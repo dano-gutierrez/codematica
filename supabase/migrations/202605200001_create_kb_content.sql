@@ -1,3 +1,4 @@
+create schema if not exists extensions;
 create extension if not exists pg_trgm with schema extensions;
 
 create table if not exists public.kb_documents (
@@ -19,13 +20,7 @@ create table if not exists public.kb_documents (
   mermaid_blocks jsonb not null default '[]'::jsonb,
   content_hash text not null,
   reading_minutes integer not null check (reading_minutes > 0),
-  search_document tsvector generated always as (
-    setweight(to_tsvector('english'::regconfig, coalesce(title, '')), 'A') ||
-    setweight(to_tsvector('english'::regconfig, coalesce(array_to_string(tags, ' '), '')), 'A') ||
-    setweight(to_tsvector('english'::regconfig, coalesce(summary, '')), 'B') ||
-    setweight(to_tsvector('english'::regconfig, coalesce(track, '') || ' ' || coalesce(topic, '')), 'B') ||
-    setweight(to_tsvector('english'::regconfig, coalesce(plain_text, '')), 'C')
-  ) stored,
+  search_document tsvector not null default ''::tsvector,
   created_at timestamptz not null default now(),
   updated_at timestamptz not null default now()
 );
@@ -37,21 +32,18 @@ create table if not exists public.kb_diagrams (
   source_path text not null,
   source text not null,
   content_hash text not null,
-  search_document tsvector generated always as (
-    setweight(to_tsvector('english'::regconfig, coalesce(title, '')), 'A') ||
-    setweight(to_tsvector('english'::regconfig, coalesce(source, '')), 'C')
-  ) stored,
+  search_document tsvector not null default ''::tsvector,
   created_at timestamptz not null default now(),
   updated_at timestamptz not null default now()
 );
 
 create index if not exists kb_documents_search_document_idx on public.kb_documents using gin (search_document);
-create index if not exists kb_documents_title_trgm_idx on public.kb_documents using gin (title gin_trgm_ops);
-create index if not exists kb_documents_plain_text_trgm_idx on public.kb_documents using gin (plain_text gin_trgm_ops);
+create index if not exists kb_documents_title_trgm_idx on public.kb_documents using gin (title extensions.gin_trgm_ops);
+create index if not exists kb_documents_plain_text_trgm_idx on public.kb_documents using gin (plain_text extensions.gin_trgm_ops);
 create index if not exists kb_documents_tags_idx on public.kb_documents using gin (tags);
 create index if not exists kb_diagrams_search_document_idx on public.kb_diagrams using gin (search_document);
-create index if not exists kb_diagrams_title_trgm_idx on public.kb_diagrams using gin (title gin_trgm_ops);
-create index if not exists kb_diagrams_source_trgm_idx on public.kb_diagrams using gin (source gin_trgm_ops);
+create index if not exists kb_diagrams_title_trgm_idx on public.kb_diagrams using gin (title extensions.gin_trgm_ops);
+create index if not exists kb_diagrams_source_trgm_idx on public.kb_diagrams using gin (source extensions.gin_trgm_ops);
 
 alter table public.kb_documents enable row level security;
 alter table public.kb_diagrams enable row level security;
@@ -65,6 +57,47 @@ begin
   return new;
 end;
 $$;
+
+create or replace function public.set_kb_document_search_document()
+returns trigger
+language plpgsql
+as $$
+begin
+  new.search_document :=
+    setweight(to_tsvector('english'::regconfig, coalesce(new.title, '')), 'A') ||
+    setweight(to_tsvector('english'::regconfig, coalesce(array_to_string(new.tags, ' '), '')), 'A') ||
+    setweight(to_tsvector('english'::regconfig, coalesce(new.summary, '')), 'B') ||
+    setweight(to_tsvector('english'::regconfig, coalesce(new.track, '') || ' ' || coalesce(new.topic, '')), 'B') ||
+    setweight(to_tsvector('english'::regconfig, coalesce(new.plain_text, '')), 'C');
+
+  return new;
+end;
+$$;
+
+create or replace function public.set_kb_diagram_search_document()
+returns trigger
+language plpgsql
+as $$
+begin
+  new.search_document :=
+    setweight(to_tsvector('english'::regconfig, coalesce(new.title, '')), 'A') ||
+    setweight(to_tsvector('english'::regconfig, coalesce(new.source, '')), 'C');
+
+  return new;
+end;
+$$;
+
+drop trigger if exists kb_documents_set_search_document on public.kb_documents;
+create trigger kb_documents_set_search_document
+before insert or update of title, summary, track, topic, tags, plain_text
+on public.kb_documents
+for each row execute function public.set_kb_document_search_document();
+
+drop trigger if exists kb_diagrams_set_search_document on public.kb_diagrams;
+create trigger kb_diagrams_set_search_document
+before insert or update of title, source
+on public.kb_diagrams
+for each row execute function public.set_kb_diagram_search_document();
 
 drop trigger if exists kb_documents_set_updated_at on public.kb_documents;
 create trigger kb_documents_set_updated_at
@@ -103,7 +136,7 @@ as $$
       d.summary,
       d.source_path,
       case
-        when search_mode = 'fuzzy' then greatest(similarity(d.title, n.query), similarity(d.plain_text, n.query))
+        when search_mode = 'fuzzy' then greatest(extensions.similarity(d.title, n.query), extensions.similarity(d.plain_text, n.query))
         else ts_rank(d.search_document, plainto_tsquery('english'::regconfig, n.query))
       end::real as rank
     from public.kb_documents d
@@ -112,7 +145,7 @@ as $$
       n.query <> ''
       and d.status = 'published'
       and (
-        (search_mode = 'fuzzy' and (d.title % n.query or d.plain_text % n.query))
+        (search_mode = 'fuzzy' and (d.title operator(extensions.%) n.query or d.plain_text operator(extensions.%) n.query))
         or
         (search_mode <> 'fuzzy' and d.search_document @@ plainto_tsquery('english'::regconfig, n.query))
       )
@@ -125,7 +158,7 @@ as $$
       'Mermaid diagram stored in ' || g.source_path as summary,
       g.source_path,
       case
-        when search_mode = 'fuzzy' then greatest(similarity(g.title, n.query), similarity(g.source, n.query))
+        when search_mode = 'fuzzy' then greatest(extensions.similarity(g.title, n.query), extensions.similarity(g.source, n.query))
         else ts_rank(g.search_document, plainto_tsquery('english'::regconfig, n.query))
       end::real as rank
     from public.kb_diagrams g
@@ -133,7 +166,7 @@ as $$
     where
       n.query <> ''
       and (
-        (search_mode = 'fuzzy' and (g.title % n.query or g.source % n.query))
+        (search_mode = 'fuzzy' and (g.title operator(extensions.%) n.query or g.source operator(extensions.%) n.query))
         or
         (search_mode <> 'fuzzy' and g.search_document @@ plainto_tsquery('english'::regconfig, n.query))
       )
