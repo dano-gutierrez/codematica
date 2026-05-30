@@ -1,0 +1,235 @@
+{
+  "schemaVersion": 1,
+  "documents": [
+    {
+      "title": "TypeScript Boundary Design In Large Frontends",
+      "slug": "programming/typescript-boundaries",
+      "summary": "How to use TypeScript at API, persistence, and component boundaries without turning every implementation detail into a shared type.",
+      "track": "Programming",
+      "topic": "TypeScript",
+      "difficulty": "senior",
+      "tags": [
+        "typescript",
+        "frontend-architecture",
+        "api-contracts",
+        "maintainability"
+      ],
+      "prerequisites": [
+        "TypeScript generics",
+        "React component architecture"
+      ],
+      "diagramRefs": [],
+      "status": "published",
+      "id": "c3d030e106dc",
+      "route": "/docs/programming/typescript-boundaries",
+      "sourcePath": "content/knowledge/programming/typescript-boundaries.md",
+      "bodyPath": "content/knowledge/programming/typescript-boundaries.md",
+      "markdown": "## Boundary Principle\n\nTypes are most valuable where data crosses trust boundaries. They are less valuable when they freeze incidental implementation choices inside one module. In large frontends, the highest-leverage boundaries are network responses, persisted state, route parameters, analytics events, and shared component props.\n\n## Contract Types\n\nContract types should be boring, explicit, and stable. Prefer parseable schemas for untrusted input, especially API responses and local storage. A compile-time type is not validation when the value came from the network.\n\nKeep transport types separate from view models. The server may return nullable fields, legacy names, or denormalized shapes. The UI should usually consume a normalized model that encodes what the screen actually needs.\n\n## Avoid Type Gravity\n\nShared types create gravity. Once a type is imported everywhere, changing it becomes expensive. That cost is useful for public contracts and harmful for local state. Do not export a component's internal reducer state unless another module genuinely owns part of that state.\n\n## Practical Pattern\n\n1. Validate untrusted input with a schema.\n2. Convert it into a local domain model.\n3. Keep rendering props narrow and screen-specific.\n4. Export only the contract another module is allowed to depend on.\n\n## Review Questions\n\n- Can this type change without forcing unrelated screens to update?\n- Does this type describe source data, validated data, or rendered data?\n- Is a runtime schema needed because the source is untrusted?\n- Is a generic abstraction hiding important domain names?",
+      "plainText": "Boundary Principle Types are most valuable where data crosses trust boundaries. They are less valuable when they freeze incidental implementation choices inside one module. In large frontends, the highest-leverage boundaries are network responses, persisted state, route parameters, analytics events, and shared component props. Contract Types Contract types should be boring, explicit, and stable. Prefer parseable schemas for untrusted input, especially API responses and local storage. A compile-time type is not validation when the value came from the network. Keep transport types separate from view models. The server may return nullable fields, legacy names, or denormalized shapes. The UI should usually consume a normalized model that encodes what the screen actually needs. Avoid Type Gravity Shared types create gravity. Once a type is imported everywhere, changing it becomes expensive. That cost is useful for public contracts and harmful for local state. Do not export a component's internal reducer state unless another module genuinely owns part of that state. Practical Pattern Validate untrusted input with a schema.Convert it into a local domain model.Keep rendering props narrow and screen-specific.Export only the contract another module is allowed to depend on. Review Questions Can this type change without forcing unrelated screens to update?Does this type describe source data, validated data, or rendered data?Is a runtime schema needed because the source is untrusted?Is a generic abstraction hiding important domain names?",
+      "headings": [
+        {
+          "id": "boundary-principle",
+          "depth": 2,
+          "text": "Boundary Principle"
+        },
+        {
+          "id": "contract-types",
+          "depth": 2,
+          "text": "Contract Types"
+        },
+        {
+          "id": "avoid-type-gravity",
+          "depth": 2,
+          "text": "Avoid Type Gravity"
+        },
+        {
+          "id": "practical-pattern",
+          "depth": 2,
+          "text": "Practical Pattern"
+        },
+        {
+          "id": "review-questions",
+          "depth": 2,
+          "text": "Review Questions"
+        }
+      ],
+      "mermaidBlocks": [],
+      "contentHash": "e7920db3a9a153a5728e55b536ec4207e8e2d3ec7f413a0e9bf751c218c3cc61",
+      "readingMinutes": 2
+    },
+    {
+      "title": "Observability Signals For System Design Reviews",
+      "slug": "software-engineering/observability-signals",
+      "summary": "A practical framework for choosing logs, metrics, traces, and events that prove a system is understandable under failure.",
+      "track": "Software Engineering",
+      "topic": "Observability",
+      "difficulty": "senior",
+      "tags": [
+        "observability",
+        "operations",
+        "incident-response",
+        "architecture-review"
+      ],
+      "prerequisites": [
+        "service-level objectives",
+        "distributed tracing"
+      ],
+      "diagramRefs": [],
+      "status": "published",
+      "id": "14e8ad1d3816",
+      "route": "/docs/software-engineering/observability-signals",
+      "sourcePath": "content/knowledge/software-engineering/observability-signals.md",
+      "bodyPath": "content/knowledge/software-engineering/observability-signals.md",
+      "markdown": "## Review Lens\n\nObservability is not the amount of telemetry a service emits. It is the speed and confidence with which an engineer can answer a novel production question without shipping new code.\n\nIn a design review, ask for the debugging path. If a payment submission slows down, which graph moves first? If queue latency grows, can we tell whether producers, consumers, dependencies, or retries are responsible? If a single tenant reports bad data, can we follow one request across boundaries?\n\n## Signal Roles\n\nMetrics should expose aggregate health and alertable symptoms. Traces should explain request shape, fan-out, latency distribution, and dependency cost. Logs should preserve high-cardinality facts and decisions that are not useful as metrics. Domain events should describe business transitions that operators and analysts can reason about later.\n\n## What To Avoid\n\nDo not log every object and call that observability. Do not create dashboards that mirror implementation details nobody owns. Do not alert on causes before symptoms unless the cause is highly predictive and actionable.\n\n## Senior-Level Acceptance Bar\n\nA production-ready design should include:\n\n- User-facing SLOs and the service indicators behind them.\n- A cardinality plan for labels, tenant IDs, and request IDs.\n- Trace propagation across sync and async boundaries.\n- Logs that explain decisions, not just errors.\n- A retention policy that matches incident timelines and cost limits.\n\n## Design Review Prompt\n\nAsk the team to narrate one incident from symptom to root cause using only the proposed telemetry. Weak designs usually fail this exercise before implementation begins.",
+      "plainText": "Review Lens Observability is not the amount of telemetry a service emits. It is the speed and confidence with which an engineer can answer a novel production question without shipping new code. In a design review, ask for the debugging path. If a payment submission slows down, which graph moves first? If queue latency grows, can we tell whether producers, consumers, dependencies, or retries are responsible? If a single tenant reports bad data, can we follow one request across boundaries? Signal Roles Metrics should expose aggregate health and alertable symptoms. Traces should explain request shape, fan-out, latency distribution, and dependency cost. Logs should preserve high-cardinality facts and decisions that are not useful as metrics. Domain events should describe business transitions that operators and analysts can reason about later. What To Avoid Do not log every object and call that observability. Do not create dashboards that mirror implementation details nobody owns. Do not alert on causes before symptoms unless the cause is highly predictive and actionable. Senior-Level Acceptance Bar A production-ready design should include: User-facing SLOs and the service indicators behind them.A cardinality plan for labels, tenant IDs, and request IDs.Trace propagation across sync and async boundaries.Logs that explain decisions, not just errors.A retention policy that matches incident timelines and cost limits. Design Review Prompt Ask the team to narrate one incident from symptom to root cause using only the proposed telemetry. Weak designs usually fail this exercise before implementation begins.",
+      "headings": [
+        {
+          "id": "review-lens",
+          "depth": 2,
+          "text": "Review Lens"
+        },
+        {
+          "id": "signal-roles",
+          "depth": 2,
+          "text": "Signal Roles"
+        },
+        {
+          "id": "what-to-avoid",
+          "depth": 2,
+          "text": "What To Avoid"
+        },
+        {
+          "id": "senior-level-acceptance-bar",
+          "depth": 2,
+          "text": "Senior-Level Acceptance Bar"
+        },
+        {
+          "id": "design-review-prompt",
+          "depth": 2,
+          "text": "Design Review Prompt"
+        }
+      ],
+      "mermaidBlocks": [],
+      "contentHash": "762024b64b3b7e02f2ad5624c05a9623c1bdfc530039edd1971fee678467c19a",
+      "readingMinutes": 2
+    },
+    {
+      "title": "Cache Invalidation Under Product Pressure",
+      "slug": "system-design/cache-invalidation",
+      "summary": "A senior-level guide to choosing invalidation strategies when latency, freshness, and operational safety all matter.",
+      "track": "System Design",
+      "topic": "Caching",
+      "difficulty": "senior",
+      "tags": [
+        "caching",
+        "distributed-systems",
+        "reliability",
+        "product-architecture"
+      ],
+      "prerequisites": [
+        "HTTP caching",
+        "database transactions"
+      ],
+      "diagramRefs": [
+        "system-design/cache-aside"
+      ],
+      "status": "published",
+      "id": "c66fb799cca4",
+      "route": "/docs/system-design/cache-invalidation",
+      "sourcePath": "content/knowledge/system-design/cache-invalidation.md",
+      "bodyPath": "content/knowledge/system-design/cache-invalidation.md",
+      "markdown": "## Core Decision\n\nCache invalidation is not a cleanup task. It is a product contract about how stale the user experience is allowed to be, how expensive recomputation can become, and which system owns truth when writes happen.\n\nThe first question is not \"which cache should we use?\" The first question is \"what is the acceptable lie?\" A product feed can tolerate seconds of drift. A billing ledger cannot. A permissions system usually cannot either, unless every sensitive operation re-checks the source of truth.\n\n## Strategy Map\n\n```mermaid\nflowchart TD\n  W[Write request] --> DB[(Primary database)]\n  W --> Q[Invalidation event]\n  Q --> CDN[CDN edge]\n  Q --> App[Application cache]\n  Q --> Search[Search index]\n  CDN --> R[Read path]\n  App --> R\n  Search --> R\n  DB --> R\n```\n\nUse time-based expiration when stale data is cheap and obvious. Use event-driven invalidation when stale data creates user-visible contradictions. Use versioned keys when reads fan out and deletion is hard to make complete.\n\n## Operational Tests\n\nGood invalidation designs answer these questions before launch:\n\n- Can a failed invalidation be replayed without corrupting newer data?\n- Does the read path have a deterministic fallback when the cache is cold?\n- Can operators see the age, hit rate, and key cardinality of the cache?\n- Does a write commit before or after the invalidation event becomes visible?\n\n## Failure Modes\n\nThe dangerous failures are silent. A stale permission cache may look like a fast system until it becomes a security incident. A stale recommendation cache may only look like weak personalization. Treat cache classes differently instead of forcing one global freshness rule.\n\n## Implementation Heuristic\n\nStart with cache-aside for simple expensive reads. Add explicit invalidation events for entities users edit directly. Move to versioned keys for composite views, feed pages, and computed projections where deleting every derived key is unreliable.",
+      "plainText": "Core Decision Cache invalidation is not a cleanup task. It is a product contract about how stale the user experience is allowed to be, how expensive recomputation can become, and which system owns truth when writes happen. The first question is not \"which cache should we use?\" The first question is \"what is the acceptable lie?\" A product feed can tolerate seconds of drift. A billing ledger cannot. A permissions system usually cannot either, unless every sensitive operation re-checks the source of truth. Strategy Map flowchart TD W[Write request] --> DB[(Primary database)] W --> Q[Invalidation event] Q --> CDN[CDN edge] Q --> App[Application cache] Q --> Search[Search index] CDN --> R[Read path] App --> R Search --> R DB --> R Use time-based expiration when stale data is cheap and obvious. Use event-driven invalidation when stale data creates user-visible contradictions. Use versioned keys when reads fan out and deletion is hard to make complete. Operational Tests Good invalidation designs answer these questions before launch: Can a failed invalidation be replayed without corrupting newer data?Does the read path have a deterministic fallback when the cache is cold?Can operators see the age, hit rate, and key cardinality of the cache?Does a write commit before or after the invalidation event becomes visible? Failure Modes The dangerous failures are silent. A stale permission cache may look like a fast system until it becomes a security incident. A stale recommendation cache may only look like weak personalization. Treat cache classes differently instead of forcing one global freshness rule. Implementation Heuristic Start with cache-aside for simple expensive reads. Add explicit invalidation events for entities users edit directly. Move to versioned keys for composite views, feed pages, and computed projections where deleting every derived key is unreliable.",
+      "headings": [
+        {
+          "id": "core-decision",
+          "depth": 2,
+          "text": "Core Decision"
+        },
+        {
+          "id": "strategy-map",
+          "depth": 2,
+          "text": "Strategy Map"
+        },
+        {
+          "id": "operational-tests",
+          "depth": 2,
+          "text": "Operational Tests"
+        },
+        {
+          "id": "failure-modes",
+          "depth": 2,
+          "text": "Failure Modes"
+        },
+        {
+          "id": "implementation-heuristic",
+          "depth": 2,
+          "text": "Implementation Heuristic"
+        }
+      ],
+      "mermaidBlocks": [
+        {
+          "id": "embedded-1",
+          "source": "flowchart TD\n  W[Write request] --> DB[(Primary database)]\n  W --> Q[Invalidation event]\n  Q --> CDN[CDN edge]\n  Q --> App[Application cache]\n  Q --> Search[Search index]\n  CDN --> R[Read path]\n  App --> R\n  Search --> R\n  DB --> R"
+        }
+      ],
+      "contentHash": "38bc46ffe4f72f5851003404685ecc1c17fb2b98e29813debeca0e8fbfe3096e",
+      "readingMinutes": 2
+    }
+  ],
+  "diagrams": [
+    {
+      "id": "e092b303e922",
+      "title": "Cache Aside",
+      "slug": "system-design/cache-aside",
+      "route": "/diagrams/system-design/cache-aside",
+      "sourcePath": "content/diagrams/system-design/cache-aside.mmd",
+      "source": "sequenceDiagram\n  autonumber\n  participant Client\n  participant API\n  participant Cache\n  participant DB as Primary DB\n  Client->>API: GET /resource/:id\n  API->>Cache: Read resource key\n  alt cache hit\n    Cache-->>API: Cached projection\n  else cache miss\n    API->>DB: Read source of truth\n    DB-->>API: Canonical row\n    API->>Cache: Store projection with TTL\n  end\n  API-->>Client: Resource response",
+      "contentHash": "9748e5e5c8b3d5e9464f00d3bab4b2e95a2b49d9351b3ada0026072c851da262"
+    },
+    {
+      "id": "e6633b2eb347",
+      "title": "Write Invalidation",
+      "slug": "system-design/write-invalidation",
+      "route": "/diagrams/system-design/write-invalidation",
+      "sourcePath": "content/diagrams/system-design/write-invalidation.mermaid",
+      "source": "flowchart LR\n  Client[Client write] --> API[API command]\n  API --> Tx[(Database transaction)]\n  Tx --> Outbox[Outbox row]\n  Outbox --> Worker[Invalidation worker]\n  Worker --> Cache[Cache delete/version bump]\n  Worker --> Search[Projection rebuild]",
+      "contentHash": "351b780112c95755c115a1931f53a59e51e81d52da714910c7a0659107ef6b61"
+    }
+  ],
+  "tracks": [
+    {
+      "name": "Programming",
+      "slug": "programming",
+      "documentCount": 1,
+      "difficulties": [
+        "senior"
+      ],
+      "topics": [
+        "TypeScript"
+      ]
+    },
+    {
+      "name": "Software Engineering",
+      "slug": "software-engineering",
+      "documentCount": 1,
+      "difficulties": [
+        "senior"
+      ],
+      "topics": [
+        "Observability"
+      ]
+    },
+    {
+      "name": "System Design",
+      "slug": "system-design",
+      "documentCount": 1,
+      "difficulties": [
+        "senior"
+      ],
+      "topics": [
+        "Caching"
+      ]
+    }
+  ]
+}

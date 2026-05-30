@@ -1,0 +1,16 @@
+sequenceDiagram
+  autonumber
+  participant Client
+  participant API
+  participant Cache
+  participant DB as Primary DB
+  Client->>API: GET /resource/:id
+  API->>Cache: Read resource key
+  alt cache hit
+    Cache-->>API: Cached projection
+  else cache miss
+    API->>DB: Read source of truth
+    DB-->>API: Canonical row
+    API->>Cache: Store projection with TTL
+  end
+  API-->>Client: Resource response

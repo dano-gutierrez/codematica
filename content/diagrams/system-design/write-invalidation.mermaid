@@ -1,0 +1,7 @@
+flowchart LR
+  Client[Client write] --> API[API command]
+  API --> Tx[(Database transaction)]
+  Tx --> Outbox[Outbox row]
+  Outbox --> Worker[Invalidation worker]
+  Worker --> Cache[Cache delete/version bump]
+  Worker --> Search[Projection rebuild]
