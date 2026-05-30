@@ -1,0 +1,168 @@
+@import "tailwindcss";
+
+:root {
+  color-scheme: light;
+  --background: #f5fbff;
+  --foreground: #263238;
+  --muted: #68737d;
+  --panel: #ffffff;
+  --panel-strong: #eaf7f4;
+  --line: #d5e2e8;
+  --accent: #007c78;
+  --accent-strong: #00645f;
+  --amber: #f4b400;
+  --blue: #2f80ed;
+  --rose: #d83a52;
+  --purple: #7c5cff;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  min-height: 100%;
+  background: var(--background);
+}
+
+body {
+  min-height: 100%;
+  margin: 0;
+  background:
+    linear-gradient(180deg, rgba(0, 124, 120, 0.12) 0, rgba(245, 251, 255, 0) 18rem),
+    var(--background);
+  color: var(--foreground);
+  font-family: var(--font-geist-sans), ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button,
+input,
+select {
+  font: inherit;
+}
+
+::selection {
+  background: rgba(0, 124, 120, 0.24);
+}
+
+.prose-codematica {
+  color: #263238;
+  line-height: 1.75;
+}
+
+.prose-codematica h1,
+.prose-codematica h2,
+.prose-codematica h3,
+.prose-codematica h4 {
+  color: #263238;
+  line-height: 1.18;
+  letter-spacing: 0;
+}
+
+.prose-codematica h1 {
+  font-size: 2.4rem;
+  margin: 0 0 1.25rem;
+}
+
+.prose-codematica h2 {
+  font-size: 1.65rem;
+  margin: 2.4rem 0 0.8rem;
+  border-top: 2px solid #e4edf1;
+  padding-top: 1.5rem;
+}
+
+.prose-codematica h2:first-child {
+  margin-top: 0;
+  border-top: 0;
+  padding-top: 0;
+}
+
+.prose-codematica h3 {
+  font-size: 1.25rem;
+  margin: 2rem 0 0.65rem;
+}
+
+@media (min-width: 640px) {
+  .prose-codematica h1 {
+    font-size: 4.25rem;
+  }
+
+  .prose-codematica h2 {
+    font-size: 2.25rem;
+  }
+
+  .prose-codematica h3 {
+    font-size: 1.55rem;
+  }
+}
+
+.prose-codematica p,
+.prose-codematica ul,
+.prose-codematica ol {
+  margin: 0.95rem 0;
+}
+
+.prose-codematica ul,
+.prose-codematica ol {
+  padding-left: 1.3rem;
+}
+
+.prose-codematica li + li {
+  margin-top: 0.35rem;
+}
+
+.prose-codematica code {
+  border: 2px solid #d5e2e8;
+  border-radius: 0.5rem;
+  background: #f6fbfc;
+  padding: 0.08rem 0.32rem;
+  color: #245fba;
+  font-size: 0.92em;
+}
+
+.prose-codematica pre {
+  overflow-x: auto;
+  border: 2px solid var(--line);
+  border-bottom-width: 5px;
+  border-radius: 0.5rem;
+  background: #f6fbfc;
+  padding: 1rem;
+}
+
+.prose-codematica pre code {
+  border: 0;
+  background: transparent;
+  padding: 0;
+  color: #243b53;
+}
+
+.prose-codematica blockquote {
+  margin: 1.5rem 0;
+  border-left: 5px solid var(--accent);
+  padding-left: 1rem;
+  color: #33434b;
+  font-weight: 600;
+}
+
+.prose-codematica table {
+  display: block;
+  width: 100%;
+  overflow-x: auto;
+  border-collapse: collapse;
+}
+
+.prose-codematica th,
+.prose-codematica td {
+  border: 2px solid var(--line);
+  padding: 0.65rem;
+  text-align: left;
+}
+
+.prose-codematica th {
+  background: #eaf7f4;
+}
