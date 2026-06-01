@@ -1,0 +1,14 @@
+{
+  "slug": "system-design/versioned-keys-cloze",
+  "title": "Versioned Keys Cloze",
+  "type": "cloze",
+  "documentSlug": "system-design/cache-invalidation",
+  "concept": "Versioned cache keys",
+  "difficulty": "senior",
+  "tags": ["caching", "distributed-systems"],
+  "status": "published",
+  "prompt": "Fill the gap with the cache strategy that avoids deleting every derived key.",
+  "template": "Use {{blank}} for composite views and computed projections where deleting every derived cache key is unreliable.",
+  "acceptedAnswers": ["versioned keys", "versioned cache keys"],
+  "explanation": "Versioned keys let new reads move to a fresh namespace while old derived keys expire naturally."
+}

@@ -1,0 +1,22 @@
+{
+  "slug": "system-design-fundamentals",
+  "title": "System Design Fundamentals",
+  "summary": "A focused skill path for learning how production design choices become user-facing contracts.",
+  "kind": "skill",
+  "category": "System Design",
+  "audience": "Engineers preparing for system design interviews, architecture reviews, and production tradeoff discussions.",
+  "status": "published",
+  "units": [
+    {
+      "slug": "caching-contracts",
+      "title": "Caching Contracts",
+      "summary": "Study freshness, invalidation, diagrams, and review prompts through a short cache design loop.",
+      "nodes": [
+        { "kind": "document", "slug": "system-design/cache-invalidation" },
+        { "kind": "diagram", "slug": "system-design/cache-aside" },
+        { "kind": "exercise", "slug": "system-design/cache-product-contract" },
+        { "kind": "exercise", "slug": "system-design/versioned-keys-cloze" }
+      ]
+    }
+  ]
+}

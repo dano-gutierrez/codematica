@@ -11,9 +11,9 @@
   --accent: #007c78;
   --accent-strong: #00645f;
   --amber: #f4b400;
-  --blue: #2f80ed;
+  --blue: #245fba;
   --rose: #d83a52;
-  --purple: #7c5cff;
+  --purple: #5840b8;
 }
 
 * {
@@ -36,7 +36,6 @@ body {
 }
 
 a {
-  color: inherit;
   text-decoration: none;
 }
 

@@ -1,0 +1,24 @@
+{
+  "slug": "backend-engineer-readiness",
+  "title": "Backend Engineer Readiness",
+  "summary": "A role path for practicing the systems, operations, and boundary thinking expected of backend engineers.",
+  "kind": "role",
+  "category": "Engineering Careers",
+  "audience": "Backend and full-stack engineers who want stronger production design judgment.",
+  "status": "published",
+  "units": [
+    {
+      "slug": "production-judgment",
+      "title": "Production Judgment",
+      "summary": "Connect cache behavior, observability choices, and interface boundaries into review-ready engineering habits.",
+      "nodes": [
+        { "kind": "document", "slug": "system-design/cache-invalidation" },
+        { "kind": "exercise", "slug": "system-design/cache-product-contract" },
+        { "kind": "document", "slug": "software-engineering/observability-signals" },
+        { "kind": "exercise", "slug": "software-engineering/observability-signal-roles" },
+        { "kind": "document", "slug": "programming/typescript-boundaries" },
+        { "kind": "exercise", "slug": "programming/runtime-boundary-cloze" }
+      ]
+    }
+  ]
+}

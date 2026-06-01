@@ -38,11 +38,11 @@ export default async function DiagramPage({ params }: DiagramPageProps) {
     <main className="min-h-screen px-4 py-5 sm:py-8" data-testid="diagram-page">
       <div className="mx-auto w-full max-w-6xl">
         <Link
-          href="/"
+          href="/browse"
           className="inline-flex items-center gap-2 rounded-lg border-2 border-b-4 border-[#d5e2e8] bg-white px-3 py-2 text-sm font-extrabold text-[#263238]"
         >
           <ArrowLeft className="h-4 w-4" aria-hidden="true" />
-          Browser
+          Browse
         </Link>
         <div className="mt-6">
           <p className="text-sm font-extrabold uppercase text-[#007c78]">Mermaid Diagram</p>

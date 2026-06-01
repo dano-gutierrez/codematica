@@ -13,7 +13,7 @@
     "test:watch": "vitest",
     "content:index": "tsx scripts/content/build-index.ts",
     "content:check": "tsx scripts/content/build-index.ts --check",
-    "content:sync:supabase": "tsx scripts/content/sync-supabase.ts",
+    "content:sync:supabase": "node --env-file=.env --import tsx scripts/content/sync-supabase.ts",
     "e2e:smoke": "playwright test --config=e2e/playwright.config.ts"
   },
   "dependencies": {

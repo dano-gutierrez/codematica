@@ -1,5 +1,5 @@
 {
-  "schemaVersion": 1,
+  "schemaVersion": 2,
   "documents": [
     {
       "title": "TypeScript Boundary Design In Large Frontends",
@@ -195,6 +195,183 @@
       "sourcePath": "content/diagrams/system-design/write-invalidation.mermaid",
       "source": "flowchart LR\n  Client[Client write] --> API[API command]\n  API --> Tx[(Database transaction)]\n  Tx --> Outbox[Outbox row]\n  Outbox --> Worker[Invalidation worker]\n  Worker --> Cache[Cache delete/version bump]\n  Worker --> Search[Projection rebuild]",
       "contentHash": "351b780112c95755c115a1931f53a59e51e81d52da714910c7a0659107ef6b61"
+    }
+  ],
+  "learningPaths": [
+    {
+      "slug": "backend-engineer-readiness",
+      "title": "Backend Engineer Readiness",
+      "summary": "A role path for practicing the systems, operations, and boundary thinking expected of backend engineers.",
+      "kind": "role",
+      "category": "Engineering Careers",
+      "audience": "Backend and full-stack engineers who want stronger production design judgment.",
+      "status": "published",
+      "units": [
+        {
+          "slug": "production-judgment",
+          "title": "Production Judgment",
+          "summary": "Connect cache behavior, observability choices, and interface boundaries into review-ready engineering habits.",
+          "nodes": [
+            {
+              "kind": "document",
+              "slug": "system-design/cache-invalidation"
+            },
+            {
+              "kind": "exercise",
+              "slug": "system-design/cache-product-contract"
+            },
+            {
+              "kind": "document",
+              "slug": "software-engineering/observability-signals"
+            },
+            {
+              "kind": "exercise",
+              "slug": "software-engineering/observability-signal-roles"
+            },
+            {
+              "kind": "document",
+              "slug": "programming/typescript-boundaries"
+            },
+            {
+              "kind": "exercise",
+              "slug": "programming/runtime-boundary-cloze"
+            }
+          ]
+        }
+      ],
+      "id": "b4f512be8f33",
+      "route": "/paths/backend-engineer-readiness",
+      "sourcePath": "content/learning-paths/backend-engineer-readiness.json",
+      "contentHash": "3e7445d67ddfdf2d1866944f397cac1daa13397f2663c78ff4ba140210fee9f0"
+    },
+    {
+      "slug": "system-design-fundamentals",
+      "title": "System Design Fundamentals",
+      "summary": "A focused skill path for learning how production design choices become user-facing contracts.",
+      "kind": "skill",
+      "category": "System Design",
+      "audience": "Engineers preparing for system design interviews, architecture reviews, and production tradeoff discussions.",
+      "status": "published",
+      "units": [
+        {
+          "slug": "caching-contracts",
+          "title": "Caching Contracts",
+          "summary": "Study freshness, invalidation, diagrams, and review prompts through a short cache design loop.",
+          "nodes": [
+            {
+              "kind": "document",
+              "slug": "system-design/cache-invalidation"
+            },
+            {
+              "kind": "diagram",
+              "slug": "system-design/cache-aside"
+            },
+            {
+              "kind": "exercise",
+              "slug": "system-design/cache-product-contract"
+            },
+            {
+              "kind": "exercise",
+              "slug": "system-design/versioned-keys-cloze"
+            }
+          ]
+        }
+      ],
+      "id": "07569d83aba4",
+      "route": "/paths/system-design-fundamentals",
+      "sourcePath": "content/learning-paths/system-design-fundamentals.json",
+      "contentHash": "91947b2b659524a4330aab853a8aa41a62115d642843814553579337bcc3aac2"
+    }
+  ],
+  "exercises": [
+    {
+      "slug": "programming/runtime-boundary-cloze",
+      "title": "Runtime Boundary Cloze",
+      "documentSlug": "programming/typescript-boundaries",
+      "concept": "Runtime validation",
+      "difficulty": "senior",
+      "tags": [
+        "typescript",
+        "api-contracts"
+      ],
+      "status": "published",
+      "type": "cloze",
+      "prompt": "Fill the gap with the protection needed when data crosses a trust boundary.",
+      "template": "A compile-time type is not enough when data came from the network; use a parseable {{blank}} at the boundary.",
+      "acceptedAnswers": [
+        "schema",
+        "runtime schema",
+        "validation schema"
+      ],
+      "explanation": "TypeScript cannot prove that untrusted runtime values match a type. Boundary data needs validation before the app treats it as safe.",
+      "id": "ecf7413b0723",
+      "route": "/practice/programming/runtime-boundary-cloze",
+      "sourcePath": "content/exercises/programming/runtime-boundary-cloze.json",
+      "contentHash": "ceae32b04d6ee0c326c6229780be34680d0b56dbb24fa58e7a1f4c49adf42393"
+    },
+    {
+      "slug": "software-engineering/observability-signal-roles",
+      "title": "Observability Signal Roles",
+      "documentSlug": "software-engineering/observability-signals",
+      "concept": "Telemetry signal selection",
+      "difficulty": "senior",
+      "tags": [
+        "observability",
+        "incident-response"
+      ],
+      "status": "published",
+      "type": "flashcard",
+      "prompt": "What should metrics, traces, logs, and domain events each explain in a production system?",
+      "answer": "Metrics expose aggregate symptoms, traces explain request shape and dependency cost, logs preserve high-cardinality decisions, and domain events describe business transitions.",
+      "explanation": "The article separates telemetry by the production question each signal can answer instead of treating all emitted data as observability.",
+      "id": "ab7a3b840012",
+      "route": "/practice/software-engineering/observability-signal-roles",
+      "sourcePath": "content/exercises/software-engineering/observability-signal-roles.json",
+      "contentHash": "8580a63ea88b9a410cec6332d98168831da72cdda171d2dbcc321efebe241af0"
+    },
+    {
+      "slug": "system-design/cache-product-contract",
+      "title": "Cache Product Contract",
+      "documentSlug": "system-design/cache-invalidation",
+      "concept": "Cache invalidation",
+      "difficulty": "senior",
+      "tags": [
+        "caching",
+        "product-architecture"
+      ],
+      "status": "published",
+      "type": "flashcard",
+      "prompt": "Why is cache invalidation a product contract rather than only a cleanup task?",
+      "answer": "It defines how stale the user experience may become, who owns truth, and what latency or recomputation cost the product accepts.",
+      "explanation": "The article frames freshness as a product tradeoff. Different domains tolerate different stale states, so the cache strategy must match the user-facing contract.",
+      "id": "ad13471841df",
+      "route": "/practice/system-design/cache-product-contract",
+      "sourcePath": "content/exercises/system-design/cache-product-contract.json",
+      "contentHash": "ab92b19965e7f85e3d3833d46fa3ed6b212e85a9b0a0b0dd0630308934723f98"
+    },
+    {
+      "slug": "system-design/versioned-keys-cloze",
+      "title": "Versioned Keys Cloze",
+      "documentSlug": "system-design/cache-invalidation",
+      "concept": "Versioned cache keys",
+      "difficulty": "senior",
+      "tags": [
+        "caching",
+        "distributed-systems"
+      ],
+      "status": "published",
+      "type": "cloze",
+      "prompt": "Fill the gap with the cache strategy that avoids deleting every derived key.",
+      "template": "Use {{blank}} for composite views and computed projections where deleting every derived cache key is unreliable.",
+      "acceptedAnswers": [
+        "versioned keys",
+        "versioned cache keys"
+      ],
+      "explanation": "Versioned keys let new reads move to a fresh namespace while old derived keys expire naturally.",
+      "id": "19f8be2626c7",
+      "route": "/practice/system-design/versioned-keys-cloze",
+      "sourcePath": "content/exercises/system-design/versioned-keys-cloze.json",
+      "contentHash": "527644ae0ac7dcf1306416eccb62465f2351c825d237ef02e1fe50331b1b9962"
     }
   ],
   "tracks": [

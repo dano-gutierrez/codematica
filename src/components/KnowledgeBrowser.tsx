@@ -125,7 +125,7 @@ export function KnowledgeBrowser({ index }: { index: ContentIndex }) {
                   data-testid={`result-${result.kind}-${result.id}`}
                 >
                   <div className="flex flex-wrap items-center gap-2">
-                    <span className="inline-flex items-center gap-1 rounded-lg border-2 border-b-4 border-[#d5e2e8] bg-[#f6fbfc] px-2 py-1 text-xs font-extrabold text-[#2f80ed]">
+                    <span className="inline-flex items-center gap-1 rounded-lg border-2 border-b-4 border-[#d5e2e8] bg-[#f6fbfc] px-2 py-1 text-xs font-extrabold text-[#245fba]">
                       {result.kind === "document" ? <BookOpen className="h-3.5 w-3.5" aria-hidden="true" /> : <GitBranch className="h-3.5 w-3.5" aria-hidden="true" />}
                       {result.kind === "document" ? "Doc" : "Diagram"}
                     </span>
@@ -189,7 +189,7 @@ export function KnowledgeBrowser({ index }: { index: ContentIndex }) {
                 </div>
                 <div className="flex items-center justify-between rounded-lg bg-[#f6fbfc] px-3 py-2">
                   <span>Diagram nodes</span>
-                  <span className="font-extrabold text-[#2f80ed]">{index.diagrams.length}</span>
+                  <span className="font-extrabold text-[#245fba]">{index.diagrams.length}</span>
                 </div>
                 <div className="flex items-center justify-between rounded-lg bg-[#f6fbfc] px-3 py-2">
                   <span>Senior+</span>

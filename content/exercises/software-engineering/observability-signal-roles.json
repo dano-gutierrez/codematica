@@ -1,0 +1,13 @@
+{
+  "slug": "software-engineering/observability-signal-roles",
+  "title": "Observability Signal Roles",
+  "type": "flashcard",
+  "documentSlug": "software-engineering/observability-signals",
+  "concept": "Telemetry signal selection",
+  "difficulty": "senior",
+  "tags": ["observability", "incident-response"],
+  "status": "published",
+  "prompt": "What should metrics, traces, logs, and domain events each explain in a production system?",
+  "answer": "Metrics expose aggregate symptoms, traces explain request shape and dependency cost, logs preserve high-cardinality decisions, and domain events describe business transitions.",
+  "explanation": "The article separates telemetry by the production question each signal can answer instead of treating all emitted data as observability."
+}

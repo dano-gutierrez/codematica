@@ -1,0 +1,14 @@
+{
+  "slug": "programming/runtime-boundary-cloze",
+  "title": "Runtime Boundary Cloze",
+  "type": "cloze",
+  "documentSlug": "programming/typescript-boundaries",
+  "concept": "Runtime validation",
+  "difficulty": "senior",
+  "tags": ["typescript", "api-contracts"],
+  "status": "published",
+  "prompt": "Fill the gap with the protection needed when data crosses a trust boundary.",
+  "template": "A compile-time type is not enough when data came from the network; use a parseable {{blank}} at the boundary.",
+  "acceptedAnswers": ["schema", "runtime schema", "validation schema"],
+  "explanation": "TypeScript cannot prove that untrusted runtime values match a type. Boundary data needs validation before the app treats it as safe."
+}

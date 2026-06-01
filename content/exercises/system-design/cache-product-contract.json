@@ -1,0 +1,13 @@
+{
+  "slug": "system-design/cache-product-contract",
+  "title": "Cache Product Contract",
+  "type": "flashcard",
+  "documentSlug": "system-design/cache-invalidation",
+  "concept": "Cache invalidation",
+  "difficulty": "senior",
+  "tags": ["caching", "product-architecture"],
+  "status": "published",
+  "prompt": "Why is cache invalidation a product contract rather than only a cleanup task?",
+  "answer": "It defines how stale the user experience may become, who owns truth, and what latency or recomputation cost the product accepts.",
+  "explanation": "The article frames freshness as a product tradeoff. Different domains tolerate different stale states, so the cache strategy must match the user-facing contract."
+}

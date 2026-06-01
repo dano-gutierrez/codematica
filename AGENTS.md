@@ -291,6 +291,7 @@ Rule of thumb: if you can test it without a browser, do it in Vitest first. Use 
 - Naming: `{feature}-{element}-{qualifier}`.
 - Keep components mobile-first. Verify small viewports for major UI changes.
 - Use lucide icons inside buttons and tool controls when an icon exists.
+- Treat WCAG AA contrast as a baseline for new UI: normal text and icons must be at least 4.5:1 against their background, large/bold text at least 3:1, and non-text interactive states such as focus rings, borders, and icon-only controls at least 3:1. Verify button/link foreground classes are not overridden by global CSS.
 - Avoid nested cards. Cards are for repeated items, modals, and genuinely framed tools.
 
 ### Content And Search

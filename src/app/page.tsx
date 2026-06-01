@@ -1,6 +1,6 @@
-import { KnowledgeBrowser } from "@/components/KnowledgeBrowser";
+import { LearningPathHome } from "@/components/LearningPathMap";
 import { getContentIndex } from "@/lib/content";
 
 export default function HomePage() {
-  return <KnowledgeBrowser index={getContentIndex()} />;
+  return <LearningPathHome index={getContentIndex()} />;
 }

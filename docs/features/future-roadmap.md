@@ -3,36 +3,37 @@
 ## Snapshot
 
 - Status: `proposed`
-- Last updated: `2026-05-20`
+- Last updated: `2026-05-30`
 - Owner thread: `n/a`
-- Current state: Roadmap items are documented but not implemented.
-- Target outcome: Later versions add AI study assistance, flashcards, visual system design practice, code challenges, auth, and native-ready APIs.
+- Current state: Learning paths, flashcards, and cloze practice have a local-first MVP; deeper gamification remains planned.
+- Target outcome: Later versions add AI study assistance, broader quiz loops, visual system design practice, code challenges, auth, durable progress, and native-ready APIs.
 - Code touchpoints:
   - `docs/engineering-overview.md`
-  - `AGENTS.md`
+  - `docs/features/learning-paths-and-practice.md`
 - Primary tests:
   - `n/a`
 
 ## One-Minute Brief
 
-Codematica should grow from a knowledge browser into a gamified engineering study system. V1 establishes the content and browsing base. Later features should build on that base without breaking Markdown authoring.
+Codematica should grow from a path-first engineering study system into a deeper gamified learning product. The current MVP adds local learning paths plus flashcard and cloze practice. Later features should build on that base without breaking Markdown authoring.
 
 ## Outcome / Contract
 
-- Roadmap work must preserve repo Markdown as the canonical authoring source until a later decision changes it.
+- Roadmap work must preserve repo Markdown as the canonical authoring source for documents until a later decision changes it.
+- Learning paths and exercises should remain local structured content until auth or hosted authoring justifies a backend contract.
 - Auth and durable progress should be added before multi-device scoring matters.
 - AI features should read from validated content/index data rather than scraping rendered pages.
 
 ## Planned Feature Areas
 
 - AI summaries, article Q&A, and study prompts.
-- Flashcards generated from approved content and editable by maintainers.
+- More quiz types beyond the shipped flashcard and cloze MVP: multiple choice, ordering, matching, scenario drills, and review queues.
 - System design blueprints with visual structure, likely React Flow for editing and Mermaid import/export.
 - Mermaid authoring and diagram creation mode inside the app.
 - Code snaps for multiple languages.
 - Editable JS/TS coding challenges with compilation or execution sandboxing.
 - Real-time score feedback in a gaming style.
-- Auth, profiles, saved progress, streaks, achievements, and review queues.
+- Auth, profiles, saved progress, gated levels, streaks, achievements, leaderboards, and optional paywall boundaries.
 - Native client migration path once web contracts stabilize.
 
 ## Test Plan

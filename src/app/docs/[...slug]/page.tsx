@@ -49,18 +49,18 @@ export default async function DocumentPage({ params }: DocumentPageProps) {
     <main className="min-h-screen px-4 py-5 sm:py-8" data-testid="document-page">
       <div className="mx-auto w-full max-w-6xl">
         <Link
-          href="/"
+          href="/browse"
           className="inline-flex items-center gap-2 rounded-lg border-2 border-b-4 border-[#d5e2e8] bg-white px-3 py-2 text-sm font-extrabold text-[#263238]"
         >
           <ArrowLeft className="h-4 w-4" aria-hidden="true" />
-          Browser
+          Browse
         </Link>
 
         <article className="mt-6 grid gap-7 lg:grid-cols-[minmax(0,1fr)_17rem]">
           <div className="min-w-0">
             <div className="mb-5 flex flex-wrap items-center gap-2">
               <DifficultyPill difficulty={document.difficulty} />
-              <span className="rounded-lg border-2 border-b-4 border-[#d5e2e8] bg-white px-2.5 py-1 text-xs font-extrabold text-[#2f80ed]">{document.track}</span>
+              <span className="rounded-lg border-2 border-b-4 border-[#d5e2e8] bg-white px-2.5 py-1 text-xs font-extrabold text-[#245fba]">{document.track}</span>
               <span className="inline-flex items-center gap-1 rounded-lg border-2 border-b-4 border-[#d5e2e8] bg-white px-2.5 py-1 text-xs font-extrabold text-[#68737d]">
                 <Clock className="h-3.5 w-3.5" aria-hidden="true" />
                 {document.readingMinutes} min
@@ -88,7 +88,7 @@ export default async function DocumentPage({ params }: DocumentPageProps) {
                 <div className="mt-4 grid gap-4">
                   {referencedDiagrams.map((diagram) => (
                     <div key={diagram.slug}>
-                      <Link href={diagram.route} className="text-sm font-extrabold text-[#2f80ed]">
+                      <Link href={diagram.route} className="text-sm font-extrabold text-[#245fba]">
                         {diagram.title}
                       </Link>
                       <MermaidBlock source={diagram.source} title={diagram.title} />

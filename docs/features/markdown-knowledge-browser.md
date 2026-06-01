@@ -3,9 +3,9 @@
 ## Snapshot
 
 - Status: `shipped`
-- Last updated: `2026-05-20`
+- Last updated: `2026-05-30`
 - Owner thread: `n/a`
-- Current state: V1 browser reads a generated local index from repo-authored Markdown and Mermaid files.
+- Current state: The browser lives at `/browse` and reads a generated local index from repo-authored Markdown, Mermaid, path, and exercise files.
 - Target outcome: Users can browse, search, read articles, and render diagrams on mobile without Supabase credentials.
 - Code touchpoints:
   - `src/lib/content/`
@@ -66,7 +66,8 @@ The feature is implemented with a small starter content set. Supabase has an opt
 
 ### UI / UX
 
-- `/` shows the usable knowledge browser immediately.
+- `/browse` shows the usable knowledge browser immediately.
+- `/` shows the learning path map.
 - `/docs/[...slug]` renders one article with metadata, outline, Markdown body, and referenced diagrams.
 - `/diagrams/[...slug]` renders one standalone Mermaid diagram.
 - The layout is mobile-first and uses compact controls, including reusable dropdown filters with keyboard-friendly listbox behavior.
@@ -75,7 +76,7 @@ The feature is implemented with a small starter content set. Supabase has an opt
 
 - Markdown lives under `content/knowledge/`.
 - Diagrams live under `content/diagrams/`.
-- The generated index stores metadata, Markdown, extracted plain text, headings, Mermaid blocks, source paths, and hashes.
+- The generated index stores metadata, Markdown, extracted plain text, headings, Mermaid blocks, learning paths, exercises, source paths, and hashes.
 - Optional Supabase tables mirror the generated index for future hosted search.
 
 ### Failure And Edge Handling
@@ -91,6 +92,7 @@ The feature is implemented with a small starter content set. Supabase has an opt
 - `src/lib/search.ts`: fuzzy ranking
 - `src/components/Dropdown.tsx`: reusable dropdown primitive for browser filters
 - `src/components/KnowledgeBrowser.tsx`: mobile-first browser and filter wiring
+- `src/app/browse/page.tsx`: route that hosts the browser now that `/` is path-first
 - `scripts/content/sync-supabase.ts`: optional Supabase upsert path
 
 ## Test Plan
@@ -110,6 +112,7 @@ The feature is implemented with a small starter content set. Supabase has an opt
 - `2026-05-20`: Keep Markdown canonical and Supabase optional for V1 runtime.
 - `2026-05-29`: Remove the exact/fuzzy search mode toggle; the app always uses fuzzy search.
 - `2026-05-29`: Replace native filter selects with a reusable Radix-backed dropdown component.
+- `2026-05-30`: Move the browser from `/` to `/browse` so `/` can become the learning path map.
 
 ## Thread Handoff Prompt
 

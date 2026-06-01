@@ -17,7 +17,15 @@ Conventions:
 - `docs/features/<feature>.md` is the durable product and implementation contract for one feature.
 - `docs/features/_template.md` is the format new feature docs should follow.
 - `docs/features/README.md` explains how threads should consume and maintain feature docs.
+- `docs/features/learning-paths-and-practice.md` owns the path-first home, local path JSON, local exercise JSON, and practice routes.
 - `docs/plans/<feature>/...` is the repo-local home for durable implementation plans when a plan needs to outlive one thread.
+
+Content authoring surfaces:
+
+- `content/knowledge/`: canonical Markdown documents.
+- `content/diagrams/`: canonical Mermaid diagrams.
+- `content/learning-paths/`: role and skill path JSON.
+- `content/exercises/`: flashcard and cloze practice JSON.
 
 Maintenance rules:
 
