@@ -1,0 +1,345 @@
+{
+  "slug": "netflix",
+  "name": "Netflix",
+  "summary": "Practice cache-expiry, dependency-safety, and streaming-window prompts aligned with Netflix-style interviews.",
+  "status": "published",
+  "questions": [
+    {
+      "slug": "auto-expire-cache",
+      "title": "Auto-Expire Cache",
+      "summary": "Build a cache where entries become invisible after their time-to-live passes.",
+      "prompt": "Design a key-value cache that accepts a time-to-live for each write and returns no value after an item expires.",
+      "difficulty": "senior",
+      "tags": [
+        "cache",
+        "heap",
+        "design"
+      ],
+      "sourceLinks": [
+        {
+          "label": "InterviewQuery Netflix guide",
+          "url": "https://www.interviewquery.com/interview-guides/netflix-software-engineer"
+        }
+      ],
+      "resources": [],
+      "examples": [
+        {
+          "input": "set(a, 1, ttl=5, now=10), get(a, now=16)",
+          "output": "null",
+          "explanation": "The item expired at time 15."
+        }
+      ],
+      "constraints": [
+        "The clock is supplied by the caller in this MVP prompt."
+      ],
+      "diagrams": [
+        {
+          "title": "Expiry lifecycle",
+          "mermaid": "stateDiagram-v2\n  [*] --> Fresh\n  Fresh --> Expired: now >= expiresAt\n  Expired --> Removed: cleanup or read"
+        }
+      ],
+      "solutionTracks": [
+        {
+          "id": "lazy-expiration",
+          "title": "Lazy Expiration Map",
+          "summary": "Store each value with its expiry time and remove expired entries only when a key is read or overwritten.",
+          "steps": [
+            {
+              "title": "Store expiry metadata",
+              "explanation": "Every set writes the value and the absolute time at which it should stop being visible."
+            },
+            {
+              "title": "Check on get",
+              "explanation": "Reads compare the current time against the stored expiry before returning a value."
+            },
+            {
+              "title": "Delete stale keys",
+              "explanation": "If the entry is expired, delete it and behave like the key was missing."
+            }
+          ],
+          "explanation": "The cache never returns stale data because every read validates the expiry timestamp. It avoids background cleanup work, trading memory cleanup latency for simpler operations.",
+          "complexity": {
+            "time": "O(1) average get/set",
+            "space": "O(n)"
+          },
+          "languages": {
+            "python": {
+              "label": "Python",
+              "code": "class ExpiringCache:\n    def __init__(self):\n        self.data = {}\n\n    def set(self, key, value, ttl, now):\n        self.data[key] = (value, now + ttl)\n\n    def get(self, key, now):\n        item = self.data.get(key)\n        if not item:\n            return None\n        value, expires_at = item\n        if now >= expires_at:\n            del self.data[key]\n            return None\n        return value"
+            },
+            "typescript": {
+              "label": "TypeScript",
+              "code": "export class ExpiringCache<V> {\n  private data = new Map<string, { value: V; expiresAt: number }>();\n  set(key: string, value: V, ttl: number, now: number): void {\n    this.data.set(key, { value, expiresAt: now + ttl });\n  }\n  get(key: string, now: number): V | undefined {\n    const item = this.data.get(key);\n    if (!item) return undefined;\n    if (now >= item.expiresAt) { this.data.delete(key); return undefined; }\n    return item.value;\n  }\n}"
+            },
+            "java": {
+              "label": "Java",
+              "code": "class ExpiringCache<V> {\n  record Entry<V>(V value, long expiresAt) {}\n  private final Map<String, Entry<V>> data = new HashMap<>();\n  void set(String key, V value, long ttl, long now) { data.put(key, new Entry<>(value, now + ttl)); }\n  V get(String key, long now) {\n    Entry<V> item = data.get(key);\n    if (item == null) return null;\n    if (now >= item.expiresAt()) { data.remove(key); return null; }\n    return item.value();\n  }\n}"
+            }
+          }
+        },
+        {
+          "id": "heap-cleanup",
+          "title": "Min Heap Cleanup",
+          "summary": "Add a min heap ordered by expiry time so stale entries can be removed before reads or on a cleanup tick.",
+          "steps": [
+            {
+              "title": "Push expiry events",
+              "explanation": "Every write stores the value in a map and pushes expiry time plus key into a min heap."
+            },
+            {
+              "title": "Clean oldest first",
+              "explanation": "Before operations, pop heap entries whose expiry time is not in the future."
+            },
+            {
+              "title": "Ignore stale heap records",
+              "explanation": "If a key was overwritten, only delete it when the heap expiry matches the map expiry."
+            }
+          ],
+          "explanation": "The heap tells which entries can expire next, while the map holds the authoritative latest value. Matching expiry times prevents old heap records from deleting newer writes.",
+          "complexity": {
+            "time": "O(log n) set, amortized O(log n) cleanup",
+            "space": "O(n)"
+          },
+          "languages": {
+            "python": {
+              "label": "Python",
+              "code": "import heapq\n\nclass ExpiringCacheHeap:\n    def __init__(self):\n        self.data = {}\n        self.heap = []\n\n    def set(self, key, value, ttl, now):\n        expires = now + ttl\n        self.data[key] = (value, expires)\n        heapq.heappush(self.heap, (expires, key))\n\n    def cleanup(self, now):\n        while self.heap and self.heap[0][0] <= now:\n            expires, key = heapq.heappop(self.heap)\n            if self.data.get(key, (None, None))[1] == expires:\n                del self.data[key]"
+            },
+            "typescript": {
+              "label": "TypeScript",
+              "code": "export class ExpiringCacheHeap<V> {\n  private data = new Map<string, { value: V; expiresAt: number }>();\n  private heap: Array<[number, string]> = [];\n  set(key: string, value: V, ttl: number, now: number): void {\n    const expiresAt = now + ttl;\n    this.data.set(key, { value, expiresAt });\n    this.heap.push([expiresAt, key]);\n    this.heap.sort((a, b) => a[0] - b[0]);\n  }\n  cleanup(now: number): void {\n    while (this.heap.length && this.heap[0][0] <= now) {\n      const [expiresAt, key] = this.heap.shift()!;\n      if (this.data.get(key)?.expiresAt === expiresAt) this.data.delete(key);\n    }\n  }\n}"
+            },
+            "java": {
+              "label": "Java",
+              "code": "class ExpiringCacheHeap<V> {\n  record Entry<V>(V value, long expiresAt) {}\n  private final Map<String, Entry<V>> data = new HashMap<>();\n  private final PriorityQueue<Object[]> heap = new PriorityQueue<>(Comparator.comparingLong(a -> (Long) a[0]));\n  void set(String key, V value, long ttl, long now) {\n    long expires = now + ttl;\n    data.put(key, new Entry<>(value, expires));\n    heap.add(new Object[] { expires, key });\n  }\n  void cleanup(long now) {\n    while (!heap.isEmpty() && (Long) heap.peek()[0] <= now) {\n      Object[] item = heap.remove();\n      Entry<V> current = data.get((String) item[1]);\n      if (current != null && current.expiresAt() == (Long) item[0]) data.remove((String) item[1]);\n    }\n  }\n}"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "slug": "detect-cycle-dependency-graph",
+      "title": "Detect Cycle In A Dependency Graph",
+      "summary": "Determine whether directed service or job dependencies contain a cycle.",
+      "prompt": "Given a directed graph of dependencies, return true if there is a cycle and false if all dependencies can be ordered.",
+      "difficulty": "practitioner",
+      "tags": [
+        "graphs",
+        "dfs",
+        "topological-sort"
+      ],
+      "sourceLinks": [
+        {
+          "label": "InterviewQuery Netflix guide",
+          "url": "https://www.interviewquery.com/interview-guides/netflix-software-engineer"
+        }
+      ],
+      "resources": [],
+      "examples": [
+        {
+          "input": "A -> B, B -> C, C -> A",
+          "output": "true",
+          "explanation": "The dependencies loop back to A."
+        }
+      ],
+      "constraints": [
+        "The graph is directed."
+      ],
+      "diagrams": [
+        {
+          "title": "Cycle signal",
+          "mermaid": "flowchart LR\n  A --> B\n  B --> C\n  C --> A"
+        }
+      ],
+      "solutionTracks": [
+        {
+          "id": "dfs-coloring",
+          "title": "DFS Coloring",
+          "summary": "Color every node as unvisited, visiting, or done to detect a back edge in a directed dependency graph.",
+          "steps": [
+            {
+              "title": "Mark visiting",
+              "explanation": "When DFS enters a node, mark it as currently on the recursion path."
+            },
+            {
+              "title": "Detect back edges",
+              "explanation": "If DFS reaches a visiting node, the graph contains a cycle through the active path."
+            },
+            {
+              "title": "Mark done",
+              "explanation": "After all outgoing edges are safe, mark the node done so future traversals can skip it."
+            }
+          ],
+          "explanation": "A dependency cycle exists exactly when a path reaches a node already on that same active path. The visiting color represents that active path without needing to copy it each time.",
+          "complexity": {
+            "time": "O(V + E)",
+            "space": "O(V)"
+          },
+          "languages": {
+            "python": {
+              "label": "Python",
+              "code": "def has_cycle(graph):\n    color = {}\n    def dfs(node):\n        if color.get(node) == 1:\n            return True\n        if color.get(node) == 2:\n            return False\n        color[node] = 1\n        for nxt in graph.get(node, []):\n            if dfs(nxt):\n                return True\n        color[node] = 2\n        return False\n    return any(dfs(node) for node in graph)"
+            },
+            "typescript": {
+              "label": "TypeScript",
+              "code": "export function hasCycle(graph: Map<string, string[]>): boolean {\n  const color = new Map<string, number>();\n  function dfs(node: string): boolean {\n    if (color.get(node) === 1) return true;\n    if (color.get(node) === 2) return false;\n    color.set(node, 1);\n    for (const next of graph.get(node) ?? []) if (dfs(next)) return true;\n    color.set(node, 2);\n    return false;\n  }\n  return [...graph.keys()].some(dfs);\n}"
+            },
+            "java": {
+              "label": "Java",
+              "code": "boolean hasCycle(Map<String, List<String>> graph) {\n  Map<String, Integer> color = new HashMap<>();\n  for (String node : graph.keySet()) if (dfs(node, graph, color)) return true;\n  return false;\n}\nboolean dfs(String node, Map<String, List<String>> graph, Map<String, Integer> color) {\n  if (color.getOrDefault(node, 0) == 1) return true;\n  if (color.getOrDefault(node, 0) == 2) return false;\n  color.put(node, 1);\n  for (String next : graph.getOrDefault(node, List.of())) if (dfs(next, graph, color)) return true;\n  color.put(node, 2);\n  return false;\n}"
+            }
+          }
+        },
+        {
+          "id": "kahn-topological-count",
+          "title": "Kahn Topological Count",
+          "summary": "Repeatedly remove nodes with zero incoming edges; remaining nodes imply a directed cycle.",
+          "steps": [
+            {
+              "title": "Count indegrees",
+              "explanation": "For every edge, increment the incoming edge count of the dependent node."
+            },
+            {
+              "title": "Process ready nodes",
+              "explanation": "Start with every zero-indegree node and remove its outgoing edges from the graph."
+            },
+            {
+              "title": "Compare processed count",
+              "explanation": "If fewer nodes are processed than exist, the unprocessed nodes are trapped in cycles."
+            }
+          ],
+          "explanation": "A directed acyclic graph always has at least one zero-indegree node in every remaining subgraph. If the process stalls early, every remaining node depends on another remaining node.",
+          "complexity": {
+            "time": "O(V + E)",
+            "space": "O(V)"
+          },
+          "languages": {
+            "python": {
+              "label": "Python",
+              "code": "from collections import deque\n\ndef has_cycle_kahn(graph):\n    indegree = {node: 0 for node in graph}\n    for nodes in graph.values():\n        for node in nodes:\n            indegree[node] = indegree.get(node, 0) + 1\n    queue = deque([node for node, deg in indegree.items() if deg == 0])\n    seen = 0\n    while queue:\n        node = queue.popleft()\n        seen += 1\n        for nxt in graph.get(node, []):\n            indegree[nxt] -= 1\n            if indegree[nxt] == 0:\n                queue.append(nxt)\n    return seen != len(indegree)"
+            },
+            "typescript": {
+              "label": "TypeScript",
+              "code": "export function hasCycleKahn(graph: Map<string, string[]>): boolean {\n  const indegree = new Map<string, number>();\n  for (const node of graph.keys()) indegree.set(node, indegree.get(node) ?? 0);\n  for (const nodes of graph.values()) for (const node of nodes) indegree.set(node, (indegree.get(node) ?? 0) + 1);\n  const queue = [...indegree.entries()].filter(([, deg]) => deg === 0).map(([node]) => node);\n  let seen = 0;\n  for (let i = 0; i < queue.length; i += 1) {\n    const node = queue[i];\n    seen += 1;\n    for (const next of graph.get(node) ?? []) {\n      indegree.set(next, indegree.get(next)! - 1);\n      if (indegree.get(next) === 0) queue.push(next);\n    }\n  }\n  return seen !== indegree.size;\n}"
+            },
+            "java": {
+              "label": "Java",
+              "code": "boolean hasCycleKahn(Map<String, List<String>> graph) {\n  Map<String, Integer> indegree = new HashMap<>();\n  for (String node : graph.keySet()) indegree.putIfAbsent(node, 0);\n  for (List<String> nodes : graph.values()) for (String node : nodes) indegree.merge(node, 1, Integer::sum);\n  Queue<String> queue = new ArrayDeque<>();\n  for (Map.Entry<String, Integer> e : indegree.entrySet()) if (e.getValue() == 0) queue.add(e.getKey());\n  int seen = 0;\n  while (!queue.isEmpty()) {\n    String node = queue.remove(); seen++;\n    for (String next : graph.getOrDefault(node, List.of())) if (indegree.merge(next, -1, Integer::sum) == 0) queue.add(next);\n  }\n  return seen != indegree.size();\n}"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "slug": "longest-distinct-viewing-window",
+      "title": "Longest Distinct Viewing Window",
+      "summary": "Find the longest contiguous viewing sequence with no repeated title.",
+      "prompt": "Given an array of watched title identifiers, return the length of the longest contiguous window with no duplicate identifiers.",
+      "difficulty": "practitioner",
+      "tags": [
+        "sliding-window",
+        "hash-map"
+      ],
+      "sourceLinks": [
+        {
+          "label": "InterviewQuery Netflix guide",
+          "url": "https://www.interviewquery.com/interview-guides/netflix-software-engineer"
+        }
+      ],
+      "resources": [],
+      "examples": [
+        {
+          "input": "[A,B,C,A,D]",
+          "output": "4",
+          "explanation": "B,C,A,D is the longest distinct window."
+        }
+      ],
+      "constraints": [
+        "The window must be contiguous."
+      ],
+      "diagrams": [],
+      "solutionTracks": [
+        {
+          "id": "sliding-window-set",
+          "title": "Sliding Window Set",
+          "summary": "Maintain a window with no repeated titles by moving the left edge past duplicates as they appear.",
+          "steps": [
+            {
+              "title": "Expand right",
+              "explanation": "Add each next viewing item to the active window when it is not already present."
+            },
+            {
+              "title": "Shrink on duplicate",
+              "explanation": "If the item is already inside the window, remove items from the left until the duplicate leaves."
+            },
+            {
+              "title": "Record best length",
+              "explanation": "After each insertion, the window is distinct, so its length is a valid candidate."
+            }
+          ],
+          "explanation": "The window invariant is that every item inside it is unique. Each pointer moves only forward, so the scan stays linear while considering every maximal distinct window.",
+          "complexity": {
+            "time": "O(n)",
+            "space": "O(k)"
+          },
+          "languages": {
+            "python": {
+              "label": "Python",
+              "code": "def longest_distinct(items):\n    seen = set()\n    left = 0\n    best = 0\n    for right, item in enumerate(items):\n        while item in seen:\n            seen.remove(items[left])\n            left += 1\n        seen.add(item)\n        best = max(best, right - left + 1)\n    return best"
+            },
+            "typescript": {
+              "label": "TypeScript",
+              "code": "export function longestDistinct(items: string[]): number {\n  const seen = new Set<string>();\n  let left = 0;\n  let best = 0;\n  for (let right = 0; right < items.length; right += 1) {\n    while (seen.has(items[right])) seen.delete(items[left++]);\n    seen.add(items[right]);\n    best = Math.max(best, right - left + 1);\n  }\n  return best;\n}"
+            },
+            "java": {
+              "label": "Java",
+              "code": "int longestDistinct(String[] items) {\n  Set<String> seen = new HashSet<>();\n  int left = 0, best = 0;\n  for (int right = 0; right < items.length; right++) {\n    while (seen.contains(items[right])) seen.remove(items[left++]);\n    seen.add(items[right]);\n    best = Math.max(best, right - left + 1);\n  }\n  return best;\n}"
+            }
+          }
+        },
+        {
+          "id": "last-seen-index",
+          "title": "Last Seen Index Jump",
+          "summary": "Remember the latest index of each title and jump the left edge directly when a duplicate appears.",
+          "steps": [
+            {
+              "title": "Store last indexes",
+              "explanation": "A map records the most recent position where each item appeared."
+            },
+            {
+              "title": "Jump left safely",
+              "explanation": "When a duplicate is inside the current window, move left to one position after the previous occurrence."
+            },
+            {
+              "title": "Update best",
+              "explanation": "The window between left and right is distinct after the jump, so update the maximum length."
+            }
+          ],
+          "explanation": "The left edge never moves backward. Jumping past the previous duplicate preserves uniqueness and avoids removing each intermediate item one by one.",
+          "complexity": {
+            "time": "O(n)",
+            "space": "O(k)"
+          },
+          "languages": {
+            "python": {
+              "label": "Python",
+              "code": "def longest_distinct_jump(items):\n    last = {}\n    left = 0\n    best = 0\n    for right, item in enumerate(items):\n        if item in last and last[item] >= left:\n            left = last[item] + 1\n        last[item] = right\n        best = max(best, right - left + 1)\n    return best"
+            },
+            "typescript": {
+              "label": "TypeScript",
+              "code": "export function longestDistinctJump(items: string[]): number {\n  const last = new Map<string, number>();\n  let left = 0;\n  let best = 0;\n  for (let right = 0; right < items.length; right += 1) {\n    const prev = last.get(items[right]);\n    if (prev !== undefined && prev >= left) left = prev + 1;\n    last.set(items[right], right);\n    best = Math.max(best, right - left + 1);\n  }\n  return best;\n}"
+            },
+            "java": {
+              "label": "Java",
+              "code": "int longestDistinctJump(String[] items) {\n  Map<String, Integer> last = new HashMap<>();\n  int left = 0, best = 0;\n  for (int right = 0; right < items.length; right++) {\n    Integer prev = last.get(items[right]);\n    if (prev != null && prev >= left) left = prev + 1;\n    last.put(items[right], right);\n    best = Math.max(best, right - left + 1);\n  }\n  return best;\n}"
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "logo": {
+    "src": "/company-logos/netflix.svg",
+    "alt": "Netflix logo"
+  }
+}

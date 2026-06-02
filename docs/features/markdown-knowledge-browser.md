@@ -5,7 +5,7 @@
 - Status: `shipped`
 - Last updated: `2026-05-30`
 - Owner thread: `n/a`
-- Current state: The browser lives at `/browse` and reads a generated local index from repo-authored Markdown, Mermaid, path, and exercise files.
+- Current state: The content library lives at `/browse` and reads a generated local index from repo-authored Markdown, Mermaid, path, exercise, passive flashcard feed, and interview files.
 - Target outcome: Users can browse, search, read articles, and render diagrams on mobile without Supabase credentials.
 - Code touchpoints:
   - `src/lib/content/`
@@ -66,7 +66,7 @@ The feature is implemented with a small starter content set. Supabase has an opt
 
 ### UI / UX
 
-- `/browse` shows the usable knowledge browser immediately.
+- `/browse` shows the usable content library immediately and links back to the learning path map.
 - `/` shows the learning path map.
 - `/docs/[...slug]` renders one article with metadata, outline, Markdown body, and referenced diagrams.
 - `/diagrams/[...slug]` renders one standalone Mermaid diagram.
@@ -76,7 +76,7 @@ The feature is implemented with a small starter content set. Supabase has an opt
 
 - Markdown lives under `content/knowledge/`.
 - Diagrams live under `content/diagrams/`.
-- The generated index stores metadata, Markdown, extracted plain text, headings, Mermaid blocks, learning paths, exercises, source paths, and hashes.
+- The generated index stores metadata, Markdown, extracted plain text, headings, Mermaid blocks, learning paths, exercises, passive flashcard feeds, interview catalogs, source paths, and hashes.
 - Optional Supabase tables mirror the generated index for future hosted search.
 
 ### Failure And Edge Handling

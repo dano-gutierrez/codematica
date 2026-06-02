@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import { notFound } from "next/navigation";
-import { ArrowLeft } from "lucide-react";
+import { BackButton } from "@/components/BackButton";
 import { PracticeCard } from "@/components/PracticeCard";
 import { getContentIndex, getExerciseBySlug, getNextPathNodeRoute } from "@/lib/content";
 
@@ -23,10 +22,14 @@ export function generateStaticParams() {
 export async function generateMetadata({ params }: PracticePageProps): Promise<Metadata> {
   const { slug } = await params;
   const exercise = getExerciseBySlug(slug.join("/"));
+  const description =
+    exercise?.type === "questionnaire"
+      ? `${exercise.questions.length} ${exercise.difficulty} questions for ${exercise.concept}.`
+      : exercise?.prompt;
 
   return {
     title: exercise ? `${exercise.title} - Codematica` : "Practice not found - Codematica",
-    description: exercise?.prompt,
+    description,
   };
 }
 
@@ -46,13 +49,7 @@ export default async function PracticePage({ params, searchParams }: PracticePag
   return (
     <main className="min-h-screen px-4 py-5 sm:py-8" data-testid="practice-page">
       <div className="mx-auto w-full max-w-4xl">
-        <Link
-          href={pathSlug ? `/paths/${pathSlug}` : "/"}
-          className="inline-flex items-center gap-2 rounded-lg border-2 border-b-4 border-[#d5e2e8] bg-white px-3 py-2 text-sm font-extrabold text-[#263238]"
-        >
-          <ArrowLeft className="h-4 w-4" aria-hidden="true" />
-          {pathSlug ? "Path" : "Paths"}
-        </Link>
+        <BackButton />
 
         <div className="mt-6">
           <PracticeCard exercise={exercise} nextHref={nextHref} />

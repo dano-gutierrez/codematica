@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ArrowLeft, ArrowRight, BookOpen, Brain, GitBranch, Map, Search, Sparkles, Target } from "lucide-react";
+import { ArrowLeft, ArrowRight, BookOpen, Brain, Code2, GitBranch, Layers, Map, Search, Sparkles, Target } from "lucide-react";
 import { DifficultyPill } from "@/components/DifficultyPill";
 import { getPathNodeRoute } from "@/lib/content";
 import type { ContentIndex, LearningPath, LearningPathNode } from "@/lib/content/schema";
@@ -49,7 +49,15 @@ export function LearningPathHome({ index }: { index: ContentIndex }) {
               data-testid="home-browse-link"
             >
               <Search className="h-4 w-4" aria-hidden="true" />
-              Browse all content
+              Content library
+            </Link>
+            <Link
+              href="/interviews"
+              className="inline-flex min-h-12 items-center justify-center gap-2 rounded-lg border-2 border-b-4 border-[#00645f] bg-[#007c78] px-4 py-2 text-sm font-extrabold text-white transition hover:-translate-y-0.5"
+              data-testid="home-interviews-link"
+            >
+              <Code2 className="h-4 w-4" aria-hidden="true" />
+              Interview prep
             </Link>
           </aside>
         </div>
@@ -59,6 +67,8 @@ export function LearningPathHome({ index }: { index: ContentIndex }) {
 }
 
 export function LearningPathDetail({ index, learningPath }: { index: ContentIndex; learningPath: LearningPath }) {
+  const flashcardFeed = index.passiveFlashcardFeeds.find((feed) => feed.pathSlug === learningPath.slug && feed.status === "published");
+
   return (
     <main className="min-h-screen pb-12" data-testid="path-detail">
       <PathHeader />
@@ -79,6 +89,17 @@ export function LearningPathDetail({ index, learningPath }: { index: ContentInde
           </span>
           <h1 className="mt-4 max-w-4xl text-4xl font-extrabold leading-tight tracking-normal text-[#263238] sm:text-6xl">{learningPath.title}</h1>
           <p className="mt-4 max-w-3xl text-lg font-semibold leading-8 text-[#68737d]">{learningPath.summary}</p>
+          {flashcardFeed ? (
+            <Link
+              href={flashcardFeed.route}
+              className="mt-5 inline-flex min-h-12 items-center justify-center gap-2 rounded-lg border-2 border-b-4 border-[#1d4e9e] bg-[#245fba] px-4 py-2 text-sm font-extrabold text-white transition hover:-translate-y-0.5"
+              data-testid="path-flashcard-feed-link"
+            >
+              <Layers className="h-4 w-4" aria-hidden="true" />
+              Flashcard feed
+              <ArrowRight className="h-4 w-4" aria-hidden="true" />
+            </Link>
+          ) : null}
         </div>
 
         <div className="mt-8 grid gap-5">
@@ -111,11 +132,18 @@ function PathHeader() {
         </Link>
         <nav className="flex items-center gap-2">
           <Link
+            href="/interviews"
+            className="inline-flex min-h-10 items-center gap-2 rounded-lg border-2 border-b-4 border-[#d5e2e8] bg-white px-3 py-2 text-sm font-extrabold text-[#263238]"
+          >
+            <Code2 className="h-4 w-4 text-[#007c78]" aria-hidden="true" />
+            Interviews
+          </Link>
+          <Link
             href="/browse"
             className="inline-flex min-h-10 items-center gap-2 rounded-lg border-2 border-b-4 border-[#d5e2e8] bg-white px-3 py-2 text-sm font-extrabold text-[#263238]"
           >
             <Search className="h-4 w-4 text-[#245fba]" aria-hidden="true" />
-            Browse
+            Content library
           </Link>
         </nav>
       </div>
@@ -243,11 +271,23 @@ function getNodeDisplay(index: ContentIndex, node: LearningPathNode) {
   return {
     title: exercise?.title ?? node.slug,
     summary: exercise ? `${exercise.concept} practice` : "Practice",
-    kindLabel: exercise?.type === "cloze" ? "Fill the gap" : "Flashcard",
+    kindLabel: exercise ? exerciseKindLabel(exercise.type) : "Practice",
     difficulty: exercise?.difficulty,
     icon: <Brain className="h-3.5 w-3.5 text-[#5840b8]" aria-hidden="true" />,
     colorClass: "border-[#c8b8ff] bg-[#f3efff] text-[#5840b8]",
   };
+}
+
+function exerciseKindLabel(type: ContentIndex["exercises"][number]["type"]) {
+  if (type === "flashcard") {
+    return "Flashcard";
+  }
+
+  if (type === "cloze") {
+    return "Fill the gap";
+  }
+
+  return "Questionnaire";
 }
 
 function StatRow({ label, value, color }: { label: string; value: number; color: string }) {

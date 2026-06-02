@@ -3,15 +3,19 @@ import { promises as fs } from "node:fs";
 import path from "node:path";
 import { parseKnowledgeMarkdown } from "./parse-markdown";
 import {
+  interviewCompanyFileSchema,
   learningExerciseFileSchema,
   learningPathFileSchema,
+  passiveFlashcardFeedFileSchema,
   type ContentIndex,
   type ContentTrack,
   type Difficulty,
+  type InterviewCompany,
   type KnowledgeDocument,
   type LearningExercise,
   type LearningPath,
   type MermaidDiagram,
+  type PassiveFlashcardFeed,
 } from "./schema";
 import { toPosixPath, walkFiles } from "./files";
 
@@ -163,6 +167,55 @@ async function collectLearningPaths(rootDir: string): Promise<LearningPath[]> {
   );
 }
 
+async function collectPassiveFlashcardFeeds(rootDir: string): Promise<PassiveFlashcardFeed[]> {
+  const feedsDir = path.join(rootDir, "content", "flashcard-feeds");
+  const files = await walkFiles(feedsDir, jsonExtensions);
+
+  return Promise.all(
+    files.map(async (filePath) => {
+      const { raw, value } = await readJson(filePath);
+      const parsed = passiveFlashcardFeedFileSchema.parse(value);
+      const sourcePath = relativeSourcePath(rootDir, filePath);
+
+      return {
+        ...parsed,
+        id: sha256(parsed.slug).slice(0, 12),
+        route: `/paths/${parsed.pathSlug}/flashcards`,
+        sourcePath,
+        contentHash: sha256(raw),
+      };
+    }),
+  );
+}
+
+async function collectInterviewCompanies(rootDir: string): Promise<InterviewCompany[]> {
+  const interviewsDir = path.join(rootDir, "content", "interviews");
+  const files = await walkFiles(interviewsDir, jsonExtensions);
+
+  return Promise.all(
+    files.map(async (filePath) => {
+      const { raw, value } = await readJson(filePath);
+      const parsed = interviewCompanyFileSchema.parse(value);
+      const sourcePath = relativeSourcePath(rootDir, filePath);
+
+      return {
+        ...parsed,
+        id: sha256(parsed.slug).slice(0, 12),
+        route: `/interviews/${parsed.slug}`,
+        sourcePath,
+        contentHash: sha256(raw),
+        questions: parsed.questions.map((question) => ({
+          ...question,
+          id: sha256(`${parsed.slug}/${question.slug}`).slice(0, 12),
+          route: `/interviews/${parsed.slug}/${question.slug}`,
+          companySlug: parsed.slug,
+          companyName: parsed.name,
+        })),
+      };
+    }),
+  );
+}
+
 function buildTracks(documents: KnowledgeDocument[]): ContentTrack[] {
   const tracks = new Map<string, ContentTrack>();
 
@@ -196,6 +249,93 @@ function sortedUniqueDifficulty(values: Difficulty[]) {
   return [...new Set(values)].sort((left, right) => order.indexOf(left) - order.indexOf(right));
 }
 
+function assertUniqueIds(items: { id: string }[], label: string, sourcePath: string) {
+  const ids = new Set<string>();
+
+  for (const item of items) {
+    if (ids.has(item.id)) {
+      throw new Error(`${sourcePath} has duplicate ${label} "${item.id}".`);
+    }
+
+    ids.add(item.id);
+  }
+}
+
+function sameIdSet(left: string[], right: string[]) {
+  if (left.length !== right.length) {
+    return false;
+  }
+
+  const rightSet = new Set(right);
+  return left.every((value) => rightSet.has(value));
+}
+
+function assertQuestionnaireExercise(exercise: LearningExercise, sourcePath: string) {
+  if (exercise.type !== "questionnaire") {
+    return;
+  }
+
+  assertUniqueIds(exercise.questions, "questionnaire question id", sourcePath);
+
+  for (const question of exercise.questions) {
+    if (question.kind === "choice") {
+      assertUniqueIds(question.options, `choice option id in question "${question.id}"`, sourcePath);
+
+      if (question.options.filter((option) => option.isCorrect).length !== 1) {
+        throw new Error(`${sourcePath} choice question "${question.id}" must have exactly one correct option.`);
+      }
+    }
+
+    if (question.kind === "cloze") {
+      const blankCount = question.template.match(/\{\{blank\}\}/g)?.length ?? 0;
+
+      if (blankCount !== 1) {
+        throw new Error(`${sourcePath} questionnaire cloze question "${question.id}" must contain exactly one {{blank}}.`);
+      }
+    }
+
+    if (question.kind === "ordering") {
+      assertUniqueIds(question.items, `ordering item id in question "${question.id}"`, sourcePath);
+
+      if (!sameIdSet(question.items.map((item) => item.id), question.correctOrder)) {
+        throw new Error(`${sourcePath} ordering question "${question.id}" correctOrder must contain each item id exactly once.`);
+      }
+    }
+
+    if (question.kind === "matching") {
+      assertUniqueIds(question.pairs, `matching pair id in question "${question.id}"`, sourcePath);
+    }
+  }
+}
+
+function assertUniqueValues(values: string[], label: string, sourcePath: string) {
+  const seen = new Set<string>();
+
+  for (const value of values) {
+    if (seen.has(value)) {
+      throw new Error(`${sourcePath} has duplicate ${label} "${value}".`);
+    }
+
+    seen.add(value);
+  }
+}
+
+function assertInterviewCompany(company: InterviewCompany) {
+  assertUniqueValues(
+    company.questions.map((question) => question.slug),
+    "interview question slug",
+    company.sourcePath,
+  );
+
+  for (const question of company.questions) {
+    assertUniqueValues(
+      question.solutionTracks.map((track) => track.id),
+      `interview solution id in question "${question.slug}"`,
+      company.sourcePath,
+    );
+  }
+}
+
 function assertUniqueEntitySlugs(items: { slug: string; sourcePath: string }[], label: string) {
   const slugs = new Set<string>();
 
@@ -208,17 +348,34 @@ function assertUniqueEntitySlugs(items: { slug: string; sourcePath: string }[], 
   }
 }
 
-function assertUniqueSlugs(documents: KnowledgeDocument[], diagrams: MermaidDiagram[], exercises: LearningExercise[], learningPaths: LearningPath[]) {
+function assertUniqueSlugs(
+  documents: KnowledgeDocument[],
+  diagrams: MermaidDiagram[],
+  exercises: LearningExercise[],
+  learningPaths: LearningPath[],
+  passiveFlashcardFeeds: PassiveFlashcardFeed[],
+  interviewCompanies: InterviewCompany[],
+) {
   assertUniqueEntitySlugs(documents, "knowledge");
   assertUniqueEntitySlugs(diagrams, "diagram");
   assertUniqueEntitySlugs(exercises, "exercise");
   assertUniqueEntitySlugs(learningPaths, "learning path");
+  assertUniqueEntitySlugs(passiveFlashcardFeeds, "passive flashcard feed");
+  assertUniqueEntitySlugs(interviewCompanies, "interview company");
 }
 
-function assertContentReferences(documents: KnowledgeDocument[], diagrams: MermaidDiagram[], exercises: LearningExercise[], learningPaths: LearningPath[]) {
+function assertContentReferences(
+  documents: KnowledgeDocument[],
+  diagrams: MermaidDiagram[],
+  exercises: LearningExercise[],
+  learningPaths: LearningPath[],
+  passiveFlashcardFeeds: PassiveFlashcardFeed[],
+  interviewCompanies: InterviewCompany[],
+) {
   const documentSlugs = new Set<string>();
   const diagramSlugs = new Set(diagrams.map((diagram) => diagram.slug));
   const exerciseSlugs = new Set(exercises.map((exercise) => exercise.slug));
+  const learningPathSlugs = new Set(learningPaths.map((learningPath) => learningPath.slug));
 
   for (const document of documents) {
     documentSlugs.add(document.slug);
@@ -231,6 +388,8 @@ function assertContentReferences(documents: KnowledgeDocument[], diagrams: Merma
   }
 
   for (const exercise of exercises) {
+    assertQuestionnaireExercise(exercise, exercise.sourcePath);
+
     if (!documentSlugs.has(exercise.documentSlug)) {
       throw new Error(`${exercise.sourcePath} references missing document "${exercise.documentSlug}"`);
     }
@@ -253,29 +412,53 @@ function assertContentReferences(documents: KnowledgeDocument[], diagrams: Merma
       }
     }
   }
+
+  for (const feed of passiveFlashcardFeeds) {
+    if (!learningPathSlugs.has(feed.pathSlug)) {
+      throw new Error(`${feed.sourcePath} references missing learning path "${feed.pathSlug}"`);
+    }
+
+    assertUniqueIds(feed.cards, "passive flashcard card id", feed.sourcePath);
+
+    for (const card of feed.cards) {
+      if (card.sourceDocSlug && !documentSlugs.has(card.sourceDocSlug)) {
+        throw new Error(`${feed.sourcePath} card "${card.id}" references missing document "${card.sourceDocSlug}"`);
+      }
+    }
+  }
+
+  for (const company of interviewCompanies) {
+    assertInterviewCompany(company);
+  }
 }
 
 export async function buildContentIndex({ rootDir }: BuildContentIndexOptions): Promise<ContentIndex> {
-  const [documents, diagrams, exercises, learningPaths] = await Promise.all([
+  const [documents, diagrams, exercises, learningPaths, passiveFlashcardFeeds, interviewCompanies] = await Promise.all([
     collectKnowledgeDocuments(rootDir),
     collectMermaidDiagrams(rootDir),
     collectLearningExercises(rootDir),
     collectLearningPaths(rootDir),
+    collectPassiveFlashcardFeeds(rootDir),
+    collectInterviewCompanies(rootDir),
   ]);
 
   const sortedDocuments = documents.sort((left, right) => left.slug.localeCompare(right.slug));
   const sortedDiagrams = diagrams.sort((left, right) => left.slug.localeCompare(right.slug));
   const sortedExercises = exercises.sort((left, right) => left.slug.localeCompare(right.slug));
   const sortedLearningPaths = learningPaths.sort((left, right) => left.slug.localeCompare(right.slug));
-  assertUniqueSlugs(sortedDocuments, sortedDiagrams, sortedExercises, sortedLearningPaths);
-  assertContentReferences(sortedDocuments, sortedDiagrams, sortedExercises, sortedLearningPaths);
+  const sortedPassiveFlashcardFeeds = passiveFlashcardFeeds.sort((left, right) => left.slug.localeCompare(right.slug));
+  const sortedInterviewCompanies = interviewCompanies.sort((left, right) => left.name.localeCompare(right.name));
+  assertUniqueSlugs(sortedDocuments, sortedDiagrams, sortedExercises, sortedLearningPaths, sortedPassiveFlashcardFeeds, sortedInterviewCompanies);
+  assertContentReferences(sortedDocuments, sortedDiagrams, sortedExercises, sortedLearningPaths, sortedPassiveFlashcardFeeds, sortedInterviewCompanies);
 
   return {
-    schemaVersion: 2,
+    schemaVersion: 4,
     documents: sortedDocuments,
     diagrams: sortedDiagrams,
     learningPaths: sortedLearningPaths,
     exercises: sortedExercises,
+    passiveFlashcardFeeds: sortedPassiveFlashcardFeeds,
+    interviewCompanies: sortedInterviewCompanies,
     tracks: buildTracks(sortedDocuments),
   };
 }

@@ -22,6 +22,7 @@ export function Dropdown({
   triggerClassName,
   testId,
   icon,
+  disabled = false,
 }: {
   label: string;
   value: string;
@@ -32,14 +33,15 @@ export function Dropdown({
   triggerClassName?: string;
   testId?: string;
   icon?: ReactNode;
+  disabled?: boolean;
 }) {
   return (
     <div className={cn("grid gap-2", className)}>
-      <Select.Root value={value} onValueChange={onValueChange}>
+      <Select.Root value={value} onValueChange={onValueChange} disabled={disabled}>
         <Select.Trigger
           aria-label={label}
           className={cn(
-            "group flex h-14 w-full items-center justify-between gap-3 rounded-lg border-2 border-b-4 border-[#d5e2e8] bg-white px-4 text-left outline-none transition hover:border-[#6dd8cf] focus:border-[#007c78] focus-visible:ring-4 focus-visible:ring-[#6dd8cf]/35 data-[state=open]:translate-y-0.5 data-[state=open]:border-[#007c78] data-[state=open]:border-b-2",
+            "group flex h-14 w-full items-center justify-between gap-3 rounded-lg border-2 border-b-4 border-[#d5e2e8] bg-white px-4 text-left outline-none transition hover:border-[#6dd8cf] focus:border-[#007c78] focus-visible:ring-4 focus-visible:ring-[#6dd8cf]/35 disabled:cursor-default disabled:opacity-60 data-[state=open]:translate-y-0.5 data-[state=open]:border-[#007c78] data-[state=open]:border-b-2",
             triggerClassName,
           )}
           data-testid={testId}

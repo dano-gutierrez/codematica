@@ -4,6 +4,7 @@ import Link from "next/link";
 import { ArrowRight, CheckCircle2, RotateCcw, Sparkles } from "lucide-react";
 import { useState } from "react";
 import { DifficultyPill } from "@/components/DifficultyPill";
+import { QuestionnaireSession } from "@/components/QuestionnaireSession";
 import type { LearningExercise } from "@/lib/content/schema";
 import { cn } from "@/lib/utils";
 
@@ -13,7 +14,7 @@ export function PracticeCard({ exercise, nextHref }: { exercise: LearningExercis
       <div className="flex flex-wrap items-center gap-2">
         <span className="inline-flex items-center gap-1 rounded-lg border-2 border-b-4 border-[#d5e2e8] bg-[#f6fbfc] px-2.5 py-1 text-xs font-extrabold text-[#5840b8]">
           <Sparkles className="h-3.5 w-3.5" aria-hidden="true" />
-          {exercise.type === "flashcard" ? "Flashcard" : "Fill the gap"}
+          {exerciseKindLabel(exercise)}
         </span>
         <DifficultyPill difficulty={exercise.difficulty} />
         <span className="rounded-lg bg-[#eaf7f4] px-2.5 py-1 text-xs font-extrabold text-[#007c78]">{exercise.concept}</span>
@@ -21,9 +22,27 @@ export function PracticeCard({ exercise, nextHref }: { exercise: LearningExercis
 
       <h1 className="mt-5 text-3xl font-extrabold leading-tight tracking-normal text-[#263238] sm:text-5xl">{exercise.title}</h1>
 
-      {exercise.type === "flashcard" ? <Flashcard exercise={exercise} nextHref={nextHref} /> : <ClozeCard exercise={exercise} nextHref={nextHref} />}
+      {exercise.type === "flashcard" ? (
+        <Flashcard exercise={exercise} nextHref={nextHref} />
+      ) : exercise.type === "cloze" ? (
+        <ClozeCard exercise={exercise} nextHref={nextHref} />
+      ) : (
+        <QuestionnaireSession exercise={exercise} nextHref={nextHref} />
+      )}
     </section>
   );
+}
+
+function exerciseKindLabel(exercise: LearningExercise) {
+  if (exercise.type === "flashcard") {
+    return "Flashcard";
+  }
+
+  if (exercise.type === "cloze") {
+    return "Fill the gap";
+  }
+
+  return "Questionnaire";
 }
 
 function Flashcard({ exercise, nextHref }: { exercise: Extract<LearningExercise, { type: "flashcard" }>; nextHref?: string }) {

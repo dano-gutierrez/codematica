@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { BookOpen, CheckCircle2, GitBranch, Network, Search, Sparkles } from "lucide-react";
+import { BookOpen, CheckCircle2, GitBranch, Map, Network, Search, Sparkles } from "lucide-react";
 import { useMemo, useState } from "react";
 import { DifficultyPill } from "@/components/DifficultyPill";
 import { Dropdown, type DropdownOption } from "@/components/Dropdown";
@@ -65,9 +65,17 @@ export function KnowledgeBrowser({ index }: { index: ContentIndex }) {
               <span className="block truncate text-xs font-extrabold uppercase text-[#68737d]">Software engineering map</span>
             </span>
           </Link>
-          <div className="hidden items-center gap-2 text-sm font-extrabold text-[#33434b] sm:flex">
-            <span className="rounded-lg border-2 border-b-4 border-[#d5e2e8] bg-white px-3 py-2">{index.documents.length} docs</span>
-            <span className="rounded-lg border-2 border-b-4 border-[#d5e2e8] bg-white px-3 py-2">{index.diagrams.length} diagrams</span>
+          <div className="flex items-center gap-2 text-sm font-extrabold text-[#33434b]">
+            <Link
+              href="/"
+              className="inline-flex min-h-10 items-center gap-2 rounded-lg border-2 border-b-4 border-[#d5e2e8] bg-white px-3 py-2 text-sm font-extrabold text-[#263238]"
+              data-testid="content-library-paths-link"
+            >
+              <Map className="h-4 w-4 text-[#007c78]" aria-hidden="true" />
+              Learning paths
+            </Link>
+            <span className="hidden rounded-lg border-2 border-b-4 border-[#d5e2e8] bg-white px-3 py-2 sm:inline-flex">{index.documents.length} docs</span>
+            <span className="hidden rounded-lg border-2 border-b-4 border-[#d5e2e8] bg-white px-3 py-2 sm:inline-flex">{index.diagrams.length} diagrams</span>
           </div>
         </div>
       </header>
@@ -77,7 +85,7 @@ export function KnowledgeBrowser({ index }: { index: ContentIndex }) {
           <div className="min-w-0">
             <div className="flex flex-col gap-4">
               <div>
-                <p className="text-sm font-extrabold uppercase text-[#007c78]">Knowledge Browser</p>
+                <p className="text-sm font-extrabold uppercase text-[#007c78]">Content library</p>
                 <h1 className="mt-2 max-w-4xl text-4xl font-extrabold leading-tight tracking-normal text-[#263238] sm:text-6xl">
                   Study architecture, code, and engineering tradeoffs.
                 </h1>

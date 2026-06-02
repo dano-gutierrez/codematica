@@ -1,0 +1,139 @@
+{
+  "slug": "programming/python-async-questionnaire",
+  "title": "Python Async Testing And Production Questionnaire",
+  "type": "questionnaire",
+  "documentSlug": "programming/python-async-testing-production",
+  "concept": "Python async production standards",
+  "difficulty": "senior",
+  "tags": ["python", "asyncio", "testing", "language-refresh"],
+  "status": "published",
+  "questions": [
+    {
+      "id": "coroutine-start",
+      "kind": "choice",
+      "prompt": "A Python async function is called but not awaited or scheduled. What is the senior review note?",
+      "options": [
+        {
+          "id": "started",
+          "label": "It started immediately like most promise-returning JavaScript functions.",
+          "isCorrect": false
+        },
+        {
+          "id": "coroutine",
+          "label": "It created a coroutine object that will not run until awaited or scheduled.",
+          "isCorrect": true
+        },
+        {
+          "id": "thread",
+          "label": "It automatically moved to a background thread.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "Calling an async def returns a coroutine object. Execution requires awaiting it or scheduling it as a task."
+    },
+    {
+      "id": "loop-gap",
+      "kind": "cloze",
+      "prompt": "Fill the gap with the runtime resource blocked by sync work inside async Python code.",
+      "template": "A synchronous blocking call inside an async handler can stall the {{blank}}.",
+      "acceptedAnswers": ["event loop", "loop"],
+      "explanation": "Async syntax does not make blocking I/O or CPU-heavy work safe for the event loop."
+    },
+    {
+      "id": "task-ownership-order",
+      "kind": "ordering",
+      "prompt": "Order a safer background task ownership flow.",
+      "items": [
+        {
+          "id": "create",
+          "label": "Create or schedule the task"
+        },
+        {
+          "id": "retain",
+          "label": "Retain a reference or group owner"
+        },
+        {
+          "id": "observe",
+          "label": "Observe errors and completion"
+        },
+        {
+          "id": "cleanup",
+          "label": "Clean up references after completion"
+        }
+      ],
+      "correctOrder": ["create", "retain", "observe", "cleanup"],
+      "explanation": "Background work needs lifetime ownership, error visibility, and cleanup."
+    },
+    {
+      "id": "async-match",
+      "kind": "matching",
+      "prompt": "Match the asyncio concept to the production review lens.",
+      "pairs": [
+        {
+          "id": "coroutine",
+          "prompt": "Coroutine object",
+          "match": "awaitable work that has not necessarily been scheduled"
+        },
+        {
+          "id": "task",
+          "prompt": "Task",
+          "match": "scheduled coroutine with lifecycle ownership needs"
+        },
+        {
+          "id": "timeout",
+          "prompt": "Timeout",
+          "match": "explicit failure boundary for slow work"
+        }
+      ],
+      "explanation": "The important distinction is not syntax; it is ownership, scheduling, and failure behavior."
+    },
+    {
+      "id": "sleep-test",
+      "kind": "choice",
+      "prompt": "A flaky async test uses arbitrary sleeps to wait for work. What should a senior reviewer prefer?",
+      "options": [
+        {
+          "id": "longer-sleep",
+          "label": "Increase the sleep duration until the test passes locally.",
+          "isCorrect": false
+        },
+        {
+          "id": "observable",
+          "label": "Await observable state or test pure logic below the async wrapper.",
+          "isCorrect": true
+        },
+        {
+          "id": "skip",
+          "label": "Skip async behavior because it is hard to test.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "Reliable async tests wait on meaningful state or isolate pure behavior instead of depending on timers."
+    },
+    {
+      "id": "failure-contract-order",
+      "kind": "ordering",
+      "prompt": "Order the senior questions for choosing an async concurrency primitive.",
+      "items": [
+        {
+          "id": "fail",
+          "label": "Define what happens when one child operation fails"
+        },
+        {
+          "id": "cancel",
+          "label": "Define cancellation behavior for siblings"
+        },
+        {
+          "id": "partial",
+          "label": "Define whether partial results are acceptable"
+        },
+        {
+          "id": "cleanup",
+          "label": "Define cleanup and observability"
+        }
+      ],
+      "correctOrder": ["fail", "cancel", "partial", "cleanup"],
+      "explanation": "Concurrency primitives should be selected from the failure contract, not from surface syntax."
+    }
+  ]
+}

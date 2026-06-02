@@ -1,5 +1,6 @@
 import { MermaidBlock } from "@/components/MermaidBlock";
 import { slugifyHeading } from "@/lib/content/parse-markdown";
+import { ExternalLink } from "lucide-react";
 import type { Components } from "react-markdown";
 import ReactMarkdown from "react-markdown";
 import rehypeSanitize from "rehype-sanitize";
@@ -50,6 +51,16 @@ const components: Components = {
     }
 
     return <pre>{children}</pre>;
+  },
+  a({ children, href, ...props }) {
+    const isExternal = href?.startsWith("http://") || href?.startsWith("https://");
+
+    return (
+      <a href={href} {...props}>
+        {isExternal ? <ExternalLink className="mr-1 inline-block h-3.5 w-3.5 align-[-0.125em]" aria-hidden="true" /> : null}
+        {children}
+      </a>
+    );
   },
 };
 

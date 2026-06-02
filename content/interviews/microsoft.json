@@ -1,0 +1,333 @@
+{
+  "slug": "microsoft",
+  "name": "Microsoft",
+  "summary": "Practice stack, tree-encoding, and dynamic-programming prompts aligned with Microsoft-style interviews.",
+  "status": "published",
+  "questions": [
+    {
+      "slug": "min-stack",
+      "title": "Min Stack",
+      "summary": "Design a stack that can return the current minimum in constant time.",
+      "prompt": "Implement push, pop, top, and getMin so getMin returns the smallest value currently in the stack.",
+      "difficulty": "practitioner",
+      "tags": [
+        "stack",
+        "design"
+      ],
+      "sourceLinks": [
+        {
+          "label": "Reported public Microsoft list",
+          "url": "https://www.hackmnc.com/companies/microsoft/leetcode-interview-questions"
+        }
+      ],
+      "resources": [],
+      "examples": [
+        {
+          "input": "push(-2), push(0), push(-3), getMin(), pop(), getMin()",
+          "output": "-3, -2",
+          "explanation": "The minimum changes after -3 is removed."
+        }
+      ],
+      "constraints": [
+        "All primary operations should be constant time."
+      ],
+      "diagrams": [],
+      "solutionTracks": [
+        {
+          "id": "value-and-min-stacks",
+          "title": "Value Stack Plus Min Stack",
+          "summary": "Keep normal values in one stack and the minimum at each depth in a parallel stack.",
+          "steps": [
+            {
+              "title": "Push current minimum",
+              "explanation": "When a value is pushed, also push the smaller of that value and the previous minimum."
+            },
+            {
+              "title": "Pop both stacks",
+              "explanation": "Removing a value also removes the minimum snapshot for that stack depth."
+            },
+            {
+              "title": "Read min top",
+              "explanation": "The top of the min stack is always the minimum across all active values."
+            }
+          ],
+          "explanation": "The min stack mirrors the value stack. Each depth stores the minimum for exactly the values below or at that depth, so getMin is a top lookup.",
+          "complexity": {
+            "time": "O(1) per operation",
+            "space": "O(n)"
+          },
+          "languages": {
+            "python": {
+              "label": "Python",
+              "code": "class MinStack:\n    def __init__(self):\n        self.values = []\n        self.mins = []\n    def push(self, value):\n        self.values.append(value)\n        self.mins.append(value if not self.mins else min(value, self.mins[-1]))\n    def pop(self):\n        self.mins.pop()\n        return self.values.pop()\n    def get_min(self):\n        return self.mins[-1]"
+            },
+            "typescript": {
+              "label": "TypeScript",
+              "code": "export class MinStack {\n  private values: number[] = [];\n  private mins: number[] = [];\n  push(value: number): void { this.values.push(value); this.mins.push(this.mins.length ? Math.min(value, this.mins[this.mins.length - 1]) : value); }\n  pop(): number | undefined { this.mins.pop(); return this.values.pop(); }\n  getMin(): number { return this.mins[this.mins.length - 1]; }\n}"
+            },
+            "java": {
+              "label": "Java",
+              "code": "class MinStack {\n  private final Deque<Integer> values = new ArrayDeque<>();\n  private final Deque<Integer> mins = new ArrayDeque<>();\n  void push(int value) { values.push(value); mins.push(mins.isEmpty() ? value : Math.min(value, mins.peek())); }\n  int pop() { mins.pop(); return values.pop(); }\n  int getMin() { return mins.peek(); }\n}"
+            }
+          }
+        },
+        {
+          "id": "encoded-delta-stack",
+          "title": "Encoded Delta Stack",
+          "summary": "Store differences from the current minimum so a single stack can recover previous minimum values.",
+          "steps": [
+            {
+              "title": "Store value minus min",
+              "explanation": "A negative delta means the pushed value became the new minimum."
+            },
+            {
+              "title": "Update min on negative push",
+              "explanation": "When the delta is negative, set min to the new value after saving the delta."
+            },
+            {
+              "title": "Restore on negative pop",
+              "explanation": "A negative popped delta tells how to reconstruct the previous minimum."
+            }
+          ],
+          "explanation": "The delta encodes whether the minimum changed at that depth. Negative deltas carry enough information to restore the old minimum when that new minimum is removed.",
+          "complexity": {
+            "time": "O(1) per operation",
+            "space": "O(n)"
+          },
+          "languages": {
+            "python": {
+              "label": "Python",
+              "code": "class MinStackEncoded:\n    def __init__(self):\n        self.stack = []\n        self.min_value = 0\n    def push(self, value):\n        if not self.stack:\n            self.stack.append(0)\n            self.min_value = value\n        else:\n            delta = value - self.min_value\n            self.stack.append(delta)\n            if delta < 0:\n                self.min_value = value\n    def pop(self):\n        delta = self.stack.pop()\n        value = self.min_value if delta < 0 else self.min_value + delta\n        if delta < 0:\n            self.min_value -= delta\n        return value\n    def get_min(self):\n        return self.min_value"
+            },
+            "typescript": {
+              "label": "TypeScript",
+              "code": "export class MinStackEncoded {\n  private stack: number[] = [];\n  private minValue = 0;\n  push(value: number): void {\n    if (!this.stack.length) { this.stack.push(0); this.minValue = value; return; }\n    const delta = value - this.minValue;\n    this.stack.push(delta);\n    if (delta < 0) this.minValue = value;\n  }\n  pop(): number {\n    const delta = this.stack.pop()!;\n    const value = delta < 0 ? this.minValue : this.minValue + delta;\n    if (delta < 0) this.minValue -= delta;\n    return value;\n  }\n  getMin(): number { return this.minValue; }\n}"
+            },
+            "java": {
+              "label": "Java",
+              "code": "class MinStackEncoded {\n  private final Deque<Long> stack = new ArrayDeque<>();\n  private long minValue = 0;\n  void push(int value) {\n    if (stack.isEmpty()) { stack.push(0L); minValue = value; return; }\n    long delta = value - minValue;\n    stack.push(delta);\n    if (delta < 0) minValue = value;\n  }\n  int pop() {\n    long delta = stack.pop();\n    long value = delta < 0 ? minValue : minValue + delta;\n    if (delta < 0) minValue -= delta;\n    return (int) value;\n  }\n  int getMin() { return (int) minValue; }\n}"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "slug": "serialize-deserialize-binary-tree",
+      "title": "Serialize And Deserialize Binary Tree",
+      "summary": "Convert a binary tree to a string and reconstruct the same tree later.",
+      "prompt": "Design a serializer and deserializer for a binary tree so the decoded tree has the same values and shape as the original.",
+      "difficulty": "senior",
+      "tags": [
+        "trees",
+        "serialization"
+      ],
+      "sourceLinks": [
+        {
+          "label": "Reported public Microsoft list",
+          "url": "https://www.hackmnc.com/companies/microsoft/leetcode-interview-questions"
+        }
+      ],
+      "resources": [],
+      "examples": [
+        {
+          "input": "[1,2,3,null,null,4,5]",
+          "output": "same tree after decode",
+          "explanation": "Null positions must be preserved."
+        }
+      ],
+      "constraints": [
+        "The serialized format only needs to be understood by your own deserializer."
+      ],
+      "diagrams": [],
+      "solutionTracks": [
+        {
+          "id": "preorder-null-markers",
+          "title": "Preorder With Null Markers",
+          "summary": "Write each node before its children and include null markers so the shape can be reconstructed exactly.",
+          "steps": [
+            {
+              "title": "Emit node then children",
+              "explanation": "Preorder writes value, left subtree, then right subtree."
+            },
+            {
+              "title": "Include nulls",
+              "explanation": "Null markers distinguish missing children from future sibling values."
+            },
+            {
+              "title": "Read recursively",
+              "explanation": "Deserialization consumes the stream in the same preorder and rebuilds each subtree."
+            }
+          ],
+          "explanation": "Values alone cannot identify where missing children belonged. Null markers make the serialized stream a complete description of both tree values and tree shape.",
+          "complexity": {
+            "time": "O(n)",
+            "space": "O(n)"
+          },
+          "languages": {
+            "python": {
+              "label": "Python",
+              "code": "def serialize(root):\n    out = []\n    def dfs(node):\n        if not node:\n            out.append('#')\n            return\n        out.append(str(node.val))\n        dfs(node.left)\n        dfs(node.right)\n    dfs(root)\n    return ','.join(out)\n\ndef deserialize(data):\n    values = iter(data.split(','))\n    def build():\n        value = next(values)\n        if value == '#':\n            return None\n        node = TreeNode(int(value))\n        node.left = build()\n        node.right = build()\n        return node\n    return build()"
+            },
+            "typescript": {
+              "label": "TypeScript",
+              "code": "type TreeNode = { val: number; left: TreeNode | null; right: TreeNode | null };\nexport function serialize(root: TreeNode | null): string {\n  const out: string[] = [];\n  function dfs(node: TreeNode | null): void {\n    if (!node) { out.push('#'); return; }\n    out.push(String(node.val));\n    dfs(node.left); dfs(node.right);\n  }\n  dfs(root);\n  return out.join(',');\n}"
+            },
+            "java": {
+              "label": "Java",
+              "code": "String serialize(TreeNode root) {\n  List<String> out = new ArrayList<>();\n  serializeDfs(root, out);\n  return String.join(\",\", out);\n}\nvoid serializeDfs(TreeNode node, List<String> out) {\n  if (node == null) { out.add(\"#\"); return; }\n  out.add(String.valueOf(node.val));\n  serializeDfs(node.left, out);\n  serializeDfs(node.right, out);\n}"
+            }
+          }
+        },
+        {
+          "id": "level-order-markers",
+          "title": "Level Order With Markers",
+          "summary": "Serialize the tree breadth-first so positions line up with a common array representation.",
+          "steps": [
+            {
+              "title": "Queue nodes",
+              "explanation": "Process nodes breadth-first and write each value as it leaves the queue."
+            },
+            {
+              "title": "Write null children",
+              "explanation": "When a child is missing, write a marker so later positions remain aligned."
+            },
+            {
+              "title": "Rebuild by pairs",
+              "explanation": "During decode, each non-null queued parent consumes the next two tokens as left and right children."
+            }
+          ],
+          "explanation": "Level-order serialization mirrors heap-style tree layout. Null markers are what keep sparse trees from shifting children into the wrong parent positions.",
+          "complexity": {
+            "time": "O(n)",
+            "space": "O(n)"
+          },
+          "languages": {
+            "python": {
+              "label": "Python",
+              "code": "from collections import deque\n\ndef serialize_level(root):\n    out = []\n    queue = deque([root])\n    while queue:\n        node = queue.popleft()\n        if not node:\n            out.append('#')\n            continue\n        out.append(str(node.val))\n        queue.append(node.left)\n        queue.append(node.right)\n    return ','.join(out)"
+            },
+            "typescript": {
+              "label": "TypeScript",
+              "code": "type TreeNode = { val: number; left: TreeNode | null; right: TreeNode | null };\nexport function serializeLevel(root: TreeNode | null): string {\n  const out: string[] = [];\n  const queue: Array<TreeNode | null> = [root];\n  for (let i = 0; i < queue.length; i += 1) {\n    const node = queue[i];\n    if (!node) { out.push('#'); continue; }\n    out.push(String(node.val));\n    queue.push(node.left, node.right);\n  }\n  return out.join(',');\n}"
+            },
+            "java": {
+              "label": "Java",
+              "code": "String serializeLevel(TreeNode root) {\n  List<String> out = new ArrayList<>();\n  Queue<TreeNode> queue = new LinkedList<>();\n  queue.add(root);\n  while (!queue.isEmpty()) {\n    TreeNode node = queue.remove();\n    if (node == null) { out.add(\"#\"); continue; }\n    out.add(String.valueOf(node.val));\n    queue.add(node.left);\n    queue.add(node.right);\n  }\n  return String.join(\",\", out);\n}"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "slug": "longest-valid-parentheses",
+      "title": "Longest Valid Parentheses",
+      "summary": "Return the length of the longest well-formed parentheses substring.",
+      "prompt": "Given a string containing only opening and closing parentheses, return the length of the longest contiguous substring that is valid.",
+      "difficulty": "senior",
+      "tags": [
+        "stack",
+        "dynamic-programming"
+      ],
+      "sourceLinks": [
+        {
+          "label": "Reported public Microsoft list",
+          "url": "https://www.hackmnc.com/companies/microsoft/leetcode-interview-questions"
+        }
+      ],
+      "resources": [],
+      "examples": [
+        {
+          "input": ")()())",
+          "output": "4",
+          "explanation": "The longest valid substring is ()()."
+        }
+      ],
+      "constraints": [
+        "The substring must be contiguous."
+      ],
+      "diagrams": [],
+      "solutionTracks": [
+        {
+          "id": "index-stack",
+          "title": "Index Stack Sentinel",
+          "summary": "Use a stack of indexes where the top represents the boundary before the current valid substring.",
+          "steps": [
+            {
+              "title": "Start with sentinel",
+              "explanation": "Push -1 so a valid substring starting at zero can measure its length."
+            },
+            {
+              "title": "Push opens",
+              "explanation": "Opening parentheses become possible future matches and are stored by index."
+            },
+            {
+              "title": "Pop on closes",
+              "explanation": "After popping a match, the current valid length is current index minus the new stack top; an empty stack gets reset to current index."
+            }
+          ],
+          "explanation": "The stack stores boundaries that cannot be crossed by the current valid suffix. Measuring from the current index to the nearest boundary gives the longest valid suffix ending here.",
+          "complexity": {
+            "time": "O(n)",
+            "space": "O(n)"
+          },
+          "languages": {
+            "python": {
+              "label": "Python",
+              "code": "def longest_valid_parentheses(s):\n    stack = [-1]\n    best = 0\n    for i, ch in enumerate(s):\n        if ch == '(':\n            stack.append(i)\n        else:\n            stack.pop()\n            if not stack:\n                stack.append(i)\n            else:\n                best = max(best, i - stack[-1])\n    return best"
+            },
+            "typescript": {
+              "label": "TypeScript",
+              "code": "export function longestValidParentheses(s: string): number {\n  const stack = [-1];\n  let best = 0;\n  for (let i = 0; i < s.length; i += 1) {\n    if (s[i] === '(') stack.push(i);\n    else {\n      stack.pop();\n      if (!stack.length) stack.push(i);\n      else best = Math.max(best, i - stack[stack.length - 1]);\n    }\n  }\n  return best;\n}"
+            },
+            "java": {
+              "label": "Java",
+              "code": "int longestValidParentheses(String s) {\n  Deque<Integer> stack = new ArrayDeque<>();\n  stack.push(-1);\n  int best = 0;\n  for (int i = 0; i < s.length(); i++) {\n    if (s.charAt(i) == '(') stack.push(i);\n    else {\n      stack.pop();\n      if (stack.isEmpty()) stack.push(i);\n      else best = Math.max(best, i - stack.peek());\n    }\n  }\n  return best;\n}"
+            }
+          }
+        },
+        {
+          "id": "dynamic-programming",
+          "title": "Dynamic Programming By Ending Index",
+          "summary": "Let dp[i] store the longest valid substring ending at index i and extend it when a close can match an earlier open.",
+          "steps": [
+            {
+              "title": "Only close can end valid text",
+              "explanation": "If the current character is open, dp at that position remains zero."
+            },
+            {
+              "title": "Find matching open",
+              "explanation": "For a close, jump left over the previous valid suffix to locate a possible matching open."
+            },
+            {
+              "title": "Add previous block",
+              "explanation": "If a match exists, include the inner valid suffix and any valid block immediately before the match."
+            }
+          ],
+          "explanation": "The DP state focuses on valid substrings ending exactly at each index. Looking behind the previous valid suffix finds whether the current close can wrap it into a longer valid substring.",
+          "complexity": {
+            "time": "O(n)",
+            "space": "O(n)"
+          },
+          "languages": {
+            "python": {
+              "label": "Python",
+              "code": "def longest_valid_dp(s):\n    dp = [0] * len(s)\n    best = 0\n    for i, ch in enumerate(s):\n        if ch == ')':\n            match = i - dp[i - 1] - 1\n            if match >= 0 and s[match] == '(':\n                dp[i] = dp[i - 1] + 2 + (dp[match - 1] if match > 0 else 0)\n                best = max(best, dp[i])\n    return best"
+            },
+            "typescript": {
+              "label": "TypeScript",
+              "code": "export function longestValidDp(s: string): number {\n  const dp = Array(s.length).fill(0);\n  let best = 0;\n  for (let i = 0; i < s.length; i += 1) {\n    if (s[i] !== ')') continue;\n    const match = i - dp[i - 1] - 1;\n    if (match >= 0 && s[match] === '(') {\n      dp[i] = dp[i - 1] + 2 + (match > 0 ? dp[match - 1] : 0);\n      best = Math.max(best, dp[i]);\n    }\n  }\n  return best;\n}"
+            },
+            "java": {
+              "label": "Java",
+              "code": "int longestValidDp(String s) {\n  int[] dp = new int[s.length()];\n  int best = 0;\n  for (int i = 0; i < s.length(); i++) {\n    if (s.charAt(i) != ')') continue;\n    int match = i - (i > 0 ? dp[i - 1] : 0) - 1;\n    if (match >= 0 && s.charAt(match) == '(') {\n      dp[i] = (i > 0 ? dp[i - 1] : 0) + 2 + (match > 0 ? dp[match - 1] : 0);\n      best = Math.max(best, dp[i]);\n    }\n  }\n  return best;\n}"
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "logo": {
+    "src": "/company-logos/microsoft.svg",
+    "alt": "Microsoft logo"
+  }
+}

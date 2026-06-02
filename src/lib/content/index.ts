@@ -27,21 +27,34 @@ export function getExerciseBySlug(slug: string) {
   return contentIndex.exercises.find((exercise) => exercise.slug === slug);
 }
 
+export function getPassiveFlashcardFeedByPathSlug(pathSlug: string) {
+  return contentIndex.passiveFlashcardFeeds.find((feed) => feed.pathSlug === pathSlug);
+}
+
+export function getInterviewCompanyBySlug(slug: string) {
+  return contentIndex.interviewCompanies.find((company) => company.slug === slug);
+}
+
+export function getInterviewQuestionBySlug(companySlug: string, questionSlug: string) {
+  return getInterviewCompanyBySlug(companySlug)?.questions.find((question) => question.slug === questionSlug);
+}
+
 export function getReferencedDiagrams(diagramRefs: string[]) {
   const refs = new Set(diagramRefs);
   return contentIndex.diagrams.filter((diagram) => refs.has(diagram.slug));
 }
 
 export function getPathNodeRoute(node: LearningPathNode, pathSlug?: string) {
+  const pathSearch = pathSlug ? `?path=${encodeURIComponent(pathSlug)}` : "";
+
   if (node.kind === "document") {
-    return `/docs/${node.slug}`;
+    return `/docs/${node.slug}${pathSearch}`;
   }
 
   if (node.kind === "diagram") {
-    return `/diagrams/${node.slug}`;
+    return `/diagrams/${node.slug}${pathSearch}`;
   }
 
-  const pathSearch = pathSlug ? `?path=${encodeURIComponent(pathSlug)}` : "";
   return `/practice/${node.slug}${pathSearch}`;
 }
 

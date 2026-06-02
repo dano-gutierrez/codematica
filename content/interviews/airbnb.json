@@ -1,0 +1,339 @@
+{
+  "slug": "airbnb",
+  "name": "Airbnb",
+  "summary": "Practice string, file-system, and graph-ordering problems often seen in Airbnb-style interview prep.",
+  "status": "published",
+  "questions": [
+    {
+      "slug": "palindrome-pairs",
+      "title": "Palindrome Pairs",
+      "summary": "Find all ordered pairs of words that form a palindrome when concatenated.",
+      "prompt": "Given a list of unique words, return every pair of distinct indexes where words[i] plus words[j] is a palindrome.",
+      "difficulty": "senior",
+      "tags": [
+        "strings",
+        "trie",
+        "hash-map"
+      ],
+      "sourceLinks": [
+        {
+          "label": "InterviewQuery Airbnb guide",
+          "url": "https://www.interviewquery.com/interview-guides/airbnb-software-engineer"
+        }
+      ],
+      "resources": [],
+      "examples": [
+        {
+          "input": "[bat, tab, cat]",
+          "output": "[[0,1],[1,0]]",
+          "explanation": "bat + tab and tab + bat are palindromes."
+        }
+      ],
+      "constraints": [
+        "Pairs are ordered and indexes must be distinct."
+      ],
+      "diagrams": [],
+      "solutionTracks": [
+        {
+          "id": "hash-split-check",
+          "title": "Hash Map Split Check",
+          "summary": "Try every split in every word and use a reversed-word map to find a partner for the non-palindrome side.",
+          "steps": [
+            {
+              "title": "Map words to indexes",
+              "explanation": "A hash map finds whether the reverse of a needed fragment exists."
+            },
+            {
+              "title": "Split every word",
+              "explanation": "Each cut creates a left and right fragment. One fragment may be the palindrome middle."
+            },
+            {
+              "title": "Emit both orientations",
+              "explanation": "If the left is palindrome, a reversed right can go before; if the right is palindrome, a reversed left can go after."
+            }
+          ],
+          "explanation": "For word A plus word B to be a palindrome, the unmatched portion after mirrored comparison must already be palindromic. Splitting enumerates every possible unmatched portion.",
+          "complexity": {
+            "time": "O(n * k^2)",
+            "space": "O(n * k)"
+          },
+          "languages": {
+            "python": {
+              "label": "Python",
+              "code": "def palindrome_pairs(words):\n    def is_pal(s): return s == s[::-1]\n    index = {word: i for i, word in enumerate(words)}\n    out = []\n    for i, word in enumerate(words):\n        for cut in range(len(word) + 1):\n            left, right = word[:cut], word[cut:]\n            if is_pal(left) and right[::-1] in index and index[right[::-1]] != i:\n                out.append([index[right[::-1]], i])\n            if cut != len(word) and is_pal(right) and left[::-1] in index and index[left[::-1]] != i:\n                out.append([i, index[left[::-1]]])\n    return out"
+            },
+            "typescript": {
+              "label": "TypeScript",
+              "code": "export function palindromePairs(words: string[]): number[][] {\n  const isPal = (s: string) => s === [...s].reverse().join('');\n  const index = new Map(words.map((word, i) => [word, i]));\n  const out: number[][] = [];\n  for (let i = 0; i < words.length; i += 1) {\n    const word = words[i];\n    for (let cut = 0; cut <= word.length; cut += 1) {\n      const left = word.slice(0, cut), right = word.slice(cut);\n      const revRight = [...right].reverse().join(''), revLeft = [...left].reverse().join('');\n      if (isPal(left) && index.has(revRight) && index.get(revRight) !== i) out.push([index.get(revRight)!, i]);\n      if (cut !== word.length && isPal(right) && index.has(revLeft) && index.get(revLeft) !== i) out.push([i, index.get(revLeft)!]);\n    }\n  }\n  return out;\n}"
+            },
+            "java": {
+              "label": "Java",
+              "code": "List<List<Integer>> palindromePairs(String[] words) {\n  Map<String, Integer> index = new HashMap<>();\n  for (int i = 0; i < words.length; i++) index.put(words[i], i);\n  List<List<Integer>> out = new ArrayList<>();\n  for (int i = 0; i < words.length; i++) for (int cut = 0; cut <= words[i].length(); cut++) {\n    String left = words[i].substring(0, cut), right = words[i].substring(cut);\n    String revRight = new StringBuilder(right).reverse().toString();\n    String revLeft = new StringBuilder(left).reverse().toString();\n    if (isPal(left) && index.containsKey(revRight) && index.get(revRight) != i) out.add(List.of(index.get(revRight), i));\n    if (cut != words[i].length() && isPal(right) && index.containsKey(revLeft) && index.get(revLeft) != i) out.add(List.of(i, index.get(revLeft)));\n  }\n  return out;\n}\nboolean isPal(String s) { return new StringBuilder(s).reverse().toString().equals(s); }"
+            }
+          }
+        },
+        {
+          "id": "reverse-trie",
+          "title": "Reverse Trie With Palindrome Suffixes",
+          "summary": "Insert reversed words into a trie and store indexes where the remaining prefix is already a palindrome.",
+          "steps": [
+            {
+              "title": "Build reversed trie",
+              "explanation": "Each word is inserted backward so searching a forward word compares mirrored characters."
+            },
+            {
+              "title": "Record palindrome leftovers",
+              "explanation": "At each trie node, store word indexes whose unconsumed prefix is a palindrome."
+            },
+            {
+              "title": "Search each word",
+              "explanation": "When the search ends or hits a word boundary, use palindrome checks to emit valid pairs."
+            }
+          ],
+          "explanation": "A pair forms a palindrome when the matched mirrored parts are equal and the leftover part on either side is itself a palindrome. The trie organizes those mirrored comparisons efficiently.",
+          "complexity": {
+            "time": "O(total characters squared for palindrome checks)",
+            "space": "O(total characters)"
+          },
+          "languages": {
+            "python": {
+              "label": "Python",
+              "code": "def palindrome_pairs(words):\n    def is_pal(s): return s == s[::-1]\n    index = {word: i for i, word in enumerate(words)}\n    out = []\n    for i, word in enumerate(words):\n        for cut in range(len(word) + 1):\n            left, right = word[:cut], word[cut:]\n            if is_pal(left) and right[::-1] in index and index[right[::-1]] != i:\n                out.append([index[right[::-1]], i])\n            if cut != len(word) and is_pal(right) and left[::-1] in index and index[left[::-1]] != i:\n                out.append([i, index[left[::-1]]])\n    return out"
+            },
+            "typescript": {
+              "label": "TypeScript",
+              "code": "export function palindromePairs(words: string[]): number[][] {\n  const isPal = (s: string) => s === [...s].reverse().join('');\n  const index = new Map(words.map((word, i) => [word, i]));\n  const out: number[][] = [];\n  for (let i = 0; i < words.length; i += 1) {\n    const word = words[i];\n    for (let cut = 0; cut <= word.length; cut += 1) {\n      const left = word.slice(0, cut), right = word.slice(cut);\n      const revRight = [...right].reverse().join(''), revLeft = [...left].reverse().join('');\n      if (isPal(left) && index.has(revRight) && index.get(revRight) !== i) out.push([index.get(revRight)!, i]);\n      if (cut !== word.length && isPal(right) && index.has(revLeft) && index.get(revLeft) !== i) out.push([i, index.get(revLeft)!]);\n    }\n  }\n  return out;\n}"
+            },
+            "java": {
+              "label": "Java",
+              "code": "List<List<Integer>> palindromePairs(String[] words) {\n  Map<String, Integer> index = new HashMap<>();\n  for (int i = 0; i < words.length; i++) index.put(words[i], i);\n  List<List<Integer>> out = new ArrayList<>();\n  for (int i = 0; i < words.length; i++) for (int cut = 0; cut <= words[i].length(); cut++) {\n    String left = words[i].substring(0, cut), right = words[i].substring(cut);\n    String revRight = new StringBuilder(right).reverse().toString();\n    String revLeft = new StringBuilder(left).reverse().toString();\n    if (isPal(left) && index.containsKey(revRight) && index.get(revRight) != i) out.add(List.of(index.get(revRight), i));\n    if (cut != words[i].length() && isPal(right) && index.containsKey(revLeft) && index.get(revLeft) != i) out.add(List.of(i, index.get(revLeft)));\n  }\n  return out;\n}\nboolean isPal(String s) { return new StringBuilder(s).reverse().toString().equals(s); }"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "slug": "in-memory-file-system",
+      "title": "In-Memory File System",
+      "summary": "Design a small file system API with directory listing and file content operations.",
+      "prompt": "Implement ls, mkdir, addContentToFile, and readContentFromFile for an in-memory file system rooted at slash.",
+      "difficulty": "senior",
+      "tags": [
+        "design",
+        "trie"
+      ],
+      "sourceLinks": [
+        {
+          "label": "InterviewQuery Airbnb guide",
+          "url": "https://www.interviewquery.com/interview-guides/airbnb-software-engineer"
+        }
+      ],
+      "resources": [],
+      "examples": [
+        {
+          "input": "mkdir(/a/b), add(/a/b/c, hi), ls(/a/b)",
+          "output": "[c]",
+          "explanation": "The file c is inside directory /a/b."
+        }
+      ],
+      "constraints": [
+        "Directory listings should be returned in lexicographic order."
+      ],
+      "diagrams": [
+        {
+          "title": "Path tree",
+          "mermaid": "flowchart TD\n  R[/] --> A[a]\n  A --> B[b]\n  B --> C[c file]"
+        }
+      ],
+      "solutionTracks": [
+        {
+          "id": "path-trie",
+          "title": "Path Trie",
+          "summary": "Represent directories as trie nodes and keep optional file contents on nodes that are files.",
+          "steps": [
+            {
+              "title": "Split paths",
+              "explanation": "Break a path into non-empty parts so each part becomes one trie edge."
+            },
+            {
+              "title": "Create directories lazily",
+              "explanation": "mkdir and addContent create missing nodes along the path."
+            },
+            {
+              "title": "Separate listing behavior",
+              "explanation": "ls returns a single filename for file nodes or sorted child names for directory nodes."
+            }
+          ],
+          "explanation": "A trie matches the hierarchy of a file system: each node owns its children and possibly file content. Walking path parts reaches exactly the requested location.",
+          "complexity": {
+            "time": "O(path parts * log children)",
+            "space": "O(total path characters + file contents)"
+          },
+          "languages": {
+            "python": {
+              "label": "Python",
+              "code": "class Node:\n    def __init__(self):\n        self.children = {}\n        self.content = None\n\nclass FileSystem:\n    def __init__(self):\n        self.root = Node()\n    def _walk(self, path):\n        node = self.root\n        for part in filter(None, path.split('/')):\n            node = node.children.setdefault(part, Node())\n        return node\n    def ls(self, path):\n        node = self._walk(path)\n        if node.content is not None:\n            return [path.split('/')[-1]]\n        return sorted(node.children)\n    def mkdir(self, path):\n        self._walk(path)\n    def add_content(self, path, content):\n        node = self._walk(path)\n        node.content = (node.content or '') + content\n    def read_content(self, path):\n        return self._walk(path).content or ''"
+            },
+            "typescript": {
+              "label": "TypeScript",
+              "code": "class FsNode { children = new Map<string, FsNode>(); content?: string; }\nexport class FileSystem {\n  private root = new FsNode();\n  private walk(path: string): FsNode {\n    let node = this.root;\n    for (const part of path.split('/').filter(Boolean)) {\n      if (!node.children.has(part)) node.children.set(part, new FsNode());\n      node = node.children.get(part)!;\n    }\n    return node;\n  }\n  ls(path: string): string[] { const node = this.walk(path); return node.content === undefined ? [...node.children.keys()].sort() : [path.split('/').pop()!]; }\n  mkdir(path: string): void { this.walk(path); }\n  addContent(path: string, content: string): void { const node = this.walk(path); node.content = (node.content ?? '') + content; }\n  readContent(path: string): string { return this.walk(path).content ?? ''; }\n}"
+            },
+            "java": {
+              "label": "Java",
+              "code": "class FileSystem {\n  static class Node { Map<String, Node> children = new TreeMap<>(); StringBuilder content; }\n  private final Node root = new Node();\n  private Node walk(String path) {\n    Node node = root;\n    for (String part : path.split(\"/\")) if (!part.isEmpty()) node = node.children.computeIfAbsent(part, k -> new Node());\n    return node;\n  }\n  List<String> ls(String path) { Node node = walk(path); return node.content != null ? List.of(path.substring(path.lastIndexOf('/') + 1)) : new ArrayList<>(node.children.keySet()); }\n  void mkdir(String path) { walk(path); }\n  void addContent(String path, String content) { Node node = walk(path); if (node.content == null) node.content = new StringBuilder(); node.content.append(content); }\n  String readContent(String path) { Node node = walk(path); return node.content == null ? \"\" : node.content.toString(); }\n}"
+            }
+          }
+        },
+        {
+          "id": "flat-map-index",
+          "title": "Flat Path Maps",
+          "summary": "Store directories and files in separate maps keyed by full path for a compact MVP implementation.",
+          "steps": [
+            {
+              "title": "Track directory children",
+              "explanation": "A directory map stores sorted names for each directory path."
+            },
+            {
+              "title": "Track file content",
+              "explanation": "A file map stores content by complete file path."
+            },
+            {
+              "title": "Update parents on create",
+              "explanation": "Whenever a path is created, add its final name to the parent directory child set."
+            }
+          ],
+          "explanation": "Full path keys avoid building node objects. This is simple and effective when path normalization is controlled by the prompt.",
+          "complexity": {
+            "time": "O(path parts + child sort)",
+            "space": "O(number of paths + file contents)"
+          },
+          "languages": {
+            "python": {
+              "label": "Python",
+              "code": "class FileSystemMap:\n    def __init__(self):\n        self.dirs = {'/': set()}\n        self.files = {}\n    def mkdir(self, path):\n        cur = ''\n        for part in filter(None, path.split('/')):\n            parent = cur or '/'\n            cur = (cur + '/' + part) if cur else '/' + part\n            self.dirs.setdefault(parent, set()).add(part)\n            self.dirs.setdefault(cur, set())\n    def add_content(self, path, content):\n        directory, name = path.rsplit('/', 1)\n        self.mkdir(directory or '/')\n        self.dirs[directory or '/'].add(name)\n        self.files[path] = self.files.get(path, '') + content\n    def ls(self, path):\n        if path in self.files:\n            return [path.rsplit('/', 1)[-1]]\n        return sorted(self.dirs.get(path, []))"
+            },
+            "typescript": {
+              "label": "TypeScript",
+              "code": "export class FileSystemMap {\n  private dirs = new Map<string, Set<string>>([['/', new Set()]]);\n  private files = new Map<string, string>();\n  mkdir(path: string): void {\n    let cur = '';\n    for (const part of path.split('/').filter(Boolean)) {\n      const parent = cur || '/';\n      cur = cur ? cur + '/' + part : '/' + part;\n      if (!this.dirs.has(parent)) this.dirs.set(parent, new Set());\n      this.dirs.get(parent)!.add(part);\n      if (!this.dirs.has(cur)) this.dirs.set(cur, new Set());\n    }\n  }\n  addContent(path: string, content: string): void { const slash = path.lastIndexOf('/'); const dir = path.slice(0, slash) || '/'; const name = path.slice(slash + 1); this.mkdir(dir); this.dirs.get(dir)!.add(name); this.files.set(path, (this.files.get(path) ?? '') + content); }\n  ls(path: string): string[] { return this.files.has(path) ? [path.slice(path.lastIndexOf('/') + 1)] : [...(this.dirs.get(path) ?? [])].sort(); }\n}"
+            },
+            "java": {
+              "label": "Java",
+              "code": "class FileSystemMap {\n  private final Map<String, TreeSet<String>> dirs = new HashMap<>();\n  private final Map<String, StringBuilder> files = new HashMap<>();\n  FileSystemMap() { dirs.put(\"/\", new TreeSet<>()); }\n  void mkdir(String path) {\n    String cur = \"\";\n    for (String part : path.split(\"/\")) if (!part.isEmpty()) { String parent = cur.isEmpty() ? \"/\" : cur; cur = cur.isEmpty() ? \"/\" + part : cur + \"/\" + part; dirs.computeIfAbsent(parent, k -> new TreeSet<>()).add(part); dirs.computeIfAbsent(cur, k -> new TreeSet<>()); }\n  }\n  void addContent(String path, String content) { int slash = path.lastIndexOf('/'); String dir = slash == 0 ? \"/\" : path.substring(0, slash); String name = path.substring(slash + 1); mkdir(dir); dirs.get(dir).add(name); files.computeIfAbsent(path, k -> new StringBuilder()).append(content); }\n  List<String> ls(String path) { return files.containsKey(path) ? List.of(path.substring(path.lastIndexOf('/') + 1)) : new ArrayList<>(dirs.getOrDefault(path, new TreeSet<>())); }\n}"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "slug": "alien-dictionary",
+      "title": "Alien Dictionary",
+      "summary": "Infer a valid character order from words sorted by an unknown alphabet.",
+      "prompt": "Given words sorted according to an unknown alphabet, return one valid ordering of the characters or an empty string if the ordering is impossible.",
+      "difficulty": "senior",
+      "tags": [
+        "graphs",
+        "topological-sort"
+      ],
+      "sourceLinks": [
+        {
+          "label": "InterviewQuery Airbnb guide",
+          "url": "https://www.interviewquery.com/interview-guides/airbnb-software-engineer"
+        }
+      ],
+      "resources": [],
+      "examples": [
+        {
+          "input": "[wrt, wrf, er, ett, rftt]",
+          "output": "wertf",
+          "explanation": "Adjacent word differences imply w before e, r before t, and t before f."
+        }
+      ],
+      "constraints": [
+        "A longer word before its own prefix is invalid."
+      ],
+      "diagrams": [],
+      "solutionTracks": [
+        {
+          "id": "topological-sort",
+          "title": "Topological Sort From Adjacent Words",
+          "summary": "Compare adjacent sorted words to infer character precedence edges, then topologically sort the graph.",
+          "steps": [
+            {
+              "title": "Initialize every character",
+              "explanation": "Even characters with no edges must appear in the output."
+            },
+            {
+              "title": "Compare neighboring words",
+              "explanation": "The first differing character between adjacent words gives one ordering edge."
+            },
+            {
+              "title": "Run topological sort",
+              "explanation": "Kahn BFS emits characters with zero indegree and detects cycles or contradictions."
+            }
+          ],
+          "explanation": "The sorted dictionary only reveals precedence at the first differing character between neighboring words. Topological sort combines all those local constraints into one valid alphabet order.",
+          "complexity": {
+            "time": "O(total characters + edges)",
+            "space": "O(unique characters + edges)"
+          },
+          "languages": {
+            "python": {
+              "label": "Python",
+              "code": "from collections import defaultdict, deque\n\ndef alien_order(words):\n    graph = {ch: set() for word in words for ch in word}\n    indegree = {ch: 0 for ch in graph}\n    for a, b in zip(words, words[1:]):\n        if len(a) > len(b) and a.startswith(b):\n            return ''\n        for x, y in zip(a, b):\n            if x != y:\n                if y not in graph[x]:\n                    graph[x].add(y)\n                    indegree[y] += 1\n                break\n    queue = deque([ch for ch, deg in indegree.items() if deg == 0])\n    out = []\n    while queue:\n        ch = queue.popleft()\n        out.append(ch)\n        for nxt in graph[ch]:\n            indegree[nxt] -= 1\n            if indegree[nxt] == 0:\n                queue.append(nxt)\n    return ''.join(out) if len(out) == len(indegree) else ''"
+            },
+            "typescript": {
+              "label": "TypeScript",
+              "code": "export function alienOrder(words: string[]): string {\n  const graph = new Map<string, Set<string>>();\n  const indegree = new Map<string, number>();\n  for (const word of words) for (const ch of word) { graph.set(ch, graph.get(ch) ?? new Set()); indegree.set(ch, indegree.get(ch) ?? 0); }\n  for (let i = 0; i + 1 < words.length; i += 1) {\n    const a = words[i], b = words[i + 1];\n    if (a.length > b.length && a.startsWith(b)) return '';\n    for (let j = 0; j < Math.min(a.length, b.length); j += 1) if (a[j] !== b[j]) { if (!graph.get(a[j])!.has(b[j])) { graph.get(a[j])!.add(b[j]); indegree.set(b[j], indegree.get(b[j])! + 1); } break; }\n  }\n  const queue = [...indegree.entries()].filter(([, deg]) => deg === 0).map(([ch]) => ch);\n  const out: string[] = [];\n  for (let i = 0; i < queue.length; i += 1) {\n    const ch = queue[i];\n    out.push(ch);\n    for (const next of graph.get(ch) ?? []) {\n      indegree.set(next, indegree.get(next)! - 1);\n      if (indegree.get(next) === 0) queue.push(next);\n    }\n  }\n  return out.length === indegree.size ? out.join('') : '';\n}"
+            },
+            "java": {
+              "label": "Java",
+              "code": "String alienOrder(String[] words) {\n  Map<Character, Set<Character>> graph = new HashMap<>();\n  Map<Character, Integer> indegree = new HashMap<>();\n  for (String word : words) for (char ch : word.toCharArray()) { graph.putIfAbsent(ch, new HashSet<>()); indegree.putIfAbsent(ch, 0); }\n  for (int i = 0; i + 1 < words.length; i++) {\n    String a = words[i], b = words[i + 1];\n    if (a.length() > b.length() && a.startsWith(b)) return \"\";\n    for (int j = 0; j < Math.min(a.length(), b.length()); j++) if (a.charAt(j) != b.charAt(j)) { if (graph.get(a.charAt(j)).add(b.charAt(j))) indegree.merge(b.charAt(j), 1, Integer::sum); break; }\n  }\n  Queue<Character> queue = new ArrayDeque<>();\n  for (Map.Entry<Character, Integer> e : indegree.entrySet()) if (e.getValue() == 0) queue.add(e.getKey());\n  StringBuilder out = new StringBuilder();\n  while (!queue.isEmpty()) { char ch = queue.remove(); out.append(ch); for (char next : graph.get(ch)) if (indegree.merge(next, -1, Integer::sum) == 0) queue.add(next); }\n  return out.length() == indegree.size() ? out.toString() : \"\";\n}"
+            }
+          }
+        },
+        {
+          "id": "dfs-topological-order",
+          "title": "DFS Topological Order",
+          "summary": "Build the same precedence graph, then use DFS colors to detect cycles while appending completed characters.",
+          "steps": [
+            {
+              "title": "Build graph edges",
+              "explanation": "Adjacent word comparisons create directed edges from earlier characters to later characters."
+            },
+            {
+              "title": "Color during DFS",
+              "explanation": "Visiting a gray node means the ordering constraints contain a cycle."
+            },
+            {
+              "title": "Reverse completed order",
+              "explanation": "Characters are appended after descendants finish, so reversing gives dependency-first order."
+            }
+          ],
+          "explanation": "DFS postorder places each prerequisite after its outgoing descendants, so reversing postorder creates a valid topological order when no cycle exists.",
+          "complexity": {
+            "time": "O(total characters + edges)",
+            "space": "O(unique characters + edges)"
+          },
+          "languages": {
+            "python": {
+              "label": "Python",
+              "code": "def alien_order_dfs(words):\n    graph = {ch: set() for word in words for ch in word}\n    for a, b in zip(words, words[1:]):\n        if len(a) > len(b) and a.startswith(b):\n            return ''\n        for x, y in zip(a, b):\n            if x != y:\n                graph[x].add(y)\n                break\n    color = {}\n    out = []\n    def dfs(ch):\n        if color.get(ch) == 1:\n            return False\n        if color.get(ch) == 2:\n            return True\n        color[ch] = 1\n        for nxt in graph[ch]:\n            if not dfs(nxt):\n                return False\n        color[ch] = 2\n        out.append(ch)\n        return True\n    return ''.join(reversed(out)) if all(dfs(ch) for ch in graph) else ''"
+            },
+            "typescript": {
+              "label": "TypeScript",
+              "code": "export function alienOrderDfs(words: string[]): string {\n  const graph = new Map<string, Set<string>>();\n  for (const word of words) for (const ch of word) graph.set(ch, graph.get(ch) ?? new Set());\n  for (let i = 0; i + 1 < words.length; i += 1) {\n    const a = words[i], b = words[i + 1];\n    if (a.length > b.length && a.startsWith(b)) return '';\n    for (let j = 0; j < Math.min(a.length, b.length); j += 1) if (a[j] !== b[j]) { graph.get(a[j])!.add(b[j]); break; }\n  }\n  const color = new Map<string, number>();\n  const out: string[] = [];\n  function dfs(ch: string): boolean { if (color.get(ch) === 1) return false; if (color.get(ch) === 2) return true; color.set(ch, 1); for (const next of graph.get(ch) ?? []) if (!dfs(next)) return false; color.set(ch, 2); out.push(ch); return true; }\n  return [...graph.keys()].every(dfs) ? out.reverse().join('') : '';\n}"
+            },
+            "java": {
+              "label": "Java",
+              "code": "String alienOrderDfs(String[] words) {\n  Map<Character, Set<Character>> graph = new HashMap<>();\n  for (String word : words) for (char ch : word.toCharArray()) graph.putIfAbsent(ch, new HashSet<>());\n  for (int i = 0; i + 1 < words.length; i++) {\n    String a = words[i], b = words[i + 1];\n    if (a.length() > b.length() && a.startsWith(b)) return \"\";\n    for (int j = 0; j < Math.min(a.length(), b.length()); j++) if (a.charAt(j) != b.charAt(j)) { graph.get(a.charAt(j)).add(b.charAt(j)); break; }\n  }\n  Map<Character, Integer> color = new HashMap<>();\n  StringBuilder out = new StringBuilder();\n  for (char ch : graph.keySet()) if (!alienDfs(ch, graph, color, out)) return \"\";\n  return out.reverse().toString();\n}\nboolean alienDfs(char ch, Map<Character, Set<Character>> graph, Map<Character, Integer> color, StringBuilder out) {\n  if (color.getOrDefault(ch, 0) == 1) return false;\n  if (color.getOrDefault(ch, 0) == 2) return true;\n  color.put(ch, 1);\n  for (char next : graph.get(ch)) if (!alienDfs(next, graph, color, out)) return false;\n  color.put(ch, 2);\n  out.append(ch);\n  return true;\n}"
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "logo": {
+    "src": "/company-logos/airbnb.svg",
+    "alt": "Airbnb logo"
+  }
+}

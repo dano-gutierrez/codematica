@@ -1,0 +1,333 @@
+{
+  "slug": "apple",
+  "name": "Apple",
+  "summary": "Practice clean data-structure fundamentals and edge-case-heavy prompts aligned with Apple-style interviews.",
+  "status": "published",
+  "questions": [
+    {
+      "slug": "reverse-linked-list",
+      "title": "Reverse A Linked List",
+      "summary": "Reverse a singly linked list and return the new head.",
+      "prompt": "Given the head of a singly linked list, reverse the list in place and return the new head node.",
+      "difficulty": "foundation",
+      "tags": [
+        "linked-list",
+        "pointers"
+      ],
+      "sourceLinks": [
+        {
+          "label": "InterviewQuery Apple guide",
+          "url": "https://www.interviewquery.com/interview-guides/apple-software-engineer"
+        }
+      ],
+      "resources": [],
+      "examples": [
+        {
+          "input": "1 -> 2 -> 3",
+          "output": "3 -> 2 -> 1",
+          "explanation": "Every next pointer is redirected to the previous node."
+        }
+      ],
+      "constraints": [
+        "Do not allocate a second list in the iterative solution."
+      ],
+      "diagrams": [],
+      "solutionTracks": [
+        {
+          "id": "iterative-pointers",
+          "title": "Iterative Pointer Reversal",
+          "summary": "Walk the list once while redirecting each node to point at the previous node instead of the next node.",
+          "steps": [
+            {
+              "title": "Hold previous and current",
+              "explanation": "Previous starts empty and current starts at the head."
+            },
+            {
+              "title": "Save next before rewiring",
+              "explanation": "Store current.next before overwriting it so the rest of the list is not lost."
+            },
+            {
+              "title": "Advance both pointers",
+              "explanation": "Move previous to current and current to the saved next node until the list ends."
+            }
+          ],
+          "explanation": "At every step, previous is the head of the already reversed prefix and current is the first node not yet reversed. Rewiring current extends the reversed prefix by one node.",
+          "complexity": {
+            "time": "O(n)",
+            "space": "O(1)"
+          },
+          "languages": {
+            "python": {
+              "label": "Python",
+              "code": "def reverse_list(head):\n    prev = None\n    cur = head\n    while cur:\n        nxt = cur.next\n        cur.next = prev\n        prev = cur\n        cur = nxt\n    return prev"
+            },
+            "typescript": {
+              "label": "TypeScript",
+              "code": "type ListNode = { val: number; next: ListNode | null };\nexport function reverseList(head: ListNode | null): ListNode | null {\n  let prev: ListNode | null = null;\n  let cur = head;\n  while (cur) {\n    const next = cur.next;\n    cur.next = prev;\n    prev = cur;\n    cur = next;\n  }\n  return prev;\n}"
+            },
+            "java": {
+              "label": "Java",
+              "code": "ListNode reverseList(ListNode head) {\n  ListNode prev = null;\n  ListNode cur = head;\n  while (cur != null) {\n    ListNode next = cur.next;\n    cur.next = prev;\n    prev = cur;\n    cur = next;\n  }\n  return prev;\n}"
+            }
+          }
+        },
+        {
+          "id": "recursive-tail",
+          "title": "Recursive Reversal",
+          "summary": "Let recursion reverse the tail, then attach the current node after its original next node.",
+          "steps": [
+            {
+              "title": "Find the new head",
+              "explanation": "When the recursive call reaches the last node, that node becomes the new head."
+            },
+            {
+              "title": "Flip the edge",
+              "explanation": "After the tail is reversed, current.next.next should point back to current."
+            },
+            {
+              "title": "Break the old edge",
+              "explanation": "Set current.next to null so the old forward link does not create a cycle."
+            }
+          ],
+          "explanation": "The recursive call returns a fully reversed suffix. Repointing the suffix tail back to the current node adds the current node to the end of that reversed suffix.",
+          "complexity": {
+            "time": "O(n)",
+            "space": "O(n) recursion stack"
+          },
+          "languages": {
+            "python": {
+              "label": "Python",
+              "code": "def reverse_list_recursive(head):\n    if not head or not head.next:\n        return head\n    new_head = reverse_list_recursive(head.next)\n    head.next.next = head\n    head.next = None\n    return new_head"
+            },
+            "typescript": {
+              "label": "TypeScript",
+              "code": "type ListNode = { val: number; next: ListNode | null };\nexport function reverseListRecursive(head: ListNode | null): ListNode | null {\n  if (!head || !head.next) return head;\n  const newHead = reverseListRecursive(head.next);\n  head.next.next = head;\n  head.next = null;\n  return newHead;\n}"
+            },
+            "java": {
+              "label": "Java",
+              "code": "ListNode reverseListRecursive(ListNode head) {\n  if (head == null || head.next == null) return head;\n  ListNode newHead = reverseListRecursive(head.next);\n  head.next.next = head;\n  head.next = null;\n  return newHead;\n}"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "slug": "merge-intervals",
+      "title": "Merge Intervals",
+      "summary": "Combine overlapping intervals into the smallest set of non-overlapping ranges.",
+      "prompt": "Given a list of closed intervals, merge every overlapping interval and return the condensed list.",
+      "difficulty": "practitioner",
+      "tags": [
+        "sorting",
+        "intervals"
+      ],
+      "sourceLinks": [
+        {
+          "label": "InterviewQuery Apple guide",
+          "url": "https://www.interviewquery.com/interview-guides/apple-software-engineer"
+        }
+      ],
+      "resources": [],
+      "examples": [
+        {
+          "input": "[[1,3],[2,6],[8,10]]",
+          "output": "[[1,6],[8,10]]",
+          "explanation": "The first two intervals overlap."
+        }
+      ],
+      "constraints": [
+        "Intervals may arrive unsorted."
+      ],
+      "diagrams": [],
+      "solutionTracks": [
+        {
+          "id": "sort-and-merge",
+          "title": "Sort Then Merge",
+          "summary": "Sort intervals by start time and extend the current merged interval while overlaps continue.",
+          "steps": [
+            {
+              "title": "Sort by start",
+              "explanation": "Once intervals are sorted, any overlap with the current interval must be adjacent in the scan."
+            },
+            {
+              "title": "Compare starts to current end",
+              "explanation": "If the next start is within the current end, extend the current end to cover both intervals."
+            },
+            {
+              "title": "Start a new group",
+              "explanation": "If the next start is after the current end, append a new independent interval."
+            }
+          ],
+          "explanation": "Sorting removes the need to compare every interval with every other interval. A future interval can only overlap the active merged interval if its start is within the active end.",
+          "complexity": {
+            "time": "O(n log n)",
+            "space": "O(n)"
+          },
+          "languages": {
+            "python": {
+              "label": "Python",
+              "code": "def merge_intervals(intervals):\n    intervals.sort(key=lambda item: item[0])\n    merged = []\n    for start, end in intervals:\n        if not merged or start > merged[-1][1]:\n            merged.append([start, end])\n        else:\n            merged[-1][1] = max(merged[-1][1], end)\n    return merged"
+            },
+            "typescript": {
+              "label": "TypeScript",
+              "code": "export function mergeIntervals(intervals: number[][]): number[][] {\n  intervals.sort((a, b) => a[0] - b[0]);\n  const merged: number[][] = [];\n  for (const [start, end] of intervals) {\n    if (merged.length === 0 || start > merged[merged.length - 1][1]) merged.push([start, end]);\n    else merged[merged.length - 1][1] = Math.max(merged[merged.length - 1][1], end);\n  }\n  return merged;\n}"
+            },
+            "java": {
+              "label": "Java",
+              "code": "int[][] mergeIntervals(int[][] intervals) {\n  Arrays.sort(intervals, Comparator.comparingInt(a -> a[0]));\n  List<int[]> merged = new ArrayList<>();\n  for (int[] interval : intervals) {\n    if (merged.isEmpty() || interval[0] > merged.get(merged.size() - 1)[1]) merged.add(interval);\n    else merged.get(merged.size() - 1)[1] = Math.max(merged.get(merged.size() - 1)[1], interval[1]);\n  }\n  return merged.toArray(new int[merged.size()][]);\n}"
+            }
+          }
+        },
+        {
+          "id": "event-sweep",
+          "title": "Endpoint Sweep",
+          "summary": "Convert interval endpoints into events and rebuild merged ranges from transitions between inactive and active coverage.",
+          "steps": [
+            {
+              "title": "Create events",
+              "explanation": "Represent each start as plus one active interval and each end as minus one active interval."
+            },
+            {
+              "title": "Sort endpoints",
+              "explanation": "Process starts before ends at the same coordinate when closed intervals should merge."
+            },
+            {
+              "title": "Record coverage spans",
+              "explanation": "A merged interval starts when active count rises from zero and ends when it returns to zero."
+            }
+          ],
+          "explanation": "The active count tells whether at least one interval covers the current position. Boundaries where that count changes between zero and nonzero are exactly the merged interval edges.",
+          "complexity": {
+            "time": "O(n log n)",
+            "space": "O(n)"
+          },
+          "languages": {
+            "python": {
+              "label": "Python",
+              "code": "def merge_by_events(intervals):\n    events = []\n    for start, end in intervals:\n        events.append((start, 1))\n        events.append((end, -1))\n    events.sort(key=lambda item: (item[0], -item[1]))\n    active = 0\n    start = None\n    out = []\n    for point, delta in events:\n        if active == 0:\n            start = point\n        active += delta\n        if active == 0:\n            out.append([start, point])\n    return out"
+            },
+            "typescript": {
+              "label": "TypeScript",
+              "code": "export function mergeByEvents(intervals: number[][]): number[][] {\n  const events: Array<[number, number]> = [];\n  for (const [start, end] of intervals) { events.push([start, 1], [end, -1]); }\n  events.sort((a, b) => a[0] - b[0] || b[1] - a[1]);\n  const out: number[][] = [];\n  let active = 0;\n  let start = 0;\n  for (const [point, delta] of events) {\n    if (active === 0) start = point;\n    active += delta;\n    if (active === 0) out.push([start, point]);\n  }\n  return out;\n}"
+            },
+            "java": {
+              "label": "Java",
+              "code": "List<int[]> mergeByEvents(int[][] intervals) {\n  List<int[]> events = new ArrayList<>();\n  for (int[] interval : intervals) {\n    events.add(new int[] { interval[0], 1 });\n    events.add(new int[] { interval[1], -1 });\n  }\n  events.sort((a, b) -> a[0] != b[0] ? a[0] - b[0] : b[1] - a[1]);\n  List<int[]> out = new ArrayList<>();\n  int active = 0, start = 0;\n  for (int[] event : events) {\n    if (active == 0) start = event[0];\n    active += event[1];\n    if (active == 0) out.add(new int[] { start, event[0] });\n  }\n  return out;\n}"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "slug": "validate-parentheses-stream",
+      "title": "Validate Parentheses Stream",
+      "summary": "Check whether a stream of delimiters is balanced and properly nested.",
+      "prompt": "Given a string of bracket characters, return true if every closing bracket matches the latest unmatched opening bracket.",
+      "difficulty": "foundation",
+      "tags": [
+        "stack",
+        "strings"
+      ],
+      "sourceLinks": [
+        {
+          "label": "InterviewQuery Apple guide",
+          "url": "https://www.interviewquery.com/interview-guides/apple-software-engineer"
+        }
+      ],
+      "resources": [],
+      "examples": [
+        {
+          "input": "([]{})",
+          "output": "true",
+          "explanation": "Every close matches the latest open."
+        }
+      ],
+      "constraints": [
+        "Support parentheses, brackets, and braces in the stack solution."
+      ],
+      "diagrams": [],
+      "solutionTracks": [
+        {
+          "id": "stack-validation",
+          "title": "Stack Validation",
+          "summary": "Push opening delimiters and require every closing delimiter to match the most recent opening delimiter.",
+          "steps": [
+            {
+              "title": "Push opens",
+              "explanation": "Opening brackets create obligations that must be closed in reverse order."
+            },
+            {
+              "title": "Check closes",
+              "explanation": "A closing bracket is valid only if the stack top is the corresponding opening bracket."
+            },
+            {
+              "title": "Require empty stack",
+              "explanation": "After reading the stream, all opening obligations must have been closed."
+            }
+          ],
+          "explanation": "Balanced delimiters are last-in first-out. The stack captures that nested structure exactly, so any mismatched or leftover item proves the stream is invalid.",
+          "complexity": {
+            "time": "O(n)",
+            "space": "O(n)"
+          },
+          "languages": {
+            "python": {
+              "label": "Python",
+              "code": "def is_valid(s):\n    pairs = {')': '(', ']': '[', '}': '{'}\n    stack = []\n    for ch in s:\n        if ch in pairs.values():\n            stack.append(ch)\n        elif ch in pairs:\n            if not stack or stack.pop() != pairs[ch]:\n                return False\n    return not stack"
+            },
+            "typescript": {
+              "label": "TypeScript",
+              "code": "export function isValid(s: string): boolean {\n  const pairs = new Map<string, string>([[')', '('], [']', '['], ['}', '{']]);\n  const stack: string[] = [];\n  for (const ch of s) {\n    if (ch === '(' || ch === '[' || ch === '{') stack.push(ch);\n    else if (pairs.has(ch) && stack.pop() !== pairs.get(ch)) return false;\n  }\n  return stack.length === 0;\n}"
+            },
+            "java": {
+              "label": "Java",
+              "code": "boolean isValid(String s) {\n  Map<Character, Character> pairs = Map.of(')', '(', ']', '[', '}', '{');\n  Deque<Character> stack = new ArrayDeque<>();\n  for (char ch : s.toCharArray()) {\n    if (ch == '(' || ch == '[' || ch == '{') stack.push(ch);\n    else if (pairs.containsKey(ch) && (stack.isEmpty() || stack.pop() != pairs.get(ch))) return false;\n  }\n  return stack.isEmpty();\n}"
+            }
+          }
+        },
+        {
+          "id": "single-type-counter",
+          "title": "Counter For Single Bracket Type",
+          "summary": "When the stream uses only parentheses, a simple balance counter can replace the stack.",
+          "steps": [
+            {
+              "title": "Increment opens",
+              "explanation": "Every opening parenthesis raises the number of closes still required."
+            },
+            {
+              "title": "Reject negative balance",
+              "explanation": "If a close appears when balance is zero, there is no open parenthesis available to match it."
+            },
+            {
+              "title": "Check final balance",
+              "explanation": "A valid stream must finish with no unmatched opening parentheses."
+            }
+          ],
+          "explanation": "For one bracket type, there is no nesting-type mismatch to remember. The count of unmatched opens fully describes whether future closes can be valid.",
+          "complexity": {
+            "time": "O(n)",
+            "space": "O(1)"
+          },
+          "languages": {
+            "python": {
+              "label": "Python",
+              "code": "def is_valid_parentheses(s):\n    balance = 0\n    for ch in s:\n        if ch == '(':\n            balance += 1\n        elif ch == ')':\n            if balance == 0:\n                return False\n            balance -= 1\n    return balance == 0"
+            },
+            "typescript": {
+              "label": "TypeScript",
+              "code": "export function isValidParentheses(s: string): boolean {\n  let balance = 0;\n  for (const ch of s) {\n    if (ch === '(') balance += 1;\n    else if (ch === ')') {\n      if (balance === 0) return false;\n      balance -= 1;\n    }\n  }\n  return balance === 0;\n}"
+            },
+            "java": {
+              "label": "Java",
+              "code": "boolean isValidParentheses(String s) {\n  int balance = 0;\n  for (char ch : s.toCharArray()) {\n    if (ch == '(') balance++;\n    else if (ch == ')') {\n      if (balance == 0) return false;\n      balance--;\n    }\n  }\n  return balance == 0;\n}"
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "logo": {
+    "src": "/company-logos/apple.svg",
+    "alt": "Apple logo"
+  }
+}

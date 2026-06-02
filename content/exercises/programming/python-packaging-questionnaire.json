@@ -1,0 +1,137 @@
+{
+  "slug": "programming/python-packaging-questionnaire",
+  "title": "Python Packaging And Environments Questionnaire",
+  "type": "questionnaire",
+  "documentSlug": "programming/python-packaging-environments",
+  "concept": "Python packaging",
+  "difficulty": "senior",
+  "tags": ["python", "packaging", "environments", "language-refresh"],
+  "status": "published",
+  "questions": [
+    {
+      "id": "pyproject-role",
+      "kind": "choice",
+      "prompt": "What is the best senior framing for pyproject.toml in a modern Python project?",
+      "options": [
+        {
+          "id": "manifest",
+          "label": "It is a project metadata and tool configuration surface, not the whole reproducibility story.",
+          "isCorrect": true
+        },
+        {
+          "id": "lockfile",
+          "label": "It is always a lockfile equivalent to package-lock.json.",
+          "isCorrect": false
+        },
+        {
+          "id": "optional",
+          "label": "It is only useful for libraries and should be avoided in services.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "pyproject.toml centralizes metadata and tool configuration, while reproducible installs still need a clear locking or deployment contract."
+    },
+    {
+      "id": "environment-gap",
+      "kind": "cloze",
+      "prompt": "Fill the gap with the isolation mechanism Python teams normally use for project installs.",
+      "template": "A {{blank}} keeps project dependencies from bleeding into the global Python installation.",
+      "acceptedAnswers": ["virtual environment", "venv", "virtualenv"],
+      "explanation": "Virtual environments isolate installed packages for local and service workflows."
+    },
+    {
+      "id": "packaging-review-order",
+      "kind": "ordering",
+      "prompt": "Order the packaging review questions from project contract to deployment reproducibility.",
+      "items": [
+        {
+          "id": "version",
+          "label": "Declare the supported Python version"
+        },
+        {
+          "id": "dependencies",
+          "label": "Separate runtime, optional, and development dependencies"
+        },
+        {
+          "id": "lock",
+          "label": "Make the resolved dependency graph reproducible"
+        },
+        {
+          "id": "ci",
+          "label": "Run CI and deployment from the same contract"
+        }
+      ],
+      "correctOrder": ["version", "dependencies", "lock", "ci"],
+      "explanation": "Version support, dependency intent, resolution, and CI enforcement are separate review concerns."
+    },
+    {
+      "id": "table-match",
+      "kind": "matching",
+      "prompt": "Match each pyproject.toml area to its main purpose.",
+      "pairs": [
+        {
+          "id": "build-system",
+          "prompt": "build-system",
+          "match": "build backend and build requirements"
+        },
+        {
+          "id": "project",
+          "prompt": "project",
+          "match": "package metadata and runtime dependencies"
+        },
+        {
+          "id": "tool",
+          "prompt": "tool",
+          "match": "tool-specific configuration"
+        }
+      ],
+      "explanation": "Keeping these tables conceptually separate makes packaging reviews less tool-driven and more contract-driven."
+    },
+    {
+      "id": "import-name",
+      "kind": "choice",
+      "prompt": "Why can Python package installs confuse JavaScript developers during onboarding?",
+      "options": [
+        {
+          "id": "same-name",
+          "label": "Distribution names and import names always match exactly.",
+          "isCorrect": false
+        },
+        {
+          "id": "different-name",
+          "label": "The installed distribution name and the import name can differ.",
+          "isCorrect": true
+        },
+        {
+          "id": "no-imports",
+          "label": "Python packages cannot expose importable modules.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "A distribution can expose a different import name, so project metadata and docs matter during setup."
+    },
+    {
+      "id": "shadowing-match",
+      "kind": "matching",
+      "prompt": "Match the packaging smell to the production risk.",
+      "pairs": [
+        {
+          "id": "global",
+          "prompt": "Global install works locally",
+          "match": "missing project setup is hidden"
+        },
+        {
+          "id": "shadow",
+          "prompt": "Local typing.py file",
+          "match": "standard library module can be shadowed"
+        },
+        {
+          "id": "drift",
+          "prompt": "CI and deploy resolve separately",
+          "match": "dependency graph can drift"
+        }
+      ],
+      "explanation": "Packaging problems often look like environment mysteries until the repo contract is explicit."
+    }
+  ]
+}

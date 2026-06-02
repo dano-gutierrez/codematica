@@ -1,0 +1,131 @@
+{
+  "slug": "programming/python-runtime-questionnaire",
+  "title": "Python Runtime Model Questionnaire",
+  "type": "questionnaire",
+  "documentSlug": "programming/python-runtime-model",
+  "concept": "Python runtime model",
+  "difficulty": "senior",
+  "tags": ["python", "javascript", "runtime", "language-refresh"],
+  "status": "published",
+  "questions": [
+    {
+      "id": "binding-review",
+      "kind": "choice",
+      "prompt": "A teammate writes alias = settings and then mutates alias. What is the senior review note?",
+      "options": [
+        {
+          "id": "clone",
+          "label": "Python assignment cloned the dictionary, so settings is safe.",
+          "isCorrect": false
+        },
+        {
+          "id": "binding",
+          "label": "Both names are bound to the same object unless an explicit copy is made.",
+          "isCorrect": true
+        },
+        {
+          "id": "freeze",
+          "label": "Dictionaries become immutable once assigned to a second name.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "Python assignment binds a name to an object. Mutating through one binding is visible through another binding to the same object."
+    },
+    {
+      "id": "mutable-default",
+      "kind": "cloze",
+      "prompt": "Fill the gap for the usual replacement for a shared mutable default argument.",
+      "template": "Use {{blank}} as the sentinel default, then allocate the list or dictionary inside the function.",
+      "acceptedAnswers": ["None", "none"],
+      "explanation": "Function defaults are evaluated once at definition time, so mutable defaults can become shared state."
+    },
+    {
+      "id": "import-order",
+      "kind": "ordering",
+      "prompt": "Order the import-time lifecycle a reviewer should keep in mind.",
+      "items": [
+        {
+          "id": "find",
+          "label": "Find and load the module"
+        },
+        {
+          "id": "execute",
+          "label": "Execute top-level module code"
+        },
+        {
+          "id": "cache",
+          "label": "Cache the module for later imports"
+        }
+      ],
+      "correctOrder": ["find", "execute", "cache"],
+      "explanation": "Import-time side effects happen while top-level code executes, then the module is cached for later imports."
+    },
+    {
+      "id": "runtime-match",
+      "kind": "matching",
+      "prompt": "Match each Python runtime concept to the closest TS/JS comparison.",
+      "pairs": [
+        {
+          "id": "none",
+          "prompt": "None",
+          "match": "null-like singleton"
+        },
+        {
+          "id": "dict",
+          "prompt": "dict",
+          "match": "plain object or Map depending on key needs"
+        },
+        {
+          "id": "with",
+          "prompt": "with statement",
+          "match": "scoped try/finally cleanup"
+        }
+      ],
+      "explanation": "The comparisons are useful entry points, but Python's runtime behavior still needs direct review."
+    },
+    {
+      "id": "truthiness-state",
+      "kind": "choice",
+      "prompt": "A branch treats an empty list and a missing value the same way. What should a senior reviewer ask for?",
+      "options": [
+        {
+          "id": "truthy-only",
+          "label": "Use truthiness everywhere because Python makes this idiomatic.",
+          "isCorrect": false
+        },
+        {
+          "id": "explicit-state",
+          "label": "Separate absence with is None from emptiness with truthiness.",
+          "isCorrect": true
+        },
+        {
+          "id": "coerce-string",
+          "label": "Convert the value to a string before checking it.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "Missing, empty, and disabled states often mean different product things and should not be collapsed casually."
+    },
+    {
+      "id": "exception-scope",
+      "kind": "ordering",
+      "prompt": "Order the safer exception-handling review flow.",
+      "items": [
+        {
+          "id": "narrow",
+          "label": "Keep the try block narrow"
+        },
+        {
+          "id": "specific",
+          "label": "Catch the specific recoverable failure"
+        },
+        {
+          "id": "preserve",
+          "label": "Preserve context for unrecoverable failures"
+        }
+      ],
+      "correctOrder": ["narrow", "specific", "preserve"],
+      "explanation": "Broad exception handling hides failure boundaries. Narrow handling keeps recovery intentional."
+    }
+  ]
+}

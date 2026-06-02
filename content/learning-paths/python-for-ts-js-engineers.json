@@ -1,0 +1,47 @@
+{
+  "slug": "python-for-ts-js-engineers",
+  "title": "Python For TypeScript And JavaScript Engineers",
+  "summary": "Refresh senior Python fundamentals through the similarities, differences, and production traps most relevant to TypeScript and JavaScript engineers.",
+  "kind": "skill",
+  "category": "Programming",
+  "audience": "TypeScript and JavaScript engineers who need a senior-level Python refresh for production work.",
+  "status": "published",
+  "units": [
+    {
+      "slug": "runtime-model",
+      "title": "Runtime Model",
+      "summary": "Review Python names, objects, mutability, truthiness, exceptions, data model hooks, and imports.",
+      "nodes": [
+        { "kind": "document", "slug": "programming/python-runtime-model" },
+        { "kind": "exercise", "slug": "programming/python-runtime-questionnaire" }
+      ]
+    },
+    {
+      "slug": "types-and-contracts",
+      "title": "Types And Contracts",
+      "summary": "Use gradual typing, Any, protocols, dataclasses, and runtime validation without importing TypeScript assumptions.",
+      "nodes": [
+        { "kind": "document", "slug": "programming/python-types-and-contracts" },
+        { "kind": "exercise", "slug": "programming/python-types-questionnaire" }
+      ]
+    },
+    {
+      "slug": "packaging-environments",
+      "title": "Packaging And Environments",
+      "summary": "Understand pyproject.toml, virtual environments, dependency groups, import names, lockfiles, and deployment pain points.",
+      "nodes": [
+        { "kind": "document", "slug": "programming/python-packaging-environments" },
+        { "kind": "exercise", "slug": "programming/python-packaging-questionnaire" }
+      ]
+    },
+    {
+      "slug": "async-testing-production",
+      "title": "Async Testing And Production",
+      "summary": "Review asyncio, blocking work, test boundaries, style standards, and production maintainability.",
+      "nodes": [
+        { "kind": "document", "slug": "programming/python-async-testing-production" },
+        { "kind": "exercise", "slug": "programming/python-async-questionnaire" }
+      ]
+    }
+  ]
+}

@@ -26,6 +26,7 @@ test("@smoke mobile user can follow a path, practice, search, and open a diagram
 
   await page.goto("/browse");
   await expect(page.getByTestId("knowledge-browser")).toBeVisible();
+  await expect(page.getByTestId("content-library-paths-link")).toContainText("Learning paths");
   await expect(page.getByTestId("search-mode-exact")).toHaveCount(0);
   await expect(page.getByTestId("search-mode-fuzzy")).toHaveCount(0);
 

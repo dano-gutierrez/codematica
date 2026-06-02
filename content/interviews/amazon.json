@@ -1,0 +1,346 @@
+{
+  "slug": "amazon",
+  "name": "Amazon",
+  "summary": "Practice array, cache, and frequency-ranking problems common in Amazon-style interview prep.",
+  "status": "published",
+  "questions": [
+    {
+      "slug": "two-sum-product-pair",
+      "title": "Two Sum Product Pair",
+      "summary": "Find two input positions whose values add to a target.",
+      "prompt": "Given a list of integers and a target, return the indices of two numbers whose sum equals the target.",
+      "difficulty": "foundation",
+      "tags": [
+        "arrays",
+        "hash-map"
+      ],
+      "sourceLinks": [
+        {
+          "label": "Reported public Amazon list",
+          "url": "https://www.vervecopilot.com/blog/amazon-leetcode-interview-questions"
+        }
+      ],
+      "resources": [],
+      "examples": [
+        {
+          "input": "nums = [2,7,11,15], target = 9",
+          "output": "[0,1]",
+          "explanation": "2 plus 7 equals 9."
+        }
+      ],
+      "constraints": [
+        "Return any one valid pair.",
+        "Do not reuse the same element twice."
+      ],
+      "diagrams": [
+        {
+          "title": "Complement lookup",
+          "mermaid": "flowchart LR\n  A[Read value] --> B[Need target - value]\n  B --> C{Seen?}\n  C -->|yes| D[Return pair]\n  C -->|no| E[Store index]"
+        }
+      ],
+      "solutionTracks": [
+        {
+          "id": "one-pass-map",
+          "title": "One Pass Complement Map",
+          "summary": "Scan once while remembering earlier values by value so each new item can close a pair immediately.",
+          "steps": [
+            {
+              "title": "Store earlier values",
+              "explanation": "Keep a map from each number already scanned to its index, because only earlier positions can pair with the current position."
+            },
+            {
+              "title": "Ask for the complement",
+              "explanation": "For each value, compute target minus value and check whether that complement was seen before."
+            },
+            {
+              "title": "Return the pair",
+              "explanation": "When the complement exists, the stored index and current index form a valid answer without more scanning."
+            }
+          ],
+          "explanation": "The invariant is that the map contains every candidate from the prefix before the current index. If a valid pair ends at the current item, its partner must already be in that prefix, so the lookup is sufficient.",
+          "complexity": {
+            "time": "O(n)",
+            "space": "O(n)"
+          },
+          "languages": {
+            "python": {
+              "label": "Python",
+              "code": "def two_sum(nums, target):\n    seen = {}\n    for i, value in enumerate(nums):\n        need = target - value\n        if need in seen:\n            return [seen[need], i]\n        seen[value] = i\n    return []"
+            },
+            "typescript": {
+              "label": "TypeScript",
+              "code": "export function twoSum(nums: number[], target: number): number[] {\n  const seen = new Map<number, number>();\n  for (let i = 0; i < nums.length; i += 1) {\n    const need = target - nums[i];\n    const j = seen.get(need);\n    if (j !== undefined) return [j, i];\n    seen.set(nums[i], i);\n  }\n  return [];\n}"
+            },
+            "java": {
+              "label": "Java",
+              "code": "int[] twoSum(int[] nums, int target) {\n  Map<Integer, Integer> seen = new HashMap<>();\n  for (int i = 0; i < nums.length; i++) {\n    int need = target - nums[i];\n    if (seen.containsKey(need)) return new int[] { seen.get(need), i };\n    seen.put(nums[i], i);\n  }\n  return new int[0];\n}"
+            }
+          }
+        },
+        {
+          "id": "sorted-two-pointer",
+          "title": "Sorted Value Pairs",
+          "summary": "Sort values with their original indexes, then move two pointers inward until the target sum appears.",
+          "steps": [
+            {
+              "title": "Preserve indexes",
+              "explanation": "Pair every value with its original index before sorting so the final answer still uses input positions."
+            },
+            {
+              "title": "Use sorted direction",
+              "explanation": "If the current sum is too small move the left pointer right; if too large move the right pointer left."
+            },
+            {
+              "title": "Return original positions",
+              "explanation": "When the sum equals the target, return the stored original indexes rather than the sorted positions."
+            }
+          ],
+          "explanation": "Sorting creates monotonic movement: increasing the left pointer raises the sum and decreasing the right pointer lowers it. That means every discarded pair cannot become valid later.",
+          "complexity": {
+            "time": "O(n log n)",
+            "space": "O(n)"
+          },
+          "languages": {
+            "python": {
+              "label": "Python",
+              "code": "def two_sum_sorted(nums, target):\n    pairs = sorted((value, i) for i, value in enumerate(nums))\n    left, right = 0, len(pairs) - 1\n    while left < right:\n        total = pairs[left][0] + pairs[right][0]\n        if total == target:\n            return [pairs[left][1], pairs[right][1]]\n        if total < target:\n            left += 1\n        else:\n            right -= 1\n    return []"
+            },
+            "typescript": {
+              "label": "TypeScript",
+              "code": "export function twoSumSorted(nums: number[], target: number): number[] {\n  const pairs = nums.map((value, index) => ({ value, index })).sort((a, b) => a.value - b.value);\n  let left = 0;\n  let right = pairs.length - 1;\n  while (left < right) {\n    const total = pairs[left].value + pairs[right].value;\n    if (total === target) return [pairs[left].index, pairs[right].index];\n    if (total < target) left += 1;\n    else right -= 1;\n  }\n  return [];\n}"
+            },
+            "java": {
+              "label": "Java",
+              "code": "int[] twoSumSorted(int[] nums, int target) {\n  int[][] pairs = new int[nums.length][2];\n  for (int i = 0; i < nums.length; i++) pairs[i] = new int[] { nums[i], i };\n  Arrays.sort(pairs, Comparator.comparingInt(a -> a[0]));\n  int left = 0, right = pairs.length - 1;\n  while (left < right) {\n    int total = pairs[left][0] + pairs[right][0];\n    if (total == target) return new int[] { pairs[left][1], pairs[right][1] };\n    if (total < target) left++; else right--;\n  }\n  return new int[0];\n}"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "slug": "lru-cache",
+      "title": "LRU Cache",
+      "summary": "Implement a fixed-capacity cache that evicts the least recently used key.",
+      "prompt": "Design a cache with get and put operations. Both should update recency, and the cache should evict the least recently used key when capacity is exceeded.",
+      "difficulty": "senior",
+      "tags": [
+        "design",
+        "hash-map",
+        "linked-list"
+      ],
+      "sourceLinks": [
+        {
+          "label": "Reported public Amazon list",
+          "url": "https://www.vervecopilot.com/blog/amazon-leetcode-interview-questions"
+        }
+      ],
+      "resources": [],
+      "examples": [
+        {
+          "input": "put(1,1), put(2,2), get(1), put(3,3), get(2)",
+          "output": "1, -1",
+          "explanation": "Key 2 is evicted because key 1 was recently read."
+        }
+      ],
+      "constraints": [
+        "Aim for constant-time get and put in the main solution."
+      ],
+      "diagrams": [
+        {
+          "title": "LRU structure",
+          "mermaid": "flowchart LR\n  M[Hash map key to node] --> N[Doubly linked list]\n  O[Oldest] --> A[Node]\n  A --> B[Newest]"
+        }
+      ],
+      "solutionTracks": [
+        {
+          "id": "hash-map-linked-list",
+          "title": "Hash Map Plus Recency List",
+          "summary": "Combine O(1) key lookup with a doubly linked list that keeps least-recently-used entries at one end.",
+          "steps": [
+            {
+              "title": "Separate lookup and recency",
+              "explanation": "Use a map for key to node lookup and a list for oldest to newest ordering."
+            },
+            {
+              "title": "Refresh on access",
+              "explanation": "Every get or update moves the node to the newest end because it was just used."
+            },
+            {
+              "title": "Evict from the old end",
+              "explanation": "When capacity is exceeded, remove the node next to the oldest sentinel and delete its key from the map."
+            }
+          ],
+          "explanation": "The map answers where a key lives and the list answers which key is oldest. Updating both structures together preserves O(1) operations and correct eviction order.",
+          "complexity": {
+            "time": "O(1) per operation",
+            "space": "O(capacity)"
+          },
+          "languages": {
+            "python": {
+              "label": "Python",
+              "code": "from collections import OrderedDict\n\nclass LRUCache:\n    def __init__(self, capacity):\n        self.capacity = capacity\n        self.data = OrderedDict()\n\n    def get(self, key):\n        if key not in self.data:\n            return -1\n        self.data.move_to_end(key)\n        return self.data[key]\n\n    def put(self, key, value):\n        if key in self.data:\n            self.data.move_to_end(key)\n        self.data[key] = value\n        if len(self.data) > self.capacity:\n            self.data.popitem(last=False)"
+            },
+            "typescript": {
+              "label": "TypeScript",
+              "code": "export class LRUCache {\n  private data = new Map<number, number>();\n  constructor(private capacity: number) {}\n\n  get(key: number): number {\n    if (!this.data.has(key)) return -1;\n    const value = this.data.get(key)!;\n    this.data.delete(key);\n    this.data.set(key, value);\n    return value;\n  }\n\n  put(key: number, value: number): void {\n    if (this.data.has(key)) this.data.delete(key);\n    this.data.set(key, value);\n    if (this.data.size > this.capacity) this.data.delete(this.data.keys().next().value);\n  }\n}"
+            },
+            "java": {
+              "label": "Java",
+              "code": "class LRUCache extends LinkedHashMap<Integer, Integer> {\n  private final int capacity;\n  LRUCache(int capacity) {\n    super(capacity, 0.75f, true);\n    this.capacity = capacity;\n  }\n  int getValue(int key) {\n    return getOrDefault(key, -1);\n  }\n  void putValue(int key, int value) {\n    put(key, value);\n  }\n  protected boolean removeEldestEntry(Map.Entry<Integer, Integer> eldest) {\n    return size() > capacity;\n  }\n}"
+            }
+          }
+        },
+        {
+          "id": "timestamp-scan",
+          "title": "Timestamped Map For Small Capacity",
+          "summary": "Store last-used timestamps with each key and scan for the oldest key only when eviction is needed.",
+          "steps": [
+            {
+              "title": "Store value and time",
+              "explanation": "Each get or put increments a clock and writes that clock as the key last-used time."
+            },
+            {
+              "title": "Use map lookups",
+              "explanation": "Reads still find keys in O(1), so missing and present keys are straightforward."
+            },
+            {
+              "title": "Scan on eviction",
+              "explanation": "If the cache grows past capacity, scan the entries and remove the smallest timestamp."
+            }
+          ],
+          "explanation": "This version is simpler and can be accepted for small capacities or as a stepping stone. It preserves the same recency semantics but spends more time during eviction.",
+          "complexity": {
+            "time": "O(1) get, O(capacity) eviction",
+            "space": "O(capacity)"
+          },
+          "languages": {
+            "python": {
+              "label": "Python",
+              "code": "class LRUCacheSimple:\n    def __init__(self, capacity):\n        self.capacity = capacity\n        self.clock = 0\n        self.data = {}\n\n    def get(self, key):\n        if key not in self.data:\n            return -1\n        value, _ = self.data[key]\n        self.clock += 1\n        self.data[key] = (value, self.clock)\n        return value\n\n    def put(self, key, value):\n        self.clock += 1\n        self.data[key] = (value, self.clock)\n        if len(self.data) > self.capacity:\n            oldest = min(self.data, key=lambda k: self.data[k][1])\n            del self.data[oldest]"
+            },
+            "typescript": {
+              "label": "TypeScript",
+              "code": "export class LRUCacheSimple {\n  private clock = 0;\n  private data = new Map<number, { value: number; used: number }>();\n  constructor(private capacity: number) {}\n  get(key: number): number {\n    const item = this.data.get(key);\n    if (!item) return -1;\n    item.used = ++this.clock;\n    return item.value;\n  }\n  put(key: number, value: number): void {\n    this.data.set(key, { value, used: ++this.clock });\n    if (this.data.size <= this.capacity) return;\n    let oldestKey = key;\n    let oldest = Infinity;\n    for (const [k, item] of this.data) if (item.used < oldest) { oldest = item.used; oldestKey = k; }\n    this.data.delete(oldestKey);\n  }\n}"
+            },
+            "java": {
+              "label": "Java",
+              "code": "class LRUCacheSimple {\n  record Entry(int value, int used) {}\n  private final int capacity;\n  private int clock = 0;\n  private final Map<Integer, Entry> data = new HashMap<>();\n  LRUCacheSimple(int capacity) { this.capacity = capacity; }\n  int get(int key) {\n    Entry item = data.get(key);\n    if (item == null) return -1;\n    data.put(key, new Entry(item.value(), ++clock));\n    return item.value();\n  }\n  void put(int key, int value) {\n    data.put(key, new Entry(value, ++clock));\n    if (data.size() > capacity) data.remove(data.entrySet().stream().min(Comparator.comparingInt(e -> e.getValue().used())).get().getKey());\n  }\n}"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "slug": "top-k-frequent-items",
+      "title": "Top K Frequent Items",
+      "summary": "Return the k values that appear most frequently in an input array.",
+      "prompt": "Given an integer array and an integer k, return any ordering of the k most frequent values.",
+      "difficulty": "practitioner",
+      "tags": [
+        "heap",
+        "bucket-sort",
+        "hash-map"
+      ],
+      "sourceLinks": [
+        {
+          "label": "Reported public Amazon list",
+          "url": "https://www.vervecopilot.com/blog/amazon-leetcode-interview-questions"
+        }
+      ],
+      "resources": [],
+      "examples": [
+        {
+          "input": "nums = [1,1,1,2,2,3], k = 2",
+          "output": "[1,2]",
+          "explanation": "1 and 2 have the highest frequencies."
+        }
+      ],
+      "constraints": [
+        "Any order is acceptable unless the prompt adds a tie-breaker."
+      ],
+      "diagrams": [],
+      "solutionTracks": [
+        {
+          "id": "frequency-min-heap",
+          "title": "Frequency Count With Min Heap",
+          "summary": "Count values, keep only the k largest frequencies in a min heap, and return the heap contents.",
+          "steps": [
+            {
+              "title": "Count first",
+              "explanation": "A hash map converts the input into value to frequency counts."
+            },
+            {
+              "title": "Keep heap small",
+              "explanation": "Push each pair into a min heap and pop when the heap grows beyond k."
+            },
+            {
+              "title": "Read the survivors",
+              "explanation": "The heap contains the k values whose frequencies survived every smaller-frequency eviction."
+            }
+          ],
+          "explanation": "The min heap always removes the least frequent value among the candidates it has seen. After all counts are processed, only the k strongest candidates remain.",
+          "complexity": {
+            "time": "O(n log k)",
+            "space": "O(n)"
+          },
+          "languages": {
+            "python": {
+              "label": "Python",
+              "code": "from collections import Counter\nimport heapq\n\ndef top_k_frequent(nums, k):\n    heap = []\n    for value, count in Counter(nums).items():\n        heapq.heappush(heap, (count, value))\n        if len(heap) > k:\n            heapq.heappop(heap)\n    return [value for count, value in heap]"
+            },
+            "typescript": {
+              "label": "TypeScript",
+              "code": "export function topKFrequent(nums: number[], k: number): number[] {\n  const counts = new Map<number, number>();\n  for (const value of nums) counts.set(value, (counts.get(value) ?? 0) + 1);\n  return [...counts.entries()]\n    .sort((a, b) => b[1] - a[1])\n    .slice(0, k)\n    .map(([value]) => value);\n}"
+            },
+            "java": {
+              "label": "Java",
+              "code": "int[] topKFrequent(int[] nums, int k) {\n  Map<Integer, Integer> counts = new HashMap<>();\n  for (int value : nums) counts.merge(value, 1, Integer::sum);\n  PriorityQueue<int[]> heap = new PriorityQueue<>(Comparator.comparingInt(a -> a[1]));\n  for (Map.Entry<Integer, Integer> entry : counts.entrySet()) {\n    heap.add(new int[] { entry.getKey(), entry.getValue() });\n    if (heap.size() > k) heap.remove();\n  }\n  int[] out = new int[heap.size()];\n  for (int i = 0; i < out.length; i++) out[i] = heap.remove()[0];\n  return out;\n}"
+            }
+          }
+        },
+        {
+          "id": "frequency-buckets",
+          "title": "Frequency Buckets",
+          "summary": "Group values by frequency, then walk buckets from highest frequency down until k values are collected.",
+          "steps": [
+            {
+              "title": "Count frequencies",
+              "explanation": "The highest possible frequency is the length of the input, so frequencies can address an array of buckets."
+            },
+            {
+              "title": "Bucket values",
+              "explanation": "Append each distinct value into the bucket that matches its count."
+            },
+            {
+              "title": "Walk backward",
+              "explanation": "Visit frequencies from high to low and collect values until the answer has k entries."
+            }
+          ],
+          "explanation": "Bucket indexes are already sorted by frequency, so no comparison sort is necessary. Walking backward visits values in non-increasing frequency order.",
+          "complexity": {
+            "time": "O(n)",
+            "space": "O(n)"
+          },
+          "languages": {
+            "python": {
+              "label": "Python",
+              "code": "from collections import Counter\n\ndef top_k_bucket(nums, k):\n    counts = Counter(nums)\n    buckets = [[] for _ in range(len(nums) + 1)]\n    for value, count in counts.items():\n        buckets[count].append(value)\n    out = []\n    for count in range(len(buckets) - 1, -1, -1):\n        for value in buckets[count]:\n            out.append(value)\n            if len(out) == k:\n                return out\n    return out"
+            },
+            "typescript": {
+              "label": "TypeScript",
+              "code": "export function topKBucket(nums: number[], k: number): number[] {\n  const counts = new Map<number, number>();\n  for (const value of nums) counts.set(value, (counts.get(value) ?? 0) + 1);\n  const buckets: number[][] = Array.from({ length: nums.length + 1 }, () => []);\n  for (const [value, count] of counts) buckets[count].push(value);\n  const out: number[] = [];\n  for (let count = buckets.length - 1; count >= 0; count -= 1) {\n    for (const value of buckets[count]) {\n      out.push(value);\n      if (out.length === k) return out;\n    }\n  }\n  return out;\n}"
+            },
+            "java": {
+              "label": "Java",
+              "code": "List<Integer> topKBucket(int[] nums, int k) {\n  Map<Integer, Integer> counts = new HashMap<>();\n  for (int value : nums) counts.merge(value, 1, Integer::sum);\n  List<List<Integer>> buckets = new ArrayList<>();\n  for (int i = 0; i <= nums.length; i++) buckets.add(new ArrayList<>());\n  for (Map.Entry<Integer, Integer> entry : counts.entrySet()) buckets.get(entry.getValue()).add(entry.getKey());\n  List<Integer> out = new ArrayList<>();\n  for (int count = buckets.size() - 1; count >= 0 && out.size() < k; count--) out.addAll(buckets.get(count));\n  return out.subList(0, k);\n}"
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "logo": {
+    "src": "/company-logos/amazon.svg",
+    "alt": "Amazon logo"
+  }
+}

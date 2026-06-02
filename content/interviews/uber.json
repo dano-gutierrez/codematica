@@ -1,0 +1,339 @@
+{
+  "slug": "uber",
+  "name": "Uber",
+  "summary": "Practice routing, scheduling, and connected-component prompts aligned with Uber-style interviews.",
+  "status": "published",
+  "questions": [
+    {
+      "slug": "shortest-path-weighted-road-graph",
+      "title": "Shortest Path In A Weighted Road Graph",
+      "summary": "Compute the cheapest route between two nodes when every road weight is non-negative.",
+      "prompt": "Given a weighted graph of roads, a start node, and a target node, return the cost of the shortest route.",
+      "difficulty": "senior",
+      "tags": [
+        "graphs",
+        "dijkstra"
+      ],
+      "sourceLinks": [
+        {
+          "label": "InterviewQuery Uber guide",
+          "url": "https://www.interviewquery.com/interview-guides/uber-software-engineer"
+        }
+      ],
+      "resources": [],
+      "examples": [
+        {
+          "input": "A-B:4, A-C:1, C-B:2",
+          "output": "3",
+          "explanation": "A to C to B is cheaper than A to B directly."
+        }
+      ],
+      "constraints": [
+        "Weights are non-negative in the Dijkstra solution."
+      ],
+      "diagrams": [
+        {
+          "title": "Relaxation",
+          "mermaid": "flowchart LR\n  A((A)) -- 1 --> C((C))\n  C -- 2 --> B((B))\n  A -- 4 --> B"
+        }
+      ],
+      "solutionTracks": [
+        {
+          "id": "dijkstra-priority-queue",
+          "title": "Dijkstra With Priority Queue",
+          "summary": "For non-negative road weights, always expand the currently cheapest city and relax outgoing roads.",
+          "steps": [
+            {
+              "title": "Seed the start",
+              "explanation": "Distance to the start is zero and all other distances are initially unknown."
+            },
+            {
+              "title": "Expand cheapest candidate",
+              "explanation": "A priority queue returns the unprocessed node with the smallest known distance."
+            },
+            {
+              "title": "Relax edges",
+              "explanation": "If reaching a neighbor through the current node is cheaper, update its distance and push it into the queue."
+            }
+          ],
+          "explanation": "With non-negative weights, the first time a node is popped with its best distance, no future path can improve it. The priority queue enforces that safe processing order.",
+          "complexity": {
+            "time": "O((V + E) log V)",
+            "space": "O(V + E)"
+          },
+          "languages": {
+            "python": {
+              "label": "Python",
+              "code": "import heapq\n\ndef shortest_path(graph, start, target):\n    dist = {start: 0}\n    heap = [(0, start)]\n    while heap:\n        cost, node = heapq.heappop(heap)\n        if node == target:\n            return cost\n        if cost != dist.get(node):\n            continue\n        for nxt, weight in graph.get(node, []):\n            new_cost = cost + weight\n            if new_cost < dist.get(nxt, float('inf')):\n                dist[nxt] = new_cost\n                heapq.heappush(heap, (new_cost, nxt))\n    return -1"
+            },
+            "typescript": {
+              "label": "TypeScript",
+              "code": "export function shortestPath(graph: Map<string, Array<[string, number]>>, start: string, target: string): number {\n  const dist = new Map<string, number>([[start, 0]]);\n  const heap: Array<[number, string]> = [[0, start]];\n  while (heap.length) {\n    heap.sort((a, b) => a[0] - b[0]);\n    const [cost, node] = heap.shift()!;\n    if (node === target) return cost;\n    if (cost !== dist.get(node)) continue;\n    for (const [next, weight] of graph.get(node) ?? []) {\n      const newCost = cost + weight;\n      if (newCost < (dist.get(next) ?? Infinity)) { dist.set(next, newCost); heap.push([newCost, next]); }\n    }\n  }\n  return -1;\n}"
+            },
+            "java": {
+              "label": "Java",
+              "code": "int shortestPath(Map<String, List<Edge>> graph, String start, String target) {\n  Map<String, Integer> dist = new HashMap<>();\n  PriorityQueue<Object[]> heap = new PriorityQueue<>(Comparator.comparingInt(a -> (Integer) a[0]));\n  dist.put(start, 0); heap.add(new Object[] { 0, start });\n  while (!heap.isEmpty()) {\n    Object[] item = heap.remove(); int cost = (Integer) item[0]; String node = (String) item[1];\n    if (node.equals(target)) return cost;\n    if (cost != dist.get(node)) continue;\n    for (Edge edge : graph.getOrDefault(node, List.of())) {\n      int nextCost = cost + edge.weight;\n      if (nextCost < dist.getOrDefault(edge.to, Integer.MAX_VALUE)) { dist.put(edge.to, nextCost); heap.add(new Object[] { nextCost, edge.to }); }\n    }\n  }\n  return -1;\n}"
+            }
+          }
+        },
+        {
+          "id": "unweighted-bfs",
+          "title": "BFS For Unit Roads",
+          "summary": "When every road has equal cost, regular BFS finds the shortest number of hops without a priority queue.",
+          "steps": [
+            {
+              "title": "Queue the start",
+              "explanation": "The start city begins at distance zero."
+            },
+            {
+              "title": "Visit each city once",
+              "explanation": "The first time a city is reached is through the fewest number of roads."
+            },
+            {
+              "title": "Stop at target",
+              "explanation": "When the target leaves the queue, its stored distance is the shortest hop count."
+            }
+          ],
+          "explanation": "BFS explores paths by hop count: all one-hop routes, then all two-hop routes, and so on. Equal edge weights make hop count the optimization target.",
+          "complexity": {
+            "time": "O(V + E)",
+            "space": "O(V)"
+          },
+          "languages": {
+            "python": {
+              "label": "Python",
+              "code": "from collections import deque\n\ndef shortest_hops(graph, start, target):\n    queue = deque([(start, 0)])\n    seen = {start}\n    while queue:\n        node, dist = queue.popleft()\n        if node == target:\n            return dist\n        for nxt in graph.get(node, []):\n            if nxt not in seen:\n                seen.add(nxt)\n                queue.append((nxt, dist + 1))\n    return -1"
+            },
+            "typescript": {
+              "label": "TypeScript",
+              "code": "export function shortestHops(graph: Map<string, string[]>, start: string, target: string): number {\n  const queue: Array<[string, number]> = [[start, 0]];\n  const seen = new Set([start]);\n  for (let i = 0; i < queue.length; i += 1) {\n    const [node, dist] = queue[i];\n    if (node === target) return dist;\n    for (const next of graph.get(node) ?? []) if (!seen.has(next)) { seen.add(next); queue.push([next, dist + 1]); }\n  }\n  return -1;\n}"
+            },
+            "java": {
+              "label": "Java",
+              "code": "int shortestHops(Map<String, List<String>> graph, String start, String target) {\n  Queue<String> queue = new ArrayDeque<>();\n  Map<String, Integer> dist = new HashMap<>();\n  queue.add(start); dist.put(start, 0);\n  while (!queue.isEmpty()) {\n    String node = queue.remove();\n    if (node.equals(target)) return dist.get(node);\n    for (String next : graph.getOrDefault(node, List.of())) if (!dist.containsKey(next)) { dist.put(next, dist.get(node) + 1); queue.add(next); }\n  }\n  return -1;\n}"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "slug": "meeting-rooms-ii",
+      "title": "Meeting Rooms II",
+      "summary": "Find the minimum number of rooms needed for overlapping meetings.",
+      "prompt": "Given meeting start and end times, return the minimum number of rooms required so every meeting can be scheduled.",
+      "difficulty": "practitioner",
+      "tags": [
+        "heap",
+        "intervals"
+      ],
+      "sourceLinks": [
+        {
+          "label": "InterviewQuery Uber guide",
+          "url": "https://www.interviewquery.com/interview-guides/uber-software-engineer"
+        }
+      ],
+      "resources": [],
+      "examples": [
+        {
+          "input": "[[0,30],[5,10],[15,20]]",
+          "output": "2",
+          "explanation": "The first meeting overlaps each shorter meeting."
+        }
+      ],
+      "constraints": [
+        "A meeting ending at time t frees the room for another meeting starting at t."
+      ],
+      "diagrams": [],
+      "solutionTracks": [
+        {
+          "id": "end-time-min-heap",
+          "title": "End Time Min Heap",
+          "summary": "Sort meetings by start time and keep a min heap of room end times to reuse rooms as soon as they free up.",
+          "steps": [
+            {
+              "title": "Sort starts",
+              "explanation": "Processing meetings chronologically lets each meeting decide whether the earliest room is already free."
+            },
+            {
+              "title": "Pop free room",
+              "explanation": "If the smallest end time is at or before the next start, that room can be reused."
+            },
+            {
+              "title": "Track heap size",
+              "explanation": "After adding the current end, the maximum heap size is the number of rooms required."
+            }
+          ],
+          "explanation": "The heap represents rooms currently in use, ordered by when they free. Whenever the earliest room is free, reusing it cannot hurt future meetings.",
+          "complexity": {
+            "time": "O(n log n)",
+            "space": "O(n)"
+          },
+          "languages": {
+            "python": {
+              "label": "Python",
+              "code": "import heapq\n\ndef min_meeting_rooms(intervals):\n    intervals.sort(key=lambda item: item[0])\n    heap = []\n    for start, end in intervals:\n        if heap and heap[0] <= start:\n            heapq.heappop(heap)\n        heapq.heappush(heap, end)\n    return len(heap)"
+            },
+            "typescript": {
+              "label": "TypeScript",
+              "code": "export function minMeetingRooms(intervals: number[][]): number {\n  intervals.sort((a, b) => a[0] - b[0]);\n  const ends: number[] = [];\n  let best = 0;\n  for (const [start, end] of intervals) {\n    ends.sort((a, b) => a - b);\n    if (ends.length && ends[0] <= start) ends.shift();\n    ends.push(end);\n    best = Math.max(best, ends.length);\n  }\n  return best;\n}"
+            },
+            "java": {
+              "label": "Java",
+              "code": "int minMeetingRooms(int[][] intervals) {\n  Arrays.sort(intervals, Comparator.comparingInt(a -> a[0]));\n  PriorityQueue<Integer> ends = new PriorityQueue<>();\n  for (int[] interval : intervals) {\n    if (!ends.isEmpty() && ends.peek() <= interval[0]) ends.remove();\n    ends.add(interval[1]);\n  }\n  return ends.size();\n}"
+            }
+          }
+        },
+        {
+          "id": "start-end-sweep",
+          "title": "Separate Start And End Sweep",
+          "summary": "Sort starts and ends independently and count simultaneous active meetings as pointers move forward.",
+          "steps": [
+            {
+              "title": "Sort starts and ends",
+              "explanation": "The next start adds a room unless the earliest end has already freed one."
+            },
+            {
+              "title": "Move end pointer on reuse",
+              "explanation": "If a meeting ended before the next start, consume that end and reuse the room."
+            },
+            {
+              "title": "Count active rooms",
+              "explanation": "Each unreused start increases the number of active rooms and updates the maximum."
+            }
+          ],
+          "explanation": "The sweep compares the next meeting arrival against the earliest departure. That is enough to know whether total concurrent meetings grows or one room is reused.",
+          "complexity": {
+            "time": "O(n log n)",
+            "space": "O(n)"
+          },
+          "languages": {
+            "python": {
+              "label": "Python",
+              "code": "def min_rooms_sweep(intervals):\n    starts = sorted(start for start, end in intervals)\n    ends = sorted(end for start, end in intervals)\n    used = best = end_i = 0\n    for start in starts:\n        if start >= ends[end_i]:\n            used -= 1\n            end_i += 1\n        used += 1\n        best = max(best, used)\n    return best"
+            },
+            "typescript": {
+              "label": "TypeScript",
+              "code": "export function minRoomsSweep(intervals: number[][]): number {\n  const starts = intervals.map((x) => x[0]).sort((a, b) => a - b);\n  const ends = intervals.map((x) => x[1]).sort((a, b) => a - b);\n  let used = 0, best = 0, endIndex = 0;\n  for (const start of starts) {\n    if (start >= ends[endIndex]) { used -= 1; endIndex += 1; }\n    used += 1;\n    best = Math.max(best, used);\n  }\n  return best;\n}"
+            },
+            "java": {
+              "label": "Java",
+              "code": "int minRoomsSweep(int[][] intervals) {\n  int[] starts = Arrays.stream(intervals).mapToInt(a -> a[0]).sorted().toArray();\n  int[] ends = Arrays.stream(intervals).mapToInt(a -> a[1]).sorted().toArray();\n  int used = 0, best = 0, endIndex = 0;\n  for (int start : starts) {\n    if (start >= ends[endIndex]) { used--; endIndex++; }\n    used++;\n    best = Math.max(best, used);\n  }\n  return best;\n}"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "slug": "connected-regions",
+      "title": "Connected Regions",
+      "summary": "Count groups of connected land cells in a grid.",
+      "prompt": "Given a binary grid where 1 is land and 0 is water, return the number of connected land regions using four-direction adjacency.",
+      "difficulty": "practitioner",
+      "tags": [
+        "graphs",
+        "dfs",
+        "union-find"
+      ],
+      "sourceLinks": [
+        {
+          "label": "InterviewQuery Uber guide",
+          "url": "https://www.interviewquery.com/interview-guides/uber-software-engineer"
+        }
+      ],
+      "resources": [],
+      "examples": [
+        {
+          "input": "[[1,1,0],[0,1,0],[1,0,1]]",
+          "output": "3",
+          "explanation": "The top-left cluster, bottom-left cell, and bottom-right cell are separate."
+        }
+      ],
+      "constraints": [
+        "Use four-direction adjacency unless the prompt says diagonal connections count."
+      ],
+      "diagrams": [],
+      "solutionTracks": [
+        {
+          "id": "grid-dfs",
+          "title": "Grid DFS Flood Fill",
+          "summary": "Treat each land cell as part of a graph and flood-fill every unseen connected component.",
+          "steps": [
+            {
+              "title": "Scan every cell",
+              "explanation": "A new region starts whenever the scan finds land that has not been visited."
+            },
+            {
+              "title": "Flood neighbors",
+              "explanation": "DFS marks the current cell and recursively explores its four adjacent land neighbors."
+            },
+            {
+              "title": "Count components",
+              "explanation": "Increment the region count once before each flood-fill because that fill consumes exactly one component."
+            }
+          ],
+          "explanation": "Connectivity is transitive: every land cell reached by the flood fill belongs to the same region. Starting a fill only from unseen land counts each region once.",
+          "complexity": {
+            "time": "O(rows * cols)",
+            "space": "O(rows * cols)"
+          },
+          "languages": {
+            "python": {
+              "label": "Python",
+              "code": "def count_regions(grid):\n    rows, cols = len(grid), len(grid[0])\n    seen = set()\n    def dfs(r, c):\n        if r < 0 or c < 0 or r == rows or c == cols or grid[r][c] == 0 or (r, c) in seen:\n            return\n        seen.add((r, c))\n        for dr, dc in [(1,0),(-1,0),(0,1),(0,-1)]:\n            dfs(r + dr, c + dc)\n    total = 0\n    for r in range(rows):\n        for c in range(cols):\n            if grid[r][c] == 1 and (r, c) not in seen:\n                total += 1\n                dfs(r, c)\n    return total"
+            },
+            "typescript": {
+              "label": "TypeScript",
+              "code": "export function countRegions(grid: number[][]): number {\n  const rows = grid.length, cols = grid[0].length;\n  const seen = new Set<string>();\n  function dfs(r: number, c: number): void {\n    const key = r + ',' + c;\n    if (r < 0 || c < 0 || r === rows || c === cols || grid[r][c] === 0 || seen.has(key)) return;\n    seen.add(key);\n    dfs(r + 1, c); dfs(r - 1, c); dfs(r, c + 1); dfs(r, c - 1);\n  }\n  let total = 0;\n  for (let r = 0; r < rows; r += 1) for (let c = 0; c < cols; c += 1) if (grid[r][c] === 1 && !seen.has(r + ',' + c)) { total += 1; dfs(r, c); }\n  return total;\n}"
+            },
+            "java": {
+              "label": "Java",
+              "code": "int countRegions(int[][] grid) {\n  boolean[][] seen = new boolean[grid.length][grid[0].length];\n  int total = 0;\n  for (int r = 0; r < grid.length; r++) for (int c = 0; c < grid[0].length; c++) if (grid[r][c] == 1 && !seen[r][c]) { total++; dfs(grid, seen, r, c); }\n  return total;\n}\nvoid dfs(int[][] grid, boolean[][] seen, int r, int c) {\n  if (r < 0 || c < 0 || r == grid.length || c == grid[0].length || grid[r][c] == 0 || seen[r][c]) return;\n  seen[r][c] = true;\n  dfs(grid, seen, r + 1, c); dfs(grid, seen, r - 1, c); dfs(grid, seen, r, c + 1); dfs(grid, seen, r, c - 1);\n}"
+            }
+          }
+        },
+        {
+          "id": "union-find",
+          "title": "Union Find Components",
+          "summary": "Give every land cell an id, union adjacent land cells, and count unique component roots.",
+          "steps": [
+            {
+              "title": "Create ids for land",
+              "explanation": "Map each land coordinate to a disjoint-set id and ignore water cells."
+            },
+            {
+              "title": "Union neighbors",
+              "explanation": "For each land cell, union it with right and down land neighbors to connect components."
+            },
+            {
+              "title": "Count roots",
+              "explanation": "After all unions, the number of distinct roots among land ids is the number of regions."
+            }
+          ],
+          "explanation": "Union find stores connected components explicitly. Unioning adjacent land cells merges exactly the cells that share a region, and final roots identify distinct regions.",
+          "complexity": {
+            "time": "O(rows * cols * alpha(n))",
+            "space": "O(rows * cols)"
+          },
+          "languages": {
+            "python": {
+              "label": "Python",
+              "code": "def count_regions_union(grid):\n    parent = {}\n    def find(x):\n        parent.setdefault(x, x)\n        if parent[x] != x:\n            parent[x] = find(parent[x])\n        return parent[x]\n    def union(a, b):\n        parent[find(a)] = find(b)\n    rows, cols = len(grid), len(grid[0])\n    for r in range(rows):\n        for c in range(cols):\n            if grid[r][c] == 1:\n                find((r, c))\n                for nr, nc in [(r + 1, c), (r, c + 1)]:\n                    if nr < rows and nc < cols and grid[nr][nc] == 1:\n                        union((r, c), (nr, nc))\n    return len({find(cell) for cell in parent})"
+            },
+            "typescript": {
+              "label": "TypeScript",
+              "code": "export function countRegionsUnion(grid: number[][]): number {\n  const parent = new Map<string, string>();\n  const find = (x: string): string => { if (!parent.has(x)) parent.set(x, x); if (parent.get(x) !== x) parent.set(x, find(parent.get(x)!)); return parent.get(x)!; };\n  const union = (a: string, b: string) => parent.set(find(a), find(b));\n  for (let r = 0; r < grid.length; r += 1) for (let c = 0; c < grid[0].length; c += 1) if (grid[r][c] === 1) {\n    const key = r + ',' + c; find(key);\n    if (r + 1 < grid.length && grid[r + 1][c] === 1) union(key, (r + 1) + ',' + c);\n    if (c + 1 < grid[0].length && grid[r][c + 1] === 1) union(key, r + ',' + (c + 1));\n  }\n  return new Set([...parent.keys()].map(find)).size;\n}"
+            },
+            "java": {
+              "label": "Java",
+              "code": "int countRegionsUnion(int[][] grid) {\n  Map<String, String> parent = new HashMap<>();\n  for (int r = 0; r < grid.length; r++) for (int c = 0; c < grid[0].length; c++) if (grid[r][c] == 1) {\n    String key = r + \",\" + c; find(parent, key);\n    if (r + 1 < grid.length && grid[r + 1][c] == 1) union(parent, key, (r + 1) + \",\" + c);\n    if (c + 1 < grid[0].length && grid[r][c + 1] == 1) union(parent, key, r + \",\" + (c + 1));\n  }\n  return (int) parent.keySet().stream().map(k -> find(parent, k)).distinct().count();\n}\nString find(Map<String, String> parent, String x) { parent.putIfAbsent(x, x); if (!parent.get(x).equals(x)) parent.put(x, find(parent, parent.get(x))); return parent.get(x); }\nvoid union(Map<String, String> parent, String a, String b) { parent.put(find(parent, a), find(parent, b)); }"
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "logo": {
+    "src": "/company-logos/uber.svg",
+    "alt": "Uber logo"
+  }
+}

@@ -1,15 +1,19 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { ArrowLeft, Clock, GitBranch } from "lucide-react";
+import { ArrowRight, Clock, GitBranch } from "lucide-react";
+import { BackButton } from "@/components/BackButton";
 import { DifficultyPill } from "@/components/DifficultyPill";
 import { MarkdownRenderer } from "@/components/MarkdownRenderer";
 import { MermaidBlock } from "@/components/MermaidBlock";
-import { getContentIndex, getDocumentBySlug, getReferencedDiagrams } from "@/lib/content";
+import { getContentIndex, getDocumentBySlug, getNextPathNodeRoute, getReferencedDiagrams } from "@/lib/content";
 
 type DocumentPageProps = {
   params: Promise<{
     slug: string[];
+  }>;
+  searchParams: Promise<{
+    path?: string | string[];
   }>;
 };
 
@@ -35,26 +39,23 @@ export async function generateMetadata({ params }: DocumentPageProps): Promise<M
   };
 }
 
-export default async function DocumentPage({ params }: DocumentPageProps) {
+export default async function DocumentPage({ params, searchParams }: DocumentPageProps) {
   const { slug } = await params;
+  const { path } = await searchParams;
   const document = getDocumentBySlug(slug.join("/"));
 
   if (!document) {
     notFound();
   }
 
+  const pathSlug = Array.isArray(path) ? path[0] : path;
+  const nextHref = pathSlug ? getNextPathNodeRoute(pathSlug, { kind: "document", slug: document.slug }) : undefined;
   const referencedDiagrams = getReferencedDiagrams(document.diagramRefs);
 
   return (
     <main className="min-h-screen px-4 py-5 sm:py-8" data-testid="document-page">
       <div className="mx-auto w-full max-w-6xl">
-        <Link
-          href="/browse"
-          className="inline-flex items-center gap-2 rounded-lg border-2 border-b-4 border-[#d5e2e8] bg-white px-3 py-2 text-sm font-extrabold text-[#263238]"
-        >
-          <ArrowLeft className="h-4 w-4" aria-hidden="true" />
-          Browse
-        </Link>
+        <BackButton />
 
         <article className="mt-6 grid gap-7 lg:grid-cols-[minmax(0,1fr)_17rem]">
           <div className="min-w-0">
@@ -78,6 +79,19 @@ export default async function DocumentPage({ params }: DocumentPageProps) {
             <div className="mt-8 rounded-lg border-2 border-b-4 border-[#d5e2e8] bg-white p-5 sm:p-7">
               <MarkdownRenderer markdown={document.markdown} />
             </div>
+
+            {nextHref ? (
+              <div className="mt-6 flex justify-end">
+                <Link
+                  href={nextHref}
+                  className="inline-flex min-h-12 items-center gap-2 rounded-lg border-2 border-b-4 border-[#1d4e9e] bg-[#245fba] px-4 py-2 text-sm font-extrabold text-white transition hover:-translate-y-0.5"
+                  data-testid="document-next-node"
+                >
+                  Next node
+                  <ArrowRight className="h-4 w-4" aria-hidden="true" />
+                </Link>
+              </div>
+            ) : null}
 
             {referencedDiagrams.length > 0 ? (
               <section className="mt-10 border-t-2 border-[#d5e2e8] pt-6" data-testid="referenced-diagrams">

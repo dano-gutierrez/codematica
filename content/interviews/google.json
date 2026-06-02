@@ -1,0 +1,333 @@
+{
+  "slug": "google",
+  "name": "Google",
+  "summary": "Practice invariant-driven arrays, graph search, and binary-search prompts aligned with Google-style interviews.",
+  "status": "published",
+  "questions": [
+    {
+      "slug": "subarray-sum-equals-k",
+      "title": "Subarray Sum Equals K",
+      "summary": "Count contiguous subarrays whose sum equals a target value.",
+      "prompt": "Given an array of integers and a target k, return the number of contiguous subarrays whose values sum to k.",
+      "difficulty": "practitioner",
+      "tags": [
+        "prefix-sum",
+        "hash-map"
+      ],
+      "sourceLinks": [
+        {
+          "label": "InterviewQuery Google guide",
+          "url": "https://www.interviewquery.com/interview-guides/google-software-engineer"
+        }
+      ],
+      "resources": [],
+      "examples": [
+        {
+          "input": "nums = [1,1,1], k = 2",
+          "output": "2",
+          "explanation": "The first two and last two values both sum to 2."
+        }
+      ],
+      "constraints": [
+        "Values may be negative, so sliding window is not sufficient."
+      ],
+      "diagrams": [],
+      "solutionTracks": [
+        {
+          "id": "prefix-sum-counts",
+          "title": "Prefix Sum Counts",
+          "summary": "Count previous prefix sums so each current prefix can identify how many earlier starts produce the target sum.",
+          "steps": [
+            {
+              "title": "Maintain running sum",
+              "explanation": "The sum of a subarray ending at the current index is current prefix minus an earlier prefix."
+            },
+            {
+              "title": "Look for prefix minus k",
+              "explanation": "If current minus target has appeared before, each occurrence starts a valid subarray."
+            },
+            {
+              "title": "Record current prefix",
+              "explanation": "After counting matches, add the current prefix to support future endings."
+            }
+          ],
+          "explanation": "For any end index, subarray sum equals prefix[end] minus prefix[start before]. Rearranging gives the exact earlier prefix value needed for target k.",
+          "complexity": {
+            "time": "O(n)",
+            "space": "O(n)"
+          },
+          "languages": {
+            "python": {
+              "label": "Python",
+              "code": "def subarray_sum(nums, k):\n    counts = {0: 1}\n    prefix = 0\n    total = 0\n    for value in nums:\n        prefix += value\n        total += counts.get(prefix - k, 0)\n        counts[prefix] = counts.get(prefix, 0) + 1\n    return total"
+            },
+            "typescript": {
+              "label": "TypeScript",
+              "code": "export function subarraySum(nums: number[], k: number): number {\n  const counts = new Map<number, number>([[0, 1]]);\n  let prefix = 0;\n  let total = 0;\n  for (const value of nums) {\n    prefix += value;\n    total += counts.get(prefix - k) ?? 0;\n    counts.set(prefix, (counts.get(prefix) ?? 0) + 1);\n  }\n  return total;\n}"
+            },
+            "java": {
+              "label": "Java",
+              "code": "int subarraySum(int[] nums, int k) {\n  Map<Integer, Integer> counts = new HashMap<>();\n  counts.put(0, 1);\n  int prefix = 0, total = 0;\n  for (int value : nums) {\n    prefix += value;\n    total += counts.getOrDefault(prefix - k, 0);\n    counts.merge(prefix, 1, Integer::sum);\n  }\n  return total;\n}"
+            }
+          }
+        },
+        {
+          "id": "prefix-array-brute",
+          "title": "Prefix Array Pair Check",
+          "summary": "Build prefix sums first, then compare every start and end pair to make the target relationship explicit.",
+          "steps": [
+            {
+              "title": "Build prefix array",
+              "explanation": "prefix[i] stores the sum of every item before index i."
+            },
+            {
+              "title": "Try all ranges",
+              "explanation": "For every start and end, compute prefix[end] minus prefix[start]."
+            },
+            {
+              "title": "Count target ranges",
+              "explanation": "Increment the answer whenever that range sum equals k."
+            }
+          ],
+          "explanation": "This version is slower but useful for deriving the optimized formula. Prefix sums make each candidate range sum O(1) instead of rescanning the range.",
+          "complexity": {
+            "time": "O(n^2)",
+            "space": "O(n)"
+          },
+          "languages": {
+            "python": {
+              "label": "Python",
+              "code": "def subarray_sum_prefix(nums, k):\n    prefix = [0]\n    for value in nums:\n        prefix.append(prefix[-1] + value)\n    total = 0\n    for start in range(len(nums)):\n        for end in range(start + 1, len(nums) + 1):\n            if prefix[end] - prefix[start] == k:\n                total += 1\n    return total"
+            },
+            "typescript": {
+              "label": "TypeScript",
+              "code": "export function subarraySumPrefix(nums: number[], k: number): number {\n  const prefix = [0];\n  for (const value of nums) prefix.push(prefix[prefix.length - 1] + value);\n  let total = 0;\n  for (let start = 0; start < nums.length; start += 1) {\n    for (let end = start + 1; end <= nums.length; end += 1) if (prefix[end] - prefix[start] === k) total += 1;\n  }\n  return total;\n}"
+            },
+            "java": {
+              "label": "Java",
+              "code": "int subarraySumPrefix(int[] nums, int k) {\n  int[] prefix = new int[nums.length + 1];\n  for (int i = 0; i < nums.length; i++) prefix[i + 1] = prefix[i] + nums[i];\n  int total = 0;\n  for (int start = 0; start < nums.length; start++)\n    for (int end = start + 1; end <= nums.length; end++)\n      if (prefix[end] - prefix[start] == k) total++;\n  return total;\n}"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "slug": "word-ladder",
+      "title": "Word Ladder",
+      "summary": "Find the shortest one-letter-at-a-time transformation from one word to another.",
+      "prompt": "Given a begin word, an end word, and a dictionary, return the length of the shortest transformation sequence where each step changes one letter and remains in the dictionary.",
+      "difficulty": "senior",
+      "tags": [
+        "graphs",
+        "bfs"
+      ],
+      "sourceLinks": [
+        {
+          "label": "InterviewQuery Google guide",
+          "url": "https://www.interviewquery.com/interview-guides/google-software-engineer"
+        }
+      ],
+      "resources": [],
+      "examples": [
+        {
+          "input": "hit -> cog with [hot,dot,dog,lot,log,cog]",
+          "output": "5",
+          "explanation": "hit, hot, dot, dog, cog has five words."
+        }
+      ],
+      "constraints": [
+        "Every transformation has equal cost."
+      ],
+      "diagrams": [],
+      "solutionTracks": [
+        {
+          "id": "plain-bfs",
+          "title": "Breadth-First Word Search",
+          "summary": "Treat words as graph nodes and use BFS because every one-letter transformation has equal cost.",
+          "steps": [
+            {
+              "title": "Queue the start word",
+              "explanation": "BFS starts with the begin word at distance one and a set of unused dictionary words."
+            },
+            {
+              "title": "Generate neighbors",
+              "explanation": "For each position, try replacing it with every letter and keep candidates that are in the dictionary."
+            },
+            {
+              "title": "Stop at target",
+              "explanation": "The first time BFS reaches the end word is the shortest transformation length."
+            }
+          ],
+          "explanation": "BFS explores all paths of length d before any path of length d plus one. Because every transformation costs one, the first end-word discovery is optimal.",
+          "complexity": {
+            "time": "O(n * m * 26)",
+            "space": "O(n)"
+          },
+          "languages": {
+            "python": {
+              "label": "Python",
+              "code": "from collections import deque\n\ndef ladder_length(begin, end, words):\n    unused = set(words)\n    queue = deque([(begin, 1)])\n    while queue:\n        word, dist = queue.popleft()\n        if word == end:\n            return dist\n        for i in range(len(word)):\n            for c in 'abcdefghijklmnopqrstuvwxyz':\n                nxt = word[:i] + c + word[i+1:]\n                if nxt in unused:\n                    unused.remove(nxt)\n                    queue.append((nxt, dist + 1))\n    return 0"
+            },
+            "typescript": {
+              "label": "TypeScript",
+              "code": "export function ladderLength(begin: string, end: string, words: string[]): number {\n  const unused = new Set(words);\n  const queue: Array<[string, number]> = [[begin, 1]];\n  for (let qi = 0; qi < queue.length; qi += 1) {\n    const [word, dist] = queue[qi];\n    if (word === end) return dist;\n    for (let i = 0; i < word.length; i += 1) {\n      for (let code = 97; code <= 122; code += 1) {\n        const next = word.slice(0, i) + String.fromCharCode(code) + word.slice(i + 1);\n        if (unused.delete(next)) queue.push([next, dist + 1]);\n      }\n    }\n  }\n  return 0;\n}"
+            },
+            "java": {
+              "label": "Java",
+              "code": "int ladderLength(String begin, String end, List<String> words) {\n  Set<String> unused = new HashSet<>(words);\n  Queue<String> queue = new ArrayDeque<>();\n  queue.add(begin);\n  for (int dist = 1; !queue.isEmpty(); dist++) {\n    for (int size = queue.size(); size > 0; size--) {\n      String word = queue.remove();\n      if (word.equals(end)) return dist;\n      char[] chars = word.toCharArray();\n      for (int i = 0; i < chars.length; i++) {\n        char old = chars[i];\n        for (char c = 'a'; c <= 'z'; c++) { chars[i] = c; String next = new String(chars); if (unused.remove(next)) queue.add(next); }\n        chars[i] = old;\n      }\n    }\n  }\n  return 0;\n}"
+            }
+          }
+        },
+        {
+          "id": "bidirectional-bfs",
+          "title": "Bidirectional BFS",
+          "summary": "Search from both begin and end words, always expanding the smaller frontier to reduce the branching work.",
+          "steps": [
+            {
+              "title": "Keep two frontiers",
+              "explanation": "One set grows from the begin word and one grows backward from the end word."
+            },
+            {
+              "title": "Expand the smaller side",
+              "explanation": "Choosing the smaller frontier limits the number of generated one-letter variants."
+            },
+            {
+              "title": "Meet in the middle",
+              "explanation": "When a generated word exists in the opposite frontier, the two half paths connect."
+            }
+          ],
+          "explanation": "Both searches still use BFS levels, so meeting frontiers gives the shortest path. Expanding the smaller frontier often cuts the explored graph dramatically.",
+          "complexity": {
+            "time": "O(n * m * 26) worst case",
+            "space": "O(n)"
+          },
+          "languages": {
+            "python": {
+              "label": "Python",
+              "code": "def ladder_length_bi(begin, end, words):\n    unused = set(words)\n    if end not in unused:\n        return 0\n    front, back = {begin}, {end}\n    dist = 1\n    while front and back:\n        if len(front) > len(back):\n            front, back = back, front\n        nxt_front = set()\n        for word in front:\n            for i in range(len(word)):\n                for c in 'abcdefghijklmnopqrstuvwxyz':\n                    nxt = word[:i] + c + word[i+1:]\n                    if nxt in back:\n                        return dist + 1\n                    if nxt in unused:\n                        unused.remove(nxt)\n                        nxt_front.add(nxt)\n        front = nxt_front\n        dist += 1\n    return 0"
+            },
+            "typescript": {
+              "label": "TypeScript",
+              "code": "export function ladderLengthBi(begin: string, end: string, words: string[]): number {\n  const unused = new Set(words);\n  if (!unused.has(end)) return 0;\n  let front = new Set([begin]);\n  let back = new Set([end]);\n  let dist = 1;\n  while (front.size && back.size) {\n    if (front.size > back.size) [front, back] = [back, front];\n    const nextFront = new Set<string>();\n    for (const word of front) for (let i = 0; i < word.length; i += 1) for (let c = 97; c <= 122; c += 1) {\n      const next = word.slice(0, i) + String.fromCharCode(c) + word.slice(i + 1);\n      if (back.has(next)) return dist + 1;\n      if (unused.delete(next)) nextFront.add(next);\n    }\n    front = nextFront;\n    dist += 1;\n  }\n  return 0;\n}"
+            },
+            "java": {
+              "label": "Java",
+              "code": "int ladderLengthBi(String begin, String end, List<String> words) {\n  Set<String> unused = new HashSet<>(words);\n  if (!unused.contains(end)) return 0;\n  Set<String> front = new HashSet<>(List.of(begin)), back = new HashSet<>(List.of(end));\n  int dist = 1;\n  while (!front.isEmpty() && !back.isEmpty()) {\n    if (front.size() > back.size()) { Set<String> tmp = front; front = back; back = tmp; }\n    Set<String> nextFront = new HashSet<>();\n    for (String word : front) {\n      char[] chars = word.toCharArray();\n      for (int i = 0; i < chars.length; i++) { char old = chars[i]; for (char c = 'a'; c <= 'z'; c++) { chars[i] = c; String next = new String(chars); if (back.contains(next)) return dist + 1; if (unused.remove(next)) nextFront.add(next); } chars[i] = old; }\n    }\n    front = nextFront; dist++;\n  }\n  return 0;\n}"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "slug": "median-two-sorted-arrays",
+      "title": "Median Of Two Sorted Arrays",
+      "summary": "Find the median of two sorted arrays without fully sorting their union.",
+      "prompt": "Given two individually sorted arrays, return the median value across all numbers in both arrays.",
+      "difficulty": "senior",
+      "tags": [
+        "binary-search",
+        "arrays"
+      ],
+      "sourceLinks": [
+        {
+          "label": "InterviewQuery Google guide",
+          "url": "https://www.interviewquery.com/interview-guides/google-software-engineer"
+        }
+      ],
+      "resources": [],
+      "examples": [
+        {
+          "input": "a = [1,3], b = [2]",
+          "output": "2",
+          "explanation": "The combined sorted order is [1,2,3]."
+        }
+      ],
+      "constraints": [
+        "The optimized solution should run in logarithmic time in the shorter array."
+      ],
+      "diagrams": [],
+      "solutionTracks": [
+        {
+          "id": "binary-partition",
+          "title": "Binary Partition",
+          "summary": "Binary search the shorter array for a partition where every left-side value is less than every right-side value.",
+          "steps": [
+            {
+              "title": "Search shorter array",
+              "explanation": "Using the shorter array bounds the binary search and makes edge cases easier to control."
+            },
+            {
+              "title": "Balance left size",
+              "explanation": "Choose the matching partition in the second array so the combined left half has the desired size."
+            },
+            {
+              "title": "Validate boundaries",
+              "explanation": "When left maximums are not greater than right minimums, the partition gives the median immediately."
+            }
+          ],
+          "explanation": "The correct median partition is the place where the combined left half contains the smaller values and the combined right half contains the larger values. Binary search moves toward that boundary.",
+          "complexity": {
+            "time": "O(log min(m,n))",
+            "space": "O(1)"
+          },
+          "languages": {
+            "python": {
+              "label": "Python",
+              "code": "def find_median_sorted_arrays(a, b):\n    if len(a) > len(b):\n        a, b = b, a\n    total = len(a) + len(b)\n    half = (total + 1) // 2\n    lo, hi = 0, len(a)\n    while lo <= hi:\n        i = (lo + hi) // 2\n        j = half - i\n        a_left = float('-inf') if i == 0 else a[i - 1]\n        a_right = float('inf') if i == len(a) else a[i]\n        b_left = float('-inf') if j == 0 else b[j - 1]\n        b_right = float('inf') if j == len(b) else b[j]\n        if a_left <= b_right and b_left <= a_right:\n            if total % 2:\n                return max(a_left, b_left)\n            return (max(a_left, b_left) + min(a_right, b_right)) / 2\n        if a_left > b_right:\n            hi = i - 1\n        else:\n            lo = i + 1"
+            },
+            "typescript": {
+              "label": "TypeScript",
+              "code": "export function medianSortedArrays(a: number[], b: number[]): number {\n  if (a.length > b.length) return medianSortedArrays(b, a);\n  const total = a.length + b.length;\n  const half = Math.floor((total + 1) / 2);\n  let lo = 0, hi = a.length;\n  while (lo <= hi) {\n    const i = Math.floor((lo + hi) / 2);\n    const j = half - i;\n    const aLeft = i === 0 ? -Infinity : a[i - 1];\n    const aRight = i === a.length ? Infinity : a[i];\n    const bLeft = j === 0 ? -Infinity : b[j - 1];\n    const bRight = j === b.length ? Infinity : b[j];\n    if (aLeft <= bRight && bLeft <= aRight) return total % 2 ? Math.max(aLeft, bLeft) : (Math.max(aLeft, bLeft) + Math.min(aRight, bRight)) / 2;\n    if (aLeft > bRight) hi = i - 1; else lo = i + 1;\n  }\n  return 0;\n}"
+            },
+            "java": {
+              "label": "Java",
+              "code": "double medianSortedArrays(int[] a, int[] b) {\n  if (a.length > b.length) return medianSortedArrays(b, a);\n  int total = a.length + b.length, half = (total + 1) / 2;\n  int lo = 0, hi = a.length;\n  while (lo <= hi) {\n    int i = (lo + hi) / 2, j = half - i;\n    int aLeft = i == 0 ? Integer.MIN_VALUE : a[i - 1];\n    int aRight = i == a.length ? Integer.MAX_VALUE : a[i];\n    int bLeft = j == 0 ? Integer.MIN_VALUE : b[j - 1];\n    int bRight = j == b.length ? Integer.MAX_VALUE : b[j];\n    if (aLeft <= bRight && bLeft <= aRight) return total % 2 == 1 ? Math.max(aLeft, bLeft) : (Math.max(aLeft, bLeft) + Math.min(aRight, bRight)) / 2.0;\n    if (aLeft > bRight) hi = i - 1; else lo = i + 1;\n  }\n  return 0;\n}"
+            }
+          }
+        },
+        {
+          "id": "partial-merge",
+          "title": "Partial Merge",
+          "summary": "Merge only until the middle positions are known instead of building the full combined array.",
+          "steps": [
+            {
+              "title": "Walk both arrays",
+              "explanation": "Use two pointers just like merge sort to consume the smaller next value."
+            },
+            {
+              "title": "Remember two middle values",
+              "explanation": "Track the previous and current consumed values until the median index is reached."
+            },
+            {
+              "title": "Handle odd and even totals",
+              "explanation": "Odd totals return the current middle; even totals average previous and current."
+            }
+          ],
+          "explanation": "The merged order defines the median. Stopping after the middle avoids extra work while preserving the exact sequence needed to compute the answer.",
+          "complexity": {
+            "time": "O(m + n)",
+            "space": "O(1)"
+          },
+          "languages": {
+            "python": {
+              "label": "Python",
+              "code": "def median_partial_merge(a, b):\n    total = len(a) + len(b)\n    i = j = 0\n    prev = cur = 0\n    for _ in range(total // 2 + 1):\n        prev = cur\n        if j == len(b) or (i < len(a) and a[i] <= b[j]):\n            cur = a[i]\n            i += 1\n        else:\n            cur = b[j]\n            j += 1\n    return cur if total % 2 else (prev + cur) / 2"
+            },
+            "typescript": {
+              "label": "TypeScript",
+              "code": "export function medianPartialMerge(a: number[], b: number[]): number {\n  const total = a.length + b.length;\n  let i = 0, j = 0, prev = 0, cur = 0;\n  for (let step = 0; step <= Math.floor(total / 2); step += 1) {\n    prev = cur;\n    if (j === b.length || (i < a.length && a[i] <= b[j])) cur = a[i++];\n    else cur = b[j++];\n  }\n  return total % 2 ? cur : (prev + cur) / 2;\n}"
+            },
+            "java": {
+              "label": "Java",
+              "code": "double medianPartialMerge(int[] a, int[] b) {\n  int total = a.length + b.length, i = 0, j = 0, prev = 0, cur = 0;\n  for (int step = 0; step <= total / 2; step++) {\n    prev = cur;\n    if (j == b.length || (i < a.length && a[i] <= b[j])) cur = a[i++];\n    else cur = b[j++];\n  }\n  return total % 2 == 1 ? cur : (prev + cur) / 2.0;\n}"
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "logo": {
+    "src": "/company-logos/google.svg",
+    "alt": "Google logo"
+  }
+}

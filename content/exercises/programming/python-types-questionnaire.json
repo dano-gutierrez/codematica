@@ -1,0 +1,135 @@
+{
+  "slug": "programming/python-types-questionnaire",
+  "title": "Python Types And Contracts Questionnaire",
+  "type": "questionnaire",
+  "documentSlug": "programming/python-types-and-contracts",
+  "concept": "Python type contracts",
+  "difficulty": "senior",
+  "tags": ["python", "typing", "contracts", "language-refresh"],
+  "status": "published",
+  "questions": [
+    {
+      "id": "annotation-runtime",
+      "kind": "choice",
+      "prompt": "A Python handler accepts payload: UserPayload from an HTTP request. What is the correct senior interpretation?",
+      "options": [
+        {
+          "id": "runtime-safe",
+          "label": "The annotation proves the request body has the right runtime shape.",
+          "isCorrect": false
+        },
+        {
+          "id": "tooling-only",
+          "label": "The annotation helps tools and readers, but boundary parsing still has to happen.",
+          "isCorrect": true
+        },
+        {
+          "id": "compiler-block",
+          "label": "Python will block deployment if the request body mismatches the annotation.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "Python annotations are not runtime enforcement. Untrusted input still needs validation."
+    },
+    {
+      "id": "boundary-gap",
+      "kind": "cloze",
+      "prompt": "Fill the gap with the practice needed where trust changes.",
+      "template": "Use {{blank}} at Python trust boundaries instead of assuming annotations validate remote input.",
+      "acceptedAnswers": ["runtime validation", "validation", "parsing"],
+      "explanation": "Annotations communicate intent, while validation turns unknown runtime values into trusted domain values."
+    },
+    {
+      "id": "boundary-order",
+      "kind": "ordering",
+      "prompt": "Order the safer data contract flow.",
+      "items": [
+        {
+          "id": "receive",
+          "label": "Receive unknown transport data"
+        },
+        {
+          "id": "validate",
+          "label": "Validate and normalize the shape"
+        },
+        {
+          "id": "domain",
+          "label": "Build a domain object"
+        },
+        {
+          "id": "use",
+          "label": "Use the trusted model in business logic"
+        }
+      ],
+      "correctOrder": ["receive", "validate", "domain", "use"],
+      "explanation": "Domain logic should depend on narrowed values, not raw transport payloads."
+    },
+    {
+      "id": "typing-match",
+      "kind": "matching",
+      "prompt": "Match the Python typing concept to the TypeScript-oriented review lens.",
+      "pairs": [
+        {
+          "id": "any",
+          "prompt": "Any",
+          "match": "dynamic escape hatch like any"
+        },
+        {
+          "id": "object",
+          "prompt": "object",
+          "match": "unknown value that still requires safe narrowing"
+        },
+        {
+          "id": "protocol",
+          "prompt": "Protocol",
+          "match": "structural behavior contract"
+        }
+      ],
+      "explanation": "The closest TS comparisons help, but Python's static tooling and runtime remain separate."
+    },
+    {
+      "id": "dataclass-schema",
+      "kind": "choice",
+      "prompt": "A teammate says a dataclass can replace input validation. What is the review response?",
+      "options": [
+        {
+          "id": "schema",
+          "label": "Dataclasses automatically validate nested untrusted payloads.",
+          "isCorrect": false
+        },
+        {
+          "id": "trusted",
+          "label": "Use dataclasses after data is trusted enough to become a domain value.",
+          "isCorrect": true
+        },
+        {
+          "id": "ban",
+          "label": "Dataclasses should be banned from production Python.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "Dataclasses reduce boilerplate, but they do not replace boundary parsing."
+    },
+    {
+      "id": "any-order",
+      "kind": "ordering",
+      "prompt": "Order the safer treatment of a value that enters as Any.",
+      "items": [
+        {
+          "id": "isolate",
+          "label": "Keep Any near the integration boundary"
+        },
+        {
+          "id": "narrow",
+          "label": "Narrow or validate before use"
+        },
+        {
+          "id": "precise",
+          "label": "Expose a precise type to domain code"
+        }
+      ],
+      "correctOrder": ["isolate", "narrow", "precise"],
+      "explanation": "Any is most dangerous when it flows deeply through code that appears precisely typed."
+    }
+  ]
+}

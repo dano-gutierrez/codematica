@@ -1,0 +1,340 @@
+{
+  "slug": "meta",
+  "name": "Meta",
+  "summary": "Practice string, tree, and traversal prompts aligned with Meta-style interview loops.",
+  "status": "published",
+  "questions": [
+    {
+      "slug": "valid-palindrome-with-one-deletion",
+      "title": "Valid Palindrome With One Deletion",
+      "summary": "Decide whether a string can become a palindrome after deleting at most one character.",
+      "prompt": "Given a string, return true when it is already a palindrome or can become one by deleting at most one character.",
+      "difficulty": "foundation",
+      "tags": [
+        "strings",
+        "two-pointers"
+      ],
+      "sourceLinks": [
+        {
+          "label": "Reported public Meta examples",
+          "url": "https://leetcode.com/discuss/interview-question/396512/facebook-phone-screen-valid-palindrome-2-vertical-order-traversal-of-binary-tree"
+        }
+      ],
+      "resources": [],
+      "examples": [
+        {
+          "input": "abca",
+          "output": "true",
+          "explanation": "Deleting b or c leaves a palindrome."
+        }
+      ],
+      "constraints": [
+        "Use at most one deletion.",
+        "Treat the input as case-sensitive plain characters."
+      ],
+      "diagrams": [],
+      "solutionTracks": [
+        {
+          "id": "skip-left-or-right",
+          "title": "Two Pointers With One Skip",
+          "summary": "Walk inward and spend the single allowed deletion only when the two boundary characters disagree.",
+          "steps": [
+            {
+              "title": "Compare boundaries",
+              "explanation": "Move left and right inward while characters match because the outside of the palindrome is already proven."
+            },
+            {
+              "title": "Branch once on mismatch",
+              "explanation": "At the first mismatch, test the remaining substring after skipping the left character or the right character."
+            },
+            {
+              "title": "Avoid extra branching",
+              "explanation": "After the skip is spent, the helper performs a plain palindrome check with no further deletions."
+            }
+          ],
+          "explanation": "Only the first mismatch can require the optional deletion. If skipping either side makes the middle a palindrome then one deletion is enough; otherwise no later decision can repair that boundary mismatch.",
+          "complexity": {
+            "time": "O(n)",
+            "space": "O(1)"
+          },
+          "languages": {
+            "python": {
+              "label": "Python",
+              "code": "def valid_palindrome(s):\n    def is_pal(left, right):\n        while left < right:\n            if s[left] != s[right]:\n                return False\n            left += 1\n            right -= 1\n        return True\n\n    left, right = 0, len(s) - 1\n    while left < right:\n        if s[left] != s[right]:\n            return is_pal(left + 1, right) or is_pal(left, right - 1)\n        left += 1\n        right -= 1\n    return True"
+            },
+            "typescript": {
+              "label": "TypeScript",
+              "code": "export function validPalindrome(s: string): boolean {\n  function isPal(left: number, right: number): boolean {\n    while (left < right) {\n      if (s[left] !== s[right]) return false;\n      left += 1;\n      right -= 1;\n    }\n    return true;\n  }\n  let left = 0;\n  let right = s.length - 1;\n  while (left < right) {\n    if (s[left] !== s[right]) return isPal(left + 1, right) || isPal(left, right - 1);\n    left += 1;\n    right -= 1;\n  }\n  return true;\n}"
+            },
+            "java": {
+              "label": "Java",
+              "code": "boolean validPalindrome(String s) {\n  int left = 0, right = s.length() - 1;\n  while (left < right) {\n    if (s.charAt(left) != s.charAt(right)) {\n      return isPal(s, left + 1, right) || isPal(s, left, right - 1);\n    }\n    left++;\n    right--;\n  }\n  return true;\n}\n\nboolean isPal(String s, int left, int right) {\n  while (left < right) {\n    if (s.charAt(left++) != s.charAt(right--)) return false;\n  }\n  return true;\n}"
+            }
+          }
+        },
+        {
+          "id": "recursive-budget",
+          "title": "Recursive Mismatch Budget",
+          "summary": "Model the deletion as a one-use budget and recurse only when the current pair of characters mismatches.",
+          "steps": [
+            {
+              "title": "Carry the budget",
+              "explanation": "The helper receives left, right, and whether the deletion has already been used."
+            },
+            {
+              "title": "Recurse on mismatch",
+              "explanation": "When characters differ and the budget is unused, try consuming it on either side."
+            },
+            {
+              "title": "Stop on exhausted budget",
+              "explanation": "A mismatch after the budget is spent means this path cannot form a palindrome."
+            }
+          ],
+          "explanation": "The recursive state describes exactly what remains to prove. Because the budget can branch only once, the solution still checks at most two linear substrings.",
+          "complexity": {
+            "time": "O(n)",
+            "space": "O(n) recursion stack"
+          },
+          "languages": {
+            "python": {
+              "label": "Python",
+              "code": "def valid_palindrome(s):\n    def check(left, right, used):\n        while left < right:\n            if s[left] == s[right]:\n                left += 1\n                right -= 1\n            elif not used:\n                return check(left + 1, right, True) or check(left, right - 1, True)\n            else:\n                return False\n        return True\n    return check(0, len(s) - 1, False)"
+            },
+            "typescript": {
+              "label": "TypeScript",
+              "code": "export function validPalindromeRecursive(s: string): boolean {\n  function check(left: number, right: number, used: boolean): boolean {\n    while (left < right) {\n      if (s[left] === s[right]) {\n        left += 1;\n        right -= 1;\n      } else if (!used) {\n        return check(left + 1, right, true) || check(left, right - 1, true);\n      } else {\n        return false;\n      }\n    }\n    return true;\n  }\n  return check(0, s.length - 1, false);\n}"
+            },
+            "java": {
+              "label": "Java",
+              "code": "boolean validPalindromeRecursive(String s) {\n  return check(s, 0, s.length() - 1, false);\n}\n\nboolean check(String s, int left, int right, boolean used) {\n  while (left < right) {\n    if (s.charAt(left) == s.charAt(right)) {\n      left++;\n      right--;\n    } else if (!used) {\n      return check(s, left + 1, right, true) || check(s, left, right - 1, true);\n    } else {\n      return false;\n    }\n  }\n  return true;\n}"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "slug": "binary-tree-vertical-columns",
+      "title": "Binary Tree Vertical Columns",
+      "summary": "Group binary tree nodes by their vertical column from left to right.",
+      "prompt": "Given a binary tree, return the node values grouped by vertical column from the leftmost column to the rightmost column.",
+      "difficulty": "practitioner",
+      "tags": [
+        "trees",
+        "bfs",
+        "sorting"
+      ],
+      "sourceLinks": [
+        {
+          "label": "Reported public Meta examples",
+          "url": "https://leetcode.com/discuss/interview-question/396512/facebook-phone-screen-valid-palindrome-2-vertical-order-traversal-of-binary-tree"
+        }
+      ],
+      "resources": [],
+      "examples": [
+        {
+          "input": "root = [3,9,20,null,null,15,7]",
+          "output": "[[9],[3,15],[20],[7]]",
+          "explanation": "Nodes with the same horizontal offset share a column."
+        }
+      ],
+      "constraints": [
+        "Preserve top-to-bottom order within a column for the BFS variant."
+      ],
+      "diagrams": [
+        {
+          "title": "Column coordinates",
+          "mermaid": "flowchart TD\n  A[Root col 0] --> B[Left col -1]\n  A --> C[Right col +1]\n  C --> D[Left child col 0]"
+        }
+      ],
+      "solutionTracks": [
+        {
+          "id": "bfs-column-order",
+          "title": "BFS With Column Buckets",
+          "summary": "Traverse the tree by level while assigning each node a column index and collecting nodes by column.",
+          "steps": [
+            {
+              "title": "Attach coordinates",
+              "explanation": "Start the root at column zero; the left child is column minus one and the right child is column plus one."
+            },
+            {
+              "title": "Preserve top-down order",
+              "explanation": "Use breadth-first traversal so nodes in the same column are appended in the order they are encountered by level."
+            },
+            {
+              "title": "Emit sorted columns",
+              "explanation": "Track the smallest and largest column or sort the keys before building the final list."
+            }
+          ],
+          "explanation": "Column indexes group nodes that should appear together. BFS gives the expected top-to-bottom order inside each column without sorting every node by depth.",
+          "complexity": {
+            "time": "O(n log c)",
+            "space": "O(n)"
+          },
+          "languages": {
+            "python": {
+              "label": "Python",
+              "code": "from collections import defaultdict, deque\n\ndef vertical_order(root):\n    if not root:\n        return []\n    cols = defaultdict(list)\n    queue = deque([(root, 0)])\n    while queue:\n        node, col = queue.popleft()\n        cols[col].append(node.val)\n        if node.left:\n            queue.append((node.left, col - 1))\n        if node.right:\n            queue.append((node.right, col + 1))\n    return [cols[col] for col in sorted(cols)]"
+            },
+            "typescript": {
+              "label": "TypeScript",
+              "code": "type TreeNode = { val: number; left?: TreeNode | null; right?: TreeNode | null };\nexport function verticalOrder(root: TreeNode | null): number[][] {\n  if (!root) return [];\n  const cols = new Map<number, number[]>();\n  const queue: Array<[TreeNode, number]> = [[root, 0]];\n  for (let i = 0; i < queue.length; i += 1) {\n    const [node, col] = queue[i];\n    cols.set(col, [...(cols.get(col) ?? []), node.val]);\n    if (node.left) queue.push([node.left, col - 1]);\n    if (node.right) queue.push([node.right, col + 1]);\n  }\n  return [...cols.keys()].sort((a, b) => a - b).map((col) => cols.get(col)!);\n}"
+            },
+            "java": {
+              "label": "Java",
+              "code": "List<List<Integer>> verticalOrder(TreeNode root) {\n  if (root == null) return List.of();\n  Map<Integer, List<Integer>> cols = new HashMap<>();\n  Queue<Object[]> queue = new ArrayDeque<>();\n  queue.add(new Object[] { root, 0 });\n  while (!queue.isEmpty()) {\n    Object[] item = queue.remove();\n    TreeNode node = (TreeNode) item[0];\n    int col = (Integer) item[1];\n    cols.computeIfAbsent(col, k -> new ArrayList<>()).add(node.val);\n    if (node.left != null) queue.add(new Object[] { node.left, col - 1 });\n    if (node.right != null) queue.add(new Object[] { node.right, col + 1 });\n  }\n  return cols.keySet().stream().sorted().map(cols::get).toList();\n}"
+            }
+          }
+        },
+        {
+          "id": "dfs-sort-coordinates",
+          "title": "DFS Then Sort Coordinates",
+          "summary": "Record each node as row, column, and value, then sort records into the requested vertical ordering.",
+          "steps": [
+            {
+              "title": "Record every coordinate",
+              "explanation": "Depth-first traversal writes a tuple containing column, row, and value for each node."
+            },
+            {
+              "title": "Sort globally",
+              "explanation": "Sort by column first, then row, then value when a prompt requires tie-breaking among same-position nodes."
+            },
+            {
+              "title": "Group by column",
+              "explanation": "Walk the sorted records and start a new output group whenever the column changes."
+            }
+          ],
+          "explanation": "The tuple contains every ordering dimension needed by the output. Once the records are sorted, grouping adjacent equal columns is deterministic.",
+          "complexity": {
+            "time": "O(n log n)",
+            "space": "O(n)"
+          },
+          "languages": {
+            "python": {
+              "label": "Python",
+              "code": "def vertical_traversal(root):\n    rows = []\n    def dfs(node, row, col):\n        if not node:\n            return\n        rows.append((col, row, node.val))\n        dfs(node.left, row + 1, col - 1)\n        dfs(node.right, row + 1, col + 1)\n    dfs(root, 0, 0)\n    ans = []\n    last_col = None\n    for col, row, value in sorted(rows):\n        if col != last_col:\n            ans.append([])\n            last_col = col\n        ans[-1].append(value)\n    return ans"
+            },
+            "typescript": {
+              "label": "TypeScript",
+              "code": "type TreeNode = { val: number; left?: TreeNode | null; right?: TreeNode | null };\nexport function verticalTraversal(root: TreeNode | null): number[][] {\n  const rows: Array<[number, number, number]> = [];\n  function dfs(node: TreeNode | null, row: number, col: number): void {\n    if (!node) return;\n    rows.push([col, row, node.val]);\n    dfs(node.left ?? null, row + 1, col - 1);\n    dfs(node.right ?? null, row + 1, col + 1);\n  }\n  dfs(root, 0, 0);\n  rows.sort((a, b) => a[0] - b[0] || a[1] - b[1] || a[2] - b[2]);\n  const out: number[][] = [];\n  let lastCol: number | undefined;\n  for (const [col, , value] of rows) {\n    if (lastCol === undefined || col !== lastCol) {\n      out.push([]);\n      lastCol = col;\n    }\n    out[out.length - 1].push(value);\n  }\n  return out;\n}"
+            },
+            "java": {
+              "label": "Java",
+              "code": "List<List<Integer>> verticalTraversal(TreeNode root) {\n  List<int[]> rows = new ArrayList<>();\n  dfs(root, 0, 0, rows);\n  rows.sort((a, b) -> a[0] != b[0] ? a[0] - b[0] : a[1] != b[1] ? a[1] - b[1] : a[2] - b[2]);\n  List<List<Integer>> out = new ArrayList<>();\n  Integer lastCol = null;\n  for (int[] row : rows) {\n    if (lastCol == null || row[0] != lastCol) {\n      out.add(new ArrayList<>());\n      lastCol = row[0];\n    }\n    out.get(out.size() - 1).add(row[2]);\n  }\n  return out;\n}\nvoid dfs(TreeNode node, int row, int col, List<int[]> rows) {\n  if (node == null) return;\n  rows.add(new int[] { col, row, node.val });\n  dfs(node.left, row + 1, col - 1, rows);\n  dfs(node.right, row + 1, col + 1, rows);\n}"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "slug": "minimum-remove-balanced-parentheses",
+      "title": "Minimum Remove For Balanced Parentheses",
+      "summary": "Remove the fewest parentheses needed to make a mixed string valid.",
+      "prompt": "Given a string containing letters and parentheses, remove the minimum number of parentheses so the remaining string is balanced.",
+      "difficulty": "foundation",
+      "tags": [
+        "strings",
+        "stack"
+      ],
+      "sourceLinks": [
+        {
+          "label": "Reported public Meta examples",
+          "url": "https://leetcode.com/discuss/interview-question/396512/facebook-phone-screen-valid-palindrome-2-vertical-order-traversal-of-binary-tree"
+        }
+      ],
+      "resources": [],
+      "examples": [
+        {
+          "input": "a)b(c)d",
+          "output": "ab(c)d",
+          "explanation": "The first closing parenthesis has no matching opening parenthesis."
+        }
+      ],
+      "constraints": [
+        "Keep all non-parenthesis characters in their original order."
+      ],
+      "diagrams": [],
+      "solutionTracks": [
+        {
+          "id": "stack-indexes",
+          "title": "Stack Of Unmatched Opens",
+          "summary": "Use a stack to remember unmatched opening characters and a set to mark characters that must be removed.",
+          "steps": [
+            {
+              "title": "Mark invalid closes",
+              "explanation": "When a closing character appears without an available opening character, mark that index for removal."
+            },
+            {
+              "title": "Save unmatched opens",
+              "explanation": "Push opening indexes and pop one whenever a valid closing character matches it."
+            },
+            {
+              "title": "Rebuild once",
+              "explanation": "After the scan, remove every marked index and every opening index left in the stack."
+            }
+          ],
+          "explanation": "A closing character is valid only if it can consume a previous unmatched opening character. Any leftover opening character also cannot be matched later, so rebuilding without those indexes creates a balanced string.",
+          "complexity": {
+            "time": "O(n)",
+            "space": "O(n)"
+          },
+          "languages": {
+            "python": {
+              "label": "Python",
+              "code": "def clean_parentheses(s):\n    stack = []\n    remove = set()\n    for i, ch in enumerate(s):\n        if ch == '(':\n            stack.append(i)\n        elif ch == ')':\n            if stack:\n                stack.pop()\n            else:\n                remove.add(i)\n    remove.update(stack)\n    return ''.join(ch for i, ch in enumerate(s) if i not in remove)"
+            },
+            "typescript": {
+              "label": "TypeScript",
+              "code": "export function cleanParentheses(s: string): string {\n  const stack: number[] = [];\n  const remove = new Set<number>();\n  for (let i = 0; i < s.length; i += 1) {\n    if (s[i] === '(') stack.push(i);\n    else if (s[i] === ')') {\n      if (stack.length) stack.pop();\n      else remove.add(i);\n    }\n  }\n  for (const i of stack) remove.add(i);\n  return [...s].filter((_, i) => !remove.has(i)).join('');\n}"
+            },
+            "java": {
+              "label": "Java",
+              "code": "String cleanParentheses(String s) {\n  Deque<Integer> stack = new ArrayDeque<>();\n  Set<Integer> remove = new HashSet<>();\n  for (int i = 0; i < s.length(); i++) {\n    char ch = s.charAt(i);\n    if (ch == '(') stack.push(i);\n    else if (ch == ')') {\n      if (!stack.isEmpty()) stack.pop();\n      else remove.add(i);\n    }\n  }\n  remove.addAll(stack);\n  StringBuilder out = new StringBuilder();\n  for (int i = 0; i < s.length(); i++) if (!remove.contains(i)) out.append(s.charAt(i));\n  return out.toString();\n}"
+            }
+          }
+        },
+        {
+          "id": "two-pass-filter",
+          "title": "Two Pass Filter",
+          "summary": "First remove invalid closing characters, then walk backward to remove extra opening characters.",
+          "steps": [
+            {
+              "title": "Filter left to right",
+              "explanation": "Append characters while maintaining a balance counter, skipping closing characters that would make balance negative."
+            },
+            {
+              "title": "Filter right to left",
+              "explanation": "Walk the intermediate string backward and skip exactly the surplus opening characters."
+            },
+            {
+              "title": "Reverse the result",
+              "explanation": "The backward pass builds the string in reverse order, so reverse it once before returning."
+            }
+          ],
+          "explanation": "The first pass guarantees no prefix has more closes than opens. The second pass removes the remaining surplus opens, so every prefix and the final balance are valid.",
+          "complexity": {
+            "time": "O(n)",
+            "space": "O(n)"
+          },
+          "languages": {
+            "python": {
+              "label": "Python",
+              "code": "def clean_parentheses_two_pass(s):\n    first = []\n    balance = 0\n    for ch in s:\n        if ch == '(':\n            balance += 1\n            first.append(ch)\n        elif ch == ')':\n            if balance == 0:\n                continue\n            balance -= 1\n            first.append(ch)\n        else:\n            first.append(ch)\n    out = []\n    for ch in reversed(first):\n        if ch == '(' and balance > 0:\n            balance -= 1\n            continue\n        out.append(ch)\n    return ''.join(reversed(out))"
+            },
+            "typescript": {
+              "label": "TypeScript",
+              "code": "export function cleanParenthesesTwoPass(s: string): string {\n  const first: string[] = [];\n  let balance = 0;\n  for (const ch of s) {\n    if (ch === '(') { balance += 1; first.push(ch); }\n    else if (ch === ')') {\n      if (balance === 0) continue;\n      balance -= 1;\n      first.push(ch);\n    } else first.push(ch);\n  }\n  const out: string[] = [];\n  for (let i = first.length - 1; i >= 0; i -= 1) {\n    if (first[i] === '(' && balance > 0) {\n      balance -= 1;\n      continue;\n    }\n    out.push(first[i]);\n  }\n  return out.reverse().join('');\n}"
+            },
+            "java": {
+              "label": "Java",
+              "code": "String cleanParenthesesTwoPass(String s) {\n  StringBuilder first = new StringBuilder();\n  int balance = 0;\n  for (char ch : s.toCharArray()) {\n    if (ch == '(') { balance++; first.append(ch); }\n    else if (ch == ')') {\n      if (balance == 0) continue;\n      balance--; first.append(ch);\n    } else first.append(ch);\n  }\n  StringBuilder out = new StringBuilder();\n  for (int i = first.length() - 1; i >= 0; i--) {\n    char ch = first.charAt(i);\n    if (ch == '(' && balance > 0) {\n      balance--;\n      continue;\n    }\n    out.append(ch);\n  }\n  return out.reverse().toString();\n}"
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "logo": {
+    "src": "/company-logos/meta.svg",
+    "alt": "Meta logo"
+  }
+}
