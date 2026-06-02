@@ -1,7 +1,8 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import { ArrowRight, Code2, RotateCcw } from "lucide-react";
+import { ArrowRight, RotateCcw } from "lucide-react";
+import { CodeBlock } from "@/components/CodeBlock";
 import { MermaidBlock } from "@/components/MermaidBlock";
 import type { InterviewQuestion, InterviewSolutionTrack } from "@/lib/content/schema";
 import { selectInterviewSolutionTrack } from "@/lib/interviews";
@@ -111,17 +112,7 @@ export function InterviewQuestionSession({ question }: { question: InterviewQues
                 <span className="rounded-lg bg-white px-2.5 py-1">Space {track.complexity.space}</span>
               </div>
             </section>
-            <section className="overflow-hidden rounded-lg border-2 border-b-4 border-[#d5e2e8] bg-[#182027]">
-              <div className="flex items-center justify-between gap-3 border-b border-[#33434b] px-4 py-3 text-xs font-extrabold uppercase text-[#b7c3cc]">
-                <span className="inline-flex items-center gap-2">
-                  <Code2 className="h-4 w-4" aria-hidden="true" />
-                  {currentCode.label}
-                </span>
-              </div>
-              <pre className="overflow-x-auto p-4 text-sm leading-6 text-[#eef6f7]" data-testid="interview-code">
-                <code>{currentCode.code}</code>
-              </pre>
-            </section>
+            <CodeBlock code={currentCode.code} language={language} label={currentCode.label} dataTestId="interview-code" />
           </div>
         ) : null}
 

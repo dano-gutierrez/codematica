@@ -38,6 +38,7 @@ Supabase is scaffolded for future hosted indexing and search, but it is not requ
 - `src/components/InterviewQuestionSession.tsx`: guided interview solution walkthrough
 - `src/components/KnowledgeBrowser.tsx`: browser, filters, and result cards
 - `src/components/MarkdownRenderer.tsx`: safe Markdown rendering and embedded Mermaid support
+- `src/components/CodeBlock.tsx`: shared language-aware code block renderer
 - `src/components/MermaidBlock.tsx`: client-side Mermaid renderer
 - `src/lib/content/`: content schema, parser, index builder, and generated index access
 - `src/lib/search.ts`: fuzzy search

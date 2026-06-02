@@ -4,6 +4,7 @@ import Link from "next/link";
 import { ArrowLeft, Briefcase, Code2, Lightbulb, MessagesSquare } from "lucide-react";
 import type { UIEvent } from "react";
 import { useEffect, useMemo, useState } from "react";
+import { CodeBlock } from "@/components/CodeBlock";
 import { DifficultyPill } from "@/components/DifficultyPill";
 import type { PassiveFlashcardCard, PassiveFlashcardFeed as PassiveFlashcardFeedType, PassiveFlashcardType } from "@/lib/content/schema";
 import { buildPassiveFlashcardWindow, shufflePassiveFlashcards } from "@/lib/flashcards/passive";
@@ -123,11 +124,7 @@ function PassiveFlashcard({ card, sequenceIndex }: { card: PassiveFlashcardCard;
           <p className="mt-5 text-xl font-extrabold leading-8 text-[#33434b] sm:text-2xl sm:leading-9">{card.prompt}</p>
           <p className="mt-5 text-base font-semibold leading-7 text-[#68737d] sm:text-lg sm:leading-8">{card.explanation}</p>
 
-          {card.code ? (
-            <pre className="mt-5 overflow-x-auto rounded-lg border-2 border-[#d5e2e8] bg-[#172126] p-4 text-sm font-bold leading-6 text-[#eef7f8]">
-              <code>{card.code}</code>
-            </pre>
-          ) : null}
+          {card.code ? <CodeBlock code={card.code} language="python" className="mt-5" /> : null}
 
           <div className="mt-6 flex flex-wrap gap-2">
             {card.tags.slice(0, 5).map((tag) => (

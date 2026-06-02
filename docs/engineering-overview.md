@@ -10,6 +10,7 @@ Codematica is a mobile-first learning app for system design, coding, programming
 - React and TypeScript
 - Tailwind CSS
 - plain Markdown rendered with `react-markdown`
+- language-aware code highlighting with `highlight.js`
 - Mermaid rendered client-side
 - Fuse.js-style fuzzy search
 - local JSON learning paths, practice prompts, flashcard feeds, and interview catalogs
@@ -53,7 +54,7 @@ Supabase is prepared for later:
 
 Every article has frontmatter with title, slug, summary, track, topic, difficulty, tags, prerequisites, diagram references, and status. The parser validates this contract before generating the index.
 
-External diagrams are stored separately and referenced by slug from article frontmatter. Embedded Mermaid blocks inside Markdown are also rendered.
+External diagrams are stored separately and referenced by slug from article frontmatter. Embedded Mermaid blocks inside Markdown are also rendered. Fenced code blocks and app-authored solution snippets use the shared highlighted code block theme with language labels for Python, TypeScript, Java, JSON, shell, Markdown, and related aliases.
 
 Learning paths live in `content/learning-paths/*.json` and contain ordered units of document, diagram, and exercise nodes. Exercises live in `content/exercises/**/*.json` and currently support `flashcard`, `cloze`, and `questionnaire` prompts. Questionnaires contain one-screen-at-a-time `choice`, `cloze`, `ordering`, and `matching` questions with per-attempt randomization and no persisted scores.
 

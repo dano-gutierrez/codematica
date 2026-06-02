@@ -16,4 +16,11 @@ describe("MarkdownRenderer", () => {
     expect(screen.getByText("Safe text.")).toBeInTheDocument();
     expect(screen.queryByText("alert('no')")).not.toBeInTheDocument();
   });
+
+  it("themes fenced code blocks by language", () => {
+    render(<MarkdownRenderer markdown={"```python\ndef total(items):\n    return sum(items)\n```"} />);
+
+    expect(screen.getByText("Python")).toBeVisible();
+    expect(screen.getByText("total").closest("code")).toHaveTextContent("def total(items):");
+  });
 });

@@ -2,6 +2,7 @@
 
 import { AlertTriangle, Code2 } from "lucide-react";
 import { useEffect, useId, useState } from "react";
+import { CodeBlock } from "@/components/CodeBlock";
 
 type MermaidState =
   | { status: "loading" }
@@ -90,9 +91,7 @@ export function MermaidBlock({ source, title }: { source: string; title?: string
           <Code2 className="h-4 w-4" aria-hidden="true" />
           Source
         </summary>
-        <pre className="mt-3 max-h-80 overflow-auto rounded-lg border-2 border-[#d5e2e8] bg-[#f6fbfc] p-3 text-xs leading-6 text-[#263238]">
-          <code>{source}</code>
-        </pre>
+        <CodeBlock code={source} language="mermaid" className="mt-3 max-h-80" />
       </details>
     </figure>
   );

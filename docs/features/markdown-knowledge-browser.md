@@ -32,6 +32,7 @@ The V1 app is a searchable study browser. Content authors create plain Markdown 
 - Fuzzy search must weight title, tags, and headings above body text.
 - Track and difficulty filters use the reusable Radix-backed `Dropdown` component, not native select styling.
 - Embedded Mermaid blocks and external diagram files must render with source/error states.
+- Fenced code blocks render with the shared language-aware code theme instead of unstyled browser defaults.
 - `src/generated/content-index.json` must not be edited manually.
 
 ## Current State
@@ -92,12 +93,13 @@ The feature is implemented with a small starter content set. Supabase has an opt
 - `src/lib/search.ts`: fuzzy ranking
 - `src/components/Dropdown.tsx`: reusable dropdown primitive for browser filters
 - `src/components/KnowledgeBrowser.tsx`: mobile-first browser and filter wiring
+- `src/components/CodeBlock.tsx`: shared highlighted code block renderer
 - `src/app/browse/page.tsx`: route that hosts the browser now that `/` is path-first
 - `scripts/content/sync-supabase.ts`: optional Supabase upsert path
 
 ## Test Plan
 
-- Unit: frontmatter validation, parsing, headings, Mermaid block extraction, fuzzy ranking, snippets.
+- Unit: frontmatter validation, parsing, headings, Mermaid block extraction, code block rendering, fuzzy ranking, snippets.
 - Integration: generated index loads starter content and validates external diagrams.
 - E2E: mobile user uses dropdown filters, searches, opens a document, and opens a diagram.
 

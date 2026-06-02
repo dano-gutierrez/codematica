@@ -1,3 +1,4 @@
+import { CodeBlock } from "@/components/CodeBlock";
 import { MermaidBlock } from "@/components/MermaidBlock";
 import { slugifyHeading } from "@/lib/content/parse-markdown";
 import { ExternalLink } from "lucide-react";
@@ -43,14 +44,17 @@ const components: Components = {
   pre({ children }) {
     if (isValidElement<{ className?: string; children?: ReactNode }>(children)) {
       const className = children.props.className ?? "";
-      const language = /language-(\w+)/.exec(className)?.[1];
+      const language = /language-([\w-]+)/.exec(className)?.[1];
+      const code = nodeText(children.props.children).replace(/\n$/, "");
 
       if (language === "mermaid") {
-        return <MermaidBlock source={nodeText(children.props.children).trim()} />;
+        return <MermaidBlock source={code.trim()} />;
       }
+
+      return <CodeBlock code={code} language={language} className="my-5" />;
     }
 
-    return <pre>{children}</pre>;
+    return <CodeBlock code={nodeText(children).replace(/\n$/, "")} className="my-5" />;
   },
   a({ children, href, ...props }) {
     const isExternal = href?.startsWith("http://") || href?.startsWith("https://");

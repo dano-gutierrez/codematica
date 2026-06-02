@@ -34,7 +34,7 @@ Language refresh paths are skill paths that teach one programming language from 
 - The path `python-for-ts-js-engineers` alternates each Markdown document with a questionnaire for the same concept.
 - The passive feed route is `/paths/python-for-ts-js-engineers/flashcards`.
 - Questionnaires are local-only, randomized per attempt, one question per screen, and do not store score, completion, streaks, or progress.
-- Passive flashcards are local-only and do not store read state, mastery, score, streaks, or progress.
+- Passive flashcards are local-only, use the shared highlighted code theme for snippet cards, and do not store read state, mastery, score, streaks, or progress.
 - Python guidance should stay aligned with official Python and PyPA references when docs are updated.
 
 ## Python V1 Content

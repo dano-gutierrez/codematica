@@ -69,7 +69,7 @@ describe("PassiveFlashcardFeed", () => {
 
     expect(screen.getByText("Names Bind Objects")).toBeVisible();
     expect(screen.getByText("Annotations Are Metadata")).toBeVisible();
-    expect(screen.getByText(/def load_user/)).toHaveTextContent("def load_user(user_id: int) -> User:");
+    expect(screen.getByText("load_user").closest("code")).toHaveTextContent("def load_user(user_id: int) -> User:");
     expect(screen.queryByRole("button", { name: /reveal answer/i })).not.toBeInTheDocument();
     expect(screen.queryByRole("button", { name: /check answer/i })).not.toBeInTheDocument();
     expect(screen.queryByText(/question \d+ of/i)).not.toBeInTheDocument();

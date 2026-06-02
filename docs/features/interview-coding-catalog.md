@@ -14,6 +14,7 @@
   - `src/lib/content/build-index.ts`
   - `src/components/InterviewCatalog.tsx`
   - `src/components/InterviewQuestionSession.tsx`
+  - `src/components/CodeBlock.tsx`
   - `src/app/interviews/**/page.tsx`
 - Primary tests:
   - `src/lib/content/build-index.test.ts`
@@ -31,7 +32,7 @@ The interview catalog is a local content surface for coding interview preparatio
 - `/interviews` shows company text-logo tiles and a random-question button.
 - `/interviews/[company]` shows all available coding questions for one company.
 - `/interviews/[company]/[question]` shows the prompt, examples, constraints, diagrams when present, and the guided solution session.
-- The guided session defaults to Python, lets users switch to TypeScript or Java, and reveals one step per `Next`.
+- The guided session defaults to Python, lets users switch to TypeScript or Java, reveals one step per `Next`, and renders final code with language-aware highlighting.
 - Starting or restarting a session selects a solution track at random and avoids immediately repeating the previous track when another track exists.
 - Catalog language says the prompts are reported/public prep, not official company question banks.
 - Supabase, auth, saved progress, scoring, real-time compilation, and answer validation are out of scope for this MVP.
@@ -61,7 +62,7 @@ Seed content uses public/community-reported prep references such as InterviewQue
 
 - Unit: schema validation, duplicate company/question/solution IDs, required source links, and required language code.
 - Integration: generated index loads eight companies, 24 questions, and lookup helpers resolve company and question routes.
-- Component: guided walkthrough advances steps, switches language, shows final code/explanation, and restarts on a different solution track.
+- Component: guided walkthrough advances steps, switches language, shows highlighted final code/explanation, and restarts on a different solution track.
 - E2E: user opens `/interviews`, uses random navigation, opens Amazon, starts Two Sum, advances steps, switches language, and reaches the final explanation.
 
 ## Thread Handoff Prompt
