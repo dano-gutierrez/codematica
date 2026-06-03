@@ -107,7 +107,7 @@ export function CodeReviewSession({
               </span>
               <span className="rounded-md bg-[#263544] px-2 py-1 text-xs font-extrabold uppercase text-[#dce7ef]">{codeLanguageLabel(file.language)}</span>
             </div>
-            <div className="max-h-[32rem] overflow-auto" data-testid={`code-review-scroll-${testIdPart(file.path)}`}>
+            <div className="max-h-[32rem] overflow-x-auto overflow-y-auto" data-testid={`code-review-scroll-${testIdPart(file.path)}`}>
               <pre className="code-block-pre min-w-max p-0 text-sm leading-6">
                 <code className={cn("hljs", normalizeCodeLanguage(file.language) ? `language-${normalizeCodeLanguage(file.language)}` : undefined)}>
                   {file.lines.map((line, lineIndex) => (
@@ -183,9 +183,9 @@ function CodeReviewLine({
   const language = normalizeCodeLanguage(file.language);
 
   return (
-    <span className="grid grid-cols-[3.25rem_minmax(0,1fr)] border-b border-[#1c2a36] last:border-b-0">
+    <span className="grid w-max min-w-full grid-cols-[3.25rem_max-content] border-b border-[#1c2a36] last:border-b-0">
       <span className="select-none border-r border-[#263544] bg-[#172430] px-3 py-0.5 text-right font-mono text-xs text-[#8494a3]">{lineNumber}</span>
-      <span className="px-3 py-0.5 font-mono">
+      <span className="flex w-max whitespace-pre px-3 py-0.5 font-mono">
         {segments.map((segment, segmentIndex) => {
           const testId = segment.findingId
             ? `code-review-finding-${segment.findingId}`
@@ -199,7 +199,7 @@ function CodeReviewLine({
               type="button"
               onClick={() => onSegmentClick(file.path, lineNumber, segment.startColumn)}
               className={cn(
-                "m-0 inline whitespace-pre border-0 bg-transparent p-0 font-mono text-left text-[#dce7ef] outline-none hover:bg-[#263544] focus:bg-[#263544] focus:ring-2 focus:ring-[#6dd8cf]",
+                "m-0 inline-block shrink-0 whitespace-pre border-0 bg-transparent p-0 font-mono text-left text-[#dce7ef] outline-none hover:bg-[#263544] focus:bg-[#263544] focus:ring-2 focus:ring-[#6dd8cf]",
                 fixedFindingIds.has(segment.findingId ?? "") ? "text-[#6dd8cf]" : undefined,
               )}
               aria-label={`${file.path} line ${lineNumber} column ${segment.startColumn}`}

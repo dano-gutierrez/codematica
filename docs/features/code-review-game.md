@@ -70,6 +70,7 @@ The shipped starter set includes a TypeScript runtime-boundary review and a Pyth
 ### UI / UX
 
 - File panes look like compact pull-request snippets with file headers, line numbers, shared syntax highlighting, vertical scrolling, and horizontal code scrolling.
+- On mobile, code lines must not wrap; long lines overflow horizontally inside the snippet pane, matching GitHub-style mobile code review behavior.
 - Every visible code segment can be clicked.
 - Healthy clicks increment attempts and show a `role="alert"` explanation from the matching healthy note or file-level healthy explanation.
 - Finding clicks increment attempts, open a `role="dialog"` explanation, apply the fix, and update the snippet.

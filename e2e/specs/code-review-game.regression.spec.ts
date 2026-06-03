@@ -6,6 +6,20 @@ test("@regression standalone code review applies a fix and offers another review
   await expect(page.getByTestId("code-reviews-page")).toBeVisible();
   await expect(page.getByRole("heading", { name: "User Profile Boundary Review" })).toBeVisible();
   await expect(page.getByTestId("code-review-file-src-api-userprofile-ts")).toContainText("src/api/userProfile.ts");
+  expect(
+    await page.getByTestId("code-review-scroll-src-api-userprofile-ts").evaluate((element) => {
+      const firstSegment = element.querySelector<HTMLElement>('[data-testid="code-review-token-src-api-userprofile-ts-14-0"]');
+      const findingSegment = element.querySelector<HTMLElement>('[data-testid="code-review-finding-unchecked-network-json"]');
+
+      return {
+        canScrollHorizontally: element.scrollWidth > element.clientWidth,
+        splitSegmentsStayInline: Boolean(firstSegment && findingSegment && firstSegment.offsetTop === findingSegment.offsetTop),
+      };
+    }),
+  ).toEqual({
+    canScrollHorizontally: true,
+    splitSegmentsStayInline: true,
+  });
 
   await page.getByTestId("code-review-healthy-schema-import").click();
   await expect(page.getByTestId("code-review-attempts")).toContainText("Attempts 1");
