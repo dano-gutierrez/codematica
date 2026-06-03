@@ -82,7 +82,7 @@ The shipped starter set includes a TypeScript runtime-boundary review and a Pyth
 - `files[]` contains `path`, `language`, `healthyExplanation`, and `lines`.
 - `findings[]` contains `id`, `kind`, `range`, `explanation`, and `replacementLines`.
 - `healthyNotes[]` contains optional range-specific healthy explanations.
-- The generated content index is `schemaVersion: 7`.
+- The generated content index is `schemaVersion: 8`.
 - No review attempts, time, score, or completion state are persisted.
 
 ### Failure And Edge Handling

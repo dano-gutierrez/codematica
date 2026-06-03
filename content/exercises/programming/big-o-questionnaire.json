@@ -1,0 +1,137 @@
+{
+  "slug": "programming/big-o-questionnaire",
+  "title": "Big O Program Flow Questionnaire",
+  "type": "questionnaire",
+  "documentSlug": "programming/big-o-program-flow",
+  "concept": "Program flow complexity",
+  "difficulty": "foundation",
+  "tags": ["algorithms", "complexity", "big-o"],
+  "status": "published",
+  "questions": [
+    {
+      "id": "constant-lookup",
+      "kind": "choice",
+      "prompt": "Which code shape is usually described as O(1) average-case query work?",
+      "options": [
+        {
+          "id": "scan-array",
+          "label": "Scanning an unsorted array until a match appears.",
+          "isCorrect": false
+        },
+        {
+          "id": "hash-set",
+          "label": "Checking membership in a prebuilt hash set.",
+          "isCorrect": true
+        },
+        {
+          "id": "nested-loop",
+          "label": "Comparing every item with every other item.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "A hash set lookup is usually flat average-case query work after the set has been built."
+    },
+    {
+      "id": "dominant-term",
+      "kind": "cloze",
+      "prompt": "Fill the gap for a function that does n^2 pair checks and then one linear cleanup pass.",
+      "template": "The simplified Big O time is {{blank}}.",
+      "acceptedAnswers": ["O(n^2)", "o(n^2)", "n^2"],
+      "explanation": "The quadratic pair checks dominate the later linear pass as input grows."
+    },
+    {
+      "id": "setup-query-order",
+      "kind": "ordering",
+      "prompt": "Order the reasoning for replacing repeated list scans with a set.",
+      "items": [
+        {
+          "id": "name-repeat",
+          "label": "Notice that the membership check repeats."
+        },
+        {
+          "id": "build-index",
+          "label": "Build a set once from the lookup values."
+        },
+        {
+          "id": "query-flat",
+          "label": "Use O(1) average-case membership checks."
+        },
+        {
+          "id": "state-space",
+          "label": "Call out the extra O(n) memory."
+        }
+      ],
+      "correctOrder": ["name-repeat", "build-index", "query-flat", "state-space"],
+      "explanation": "A strong explanation says why the repeated query exists, where setup work moved, and what memory was added."
+    },
+    {
+      "id": "match-code-shape",
+      "kind": "matching",
+      "prompt": "Match each code shape to its usual Big O label.",
+      "pairs": [
+        {
+          "id": "binary-search",
+          "prompt": "Halve the remaining sorted range each step",
+          "match": "O(log n)"
+        },
+        {
+          "id": "linear-scan",
+          "prompt": "Inspect each item once",
+          "match": "O(n)"
+        },
+        {
+          "id": "pairwise",
+          "prompt": "Compare each item with many other items",
+          "match": "O(n^2)"
+        }
+      ],
+      "explanation": "Big O follows the execution shape: halving is logarithmic, one pass is linear, and pairwise comparison is quadratic."
+    },
+    {
+      "id": "space-tradeoff",
+      "kind": "choice",
+      "prompt": "What tradeoff does the standard hash-map Two Sum solution make?",
+      "options": [
+        {
+          "id": "less-space",
+          "label": "It uses less memory to keep the same O(n^2) runtime.",
+          "isCorrect": false
+        },
+        {
+          "id": "more-space",
+          "label": "It uses O(n) extra space to reduce time to O(n).",
+          "isCorrect": true
+        },
+        {
+          "id": "sort-only",
+          "label": "It sorts the array and keeps original indices for free.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "The map stores previous values so each new value can be checked once, trading memory for time."
+    },
+    {
+      "id": "graph-dimensions",
+      "kind": "choice",
+      "prompt": "Why do graph algorithms often use V and E instead of only n?",
+      "options": [
+        {
+          "id": "two-dimensions",
+          "label": "Nodes and edges can grow independently, so both dimensions matter.",
+          "isCorrect": true
+        },
+        {
+          "id": "graphs-constant",
+          "label": "Graph algorithms are always O(1) after setup.",
+          "isCorrect": false
+        },
+        {
+          "id": "hide-memory",
+          "label": "V and E hide the memory cost of the algorithm.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "A graph with the same number of nodes can have very different numbers of edges, so traversal cost often names both."
+    }
+  ]
+}

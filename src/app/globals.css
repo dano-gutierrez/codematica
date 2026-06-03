@@ -193,6 +193,15 @@ select {
   tab-size: 2;
 }
 
+.prose-codematica .code-block-pre {
+  margin: 0;
+  background:
+    linear-gradient(90deg, rgba(255, 255, 255, 0.035) 0 1px, transparent 1px 100%),
+    #101820;
+  background-size: 3rem 100%;
+  color: #d9e7ef;
+}
+
 .code-block code,
 .prose-codematica .code-block code {
   display: block;

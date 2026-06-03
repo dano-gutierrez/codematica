@@ -1,0 +1,14 @@
+{
+  "slug": "programming/big-o-dominant-term-cloze",
+  "title": "Big O Dominant Term Cloze",
+  "type": "cloze",
+  "documentSlug": "programming/big-o-notation-foundations",
+  "concept": "Dominant term simplification",
+  "difficulty": "foundation",
+  "tags": ["algorithms", "complexity", "big-o"],
+  "status": "published",
+  "prompt": "Simplify the dominant term for nested loops over the same input size.",
+  "template": "A loop nested inside another loop over the same n input usually simplifies to {{blank}}.",
+  "acceptedAnswers": ["O(n^2)", "o(n^2)", "n^2"],
+  "explanation": "The inner loop can run for each outer item, so pairwise work grows quadratically. Big O keeps the dominant growth term."
+}

@@ -1,6 +1,7 @@
 import { CodeBlock } from "@/components/CodeBlock";
+import { ComplexityFlowBlock } from "@/components/ComplexityFlowBlock";
 import { MermaidBlock } from "@/components/MermaidBlock";
-import { slugifyHeading } from "@/lib/content/parse-markdown";
+import { parseComplexityFlowBlock, slugifyHeading } from "@/lib/content/parse-markdown";
 import { ExternalLink } from "lucide-react";
 import type { Components } from "react-markdown";
 import ReactMarkdown from "react-markdown";
@@ -49,6 +50,10 @@ const components: Components = {
 
       if (language === "mermaid") {
         return <MermaidBlock source={code.trim()} />;
+      }
+
+      if (language === "complexity-flow") {
+        return <ComplexityFlowBlock flow={parseComplexityFlowBlock(code.trim())} />;
       }
 
       return <CodeBlock code={code} language={language} className="my-5" />;

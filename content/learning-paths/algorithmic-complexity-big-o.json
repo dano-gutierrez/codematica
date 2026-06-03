@@ -1,0 +1,47 @@
+{
+  "slug": "algorithmic-complexity-big-o",
+  "title": "Algorithmic Complexity And Big O",
+  "summary": "A skill path for understanding Big O notation through program flow, practical tradeoffs, production scenarios, and interview problems.",
+  "kind": "skill",
+  "category": "Programming",
+  "audience": "Engineers who want Big O notation to feel practical in code reviews, production design, and interviews.",
+  "status": "published",
+  "units": [
+    {
+      "slug": "notation-foundations",
+      "title": "Notation Foundations",
+      "summary": "Learn the core growth classes, dominant terms, and separate time and space reasoning.",
+      "nodes": [
+        { "kind": "document", "slug": "programming/big-o-notation-foundations" },
+        { "kind": "diagram", "slug": "programming/big-o-growth-classes" },
+        { "kind": "exercise", "slug": "programming/big-o-dominant-term-cloze" }
+      ]
+    },
+    {
+      "slug": "program-flow",
+      "title": "Program Flow",
+      "summary": "Watch how control flow and data structures change runtime growth for realistic lookup work.",
+      "nodes": [
+        { "kind": "document", "slug": "programming/big-o-program-flow" },
+        { "kind": "diagram", "slug": "programming/big-o-code-shapes" },
+        { "kind": "exercise", "slug": "programming/big-o-questionnaire" },
+        { "kind": "exercise", "slug": "programming/big-o-membership-review" }
+      ]
+    },
+    {
+      "slug": "production-and-interviews",
+      "title": "Production And Interviews",
+      "summary": "Connect complexity explanations to real systems, memory tradeoffs, and existing interview problems.",
+      "nodes": [
+        { "kind": "document", "slug": "programming/big-o-production-tradeoffs" },
+        { "kind": "interview", "slug": "amazon/two-sum-product-pair" },
+        { "kind": "interview", "slug": "google/subarray-sum-equals-k" },
+        { "kind": "interview", "slug": "google/median-two-sorted-arrays" },
+        { "kind": "interview", "slug": "amazon/top-k-frequent-items" },
+        { "kind": "interview", "slug": "netflix/longest-distinct-viewing-window" },
+        { "kind": "interview", "slug": "amazon/lru-cache" },
+        { "kind": "interview", "slug": "uber/shortest-path-weighted-road-graph" }
+      ]
+    }
+  ]
+}

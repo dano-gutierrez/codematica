@@ -10,5 +10,6 @@ This folder contains path-scoped passive flashcard feeds for short review sessio
 - `code` is optional and should be a short snippet that fits on mobile.
 - Passive feeds do not store progress, score, read state, mastery, streaks, or completion.
 - The Python language-refresh feed currently contains 480 senior cards balanced across the four card types.
+- The Big O feed uses the same four card types with shorter foundation-to-practitioner cards tied to the Big O path.
 
 Passive flashcards are separate from interactive `type: "flashcard"` exercises in `content/exercises/`. Run `npm run content:check` before committing feed changes.

@@ -271,6 +271,166 @@ export const caseStudyFlowFileSchema = z.object({
   steps: z.array(caseStudyFlowStepSchema).min(1).max(8),
 });
 
+export const complexityFlowNodeKindSchema = z.enum(["input", "operation", "decision", "data", "result"]);
+
+export const complexityFlowCodeSchema = z.object({
+  language: z.enum(["typescript", "javascript", "python", "java"]),
+  label: z.string().min(2).max(48).optional(),
+  source: z.string().min(6).max(1200),
+});
+
+export const complexityFlowNodeSchema = z.object({
+  id: caseStudyElementIdSchema,
+  label: z.string().min(2).max(48),
+  kind: complexityFlowNodeKindSchema,
+  description: z.string().min(10).max(180),
+  position: z.object({
+    x: z.number().finite(),
+    y: z.number().finite(),
+  }),
+});
+
+export const complexityFlowEdgeSchema = z.object({
+  id: caseStudyElementIdSchema,
+  source: caseStudyElementIdSchema,
+  target: caseStudyElementIdSchema,
+  label: z.string().min(2).max(48).optional(),
+});
+
+export const complexityFlowStepSchema = z.object({
+  id: caseStudyElementIdSchema,
+  title: z.string().min(4).max(72),
+  description: z.string().min(20).max(260),
+  activeNodeIds: z.array(caseStudyElementIdSchema).min(1),
+  activeEdgeIds: z.array(caseStudyElementIdSchema).default([]),
+});
+
+function hasDuplicateIds(items: { id: string }[]) {
+  const ids = new Set<string>();
+
+  for (const item of items) {
+    if (ids.has(item.id)) {
+      return item.id;
+    }
+
+    ids.add(item.id);
+  }
+
+  return undefined;
+}
+
+export const complexityFlowVariantSchema = z
+  .object({
+    id: caseStudyElementIdSchema,
+    label: z.string().min(2).max(36),
+    complexity: z.string().min(3).max(64),
+    summary: z.string().min(20).max(220),
+    operationCounts: z.array(z.number().int().nonnegative()).min(1).max(12),
+    code: complexityFlowCodeSchema.optional(),
+    nodes: z.array(complexityFlowNodeSchema).min(2).max(10),
+    edges: z.array(complexityFlowEdgeSchema).min(1).max(18),
+    steps: z.array(complexityFlowStepSchema).min(1).max(12),
+  })
+  .superRefine((variant, context) => {
+    const duplicateNodeId = hasDuplicateIds(variant.nodes);
+    const duplicateEdgeId = hasDuplicateIds(variant.edges);
+    const duplicateStepId = hasDuplicateIds(variant.steps);
+
+    if (duplicateNodeId) {
+      context.addIssue({
+        code: "custom",
+        message: `duplicate complexity flow node id "${duplicateNodeId}"`,
+        path: ["nodes"],
+      });
+    }
+
+    if (duplicateEdgeId) {
+      context.addIssue({
+        code: "custom",
+        message: `duplicate complexity flow edge id "${duplicateEdgeId}"`,
+        path: ["edges"],
+      });
+    }
+
+    if (duplicateStepId) {
+      context.addIssue({
+        code: "custom",
+        message: `duplicate complexity flow step id "${duplicateStepId}"`,
+        path: ["steps"],
+      });
+    }
+
+    if (variant.operationCounts.length !== variant.steps.length) {
+      context.addIssue({
+        code: "custom",
+        message: "operationCounts length must match steps length",
+        path: ["operationCounts"],
+      });
+    }
+
+    const nodeIds = new Set(variant.nodes.map((node) => node.id));
+    const edgeIds = new Set(variant.edges.map((edge) => edge.id));
+
+    for (const edge of variant.edges) {
+      if (!nodeIds.has(edge.source)) {
+        context.addIssue({
+          code: "custom",
+          message: `edge "${edge.id}" references unknown complexity flow node "${edge.source}"`,
+          path: ["edges"],
+        });
+      }
+
+      if (!nodeIds.has(edge.target)) {
+        context.addIssue({
+          code: "custom",
+          message: `edge "${edge.id}" references unknown complexity flow node "${edge.target}"`,
+          path: ["edges"],
+        });
+      }
+    }
+
+    for (const step of variant.steps) {
+      for (const nodeId of step.activeNodeIds) {
+        if (!nodeIds.has(nodeId)) {
+          context.addIssue({
+            code: "custom",
+            message: `step "${step.id}" references unknown complexity flow node "${nodeId}"`,
+            path: ["steps"],
+          });
+        }
+      }
+
+      for (const edgeId of step.activeEdgeIds) {
+        if (!edgeIds.has(edgeId)) {
+          context.addIssue({
+            code: "custom",
+            message: `step "${step.id}" references unknown complexity flow edge "${edgeId}"`,
+            path: ["steps"],
+          });
+        }
+      }
+    }
+  });
+
+export const complexityFlowBlockSchema = z
+  .object({
+    id: caseStudyElementIdSchema,
+    title: z.string().min(4).max(80),
+    scenario: z.string().min(20).max(260),
+    variants: z.array(complexityFlowVariantSchema).min(2).max(4),
+  })
+  .superRefine((flow, context) => {
+    const duplicateVariantId = hasDuplicateIds(flow.variants);
+
+    if (duplicateVariantId) {
+      context.addIssue({
+        code: "custom",
+        message: `duplicate complexity flow variant id "${duplicateVariantId}"`,
+        path: ["variants"],
+      });
+    }
+  });
+
 const externalLinkSchema = z.object({
   label: z.string().min(4),
   url: z.string().url(),
@@ -364,6 +524,12 @@ export type CaseStudyFlowNode = z.infer<typeof caseStudyFlowNodeSchema>;
 export type CaseStudyFlowEdge = z.infer<typeof caseStudyFlowEdgeSchema>;
 export type CaseStudyFlowStep = z.infer<typeof caseStudyFlowStepSchema>;
 export type CaseStudyFlowFile = z.infer<typeof caseStudyFlowFileSchema>;
+export type ComplexityFlowNodeKind = z.infer<typeof complexityFlowNodeKindSchema>;
+export type ComplexityFlowNode = z.infer<typeof complexityFlowNodeSchema>;
+export type ComplexityFlowEdge = z.infer<typeof complexityFlowEdgeSchema>;
+export type ComplexityFlowStep = z.infer<typeof complexityFlowStepSchema>;
+export type ComplexityFlowVariant = z.infer<typeof complexityFlowVariantSchema>;
+export type ComplexityFlowBlock = z.infer<typeof complexityFlowBlockSchema>;
 export type InterviewSolutionTrack = z.infer<typeof interviewSolutionTrackSchema>;
 export type InterviewQuestionFile = z.infer<typeof interviewQuestionFileSchema>;
 export type InterviewCompanyFile = z.infer<typeof interviewCompanyFileSchema>;
@@ -388,6 +554,7 @@ export type KnowledgeDocument = KnowledgeFrontmatter & {
   plainText: string;
   headings: ContentHeading[];
   mermaidBlocks: MermaidBlock[];
+  complexityFlowBlocks: ComplexityFlowBlock[];
   contentHash: string;
   readingMinutes: number;
 };
@@ -454,7 +621,7 @@ export type ContentTrack = {
 };
 
 export type ContentIndex = {
-  schemaVersion: 7;
+  schemaVersion: 8;
   documents: KnowledgeDocument[];
   diagrams: MermaidDiagram[];
   learningPaths: LearningPath[];

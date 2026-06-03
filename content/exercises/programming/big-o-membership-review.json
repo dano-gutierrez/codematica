@@ -1,0 +1,60 @@
+{
+  "slug": "programming/big-o-membership-review",
+  "title": "Big O Membership Review",
+  "type": "code-review",
+  "documentSlug": "programming/big-o-production-tradeoffs",
+  "concept": "Nested membership checks",
+  "difficulty": "practitioner",
+  "tags": ["algorithms", "complexity", "code-review"],
+  "status": "published",
+  "prompt": "Review the product filter and find the hidden complexity problem before this runs on large catalogs.",
+  "files": [
+    {
+      "path": "src/catalog/visibleProducts.ts",
+      "language": "typescript",
+      "healthyExplanation": "The function keeps the product and SKU data explicit at the boundary, which makes the complexity issue reviewable.",
+      "lines": [
+        "type Product = { sku: string; name: string };",
+        "",
+        "export function visibleProducts(products: Product[], allowedSkus: string[]) {",
+        "  return products.filter((product) => {",
+        "    return allowedSkus.includes(product.sku);",
+        "  });",
+        "}"
+      ]
+    }
+  ],
+  "findings": [
+    {
+      "id": "nested-membership-scan",
+      "kind": "improvement",
+      "range": {
+        "filePath": "src/catalog/visibleProducts.ts",
+        "startLine": 3,
+        "startColumn": 1,
+        "endLine": 7,
+        "endColumn": 2
+      },
+      "explanation": "Filtering products while scanning allowedSkus for every product creates O(products * allowedSkus) work. Build a set once, then each SKU check is O(1) average case.",
+      "replacementLines": [
+        "export function visibleProducts(products: Product[], allowedSkus: string[]) {",
+        "  const allowedSkuSet = new Set(allowedSkus);",
+        "  return products.filter((product) => allowedSkuSet.has(product.sku));",
+        "}"
+      ]
+    }
+  ],
+  "healthyNotes": [
+    {
+      "id": "explicit-inputs",
+      "range": {
+        "filePath": "src/catalog/visibleProducts.ts",
+        "startLine": 1,
+        "startColumn": 6,
+        "endLine": 1,
+        "endColumn": 13
+      },
+      "explanation": "The product shape is narrow and explicit, which keeps the review focused on the algorithmic work instead of unrelated type design."
+    }
+  ]
+}

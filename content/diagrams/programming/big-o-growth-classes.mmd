@@ -1,0 +1,12 @@
+flowchart LR
+  N["n = input size"] --> C["O(1)\nconstant lookup"]
+  N --> L["O(log n)\nhalve the search space"]
+  N --> LIN["O(n)\nscan each item"]
+  N --> NL["O(n log n)\nsort or divide and merge"]
+  N --> Q["O(n^2)\ncompare pairs"]
+
+  C --> CHOOSE["Choose the simplest design that meets the data size and repeat count"]
+  L --> CHOOSE
+  LIN --> CHOOSE
+  NL --> CHOOSE
+  Q --> CHOOSE

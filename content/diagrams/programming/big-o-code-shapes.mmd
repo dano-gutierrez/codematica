@@ -1,0 +1,13 @@
+flowchart TD
+  A["Read the code shape"] --> B{"How many times can this block run?"}
+  B -->|fixed count| C["O(1)"]
+  B -->|once per item| D["O(n)"]
+  B -->|nested over same input| E["O(n^2)"]
+  B -->|input halves each step| F["O(log n)"]
+  B -->|sort then scan| G["O(n log n)"]
+  C --> H["Check space separately"]
+  D --> H
+  E --> H
+  F --> H
+  G --> H
+  H --> I["Name the tradeoff: time, memory, setup cost, and query count"]

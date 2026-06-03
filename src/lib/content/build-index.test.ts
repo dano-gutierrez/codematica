@@ -37,6 +37,29 @@ Cache aside is a useful pattern.
   );
 }
 
+async function writeKnowledgeWithBody(rootDir: string, slug: string, body: string) {
+  const filePath = path.join(rootDir, "content", "knowledge", `${slug}.md`);
+  await mkdir(path.dirname(filePath), { recursive: true });
+  await writeFile(
+    filePath,
+    `---
+title: Big O Program Flow
+slug: ${slug}
+summary: Learn how Big O changes as program flow and data structures change.
+track: Programming
+topic: Algorithms
+difficulty: foundation
+tags: [algorithms, complexity]
+prerequisites: []
+diagramRefs: []
+status: published
+---
+
+${body}
+`,
+  );
+}
+
 async function writeCaseStudyFlow(rootDir: string, slug = "system-design/cache-invalidation-flow", overrides: Record<string, unknown> = {}) {
   const filePath = path.join(rootDir, "content", "case-studies", `${slug}.json`);
   await mkdir(path.dirname(filePath), { recursive: true });
@@ -510,7 +533,7 @@ describe("buildContentIndex", () => {
 
     const index = await buildContentIndex({ rootDir });
 
-    expect(index.schemaVersion).toBe(7);
+    expect(index.schemaVersion).toBe(8);
     expect(index.documents).toHaveLength(1);
     expect(index.diagrams).toHaveLength(1);
     expect(index.caseStudyFlows).toEqual([]);
@@ -606,6 +629,118 @@ describe("buildContentIndex", () => {
     });
 
     await expect(buildContentIndex({ rootDir })).rejects.toThrow(/Duplicate case study flow slug/);
+  });
+
+  it("indexes validated complexity flow blocks from Markdown documents", async () => {
+    const rootDir = await makeTempRoot();
+    await writeKnowledgeWithBody(
+      rootDir,
+      "programming/big-o-program-flow",
+      `## Program Flow
+
+\`\`\`complexity-flow
+{
+  "id": "lookup-comparison",
+  "title": "Membership Lookup Tradeoff",
+  "scenario": "Compare repeated list scans with prebuilt set lookups.",
+  "variants": [
+    {
+      "id": "list-scan",
+      "label": "List scan",
+      "complexity": "O(n)",
+      "summary": "A miss may inspect every item.",
+      "operationCounts": [1, 2],
+      "nodes": [
+        {
+          "id": "request",
+          "label": "Request",
+          "kind": "input",
+          "description": "One lookup request.",
+          "position": { "x": 0, "y": 0 }
+        },
+        {
+          "id": "scan",
+          "label": "Scan list",
+          "kind": "operation",
+          "description": "Check values one by one.",
+          "position": { "x": 220, "y": 0 }
+        }
+      ],
+      "edges": [
+        { "id": "request-scan", "source": "request", "target": "scan", "label": "iterate" }
+      ],
+      "steps": [
+        {
+          "id": "start",
+          "title": "Start scan",
+          "description": "The list length controls the possible work.",
+          "activeNodeIds": ["request"],
+          "activeEdgeIds": []
+        },
+        {
+          "id": "compare",
+          "title": "Compare value",
+          "description": "Each miss adds another operation.",
+          "activeNodeIds": ["scan"],
+          "activeEdgeIds": ["request-scan"]
+        }
+      ]
+    },
+    {
+      "id": "set-lookup",
+      "label": "Prebuilt set",
+      "complexity": "O(1) per query",
+      "summary": "Pay once to build an index, then query flat.",
+      "operationCounts": [1],
+      "nodes": [
+        {
+          "id": "set",
+          "label": "Set",
+          "kind": "data",
+          "description": "A hash-backed lookup set.",
+          "position": { "x": 0, "y": 0 }
+        },
+        {
+          "id": "answer",
+          "label": "Answer",
+          "kind": "result",
+          "description": "The lookup returns a membership answer.",
+          "position": { "x": 220, "y": 0 }
+        }
+      ],
+      "edges": [
+        { "id": "set-answer", "source": "set", "target": "answer", "label": "hash" }
+      ],
+      "steps": [
+        {
+          "id": "lookup",
+          "title": "Lookup key",
+          "description": "The query avoids a full scan.",
+          "activeNodeIds": ["set", "answer"],
+          "activeEdgeIds": ["set-answer"]
+        }
+      ]
+    }
+  ]
+}
+\`\`\``,
+    );
+
+    const index = await buildContentIndex({ rootDir });
+
+    expect(index.documents[0]).toEqual(
+      expect.objectContaining({
+        slug: "programming/big-o-program-flow",
+        complexityFlowBlocks: [
+          expect.objectContaining({
+            id: "lookup-comparison",
+            variants: [expect.objectContaining({ id: "list-scan" }), expect.objectContaining({ id: "set-lookup" })],
+          }),
+        ],
+      }),
+    );
+    expect(index.documents[0]?.plainText).toContain("Membership Lookup Tradeoff");
+    expect(index.documents[0]?.plainText).not.toContain("\"operationCounts\"");
   });
 
   it("indexes passive flashcard feeds for learning paths", async () => {
@@ -1104,7 +1239,7 @@ describe("buildContentIndex", () => {
 
     const index = await buildContentIndex({ rootDir });
 
-    expect(index.schemaVersion).toBe(7);
+    expect(index.schemaVersion).toBe(8);
     expect(index.interviewCompanies).toEqual([
       expect.objectContaining({
         slug: "amazon",

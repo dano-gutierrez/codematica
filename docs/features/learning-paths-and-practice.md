@@ -47,13 +47,13 @@ Codematica uses learning paths as the main study surface. Paths are inspired by 
 - `/practice/[...slug]` renders one flashcard, cloze prompt, questionnaire session, or code-review session.
 - `/code-reviews` renders a standalone random published code-review exercise, with `?exercise=<slug>` for deterministic links.
 - Exercise content is manually authored in `content/exercises/**/*.json`; path content is authored in `content/learning-paths/*.json`; passive flashcard feeds are authored in `content/flashcard-feeds/*.json`.
-- `src/generated/content-index.json` has `schemaVersion: 7` and includes `learningPaths`, `exercises`, `passiveFlashcardFeeds`, `caseStudyFlows`, and `interviewCompanies`.
+- `src/generated/content-index.json` has `schemaVersion: 8` and includes `learningPaths`, `exercises`, `passiveFlashcardFeeds`, `caseStudyFlows`, and `interviewCompanies`.
 - Index generation fails on duplicate path, exercise, or passive feed slugs, missing document, diagram, exercise, or interview node references, exercises pointing at missing documents, invalid passive feed path or source document references, cloze templates without exactly one `{{blank}}`, invalid questionnaire structure, or invalid code-review file/range structure.
 - No node is locked, disabled, gated, paywalled, or persisted as complete in this milestone.
 
 ## Current State
 
-The shipped content includes skill and role paths using Markdown articles, external Mermaid diagrams, flashcards, cloze prompts, questionnaires, code reviews, and passive flashcard feeds. Supabase remains optional and does not store paths, exercises, passive feed state, progress, attempts, or gating state yet.
+The shipped content includes skill and role paths using Markdown articles, external Mermaid diagrams, embedded complexity-flow animations, flashcards, cloze prompts, questionnaires, code reviews, interview nodes, and passive flashcard feeds. Supabase remains optional and does not store paths, exercises, passive feed state, progress, attempts, or gating state yet.
 
 ## Scope
 
@@ -128,7 +128,7 @@ The shipped content includes skill and role paths using Markdown articles, exter
 ## Code Touchpoints
 
 - `src/lib/content/schema.ts`: schemas and generated index types.
-- `src/lib/content/build-index.ts`: path, exercise, passive flashcard feed, case-study flow, and interview collection, validation, reference checks, and schema version 7 serialization.
+- `src/lib/content/build-index.ts`: path, exercise, passive flashcard feed, case-study flow, complexity-flow document blocks, and interview collection, validation, reference checks, and schema version 8 serialization.
 - `src/lib/content/index.ts`: lookup helpers and path-node route helpers.
 - `src/components/LearningPathMap.tsx`: home and path detail UI.
 - `src/components/PracticeCard.tsx`: flashcard, cloze, questionnaire, and code-review shell.
@@ -145,7 +145,7 @@ The shipped content includes skill and role paths using Markdown articles, exter
 - Unit: path, exercise, passive feed schema coverage, cloze validation, questionnaire validation, code-review range/replacement helpers, passive feed windowing, duplicate slug validation, missing reference validation.
 - Integration: generated index loads starter paths, exercises, passive feeds, and path-scoped next routes.
 - Component: flashcard reveal, cloze answer checking, questionnaire feedback/navigation, code-review feedback/fixes, and passive feed rendering.
-- E2E: mobile path landing, passive Python feed, document open from a path, practice flow, Python questionnaire flow, code-review flow, `/browse` fuzzy search, and Mermaid diagram rendering.
+- E2E: mobile path landing, passive Python feed, Big O animation and practice flow, document open from a path, practice flow, Python questionnaire flow, code-review flow, `/browse` fuzzy search, and Mermaid diagram rendering.
 
 ## Open Questions
 
@@ -165,6 +165,7 @@ The shipped content includes skill and role paths using Markdown articles, exter
 - `2026-06-02`: Add code-review exercises and a standalone `/code-reviews` route while keeping attempts transient.
 - `2026-06-02`: Add interview learning-path nodes so paths can link existing interview questions without creating a separate catalog or persistence model.
 - `2026-06-03`: Add a real production data platforms unit to System Design Fundamentals with Netflix, Uber, and Spotify case-study documents.
+- `2026-06-03`: Add the Algorithmic Complexity And Big O skill path with embedded complexity-flow animations, practice, passive flashcards, and reused interview nodes.
 
 ## Documentation Updates
 

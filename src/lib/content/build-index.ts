@@ -114,6 +114,7 @@ async function collectKnowledgeDocuments(rootDir: string): Promise<KnowledgeDocu
         plainText: parsed.plainText,
         headings: parsed.headings,
         mermaidBlocks: parsed.mermaidBlocks,
+        complexityFlowBlocks: parsed.complexityFlowBlocks,
         contentHash,
         readingMinutes: parsed.readingMinutes,
       };
@@ -623,7 +624,7 @@ export async function buildContentIndex({ rootDir }: BuildContentIndexOptions): 
   );
 
   return {
-    schemaVersion: 7,
+    schemaVersion: 8,
     documents: sortedDocuments,
     diagrams: sortedDiagrams,
     learningPaths: sortedLearningPaths,

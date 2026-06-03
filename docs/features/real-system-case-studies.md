@@ -90,7 +90,7 @@ The shipped case studies cover Netflix, Uber, and Spotify data/ML feedback-loop 
 
 ## Code Touchpoints
 
-- `src/lib/content/schema.ts`: flow schemas, `caseStudyFlowRef`, and schema version 7.
+- `src/lib/content/schema.ts`: flow schemas, `caseStudyFlowRef`, and generated index schema version 8.
 - `src/lib/content/build-index.ts`: flow collection, route binding, and reference validation.
 - `src/components/CaseStudyFlow.tsx`: read-only React Flow renderer and stepper.
 - `src/components/LearningPathMap.tsx`: home shortcut and path-unit anchors.

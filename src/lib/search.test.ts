@@ -3,7 +3,7 @@ import type { ContentIndex } from "./content/schema";
 import { buildSnippet, searchContent } from "./search";
 
 const index: ContentIndex = {
-  schemaVersion: 7,
+  schemaVersion: 8,
   tracks: [],
   learningPaths: [],
   exercises: [],
@@ -30,6 +30,7 @@ const index: ContentIndex = {
       plainText: "Cache aside uses lazy loading and explicit invalidation.",
       headings: [{ id: "cache-aside", depth: 2, text: "Cache Aside" }],
       mermaidBlocks: [],
+      complexityFlowBlocks: [],
       contentHash: "hash",
       readingMinutes: 1,
     },
@@ -52,6 +53,7 @@ const index: ContentIndex = {
       plainText: "Runtime schemas protect API boundaries.",
       headings: [{ id: "contracts", depth: 2, text: "Contracts" }],
       mermaidBlocks: [],
+      complexityFlowBlocks: [],
       contentHash: "hash",
       readingMinutes: 1,
     },

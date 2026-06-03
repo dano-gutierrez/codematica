@@ -48,7 +48,7 @@ const systemDesignPath: LearningPath = {
 };
 
 const index = {
-  schemaVersion: 7,
+  schemaVersion: 8,
   documents: [],
   diagrams: [],
   learningPaths: [learningPath, systemDesignPath],

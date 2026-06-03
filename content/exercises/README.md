@@ -11,6 +11,7 @@ This folder contains manually authored practice prompts for Codematica learning 
 - Questionnaire question `kind` values are `choice`, `cloze`, `ordering`, and `matching`.
 - Choice questions require exactly one correct option, ordering questions require a `correctOrder` containing every item ID exactly once, and matching questions require unique pair IDs.
 - Python language-refresh questionnaires currently use ten senior questions each while staying transient and score-free.
+- Big O practice combines cloze, questionnaire, and code-review exercises to connect notation, program flow, and production code review.
 - Code reviews require `prompt`, `files[]`, `findings[]`, and optional `healthyNotes[]`.
 - Code review files support `language` values `typescript`, `javascript`, and `python`; each file must include `path`, `lines`, and `healthyExplanation`.
 - Code review ranges use 1-based `startLine`, `startColumn`, `endLine`, and exclusive `endColumn`.

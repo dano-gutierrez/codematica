@@ -16,7 +16,7 @@ describe("generated content index", () => {
   it("loads starter documents and diagrams", () => {
     const index = getContentIndex();
 
-    expect(index.schemaVersion).toBe(7);
+    expect(index.schemaVersion).toBe(8);
     expect(index.documents.length).toBeGreaterThanOrEqual(3);
     expect(index.diagrams.length).toBeGreaterThanOrEqual(2);
     expect(index.caseStudyFlows.length).toBeGreaterThanOrEqual(3);
@@ -27,6 +27,49 @@ describe("generated content index", () => {
     expect(getDocumentBySlug("system-design/cache-invalidation")?.title).toBe("Cache Invalidation Under Product Pressure");
     expect(getLearningPathBySlug("system-design-fundamentals")?.title).toBe("System Design Fundamentals");
     expect(getExerciseBySlug("system-design/versioned-keys-cloze")?.type).toBe("cloze");
+  });
+
+  it("loads the Big O path, animated documents, exercises, diagrams, and flashcards", () => {
+    const path = getLearningPathBySlug("algorithmic-complexity-big-o");
+    const flowDocument = getDocumentBySlug("programming/big-o-program-flow");
+    const questionnaire = getExerciseBySlug("programming/big-o-questionnaire");
+    const review = getExerciseBySlug("programming/big-o-membership-review");
+    const feed = getPassiveFlashcardFeedByPathSlug("algorithmic-complexity-big-o");
+
+    expect(path?.title).toBe("Algorithmic Complexity And Big O");
+    expect(path?.units.flatMap((unit) => unit.nodes).map((node) => node.slug)).toEqual([
+      "programming/big-o-notation-foundations",
+      "programming/big-o-growth-classes",
+      "programming/big-o-dominant-term-cloze",
+      "programming/big-o-program-flow",
+      "programming/big-o-code-shapes",
+      "programming/big-o-questionnaire",
+      "programming/big-o-membership-review",
+      "programming/big-o-production-tradeoffs",
+      "amazon/two-sum-product-pair",
+      "google/subarray-sum-equals-k",
+      "google/median-two-sorted-arrays",
+      "amazon/top-k-frequent-items",
+      "netflix/longest-distinct-viewing-window",
+      "amazon/lru-cache",
+      "uber/shortest-path-weighted-road-graph",
+    ]);
+    expect(flowDocument?.complexityFlowBlocks).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          id: "membership-lookup-comparison",
+          variants: expect.arrayContaining([
+            expect.objectContaining({ id: "list-scan", complexity: "O(n)" }),
+            expect.objectContaining({ id: "set-lookup", complexity: "O(1) per query after O(n) build" }),
+          ]),
+        }),
+      ]),
+    );
+    expect(flowDocument?.plainText).toContain("Membership Lookup Tradeoff");
+    expect(flowDocument?.plainText).not.toContain("\"nodes\"");
+    expect(questionnaire?.type).toBe("questionnaire");
+    expect(review?.type).toBe("code-review");
+    expect(feed?.cards.map((card) => card.type)).toEqual(expect.arrayContaining(["concept", "practical", "snippet", "interview"]));
   });
 
   it("loads real system case studies, flows, and path nodes", () => {

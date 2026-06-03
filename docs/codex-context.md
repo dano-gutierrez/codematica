@@ -17,7 +17,7 @@ This file carries durable repo context across Codex threads.
 
 ## Current Product Shape
 
-Codematica V1 is a mobile-first Next.js learning app. The home route is a path map built from local learning-path JSON with explicit shortcuts for browse, real cases, interviews, and code reviews. It renders plain Markdown articles, renders embedded and external Mermaid diagrams, supports local React Flow case-study walkthroughs for selected system-design articles, supports flashcard, cloze, questionnaire, code-review, passive flashcard, and guided interview coding practice, preserves path-scoped interview continuation, and keeps the content library at `/browse` from a generated local content index.
+Codematica V1 is a mobile-first Next.js learning app. The home route is a path map built from local learning-path JSON with explicit shortcuts for browse, real cases, interviews, and code reviews. It renders plain Markdown articles, renders embedded and external Mermaid diagrams, supports local React Flow case-study walkthroughs for selected system-design articles, supports embedded React Flow complexity animations in Markdown, supports flashcard, cloze, questionnaire, code-review, passive flashcard, and guided interview coding practice, preserves path-scoped interview continuation, and keeps the content library at `/browse` from a generated local content index.
 
 Supabase is scaffolded for future hosted indexing and search, but it is not required for local V1 runtime.
 
@@ -40,8 +40,9 @@ Supabase is scaffolded for future hosted indexing and search, but it is not requ
 - `src/components/InterviewCatalog.tsx`: interview catalog and company page UI
 - `src/components/InterviewQuestionSession.tsx`: guided interview solution walkthrough
 - `src/components/CaseStudyFlow.tsx`: read-only React Flow architecture walkthrough renderer
+- `src/components/ComplexityFlowBlock.tsx`: read-only React Flow algorithm-complexity walkthrough renderer
 - `src/components/KnowledgeBrowser.tsx`: browser, filters, and result cards
-- `src/components/MarkdownRenderer.tsx`: safe Markdown rendering and embedded Mermaid support
+- `src/components/MarkdownRenderer.tsx`: safe Markdown rendering, embedded Mermaid, and embedded complexity-flow support
 - `src/components/CodeBlock.tsx`: shared language-aware code block renderer
 - `src/components/MermaidBlock.tsx`: client-side Mermaid renderer
 - `src/lib/content/`: content schema, parser, index builder, and generated index access
@@ -56,6 +57,7 @@ Supabase is scaffolded for future hosted indexing and search, but it is not requ
 
 - Preserve Markdown as the authoring source of truth.
 - Preserve learning path and exercise JSON as the local source of truth for study structure, including interview nodes that reference existing interview catalog questions.
+- Preserve embedded `complexity-flow` Markdown blocks as the local source of truth for article-specific algorithm animations.
 - Preserve code-review exercise JSON as the local source of truth for snippets, findings, healthy notes, and fixes.
 - Preserve passive flashcard feed JSON as the local source of truth for scroll-only review.
 - Preserve case-study flow JSON as the local source of truth for interactive architecture walkthroughs.
@@ -64,6 +66,7 @@ Supabase is scaffolded for future hosted indexing and search, but it is not requ
 - Keep code-review attempts transient unless a future progress/scoring feature explicitly adds durable state.
 - Keep passive flashcard feed sessions transient unless a future review feature explicitly adds durable state.
 - Keep case-study flows local-first and out of Supabase sync until a hosted case-study/search feature explicitly requires remote storage.
+- Keep complexity-flow playback transient and read-only; do not add persisted progress or user-authored flow editing without a feature contract.
 - Keep Supabase optional until a feature explicitly moves runtime search or persistence there.
 - Update feature docs and architecture docs with behavior changes.
 - Add tests with behavior changes; prefer unit coverage before browser coverage.
@@ -76,5 +79,6 @@ Supabase is scaffolded for future hosted indexing and search, but it is not requ
 - `docs/features/code-review-game.md`: code-review exercise schema, standalone route, review UI, and future scoring/fix-choice roadmap.
 - `docs/features/real-system-case-studies.md`: source-backed system-design case studies with Mermaid diagrams and local React Flow walkthroughs.
 - `docs/features/programming-language-refresh.md`: reusable language refresh paths and the Python-for-TS/JS module.
+- `docs/features/big-o-notation-skill.md`: Big O skill path, complexity-flow Markdown blocks, and algorithm practice content.
 - `docs/features/interview-coding-catalog.md`: reported-public company coding catalog and guided multi-language solution walkthroughs.
 - `docs/features/future-roadmap.md`: planned AI, flashcard, blueprint, code challenge, auth, and native app directions.

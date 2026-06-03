@@ -1,6 +1,621 @@
 {
-  "schemaVersion": 7,
+  "schemaVersion": 8,
   "documents": [
+    {
+      "title": "Big O Notation Foundations",
+      "slug": "programming/big-o-notation-foundations",
+      "summary": "A practical introduction to Big O notation for reading code, predicting growth, and explaining performance tradeoffs.",
+      "track": "Programming",
+      "topic": "Algorithms",
+      "difficulty": "foundation",
+      "tags": [
+        "algorithms",
+        "complexity",
+        "big-o",
+        "performance"
+      ],
+      "prerequisites": [
+        "Basic loops",
+        "Arrays and maps"
+      ],
+      "diagramRefs": [
+        "programming/big-o-growth-classes"
+      ],
+      "status": "published",
+      "id": "e9f869817a93",
+      "route": "/docs/programming/big-o-notation-foundations",
+      "sourcePath": "content/knowledge/programming/big-o-notation-foundations.md",
+      "bodyPath": "content/knowledge/programming/big-o-notation-foundations.md",
+      "markdown": "## The Job Of Big O\n\nBig O is a vocabulary for how work grows as input grows. It does not tell you the exact number of milliseconds a program will take. It tells you whether the shape of the solution stays flat, grows one step per item, halves the search space, or explodes into many repeated comparisons.\n\nThat distinction matters in product work. A dashboard that scans 200 rows may be fine. The same code scanning 2 million rows on every request becomes an incident. Big O helps you notice that risk before load tests or production traffic expose it.\n\n## The Common Growth Classes\n\n| Notation | Code shape | Practical meaning |\n| --- | --- | --- |\n| `O(1)` | direct lookup, fixed work | Adding more input does not add more query work. |\n| `O(log n)` | binary search, tree walk | Each step removes a large fraction of the remaining search space. |\n| `O(n)` | one pass over input | Work grows once per item. |\n| `O(n log n)` | sorting, divide and merge | Often acceptable for batch work, but not free at large scale. |\n| `O(n^2)` | nested pair comparisons | Every item may compare with many other items. This becomes expensive quickly. |\n\nThe attached diagram maps these classes to the code shapes engineers usually see in review.\n\n## Drop Constants, Keep The Story\n\nIf a function loops through an array twice, the work is about `2n`. Big O reports that as `O(n)` because the important story is linear growth. If a function does `3n^2 + 20n + 8` operations, the `n^2` term dominates at large input sizes, so the simplified notation is `O(n^2)`.\n\nDo not use that simplification to hide bad engineering judgment. A constant factor can still matter when the input is small and the code is hot. Big O is the first pass, not the whole performance review.\n\n## Worst, Average, And Amortized Cases\n\nMost interview explanations use worst-case Big O because it is the safest promise. Production work often needs more nuance:\n\n- A list membership check is `O(n)` because the item might be at the end or absent.\n- A hash set lookup is usually described as `O(1)` average case, while collisions and resizing explain the caveats.\n- Appending to a dynamic array is amortized `O(1)` because occasional resizes are spread across many cheap appends.\n\nThe Python time-complexity table is a useful real-world anchor: common list operations, dictionary lookups, and set operations have different average and worst-case behavior. The review habit is to name the operation, not just the container.\n\n## Time And Space Are Separate\n\nMany faster solutions buy speed with memory. Two Sum is the standard example: the brute force version checks pairs in `O(n^2)` time and `O(1)` extra space. The hash-map version runs in `O(n)` time and uses `O(n)` extra space.\n\nNeither answer is automatically correct. If the input is tiny and memory is constrained, brute force can be acceptable. If the input is large or the query repeats often, the map usually wins.\n\n## Real-Life Scenarios\n\nUse Big O language when the data-size question changes the design:\n\n- Search autocomplete: scanning every product name on every keystroke can be `O(n)` per keypress; an index shifts work to build time.\n- Permission checks: repeated list scans across every request become expensive; a set can make each membership check flat after setup.\n- Feed ranking: comparing every post with every other post is pairwise work; production systems usually filter, index, sample, or precompute.\n- Incident dashboards: sorting and grouping millions of events on every refresh can be fine in a warehouse job and unacceptable in a request path.\n\n## Review Standard\n\nWhen reviewing code, ask four questions:\n\n1. What is `n`?\n2. How many times can each block run as `n` grows?\n3. What memory is allocated to make the runtime better?\n4. Does this code run once, per request, per user action, or in a background batch?\n\nBig O becomes useful when it connects code shape to product load.\n\n## Reference Anchors\n\n- [Cornell CS3110 Big-Oh Notation](https://cs3110.github.io/textbook/chapters/appendix/bigoh.html)\n- [MIT OCW Program Efficiency](https://ocw.mit.edu/courses/6-0001-introduction-to-computer-science-and-programming-in-python-fall-2016/resources/lecture-10-understanding-program-efficiency-part-1/)\n- [Python TimeComplexity Wiki](https://wiki.python.org/moin/TimeComplexity%C2%A0)",
+      "plainText": "The Job Of Big O Big O is a vocabulary for how work grows as input grows. It does not tell you the exact number of milliseconds a program will take. It tells you whether the shape of the solution stays flat, grows one step per item, halves the search space, or explodes into many repeated comparisons. That distinction matters in product work. A dashboard that scans 200 rows may be fine. The same code scanning 2 million rows on every request becomes an incident. Big O helps you notice that risk before load tests or production traffic expose it. The Common Growth Classes | Notation | Code shape | Practical meaning | | --- | --- | --- | | O(1) | direct lookup, fixed work | Adding more input does not add more query work. | | O(log n) | binary search, tree walk | Each step removes a large fraction of the remaining search space. | | O(n) | one pass over input | Work grows once per item. | | O(n log n) | sorting, divide and merge | Often acceptable for batch work, but not free at large scale. | | O(n^2) | nested pair comparisons | Every item may compare with many other items. This becomes expensive quickly. | The attached diagram maps these classes to the code shapes engineers usually see in review. Drop Constants, Keep The Story If a function loops through an array twice, the work is about 2n. Big O reports that as O(n) because the important story is linear growth. If a function does 3n^2 + 20n + 8 operations, the n^2 term dominates at large input sizes, so the simplified notation is O(n^2). Do not use that simplification to hide bad engineering judgment. A constant factor can still matter when the input is small and the code is hot. Big O is the first pass, not the whole performance review. Worst, Average, And Amortized Cases Most interview explanations use worst-case Big O because it is the safest promise. Production work often needs more nuance: A list membership check is O(n) because the item might be at the end or absent.A hash set lookup is usually described as O(1) average case, while collisions and resizing explain the caveats.Appending to a dynamic array is amortized O(1) because occasional resizes are spread across many cheap appends. The Python time-complexity table is a useful real-world anchor: common list operations, dictionary lookups, and set operations have different average and worst-case behavior. The review habit is to name the operation, not just the container. Time And Space Are Separate Many faster solutions buy speed with memory. Two Sum is the standard example: the brute force version checks pairs in O(n^2) time and O(1) extra space. The hash-map version runs in O(n) time and uses O(n) extra space. Neither answer is automatically correct. If the input is tiny and memory is constrained, brute force can be acceptable. If the input is large or the query repeats often, the map usually wins. Real-Life Scenarios Use Big O language when the data-size question changes the design: Search autocomplete: scanning every product name on every keystroke can be O(n) per keypress; an index shifts work to build time.Permission checks: repeated list scans across every request become expensive; a set can make each membership check flat after setup.Feed ranking: comparing every post with every other post is pairwise work; production systems usually filter, index, sample, or precompute.Incident dashboards: sorting and grouping millions of events on every refresh can be fine in a warehouse job and unacceptable in a request path. Review Standard When reviewing code, ask four questions: What is n?How many times can each block run as n grows?What memory is allocated to make the runtime better?Does this code run once, per request, per user action, or in a background batch? Big O becomes useful when it connects code shape to product load. Reference Anchors Cornell CS3110 Big-Oh NotationMIT OCW Program EfficiencyPython TimeComplexity Wiki",
+      "headings": [
+        {
+          "id": "the-job-of-big-o",
+          "depth": 2,
+          "text": "The Job Of Big O"
+        },
+        {
+          "id": "the-common-growth-classes",
+          "depth": 2,
+          "text": "The Common Growth Classes"
+        },
+        {
+          "id": "drop-constants-keep-the-story",
+          "depth": 2,
+          "text": "Drop Constants, Keep The Story"
+        },
+        {
+          "id": "worst-average-and-amortized-cases",
+          "depth": 2,
+          "text": "Worst, Average, And Amortized Cases"
+        },
+        {
+          "id": "time-and-space-are-separate",
+          "depth": 2,
+          "text": "Time And Space Are Separate"
+        },
+        {
+          "id": "real-life-scenarios",
+          "depth": 2,
+          "text": "Real-Life Scenarios"
+        },
+        {
+          "id": "review-standard",
+          "depth": 2,
+          "text": "Review Standard"
+        },
+        {
+          "id": "reference-anchors",
+          "depth": 2,
+          "text": "Reference Anchors"
+        }
+      ],
+      "mermaidBlocks": [],
+      "complexityFlowBlocks": [],
+      "contentHash": "e6b806d13998fcdbb77c5ce8cf920b98cdfd480d2a1235355a63d5dfb9a0c166",
+      "readingMinutes": 4
+    },
+    {
+      "title": "Big O Production Tradeoffs",
+      "slug": "programming/big-o-production-tradeoffs",
+      "summary": "How to use Big O notation in production design reviews, interview explanations, data-size estimates, and real user workflows.",
+      "track": "Programming",
+      "topic": "Algorithms",
+      "difficulty": "practitioner",
+      "tags": [
+        "algorithms",
+        "complexity",
+        "big-o",
+        "production"
+      ],
+      "prerequisites": [
+        "Big O notation foundations",
+        "Big O program flow"
+      ],
+      "diagramRefs": [],
+      "status": "published",
+      "id": "74c5dbcc961f",
+      "route": "/docs/programming/big-o-production-tradeoffs",
+      "sourcePath": "content/knowledge/programming/big-o-production-tradeoffs.md",
+      "bodyPath": "content/knowledge/programming/big-o-production-tradeoffs.md",
+      "markdown": "## Complexity Is A Product Question\n\nBig O becomes useful when it changes a product or system decision. \"This endpoint is O(n)\" is incomplete. The stronger review statement is: \"This endpoint scans all subscriptions for the tenant on every request, so latency grows with tenant size. A tenant with 100 subscriptions will not expose the risk, but a tenant with 500,000 subscriptions will.\"\n\nName the work and the owner of the input:\n\n- `n` can be users in a tenant, rows in a table, items in a cart, events in a time window, nodes in a graph, or bytes in a file.\n- The same code can be safe in a backfill and unsafe on a page load.\n- The right tradeoff can change when a query repeats.\n\n## Setup Cost Versus Query Cost\n\nIndexes, maps, sets, caches, and sorted arrays usually move cost around. They rarely make cost disappear.\n\n```typescript\nconst allowedSkuSet = new Set(allowedSkus);\n\nreturn products.filter((product) => allowedSkuSet.has(product.sku));\n```\n\nThis turns a repeated membership check from `O(products * allowedSkus)` into `O(allowedSkus + products)`. The setup pass creates the set. The filter pass uses flat average-case lookups. That is a real improvement when both lists can grow.\n\nIt is not free:\n\n- The set uses memory.\n- Building the set every time can still be wasteful.\n- If `allowedSkus` has only three values, the constant cost may be noise.\n- If the same allowed set serves many requests, reusing it can be much better.\n\n## Real-Life Scenarios\n\n### Shopping Cart Eligibility\n\nA checkout service filters cart lines against promotions, inventory rules, restricted SKUs, and regional rules. A nested scan across every cart line and every rule can become `O(cartLines * rules)`. A map from SKU to rule or a set of restricted SKUs can make the hot path easier to predict.\n\nThe production question is not just runtime. It is freshness. A cached rule index must be invalidated when promotion rules change.\n\n### Search And Autocomplete\n\nScanning every product title on each keystroke is easy to explain and often too slow. Search systems build indexes so query work does not grow like a naive full scan. The index costs storage and update work, but it protects user-facing latency.\n\nThis is the same Big O story as a set lookup, scaled up: pay structured setup cost so repeated queries stay fast.\n\n### Observability Dashboards\n\nA dashboard may aggregate millions of events by service, region, and error code. Sorting and grouping everything on every refresh can be acceptable in a warehouse job and unacceptable in the browser or request path. Pre-aggregated windows, materialized views, or streaming counters move work before the user asks for the answer.\n\n### Graph And Routing Problems\n\nRoad routing, dependency graphs, and social graphs are not simple arrays. Their complexity usually uses `V` for vertices and `E` for edges. A graph traversal such as breadth-first search is often `O(V + E)` because the algorithm may visit each node and edge. Dijkstra-style shortest path adds priority-queue cost.\n\nWhen the data is a graph, avoid forcing the explanation into only `n`.\n\n## Interview Translation\n\nSeveral existing Codematica interview problems are good Big O anchors:\n\n- Two Sum: brute force is `O(n^2)` time and `O(1)` extra space; a hash map is `O(n)` time and `O(n)` space.\n- Subarray Sum Equals K: nested ranges are `O(n^2)`; prefix sums plus a map reduce it to `O(n)`.\n- Median Of Two Sorted Arrays: merging is `O(m + n)`; binary partitioning is `O(log min(m,n))`.\n- Top K Frequent Items: a heap can be `O(n log k)`; bucket-style grouping can be `O(n)`.\n- LRU Cache: a map plus linked list gives `O(1)` get and put by combining direct lookup with recency order.\n\nThe interview move is to compare approaches, not only state the final complexity.\n\n## Senior Review Standard\n\nA senior explanation should include:\n\n1. The input dimensions.\n2. The dominant operation.\n3. The space tradeoff.\n4. Whether setup work is one-time, per request, or per query.\n5. Why the chosen complexity is acceptable for the expected data size.\n\nGood engineering reviews do not worship Big O. They use it to ask better questions before the system is under load.",
+      "plainText": "Complexity Is A Product Question Big O becomes useful when it changes a product or system decision. \"This endpoint is O(n)\" is incomplete. The stronger review statement is: \"This endpoint scans all subscriptions for the tenant on every request, so latency grows with tenant size. A tenant with 100 subscriptions will not expose the risk, but a tenant with 500,000 subscriptions will.\" Name the work and the owner of the input: n can be users in a tenant, rows in a table, items in a cart, events in a time window, nodes in a graph, or bytes in a file.The same code can be safe in a backfill and unsafe on a page load.The right tradeoff can change when a query repeats. Setup Cost Versus Query Cost Indexes, maps, sets, caches, and sorted arrays usually move cost around. They rarely make cost disappear. const allowedSkuSet = new Set(allowedSkus); return products.filter((product) => allowedSkuSet.has(product.sku)); This turns a repeated membership check from O(products * allowedSkus) into O(allowedSkus + products). The setup pass creates the set. The filter pass uses flat average-case lookups. That is a real improvement when both lists can grow. It is not free: The set uses memory.Building the set every time can still be wasteful.If allowedSkus has only three values, the constant cost may be noise.If the same allowed set serves many requests, reusing it can be much better. Real-Life Scenarios Shopping Cart Eligibility A checkout service filters cart lines against promotions, inventory rules, restricted SKUs, and regional rules. A nested scan across every cart line and every rule can become O(cartLines * rules). A map from SKU to rule or a set of restricted SKUs can make the hot path easier to predict. The production question is not just runtime. It is freshness. A cached rule index must be invalidated when promotion rules change. Search And Autocomplete Scanning every product title on each keystroke is easy to explain and often too slow. Search systems build indexes so query work does not grow like a naive full scan. The index costs storage and update work, but it protects user-facing latency. This is the same Big O story as a set lookup, scaled up: pay structured setup cost so repeated queries stay fast. Observability Dashboards A dashboard may aggregate millions of events by service, region, and error code. Sorting and grouping everything on every refresh can be acceptable in a warehouse job and unacceptable in the browser or request path. Pre-aggregated windows, materialized views, or streaming counters move work before the user asks for the answer. Graph And Routing Problems Road routing, dependency graphs, and social graphs are not simple arrays. Their complexity usually uses V for vertices and E for edges. A graph traversal such as breadth-first search is often O(V + E) because the algorithm may visit each node and edge. Dijkstra-style shortest path adds priority-queue cost. When the data is a graph, avoid forcing the explanation into only n. Interview Translation Several existing Codematica interview problems are good Big O anchors: Two Sum: brute force is O(n^2) time and O(1) extra space; a hash map is O(n) time and O(n) space.Subarray Sum Equals K: nested ranges are O(n^2); prefix sums plus a map reduce it to O(n).Median Of Two Sorted Arrays: merging is O(m + n); binary partitioning is O(log min(m,n)).Top K Frequent Items: a heap can be O(n log k); bucket-style grouping can be O(n).LRU Cache: a map plus linked list gives O(1) get and put by combining direct lookup with recency order. The interview move is to compare approaches, not only state the final complexity. Senior Review Standard A senior explanation should include: The input dimensions.The dominant operation.The space tradeoff.Whether setup work is one-time, per request, or per query.Why the chosen complexity is acceptable for the expected data size. Good engineering reviews do not worship Big O. They use it to ask better questions before the system is under load.",
+      "headings": [
+        {
+          "id": "complexity-is-a-product-question",
+          "depth": 2,
+          "text": "Complexity Is A Product Question"
+        },
+        {
+          "id": "setup-cost-versus-query-cost",
+          "depth": 2,
+          "text": "Setup Cost Versus Query Cost"
+        },
+        {
+          "id": "real-life-scenarios",
+          "depth": 2,
+          "text": "Real-Life Scenarios"
+        },
+        {
+          "id": "shopping-cart-eligibility",
+          "depth": 3,
+          "text": "Shopping Cart Eligibility"
+        },
+        {
+          "id": "search-and-autocomplete",
+          "depth": 3,
+          "text": "Search And Autocomplete"
+        },
+        {
+          "id": "observability-dashboards",
+          "depth": 3,
+          "text": "Observability Dashboards"
+        },
+        {
+          "id": "graph-and-routing-problems",
+          "depth": 3,
+          "text": "Graph And Routing Problems"
+        },
+        {
+          "id": "interview-translation",
+          "depth": 2,
+          "text": "Interview Translation"
+        },
+        {
+          "id": "senior-review-standard",
+          "depth": 2,
+          "text": "Senior Review Standard"
+        }
+      ],
+      "mermaidBlocks": [],
+      "complexityFlowBlocks": [],
+      "contentHash": "70092b801f23040bdaa075f9ba1c11a8b3c2406302fef81106c0e963dcc7d6e7",
+      "readingMinutes": 3
+    },
+    {
+      "title": "Big O Program Flow",
+      "slug": "programming/big-o-program-flow",
+      "summary": "Animated program-flow walkthroughs that show how the same practical lookup work changes between O(n), O(1), O(n^2), and O(log n).",
+      "track": "Programming",
+      "topic": "Algorithms",
+      "difficulty": "foundation",
+      "tags": [
+        "algorithms",
+        "complexity",
+        "big-o",
+        "data-structures"
+      ],
+      "prerequisites": [
+        "Big O notation foundations",
+        "Arrays and maps"
+      ],
+      "diagramRefs": [
+        "programming/big-o-code-shapes"
+      ],
+      "status": "published",
+      "id": "28fea74a30b0",
+      "route": "/docs/programming/big-o-program-flow",
+      "sourcePath": "content/knowledge/programming/big-o-program-flow.md",
+      "bodyPath": "content/knowledge/programming/big-o-program-flow.md",
+      "markdown": "## Program Flow First\n\nThe fastest way to understand Big O is to watch the program move. Do not start by memorizing labels. Start with the control flow:\n\n1. Does the code do a fixed amount of work?\n2. Does it walk every item?\n3. Does it walk every item for every other item?\n4. Does each step remove a large part of the remaining search space?\n\nThe same product task can have very different complexity depending on the data structure and when setup work happens.\n\n```complexity-flow\n{\n  \"id\": \"membership-lookup-comparison\",\n  \"title\": \"Membership Lookup Tradeoff\",\n  \"scenario\": \"Compare a repeated permission check implemented as a list scan, a prebuilt set lookup, a nested comparison, and a sorted binary search.\",\n  \"variants\": [\n    {\n      \"id\": \"list-scan\",\n      \"label\": \"List scan\",\n      \"complexity\": \"O(n)\",\n      \"summary\": \"A list scan is simple, but a miss or late match may inspect every stored value.\",\n      \"operationCounts\": [1, 2, 3],\n      \"code\": {\n        \"language\": \"typescript\",\n        \"label\": \"Linear lookup\",\n        \"source\": \"export function canUseFeature(permissions: string[], required: string) {\\n  return permissions.includes(required);\\n}\"\n      },\n      \"nodes\": [\n        {\n          \"id\": \"request\",\n          \"label\": \"Request\",\n          \"kind\": \"input\",\n          \"description\": \"A request asks whether one permission is present.\",\n          \"position\": { \"x\": 0, \"y\": 80 }\n        },\n        {\n          \"id\": \"scan\",\n          \"label\": \"Scan permissions\",\n          \"kind\": \"operation\",\n          \"description\": \"The program compares the required value with each stored value.\",\n          \"position\": { \"x\": 230, \"y\": 80 }\n        },\n        {\n          \"id\": \"answer\",\n          \"label\": \"Answer\",\n          \"kind\": \"result\",\n          \"description\": \"Return true on a match or false after the list is exhausted.\",\n          \"position\": { \"x\": 460, \"y\": 80 }\n        }\n      ],\n      \"edges\": [\n        { \"id\": \"request-scan\", \"source\": \"request\", \"target\": \"scan\", \"label\": \"start\" },\n        { \"id\": \"scan-answer\", \"source\": \"scan\", \"target\": \"answer\", \"label\": \"done\" }\n      ],\n      \"steps\": [\n        {\n          \"id\": \"read-request\",\n          \"title\": \"Read the requested permission\",\n          \"description\": \"The input is one permission name, but the stored permission list can be any length.\",\n          \"activeNodeIds\": [\"request\"],\n          \"activeEdgeIds\": []\n        },\n        {\n          \"id\": \"compare-items\",\n          \"title\": \"Compare permissions one by one\",\n          \"description\": \"Every miss adds one more comparison, so larger lists create more work.\",\n          \"activeNodeIds\": [\"request\", \"scan\"],\n          \"activeEdgeIds\": [\"request-scan\"]\n        },\n        {\n          \"id\": \"finish-linear\",\n          \"title\": \"Return after match or exhaustion\",\n          \"description\": \"The worst case reaches the end of the list, which is why the query is linear.\",\n          \"activeNodeIds\": [\"scan\", \"answer\"],\n          \"activeEdgeIds\": [\"scan-answer\"]\n        }\n      ]\n    },\n    {\n      \"id\": \"set-lookup\",\n      \"label\": \"Prebuilt set\",\n      \"complexity\": \"O(1) per query after O(n) build\",\n      \"summary\": \"A set moves work to setup time so repeated membership checks stay flat per query.\",\n      \"operationCounts\": [1, 1],\n      \"code\": {\n        \"language\": \"typescript\",\n        \"label\": \"Hash lookup\",\n        \"source\": \"const permissionSet = new Set(permissions);\\n\\nexport function canUseFeature(required: string) {\\n  return permissionSet.has(required);\\n}\"\n      },\n      \"nodes\": [\n        {\n          \"id\": \"build-set\",\n          \"label\": \"Build set\",\n          \"kind\": \"data\",\n          \"description\": \"Create a hash-backed index from the permission list.\",\n          \"position\": { \"x\": 0, \"y\": 80 }\n        },\n        {\n          \"id\": \"hash-lookup\",\n          \"label\": \"Hash lookup\",\n          \"kind\": \"operation\",\n          \"description\": \"Jump to the bucket for the requested permission.\",\n          \"position\": { \"x\": 230, \"y\": 80 }\n        },\n        {\n          \"id\": \"return-answer\",\n          \"label\": \"Answer\",\n          \"kind\": \"result\",\n          \"description\": \"Return the membership result without scanning every value.\",\n          \"position\": { \"x\": 460, \"y\": 80 }\n        }\n      ],\n      \"edges\": [\n        { \"id\": \"build-lookup\", \"source\": \"build-set\", \"target\": \"hash-lookup\", \"label\": \"index\" },\n        { \"id\": \"lookup-answer\", \"source\": \"hash-lookup\", \"target\": \"return-answer\", \"label\": \"result\" }\n      ],\n      \"steps\": [\n        {\n          \"id\": \"prepare-index\",\n          \"title\": \"Build the set once\",\n          \"description\": \"The setup still costs O(n), so it is most useful when many queries reuse the same data.\",\n          \"activeNodeIds\": [\"build-set\", \"hash-lookup\"],\n          \"activeEdgeIds\": [\"build-lookup\"]\n        },\n        {\n          \"id\": \"return-membership\",\n          \"title\": \"Return the membership result\",\n          \"description\": \"Each later permission check uses the index instead of walking the whole list again.\",\n          \"activeNodeIds\": [\"hash-lookup\", \"return-answer\"],\n          \"activeEdgeIds\": [\"lookup-answer\"]\n        }\n      ]\n    },\n    {\n      \"id\": \"nested-scan\",\n      \"label\": \"Nested scan\",\n      \"complexity\": \"O(n^2)\",\n      \"summary\": \"Pairwise comparison is easy to write, but the number of checks grows for every item against every other item.\",\n      \"operationCounts\": [1, 4, 9],\n      \"code\": {\n        \"language\": \"typescript\",\n        \"label\": \"Pair comparison\",\n        \"source\": \"export function hasDuplicate(values: string[]) {\\n  for (let i = 0; i < values.length; i += 1) {\\n    for (let j = i + 1; j < values.length; j += 1) {\\n      if (values[i] === values[j]) return true;\\n    }\\n  }\\n  return false;\\n}\"\n      },\n      \"nodes\": [\n        {\n          \"id\": \"values\",\n          \"label\": \"Values\",\n          \"kind\": \"input\",\n          \"description\": \"A list of values that might contain duplicates.\",\n          \"position\": { \"x\": 0, \"y\": 80 }\n        },\n        {\n          \"id\": \"outer-loop\",\n          \"label\": \"Outer loop\",\n          \"kind\": \"operation\",\n          \"description\": \"Pick one candidate value.\",\n          \"position\": { \"x\": 220, \"y\": 40 }\n        },\n        {\n          \"id\": \"inner-loop\",\n          \"label\": \"Inner loop\",\n          \"kind\": \"operation\",\n          \"description\": \"Compare that candidate with many later values.\",\n          \"position\": { \"x\": 220, \"y\": 170 }\n        },\n        {\n          \"id\": \"duplicate-answer\",\n          \"label\": \"Answer\",\n          \"kind\": \"result\",\n          \"description\": \"Return when a duplicate appears or every pair is checked.\",\n          \"position\": { \"x\": 460, \"y\": 105 }\n        }\n      ],\n      \"edges\": [\n        { \"id\": \"values-outer\", \"source\": \"values\", \"target\": \"outer-loop\", \"label\": \"pick\" },\n        { \"id\": \"outer-inner\", \"source\": \"outer-loop\", \"target\": \"inner-loop\", \"label\": \"compare\" },\n        { \"id\": \"inner-answer\", \"source\": \"inner-loop\", \"target\": \"duplicate-answer\", \"label\": \"done\" }\n      ],\n      \"steps\": [\n        {\n          \"id\": \"pick-candidate\",\n          \"title\": \"Pick a candidate value\",\n          \"description\": \"The outer loop can run once per input item.\",\n          \"activeNodeIds\": [\"values\", \"outer-loop\"],\n          \"activeEdgeIds\": [\"values-outer\"]\n        },\n        {\n          \"id\": \"compare-candidate\",\n          \"title\": \"Compare against later values\",\n          \"description\": \"For each outer item, the inner loop may scan many remaining items.\",\n          \"activeNodeIds\": [\"outer-loop\", \"inner-loop\"],\n          \"activeEdgeIds\": [\"outer-inner\"]\n        },\n        {\n          \"id\": \"finish-pairs\",\n          \"title\": \"Finish pairwise work\",\n          \"description\": \"As input grows, pair checks grow much faster than the list length.\",\n          \"activeNodeIds\": [\"inner-loop\", \"duplicate-answer\"],\n          \"activeEdgeIds\": [\"inner-answer\"]\n        }\n      ]\n    },\n    {\n      \"id\": \"binary-search\",\n      \"label\": \"Binary search\",\n      \"complexity\": \"O(log n)\",\n      \"summary\": \"When data is sorted, each comparison can discard about half of the remaining search space.\",\n      \"operationCounts\": [1, 2, 3],\n      \"code\": {\n        \"language\": \"typescript\",\n        \"label\": \"Binary search\",\n        \"source\": \"export function hasSku(sortedSkus: string[], target: string) {\\n  let left = 0;\\n  let right = sortedSkus.length - 1;\\n  while (left <= right) {\\n    const mid = Math.floor((left + right) / 2);\\n    if (sortedSkus[mid] === target) return true;\\n    if (sortedSkus[mid] < target) left = mid + 1;\\n    else right = mid - 1;\\n  }\\n  return false;\\n}\"\n      },\n      \"nodes\": [\n        {\n          \"id\": \"sorted-input\",\n          \"label\": \"Sorted values\",\n          \"kind\": \"data\",\n          \"description\": \"The input must already be sorted or indexed.\",\n          \"position\": { \"x\": 0, \"y\": 80 }\n        },\n        {\n          \"id\": \"middle-check\",\n          \"label\": \"Middle check\",\n          \"kind\": \"decision\",\n          \"description\": \"Compare the target with the middle value.\",\n          \"position\": { \"x\": 230, \"y\": 80 }\n        },\n        {\n          \"id\": \"discard-half\",\n          \"label\": \"Discard half\",\n          \"kind\": \"operation\",\n          \"description\": \"Remove the half that cannot contain the target.\",\n          \"position\": { \"x\": 460, \"y\": 80 }\n        }\n      ],\n      \"edges\": [\n        { \"id\": \"sorted-middle\", \"source\": \"sorted-input\", \"target\": \"middle-check\", \"label\": \"check\" },\n        { \"id\": \"middle-discard\", \"source\": \"middle-check\", \"target\": \"discard-half\", \"label\": \"halve\" }\n      ],\n      \"steps\": [\n        {\n          \"id\": \"start-sorted\",\n          \"title\": \"Start with sorted data\",\n          \"description\": \"Binary search only works when ordering lets the program reason about halves.\",\n          \"activeNodeIds\": [\"sorted-input\"],\n          \"activeEdgeIds\": []\n        },\n        {\n          \"id\": \"check-middle\",\n          \"title\": \"Check the middle value\",\n          \"description\": \"One comparison decides which half can still contain the target.\",\n          \"activeNodeIds\": [\"sorted-input\", \"middle-check\"],\n          \"activeEdgeIds\": [\"sorted-middle\"]\n        },\n        {\n          \"id\": \"halve-space\",\n          \"title\": \"Discard half the search space\",\n          \"description\": \"The remaining work shrinks quickly, so very large arrays need only a small number of checks.\",\n          \"activeNodeIds\": [\"middle-check\", \"discard-half\"],\n          \"activeEdgeIds\": [\"middle-discard\"]\n        }\n      ]\n    }\n  ]\n}\n```\n\n## Reading The Animation\n\nThe operation counter is not a benchmark. It is a shape hint. In the list scan, each missed permission adds another comparison. In the set lookup, the query stays flat after setup. In the nested scan, adding more items creates many more pair checks. In binary search, each decision removes a large fraction of the remaining work.\n\nThat is the core skill: connect the data movement to the complexity label.\n\n## Same Problem, Different Budget\n\nImagine a permissions service:\n\n- One admin page checks a single permission for one user. A list scan is probably fine.\n- Every API request checks several permissions against the same role. A set is usually worth the setup cost.\n- A migration compares every permission with every other permission to detect duplicates. A nested scan may be acceptable offline and unacceptable in a request path.\n- A catalog service searches sorted SKU ranges. Binary search or an index can keep lookup work small.\n\nBig O is not about choosing the fanciest data structure. It is about matching the data shape and repeat count to the product budget.\n\n## Code Shape Checklist\n\nWhen reviewing code, mark the loops and data-structure operations before naming Big O:\n\n```typescript\nfor (const user of users) {\n  for (const permission of permissions) {\n    grantIfNeeded(user, permission);\n  }\n}\n```\n\nIf `users` and `permissions` are independent inputs, the work is `O(u * p)`. If they are both the same input size, people often simplify the shape to `O(n^2)`.\n\n```typescript\nconst bySku = new Map(products.map((product) => [product.sku, product]));\n\nfor (const line of cartLines) {\n  bySku.get(line.sku);\n}\n```\n\nThis is `O(p + c)`: one pass to build the map, one pass over cart lines. If the same map serves many carts, the setup cost can be reused.\n\n## Review Standard\n\nDo not stop at \"this is O(n).\" Explain why:\n\n- What is the input size?\n- Which loop or data-structure operation dominates?\n- Does setup work happen once or on every request?\n- What space is allocated to reduce time?\n\nStrong Big O explanations sound like program flow, not flashcards.",
+      "plainText": "Program Flow First The fastest way to understand Big O is to watch the program move. Do not start by memorizing labels. Start with the control flow: Does the code do a fixed amount of work?Does it walk every item?Does it walk every item for every other item?Does each step remove a large part of the remaining search space? The same product task can have very different complexity depending on the data structure and when setup work happens. Membership Lookup Tradeoff Compare a repeated permission check implemented as a list scan, a prebuilt set lookup, a nested comparison, and a sorted binary search. List scan O(n) A list scan is simple, but a miss or late match may inspect every stored value. Linear lookup Read the requested permission The input is one permission name, but the stored permission list can be any length. Compare permissions one by one Every miss adds one more comparison, so larger lists create more work. Return after match or exhaustion The worst case reaches the end of the list, which is why the query is linear. Prebuilt set O(1) per query after O(n) build A set moves work to setup time so repeated membership checks stay flat per query. Hash lookup Build the set once The setup still costs O(n), so it is most useful when many queries reuse the same data. Return the membership result Each later permission check uses the index instead of walking the whole list again. Nested scan O(n^2) Pairwise comparison is easy to write, but the number of checks grows for every item against every other item. Pair comparison Pick a candidate value The outer loop can run once per input item. Compare against later values For each outer item, the inner loop may scan many remaining items. Finish pairwise work As input grows, pair checks grow much faster than the list length. Binary search O(log n) When data is sorted, each comparison can discard about half of the remaining search space. Binary search Start with sorted data Binary search only works when ordering lets the program reason about halves. Check the middle value One comparison decides which half can still contain the target. Discard half the search space The remaining work shrinks quickly, so very large arrays need only a small number of checks. Reading The Animation The operation counter is not a benchmark. It is a shape hint. In the list scan, each missed permission adds another comparison. In the set lookup, the query stays flat after setup. In the nested scan, adding more items creates many more pair checks. In binary search, each decision removes a large fraction of the remaining work. That is the core skill: connect the data movement to the complexity label. Same Problem, Different Budget Imagine a permissions service: One admin page checks a single permission for one user. A list scan is probably fine.Every API request checks several permissions against the same role. A set is usually worth the setup cost.A migration compares every permission with every other permission to detect duplicates. A nested scan may be acceptable offline and unacceptable in a request path.A catalog service searches sorted SKU ranges. Binary search or an index can keep lookup work small. Big O is not about choosing the fanciest data structure. It is about matching the data shape and repeat count to the product budget. Code Shape Checklist When reviewing code, mark the loops and data-structure operations before naming Big O: for (const user of users) { for (const permission of permissions) { grantIfNeeded(user, permission); } } If users and permissions are independent inputs, the work is O(u * p). If they are both the same input size, people often simplify the shape to O(n^2). const bySku = new Map(products.map((product) => [product.sku, product])); for (const line of cartLines) { bySku.get(line.sku); } This is O(p + c): one pass to build the map, one pass over cart lines. If the same map serves many carts, the setup cost can be reused. Review Standard Do not stop at \"this is O(n).\" Explain why: What is the input size?Which loop or data-structure operation dominates?Does setup work happen once or on every request?What space is allocated to reduce time? Strong Big O explanations sound like program flow, not flashcards.",
+      "headings": [
+        {
+          "id": "program-flow-first",
+          "depth": 2,
+          "text": "Program Flow First"
+        },
+        {
+          "id": "reading-the-animation",
+          "depth": 2,
+          "text": "Reading The Animation"
+        },
+        {
+          "id": "same-problem-different-budget",
+          "depth": 2,
+          "text": "Same Problem, Different Budget"
+        },
+        {
+          "id": "code-shape-checklist",
+          "depth": 2,
+          "text": "Code Shape Checklist"
+        },
+        {
+          "id": "review-standard",
+          "depth": 2,
+          "text": "Review Standard"
+        }
+      ],
+      "mermaidBlocks": [],
+      "complexityFlowBlocks": [
+        {
+          "id": "membership-lookup-comparison",
+          "title": "Membership Lookup Tradeoff",
+          "scenario": "Compare a repeated permission check implemented as a list scan, a prebuilt set lookup, a nested comparison, and a sorted binary search.",
+          "variants": [
+            {
+              "id": "list-scan",
+              "label": "List scan",
+              "complexity": "O(n)",
+              "summary": "A list scan is simple, but a miss or late match may inspect every stored value.",
+              "operationCounts": [
+                1,
+                2,
+                3
+              ],
+              "code": {
+                "language": "typescript",
+                "label": "Linear lookup",
+                "source": "export function canUseFeature(permissions: string[], required: string) {\n  return permissions.includes(required);\n}"
+              },
+              "nodes": [
+                {
+                  "id": "request",
+                  "label": "Request",
+                  "kind": "input",
+                  "description": "A request asks whether one permission is present.",
+                  "position": {
+                    "x": 0,
+                    "y": 80
+                  }
+                },
+                {
+                  "id": "scan",
+                  "label": "Scan permissions",
+                  "kind": "operation",
+                  "description": "The program compares the required value with each stored value.",
+                  "position": {
+                    "x": 230,
+                    "y": 80
+                  }
+                },
+                {
+                  "id": "answer",
+                  "label": "Answer",
+                  "kind": "result",
+                  "description": "Return true on a match or false after the list is exhausted.",
+                  "position": {
+                    "x": 460,
+                    "y": 80
+                  }
+                }
+              ],
+              "edges": [
+                {
+                  "id": "request-scan",
+                  "source": "request",
+                  "target": "scan",
+                  "label": "start"
+                },
+                {
+                  "id": "scan-answer",
+                  "source": "scan",
+                  "target": "answer",
+                  "label": "done"
+                }
+              ],
+              "steps": [
+                {
+                  "id": "read-request",
+                  "title": "Read the requested permission",
+                  "description": "The input is one permission name, but the stored permission list can be any length.",
+                  "activeNodeIds": [
+                    "request"
+                  ],
+                  "activeEdgeIds": []
+                },
+                {
+                  "id": "compare-items",
+                  "title": "Compare permissions one by one",
+                  "description": "Every miss adds one more comparison, so larger lists create more work.",
+                  "activeNodeIds": [
+                    "request",
+                    "scan"
+                  ],
+                  "activeEdgeIds": [
+                    "request-scan"
+                  ]
+                },
+                {
+                  "id": "finish-linear",
+                  "title": "Return after match or exhaustion",
+                  "description": "The worst case reaches the end of the list, which is why the query is linear.",
+                  "activeNodeIds": [
+                    "scan",
+                    "answer"
+                  ],
+                  "activeEdgeIds": [
+                    "scan-answer"
+                  ]
+                }
+              ]
+            },
+            {
+              "id": "set-lookup",
+              "label": "Prebuilt set",
+              "complexity": "O(1) per query after O(n) build",
+              "summary": "A set moves work to setup time so repeated membership checks stay flat per query.",
+              "operationCounts": [
+                1,
+                1
+              ],
+              "code": {
+                "language": "typescript",
+                "label": "Hash lookup",
+                "source": "const permissionSet = new Set(permissions);\n\nexport function canUseFeature(required: string) {\n  return permissionSet.has(required);\n}"
+              },
+              "nodes": [
+                {
+                  "id": "build-set",
+                  "label": "Build set",
+                  "kind": "data",
+                  "description": "Create a hash-backed index from the permission list.",
+                  "position": {
+                    "x": 0,
+                    "y": 80
+                  }
+                },
+                {
+                  "id": "hash-lookup",
+                  "label": "Hash lookup",
+                  "kind": "operation",
+                  "description": "Jump to the bucket for the requested permission.",
+                  "position": {
+                    "x": 230,
+                    "y": 80
+                  }
+                },
+                {
+                  "id": "return-answer",
+                  "label": "Answer",
+                  "kind": "result",
+                  "description": "Return the membership result without scanning every value.",
+                  "position": {
+                    "x": 460,
+                    "y": 80
+                  }
+                }
+              ],
+              "edges": [
+                {
+                  "id": "build-lookup",
+                  "source": "build-set",
+                  "target": "hash-lookup",
+                  "label": "index"
+                },
+                {
+                  "id": "lookup-answer",
+                  "source": "hash-lookup",
+                  "target": "return-answer",
+                  "label": "result"
+                }
+              ],
+              "steps": [
+                {
+                  "id": "prepare-index",
+                  "title": "Build the set once",
+                  "description": "The setup still costs O(n), so it is most useful when many queries reuse the same data.",
+                  "activeNodeIds": [
+                    "build-set",
+                    "hash-lookup"
+                  ],
+                  "activeEdgeIds": [
+                    "build-lookup"
+                  ]
+                },
+                {
+                  "id": "return-membership",
+                  "title": "Return the membership result",
+                  "description": "Each later permission check uses the index instead of walking the whole list again.",
+                  "activeNodeIds": [
+                    "hash-lookup",
+                    "return-answer"
+                  ],
+                  "activeEdgeIds": [
+                    "lookup-answer"
+                  ]
+                }
+              ]
+            },
+            {
+              "id": "nested-scan",
+              "label": "Nested scan",
+              "complexity": "O(n^2)",
+              "summary": "Pairwise comparison is easy to write, but the number of checks grows for every item against every other item.",
+              "operationCounts": [
+                1,
+                4,
+                9
+              ],
+              "code": {
+                "language": "typescript",
+                "label": "Pair comparison",
+                "source": "export function hasDuplicate(values: string[]) {\n  for (let i = 0; i < values.length; i += 1) {\n    for (let j = i + 1; j < values.length; j += 1) {\n      if (values[i] === values[j]) return true;\n    }\n  }\n  return false;\n}"
+              },
+              "nodes": [
+                {
+                  "id": "values",
+                  "label": "Values",
+                  "kind": "input",
+                  "description": "A list of values that might contain duplicates.",
+                  "position": {
+                    "x": 0,
+                    "y": 80
+                  }
+                },
+                {
+                  "id": "outer-loop",
+                  "label": "Outer loop",
+                  "kind": "operation",
+                  "description": "Pick one candidate value.",
+                  "position": {
+                    "x": 220,
+                    "y": 40
+                  }
+                },
+                {
+                  "id": "inner-loop",
+                  "label": "Inner loop",
+                  "kind": "operation",
+                  "description": "Compare that candidate with many later values.",
+                  "position": {
+                    "x": 220,
+                    "y": 170
+                  }
+                },
+                {
+                  "id": "duplicate-answer",
+                  "label": "Answer",
+                  "kind": "result",
+                  "description": "Return when a duplicate appears or every pair is checked.",
+                  "position": {
+                    "x": 460,
+                    "y": 105
+                  }
+                }
+              ],
+              "edges": [
+                {
+                  "id": "values-outer",
+                  "source": "values",
+                  "target": "outer-loop",
+                  "label": "pick"
+                },
+                {
+                  "id": "outer-inner",
+                  "source": "outer-loop",
+                  "target": "inner-loop",
+                  "label": "compare"
+                },
+                {
+                  "id": "inner-answer",
+                  "source": "inner-loop",
+                  "target": "duplicate-answer",
+                  "label": "done"
+                }
+              ],
+              "steps": [
+                {
+                  "id": "pick-candidate",
+                  "title": "Pick a candidate value",
+                  "description": "The outer loop can run once per input item.",
+                  "activeNodeIds": [
+                    "values",
+                    "outer-loop"
+                  ],
+                  "activeEdgeIds": [
+                    "values-outer"
+                  ]
+                },
+                {
+                  "id": "compare-candidate",
+                  "title": "Compare against later values",
+                  "description": "For each outer item, the inner loop may scan many remaining items.",
+                  "activeNodeIds": [
+                    "outer-loop",
+                    "inner-loop"
+                  ],
+                  "activeEdgeIds": [
+                    "outer-inner"
+                  ]
+                },
+                {
+                  "id": "finish-pairs",
+                  "title": "Finish pairwise work",
+                  "description": "As input grows, pair checks grow much faster than the list length.",
+                  "activeNodeIds": [
+                    "inner-loop",
+                    "duplicate-answer"
+                  ],
+                  "activeEdgeIds": [
+                    "inner-answer"
+                  ]
+                }
+              ]
+            },
+            {
+              "id": "binary-search",
+              "label": "Binary search",
+              "complexity": "O(log n)",
+              "summary": "When data is sorted, each comparison can discard about half of the remaining search space.",
+              "operationCounts": [
+                1,
+                2,
+                3
+              ],
+              "code": {
+                "language": "typescript",
+                "label": "Binary search",
+                "source": "export function hasSku(sortedSkus: string[], target: string) {\n  let left = 0;\n  let right = sortedSkus.length - 1;\n  while (left <= right) {\n    const mid = Math.floor((left + right) / 2);\n    if (sortedSkus[mid] === target) return true;\n    if (sortedSkus[mid] < target) left = mid + 1;\n    else right = mid - 1;\n  }\n  return false;\n}"
+              },
+              "nodes": [
+                {
+                  "id": "sorted-input",
+                  "label": "Sorted values",
+                  "kind": "data",
+                  "description": "The input must already be sorted or indexed.",
+                  "position": {
+                    "x": 0,
+                    "y": 80
+                  }
+                },
+                {
+                  "id": "middle-check",
+                  "label": "Middle check",
+                  "kind": "decision",
+                  "description": "Compare the target with the middle value.",
+                  "position": {
+                    "x": 230,
+                    "y": 80
+                  }
+                },
+                {
+                  "id": "discard-half",
+                  "label": "Discard half",
+                  "kind": "operation",
+                  "description": "Remove the half that cannot contain the target.",
+                  "position": {
+                    "x": 460,
+                    "y": 80
+                  }
+                }
+              ],
+              "edges": [
+                {
+                  "id": "sorted-middle",
+                  "source": "sorted-input",
+                  "target": "middle-check",
+                  "label": "check"
+                },
+                {
+                  "id": "middle-discard",
+                  "source": "middle-check",
+                  "target": "discard-half",
+                  "label": "halve"
+                }
+              ],
+              "steps": [
+                {
+                  "id": "start-sorted",
+                  "title": "Start with sorted data",
+                  "description": "Binary search only works when ordering lets the program reason about halves.",
+                  "activeNodeIds": [
+                    "sorted-input"
+                  ],
+                  "activeEdgeIds": []
+                },
+                {
+                  "id": "check-middle",
+                  "title": "Check the middle value",
+                  "description": "One comparison decides which half can still contain the target.",
+                  "activeNodeIds": [
+                    "sorted-input",
+                    "middle-check"
+                  ],
+                  "activeEdgeIds": [
+                    "sorted-middle"
+                  ]
+                },
+                {
+                  "id": "halve-space",
+                  "title": "Discard half the search space",
+                  "description": "The remaining work shrinks quickly, so very large arrays need only a small number of checks.",
+                  "activeNodeIds": [
+                    "middle-check",
+                    "discard-half"
+                  ],
+                  "activeEdgeIds": [
+                    "middle-discard"
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "contentHash": "1c88a23a5dc5276b09276ca015168757decc9fc3cede4888a7bbeeb88f9fdf3c",
+      "readingMinutes": 4
+    },
     {
       "title": "Python Async Testing And Production Standards For JS Engineers",
       "slug": "programming/python-async-testing-production",
@@ -80,6 +695,7 @@
         }
       ],
       "mermaidBlocks": [],
+      "complexityFlowBlocks": [],
       "contentHash": "d798fed3f17f99551ef144230ab4eac1b0ec9f5b052e2c8e34fc9271c366d1bb",
       "readingMinutes": 5
     },
@@ -166,6 +782,7 @@
         }
       ],
       "mermaidBlocks": [],
+      "complexityFlowBlocks": [],
       "contentHash": "450e5611c7e59caa278d358869c4b1dfa5a8fc3ced5c71a212a148cd541929e6",
       "readingMinutes": 5
     },
@@ -267,6 +884,7 @@
         }
       ],
       "mermaidBlocks": [],
+      "complexityFlowBlocks": [],
       "contentHash": "59aa868161e6d2250edf3a6640c007ea172a97346df9cdbc064ffc268f2da780",
       "readingMinutes": 6
     },
@@ -353,6 +971,7 @@
         }
       ],
       "mermaidBlocks": [],
+      "complexityFlowBlocks": [],
       "contentHash": "149218d791c62527080cc7f8b2c858d7144e7ad8c679498dcdda2211ea6ba921",
       "readingMinutes": 5
     },
@@ -409,6 +1028,7 @@
         }
       ],
       "mermaidBlocks": [],
+      "complexityFlowBlocks": [],
       "contentHash": "e7920db3a9a153a5728e55b536ec4207e8e2d3ec7f413a0e9bf751c218c3cc61",
       "readingMinutes": 2
     },
@@ -465,6 +1085,7 @@
         }
       ],
       "mermaidBlocks": [],
+      "complexityFlowBlocks": [],
       "contentHash": "762024b64b3b7e02f2ad5624c05a9623c1bdfc530039edd1971fee678467c19a",
       "readingMinutes": 2
     },
@@ -528,6 +1149,7 @@
           "source": "flowchart TD\n  W[Write request] --> DB[(Primary database)]\n  W --> Q[Invalidation event]\n  Q --> CDN[CDN edge]\n  Q --> App[Application cache]\n  Q --> Search[Search index]\n  CDN --> R[Read path]\n  App --> R\n  Search --> R\n  DB --> R"
         }
       ],
+      "complexityFlowBlocks": [],
       "contentHash": "38bc46ffe4f72f5851003404685ecc1c17fb2b98e29813debeca0e8fbfe3096e",
       "readingMinutes": 2
     },
@@ -604,6 +1226,7 @@
         }
       ],
       "mermaidBlocks": [],
+      "complexityFlowBlocks": [],
       "contentHash": "1aee95a009ffd42a7be8c0dd5e8d99157b734f862acb2c621cf422e6df708091",
       "readingMinutes": 4
     },
@@ -680,6 +1303,7 @@
         }
       ],
       "mermaidBlocks": [],
+      "complexityFlowBlocks": [],
       "contentHash": "47b2cf869b69281118f2664458ec3f9c8c615db8f03142d99000bd7614a9e1bf",
       "readingMinutes": 3
     },
@@ -756,11 +1380,30 @@
         }
       ],
       "mermaidBlocks": [],
+      "complexityFlowBlocks": [],
       "contentHash": "893fc2fd15b89fba7ab83b72f0b8259011b30b2252a699a22319e27ace62e4d9",
       "readingMinutes": 3
     }
   ],
   "diagrams": [
+    {
+      "id": "77db36e6e1cf",
+      "title": "Big O Code Shapes",
+      "slug": "programming/big-o-code-shapes",
+      "route": "/diagrams/programming/big-o-code-shapes",
+      "sourcePath": "content/diagrams/programming/big-o-code-shapes.mmd",
+      "source": "flowchart TD\n  A[\"Read the code shape\"] --> B{\"How many times can this block run?\"}\n  B -->|fixed count| C[\"O(1)\"]\n  B -->|once per item| D[\"O(n)\"]\n  B -->|nested over same input| E[\"O(n^2)\"]\n  B -->|input halves each step| F[\"O(log n)\"]\n  B -->|sort then scan| G[\"O(n log n)\"]\n  C --> H[\"Check space separately\"]\n  D --> H\n  E --> H\n  F --> H\n  G --> H\n  H --> I[\"Name the tradeoff: time, memory, setup cost, and query count\"]",
+      "contentHash": "0efa5ba6fdb72763a1650956e5d2ebc49c63f0bf1ba45b4dbd0332e068fba171"
+    },
+    {
+      "id": "42037153a9a8",
+      "title": "Big O Growth Classes",
+      "slug": "programming/big-o-growth-classes",
+      "route": "/diagrams/programming/big-o-growth-classes",
+      "sourcePath": "content/diagrams/programming/big-o-growth-classes.mmd",
+      "source": "flowchart LR\n  N[\"n = input size\"] --> C[\"O(1)\\nconstant lookup\"]\n  N --> L[\"O(log n)\\nhalve the search space\"]\n  N --> LIN[\"O(n)\\nscan each item\"]\n  N --> NL[\"O(n log n)\\nsort or divide and merge\"]\n  N --> Q[\"O(n^2)\\ncompare pairs\"]\n\n  C --> CHOOSE[\"Choose the simplest design that meets the data size and repeat count\"]\n  L --> CHOOSE\n  LIN --> CHOOSE\n  NL --> CHOOSE\n  Q --> CHOOSE",
+      "contentHash": "8d8639a48aedbe8290f909f733269fd47cbdde1e330922764fcb04e319022a36"
+    },
     {
       "id": "e092b303e922",
       "title": "Cache Aside",
@@ -817,6 +1460,102 @@
     }
   ],
   "learningPaths": [
+    {
+      "slug": "algorithmic-complexity-big-o",
+      "title": "Algorithmic Complexity And Big O",
+      "summary": "A skill path for understanding Big O notation through program flow, practical tradeoffs, production scenarios, and interview problems.",
+      "kind": "skill",
+      "category": "Programming",
+      "audience": "Engineers who want Big O notation to feel practical in code reviews, production design, and interviews.",
+      "status": "published",
+      "units": [
+        {
+          "slug": "notation-foundations",
+          "title": "Notation Foundations",
+          "summary": "Learn the core growth classes, dominant terms, and separate time and space reasoning.",
+          "nodes": [
+            {
+              "kind": "document",
+              "slug": "programming/big-o-notation-foundations"
+            },
+            {
+              "kind": "diagram",
+              "slug": "programming/big-o-growth-classes"
+            },
+            {
+              "kind": "exercise",
+              "slug": "programming/big-o-dominant-term-cloze"
+            }
+          ]
+        },
+        {
+          "slug": "program-flow",
+          "title": "Program Flow",
+          "summary": "Watch how control flow and data structures change runtime growth for realistic lookup work.",
+          "nodes": [
+            {
+              "kind": "document",
+              "slug": "programming/big-o-program-flow"
+            },
+            {
+              "kind": "diagram",
+              "slug": "programming/big-o-code-shapes"
+            },
+            {
+              "kind": "exercise",
+              "slug": "programming/big-o-questionnaire"
+            },
+            {
+              "kind": "exercise",
+              "slug": "programming/big-o-membership-review"
+            }
+          ]
+        },
+        {
+          "slug": "production-and-interviews",
+          "title": "Production And Interviews",
+          "summary": "Connect complexity explanations to real systems, memory tradeoffs, and existing interview problems.",
+          "nodes": [
+            {
+              "kind": "document",
+              "slug": "programming/big-o-production-tradeoffs"
+            },
+            {
+              "kind": "interview",
+              "slug": "amazon/two-sum-product-pair"
+            },
+            {
+              "kind": "interview",
+              "slug": "google/subarray-sum-equals-k"
+            },
+            {
+              "kind": "interview",
+              "slug": "google/median-two-sorted-arrays"
+            },
+            {
+              "kind": "interview",
+              "slug": "amazon/top-k-frequent-items"
+            },
+            {
+              "kind": "interview",
+              "slug": "netflix/longest-distinct-viewing-window"
+            },
+            {
+              "kind": "interview",
+              "slug": "amazon/lru-cache"
+            },
+            {
+              "kind": "interview",
+              "slug": "uber/shortest-path-weighted-road-graph"
+            }
+          ]
+        }
+      ],
+      "id": "66d5e4220f1e",
+      "route": "/paths/algorithmic-complexity-big-o",
+      "sourcePath": "content/learning-paths/algorithmic-complexity-big-o.json",
+      "contentHash": "91b07a6884b81cada610b8dcc4d4aaf56a6647b608c44c98879d8727d2af2011"
+    },
     {
       "slug": "backend-engineer-readiness",
       "title": "Backend Engineer Readiness",
@@ -1044,6 +1783,254 @@
     }
   ],
   "exercises": [
+    {
+      "slug": "programming/big-o-dominant-term-cloze",
+      "title": "Big O Dominant Term Cloze",
+      "documentSlug": "programming/big-o-notation-foundations",
+      "concept": "Dominant term simplification",
+      "difficulty": "foundation",
+      "tags": [
+        "algorithms",
+        "complexity",
+        "big-o"
+      ],
+      "status": "published",
+      "type": "cloze",
+      "prompt": "Simplify the dominant term for nested loops over the same input size.",
+      "template": "A loop nested inside another loop over the same n input usually simplifies to {{blank}}.",
+      "acceptedAnswers": [
+        "O(n^2)",
+        "o(n^2)",
+        "n^2"
+      ],
+      "explanation": "The inner loop can run for each outer item, so pairwise work grows quadratically. Big O keeps the dominant growth term.",
+      "id": "7bfbb482ba96",
+      "route": "/practice/programming/big-o-dominant-term-cloze",
+      "sourcePath": "content/exercises/programming/big-o-dominant-term-cloze.json",
+      "contentHash": "63b5cc0778df2c54304130589f36c8b9b46c7937d63bbd26bc7c9ec36e277311"
+    },
+    {
+      "slug": "programming/big-o-membership-review",
+      "title": "Big O Membership Review",
+      "documentSlug": "programming/big-o-production-tradeoffs",
+      "concept": "Nested membership checks",
+      "difficulty": "practitioner",
+      "tags": [
+        "algorithms",
+        "complexity",
+        "code-review"
+      ],
+      "status": "published",
+      "type": "code-review",
+      "prompt": "Review the product filter and find the hidden complexity problem before this runs on large catalogs.",
+      "files": [
+        {
+          "path": "src/catalog/visibleProducts.ts",
+          "language": "typescript",
+          "healthyExplanation": "The function keeps the product and SKU data explicit at the boundary, which makes the complexity issue reviewable.",
+          "lines": [
+            "type Product = { sku: string; name: string };",
+            "",
+            "export function visibleProducts(products: Product[], allowedSkus: string[]) {",
+            "  return products.filter((product) => {",
+            "    return allowedSkus.includes(product.sku);",
+            "  });",
+            "}"
+          ]
+        }
+      ],
+      "findings": [
+        {
+          "id": "nested-membership-scan",
+          "kind": "improvement",
+          "range": {
+            "filePath": "src/catalog/visibleProducts.ts",
+            "startLine": 3,
+            "startColumn": 1,
+            "endLine": 7,
+            "endColumn": 2
+          },
+          "explanation": "Filtering products while scanning allowedSkus for every product creates O(products * allowedSkus) work. Build a set once, then each SKU check is O(1) average case.",
+          "replacementLines": [
+            "export function visibleProducts(products: Product[], allowedSkus: string[]) {",
+            "  const allowedSkuSet = new Set(allowedSkus);",
+            "  return products.filter((product) => allowedSkuSet.has(product.sku));",
+            "}"
+          ]
+        }
+      ],
+      "healthyNotes": [
+        {
+          "id": "explicit-inputs",
+          "range": {
+            "filePath": "src/catalog/visibleProducts.ts",
+            "startLine": 1,
+            "startColumn": 6,
+            "endLine": 1,
+            "endColumn": 13
+          },
+          "explanation": "The product shape is narrow and explicit, which keeps the review focused on the algorithmic work instead of unrelated type design."
+        }
+      ],
+      "id": "80b91aa3594b",
+      "route": "/practice/programming/big-o-membership-review",
+      "sourcePath": "content/exercises/programming/big-o-membership-review.json",
+      "contentHash": "3bcfa0a8f06076acfea5ea39615c59eed2dde3b4daa5120dcea96daec3d47c37"
+    },
+    {
+      "slug": "programming/big-o-questionnaire",
+      "title": "Big O Program Flow Questionnaire",
+      "documentSlug": "programming/big-o-program-flow",
+      "concept": "Program flow complexity",
+      "difficulty": "foundation",
+      "tags": [
+        "algorithms",
+        "complexity",
+        "big-o"
+      ],
+      "status": "published",
+      "type": "questionnaire",
+      "questions": [
+        {
+          "id": "constant-lookup",
+          "prompt": "Which code shape is usually described as O(1) average-case query work?",
+          "explanation": "A hash set lookup is usually flat average-case query work after the set has been built.",
+          "kind": "choice",
+          "options": [
+            {
+              "id": "scan-array",
+              "label": "Scanning an unsorted array until a match appears.",
+              "isCorrect": false
+            },
+            {
+              "id": "hash-set",
+              "label": "Checking membership in a prebuilt hash set.",
+              "isCorrect": true
+            },
+            {
+              "id": "nested-loop",
+              "label": "Comparing every item with every other item.",
+              "isCorrect": false
+            }
+          ]
+        },
+        {
+          "id": "dominant-term",
+          "prompt": "Fill the gap for a function that does n^2 pair checks and then one linear cleanup pass.",
+          "explanation": "The quadratic pair checks dominate the later linear pass as input grows.",
+          "kind": "cloze",
+          "template": "The simplified Big O time is {{blank}}.",
+          "acceptedAnswers": [
+            "O(n^2)",
+            "o(n^2)",
+            "n^2"
+          ]
+        },
+        {
+          "id": "setup-query-order",
+          "prompt": "Order the reasoning for replacing repeated list scans with a set.",
+          "explanation": "A strong explanation says why the repeated query exists, where setup work moved, and what memory was added.",
+          "kind": "ordering",
+          "items": [
+            {
+              "id": "name-repeat",
+              "label": "Notice that the membership check repeats."
+            },
+            {
+              "id": "build-index",
+              "label": "Build a set once from the lookup values."
+            },
+            {
+              "id": "query-flat",
+              "label": "Use O(1) average-case membership checks."
+            },
+            {
+              "id": "state-space",
+              "label": "Call out the extra O(n) memory."
+            }
+          ],
+          "correctOrder": [
+            "name-repeat",
+            "build-index",
+            "query-flat",
+            "state-space"
+          ]
+        },
+        {
+          "id": "match-code-shape",
+          "prompt": "Match each code shape to its usual Big O label.",
+          "explanation": "Big O follows the execution shape: halving is logarithmic, one pass is linear, and pairwise comparison is quadratic.",
+          "kind": "matching",
+          "pairs": [
+            {
+              "id": "binary-search",
+              "prompt": "Halve the remaining sorted range each step",
+              "match": "O(log n)"
+            },
+            {
+              "id": "linear-scan",
+              "prompt": "Inspect each item once",
+              "match": "O(n)"
+            },
+            {
+              "id": "pairwise",
+              "prompt": "Compare each item with many other items",
+              "match": "O(n^2)"
+            }
+          ]
+        },
+        {
+          "id": "space-tradeoff",
+          "prompt": "What tradeoff does the standard hash-map Two Sum solution make?",
+          "explanation": "The map stores previous values so each new value can be checked once, trading memory for time.",
+          "kind": "choice",
+          "options": [
+            {
+              "id": "less-space",
+              "label": "It uses less memory to keep the same O(n^2) runtime.",
+              "isCorrect": false
+            },
+            {
+              "id": "more-space",
+              "label": "It uses O(n) extra space to reduce time to O(n).",
+              "isCorrect": true
+            },
+            {
+              "id": "sort-only",
+              "label": "It sorts the array and keeps original indices for free.",
+              "isCorrect": false
+            }
+          ]
+        },
+        {
+          "id": "graph-dimensions",
+          "prompt": "Why do graph algorithms often use V and E instead of only n?",
+          "explanation": "A graph with the same number of nodes can have very different numbers of edges, so traversal cost often names both.",
+          "kind": "choice",
+          "options": [
+            {
+              "id": "two-dimensions",
+              "label": "Nodes and edges can grow independently, so both dimensions matter.",
+              "isCorrect": true
+            },
+            {
+              "id": "graphs-constant",
+              "label": "Graph algorithms are always O(1) after setup.",
+              "isCorrect": false
+            },
+            {
+              "id": "hide-memory",
+              "label": "V and E hide the memory cost of the algorithm.",
+              "isCorrect": false
+            }
+          ]
+        }
+      ],
+      "id": "1e6c919b7e2d",
+      "route": "/practice/programming/big-o-questionnaire",
+      "sourcePath": "content/exercises/programming/big-o-questionnaire.json",
+      "contentHash": "62bd9b67fa064a053b4b1b1c7aa69875303089068f500dc55b48d86decbd3878"
+    },
     {
       "slug": "programming/python-async-questionnaire",
       "title": "Python Async Testing And Production Questionnaire",
@@ -2269,6 +3256,134 @@
     }
   ],
   "passiveFlashcardFeeds": [
+    {
+      "slug": "algorithmic-complexity-big-o",
+      "pathSlug": "algorithmic-complexity-big-o",
+      "title": "Big O Flashcard Feed",
+      "summary": "Passive flashcards for Big O notation, program-flow recognition, production tradeoffs, snippets, and interview explanations.",
+      "audience": "Engineers studying algorithmic complexity for practical code review and interview fluency.",
+      "status": "published",
+      "cards": [
+        {
+          "id": "big-o-growth-concept",
+          "type": "concept",
+          "title": "Growth Shape",
+          "prompt": "Big O describes how work grows as input grows, not exact runtime in milliseconds.",
+          "explanation": "Use Big O to reason about code shape and scaling risk before specific hardware, constants, or benchmarks dominate the conversation.",
+          "difficulty": "foundation",
+          "tags": [
+            "algorithms",
+            "complexity",
+            "concept"
+          ],
+          "sourceDocSlug": "programming/big-o-notation-foundations"
+        },
+        {
+          "id": "big-o-dominant-term-practical",
+          "type": "practical",
+          "title": "Dominant Term Review",
+          "prompt": "A function that does n^2 pair checks and then a linear pass is still O(n^2).",
+          "explanation": "The quadratic work dominates as input grows. Keep constants and smaller terms in mind for engineering, but simplify the growth label to the dominant term.",
+          "difficulty": "foundation",
+          "tags": [
+            "algorithms",
+            "complexity",
+            "review"
+          ],
+          "sourceDocSlug": "programming/big-o-notation-foundations"
+        },
+        {
+          "id": "big-o-set-lookup-snippet",
+          "type": "snippet",
+          "title": "Set Lookup Snippet",
+          "prompt": "Read the snippet as a reminder that setup work can reduce repeated query work.",
+          "explanation": "Building the set is O(n), but each later membership check is usually O(1) average case.",
+          "difficulty": "foundation",
+          "tags": [
+            "algorithms",
+            "complexity",
+            "code"
+          ],
+          "sourceDocSlug": "programming/big-o-program-flow",
+          "code": "const allowed = new Set(allowedSkus);\nitems.filter((item) => allowed.has(item.sku));"
+        },
+        {
+          "id": "big-o-two-sum-interview",
+          "type": "interview",
+          "title": "Two Sum Tradeoff",
+          "prompt": "Explain the time and space tradeoff between brute force Two Sum and the hash-map solution.",
+          "explanation": "Brute force checks pairs in O(n^2) time with O(1) extra space. The hash-map solution uses O(n) space to reduce time to O(n).",
+          "difficulty": "foundation",
+          "tags": [
+            "algorithms",
+            "complexity",
+            "interview"
+          ],
+          "sourceDocSlug": "programming/big-o-production-tradeoffs"
+        },
+        {
+          "id": "big-o-binary-search-concept",
+          "type": "concept",
+          "title": "Halving Work",
+          "prompt": "Binary search is O(log n) because each comparison can discard about half the remaining search space.",
+          "explanation": "The sorted-data precondition is the important detail. Without sorted or indexed data, the program cannot safely discard half.",
+          "difficulty": "foundation",
+          "tags": [
+            "algorithms",
+            "complexity",
+            "search"
+          ],
+          "sourceDocSlug": "programming/big-o-program-flow"
+        },
+        {
+          "id": "big-o-production-practical",
+          "type": "practical",
+          "title": "Request Path Budget",
+          "prompt": "The same O(n log n) sort can be fine in a nightly job and wrong in a user-facing request path.",
+          "explanation": "Complexity review must include where the work runs, how often it repeats, and which user or system budget owns the latency.",
+          "difficulty": "practitioner",
+          "tags": [
+            "algorithms",
+            "complexity",
+            "production"
+          ],
+          "sourceDocSlug": "programming/big-o-production-tradeoffs"
+        },
+        {
+          "id": "big-o-graph-interview",
+          "type": "interview",
+          "title": "Graph Dimensions",
+          "prompt": "Why do graph problems often describe complexity as O(V + E)?",
+          "explanation": "Nodes and edges can grow independently. A traversal may visit each vertex and each edge, so both dimensions belong in the explanation.",
+          "difficulty": "practitioner",
+          "tags": [
+            "algorithms",
+            "complexity",
+            "graphs"
+          ],
+          "sourceDocSlug": "programming/big-o-production-tradeoffs"
+        },
+        {
+          "id": "big-o-nested-snippet",
+          "type": "snippet",
+          "title": "Nested Loop Snippet",
+          "prompt": "Read the snippet as a reminder that nested loops can multiply independent input sizes.",
+          "explanation": "If users and permissions can grow independently, the work is O(users * permissions), not just a vague O(n).",
+          "difficulty": "foundation",
+          "tags": [
+            "algorithms",
+            "complexity",
+            "code"
+          ],
+          "sourceDocSlug": "programming/big-o-program-flow",
+          "code": "for (const user of users) {\n  for (const permission of permissions) {\n    grantIfNeeded(user, permission);\n  }\n}"
+        }
+      ],
+      "id": "66d5e4220f1e",
+      "route": "/paths/algorithmic-complexity-big-o/flashcards",
+      "sourcePath": "content/flashcard-feeds/algorithmic-complexity-big-o.json",
+      "contentHash": "44191a124b80774a86eff4253382c0af37c45013731a3faec6efec898bf072ee"
+    },
     {
       "slug": "python-for-ts-js-engineers",
       "pathSlug": "python-for-ts-js-engineers",
@@ -12711,11 +13826,14 @@
     {
       "name": "Programming",
       "slug": "programming",
-      "documentCount": 5,
+      "documentCount": 8,
       "difficulties": [
+        "foundation",
+        "practitioner",
         "senior"
       ],
       "topics": [
+        "Algorithms",
         "Python",
         "TypeScript"
       ]

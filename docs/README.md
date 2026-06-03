@@ -20,13 +20,14 @@ Conventions:
 - `docs/features/learning-paths-and-practice.md` owns the path-first home, local path JSON, local exercise JSON, interview path nodes, and practice routes.
 - `docs/features/code-review-game.md` owns code-review exercise JSON, the standalone review route, and review-game behavior.
 - `docs/features/programming-language-refresh.md` owns reusable programming-language refresh paths, starting with Python for TypeScript and JavaScript engineers.
+- `docs/features/big-o-notation-skill.md` owns the Big O skill path and embedded complexity-flow React Flow blocks.
 - `docs/features/interview-coding-catalog.md` owns the reported-public company interview coding catalog and guided solution walkthroughs.
 - `docs/features/real-system-case-studies.md` owns sourced real-system architecture case studies and local React Flow walkthrough JSON.
 - `docs/plans/<feature>/...` is the repo-local home for durable implementation plans when a plan needs to outlive one thread.
 
 Content authoring surfaces:
 
-- `content/knowledge/`: canonical Markdown documents.
+- `content/knowledge/`: canonical Markdown documents, including embedded Mermaid and validated `complexity-flow` blocks.
 - `content/diagrams/`: canonical Mermaid diagrams.
 - `content/learning-paths/`: role and skill path JSON, including document, diagram, exercise, and interview nodes.
 - `content/exercises/`: flashcard, cloze, questionnaire, and code-review practice JSON.

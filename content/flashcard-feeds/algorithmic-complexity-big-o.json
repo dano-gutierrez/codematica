@@ -1,0 +1,92 @@
+{
+  "slug": "algorithmic-complexity-big-o",
+  "pathSlug": "algorithmic-complexity-big-o",
+  "title": "Big O Flashcard Feed",
+  "summary": "Passive flashcards for Big O notation, program-flow recognition, production tradeoffs, snippets, and interview explanations.",
+  "audience": "Engineers studying algorithmic complexity for practical code review and interview fluency.",
+  "status": "published",
+  "cards": [
+    {
+      "id": "big-o-growth-concept",
+      "type": "concept",
+      "title": "Growth Shape",
+      "prompt": "Big O describes how work grows as input grows, not exact runtime in milliseconds.",
+      "explanation": "Use Big O to reason about code shape and scaling risk before specific hardware, constants, or benchmarks dominate the conversation.",
+      "difficulty": "foundation",
+      "tags": ["algorithms", "complexity", "concept"],
+      "sourceDocSlug": "programming/big-o-notation-foundations"
+    },
+    {
+      "id": "big-o-dominant-term-practical",
+      "type": "practical",
+      "title": "Dominant Term Review",
+      "prompt": "A function that does n^2 pair checks and then a linear pass is still O(n^2).",
+      "explanation": "The quadratic work dominates as input grows. Keep constants and smaller terms in mind for engineering, but simplify the growth label to the dominant term.",
+      "difficulty": "foundation",
+      "tags": ["algorithms", "complexity", "review"],
+      "sourceDocSlug": "programming/big-o-notation-foundations"
+    },
+    {
+      "id": "big-o-set-lookup-snippet",
+      "type": "snippet",
+      "title": "Set Lookup Snippet",
+      "prompt": "Read the snippet as a reminder that setup work can reduce repeated query work.",
+      "explanation": "Building the set is O(n), but each later membership check is usually O(1) average case.",
+      "difficulty": "foundation",
+      "tags": ["algorithms", "complexity", "code"],
+      "sourceDocSlug": "programming/big-o-program-flow",
+      "code": "const allowed = new Set(allowedSkus);\nitems.filter((item) => allowed.has(item.sku));"
+    },
+    {
+      "id": "big-o-two-sum-interview",
+      "type": "interview",
+      "title": "Two Sum Tradeoff",
+      "prompt": "Explain the time and space tradeoff between brute force Two Sum and the hash-map solution.",
+      "explanation": "Brute force checks pairs in O(n^2) time with O(1) extra space. The hash-map solution uses O(n) space to reduce time to O(n).",
+      "difficulty": "foundation",
+      "tags": ["algorithms", "complexity", "interview"],
+      "sourceDocSlug": "programming/big-o-production-tradeoffs"
+    },
+    {
+      "id": "big-o-binary-search-concept",
+      "type": "concept",
+      "title": "Halving Work",
+      "prompt": "Binary search is O(log n) because each comparison can discard about half the remaining search space.",
+      "explanation": "The sorted-data precondition is the important detail. Without sorted or indexed data, the program cannot safely discard half.",
+      "difficulty": "foundation",
+      "tags": ["algorithms", "complexity", "search"],
+      "sourceDocSlug": "programming/big-o-program-flow"
+    },
+    {
+      "id": "big-o-production-practical",
+      "type": "practical",
+      "title": "Request Path Budget",
+      "prompt": "The same O(n log n) sort can be fine in a nightly job and wrong in a user-facing request path.",
+      "explanation": "Complexity review must include where the work runs, how often it repeats, and which user or system budget owns the latency.",
+      "difficulty": "practitioner",
+      "tags": ["algorithms", "complexity", "production"],
+      "sourceDocSlug": "programming/big-o-production-tradeoffs"
+    },
+    {
+      "id": "big-o-graph-interview",
+      "type": "interview",
+      "title": "Graph Dimensions",
+      "prompt": "Why do graph problems often describe complexity as O(V + E)?",
+      "explanation": "Nodes and edges can grow independently. A traversal may visit each vertex and each edge, so both dimensions belong in the explanation.",
+      "difficulty": "practitioner",
+      "tags": ["algorithms", "complexity", "graphs"],
+      "sourceDocSlug": "programming/big-o-production-tradeoffs"
+    },
+    {
+      "id": "big-o-nested-snippet",
+      "type": "snippet",
+      "title": "Nested Loop Snippet",
+      "prompt": "Read the snippet as a reminder that nested loops can multiply independent input sizes.",
+      "explanation": "If users and permissions can grow independently, the work is O(users * permissions), not just a vague O(n).",
+      "difficulty": "foundation",
+      "tags": ["algorithms", "complexity", "code"],
+      "sourceDocSlug": "programming/big-o-program-flow",
+      "code": "for (const user of users) {\n  for (const permission of permissions) {\n    grantIfNeeded(user, permission);\n  }\n}"
+    }
+  ]
+}

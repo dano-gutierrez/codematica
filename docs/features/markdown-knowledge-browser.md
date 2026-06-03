@@ -5,7 +5,7 @@
 - Status: `shipped`
 - Last updated: `2026-06-03`
 - Owner thread: `n/a`
-- Current state: The content library lives at `/browse` and reads a generated local index from repo-authored Markdown, Mermaid, path, exercise, passive flashcard feed, interview, and case-study flow files.
+- Current state: The content library lives at `/browse` and reads a generated local index from repo-authored Markdown, Mermaid, embedded complexity-flow blocks, path, exercise, passive flashcard feed, interview, and case-study flow files.
 - Target outcome: Users can browse, search, read articles, and render diagrams on mobile without Supabase credentials.
 - Code touchpoints:
   - `src/lib/content/`
@@ -25,7 +25,7 @@
 
 ## One-Minute Brief
 
-The V1 app is a searchable study browser. Content authors create plain Markdown files with validated frontmatter and optional Mermaid blocks. A script generates a local index used by the Next.js app for browsing, filters, fuzzy search, article routes, and diagram routes.
+The V1 app is a searchable study browser. Content authors create plain Markdown files with validated frontmatter, optional Mermaid blocks, and optional validated `complexity-flow` animation blocks. A script generates a local index used by the Next.js app for browsing, filters, fuzzy search, article routes, and diagram routes.
 
 ## Outcome / Contract
 
@@ -35,6 +35,7 @@ The V1 app is a searchable study browser. Content authors create plain Markdown 
 - Fuzzy search must weight title, tags, and headings above body text.
 - Track and difficulty filters use the reusable Radix-backed `Dropdown` component, not native select styling.
 - Embedded Mermaid blocks and external diagram files must render with source/error states.
+- Embedded `complexity-flow` blocks must validate during index generation and render as read-only React Flow walkthroughs.
 - Fenced code blocks render with the shared language-aware code theme instead of unstyled browser defaults.
 - Documents may declare `caseStudyFlowRef` to render one read-only React Flow architecture walkthrough from local `content/case-studies/**/*.json`.
 - `src/generated/content-index.json` must not be edited manually.
@@ -51,6 +52,7 @@ The feature is implemented with a small starter content set. Supabase has an opt
 - track and difficulty filters
 - fuzzy search
 - embedded and external Mermaid rendering
+- embedded complexity-flow rendering
 - generated local content index
 - optional Supabase sync scaffold
 
@@ -82,7 +84,7 @@ The feature is implemented with a small starter content set. Supabase has an opt
 - Markdown lives under `content/knowledge/`.
 - Diagrams live under `content/diagrams/`.
 - Case-study flow JSON lives under `content/case-studies/` and is referenced from document frontmatter.
-- The generated index stores metadata, Markdown, extracted plain text, headings, Mermaid blocks, case-study flow refs, learning paths, exercises, passive flashcard feeds, interview catalogs, case-study flows, source paths, and hashes.
+- The generated index stores metadata, Markdown, extracted plain text, headings, Mermaid blocks, complexity-flow blocks, case-study flow refs, learning paths, exercises, passive flashcard feeds, interview catalogs, case-study flows, source paths, and hashes.
 - Optional Supabase tables mirror documents and diagrams for future hosted search; case-study flow JSON is not synced in this milestone.
 
 ### Failure And Edge Handling
@@ -92,6 +94,7 @@ The feature is implemented with a small starter content set. Supabase has an opt
 - Duplicate document slugs fail index generation.
 - Duplicate case-study flow slugs or invalid flow node/edge refs fail index generation.
 - Invalid Mermaid renders an error state with source visible.
+- Invalid `complexity-flow` JSON or graph references fail index generation.
 
 ## Code Touchpoints
 
@@ -107,7 +110,7 @@ The feature is implemented with a small starter content set. Supabase has an opt
 
 ## Test Plan
 
-- Unit: frontmatter validation, parsing, headings, Mermaid block extraction, code block rendering, fuzzy ranking, snippets.
+- Unit: frontmatter validation, parsing, headings, Mermaid block extraction, complexity-flow extraction, code block rendering, fuzzy ranking, snippets.
 - Integration: generated index loads starter content and validates external diagrams.
 - E2E: mobile user uses dropdown filters, searches, opens a document, and opens a diagram.
 
@@ -124,6 +127,7 @@ The feature is implemented with a small starter content set. Supabase has an opt
 - `2026-05-29`: Replace native filter selects with a reusable Radix-backed dropdown component.
 - `2026-05-30`: Move the browser from `/` to `/browse` so `/` can become the learning path map.
 - `2026-06-03`: Add local case-study flow JSON and React Flow rendering for selected Markdown documents; keep Supabase sync unchanged.
+- `2026-06-03`: Add embedded complexity-flow JSON blocks and React Flow rendering for algorithm walkthrough documents; sync document rows with `complexity_flow_blocks`.
 
 ## Thread Handoff Prompt
 
