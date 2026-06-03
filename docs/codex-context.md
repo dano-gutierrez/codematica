@@ -11,12 +11,13 @@ This file carries durable repo context across Codex threads.
 - Canonical learning paths live in `content/learning-paths/`.
 - Canonical practice prompts, questionnaires, and code reviews live in `content/exercises/`.
 - Canonical passive flashcard feeds live in `content/flashcard-feeds/`.
+- Canonical interactive real-system case-study flows live in `content/case-studies/`.
 - Canonical interview coding catalog content lives in `content/interviews/`.
 - Generated content search data lives in `src/generated/content-index.json` and must be regenerated, not edited by hand.
 
 ## Current Product Shape
 
-Codematica V1 is a mobile-first Next.js learning app. The home route is a path map built from local learning-path JSON. It renders plain Markdown articles, renders embedded and external Mermaid diagrams, supports flashcard, cloze, questionnaire, code-review, passive flashcard, and guided interview coding practice, preserves path-scoped interview continuation, and keeps the content library at `/browse` from a generated local content index.
+Codematica V1 is a mobile-first Next.js learning app. The home route is a path map built from local learning-path JSON with explicit shortcuts for browse, real cases, interviews, and code reviews. It renders plain Markdown articles, renders embedded and external Mermaid diagrams, supports local React Flow case-study walkthroughs for selected system-design articles, supports flashcard, cloze, questionnaire, code-review, passive flashcard, and guided interview coding practice, preserves path-scoped interview continuation, and keeps the content library at `/browse` from a generated local content index.
 
 Supabase is scaffolded for future hosted indexing and search, but it is not required for local V1 runtime.
 
@@ -38,6 +39,7 @@ Supabase is scaffolded for future hosted indexing and search, but it is not requ
 - `src/components/PassiveFlashcardFeed.tsx`: path-scoped passive flashcard feed UI
 - `src/components/InterviewCatalog.tsx`: interview catalog and company page UI
 - `src/components/InterviewQuestionSession.tsx`: guided interview solution walkthrough
+- `src/components/CaseStudyFlow.tsx`: read-only React Flow architecture walkthrough renderer
 - `src/components/KnowledgeBrowser.tsx`: browser, filters, and result cards
 - `src/components/MarkdownRenderer.tsx`: safe Markdown rendering and embedded Mermaid support
 - `src/components/CodeBlock.tsx`: shared language-aware code block renderer
@@ -56,10 +58,12 @@ Supabase is scaffolded for future hosted indexing and search, but it is not requ
 - Preserve learning path and exercise JSON as the local source of truth for study structure, including interview nodes that reference existing interview catalog questions.
 - Preserve code-review exercise JSON as the local source of truth for snippets, findings, healthy notes, and fixes.
 - Preserve passive flashcard feed JSON as the local source of truth for scroll-only review.
+- Preserve case-study flow JSON as the local source of truth for interactive architecture walkthroughs.
 - Preserve interview catalog JSON as the local source of truth for reported/public coding prompt packs.
 - Keep questionnaire sessions transient unless a future progress feature explicitly adds durable state.
 - Keep code-review attempts transient unless a future progress/scoring feature explicitly adds durable state.
 - Keep passive flashcard feed sessions transient unless a future review feature explicitly adds durable state.
+- Keep case-study flows local-first and out of Supabase sync until a hosted case-study/search feature explicitly requires remote storage.
 - Keep Supabase optional until a feature explicitly moves runtime search or persistence there.
 - Update feature docs and architecture docs with behavior changes.
 - Add tests with behavior changes; prefer unit coverage before browser coverage.
@@ -70,6 +74,7 @@ Supabase is scaffolded for future hosted indexing and search, but it is not requ
 - `docs/features/markdown-knowledge-browser.md`: V1 Markdown browser, search, diagrams, content indexing, and Supabase scaffold.
 - `docs/features/learning-paths-and-practice.md`: path-first study map, flashcards, cloze prompts, interview path nodes, and local path/exercise content.
 - `docs/features/code-review-game.md`: code-review exercise schema, standalone route, review UI, and future scoring/fix-choice roadmap.
+- `docs/features/real-system-case-studies.md`: source-backed system-design case studies with Mermaid diagrams and local React Flow walkthroughs.
 - `docs/features/programming-language-refresh.md`: reusable language refresh paths and the Python-for-TS/JS module.
 - `docs/features/interview-coding-catalog.md`: reported-public company coding catalog and guided multi-language solution walkthroughs.
 - `docs/features/future-roadmap.md`: planned AI, flashcard, blueprint, code challenge, auth, and native app directions.

@@ -1,0 +1,12 @@
+flowchart LR
+  Clients[Spotify clients and services] --> EventService[Event Service]
+  EventService --> PubSub[Cloud Pub/Sub topics per event type]
+  PubSub --> ETL[ETL per event type]
+  ETL --> GCS[Cloud Storage buckets]
+  ETL --> BigQuery[BigQuery warehouse]
+  ETL --> Dataflow[Dataflow sensitive-data jobs]
+  BigQuery --> Features[Analytics and feature pipelines]
+  GCS --> Lakehouse[BigLake / Iceberg lakehouse direction]
+  Features --> Personalization[Discovery, mixes, ads, artist analytics]
+  Lakehouse --> Personalization
+  Personalization --> Clients

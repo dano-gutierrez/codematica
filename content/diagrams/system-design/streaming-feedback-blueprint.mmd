@@ -1,0 +1,10 @@
+flowchart LR
+  Producers[Product and service events] --> Stream[Streaming backbone]
+  Stream --> Realtime[Real-time processors]
+  Stream --> Lake[Durable lake or warehouse]
+  Realtime --> Serving[Low-latency serving stores]
+  Lake --> Batch[Batch analytics and model training]
+  Batch --> Models[Models and decision systems]
+  Serving --> Product[Product experience]
+  Models --> Product
+  Product --> Producers

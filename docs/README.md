@@ -21,6 +21,7 @@ Conventions:
 - `docs/features/code-review-game.md` owns code-review exercise JSON, the standalone review route, and review-game behavior.
 - `docs/features/programming-language-refresh.md` owns reusable programming-language refresh paths, starting with Python for TypeScript and JavaScript engineers.
 - `docs/features/interview-coding-catalog.md` owns the reported-public company interview coding catalog and guided solution walkthroughs.
+- `docs/features/real-system-case-studies.md` owns sourced real-system architecture case studies and local React Flow walkthrough JSON.
 - `docs/plans/<feature>/...` is the repo-local home for durable implementation plans when a plan needs to outlive one thread.
 
 Content authoring surfaces:
@@ -31,6 +32,7 @@ Content authoring surfaces:
 - `content/exercises/`: flashcard, cloze, questionnaire, and code-review practice JSON.
 - `content/flashcard-feeds/`: path-scoped passive flashcard feed JSON.
 - `content/interviews/`: company-scoped interview coding catalog JSON.
+- `content/case-studies/`: local interactive architecture walkthrough JSON referenced by selected Markdown documents.
 
 Maintenance rules:
 

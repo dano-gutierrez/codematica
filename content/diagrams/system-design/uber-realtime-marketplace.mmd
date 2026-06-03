@@ -1,0 +1,12 @@
+flowchart LR
+  Apps[Rider and driver apps] --> Events[Trips, location, demand, supply events]
+  Events --> Kafka[Kafka topics]
+  Kafka --> Flink[Flink / FlinkSQL transforms]
+  Kafka --> Lake[Hudi data lake]
+  Flink --> Pinot[Apache Pinot real-time OLAP]
+  Lake --> Spark[Spark / Presto analytics]
+  Pinot --> Marketplace[Marketplace dashboards and services]
+  Spark --> Michelangelo[Michelangelo ML platform]
+  Michelangelo --> Decisions[ETA, matching, fraud, pricing models]
+  Marketplace --> Decisions
+  Decisions --> Apps

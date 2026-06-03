@@ -1,0 +1,94 @@
+{
+  "slug": "system-design/spotify-event-delivery-personalization",
+  "title": "Spotify Event Delivery And Personalization",
+  "summary": "How listen events become isolated data products for analytics, recommendations, and artist insights.",
+  "nodes": [
+    {
+      "id": "client-events",
+      "label": "Client events",
+      "kind": "source",
+      "description": "Listening, ad, playlist, search, and operational events from clients and services.",
+      "position": { "x": 0, "y": 120 }
+    },
+    {
+      "id": "event-service",
+      "label": "Event Service",
+      "kind": "control",
+      "description": "Parses event types, rejects malformed data, and routes each type separately.",
+      "position": { "x": 250, "y": 120 }
+    },
+    {
+      "id": "pubsub-topics",
+      "label": "Cloud Pub/Sub",
+      "kind": "stream",
+      "description": "Each event type gets an isolated topic, ETL path, and storage target.",
+      "position": { "x": 500, "y": 120 }
+    },
+    {
+      "id": "etl-jobs",
+      "label": "ETL jobs",
+      "kind": "compute",
+      "description": "Dedicated jobs bucket, deduplicate, encrypt, and deliver event data.",
+      "position": { "x": 750, "y": 40 }
+    },
+    {
+      "id": "warehouse",
+      "label": "GCS + BigQuery",
+      "kind": "warehouse",
+      "description": "Storage and warehouse tables support data science, analytics, and product teams.",
+      "position": { "x": 750, "y": 220 }
+    },
+    {
+      "id": "personalization",
+      "label": "Personalization",
+      "kind": "product",
+      "description": "Discovery surfaces, mixes, ads, and artist insights consume the data products.",
+      "position": { "x": 1020, "y": 120 }
+    }
+  ],
+  "edges": [
+    { "id": "clients-to-service", "source": "client-events", "target": "event-service", "label": "emit" },
+    { "id": "service-to-pubsub", "source": "event-service", "target": "pubsub-topics", "label": "route" },
+    { "id": "pubsub-to-etl", "source": "pubsub-topics", "target": "etl-jobs", "label": "consume" },
+    { "id": "etl-to-warehouse", "source": "etl-jobs", "target": "warehouse", "label": "deliver" },
+    { "id": "warehouse-to-product", "source": "warehouse", "target": "personalization", "label": "features" },
+    { "id": "product-to-events", "source": "personalization", "target": "client-events", "label": "feedback" }
+  ],
+  "steps": [
+    {
+      "id": "collect-listening-signals",
+      "title": "Collect listening signals",
+      "description": "Spotify treats event delivery as core infrastructure because product learning starts with reliable events.",
+      "activeNodeIds": ["client-events", "event-service"],
+      "activeEdgeIds": ["clients-to-service"]
+    },
+    {
+      "id": "isolate-event-types",
+      "title": "Isolate event types early",
+      "description": "Cloud Pub/Sub topics separate noisy and business-critical events so one stream does not block all others.",
+      "activeNodeIds": ["event-service", "pubsub-topics"],
+      "activeEdgeIds": ["service-to-pubsub"]
+    },
+    {
+      "id": "deliver-durable-buckets",
+      "title": "Deliver durable buckets",
+      "description": "Dedicated ETL jobs close immutable buckets and make events safe for downstream consumers.",
+      "activeNodeIds": ["pubsub-topics", "etl-jobs", "warehouse"],
+      "activeEdgeIds": ["pubsub-to-etl", "etl-to-warehouse"]
+    },
+    {
+      "id": "feed-personalization",
+      "title": "Feed personalization",
+      "description": "Warehouse and lakehouse data power discovery, analytics, ads, and artist-facing insights.",
+      "activeNodeIds": ["warehouse", "personalization"],
+      "activeEdgeIds": ["warehouse-to-product"]
+    },
+    {
+      "id": "measure-new-behavior",
+      "title": "Measure new behavior",
+      "description": "The next listening session becomes the next signal for measuring and improving the product.",
+      "activeNodeIds": ["personalization", "client-events"],
+      "activeEdgeIds": ["product-to-events"]
+    }
+  ]
+}

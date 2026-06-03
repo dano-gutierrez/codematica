@@ -3,9 +3,9 @@
 ## Snapshot
 
 - Status: `shipped`
-- Last updated: `2026-06-02`
+- Last updated: `2026-06-03`
 - Owner thread: `n/a`
-- Current state: The home route is a path-first map backed by local path, exercise, passive flashcard feed, and interview JSON indexed with Markdown documents.
+- Current state: The home route is a path-first map with explicit shortcuts, backed by local path, exercise, passive flashcard feed, interview, and case-study flow JSON indexed with Markdown documents.
 - Target outcome: Users can follow role and skill paths, open documents, diagrams, interview problems, complete flashcard, cloze, questionnaire, or code-review practice, and review passive path-scoped flashcards without auth or Supabase.
 - Code touchpoints:
   - `src/lib/content/schema.ts`
@@ -30,6 +30,7 @@
   - `src/components/PracticeCard.test.tsx`
   - `e2e/specs/code-review-game.regression.spec.ts`
   - `e2e/specs/python-refresh.regression.spec.ts`
+  - `e2e/specs/real-system-case-studies.regression.spec.ts`
   - `e2e/specs/knowledge-browser.smoke.spec.ts`
 
 ## One-Minute Brief
@@ -39,13 +40,14 @@ Codematica uses learning paths as the main study surface. Paths are inspired by 
 ## Outcome / Contract
 
 - `/` shows a mobile-first path map, not the fuzzy browser.
+- `/` includes an explicit `Real cases` shortcut to `/paths/system-design-fundamentals#real-production-data-platforms`.
 - `/browse` preserves the content library, fuzzy search, track filter, and difficulty filter.
 - `/paths/[slug]` renders one role or skill path with ordered unit nodes.
 - `/paths/[slug]/flashcards` renders one passive flashcard feed when a path has a published feed.
 - `/practice/[...slug]` renders one flashcard, cloze prompt, questionnaire session, or code-review session.
 - `/code-reviews` renders a standalone random published code-review exercise, with `?exercise=<slug>` for deterministic links.
 - Exercise content is manually authored in `content/exercises/**/*.json`; path content is authored in `content/learning-paths/*.json`; passive flashcard feeds are authored in `content/flashcard-feeds/*.json`.
-- `src/generated/content-index.json` has `schemaVersion: 6` and includes `learningPaths`, `exercises`, `passiveFlashcardFeeds`, and `interviewCompanies`.
+- `src/generated/content-index.json` has `schemaVersion: 7` and includes `learningPaths`, `exercises`, `passiveFlashcardFeeds`, `caseStudyFlows`, and `interviewCompanies`.
 - Index generation fails on duplicate path, exercise, or passive feed slugs, missing document, diagram, exercise, or interview node references, exercises pointing at missing documents, invalid passive feed path or source document references, cloze templates without exactly one `{{blank}}`, invalid questionnaire structure, or invalid code-review file/range structure.
 - No node is locked, disabled, gated, paywalled, or persisted as complete in this milestone.
 
@@ -67,6 +69,7 @@ The shipped content includes skill and role paths using Markdown articles, exter
 - code-review sessions with token/range-level clicks and authored fixes
 - path-aware next link from practice pages
 - passive path-scoped flashcard feed routes with per-session shuffle and infinite local scroll
+- real-system case-study document units with optional interactive flow refs
 
 ### Out Of Scope
 
@@ -88,7 +91,7 @@ The shipped content includes skill and role paths using Markdown articles, exter
 
 ### UI / UX
 
-- Home shows path cards with node previews and a prominent `/browse` content-library link.
+- Home shows path cards with node previews, a prominent `/browse` content-library link, and a `Real cases` shortcut to the real production data platforms unit.
 - Path nodes can be documents, diagrams, exercises, or interview problems and are always navigable.
 - Document and diagram nodes opened from a path preserve `?path=` and expose a next-node link when another node follows.
 - Interview nodes opened from a path preserve `?path=` and expose a next-node link after the guided solution reaches the final explanation.
@@ -107,6 +110,7 @@ The shipped content includes skill and role paths using Markdown articles, exter
 - `content/learning-paths/*.json` stores path metadata and ordered unit nodes. Node `kind` values are `document`, `diagram`, `exercise`, and `interview`.
 - `content/exercises/**/*.json` stores `flashcard`, `cloze`, `questionnaire`, and `code-review` prompts.
 - `content/flashcard-feeds/*.json` stores path-scoped passive review cards.
+- `content/case-studies/**/*.json` stores optional interactive walkthroughs for selected Markdown document nodes.
 - Generated fields include `id`, `route`, `sourcePath`, and `contentHash`.
 - No user state is persisted.
 
@@ -124,7 +128,7 @@ The shipped content includes skill and role paths using Markdown articles, exter
 ## Code Touchpoints
 
 - `src/lib/content/schema.ts`: schemas and generated index types.
-- `src/lib/content/build-index.ts`: path, exercise, passive flashcard feed, and interview collection, validation, reference checks, and schema version 6 serialization.
+- `src/lib/content/build-index.ts`: path, exercise, passive flashcard feed, case-study flow, and interview collection, validation, reference checks, and schema version 7 serialization.
 - `src/lib/content/index.ts`: lookup helpers and path-node route helpers.
 - `src/components/LearningPathMap.tsx`: home and path detail UI.
 - `src/components/PracticeCard.tsx`: flashcard, cloze, questionnaire, and code-review shell.
@@ -160,11 +164,12 @@ The shipped content includes skill and role paths using Markdown articles, exter
 - `2026-06-01`: Add path-scoped passive flashcard feeds as local JSON distinct from interactive flashcard exercises.
 - `2026-06-02`: Add code-review exercises and a standalone `/code-reviews` route while keeping attempts transient.
 - `2026-06-02`: Add interview learning-path nodes so paths can link existing interview questions without creating a separate catalog or persistence model.
+- `2026-06-03`: Add a real production data platforms unit to System Design Fundamentals with Netflix, Uber, and Spotify case-study documents.
 
 ## Documentation Updates
 
 - `docs/README.md`: Adds this feature doc and new content authoring areas to the reading map.
-- Nested READMEs: Updates `content/learning-paths/README.md`, `content/exercises/README.md`, and `content/flashcard-feeds/README.md`.
+- Nested READMEs: Updates `content/learning-paths/README.md`, `content/exercises/README.md`, `content/flashcard-feeds/README.md`, and `content/case-studies/README.md`.
 - `docs/engineering-overview.md`: Updates the content flow and route model.
 
 ## Thread Handoff Prompt

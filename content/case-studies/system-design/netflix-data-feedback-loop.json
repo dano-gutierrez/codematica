@@ -1,0 +1,95 @@
+{
+  "slug": "system-design/netflix-data-feedback-loop",
+  "title": "Netflix Data Feedback Loop",
+  "summary": "How member behavior moves through streaming, durable data products, and personalization systems.",
+  "nodes": [
+    {
+      "id": "device-events",
+      "label": "Device events",
+      "kind": "source",
+      "description": "Playback, search, impression, and interaction events from the product surface.",
+      "position": { "x": 0, "y": 120 }
+    },
+    {
+      "id": "keystone-kafka",
+      "label": "Keystone + Kafka",
+      "kind": "stream",
+      "description": "The streaming backbone that collects and routes high-volume events.",
+      "position": { "x": 260, "y": 120 }
+    },
+    {
+      "id": "flink-processors",
+      "label": "Flink processors",
+      "kind": "compute",
+      "description": "Stateful and stateless processing turns raw events into useful streams.",
+      "position": { "x": 520, "y": 40 }
+    },
+    {
+      "id": "iceberg-products",
+      "label": "Iceberg data products",
+      "kind": "warehouse",
+      "description": "Durable tables support backfills, analytics, and training workloads.",
+      "position": { "x": 520, "y": 220 }
+    },
+    {
+      "id": "model-training",
+      "label": "Model training",
+      "kind": "ml",
+      "description": "Batch and nearline features train personalization and ranking models.",
+      "position": { "x": 780, "y": 220 }
+    },
+    {
+      "id": "personalized-experience",
+      "label": "Personalized experience",
+      "kind": "product",
+      "description": "Rows, search, artwork, and title choices adapt to member behavior.",
+      "position": { "x": 1040, "y": 120 }
+    }
+  ],
+  "edges": [
+    { "id": "events-to-keystone", "source": "device-events", "target": "keystone-kafka", "label": "emit" },
+    { "id": "keystone-to-flink", "source": "keystone-kafka", "target": "flink-processors", "label": "streams" },
+    { "id": "keystone-to-iceberg", "source": "keystone-kafka", "target": "iceberg-products", "label": "persist" },
+    { "id": "flink-to-experience", "source": "flink-processors", "target": "personalized-experience", "label": "fresh features" },
+    { "id": "iceberg-to-training", "source": "iceberg-products", "target": "model-training", "label": "train" },
+    { "id": "training-to-experience", "source": "model-training", "target": "personalized-experience", "label": "models" },
+    { "id": "experience-to-events", "source": "personalized-experience", "target": "device-events", "label": "feedback" }
+  ],
+  "steps": [
+    {
+      "id": "capture-member-behavior",
+      "title": "Capture member behavior",
+      "description": "Every useful recommendation starts as product behavior that can be safely collected and routed.",
+      "activeNodeIds": ["device-events", "keystone-kafka"],
+      "activeEdgeIds": ["events-to-keystone"]
+    },
+    {
+      "id": "process-streams",
+      "title": "Process streams in parallel",
+      "description": "Streaming jobs serve freshness-sensitive features while raw and curated events continue toward durable storage.",
+      "activeNodeIds": ["keystone-kafka", "flink-processors", "iceberg-products"],
+      "activeEdgeIds": ["keystone-to-flink", "keystone-to-iceberg"]
+    },
+    {
+      "id": "serve-fresh-context",
+      "title": "Serve fresh context",
+      "description": "Near-real-time processors can update product-facing context without waiting for the next full batch cycle.",
+      "activeNodeIds": ["flink-processors", "personalized-experience"],
+      "activeEdgeIds": ["flink-to-experience"]
+    },
+    {
+      "id": "train-from-history",
+      "title": "Train from durable history",
+      "description": "Warehouse and lakehouse tables make longer histories available for model training, audits, and backfills.",
+      "activeNodeIds": ["iceberg-products", "model-training"],
+      "activeEdgeIds": ["iceberg-to-training"]
+    },
+    {
+      "id": "feedback-loop",
+      "title": "Close the feedback loop",
+      "description": "The personalized surface changes what members do next, creating the next round of training and evaluation data.",
+      "activeNodeIds": ["model-training", "personalized-experience", "device-events"],
+      "activeEdgeIds": ["training-to-experience", "experience-to-events"]
+    }
+  ]
+}

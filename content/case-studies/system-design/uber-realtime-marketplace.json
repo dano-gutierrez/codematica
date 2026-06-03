@@ -1,0 +1,103 @@
+{
+  "slug": "system-design/uber-realtime-marketplace",
+  "title": "Uber Real-Time Marketplace",
+  "summary": "How marketplace events feed low-latency analytics, lakehouse data, and ML decisions.",
+  "nodes": [
+    {
+      "id": "marketplace-events",
+      "label": "Marketplace events",
+      "kind": "source",
+      "description": "Trips, GPS, rider demand, driver supply, Eats orders, and service logs.",
+      "position": { "x": 0, "y": 120 }
+    },
+    {
+      "id": "kafka-topics",
+      "label": "Kafka topics",
+      "kind": "stream",
+      "description": "Thousands of services publish data for real-time and offline consumers.",
+      "position": { "x": 250, "y": 120 }
+    },
+    {
+      "id": "flink-transforms",
+      "label": "FlinkSQL transforms",
+      "kind": "compute",
+      "description": "Streaming SQL filters, joins, and pre-aggregates data before serving.",
+      "position": { "x": 500, "y": 40 }
+    },
+    {
+      "id": "pinot-olap",
+      "label": "Pinot OLAP",
+      "kind": "analytics",
+      "description": "Fresh analytical tables serve dashboards and product-facing queries.",
+      "position": { "x": 750, "y": 40 }
+    },
+    {
+      "id": "hudi-lake",
+      "label": "Hudi data lake",
+      "kind": "warehouse",
+      "description": "Incremental tables preserve large histories for analytics and ML.",
+      "position": { "x": 500, "y": 220 }
+    },
+    {
+      "id": "michelangelo",
+      "label": "Michelangelo",
+      "kind": "ml",
+      "description": "The ML platform trains, deploys, serves, and monitors production models.",
+      "position": { "x": 750, "y": 220 }
+    },
+    {
+      "id": "marketplace-decisions",
+      "label": "Marketplace decisions",
+      "kind": "product",
+      "description": "ETA, fraud, matching, routing, and pricing decisions affect the live market.",
+      "position": { "x": 1020, "y": 120 }
+    }
+  ],
+  "edges": [
+    { "id": "events-to-kafka", "source": "marketplace-events", "target": "kafka-topics", "label": "publish" },
+    { "id": "kafka-to-flink", "source": "kafka-topics", "target": "flink-transforms", "label": "stream" },
+    { "id": "flink-to-pinot", "source": "flink-transforms", "target": "pinot-olap", "label": "serve" },
+    { "id": "kafka-to-hudi", "source": "kafka-topics", "target": "hudi-lake", "label": "ingest" },
+    { "id": "hudi-to-ml", "source": "hudi-lake", "target": "michelangelo", "label": "features" },
+    { "id": "pinot-to-decisions", "source": "pinot-olap", "target": "marketplace-decisions", "label": "fresh metrics" },
+    { "id": "ml-to-decisions", "source": "michelangelo", "target": "marketplace-decisions", "label": "predictions" },
+    { "id": "decisions-to-events", "source": "marketplace-decisions", "target": "marketplace-events", "label": "new state" }
+  ],
+  "steps": [
+    {
+      "id": "capture-market-state",
+      "title": "Capture market state",
+      "description": "The marketplace only works if supply, demand, and movement data are visible quickly enough to act on.",
+      "activeNodeIds": ["marketplace-events", "kafka-topics"],
+      "activeEdgeIds": ["events-to-kafka"]
+    },
+    {
+      "id": "prepare-realtime-tables",
+      "title": "Prepare real-time tables",
+      "description": "FlinkSQL jobs transform Kafka streams into shapes that Pinot can query with low latency.",
+      "activeNodeIds": ["kafka-topics", "flink-transforms", "pinot-olap"],
+      "activeEdgeIds": ["kafka-to-flink", "flink-to-pinot"]
+    },
+    {
+      "id": "preserve-history",
+      "title": "Preserve correction-friendly history",
+      "description": "A Hudi-backed lake keeps incremental history available when analytics and ML need more than live streams.",
+      "activeNodeIds": ["kafka-topics", "hudi-lake"],
+      "activeEdgeIds": ["kafka-to-hudi"]
+    },
+    {
+      "id": "train-and-serve",
+      "title": "Train and serve models",
+      "description": "Michelangelo uses historical and fresh features to deploy models for ETA, fraud, and marketplace decisions.",
+      "activeNodeIds": ["hudi-lake", "michelangelo", "marketplace-decisions"],
+      "activeEdgeIds": ["hudi-to-ml", "ml-to-decisions"]
+    },
+    {
+      "id": "operate-the-loop",
+      "title": "Operate the live loop",
+      "description": "Dashboards and predictions change the marketplace, then those changes create new data to measure.",
+      "activeNodeIds": ["pinot-olap", "marketplace-decisions", "marketplace-events"],
+      "activeEdgeIds": ["pinot-to-decisions", "decisions-to-events"]
+    }
+  ]
+}

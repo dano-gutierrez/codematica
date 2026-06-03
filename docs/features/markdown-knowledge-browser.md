@@ -3,22 +3,25 @@
 ## Snapshot
 
 - Status: `shipped`
-- Last updated: `2026-05-30`
+- Last updated: `2026-06-03`
 - Owner thread: `n/a`
-- Current state: The content library lives at `/browse` and reads a generated local index from repo-authored Markdown, Mermaid, path, exercise, passive flashcard feed, and interview files.
+- Current state: The content library lives at `/browse` and reads a generated local index from repo-authored Markdown, Mermaid, path, exercise, passive flashcard feed, interview, and case-study flow files.
 - Target outcome: Users can browse, search, read articles, and render diagrams on mobile without Supabase credentials.
 - Code touchpoints:
   - `src/lib/content/`
   - `src/lib/search.ts`
   - `src/components/Dropdown.tsx`
   - `src/components/KnowledgeBrowser.tsx`
+  - `src/components/CaseStudyFlow.tsx`
   - `src/app/docs/[...slug]/page.tsx`
   - `src/app/diagrams/[...slug]/page.tsx`
 - Primary tests:
   - `src/components/Dropdown.test.tsx`
   - `src/lib/content/parse-markdown.test.ts`
   - `src/lib/search.test.ts`
+  - `src/components/CaseStudyFlow.test.tsx`
   - `e2e/specs/knowledge-browser.smoke.spec.ts`
+  - `e2e/specs/real-system-case-studies.regression.spec.ts`
 
 ## One-Minute Brief
 
@@ -33,6 +36,7 @@ The V1 app is a searchable study browser. Content authors create plain Markdown 
 - Track and difficulty filters use the reusable Radix-backed `Dropdown` component, not native select styling.
 - Embedded Mermaid blocks and external diagram files must render with source/error states.
 - Fenced code blocks render with the shared language-aware code theme instead of unstyled browser defaults.
+- Documents may declare `caseStudyFlowRef` to render one read-only React Flow architecture walkthrough from local `content/case-studies/**/*.json`.
 - `src/generated/content-index.json` must not be edited manually.
 
 ## Current State
@@ -77,13 +81,16 @@ The feature is implemented with a small starter content set. Supabase has an opt
 
 - Markdown lives under `content/knowledge/`.
 - Diagrams live under `content/diagrams/`.
-- The generated index stores metadata, Markdown, extracted plain text, headings, Mermaid blocks, learning paths, exercises, passive flashcard feeds, interview catalogs, source paths, and hashes.
-- Optional Supabase tables mirror the generated index for future hosted search.
+- Case-study flow JSON lives under `content/case-studies/` and is referenced from document frontmatter.
+- The generated index stores metadata, Markdown, extracted plain text, headings, Mermaid blocks, case-study flow refs, learning paths, exercises, passive flashcard feeds, interview catalogs, case-study flows, source paths, and hashes.
+- Optional Supabase tables mirror documents and diagrams for future hosted search; case-study flow JSON is not synced in this milestone.
 
 ### Failure And Edge Handling
 
 - Missing diagram refs fail index generation.
+- Missing case-study flow refs fail index generation.
 - Duplicate document slugs fail index generation.
+- Duplicate case-study flow slugs or invalid flow node/edge refs fail index generation.
 - Invalid Mermaid renders an error state with source visible.
 
 ## Code Touchpoints
@@ -94,6 +101,7 @@ The feature is implemented with a small starter content set. Supabase has an opt
 - `src/components/Dropdown.tsx`: reusable dropdown primitive for browser filters
 - `src/components/KnowledgeBrowser.tsx`: mobile-first browser and filter wiring
 - `src/components/CodeBlock.tsx`: shared highlighted code block renderer
+- `src/components/CaseStudyFlow.tsx`: read-only interactive architecture walkthrough renderer
 - `src/app/browse/page.tsx`: route that hosts the browser now that `/` is path-first
 - `scripts/content/sync-supabase.ts`: optional Supabase upsert path
 
@@ -115,6 +123,7 @@ The feature is implemented with a small starter content set. Supabase has an opt
 - `2026-05-29`: Remove the exact/fuzzy search mode toggle; the app always uses fuzzy search.
 - `2026-05-29`: Replace native filter selects with a reusable Radix-backed dropdown component.
 - `2026-05-30`: Move the browser from `/` to `/browse` so `/` can become the learning path map.
+- `2026-06-03`: Add local case-study flow JSON and React Flow rendering for selected Markdown documents; keep Supabase sync unchanged.
 
 ## Thread Handoff Prompt
 

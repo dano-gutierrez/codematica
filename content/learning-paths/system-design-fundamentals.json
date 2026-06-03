@@ -17,6 +17,17 @@
         { "kind": "exercise", "slug": "system-design/cache-product-contract" },
         { "kind": "exercise", "slug": "system-design/versioned-keys-cloze" }
       ]
+    },
+    {
+      "slug": "real-production-data-platforms",
+      "title": "Real Production Data Platforms",
+      "summary": "Compare Netflix, Uber, and Spotify data feedback loops through sourced system-design case studies.",
+      "nodes": [
+        { "kind": "document", "slug": "system-design/netflix-data-feedback-loop" },
+        { "kind": "document", "slug": "system-design/uber-realtime-marketplace" },
+        { "kind": "document", "slug": "system-design/spotify-event-delivery-personalization" },
+        { "kind": "diagram", "slug": "system-design/streaming-feedback-blueprint" }
+      ]
     }
   ]
 }

@@ -1,0 +1,13 @@
+flowchart LR
+  Devices[Member devices] --> Events[Playback, search, impression events]
+  Events --> Keystone[Keystone / Kafka]
+  Keystone --> Flink[Flink stream processing]
+  Keystone --> DataMesh[Data Mesh pipelines]
+  Flink --> Realtime[Near-real-time features]
+  DataMesh --> Iceberg[Iceberg data products]
+  Iceberg --> Spark[Spark / warehouse jobs]
+  Realtime --> Recs[Personalization services]
+  Spark --> Training[Recommendation training]
+  Training --> Recs
+  Recs --> Experience[Rows, search, artwork, and title choices]
+  Experience --> Events

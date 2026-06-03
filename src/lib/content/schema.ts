@@ -19,6 +19,7 @@ export const knowledgeFrontmatterSchema = z.object({
   tags: z.array(z.string().min(2)).min(1),
   prerequisites: z.array(z.string().min(2)).default([]),
   diagramRefs: z.array(slugSchema).default([]),
+  caseStudyFlowRef: slugSchema.optional(),
   status: contentStatusSchema.default("draft"),
 });
 
@@ -228,6 +229,48 @@ export const passiveFlashcardFeedFileSchema = z.object({
   cards: z.array(passiveFlashcardCardSchema).min(1),
 });
 
+const caseStudyElementIdSchema = z
+  .string()
+  .min(2)
+  .regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/, "Use lowercase IDs with - separators.");
+
+export const caseStudyFlowNodeKindSchema = z.enum(["source", "stream", "compute", "storage", "warehouse", "analytics", "ml", "serving", "product", "control"]);
+
+export const caseStudyFlowNodeSchema = z.object({
+  id: caseStudyElementIdSchema,
+  label: z.string().min(2).max(48),
+  kind: caseStudyFlowNodeKindSchema,
+  description: z.string().min(12).max(180),
+  position: z.object({
+    x: z.number().finite(),
+    y: z.number().finite(),
+  }),
+});
+
+export const caseStudyFlowEdgeSchema = z.object({
+  id: caseStudyElementIdSchema,
+  source: caseStudyElementIdSchema,
+  target: caseStudyElementIdSchema,
+  label: z.string().min(2).max(48).optional(),
+});
+
+export const caseStudyFlowStepSchema = z.object({
+  id: caseStudyElementIdSchema,
+  title: z.string().min(4).max(72),
+  description: z.string().min(20).max(260),
+  activeNodeIds: z.array(caseStudyElementIdSchema).min(1),
+  activeEdgeIds: z.array(caseStudyElementIdSchema).default([]),
+});
+
+export const caseStudyFlowFileSchema = z.object({
+  slug: slugSchema,
+  title: z.string().min(4),
+  summary: z.string().min(20),
+  nodes: z.array(caseStudyFlowNodeSchema).min(2).max(12),
+  edges: z.array(caseStudyFlowEdgeSchema).min(1).max(20),
+  steps: z.array(caseStudyFlowStepSchema).min(1).max(8),
+});
+
 const externalLinkSchema = z.object({
   label: z.string().min(4),
   url: z.string().url(),
@@ -316,6 +359,11 @@ export type LearningExerciseFile = z.infer<typeof learningExerciseFileSchema>;
 export type PassiveFlashcardType = z.infer<typeof passiveFlashcardTypeSchema>;
 export type PassiveFlashcardCard = z.infer<typeof passiveFlashcardCardSchema>;
 export type PassiveFlashcardFeedFile = z.infer<typeof passiveFlashcardFeedFileSchema>;
+export type CaseStudyFlowNodeKind = z.infer<typeof caseStudyFlowNodeKindSchema>;
+export type CaseStudyFlowNode = z.infer<typeof caseStudyFlowNodeSchema>;
+export type CaseStudyFlowEdge = z.infer<typeof caseStudyFlowEdgeSchema>;
+export type CaseStudyFlowStep = z.infer<typeof caseStudyFlowStepSchema>;
+export type CaseStudyFlowFile = z.infer<typeof caseStudyFlowFileSchema>;
 export type InterviewSolutionTrack = z.infer<typeof interviewSolutionTrackSchema>;
 export type InterviewQuestionFile = z.infer<typeof interviewQuestionFileSchema>;
 export type InterviewCompanyFile = z.infer<typeof interviewCompanyFileSchema>;
@@ -365,6 +413,13 @@ export type PassiveFlashcardFeed = PassiveFlashcardFeedFile & {
   contentHash: string;
 };
 
+export type CaseStudyFlow = CaseStudyFlowFile & {
+  id: string;
+  route: string;
+  sourcePath: string;
+  contentHash: string;
+};
+
 export type InterviewQuestion = InterviewQuestionFile & {
   id: string;
   route: string;
@@ -399,12 +454,13 @@ export type ContentTrack = {
 };
 
 export type ContentIndex = {
-  schemaVersion: 6;
+  schemaVersion: 7;
   documents: KnowledgeDocument[];
   diagrams: MermaidDiagram[];
   learningPaths: LearningPath[];
   exercises: LearningExercise[];
   passiveFlashcardFeeds: PassiveFlashcardFeed[];
+  caseStudyFlows: CaseStudyFlow[];
   interviewCompanies: InterviewCompany[];
   tracks: ContentTrack[];
 };

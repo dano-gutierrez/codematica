@@ -3,6 +3,7 @@ import {
   getContentIndex,
   getDocumentBySlug,
   getExerciseBySlug,
+  getCaseStudyFlowBySlug,
   getInterviewCompanyBySlug,
   getInterviewQuestionBySlug,
   getLearningPathBySlug,
@@ -15,9 +16,10 @@ describe("generated content index", () => {
   it("loads starter documents and diagrams", () => {
     const index = getContentIndex();
 
-    expect(index.schemaVersion).toBe(6);
+    expect(index.schemaVersion).toBe(7);
     expect(index.documents.length).toBeGreaterThanOrEqual(3);
     expect(index.diagrams.length).toBeGreaterThanOrEqual(2);
+    expect(index.caseStudyFlows.length).toBeGreaterThanOrEqual(3);
     expect(index.learningPaths.length).toBeGreaterThanOrEqual(2);
     expect(index.exercises.length).toBeGreaterThanOrEqual(4);
     expect(index.interviewCompanies.length).toBeGreaterThanOrEqual(8);
@@ -25,6 +27,36 @@ describe("generated content index", () => {
     expect(getDocumentBySlug("system-design/cache-invalidation")?.title).toBe("Cache Invalidation Under Product Pressure");
     expect(getLearningPathBySlug("system-design-fundamentals")?.title).toBe("System Design Fundamentals");
     expect(getExerciseBySlug("system-design/versioned-keys-cloze")?.type).toBe("cloze");
+  });
+
+  it("loads real system case studies, flows, and path nodes", () => {
+    const path = getLearningPathBySlug("system-design-fundamentals");
+    const netflix = getDocumentBySlug("system-design/netflix-data-feedback-loop");
+    const uber = getDocumentBySlug("system-design/uber-realtime-marketplace");
+    const spotify = getDocumentBySlug("system-design/spotify-event-delivery-personalization");
+    const netflixFlow = getCaseStudyFlowBySlug("system-design/netflix-data-feedback-loop");
+
+    expect(netflix).toEqual(
+      expect.objectContaining({
+        title: "Netflix Data Feedback Loop",
+        caseStudyFlowRef: "system-design/netflix-data-feedback-loop",
+        diagramRefs: expect.arrayContaining(["system-design/netflix-data-feedback-loop", "system-design/streaming-feedback-blueprint"]),
+      }),
+    );
+    expect(uber?.caseStudyFlowRef).toBe("system-design/uber-realtime-marketplace");
+    expect(spotify?.caseStudyFlowRef).toBe("system-design/spotify-event-delivery-personalization");
+    expect(netflixFlow).toEqual(
+      expect.objectContaining({
+        title: "Netflix Data Feedback Loop",
+        steps: expect.arrayContaining([expect.objectContaining({ id: "feedback-loop" })]),
+      }),
+    );
+    expect(path?.units.find((unit) => unit.slug === "real-production-data-platforms")?.nodes).toEqual([
+      { kind: "document", slug: "system-design/netflix-data-feedback-loop" },
+      { kind: "document", slug: "system-design/uber-realtime-marketplace" },
+      { kind: "document", slug: "system-design/spotify-event-delivery-personalization" },
+      { kind: "diagram", slug: "system-design/streaming-feedback-blueprint" },
+    ]);
   });
 
   it("loads code review exercises from the generated index", () => {

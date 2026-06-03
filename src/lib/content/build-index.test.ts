@@ -8,9 +8,12 @@ async function makeTempRoot() {
   return mkdtemp(path.join(os.tmpdir(), "codematica-content-"));
 }
 
-async function writeKnowledge(rootDir: string, slug: string, diagramRefs: string[] = []) {
+async function writeKnowledge(rootDir: string, slug: string, diagramRefs: string[] = [], frontmatterOverrides: Record<string, unknown> = {}) {
   const filePath = path.join(rootDir, "content", "knowledge", `${slug}.md`);
   await mkdir(path.dirname(filePath), { recursive: true });
+  const extraFrontmatter = Object.entries(frontmatterOverrides)
+    .map(([key, value]) => `${key}: ${JSON.stringify(value)}`)
+    .join("\n");
   await writeFile(
     filePath,
     `---
@@ -24,12 +27,84 @@ tags: [caching]
 prerequisites: []
 diagramRefs: ${JSON.stringify(diagramRefs)}
 status: published
+${extraFrontmatter}
 ---
 
 ## Test Heading
 
 Cache aside is a useful pattern.
 `,
+  );
+}
+
+async function writeCaseStudyFlow(rootDir: string, slug = "system-design/cache-invalidation-flow", overrides: Record<string, unknown> = {}) {
+  const filePath = path.join(rootDir, "content", "case-studies", `${slug}.json`);
+  await mkdir(path.dirname(filePath), { recursive: true });
+  await writeFile(
+    filePath,
+    JSON.stringify(
+      {
+        slug,
+        title: "Cache Invalidation Flow",
+        summary: "A step-by-step architecture walkthrough for cache invalidation.",
+        nodes: [
+          {
+            id: "client",
+            label: "Client",
+            kind: "source",
+            description: "Produces user-visible requests.",
+            position: { x: 0, y: 80 },
+          },
+          {
+            id: "api",
+            label: "API",
+            kind: "compute",
+            description: "Validates and routes the write.",
+            position: { x: 240, y: 80 },
+          },
+          {
+            id: "cache",
+            label: "Cache",
+            kind: "serving",
+            description: "Serves derived read projections.",
+            position: { x: 480, y: 80 },
+          },
+        ],
+        edges: [
+          {
+            id: "client-api",
+            source: "client",
+            target: "api",
+            label: "request",
+          },
+          {
+            id: "api-cache",
+            source: "api",
+            target: "cache",
+            label: "invalidate",
+          },
+        ],
+        steps: [
+          {
+            id: "ingest",
+            title: "Capture the request",
+            description: "The API receives the user action and determines the affected projection.",
+            activeNodeIds: ["client", "api"],
+            activeEdgeIds: ["client-api"],
+          },
+          {
+            id: "publish",
+            title: "Refresh the projection",
+            description: "The invalidation event refreshes the cached projection after the write.",
+            activeNodeIds: ["api", "cache"],
+            activeEdgeIds: ["api-cache"],
+          },
+        ],
+        ...overrides,
+      },
+      null,
+      2,
+    ),
   );
 }
 
@@ -435,9 +510,10 @@ describe("buildContentIndex", () => {
 
     const index = await buildContentIndex({ rootDir });
 
-    expect(index.schemaVersion).toBe(6);
+    expect(index.schemaVersion).toBe(7);
     expect(index.documents).toHaveLength(1);
     expect(index.diagrams).toHaveLength(1);
+    expect(index.caseStudyFlows).toEqual([]);
     expect(index.exercises).toEqual([
       expect.objectContaining({
         slug: "system-design/cache-aside-recall",
@@ -469,6 +545,67 @@ describe("buildContentIndex", () => {
         topics: ["Caching"],
       },
     ]);
+  });
+
+  it("indexes case study flows referenced by documents", async () => {
+    const rootDir = await makeTempRoot();
+    await writeCaseStudyFlow(rootDir);
+    await writeKnowledge(rootDir, "system-design/cache-invalidation", [], {
+      caseStudyFlowRef: "system-design/cache-invalidation-flow",
+    });
+
+    const index = await buildContentIndex({ rootDir });
+
+    expect(index.caseStudyFlows).toEqual([
+      expect.objectContaining({
+        slug: "system-design/cache-invalidation-flow",
+        route: "/docs/system-design/cache-invalidation#case-study-flow",
+        nodes: [
+          expect.objectContaining({ id: "client", label: "Client", kind: "source" }),
+          expect.objectContaining({ id: "api", label: "API", kind: "compute" }),
+          expect.objectContaining({ id: "cache", label: "Cache", kind: "serving" }),
+        ],
+        steps: [
+          expect.objectContaining({ id: "ingest", activeEdgeIds: ["client-api"] }),
+          expect.objectContaining({ id: "publish", activeNodeIds: ["api", "cache"] }),
+        ],
+      }),
+    ]);
+    expect(index.documents[0]).toEqual(expect.objectContaining({ caseStudyFlowRef: "system-design/cache-invalidation-flow" }));
+  });
+
+  it("fails when a document references a missing case study flow", async () => {
+    const rootDir = await makeTempRoot();
+    await writeKnowledge(rootDir, "system-design/cache-invalidation", [], {
+      caseStudyFlowRef: "system-design/missing-flow",
+    });
+
+    await expect(buildContentIndex({ rootDir })).rejects.toThrow(/references missing case study flow/i);
+  });
+
+  it("fails when a case study flow edge references an unknown node", async () => {
+    const rootDir = await makeTempRoot();
+    await writeCaseStudyFlow(rootDir, "system-design/cache-invalidation-flow", {
+      edges: [{ id: "missing-edge", source: "client", target: "missing", label: "broken" }],
+    });
+    await writeKnowledge(rootDir, "system-design/cache-invalidation", [], {
+      caseStudyFlowRef: "system-design/cache-invalidation-flow",
+    });
+
+    await expect(buildContentIndex({ rootDir })).rejects.toThrow(/unknown case study flow node/i);
+  });
+
+  it("fails on duplicate case study flow slugs", async () => {
+    const rootDir = await makeTempRoot();
+    await writeCaseStudyFlow(rootDir, "system-design/cache-invalidation-flow");
+    await writeCaseStudyFlow(rootDir, "system-design/cache-invalidation-copy", {
+      slug: "system-design/cache-invalidation-flow",
+    });
+    await writeKnowledge(rootDir, "system-design/cache-invalidation", [], {
+      caseStudyFlowRef: "system-design/cache-invalidation-flow",
+    });
+
+    await expect(buildContentIndex({ rootDir })).rejects.toThrow(/Duplicate case study flow slug/);
   });
 
   it("indexes passive flashcard feeds for learning paths", async () => {
@@ -967,7 +1104,7 @@ describe("buildContentIndex", () => {
 
     const index = await buildContentIndex({ rootDir });
 
-    expect(index.schemaVersion).toBe(6);
+    expect(index.schemaVersion).toBe(7);
     expect(index.interviewCompanies).toEqual([
       expect.objectContaining({
         slug: "amazon",

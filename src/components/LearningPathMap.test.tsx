@@ -1,6 +1,6 @@
 import { render, screen } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
-import { LearningPathDetail } from "./LearningPathMap";
+import { LearningPathDetail, LearningPathHome } from "./LearningPathMap";
 import type { ContentIndex, LearningPath } from "@/lib/content/schema";
 
 const learningPath: LearningPath = {
@@ -25,13 +25,36 @@ const learningPath: LearningPath = {
   ],
 };
 
+const systemDesignPath: LearningPath = {
+  id: "path-system-design",
+  slug: "system-design-fundamentals",
+  title: "System Design Fundamentals",
+  summary: "Build system design judgment from core concepts and production examples.",
+  kind: "skill",
+  category: "System Design",
+  audience: "Engineers practicing system design.",
+  status: "published",
+  route: "/paths/system-design-fundamentals",
+  sourcePath: "content/learning-paths/system-design-fundamentals.json",
+  contentHash: "hash",
+  units: [
+    {
+      slug: "real-production-data-platforms",
+      title: "Real Production Data Platforms",
+      summary: "Study Netflix, Uber, and Spotify feedback-loop architectures.",
+      nodes: [{ kind: "document", slug: "system-design/netflix-data-feedback-loop" }],
+    },
+  ],
+};
+
 const index = {
-  schemaVersion: 6,
+  schemaVersion: 7,
   documents: [],
   diagrams: [],
-  learningPaths: [learningPath],
+  learningPaths: [learningPath, systemDesignPath],
   exercises: [],
   passiveFlashcardFeeds: [],
+  caseStudyFlows: [],
   interviewCompanies: [
     {
       id: "company-amazon",
@@ -68,9 +91,22 @@ const index = {
   tracks: [],
 } satisfies ContentIndex;
 
+describe("LearningPathHome", () => {
+  it("links directly to the real cases unit from the home screen", () => {
+    render(<LearningPathHome index={index} />);
+
+    const link = screen.getByTestId("home-real-cases-link");
+
+    expect(link).toHaveAttribute("href", "/paths/system-design-fundamentals#real-production-data-platforms");
+    expect(link).toHaveTextContent("Real cases");
+  });
+});
+
 describe("LearningPathDetail", () => {
   it("renders interview nodes as interview problems", () => {
     render(<LearningPathDetail index={index} learningPath={learningPath} />);
+
+    expect(screen.getByTestId("path-unit-interview-practice")).toHaveAttribute("id", "interview-practice");
 
     const node = screen.getByTestId("path-node-interview-amazon-lru-cache");
 

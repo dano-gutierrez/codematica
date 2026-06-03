@@ -1,6 +1,6 @@
 # Codematica Engineering Overview
 
-Last updated: 2026-06-02
+Last updated: 2026-06-03
 
 Codematica is a mobile-first learning app for system design, coding, programming, and software engineering. V1 keeps the product intentionally local-first: author documents as Markdown, author paths, exercises, flashcard feeds, and interview catalogs as JSON, generate a static study index, and render the app with Next.js.
 
@@ -12,8 +12,9 @@ Codematica is a mobile-first learning app for system design, coding, programming
 - plain Markdown rendered with `react-markdown`
 - language-aware code highlighting with `highlight.js`
 - Mermaid rendered client-side
+- `@xyflow/react` for read-only architecture walkthroughs
 - Fuse.js-style fuzzy search
-- local JSON learning paths, practice prompts, flashcard feeds, and interview catalogs
+- local JSON learning paths, practice prompts, flashcard feeds, case-study flows, and interview catalogs
 - Vitest for unit/integration tests
 - Playwright for mobile smoke tests
 - optional Supabase Postgres scaffold for later hosted search
@@ -27,12 +28,14 @@ flowchart TD
   PATHS["content/learning-paths/*.json"] --> Parser
   EX["content/exercises/**/*.json"] --> Parser
   FEEDS["content/flashcard-feeds/*.json"] --> Parser
+  CS["content/case-studies/**/*.json"] --> Parser
   IV["content/interviews/*.json"] --> Parser
   Parser --> Index["src/generated/content-index.json"]
   Index --> Paths["Next.js path map"]
   Index --> Practice["Flashcard, cloze, questionnaire + code-review practice"]
   Index --> Reviews["Standalone code review game"]
   Index --> Passive["Passive flashcard feed"]
+  Index --> CaseStudies["Document-embedded React Flow walkthroughs"]
   Index --> Interviews["Interview coding catalog"]
   Index --> Browser["Next.js browser UI"]
   Index --> Search["Fuzzy search"]
@@ -53,7 +56,7 @@ Supabase is prepared for later:
 
 ## Content Model
 
-Every article has frontmatter with title, slug, summary, track, topic, difficulty, tags, prerequisites, diagram references, and status. The parser validates this contract before generating the index.
+Every article has frontmatter with title, slug, summary, track, topic, difficulty, tags, prerequisites, diagram references, optional case-study flow references, and status. The parser validates this contract before generating the index.
 
 External diagrams are stored separately and referenced by slug from article frontmatter. Embedded Mermaid blocks inside Markdown are also rendered. Fenced code blocks and app-authored solution snippets use the shared highlighted code block theme with language labels for Python, TypeScript, Java, JSON, shell, Markdown, and related aliases.
 
@@ -61,13 +64,17 @@ Learning paths live in `content/learning-paths/*.json` and contain ordered units
 
 Passive flashcard feeds live in `content/flashcard-feeds/*.json` and attach short review cards to learning paths.
 
+Case-study flows live in `content/case-studies/**/*.json`. They store fixed-position nodes, edges, and 4-6 walkthrough steps for selected system-design articles. `src/generated/content-index.json` includes them as `caseStudyFlows` under schema version 7, and `/docs/[...slug]` renders a read-only React Flow walkthrough when the article declares `caseStudyFlowRef`. These flow files are local-first content and are not part of the optional Supabase sync path until a hosted case-study/search feature explicitly adds that contract.
+
 Interview company catalogs live in `content/interviews/*.json`. Each company contains reported-public coding questions, public source links, examples, optional Mermaid diagrams, and at least two guided solution tracks with Python, TypeScript, and Java code.
 
 The Python language refresh path is the first reusable language-refresh slice. It pairs searchable Markdown docs with ten-question senior questionnaires, a 480-card passive flashcard feed, and a final interview-practice unit for TypeScript and JavaScript engineers.
 
+The System Design Fundamentals path includes a `real-production-data-platforms` unit with Netflix, Uber, and Spotify data/ML feedback-loop case studies plus a shared streaming backbone blueprint diagram. The home route links directly to that unit through the `Real cases` shortcut.
+
 ## Route Model
 
-- `/`: path-first home map.
+- `/`: path-first home map with explicit shortcuts for browse, real cases, interviews, and code reviews.
 - `/browse`: fuzzy content library.
 - `/paths/[slug]`: one role or skill path.
 - `/paths/[slug]/flashcards`: one passive flashcard feed for a path.
@@ -81,7 +88,7 @@ The Python language refresh path is the first reusable language-refresh slice. I
 
 ## Testing Model
 
-Unit tests cover schema validation, parser behavior, fuzzy search, snippets, questionnaire shuffling/checking, code-review hit detection/replacement, interview solution selection, path/exercise/interview validation, and diagram indexing. Integration tests cover generated index loading and renderer behavior. Playwright smoke and regression tests cover the mobile path, practice, browser, questionnaire, code-review, interview, flashcard, and diagram journeys.
+Unit tests cover schema validation, parser behavior, fuzzy search, snippets, questionnaire shuffling/checking, code-review hit detection/replacement, interview solution selection, path/exercise/interview/case-study-flow validation, and diagram indexing. Integration tests cover generated index loading and renderer behavior. Component tests cover the case-study flow step view model. Playwright smoke and regression tests cover the mobile path, practice, browser, questionnaire, code-review, interview, flashcard, diagram, and real-system case-study journeys.
 
 ## Future Architecture Direction
 

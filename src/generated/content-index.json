@@ -1,5 +1,5 @@
 {
-  "schemaVersion": 6,
+  "schemaVersion": 7,
   "documents": [
     {
       "title": "Python Async Testing And Production Standards For JS Engineers",
@@ -530,6 +530,234 @@
       ],
       "contentHash": "38bc46ffe4f72f5851003404685ecc1c17fb2b98e29813debeca0e8fbfe3096e",
       "readingMinutes": 2
+    },
+    {
+      "title": "Netflix Data Feedback Loop",
+      "slug": "system-design/netflix-data-feedback-loop",
+      "summary": "A source-backed case study of how Netflix turns member behavior into streaming data, durable analytics, and personalization feedback loops.",
+      "track": "System Design",
+      "topic": "Real Systems",
+      "difficulty": "senior",
+      "tags": [
+        "real-systems",
+        "streaming",
+        "personalization",
+        "data-platforms"
+      ],
+      "prerequisites": [
+        "event streaming",
+        "data lakehouse basics",
+        "recommendation systems"
+      ],
+      "diagramRefs": [
+        "system-design/netflix-data-feedback-loop",
+        "system-design/streaming-feedback-blueprint"
+      ],
+      "caseStudyFlowRef": "system-design/netflix-data-feedback-loop",
+      "status": "published",
+      "id": "144c745e9223",
+      "route": "/docs/system-design/netflix-data-feedback-loop",
+      "sourcePath": "content/knowledge/system-design/netflix-data-feedback-loop.md",
+      "bodyPath": "content/knowledge/system-design/netflix-data-feedback-loop.md",
+      "markdown": "## Core System Pressure\n\nNetflix is not only serving video. It is continuously learning from how members discover, start, pause, abandon, search, and resume titles. That creates two competing requirements: the product needs fresh signals for personalization, while data scientists and analysts need durable, replayable history for model training, experimentation, studio decisions, and debugging.\n\nThe useful design lesson is that Netflix does not treat the event pipeline as a side channel. Public engineering posts describe Keystone as a real-time stream processing platform and Data Mesh as a later data movement and processing platform. Both point to the same system-design pressure: capture behavior once, route it reliably, then let different consumers choose freshness, cost, and correctness tradeoffs.\n\n## Architecture Map\n\nThe high-level shape is a feedback loop:\n\n- Member devices and services emit product events.\n- Keystone and Kafka-style transports collect and route events.\n- Flink processors compute fresh streams and reusable data products.\n- Durable stores such as Iceberg-backed data products support backfills, analytics, and training.\n- Recommendation and personalization services use the resulting features and models.\n- The personalized surface changes what members do next, creating the next round of events.\n\nThe diagram attached to this article shows that split explicitly: streaming paths feed freshness-sensitive serving, while lakehouse and warehouse paths feed historical analysis and model training.\n\n## Streaming Path\n\nKeystone is the real-time lane. Public Netflix material describes a data pipeline with routing and Kafka-enabled messaging, plus stream processing as a service for custom jobs. That matters because the consumer set is diverse: some teams need event delivery, some need near-real-time aggregations, and some need stateful processing.\n\nFlink is a natural fit for this layer because processors can maintain state, window events, and write downstream streams or serving-ready outputs. In a recommender system, this is where recent viewing and interaction behavior can become fresh user context instead of waiting for the next large batch job.\n\nThe main design tradeoff is duplicate tolerance versus latency. Recommendation features can often tolerate replay-safe idempotent updates. Financial reporting or studio metrics may need stricter reconciliation from durable data.\n\n## Batch And Warehouse Path\n\nThe durable path exists because streaming state is not enough. Training, A/B analysis, and data quality investigations need historical replay, long lookback windows, and a table abstraction that many engines can query. Netflix Data Mesh posts describe processors that can sink data into systems such as Iceberg, Elasticsearch, or Kafka topics.\n\nThe key system-design move is separation of concern. Streaming processors keep the product fresh. Durable tables keep history trustworthy. Spark and warehouse-style jobs can rebuild features, validate metrics, and train models from a broader history than the real-time path keeps in memory.\n\n## ML And Product Feedback Loop\n\nNetflix personalization is a multi-model product surface. Recent Netflix posts describe centralizing member preference learning through a foundation model and using embeddings or subgraph integration to distribute that learning to applications. That is a useful modern extension of the older data-platform pattern.\n\nThe feedback loop is:\n\n- The product chooses rows, titles, artwork, and rankings.\n- Members interact with those choices.\n- Events become training data and fresh features.\n- Updated models change the next product decision.\n\nThis is why recommendation architecture is not just \"train a model.\" The hard part is keeping event contracts, feature freshness, model cost, online latency, and experiment metrics aligned.\n\n## Failure Modes\n\n- A malformed or high-volume event can pollute many consumers unless schemas and routing boundaries reject it early.\n- Stream processors can silently fall behind, creating stale personalization that still looks operationally healthy.\n- Batch tables can diverge from streaming outputs if correction and replay paths are not designed upfront.\n- Model improvements can regress a lower-latency surface if every use case is forced through the same serving path.\n- Data lineage gaps make A/B test results hard to trust because teams cannot explain which behavior became which feature.\n\n## Design Takeaways\n\n- Separate fresh serving from durable truth instead of making one path satisfy every consumer.\n- Treat schemas and event ownership as product contracts.\n- Make replay and backfill normal operations, not emergency tools.\n- Build feedback loops with observability around lag, data quality, and model freshness.\n- Let different recommendation surfaces choose different integration patterns when latency and model value differ.\n\n## References\n\n- [Keystone Real-time Stream Processing Platform](https://www.engineering.fyi/article/keystone-real-time-stream-processing-platform)\n- [Data Mesh: A Data Movement and Processing Platform at Netflix](https://noise.getoto.net/2022/08/01/data-mesh%E2%80%8A-%E2%80%8Aa-data-movement-and-processing-platform-netflix/)\n- [Integrating Netflix's Foundation Model into Personalization Applications](https://netflixtechblog.medium.com/integrating-netflixs-foundation-model-into-personalization-applications-cf176b5860eb)\n- [Lessons Learnt From Consolidating ML Models in a Large Scale Recommendation System](https://netflixtechblog.medium.com/lessons-learnt-from-consolidating-ml-models-in-a-large-scale-recommendation-system-870c5ea5eb4a)",
+      "plainText": "Core System Pressure Netflix is not only serving video. It is continuously learning from how members discover, start, pause, abandon, search, and resume titles. That creates two competing requirements: the product needs fresh signals for personalization, while data scientists and analysts need durable, replayable history for model training, experimentation, studio decisions, and debugging. The useful design lesson is that Netflix does not treat the event pipeline as a side channel. Public engineering posts describe Keystone as a real-time stream processing platform and Data Mesh as a later data movement and processing platform. Both point to the same system-design pressure: capture behavior once, route it reliably, then let different consumers choose freshness, cost, and correctness tradeoffs. Architecture Map The high-level shape is a feedback loop: Member devices and services emit product events.Keystone and Kafka-style transports collect and route events.Flink processors compute fresh streams and reusable data products.Durable stores such as Iceberg-backed data products support backfills, analytics, and training.Recommendation and personalization services use the resulting features and models.The personalized surface changes what members do next, creating the next round of events. The diagram attached to this article shows that split explicitly: streaming paths feed freshness-sensitive serving, while lakehouse and warehouse paths feed historical analysis and model training. Streaming Path Keystone is the real-time lane. Public Netflix material describes a data pipeline with routing and Kafka-enabled messaging, plus stream processing as a service for custom jobs. That matters because the consumer set is diverse: some teams need event delivery, some need near-real-time aggregations, and some need stateful processing. Flink is a natural fit for this layer because processors can maintain state, window events, and write downstream streams or serving-ready outputs. In a recommender system, this is where recent viewing and interaction behavior can become fresh user context instead of waiting for the next large batch job. The main design tradeoff is duplicate tolerance versus latency. Recommendation features can often tolerate replay-safe idempotent updates. Financial reporting or studio metrics may need stricter reconciliation from durable data. Batch And Warehouse Path The durable path exists because streaming state is not enough. Training, A/B analysis, and data quality investigations need historical replay, long lookback windows, and a table abstraction that many engines can query. Netflix Data Mesh posts describe processors that can sink data into systems such as Iceberg, Elasticsearch, or Kafka topics. The key system-design move is separation of concern. Streaming processors keep the product fresh. Durable tables keep history trustworthy. Spark and warehouse-style jobs can rebuild features, validate metrics, and train models from a broader history than the real-time path keeps in memory. ML And Product Feedback Loop Netflix personalization is a multi-model product surface. Recent Netflix posts describe centralizing member preference learning through a foundation model and using embeddings or subgraph integration to distribute that learning to applications. That is a useful modern extension of the older data-platform pattern. The feedback loop is: The product chooses rows, titles, artwork, and rankings.Members interact with those choices.Events become training data and fresh features.Updated models change the next product decision. This is why recommendation architecture is not just \"train a model.\" The hard part is keeping event contracts, feature freshness, model cost, online latency, and experiment metrics aligned. Failure Modes A malformed or high-volume event can pollute many consumers unless schemas and routing boundaries reject it early.Stream processors can silently fall behind, creating stale personalization that still looks operationally healthy.Batch tables can diverge from streaming outputs if correction and replay paths are not designed upfront.Model improvements can regress a lower-latency surface if every use case is forced through the same serving path.Data lineage gaps make A/B test results hard to trust because teams cannot explain which behavior became which feature. Design Takeaways Separate fresh serving from durable truth instead of making one path satisfy every consumer.Treat schemas and event ownership as product contracts.Make replay and backfill normal operations, not emergency tools.Build feedback loops with observability around lag, data quality, and model freshness.Let different recommendation surfaces choose different integration patterns when latency and model value differ. References Keystone Real-time Stream Processing PlatformData Mesh: A Data Movement and Processing Platform at NetflixIntegrating Netflix's Foundation Model into Personalization ApplicationsLessons Learnt From Consolidating ML Models in a Large Scale Recommendation System",
+      "headings": [
+        {
+          "id": "core-system-pressure",
+          "depth": 2,
+          "text": "Core System Pressure"
+        },
+        {
+          "id": "architecture-map",
+          "depth": 2,
+          "text": "Architecture Map"
+        },
+        {
+          "id": "streaming-path",
+          "depth": 2,
+          "text": "Streaming Path"
+        },
+        {
+          "id": "batch-and-warehouse-path",
+          "depth": 2,
+          "text": "Batch And Warehouse Path"
+        },
+        {
+          "id": "ml-and-product-feedback-loop",
+          "depth": 2,
+          "text": "ML And Product Feedback Loop"
+        },
+        {
+          "id": "failure-modes",
+          "depth": 2,
+          "text": "Failure Modes"
+        },
+        {
+          "id": "design-takeaways",
+          "depth": 2,
+          "text": "Design Takeaways"
+        },
+        {
+          "id": "references",
+          "depth": 2,
+          "text": "References"
+        }
+      ],
+      "mermaidBlocks": [],
+      "contentHash": "1aee95a009ffd42a7be8c0dd5e8d99157b734f862acb2c621cf422e6df708091",
+      "readingMinutes": 4
+    },
+    {
+      "title": "Spotify Event Delivery And Personalization",
+      "slug": "system-design/spotify-event-delivery-personalization",
+      "summary": "A source-backed case study of how Spotify isolates listen events, delivers durable data, and feeds analytics and personalization workflows.",
+      "track": "System Design",
+      "topic": "Real Systems",
+      "difficulty": "senior",
+      "tags": [
+        "real-systems",
+        "event-delivery",
+        "personalization",
+        "data-platforms"
+      ],
+      "prerequisites": [
+        "publish-subscribe systems",
+        "ETL pipelines",
+        "analytics warehouses"
+      ],
+      "diagramRefs": [
+        "system-design/spotify-event-delivery-personalization",
+        "system-design/streaming-feedback-blueprint"
+      ],
+      "caseStudyFlowRef": "system-design/spotify-event-delivery-personalization",
+      "status": "published",
+      "id": "6ccf079c21df",
+      "route": "/docs/system-design/spotify-event-delivery-personalization",
+      "sourcePath": "content/knowledge/system-design/spotify-event-delivery-personalization.md",
+      "bodyPath": "content/knowledge/system-design/spotify-event-delivery-personalization.md",
+      "markdown": "## Core System Pressure\n\nSpotify needs to understand listening behavior, ads, playlists, crashes, royalties, A/B tests, artist launches, and product metrics. The same event infrastructure supports personalization surfaces such as Discover Weekly, business-critical reporting, and artist-facing analytics.\n\nSpotify's public engineering posts describe a migration from a Kafka-based event delivery system to a GCP-based design using Cloud Pub/Sub. The important system-design choice is early isolation: each event type gets its own Pub/Sub topic, ETL process, and final storage location. That lets noisy event types degrade independently instead of blocking the whole data platform.\n\n## Architecture Map\n\nThe high-level shape is:\n\n- Clients and services emit typed events.\n- Event Service parses and recognizes event types, then rejects malformed or unknown events.\n- Cloud Pub/Sub carries isolated topics for each event type.\n- Dedicated ETL jobs close immutable hourly buckets and deliver data to durable storage.\n- Cloud Storage and BigQuery serve analysts, data scientists, product managers, and engineers.\n- Dataflow appears in the sensitive-data processing path, and Spotify's newer lakehouse direction uses BigLake and Iceberg-compatible access.\n- Analytics and feature pipelines feed discovery, ads, product experiments, royalties, and artist insights.\n\n## Streaming Path\n\nSpotify's GCP event delivery system prioritizes event-type isolation. Public posts describe over 500 distinct event types, each with independent topics, ETL, storage configuration, priorities, and SLOs. The strictest SLOs are still hours, not milliseconds, because this pipeline is primarily reliable event delivery for downstream data consumers rather than per-request online serving.\n\nThis is a useful contrast with Uber. Uber needs many marketplace decisions in seconds. Spotify's event delivery system emphasizes durable, isolated, audited delivery so data consumers can trust the closed buckets they read later.\n\n## Batch And Warehouse Path\n\nSpotify's ETL path writes durable data to Cloud Storage and BigQuery. The older Pub/Sub export post explains the bucket-closing problem: late events, deduplication, and hourly immutability must be handled so downstream jobs see consistent data.\n\nThe modern lakehouse direction is also public. Google Cloud quotes Spotify using BigLake and BigLake metastore to build an Iceberg-based platform where data is accessible from BigQuery, Dataflow, and open-source Iceberg-compatible engines. The architecture lesson is that warehouse convenience and open table formats can coexist when the platform standardizes metadata and access.\n\n## ML And Product Feedback Loop\n\nThe event delivery system makes personalization measurable and repeatable. Listening behavior and product interactions become data products that can feed discovery surfaces, daily mixes, ad targeting, A/B analysis, and artist-facing analytics.\n\nSpotify's own 2019 Event Delivery post reports more than 500 distinct event types, more than 350 TB of raw event data daily, and more than 8M events per second at peak. Those numbers are enough to make the design point: isolation, schema ownership, and operational SLOs matter before model sophistication.\n\n## Failure Modes\n\n- A popular feature can create a sudden event-volume spike that exhausts quotas or delays delivery.\n- If event types are not isolated, a noisy low-priority stream can delay royalty or core metric data.\n- Late events can make hourly buckets inconsistent unless closing and deduplication are explicit.\n- Sensitive fields can leak unless schemas carry privacy annotations and storage policies.\n- Cost can grow faster than product traffic when teams instrument more events than they can use.\n\n## Design Takeaways\n\n- Isolate event types early when teams have different ownership, volume, and business impact.\n- Make bucket closing and deduplication part of the data contract.\n- Prefer liveness over global blocking when delayed data from one stream should not stop all others.\n- Use managed services where they remove undifferentiated work, but expect to hit scale-specific edges.\n- Track event production cost because easy instrumentation can become waste.\n\n## References\n\n- [Spotify's Event Delivery: Life in the Cloud](https://engineering.atspotify.com/2019/11/spotifys-event-delivery-life-in-the-cloud)\n- [Reliable Export of Cloud Pub/Sub Streams to Cloud Storage](https://engineering.atspotify.com/2017/04/26/reliable-export-of-cloud-pubsub-streams-to-cloud-storage/)\n- [BigLake Metastore Now Supports Iceberg REST Catalog](https://cloud.google.com/blog/products/data-analytics/biglake-metastore-now-supports-iceberg-rest-catalog)\n- [Big Data Processing at Spotify: The Road to Scio](https://engineering.atspotify.com/2017/10/big-data-processing-at-spotify-the-road-to-scio-part-1)",
+      "plainText": "Core System Pressure Spotify needs to understand listening behavior, ads, playlists, crashes, royalties, A/B tests, artist launches, and product metrics. The same event infrastructure supports personalization surfaces such as Discover Weekly, business-critical reporting, and artist-facing analytics. Spotify's public engineering posts describe a migration from a Kafka-based event delivery system to a GCP-based design using Cloud Pub/Sub. The important system-design choice is early isolation: each event type gets its own Pub/Sub topic, ETL process, and final storage location. That lets noisy event types degrade independently instead of blocking the whole data platform. Architecture Map The high-level shape is: Clients and services emit typed events.Event Service parses and recognizes event types, then rejects malformed or unknown events.Cloud Pub/Sub carries isolated topics for each event type.Dedicated ETL jobs close immutable hourly buckets and deliver data to durable storage.Cloud Storage and BigQuery serve analysts, data scientists, product managers, and engineers.Dataflow appears in the sensitive-data processing path, and Spotify's newer lakehouse direction uses BigLake and Iceberg-compatible access.Analytics and feature pipelines feed discovery, ads, product experiments, royalties, and artist insights. Streaming Path Spotify's GCP event delivery system prioritizes event-type isolation. Public posts describe over 500 distinct event types, each with independent topics, ETL, storage configuration, priorities, and SLOs. The strictest SLOs are still hours, not milliseconds, because this pipeline is primarily reliable event delivery for downstream data consumers rather than per-request online serving. This is a useful contrast with Uber. Uber needs many marketplace decisions in seconds. Spotify's event delivery system emphasizes durable, isolated, audited delivery so data consumers can trust the closed buckets they read later. Batch And Warehouse Path Spotify's ETL path writes durable data to Cloud Storage and BigQuery. The older Pub/Sub export post explains the bucket-closing problem: late events, deduplication, and hourly immutability must be handled so downstream jobs see consistent data. The modern lakehouse direction is also public. Google Cloud quotes Spotify using BigLake and BigLake metastore to build an Iceberg-based platform where data is accessible from BigQuery, Dataflow, and open-source Iceberg-compatible engines. The architecture lesson is that warehouse convenience and open table formats can coexist when the platform standardizes metadata and access. ML And Product Feedback Loop The event delivery system makes personalization measurable and repeatable. Listening behavior and product interactions become data products that can feed discovery surfaces, daily mixes, ad targeting, A/B analysis, and artist-facing analytics. Spotify's own 2019 Event Delivery post reports more than 500 distinct event types, more than 350 TB of raw event data daily, and more than 8M events per second at peak. Those numbers are enough to make the design point: isolation, schema ownership, and operational SLOs matter before model sophistication. Failure Modes A popular feature can create a sudden event-volume spike that exhausts quotas or delays delivery.If event types are not isolated, a noisy low-priority stream can delay royalty or core metric data.Late events can make hourly buckets inconsistent unless closing and deduplication are explicit.Sensitive fields can leak unless schemas carry privacy annotations and storage policies.Cost can grow faster than product traffic when teams instrument more events than they can use. Design Takeaways Isolate event types early when teams have different ownership, volume, and business impact.Make bucket closing and deduplication part of the data contract.Prefer liveness over global blocking when delayed data from one stream should not stop all others.Use managed services where they remove undifferentiated work, but expect to hit scale-specific edges.Track event production cost because easy instrumentation can become waste. References Spotify's Event Delivery: Life in the CloudReliable Export of Cloud Pub/Sub Streams to Cloud StorageBigLake Metastore Now Supports Iceberg REST CatalogBig Data Processing at Spotify: The Road to Scio",
+      "headings": [
+        {
+          "id": "core-system-pressure",
+          "depth": 2,
+          "text": "Core System Pressure"
+        },
+        {
+          "id": "architecture-map",
+          "depth": 2,
+          "text": "Architecture Map"
+        },
+        {
+          "id": "streaming-path",
+          "depth": 2,
+          "text": "Streaming Path"
+        },
+        {
+          "id": "batch-and-warehouse-path",
+          "depth": 2,
+          "text": "Batch And Warehouse Path"
+        },
+        {
+          "id": "ml-and-product-feedback-loop",
+          "depth": 2,
+          "text": "ML And Product Feedback Loop"
+        },
+        {
+          "id": "failure-modes",
+          "depth": 2,
+          "text": "Failure Modes"
+        },
+        {
+          "id": "design-takeaways",
+          "depth": 2,
+          "text": "Design Takeaways"
+        },
+        {
+          "id": "references",
+          "depth": 2,
+          "text": "References"
+        }
+      ],
+      "mermaidBlocks": [],
+      "contentHash": "47b2cf869b69281118f2664458ec3f9c8c615db8f03142d99000bd7614a9e1bf",
+      "readingMinutes": 3
+    },
+    {
+      "title": "Uber Real-Time Marketplace",
+      "slug": "system-design/uber-realtime-marketplace",
+      "summary": "A source-backed case study of how Uber connects marketplace events, real-time analytics, lakehouse data, and ML platforms for live decisions.",
+      "track": "System Design",
+      "topic": "Real Systems",
+      "difficulty": "senior",
+      "tags": [
+        "real-systems",
+        "marketplaces",
+        "streaming",
+        "machine-learning"
+      ],
+      "prerequisites": [
+        "event streaming",
+        "geospatial systems",
+        "machine learning platforms"
+      ],
+      "diagramRefs": [
+        "system-design/uber-realtime-marketplace",
+        "system-design/streaming-feedback-blueprint"
+      ],
+      "caseStudyFlowRef": "system-design/uber-realtime-marketplace",
+      "status": "published",
+      "id": "b941e6abd5ae",
+      "route": "/docs/system-design/uber-realtime-marketplace",
+      "sourcePath": "content/knowledge/system-design/uber-realtime-marketplace.md",
+      "bodyPath": "content/knowledge/system-design/uber-realtime-marketplace.md",
+      "markdown": "## Core System Pressure\n\nUber is a live marketplace. Rider demand, driver supply, routes, traffic, fraud signals, Eats orders, and regional operations all change quickly. Decisions that are stale by minutes can produce bad ETAs, poor matching, weak fraud detection, or a marketplace imbalance.\n\nThe public architecture pattern is clear: events flow through Kafka, some streams are transformed with FlinkSQL, real-time OLAP is served by Pinot, large historical data lands in a lakehouse, and ML workflows are standardized through Michelangelo. The product lesson is that a marketplace needs both real-time awareness and deep historical learning.\n\n## Architecture Map\n\nThe high-level shape is:\n\n- Apps and backend services emit marketplace events.\n- Kafka transports those events to real-time and offline consumers.\n- FlinkSQL filters, joins, and pre-aggregates selected streams before Pinot ingestion.\n- Pinot serves low-latency analytical tables for dashboards and product-facing applications.\n- Hudi-backed lakehouse data keeps incremental history available for Spark, Presto, and ML workflows.\n- Michelangelo trains, deploys, serves, and monitors models for production decisions.\n\nThe split lets Uber answer two different questions: \"What is happening right now?\" and \"What patterns have we learned from many previous trips?\"\n\n## Streaming Path\n\nUber's Pinot post describes thousands of microservices writing logs and events to Kafka topics. Pinot can ingest some topics directly, while other topics go through FlinkSQL first when they need filtering, joins, or pre-aggregation.\n\nThat is the practical real-time OLAP pattern: keep the ingest path simple for streams that are already query-ready, and add stream processing only when it changes the serving shape. Pinot then gives dashboards and services a low-latency way to query demand, supply, delayed orders, abandoned carts, and operational signals.\n\n## Batch And Warehouse Path\n\nUber's lakehouse path solves a different problem. Hudi was built at Uber for incremental ingestion, upserts, and large-scale data lake operations. Public Uber posts describe Hudi as central to data lake workloads across analytics and ML.\n\nThis offline path also corrects the real-time path. The Pinot article notes that curated offline data can overwrite inconsistent real-time data and improve accuracy. That is a valuable pattern for interviews: real-time data optimizes freshness, while offline data restores correctness when late or corrected facts arrive.\n\n## ML And Product Feedback Loop\n\nMichelangelo standardizes the ML lifecycle: data management, training, evaluation, deployment, prediction, and monitoring. Uber's DeepETA post shows the serving side of this pattern. A routing engine produces an ETA, then an ML model refines it using historical and real-time signals, with strict latency constraints.\n\nSurge pricing should be described carefully. Uber's public marketplace page says prices update frequently and are tied to real-time supply and demand imbalance. This article does not assert a fixed update cadence. The design principle is that marketplace algorithms must use fresh supply-demand signals, but they also need controls, caps, and monitoring because pricing is user-facing.\n\n## Failure Modes\n\n- A Kafka topic can be fresh but not query-ready, causing downstream teams to duplicate transformations.\n- A real-time table can be fast and wrong if late corrections never reconcile with the offline source.\n- Pinot tenants can suffer noisy-neighbor effects if high-cardinality or bad queries are not isolated.\n- ML features can drift when online prediction data and training data are generated differently.\n- Pricing and matching loops can overreact when local supply-demand signals are sparse or noisy.\n\n## Design Takeaways\n\n- Use real-time OLAP for live marketplace visibility, not as the only source of truth.\n- Keep an incremental lakehouse path for correction, replay, and long-range training.\n- Treat ML feature generation as a shared platform concern, not per-team glue code.\n- Build serving latency budgets into model design early.\n- Make marketplace controls explicit because automated pricing and matching are product policy, not only algorithms.\n\n## References\n\n- [Operating Apache Pinot at Uber Scale](https://www.uber.com/us/en/blog/operating-apache-pinot/)\n- [Apache Hudi at Uber: Engineering for Trillion-Record-Scale Data Lake Operations](https://www.uber.com/en-JP/blog/apache-hudi-at-uber/)\n- [Meet Michelangelo: Uber's Machine Learning Platform](https://www.uber.com/en-IT/blog/michelangelo-machine-learning-platform/)\n- [DeepETA: How Uber Predicts Arrival Times Using Deep Learning](https://www.uber.com/en-IE/blog/deepeta-how-uber-predicts-arrival-times/)\n- [Uber Marketplace Surge Pricing](https://www.uber.com/us/en/marketplace/pricing/surge-pricing/)",
+      "plainText": "Core System Pressure Uber is a live marketplace. Rider demand, driver supply, routes, traffic, fraud signals, Eats orders, and regional operations all change quickly. Decisions that are stale by minutes can produce bad ETAs, poor matching, weak fraud detection, or a marketplace imbalance. The public architecture pattern is clear: events flow through Kafka, some streams are transformed with FlinkSQL, real-time OLAP is served by Pinot, large historical data lands in a lakehouse, and ML workflows are standardized through Michelangelo. The product lesson is that a marketplace needs both real-time awareness and deep historical learning. Architecture Map The high-level shape is: Apps and backend services emit marketplace events.Kafka transports those events to real-time and offline consumers.FlinkSQL filters, joins, and pre-aggregates selected streams before Pinot ingestion.Pinot serves low-latency analytical tables for dashboards and product-facing applications.Hudi-backed lakehouse data keeps incremental history available for Spark, Presto, and ML workflows.Michelangelo trains, deploys, serves, and monitors models for production decisions. The split lets Uber answer two different questions: \"What is happening right now?\" and \"What patterns have we learned from many previous trips?\" Streaming Path Uber's Pinot post describes thousands of microservices writing logs and events to Kafka topics. Pinot can ingest some topics directly, while other topics go through FlinkSQL first when they need filtering, joins, or pre-aggregation. That is the practical real-time OLAP pattern: keep the ingest path simple for streams that are already query-ready, and add stream processing only when it changes the serving shape. Pinot then gives dashboards and services a low-latency way to query demand, supply, delayed orders, abandoned carts, and operational signals. Batch And Warehouse Path Uber's lakehouse path solves a different problem. Hudi was built at Uber for incremental ingestion, upserts, and large-scale data lake operations. Public Uber posts describe Hudi as central to data lake workloads across analytics and ML. This offline path also corrects the real-time path. The Pinot article notes that curated offline data can overwrite inconsistent real-time data and improve accuracy. That is a valuable pattern for interviews: real-time data optimizes freshness, while offline data restores correctness when late or corrected facts arrive. ML And Product Feedback Loop Michelangelo standardizes the ML lifecycle: data management, training, evaluation, deployment, prediction, and monitoring. Uber's DeepETA post shows the serving side of this pattern. A routing engine produces an ETA, then an ML model refines it using historical and real-time signals, with strict latency constraints. Surge pricing should be described carefully. Uber's public marketplace page says prices update frequently and are tied to real-time supply and demand imbalance. This article does not assert a fixed update cadence. The design principle is that marketplace algorithms must use fresh supply-demand signals, but they also need controls, caps, and monitoring because pricing is user-facing. Failure Modes A Kafka topic can be fresh but not query-ready, causing downstream teams to duplicate transformations.A real-time table can be fast and wrong if late corrections never reconcile with the offline source.Pinot tenants can suffer noisy-neighbor effects if high-cardinality or bad queries are not isolated.ML features can drift when online prediction data and training data are generated differently.Pricing and matching loops can overreact when local supply-demand signals are sparse or noisy. Design Takeaways Use real-time OLAP for live marketplace visibility, not as the only source of truth.Keep an incremental lakehouse path for correction, replay, and long-range training.Treat ML feature generation as a shared platform concern, not per-team glue code.Build serving latency budgets into model design early.Make marketplace controls explicit because automated pricing and matching are product policy, not only algorithms. References Operating Apache Pinot at Uber ScaleApache Hudi at Uber: Engineering for Trillion-Record-Scale Data Lake OperationsMeet Michelangelo: Uber's Machine Learning PlatformDeepETA: How Uber Predicts Arrival Times Using Deep LearningUber Marketplace Surge Pricing",
+      "headings": [
+        {
+          "id": "core-system-pressure",
+          "depth": 2,
+          "text": "Core System Pressure"
+        },
+        {
+          "id": "architecture-map",
+          "depth": 2,
+          "text": "Architecture Map"
+        },
+        {
+          "id": "streaming-path",
+          "depth": 2,
+          "text": "Streaming Path"
+        },
+        {
+          "id": "batch-and-warehouse-path",
+          "depth": 2,
+          "text": "Batch And Warehouse Path"
+        },
+        {
+          "id": "ml-and-product-feedback-loop",
+          "depth": 2,
+          "text": "ML And Product Feedback Loop"
+        },
+        {
+          "id": "failure-modes",
+          "depth": 2,
+          "text": "Failure Modes"
+        },
+        {
+          "id": "design-takeaways",
+          "depth": 2,
+          "text": "Design Takeaways"
+        },
+        {
+          "id": "references",
+          "depth": 2,
+          "text": "References"
+        }
+      ],
+      "mermaidBlocks": [],
+      "contentHash": "893fc2fd15b89fba7ab83b72f0b8259011b30b2252a699a22319e27ace62e4d9",
+      "readingMinutes": 3
     }
   ],
   "diagrams": [
@@ -541,6 +769,42 @@
       "sourcePath": "content/diagrams/system-design/cache-aside.mmd",
       "source": "sequenceDiagram\n  autonumber\n  participant Client\n  participant API\n  participant Cache\n  participant DB as Primary DB\n  Client->>API: GET /resource/:id\n  API->>Cache: Read resource key\n  alt cache hit\n    Cache-->>API: Cached projection\n  else cache miss\n    API->>DB: Read source of truth\n    DB-->>API: Canonical row\n    API->>Cache: Store projection with TTL\n  end\n  API-->>Client: Resource response",
       "contentHash": "9748e5e5c8b3d5e9464f00d3bab4b2e95a2b49d9351b3ada0026072c851da262"
+    },
+    {
+      "id": "144c745e9223",
+      "title": "Netflix Data Feedback Loop",
+      "slug": "system-design/netflix-data-feedback-loop",
+      "route": "/diagrams/system-design/netflix-data-feedback-loop",
+      "sourcePath": "content/diagrams/system-design/netflix-data-feedback-loop.mmd",
+      "source": "flowchart LR\n  Devices[Member devices] --> Events[Playback, search, impression events]\n  Events --> Keystone[Keystone / Kafka]\n  Keystone --> Flink[Flink stream processing]\n  Keystone --> DataMesh[Data Mesh pipelines]\n  Flink --> Realtime[Near-real-time features]\n  DataMesh --> Iceberg[Iceberg data products]\n  Iceberg --> Spark[Spark / warehouse jobs]\n  Realtime --> Recs[Personalization services]\n  Spark --> Training[Recommendation training]\n  Training --> Recs\n  Recs --> Experience[Rows, search, artwork, and title choices]\n  Experience --> Events",
+      "contentHash": "54e15450492dce7d088e81a610939882cb50ae682ba4a1f3795dcf016471b989"
+    },
+    {
+      "id": "6ccf079c21df",
+      "title": "Spotify Event Delivery Personalization",
+      "slug": "system-design/spotify-event-delivery-personalization",
+      "route": "/diagrams/system-design/spotify-event-delivery-personalization",
+      "sourcePath": "content/diagrams/system-design/spotify-event-delivery-personalization.mmd",
+      "source": "flowchart LR\n  Clients[Spotify clients and services] --> EventService[Event Service]\n  EventService --> PubSub[Cloud Pub/Sub topics per event type]\n  PubSub --> ETL[ETL per event type]\n  ETL --> GCS[Cloud Storage buckets]\n  ETL --> BigQuery[BigQuery warehouse]\n  ETL --> Dataflow[Dataflow sensitive-data jobs]\n  BigQuery --> Features[Analytics and feature pipelines]\n  GCS --> Lakehouse[BigLake / Iceberg lakehouse direction]\n  Features --> Personalization[Discovery, mixes, ads, artist analytics]\n  Lakehouse --> Personalization\n  Personalization --> Clients",
+      "contentHash": "f46f25c94e48997c01ac0f6ba32d9c79211d6fc8a172d00dae0fb6b12040a088"
+    },
+    {
+      "id": "6849688ad67c",
+      "title": "Streaming Feedback Blueprint",
+      "slug": "system-design/streaming-feedback-blueprint",
+      "route": "/diagrams/system-design/streaming-feedback-blueprint",
+      "sourcePath": "content/diagrams/system-design/streaming-feedback-blueprint.mmd",
+      "source": "flowchart LR\n  Producers[Product and service events] --> Stream[Streaming backbone]\n  Stream --> Realtime[Real-time processors]\n  Stream --> Lake[Durable lake or warehouse]\n  Realtime --> Serving[Low-latency serving stores]\n  Lake --> Batch[Batch analytics and model training]\n  Batch --> Models[Models and decision systems]\n  Serving --> Product[Product experience]\n  Models --> Product\n  Product --> Producers",
+      "contentHash": "dbd0050d86104ac80aaf54be920628c2fe7ec1075064ac35745a820304ccfe82"
+    },
+    {
+      "id": "b941e6abd5ae",
+      "title": "Uber Realtime Marketplace",
+      "slug": "system-design/uber-realtime-marketplace",
+      "route": "/diagrams/system-design/uber-realtime-marketplace",
+      "sourcePath": "content/diagrams/system-design/uber-realtime-marketplace.mmd",
+      "source": "flowchart LR\n  Apps[Rider and driver apps] --> Events[Trips, location, demand, supply events]\n  Events --> Kafka[Kafka topics]\n  Kafka --> Flink[Flink / FlinkSQL transforms]\n  Kafka --> Lake[Hudi data lake]\n  Flink --> Pinot[Apache Pinot real-time OLAP]\n  Lake --> Spark[Spark / Presto analytics]\n  Pinot --> Marketplace[Marketplace dashboards and services]\n  Spark --> Michelangelo[Michelangelo ML platform]\n  Michelangelo --> Decisions[ETA, matching, fraud, pricing models]\n  Marketplace --> Decisions\n  Decisions --> Apps",
+      "contentHash": "632aaf7e181411ba6e9d2973c8e2f480b76f80e19110e111c9876bfcbd1f40d7"
     },
     {
       "id": "e6633b2eb347",
@@ -748,12 +1012,35 @@
               "slug": "system-design/versioned-keys-cloze"
             }
           ]
+        },
+        {
+          "slug": "real-production-data-platforms",
+          "title": "Real Production Data Platforms",
+          "summary": "Compare Netflix, Uber, and Spotify data feedback loops through sourced system-design case studies.",
+          "nodes": [
+            {
+              "kind": "document",
+              "slug": "system-design/netflix-data-feedback-loop"
+            },
+            {
+              "kind": "document",
+              "slug": "system-design/uber-realtime-marketplace"
+            },
+            {
+              "kind": "document",
+              "slug": "system-design/spotify-event-delivery-personalization"
+            },
+            {
+              "kind": "diagram",
+              "slug": "system-design/streaming-feedback-blueprint"
+            }
+          ]
         }
       ],
       "id": "07569d83aba4",
       "route": "/paths/system-design-fundamentals",
       "sourcePath": "content/learning-paths/system-design-fundamentals.json",
-      "contentHash": "91947b2b659524a4330aab853a8aa41a62115d642843814553579337bcc3aac2"
+      "contentHash": "41edaaf80821da3be5a789b16bbbe591509cdbc26690ba486786f6596100cebe"
     }
   ],
   "exercises": [
@@ -9027,6 +9314,561 @@
       "contentHash": "69f376972762ca51e345c9a663e72affa33998ffddf5935874998a85ade510f3"
     }
   ],
+  "caseStudyFlows": [
+    {
+      "slug": "system-design/netflix-data-feedback-loop",
+      "title": "Netflix Data Feedback Loop",
+      "summary": "How member behavior moves through streaming, durable data products, and personalization systems.",
+      "nodes": [
+        {
+          "id": "device-events",
+          "label": "Device events",
+          "kind": "source",
+          "description": "Playback, search, impression, and interaction events from the product surface.",
+          "position": {
+            "x": 0,
+            "y": 120
+          }
+        },
+        {
+          "id": "keystone-kafka",
+          "label": "Keystone + Kafka",
+          "kind": "stream",
+          "description": "The streaming backbone that collects and routes high-volume events.",
+          "position": {
+            "x": 260,
+            "y": 120
+          }
+        },
+        {
+          "id": "flink-processors",
+          "label": "Flink processors",
+          "kind": "compute",
+          "description": "Stateful and stateless processing turns raw events into useful streams.",
+          "position": {
+            "x": 520,
+            "y": 40
+          }
+        },
+        {
+          "id": "iceberg-products",
+          "label": "Iceberg data products",
+          "kind": "warehouse",
+          "description": "Durable tables support backfills, analytics, and training workloads.",
+          "position": {
+            "x": 520,
+            "y": 220
+          }
+        },
+        {
+          "id": "model-training",
+          "label": "Model training",
+          "kind": "ml",
+          "description": "Batch and nearline features train personalization and ranking models.",
+          "position": {
+            "x": 780,
+            "y": 220
+          }
+        },
+        {
+          "id": "personalized-experience",
+          "label": "Personalized experience",
+          "kind": "product",
+          "description": "Rows, search, artwork, and title choices adapt to member behavior.",
+          "position": {
+            "x": 1040,
+            "y": 120
+          }
+        }
+      ],
+      "edges": [
+        {
+          "id": "events-to-keystone",
+          "source": "device-events",
+          "target": "keystone-kafka",
+          "label": "emit"
+        },
+        {
+          "id": "keystone-to-flink",
+          "source": "keystone-kafka",
+          "target": "flink-processors",
+          "label": "streams"
+        },
+        {
+          "id": "keystone-to-iceberg",
+          "source": "keystone-kafka",
+          "target": "iceberg-products",
+          "label": "persist"
+        },
+        {
+          "id": "flink-to-experience",
+          "source": "flink-processors",
+          "target": "personalized-experience",
+          "label": "fresh features"
+        },
+        {
+          "id": "iceberg-to-training",
+          "source": "iceberg-products",
+          "target": "model-training",
+          "label": "train"
+        },
+        {
+          "id": "training-to-experience",
+          "source": "model-training",
+          "target": "personalized-experience",
+          "label": "models"
+        },
+        {
+          "id": "experience-to-events",
+          "source": "personalized-experience",
+          "target": "device-events",
+          "label": "feedback"
+        }
+      ],
+      "steps": [
+        {
+          "id": "capture-member-behavior",
+          "title": "Capture member behavior",
+          "description": "Every useful recommendation starts as product behavior that can be safely collected and routed.",
+          "activeNodeIds": [
+            "device-events",
+            "keystone-kafka"
+          ],
+          "activeEdgeIds": [
+            "events-to-keystone"
+          ]
+        },
+        {
+          "id": "process-streams",
+          "title": "Process streams in parallel",
+          "description": "Streaming jobs serve freshness-sensitive features while raw and curated events continue toward durable storage.",
+          "activeNodeIds": [
+            "keystone-kafka",
+            "flink-processors",
+            "iceberg-products"
+          ],
+          "activeEdgeIds": [
+            "keystone-to-flink",
+            "keystone-to-iceberg"
+          ]
+        },
+        {
+          "id": "serve-fresh-context",
+          "title": "Serve fresh context",
+          "description": "Near-real-time processors can update product-facing context without waiting for the next full batch cycle.",
+          "activeNodeIds": [
+            "flink-processors",
+            "personalized-experience"
+          ],
+          "activeEdgeIds": [
+            "flink-to-experience"
+          ]
+        },
+        {
+          "id": "train-from-history",
+          "title": "Train from durable history",
+          "description": "Warehouse and lakehouse tables make longer histories available for model training, audits, and backfills.",
+          "activeNodeIds": [
+            "iceberg-products",
+            "model-training"
+          ],
+          "activeEdgeIds": [
+            "iceberg-to-training"
+          ]
+        },
+        {
+          "id": "feedback-loop",
+          "title": "Close the feedback loop",
+          "description": "The personalized surface changes what members do next, creating the next round of training and evaluation data.",
+          "activeNodeIds": [
+            "model-training",
+            "personalized-experience",
+            "device-events"
+          ],
+          "activeEdgeIds": [
+            "training-to-experience",
+            "experience-to-events"
+          ]
+        }
+      ],
+      "id": "144c745e9223",
+      "route": "/docs/system-design/netflix-data-feedback-loop#case-study-flow",
+      "sourcePath": "content/case-studies/system-design/netflix-data-feedback-loop.json",
+      "contentHash": "3981c6f4e21b8e9f5b3b7d8735a9c5d23e14d3fe8ea122c57ba928b35a2881cd"
+    },
+    {
+      "slug": "system-design/spotify-event-delivery-personalization",
+      "title": "Spotify Event Delivery And Personalization",
+      "summary": "How listen events become isolated data products for analytics, recommendations, and artist insights.",
+      "nodes": [
+        {
+          "id": "client-events",
+          "label": "Client events",
+          "kind": "source",
+          "description": "Listening, ad, playlist, search, and operational events from clients and services.",
+          "position": {
+            "x": 0,
+            "y": 120
+          }
+        },
+        {
+          "id": "event-service",
+          "label": "Event Service",
+          "kind": "control",
+          "description": "Parses event types, rejects malformed data, and routes each type separately.",
+          "position": {
+            "x": 250,
+            "y": 120
+          }
+        },
+        {
+          "id": "pubsub-topics",
+          "label": "Cloud Pub/Sub",
+          "kind": "stream",
+          "description": "Each event type gets an isolated topic, ETL path, and storage target.",
+          "position": {
+            "x": 500,
+            "y": 120
+          }
+        },
+        {
+          "id": "etl-jobs",
+          "label": "ETL jobs",
+          "kind": "compute",
+          "description": "Dedicated jobs bucket, deduplicate, encrypt, and deliver event data.",
+          "position": {
+            "x": 750,
+            "y": 40
+          }
+        },
+        {
+          "id": "warehouse",
+          "label": "GCS + BigQuery",
+          "kind": "warehouse",
+          "description": "Storage and warehouse tables support data science, analytics, and product teams.",
+          "position": {
+            "x": 750,
+            "y": 220
+          }
+        },
+        {
+          "id": "personalization",
+          "label": "Personalization",
+          "kind": "product",
+          "description": "Discovery surfaces, mixes, ads, and artist insights consume the data products.",
+          "position": {
+            "x": 1020,
+            "y": 120
+          }
+        }
+      ],
+      "edges": [
+        {
+          "id": "clients-to-service",
+          "source": "client-events",
+          "target": "event-service",
+          "label": "emit"
+        },
+        {
+          "id": "service-to-pubsub",
+          "source": "event-service",
+          "target": "pubsub-topics",
+          "label": "route"
+        },
+        {
+          "id": "pubsub-to-etl",
+          "source": "pubsub-topics",
+          "target": "etl-jobs",
+          "label": "consume"
+        },
+        {
+          "id": "etl-to-warehouse",
+          "source": "etl-jobs",
+          "target": "warehouse",
+          "label": "deliver"
+        },
+        {
+          "id": "warehouse-to-product",
+          "source": "warehouse",
+          "target": "personalization",
+          "label": "features"
+        },
+        {
+          "id": "product-to-events",
+          "source": "personalization",
+          "target": "client-events",
+          "label": "feedback"
+        }
+      ],
+      "steps": [
+        {
+          "id": "collect-listening-signals",
+          "title": "Collect listening signals",
+          "description": "Spotify treats event delivery as core infrastructure because product learning starts with reliable events.",
+          "activeNodeIds": [
+            "client-events",
+            "event-service"
+          ],
+          "activeEdgeIds": [
+            "clients-to-service"
+          ]
+        },
+        {
+          "id": "isolate-event-types",
+          "title": "Isolate event types early",
+          "description": "Cloud Pub/Sub topics separate noisy and business-critical events so one stream does not block all others.",
+          "activeNodeIds": [
+            "event-service",
+            "pubsub-topics"
+          ],
+          "activeEdgeIds": [
+            "service-to-pubsub"
+          ]
+        },
+        {
+          "id": "deliver-durable-buckets",
+          "title": "Deliver durable buckets",
+          "description": "Dedicated ETL jobs close immutable buckets and make events safe for downstream consumers.",
+          "activeNodeIds": [
+            "pubsub-topics",
+            "etl-jobs",
+            "warehouse"
+          ],
+          "activeEdgeIds": [
+            "pubsub-to-etl",
+            "etl-to-warehouse"
+          ]
+        },
+        {
+          "id": "feed-personalization",
+          "title": "Feed personalization",
+          "description": "Warehouse and lakehouse data power discovery, analytics, ads, and artist-facing insights.",
+          "activeNodeIds": [
+            "warehouse",
+            "personalization"
+          ],
+          "activeEdgeIds": [
+            "warehouse-to-product"
+          ]
+        },
+        {
+          "id": "measure-new-behavior",
+          "title": "Measure new behavior",
+          "description": "The next listening session becomes the next signal for measuring and improving the product.",
+          "activeNodeIds": [
+            "personalization",
+            "client-events"
+          ],
+          "activeEdgeIds": [
+            "product-to-events"
+          ]
+        }
+      ],
+      "id": "6ccf079c21df",
+      "route": "/docs/system-design/spotify-event-delivery-personalization#case-study-flow",
+      "sourcePath": "content/case-studies/system-design/spotify-event-delivery-personalization.json",
+      "contentHash": "b4384318f9210d0f6870287a68af689a31b93f1c19f10ee45dcb6db02d3d4d1e"
+    },
+    {
+      "slug": "system-design/uber-realtime-marketplace",
+      "title": "Uber Real-Time Marketplace",
+      "summary": "How marketplace events feed low-latency analytics, lakehouse data, and ML decisions.",
+      "nodes": [
+        {
+          "id": "marketplace-events",
+          "label": "Marketplace events",
+          "kind": "source",
+          "description": "Trips, GPS, rider demand, driver supply, Eats orders, and service logs.",
+          "position": {
+            "x": 0,
+            "y": 120
+          }
+        },
+        {
+          "id": "kafka-topics",
+          "label": "Kafka topics",
+          "kind": "stream",
+          "description": "Thousands of services publish data for real-time and offline consumers.",
+          "position": {
+            "x": 250,
+            "y": 120
+          }
+        },
+        {
+          "id": "flink-transforms",
+          "label": "FlinkSQL transforms",
+          "kind": "compute",
+          "description": "Streaming SQL filters, joins, and pre-aggregates data before serving.",
+          "position": {
+            "x": 500,
+            "y": 40
+          }
+        },
+        {
+          "id": "pinot-olap",
+          "label": "Pinot OLAP",
+          "kind": "analytics",
+          "description": "Fresh analytical tables serve dashboards and product-facing queries.",
+          "position": {
+            "x": 750,
+            "y": 40
+          }
+        },
+        {
+          "id": "hudi-lake",
+          "label": "Hudi data lake",
+          "kind": "warehouse",
+          "description": "Incremental tables preserve large histories for analytics and ML.",
+          "position": {
+            "x": 500,
+            "y": 220
+          }
+        },
+        {
+          "id": "michelangelo",
+          "label": "Michelangelo",
+          "kind": "ml",
+          "description": "The ML platform trains, deploys, serves, and monitors production models.",
+          "position": {
+            "x": 750,
+            "y": 220
+          }
+        },
+        {
+          "id": "marketplace-decisions",
+          "label": "Marketplace decisions",
+          "kind": "product",
+          "description": "ETA, fraud, matching, routing, and pricing decisions affect the live market.",
+          "position": {
+            "x": 1020,
+            "y": 120
+          }
+        }
+      ],
+      "edges": [
+        {
+          "id": "events-to-kafka",
+          "source": "marketplace-events",
+          "target": "kafka-topics",
+          "label": "publish"
+        },
+        {
+          "id": "kafka-to-flink",
+          "source": "kafka-topics",
+          "target": "flink-transforms",
+          "label": "stream"
+        },
+        {
+          "id": "flink-to-pinot",
+          "source": "flink-transforms",
+          "target": "pinot-olap",
+          "label": "serve"
+        },
+        {
+          "id": "kafka-to-hudi",
+          "source": "kafka-topics",
+          "target": "hudi-lake",
+          "label": "ingest"
+        },
+        {
+          "id": "hudi-to-ml",
+          "source": "hudi-lake",
+          "target": "michelangelo",
+          "label": "features"
+        },
+        {
+          "id": "pinot-to-decisions",
+          "source": "pinot-olap",
+          "target": "marketplace-decisions",
+          "label": "fresh metrics"
+        },
+        {
+          "id": "ml-to-decisions",
+          "source": "michelangelo",
+          "target": "marketplace-decisions",
+          "label": "predictions"
+        },
+        {
+          "id": "decisions-to-events",
+          "source": "marketplace-decisions",
+          "target": "marketplace-events",
+          "label": "new state"
+        }
+      ],
+      "steps": [
+        {
+          "id": "capture-market-state",
+          "title": "Capture market state",
+          "description": "The marketplace only works if supply, demand, and movement data are visible quickly enough to act on.",
+          "activeNodeIds": [
+            "marketplace-events",
+            "kafka-topics"
+          ],
+          "activeEdgeIds": [
+            "events-to-kafka"
+          ]
+        },
+        {
+          "id": "prepare-realtime-tables",
+          "title": "Prepare real-time tables",
+          "description": "FlinkSQL jobs transform Kafka streams into shapes that Pinot can query with low latency.",
+          "activeNodeIds": [
+            "kafka-topics",
+            "flink-transforms",
+            "pinot-olap"
+          ],
+          "activeEdgeIds": [
+            "kafka-to-flink",
+            "flink-to-pinot"
+          ]
+        },
+        {
+          "id": "preserve-history",
+          "title": "Preserve correction-friendly history",
+          "description": "A Hudi-backed lake keeps incremental history available when analytics and ML need more than live streams.",
+          "activeNodeIds": [
+            "kafka-topics",
+            "hudi-lake"
+          ],
+          "activeEdgeIds": [
+            "kafka-to-hudi"
+          ]
+        },
+        {
+          "id": "train-and-serve",
+          "title": "Train and serve models",
+          "description": "Michelangelo uses historical and fresh features to deploy models for ETA, fraud, and marketplace decisions.",
+          "activeNodeIds": [
+            "hudi-lake",
+            "michelangelo",
+            "marketplace-decisions"
+          ],
+          "activeEdgeIds": [
+            "hudi-to-ml",
+            "ml-to-decisions"
+          ]
+        },
+        {
+          "id": "operate-the-loop",
+          "title": "Operate the live loop",
+          "description": "Dashboards and predictions change the marketplace, then those changes create new data to measure.",
+          "activeNodeIds": [
+            "pinot-olap",
+            "marketplace-decisions",
+            "marketplace-events"
+          ],
+          "activeEdgeIds": [
+            "pinot-to-decisions",
+            "decisions-to-events"
+          ]
+        }
+      ],
+      "id": "b941e6abd5ae",
+      "route": "/docs/system-design/uber-realtime-marketplace#case-study-flow",
+      "sourcePath": "content/case-studies/system-design/uber-realtime-marketplace.json",
+      "contentHash": "34f4fa2af178665806b170a49a05b95bd8a09cded11ebcd714b0cf6f1d5568e5"
+    }
+  ],
   "interviewCompanies": [
     {
       "slug": "airbnb",
@@ -11892,12 +12734,13 @@
     {
       "name": "System Design",
       "slug": "system-design",
-      "documentCount": 1,
+      "documentCount": 4,
       "difficulties": [
         "senior"
       ],
       "topics": [
-        "Caching"
+        "Caching",
+        "Real Systems"
       ]
     }
   ]

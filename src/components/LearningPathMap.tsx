@@ -1,11 +1,13 @@
 import Link from "next/link";
-import { ArrowLeft, ArrowRight, BookOpen, Brain, Code2, GitBranch, GitPullRequest, Layers, Map, Search, Sparkles, Target } from "lucide-react";
+import { ArrowLeft, ArrowRight, BookOpen, Brain, Code2, GitBranch, GitPullRequest, Layers, Map, Search, Sparkles, Target, Workflow } from "lucide-react";
 import { DifficultyPill } from "@/components/DifficultyPill";
 import { getPathNodeRoute } from "@/lib/content";
 import type { ContentIndex, LearningPath, LearningPathNode } from "@/lib/content/schema";
 import { cn } from "@/lib/utils";
 
 export function LearningPathHome({ index }: { index: ContentIndex }) {
+  const realCasesHref = getRealCasesHref(index);
+
   return (
     <main className="min-h-screen pb-12" data-testid="path-home">
       <PathHeader />
@@ -51,6 +53,16 @@ export function LearningPathHome({ index }: { index: ContentIndex }) {
               <Search className="h-4 w-4" aria-hidden="true" />
               Content library
             </Link>
+            {realCasesHref ? (
+              <Link
+                href={realCasesHref}
+                className="inline-flex min-h-12 items-center justify-center gap-2 rounded-lg border-2 border-b-4 border-[#6f4a00] bg-[#8a5c00] px-4 py-2 text-sm font-extrabold text-white transition hover:-translate-y-0.5"
+                data-testid="home-real-cases-link"
+              >
+                <Workflow className="h-4 w-4" aria-hidden="true" />
+                Real cases
+              </Link>
+            ) : null}
             <Link
               href="/interviews"
               className="inline-flex min-h-12 items-center justify-center gap-2 rounded-lg border-2 border-b-4 border-[#00645f] bg-[#007c78] px-4 py-2 text-sm font-extrabold text-white transition hover:-translate-y-0.5"
@@ -112,7 +124,12 @@ export function LearningPathDetail({ index, learningPath }: { index: ContentInde
 
         <div className="mt-8 grid gap-5">
           {learningPath.units.map((unit, unitIndex) => (
-            <section key={unit.slug} className="rounded-lg border-2 border-b-4 border-[#d5e2e8] bg-white p-4 sm:p-6">
+            <section
+              key={unit.slug}
+              id={unit.slug}
+              className="scroll-mt-5 rounded-lg border-2 border-b-4 border-[#d5e2e8] bg-white p-4 sm:p-6"
+              data-testid={`path-unit-${unit.slug}`}
+            >
               <p className="text-xs font-extrabold uppercase text-[#68737d]">Unit {unitIndex + 1}</p>
               <h2 className="mt-1 text-2xl font-extrabold tracking-normal text-[#263238]">{unit.title}</h2>
               <p className="mt-2 text-sm font-semibold leading-6 text-[#68737d]">{unit.summary}</p>
@@ -123,6 +140,16 @@ export function LearningPathDetail({ index, learningPath }: { index: ContentInde
       </section>
     </main>
   );
+}
+
+function getRealCasesHref(index: ContentIndex) {
+  const path = index.learningPaths.find(
+    (learningPath) =>
+      learningPath.slug === "system-design-fundamentals" &&
+      learningPath.units.some((unit) => unit.slug === "real-production-data-platforms"),
+  );
+
+  return path ? `${path.route}#real-production-data-platforms` : undefined;
 }
 
 function PathHeader() {

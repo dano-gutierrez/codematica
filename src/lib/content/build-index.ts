@@ -3,10 +3,12 @@ import { promises as fs } from "node:fs";
 import path from "node:path";
 import { parseKnowledgeMarkdown } from "./parse-markdown";
 import {
+  caseStudyFlowFileSchema,
   interviewCompanyFileSchema,
   learningExerciseFileSchema,
   learningPathFileSchema,
   passiveFlashcardFeedFileSchema,
+  type CaseStudyFlow,
   type ContentIndex,
   type ContentTrack,
   type CodeReviewFile,
@@ -190,6 +192,27 @@ async function collectPassiveFlashcardFeeds(rootDir: string): Promise<PassiveFla
   );
 }
 
+async function collectCaseStudyFlows(rootDir: string): Promise<CaseStudyFlow[]> {
+  const caseStudiesDir = path.join(rootDir, "content", "case-studies");
+  const files = await walkFiles(caseStudiesDir, jsonExtensions);
+
+  return Promise.all(
+    files.map(async (filePath) => {
+      const { raw, value } = await readJson(filePath);
+      const parsed = caseStudyFlowFileSchema.parse(value);
+      const sourcePath = relativeSourcePath(rootDir, filePath);
+
+      return {
+        ...parsed,
+        id: sha256(parsed.slug).slice(0, 12),
+        route: `/case-studies/${parsed.slug}`,
+        sourcePath,
+        contentHash: sha256(raw),
+      };
+    }),
+  );
+}
+
 async function collectInterviewCompanies(rootDir: string): Promise<InterviewCompany[]> {
   const interviewsDir = path.join(rootDir, "content", "interviews");
   const files = await walkFiles(interviewsDir, jsonExtensions);
@@ -260,6 +283,39 @@ function assertUniqueIds(items: { id: string }[], label: string, sourcePath: str
     }
 
     ids.add(item.id);
+  }
+}
+
+function assertCaseStudyFlow(flow: CaseStudyFlow) {
+  assertUniqueIds(flow.nodes, "case study flow node id", flow.sourcePath);
+  assertUniqueIds(flow.edges, "case study flow edge id", flow.sourcePath);
+  assertUniqueIds(flow.steps, "case study flow step id", flow.sourcePath);
+
+  const nodeIds = new Set(flow.nodes.map((node) => node.id));
+  const edgeIds = new Set(flow.edges.map((edge) => edge.id));
+
+  for (const edge of flow.edges) {
+    if (!nodeIds.has(edge.source)) {
+      throw new Error(`${flow.sourcePath} edge "${edge.id}" references unknown case study flow node "${edge.source}".`);
+    }
+
+    if (!nodeIds.has(edge.target)) {
+      throw new Error(`${flow.sourcePath} edge "${edge.id}" references unknown case study flow node "${edge.target}".`);
+    }
+  }
+
+  for (const step of flow.steps) {
+    for (const nodeId of step.activeNodeIds) {
+      if (!nodeIds.has(nodeId)) {
+        throw new Error(`${flow.sourcePath} step "${step.id}" references unknown case study flow node "${nodeId}".`);
+      }
+    }
+
+    for (const edgeId of step.activeEdgeIds) {
+      if (!edgeIds.has(edgeId)) {
+        throw new Error(`${flow.sourcePath} step "${step.id}" references unknown case study flow edge "${edgeId}".`);
+      }
+    }
   }
 }
 
@@ -418,6 +474,7 @@ function assertUniqueSlugs(
   exercises: LearningExercise[],
   learningPaths: LearningPath[],
   passiveFlashcardFeeds: PassiveFlashcardFeed[],
+  caseStudyFlows: CaseStudyFlow[],
   interviewCompanies: InterviewCompany[],
 ) {
   assertUniqueEntitySlugs(documents, "knowledge");
@@ -425,6 +482,7 @@ function assertUniqueSlugs(
   assertUniqueEntitySlugs(exercises, "exercise");
   assertUniqueEntitySlugs(learningPaths, "learning path");
   assertUniqueEntitySlugs(passiveFlashcardFeeds, "passive flashcard feed");
+  assertUniqueEntitySlugs(caseStudyFlows, "case study flow");
   assertUniqueEntitySlugs(interviewCompanies, "interview company");
 }
 
@@ -434,15 +492,21 @@ function assertContentReferences(
   exercises: LearningExercise[],
   learningPaths: LearningPath[],
   passiveFlashcardFeeds: PassiveFlashcardFeed[],
+  caseStudyFlows: CaseStudyFlow[],
   interviewCompanies: InterviewCompany[],
 ) {
   const documentSlugs = new Set<string>();
   const diagramSlugs = new Set(diagrams.map((diagram) => diagram.slug));
   const exerciseSlugs = new Set(exercises.map((exercise) => exercise.slug));
   const learningPathSlugs = new Set(learningPaths.map((learningPath) => learningPath.slug));
+  const caseStudyFlowSlugs = new Set(caseStudyFlows.map((flow) => flow.slug));
   const interviewQuestionSlugs = new Set(
     interviewCompanies.flatMap((company) => company.questions.map((question) => `${company.slug}/${question.slug}`)),
   );
+
+  for (const flow of caseStudyFlows) {
+    assertCaseStudyFlow(flow);
+  }
 
   for (const document of documents) {
     documentSlugs.add(document.slug);
@@ -451,6 +515,10 @@ function assertContentReferences(
       if (!diagramSlugs.has(diagramRef)) {
         throw new Error(`${document.sourcePath} references missing diagram "${diagramRef}"`);
       }
+    }
+
+    if (document.caseStudyFlowRef && !caseStudyFlowSlugs.has(document.caseStudyFlowRef)) {
+      throw new Error(`${document.sourcePath} references missing case study flow "${document.caseStudyFlowRef}"`);
     }
   }
 
@@ -505,12 +573,13 @@ function assertContentReferences(
 }
 
 export async function buildContentIndex({ rootDir }: BuildContentIndexOptions): Promise<ContentIndex> {
-  const [documents, diagrams, exercises, learningPaths, passiveFlashcardFeeds, interviewCompanies] = await Promise.all([
+  const [documents, diagrams, exercises, learningPaths, passiveFlashcardFeeds, caseStudyFlows, interviewCompanies] = await Promise.all([
     collectKnowledgeDocuments(rootDir),
     collectMermaidDiagrams(rootDir),
     collectLearningExercises(rootDir),
     collectLearningPaths(rootDir),
     collectPassiveFlashcardFeeds(rootDir),
+    collectCaseStudyFlows(rootDir),
     collectInterviewCompanies(rootDir),
   ]);
 
@@ -519,17 +588,48 @@ export async function buildContentIndex({ rootDir }: BuildContentIndexOptions): 
   const sortedExercises = exercises.sort((left, right) => left.slug.localeCompare(right.slug));
   const sortedLearningPaths = learningPaths.sort((left, right) => left.slug.localeCompare(right.slug));
   const sortedPassiveFlashcardFeeds = passiveFlashcardFeeds.sort((left, right) => left.slug.localeCompare(right.slug));
+  const documentRouteByFlowSlug = new Map<string, string>();
+
+  for (const document of sortedDocuments) {
+    if (document.caseStudyFlowRef && !documentRouteByFlowSlug.has(document.caseStudyFlowRef)) {
+      documentRouteByFlowSlug.set(document.caseStudyFlowRef, document.route);
+    }
+  }
+
+  const sortedCaseStudyFlows = caseStudyFlows
+    .map((flow) => ({
+      ...flow,
+      route: `${documentRouteByFlowSlug.get(flow.slug) ?? `/case-studies/${flow.slug}`}#case-study-flow`,
+    }))
+    .sort((left, right) => left.slug.localeCompare(right.slug));
   const sortedInterviewCompanies = interviewCompanies.sort((left, right) => left.name.localeCompare(right.name));
-  assertUniqueSlugs(sortedDocuments, sortedDiagrams, sortedExercises, sortedLearningPaths, sortedPassiveFlashcardFeeds, sortedInterviewCompanies);
-  assertContentReferences(sortedDocuments, sortedDiagrams, sortedExercises, sortedLearningPaths, sortedPassiveFlashcardFeeds, sortedInterviewCompanies);
+  assertUniqueSlugs(
+    sortedDocuments,
+    sortedDiagrams,
+    sortedExercises,
+    sortedLearningPaths,
+    sortedPassiveFlashcardFeeds,
+    sortedCaseStudyFlows,
+    sortedInterviewCompanies,
+  );
+  assertContentReferences(
+    sortedDocuments,
+    sortedDiagrams,
+    sortedExercises,
+    sortedLearningPaths,
+    sortedPassiveFlashcardFeeds,
+    sortedCaseStudyFlows,
+    sortedInterviewCompanies,
+  );
 
   return {
-    schemaVersion: 6,
+    schemaVersion: 7,
     documents: sortedDocuments,
     diagrams: sortedDiagrams,
     learningPaths: sortedLearningPaths,
     exercises: sortedExercises,
     passiveFlashcardFeeds: sortedPassiveFlashcardFeeds,
+    caseStudyFlows: sortedCaseStudyFlows,
     interviewCompanies: sortedInterviewCompanies,
     tracks: buildTracks(sortedDocuments),
   };

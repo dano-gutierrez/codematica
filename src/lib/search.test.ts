@@ -3,11 +3,12 @@ import type { ContentIndex } from "./content/schema";
 import { buildSnippet, searchContent } from "./search";
 
 const index: ContentIndex = {
-  schemaVersion: 6,
+  schemaVersion: 7,
   tracks: [],
   learningPaths: [],
   exercises: [],
   passiveFlashcardFeeds: [],
+  caseStudyFlows: [],
   interviewCompanies: [],
   documents: [
     {

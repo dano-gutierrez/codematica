@@ -3,10 +3,11 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ArrowRight, Clock, GitBranch } from "lucide-react";
 import { BackButton } from "@/components/BackButton";
+import { CaseStudyFlow } from "@/components/CaseStudyFlow";
 import { DifficultyPill } from "@/components/DifficultyPill";
 import { MarkdownRenderer } from "@/components/MarkdownRenderer";
 import { MermaidBlock } from "@/components/MermaidBlock";
-import { getContentIndex, getDocumentBySlug, getNextPathNodeRoute, getReferencedDiagrams } from "@/lib/content";
+import { getCaseStudyFlowBySlug, getContentIndex, getDocumentBySlug, getNextPathNodeRoute, getReferencedDiagrams } from "@/lib/content";
 
 type DocumentPageProps = {
   params: Promise<{
@@ -51,6 +52,7 @@ export default async function DocumentPage({ params, searchParams }: DocumentPag
   const pathSlug = Array.isArray(path) ? path[0] : path;
   const nextHref = pathSlug ? getNextPathNodeRoute(pathSlug, { kind: "document", slug: document.slug }) : undefined;
   const referencedDiagrams = getReferencedDiagrams(document.diagramRefs);
+  const caseStudyFlow = document.caseStudyFlowRef ? getCaseStudyFlowBySlug(document.caseStudyFlowRef) : undefined;
 
   return (
     <main className="min-h-screen px-4 py-5 sm:py-8" data-testid="document-page">
@@ -79,6 +81,7 @@ export default async function DocumentPage({ params, searchParams }: DocumentPag
             <div className="mt-8 rounded-lg border-2 border-b-4 border-[#d5e2e8] bg-white p-5 sm:p-7">
               <MarkdownRenderer markdown={document.markdown} />
             </div>
+            {caseStudyFlow ? <CaseStudyFlow flow={caseStudyFlow} /> : null}
 
             {nextHref ? (
               <div className="mt-6 flex justify-end">

@@ -31,6 +31,10 @@ export function getPassiveFlashcardFeedByPathSlug(pathSlug: string) {
   return contentIndex.passiveFlashcardFeeds.find((feed) => feed.pathSlug === pathSlug);
 }
 
+export function getCaseStudyFlowBySlug(slug: string) {
+  return contentIndex.caseStudyFlows.find((flow) => flow.slug === slug);
+}
+
 export function getInterviewCompanyBySlug(slug: string) {
   return contentIndex.interviewCompanies.find((company) => company.slug === slug);
 }
