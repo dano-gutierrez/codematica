@@ -1,6 +1,7 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
+import Link from "next/link";
 import { ArrowRight, RotateCcw } from "lucide-react";
 import { CodeBlock } from "@/components/CodeBlock";
 import { MermaidBlock } from "@/components/MermaidBlock";
@@ -15,11 +16,13 @@ const languageOptions: { value: LanguageKey; label: string }[] = [
   { value: "java", label: "Java" },
 ];
 
-export function InterviewQuestionSession({ question }: { question: InterviewQuestion }) {
+export function InterviewQuestionSession({ question, nextHref }: { question: InterviewQuestion; nextHref?: string }) {
+  const sessionRef = useRef<HTMLElement>(null);
   const [track, setTrack] = useState(() => question.solutionTracks[0]);
   const [previousTrackId, setPreviousTrackId] = useState<string | undefined>();
   const [stepIndex, setStepIndex] = useState(0);
   const [language, setLanguage] = useState<LanguageKey>("python");
+  const [isReady, setIsReady] = useState(false);
   const isFinal = stepIndex >= track.steps.length;
   const visibleSteps = track.steps.slice(0, Math.min(stepIndex + 1, track.steps.length));
   const currentCode = track.languages[language];
@@ -35,6 +38,7 @@ export function InterviewQuestionSession({ question }: { question: InterviewQues
       const selectedTrack = selectInterviewSolutionTrack(question);
       setTrack(selectedTrack);
       setPreviousTrackId(selectedTrack.id);
+      setIsReady(true);
     });
 
     return () => {
@@ -42,16 +46,39 @@ export function InterviewQuestionSession({ question }: { question: InterviewQues
     };
   }, [question]);
 
-  function advance() {
-    setStepIndex((value) => Math.min(value + 1, track.steps.length));
-  }
+  useEffect(() => {
+    const rootNode = sessionRef.current;
 
-  function restart() {
-    const selectedTrack = selectInterviewSolutionTrack(question, previousTrackId);
-    setTrack(selectedTrack);
-    setPreviousTrackId(selectedTrack.id);
-    setStepIndex(0);
-  }
+    if (!rootNode) {
+      return;
+    }
+
+    function handleActionClick(event: MouseEvent) {
+      const target = event.target instanceof Element ? event.target : undefined;
+      const button = target?.closest<HTMLButtonElement>("button[data-interview-action]");
+
+      if (!button || !rootNode?.contains(button) || button.disabled) {
+        return;
+      }
+
+      if (button.dataset.interviewAction === "advance") {
+        setStepIndex((value) => Math.min(value + 1, track.steps.length));
+        return;
+      }
+
+      if (button.dataset.interviewAction === "restart") {
+        const selectedTrack = selectInterviewSolutionTrack(question, previousTrackId);
+        setTrack(selectedTrack);
+        setPreviousTrackId(selectedTrack.id);
+        setStepIndex(0);
+      }
+    }
+
+    rootNode.addEventListener("click", handleActionClick);
+
+    return () => rootNode.removeEventListener("click", handleActionClick);
+  }, [previousTrackId, question, track.steps.length]);
+
 
   const progressLabel = useMemo(() => {
     if (isFinal) {
@@ -62,7 +89,7 @@ export function InterviewQuestionSession({ question }: { question: InterviewQues
   }, [isFinal, stepIndex, track.steps.length]);
 
   return (
-    <section className="mt-7 grid gap-5" data-testid="interview-question-session">
+    <section className="mt-7 grid gap-5" data-testid="interview-question-session" data-ready={isReady ? "true" : "false"} ref={sessionRef}>
       <div className="rounded-lg border-2 border-b-4 border-[#d5e2e8] bg-white p-4 sm:p-5">
         <div className="flex flex-wrap items-center justify-between gap-3">
           <div>
@@ -79,6 +106,7 @@ export function InterviewQuestionSession({ question }: { question: InterviewQues
               aria-label="Solution language"
               value={language}
               onChange={(event) => setLanguage(event.target.value as LanguageKey)}
+              disabled={!isReady}
               className="min-h-11 rounded-lg border-2 border-b-4 border-[#d5e2e8] bg-[#f6fbfc] px-3 text-sm font-extrabold normal-case text-[#263238] outline-none focus:border-[#007c78]"
             >
               {languageOptions.map((option) => (
@@ -118,18 +146,31 @@ export function InterviewQuestionSession({ question }: { question: InterviewQues
 
         <div className="mt-6 flex flex-wrap gap-3">
           {isFinal ? (
-            <button
-              type="button"
-              onClick={restart}
-              className="inline-flex min-h-12 items-center gap-2 rounded-lg border-2 border-b-4 border-[#d5e2e8] bg-white px-4 py-2 text-sm font-extrabold text-[#263238]"
-            >
-              <RotateCcw className="h-4 w-4" aria-hidden="true" />
-              Restart
-            </button>
+            <>
+              <button
+                type="button"
+                disabled={!isReady}
+                data-interview-action="restart"
+                className="inline-flex min-h-12 items-center gap-2 rounded-lg border-2 border-b-4 border-[#d5e2e8] bg-white px-4 py-2 text-sm font-extrabold text-[#263238]"
+              >
+                <RotateCcw className="h-4 w-4" aria-hidden="true" />
+                Restart
+              </button>
+              {nextHref ? (
+                <Link
+                  href={nextHref}
+                  className="inline-flex min-h-12 items-center gap-2 rounded-lg border-2 border-b-4 border-[#1d4e9e] bg-[#245fba] px-4 py-2 text-sm font-extrabold text-white transition hover:-translate-y-0.5"
+                >
+                  Next node
+                  <ArrowRight className="h-4 w-4" aria-hidden="true" />
+                </Link>
+              ) : null}
+            </>
           ) : (
             <button
               type="button"
-              onClick={advance}
+              disabled={!isReady}
+              data-interview-action="advance"
               className="inline-flex min-h-12 items-center gap-2 rounded-lg border-2 border-b-4 border-[#1d4e9e] bg-[#245fba] px-4 py-2 text-sm font-extrabold text-white transition hover:-translate-y-0.5"
             >
               {stepIndex + 1 >= track.steps.length ? "Show full explanation" : "Next"}

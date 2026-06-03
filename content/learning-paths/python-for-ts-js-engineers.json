@@ -42,6 +42,20 @@
         { "kind": "document", "slug": "programming/python-async-testing-production" },
         { "kind": "exercise", "slug": "programming/python-async-questionnaire" }
       ]
+    },
+    {
+      "slug": "python-interview-practice",
+      "title": "Python Interview Practice",
+      "summary": "Apply professional Python runtime, data model, collection, graph, cache, and serialization judgment to reported public interview problems.",
+      "nodes": [
+        { "kind": "interview", "slug": "amazon/lru-cache" },
+        { "kind": "interview", "slug": "airbnb/in-memory-file-system" },
+        { "kind": "interview", "slug": "airbnb/alien-dictionary" },
+        { "kind": "interview", "slug": "google/word-ladder" },
+        { "kind": "interview", "slug": "microsoft/serialize-deserialize-binary-tree" },
+        { "kind": "interview", "slug": "netflix/auto-expire-cache" },
+        { "kind": "interview", "slug": "uber/shortest-path-weighted-road-graph" }
+      ]
     }
   ]
 }

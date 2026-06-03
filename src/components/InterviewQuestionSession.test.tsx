@@ -81,4 +81,23 @@ describe("InterviewQuestionSession", () => {
     expect(screen.getByTestId("interview-solution-track")).toHaveTextContent("Sorted two pointer");
     randomSpy.mockRestore();
   });
+
+  it("shows a path next-node link only after the final explanation", async () => {
+    const randomSpy = vi.spyOn(Math, "random").mockReturnValue(0);
+
+    render(<InterviewQuestionSession question={question} nextHref="/interviews/airbnb/in-memory-file-system?path=python-for-ts-js-engineers" />);
+
+    await waitFor(() => expect(randomSpy).toHaveBeenCalled());
+    expect(screen.queryByRole("link", { name: /next node/i })).not.toBeInTheDocument();
+
+    fireEvent.click(screen.getByRole("button", { name: /next/i }));
+    fireEvent.click(screen.getByRole("button", { name: /show full explanation/i }));
+
+    expect(screen.getByRole("link", { name: /next node/i })).toHaveAttribute(
+      "href",
+      "/interviews/airbnb/in-memory-file-system?path=python-for-ts-js-engineers",
+    );
+
+    randomSpy.mockRestore();
+  });
 });

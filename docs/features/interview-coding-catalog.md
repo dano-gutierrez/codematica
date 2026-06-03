@@ -3,10 +3,10 @@
 ## Snapshot
 
 - Status: `shipped`
-- Last updated: `2026-06-01`
+- Last updated: `2026-06-02`
 - Owner thread: `n/a`
-- Current state: The app has a local-first interview coding catalog with company pages, reported-public source links, random question navigation, and guided multi-language solution walkthroughs.
-- Target outcome: Users can choose a major tech company, open available coding prompts, advance through a step-by-step solution, and review Python, TypeScript, or Java code without auth, Supabase, or a compiler.
+- Current state: The app has a local-first interview coding catalog with company pages, reported-public source links, random question navigation, guided multi-language solution walkthroughs, and optional learning-path context.
+- Target outcome: Users can choose a major tech company, open available coding prompts, advance through a step-by-step solution, review Python, TypeScript, or Java code, and continue a learning path when the question was opened from one without auth, Supabase, or a compiler.
 - Code touchpoints:
   - `content/interviews/*.json`
   - `public/company-logos/*.svg`
@@ -33,6 +33,7 @@ The interview catalog is a local content surface for coding interview preparatio
 - `/interviews/[company]` shows all available coding questions for one company.
 - `/interviews/[company]/[question]` shows the prompt, examples, constraints, diagrams when present, and the guided solution session.
 - The guided session defaults to Python, lets users switch to TypeScript or Java, reveals one step per `Next`, and renders final code with language-aware highlighting.
+- When a question is opened with `?path=<learning-path-slug>`, the guided session shows a `Next node` link only after the final explanation if the path has another node.
 - Starting or restarting a session selects a solution track at random and avoids immediately repeating the previous track when another track exists.
 - Catalog language says the prompts are reported/public prep, not official company question banks.
 - Supabase, auth, saved progress, scoring, real-time compilation, and answer validation are out of scope for this MVP.
@@ -44,7 +45,8 @@ The interview catalog is a local content surface for coding interview preparatio
 - `logo.src` points to a local SVG under `/company-logos/` so the catalog does not depend on remote image loading.
 - Every question has `sourceLinks`, `examples`, `constraints`, optional Mermaid `diagrams`, and at least two `solutionTracks`.
 - Every solution track requires `steps`, `explanation`, `complexity`, and `languages.python`, `languages.typescript`, and `languages.java`.
-- Generated index schema version is `4` and includes `interviewCompanies`.
+- Generated index schema version is `6` and includes `interviewCompanies`.
+- Learning paths may reference existing interview questions with `kind: "interview"` and slugs shaped as `company/question`, but the interview catalog itself remains the canonical source for question content.
 
 ## Future Versions
 
@@ -62,8 +64,8 @@ Seed content uses public/community-reported prep references such as InterviewQue
 
 - Unit: schema validation, duplicate company/question/solution IDs, required source links, and required language code.
 - Integration: generated index loads eight companies, 24 questions, and lookup helpers resolve company and question routes.
-- Component: guided walkthrough advances steps, switches language, shows highlighted final code/explanation, and restarts on a different solution track.
-- E2E: user opens `/interviews`, uses random navigation, opens Amazon, starts Two Sum, advances steps, switches language, and reaches the final explanation.
+- Component: guided walkthrough advances steps, switches language, shows highlighted final code/explanation, restarts on a different solution track, and exposes path next-node links only after final explanation.
+- E2E: user opens `/interviews`, uses random navigation, opens Amazon, starts Two Sum, advances steps, switches language, reaches the final explanation, and path-scoped Python interview practice can continue to the next node.
 
 ## Thread Handoff Prompt
 

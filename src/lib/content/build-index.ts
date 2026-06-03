@@ -9,6 +9,8 @@ import {
   passiveFlashcardFeedFileSchema,
   type ContentIndex,
   type ContentTrack,
+  type CodeReviewFile,
+  type CodeReviewRange,
   type Difficulty,
   type InterviewCompany,
   type KnowledgeDocument,
@@ -308,6 +310,68 @@ function assertQuestionnaireExercise(exercise: LearningExercise, sourcePath: str
   }
 }
 
+function assertCodeReviewExercise(exercise: LearningExercise, sourcePath: string) {
+  if (exercise.type !== "code-review") {
+    return;
+  }
+
+  assertUniqueValues(
+    exercise.files.map((file) => file.path),
+    "code review file path",
+    sourcePath,
+  );
+  assertUniqueIds(exercise.findings, "code review finding id", sourcePath);
+  assertUniqueIds(exercise.healthyNotes, "code review healthy note id", sourcePath);
+
+  const filesByPath = new Map(exercise.files.map((file) => [file.path, file]));
+  const findingFilePaths = new Set<string>();
+  const findingRanges = new Set<string>();
+
+  for (const finding of exercise.findings) {
+    assertCodeReviewRange(filesByPath, finding.range, `finding "${finding.id}"`, sourcePath);
+
+    if (findingFilePaths.has(finding.range.filePath)) {
+      throw new Error(`${sourcePath} code review exercise must have at most one finding per file.`);
+    }
+
+    const rangeKey = codeReviewRangeKey(finding.range);
+
+    if (findingRanges.has(rangeKey)) {
+      throw new Error(`${sourcePath} has duplicate code review finding range "${rangeKey}".`);
+    }
+
+    findingFilePaths.add(finding.range.filePath);
+    findingRanges.add(rangeKey);
+  }
+
+  for (const healthyNote of exercise.healthyNotes) {
+    assertCodeReviewRange(filesByPath, healthyNote.range, `healthy note "${healthyNote.id}"`, sourcePath);
+  }
+}
+
+function assertCodeReviewRange(filesByPath: Map<string, CodeReviewFile>, range: CodeReviewRange, label: string, sourcePath: string) {
+  const file = filesByPath.get(range.filePath);
+
+  if (!file) {
+    throw new Error(`${sourcePath} ${label} references missing code review file "${range.filePath}".`);
+  }
+
+  const startLine = file.lines[range.startLine - 1];
+  const endLine = file.lines[range.endLine - 1];
+
+  if (startLine === undefined || endLine === undefined) {
+    throw new Error(`${sourcePath} ${label} has an invalid code review range outside "${range.filePath}".`);
+  }
+
+  if (range.startColumn > startLine.length + 1 || range.endColumn > endLine.length + 1) {
+    throw new Error(`${sourcePath} ${label} has an invalid code review range outside "${range.filePath}".`);
+  }
+}
+
+function codeReviewRangeKey(range: CodeReviewRange) {
+  return `${range.filePath}:${range.startLine}:${range.startColumn}-${range.endLine}:${range.endColumn}`;
+}
+
 function assertUniqueValues(values: string[], label: string, sourcePath: string) {
   const seen = new Set<string>();
 
@@ -376,6 +440,9 @@ function assertContentReferences(
   const diagramSlugs = new Set(diagrams.map((diagram) => diagram.slug));
   const exerciseSlugs = new Set(exercises.map((exercise) => exercise.slug));
   const learningPathSlugs = new Set(learningPaths.map((learningPath) => learningPath.slug));
+  const interviewQuestionSlugs = new Set(
+    interviewCompanies.flatMap((company) => company.questions.map((question) => `${company.slug}/${question.slug}`)),
+  );
 
   for (const document of documents) {
     documentSlugs.add(document.slug);
@@ -389,6 +456,7 @@ function assertContentReferences(
 
   for (const exercise of exercises) {
     assertQuestionnaireExercise(exercise, exercise.sourcePath);
+    assertCodeReviewExercise(exercise, exercise.sourcePath);
 
     if (!documentSlugs.has(exercise.documentSlug)) {
       throw new Error(`${exercise.sourcePath} references missing document "${exercise.documentSlug}"`);
@@ -408,6 +476,10 @@ function assertContentReferences(
 
         if (node.kind === "exercise" && !exerciseSlugs.has(node.slug)) {
           throw new Error(`${learningPath.sourcePath} references missing exercise "${node.slug}"`);
+        }
+
+        if (node.kind === "interview" && !interviewQuestionSlugs.has(node.slug)) {
+          throw new Error(`${learningPath.sourcePath} references missing interview "${node.slug}"`);
         }
       }
     }
@@ -452,7 +524,7 @@ export async function buildContentIndex({ rootDir }: BuildContentIndexOptions): 
   assertContentReferences(sortedDocuments, sortedDiagrams, sortedExercises, sortedLearningPaths, sortedPassiveFlashcardFeeds, sortedInterviewCompanies);
 
   return {
-    schemaVersion: 4,
+    schemaVersion: 6,
     documents: sortedDocuments,
     diagrams: sortedDiagrams,
     learningPaths: sortedLearningPaths,

@@ -15,7 +15,7 @@ describe("generated content index", () => {
   it("loads starter documents and diagrams", () => {
     const index = getContentIndex();
 
-    expect(index.schemaVersion).toBe(4);
+    expect(index.schemaVersion).toBe(6);
     expect(index.documents.length).toBeGreaterThanOrEqual(3);
     expect(index.diagrams.length).toBeGreaterThanOrEqual(2);
     expect(index.learningPaths.length).toBeGreaterThanOrEqual(2);
@@ -25,6 +25,20 @@ describe("generated content index", () => {
     expect(getDocumentBySlug("system-design/cache-invalidation")?.title).toBe("Cache Invalidation Under Product Pressure");
     expect(getLearningPathBySlug("system-design-fundamentals")?.title).toBe("System Design Fundamentals");
     expect(getExerciseBySlug("system-design/versioned-keys-cloze")?.type).toBe("cloze");
+  });
+
+  it("loads code review exercises from the generated index", () => {
+    const typeScriptReview = getExerciseBySlug("programming/user-profile-boundary-review");
+    const pythonReview = getExerciseBySlug("software-engineering/checkout-observability-review");
+
+    if (typeScriptReview?.type !== "code-review" || pythonReview?.type !== "code-review") {
+      throw new Error("Expected starter code review exercises to be indexed.");
+    }
+
+    expect(typeScriptReview?.route).toBe("/practice/programming/user-profile-boundary-review");
+    expect(typeScriptReview?.files).toHaveLength(2);
+    expect(typeScriptReview?.findings[0]?.id).toBe("unchecked-network-json");
+    expect(pythonReview?.findings[0]?.id).toBe("payload-as-logging-args");
   });
 
   it("loads the Python refresh path, documents, and questionnaires", () => {
@@ -42,6 +56,13 @@ describe("generated content index", () => {
       "programming/python-packaging-questionnaire",
       "programming/python-async-testing-production",
       "programming/python-async-questionnaire",
+      "amazon/lru-cache",
+      "airbnb/in-memory-file-system",
+      "airbnb/alien-dictionary",
+      "google/word-ladder",
+      "microsoft/serialize-deserialize-binary-tree",
+      "netflix/auto-expire-cache",
+      "uber/shortest-path-weighted-road-graph",
     ]);
     expect(document?.track).toBe("Programming");
     expect(questionnaire?.type).toBe("questionnaire");
@@ -53,7 +74,7 @@ describe("generated content index", () => {
 
     expect(feed?.title).toBe("Python Flashcard Feed");
     expect(feed?.route).toBe("/paths/python-for-ts-js-engineers/flashcards");
-    expect(feed?.cards).toHaveLength(320);
+    expect(feed?.cards).toHaveLength(480);
     expect(feed?.cards.map((card) => card.type)).toEqual(expect.arrayContaining(["concept", "practical", "snippet", "interview"]));
     expect(feed?.cards.some((card) => card.code?.includes("def "))).toBe(true);
   });
@@ -80,6 +101,15 @@ describe("generated content index", () => {
   it("resolves the next node route from a path-scoped document", () => {
     expect(getNextPathNodeRoute("python-for-ts-js-engineers", { kind: "document", slug: "programming/python-runtime-model" })).toBe(
       "/practice/programming/python-runtime-questionnaire?path=python-for-ts-js-engineers",
+    );
+  });
+
+  it("resolves path-scoped interview routes and next nodes", () => {
+    expect(getNextPathNodeRoute("python-for-ts-js-engineers", { kind: "exercise", slug: "programming/python-async-questionnaire" })).toBe(
+      "/interviews/amazon/lru-cache?path=python-for-ts-js-engineers",
+    );
+    expect(getNextPathNodeRoute("python-for-ts-js-engineers", { kind: "interview", slug: "amazon/lru-cache" })).toBe(
+      "/interviews/airbnb/in-memory-file-system?path=python-for-ts-js-engineers",
     );
   });
 

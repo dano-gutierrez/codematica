@@ -36,22 +36,22 @@ export function Dropdown({
   disabled?: boolean;
 }) {
   return (
-    <div className={cn("grid gap-2", className)}>
+    <div className={cn("grid min-w-0 gap-2", className)}>
       <Select.Root value={value} onValueChange={onValueChange} disabled={disabled}>
         <Select.Trigger
           aria-label={label}
           className={cn(
-            "group flex h-14 w-full items-center justify-between gap-3 rounded-lg border-2 border-b-4 border-[#d5e2e8] bg-white px-4 text-left outline-none transition hover:border-[#6dd8cf] focus:border-[#007c78] focus-visible:ring-4 focus-visible:ring-[#6dd8cf]/35 disabled:cursor-default disabled:opacity-60 data-[state=open]:translate-y-0.5 data-[state=open]:border-[#007c78] data-[state=open]:border-b-2",
+            "group flex h-14 w-full min-w-0 items-center justify-between gap-3 rounded-lg border-2 border-b-4 border-[#d5e2e8] bg-white px-4 text-left outline-none transition hover:border-[#6dd8cf] focus:border-[#007c78] focus-visible:ring-4 focus-visible:ring-[#6dd8cf]/35 disabled:cursor-default disabled:opacity-60 data-[state=open]:translate-y-0.5 data-[state=open]:border-[#007c78] data-[state=open]:border-b-2",
             triggerClassName,
           )}
           data-testid={testId}
         >
-          <span className="flex min-w-0 items-center gap-3">
+          <span className="flex min-w-0 flex-1 items-center gap-3">
             {icon ? (
               <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border-2 border-[#b9dce7] bg-[#f6fbfc] text-[#007c78]">{icon}</span>
             ) : null}
-            <span className="min-w-0">
-              <span className="block text-[0.68rem] font-extrabold uppercase leading-none text-[#68737d]">{label}</span>
+            <span className="min-w-0 flex-1">
+              <span className="block truncate text-[0.68rem] font-extrabold uppercase leading-none text-[#68737d]">{label}</span>
               <span className="mt-1 block truncate text-sm font-extrabold text-[#263238]">
                 <Select.Value placeholder={placeholder} />
               </span>

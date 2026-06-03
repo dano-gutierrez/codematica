@@ -134,6 +134,85 @@
       ],
       "correctOrder": ["fail", "cancel", "partial", "cleanup"],
       "explanation": "Concurrency primitives should be selected from the failure contract, not from surface syntax."
+    },
+    {
+      "id": "taskgroup-contract",
+      "kind": "choice",
+      "prompt": "When is asyncio.TaskGroup a strong fit in senior Python async code?",
+      "options": [
+        {
+          "id": "shared-lifetime",
+          "label": "When child tasks share a scope and sibling cancellation should be explicit.",
+          "isCorrect": true
+        },
+        {
+          "id": "fire-forget",
+          "label": "When background work should be forgotten after it is scheduled.",
+          "isCorrect": false
+        },
+        {
+          "id": "cpu",
+          "label": "When CPU-heavy work needs to run faster on the event loop.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "TaskGroup expresses structured concurrency: child tasks belong to a scope and failures are handled as part of that scope."
+    },
+    {
+      "id": "timeout-gap",
+      "kind": "cloze",
+      "prompt": "Fill the gap for what a timeout should represent in production async code.",
+      "template": "A timeout should be a domain-owned {{blank}}, not a magic number copied across adapters.",
+      "acceptedAnswers": ["budget", "failure budget", "time budget"],
+      "explanation": "Timeouts define when work becomes unavailable for the user or caller. They should be owned by the operation contract."
+    },
+    {
+      "id": "resource-lifetime-order",
+      "kind": "ordering",
+      "prompt": "Order the review flow for a long-lived async client or connection pool.",
+      "items": [
+        {
+          "id": "create",
+          "label": "Create it at the application-owned boundary"
+        },
+        {
+          "id": "inject",
+          "label": "Pass it to handlers or services explicitly"
+        },
+        {
+          "id": "observe",
+          "label": "Log and trace operations through the adapter"
+        },
+        {
+          "id": "close",
+          "label": "Close it during shutdown or scope exit"
+        }
+      ],
+      "correctOrder": ["create", "inject", "observe", "close"],
+      "explanation": "Resource lifetime should be visible and deterministic instead of controlled by import-time globals."
+    },
+    {
+      "id": "advanced-async-match",
+      "kind": "matching",
+      "prompt": "Match each async production concept to the senior review concern.",
+      "pairs": [
+        {
+          "id": "blocking",
+          "prompt": "Sync SDK in async handler",
+          "match": "event loop can stall"
+        },
+        {
+          "id": "fixture",
+          "prompt": "pytest fixture scope",
+          "match": "resource state can leak between tests"
+        },
+        {
+          "id": "logging",
+          "prompt": "structured logging",
+          "match": "operational context should survive incidents"
+        }
+      ],
+      "explanation": "Senior production Python review connects async behavior, test stability, and observability to explicit ownership."
     }
   ]
 }

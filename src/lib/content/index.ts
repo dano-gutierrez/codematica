@@ -55,6 +55,10 @@ export function getPathNodeRoute(node: LearningPathNode, pathSlug?: string) {
     return `/diagrams/${node.slug}${pathSearch}`;
   }
 
+  if (node.kind === "interview") {
+    return `/interviews/${node.slug}${pathSearch}`;
+  }
+
   return `/practice/${node.slug}${pathSearch}`;
 }
 

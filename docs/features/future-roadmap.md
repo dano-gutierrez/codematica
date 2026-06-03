@@ -3,9 +3,9 @@
 ## Snapshot
 
 - Status: `proposed`
-- Last updated: `2026-05-30`
+- Last updated: `2026-06-02`
 - Owner thread: `n/a`
-- Current state: Learning paths, flashcards, cloze practice, questionnaires, passive flashcard feeds, and interview walkthroughs have a local-first MVP; deeper gamification remains planned.
+- Current state: Learning paths, flashcards, cloze practice, questionnaires, code reviews, passive flashcard feeds, and interview walkthroughs have a local-first MVP; deeper gamification remains planned.
 - Target outcome: Later versions add AI study assistance, broader quiz loops, visual system design practice, code challenges, auth, durable progress, and native-ready APIs.
 - Code touchpoints:
   - `docs/engineering-overview.md`
@@ -27,9 +27,10 @@ Codematica should grow from a path-first engineering study system into a deeper 
 ## Planned Feature Areas
 
 - AI summaries, article Q&A, and study prompts.
-- More practice depth beyond the shipped flashcard, cloze, choice, ordering, and matching MVP: scenario drills, adaptive review queues, and code challenges.
+- More practice depth beyond the shipped flashcard, cloze, choice, ordering, matching, and code-review MVP: scenario drills, adaptive review queues, scored review choices, and code challenges.
 - System design blueprints with visual structure, likely React Flow for editing and Mermaid import/export.
 - Mermaid authoring and diagram creation mode inside the app.
+- Code review upgrades: timer and score formula, persisted attempts, multiple findings per file, fix-option choices, richer PR diff views, and AI-assisted scenario generation.
 - Code snaps for multiple languages.
 - Editable JS/TS coding challenges with compilation or execution sandboxing.
 - Real-time score feedback in a gaming style.

@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ArrowLeft, ArrowRight, BookOpen, Brain, Code2, GitBranch, Layers, Map, Search, Sparkles, Target } from "lucide-react";
+import { ArrowLeft, ArrowRight, BookOpen, Brain, Code2, GitBranch, GitPullRequest, Layers, Map, Search, Sparkles, Target } from "lucide-react";
 import { DifficultyPill } from "@/components/DifficultyPill";
 import { getPathNodeRoute } from "@/lib/content";
 import type { ContentIndex, LearningPath, LearningPathNode } from "@/lib/content/schema";
@@ -58,6 +58,14 @@ export function LearningPathHome({ index }: { index: ContentIndex }) {
             >
               <Code2 className="h-4 w-4" aria-hidden="true" />
               Interview prep
+            </Link>
+            <Link
+              href="/code-reviews"
+              className="inline-flex min-h-12 items-center justify-center gap-2 rounded-lg border-2 border-b-4 border-[#5840b8] bg-[#6f52d9] px-4 py-2 text-sm font-extrabold text-white transition hover:-translate-y-0.5"
+              data-testid="home-code-reviews-link"
+            >
+              <GitPullRequest className="h-4 w-4" aria-hidden="true" />
+              Code reviews
             </Link>
           </aside>
         </div>
@@ -266,6 +274,21 @@ function getNodeDisplay(index: ContentIndex, node: LearningPathNode) {
     };
   }
 
+  if (node.kind === "interview") {
+    const [companySlug, questionSlug] = node.slug.split("/");
+    const company = index.interviewCompanies.find((item) => item.slug === companySlug);
+    const question = company?.questions.find((item) => item.slug === questionSlug);
+
+    return {
+      title: question?.title ?? node.slug,
+      summary: question ? `${question.companyName} problem - ${question.tags.slice(0, 3).join(", ")}` : "Interview problem",
+      kindLabel: "Interview problem",
+      difficulty: question?.difficulty,
+      icon: <Code2 className="h-3.5 w-3.5 text-[#8a5c00]" aria-hidden="true" />,
+      colorClass: "border-[#ffd86b] bg-[#fff5d6] text-[#8a5c00]",
+    };
+  }
+
   const exercise = index.exercises.find((item) => item.slug === node.slug);
 
   return {
@@ -285,6 +308,10 @@ function exerciseKindLabel(type: ContentIndex["exercises"][number]["type"]) {
 
   if (type === "cloze") {
     return "Fill the gap";
+  }
+
+  if (type === "code-review") {
+    return "Code review";
   }
 
   return "Questionnaire";

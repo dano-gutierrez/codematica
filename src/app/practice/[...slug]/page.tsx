@@ -48,7 +48,7 @@ export default async function PracticePage({ params, searchParams }: PracticePag
 
   return (
     <main className="min-h-screen px-4 py-5 sm:py-8" data-testid="practice-page">
-      <div className="mx-auto w-full max-w-4xl">
+      <div className="mx-auto w-full max-w-6xl">
         <BackButton />
 
         <div className="mt-6">

@@ -70,10 +70,10 @@ export function CodeBlock({
   className?: string;
   dataTestId?: string;
 }) {
-  const normalizedLanguage = normalizeLanguage(language);
+  const normalizedLanguage = normalizeCodeLanguage(language);
   const highlighted = highlightCode(code, normalizedLanguage);
-  const displayLabel = label ?? languageLabels[normalizedLanguage] ?? "Code";
-  const accent = languageAccents[normalizedLanguage] ?? "#b7c3cc";
+  const displayLabel = label ?? codeLanguageLabel(normalizedLanguage);
+  const accent = codeLanguageAccent(normalizedLanguage);
 
   return (
     <figure className={cn("code-block overflow-hidden rounded-lg border-2 border-b-4 border-[#263544] bg-[#101820]", className)} style={{ "--code-accent": accent } as CSSProperties}>
@@ -93,7 +93,7 @@ export function CodeBlock({
   );
 }
 
-function normalizeLanguage(language?: string) {
+export function normalizeCodeLanguage(language?: string) {
   const rawLanguage = language?.trim().toLowerCase();
 
   if (!rawLanguage) {
@@ -103,9 +103,19 @@ function normalizeLanguage(language?: string) {
   return languageAliases[rawLanguage] ?? rawLanguage;
 }
 
-function highlightCode(code: string, language: string) {
-  if (language && hljs.getLanguage(language)) {
-    return hljs.highlight(code, { language, ignoreIllegals: true }).value;
+export function codeLanguageLabel(language: string) {
+  return languageLabels[normalizeCodeLanguage(language)] ?? "Code";
+}
+
+export function codeLanguageAccent(language: string) {
+  return languageAccents[normalizeCodeLanguage(language)] ?? "#b7c3cc";
+}
+
+export function highlightCode(code: string, language: string) {
+  const normalizedLanguage = normalizeCodeLanguage(language);
+
+  if (normalizedLanguage && hljs.getLanguage(normalizedLanguage)) {
+    return hljs.highlight(code, { language: normalizedLanguage, ignoreIllegals: true }).value;
   }
 
   return escapeHtml(code);

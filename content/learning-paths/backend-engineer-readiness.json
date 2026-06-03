@@ -16,7 +16,9 @@
         { "kind": "exercise", "slug": "system-design/cache-product-contract" },
         { "kind": "document", "slug": "software-engineering/observability-signals" },
         { "kind": "exercise", "slug": "software-engineering/observability-signal-roles" },
+        { "kind": "exercise", "slug": "software-engineering/checkout-observability-review" },
         { "kind": "document", "slug": "programming/typescript-boundaries" },
+        { "kind": "exercise", "slug": "programming/user-profile-boundary-review" },
         { "kind": "exercise", "slug": "programming/runtime-boundary-cloze" }
       ]
     }

@@ -1,0 +1,62 @@
+{
+  "slug": "software-engineering/checkout-observability-review",
+  "title": "Checkout Observability Review",
+  "type": "code-review",
+  "documentSlug": "software-engineering/observability-signals",
+  "concept": "Structured logging",
+  "difficulty": "senior",
+  "tags": ["python", "observability", "code-review"],
+  "status": "published",
+  "prompt": "Find the logging bug before this checkout event reaches production.",
+  "files": [
+    {
+      "path": "services/checkout_events.py",
+      "language": "python",
+      "healthyExplanation": "The payload builder keeps the event fields explicit and avoids mixing unrelated telemetry concerns into the formatter.",
+      "lines": [
+        "from datetime import datetime, timezone",
+        "import logging",
+        "",
+        "def build_checkout_payload(event: dict) -> dict:",
+        "    return {",
+        "        \"order_id\": event[\"order_id\"],",
+        "        \"total\": event[\"total\"],",
+        "        \"captured_at\": datetime.now(timezone.utc).isoformat(),",
+        "    }",
+        "",
+        "def record_checkout(event: dict, logger: logging.Logger) -> dict:",
+        "    payload = build_checkout_payload(event)",
+        "    logger.info(\"checkout completed\", payload)",
+        "    return payload"
+      ]
+    }
+  ],
+  "findings": [
+    {
+      "id": "payload-as-logging-args",
+      "kind": "bug",
+      "range": {
+        "filePath": "services/checkout_events.py",
+        "startLine": 13,
+        "startColumn": 39,
+        "endLine": 13,
+        "endColumn": 46
+      },
+      "explanation": "Passing the payload as a positional logging argument asks Python logging to format the message. With no placeholder, the event can fail formatting instead of becoming structured context.",
+      "replacementLines": ["    logger.info(\"checkout completed\", extra={\"checkout\": payload})"]
+    }
+  ],
+  "healthyNotes": [
+    {
+      "id": "timezone-aware-clock",
+      "range": {
+        "filePath": "services/checkout_events.py",
+        "startLine": 1,
+        "startColumn": 32,
+        "endLine": 1,
+        "endColumn": 40
+      },
+      "explanation": "Using a timezone-aware clock is healthy because event timestamps should preserve the time basis used in production telemetry."
+    }
+  ]
+}

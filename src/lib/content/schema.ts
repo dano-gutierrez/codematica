@@ -25,7 +25,7 @@ export const knowledgeFrontmatterSchema = z.object({
 export const learningPathKindSchema = z.enum(["role", "skill"]);
 
 export const learningPathNodeSchema = z.object({
-  kind: z.enum(["document", "diagram", "exercise"]),
+  kind: z.enum(["document", "diagram", "exercise", "interview"]),
   slug: slugSchema,
 });
 
@@ -140,10 +140,68 @@ export const questionnaireExerciseFileSchema = exerciseBaseSchema.extend({
   questions: z.array(questionnaireQuestionSchema).min(1),
 });
 
+export const codeReviewLanguageSchema = z.enum(["typescript", "javascript", "python"]);
+
+export const codeReviewRangeSchema = z
+  .object({
+    filePath: z.string().min(4),
+    startLine: z.number().int().positive(),
+    startColumn: z.number().int().positive(),
+    endLine: z.number().int().positive(),
+    endColumn: z.number().int().positive(),
+  })
+  .superRefine((range, context) => {
+    if (range.endLine < range.startLine) {
+      context.addIssue({
+        code: "custom",
+        message: "Code review ranges must end on or after the start line.",
+        path: ["endLine"],
+      });
+    }
+
+    if (range.endLine === range.startLine && range.endColumn <= range.startColumn) {
+      context.addIssue({
+        code: "custom",
+        message: "Code review ranges must use an exclusive endColumn greater than startColumn.",
+        path: ["endColumn"],
+      });
+    }
+  });
+
+export const codeReviewFileSchema = z.object({
+  path: z.string().min(4),
+  language: codeReviewLanguageSchema,
+  healthyExplanation: z.string().min(20),
+  lines: z.array(z.string().max(240)).min(1).max(80),
+});
+
+export const codeReviewFindingSchema = z.object({
+  id: questionIdSchema,
+  kind: z.enum(["bug", "improvement"]),
+  range: codeReviewRangeSchema,
+  explanation: z.string().min(20),
+  replacementLines: z.array(z.string().max(240)).min(1).max(20),
+});
+
+export const codeReviewHealthyNoteSchema = z.object({
+  id: questionIdSchema,
+  range: codeReviewRangeSchema,
+  explanation: z.string().min(20),
+});
+
+export const codeReviewExerciseFileSchema = exerciseBaseSchema.extend({
+  type: z.literal("code-review"),
+  prompt: z.string().min(10),
+  files: z.array(codeReviewFileSchema).min(1).max(2),
+  findings: z.array(codeReviewFindingSchema).min(1).max(2),
+  healthyNotes: z.array(codeReviewHealthyNoteSchema).default([]),
+});
+
 export const learningExerciseFileSchema = z.discriminatedUnion("type", [
   flashcardExerciseFileSchema,
   clozeExerciseFileSchema,
   questionnaireExerciseFileSchema,
+  codeReviewExerciseFileSchema,
 ]);
 
 export const passiveFlashcardTypeSchema = z.enum(["concept", "practical", "snippet", "interview"]);
@@ -248,6 +306,12 @@ export type LearningPathNode = z.infer<typeof learningPathNodeSchema>;
 export type LearningPathUnit = z.infer<typeof learningPathUnitSchema>;
 export type LearningPathFile = z.infer<typeof learningPathFileSchema>;
 export type QuestionnaireQuestion = z.infer<typeof questionnaireQuestionSchema>;
+export type CodeReviewLanguage = z.infer<typeof codeReviewLanguageSchema>;
+export type CodeReviewRange = z.infer<typeof codeReviewRangeSchema>;
+export type CodeReviewFile = z.infer<typeof codeReviewFileSchema>;
+export type CodeReviewFinding = z.infer<typeof codeReviewFindingSchema>;
+export type CodeReviewHealthyNote = z.infer<typeof codeReviewHealthyNoteSchema>;
+export type CodeReviewExerciseFile = z.infer<typeof codeReviewExerciseFileSchema>;
 export type LearningExerciseFile = z.infer<typeof learningExerciseFileSchema>;
 export type PassiveFlashcardType = z.infer<typeof passiveFlashcardTypeSchema>;
 export type PassiveFlashcardCard = z.infer<typeof passiveFlashcardCardSchema>;
@@ -335,7 +399,7 @@ export type ContentTrack = {
 };
 
 export type ContentIndex = {
-  schemaVersion: 4;
+  schemaVersion: 6;
   documents: KnowledgeDocument[];
   diagrams: MermaidDiagram[];
   learningPaths: LearningPath[];

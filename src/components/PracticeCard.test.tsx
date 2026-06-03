@@ -1,5 +1,6 @@
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
+import type { LearningExercise } from "@/lib/content/schema";
 import { PracticeCard } from "./PracticeCard";
 
 const baseExercise = {
@@ -15,6 +16,65 @@ const baseExercise = {
   sourcePath: "content/exercises/system-design/cache-practice.json",
   contentHash: "hash",
 };
+
+const codeReviewExercise = {
+  ...baseExercise,
+  slug: "programming/user-profile-review",
+  title: "User Profile Boundary Review",
+  type: "code-review",
+  documentSlug: "programming/typescript-boundaries",
+  concept: "Runtime validation",
+  tags: ["typescript", "code-review"],
+  prompt: "Find the unsafe boundary assumption.",
+  files: [
+    {
+      path: "src/api/userProfile.ts",
+      language: "typescript",
+      healthyExplanation: "The import and schema definition are appropriate because runtime data should be parsed near the network boundary.",
+      lines: [
+        'import { z } from "zod";',
+        "",
+        "const userSchema = z.object({",
+        "  id: z.string(),",
+        "});",
+        "",
+        "export async function loadUserProfile(userId: string) {",
+        "  const response = await fetch(`/api/users/${userId}`);",
+        "  const data = await response.json();",
+        "  return data as UserProfile;",
+        "}",
+      ],
+    },
+  ],
+  findings: [
+    {
+      id: "unchecked-network-json",
+      kind: "bug" as const,
+      range: {
+        filePath: "src/api/userProfile.ts",
+        startLine: 10,
+        startColumn: 10,
+        endLine: 10,
+        endColumn: 30,
+      },
+      explanation: "Casting the network payload bypasses the runtime schema, so invalid data can enter the domain model.",
+      replacementLines: ["  return userSchema.parse(data);"],
+    },
+  ],
+  healthyNotes: [
+    {
+      id: "schema-import",
+      range: {
+        filePath: "src/api/userProfile.ts",
+        startLine: 1,
+        startColumn: 10,
+        endLine: 1,
+        endColumn: 11,
+      },
+      explanation: "Using Zod here is healthy because the code needs runtime validation, not only TypeScript types.",
+    },
+  ],
+} satisfies LearningExercise;
 
 describe("PracticeCard", () => {
   it("reveals flashcard answers on demand", () => {
@@ -111,5 +171,29 @@ describe("PracticeCard", () => {
     expect(screen.getByText("Fill the gap for Python boundary safety.")).toBeVisible();
 
     randomSpy.mockRestore();
+  });
+
+  it("explains healthy code review clicks and increments attempts", () => {
+    render(<PracticeCard exercise={codeReviewExercise} />);
+
+    expect(screen.getByTestId("code-review-token-src-api-userprofile-ts-7-0").querySelector(".hljs-keyword")).not.toBeNull();
+
+    fireEvent.click(screen.getByTestId("code-review-healthy-schema-import"));
+
+    expect(screen.getByTestId("code-review-attempts")).toHaveTextContent("Attempts 1");
+    expect(screen.getByRole("alert")).toHaveTextContent("Healthy code");
+    expect(screen.getByRole("alert")).toHaveTextContent("Using Zod here is healthy");
+  });
+
+  it("fixes a code review finding and reveals the path next link after completion", () => {
+    render(<PracticeCard exercise={codeReviewExercise} nextHref="/practice/programming/runtime-boundary-cloze" />);
+
+    fireEvent.click(screen.getByTestId("code-review-finding-unchecked-network-json"));
+
+    expect(screen.getByTestId("code-review-attempts")).toHaveTextContent("Attempts 1");
+    expect(screen.getByRole("dialog")).toHaveTextContent("Casting the network payload bypasses the runtime schema");
+    expect(screen.getByTestId("code-review-token-src-api-userprofile-ts-10-0")).toHaveTextContent("return userSchema.parse(data);");
+    expect(screen.getByTestId("code-review-complete")).toHaveTextContent("Review complete");
+    expect(screen.getByRole("link", { name: /next node/i })).toHaveAttribute("href", "/practice/programming/runtime-boundary-cloze");
   });
 });

@@ -3,12 +3,13 @@
 import Link from "next/link";
 import { ArrowRight, CheckCircle2, RotateCcw, Sparkles } from "lucide-react";
 import { useState } from "react";
+import { CodeReviewSession } from "@/components/CodeReviewSession";
 import { DifficultyPill } from "@/components/DifficultyPill";
 import { QuestionnaireSession } from "@/components/QuestionnaireSession";
 import type { LearningExercise } from "@/lib/content/schema";
 import { cn } from "@/lib/utils";
 
-export function PracticeCard({ exercise, nextHref }: { exercise: LearningExercise; nextHref?: string }) {
+export function PracticeCard({ exercise, nextHref, reviewRoutes }: { exercise: LearningExercise; nextHref?: string; reviewRoutes?: string[] }) {
   return (
     <section className="rounded-lg border-2 border-b-4 border-[#d5e2e8] bg-white p-5 sm:p-7" data-testid="practice-card">
       <div className="flex flex-wrap items-center gap-2">
@@ -26,6 +27,8 @@ export function PracticeCard({ exercise, nextHref }: { exercise: LearningExercis
         <Flashcard exercise={exercise} nextHref={nextHref} />
       ) : exercise.type === "cloze" ? (
         <ClozeCard exercise={exercise} nextHref={nextHref} />
+      ) : exercise.type === "code-review" ? (
+        <CodeReviewSession exercise={exercise} nextHref={nextHref} reviewRoutes={reviewRoutes} />
       ) : (
         <QuestionnaireSession exercise={exercise} nextHref={nextHref} />
       )}
@@ -40,6 +43,10 @@ function exerciseKindLabel(exercise: LearningExercise) {
 
   if (exercise.type === "cloze") {
     return "Fill the gap";
+  }
+
+  if (exercise.type === "code-review") {
+    return "Code review";
   }
 
   return "Questionnaire";

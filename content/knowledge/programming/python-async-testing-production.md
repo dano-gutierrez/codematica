@@ -35,11 +35,35 @@ task = asyncio.create_task(refresh_cache())
 
 The first line creates work that has not been scheduled. The second schedules work and now needs ownership. A task without a retained reference can lose observability and error handling. Keep background tasks in a tracked structure or use structured concurrency primitives where appropriate.
 
+Python's `TaskGroup` gives a structured way to say that child tasks share a lifetime. It is closer to "these operations belong to this scope" than to a loose `Promise.all` mental model.
+
+```python
+import asyncio
+
+async def load_profile(user_id: str) -> Profile:
+    async with asyncio.TaskGroup() as group:
+        account_task = group.create_task(fetch_account(user_id))
+        settings_task = group.create_task(fetch_settings(user_id))
+
+    return Profile(account=account_task.result(), settings=settings_task.result())
+```
+
+If one task fails, the group handles sibling cancellation and surfaces the failure after cleanup. Review whether that failure contract is what the product needs, especially for partial-result APIs.
+
 ## Blocking Work
 
 Async Python does not make CPU-bound or blocking I/O work disappear. A synchronous database driver, filesystem call, or CPU-heavy transform inside an async handler can block the event loop. That is similar to blocking the JavaScript event loop, but Python services often mix sync and async libraries during migration.
 
 Review every dependency on an async path. Is it truly async? Does it use a thread pool? Does it expose cancellation? Does it preserve context for tracing? The answer determines whether the service is concurrent or only syntactically async.
+
+```python
+async def handler(request: Request) -> Response:
+    # Bad on an async path if this is a slow synchronous SDK call.
+    result = payment_client.charge(request.user_id)
+    return Response(result)
+```
+
+Use an async-native client when possible. When a synchronous library is unavoidable, isolate it behind a small adapter and make the thread or process boundary explicit.
 
 ## Testing Boundaries
 
@@ -50,6 +74,23 @@ Python's standard library includes `unittest`, and many teams use pytest, but th
 - Async tests that prove cancellation, timeout, and concurrent scheduling behavior where those are product requirements.
 
 Avoid testing implementation timing with sleeps. Prefer awaiting observable state, using fake dependencies, or testing the pure logic below the async wrapper. This mirrors good Playwright and frontend testing practice: wait for a meaningful condition, not a timer.
+
+Pytest fixtures are a good way to make resource setup visible, but fixture scope is a production-adjacent decision. A session-scoped database fixture can leak state between tests; a function-scoped fixture can be slower but clearer.
+
+```python
+import pytest
+
+@pytest.fixture
+def user_repo(tmp_path):
+    return SqliteUserRepo(tmp_path / "users.db")
+
+def test_create_user_requires_unique_email(user_repo):
+    user_repo.create("a@example.com")
+    with pytest.raises(DuplicateEmail):
+        user_repo.create("a@example.com")
+```
+
+The fixture describes the resource lifetime, and the test asserts behavior rather than implementation details.
 
 ## Style Is A Production Tool
 
@@ -63,6 +104,36 @@ Production async code needs explicit timeout and cancellation behavior. A JavaSc
 
 If one child operation fails, should siblings continue? Should results be partial? Should the request be cancelled? Should cleanup run? The code should answer these questions directly instead of relying on accidental defaults.
 
+```python
+async def fetch_with_budget(user_id: str) -> Profile:
+    try:
+        async with asyncio.timeout(1.5):
+            return await profile_client.fetch(user_id)
+    except TimeoutError as exc:
+        raise ProfileUnavailable(user_id) from exc
+```
+
+Timeouts should be domain decisions, not magic numbers scattered through adapters. Keep them close to the user-visible operation or configuration object that owns the budget.
+
+Cancellation deserves the same care. Cleanup should run in `finally`, and broad `except Exception` blocks should not accidentally swallow cancellation signals or convert shutdown into a partial success.
+
+## Logging, Configuration, And Resource Lifetimes
+
+Python production code should use structured logging conventions that preserve useful fields without logging secrets. Prefer module loggers and stable event names over ad hoc `print()` calls.
+
+```python
+import logging
+
+logger = logging.getLogger(__name__)
+
+def record_delivery(message_id: str, status: str) -> None:
+    logger.info("message_delivery_recorded", extra={"message_id": message_id, "status": status})
+```
+
+Configuration should be parsed at the boundary and passed in as a typed object. Reading environment variables deep inside business logic makes tests order-dependent and hides operational inputs.
+
+Long-lived resources such as clients, pools, and background tasks need an explicit owner. In web services, that owner is often application startup/shutdown. In scripts, it may be a `with` block or top-level `main()` that creates resources and closes them deterministically.
+
 ## Senior Pain Points
 
 - Calling coroutines and assuming they have started.
@@ -71,6 +142,10 @@ If one child operation fails, should siblings continue? Should results be partia
 - Tests that use sleeps instead of observable conditions.
 - Style debates that hide missing failure contracts.
 - Timeout behavior that differs between local tests and production.
+- `TaskGroup`, `gather`, and raw tasks used interchangeably without a failure contract.
+- Configuration read from environment variables inside domain code.
+- Logs that lose operational context or leak sensitive payloads.
+- Client and pool lifetimes controlled by import-time globals.
 
 ## Review Standard
 

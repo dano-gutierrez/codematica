@@ -17,7 +17,8 @@ Conventions:
 - `docs/features/<feature>.md` is the durable product and implementation contract for one feature.
 - `docs/features/_template.md` is the format new feature docs should follow.
 - `docs/features/README.md` explains how threads should consume and maintain feature docs.
-- `docs/features/learning-paths-and-practice.md` owns the path-first home, local path JSON, local exercise JSON, and practice routes.
+- `docs/features/learning-paths-and-practice.md` owns the path-first home, local path JSON, local exercise JSON, interview path nodes, and practice routes.
+- `docs/features/code-review-game.md` owns code-review exercise JSON, the standalone review route, and review-game behavior.
 - `docs/features/programming-language-refresh.md` owns reusable programming-language refresh paths, starting with Python for TypeScript and JavaScript engineers.
 - `docs/features/interview-coding-catalog.md` owns the reported-public company interview coding catalog and guided solution walkthroughs.
 - `docs/plans/<feature>/...` is the repo-local home for durable implementation plans when a plan needs to outlive one thread.
@@ -26,8 +27,8 @@ Content authoring surfaces:
 
 - `content/knowledge/`: canonical Markdown documents.
 - `content/diagrams/`: canonical Mermaid diagrams.
-- `content/learning-paths/`: role and skill path JSON.
-- `content/exercises/`: flashcard, cloze, and questionnaire practice JSON.
+- `content/learning-paths/`: role and skill path JSON, including document, diagram, exercise, and interview nodes.
+- `content/exercises/`: flashcard, cloze, questionnaire, and code-review practice JSON.
 - `content/flashcard-feeds/`: path-scoped passive flashcard feed JSON.
 - `content/interviews/`: company-scoped interview coding catalog JSON.
 

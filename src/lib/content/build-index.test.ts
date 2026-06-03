@@ -131,6 +131,78 @@ async function writeQuestionnaire(rootDir: string, slug: string, overrides: Reco
   );
 }
 
+async function writeCodeReview(rootDir: string, slug: string, overrides: Record<string, unknown> = {}) {
+  const filePath = path.join(rootDir, "content", "exercises", `${slug}.json`);
+  await mkdir(path.dirname(filePath), { recursive: true });
+  await writeFile(
+    filePath,
+    JSON.stringify(
+      {
+        slug,
+        title: "User Profile Boundary Review",
+        type: "code-review",
+        documentSlug: "programming/typescript-boundaries",
+        concept: "Runtime validation",
+        difficulty: "senior",
+        tags: ["typescript", "code-review"],
+        status: "published",
+        prompt: "Review the boundary helper and find the unsafe runtime assumption.",
+        files: [
+          {
+            path: "src/api/userProfile.ts",
+            language: "typescript",
+            healthyExplanation: "The helper keeps parsing close to the network request and uses a local schema definition.",
+            lines: [
+              'import { z } from "zod";',
+              "",
+              "const userSchema = z.object({",
+              "  id: z.string(),",
+              "});",
+              "",
+              "export async function loadUserProfile(userId: string) {",
+              "  const response = await fetch(`/api/users/${userId}`);",
+              "  const data = await response.json();",
+              "  return data as UserProfile;",
+              "}",
+            ],
+          },
+        ],
+        findings: [
+          {
+            id: "unchecked-network-json",
+            kind: "bug",
+            range: {
+              filePath: "src/api/userProfile.ts",
+              startLine: 10,
+              startColumn: 10,
+              endLine: 10,
+              endColumn: 30,
+            },
+            explanation: "Casting the network payload bypasses the runtime schema, so invalid data can enter the domain model.",
+            replacementLines: ["  return userSchema.parse(data);"],
+          },
+        ],
+        healthyNotes: [
+          {
+            id: "schema-import",
+            range: {
+              filePath: "src/api/userProfile.ts",
+              startLine: 1,
+              startColumn: 10,
+              endLine: 1,
+              endColumn: 11,
+            },
+            explanation: "Using Zod here is healthy because the code needs runtime validation, not only TypeScript types.",
+          },
+        ],
+        ...overrides,
+      },
+      null,
+      2,
+    ),
+  );
+}
+
 async function writeLearningPath(rootDir: string, slug: string, nodeSlug = "system-design/cache-invalidation") {
   const filePath = path.join(rootDir, "content", "learning-paths", `${slug}.json`);
   await mkdir(path.dirname(filePath), { recursive: true });
@@ -184,6 +256,35 @@ async function writeDocumentOnlyLearningPath(rootDir: string, slug: string, node
             title: "Python Runtime",
             summary: "Learn how Python runtime behavior differs from JavaScript assumptions.",
             nodes: [{ kind: "document", slug: nodeSlug }],
+          },
+        ],
+      },
+      null,
+      2,
+    ),
+  );
+}
+
+async function writeInterviewLearningPath(rootDir: string, interviewSlug = "amazon/two-sum-product-pair") {
+  const filePath = path.join(rootDir, "content", "learning-paths", "python-for-ts-js-engineers.json");
+  await mkdir(path.dirname(filePath), { recursive: true });
+  await writeFile(
+    filePath,
+    JSON.stringify(
+      {
+        slug: "python-for-ts-js-engineers",
+        title: "Python For TypeScript And JavaScript Engineers",
+        summary: "A short path through Python concepts and interview practice.",
+        kind: "skill",
+        category: "Programming",
+        audience: "TypeScript and JavaScript engineers refreshing Python.",
+        status: "published",
+        units: [
+          {
+            slug: "interview-practice",
+            title: "Interview Practice",
+            summary: "Apply Python concepts to reported public interview problems.",
+            nodes: [{ kind: "interview", slug: interviewSlug }],
           },
         ],
       },
@@ -334,7 +435,7 @@ describe("buildContentIndex", () => {
 
     const index = await buildContentIndex({ rootDir });
 
-    expect(index.schemaVersion).toBe(4);
+    expect(index.schemaVersion).toBe(6);
     expect(index.documents).toHaveLength(1);
     expect(index.diagrams).toHaveLength(1);
     expect(index.exercises).toEqual([
@@ -471,6 +572,33 @@ describe("buildContentIndex", () => {
     await expect(buildContentIndex({ rootDir })).rejects.toThrow(/references missing document/);
   });
 
+  it("indexes interview nodes in learning paths", async () => {
+    const rootDir = await makeTempRoot();
+    await writeInterviewCompany(rootDir, "amazon");
+    await writeInterviewLearningPath(rootDir);
+
+    const index = await buildContentIndex({ rootDir });
+
+    expect(index.learningPaths).toEqual([
+      expect.objectContaining({
+        slug: "python-for-ts-js-engineers",
+        units: [
+          expect.objectContaining({
+            nodes: [{ kind: "interview", slug: "amazon/two-sum-product-pair" }],
+          }),
+        ],
+      }),
+    ]);
+  });
+
+  it("fails when a path references a missing interview question", async () => {
+    const rootDir = await makeTempRoot();
+    await writeInterviewCompany(rootDir, "amazon");
+    await writeInterviewLearningPath(rootDir, "amazon/missing-question");
+
+    await expect(buildContentIndex({ rootDir })).rejects.toThrow(/references missing interview/);
+  });
+
   it("fails when an exercise references a missing document", async () => {
     const rootDir = await makeTempRoot();
     await writeDiagram(rootDir, "system-design/cache-aside");
@@ -532,6 +660,193 @@ describe("buildContentIndex", () => {
         ]),
       }),
     ]);
+  });
+
+  it("indexes code review exercises", async () => {
+    const rootDir = await makeTempRoot();
+    await writeKnowledge(rootDir, "programming/typescript-boundaries");
+    await writeCodeReview(rootDir, "programming/user-profile-review");
+
+    const index = await buildContentIndex({ rootDir });
+
+    expect(index.exercises).toEqual([
+      expect.objectContaining({
+        slug: "programming/user-profile-review",
+        route: "/practice/programming/user-profile-review",
+        type: "code-review",
+        files: [expect.objectContaining({ path: "src/api/userProfile.ts", language: "typescript" })],
+        findings: [expect.objectContaining({ id: "unchecked-network-json", kind: "bug" })],
+      }),
+    ]);
+  });
+
+  it("fails when a code review uses an unsupported language", async () => {
+    const rootDir = await makeTempRoot();
+    await writeKnowledge(rootDir, "programming/typescript-boundaries");
+    await writeCodeReview(rootDir, "programming/user-profile-review", {
+      files: [
+        {
+          path: "src/api/userProfile.ts",
+          language: "ruby",
+          healthyExplanation: "The helper keeps parsing close to the network request and uses a local schema definition.",
+          lines: ["puts 'hello'"],
+        },
+      ],
+    });
+
+    await expect(buildContentIndex({ rootDir })).rejects.toThrow(/language/i);
+  });
+
+  it("fails when a code review has too many files or no findings", async () => {
+    const rootDir = await makeTempRoot();
+    await writeKnowledge(rootDir, "programming/typescript-boundaries");
+    await writeCodeReview(rootDir, "programming/user-profile-review", {
+      files: [
+        {
+          path: "src/a.ts",
+          language: "typescript",
+          healthyExplanation: "This file is intentionally short and healthy for the review exercise.",
+          lines: ["export const a = 1;"],
+        },
+        {
+          path: "src/b.ts",
+          language: "typescript",
+          healthyExplanation: "This file is intentionally short and healthy for the review exercise.",
+          lines: ["export const b = 1;"],
+        },
+        {
+          path: "src/c.ts",
+          language: "typescript",
+          healthyExplanation: "This file is intentionally short and healthy for the review exercise.",
+          lines: ["export const c = 1;"],
+        },
+      ],
+      findings: [],
+    });
+
+    await expect(buildContentIndex({ rootDir })).rejects.toThrow(/files|findings/i);
+  });
+
+  it("fails when a code review finding references a missing file", async () => {
+    const rootDir = await makeTempRoot();
+    await writeKnowledge(rootDir, "programming/typescript-boundaries");
+    await writeCodeReview(rootDir, "programming/user-profile-review", {
+      findings: [
+        {
+          id: "missing-file",
+          kind: "bug",
+          range: {
+            filePath: "src/api/missing.ts",
+            startLine: 1,
+            startColumn: 1,
+            endLine: 1,
+            endColumn: 5,
+          },
+          explanation: "The finding points at a file that is not included in the exercise.",
+          replacementLines: ["fixed"],
+        },
+      ],
+    });
+
+    await expect(buildContentIndex({ rootDir })).rejects.toThrow(/missing code review file/i);
+  });
+
+  it("fails when a code review finding range is outside the file", async () => {
+    const rootDir = await makeTempRoot();
+    await writeKnowledge(rootDir, "programming/typescript-boundaries");
+    await writeCodeReview(rootDir, "programming/user-profile-review", {
+      findings: [
+        {
+          id: "invalid-range",
+          kind: "bug",
+          range: {
+            filePath: "src/api/userProfile.ts",
+            startLine: 10,
+            startColumn: 500,
+            endLine: 10,
+            endColumn: 510,
+          },
+          explanation: "The finding range points beyond the target line and should fail content indexing.",
+          replacementLines: ["  return userSchema.parse(data);"],
+        },
+      ],
+    });
+
+    await expect(buildContentIndex({ rootDir })).rejects.toThrow(/invalid code review range/i);
+  });
+
+  it("fails when a code review has duplicate findings or more than one finding per file", async () => {
+    const rootDir = await makeTempRoot();
+    await writeKnowledge(rootDir, "programming/typescript-boundaries");
+    await writeCodeReview(rootDir, "programming/user-profile-review", {
+      findings: [
+        {
+          id: "duplicate",
+          kind: "bug",
+          range: {
+            filePath: "src/api/userProfile.ts",
+            startLine: 10,
+            startColumn: 10,
+            endLine: 10,
+            endColumn: 30,
+          },
+          explanation: "The first finding catches the unsafe network cast.",
+          replacementLines: ["  return userSchema.parse(data);"],
+        },
+        {
+          id: "duplicate",
+          kind: "improvement",
+          range: {
+            filePath: "src/api/userProfile.ts",
+            startLine: 8,
+            startColumn: 26,
+            endLine: 8,
+            endColumn: 31,
+          },
+          explanation: "The duplicate ID should fail before users see the exercise.",
+          replacementLines: ["  const response = await fetch(`/api/users/${userId}`, { cache: \"no-store\" });"],
+        },
+      ],
+    });
+
+    await expect(buildContentIndex({ rootDir })).rejects.toThrow(/duplicate code review finding id/i);
+  });
+
+  it("fails when a code review has more than one finding per file", async () => {
+    const rootDir = await makeTempRoot();
+    await writeKnowledge(rootDir, "programming/typescript-boundaries");
+    await writeCodeReview(rootDir, "programming/user-profile-review", {
+      findings: [
+        {
+          id: "unchecked-network-json",
+          kind: "bug",
+          range: {
+            filePath: "src/api/userProfile.ts",
+            startLine: 10,
+            startColumn: 10,
+            endLine: 10,
+            endColumn: 30,
+          },
+          explanation: "The first finding catches the unsafe network cast.",
+          replacementLines: ["  return userSchema.parse(data);"],
+        },
+        {
+          id: "missing-cache-policy",
+          kind: "improvement",
+          range: {
+            filePath: "src/api/userProfile.ts",
+            startLine: 8,
+            startColumn: 26,
+            endLine: 8,
+            endColumn: 31,
+          },
+          explanation: "A second finding in the same file is future work because replacements can shift coordinates.",
+          replacementLines: ["  const response = await fetch(`/api/users/${userId}`, { cache: \"no-store\" });"],
+        },
+      ],
+    });
+
+    await expect(buildContentIndex({ rootDir })).rejects.toThrow(/at most one finding per file/i);
   });
 
   it("fails when a questionnaire has duplicate question IDs", async () => {
@@ -652,7 +967,7 @@ describe("buildContentIndex", () => {
 
     const index = await buildContentIndex({ rootDir });
 
-    expect(index.schemaVersion).toBe(4);
+    expect(index.schemaVersion).toBe(6);
     expect(index.interviewCompanies).toEqual([
       expect.objectContaining({
         slug: "amazon",

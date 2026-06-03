@@ -132,6 +132,85 @@
         }
       ],
       "explanation": "Packaging problems often look like environment mysteries until the repo contract is explicit."
+    },
+    {
+      "id": "src-layout-review",
+      "kind": "choice",
+      "prompt": "A repo adopts src/ layout, but tests pass only because PYTHONPATH is hand-set locally. What should review ask for?",
+      "options": [
+        {
+          "id": "keep-env",
+          "label": "Keep the manual PYTHONPATH step because src/ layout always requires it.",
+          "isCorrect": false
+        },
+        {
+          "id": "install-contract",
+          "label": "Use a documented install or editable-install command that matches CI behavior.",
+          "isCorrect": true
+        },
+        {
+          "id": "remove-init",
+          "label": "Remove all __init__.py files so imports become automatic.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "The src/ layout is useful when installation behavior is explicit. Hidden path tweaks make local behavior diverge from production."
+    },
+    {
+      "id": "lockfile-gap",
+      "kind": "cloze",
+      "prompt": "Fill the gap for what a lockfile is meant to make reproducible.",
+      "template": "A useful Python lock process makes the resolved {{blank}} consistent across local, CI, and deployment.",
+      "acceptedAnswers": ["dependency graph", "dependencies", "package graph"],
+      "explanation": "The lockfile matters only if the install commands actually use it across environments."
+    },
+    {
+      "id": "install-failure-order",
+      "kind": "ordering",
+      "prompt": "Order the senior triage flow when an import works locally but fails in deployment.",
+      "items": [
+        {
+          "id": "env",
+          "label": "Confirm the process uses the intended virtual environment"
+        },
+        {
+          "id": "dist",
+          "label": "Check distribution name versus import name"
+        },
+        {
+          "id": "shadow",
+          "label": "Look for local modules shadowing dependencies"
+        },
+        {
+          "id": "contract",
+          "label": "Align the install command with CI and deployment"
+        }
+      ],
+      "correctOrder": ["env", "dist", "shadow", "contract"],
+      "explanation": "Import failures are often environment contract failures, not reasons to patch sys.path blindly."
+    },
+    {
+      "id": "advanced-packaging-match",
+      "kind": "matching",
+      "prompt": "Match the packaging artifact to the review question it should answer.",
+      "pairs": [
+        {
+          "id": "requires-python",
+          "prompt": "requires-python",
+          "match": "which interpreter versions are supported"
+        },
+        {
+          "id": "dependency-groups",
+          "prompt": "dependency groups",
+          "match": "which dependencies are for development or tooling"
+        },
+        {
+          "id": "project-scripts",
+          "prompt": "project scripts",
+          "match": "which importable entry point starts the command"
+        }
+      ],
+      "explanation": "Packaging review is about making environment and artifact assumptions explicit enough for CI and production."
     }
   ]
 }

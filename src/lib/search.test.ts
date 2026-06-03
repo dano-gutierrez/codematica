@@ -3,7 +3,7 @@ import type { ContentIndex } from "./content/schema";
 import { buildSnippet, searchContent } from "./search";
 
 const index: ContentIndex = {
-  schemaVersion: 4,
+  schemaVersion: 6,
   tracks: [],
   learningPaths: [],
   exercises: [],

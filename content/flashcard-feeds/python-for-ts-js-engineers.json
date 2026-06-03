@@ -4555,6 +4555,2486 @@
         "interview"
       ],
       "sourceDocSlug": "programming/python-types-and-contracts"
+    },
+    {
+      "id": "pro-python-generator-exhaustion-concept",
+      "type": "concept",
+      "title": "Generator Exhaustion",
+      "prompt": "Generators are one-shot streams; materialize only when repeated passes are required.",
+      "explanation": "Generators are one-shot streams; materialize only when repeated passes are required. Review the runtime or tooling rule directly and name the edge case a teammate could miss.",
+      "difficulty": "senior",
+      "tags": [
+        "python",
+        "runtime",
+        "senior",
+        "concept"
+      ],
+      "sourceDocSlug": "programming/python-runtime-model"
+    },
+    {
+      "id": "pro-python-generator-exhaustion-practical",
+      "type": "practical",
+      "title": "Generator Exhaustion Review",
+      "prompt": "Review code for this Python production concern: Generators are one-shot streams; materialize only when repeated passes are required.",
+      "explanation": "Senior review standard: state the ownership, boundary, or failure contract; then add a narrow test around the edge case. Use this in Word Ladder neighbor generation without consuming the same stream twice.",
+      "difficulty": "senior",
+      "tags": [
+        "python",
+        "runtime",
+        "senior",
+        "review"
+      ],
+      "sourceDocSlug": "programming/python-runtime-model"
+    },
+    {
+      "id": "pro-python-generator-exhaustion-snippet",
+      "type": "snippet",
+      "title": "Generator Exhaustion Snippet",
+      "prompt": "Read the snippet and identify the Python contract: Generators are one-shot streams; materialize only when repeated passes are required.",
+      "explanation": "The snippet demonstrates the professional Python behavior to preserve in production code. Use this in Word Ladder neighbor generation without consuming the same stream twice.",
+      "difficulty": "senior",
+      "tags": [
+        "python",
+        "runtime",
+        "senior",
+        "snippet"
+      ],
+      "sourceDocSlug": "programming/python-runtime-model",
+      "code": "def active_ids(rows):\n    for row in rows:\n        if row.active:\n            yield row.user_id\n\nids = active_ids(rows)\nlist(ids)\nlist(ids)  # []"
+    },
+    {
+      "id": "pro-python-generator-exhaustion-interview",
+      "type": "interview",
+      "title": "Generator Exhaustion Interview Lens",
+      "prompt": "Use this in Word Ladder neighbor generation without consuming the same stream twice.",
+      "explanation": "In an interview, explain the tradeoff, show the Python-specific behavior, and call out the bug this prevents. Generators are one-shot streams; materialize only when repeated passes are required.",
+      "difficulty": "senior",
+      "tags": [
+        "python",
+        "runtime",
+        "senior",
+        "interview"
+      ],
+      "sourceDocSlug": "programming/python-runtime-model",
+      "code": "def active_ids(rows):\n    for row in rows:\n        if row.active:\n            yield row.user_id\n\nids = active_ids(rows)\nlist(ids)\nlist(ids)  # []"
+    },
+    {
+      "id": "pro-python-iterator-state-concept",
+      "type": "concept",
+      "title": "Iterator State",
+      "prompt": "An iterator owns traversal state, so separate iterable containers from one-pass iterators.",
+      "explanation": "An iterator owns traversal state, so separate iterable containers from one-pass iterators. Review the runtime or tooling rule directly and name the edge case a teammate could miss.",
+      "difficulty": "senior",
+      "tags": [
+        "python",
+        "runtime",
+        "senior",
+        "concept"
+      ],
+      "sourceDocSlug": "programming/python-runtime-model"
+    },
+    {
+      "id": "pro-python-iterator-state-practical",
+      "type": "practical",
+      "title": "Iterator State Review",
+      "prompt": "Review code for this Python production concern: An iterator owns traversal state, so separate iterable containers from one-pass iterators.",
+      "explanation": "Senior review standard: state the ownership, boundary, or failure contract; then add a narrow test around the edge case. Explain this when writing custom traversal helpers for trees or graphs.",
+      "difficulty": "senior",
+      "tags": [
+        "python",
+        "runtime",
+        "senior",
+        "review"
+      ],
+      "sourceDocSlug": "programming/python-runtime-model"
+    },
+    {
+      "id": "pro-python-iterator-state-snippet",
+      "type": "snippet",
+      "title": "Iterator State Snippet",
+      "prompt": "Read the snippet and identify the Python contract: An iterator owns traversal state, so separate iterable containers from one-pass iterators.",
+      "explanation": "The snippet demonstrates the professional Python behavior to preserve in production code. Explain this when writing custom traversal helpers for trees or graphs.",
+      "difficulty": "senior",
+      "tags": [
+        "python",
+        "runtime",
+        "senior",
+        "snippet"
+      ],
+      "sourceDocSlug": "programming/python-runtime-model",
+      "code": "class Countdown:\n    def __iter__(self):\n        return self\n    def __next__(self):\n        if self.n <= 0:\n            raise StopIteration\n        self.n -= 1\n        return self.n"
+    },
+    {
+      "id": "pro-python-iterator-state-interview",
+      "type": "interview",
+      "title": "Iterator State Interview Lens",
+      "prompt": "Explain this when writing custom traversal helpers for trees or graphs.",
+      "explanation": "In an interview, explain the tradeoff, show the Python-specific behavior, and call out the bug this prevents. An iterator owns traversal state, so separate iterable containers from one-pass iterators.",
+      "difficulty": "senior",
+      "tags": [
+        "python",
+        "runtime",
+        "senior",
+        "interview"
+      ],
+      "sourceDocSlug": "programming/python-runtime-model",
+      "code": "class Countdown:\n    def __iter__(self):\n        return self\n    def __next__(self):\n        if self.n <= 0:\n            raise StopIteration\n        self.n -= 1\n        return self.n"
+    },
+    {
+      "id": "pro-python-property-side-effects-concept",
+      "type": "concept",
+      "title": "Property Side Effects",
+      "prompt": "A property should be cheap and deterministic; expensive work deserves a named method.",
+      "explanation": "A property should be cheap and deterministic; expensive work deserves a named method. Review the runtime or tooling rule directly and name the edge case a teammate could miss.",
+      "difficulty": "senior",
+      "tags": [
+        "python",
+        "runtime",
+        "senior",
+        "concept"
+      ],
+      "sourceDocSlug": "programming/python-runtime-model"
+    },
+    {
+      "id": "pro-python-property-side-effects-practical",
+      "type": "practical",
+      "title": "Property Side Effects Review",
+      "prompt": "Review code for this Python production concern: A property should be cheap and deterministic; expensive work deserves a named method.",
+      "explanation": "Senior review standard: state the ownership, boundary, or failure contract; then add a narrow test around the edge case. Use explicit methods for file-system reads, cache refreshes, and network calls.",
+      "difficulty": "senior",
+      "tags": [
+        "python",
+        "runtime",
+        "senior",
+        "review"
+      ],
+      "sourceDocSlug": "programming/python-runtime-model"
+    },
+    {
+      "id": "pro-python-property-side-effects-snippet",
+      "type": "snippet",
+      "title": "Property Side Effects Snippet",
+      "prompt": "Read the snippet and identify the Python contract: A property should be cheap and deterministic; expensive work deserves a named method.",
+      "explanation": "The snippet demonstrates the professional Python behavior to preserve in production code. Use explicit methods for file-system reads, cache refreshes, and network calls.",
+      "difficulty": "senior",
+      "tags": [
+        "python",
+        "runtime",
+        "senior",
+        "snippet"
+      ],
+      "sourceDocSlug": "programming/python-runtime-model",
+      "code": "class User:\n    @property\n    def email(self):\n        return self.raw_email.strip().lower()\n\n    def fetch_balance(self):\n        return gateway.balance(self.id)"
+    },
+    {
+      "id": "pro-python-property-side-effects-interview",
+      "type": "interview",
+      "title": "Property Side Effects Interview Lens",
+      "prompt": "Use explicit methods for file-system reads, cache refreshes, and network calls.",
+      "explanation": "In an interview, explain the tradeoff, show the Python-specific behavior, and call out the bug this prevents. A property should be cheap and deterministic; expensive work deserves a named method.",
+      "difficulty": "senior",
+      "tags": [
+        "python",
+        "runtime",
+        "senior",
+        "interview"
+      ],
+      "sourceDocSlug": "programming/python-runtime-model",
+      "code": "class User:\n    @property\n    def email(self):\n        return self.raw_email.strip().lower()\n\n    def fetch_balance(self):\n        return gateway.balance(self.id)"
+    },
+    {
+      "id": "pro-python-descriptor-validation-concept",
+      "type": "concept",
+      "title": "Descriptor Validation",
+      "prompt": "Descriptors can enforce repeated attribute contracts, but they are easy to overuse.",
+      "explanation": "Descriptors can enforce repeated attribute contracts, but they are easy to overuse. Review the runtime or tooling rule directly and name the edge case a teammate could miss.",
+      "difficulty": "senior",
+      "tags": [
+        "python",
+        "runtime",
+        "senior",
+        "concept"
+      ],
+      "sourceDocSlug": "programming/python-runtime-model"
+    },
+    {
+      "id": "pro-python-descriptor-validation-practical",
+      "type": "practical",
+      "title": "Descriptor Validation Review",
+      "prompt": "Review code for this Python production concern: Descriptors can enforce repeated attribute contracts, but they are easy to overuse.",
+      "explanation": "Senior review standard: state the ownership, boundary, or failure contract; then add a narrow test around the edge case. Useful to recognize in framework-heavy senior Python code.",
+      "difficulty": "senior",
+      "tags": [
+        "python",
+        "runtime",
+        "senior",
+        "review"
+      ],
+      "sourceDocSlug": "programming/python-runtime-model"
+    },
+    {
+      "id": "pro-python-descriptor-validation-snippet",
+      "type": "snippet",
+      "title": "Descriptor Validation Snippet",
+      "prompt": "Read the snippet and identify the Python contract: Descriptors can enforce repeated attribute contracts, but they are easy to overuse.",
+      "explanation": "The snippet demonstrates the professional Python behavior to preserve in production code. Useful to recognize in framework-heavy senior Python code.",
+      "difficulty": "senior",
+      "tags": [
+        "python",
+        "runtime",
+        "senior",
+        "snippet"
+      ],
+      "sourceDocSlug": "programming/python-runtime-model",
+      "code": "class PositiveInt:\n    def __set_name__(self, owner, name):\n        self.name = \"_\" + name\n    def __set__(self, obj, value):\n        if value <= 0:\n            raise ValueError(\"positive required\")\n        setattr(obj, self.name, value)"
+    },
+    {
+      "id": "pro-python-descriptor-validation-interview",
+      "type": "interview",
+      "title": "Descriptor Validation Interview Lens",
+      "prompt": "Useful to recognize in framework-heavy senior Python code.",
+      "explanation": "In an interview, explain the tradeoff, show the Python-specific behavior, and call out the bug this prevents. Descriptors can enforce repeated attribute contracts, but they are easy to overuse.",
+      "difficulty": "senior",
+      "tags": [
+        "python",
+        "runtime",
+        "senior",
+        "interview"
+      ],
+      "sourceDocSlug": "programming/python-runtime-model",
+      "code": "class PositiveInt:\n    def __set_name__(self, owner, name):\n        self.name = \"_\" + name\n    def __set__(self, obj, value):\n        if value <= 0:\n            raise ValueError(\"positive required\")\n        setattr(obj, self.name, value)"
+    },
+    {
+      "id": "pro-python-contextmanager-preserve-concept",
+      "type": "concept",
+      "title": "Context Manager Preservation",
+      "prompt": "Context managers should clean up without swallowing exceptions unless suppression is intentional.",
+      "explanation": "Context managers should clean up without swallowing exceptions unless suppression is intentional. Review the runtime or tooling rule directly and name the edge case a teammate could miss.",
+      "difficulty": "senior",
+      "tags": [
+        "python",
+        "runtime",
+        "senior",
+        "concept"
+      ],
+      "sourceDocSlug": "programming/python-runtime-model"
+    },
+    {
+      "id": "pro-python-contextmanager-preserve-practical",
+      "type": "practical",
+      "title": "Context Manager Preservation Review",
+      "prompt": "Review code for this Python production concern: Context managers should clean up without swallowing exceptions unless suppression is intentional.",
+      "explanation": "Senior review standard: state the ownership, boundary, or failure contract; then add a narrow test around the edge case. Mention this when a resource-owning interview solution uses with-statements.",
+      "difficulty": "senior",
+      "tags": [
+        "python",
+        "runtime",
+        "senior",
+        "review"
+      ],
+      "sourceDocSlug": "programming/python-runtime-model"
+    },
+    {
+      "id": "pro-python-contextmanager-preserve-snippet",
+      "type": "snippet",
+      "title": "Context Manager Preservation Snippet",
+      "prompt": "Read the snippet and identify the Python contract: Context managers should clean up without swallowing exceptions unless suppression is intentional.",
+      "explanation": "The snippet demonstrates the professional Python behavior to preserve in production code. Mention this when a resource-owning interview solution uses with-statements.",
+      "difficulty": "senior",
+      "tags": [
+        "python",
+        "runtime",
+        "senior",
+        "snippet"
+      ],
+      "sourceDocSlug": "programming/python-runtime-model",
+      "code": "class Span:\n    def __exit__(self, exc_type, exc, tb):\n        if exc:\n            self.record_exception(exc)\n        self.end()\n        return False"
+    },
+    {
+      "id": "pro-python-contextmanager-preserve-interview",
+      "type": "interview",
+      "title": "Context Manager Preservation Interview Lens",
+      "prompt": "Mention this when a resource-owning interview solution uses with-statements.",
+      "explanation": "In an interview, explain the tradeoff, show the Python-specific behavior, and call out the bug this prevents. Context managers should clean up without swallowing exceptions unless suppression is intentional.",
+      "difficulty": "senior",
+      "tags": [
+        "python",
+        "runtime",
+        "senior",
+        "interview"
+      ],
+      "sourceDocSlug": "programming/python-runtime-model",
+      "code": "class Span:\n    def __exit__(self, exc_type, exc, tb):\n        if exc:\n            self.record_exception(exc)\n        self.end()\n        return False"
+    },
+    {
+      "id": "pro-python-exception-cause-concept",
+      "type": "concept",
+      "title": "Exception Cause",
+      "prompt": "raise ... from exc preserves the cause while exposing a domain-level error.",
+      "explanation": "raise ... from exc preserves the cause while exposing a domain-level error. Review the runtime or tooling rule directly and name the edge case a teammate could miss.",
+      "difficulty": "senior",
+      "tags": [
+        "python",
+        "runtime",
+        "senior",
+        "concept"
+      ],
+      "sourceDocSlug": "programming/python-runtime-model"
+    },
+    {
+      "id": "pro-python-exception-cause-practical",
+      "type": "practical",
+      "title": "Exception Cause Review",
+      "prompt": "Review code for this Python production concern: raise ... from exc preserves the cause while exposing a domain-level error.",
+      "explanation": "Senior review standard: state the ownership, boundary, or failure contract; then add a narrow test around the edge case. Use for serializers, config loaders, and tree parsing helpers.",
+      "difficulty": "senior",
+      "tags": [
+        "python",
+        "runtime",
+        "senior",
+        "review"
+      ],
+      "sourceDocSlug": "programming/python-runtime-model"
+    },
+    {
+      "id": "pro-python-exception-cause-snippet",
+      "type": "snippet",
+      "title": "Exception Cause Snippet",
+      "prompt": "Read the snippet and identify the Python contract: raise ... from exc preserves the cause while exposing a domain-level error.",
+      "explanation": "The snippet demonstrates the professional Python behavior to preserve in production code. Use for serializers, config loaders, and tree parsing helpers.",
+      "difficulty": "senior",
+      "tags": [
+        "python",
+        "runtime",
+        "senior",
+        "snippet"
+      ],
+      "sourceDocSlug": "programming/python-runtime-model",
+      "code": "try:\n    payload = json.loads(raw)\nexcept json.JSONDecodeError as exc:\n    raise InvalidPayload(\"bad JSON\") from exc"
+    },
+    {
+      "id": "pro-python-exception-cause-interview",
+      "type": "interview",
+      "title": "Exception Cause Interview Lens",
+      "prompt": "Use for serializers, config loaders, and tree parsing helpers.",
+      "explanation": "In an interview, explain the tradeoff, show the Python-specific behavior, and call out the bug this prevents. raise ... from exc preserves the cause while exposing a domain-level error.",
+      "difficulty": "senior",
+      "tags": [
+        "python",
+        "runtime",
+        "senior",
+        "interview"
+      ],
+      "sourceDocSlug": "programming/python-runtime-model",
+      "code": "try:\n    payload = json.loads(raw)\nexcept json.JSONDecodeError as exc:\n    raise InvalidPayload(\"bad JSON\") from exc"
+    },
+    {
+      "id": "pro-python-shallow-copy-concept",
+      "type": "concept",
+      "title": "Shallow Copy",
+      "prompt": "dict.copy() copies the outer mapping, not nested mutable values.",
+      "explanation": "dict.copy() copies the outer mapping, not nested mutable values. Review the runtime or tooling rule directly and name the edge case a teammate could miss.",
+      "difficulty": "senior",
+      "tags": [
+        "python",
+        "runtime",
+        "senior",
+        "concept"
+      ],
+      "sourceDocSlug": "programming/python-runtime-model"
+    },
+    {
+      "id": "pro-python-shallow-copy-practical",
+      "type": "practical",
+      "title": "Shallow Copy Review",
+      "prompt": "Review code for this Python production concern: dict.copy() copies the outer mapping, not nested mutable values.",
+      "explanation": "Senior review standard: state the ownership, boundary, or failure contract; then add a narrow test around the edge case. This matters in cache values, tries, graph maps, and test fixtures.",
+      "difficulty": "senior",
+      "tags": [
+        "python",
+        "runtime",
+        "senior",
+        "review"
+      ],
+      "sourceDocSlug": "programming/python-runtime-model"
+    },
+    {
+      "id": "pro-python-shallow-copy-snippet",
+      "type": "snippet",
+      "title": "Shallow Copy Snippet",
+      "prompt": "Read the snippet and identify the Python contract: dict.copy() copies the outer mapping, not nested mutable values.",
+      "explanation": "The snippet demonstrates the professional Python behavior to preserve in production code. This matters in cache values, tries, graph maps, and test fixtures.",
+      "difficulty": "senior",
+      "tags": [
+        "python",
+        "runtime",
+        "senior",
+        "snippet"
+      ],
+      "sourceDocSlug": "programming/python-runtime-model",
+      "code": "base = {\"meta\": {\"tenant\": \"default\"}}\ncopy = base.copy()\ncopy[\"meta\"][\"tenant\"] = \"acme\"\nassert base[\"meta\"][\"tenant\"] == \"acme\""
+    },
+    {
+      "id": "pro-python-shallow-copy-interview",
+      "type": "interview",
+      "title": "Shallow Copy Interview Lens",
+      "prompt": "This matters in cache values, tries, graph maps, and test fixtures.",
+      "explanation": "In an interview, explain the tradeoff, show the Python-specific behavior, and call out the bug this prevents. dict.copy() copies the outer mapping, not nested mutable values.",
+      "difficulty": "senior",
+      "tags": [
+        "python",
+        "runtime",
+        "senior",
+        "interview"
+      ],
+      "sourceDocSlug": "programming/python-runtime-model",
+      "code": "base = {\"meta\": {\"tenant\": \"default\"}}\ncopy = base.copy()\ncopy[\"meta\"][\"tenant\"] = \"acme\"\nassert base[\"meta\"][\"tenant\"] == \"acme\""
+    },
+    {
+      "id": "pro-python-import-cycle-concept",
+      "type": "concept",
+      "title": "Import Cycle Triage",
+      "prompt": "Circular imports often mean top-level wiring lives in the wrong module.",
+      "explanation": "Circular imports often mean top-level wiring lives in the wrong module. Review the runtime or tooling rule directly and name the edge case a teammate could miss.",
+      "difficulty": "senior",
+      "tags": [
+        "python",
+        "runtime",
+        "senior",
+        "concept"
+      ],
+      "sourceDocSlug": "programming/python-runtime-model"
+    },
+    {
+      "id": "pro-python-import-cycle-practical",
+      "type": "practical",
+      "title": "Import Cycle Triage Review",
+      "prompt": "Review code for this Python production concern: Circular imports often mean top-level wiring lives in the wrong module.",
+      "explanation": "Senior review standard: state the ownership, boundary, or failure contract; then add a narrow test around the edge case. In design interviews, keep algorithms importable without service startup side effects.",
+      "difficulty": "senior",
+      "tags": [
+        "python",
+        "runtime",
+        "senior",
+        "review"
+      ],
+      "sourceDocSlug": "programming/python-runtime-model"
+    },
+    {
+      "id": "pro-python-import-cycle-snippet",
+      "type": "snippet",
+      "title": "Import Cycle Triage Snippet",
+      "prompt": "Read the snippet and identify the Python contract: Circular imports often mean top-level wiring lives in the wrong module.",
+      "explanation": "The snippet demonstrates the professional Python behavior to preserve in production code. In design interviews, keep algorithms importable without service startup side effects.",
+      "difficulty": "senior",
+      "tags": [
+        "python",
+        "runtime",
+        "senior",
+        "snippet"
+      ],
+      "sourceDocSlug": "programming/python-runtime-model",
+      "code": "# Prefer:\n# domain/types.py for contracts\n# adapters/http.py for I/O\n# app/factory.py for runtime wiring"
+    },
+    {
+      "id": "pro-python-import-cycle-interview",
+      "type": "interview",
+      "title": "Import Cycle Triage Interview Lens",
+      "prompt": "In design interviews, keep algorithms importable without service startup side effects.",
+      "explanation": "In an interview, explain the tradeoff, show the Python-specific behavior, and call out the bug this prevents. Circular imports often mean top-level wiring lives in the wrong module.",
+      "difficulty": "senior",
+      "tags": [
+        "python",
+        "runtime",
+        "senior",
+        "interview"
+      ],
+      "sourceDocSlug": "programming/python-runtime-model",
+      "code": "# Prefer:\n# domain/types.py for contracts\n# adapters/http.py for I/O\n# app/factory.py for runtime wiring"
+    },
+    {
+      "id": "pro-python-lru-ordered-dict-concept",
+      "type": "concept",
+      "title": "LRU OrderedDict",
+      "prompt": "OrderedDict expresses recency updates clearly for production-friendly LRU code.",
+      "explanation": "OrderedDict expresses recency updates clearly for production-friendly LRU code. Review the runtime or tooling rule directly and name the edge case a teammate could miss.",
+      "difficulty": "senior",
+      "tags": [
+        "python",
+        "runtime",
+        "senior",
+        "concept"
+      ],
+      "sourceDocSlug": "programming/python-runtime-model"
+    },
+    {
+      "id": "pro-python-lru-ordered-dict-practical",
+      "type": "practical",
+      "title": "LRU OrderedDict Review",
+      "prompt": "Review code for this Python production concern: OrderedDict expresses recency updates clearly for production-friendly LRU code.",
+      "explanation": "Senior review standard: state the ownership, boundary, or failure contract; then add a narrow test around the edge case. Route: /interviews/amazon/lru-cache?path=python-for-ts-js-engineers",
+      "difficulty": "senior",
+      "tags": [
+        "python",
+        "runtime",
+        "senior",
+        "review"
+      ],
+      "sourceDocSlug": "programming/python-runtime-model"
+    },
+    {
+      "id": "pro-python-lru-ordered-dict-snippet",
+      "type": "snippet",
+      "title": "LRU OrderedDict Snippet",
+      "prompt": "Read the snippet and identify the Python contract: OrderedDict expresses recency updates clearly for production-friendly LRU code.",
+      "explanation": "The snippet demonstrates the professional Python behavior to preserve in production code. Route: /interviews/amazon/lru-cache?path=python-for-ts-js-engineers",
+      "difficulty": "senior",
+      "tags": [
+        "python",
+        "runtime",
+        "senior",
+        "snippet"
+      ],
+      "sourceDocSlug": "programming/python-runtime-model",
+      "code": "from collections import OrderedDict\n\nclass LRUCache:\n    def __init__(self, capacity):\n        self.capacity = capacity\n        self.data = OrderedDict()\n    def get(self, key):\n        if key not in self.data:\n            return -1\n        self.data.move_to_end(key)\n        return self.data[key]"
+    },
+    {
+      "id": "pro-python-lru-ordered-dict-interview",
+      "type": "interview",
+      "title": "LRU OrderedDict Interview Lens",
+      "prompt": "Route: /interviews/amazon/lru-cache?path=python-for-ts-js-engineers",
+      "explanation": "In an interview, explain the tradeoff, show the Python-specific behavior, and call out the bug this prevents. OrderedDict expresses recency updates clearly for production-friendly LRU code.",
+      "difficulty": "senior",
+      "tags": [
+        "python",
+        "runtime",
+        "senior",
+        "interview"
+      ],
+      "sourceDocSlug": "programming/python-runtime-model",
+      "code": "from collections import OrderedDict\n\nclass LRUCache:\n    def __init__(self, capacity):\n        self.capacity = capacity\n        self.data = OrderedDict()\n    def get(self, key):\n        if key not in self.data:\n            return -1\n        self.data.move_to_end(key)\n        return self.data[key]"
+    },
+    {
+      "id": "pro-python-heap-stale-records-concept",
+      "type": "concept",
+      "title": "Heap Stale Records",
+      "prompt": "heapq lacks decrease-key, so push newer records and skip stale ones.",
+      "explanation": "heapq lacks decrease-key, so push newer records and skip stale ones. Review the runtime or tooling rule directly and name the edge case a teammate could miss.",
+      "difficulty": "senior",
+      "tags": [
+        "python",
+        "runtime",
+        "senior",
+        "concept"
+      ],
+      "sourceDocSlug": "programming/python-runtime-model"
+    },
+    {
+      "id": "pro-python-heap-stale-records-practical",
+      "type": "practical",
+      "title": "Heap Stale Records Review",
+      "prompt": "Review code for this Python production concern: heapq lacks decrease-key, so push newer records and skip stale ones.",
+      "explanation": "Senior review standard: state the ownership, boundary, or failure contract; then add a narrow test around the edge case. Route: /interviews/uber/shortest-path-weighted-road-graph?path=python-for-ts-js-engineers",
+      "difficulty": "senior",
+      "tags": [
+        "python",
+        "runtime",
+        "senior",
+        "review"
+      ],
+      "sourceDocSlug": "programming/python-runtime-model"
+    },
+    {
+      "id": "pro-python-heap-stale-records-snippet",
+      "type": "snippet",
+      "title": "Heap Stale Records Snippet",
+      "prompt": "Read the snippet and identify the Python contract: heapq lacks decrease-key, so push newer records and skip stale ones.",
+      "explanation": "The snippet demonstrates the professional Python behavior to preserve in production code. Route: /interviews/uber/shortest-path-weighted-road-graph?path=python-for-ts-js-engineers",
+      "difficulty": "senior",
+      "tags": [
+        "python",
+        "runtime",
+        "senior",
+        "snippet"
+      ],
+      "sourceDocSlug": "programming/python-runtime-model",
+      "code": "cost, node = heapq.heappop(heap)\nif cost != dist[node]:\n    continue"
+    },
+    {
+      "id": "pro-python-heap-stale-records-interview",
+      "type": "interview",
+      "title": "Heap Stale Records Interview Lens",
+      "prompt": "Route: /interviews/uber/shortest-path-weighted-road-graph?path=python-for-ts-js-engineers",
+      "explanation": "In an interview, explain the tradeoff, show the Python-specific behavior, and call out the bug this prevents. heapq lacks decrease-key, so push newer records and skip stale ones.",
+      "difficulty": "senior",
+      "tags": [
+        "python",
+        "runtime",
+        "senior",
+        "interview"
+      ],
+      "sourceDocSlug": "programming/python-runtime-model",
+      "code": "cost, node = heapq.heappop(heap)\nif cost != dist[node]:\n    continue"
+    },
+    {
+      "id": "pro-python-protocol-publisher-concept",
+      "type": "concept",
+      "title": "Protocol Publisher",
+      "prompt": "Use Protocol for behavior a function needs instead of a concrete production class.",
+      "explanation": "Use Protocol for behavior a function needs instead of a concrete production class. Review the runtime or tooling rule directly and name the edge case a teammate could miss.",
+      "difficulty": "senior",
+      "tags": [
+        "python",
+        "typing",
+        "senior",
+        "concept"
+      ],
+      "sourceDocSlug": "programming/python-types-and-contracts"
+    },
+    {
+      "id": "pro-python-protocol-publisher-practical",
+      "type": "practical",
+      "title": "Protocol Publisher Review",
+      "prompt": "Review code for this Python production concern: Use Protocol for behavior a function needs instead of a concrete production class.",
+      "explanation": "Senior review standard: state the ownership, boundary, or failure contract; then add a narrow test around the edge case. Good for testable cache, file-system, and graph service designs.",
+      "difficulty": "senior",
+      "tags": [
+        "python",
+        "typing",
+        "senior",
+        "review"
+      ],
+      "sourceDocSlug": "programming/python-types-and-contracts"
+    },
+    {
+      "id": "pro-python-protocol-publisher-snippet",
+      "type": "snippet",
+      "title": "Protocol Publisher Snippet",
+      "prompt": "Read the snippet and identify the Python contract: Use Protocol for behavior a function needs instead of a concrete production class.",
+      "explanation": "The snippet demonstrates the professional Python behavior to preserve in production code. Good for testable cache, file-system, and graph service designs.",
+      "difficulty": "senior",
+      "tags": [
+        "python",
+        "typing",
+        "senior",
+        "snippet"
+      ],
+      "sourceDocSlug": "programming/python-types-and-contracts",
+      "code": "class Publisher(Protocol):\n    def publish(self, topic: str, payload: bytes) -> None: ...\n\ndef notify(pub: Publisher, user_id: str) -> None:\n    pub.publish(\"user.created\", user_id.encode())"
+    },
+    {
+      "id": "pro-python-protocol-publisher-interview",
+      "type": "interview",
+      "title": "Protocol Publisher Interview Lens",
+      "prompt": "Good for testable cache, file-system, and graph service designs.",
+      "explanation": "In an interview, explain the tradeoff, show the Python-specific behavior, and call out the bug this prevents. Use Protocol for behavior a function needs instead of a concrete production class.",
+      "difficulty": "senior",
+      "tags": [
+        "python",
+        "typing",
+        "senior",
+        "interview"
+      ],
+      "sourceDocSlug": "programming/python-types-and-contracts",
+      "code": "class Publisher(Protocol):\n    def publish(self, topic: str, payload: bytes) -> None: ...\n\ndef notify(pub: Publisher, user_id: str) -> None:\n    pub.publish(\"user.created\", user_id.encode())"
+    },
+    {
+      "id": "pro-python-typeddict-payload-concept",
+      "type": "concept",
+      "title": "TypedDict Payload",
+      "prompt": "TypedDict documents dictionary-shaped payloads near the transport boundary.",
+      "explanation": "TypedDict documents dictionary-shaped payloads near the transport boundary. Review the runtime or tooling rule directly and name the edge case a teammate could miss.",
+      "difficulty": "senior",
+      "tags": [
+        "python",
+        "typing",
+        "senior",
+        "concept"
+      ],
+      "sourceDocSlug": "programming/python-types-and-contracts"
+    },
+    {
+      "id": "pro-python-typeddict-payload-practical",
+      "type": "practical",
+      "title": "TypedDict Payload Review",
+      "prompt": "Review code for this Python production concern: TypedDict documents dictionary-shaped payloads near the transport boundary.",
+      "explanation": "Senior review standard: state the ownership, boundary, or failure contract; then add a narrow test around the edge case. Convert to domain values before business logic.",
+      "difficulty": "senior",
+      "tags": [
+        "python",
+        "typing",
+        "senior",
+        "review"
+      ],
+      "sourceDocSlug": "programming/python-types-and-contracts"
+    },
+    {
+      "id": "pro-python-typeddict-payload-snippet",
+      "type": "snippet",
+      "title": "TypedDict Payload Snippet",
+      "prompt": "Read the snippet and identify the Python contract: TypedDict documents dictionary-shaped payloads near the transport boundary.",
+      "explanation": "The snippet demonstrates the professional Python behavior to preserve in production code. Convert to domain values before business logic.",
+      "difficulty": "senior",
+      "tags": [
+        "python",
+        "typing",
+        "senior",
+        "snippet"
+      ],
+      "sourceDocSlug": "programming/python-types-and-contracts",
+      "code": "class RawUser(TypedDict):\n    id: str\n    email: str\n\ndef to_command(raw: RawUser) -> CreateUser:\n    return CreateUser(raw[\"id\"], raw[\"email\"])"
+    },
+    {
+      "id": "pro-python-typeddict-payload-interview",
+      "type": "interview",
+      "title": "TypedDict Payload Interview Lens",
+      "prompt": "Convert to domain values before business logic.",
+      "explanation": "In an interview, explain the tradeoff, show the Python-specific behavior, and call out the bug this prevents. TypedDict documents dictionary-shaped payloads near the transport boundary.",
+      "difficulty": "senior",
+      "tags": [
+        "python",
+        "typing",
+        "senior",
+        "interview"
+      ],
+      "sourceDocSlug": "programming/python-types-and-contracts",
+      "code": "class RawUser(TypedDict):\n    id: str\n    email: str\n\ndef to_command(raw: RawUser) -> CreateUser:\n    return CreateUser(raw[\"id\"], raw[\"email\"])"
+    },
+    {
+      "id": "pro-python-any-containment-concept",
+      "type": "concept",
+      "title": "Any Containment",
+      "prompt": "Any is acceptable at dynamic boundaries only if it is narrowed quickly.",
+      "explanation": "Any is acceptable at dynamic boundaries only if it is narrowed quickly. Review the runtime or tooling rule directly and name the edge case a teammate could miss.",
+      "difficulty": "senior",
+      "tags": [
+        "python",
+        "typing",
+        "senior",
+        "concept"
+      ],
+      "sourceDocSlug": "programming/python-types-and-contracts"
+    },
+    {
+      "id": "pro-python-any-containment-practical",
+      "type": "practical",
+      "title": "Any Containment Review",
+      "prompt": "Review code for this Python production concern: Any is acceptable at dynamic boundaries only if it is narrowed quickly.",
+      "explanation": "Senior review standard: state the ownership, boundary, or failure contract; then add a narrow test around the edge case. Interview inputs can be dynamic, but senior code narrows before mutation.",
+      "difficulty": "senior",
+      "tags": [
+        "python",
+        "typing",
+        "senior",
+        "review"
+      ],
+      "sourceDocSlug": "programming/python-types-and-contracts"
+    },
+    {
+      "id": "pro-python-any-containment-snippet",
+      "type": "snippet",
+      "title": "Any Containment Snippet",
+      "prompt": "Read the snippet and identify the Python contract: Any is acceptable at dynamic boundaries only if it is narrowed quickly.",
+      "explanation": "The snippet demonstrates the professional Python behavior to preserve in production code. Interview inputs can be dynamic, but senior code narrows before mutation.",
+      "difficulty": "senior",
+      "tags": [
+        "python",
+        "typing",
+        "senior",
+        "snippet"
+      ],
+      "sourceDocSlug": "programming/python-types-and-contracts",
+      "code": "def parse(raw: dict[str, Any]) -> Command:\n    count = raw.get(\"count\")\n    if not isinstance(count, int):\n        raise ValueError(\"count must be int\")\n    return Command(count=count)"
+    },
+    {
+      "id": "pro-python-any-containment-interview",
+      "type": "interview",
+      "title": "Any Containment Interview Lens",
+      "prompt": "Interview inputs can be dynamic, but senior code narrows before mutation.",
+      "explanation": "In an interview, explain the tradeoff, show the Python-specific behavior, and call out the bug this prevents. Any is acceptable at dynamic boundaries only if it is narrowed quickly.",
+      "difficulty": "senior",
+      "tags": [
+        "python",
+        "typing",
+        "senior",
+        "interview"
+      ],
+      "sourceDocSlug": "programming/python-types-and-contracts",
+      "code": "def parse(raw: dict[str, Any]) -> Command:\n    count = raw.get(\"count\")\n    if not isinstance(count, int):\n        raise ValueError(\"count must be int\")\n    return Command(count=count)"
+    },
+    {
+      "id": "pro-python-cast-invariant-concept",
+      "type": "concept",
+      "title": "Cast Invariant",
+      "prompt": "typing.cast is a static assertion, not runtime validation.",
+      "explanation": "typing.cast is a static assertion, not runtime validation. Review the runtime or tooling rule directly and name the edge case a teammate could miss.",
+      "difficulty": "senior",
+      "tags": [
+        "python",
+        "typing",
+        "senior",
+        "concept"
+      ],
+      "sourceDocSlug": "programming/python-types-and-contracts"
+    },
+    {
+      "id": "pro-python-cast-invariant-practical",
+      "type": "practical",
+      "title": "Cast Invariant Review",
+      "prompt": "Review code for this Python production concern: typing.cast is a static assertion, not runtime validation.",
+      "explanation": "Senior review standard: state the ownership, boundary, or failure contract; then add a narrow test around the edge case. Explain the invariant or replace the cast with a runtime check.",
+      "difficulty": "senior",
+      "tags": [
+        "python",
+        "typing",
+        "senior",
+        "review"
+      ],
+      "sourceDocSlug": "programming/python-types-and-contracts"
+    },
+    {
+      "id": "pro-python-cast-invariant-snippet",
+      "type": "snippet",
+      "title": "Cast Invariant Snippet",
+      "prompt": "Read the snippet and identify the Python contract: typing.cast is a static assertion, not runtime validation.",
+      "explanation": "The snippet demonstrates the professional Python behavior to preserve in production code. Explain the invariant or replace the cast with a runtime check.",
+      "difficulty": "senior",
+      "tags": [
+        "python",
+        "typing",
+        "senior",
+        "snippet"
+      ],
+      "sourceDocSlug": "programming/python-types-and-contracts",
+      "code": "item = cache.get(key)\nif item is None:\n    return None\nuser = cast(User, item)"
+    },
+    {
+      "id": "pro-python-cast-invariant-interview",
+      "type": "interview",
+      "title": "Cast Invariant Interview Lens",
+      "prompt": "Explain the invariant or replace the cast with a runtime check.",
+      "explanation": "In an interview, explain the tradeoff, show the Python-specific behavior, and call out the bug this prevents. typing.cast is a static assertion, not runtime validation.",
+      "difficulty": "senior",
+      "tags": [
+        "python",
+        "typing",
+        "senior",
+        "interview"
+      ],
+      "sourceDocSlug": "programming/python-types-and-contracts",
+      "code": "item = cache.get(key)\nif item is None:\n    return None\nuser = cast(User, item)"
+    },
+    {
+      "id": "pro-python-isinstance-narrowing-concept",
+      "type": "concept",
+      "title": "isinstance Narrowing",
+      "prompt": "Runtime checks can narrow object values for both safety and static tools.",
+      "explanation": "Runtime checks can narrow object values for both safety and static tools. Review the runtime or tooling rule directly and name the edge case a teammate could miss.",
+      "difficulty": "senior",
+      "tags": [
+        "python",
+        "typing",
+        "senior",
+        "concept"
+      ],
+      "sourceDocSlug": "programming/python-types-and-contracts"
+    },
+    {
+      "id": "pro-python-isinstance-narrowing-practical",
+      "type": "practical",
+      "title": "isinstance Narrowing Review",
+      "prompt": "Review code for this Python production concern: Runtime checks can narrow object values for both safety and static tools.",
+      "explanation": "Senior review standard: state the ownership, boundary, or failure contract; then add a narrow test around the edge case. Useful for mixed input code-reading questions.",
+      "difficulty": "senior",
+      "tags": [
+        "python",
+        "typing",
+        "senior",
+        "review"
+      ],
+      "sourceDocSlug": "programming/python-types-and-contracts"
+    },
+    {
+      "id": "pro-python-isinstance-narrowing-snippet",
+      "type": "snippet",
+      "title": "isinstance Narrowing Snippet",
+      "prompt": "Read the snippet and identify the Python contract: Runtime checks can narrow object values for both safety and static tools.",
+      "explanation": "The snippet demonstrates the professional Python behavior to preserve in production code. Useful for mixed input code-reading questions.",
+      "difficulty": "senior",
+      "tags": [
+        "python",
+        "typing",
+        "senior",
+        "snippet"
+      ],
+      "sourceDocSlug": "programming/python-types-and-contracts",
+      "code": "def normalize(value: object) -> str:\n    if isinstance(value, str):\n        return value.strip()\n    if isinstance(value, int):\n        return str(value)\n    raise TypeError(\"unsupported\")"
+    },
+    {
+      "id": "pro-python-isinstance-narrowing-interview",
+      "type": "interview",
+      "title": "isinstance Narrowing Interview Lens",
+      "prompt": "Useful for mixed input code-reading questions.",
+      "explanation": "In an interview, explain the tradeoff, show the Python-specific behavior, and call out the bug this prevents. Runtime checks can narrow object values for both safety and static tools.",
+      "difficulty": "senior",
+      "tags": [
+        "python",
+        "typing",
+        "senior",
+        "interview"
+      ],
+      "sourceDocSlug": "programming/python-types-and-contracts",
+      "code": "def normalize(value: object) -> str:\n    if isinstance(value, str):\n        return value.strip()\n    if isinstance(value, int):\n        return str(value)\n    raise TypeError(\"unsupported\")"
+    },
+    {
+      "id": "pro-python-dataclass-invariant-concept",
+      "type": "concept",
+      "title": "Dataclass Invariant",
+      "prompt": "__post_init__ can enforce local domain invariants after construction.",
+      "explanation": "__post_init__ can enforce local domain invariants after construction. Review the runtime or tooling rule directly and name the edge case a teammate could miss.",
+      "difficulty": "senior",
+      "tags": [
+        "python",
+        "typing",
+        "senior",
+        "concept"
+      ],
+      "sourceDocSlug": "programming/python-types-and-contracts"
+    },
+    {
+      "id": "pro-python-dataclass-invariant-practical",
+      "type": "practical",
+      "title": "Dataclass Invariant Review",
+      "prompt": "Review code for this Python production concern: __post_init__ can enforce local domain invariants after construction.",
+      "explanation": "Senior review standard: state the ownership, boundary, or failure contract; then add a narrow test around the edge case. Good for interval and scheduling interview helpers.",
+      "difficulty": "senior",
+      "tags": [
+        "python",
+        "typing",
+        "senior",
+        "review"
+      ],
+      "sourceDocSlug": "programming/python-types-and-contracts"
+    },
+    {
+      "id": "pro-python-dataclass-invariant-snippet",
+      "type": "snippet",
+      "title": "Dataclass Invariant Snippet",
+      "prompt": "Read the snippet and identify the Python contract: __post_init__ can enforce local domain invariants after construction.",
+      "explanation": "The snippet demonstrates the professional Python behavior to preserve in production code. Good for interval and scheduling interview helpers.",
+      "difficulty": "senior",
+      "tags": [
+        "python",
+        "typing",
+        "senior",
+        "snippet"
+      ],
+      "sourceDocSlug": "programming/python-types-and-contracts",
+      "code": "@dataclass(frozen=True)\nclass Window:\n    start: int\n    end: int\n    def __post_init__(self):\n        if self.end < self.start:\n            raise ValueError(\"invalid window\")"
+    },
+    {
+      "id": "pro-python-dataclass-invariant-interview",
+      "type": "interview",
+      "title": "Dataclass Invariant Interview Lens",
+      "prompt": "Good for interval and scheduling interview helpers.",
+      "explanation": "In an interview, explain the tradeoff, show the Python-specific behavior, and call out the bug this prevents. __post_init__ can enforce local domain invariants after construction.",
+      "difficulty": "senior",
+      "tags": [
+        "python",
+        "typing",
+        "senior",
+        "interview"
+      ],
+      "sourceDocSlug": "programming/python-types-and-contracts",
+      "code": "@dataclass(frozen=True)\nclass Window:\n    start: int\n    end: int\n    def __post_init__(self):\n        if self.end < self.start:\n            raise ValueError(\"invalid window\")"
+    },
+    {
+      "id": "pro-python-frozen-limits-concept",
+      "type": "concept",
+      "title": "Frozen Dataclass Limits",
+      "prompt": "frozen=True prevents direct rebinding but does not deeply freeze nested objects.",
+      "explanation": "frozen=True prevents direct rebinding but does not deeply freeze nested objects. Review the runtime or tooling rule directly and name the edge case a teammate could miss.",
+      "difficulty": "senior",
+      "tags": [
+        "python",
+        "typing",
+        "senior",
+        "concept"
+      ],
+      "sourceDocSlug": "programming/python-types-and-contracts"
+    },
+    {
+      "id": "pro-python-frozen-limits-practical",
+      "type": "practical",
+      "title": "Frozen Dataclass Limits Review",
+      "prompt": "Review code for this Python production concern: frozen=True prevents direct rebinding but does not deeply freeze nested objects.",
+      "explanation": "Senior review standard: state the ownership, boundary, or failure contract; then add a narrow test around the edge case. Review nested ownership before claiming immutability.",
+      "difficulty": "senior",
+      "tags": [
+        "python",
+        "typing",
+        "senior",
+        "review"
+      ],
+      "sourceDocSlug": "programming/python-types-and-contracts"
+    },
+    {
+      "id": "pro-python-frozen-limits-snippet",
+      "type": "snippet",
+      "title": "Frozen Dataclass Limits Snippet",
+      "prompt": "Read the snippet and identify the Python contract: frozen=True prevents direct rebinding but does not deeply freeze nested objects.",
+      "explanation": "The snippet demonstrates the professional Python behavior to preserve in production code. Review nested ownership before claiming immutability.",
+      "difficulty": "senior",
+      "tags": [
+        "python",
+        "typing",
+        "senior",
+        "snippet"
+      ],
+      "sourceDocSlug": "programming/python-types-and-contracts",
+      "code": "@dataclass(frozen=True)\nclass Batch:\n    items: list[str]\n\nbatch.items.append(\"still mutable\")"
+    },
+    {
+      "id": "pro-python-frozen-limits-interview",
+      "type": "interview",
+      "title": "Frozen Dataclass Limits Interview Lens",
+      "prompt": "Review nested ownership before claiming immutability.",
+      "explanation": "In an interview, explain the tradeoff, show the Python-specific behavior, and call out the bug this prevents. frozen=True prevents direct rebinding but does not deeply freeze nested objects.",
+      "difficulty": "senior",
+      "tags": [
+        "python",
+        "typing",
+        "senior",
+        "interview"
+      ],
+      "sourceDocSlug": "programming/python-types-and-contracts",
+      "code": "@dataclass(frozen=True)\nclass Batch:\n    items: list[str]\n\nbatch.items.append(\"still mutable\")"
+    },
+    {
+      "id": "pro-python-narrow-collections-concept",
+      "type": "concept",
+      "title": "Narrow Collections",
+      "prompt": "Annotate the behavior required, not the widest concrete container.",
+      "explanation": "Annotate the behavior required, not the widest concrete container. Review the runtime or tooling rule directly and name the edge case a teammate could miss.",
+      "difficulty": "senior",
+      "tags": [
+        "python",
+        "typing",
+        "senior",
+        "concept"
+      ],
+      "sourceDocSlug": "programming/python-types-and-contracts"
+    },
+    {
+      "id": "pro-python-narrow-collections-practical",
+      "type": "practical",
+      "title": "Narrow Collections Review",
+      "prompt": "Review code for this Python production concern: Annotate the behavior required, not the widest concrete container.",
+      "explanation": "Senior review standard: state the ownership, boundary, or failure contract; then add a narrow test around the edge case. Use Iterable, Sequence, Mapping, or MutableMapping intentionally.",
+      "difficulty": "senior",
+      "tags": [
+        "python",
+        "typing",
+        "senior",
+        "review"
+      ],
+      "sourceDocSlug": "programming/python-types-and-contracts"
+    },
+    {
+      "id": "pro-python-narrow-collections-snippet",
+      "type": "snippet",
+      "title": "Narrow Collections Snippet",
+      "prompt": "Read the snippet and identify the Python contract: Annotate the behavior required, not the widest concrete container.",
+      "explanation": "The snippet demonstrates the professional Python behavior to preserve in production code. Use Iterable, Sequence, Mapping, or MutableMapping intentionally.",
+      "difficulty": "senior",
+      "tags": [
+        "python",
+        "typing",
+        "senior",
+        "snippet"
+      ],
+      "sourceDocSlug": "programming/python-types-and-contracts",
+      "code": "def total(values: Iterable[int]) -> int:\n    return sum(values)\n\ndef first(values: Sequence[int]) -> int:\n    return values[0]"
+    },
+    {
+      "id": "pro-python-narrow-collections-interview",
+      "type": "interview",
+      "title": "Narrow Collections Interview Lens",
+      "prompt": "Use Iterable, Sequence, Mapping, or MutableMapping intentionally.",
+      "explanation": "In an interview, explain the tradeoff, show the Python-specific behavior, and call out the bug this prevents. Annotate the behavior required, not the widest concrete container.",
+      "difficulty": "senior",
+      "tags": [
+        "python",
+        "typing",
+        "senior",
+        "interview"
+      ],
+      "sourceDocSlug": "programming/python-types-and-contracts",
+      "code": "def total(values: Iterable[int]) -> int:\n    return sum(values)\n\ndef first(values: Sequence[int]) -> int:\n    return values[0]"
+    },
+    {
+      "id": "pro-python-literal-status-concept",
+      "type": "concept",
+      "title": "Literal Status",
+      "prompt": "Literal can capture small fixed string domains without inventing classes.",
+      "explanation": "Literal can capture small fixed string domains without inventing classes. Review the runtime or tooling rule directly and name the edge case a teammate could miss.",
+      "difficulty": "senior",
+      "tags": [
+        "python",
+        "typing",
+        "senior",
+        "concept"
+      ],
+      "sourceDocSlug": "programming/python-types-and-contracts"
+    },
+    {
+      "id": "pro-python-literal-status-practical",
+      "type": "practical",
+      "title": "Literal Status Review",
+      "prompt": "Review code for this Python production concern: Literal can capture small fixed string domains without inventing classes.",
+      "explanation": "Senior review standard: state the ownership, boundary, or failure contract; then add a narrow test around the edge case. Useful when interview state machines have a closed set of states.",
+      "difficulty": "senior",
+      "tags": [
+        "python",
+        "typing",
+        "senior",
+        "review"
+      ],
+      "sourceDocSlug": "programming/python-types-and-contracts"
+    },
+    {
+      "id": "pro-python-literal-status-snippet",
+      "type": "snippet",
+      "title": "Literal Status Snippet",
+      "prompt": "Read the snippet and identify the Python contract: Literal can capture small fixed string domains without inventing classes.",
+      "explanation": "The snippet demonstrates the professional Python behavior to preserve in production code. Useful when interview state machines have a closed set of states.",
+      "difficulty": "senior",
+      "tags": [
+        "python",
+        "typing",
+        "senior",
+        "snippet"
+      ],
+      "sourceDocSlug": "programming/python-types-and-contracts",
+      "code": "Status = Literal[\"queued\", \"running\", \"failed\", \"done\"]\n\ndef transition(status: Status) -> Status:\n    ..."
+    },
+    {
+      "id": "pro-python-literal-status-interview",
+      "type": "interview",
+      "title": "Literal Status Interview Lens",
+      "prompt": "Useful when interview state machines have a closed set of states.",
+      "explanation": "In an interview, explain the tradeoff, show the Python-specific behavior, and call out the bug this prevents. Literal can capture small fixed string domains without inventing classes.",
+      "difficulty": "senior",
+      "tags": [
+        "python",
+        "typing",
+        "senior",
+        "interview"
+      ],
+      "sourceDocSlug": "programming/python-types-and-contracts",
+      "code": "Status = Literal[\"queued\", \"running\", \"failed\", \"done\"]\n\ndef transition(status: Status) -> Status:\n    ..."
+    },
+    {
+      "id": "pro-python-overload-factory-concept",
+      "type": "concept",
+      "title": "Overload Factory",
+      "prompt": "overload can document APIs whose return type depends on arguments.",
+      "explanation": "overload can document APIs whose return type depends on arguments. Review the runtime or tooling rule directly and name the edge case a teammate could miss.",
+      "difficulty": "senior",
+      "tags": [
+        "python",
+        "typing",
+        "senior",
+        "concept"
+      ],
+      "sourceDocSlug": "programming/python-types-and-contracts"
+    },
+    {
+      "id": "pro-python-overload-factory-practical",
+      "type": "practical",
+      "title": "Overload Factory Review",
+      "prompt": "Review code for this Python production concern: overload can document APIs whose return type depends on arguments.",
+      "explanation": "Senior review standard: state the ownership, boundary, or failure contract; then add a narrow test around the edge case. Use sparingly; a simpler function split is often clearer.",
+      "difficulty": "senior",
+      "tags": [
+        "python",
+        "typing",
+        "senior",
+        "review"
+      ],
+      "sourceDocSlug": "programming/python-types-and-contracts"
+    },
+    {
+      "id": "pro-python-overload-factory-snippet",
+      "type": "snippet",
+      "title": "Overload Factory Snippet",
+      "prompt": "Read the snippet and identify the Python contract: overload can document APIs whose return type depends on arguments.",
+      "explanation": "The snippet demonstrates the professional Python behavior to preserve in production code. Use sparingly; a simpler function split is often clearer.",
+      "difficulty": "senior",
+      "tags": [
+        "python",
+        "typing",
+        "senior",
+        "snippet"
+      ],
+      "sourceDocSlug": "programming/python-types-and-contracts",
+      "code": "@overload\ndef load(raw: bytes) -> Payload: ...\n@overload\ndef load(raw: None) -> None: ..."
+    },
+    {
+      "id": "pro-python-overload-factory-interview",
+      "type": "interview",
+      "title": "Overload Factory Interview Lens",
+      "prompt": "Use sparingly; a simpler function split is often clearer.",
+      "explanation": "In an interview, explain the tradeoff, show the Python-specific behavior, and call out the bug this prevents. overload can document APIs whose return type depends on arguments.",
+      "difficulty": "senior",
+      "tags": [
+        "python",
+        "typing",
+        "senior",
+        "interview"
+      ],
+      "sourceDocSlug": "programming/python-types-and-contracts",
+      "code": "@overload\ndef load(raw: bytes) -> Payload: ...\n@overload\ndef load(raw: None) -> None: ..."
+    },
+    {
+      "id": "pro-python-pyproject-scripts-concept",
+      "type": "concept",
+      "title": "pyproject Scripts",
+      "prompt": "project.scripts should point to importable functions that work after installation.",
+      "explanation": "project.scripts should point to importable functions that work after installation. Review the runtime or tooling rule directly and name the edge case a teammate could miss.",
+      "difficulty": "senior",
+      "tags": [
+        "python",
+        "packaging",
+        "senior",
+        "concept"
+      ],
+      "sourceDocSlug": "programming/python-packaging-environments"
+    },
+    {
+      "id": "pro-python-pyproject-scripts-practical",
+      "type": "practical",
+      "title": "pyproject Scripts Review",
+      "prompt": "Review code for this Python production concern: project.scripts should point to importable functions that work after installation.",
+      "explanation": "Senior review standard: state the ownership, boundary, or failure contract; then add a narrow test around the edge case. Senior answers include how the code is packaged and run.",
+      "difficulty": "senior",
+      "tags": [
+        "python",
+        "packaging",
+        "senior",
+        "review"
+      ],
+      "sourceDocSlug": "programming/python-packaging-environments"
+    },
+    {
+      "id": "pro-python-pyproject-scripts-snippet",
+      "type": "snippet",
+      "title": "pyproject Scripts Snippet",
+      "prompt": "Read the snippet and identify the Python contract: project.scripts should point to importable functions that work after installation.",
+      "explanation": "The snippet demonstrates the professional Python behavior to preserve in production code. Senior answers include how the code is packaged and run.",
+      "difficulty": "senior",
+      "tags": [
+        "python",
+        "packaging",
+        "senior",
+        "snippet"
+      ],
+      "sourceDocSlug": "programming/python-packaging-environments",
+      "code": "[project.scripts]\nbilling-worker = \"billing_service.cli:main\""
+    },
+    {
+      "id": "pro-python-pyproject-scripts-interview",
+      "type": "interview",
+      "title": "pyproject Scripts Interview Lens",
+      "prompt": "Senior answers include how the code is packaged and run.",
+      "explanation": "In an interview, explain the tradeoff, show the Python-specific behavior, and call out the bug this prevents. project.scripts should point to importable functions that work after installation.",
+      "difficulty": "senior",
+      "tags": [
+        "python",
+        "packaging",
+        "senior",
+        "interview"
+      ],
+      "sourceDocSlug": "programming/python-packaging-environments",
+      "code": "[project.scripts]\nbilling-worker = \"billing_service.cli:main\""
+    },
+    {
+      "id": "pro-python-src-layout-concept",
+      "type": "concept",
+      "title": "src Layout",
+      "prompt": "src/ layout helps tests import the installed package shape instead of the repo tree.",
+      "explanation": "src/ layout helps tests import the installed package shape instead of the repo tree. Review the runtime or tooling rule directly and name the edge case a teammate could miss.",
+      "difficulty": "senior",
+      "tags": [
+        "python",
+        "packaging",
+        "senior",
+        "concept"
+      ],
+      "sourceDocSlug": "programming/python-packaging-environments"
+    },
+    {
+      "id": "pro-python-src-layout-practical",
+      "type": "practical",
+      "title": "src Layout Review",
+      "prompt": "Review code for this Python production concern: src/ layout helps tests import the installed package shape instead of the repo tree.",
+      "explanation": "Senior review standard: state the ownership, boundary, or failure contract; then add a narrow test around the edge case. Works best with documented editable installs in local and CI.",
+      "difficulty": "senior",
+      "tags": [
+        "python",
+        "packaging",
+        "senior",
+        "review"
+      ],
+      "sourceDocSlug": "programming/python-packaging-environments"
+    },
+    {
+      "id": "pro-python-src-layout-snippet",
+      "type": "snippet",
+      "title": "src Layout Snippet",
+      "prompt": "Read the snippet and identify the Python contract: src/ layout helps tests import the installed package shape instead of the repo tree.",
+      "explanation": "The snippet demonstrates the professional Python behavior to preserve in production code. Works best with documented editable installs in local and CI.",
+      "difficulty": "senior",
+      "tags": [
+        "python",
+        "packaging",
+        "senior",
+        "snippet"
+      ],
+      "sourceDocSlug": "programming/python-packaging-environments",
+      "code": "repo/\n  pyproject.toml\n  src/\n    billing_service/\n      __init__.py\n  tests/"
+    },
+    {
+      "id": "pro-python-src-layout-interview",
+      "type": "interview",
+      "title": "src Layout Interview Lens",
+      "prompt": "Works best with documented editable installs in local and CI.",
+      "explanation": "In an interview, explain the tradeoff, show the Python-specific behavior, and call out the bug this prevents. src/ layout helps tests import the installed package shape instead of the repo tree.",
+      "difficulty": "senior",
+      "tags": [
+        "python",
+        "packaging",
+        "senior",
+        "interview"
+      ],
+      "sourceDocSlug": "programming/python-packaging-environments",
+      "code": "repo/\n  pyproject.toml\n  src/\n    billing_service/\n      __init__.py\n  tests/"
+    },
+    {
+      "id": "pro-python-dependency-groups-concept",
+      "type": "concept",
+      "title": "Dependency Groups",
+      "prompt": "Dependency groups separate dev tooling from runtime requirements.",
+      "explanation": "Dependency groups separate dev tooling from runtime requirements. Review the runtime or tooling rule directly and name the edge case a teammate could miss.",
+      "difficulty": "senior",
+      "tags": [
+        "python",
+        "packaging",
+        "senior",
+        "concept"
+      ],
+      "sourceDocSlug": "programming/python-packaging-environments"
+    },
+    {
+      "id": "pro-python-dependency-groups-practical",
+      "type": "practical",
+      "title": "Dependency Groups Review",
+      "prompt": "Review code for this Python production concern: Dependency groups separate dev tooling from runtime requirements.",
+      "explanation": "Senior review standard: state the ownership, boundary, or failure contract; then add a narrow test around the edge case. Review whether deployment installs only what it needs.",
+      "difficulty": "senior",
+      "tags": [
+        "python",
+        "packaging",
+        "senior",
+        "review"
+      ],
+      "sourceDocSlug": "programming/python-packaging-environments"
+    },
+    {
+      "id": "pro-python-dependency-groups-snippet",
+      "type": "snippet",
+      "title": "Dependency Groups Snippet",
+      "prompt": "Read the snippet and identify the Python contract: Dependency groups separate dev tooling from runtime requirements.",
+      "explanation": "The snippet demonstrates the professional Python behavior to preserve in production code. Review whether deployment installs only what it needs.",
+      "difficulty": "senior",
+      "tags": [
+        "python",
+        "packaging",
+        "senior",
+        "snippet"
+      ],
+      "sourceDocSlug": "programming/python-packaging-environments",
+      "code": "[dependency-groups]\ndev = [\"pytest>=8\", \"ruff>=0.5\", \"mypy>=1.10\"]"
+    },
+    {
+      "id": "pro-python-dependency-groups-interview",
+      "type": "interview",
+      "title": "Dependency Groups Interview Lens",
+      "prompt": "Review whether deployment installs only what it needs.",
+      "explanation": "In an interview, explain the tradeoff, show the Python-specific behavior, and call out the bug this prevents. Dependency groups separate dev tooling from runtime requirements.",
+      "difficulty": "senior",
+      "tags": [
+        "python",
+        "packaging",
+        "senior",
+        "interview"
+      ],
+      "sourceDocSlug": "programming/python-packaging-environments",
+      "code": "[dependency-groups]\ndev = [\"pytest>=8\", \"ruff>=0.5\", \"mypy>=1.10\"]"
+    },
+    {
+      "id": "pro-python-lockfile-diff-concept",
+      "type": "concept",
+      "title": "Lockfile Diff",
+      "prompt": "Lockfile review includes direct intent, transitive graph changes, and Python markers.",
+      "explanation": "Lockfile review includes direct intent, transitive graph changes, and Python markers. Review the runtime or tooling rule directly and name the edge case a teammate could miss.",
+      "difficulty": "senior",
+      "tags": [
+        "python",
+        "packaging",
+        "senior",
+        "concept"
+      ],
+      "sourceDocSlug": "programming/python-packaging-environments"
+    },
+    {
+      "id": "pro-python-lockfile-diff-practical",
+      "type": "practical",
+      "title": "Lockfile Diff Review",
+      "prompt": "Review code for this Python production concern: Lockfile review includes direct intent, transitive graph changes, and Python markers.",
+      "explanation": "Senior review standard: state the ownership, boundary, or failure contract; then add a narrow test around the edge case. A lockfile not used by CI is documentation, not reproducibility.",
+      "difficulty": "senior",
+      "tags": [
+        "python",
+        "packaging",
+        "senior",
+        "review"
+      ],
+      "sourceDocSlug": "programming/python-packaging-environments"
+    },
+    {
+      "id": "pro-python-lockfile-diff-snippet",
+      "type": "snippet",
+      "title": "Lockfile Diff Snippet",
+      "prompt": "Read the snippet and identify the Python contract: Lockfile review includes direct intent, transitive graph changes, and Python markers.",
+      "explanation": "The snippet demonstrates the professional Python behavior to preserve in production code. A lockfile not used by CI is documentation, not reproducibility.",
+      "difficulty": "senior",
+      "tags": [
+        "python",
+        "packaging",
+        "senior",
+        "snippet"
+      ],
+      "sourceDocSlug": "programming/python-packaging-environments",
+      "code": "# Review:\n# - direct requirement\n# - transitive package diff\n# - requires-python markers\n# - CI install command"
+    },
+    {
+      "id": "pro-python-lockfile-diff-interview",
+      "type": "interview",
+      "title": "Lockfile Diff Interview Lens",
+      "prompt": "A lockfile not used by CI is documentation, not reproducibility.",
+      "explanation": "In an interview, explain the tradeoff, show the Python-specific behavior, and call out the bug this prevents. Lockfile review includes direct intent, transitive graph changes, and Python markers.",
+      "difficulty": "senior",
+      "tags": [
+        "python",
+        "packaging",
+        "senior",
+        "interview"
+      ],
+      "sourceDocSlug": "programming/python-packaging-environments",
+      "code": "# Review:\n# - direct requirement\n# - transitive package diff\n# - requires-python markers\n# - CI install command"
+    },
+    {
+      "id": "pro-python-import-name-concept",
+      "type": "concept",
+      "title": "Import Name Mismatch",
+      "prompt": "Python distribution names and import names can differ.",
+      "explanation": "Python distribution names and import names can differ. Review the runtime or tooling rule directly and name the edge case a teammate could miss.",
+      "difficulty": "senior",
+      "tags": [
+        "python",
+        "packaging",
+        "senior",
+        "concept"
+      ],
+      "sourceDocSlug": "programming/python-packaging-environments"
+    },
+    {
+      "id": "pro-python-import-name-practical",
+      "type": "practical",
+      "title": "Import Name Mismatch Review",
+      "prompt": "Review code for this Python production concern: Python distribution names and import names can differ.",
+      "explanation": "Senior review standard: state the ownership, boundary, or failure contract; then add a narrow test around the edge case. Document mismatches and avoid local shadow modules.",
+      "difficulty": "senior",
+      "tags": [
+        "python",
+        "packaging",
+        "senior",
+        "review"
+      ],
+      "sourceDocSlug": "programming/python-packaging-environments"
+    },
+    {
+      "id": "pro-python-import-name-snippet",
+      "type": "snippet",
+      "title": "Import Name Mismatch Snippet",
+      "prompt": "Read the snippet and identify the Python contract: Python distribution names and import names can differ.",
+      "explanation": "The snippet demonstrates the professional Python behavior to preserve in production code. Document mismatches and avoid local shadow modules.",
+      "difficulty": "senior",
+      "tags": [
+        "python",
+        "packaging",
+        "senior",
+        "snippet"
+      ],
+      "sourceDocSlug": "programming/python-packaging-environments",
+      "code": "# Distribution: beautifulsoup4\nfrom bs4 import BeautifulSoup"
+    },
+    {
+      "id": "pro-python-import-name-interview",
+      "type": "interview",
+      "title": "Import Name Mismatch Interview Lens",
+      "prompt": "Document mismatches and avoid local shadow modules.",
+      "explanation": "In an interview, explain the tradeoff, show the Python-specific behavior, and call out the bug this prevents. Python distribution names and import names can differ.",
+      "difficulty": "senior",
+      "tags": [
+        "python",
+        "packaging",
+        "senior",
+        "interview"
+      ],
+      "sourceDocSlug": "programming/python-packaging-environments",
+      "code": "# Distribution: beautifulsoup4\nfrom bs4 import BeautifulSoup"
+    },
+    {
+      "id": "pro-python-venv-contract-concept",
+      "type": "concept",
+      "title": "Virtual Environment Contract",
+      "prompt": "A global Python install can hide missing setup until CI fails.",
+      "explanation": "A global Python install can hide missing setup until CI fails. Review the runtime or tooling rule directly and name the edge case a teammate could miss.",
+      "difficulty": "senior",
+      "tags": [
+        "python",
+        "packaging",
+        "senior",
+        "concept"
+      ],
+      "sourceDocSlug": "programming/python-packaging-environments"
+    },
+    {
+      "id": "pro-python-venv-contract-practical",
+      "type": "practical",
+      "title": "Virtual Environment Contract Review",
+      "prompt": "Review code for this Python production concern: A global Python install can hide missing setup until CI fails.",
+      "explanation": "Senior review standard: state the ownership, boundary, or failure contract; then add a narrow test around the edge case. Take-home exercises should provide a repeatable setup command.",
+      "difficulty": "senior",
+      "tags": [
+        "python",
+        "packaging",
+        "senior",
+        "review"
+      ],
+      "sourceDocSlug": "programming/python-packaging-environments"
+    },
+    {
+      "id": "pro-python-venv-contract-snippet",
+      "type": "snippet",
+      "title": "Virtual Environment Contract Snippet",
+      "prompt": "Read the snippet and identify the Python contract: A global Python install can hide missing setup until CI fails.",
+      "explanation": "The snippet demonstrates the professional Python behavior to preserve in production code. Take-home exercises should provide a repeatable setup command.",
+      "difficulty": "senior",
+      "tags": [
+        "python",
+        "packaging",
+        "senior",
+        "snippet"
+      ],
+      "sourceDocSlug": "programming/python-packaging-environments",
+      "code": "python -m venv .venv\n. .venv/bin/activate\npython -m pip install -e \".[dev]\""
+    },
+    {
+      "id": "pro-python-venv-contract-interview",
+      "type": "interview",
+      "title": "Virtual Environment Contract Interview Lens",
+      "prompt": "Take-home exercises should provide a repeatable setup command.",
+      "explanation": "In an interview, explain the tradeoff, show the Python-specific behavior, and call out the bug this prevents. A global Python install can hide missing setup until CI fails.",
+      "difficulty": "senior",
+      "tags": [
+        "python",
+        "packaging",
+        "senior",
+        "interview"
+      ],
+      "sourceDocSlug": "programming/python-packaging-environments",
+      "code": "python -m venv .venv\n. .venv/bin/activate\npython -m pip install -e \".[dev]\""
+    },
+    {
+      "id": "pro-python-module-shadowing-concept",
+      "type": "concept",
+      "title": "Module Shadowing",
+      "prompt": "Local files can shadow standard library or third-party modules.",
+      "explanation": "Local files can shadow standard library or third-party modules. Review the runtime or tooling rule directly and name the edge case a teammate could miss.",
+      "difficulty": "senior",
+      "tags": [
+        "python",
+        "packaging",
+        "senior",
+        "concept"
+      ],
+      "sourceDocSlug": "programming/python-packaging-environments"
+    },
+    {
+      "id": "pro-python-module-shadowing-practical",
+      "type": "practical",
+      "title": "Module Shadowing Review",
+      "prompt": "Review code for this Python production concern: Local files can shadow standard library or third-party modules.",
+      "explanation": "Senior review standard: state the ownership, boundary, or failure contract; then add a narrow test around the edge case. Check import resolution before rewriting working code.",
+      "difficulty": "senior",
+      "tags": [
+        "python",
+        "packaging",
+        "senior",
+        "review"
+      ],
+      "sourceDocSlug": "programming/python-packaging-environments"
+    },
+    {
+      "id": "pro-python-module-shadowing-snippet",
+      "type": "snippet",
+      "title": "Module Shadowing Snippet",
+      "prompt": "Read the snippet and identify the Python contract: Local files can shadow standard library or third-party modules.",
+      "explanation": "The snippet demonstrates the professional Python behavior to preserve in production code. Check import resolution before rewriting working code.",
+      "difficulty": "senior",
+      "tags": [
+        "python",
+        "packaging",
+        "senior",
+        "snippet"
+      ],
+      "sourceDocSlug": "programming/python-packaging-environments",
+      "code": "# Risky project-root names:\n# typing.py\n# asyncio.py\n# requests.py"
+    },
+    {
+      "id": "pro-python-module-shadowing-interview",
+      "type": "interview",
+      "title": "Module Shadowing Interview Lens",
+      "prompt": "Check import resolution before rewriting working code.",
+      "explanation": "In an interview, explain the tradeoff, show the Python-specific behavior, and call out the bug this prevents. Local files can shadow standard library or third-party modules.",
+      "difficulty": "senior",
+      "tags": [
+        "python",
+        "packaging",
+        "senior",
+        "interview"
+      ],
+      "sourceDocSlug": "programming/python-packaging-environments",
+      "code": "# Risky project-root names:\n# typing.py\n# asyncio.py\n# requests.py"
+    },
+    {
+      "id": "pro-python-build-backend-concept",
+      "type": "concept",
+      "title": "Build Backend",
+      "prompt": "The build backend should be intentional, not unexplained template residue.",
+      "explanation": "The build backend should be intentional, not unexplained template residue. Review the runtime or tooling rule directly and name the edge case a teammate could miss.",
+      "difficulty": "senior",
+      "tags": [
+        "python",
+        "packaging",
+        "senior",
+        "concept"
+      ],
+      "sourceDocSlug": "programming/python-packaging-environments"
+    },
+    {
+      "id": "pro-python-build-backend-practical",
+      "type": "practical",
+      "title": "Build Backend Review",
+      "prompt": "Review code for this Python production concern: The build backend should be intentional, not unexplained template residue.",
+      "explanation": "Senior review standard: state the ownership, boundary, or failure contract; then add a narrow test around the edge case. Know where package metadata ends and build tooling begins.",
+      "difficulty": "senior",
+      "tags": [
+        "python",
+        "packaging",
+        "senior",
+        "review"
+      ],
+      "sourceDocSlug": "programming/python-packaging-environments"
+    },
+    {
+      "id": "pro-python-build-backend-snippet",
+      "type": "snippet",
+      "title": "Build Backend Snippet",
+      "prompt": "Read the snippet and identify the Python contract: The build backend should be intentional, not unexplained template residue.",
+      "explanation": "The snippet demonstrates the professional Python behavior to preserve in production code. Know where package metadata ends and build tooling begins.",
+      "difficulty": "senior",
+      "tags": [
+        "python",
+        "packaging",
+        "senior",
+        "snippet"
+      ],
+      "sourceDocSlug": "programming/python-packaging-environments",
+      "code": "[build-system]\nrequires = [\"hatchling\"]\nbuild-backend = \"hatchling.build\""
+    },
+    {
+      "id": "pro-python-build-backend-interview",
+      "type": "interview",
+      "title": "Build Backend Interview Lens",
+      "prompt": "Know where package metadata ends and build tooling begins.",
+      "explanation": "In an interview, explain the tradeoff, show the Python-specific behavior, and call out the bug this prevents. The build backend should be intentional, not unexplained template residue.",
+      "difficulty": "senior",
+      "tags": [
+        "python",
+        "packaging",
+        "senior",
+        "interview"
+      ],
+      "sourceDocSlug": "programming/python-packaging-environments",
+      "code": "[build-system]\nrequires = [\"hatchling\"]\nbuild-backend = \"hatchling.build\""
+    },
+    {
+      "id": "pro-python-requires-python-concept",
+      "type": "concept",
+      "title": "requires-python",
+      "prompt": "Declare supported interpreter versions where project metadata can enforce them.",
+      "explanation": "Declare supported interpreter versions where project metadata can enforce them. Review the runtime or tooling rule directly and name the edge case a teammate could miss.",
+      "difficulty": "senior",
+      "tags": [
+        "python",
+        "packaging",
+        "senior",
+        "concept"
+      ],
+      "sourceDocSlug": "programming/python-packaging-environments"
+    },
+    {
+      "id": "pro-python-requires-python-practical",
+      "type": "practical",
+      "title": "requires-python Review",
+      "prompt": "Review code for this Python production concern: Declare supported interpreter versions where project metadata can enforce them.",
+      "explanation": "Senior review standard: state the ownership, boundary, or failure contract; then add a narrow test around the edge case. Review interpreter support before accepting syntax or stdlib features.",
+      "difficulty": "senior",
+      "tags": [
+        "python",
+        "packaging",
+        "senior",
+        "review"
+      ],
+      "sourceDocSlug": "programming/python-packaging-environments"
+    },
+    {
+      "id": "pro-python-requires-python-snippet",
+      "type": "snippet",
+      "title": "requires-python Snippet",
+      "prompt": "Read the snippet and identify the Python contract: Declare supported interpreter versions where project metadata can enforce them.",
+      "explanation": "The snippet demonstrates the professional Python behavior to preserve in production code. Review interpreter support before accepting syntax or stdlib features.",
+      "difficulty": "senior",
+      "tags": [
+        "python",
+        "packaging",
+        "senior",
+        "snippet"
+      ],
+      "sourceDocSlug": "programming/python-packaging-environments",
+      "code": "[project]\nrequires-python = \">=3.12\""
+    },
+    {
+      "id": "pro-python-requires-python-interview",
+      "type": "interview",
+      "title": "requires-python Interview Lens",
+      "prompt": "Review interpreter support before accepting syntax or stdlib features.",
+      "explanation": "In an interview, explain the tradeoff, show the Python-specific behavior, and call out the bug this prevents. Declare supported interpreter versions where project metadata can enforce them.",
+      "difficulty": "senior",
+      "tags": [
+        "python",
+        "packaging",
+        "senior",
+        "interview"
+      ],
+      "sourceDocSlug": "programming/python-packaging-environments",
+      "code": "[project]\nrequires-python = \">=3.12\""
+    },
+    {
+      "id": "pro-python-editable-install-concept",
+      "type": "concept",
+      "title": "Editable Install",
+      "prompt": "Editable installs make src/ layout development match package import behavior.",
+      "explanation": "Editable installs make src/ layout development match package import behavior. Review the runtime or tooling rule directly and name the edge case a teammate could miss.",
+      "difficulty": "senior",
+      "tags": [
+        "python",
+        "packaging",
+        "senior",
+        "concept"
+      ],
+      "sourceDocSlug": "programming/python-packaging-environments"
+    },
+    {
+      "id": "pro-python-editable-install-practical",
+      "type": "practical",
+      "title": "Editable Install Review",
+      "prompt": "Review code for this Python production concern: Editable installs make src/ layout development match package import behavior.",
+      "explanation": "Senior review standard: state the ownership, boundary, or failure contract; then add a narrow test around the edge case. Prefer this over hand-managed PYTHONPATH for application tests.",
+      "difficulty": "senior",
+      "tags": [
+        "python",
+        "packaging",
+        "senior",
+        "review"
+      ],
+      "sourceDocSlug": "programming/python-packaging-environments"
+    },
+    {
+      "id": "pro-python-editable-install-snippet",
+      "type": "snippet",
+      "title": "Editable Install Snippet",
+      "prompt": "Read the snippet and identify the Python contract: Editable installs make src/ layout development match package import behavior.",
+      "explanation": "The snippet demonstrates the professional Python behavior to preserve in production code. Prefer this over hand-managed PYTHONPATH for application tests.",
+      "difficulty": "senior",
+      "tags": [
+        "python",
+        "packaging",
+        "senior",
+        "snippet"
+      ],
+      "sourceDocSlug": "programming/python-packaging-environments",
+      "code": "python -m pip install -e .\npython -m pytest"
+    },
+    {
+      "id": "pro-python-editable-install-interview",
+      "type": "interview",
+      "title": "Editable Install Interview Lens",
+      "prompt": "Prefer this over hand-managed PYTHONPATH for application tests.",
+      "explanation": "In an interview, explain the tradeoff, show the Python-specific behavior, and call out the bug this prevents. Editable installs make src/ layout development match package import behavior.",
+      "difficulty": "senior",
+      "tags": [
+        "python",
+        "packaging",
+        "senior",
+        "interview"
+      ],
+      "sourceDocSlug": "programming/python-packaging-environments",
+      "code": "python -m pip install -e .\npython -m pytest"
+    },
+    {
+      "id": "pro-python-taskgroup-scope-concept",
+      "type": "concept",
+      "title": "TaskGroup Scope",
+      "prompt": "TaskGroup says child tasks belong to this lifetime and failure scope.",
+      "explanation": "TaskGroup says child tasks belong to this lifetime and failure scope. Review the runtime or tooling rule directly and name the edge case a teammate could miss.",
+      "difficulty": "senior",
+      "tags": [
+        "python",
+        "async",
+        "senior",
+        "concept"
+      ],
+      "sourceDocSlug": "programming/python-async-testing-production"
+    },
+    {
+      "id": "pro-python-taskgroup-scope-practical",
+      "type": "practical",
+      "title": "TaskGroup Scope Review",
+      "prompt": "Review code for this Python production concern: TaskGroup says child tasks belong to this lifetime and failure scope.",
+      "explanation": "Senior review standard: state the ownership, boundary, or failure contract; then add a narrow test around the edge case. Define sibling cancellation and partial-result behavior.",
+      "difficulty": "senior",
+      "tags": [
+        "python",
+        "async",
+        "senior",
+        "review"
+      ],
+      "sourceDocSlug": "programming/python-async-testing-production"
+    },
+    {
+      "id": "pro-python-taskgroup-scope-snippet",
+      "type": "snippet",
+      "title": "TaskGroup Scope Snippet",
+      "prompt": "Read the snippet and identify the Python contract: TaskGroup says child tasks belong to this lifetime and failure scope.",
+      "explanation": "The snippet demonstrates the professional Python behavior to preserve in production code. Define sibling cancellation and partial-result behavior.",
+      "difficulty": "senior",
+      "tags": [
+        "python",
+        "async",
+        "senior",
+        "snippet"
+      ],
+      "sourceDocSlug": "programming/python-async-testing-production",
+      "code": "async with asyncio.TaskGroup() as group:\n    a = group.create_task(fetch_a())\n    b = group.create_task(fetch_b())"
+    },
+    {
+      "id": "pro-python-taskgroup-scope-interview",
+      "type": "interview",
+      "title": "TaskGroup Scope Interview Lens",
+      "prompt": "Define sibling cancellation and partial-result behavior.",
+      "explanation": "In an interview, explain the tradeoff, show the Python-specific behavior, and call out the bug this prevents. TaskGroup says child tasks belong to this lifetime and failure scope.",
+      "difficulty": "senior",
+      "tags": [
+        "python",
+        "async",
+        "senior",
+        "interview"
+      ],
+      "sourceDocSlug": "programming/python-async-testing-production",
+      "code": "async with asyncio.TaskGroup() as group:\n    a = group.create_task(fetch_a())\n    b = group.create_task(fetch_b())"
+    },
+    {
+      "id": "pro-python-timeout-budget-concept",
+      "type": "concept",
+      "title": "Timeout Budget",
+      "prompt": "A timeout should be owned by the operation contract, not copied as a magic number.",
+      "explanation": "A timeout should be owned by the operation contract, not copied as a magic number. Review the runtime or tooling rule directly and name the edge case a teammate could miss.",
+      "difficulty": "senior",
+      "tags": [
+        "python",
+        "async",
+        "senior",
+        "concept"
+      ],
+      "sourceDocSlug": "programming/python-async-testing-production"
+    },
+    {
+      "id": "pro-python-timeout-budget-practical",
+      "type": "practical",
+      "title": "Timeout Budget Review",
+      "prompt": "Review code for this Python production concern: A timeout should be owned by the operation contract, not copied as a magic number.",
+      "explanation": "Senior review standard: state the ownership, boundary, or failure contract; then add a narrow test around the edge case. Mention fallback or failure behavior in service-style interviews.",
+      "difficulty": "senior",
+      "tags": [
+        "python",
+        "async",
+        "senior",
+        "review"
+      ],
+      "sourceDocSlug": "programming/python-async-testing-production"
+    },
+    {
+      "id": "pro-python-timeout-budget-snippet",
+      "type": "snippet",
+      "title": "Timeout Budget Snippet",
+      "prompt": "Read the snippet and identify the Python contract: A timeout should be owned by the operation contract, not copied as a magic number.",
+      "explanation": "The snippet demonstrates the professional Python behavior to preserve in production code. Mention fallback or failure behavior in service-style interviews.",
+      "difficulty": "senior",
+      "tags": [
+        "python",
+        "async",
+        "senior",
+        "snippet"
+      ],
+      "sourceDocSlug": "programming/python-async-testing-production",
+      "code": "async with asyncio.timeout(settings.profile_timeout):\n    return await profile_client.fetch(user_id)"
+    },
+    {
+      "id": "pro-python-timeout-budget-interview",
+      "type": "interview",
+      "title": "Timeout Budget Interview Lens",
+      "prompt": "Mention fallback or failure behavior in service-style interviews.",
+      "explanation": "In an interview, explain the tradeoff, show the Python-specific behavior, and call out the bug this prevents. A timeout should be owned by the operation contract, not copied as a magic number.",
+      "difficulty": "senior",
+      "tags": [
+        "python",
+        "async",
+        "senior",
+        "interview"
+      ],
+      "sourceDocSlug": "programming/python-async-testing-production",
+      "code": "async with asyncio.timeout(settings.profile_timeout):\n    return await profile_client.fetch(user_id)"
+    },
+    {
+      "id": "pro-python-cancellation-finally-concept",
+      "type": "concept",
+      "title": "Cancellation Finally",
+      "prompt": "Use finally for cleanup that must run when async work is cancelled.",
+      "explanation": "Use finally for cleanup that must run when async work is cancelled. Review the runtime or tooling rule directly and name the edge case a teammate could miss.",
+      "difficulty": "senior",
+      "tags": [
+        "python",
+        "async",
+        "senior",
+        "concept"
+      ],
+      "sourceDocSlug": "programming/python-async-testing-production"
+    },
+    {
+      "id": "pro-python-cancellation-finally-practical",
+      "type": "practical",
+      "title": "Cancellation Finally Review",
+      "prompt": "Review code for this Python production concern: Use finally for cleanup that must run when async work is cancelled.",
+      "explanation": "Senior review standard: state the ownership, boundary, or failure contract; then add a narrow test around the edge case. Streaming interview code should handle early termination.",
+      "difficulty": "senior",
+      "tags": [
+        "python",
+        "async",
+        "senior",
+        "review"
+      ],
+      "sourceDocSlug": "programming/python-async-testing-production"
+    },
+    {
+      "id": "pro-python-cancellation-finally-snippet",
+      "type": "snippet",
+      "title": "Cancellation Finally Snippet",
+      "prompt": "Read the snippet and identify the Python contract: Use finally for cleanup that must run when async work is cancelled.",
+      "explanation": "The snippet demonstrates the professional Python behavior to preserve in production code. Streaming interview code should handle early termination.",
+      "difficulty": "senior",
+      "tags": [
+        "python",
+        "async",
+        "senior",
+        "snippet"
+      ],
+      "sourceDocSlug": "programming/python-async-testing-production",
+      "code": "handle = await open_stream()\ntry:\n    async for row in handle:\n        yield row\nfinally:\n    await handle.close()"
+    },
+    {
+      "id": "pro-python-cancellation-finally-interview",
+      "type": "interview",
+      "title": "Cancellation Finally Interview Lens",
+      "prompt": "Streaming interview code should handle early termination.",
+      "explanation": "In an interview, explain the tradeoff, show the Python-specific behavior, and call out the bug this prevents. Use finally for cleanup that must run when async work is cancelled.",
+      "difficulty": "senior",
+      "tags": [
+        "python",
+        "async",
+        "senior",
+        "interview"
+      ],
+      "sourceDocSlug": "programming/python-async-testing-production",
+      "code": "handle = await open_stream()\ntry:\n    async for row in handle:\n        yield row\nfinally:\n    await handle.close()"
+    },
+    {
+      "id": "pro-python-blocking-sdk-concept",
+      "type": "concept",
+      "title": "Blocking SDK",
+      "prompt": "A sync SDK in an async handler can stall the event loop.",
+      "explanation": "A sync SDK in an async handler can stall the event loop. Review the runtime or tooling rule directly and name the edge case a teammate could miss.",
+      "difficulty": "senior",
+      "tags": [
+        "python",
+        "async",
+        "senior",
+        "concept"
+      ],
+      "sourceDocSlug": "programming/python-async-testing-production"
+    },
+    {
+      "id": "pro-python-blocking-sdk-practical",
+      "type": "practical",
+      "title": "Blocking SDK Review",
+      "prompt": "Review code for this Python production concern: A sync SDK in an async handler can stall the event loop.",
+      "explanation": "Senior review standard: state the ownership, boundary, or failure contract; then add a narrow test around the edge case. Prefer async-native clients or explicit thread boundaries.",
+      "difficulty": "senior",
+      "tags": [
+        "python",
+        "async",
+        "senior",
+        "review"
+      ],
+      "sourceDocSlug": "programming/python-async-testing-production"
+    },
+    {
+      "id": "pro-python-blocking-sdk-snippet",
+      "type": "snippet",
+      "title": "Blocking SDK Snippet",
+      "prompt": "Read the snippet and identify the Python contract: A sync SDK in an async handler can stall the event loop.",
+      "explanation": "The snippet demonstrates the professional Python behavior to preserve in production code. Prefer async-native clients or explicit thread boundaries.",
+      "difficulty": "senior",
+      "tags": [
+        "python",
+        "async",
+        "senior",
+        "snippet"
+      ],
+      "sourceDocSlug": "programming/python-async-testing-production",
+      "code": "result = await asyncio.to_thread(sync_client.charge, user_id)"
+    },
+    {
+      "id": "pro-python-blocking-sdk-interview",
+      "type": "interview",
+      "title": "Blocking SDK Interview Lens",
+      "prompt": "Prefer async-native clients or explicit thread boundaries.",
+      "explanation": "In an interview, explain the tradeoff, show the Python-specific behavior, and call out the bug this prevents. A sync SDK in an async handler can stall the event loop.",
+      "difficulty": "senior",
+      "tags": [
+        "python",
+        "async",
+        "senior",
+        "interview"
+      ],
+      "sourceDocSlug": "programming/python-async-testing-production",
+      "code": "result = await asyncio.to_thread(sync_client.charge, user_id)"
+    },
+    {
+      "id": "pro-python-fixture-scope-concept",
+      "type": "concept",
+      "title": "Fixture Scope",
+      "prompt": "pytest fixture scope controls resource lifetime and test isolation.",
+      "explanation": "pytest fixture scope controls resource lifetime and test isolation. Review the runtime or tooling rule directly and name the edge case a teammate could miss.",
+      "difficulty": "senior",
+      "tags": [
+        "python",
+        "async",
+        "senior",
+        "concept"
+      ],
+      "sourceDocSlug": "programming/python-async-testing-production"
+    },
+    {
+      "id": "pro-python-fixture-scope-practical",
+      "type": "practical",
+      "title": "Fixture Scope Review",
+      "prompt": "Review code for this Python production concern: pytest fixture scope controls resource lifetime and test isolation.",
+      "explanation": "Senior review standard: state the ownership, boundary, or failure contract; then add a narrow test around the edge case. Stateful caches and repositories need isolated tests.",
+      "difficulty": "senior",
+      "tags": [
+        "python",
+        "async",
+        "senior",
+        "review"
+      ],
+      "sourceDocSlug": "programming/python-async-testing-production"
+    },
+    {
+      "id": "pro-python-fixture-scope-snippet",
+      "type": "snippet",
+      "title": "Fixture Scope Snippet",
+      "prompt": "Read the snippet and identify the Python contract: pytest fixture scope controls resource lifetime and test isolation.",
+      "explanation": "The snippet demonstrates the professional Python behavior to preserve in production code. Stateful caches and repositories need isolated tests.",
+      "difficulty": "senior",
+      "tags": [
+        "python",
+        "async",
+        "senior",
+        "snippet"
+      ],
+      "sourceDocSlug": "programming/python-async-testing-production",
+      "code": "@pytest.fixture\ndef repo(tmp_path):\n    return SqliteRepo(tmp_path / \"test.db\")"
+    },
+    {
+      "id": "pro-python-fixture-scope-interview",
+      "type": "interview",
+      "title": "Fixture Scope Interview Lens",
+      "prompt": "Stateful caches and repositories need isolated tests.",
+      "explanation": "In an interview, explain the tradeoff, show the Python-specific behavior, and call out the bug this prevents. pytest fixture scope controls resource lifetime and test isolation.",
+      "difficulty": "senior",
+      "tags": [
+        "python",
+        "async",
+        "senior",
+        "interview"
+      ],
+      "sourceDocSlug": "programming/python-async-testing-production",
+      "code": "@pytest.fixture\ndef repo(tmp_path):\n    return SqliteRepo(tmp_path / \"test.db\")"
+    },
+    {
+      "id": "pro-python-observable-tests-concept",
+      "type": "concept",
+      "title": "Observable Tests",
+      "prompt": "Await meaningful state instead of arbitrary sleeps in async tests.",
+      "explanation": "Await meaningful state instead of arbitrary sleeps in async tests. Review the runtime or tooling rule directly and name the edge case a teammate could miss.",
+      "difficulty": "senior",
+      "tags": [
+        "python",
+        "async",
+        "senior",
+        "concept"
+      ],
+      "sourceDocSlug": "programming/python-async-testing-production"
+    },
+    {
+      "id": "pro-python-observable-tests-practical",
+      "type": "practical",
+      "title": "Observable Tests Review",
+      "prompt": "Review code for this Python production concern: Await meaningful state instead of arbitrary sleeps in async tests.",
+      "explanation": "Senior review standard: state the ownership, boundary, or failure contract; then add a narrow test around the edge case. Senior testing discussion should make concurrency deterministic.",
+      "difficulty": "senior",
+      "tags": [
+        "python",
+        "async",
+        "senior",
+        "review"
+      ],
+      "sourceDocSlug": "programming/python-async-testing-production"
+    },
+    {
+      "id": "pro-python-observable-tests-snippet",
+      "type": "snippet",
+      "title": "Observable Tests Snippet",
+      "prompt": "Read the snippet and identify the Python contract: Await meaningful state instead of arbitrary sleeps in async tests.",
+      "explanation": "The snippet demonstrates the professional Python behavior to preserve in production code. Senior testing discussion should make concurrency deterministic.",
+      "difficulty": "senior",
+      "tags": [
+        "python",
+        "async",
+        "senior",
+        "snippet"
+      ],
+      "sourceDocSlug": "programming/python-async-testing-production",
+      "code": "await worker.enqueue(job)\nawait worker.drain()\nassert repo.get(job.id).status == \"done\""
+    },
+    {
+      "id": "pro-python-observable-tests-interview",
+      "type": "interview",
+      "title": "Observable Tests Interview Lens",
+      "prompt": "Senior testing discussion should make concurrency deterministic.",
+      "explanation": "In an interview, explain the tradeoff, show the Python-specific behavior, and call out the bug this prevents. Await meaningful state instead of arbitrary sleeps in async tests.",
+      "difficulty": "senior",
+      "tags": [
+        "python",
+        "async",
+        "senior",
+        "interview"
+      ],
+      "sourceDocSlug": "programming/python-async-testing-production",
+      "code": "await worker.enqueue(job)\nawait worker.drain()\nassert repo.get(job.id).status == \"done\""
+    },
+    {
+      "id": "pro-python-structured-logs-concept",
+      "type": "concept",
+      "title": "Structured Logs",
+      "prompt": "Stable event names and fields beat print debugging in production Python.",
+      "explanation": "Stable event names and fields beat print debugging in production Python. Review the runtime or tooling rule directly and name the edge case a teammate could miss.",
+      "difficulty": "senior",
+      "tags": [
+        "python",
+        "async",
+        "senior",
+        "concept"
+      ],
+      "sourceDocSlug": "programming/python-async-testing-production"
+    },
+    {
+      "id": "pro-python-structured-logs-practical",
+      "type": "practical",
+      "title": "Structured Logs Review",
+      "prompt": "Review code for this Python production concern: Stable event names and fields beat print debugging in production Python.",
+      "explanation": "Senior review standard: state the ownership, boundary, or failure contract; then add a narrow test around the edge case. Cache interview answers can name hits, misses, evictions, and stale reads.",
+      "difficulty": "senior",
+      "tags": [
+        "python",
+        "async",
+        "senior",
+        "review"
+      ],
+      "sourceDocSlug": "programming/python-async-testing-production"
+    },
+    {
+      "id": "pro-python-structured-logs-snippet",
+      "type": "snippet",
+      "title": "Structured Logs Snippet",
+      "prompt": "Read the snippet and identify the Python contract: Stable event names and fields beat print debugging in production Python.",
+      "explanation": "The snippet demonstrates the professional Python behavior to preserve in production code. Cache interview answers can name hits, misses, evictions, and stale reads.",
+      "difficulty": "senior",
+      "tags": [
+        "python",
+        "async",
+        "senior",
+        "snippet"
+      ],
+      "sourceDocSlug": "programming/python-async-testing-production",
+      "code": "logger.info(\"cache_evicted\", extra={\"key\": key, \"reason\": \"ttl\"})"
+    },
+    {
+      "id": "pro-python-structured-logs-interview",
+      "type": "interview",
+      "title": "Structured Logs Interview Lens",
+      "prompt": "Cache interview answers can name hits, misses, evictions, and stale reads.",
+      "explanation": "In an interview, explain the tradeoff, show the Python-specific behavior, and call out the bug this prevents. Stable event names and fields beat print debugging in production Python.",
+      "difficulty": "senior",
+      "tags": [
+        "python",
+        "async",
+        "senior",
+        "interview"
+      ],
+      "sourceDocSlug": "programming/python-async-testing-production",
+      "code": "logger.info(\"cache_evicted\", extra={\"key\": key, \"reason\": \"ttl\"})"
+    },
+    {
+      "id": "pro-python-settings-object-concept",
+      "type": "concept",
+      "title": "Settings Object",
+      "prompt": "Parse environment config once and pass a typed settings object inward.",
+      "explanation": "Parse environment config once and pass a typed settings object inward. Review the runtime or tooling rule directly and name the edge case a teammate could miss.",
+      "difficulty": "senior",
+      "tags": [
+        "python",
+        "async",
+        "senior",
+        "concept"
+      ],
+      "sourceDocSlug": "programming/python-async-testing-production"
+    },
+    {
+      "id": "pro-python-settings-object-practical",
+      "type": "practical",
+      "title": "Settings Object Review",
+      "prompt": "Review code for this Python production concern: Parse environment config once and pass a typed settings object inward.",
+      "explanation": "Senior review standard: state the ownership, boundary, or failure contract; then add a narrow test around the edge case. Avoid reading env vars deep inside domain code.",
+      "difficulty": "senior",
+      "tags": [
+        "python",
+        "async",
+        "senior",
+        "review"
+      ],
+      "sourceDocSlug": "programming/python-async-testing-production"
+    },
+    {
+      "id": "pro-python-settings-object-snippet",
+      "type": "snippet",
+      "title": "Settings Object Snippet",
+      "prompt": "Read the snippet and identify the Python contract: Parse environment config once and pass a typed settings object inward.",
+      "explanation": "The snippet demonstrates the professional Python behavior to preserve in production code. Avoid reading env vars deep inside domain code.",
+      "difficulty": "senior",
+      "tags": [
+        "python",
+        "async",
+        "senior",
+        "snippet"
+      ],
+      "sourceDocSlug": "programming/python-async-testing-production",
+      "code": "@dataclass(frozen=True)\nclass Settings:\n    request_timeout_seconds: float"
+    },
+    {
+      "id": "pro-python-settings-object-interview",
+      "type": "interview",
+      "title": "Settings Object Interview Lens",
+      "prompt": "Avoid reading env vars deep inside domain code.",
+      "explanation": "In an interview, explain the tradeoff, show the Python-specific behavior, and call out the bug this prevents. Parse environment config once and pass a typed settings object inward.",
+      "difficulty": "senior",
+      "tags": [
+        "python",
+        "async",
+        "senior",
+        "interview"
+      ],
+      "sourceDocSlug": "programming/python-async-testing-production",
+      "code": "@dataclass(frozen=True)\nclass Settings:\n    request_timeout_seconds: float"
+    },
+    {
+      "id": "pro-python-auto-expire-cache-concept",
+      "type": "concept",
+      "title": "Auto-Expire Cache Cleanup",
+      "prompt": "A heap plus dict can support TTL cleanup while ignoring stale heap records.",
+      "explanation": "A heap plus dict can support TTL cleanup while ignoring stale heap records. Review the runtime or tooling rule directly and name the edge case a teammate could miss.",
+      "difficulty": "senior",
+      "tags": [
+        "python",
+        "async",
+        "senior",
+        "concept"
+      ],
+      "sourceDocSlug": "programming/python-async-testing-production"
+    },
+    {
+      "id": "pro-python-auto-expire-cache-practical",
+      "type": "practical",
+      "title": "Auto-Expire Cache Cleanup Review",
+      "prompt": "Review code for this Python production concern: A heap plus dict can support TTL cleanup while ignoring stale heap records.",
+      "explanation": "Senior review standard: state the ownership, boundary, or failure contract; then add a narrow test around the edge case. Route: /interviews/netflix/auto-expire-cache?path=python-for-ts-js-engineers",
+      "difficulty": "senior",
+      "tags": [
+        "python",
+        "async",
+        "senior",
+        "review"
+      ],
+      "sourceDocSlug": "programming/python-async-testing-production"
+    },
+    {
+      "id": "pro-python-auto-expire-cache-snippet",
+      "type": "snippet",
+      "title": "Auto-Expire Cache Cleanup Snippet",
+      "prompt": "Read the snippet and identify the Python contract: A heap plus dict can support TTL cleanup while ignoring stale heap records.",
+      "explanation": "The snippet demonstrates the professional Python behavior to preserve in production code. Route: /interviews/netflix/auto-expire-cache?path=python-for-ts-js-engineers",
+      "difficulty": "senior",
+      "tags": [
+        "python",
+        "async",
+        "senior",
+        "snippet"
+      ],
+      "sourceDocSlug": "programming/python-async-testing-production",
+      "code": "while heap and heap[0][0] <= now:\n    expires_at, key = heapq.heappop(heap)\n    record = data.get(key)\n    if record and record.expires_at == expires_at:\n        del data[key]"
+    },
+    {
+      "id": "pro-python-auto-expire-cache-interview",
+      "type": "interview",
+      "title": "Auto-Expire Cache Cleanup Interview Lens",
+      "prompt": "Route: /interviews/netflix/auto-expire-cache?path=python-for-ts-js-engineers",
+      "explanation": "In an interview, explain the tradeoff, show the Python-specific behavior, and call out the bug this prevents. A heap plus dict can support TTL cleanup while ignoring stale heap records.",
+      "difficulty": "senior",
+      "tags": [
+        "python",
+        "async",
+        "senior",
+        "interview"
+      ],
+      "sourceDocSlug": "programming/python-async-testing-production",
+      "code": "while heap and heap[0][0] <= now:\n    expires_at, key = heapq.heappop(heap)\n    record = data.get(key)\n    if record and record.expires_at == expires_at:\n        del data[key]"
+    },
+    {
+      "id": "pro-python-async-client-lifetime-concept",
+      "type": "concept",
+      "title": "Async Client Lifetime",
+      "prompt": "Clients and pools need explicit startup and shutdown owners.",
+      "explanation": "Clients and pools need explicit startup and shutdown owners. Review the runtime or tooling rule directly and name the edge case a teammate could miss.",
+      "difficulty": "senior",
+      "tags": [
+        "python",
+        "async",
+        "senior",
+        "concept"
+      ],
+      "sourceDocSlug": "programming/python-async-testing-production"
+    },
+    {
+      "id": "pro-python-async-client-lifetime-practical",
+      "type": "practical",
+      "title": "Async Client Lifetime Review",
+      "prompt": "Review code for this Python production concern: Clients and pools need explicit startup and shutdown owners.",
+      "explanation": "Senior review standard: state the ownership, boundary, or failure contract; then add a narrow test around the edge case. Resource lifetime should not be hidden in import-time globals.",
+      "difficulty": "senior",
+      "tags": [
+        "python",
+        "async",
+        "senior",
+        "review"
+      ],
+      "sourceDocSlug": "programming/python-async-testing-production"
+    },
+    {
+      "id": "pro-python-async-client-lifetime-snippet",
+      "type": "snippet",
+      "title": "Async Client Lifetime Snippet",
+      "prompt": "Read the snippet and identify the Python contract: Clients and pools need explicit startup and shutdown owners.",
+      "explanation": "The snippet demonstrates the professional Python behavior to preserve in production code. Resource lifetime should not be hidden in import-time globals.",
+      "difficulty": "senior",
+      "tags": [
+        "python",
+        "async",
+        "senior",
+        "snippet"
+      ],
+      "sourceDocSlug": "programming/python-async-testing-production",
+      "code": "async with httpx.AsyncClient(timeout=timeout) as client:\n    return await client.get(url)"
+    },
+    {
+      "id": "pro-python-async-client-lifetime-interview",
+      "type": "interview",
+      "title": "Async Client Lifetime Interview Lens",
+      "prompt": "Resource lifetime should not be hidden in import-time globals.",
+      "explanation": "In an interview, explain the tradeoff, show the Python-specific behavior, and call out the bug this prevents. Clients and pools need explicit startup and shutdown owners.",
+      "difficulty": "senior",
+      "tags": [
+        "python",
+        "async",
+        "senior",
+        "interview"
+      ],
+      "sourceDocSlug": "programming/python-async-testing-production",
+      "code": "async with httpx.AsyncClient(timeout=timeout) as client:\n    return await client.get(url)"
     }
   ]
 }

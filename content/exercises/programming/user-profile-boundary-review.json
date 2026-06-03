@@ -1,0 +1,75 @@
+{
+  "slug": "programming/user-profile-boundary-review",
+  "title": "User Profile Boundary Review",
+  "type": "code-review",
+  "documentSlug": "programming/typescript-boundaries",
+  "concept": "Runtime validation",
+  "difficulty": "senior",
+  "tags": ["typescript", "api-contracts", "code-review"],
+  "status": "published",
+  "prompt": "Find the unsafe boundary assumption in this profile loading helper.",
+  "files": [
+    {
+      "path": "src/api/userProfile.ts",
+      "language": "typescript",
+      "healthyExplanation": "This file is close to the network boundary and has a schema ready to parse untrusted JSON.",
+      "lines": [
+        "import { z } from \"zod\";",
+        "",
+        "const userSchema = z.object({",
+        "  id: z.string(),",
+        "  email: z.string().email(),",
+        "  displayName: z.string().min(1),",
+        "});",
+        "",
+        "export type UserProfile = z.infer<typeof userSchema>;",
+        "",
+        "export async function loadUserProfile(userId: string) {",
+        "  const response = await fetch(`/api/users/${userId}`);",
+        "  const data = await response.json();",
+        "  return data as UserProfile;",
+        "}"
+      ]
+    },
+    {
+      "path": "src/components/ProfileBadge.tsx",
+      "language": "typescript",
+      "healthyExplanation": "This component receives an already validated profile and only reads typed display fields.",
+      "lines": [
+        "import type { UserProfile } from \"../api/userProfile\";",
+        "",
+        "export function ProfileBadge({ user }: { user: UserProfile }) {",
+        "  return <span>{user.displayName}</span>;",
+        "}"
+      ]
+    }
+  ],
+  "findings": [
+    {
+      "id": "unchecked-network-json",
+      "kind": "bug",
+      "range": {
+        "filePath": "src/api/userProfile.ts",
+        "startLine": 14,
+        "startColumn": 10,
+        "endLine": 14,
+        "endColumn": 30
+      },
+      "explanation": "Casting the network payload to UserProfile bypasses the schema. TypeScript trusts the cast, so invalid JSON can enter the domain model.",
+      "replacementLines": ["  return userSchema.parse(data);"]
+    }
+  ],
+  "healthyNotes": [
+    {
+      "id": "schema-import",
+      "range": {
+        "filePath": "src/api/userProfile.ts",
+        "startLine": 1,
+        "startColumn": 10,
+        "endLine": 1,
+        "endColumn": 11
+      },
+      "explanation": "Using Zod here is healthy because the boundary needs runtime validation in addition to TypeScript types."
+    }
+  ]
+}

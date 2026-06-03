@@ -72,11 +72,94 @@ Python objects participate in the language by implementing special methods such 
 
 Do not add these methods just to be clever. Add them when the object really should behave like that language concept. A domain object with `__iter__` may become convenient, but it can also blur whether the object is an entity, a collection, or a transport record.
 
+## Iterators And Generators
+
+Python iterators are stateful. Once an iterator is consumed, it is usually exhausted. This is different from reviewing a JavaScript array, where repeated loops naturally see the same elements. In Python, senior review should ask whether a value is a reusable collection or a one-pass stream:
+
+```python
+def active_user_ids(rows: Iterable[Row]) -> Iterator[int]:
+    for row in rows:
+        if row.active:
+            yield row.user_id
+
+ids = active_user_ids(fetch_rows())
+list(ids)
+list(ids)  # empty; the generator already ran
+```
+
+Generators are excellent for memory-aware pipelines and interview problems with large search spaces, but they are a poor fit when callers expect caching, random access, or multiple passes. If a function returns a generator for performance, document that it is lazy and one-shot.
+
+## Descriptors, Properties, And Attribute Access
+
+Python attribute access can run code. `@property`, descriptors, and `__getattr__` are useful, but they can hide I/O, cache mutation, or exception-heavy behavior behind field-looking syntax. TypeScript developers often read `object.value` as cheap. In Python, review the class before assuming that.
+
+```python
+class UserAccount:
+    def __init__(self, raw_email: str) -> None:
+        self._raw_email = raw_email
+
+    @property
+    def email(self) -> str:
+        return self._raw_email.strip().lower()
+```
+
+A property like this is fine because it is deterministic and cheap. A property that queries a database is not a property; it is a method pretending to be a field. Prefer explicit verbs for expensive or failure-prone work.
+
+## Context Managers As Lifetime Contracts
+
+Context managers are more than file helpers. They are Python's normal way to make resource lifetime visible. A production context manager should keep acquisition and release close together, preserve exceptions unless it intentionally suppresses them, and avoid doing surprising global work.
+
+```python
+from contextlib import contextmanager
+
+@contextmanager
+def measured_span(name: str):
+    span = tracer.start_span(name)
+    try:
+        yield span
+    except Exception as exc:
+        span.record_exception(exc)
+        raise
+    finally:
+        span.end()
+```
+
+The `raise` is important. Without it, the context manager would convert an incident into a successful request path.
+
 ## Imports Execute Code
 
 Python imports execute module top-level code once per interpreter process and cache the module. This is a common difference from bundler-shaped JavaScript mental models. Import-time side effects can create database connections, read environment variables, register plugins, mutate global registries, or slow startup.
 
 Keep import-time work boring. Define constants, classes, and functions. Move runtime wiring into explicit functions. This makes tests easier, service startup more predictable, and dependency cycles easier to diagnose.
+
+Circular imports are usually a design signal. They often mean domain objects know too much about transport code, factory wiring lives at module top level, or type-only imports are mixed with runtime imports. Use local imports sparingly to break unavoidable cycles, and prefer moving shared protocols or configuration objects into a lower-level module.
+
+## Copy Depth And Ownership
+
+Python copying is explicit, and shallow copies keep references to nested objects. This matters in services that normalize request payloads, build caches, or return mutable defaults from helpers.
+
+```python
+from copy import deepcopy
+
+template = {"headers": [], "metadata": {"tenant": "default"}}
+request_config = template.copy()
+request_config["metadata"]["tenant"] = "acme"
+```
+
+The `metadata` dictionary is still shared. A senior review should ask whether the nested object is intentionally shared, whether a targeted copy is enough, or whether `deepcopy` is hiding a larger ownership problem.
+
+## Exception Chaining
+
+When code translates a low-level exception into a domain exception, preserve the cause. Python's `raise ... from exc` keeps the operational breadcrumb that a plain replacement would destroy.
+
+```python
+try:
+    payload = json.loads(raw_payload)
+except json.JSONDecodeError as exc:
+    raise InvalidWebhookPayload("Webhook payload is not valid JSON") from exc
+```
+
+Use exception chaining when the public error should be domain-specific but the debugging trail still matters. Use `raise ... from None` only when the lower-level cause is intentionally unhelpful or unsafe to expose.
 
 ## Senior Pain Points
 
@@ -85,6 +168,9 @@ Keep import-time work boring. Define constants, classes, and functions. Move run
 - Catching broad exceptions and losing the failure boundary.
 - Import-time side effects that make tests order-dependent.
 - Data model hooks that make objects surprising to readers.
+- One-shot iterators consumed twice in review-blind data pipelines.
+- Descriptor or property access hiding I/O, mutation, or exceptions.
+- Shallow copies used where nested ownership is not understood.
 
 ## Review Standard
 

@@ -207,7 +207,7 @@ export function QuestionnaireSession({ exercise, nextHref }: { exercise: Questio
     return (
       <div className="mt-5 grid gap-3">
         {question.leftItems.map((leftItem) => (
-          <div key={leftItem.id} className="rounded-lg border-2 border-b-4 border-[#d5e2e8] bg-white p-3">
+          <div key={leftItem.id} className="min-w-0 rounded-lg border-2 border-b-4 border-[#d5e2e8] bg-white p-3">
             <Dropdown
               label={`Match for ${leftItem.label}`}
               value={selectedMatches[leftItem.id] ?? ""}
@@ -278,7 +278,7 @@ export function QuestionnaireSession({ exercise, nextHref }: { exercise: Questio
 
       {result ? <QuestionFeedback question={question} result={result} /> : null}
 
-      <div className="mt-6 flex flex-wrap gap-3">
+      <div className="relative z-10 mt-6 flex flex-wrap gap-3">
         <button
           type="button"
           onClick={checkAnswer}
@@ -326,8 +326,8 @@ function QuestionFeedback({ question, result }: { question: QuestionnaireAttempt
       <p className={cn("text-sm font-extrabold", result.isCorrect ? "text-[#007c78]" : "text-[#7a5200]")}>
         {result.isCorrect ? "Correct" : "Review this"}
       </p>
-      {!result.isCorrect || question.kind !== "choice" ? (
-        <p className="mt-2 text-sm font-extrabold leading-6 text-[#263238]">Correct answer: {result.correctAnswer}</p>
+      {!result.isCorrect ? (
+        <p className="mt-2 break-words text-sm font-extrabold leading-6 text-[#263238]">Correct answer: {result.correctAnswer}</p>
       ) : null}
       <p className="mt-2 text-sm font-semibold leading-6 text-[#33434b]">{question.explanation}</p>
     </div>

@@ -126,6 +126,85 @@
       ],
       "correctOrder": ["narrow", "specific", "preserve"],
       "explanation": "Broad exception handling hides failure boundaries. Narrow handling keeps recovery intentional."
+    },
+    {
+      "id": "generator-reuse",
+      "kind": "choice",
+      "prompt": "A function returns a generator and a caller loops over it twice expecting the same rows. What should review flag?",
+      "options": [
+        {
+          "id": "reusable",
+          "label": "Generators are reusable collections, so the second loop is safe.",
+          "isCorrect": false
+        },
+        {
+          "id": "one-shot",
+          "label": "Most generators are one-shot iterators and may be exhausted after the first pass.",
+          "isCorrect": true
+        },
+        {
+          "id": "copy-first",
+          "label": "Python automatically deep-copies generator output before iteration.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "Generators are lazy and stateful. If callers need multiple passes, return a collection or document and materialize intentionally."
+    },
+    {
+      "id": "descriptor-gap",
+      "kind": "cloze",
+      "prompt": "Fill the gap for the senior warning about expensive Python properties.",
+      "template": "A property that performs network or database work is hiding {{blank}} behind attribute access.",
+      "acceptedAnswers": ["I/O", "io", "side effects", "expensive work"],
+      "explanation": "Attribute access can execute Python code. Expensive or failure-prone operations should usually be explicit methods."
+    },
+    {
+      "id": "copy-depth-order",
+      "kind": "ordering",
+      "prompt": "Order the review flow for a shallow copy of nested mutable config.",
+      "items": [
+        {
+          "id": "identify",
+          "label": "Identify which nested objects remain shared"
+        },
+        {
+          "id": "decide",
+          "label": "Decide whether sharing is intentional ownership"
+        },
+        {
+          "id": "copy",
+          "label": "Use targeted copy or deepcopy only when required"
+        },
+        {
+          "id": "test",
+          "label": "Add a test around mutation isolation"
+        }
+      ],
+      "correctOrder": ["identify", "decide", "copy", "test"],
+      "explanation": "Shallow copies keep references to nested objects. Review should clarify ownership before reaching for deepcopy."
+    },
+    {
+      "id": "advanced-runtime-match",
+      "kind": "matching",
+      "prompt": "Match each advanced runtime feature to the senior review concern.",
+      "pairs": [
+        {
+          "id": "descriptor",
+          "prompt": "Descriptor or property",
+          "match": "field-looking access can execute code"
+        },
+        {
+          "id": "exception-chain",
+          "prompt": "raise ... from exc",
+          "match": "domain error preserves operational cause"
+        },
+        {
+          "id": "cycle",
+          "prompt": "Circular import",
+          "match": "module boundaries or import-time wiring may be wrong"
+        }
+      ],
+      "explanation": "Senior Python review focuses on what runtime behavior is hidden behind concise syntax."
     }
   ]
 }

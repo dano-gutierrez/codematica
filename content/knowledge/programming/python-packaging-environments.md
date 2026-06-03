@@ -33,6 +33,26 @@ The senior habit is to separate three concerns: project metadata, environment is
 
 This is closer to `package.json` as a project manifest, but it is not the whole dependency story. A project can declare dependencies in `pyproject.toml` and still need a lock or deployment process to make installations reproducible.
 
+```toml
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "billing-service"
+version = "0.1.0"
+requires-python = ">=3.12"
+dependencies = [
+  "httpx>=0.27",
+  "pydantic>=2.7",
+]
+
+[project.scripts]
+billing-worker = "billing_service.cli:main"
+```
+
+Senior review should check whether the declared Python range matches production, whether scripts point at importable modules, and whether the build backend is intentional rather than inherited from a template.
+
 ## Virtual Environments
 
 Python virtual environments isolate installed packages for a project or service. This is not the same as `node_modules`, but the goal is similar: avoid global dependency bleed. Senior teams make environment creation boring and documented.
@@ -45,11 +65,29 @@ Runtime dependencies belong in project metadata. Optional feature dependencies a
 
 The production question is which dependencies ship with the artifact. A lint tool, type checker, or test-only library should not silently become a runtime requirement. This maps to the JavaScript distinction between runtime dependencies and development dependencies, but the exact mechanism depends on the Python toolchain.
 
+```toml
+[dependency-groups]
+dev = [
+  "pytest>=8",
+  "ruff>=0.5",
+  "mypy>=1.10",
+]
+```
+
+Dependency groups are about environment roles. They are not a replacement for validating the runtime artifact. If deployment installs only production dependencies, CI should prove that the service still starts with only those dependencies.
+
 ## Import Names Versus Distribution Names
 
 Python package distribution names and import names can differ. A well-known example is installing a distribution and importing a differently named module. This is a common source of onboarding confusion for JavaScript developers because npm package names usually map more directly to imports.
 
 Review packaging docs and project metadata when the import does not match the install name. Do not paper over the mismatch with local module names that shadow third-party packages.
+
+```text
+pyproject.toml project name: beautifulsoup4
+Python import name: bs4
+```
+
+The senior review question is whether the mismatch is documented and whether local modules avoid shadowing standard library or third-party names.
 
 ## Lockfiles And Reproducibility
 
@@ -62,11 +100,38 @@ Python has multiple tools that can lock environments, and PyPA has a `pylock.tom
 
 Without that contract, packaging issues become runtime incidents.
 
+Lockfile review should look like dependency graph review in JavaScript: direct requirement changed, transitive graph changed, supported Python marker changed, and installer command still matches docs. A lockfile that exists but is not used by CI is documentation, not reproducibility.
+
 ## Project Layout
 
 Use a layout that makes imports predictable. The `src/` layout is common because tests do not accidentally import the source tree as if it were installed. Smaller applications may choose simpler layouts, but they still need import behavior that matches production.
 
 Avoid naming files after standard library modules or dependencies. A local `typing.py`, `asyncio.py`, or `requests.py` can shadow the real package and create confusing failures.
+
+```text
+repo/
+  pyproject.toml
+  src/
+    billing_service/
+      __init__.py
+      api.py
+  tests/
+    test_api.py
+```
+
+With this layout, tests exercise the installed package shape more closely. It also forces package imports to use the real import name instead of relying on the repository root being on `sys.path`.
+
+## Import And Package Review Checklist
+
+When a Python import fails in production but works locally, review the environment before changing code:
+
+- Is the package installed into the same virtual environment used by the process?
+- Does the distribution name differ from the import name?
+- Is a local file shadowing a dependency or standard library module?
+- Does the `src/` layout require an editable install during development?
+- Did a circular import expose module top-level wiring that should move into a factory?
+
+These questions prevent the common "just tweak `PYTHONPATH`" reaction. `PYTHONPATH` can be useful for tooling, but using it as the main application packaging strategy makes production behavior fragile.
 
 ## Senior Pain Points
 
@@ -75,6 +140,9 @@ Avoid naming files after standard library modules or dependencies. A local `typi
 - Import-name and distribution-name mismatches.
 - Tool config scattered across files without a clear owner.
 - Lockfile or supported-version drift between local, CI, and production.
+- `src/` layout adopted without an editable install or clear test command.
+- Runtime artifacts accidentally depending on development groups.
+- Import fixes that rely on environment variables instead of package structure.
 
 ## Review Standard
 

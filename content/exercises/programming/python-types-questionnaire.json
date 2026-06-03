@@ -130,6 +130,85 @@
       ],
       "correctOrder": ["isolate", "narrow", "precise"],
       "explanation": "Any is most dangerous when it flows deeply through code that appears precisely typed."
+    },
+    {
+      "id": "protocol-width",
+      "kind": "choice",
+      "prompt": "A function only calls publish(topic, payload), but its annotation requires a concrete KafkaPublisher. What is the better senior type contract?",
+      "options": [
+        {
+          "id": "concrete",
+          "label": "Keep the concrete class so tests must use the exact production publisher.",
+          "isCorrect": false
+        },
+        {
+          "id": "protocol",
+          "label": "Use a narrow Protocol that describes the publish behavior the function needs.",
+          "isCorrect": true
+        },
+        {
+          "id": "any",
+          "label": "Annotate the publisher as Any to avoid all review friction.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "A narrow Protocol captures behavior without forcing inheritance or overfitting tests to production classes."
+    },
+    {
+      "id": "cast-gap",
+      "kind": "cloze",
+      "prompt": "Fill the gap for the risk of typing.cast in production Python.",
+      "template": "cast() changes what the checker believes, but it does not change the {{blank}} value.",
+      "acceptedAnswers": ["runtime", "runtime value", "actual runtime"],
+      "explanation": "A cast is a static assertion. Review it as a claim that needs a nearby invariant or a real runtime check."
+    },
+    {
+      "id": "typeddict-lifecycle",
+      "kind": "ordering",
+      "prompt": "Order the safer lifecycle for a TypedDict that models incoming JSON.",
+      "items": [
+        {
+          "id": "shape",
+          "label": "Use TypedDict to describe the payload shape"
+        },
+        {
+          "id": "validate",
+          "label": "Validate required keys and runtime values"
+        },
+        {
+          "id": "convert",
+          "label": "Convert to a domain object"
+        },
+        {
+          "id": "hide",
+          "label": "Keep transport dictionaries out of domain APIs"
+        }
+      ],
+      "correctOrder": ["shape", "validate", "convert", "hide"],
+      "explanation": "TypedDict is useful near payload boundaries, but domain logic should rely on trusted objects with clearer invariants."
+    },
+    {
+      "id": "advanced-typing-match",
+      "kind": "matching",
+      "prompt": "Match each typing feature to the senior review question.",
+      "pairs": [
+        {
+          "id": "typeddict",
+          "prompt": "TypedDict",
+          "match": "is this still transport-shaped data"
+        },
+        {
+          "id": "cast",
+          "prompt": "cast()",
+          "match": "what runtime invariant justifies this claim"
+        },
+        {
+          "id": "frozen",
+          "prompt": "frozen dataclass",
+          "match": "does this prevent only direct mutation or also validate input"
+        }
+      ],
+      "explanation": "Python typing features improve communication, but review still has to separate static promises from runtime guarantees."
     }
   ]
 }

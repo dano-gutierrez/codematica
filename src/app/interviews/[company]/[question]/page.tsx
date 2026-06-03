@@ -5,12 +5,15 @@ import { ArrowLeft } from "lucide-react";
 import { DifficultyPill } from "@/components/DifficultyPill";
 import { InterviewHeader } from "@/components/InterviewCatalog";
 import { InterviewQuestionSession } from "@/components/InterviewQuestionSession";
-import { getContentIndex, getInterviewCompanyBySlug, getInterviewQuestionBySlug } from "@/lib/content";
+import { getContentIndex, getInterviewCompanyBySlug, getInterviewQuestionBySlug, getNextPathNodeRoute } from "@/lib/content";
 
 type InterviewQuestionPageProps = {
   params: Promise<{
     company: string;
     question: string;
+  }>;
+  searchParams?: Promise<{
+    path?: string;
   }>;
 };
 
@@ -33,10 +36,13 @@ export async function generateMetadata({ params }: InterviewQuestionPageProps): 
   };
 }
 
-export default async function InterviewQuestionPage({ params }: InterviewQuestionPageProps) {
+export default async function InterviewQuestionPage({ params, searchParams }: InterviewQuestionPageProps) {
   const { company: companySlug, question: questionSlug } = await params;
+  const resolvedSearchParams = await searchParams;
   const company = getInterviewCompanyBySlug(companySlug);
   const question = getInterviewQuestionBySlug(companySlug, questionSlug);
+  const pathSlug = resolvedSearchParams?.path;
+  const nextHref = pathSlug ? getNextPathNodeRoute(pathSlug, { kind: "interview", slug: `${companySlug}/${questionSlug}` }) : undefined;
 
   if (!company || !question) {
     notFound();
@@ -97,7 +103,7 @@ export default async function InterviewQuestionPage({ params }: InterviewQuestio
           ) : null}
         </div>
 
-        <InterviewQuestionSession question={question} />
+        <InterviewQuestionSession question={question} nextHref={nextHref} />
       </section>
     </main>
   );
