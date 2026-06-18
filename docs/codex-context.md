@@ -30,6 +30,7 @@ Supabase is scaffolded for future hosted indexing and search, but it is not requ
 - `src/app/interviews/**/page.tsx`: interview catalog, company, and question routes
 - `src/app/docs/[...slug]/page.tsx`: Markdown article route
 - `src/app/diagrams/[...slug]/page.tsx`: external Mermaid route
+- `src/components/BackButton.tsx`: shared client-side back navigation button
 - `src/components/LearningPathMap.tsx`: path home and path detail UI
 - `src/components/PracticeCard.tsx`: flashcard, cloze, and questionnaire shell
 - `src/components/QuestionnaireSession.tsx`: one-screen questionnaire interactions
@@ -37,9 +38,12 @@ Supabase is scaffolded for future hosted indexing and search, but it is not requ
 - `src/components/InterviewCatalog.tsx`: interview catalog and company page UI
 - `src/components/InterviewQuestionSession.tsx`: guided interview solution walkthrough
 - `src/components/KnowledgeBrowser.tsx`: browser, filters, and result cards
+- `src/components/DifficultyPill.tsx`: shared difficulty badge
+- `src/components/Dropdown.tsx`: custom Radix-backed dropdown primitive
 - `src/components/MarkdownRenderer.tsx`: safe Markdown rendering and embedded Mermaid support
 - `src/components/CodeBlock.tsx`: shared language-aware code block renderer
 - `src/components/MermaidBlock.tsx`: client-side Mermaid renderer
+- `src/components/RandomInterviewButton.tsx`: randomized interview practice CTA
 - `src/lib/content/`: content schema, parser, index builder, and generated index access
 - `src/lib/search.ts`: fuzzy search
 - `scripts/content/`: index generation and optional Supabase sync
@@ -58,6 +62,7 @@ Supabase is scaffolded for future hosted indexing and search, but it is not requ
 - Update feature docs and architecture docs with behavior changes.
 - Add tests with behavior changes; prefer unit coverage before browser coverage.
 - Keep UI mobile-first and dense enough for repeated study workflows.
+- Reuse and extend existing components in `src/components/` before creating new UI from scratch. New reusable components should be added to the inventory in `AGENTS.md`.
 
 ## Feature Index
 

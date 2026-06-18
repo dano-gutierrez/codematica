@@ -287,12 +287,34 @@ Rule of thumb: if you can test it without a browser, do it in Vitest first. Use 
 
 ### React Components
 
+- Reuse existing components before creating new ones. Start every UI task by checking `src/components/` and nearby route usage for a component or pattern to extend.
+- Prefer adding a small prop, slot, or composition path to an existing component over creating another bespoke component for the same behavior. Less code is good. Reusing is good. Abstracting repeated UI and logic is good.
+- Create a new component only when no existing component can reasonably own the behavior, state, styling, or accessibility contract. If you create one, add it to the reusable component inventory in this file and update the relevant docs.
 - Use `data-testid` on any element that E2E tests interact with.
 - Naming: `{feature}-{element}-{qualifier}`.
 - Keep components mobile-first. Verify small viewports for major UI changes.
 - Use lucide icons inside buttons and tool controls when an icon exists.
 - Treat WCAG AA contrast as a baseline for new UI: normal text and icons must be at least 4.5:1 against their background, large/bold text at least 3:1, and non-text interactive states such as focus rings, borders, and icon-only controls at least 3:1. Verify button/link foreground classes are not overridden by global CSS.
 - Avoid nested cards. Cards are for repeated items, modals, and genuinely framed tools.
+
+### Reusable Component Inventory
+
+All sessions should reuse and, when necessary, expand these existing components instead of rebuilding equivalent UI from scratch:
+
+- `src/components/BackButton.tsx`: shared client-side back navigation button with an optional label.
+- `src/components/CodeBlock.tsx`: shared language-aware code block renderer for Markdown, interview solutions, flashcard code, and Mermaid source fallbacks.
+- `src/components/DifficultyPill.tsx`: shared difficulty badge for beginner, intermediate, and advanced content.
+- `src/components/Dropdown.tsx`: custom Radix-backed dropdown primitive for filters and select-style controls; use this instead of native selects or one-off dropdowns.
+- `src/components/InterviewCatalog.tsx`: interview catalog, company detail page UI, shared interview header, company tiles, question cards, and supporting interview stats.
+- `src/components/InterviewQuestionSession.tsx`: guided coding interview walkthrough with solution track navigation, language switching, Mermaid rendering, and code rendering.
+- `src/components/KnowledgeBrowser.tsx`: generated content browser with search, track filters, difficulty filters, and result cards.
+- `src/components/LearningPathMap.tsx`: learning path home and detail views, path overview stats, and path node display.
+- `src/components/MarkdownRenderer.tsx`: safe Markdown renderer with GFM, shared code block rendering, and embedded Mermaid support.
+- `src/components/MermaidBlock.tsx`: client-side Mermaid renderer with loading, error, and source fallback states.
+- `src/components/PassiveFlashcardFeed.tsx`: path-scoped passive flashcard feed UI for scroll-only review.
+- `src/components/PracticeCard.tsx`: flashcard, cloze, and questionnaire practice shell with next-node navigation.
+- `src/components/QuestionnaireSession.tsx`: interactive questionnaire session UI, transient answer state, grading feedback, and next-node navigation.
+- `src/components/RandomInterviewButton.tsx`: randomized interview question CTA for interview practice surfaces.
 
 ### Content And Search
 
