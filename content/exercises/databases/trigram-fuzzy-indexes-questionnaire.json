@@ -1,0 +1,135 @@
+{
+  "slug": "databases/trigram-fuzzy-indexes-questionnaire",
+  "title": "Trigram Fuzzy Indexes Questionnaire",
+  "type": "questionnaire",
+  "documentSlug": "databases/trigram-fuzzy-indexes",
+  "concept": "PostgreSQL trigram fuzzy indexes",
+  "difficulty": "senior",
+  "tags": ["postgres", "pg-trgm", "fuzzy-search", "gin-index"],
+  "status": "published",
+  "questions": [
+    {
+      "id": "trigram-meaning",
+      "kind": "choice",
+      "prompt": "What does pg_trgm compare when it decides whether two strings are similar?",
+      "options": [
+        {
+          "id": "tokens",
+          "label": "Normalized full text search lexemes only.",
+          "isCorrect": false
+        },
+        {
+          "id": "fragments",
+          "label": "Overlapping three-character fragments shared by the strings.",
+          "isCorrect": true
+        },
+        {
+          "id": "bytes",
+          "label": "The raw byte length of each string.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "Trigram similarity compares shared three-character fragments, which makes it useful for typo-tolerant text search."
+    },
+    {
+      "id": "threshold-name",
+      "kind": "cloze",
+      "prompt": "Fill the setting concept controlled by pg_trgm.similarity_threshold.",
+      "template": "The % operator admits rows according to the active {{blank}}.",
+      "acceptedAnswers": ["similarity threshold", "threshold"],
+      "explanation": "Lower thresholds admit weaker matches and more candidates; higher thresholds require stronger overlap."
+    },
+    {
+      "id": "trigram-query-flow",
+      "kind": "ordering",
+      "prompt": "Order a typical trigram search flow.",
+      "items": [
+        {
+          "id": "normalize",
+          "label": "Normalize the indexed text and query with the same expression"
+        },
+        {
+          "id": "filter",
+          "label": "Filter candidates with the % operator"
+        },
+        {
+          "id": "rank",
+          "label": "Order candidates with similarity"
+        }
+      ],
+      "correctOrder": ["normalize", "filter", "rank"],
+      "explanation": "The index accelerates candidate filtering; ranking still needs the similarity score over the candidate set."
+    },
+    {
+      "id": "trigram-index-match",
+      "kind": "matching",
+      "prompt": "Match each trigram indexing term to the right production meaning.",
+      "pairs": [
+        {
+          "id": "gin",
+          "prompt": "GIN trigram index",
+          "match": "fast trigram filtering"
+        },
+        {
+          "id": "gist",
+          "prompt": "GiST trigram index",
+          "match": "distance ordering"
+        },
+        {
+          "id": "operator-class",
+          "prompt": "gin_trgm_ops",
+          "match": "operator support"
+        }
+      ],
+      "explanation": "Operator classes bind an index access method to a family of supported operators for a data type or expression."
+    },
+    {
+      "id": "expression-index-match",
+      "kind": "choice",
+      "prompt": "A table has a GIN index on lower(name) gin_trgm_ops. What should the query do?",
+      "options": [
+        {
+          "id": "same-expression",
+          "label": "Apply the same lower expression before using the trigram operator.",
+          "isCorrect": true
+        },
+        {
+          "id": "raw-name",
+          "label": "Use name % $1 and assume PostgreSQL rewrites it to lower(name).",
+          "isCorrect": false
+        },
+        {
+          "id": "btree-sort",
+          "label": "Use a B-tree order by name to activate gin_trgm_ops.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "Expression indexes are tied to the indexed expression, so lower(name) in the index needs lower(name) in the predicate."
+    },
+    {
+      "id": "threshold-safety",
+      "kind": "ordering",
+      "prompt": "Order safer handling for a request-specific trigram threshold on pooled connections.",
+      "items": [
+        {
+          "id": "begin",
+          "label": "Open a transaction"
+        },
+        {
+          "id": "set-local",
+          "label": "Use SET LOCAL for pg_trgm.similarity_threshold"
+        },
+        {
+          "id": "query",
+          "label": "Run the search query"
+        },
+        {
+          "id": "commit",
+          "label": "Commit so the local setting is cleared"
+        }
+      ],
+      "correctOrder": ["begin", "set-local", "query", "commit"],
+      "explanation": "SET LOCAL keeps a relaxed threshold from leaking into later requests that reuse the same database connection."
+    }
+  ]
+}

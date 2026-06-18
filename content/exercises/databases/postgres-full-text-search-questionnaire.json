@@ -1,0 +1,139 @@
+{
+  "slug": "databases/postgres-full-text-search-questionnaire",
+  "title": "PostgreSQL Full Text Search Questionnaire",
+  "type": "questionnaire",
+  "documentSlug": "databases/postgres-full-text-search",
+  "concept": "PostgreSQL full text search",
+  "difficulty": "senior",
+  "tags": ["postgres", "full-text-search", "gin-index", "ranking"],
+  "status": "published",
+  "questions": [
+    {
+      "id": "vector-query",
+      "kind": "choice",
+      "prompt": "Which pairing describes PostgreSQL full text search types?",
+      "options": [
+        {
+          "id": "raw-strings",
+          "label": "tsvector stores raw strings and tsquery stores highlighted HTML.",
+          "isCorrect": false
+        },
+        {
+          "id": "document-query",
+          "label": "tsvector represents the searchable document and tsquery represents the parsed query.",
+          "isCorrect": true
+        },
+        {
+          "id": "index-only",
+          "label": "tsvector is an index type and tsquery is a table type.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "PostgreSQL matches a parsed tsquery against a normalized tsvector using the @@ operator."
+    },
+    {
+      "id": "query-parser",
+      "kind": "cloze",
+      "prompt": "Fill the function name that accepts web-style search syntax.",
+      "template": "{{blank}} turns user-friendly search input into a tsquery with phrase, OR, and NOT behavior.",
+      "acceptedAnswers": ["websearch_to_tsquery"],
+      "explanation": "websearch_to_tsquery is often safer for raw search boxes than requiring users to write to_tsquery syntax."
+    },
+    {
+      "id": "fts-build-flow",
+      "kind": "ordering",
+      "prompt": "Order the full text search execution model.",
+      "items": [
+        {
+          "id": "vector",
+          "label": "Build or read a tsvector for the document"
+        },
+        {
+          "id": "query",
+          "label": "Parse user input into a tsquery"
+        },
+        {
+          "id": "match",
+          "label": "Filter with the @@ operator"
+        },
+        {
+          "id": "rank",
+          "label": "Rank matching rows"
+        }
+      ],
+      "correctOrder": ["vector", "query", "match", "rank"],
+      "explanation": "Search should filter candidates before doing ranking and snippet work over the matching set."
+    },
+    {
+      "id": "fts-functions",
+      "kind": "matching",
+      "prompt": "Match each full text search function to its purpose.",
+      "pairs": [
+        {
+          "id": "to-tsvector",
+          "prompt": "to_tsvector",
+          "match": "turns document text into normalized lexemes"
+        },
+        {
+          "id": "setweight",
+          "prompt": "setweight",
+          "match": "labels lexemes from fields such as title or body"
+        },
+        {
+          "id": "ts-rank-cd",
+          "prompt": "ts_rank_cd",
+          "match": "scores matches using cover density"
+        }
+      ],
+      "explanation": "These functions separate document preparation, field weighting, and relevance ranking."
+    },
+    {
+      "id": "ranking-caveat",
+      "kind": "choice",
+      "prompt": "What should a reviewer remember about ts_rank and ts_rank_cd values?",
+      "options": [
+        {
+          "id": "percentage",
+          "label": "They are universal percentages that can be compared across unrelated queries.",
+          "isCorrect": false
+        },
+        {
+          "id": "ordering-signal",
+          "label": "They are query-local ordering signals, not durable product quality scores.",
+          "isCorrect": true
+        },
+        {
+          "id": "index-free",
+          "label": "They remove the need for a GIN index.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "PostgreSQL ranking does not use global corpus statistics like a dedicated search engine, so treat rank as local ordering."
+    },
+    {
+      "id": "fts-index-review",
+      "kind": "ordering",
+      "prompt": "Order the review checklist for an FTS-backed search endpoint.",
+      "items": [
+        {
+          "id": "config",
+          "label": "Choose the text search configuration"
+        },
+        {
+          "id": "storage",
+          "label": "Decide whether to store or recompute the vector"
+        },
+        {
+          "id": "index",
+          "label": "Create a matching GIN index"
+        },
+        {
+          "id": "fallback",
+          "label": "Add fuzzy fallback if typos must work"
+        }
+      ],
+      "correctOrder": ["config", "storage", "index", "fallback"],
+      "explanation": "Good FTS design starts with language semantics, then storage and indexing, then product-specific fallback behavior."
+    }
+  ]
+}

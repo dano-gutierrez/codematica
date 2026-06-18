@@ -19,6 +19,7 @@ Conventions:
 - `docs/features/README.md` explains how threads should consume and maintain feature docs.
 - `docs/features/learning-paths-and-practice.md` owns the path-first home, local path JSON, local exercise JSON, and practice routes.
 - `docs/features/programming-language-refresh.md` owns reusable programming-language refresh paths, starting with Python for TypeScript and JavaScript engineers.
+- `docs/features/database-indexes-learning-path.md` owns the database indexes and PostgreSQL search path, including local lessons, quizzes, passive flashcards, and future SQL editor roadmap boundaries.
 - `docs/features/interview-coding-catalog.md` owns the reported-public company interview coding catalog and guided solution walkthroughs.
 - `docs/plans/<feature>/...` is the repo-local home for durable implementation plans when a plan needs to outlive one thread.
 
@@ -30,6 +31,8 @@ Content authoring surfaces:
 - `content/exercises/`: flashcard, cloze, and questionnaire practice JSON.
 - `content/flashcard-feeds/`: path-scoped passive flashcard feed JSON.
 - `content/interviews/`: company-scoped interview coding catalog JSON.
+
+Database index lesson content under `content/knowledge/databases/` must stay aligned with primary or official sources such as PostgreSQL documentation and Drizzle documentation. SQL query practice remains non-executable roadmap work until a future SQL editor feature adds a validated demo-data contract.
 
 Maintenance rules:
 

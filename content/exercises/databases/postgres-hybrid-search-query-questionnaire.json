@@ -1,0 +1,139 @@
+{
+  "slug": "databases/postgres-hybrid-search-query-questionnaire",
+  "title": "PostgreSQL Hybrid Search Query Questionnaire",
+  "type": "questionnaire",
+  "documentSlug": "databases/postgres-hybrid-search-query",
+  "concept": "Hybrid full text and trigram search query",
+  "difficulty": "senior",
+  "tags": ["postgres", "pg-trgm", "full-text-search", "query-analysis"],
+  "status": "published",
+  "questions": [
+    {
+      "id": "two-pass-purpose",
+      "kind": "choice",
+      "prompt": "Why does the hybrid query use both an FTS pass and a trigram pass?",
+      "options": [
+        {
+          "id": "same-work",
+          "label": "They do the same work, so one pass exists only for syntax variety.",
+          "isCorrect": false
+        },
+        {
+          "id": "lexeme-and-typo",
+          "label": "FTS handles exact lexeme matches while trigram search handles typo-tolerant candidates.",
+          "isCorrect": true
+        },
+        {
+          "id": "avoid-indexes",
+          "label": "The combination avoids needing any database indexes.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "The two passes produce complementary candidate sets: precise lexical matches and fuzzy typo matches."
+    },
+    {
+      "id": "union-choice",
+      "kind": "cloze",
+      "prompt": "Fill the SQL set operator used to keep source-specific candidate rows.",
+      "template": "The query uses {{blank}} so a row can appear from both FTS and trigram candidate passes before scoring.",
+      "acceptedAnswers": ["union all", "UNION ALL"],
+      "explanation": "UNION ALL avoids de-duplication work and lets the scored CTE decide how to collapse duplicate candidates."
+    },
+    {
+      "id": "candidate-flow",
+      "kind": "ordering",
+      "prompt": "Order the hybrid query stages.",
+      "items": [
+        {
+          "id": "parse",
+          "label": "Parse user input into query and qraw forms"
+        },
+        {
+          "id": "candidates",
+          "label": "Collect FTS and trigram candidates"
+        },
+        {
+          "id": "score",
+          "label": "Group by series_id and keep the best rank"
+        },
+        {
+          "id": "join",
+          "label": "Join back to rows and order with a tie-breaker"
+        }
+      ],
+      "correctOrder": ["parse", "candidates", "score", "join"],
+      "explanation": "The query keeps candidate generation narrow, collapses duplicates, then fetches full rows for the final result."
+    },
+    {
+      "id": "hybrid-parts",
+      "kind": "matching",
+      "prompt": "Match each query fragment to its role.",
+      "pairs": [
+        {
+          "id": "ts-rank-cd",
+          "prompt": "ts_rank_cd",
+          "match": "ranks dense full text matches"
+        },
+        {
+          "id": "similarity",
+          "prompt": "similarity(...) * 0.8",
+          "match": "scores fuzzy matches with a business weight"
+        },
+        {
+          "id": "max-rank",
+          "prompt": "max(rank)",
+          "match": "keeps the best candidate score per row"
+        }
+      ],
+      "explanation": "Each stage carries a distinct ranking decision: FTS relevance, fuzzy relevance, then duplicate collapse."
+    },
+    {
+      "id": "extension-placement",
+      "kind": "choice",
+      "prompt": "Where should CREATE EXTENSION IF NOT EXISTS pg_trgm usually live?",
+      "options": [
+        {
+          "id": "migration",
+          "label": "In migrations or database setup, not inside every search request.",
+          "isCorrect": true
+        },
+        {
+          "id": "each-query",
+          "label": "At the top of every SELECT so PostgreSQL can use the index.",
+          "isCorrect": false
+        },
+        {
+          "id": "browser",
+          "label": "In browser code before calling the API.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "Extensions create database objects and should be managed as schema setup, while request-specific tuning belongs in request transactions."
+    },
+    {
+      "id": "supporting-indexes",
+      "kind": "ordering",
+      "prompt": "Order the supporting search schema from least to most query-specific.",
+      "items": [
+        {
+          "id": "normalized",
+          "label": "Define normalized title search expressions or columns"
+        },
+        {
+          "id": "fts-index",
+          "label": "Add a GIN index for the tsvector search document"
+        },
+        {
+          "id": "trgm-index",
+          "label": "Add a GIN trigram index using gin_trgm_ops"
+        },
+        {
+          "id": "query-match",
+          "label": "Write the query using matching expressions"
+        }
+      ],
+      "correctOrder": ["normalized", "fts-index", "trgm-index", "query-match"],
+      "explanation": "The query can only benefit from indexes when the indexed expressions and query predicates agree."
+    }
+  ]
+}

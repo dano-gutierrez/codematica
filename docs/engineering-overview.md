@@ -1,6 +1,6 @@
 # Codematica Engineering Overview
 
-Last updated: 2026-06-01
+Last updated: 2026-06-18
 
 Codematica is a mobile-first learning app for system design, coding, programming, and software engineering. V1 keeps the product intentionally local-first: author documents as Markdown, author paths, exercises, flashcard feeds, and interview catalogs as JSON, generate a static study index, and render the app with Next.js.
 
@@ -64,6 +64,8 @@ Interview company catalogs live in `content/interviews/*.json`. Each company con
 
 The Python language refresh path is the first reusable language-refresh slice. It pairs searchable Markdown docs with senior-level questionnaires and passive flashcards for TypeScript and JavaScript engineers.
 
+The database indexes and search path teaches production index judgment, PostgreSQL full text search, trigram fuzzy matching, and hybrid SQL search query design. It pairs searchable Markdown lessons with senior-level questionnaires and passive flashcards, while keeping executable SQL query practice as future roadmap work.
+
 ## Route Model
 
 - `/`: path-first home map.
@@ -79,7 +81,7 @@ The Python language refresh path is the first reusable language-refresh slice. I
 
 ## Testing Model
 
-Unit tests cover schema validation, parser behavior, fuzzy search, snippets, questionnaire shuffling/checking, interview solution selection, path/exercise/interview validation, and diagram indexing. Integration tests cover generated index loading and renderer behavior. Playwright smoke and regression tests cover the mobile path, practice, browser, questionnaire, interview, flashcard, and diagram journeys.
+Unit tests cover schema validation, parser behavior, fuzzy search, snippets, questionnaire shuffling/checking, interview solution selection, path/exercise/interview validation, and diagram indexing. Integration tests cover generated index loading and renderer behavior, including the Python refresh path and database indexes path. Playwright smoke and regression tests cover the mobile path, practice, browser, questionnaire, interview, flashcard, and diagram journeys.
 
 ## Future Architecture Direction
 

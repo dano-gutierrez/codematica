@@ -58,6 +58,36 @@ describe("generated content index", () => {
     expect(feed?.cards.some((card) => card.code?.includes("def "))).toBe(true);
   });
 
+
+  it("loads the database indexes and search path", () => {
+    const path = getLearningPathBySlug("database-indexes-and-search");
+    const trigramDocument = getDocumentBySlug("databases/trigram-fuzzy-indexes");
+    const trigramQuiz = getExerciseBySlug("databases/trigram-fuzzy-indexes-questionnaire");
+    const feed = getPassiveFlashcardFeedByPathSlug("database-indexes-and-search");
+
+    expect(path?.title).toBe("Database Indexes And Search");
+    expect(path?.route).toBe("/paths/database-indexes-and-search");
+    expect(path?.units.flatMap((unit) => unit.nodes).map((node) => node.slug)).toEqual([
+      "databases/index-fundamentals",
+      "databases/index-fundamentals-questionnaire",
+      "databases/postgres-full-text-search",
+      "databases/postgres-full-text-search-questionnaire",
+      "databases/trigram-fuzzy-indexes",
+      "databases/trigram-fuzzy-indexes-questionnaire",
+      "databases/postgres-hybrid-search-query",
+      "databases/postgres-hybrid-search-query-questionnaire",
+    ]);
+    expect(trigramDocument?.track).toBe("Databases");
+    expect(trigramDocument?.tags).toEqual(expect.arrayContaining(["postgres", "pg-trgm", "fuzzy-search"]));
+    expect(trigramQuiz?.type).toBe("questionnaire");
+    expect(trigramQuiz?.route).toBe("/practice/databases/trigram-fuzzy-indexes-questionnaire");
+    expect(feed?.title).toBe("Database Indexes And Search Flashcard Feed");
+    expect(feed?.route).toBe("/paths/database-indexes-and-search/flashcards");
+    expect(feed?.cards).toHaveLength(32);
+    expect(feed?.cards.map((card) => card.type)).toEqual(expect.arrayContaining(["concept", "practical", "snippet", "interview"]));
+    expect(feed?.cards.some((card) => card.code?.includes("gin_trgm_ops"))).toBe(true);
+  });
+
   it("resolves diagram references from article frontmatter", () => {
     const document = getDocumentBySlug("system-design/cache-invalidation");
 
@@ -80,6 +110,13 @@ describe("generated content index", () => {
   it("resolves the next node route from a path-scoped document", () => {
     expect(getNextPathNodeRoute("python-for-ts-js-engineers", { kind: "document", slug: "programming/python-runtime-model" })).toBe(
       "/practice/programming/python-runtime-questionnaire?path=python-for-ts-js-engineers",
+    );
+  });
+
+
+  it("resolves the next node route through the database indexes path", () => {
+    expect(getNextPathNodeRoute("database-indexes-and-search", { kind: "document", slug: "databases/trigram-fuzzy-indexes" })).toBe(
+      "/practice/databases/trigram-fuzzy-indexes-questionnaire?path=database-indexes-and-search",
     );
   });
 

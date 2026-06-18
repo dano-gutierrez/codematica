@@ -1,0 +1,135 @@
+{
+  "slug": "databases/index-fundamentals-questionnaire",
+  "title": "Database Index Fundamentals Questionnaire",
+  "type": "questionnaire",
+  "documentSlug": "databases/index-fundamentals",
+  "concept": "Database index fundamentals",
+  "difficulty": "senior",
+  "tags": ["database-indexes", "query-planning", "performance", "postgres"],
+  "status": "published",
+  "questions": [
+    {
+      "id": "index-trade",
+      "kind": "choice",
+      "prompt": "What is the most accurate production review note for a new index?",
+      "options": [
+        {
+          "id": "always-free",
+          "label": "Indexes are read-only metadata, so they do not affect writes.",
+          "isCorrect": false
+        },
+        {
+          "id": "read-structure",
+          "label": "An index is a maintained read structure that must justify write and storage cost.",
+          "isCorrect": true
+        },
+        {
+          "id": "cache-result",
+          "label": "An index stores complete query results for every common filter.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "A useful index accelerates matching query shapes, but inserts, updates, deletes, storage, and maintenance now pay for it."
+    },
+    {
+      "id": "leftmost-prefix",
+      "kind": "cloze",
+      "prompt": "Fill the index design term for composite B-tree ordering.",
+      "template": "A composite B-tree is most useful when the query constrains the {{blank}} columns in index order.",
+      "acceptedAnswers": ["leftmost", "leftmost prefix", "leading"],
+      "explanation": "An index on account_id, created_at is strongest when account_id participates in the predicate before created_at ordering or range work."
+    },
+    {
+      "id": "index-review-order",
+      "kind": "ordering",
+      "prompt": "Order a safe index review flow.",
+      "items": [
+        {
+          "id": "query",
+          "label": "Name the exact query shape"
+        },
+        {
+          "id": "selectivity",
+          "label": "Estimate selectivity and returned rows"
+        },
+        {
+          "id": "write-cost",
+          "label": "Account for write and maintenance cost"
+        },
+        {
+          "id": "verify",
+          "label": "Verify with the real plan and workload"
+        }
+      ],
+      "correctOrder": ["query", "selectivity", "write-cost", "verify"],
+      "explanation": "Index work should start from a query, then validate whether the read benefit outweighs the operational cost."
+    },
+    {
+      "id": "access-method-match",
+      "kind": "matching",
+      "prompt": "Match each index family to its usual production use.",
+      "pairs": [
+        {
+          "id": "btree",
+          "prompt": "B-tree",
+          "match": "equality, ranges, ordering, and uniqueness"
+        },
+        {
+          "id": "gin",
+          "prompt": "GIN",
+          "match": "inverted lookup over component values"
+        },
+        {
+          "id": "brin",
+          "prompt": "BRIN",
+          "match": "block summaries for physically correlated data"
+        }
+      ],
+      "explanation": "The access method should match the shape of the value and the operator family used by the query."
+    },
+    {
+      "id": "partial-index",
+      "kind": "choice",
+      "prompt": "When is a partial index most likely to help?",
+      "options": [
+        {
+          "id": "hot-subset",
+          "label": "The hot query always includes a predicate that selects a small stable subset.",
+          "isCorrect": true
+        },
+        {
+          "id": "random-predicate",
+          "label": "The query predicate changes on every request and cannot imply the index predicate.",
+          "isCorrect": false
+        },
+        {
+          "id": "replace-partitions",
+          "label": "The team wants hundreds of partial indexes instead of partitioning.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "A partial index works when the query's WHERE condition implies the index predicate and the subset is meaningfully smaller."
+    },
+    {
+      "id": "unused-index-causes",
+      "kind": "ordering",
+      "prompt": "Order the debugging path when a new index is not being used.",
+      "items": [
+        {
+          "id": "predicate",
+          "label": "Check whether the query predicate matches the index expression or predicate"
+        },
+        {
+          "id": "cardinality",
+          "label": "Check whether the filter returns too much of the table"
+        },
+        {
+          "id": "stats",
+          "label": "Check statistics and real EXPLAIN ANALYZE output"
+        }
+      ],
+      "correctOrder": ["predicate", "cardinality", "stats"],
+      "explanation": "A mismatch in query shape is the first thing to rule out before blaming the planner."
+    }
+  ]
+}

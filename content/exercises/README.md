@@ -11,7 +11,8 @@ This folder contains manually authored practice prompts for Codematica learning 
 - Questionnaire question `kind` values are `choice`, `cloze`, `ordering`, and `matching`.
 - Choice questions require exactly one correct option, ordering questions require a `correctOrder` containing every item ID exactly once, and matching questions require unique pair IDs.
 - `documentSlug` must reference an existing Markdown document.
+- Database SQL query practice is future work. Until a dedicated SQL editor feature defines demo data, validation, and allowed SQL behavior, database path practice should use the existing questionnaire model.
 
-Exercise generation, AI feedback, scoring, persisted progress, and review queues are future work. Run `npm run content:check` before committing exercise changes.
+Exercise generation, executable SQL validation, AI feedback, scoring, persisted progress, and review queues are future work. Run `npm run content:check` before committing exercise changes.
 
 Passive scroll-only flashcards are authored separately in `content/flashcard-feeds/`; do not model them as interactive `type: "flashcard"` exercises.

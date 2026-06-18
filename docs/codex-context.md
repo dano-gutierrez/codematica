@@ -69,5 +69,6 @@ Supabase is scaffolded for future hosted indexing and search, but it is not requ
 - `docs/features/markdown-knowledge-browser.md`: V1 Markdown browser, search, diagrams, content indexing, and Supabase scaffold.
 - `docs/features/learning-paths-and-practice.md`: path-first study map, flashcards, cloze prompts, and local path/exercise content.
 - `docs/features/programming-language-refresh.md`: reusable language refresh paths and the Python-for-TS/JS module.
+- `docs/features/database-indexes-learning-path.md`: database indexes and PostgreSQL search path, including index fundamentals, full text search, trigram fuzzy matching, hybrid SQL search, quizzes, passive flashcards, and SQL editor roadmap boundaries.
 - `docs/features/interview-coding-catalog.md`: reported-public company coding catalog and guided multi-language solution walkthroughs.
 - `docs/features/future-roadmap.md`: planned AI, flashcard, blueprint, code challenge, auth, and native app directions.

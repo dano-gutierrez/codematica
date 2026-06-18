@@ -1,0 +1,338 @@
+{
+  "slug": "database-indexes-and-search",
+  "pathSlug": "database-indexes-and-search",
+  "title": "Database Indexes And Search Flashcard Feed",
+  "summary": "Passive database index and PostgreSQL search cards for short mobile review sessions.",
+  "audience": "Backend, full-stack, and platform engineers reviewing database indexing and search behavior.",
+  "status": "published",
+  "cards": [
+    {
+      "id": "indexes-are-read-models-concept",
+      "type": "concept",
+      "title": "Indexes Are Read Models",
+      "prompt": "A database index is a maintained read structure, not a free lookup spell.",
+      "explanation": "Every index trades faster matching query shapes for write overhead, storage, vacuum work, and migration cost. Review the workload that pays for it.",
+      "difficulty": "senior",
+      "tags": ["database-indexes", "performance", "review"],
+      "sourceDocSlug": "databases/index-fundamentals"
+    },
+    {
+      "id": "btree-leftmost-prefix-concept",
+      "type": "concept",
+      "title": "Leftmost Prefix",
+      "prompt": "Composite B-tree indexes are strongest when queries constrain leading columns in order.",
+      "explanation": "An index on account_id and created_at is designed around account first. A query that only filters created_at may not benefit much.",
+      "difficulty": "senior",
+      "tags": ["btree", "query-planning", "postgres"],
+      "sourceDocSlug": "databases/index-fundamentals"
+    },
+    {
+      "id": "gin-inverted-index-concept",
+      "type": "concept",
+      "title": "GIN Is Inverted",
+      "prompt": "GIN stores component keys such as lexemes, trigrams, or array elements.",
+      "explanation": "Instead of one scalar key per row, GIN maps extracted components to candidate rows. That makes it fit containment and text search shapes.",
+      "difficulty": "senior",
+      "tags": ["gin-index", "inverted-index", "postgres"],
+      "sourceDocSlug": "databases/index-fundamentals"
+    },
+    {
+      "id": "tsvector-tsquery-concept",
+      "type": "concept",
+      "title": "Document Meets Query",
+      "prompt": "PostgreSQL full text search matches tsquery against tsvector with @@.",
+      "explanation": "The document and query are both parsed into normalized search structures before matching; this is not raw substring search.",
+      "difficulty": "senior",
+      "tags": ["full-text-search", "postgres", "tsvector"],
+      "sourceDocSlug": "databases/postgres-full-text-search"
+    },
+    {
+      "id": "rank-is-local-concept",
+      "type": "concept",
+      "title": "Rank Is Local",
+      "prompt": "ts_rank and ts_rank_cd are ordering signals inside one query, not universal relevance percentages.",
+      "explanation": "Normalization can scale scores, but it does not make ranks comparable across unrelated queries or a durable product quality metric.",
+      "difficulty": "senior",
+      "tags": ["ranking", "full-text-search", "postgres"],
+      "sourceDocSlug": "databases/postgres-full-text-search"
+    },
+    {
+      "id": "trigrams-handle-typos-concept",
+      "type": "concept",
+      "title": "Trigrams Handle Typos",
+      "prompt": "pg_trgm compares overlapping three-character fragments to find similar strings.",
+      "explanation": "A misspelling can still share enough trigrams with the intended word for useful candidate generation.",
+      "difficulty": "senior",
+      "tags": ["pg-trgm", "fuzzy-search", "postgres"],
+      "sourceDocSlug": "databases/trigram-fuzzy-indexes"
+    },
+    {
+      "id": "threshold-is-product-tuning-concept",
+      "type": "concept",
+      "title": "Threshold Is Tuning",
+      "prompt": "pg_trgm.similarity_threshold decides which fuzzy candidates the % operator admits.",
+      "explanation": "Lower thresholds help typo-heavy short searches but increase candidate volume and irrelevant matches. Tune with real search examples.",
+      "difficulty": "senior",
+      "tags": ["pg-trgm", "threshold", "search-quality"],
+      "sourceDocSlug": "databases/trigram-fuzzy-indexes"
+    },
+    {
+      "id": "hybrid-search-candidates-concept",
+      "type": "concept",
+      "title": "Hybrid Candidate Sets",
+      "prompt": "Hybrid search often combines precise FTS candidates with fuzzy trigram candidates.",
+      "explanation": "FTS catches exact lexeme matches. Trigrams catch typos. The ranking layer decides how those signals compete.",
+      "difficulty": "senior",
+      "tags": ["hybrid-search", "full-text-search", "pg-trgm"],
+      "sourceDocSlug": "databases/postgres-hybrid-search-query"
+    },
+    {
+      "id": "index-review-practical",
+      "type": "practical",
+      "title": "Index Review",
+      "prompt": "Before adding an index, name the exact query shape it supports.",
+      "explanation": "If the index cannot be tied to a real predicate, sort, and result size, it is likely to become maintenance cost without clear benefit.",
+      "difficulty": "senior",
+      "tags": ["review", "query-planning", "performance"],
+      "sourceDocSlug": "databases/index-fundamentals"
+    },
+    {
+      "id": "partial-index-practical",
+      "type": "practical",
+      "title": "Partial Index Fit",
+      "prompt": "Use partial indexes for stable hot subsets, not as a substitute for partitioning.",
+      "explanation": "The query predicate must imply the index predicate. Many overlapping partial indexes can make planning and maintenance worse.",
+      "difficulty": "senior",
+      "tags": ["partial-index", "postgres", "review"],
+      "sourceDocSlug": "databases/index-fundamentals"
+    },
+    {
+      "id": "expression-match-practical",
+      "type": "practical",
+      "title": "Expression Must Match",
+      "prompt": "An expression index on lower(name) expects queries to use lower(name).",
+      "explanation": "Changing the query to raw name or unaccent(lower(name)) changes the indexed expression and may prevent index usage.",
+      "difficulty": "senior",
+      "tags": ["expression-index", "postgres", "query-planning"],
+      "sourceDocSlug": "databases/trigram-fuzzy-indexes"
+    },
+    {
+      "id": "fts-config-practical",
+      "type": "practical",
+      "title": "Choose Search Config",
+      "prompt": "Use simple or english text search configuration intentionally.",
+      "explanation": "English stemming helps prose. Simple configuration can be better for titles, names, tags, codes, and labels where literal matching matters.",
+      "difficulty": "senior",
+      "tags": ["full-text-search", "postgres", "configuration"],
+      "sourceDocSlug": "databases/postgres-full-text-search"
+    },
+    {
+      "id": "store-search-vector-practical",
+      "type": "practical",
+      "title": "Store The Vector",
+      "prompt": "Frequently searched documents usually deserve a stored tsvector or generated column.",
+      "explanation": "Recomputing to_tsvector in every query can be wasteful. Stored vectors make the query and matching GIN index easier to reason about.",
+      "difficulty": "senior",
+      "tags": ["tsvector", "gin-index", "postgres"],
+      "sourceDocSlug": "databases/postgres-full-text-search"
+    },
+    {
+      "id": "set-local-threshold-practical",
+      "type": "practical",
+      "title": "Use SET LOCAL",
+      "prompt": "Use SET LOCAL for request-specific trigram thresholds on pooled connections.",
+      "explanation": "A plain SET can leak a relaxed threshold into later requests on the same connection. SET LOCAL clears when the transaction ends.",
+      "difficulty": "senior",
+      "tags": ["pg-trgm", "connection-pooling", "postgres"],
+      "sourceDocSlug": "databases/trigram-fuzzy-indexes"
+    },
+    {
+      "id": "extension-placement-practical",
+      "type": "practical",
+      "title": "Extensions Are Setup",
+      "prompt": "CREATE EXTENSION belongs in migrations or database setup, not every search query.",
+      "explanation": "Extensions create database objects. Search requests should assume the schema exists and only tune request-local settings when needed.",
+      "difficulty": "senior",
+      "tags": ["postgres", "migrations", "extensions"],
+      "sourceDocSlug": "databases/postgres-hybrid-search-query"
+    },
+    {
+      "id": "stable-pagination-practical",
+      "type": "practical",
+      "title": "Tie-Break Search Results",
+      "prompt": "Add a deterministic tie-breaker after rank, such as id.",
+      "explanation": "Stable ordering matters for repeatable tests and pagination. Rank alone can leave equal-score rows in unstable order.",
+      "difficulty": "senior",
+      "tags": ["pagination", "ranking", "postgres"],
+      "sourceDocSlug": "databases/postgres-hybrid-search-query"
+    },
+    {
+      "id": "btree-compound-snippet",
+      "type": "snippet",
+      "title": "Compound B-Tree Snippet",
+      "prompt": "Read the index order as account first, recent orders second.",
+      "explanation": "The query must use account_id for this index to be highly selective before created_at ordering matters.",
+      "difficulty": "senior",
+      "tags": ["btree", "sql", "query-planning"],
+      "sourceDocSlug": "databases/index-fundamentals",
+      "code": "create index orders_account_created_idx\n  on orders (account_id, created_at desc);"
+    },
+    {
+      "id": "partial-index-snippet",
+      "type": "snippet",
+      "title": "Partial Index Snippet",
+      "prompt": "Read the predicate as part of the index contract.",
+      "explanation": "Only unfulfilled orders are indexed. Queries must include or imply fulfilled_at is null to use this index.",
+      "difficulty": "senior",
+      "tags": ["partial-index", "sql", "postgres"],
+      "sourceDocSlug": "databases/index-fundamentals",
+      "code": "create index orders_unfulfilled_recent_idx\n  on orders (created_at desc)\n  where fulfilled_at is null;"
+    },
+    {
+      "id": "fts-vector-snippet",
+      "type": "snippet",
+      "title": "Weighted Vector Snippet",
+      "prompt": "Read title as A weight and body as C weight.",
+      "explanation": "setweight lets title matches outrank body-only matches when ranking consults the weighted vector.",
+      "difficulty": "senior",
+      "tags": ["full-text-search", "tsvector", "sql"],
+      "sourceDocSlug": "databases/postgres-full-text-search",
+      "code": "setweight(to_tsvector('english', coalesce(title, '')), 'A') ||\nsetweight(to_tsvector('english', coalesce(body, '')), 'C')"
+    },
+    {
+      "id": "fts-gin-snippet",
+      "type": "snippet",
+      "title": "FTS GIN Snippet",
+      "prompt": "Read this as a GIN index over a stored search document.",
+      "explanation": "The search query should use the same search_document column with @@ so the index can filter candidates.",
+      "difficulty": "senior",
+      "tags": ["gin-index", "full-text-search", "sql"],
+      "sourceDocSlug": "databases/postgres-full-text-search",
+      "code": "create index articles_search_document_idx\n  on articles\n  using gin (search_document);"
+    },
+    {
+      "id": "drizzle-trigram-snippet",
+      "type": "snippet",
+      "title": "Drizzle Trigram Snippet",
+      "prompt": "Read this as a GIN trigram expression index over lower(name).",
+      "explanation": "gin_trgm_ops tells PostgreSQL to extract trigram keys from the lower(name) expression for fuzzy matching.",
+      "difficulty": "senior",
+      "tags": ["drizzle", "pg-trgm", "gin-index"],
+      "sourceDocSlug": "databases/trigram-fuzzy-indexes",
+      "code": "index('tag_localization_name_trgm_idx').using(\n  'gin',\n  sql`(lower(${table.name}) gin_trgm_ops)`,\n)"
+    },
+    {
+      "id": "trigram-query-snippet",
+      "type": "snippet",
+      "title": "Trigram Query Snippet",
+      "prompt": "Read % as candidate admission and similarity as ranking.",
+      "explanation": "The WHERE clause can use the trigram index, while ORDER BY ranks the filtered candidate set.",
+      "difficulty": "senior",
+      "tags": ["pg-trgm", "fuzzy-search", "sql"],
+      "sourceDocSlug": "databases/trigram-fuzzy-indexes",
+      "code": "where lower(title) % lower($1)\norder by similarity(lower(title), lower($1)) desc"
+    },
+    {
+      "id": "hybrid-candidates-snippet",
+      "type": "snippet",
+      "title": "Hybrid Candidates Snippet",
+      "prompt": "Read UNION ALL as keeping both FTS and trigram evidence.",
+      "explanation": "Rows can come from both passes. A later grouped score can keep the best signal or add a combined-match bonus.",
+      "difficulty": "senior",
+      "tags": ["hybrid-search", "sql", "ranking"],
+      "sourceDocSlug": "databases/postgres-hybrid-search-query",
+      "code": "select id, fts_rank as rank from fts_candidates\nunion all\nselect id, trigram_rank as rank from trigram_candidates"
+    },
+    {
+      "id": "set-local-snippet",
+      "type": "snippet",
+      "title": "SET LOCAL Snippet",
+      "prompt": "Read this as request-scoped threshold tuning.",
+      "explanation": "The threshold applies within the transaction and clears when the transaction ends.",
+      "difficulty": "senior",
+      "tags": ["pg-trgm", "postgres", "sql"],
+      "sourceDocSlug": "databases/postgres-hybrid-search-query",
+      "code": "begin;\nset local pg_trgm.similarity_threshold = 0.11;\nselect ...;\ncommit;"
+    },
+    {
+      "id": "index-cost-interview",
+      "type": "interview",
+      "title": "Index Cost Interview",
+      "prompt": "A teammate says every frequently filtered column should get an index. How do you respond?",
+      "explanation": "A strong answer discusses exact query shape, selectivity, returned rows, write amplification, storage, migration risk, and plan verification.",
+      "difficulty": "senior",
+      "tags": ["interview", "database-indexes", "review"],
+      "sourceDocSlug": "databases/index-fundamentals"
+    },
+    {
+      "id": "partial-index-interview",
+      "type": "interview",
+      "title": "Partial Index Interview",
+      "prompt": "When would you use a partial index instead of a normal index?",
+      "explanation": "Use it when a stable predicate selects a small hot subset and the target queries include or imply that predicate.",
+      "difficulty": "senior",
+      "tags": ["interview", "partial-index", "postgres"],
+      "sourceDocSlug": "databases/index-fundamentals"
+    },
+    {
+      "id": "fts-versus-like-interview",
+      "type": "interview",
+      "title": "FTS Versus LIKE Interview",
+      "prompt": "Why is full text search different from lower(body) like '%term%'?",
+      "explanation": "FTS parses documents into lexemes and queries into tsquery values. LIKE is character pattern matching and has different index behavior.",
+      "difficulty": "senior",
+      "tags": ["interview", "full-text-search", "postgres"],
+      "sourceDocSlug": "databases/postgres-full-text-search"
+    },
+    {
+      "id": "rank-caveat-interview",
+      "type": "interview",
+      "title": "Rank Caveat Interview",
+      "prompt": "Why should a product not display ts_rank_cd as a percent match?",
+      "explanation": "The score is a query-local ranking signal and does not use global corpus statistics. It is useful for ordering, not universal quality.",
+      "difficulty": "senior",
+      "tags": ["interview", "ranking", "postgres"],
+      "sourceDocSlug": "databases/postgres-full-text-search"
+    },
+    {
+      "id": "trigram-index-interview",
+      "type": "interview",
+      "title": "Trigram Index Interview",
+      "prompt": "Explain what lower(name) gin_trgm_ops means in a PostgreSQL index.",
+      "explanation": "It is a trigram operator-class index over the lower(name) expression. Compatible queries must use the same normalized expression.",
+      "difficulty": "senior",
+      "tags": ["interview", "pg-trgm", "gin-index"],
+      "sourceDocSlug": "databases/trigram-fuzzy-indexes"
+    },
+    {
+      "id": "threshold-tuning-interview",
+      "type": "interview",
+      "title": "Threshold Tuning Interview",
+      "prompt": "What can go wrong when pg_trgm.similarity_threshold is lowered too far?",
+      "explanation": "More weak matches enter the candidate set, increasing ranking work, latency, and irrelevant results unless other filters and ranking signals control it.",
+      "difficulty": "senior",
+      "tags": ["interview", "pg-trgm", "search-quality"],
+      "sourceDocSlug": "databases/trigram-fuzzy-indexes"
+    },
+    {
+      "id": "hybrid-ranking-interview",
+      "type": "interview",
+      "title": "Hybrid Ranking Interview",
+      "prompt": "Why might a hybrid query multiply trigram similarity by 0.8?",
+      "explanation": "It is a business weighting choice that lets exact FTS matches usually outrank fuzzy typo matches with similar raw scores.",
+      "difficulty": "senior",
+      "tags": ["interview", "hybrid-search", "ranking"],
+      "sourceDocSlug": "databases/postgres-hybrid-search-query"
+    },
+    {
+      "id": "extension-placement-interview",
+      "type": "interview",
+      "title": "Extension Placement Interview",
+      "prompt": "Why should CREATE EXTENSION not live in a normal search query?",
+      "explanation": "Extensions are schema setup. Runtime search should rely on migrated database capabilities and keep request-specific settings transaction-local.",
+      "difficulty": "senior",
+      "tags": ["interview", "postgres", "migrations"],
+      "sourceDocSlug": "databases/postgres-hybrid-search-query"
+    }
+  ]
+}

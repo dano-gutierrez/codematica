@@ -1,0 +1,47 @@
+{
+  "slug": "database-indexes-and-search",
+  "title": "Database Indexes And Search",
+  "summary": "Learn how database indexes, PostgreSQL full text search, trigram fuzzy matching, and hybrid search queries behave under production constraints.",
+  "kind": "skill",
+  "category": "Databases",
+  "audience": "Backend, full-stack, and platform engineers who need practical judgment for database indexes and search queries.",
+  "status": "published",
+  "units": [
+    {
+      "slug": "index-fundamentals",
+      "title": "Index Fundamentals",
+      "summary": "Build the mental model for B-tree, GIN, GiST, BRIN, expression, partial, and covering indexes.",
+      "nodes": [
+        { "kind": "document", "slug": "databases/index-fundamentals" },
+        { "kind": "exercise", "slug": "databases/index-fundamentals-questionnaire" }
+      ]
+    },
+    {
+      "slug": "postgres-full-text-search",
+      "title": "PostgreSQL Full Text Search",
+      "summary": "Understand tsvector, tsquery, websearch input, weighted vectors, GIN indexes, and ranking behavior.",
+      "nodes": [
+        { "kind": "document", "slug": "databases/postgres-full-text-search" },
+        { "kind": "exercise", "slug": "databases/postgres-full-text-search-questionnaire" }
+      ]
+    },
+    {
+      "slug": "trigram-fuzzy-indexes",
+      "title": "Trigram Fuzzy Indexes",
+      "summary": "Use pg_trgm, similarity thresholds, gin_trgm_ops, and expression indexes for typo-tolerant text search.",
+      "nodes": [
+        { "kind": "document", "slug": "databases/trigram-fuzzy-indexes" },
+        { "kind": "exercise", "slug": "databases/trigram-fuzzy-indexes-questionnaire" }
+      ]
+    },
+    {
+      "slug": "hybrid-search-query",
+      "title": "Hybrid Search Query",
+      "summary": "Walk through a production-style query that combines full text search and trigram candidates.",
+      "nodes": [
+        { "kind": "document", "slug": "databases/postgres-hybrid-search-query" },
+        { "kind": "exercise", "slug": "databases/postgres-hybrid-search-query-questionnaire" }
+      ]
+    }
+  ]
+}

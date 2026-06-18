@@ -27,11 +27,12 @@ Codematica should grow from a path-first engineering study system into a deeper 
 ## Planned Feature Areas
 
 - AI summaries, article Q&A, and study prompts.
-- More practice depth beyond the shipped flashcard, cloze, choice, ordering, and matching MVP: scenario drills, adaptive review queues, and code challenges.
+- More practice depth beyond the shipped flashcard, cloze, choice, ordering, and matching MVP: scenario drills, adaptive review queues, code challenges, and SQL query practice.
 - System design blueprints with visual structure, likely React Flow for editing and Mermaid import/export.
 - Mermaid authoring and diagram creation mode inside the app.
 - Code snaps for multiple languages.
 - Editable JS/TS coding challenges with compilation or execution sandboxing.
+- SQL query practice with an in-app editor backed by deterministic demo data, read-only validation, expected result checks, and a dedicated feature contract before any executable SQL schema or UI is added.
 - Real-time score feedback in a gaming style.
 - Auth, profiles, saved progress, gated levels, streaks, achievements, leaderboards, and optional paywall boundaries.
 - Native client migration path once web contracts stabilize.
