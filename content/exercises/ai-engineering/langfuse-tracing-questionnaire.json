@@ -1,0 +1,91 @@
+{
+  "slug": "ai-engineering/langfuse-tracing-questionnaire",
+  "title": "Langfuse Tracing Questionnaire",
+  "type": "questionnaire",
+  "documentSlug": "ai-engineering/langfuse-tracing-fundamentals",
+  "concept": "Langfuse tracing",
+  "difficulty": "practitioner",
+  "tags": ["langfuse", "tracing", "observability", "opentelemetry"],
+  "status": "published",
+  "questions": [
+    {
+      "id": "trace-meaning",
+      "kind": "choice",
+      "prompt": "Which statement best describes a trace in an LLM application?",
+      "options": [
+        {
+          "id": "timeline",
+          "label": "A trace groups one user or system interaction into a debuggable timeline.",
+          "isCorrect": true
+        },
+        {
+          "id": "dashboard",
+          "label": "A trace is only a dashboard for aggregate model spend.",
+          "isCorrect": false
+        },
+        {
+          "id": "prompt-only",
+          "label": "A trace stores only the final prompt text and nothing else.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "A trace explains a request or task across prompt assembly, retrieval, tools, model calls, status, and output."
+    },
+    {
+      "id": "observation-cloze",
+      "kind": "cloze",
+      "prompt": "Fill the gap with the common operation unit inside a trace.",
+      "template": "A retrieval call, tool call, or output check is usually represented as a {{blank}} inside the trace.",
+      "acceptedAnswers": ["span", "observation"],
+      "explanation": "Langfuse observations include spans and generations. They make individual operations visible within the trace."
+    },
+    {
+      "id": "trace-order",
+      "kind": "ordering",
+      "prompt": "Order a healthy traced support answer request.",
+      "items": [
+        {
+          "id": "start",
+          "label": "Start trace with safe request metadata"
+        },
+        {
+          "id": "retrieve",
+          "label": "Record retrieval source ids"
+        },
+        {
+          "id": "generate",
+          "label": "Record model generation usage and latency"
+        },
+        {
+          "id": "finish",
+          "label": "End trace with output status"
+        }
+      ],
+      "correctOrder": ["start", "retrieve", "generate", "finish"],
+      "explanation": "The trace should follow the user request from boundary metadata through retrieval, model generation, and final status."
+    },
+    {
+      "id": "trace-parts-match",
+      "kind": "matching",
+      "prompt": "Match the Langfuse trace concept to its role.",
+      "pairs": [
+        {
+          "id": "trace",
+          "prompt": "Trace",
+          "match": "full request or task timeline"
+        },
+        {
+          "id": "generation",
+          "prompt": "Generation",
+          "match": "model call with prompt, response, usage, and model metadata"
+        },
+        {
+          "id": "session",
+          "prompt": "Session",
+          "match": "multi-turn user journey across traces"
+        }
+      ],
+      "explanation": "Trace, generation, and session are different levels of the LLM observability model."
+    }
+  ]
+}

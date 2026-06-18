@@ -1,0 +1,91 @@
+{
+  "slug": "ai-engineering/langchain-agents-langgraph-questionnaire",
+  "title": "LangChain Agents LangGraph Questionnaire",
+  "type": "questionnaire",
+  "documentSlug": "ai-engineering/langchain-agents-langgraph-operations",
+  "concept": "Agent operations",
+  "difficulty": "senior",
+  "tags": ["langchain", "langgraph", "agents", "operations"],
+  "status": "published",
+  "questions": [
+    {
+      "id": "workflow-or-agent",
+      "kind": "choice",
+      "prompt": "When is a deterministic workflow usually better than an agent?",
+      "options": [
+        {
+          "id": "known",
+          "label": "When the product steps are known and do not need model-selected branching.",
+          "isCorrect": true
+        },
+        {
+          "id": "never",
+          "label": "Never; agents are always safer than workflows.",
+          "isCorrect": false
+        },
+        {
+          "id": "more-tools",
+          "label": "When the team wants to expose as many tools as possible.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "Known steps should usually stay explicit. Agents are for genuine dynamic choice."
+    },
+    {
+      "id": "approval-cloze",
+      "kind": "cloze",
+      "prompt": "Fill the gap with the control needed before write-capable agent actions.",
+      "template": "High-impact tool calls should pass through a human {{blank}} gate.",
+      "acceptedAnswers": ["approval", "human approval"],
+      "explanation": "Human approval is appropriate for money movement, external commitments, sensitive access, and destructive actions."
+    },
+    {
+      "id": "agent-safe-order",
+      "kind": "ordering",
+      "prompt": "Order a safe agent tool action.",
+      "items": [
+        {
+          "id": "classify",
+          "label": "Classify intent and risk"
+        },
+        {
+          "id": "validate",
+          "label": "Validate tool arguments"
+        },
+        {
+          "id": "approve",
+          "label": "Require approval if needed"
+        },
+        {
+          "id": "trace",
+          "label": "Trace action and result"
+        }
+      ],
+      "correctOrder": ["classify", "validate", "approve", "trace"],
+      "explanation": "The application owns classification, validation, approval, and tracing around model-proposed actions."
+    },
+    {
+      "id": "graph-match",
+      "kind": "matching",
+      "prompt": "Match the operations concept to its role.",
+      "pairs": [
+        {
+          "id": "checkpoint",
+          "prompt": "Checkpoint",
+          "match": "persisted graph state for resume or recovery"
+        },
+        {
+          "id": "interrupt",
+          "prompt": "Interrupt",
+          "match": "pause for human input or approval"
+        },
+        {
+          "id": "least-privilege",
+          "prompt": "Least privilege",
+          "match": "limit each tool to the authority it needs"
+        }
+      ],
+      "explanation": "Durable agent systems need operational controls, not just prompts."
+    }
+  ]
+}

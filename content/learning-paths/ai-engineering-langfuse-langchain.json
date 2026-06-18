@@ -1,0 +1,77 @@
+{
+  "slug": "ai-engineering-langfuse-langchain",
+  "title": "Langfuse And LangChain AI Engineering",
+  "summary": "Learn how production LLM applications are built, traced, evaluated, and governed with LangChain, LangGraph, Langfuse, and trusted AI risk practices.",
+  "kind": "skill",
+  "category": "AI Engineering",
+  "audience": "Engineers moving from LLM prototypes toward production-ready AI applications, from beginner foundations through principal review standards.",
+  "status": "published",
+  "units": [
+    {
+      "slug": "llm-application-foundations",
+      "title": "LLM Application Foundations",
+      "summary": "Map the moving pieces of an LLM application: prompts, retrieval, tools, traces, evaluations, cost, and safety.",
+      "nodes": [
+        { "kind": "document", "slug": "ai-engineering/llm-application-map" },
+        { "kind": "diagram", "slug": "ai-engineering/llm-observability-loop" },
+        { "kind": "exercise", "slug": "ai-engineering/llm-application-map-questionnaire" }
+      ]
+    },
+    {
+      "slug": "langchain-building-blocks",
+      "title": "LangChain Building Blocks",
+      "summary": "Practice the mental model for LangChain model calls, structured output, tool contracts, and RAG flows.",
+      "nodes": [
+        { "kind": "document", "slug": "ai-engineering/langchain-models-tools-rag" },
+        { "kind": "exercise", "slug": "ai-engineering/langchain-models-tools-rag-questionnaire" }
+      ]
+    },
+    {
+      "slug": "langfuse-tracing",
+      "title": "Langfuse Tracing",
+      "summary": "Learn how to structure traces, observations, sessions, metadata, token usage, and debugging workflows.",
+      "nodes": [
+        { "kind": "document", "slug": "ai-engineering/langfuse-tracing-fundamentals" },
+        { "kind": "diagram", "slug": "ai-engineering/langfuse-trace-lifecycle" },
+        { "kind": "exercise", "slug": "ai-engineering/langfuse-tracing-questionnaire" }
+      ]
+    },
+    {
+      "slug": "prompts-datasets-evals",
+      "title": "Prompts Datasets And Evals",
+      "summary": "Use Langfuse prompt versions, datasets, experiments, and scores to make LLM iteration measurable.",
+      "nodes": [
+        { "kind": "document", "slug": "ai-engineering/langfuse-prompts-datasets-evals" },
+        { "kind": "exercise", "slug": "ai-engineering/langfuse-prompts-datasets-evals-questionnaire" }
+      ]
+    },
+    {
+      "slug": "rag-quality",
+      "title": "RAG Quality",
+      "summary": "Diagnose retrieval quality, grounding, citation failures, and evaluation datasets for RAG systems.",
+      "nodes": [
+        { "kind": "document", "slug": "ai-engineering/rag-quality-with-langchain-langfuse" },
+        { "kind": "exercise", "slug": "ai-engineering/rag-quality-questionnaire" }
+      ]
+    },
+    {
+      "slug": "agents-operations",
+      "title": "Agents And Operations",
+      "summary": "Review LangChain agents, LangGraph durability, human approval, tool authority, and production operations.",
+      "nodes": [
+        { "kind": "document", "slug": "ai-engineering/langchain-agents-langgraph-operations" },
+        { "kind": "diagram", "slug": "ai-engineering/agent-tool-safety-flow" },
+        { "kind": "exercise", "slug": "ai-engineering/langchain-agents-langgraph-questionnaire" }
+      ]
+    },
+    {
+      "slug": "risk-governance",
+      "title": "Risk And Governance",
+      "summary": "Connect OWASP and NIST risk guidance to practical LLM application safeguards and incident response.",
+      "nodes": [
+        { "kind": "document", "slug": "ai-engineering/llm-production-risk-governance" },
+        { "kind": "exercise", "slug": "ai-engineering/llm-production-risk-governance-questionnaire" }
+      ]
+    }
+  ]
+}

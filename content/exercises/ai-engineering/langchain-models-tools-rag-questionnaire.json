@@ -1,0 +1,91 @@
+{
+  "slug": "ai-engineering/langchain-models-tools-rag-questionnaire",
+  "title": "LangChain Models Tools And RAG Questionnaire",
+  "type": "questionnaire",
+  "documentSlug": "ai-engineering/langchain-models-tools-rag",
+  "concept": "LangChain building blocks",
+  "difficulty": "practitioner",
+  "tags": ["langchain", "rag", "tools", "structured-output"],
+  "status": "published",
+  "questions": [
+    {
+      "id": "smallest-flow",
+      "kind": "choice",
+      "prompt": "When should an engineer start with a simple chain instead of a dynamic agent?",
+      "options": [
+        {
+          "id": "known-steps",
+          "label": "When the product steps are known and can be implemented deterministically.",
+          "isCorrect": true
+        },
+        {
+          "id": "always-agent",
+          "label": "Never; all LangChain applications should start as agents.",
+          "isCorrect": false
+        },
+        {
+          "id": "hide-logic",
+          "label": "When the team wants to hide product logic inside the prompt.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "Use the simplest flow that solves the job. Agents add flexibility and operational complexity."
+    },
+    {
+      "id": "tool-schema-cloze",
+      "kind": "cloze",
+      "prompt": "Fill the gap with the contract every useful tool needs.",
+      "template": "A production tool needs a narrow name, description, and input {{blank}}.",
+      "acceptedAnswers": ["schema", "input schema"],
+      "explanation": "The schema lets the application validate model-proposed tool arguments before execution."
+    },
+    {
+      "id": "rag-order",
+      "kind": "ordering",
+      "prompt": "Order a simple RAG flow.",
+      "items": [
+        {
+          "id": "question",
+          "label": "Receive user question"
+        },
+        {
+          "id": "retrieve",
+          "label": "Retrieve trusted passages"
+        },
+        {
+          "id": "prompt",
+          "label": "Build prompt with source context"
+        },
+        {
+          "id": "answer",
+          "label": "Generate answer or fallback"
+        }
+      ],
+      "correctOrder": ["question", "retrieve", "prompt", "answer"],
+      "explanation": "RAG depends on retrieving trusted context before asking the model to answer from it."
+    },
+    {
+      "id": "langchain-match",
+      "kind": "matching",
+      "prompt": "Match the LangChain concept to the engineering review lens.",
+      "pairs": [
+        {
+          "id": "structured",
+          "prompt": "Structured output",
+          "match": "validated data shape for downstream code"
+        },
+        {
+          "id": "tool",
+          "prompt": "Tool",
+          "match": "callable function exposed to the model loop"
+        },
+        {
+          "id": "agent",
+          "prompt": "Agent",
+          "match": "model-guided loop that can choose steps"
+        }
+      ],
+      "explanation": "Structured output, tools, and agents solve different parts of the application workflow."
+    }
+  ]
+}

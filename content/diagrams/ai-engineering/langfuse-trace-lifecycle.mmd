@@ -1,0 +1,22 @@
+sequenceDiagram
+  participant User
+  participant App
+  participant Retriever
+  participant Tool
+  participant Model
+  participant Langfuse
+
+  User->>App: Ask a product question
+  App->>Langfuse: Start trace with user/session metadata
+  App->>Langfuse: Add prompt assembly span
+  App->>Retriever: Search trusted content
+  Retriever-->>App: Candidate passages
+  App->>Langfuse: Add retrieval span with source ids
+  App->>Tool: Optional deterministic action
+  Tool-->>App: Tool result or error
+  App->>Langfuse: Add tool observation
+  App->>Model: Generate grounded answer
+  Model-->>App: Answer, token usage, latency
+  App->>Langfuse: Add generation observation
+  App-->>User: Answer with citations or fallback
+  App->>Langfuse: End trace with output and status

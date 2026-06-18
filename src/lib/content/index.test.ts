@@ -58,6 +58,43 @@ describe("generated content index", () => {
     expect(feed?.cards.some((card) => card.code?.includes("def "))).toBe(true);
   });
 
+  it("loads the Langfuse and LangChain AI engineering path", () => {
+    const path = getLearningPathBySlug("ai-engineering-langfuse-langchain");
+    const tracingDocument = getDocumentBySlug("ai-engineering/langfuse-tracing-fundamentals");
+    const tracingQuiz = getExerciseBySlug("ai-engineering/langfuse-tracing-questionnaire");
+    const feed = getPassiveFlashcardFeedByPathSlug("ai-engineering-langfuse-langchain");
+
+    expect(path?.title).toBe("Langfuse And LangChain AI Engineering");
+    expect(path?.route).toBe("/paths/ai-engineering-langfuse-langchain");
+    expect(path?.units.flatMap((unit) => unit.nodes).map((node) => node.slug)).toEqual([
+      "ai-engineering/llm-application-map",
+      "ai-engineering/llm-observability-loop",
+      "ai-engineering/llm-application-map-questionnaire",
+      "ai-engineering/langchain-models-tools-rag",
+      "ai-engineering/langchain-models-tools-rag-questionnaire",
+      "ai-engineering/langfuse-tracing-fundamentals",
+      "ai-engineering/langfuse-trace-lifecycle",
+      "ai-engineering/langfuse-tracing-questionnaire",
+      "ai-engineering/langfuse-prompts-datasets-evals",
+      "ai-engineering/langfuse-prompts-datasets-evals-questionnaire",
+      "ai-engineering/rag-quality-with-langchain-langfuse",
+      "ai-engineering/rag-quality-questionnaire",
+      "ai-engineering/langchain-agents-langgraph-operations",
+      "ai-engineering/agent-tool-safety-flow",
+      "ai-engineering/langchain-agents-langgraph-questionnaire",
+      "ai-engineering/llm-production-risk-governance",
+      "ai-engineering/llm-production-risk-governance-questionnaire",
+    ]);
+    expect(tracingDocument?.track).toBe("AI Engineering");
+    expect(tracingDocument?.diagramRefs).toEqual(["ai-engineering/langfuse-trace-lifecycle"]);
+    expect(tracingQuiz?.type).toBe("questionnaire");
+    expect(tracingQuiz?.route).toBe("/practice/ai-engineering/langfuse-tracing-questionnaire");
+    expect(feed?.title).toBe("Langfuse And LangChain Flashcard Feed");
+    expect(feed?.route).toBe("/paths/ai-engineering-langfuse-langchain/flashcards");
+    expect(feed?.cards).toHaveLength(84);
+    expect(feed?.cards.map((card) => card.type)).toEqual(expect.arrayContaining(["concept", "practical", "snippet", "interview"]));
+    expect(feed?.cards.some((card) => card.code?.includes("trace_id"))).toBe(true);
+  });
 
   it("loads the database indexes and search path", () => {
     const path = getLearningPathBySlug("database-indexes-and-search");
@@ -113,6 +150,11 @@ describe("generated content index", () => {
     );
   });
 
+  it("resolves the next node route through the AI engineering path", () => {
+    expect(getNextPathNodeRoute("ai-engineering-langfuse-langchain", { kind: "document", slug: "ai-engineering/langfuse-tracing-fundamentals" })).toBe(
+      "/diagrams/ai-engineering/langfuse-trace-lifecycle?path=ai-engineering-langfuse-langchain",
+    );
+  });
 
   it("resolves the next node route through the database indexes path", () => {
     expect(getNextPathNodeRoute("database-indexes-and-search", { kind: "document", slug: "databases/trigram-fuzzy-indexes" })).toBe(

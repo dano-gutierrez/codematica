@@ -1,0 +1,91 @@
+{
+  "slug": "ai-engineering/llm-application-map-questionnaire",
+  "title": "LLM Application Map Questionnaire",
+  "type": "questionnaire",
+  "documentSlug": "ai-engineering/llm-application-map",
+  "concept": "LLM application architecture",
+  "difficulty": "foundation",
+  "tags": ["llm", "ai-engineering", "observability", "langfuse"],
+  "status": "published",
+  "questions": [
+    {
+      "id": "model-is-dependency",
+      "kind": "choice",
+      "prompt": "What is the safest beginner mental model for an LLM inside an application?",
+      "options": [
+        {
+          "id": "magic",
+          "label": "The model is magic, so normal engineering boundaries do not apply.",
+          "isCorrect": false
+        },
+        {
+          "id": "dependency",
+          "label": "The model is a probabilistic dependency surrounded by product and engineering controls.",
+          "isCorrect": true
+        },
+        {
+          "id": "database",
+          "label": "The model is a database that always returns authoritative facts.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "LLM applications still need validation, observability, tests, fallbacks, and product ownership."
+    },
+    {
+      "id": "feedback-loop-cloze",
+      "kind": "cloze",
+      "prompt": "Fill the gap with the system that explains what happened during one LLM request.",
+      "template": "Use a {{blank}} to debug prompt, retrieval, tool, model, cost, and output behavior.",
+      "acceptedAnswers": ["trace", "Langfuse trace"],
+      "explanation": "A trace records the timeline of one request or task so the team can debug and improve it."
+    },
+    {
+      "id": "llm-loop-order",
+      "kind": "ordering",
+      "prompt": "Order the basic LLM product improvement loop.",
+      "items": [
+        {
+          "id": "define",
+          "label": "Define the user job"
+        },
+        {
+          "id": "run",
+          "label": "Run the prompt, retrieval, tools, or model"
+        },
+        {
+          "id": "trace",
+          "label": "Record what happened"
+        },
+        {
+          "id": "evaluate",
+          "label": "Evaluate and improve the behavior"
+        }
+      ],
+      "correctOrder": ["define", "run", "trace", "evaluate"],
+      "explanation": "Good LLM engineering creates a loop from user intent to measured improvement."
+    },
+    {
+      "id": "piece-match",
+      "kind": "matching",
+      "prompt": "Match each LLM application piece to its role.",
+      "pairs": [
+        {
+          "id": "retrieval",
+          "prompt": "Retrieval",
+          "match": "adds trusted context before generation"
+        },
+        {
+          "id": "tool",
+          "prompt": "Tool",
+          "match": "performs a deterministic application action"
+        },
+        {
+          "id": "dataset",
+          "prompt": "Dataset",
+          "match": "stores examples used to test behavior"
+        }
+      ],
+      "explanation": "The pieces work together: retrieval supplies context, tools act, and datasets support evaluation."
+    }
+  ]
+}

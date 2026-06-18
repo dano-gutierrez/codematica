@@ -1,0 +1,91 @@
+{
+  "slug": "ai-engineering/langfuse-prompts-datasets-evals-questionnaire",
+  "title": "Langfuse Prompts Datasets And Evals Questionnaire",
+  "type": "questionnaire",
+  "documentSlug": "ai-engineering/langfuse-prompts-datasets-evals",
+  "concept": "Prompt evaluation loop",
+  "difficulty": "senior",
+  "tags": ["langfuse", "prompts", "datasets", "evaluation"],
+  "status": "published",
+  "questions": [
+    {
+      "id": "prompt-change",
+      "kind": "choice",
+      "prompt": "Why should prompt changes be treated like product changes?",
+      "options": [
+        {
+          "id": "behavior",
+          "label": "They can change tone, policy behavior, latency, cost, and answer quality.",
+          "isCorrect": true
+        },
+        {
+          "id": "copy-only",
+          "label": "They only change copy and cannot affect production behavior.",
+          "isCorrect": false
+        },
+        {
+          "id": "no-review",
+          "label": "They are safest when edited directly in code without review.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "Prompt versions encode product behavior and should be measured before promotion."
+    },
+    {
+      "id": "dataset-cloze",
+      "kind": "cloze",
+      "prompt": "Fill the gap with the artifact used to run repeatable experiments.",
+      "template": "Use a {{blank}} to store inputs and expected behavior for prompt or model experiments.",
+      "acceptedAnswers": ["dataset", "Langfuse dataset"],
+      "explanation": "Datasets provide stable examples for testing prompt versions and model choices."
+    },
+    {
+      "id": "eval-loop-order",
+      "kind": "ordering",
+      "prompt": "Order the prompt evaluation loop.",
+      "items": [
+        {
+          "id": "version",
+          "label": "Create or update prompt version"
+        },
+        {
+          "id": "dataset",
+          "label": "Run against a dataset"
+        },
+        {
+          "id": "score",
+          "label": "Score outputs"
+        },
+        {
+          "id": "decide",
+          "label": "Promote, revise, or reject"
+        }
+      ],
+      "correctOrder": ["version", "dataset", "score", "decide"],
+      "explanation": "Prompt changes should move through versioning, dataset execution, scoring, and an explicit decision."
+    },
+    {
+      "id": "eval-match",
+      "kind": "matching",
+      "prompt": "Match the evaluation concept to its role.",
+      "pairs": [
+        {
+          "id": "prompt",
+          "prompt": "Prompt version",
+          "match": "specific prompt revision used by a run"
+        },
+        {
+          "id": "experiment",
+          "prompt": "Experiment",
+          "match": "comparison of variants against examples"
+        },
+        {
+          "id": "score",
+          "prompt": "Score",
+          "match": "measurement attached to a trace, observation, session, or dataset run"
+        }
+      ],
+      "explanation": "Versions, experiments, and scores let teams reason about LLM changes with evidence."
+    }
+  ]
+}

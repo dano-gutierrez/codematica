@@ -1,0 +1,91 @@
+{
+  "slug": "ai-engineering/llm-production-risk-governance-questionnaire",
+  "title": "LLM Production Risk Governance Questionnaire",
+  "type": "questionnaire",
+  "documentSlug": "ai-engineering/llm-production-risk-governance",
+  "concept": "LLM risk governance",
+  "difficulty": "principal",
+  "tags": ["llm-security", "governance", "owasp", "nist"],
+  "status": "published",
+  "questions": [
+    {
+      "id": "prompt-injection",
+      "kind": "choice",
+      "prompt": "What is the safest engineering response to prompt injection risk?",
+      "options": [
+        {
+          "id": "one-prompt",
+          "label": "Add one sentence to the system prompt and treat the risk as solved.",
+          "isCorrect": false
+        },
+        {
+          "id": "layers",
+          "label": "Use layered controls across instructions, input handling, tool authority, tracing, and evaluation.",
+          "isCorrect": true
+        },
+        {
+          "id": "ignore",
+          "label": "Ignore it unless the model explicitly mentions an attack.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "Prompt injection needs layered mitigation. Prompts help, but application boundaries still matter."
+    },
+    {
+      "id": "agency-cloze",
+      "kind": "cloze",
+      "prompt": "Fill the gap with the risk where an agent has more authority than the task needs.",
+      "template": "An agent with too much tool permission has excessive {{blank}}.",
+      "acceptedAnswers": ["agency", "authority"],
+      "explanation": "Excessive agency appears when a model-driven system can take actions beyond the product need."
+    },
+    {
+      "id": "incident-order",
+      "kind": "ordering",
+      "prompt": "Order the incident review packet for an LLM behavior incident.",
+      "items": [
+        {
+          "id": "feature",
+          "label": "Identify feature, model, and prompt version"
+        },
+        {
+          "id": "trace",
+          "label": "Collect trace ids, session ids, and source ids"
+        },
+        {
+          "id": "impact",
+          "label": "Assess user impact and risk category"
+        },
+        {
+          "id": "mitigate",
+          "label": "Rollback, patch, or add evaluation coverage"
+        }
+      ],
+      "correctOrder": ["feature", "trace", "impact", "mitigate"],
+      "explanation": "LLM incident response needs evidence first, then impact assessment and mitigation."
+    },
+    {
+      "id": "risk-match",
+      "kind": "matching",
+      "prompt": "Match the risk to the review focus.",
+      "pairs": [
+        {
+          "id": "sensitive-data",
+          "prompt": "Sensitive information disclosure",
+          "match": "control what inputs, outputs, traces, and datasets retain"
+        },
+        {
+          "id": "output-handling",
+          "prompt": "Unsafe output handling",
+          "match": "validate generated content before downstream use"
+        },
+        {
+          "id": "model-change",
+          "prompt": "Model or prompt change",
+          "match": "run evaluations and keep rollback paths"
+        }
+      ],
+      "explanation": "Governance maps risks to concrete engineering controls."
+    }
+  ]
+}

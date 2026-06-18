@@ -1,4 +1,5 @@
 import { describe, expect, it } from "vitest";
+import { getContentIndex } from "./content";
 import type { ContentIndex } from "./content/schema";
 import { buildSnippet, searchContent } from "./search";
 
@@ -95,6 +96,23 @@ describe("searchContent", () => {
     const results = searchContent(index, "sequenceDiagram");
 
     expect(results.map((result) => result.kind)).toEqual(["diagram"]);
+  });
+
+  it("finds Langfuse and LangChain AI engineering content from the generated index", () => {
+    const generatedIndex = getContentIndex();
+
+    expect(searchContent(generatedIndex, "Langfuse").map((result) => result.route)).toContain(
+      "/docs/ai-engineering/langfuse-tracing-fundamentals",
+    );
+    expect(searchContent(generatedIndex, "LangChain").map((result) => result.route)).toContain(
+      "/docs/ai-engineering/langchain-models-tools-rag",
+    );
+    expect(searchContent(generatedIndex, "RAG").map((result) => result.route)).toContain(
+      "/docs/ai-engineering/rag-quality-with-langchain-langfuse",
+    );
+    expect(searchContent(generatedIndex, "prompt evaluation").map((result) => result.route)).toContain(
+      "/docs/ai-engineering/langfuse-prompts-datasets-evals",
+    );
   });
 });
 

@@ -64,6 +64,8 @@ Interview company catalogs live in `content/interviews/*.json`. Each company con
 
 The Python language refresh path is the first reusable language-refresh slice. It pairs searchable Markdown docs with senior-level questionnaires and passive flashcards for TypeScript and JavaScript engineers.
 
+The Langfuse and LangChain AI engineering path is the first AI engineering slice. It pairs searchable Markdown lessons, Mermaid diagrams, questionnaires, and passive flashcards for LLM application architecture, LangChain tools/RAG/agents, LangGraph operations, Langfuse tracing/evaluation workflows, and OWASP/NIST-aligned production risk governance. Coding challenge sections in these lessons are non-executable until the future code editor feature adds an executable challenge contract.
+
 The database indexes and search path teaches production index judgment, PostgreSQL full text search, trigram fuzzy matching, and hybrid SQL search query design. It pairs searchable Markdown lessons with senior-level questionnaires and passive flashcards, while keeping executable SQL query practice as future roadmap work.
 
 ## Route Model
@@ -81,7 +83,7 @@ The database indexes and search path teaches production index judgment, PostgreS
 
 ## Testing Model
 
-Unit tests cover schema validation, parser behavior, fuzzy search, snippets, questionnaire shuffling/checking, interview solution selection, path/exercise/interview validation, and diagram indexing. Integration tests cover generated index loading and renderer behavior, including the Python refresh path and database indexes path. Playwright smoke and regression tests cover the mobile path, practice, browser, questionnaire, interview, flashcard, and diagram journeys.
+Unit tests cover schema validation, parser behavior, fuzzy search, snippets, questionnaire shuffling/checking, interview solution selection, path/exercise/interview validation, and diagram indexing. Integration tests cover generated index loading and renderer behavior, including the Python refresh path, Langfuse/LangChain AI engineering path, and database indexes path. Playwright smoke and regression tests cover the mobile path, practice, browser, questionnaire, interview, flashcard, and diagram journeys.
 
 ## Future Architecture Direction
 

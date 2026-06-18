@@ -8,6 +8,7 @@ This folder contains path-scoped passive flashcard feeds for short review sessio
 - Each card needs a unique `id`, `title`, `prompt`, `explanation`, `difficulty`, and `tags`.
 - `sourceDocSlug` is optional, but if present it must reference an existing Markdown document.
 - `code` is optional and should be a short snippet that fits on mobile.
+- AI engineering feeds should balance conceptual vocabulary, practical production review, small code snippets, and interview prompts across beginner through senior/principal material.
 - Database feeds should balance conceptual index/search vocabulary, practical query review, small SQL or schema snippets, and interview prompts.
 - Passive feeds do not store progress, score, read state, mastery, streaks, or completion.
 

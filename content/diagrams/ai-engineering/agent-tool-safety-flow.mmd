@@ -1,0 +1,12 @@
+flowchart TD
+  Request["User request"] --> Policy["Classify intent and risk"]
+  Policy -->|read-only| ReadTool["Read-only tool"]
+  Policy -->|write or money movement| Approval["Human approval gate"]
+  Policy -->|unsafe or unclear| Refuse["Refuse or ask for clarification"]
+  Approval --> ScopedTool["Scoped tool with least privilege"]
+  ReadTool --> Validate["Validate tool output"]
+  ScopedTool --> Validate
+  Validate --> Model["Model reasons over trusted result"]
+  Model --> OutputCheck["Check output contract"]
+  OutputCheck --> Trace["Trace decision, tool input, output, and status"]
+  Trace --> User["Return response"]

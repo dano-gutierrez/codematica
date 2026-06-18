@@ -1,0 +1,91 @@
+{
+  "slug": "ai-engineering/rag-quality-questionnaire",
+  "title": "RAG Quality Questionnaire",
+  "type": "questionnaire",
+  "documentSlug": "ai-engineering/rag-quality-with-langchain-langfuse",
+  "concept": "RAG quality evaluation",
+  "difficulty": "senior",
+  "tags": ["rag", "retrieval", "langchain", "langfuse"],
+  "status": "published",
+  "questions": [
+    {
+      "id": "rag-quality",
+      "kind": "choice",
+      "prompt": "Which statement best describes production RAG quality?",
+      "options": [
+        {
+          "id": "model-only",
+          "label": "It is only model quality; retrieval quality does not matter.",
+          "isCorrect": false
+        },
+        {
+          "id": "system",
+          "label": "It combines retrieval, context selection, prompt behavior, fallback rules, and evaluation.",
+          "isCorrect": true
+        },
+        {
+          "id": "citations-only",
+          "label": "It is solved as soon as answers include any citation.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "RAG quality is a system property, not just a model property."
+    },
+    {
+      "id": "stale-source-cloze",
+      "kind": "cloze",
+      "prompt": "Fill the gap with the failure mode where old content is retrieved after policy changed.",
+      "template": "A source that used to be right but is no longer current is a {{blank}} hit.",
+      "acceptedAnswers": ["stale", "stale source"],
+      "explanation": "Stale sources can produce confident but outdated answers unless freshness is modeled."
+    },
+    {
+      "id": "rag-debug-order",
+      "kind": "ordering",
+      "prompt": "Order the debugging path for a bad RAG answer.",
+      "items": [
+        {
+          "id": "query",
+          "label": "Inspect normalized retrieval query"
+        },
+        {
+          "id": "sources",
+          "label": "Inspect retrieved source ids and versions"
+        },
+        {
+          "id": "prompt",
+          "label": "Inspect prompt and context token count"
+        },
+        {
+          "id": "answer",
+          "label": "Inspect answer citations and score"
+        }
+      ],
+      "correctOrder": ["query", "sources", "prompt", "answer"],
+      "explanation": "Debug retrieval first, then prompt context, then generated answer and score."
+    },
+    {
+      "id": "rag-match",
+      "kind": "matching",
+      "prompt": "Match the RAG failure to its symptom.",
+      "pairs": [
+        {
+          "id": "no-hit",
+          "prompt": "No hit",
+          "match": "retriever finds no relevant source"
+        },
+        {
+          "id": "permission-leak",
+          "prompt": "Permission leak",
+          "match": "retriever returns content the user should not see"
+        },
+        {
+          "id": "context-overload",
+          "prompt": "Context overload",
+          "match": "too many passages bury important evidence"
+        }
+      ],
+      "explanation": "Different retrieval failures need different fixes, so traces should make them distinguishable."
+    }
+  ]
+}

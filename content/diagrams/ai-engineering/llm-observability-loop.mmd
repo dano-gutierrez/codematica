@@ -1,0 +1,17 @@
+flowchart TD
+  User["User request"] --> App["LLM application"]
+  App --> Prompt["Prompt assembly"]
+  Prompt --> Retrieval["Retrieval or context lookup"]
+  Prompt --> Tools["Tool calls"]
+  Retrieval --> Model["Model call"]
+  Tools --> Model
+  Model --> Response["User response"]
+  App --> Trace["Langfuse trace"]
+  Prompt --> Trace
+  Retrieval --> Trace
+  Tools --> Trace
+  Model --> Trace
+  Trace --> Review["Debug cost, latency, errors, and quality"]
+  Review --> Dataset["Dataset item or annotation"]
+  Dataset --> Experiment["Prompt or model experiment"]
+  Experiment --> App
