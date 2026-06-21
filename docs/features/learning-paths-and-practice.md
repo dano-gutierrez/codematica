@@ -3,7 +3,7 @@
 ## Snapshot
 
 - Status: `shipped`
-- Last updated: `2026-06-01`
+- Last updated: `2026-06-18`
 - Owner thread: `n/a`
 - Current state: The home route is a path-first map backed by local path, exercise, and passive flashcard feed JSON indexed with Markdown documents.
 - Target outcome: Users can follow role and skill paths, open documents or diagrams, complete flashcard, cloze, or questionnaire practice, and review passive path-scoped flashcards without auth or Supabase.
@@ -90,6 +90,7 @@ The shipped content includes skill and role paths using Markdown articles, exter
 - When practice is opened from a path, completing the prompt or questionnaire exposes the next node in that path order.
 - Published passive flashcard feeds appear as a path-level entry point, not as ordered path nodes.
 - Passive feeds show one card per mobile viewport, shuffle card order once per page load, append more cards as the user scrolls, and expose no reveal/check/progress controls.
+- Learning paths intended to replace passive social scrolling with one-minute vertical review should include a path-scoped passive feed unless the owning feature doc explicitly scopes that surface out.
 
 ### Data Model And Persistence
 
@@ -143,6 +144,7 @@ The shipped content includes skill and role paths using Markdown articles, exter
 - `2026-06-01`: Add questionnaire exercises with choice, cloze, ordering, and matching question kinds.
 - `2026-06-01`: Keep questionnaire progress transient and defer scoring, persisted progress, and review queues.
 - `2026-06-01`: Add path-scoped passive flashcard feeds as local JSON distinct from interactive flashcard exercises.
+- `2026-06-18`: Treat passive flashcard feeds as the default one-minute vertical brief surface for addictive but meaningful scroll review.
 
 ## Documentation Updates
 

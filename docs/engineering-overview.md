@@ -68,6 +68,8 @@ The Langfuse and LangChain AI engineering path is the first AI engineering slice
 
 The database indexes and search path teaches production index judgment, PostgreSQL full text search, trigram fuzzy matching, and hybrid SQL search query design. It pairs searchable Markdown lessons with senior-level questionnaires and passive flashcards, while keeping executable SQL query practice as future roadmap work.
 
+The Advanced Next.js 16 path is the first Front-End Development skill slice. It pairs hard-only searchable Markdown lessons, senior/principal questionnaires, and one-minute passive brief cards for App Router rendering, `force-dynamic`, Cache Components, data fetching, invalidation, production failure modes, performance architecture, and migration review. Next.js content must stay anchored to official Next.js documentation, official release notes, and npm registry version metadata.
+
 ## Route Model
 
 - `/`: path-first home map.
@@ -83,7 +85,7 @@ The database indexes and search path teaches production index judgment, PostgreS
 
 ## Testing Model
 
-Unit tests cover schema validation, parser behavior, fuzzy search, snippets, questionnaire shuffling/checking, interview solution selection, path/exercise/interview validation, and diagram indexing. Integration tests cover generated index loading and renderer behavior, including the Python refresh path, Langfuse/LangChain AI engineering path, and database indexes path. Playwright smoke and regression tests cover the mobile path, practice, browser, questionnaire, interview, flashcard, and diagram journeys.
+Unit tests cover schema validation, parser behavior, fuzzy search, snippets, questionnaire shuffling/checking, interview solution selection, path/exercise/interview validation, and diagram indexing. Integration tests cover generated index loading and renderer behavior, including the Python refresh path, Langfuse/LangChain AI engineering path, database indexes path, and Advanced Next.js 16 path. Playwright smoke and regression tests cover the mobile path, practice, browser, questionnaire, interview, flashcard, one-minute brief feed, and diagram journeys.
 
 ## Future Architecture Direction
 

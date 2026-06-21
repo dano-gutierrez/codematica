@@ -1,0 +1,158 @@
+{
+  "slug": "frontend/nextjs-16-data-fetching-caching-questionnaire",
+  "title": "Next.js 16 Data Fetching And Caching Questionnaire",
+  "type": "questionnaire",
+  "documentSlug": "frontend/nextjs-16-data-fetching-caching",
+  "concept": "Data fetching and cache layers",
+  "difficulty": "principal",
+  "tags": [
+    "nextjs",
+    "fetch",
+    "data-cache",
+    "stale-data"
+  ],
+  "status": "published",
+  "questions": [
+    {
+      "id": "reuse-layer",
+      "kind": "choice",
+      "prompt": "A request is deduped during one render pass. What can you conclude?",
+      "options": [
+        {
+          "id": "persistent",
+          "label": "It is now persistently cached across requests.",
+          "isCorrect": false
+        },
+        {
+          "id": "same-layer",
+          "label": "Only the current render avoided duplicate work unless a persistent cache was also configured.",
+          "isCorrect": true
+        },
+        {
+          "id": "cdn",
+          "label": "The CDN will serve the same response to all users.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "Request memoization, persistent framework cache, browser cache, and CDN cache are different layers."
+    },
+    {
+      "id": "stale-budget",
+      "kind": "cloze",
+      "prompt": "Fill the product term that must be named before caching.",
+      "template": "Before caching a read, name the acceptable {{blank}} for users.",
+      "acceptedAnswers": [
+        "stale budget",
+        "staleness budget",
+        "freshness budget"
+      ],
+      "explanation": "Caching is a product contract about acceptable staleness, not only a performance trick."
+    },
+    {
+      "id": "fetch-review-order",
+      "kind": "ordering",
+      "prompt": "Order a server fetch review.",
+      "items": [
+        {
+          "id": "scope",
+          "label": "Identify whether fetch is inside a cached scope"
+        },
+        {
+          "id": "share",
+          "label": "Verify whether the response can be shared"
+        },
+        {
+          "id": "invalidate",
+          "label": "Name the invalidation event"
+        },
+        {
+          "id": "fallback",
+          "label": "Define slow-origin or error behavior"
+        }
+      ],
+      "correctOrder": [
+        "scope",
+        "share",
+        "invalidate",
+        "fallback"
+      ],
+      "explanation": "A fetch review needs cache context, sharing safety, invalidation, and failure behavior."
+    },
+    {
+      "id": "layer-match",
+      "kind": "matching",
+      "prompt": "Match the cache layer to the risk.",
+      "pairs": [
+        {
+          "id": "memo",
+          "prompt": "render-pass memoization",
+          "match": "dedupes duplicate work inside one render"
+        },
+        {
+          "id": "persistent",
+          "prompt": "persistent framework cache",
+          "match": "reuses output across requests"
+        },
+        {
+          "id": "browser",
+          "prompt": "browser cache",
+          "match": "can serve client-held HTTP responses"
+        }
+      ],
+      "explanation": "Debugging stale data starts by locating the layer that served the stale response."
+    },
+    {
+      "id": "nostore-review",
+      "kind": "choice",
+      "prompt": "When is no-store behavior the best answer?",
+      "options": [
+        {
+          "id": "unknown",
+          "label": "When nobody understands which cache is stale.",
+          "isCorrect": false
+        },
+        {
+          "id": "sensitive",
+          "label": "When data cannot be safely reused and must be read fresh per request.",
+          "isCorrect": true
+        },
+        {
+          "id": "all",
+          "label": "For every dashboard because dashboards are always dynamic.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "No-store is right for genuinely unreusable data, not as a substitute for finding a bad cache key."
+    },
+    {
+      "id": "incident-order",
+      "kind": "ordering",
+      "prompt": "Order a stale data incident packet.",
+      "items": [
+        {
+          "id": "route",
+          "label": "Name route and component with stale state"
+        },
+        {
+          "id": "read",
+          "label": "Identify the read function and cache layer"
+        },
+        {
+          "id": "write",
+          "label": "Identify the mutation or source update"
+        },
+        {
+          "id": "contract",
+          "label": "Compare observed stale state to product contract"
+        }
+      ],
+      "correctOrder": [
+        "route",
+        "read",
+        "write",
+        "contract"
+      ],
+      "explanation": "The packet ties user-visible stale state to a read, a write, and an expected freshness contract."
+    }
+  ]
+}

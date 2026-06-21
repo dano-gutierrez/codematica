@@ -1,0 +1,158 @@
+{
+  "slug": "frontend/nextjs-16-force-dynamic-questionnaire",
+  "title": "Next.js 16 force-dynamic Questionnaire",
+  "type": "questionnaire",
+  "documentSlug": "frontend/nextjs-16-force-dynamic",
+  "concept": "force-dynamic and route segment config",
+  "difficulty": "senior",
+  "tags": [
+    "nextjs",
+    "force-dynamic",
+    "cache-components",
+    "ssr"
+  ],
+  "status": "published",
+  "questions": [
+    {
+      "id": "meaning",
+      "kind": "choice",
+      "prompt": "In the previous App Router caching model, what did export const dynamic equals force-dynamic mean?",
+      "options": [
+        {
+          "id": "client-only",
+          "label": "Render the page only in the browser and skip Server Components.",
+          "isCorrect": false
+        },
+        {
+          "id": "request-no-store",
+          "label": "Render the route at request time and force segment fetches away from persistent cache.",
+          "isCorrect": true
+        },
+        {
+          "id": "static-shell",
+          "label": "Prebuild the route shell and cache every fetch forever.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "The previous-model setting forced request-time rendering and made the segment behave like force-no-store for fetch caching."
+    },
+    {
+      "id": "next-16-answer",
+      "kind": "cloze",
+      "prompt": "Fill the migration action for Cache Components apps.",
+      "template": "With Cache Components, force-dynamic is usually {{blank}} because pages are dynamic by default.",
+      "acceptedAnswers": [
+        "not needed",
+        "unnecessary",
+        "removed"
+      ],
+      "explanation": "Official migration guidance says force-dynamic is not needed under Cache Components."
+    },
+    {
+      "id": "migration-order",
+      "kind": "ordering",
+      "prompt": "Order a safe force-dynamic migration review.",
+      "items": [
+        {
+          "id": "reason",
+          "label": "Find why the flag was added"
+        },
+        {
+          "id": "model",
+          "label": "Confirm whether Cache Components is enabled"
+        },
+        {
+          "id": "replace",
+          "label": "Replace broad behavior with local cache or runtime boundaries"
+        },
+        {
+          "id": "measure",
+          "label": "Measure freshness and latency after removal"
+        }
+      ],
+      "correctOrder": [
+        "reason",
+        "model",
+        "replace",
+        "measure"
+      ],
+      "explanation": "The flag may have masked real stale data or auth behavior, so understand the intent before removing it."
+    },
+    {
+      "id": "config-match",
+      "kind": "matching",
+      "prompt": "Match each previous-model route setting to its modern review.",
+      "pairs": [
+        {
+          "id": "dynamic",
+          "prompt": "dynamic = force-dynamic",
+          "match": "usually remove under Cache Components"
+        },
+        {
+          "id": "revalidate",
+          "prompt": "revalidate",
+          "match": "move freshness to cacheLife"
+        },
+        {
+          "id": "fetchcache",
+          "prompt": "fetchCache",
+          "match": "replace with explicit cached scopes"
+        }
+      ],
+      "explanation": "Cache Components moves caching policy from broad segment settings to explicit cache boundaries."
+    },
+    {
+      "id": "bad-fix",
+      "kind": "choice",
+      "prompt": "A dashboard is stale after a mutation. What is the weakest fix?",
+      "options": [
+        {
+          "id": "tag",
+          "label": "Tag the cached read and invalidate that tag from the mutation.",
+          "isCorrect": false
+        },
+        {
+          "id": "scope",
+          "label": "Identify the cached function that serves stale data.",
+          "isCorrect": false
+        },
+        {
+          "id": "hammer",
+          "label": "Add force-dynamic to the whole route without finding the stale cache.",
+          "isCorrect": true
+        }
+      ],
+      "explanation": "force-dynamic can hide the stale-cache source while throwing away useful caching for the whole route."
+    },
+    {
+      "id": "decision-order",
+      "kind": "ordering",
+      "prompt": "Order the decision tree for a legacy force-dynamic route.",
+      "items": [
+        {
+          "id": "cachecomponents",
+          "label": "Check Cache Components adoption"
+        },
+        {
+          "id": "runtime",
+          "label": "Identify true request-time dependencies"
+        },
+        {
+          "id": "cached",
+          "label": "Identify reusable shared work"
+        },
+        {
+          "id": "document",
+          "label": "Document the final route behavior"
+        }
+      ],
+      "correctOrder": [
+        "cachecomponents",
+        "runtime",
+        "cached",
+        "document"
+      ],
+      "explanation": "The replacement is a precise route behavior contract, not a blind flag deletion."
+    }
+  ]
+}

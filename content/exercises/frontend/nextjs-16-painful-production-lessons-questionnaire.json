@@ -1,0 +1,158 @@
+{
+  "slug": "frontend/nextjs-16-painful-production-lessons-questionnaire",
+  "title": "Next.js 16 Painful Production Lessons Questionnaire",
+  "type": "questionnaire",
+  "documentSlug": "frontend/nextjs-16-painful-production-lessons",
+  "concept": "Next.js production boundary failures",
+  "difficulty": "principal",
+  "tags": [
+    "nextjs",
+    "production",
+    "debugging",
+    "security"
+  ],
+  "status": "published",
+  "questions": [
+    {
+      "id": "boundary-bug",
+      "kind": "choice",
+      "prompt": "Which bug is the clearest client/server boundary failure?",
+      "options": [
+        {
+          "id": "secret-import",
+          "label": "A Client Component imports a module that pulls in a server-only admin SDK.",
+          "isCorrect": true
+        },
+        {
+          "id": "fallback",
+          "label": "A Suspense fallback uses a skeleton instead of a spinner.",
+          "isCorrect": false
+        },
+        {
+          "id": "server-read",
+          "label": "A Server Component reads from the database.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "Client bundle boundaries must not pull server-only code or secrets into browser-reachable modules."
+    },
+    {
+      "id": "request-api",
+      "kind": "cloze",
+      "prompt": "Fill the kind of data represented by params, headers, cookies, and search params.",
+      "template": "Modern Next.js treats these APIs as {{blank}} data that should not be smuggled into cached work.",
+      "acceptedAnswers": [
+        "request-time",
+        "request time",
+        "runtime"
+      ],
+      "explanation": "Request APIs are tied to the current request and need explicit runtime boundaries."
+    },
+    {
+      "id": "stale-debug-order",
+      "kind": "ordering",
+      "prompt": "Order a cache debugging incident packet.",
+      "items": [
+        {
+          "id": "visible",
+          "label": "Capture the user-visible stale state"
+        },
+        {
+          "id": "read",
+          "label": "Find the cached read and its tags"
+        },
+        {
+          "id": "mutation",
+          "label": "Find the write that should invalidate it"
+        },
+        {
+          "id": "fix",
+          "label": "Fix the tag, key, or boundary with a regression test"
+        }
+      ],
+      "correctOrder": [
+        "visible",
+        "read",
+        "mutation",
+        "fix"
+      ],
+      "explanation": "Randomly adding no-store hides the root cause. Trace stale state through read and write ownership."
+    },
+    {
+      "id": "failure-match",
+      "kind": "matching",
+      "prompt": "Match each failure to the likely boundary.",
+      "pairs": [
+        {
+          "id": "secret",
+          "prompt": "Secret in browser bundle",
+          "match": "client/server import boundary"
+        },
+        {
+          "id": "stale",
+          "prompt": "Old data after successful write",
+          "match": "cache invalidation boundary"
+        },
+        {
+          "id": "blank",
+          "prompt": "Whole page blocked by one slow panel",
+          "match": "Suspense boundary too broad"
+        }
+      ],
+      "explanation": "Boundary classification makes production debugging faster and less superstitious."
+    },
+    {
+      "id": "static-dynamic",
+      "kind": "choice",
+      "prompt": "A route expected to be static reads headers in a child component. What is the best response?",
+      "options": [
+        {
+          "id": "ignore",
+          "label": "Ignore the warning because the child is deeply nested.",
+          "isCorrect": false
+        },
+        {
+          "id": "decide",
+          "label": "Decide where the request-time boundary belongs and isolate it with Suspense if needed.",
+          "isCorrect": true
+        },
+        {
+          "id": "client",
+          "label": "Move the child to a Client Component to hide the server warning.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "The runtime read is a design signal. Narrow and document the dynamic boundary."
+    },
+    {
+      "id": "security-order",
+      "kind": "ordering",
+      "prompt": "Order a Client Component security review.",
+      "items": [
+        {
+          "id": "imports",
+          "label": "Inspect imports reachable from the client boundary"
+        },
+        {
+          "id": "secrets",
+          "label": "Remove server-only secrets and SDKs"
+        },
+        {
+          "id": "data",
+          "label": "Pass only validated minimal data as props"
+        },
+        {
+          "id": "bundle",
+          "label": "Verify bundle and behavior in build output"
+        }
+      ],
+      "correctOrder": [
+        "imports",
+        "secrets",
+        "data",
+        "bundle"
+      ],
+      "explanation": "Client boundary safety starts with import reachability, then data minimization and build verification."
+    }
+  ]
+}

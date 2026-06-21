@@ -1,0 +1,157 @@
+{
+  "slug": "frontend/nextjs-16-rendering-model-questionnaire",
+  "title": "Next.js 16 Rendering Model Questionnaire",
+  "type": "questionnaire",
+  "documentSlug": "frontend/nextjs-16-rendering-model",
+  "concept": "Next.js 16 rendering model",
+  "difficulty": "senior",
+  "tags": [
+    "nextjs",
+    "app-router",
+    "server-components",
+    "ssr"
+  ],
+  "status": "published",
+  "questions": [
+    {
+      "id": "composition-review",
+      "kind": "choice",
+      "prompt": "What is the strongest rendering review note for a Next.js 16 App Router page?",
+      "options": [
+        {
+          "id": "whole-page",
+          "label": "Classify the whole page as either SSR or static and stop there.",
+          "isCorrect": false
+        },
+        {
+          "id": "subtree-boundaries",
+          "label": "Classify each subtree by cached, request-time, and client-owned behavior.",
+          "isCorrect": true
+        },
+        {
+          "id": "client-first",
+          "label": "Move uncertain data work to Client Components to avoid server rendering decisions.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "Next.js 16 rendering is compositional. The safe review identifies cache, runtime, Suspense, and client boundaries per subtree."
+    },
+    {
+      "id": "suspense-boundary",
+      "kind": "cloze",
+      "prompt": "Fill the boundary primitive that isolates delayed request-time UI.",
+      "template": "Use {{blank}} around the smallest uncached runtime subtree that can stream behind a stable shell.",
+      "acceptedAnswers": [
+        "Suspense",
+        "React Suspense"
+      ],
+      "explanation": "Suspense defines the loading contract for uncached runtime work while preserving useful shell content."
+    },
+    {
+      "id": "route-review-order",
+      "kind": "ordering",
+      "prompt": "Order a route rendering review.",
+      "items": [
+        {
+          "id": "data",
+          "label": "List data sources and ownership"
+        },
+        {
+          "id": "classify",
+          "label": "Classify cached, request-time, and client-only subtrees"
+        },
+        {
+          "id": "fallbacks",
+          "label": "Place Suspense fallbacks around slow dynamic parts"
+        },
+        {
+          "id": "verify",
+          "label": "Verify shell, streaming, and hydration behavior in browser tests"
+        }
+      ],
+      "correctOrder": [
+        "data",
+        "classify",
+        "fallbacks",
+        "verify"
+      ],
+      "explanation": "Start from data ownership, then choose rendering boundaries, then prove the user-visible behavior."
+    },
+    {
+      "id": "rendering-match",
+      "kind": "matching",
+      "prompt": "Match each rendering concern to the right review lens.",
+      "pairs": [
+        {
+          "id": "server-component",
+          "prompt": "Server Component",
+          "match": "server data and private dependencies"
+        },
+        {
+          "id": "client-component",
+          "prompt": "Client Component",
+          "match": "browser state and event handlers"
+        },
+        {
+          "id": "suspense",
+          "prompt": "Suspense boundary",
+          "match": "fallback for delayed runtime subtree"
+        }
+      ],
+      "explanation": "Each boundary has a different operational consequence for data access, bundle size, and loading behavior."
+    },
+    {
+      "id": "ppr-risk",
+      "kind": "choice",
+      "prompt": "Which route is the best candidate for a static shell plus streamed dynamic section?",
+      "options": [
+        {
+          "id": "stable-with-personal",
+          "label": "A product page with stable content and a personalized inventory panel.",
+          "isCorrect": true
+        },
+        {
+          "id": "secret-admin",
+          "label": "An admin route where every section depends on per-user permissions.",
+          "isCorrect": false
+        },
+        {
+          "id": "client-game",
+          "label": "A fully client-side canvas game with no server data.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "Partial prerendering shines when stable shell content can be shown while a smaller request-time section resolves."
+    },
+    {
+      "id": "boundary-debug-order",
+      "kind": "ordering",
+      "prompt": "Order the debugging path when a route unexpectedly becomes runtime-bound.",
+      "items": [
+        {
+          "id": "locate",
+          "label": "Locate request-time API or uncached data access"
+        },
+        {
+          "id": "scope",
+          "label": "Decide whether only a subtree needs runtime work"
+        },
+        {
+          "id": "wrap",
+          "label": "Wrap the runtime subtree with a meaningful Suspense fallback"
+        },
+        {
+          "id": "test",
+          "label": "Test the shell and delayed content on mobile"
+        }
+      ],
+      "correctOrder": [
+        "locate",
+        "scope",
+        "wrap",
+        "test"
+      ],
+      "explanation": "Find the runtime source, narrow the boundary, and test the visible outcome."
+    }
+  ]
+}

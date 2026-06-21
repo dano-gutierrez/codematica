@@ -1,0 +1,131 @@
+{
+  "slug": "advanced-nextjs-16",
+  "title": "Advanced Next.js 16",
+  "summary": "A hard front-end development path for experienced Next.js engineers covering rendering, caching, force-dynamic, invalidation, performance, and migration pain points in Next.js 16.",
+  "kind": "skill",
+  "category": "Front-End Development",
+  "audience": "Experienced Next.js App Router engineers who already ship production React applications and need hard-level caching, SSR, rendering, and migration judgment.",
+  "status": "published",
+  "units": [
+    {
+      "slug": "nextjs-16-rendering-model",
+      "title": "Rendering Model",
+      "summary": "Model Server Components, streaming, request-time work, and Suspense boundaries in Next.js 16.",
+      "nodes": [
+        {
+          "kind": "document",
+          "slug": "frontend/nextjs-16-rendering-model"
+        },
+        {
+          "kind": "exercise",
+          "slug": "frontend/nextjs-16-rendering-model-questionnaire"
+        }
+      ]
+    },
+    {
+      "slug": "nextjs-16-force-dynamic",
+      "title": "force-dynamic In Context",
+      "summary": "Learn what force-dynamic meant before Cache Components and how to review it now.",
+      "nodes": [
+        {
+          "kind": "document",
+          "slug": "frontend/nextjs-16-force-dynamic"
+        },
+        {
+          "kind": "exercise",
+          "slug": "frontend/nextjs-16-force-dynamic-questionnaire"
+        }
+      ]
+    },
+    {
+      "slug": "nextjs-16-cache-components",
+      "title": "Cache Components",
+      "summary": "Use explicit cache scopes, lifetimes, tags, and keys for production-safe reuse.",
+      "nodes": [
+        {
+          "kind": "document",
+          "slug": "frontend/nextjs-16-cache-components"
+        },
+        {
+          "kind": "exercise",
+          "slug": "frontend/nextjs-16-cache-components-questionnaire"
+        }
+      ]
+    },
+    {
+      "slug": "nextjs-16-data-fetching-caching",
+      "title": "Data Fetching And Caching",
+      "summary": "Separate request memoization, persistent server cache, browser cache, and stale data contracts.",
+      "nodes": [
+        {
+          "kind": "document",
+          "slug": "frontend/nextjs-16-data-fetching-caching"
+        },
+        {
+          "kind": "exercise",
+          "slug": "frontend/nextjs-16-data-fetching-caching-questionnaire"
+        }
+      ]
+    },
+    {
+      "slug": "nextjs-16-invalidation-mutations",
+      "title": "Invalidation And Mutations",
+      "summary": "Connect Server Actions, updateTag, revalidateTag, and mutation correctness.",
+      "nodes": [
+        {
+          "kind": "document",
+          "slug": "frontend/nextjs-16-invalidation-mutations"
+        },
+        {
+          "kind": "exercise",
+          "slug": "frontend/nextjs-16-invalidation-mutations-questionnaire"
+        }
+      ]
+    },
+    {
+      "slug": "nextjs-16-painful-production-lessons",
+      "title": "Production Pain Points",
+      "summary": "Diagnose boundary bugs involving request APIs, client bundles, secrets, and stale cache state.",
+      "nodes": [
+        {
+          "kind": "document",
+          "slug": "frontend/nextjs-16-painful-production-lessons"
+        },
+        {
+          "kind": "exercise",
+          "slug": "frontend/nextjs-16-painful-production-lessons-questionnaire"
+        }
+      ]
+    },
+    {
+      "slug": "nextjs-16-performance-architecture",
+      "title": "Performance Architecture",
+      "summary": "Review Turbopack, routing, prefetching, streaming, and cache decisions as one performance system.",
+      "nodes": [
+        {
+          "kind": "document",
+          "slug": "frontend/nextjs-16-performance-architecture"
+        },
+        {
+          "kind": "exercise",
+          "slug": "frontend/nextjs-16-performance-architecture-questionnaire"
+        }
+      ]
+    },
+    {
+      "slug": "nextjs-16-migration-review",
+      "title": "Migration Review",
+      "summary": "Plan a Next.js 16 migration around behavior, rollout risk, and official upgrade paths.",
+      "nodes": [
+        {
+          "kind": "document",
+          "slug": "frontend/nextjs-16-migration-review"
+        },
+        {
+          "kind": "exercise",
+          "slug": "frontend/nextjs-16-migration-review-questionnaire"
+        }
+      ]
+    }
+  ]
+}

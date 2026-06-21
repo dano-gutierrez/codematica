@@ -1,0 +1,158 @@
+{
+  "slug": "frontend/nextjs-16-performance-architecture-questionnaire",
+  "title": "Next.js 16 Performance Architecture Questionnaire",
+  "type": "questionnaire",
+  "documentSlug": "frontend/nextjs-16-performance-architecture",
+  "concept": "Next.js performance architecture",
+  "difficulty": "senior",
+  "tags": [
+    "nextjs",
+    "performance",
+    "turbopack",
+    "streaming"
+  ],
+  "status": "published",
+  "questions": [
+    {
+      "id": "prefetch-review",
+      "kind": "choice",
+      "prompt": "Next.js 16 shows more granular prefetch requests in dev tools. What should a senior engineer check first?",
+      "options": [
+        {
+          "id": "disable",
+          "label": "Disable prefetching because more requests always means worse performance.",
+          "isCorrect": false
+        },
+        {
+          "id": "outcomes",
+          "label": "Compare total transferred bytes, navigation latency, and origin load.",
+          "isCorrect": true
+        },
+        {
+          "id": "force",
+          "label": "Force every route to dynamic rendering.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "Enhanced routing can reduce total transfer while changing request shape. Measure outcomes, not only request count."
+    },
+    {
+      "id": "useful-shell",
+      "kind": "cloze",
+      "prompt": "Fill the performance target for streamed routes.",
+      "template": "Streaming works best when the first response is a useful {{blank}}, not a blank page.",
+      "acceptedAnswers": [
+        "shell",
+        "static shell",
+        "route shell"
+      ],
+      "explanation": "A useful shell gives users structure while dynamic content resolves."
+    },
+    {
+      "id": "perf-review-order",
+      "kind": "ordering",
+      "prompt": "Order a performance architecture review.",
+      "items": [
+        {
+          "id": "job",
+          "label": "Name the user job and critical path"
+        },
+        {
+          "id": "measure",
+          "label": "Measure shell, dynamic content, and navigation timing"
+        },
+        {
+          "id": "boundary",
+          "label": "Choose cache and Suspense boundaries"
+        },
+        {
+          "id": "regressions",
+          "label": "Protect with browser and build checks"
+        }
+      ],
+      "correctOrder": [
+        "job",
+        "measure",
+        "boundary",
+        "regressions"
+      ],
+      "explanation": "Performance work should optimize a measured user path and protect it from regression."
+    },
+    {
+      "id": "perf-match",
+      "kind": "matching",
+      "prompt": "Match each Next.js 16 feature to the performance lever.",
+      "pairs": [
+        {
+          "id": "turbopack",
+          "prompt": "Turbopack",
+          "match": "faster dev and production build feedback"
+        },
+        {
+          "id": "routing",
+          "prompt": "enhanced routing",
+          "match": "deduplicated layout and incremental prefetch payloads"
+        },
+        {
+          "id": "cache-components",
+          "prompt": "Cache Components",
+          "match": "less repeated server work for safe shared output"
+        }
+      ],
+      "explanation": "Each feature affects a different part of the performance system."
+    },
+    {
+      "id": "bad-streaming",
+      "kind": "choice",
+      "prompt": "Which streaming design is weakest?",
+      "options": [
+        {
+          "id": "small",
+          "label": "Wrap only the slow personalized panel and keep navigation stable.",
+          "isCorrect": false
+        },
+        {
+          "id": "whole",
+          "label": "Wrap the entire page in one fallback because one widget is slow.",
+          "isCorrect": true
+        },
+        {
+          "id": "skeleton",
+          "label": "Use stable dimensions for a delayed analytics chart.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "A broad fallback throws away the useful shell and makes streaming feel like blocking."
+    },
+    {
+      "id": "turbopack-order",
+      "kind": "ordering",
+      "prompt": "Order a Turbopack migration review for a customized app.",
+      "items": [
+        {
+          "id": "custom",
+          "label": "Inventory webpack and loader assumptions"
+        },
+        {
+          "id": "build",
+          "label": "Run dev and production builds under Turbopack"
+        },
+        {
+          "id": "journeys",
+          "label": "Exercise routes that depend on custom bundling"
+        },
+        {
+          "id": "optout",
+          "label": "Document opt-out only if parity fails"
+        }
+      ],
+      "correctOrder": [
+        "custom",
+        "build",
+        "journeys",
+        "optout"
+      ],
+      "explanation": "Faster defaults still need compatibility review when the app has custom bundler assumptions."
+    }
+  ]
+}

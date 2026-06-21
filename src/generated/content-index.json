@@ -895,6 +895,550 @@
       "readingMinutes": 5
     },
     {
+      "title": "Cache Components In Next.js 16",
+      "slug": "frontend/nextjs-16-cache-components",
+      "summary": "A production guide to cacheComponents, use cache, cacheLife, cacheTag, cache keys, and migration away from implicit route caching.",
+      "track": "Front-End Development",
+      "topic": "Next.js Caching",
+      "difficulty": "principal",
+      "tags": [
+        "nextjs",
+        "cache-components",
+        "use-cache",
+        "cachelife",
+        "cachetag"
+      ],
+      "prerequisites": [
+        "Next.js App Router caching",
+        "Production cache invalidation",
+        "React Server Components"
+      ],
+      "diagramRefs": [],
+      "status": "published",
+      "id": "c31fac5b0ed5",
+      "route": "/docs/frontend/nextjs-16-cache-components",
+      "sourcePath": "content/knowledge/frontend/nextjs-16-cache-components.md",
+      "bodyPath": "content/knowledge/frontend/nextjs-16-cache-components.md",
+      "markdown": "## Why Cache Components Exist\n\nCache Components makes caching explicit. Previous App Router behavior mixed route-level heuristics, `fetch` options, request-time APIs, and static generation decisions. In Next.js 16, enabling `cacheComponents` moves the app toward a clearer contract: runtime work is dynamic by default, and reusable work opts into caching with `\"use cache\"`.\n\n`cacheLife` describes freshness duration. `cacheTag` gives invalidation handles. The directive can be applied to a page, component, or async function, but production systems should usually cache the smallest honest unit.\n\n## Cache The Smallest Honest Unit\n\nThe safest cache boundary is usually close to the data or computation that is actually reusable. Caching the whole page can be correct for public marketing content. It is dangerous for dashboards, admin screens, permissioned content, carts, inboxes, and anything that blends shared data with request-specific state.\n\n```ts\nimport { cacheLife, cacheTag } from 'next/cache';\n\nexport async function getProductShell(productId: string) {\n  'use cache';\n  cacheLife('hours');\n  cacheTag('product:' + productId);\n  return db.product.findUnique({ where: { id: productId } });\n}\n```\n\n## Cache Keys Are Product Boundaries\n\nThe cache key encodes which users, tenants, locales, feature flags, AB variants, and permission states are allowed to share output. If a cached function reads tenant-specific data but the key does not include tenant identity, you created a data leak. If it reads a preview flag but the key ignores preview state, editors and users can see the wrong version.\n\n## cacheLife And cacheTag\n\n`cacheLife` is about time. `cacheTag` is about targeted invalidation. A principal-level cache design names the normal freshness budget, the invalidation event, the acceptable user-visible stale state, and the rollback path if invalidation is missed.\n\n## Migration From Implicit Caching\n\nWhen migrating, do not mechanically wrap large pages in `\"use cache\"`. Start by removing old segment configs that only existed to manipulate implicit behavior. Let development errors show you uncached or runtime accesses. Then move caching down to stable data functions and shared components.\n\n## One-Minute Brief\n\nCache Components makes caching a local contract instead of a route-wide mystery. In Next.js 16, cache only the output that can be safely shared, give it a life, tag it for invalidation, and keep request-specific work out of that scope.\n\n## Official Source Anchors\nThis lesson is anchored only to official Next.js documentation and release material, plus npm registry metadata for the latest published 16.x package version checked during authoring.\n- [Next.js 16 release notes](https://nextjs.org/blog/next-16)\n- [Route Segment Config](https://nextjs.org/docs/app/api-reference/file-conventions/route-segment-config)\n- [Caching with Cache Components](https://nextjs.org/docs/app/getting-started/caching)\n- [Migrating to Cache Components](https://nextjs.org/docs/app/guides/migrating-to-cache-components)\n- [Fetching Data](https://nextjs.org/docs/app/getting-started/fetching-data)\n- [fetch API reference](https://nextjs.org/docs/app/api-reference/functions/fetch)\n- [updateTag API reference](https://nextjs.org/docs/app/api-reference/functions/updateTag)\n- [revalidateTag API reference](https://nextjs.org/docs/app/api-reference/functions/revalidateTag)\n- [Next.js 16 upgrade guide](https://nextjs.org/docs/app/guides/upgrading/version-16)",
+      "plainText": "Why Cache Components Exist Cache Components makes caching explicit. Previous App Router behavior mixed route-level heuristics, fetch options, request-time APIs, and static generation decisions. In Next.js 16, enabling cacheComponents moves the app toward a clearer contract: runtime work is dynamic by default, and reusable work opts into caching with \"use cache\". cacheLife describes freshness duration. cacheTag gives invalidation handles. The directive can be applied to a page, component, or async function, but production systems should usually cache the smallest honest unit. Cache The Smallest Honest Unit The safest cache boundary is usually close to the data or computation that is actually reusable. Caching the whole page can be correct for public marketing content. It is dangerous for dashboards, admin screens, permissioned content, carts, inboxes, and anything that blends shared data with request-specific state. import { cacheLife, cacheTag } from 'next/cache'; export async function getProductShell(productId: string) { 'use cache'; cacheLife('hours'); cacheTag('product:' + productId); return db.product.findUnique({ where: { id: productId } }); } Cache Keys Are Product Boundaries The cache key encodes which users, tenants, locales, feature flags, AB variants, and permission states are allowed to share output. If a cached function reads tenant-specific data but the key does not include tenant identity, you created a data leak. If it reads a preview flag but the key ignores preview state, editors and users can see the wrong version. cacheLife And cacheTag cacheLife is about time. cacheTag is about targeted invalidation. A principal-level cache design names the normal freshness budget, the invalidation event, the acceptable user-visible stale state, and the rollback path if invalidation is missed. Migration From Implicit Caching When migrating, do not mechanically wrap large pages in \"use cache\". Start by removing old segment configs that only existed to manipulate implicit behavior. Let development errors show you uncached or runtime accesses. Then move caching down to stable data functions and shared components. One-Minute Brief Cache Components makes caching a local contract instead of a route-wide mystery. In Next.js 16, cache only the output that can be safely shared, give it a life, tag it for invalidation, and keep request-specific work out of that scope. Official Source Anchors This lesson is anchored only to official Next.js documentation and release material, plus npm registry metadata for the latest published 16.x package version checked during authoring. Next.js 16 release notesRoute Segment ConfigCaching with Cache ComponentsMigrating to Cache ComponentsFetching Datafetch API referenceupdateTag API referencerevalidateTag API referenceNext.js 16 upgrade guide",
+      "headings": [
+        {
+          "id": "why-cache-components-exist",
+          "depth": 2,
+          "text": "Why Cache Components Exist"
+        },
+        {
+          "id": "cache-the-smallest-honest-unit",
+          "depth": 2,
+          "text": "Cache The Smallest Honest Unit"
+        },
+        {
+          "id": "cache-keys-are-product-boundaries",
+          "depth": 2,
+          "text": "Cache Keys Are Product Boundaries"
+        },
+        {
+          "id": "cachelife-and-cachetag",
+          "depth": 2,
+          "text": "cacheLife And cacheTag"
+        },
+        {
+          "id": "migration-from-implicit-caching",
+          "depth": 2,
+          "text": "Migration From Implicit Caching"
+        },
+        {
+          "id": "one-minute-brief",
+          "depth": 2,
+          "text": "One-Minute Brief"
+        },
+        {
+          "id": "official-source-anchors",
+          "depth": 2,
+          "text": "Official Source Anchors"
+        }
+      ],
+      "mermaidBlocks": [],
+      "contentHash": "f8db9224a052f782589f4ab77b8548373be65d0bcbbd216e1450286f683e4e83",
+      "readingMinutes": 2
+    },
+    {
+      "title": "Data Fetching And Caching In Next.js 16",
+      "slug": "frontend/nextjs-16-data-fetching-caching",
+      "summary": "A deep guide to server fetch, database reads, memoization, persistent cache semantics, no-store behavior, and stale data risk in Next.js 16.",
+      "track": "Front-End Development",
+      "topic": "Next.js Data Fetching",
+      "difficulty": "principal",
+      "tags": [
+        "nextjs",
+        "fetch",
+        "data-cache",
+        "orm",
+        "stale-data"
+      ],
+      "prerequisites": [
+        "Server data fetching",
+        "HTTP caching basics",
+        "Database-backed React apps"
+      ],
+      "diagramRefs": [],
+      "status": "published",
+      "id": "fd84e2a8468b",
+      "route": "/docs/frontend/nextjs-16-data-fetching-caching",
+      "sourcePath": "content/knowledge/frontend/nextjs-16-data-fetching-caching.md",
+      "bodyPath": "content/knowledge/frontend/nextjs-16-data-fetching-caching.md",
+      "markdown": "## Separate Three Kinds Of Reuse\n\nNext.js data bugs often come from treating all reuse as the same thing. Request memoization during one render pass, persistent framework cache reused across requests, and browser or CDN caching outside the server render are different systems.\n\nA deduped request in one render is not the same as persistent caching. A cached server function is not the same as a CDN response. A stale browser response is not proof that the App Router cache failed. Debug the layer you are actually using.\n\n## Server fetch Is Extended\n\nNext.js extends server-side `fetch` so server code can express persistent cache and revalidation semantics. With Cache Components, the preferred model is to put data fetching inside explicit cached scopes when reuse is desired.\n\nA senior code review asks whether the fetch is inside a cached scope, whether the response is safe to share, what makes it stale, what invalidates it after a write, and what happens if the origin is slow or unavailable.\n\n## ORM And Database Reads\n\nORM calls do not automatically become safe because they run in a Server Component. Database reads must still choose a reuse model. If the read is per-request, leave it uncached. If it is shared, put it behind `\"use cache\"` and pass explicit key dimensions.\n\nDo not cache raw authorization decisions unless the key includes the permission dimensions and the invalidation path is clear. Authorization bugs are worse than slow queries.\n\n## Stale Data Is A Product State\n\n| Data | Can Share Across Users | Stale Budget | Invalidation | Failure Behavior |\n| --- | --- | --- | --- | --- |\n| Product copy | Usually yes | Long | Deploy or CMS tag | Serve stale |\n| User profile | No or narrow | Short | Server Action update | Read fresh |\n| Entitlements | Dangerous | Near zero | Permission mutation | Fail closed |\n| Analytics aggregate | Often yes | Medium | Batch or tag | Show timestamp |\n\n## no-store Is Not A Strategy\n\nOpting out of cache can be correct. It is not a substitute for architecture. Use no-store behavior when data cannot be safely reused. Do not use it because the team cannot find the actual stale cache.\n\n## One-Minute Brief\n\nData fetching in Next.js 16 is about picking the right reuse layer. Request memoization, persistent cache, CDN cache, and browser cache are different systems. Senior engineers debug the layer, key, stale budget, and invalidation event.\n\n## Official Source Anchors\nThis lesson is anchored only to official Next.js documentation and release material, plus npm registry metadata for the latest published 16.x package version checked during authoring.\n- [Next.js 16 release notes](https://nextjs.org/blog/next-16)\n- [Route Segment Config](https://nextjs.org/docs/app/api-reference/file-conventions/route-segment-config)\n- [Caching with Cache Components](https://nextjs.org/docs/app/getting-started/caching)\n- [Migrating to Cache Components](https://nextjs.org/docs/app/guides/migrating-to-cache-components)\n- [Fetching Data](https://nextjs.org/docs/app/getting-started/fetching-data)\n- [fetch API reference](https://nextjs.org/docs/app/api-reference/functions/fetch)\n- [updateTag API reference](https://nextjs.org/docs/app/api-reference/functions/updateTag)\n- [revalidateTag API reference](https://nextjs.org/docs/app/api-reference/functions/revalidateTag)\n- [Next.js 16 upgrade guide](https://nextjs.org/docs/app/guides/upgrading/version-16)",
+      "plainText": "Separate Three Kinds Of Reuse Next.js data bugs often come from treating all reuse as the same thing. Request memoization during one render pass, persistent framework cache reused across requests, and browser or CDN caching outside the server render are different systems. A deduped request in one render is not the same as persistent caching. A cached server function is not the same as a CDN response. A stale browser response is not proof that the App Router cache failed. Debug the layer you are actually using. Server fetch Is Extended Next.js extends server-side fetch so server code can express persistent cache and revalidation semantics. With Cache Components, the preferred model is to put data fetching inside explicit cached scopes when reuse is desired. A senior code review asks whether the fetch is inside a cached scope, whether the response is safe to share, what makes it stale, what invalidates it after a write, and what happens if the origin is slow or unavailable. ORM And Database Reads ORM calls do not automatically become safe because they run in a Server Component. Database reads must still choose a reuse model. If the read is per-request, leave it uncached. If it is shared, put it behind \"use cache\" and pass explicit key dimensions. Do not cache raw authorization decisions unless the key includes the permission dimensions and the invalidation path is clear. Authorization bugs are worse than slow queries. Stale Data Is A Product State | Data | Can Share Across Users | Stale Budget | Invalidation | Failure Behavior | | --- | --- | --- | --- | --- | | Product copy | Usually yes | Long | Deploy or CMS tag | Serve stale | | User profile | No or narrow | Short | Server Action update | Read fresh | | Entitlements | Dangerous | Near zero | Permission mutation | Fail closed | | Analytics aggregate | Often yes | Medium | Batch or tag | Show timestamp | no-store Is Not A Strategy Opting out of cache can be correct. It is not a substitute for architecture. Use no-store behavior when data cannot be safely reused. Do not use it because the team cannot find the actual stale cache. One-Minute Brief Data fetching in Next.js 16 is about picking the right reuse layer. Request memoization, persistent cache, CDN cache, and browser cache are different systems. Senior engineers debug the layer, key, stale budget, and invalidation event. Official Source Anchors This lesson is anchored only to official Next.js documentation and release material, plus npm registry metadata for the latest published 16.x package version checked during authoring. Next.js 16 release notesRoute Segment ConfigCaching with Cache ComponentsMigrating to Cache ComponentsFetching Datafetch API referenceupdateTag API referencerevalidateTag API referenceNext.js 16 upgrade guide",
+      "headings": [
+        {
+          "id": "separate-three-kinds-of-reuse",
+          "depth": 2,
+          "text": "Separate Three Kinds Of Reuse"
+        },
+        {
+          "id": "server-fetch-is-extended",
+          "depth": 2,
+          "text": "Server fetch Is Extended"
+        },
+        {
+          "id": "orm-and-database-reads",
+          "depth": 2,
+          "text": "ORM And Database Reads"
+        },
+        {
+          "id": "stale-data-is-a-product-state",
+          "depth": 2,
+          "text": "Stale Data Is A Product State"
+        },
+        {
+          "id": "no-store-is-not-a-strategy",
+          "depth": 2,
+          "text": "no-store Is Not A Strategy"
+        },
+        {
+          "id": "one-minute-brief",
+          "depth": 2,
+          "text": "One-Minute Brief"
+        },
+        {
+          "id": "official-source-anchors",
+          "depth": 2,
+          "text": "Official Source Anchors"
+        }
+      ],
+      "mermaidBlocks": [],
+      "contentHash": "425590dafc90724bf9d1af8ffc31a7423f774ef09201bb62d20323517087c222",
+      "readingMinutes": 3
+    },
+    {
+      "title": "What force-dynamic Means In Next.js 16",
+      "slug": "frontend/nextjs-16-force-dynamic",
+      "summary": "A senior explanation of export const dynamic equals force-dynamic, its previous-model cache behavior, and why Cache Components changes the recommendation.",
+      "track": "Front-End Development",
+      "topic": "Next.js Route Segment Config",
+      "difficulty": "senior",
+      "tags": [
+        "nextjs",
+        "force-dynamic",
+        "route-segment-config",
+        "cache-components",
+        "ssr"
+      ],
+      "prerequisites": [
+        "Next.js App Router routes",
+        "Server-side rendering",
+        "fetch caching basics"
+      ],
+      "diagramRefs": [],
+      "status": "published",
+      "id": "15aca1b4abaf",
+      "route": "/docs/frontend/nextjs-16-force-dynamic",
+      "sourcePath": "content/knowledge/frontend/nextjs-16-force-dynamic.md",
+      "bodyPath": "content/knowledge/frontend/nextjs-16-force-dynamic.md",
+      "markdown": "## The Short Answer\n\nIn a Next.js App Router page or layout, `export const dynamic = 'force-dynamic';` was a route segment config from the previous caching model. It told Next.js to render that route for each request and to force the route's server `fetch` calls away from persistent caching. In previous-model terms, it was the App Router equivalent of request-time SSR plus segment-wide no-store fetch behavior.\n\nFor teams using Next.js 16 with Cache Components, the official migration guidance is different: remove it. With Cache Components, pages are dynamic by default and caching is opt-in through `\"use cache\"`, `cacheLife`, and related APIs.\n\n```ts\nexport const dynamic = 'force-dynamic';\n```\n\n## What It Did In The Previous Model\n\nThe previous model exposed route-level switches such as `dynamic`, `revalidate`, and `fetchCache`. `dynamic = 'force-dynamic'` forced dynamic rendering for the route segment. It also made the route behave as though every server `fetch` in that segment opted out of caching, and as though the segment's fetch cache policy were force-no-store.\n\nThat mattered because older App Router caching could cache `fetch` results depending on where the request was discovered and which route settings existed. A developer surprised by stale data often reached for `force-dynamic` to make the whole segment request-time. It worked, but it was broad.\n\n## Why It Became A Blunt Tool\n\n`force-dynamic` can be appropriate when an entire route is truly per-request and every server fetch should bypass persistent cache. It is also easy to overuse. It can throw away useful caching for stable shell content, product copy, navigation data, or expensive shared queries.\n\nA route-level dynamic switch can hide the more precise decision: which data must be fresh, which data can be cached by tag, and which UI can stream independently?\n\n## Next.js 16 With Cache Components\n\nCache Components changes the default posture. Dynamic code runs at request time unless you explicitly cache a page, component, or function. That means `force-dynamic` is no longer the normal way to ask for fresh rendering. The modern review should look for accidental caching, missing Suspense boundaries, or an incorrectly cached function, not for a missing segment-level dynamic flag.\n\n```ts\nimport { cacheLife, cacheTag } from 'next/cache';\n\nasync function getSharedCatalog() {\n  'use cache';\n  cacheLife('hours');\n  cacheTag('catalog');\n  return db.catalog.findMany();\n}\n```\n\n## Migration Review\n\nWhen you see `dynamic = 'force-dynamic'` in a Next.js 16 app, do not delete it blindly. First identify why it was added. Common reasons include stale dashboard data, authentication-dependent rendering, search params, cookies, draft mode, or confusion around `fetch` caching. Then replace the old route-wide signal with the smallest correct policy.\n\n## One-Minute Brief\n\n`dynamic = 'force-dynamic'` used to mean: render this route on every request and do not persistently cache its server `fetch` calls. In Next.js 16 with Cache Components, request-time work is already the default. The better question is what should be explicitly cached.\n\n## Official Source Anchors\nThis lesson is anchored only to official Next.js documentation and release material, plus npm registry metadata for the latest published 16.x package version checked during authoring.\n- [Next.js 16 release notes](https://nextjs.org/blog/next-16)\n- [Route Segment Config](https://nextjs.org/docs/app/api-reference/file-conventions/route-segment-config)\n- [Caching with Cache Components](https://nextjs.org/docs/app/getting-started/caching)\n- [Migrating to Cache Components](https://nextjs.org/docs/app/guides/migrating-to-cache-components)\n- [Fetching Data](https://nextjs.org/docs/app/getting-started/fetching-data)\n- [fetch API reference](https://nextjs.org/docs/app/api-reference/functions/fetch)\n- [updateTag API reference](https://nextjs.org/docs/app/api-reference/functions/updateTag)\n- [revalidateTag API reference](https://nextjs.org/docs/app/api-reference/functions/revalidateTag)\n- [Next.js 16 upgrade guide](https://nextjs.org/docs/app/guides/upgrading/version-16)",
+      "plainText": "The Short Answer In a Next.js App Router page or layout, export const dynamic = 'force-dynamic'; was a route segment config from the previous caching model. It told Next.js to render that route for each request and to force the route's server fetch calls away from persistent caching. In previous-model terms, it was the App Router equivalent of request-time SSR plus segment-wide no-store fetch behavior. For teams using Next.js 16 with Cache Components, the official migration guidance is different: remove it. With Cache Components, pages are dynamic by default and caching is opt-in through \"use cache\", cacheLife, and related APIs. export const dynamic = 'force-dynamic'; What It Did In The Previous Model The previous model exposed route-level switches such as dynamic, revalidate, and fetchCache. dynamic = 'force-dynamic' forced dynamic rendering for the route segment. It also made the route behave as though every server fetch in that segment opted out of caching, and as though the segment's fetch cache policy were force-no-store. That mattered because older App Router caching could cache fetch results depending on where the request was discovered and which route settings existed. A developer surprised by stale data often reached for force-dynamic to make the whole segment request-time. It worked, but it was broad. Why It Became A Blunt Tool force-dynamic can be appropriate when an entire route is truly per-request and every server fetch should bypass persistent cache. It is also easy to overuse. It can throw away useful caching for stable shell content, product copy, navigation data, or expensive shared queries. A route-level dynamic switch can hide the more precise decision: which data must be fresh, which data can be cached by tag, and which UI can stream independently? Next.js 16 With Cache Components Cache Components changes the default posture. Dynamic code runs at request time unless you explicitly cache a page, component, or function. That means force-dynamic is no longer the normal way to ask for fresh rendering. The modern review should look for accidental caching, missing Suspense boundaries, or an incorrectly cached function, not for a missing segment-level dynamic flag. import { cacheLife, cacheTag } from 'next/cache'; async function getSharedCatalog() { 'use cache'; cacheLife('hours'); cacheTag('catalog'); return db.catalog.findMany(); } Migration Review When you see dynamic = 'force-dynamic' in a Next.js 16 app, do not delete it blindly. First identify why it was added. Common reasons include stale dashboard data, authentication-dependent rendering, search params, cookies, draft mode, or confusion around fetch caching. Then replace the old route-wide signal with the smallest correct policy. One-Minute Brief dynamic = 'force-dynamic' used to mean: render this route on every request and do not persistently cache its server fetch calls. In Next.js 16 with Cache Components, request-time work is already the default. The better question is what should be explicitly cached. Official Source Anchors This lesson is anchored only to official Next.js documentation and release material, plus npm registry metadata for the latest published 16.x package version checked during authoring. Next.js 16 release notesRoute Segment ConfigCaching with Cache ComponentsMigrating to Cache ComponentsFetching Datafetch API referenceupdateTag API referencerevalidateTag API referenceNext.js 16 upgrade guide",
+      "headings": [
+        {
+          "id": "the-short-answer",
+          "depth": 2,
+          "text": "The Short Answer"
+        },
+        {
+          "id": "what-it-did-in-the-previous-model",
+          "depth": 2,
+          "text": "What It Did In The Previous Model"
+        },
+        {
+          "id": "why-it-became-a-blunt-tool",
+          "depth": 2,
+          "text": "Why It Became A Blunt Tool"
+        },
+        {
+          "id": "nextjs-16-with-cache-components",
+          "depth": 2,
+          "text": "Next.js 16 With Cache Components"
+        },
+        {
+          "id": "migration-review",
+          "depth": 2,
+          "text": "Migration Review"
+        },
+        {
+          "id": "one-minute-brief",
+          "depth": 2,
+          "text": "One-Minute Brief"
+        },
+        {
+          "id": "official-source-anchors",
+          "depth": 2,
+          "text": "Official Source Anchors"
+        }
+      ],
+      "mermaidBlocks": [],
+      "contentHash": "2f3a35b5a4c2ad44aa175918e75ed32fb5866f68ee8084109319b424f30ecb55",
+      "readingMinutes": 3
+    },
+    {
+      "title": "Invalidation And Mutations In Next.js 16",
+      "slug": "frontend/nextjs-16-invalidation-mutations",
+      "summary": "A principal-level guide to Server Actions, updateTag, revalidateTag, read-your-own-writes, webhooks, and mutation-driven cache correctness.",
+      "track": "Front-End Development",
+      "topic": "Next.js Invalidation",
+      "difficulty": "principal",
+      "tags": [
+        "nextjs",
+        "server-actions",
+        "updatetag",
+        "revalidatetag",
+        "mutations"
+      ],
+      "prerequisites": [
+        "Server Actions",
+        "Cache tags",
+        "Mutation workflows"
+      ],
+      "diagramRefs": [],
+      "status": "published",
+      "id": "e27e03dfe338",
+      "route": "/docs/frontend/nextjs-16-invalidation-mutations",
+      "sourcePath": "content/knowledge/frontend/nextjs-16-invalidation-mutations.md",
+      "bodyPath": "content/knowledge/frontend/nextjs-16-invalidation-mutations.md",
+      "markdown": "## Invalidation Is Part Of The Mutation\n\nA mutation is not complete when the database write succeeds. In a cached app, the mutation is complete when the user-visible read path has the correct freshness semantics. That might mean immediate expiration for the acting user, stale-while-revalidate for public viewers, or a conservative fail-closed read for sensitive state.\n\n## updateTag For Read-Your-Own-Writes\n\n`updateTag` belongs in Server Actions. Use it when a user performs a mutation and the next read should wait for fresh data instead of seeing stale cached content. It is the right mental model for edit screens, profile updates, dashboard mutations, and workflows where the actor expects their change to be visible immediately.\n\n```ts\n'use server';\n\nimport { updateTag } from 'next/cache';\n\nexport async function renameProject(projectId: string, name: string) {\n  await db.project.update({ where: { id: projectId }, data: { name } });\n  updateTag('project:' + projectId);\n}\n```\n\n## revalidateTag For Stale-While-Revalidate\n\n`revalidateTag` can be used from contexts such as Route Handlers and is appropriate for webhooks, CMS publishes, background systems, and stale-while-revalidate behavior. With the `\"max\"` profile, the next visitor can receive stale content while revalidation happens in the background.\n\nThat is good for public content and poor for read-your-own-writes. If a user just edited a record, serving the old version and refreshing later feels broken.\n\n## Tag Design\n\nTags are an index into your cache. Design them like production identifiers: stable enough that reads and writes agree, narrow enough to avoid invalidation storms, broad enough to cover related list and detail views, and documented near the cached read and mutation.\n\n## Failure Modes\n\nThe hardest bugs are silent. The database is correct, the mutation returned success, and only one cached route is stale. Build tests or review checklists that trace the write to each affected read. Include webhook retries, idempotency, and what happens when invalidation fails after the write succeeds.\n\n## One-Minute Brief\n\nIn Next.js 16, mutation design includes cache design. Use `updateTag` in Server Actions for read-your-own-writes. Use `revalidateTag` from non-action contexts or when stale-while-revalidate is the product behavior.\n\n## Official Source Anchors\nThis lesson is anchored only to official Next.js documentation and release material, plus npm registry metadata for the latest published 16.x package version checked during authoring.\n- [Next.js 16 release notes](https://nextjs.org/blog/next-16)\n- [Route Segment Config](https://nextjs.org/docs/app/api-reference/file-conventions/route-segment-config)\n- [Caching with Cache Components](https://nextjs.org/docs/app/getting-started/caching)\n- [Migrating to Cache Components](https://nextjs.org/docs/app/guides/migrating-to-cache-components)\n- [Fetching Data](https://nextjs.org/docs/app/getting-started/fetching-data)\n- [fetch API reference](https://nextjs.org/docs/app/api-reference/functions/fetch)\n- [updateTag API reference](https://nextjs.org/docs/app/api-reference/functions/updateTag)\n- [revalidateTag API reference](https://nextjs.org/docs/app/api-reference/functions/revalidateTag)\n- [Next.js 16 upgrade guide](https://nextjs.org/docs/app/guides/upgrading/version-16)",
+      "plainText": "Invalidation Is Part Of The Mutation A mutation is not complete when the database write succeeds. In a cached app, the mutation is complete when the user-visible read path has the correct freshness semantics. That might mean immediate expiration for the acting user, stale-while-revalidate for public viewers, or a conservative fail-closed read for sensitive state. updateTag For Read-Your-Own-Writes updateTag belongs in Server Actions. Use it when a user performs a mutation and the next read should wait for fresh data instead of seeing stale cached content. It is the right mental model for edit screens, profile updates, dashboard mutations, and workflows where the actor expects their change to be visible immediately. 'use server'; import { updateTag } from 'next/cache'; export async function renameProject(projectId: string, name: string) { await db.project.update({ where: { id: projectId }, data: { name } }); updateTag('project:' + projectId); } revalidateTag For Stale-While-Revalidate revalidateTag can be used from contexts such as Route Handlers and is appropriate for webhooks, CMS publishes, background systems, and stale-while-revalidate behavior. With the \"max\" profile, the next visitor can receive stale content while revalidation happens in the background. That is good for public content and poor for read-your-own-writes. If a user just edited a record, serving the old version and refreshing later feels broken. Tag Design Tags are an index into your cache. Design them like production identifiers: stable enough that reads and writes agree, narrow enough to avoid invalidation storms, broad enough to cover related list and detail views, and documented near the cached read and mutation. Failure Modes The hardest bugs are silent. The database is correct, the mutation returned success, and only one cached route is stale. Build tests or review checklists that trace the write to each affected read. Include webhook retries, idempotency, and what happens when invalidation fails after the write succeeds. One-Minute Brief In Next.js 16, mutation design includes cache design. Use updateTag in Server Actions for read-your-own-writes. Use revalidateTag from non-action contexts or when stale-while-revalidate is the product behavior. Official Source Anchors This lesson is anchored only to official Next.js documentation and release material, plus npm registry metadata for the latest published 16.x package version checked during authoring. Next.js 16 release notesRoute Segment ConfigCaching with Cache ComponentsMigrating to Cache ComponentsFetching Datafetch API referenceupdateTag API referencerevalidateTag API referenceNext.js 16 upgrade guide",
+      "headings": [
+        {
+          "id": "invalidation-is-part-of-the-mutation",
+          "depth": 2,
+          "text": "Invalidation Is Part Of The Mutation"
+        },
+        {
+          "id": "updatetag-for-read-your-own-writes",
+          "depth": 2,
+          "text": "updateTag For Read-Your-Own-Writes"
+        },
+        {
+          "id": "revalidatetag-for-stale-while-revalidate",
+          "depth": 2,
+          "text": "revalidateTag For Stale-While-Revalidate"
+        },
+        {
+          "id": "tag-design",
+          "depth": 2,
+          "text": "Tag Design"
+        },
+        {
+          "id": "failure-modes",
+          "depth": 2,
+          "text": "Failure Modes"
+        },
+        {
+          "id": "one-minute-brief",
+          "depth": 2,
+          "text": "One-Minute Brief"
+        },
+        {
+          "id": "official-source-anchors",
+          "depth": 2,
+          "text": "Official Source Anchors"
+        }
+      ],
+      "mermaidBlocks": [],
+      "contentHash": "6c80472b2cc0d6ae810a6dfbc5fd67b0a7631799710f15c63bc771bbaa326501",
+      "readingMinutes": 2
+    },
+    {
+      "title": "Next.js 16 Migration Review For Senior Teams",
+      "slug": "frontend/nextjs-16-migration-review",
+      "summary": "A hard migration checklist for Next.js 16 covering codemods, Cache Components, proxy.ts, async request APIs, image changes, and rollout risk.",
+      "track": "Front-End Development",
+      "topic": "Next.js Migration",
+      "difficulty": "senior",
+      "tags": [
+        "nextjs",
+        "migration",
+        "upgrade",
+        "proxy",
+        "breaking-changes"
+      ],
+      "prerequisites": [
+        "Next.js 15 App Router experience",
+        "CI and rollout ownership",
+        "Production incident review"
+      ],
+      "diagramRefs": [],
+      "status": "published",
+      "id": "f2943e21532e",
+      "route": "/docs/frontend/nextjs-16-migration-review",
+      "sourcePath": "content/knowledge/frontend/nextjs-16-migration-review.md",
+      "bodyPath": "content/knowledge/frontend/nextjs-16-migration-review.md",
+      "markdown": "## Migration Is A Risk Review\n\nA Next.js 16 migration is not just a dependency bump. It changes defaults and surfaces in areas that affect correctness: caching APIs, async request APIs, routing and prefetch behavior, image defaults, middleware naming, bundler defaults, and removed or deprecated configuration. Treat the upgrade as a product risk review.\n\nThe official codemod can do mechanical work. It cannot decide whether stale data is acceptable, whether a custom webpack assumption works under Turbopack, or whether a legacy `dynamic` config was masking a design bug.\n\n## Recommended Order\n\n1. Record current Next.js, React, Node, package manager, and deployment runtime versions.\n2. Run the official upgrade codemod in a dedicated branch.\n3. Fix TypeScript and lint errors without changing product behavior.\n4. Audit route segment configs and decide whether Cache Components changes their meaning.\n5. Audit request-time APIs, params, search params, metadata, image routes, and sitemap code for async changes.\n6. Validate middleware-to-proxy migration and any edge assumptions.\n7. Run content, unit, integration, and browser journeys that cover cached, dynamic, and mutation-heavy pages.\n8. Roll out with monitoring for stale data, navigation failures, server errors, image regressions, and build performance changes.\n\n## proxy.ts And Network Boundaries\n\nNext.js 16 replaces the middleware naming direction with `proxy.ts` to make the network boundary clearer. The name matters because teams often put too much application logic into middleware. Proxy code should stay small, predictable, and safe for the runtime it runs in.\n\n## Cache Components Adoption\n\nDo not turn on Cache Components and then recreate the previous model with page-wide flags. Remove obsolete `force-dynamic` usage when it only forced request-time behavior. Replace old `revalidate` and `fetchCache` decisions with local cached scopes where the output can be safely reused.\n\n## Release Criteria\n\nA migration is ready when the team can explain which route configs were removed, which cached scopes were added, which async request APIs changed shape, which routes remain intentionally dynamic, and which browser journeys prove navigation, forms, auth, images, and reading flows still work.\n\n## One-Minute Brief\n\nA Next.js 16 upgrade is a boundary and caching audit. Let codemods handle syntax, but make humans own cache semantics, request-time APIs, proxy behavior, routing changes, and rollout monitoring.\n\n## Official Source Anchors\nThis lesson is anchored only to official Next.js documentation and release material, plus npm registry metadata for the latest published 16.x package version checked during authoring.\n- [Next.js 16 release notes](https://nextjs.org/blog/next-16)\n- [Route Segment Config](https://nextjs.org/docs/app/api-reference/file-conventions/route-segment-config)\n- [Caching with Cache Components](https://nextjs.org/docs/app/getting-started/caching)\n- [Migrating to Cache Components](https://nextjs.org/docs/app/guides/migrating-to-cache-components)\n- [Fetching Data](https://nextjs.org/docs/app/getting-started/fetching-data)\n- [fetch API reference](https://nextjs.org/docs/app/api-reference/functions/fetch)\n- [updateTag API reference](https://nextjs.org/docs/app/api-reference/functions/updateTag)\n- [revalidateTag API reference](https://nextjs.org/docs/app/api-reference/functions/revalidateTag)\n- [Next.js 16 upgrade guide](https://nextjs.org/docs/app/guides/upgrading/version-16)",
+      "plainText": "Migration Is A Risk Review A Next.js 16 migration is not just a dependency bump. It changes defaults and surfaces in areas that affect correctness: caching APIs, async request APIs, routing and prefetch behavior, image defaults, middleware naming, bundler defaults, and removed or deprecated configuration. Treat the upgrade as a product risk review. The official codemod can do mechanical work. It cannot decide whether stale data is acceptable, whether a custom webpack assumption works under Turbopack, or whether a legacy dynamic config was masking a design bug. Recommended Order Record current Next.js, React, Node, package manager, and deployment runtime versions.Run the official upgrade codemod in a dedicated branch.Fix TypeScript and lint errors without changing product behavior.Audit route segment configs and decide whether Cache Components changes their meaning.Audit request-time APIs, params, search params, metadata, image routes, and sitemap code for async changes.Validate middleware-to-proxy migration and any edge assumptions.Run content, unit, integration, and browser journeys that cover cached, dynamic, and mutation-heavy pages.Roll out with monitoring for stale data, navigation failures, server errors, image regressions, and build performance changes. proxy.ts And Network Boundaries Next.js 16 replaces the middleware naming direction with proxy.ts to make the network boundary clearer. The name matters because teams often put too much application logic into middleware. Proxy code should stay small, predictable, and safe for the runtime it runs in. Cache Components Adoption Do not turn on Cache Components and then recreate the previous model with page-wide flags. Remove obsolete force-dynamic usage when it only forced request-time behavior. Replace old revalidate and fetchCache decisions with local cached scopes where the output can be safely reused. Release Criteria A migration is ready when the team can explain which route configs were removed, which cached scopes were added, which async request APIs changed shape, which routes remain intentionally dynamic, and which browser journeys prove navigation, forms, auth, images, and reading flows still work. One-Minute Brief A Next.js 16 upgrade is a boundary and caching audit. Let codemods handle syntax, but make humans own cache semantics, request-time APIs, proxy behavior, routing changes, and rollout monitoring. Official Source Anchors This lesson is anchored only to official Next.js documentation and release material, plus npm registry metadata for the latest published 16.x package version checked during authoring. Next.js 16 release notesRoute Segment ConfigCaching with Cache ComponentsMigrating to Cache ComponentsFetching Datafetch API referenceupdateTag API referencerevalidateTag API referenceNext.js 16 upgrade guide",
+      "headings": [
+        {
+          "id": "migration-is-a-risk-review",
+          "depth": 2,
+          "text": "Migration Is A Risk Review"
+        },
+        {
+          "id": "recommended-order",
+          "depth": 2,
+          "text": "Recommended Order"
+        },
+        {
+          "id": "proxyts-and-network-boundaries",
+          "depth": 2,
+          "text": "proxy.ts And Network Boundaries"
+        },
+        {
+          "id": "cache-components-adoption",
+          "depth": 2,
+          "text": "Cache Components Adoption"
+        },
+        {
+          "id": "release-criteria",
+          "depth": 2,
+          "text": "Release Criteria"
+        },
+        {
+          "id": "one-minute-brief",
+          "depth": 2,
+          "text": "One-Minute Brief"
+        },
+        {
+          "id": "official-source-anchors",
+          "depth": 2,
+          "text": "Official Source Anchors"
+        }
+      ],
+      "mermaidBlocks": [],
+      "contentHash": "651d7fcb7bc2373d1170797f41b47dcb159bac299ed854654a1522ecca8d0d58",
+      "readingMinutes": 2
+    },
+    {
+      "title": "Painful Production Lessons In Next.js 16",
+      "slug": "frontend/nextjs-16-painful-production-lessons",
+      "summary": "Hard lessons from production Next.js work: async request APIs, static-to-dynamic errors, secrets, client boundaries, and cache debugging.",
+      "track": "Front-End Development",
+      "topic": "Next.js Production",
+      "difficulty": "principal",
+      "tags": [
+        "nextjs",
+        "production",
+        "debugging",
+        "request-apis",
+        "client-server-boundary"
+      ],
+      "prerequisites": [
+        "Production Next.js operations",
+        "App Router debugging",
+        "Security review"
+      ],
+      "diagramRefs": [],
+      "status": "published",
+      "id": "a2bd2c318c0b",
+      "route": "/docs/frontend/nextjs-16-painful-production-lessons",
+      "sourcePath": "content/knowledge/frontend/nextjs-16-painful-production-lessons.md",
+      "bodyPath": "content/knowledge/frontend/nextjs-16-painful-production-lessons.md",
+      "markdown": "## Pain Is Usually Boundary Confusion\n\nMost painful Next.js bugs are boundary bugs. A server secret crosses into a Client Component. A route that looked static reads request state through a child. A cached function accidentally depends on cookies. A mutation updates data but not tags. A loading state wraps too much of the page.\n\nThe cure is not memorizing more flags. The cure is naming each boundary and testing the product behavior it protects.\n\n## Async Request APIs\n\nModern Next.js treats params, search params, cookies, headers, and draft mode as request data, not free constants. The painful migration is usually not adding `await`. It is realizing that code reading request data cannot be treated like deterministic prerendered shell work.\n\nIf a component depends on request data, put it where request-time work belongs and give it a Suspense boundary if it delays the shell. Do not smuggle request data into cached functions unless the cache model explicitly supports that key dimension.\n\n## Static-To-Dynamic Surprises\n\nA route can surprise you when one subtree introduces runtime access. The build or dev server may complain, or the route may stop behaving like the team expected. This is usually a design signal: decide where the runtime boundary belongs.\n\n## Secrets And Client Boundaries\n\n`\"use client\"` is a bundle boundary. Anything imported by a Client Component must be safe for the browser. Do not import server-only modules, database clients, service keys, or admin SDKs through client paths. Treat Client Components as adapters for interaction. Keep data ownership, validation, authorization, and secrets on the server.\n\n## Cache Debugging\n\nWhen data is stale, do not randomly add `no-store`, `force-dynamic`, or full-page refreshes. Build a small incident packet: route, component, read function, cache tags, mutation, and product stale-state contract.\n\n## One-Minute Brief\n\nThe worst Next.js bugs are not syntax bugs. They are boundary bugs: request data inside cached work, secrets inside client bundles, stale tags after writes, and Suspense boundaries that hide too much of the product.\n\n## Official Source Anchors\nThis lesson is anchored only to official Next.js documentation and release material, plus npm registry metadata for the latest published 16.x package version checked during authoring.\n- [Next.js 16 release notes](https://nextjs.org/blog/next-16)\n- [Route Segment Config](https://nextjs.org/docs/app/api-reference/file-conventions/route-segment-config)\n- [Caching with Cache Components](https://nextjs.org/docs/app/getting-started/caching)\n- [Migrating to Cache Components](https://nextjs.org/docs/app/guides/migrating-to-cache-components)\n- [Fetching Data](https://nextjs.org/docs/app/getting-started/fetching-data)\n- [fetch API reference](https://nextjs.org/docs/app/api-reference/functions/fetch)\n- [updateTag API reference](https://nextjs.org/docs/app/api-reference/functions/updateTag)\n- [revalidateTag API reference](https://nextjs.org/docs/app/api-reference/functions/revalidateTag)\n- [Next.js 16 upgrade guide](https://nextjs.org/docs/app/guides/upgrading/version-16)",
+      "plainText": "Pain Is Usually Boundary Confusion Most painful Next.js bugs are boundary bugs. A server secret crosses into a Client Component. A route that looked static reads request state through a child. A cached function accidentally depends on cookies. A mutation updates data but not tags. A loading state wraps too much of the page. The cure is not memorizing more flags. The cure is naming each boundary and testing the product behavior it protects. Async Request APIs Modern Next.js treats params, search params, cookies, headers, and draft mode as request data, not free constants. The painful migration is usually not adding await. It is realizing that code reading request data cannot be treated like deterministic prerendered shell work. If a component depends on request data, put it where request-time work belongs and give it a Suspense boundary if it delays the shell. Do not smuggle request data into cached functions unless the cache model explicitly supports that key dimension. Static-To-Dynamic Surprises A route can surprise you when one subtree introduces runtime access. The build or dev server may complain, or the route may stop behaving like the team expected. This is usually a design signal: decide where the runtime boundary belongs. Secrets And Client Boundaries \"use client\" is a bundle boundary. Anything imported by a Client Component must be safe for the browser. Do not import server-only modules, database clients, service keys, or admin SDKs through client paths. Treat Client Components as adapters for interaction. Keep data ownership, validation, authorization, and secrets on the server. Cache Debugging When data is stale, do not randomly add no-store, force-dynamic, or full-page refreshes. Build a small incident packet: route, component, read function, cache tags, mutation, and product stale-state contract. One-Minute Brief The worst Next.js bugs are not syntax bugs. They are boundary bugs: request data inside cached work, secrets inside client bundles, stale tags after writes, and Suspense boundaries that hide too much of the product. Official Source Anchors This lesson is anchored only to official Next.js documentation and release material, plus npm registry metadata for the latest published 16.x package version checked during authoring. Next.js 16 release notesRoute Segment ConfigCaching with Cache ComponentsMigrating to Cache ComponentsFetching Datafetch API referenceupdateTag API referencerevalidateTag API referenceNext.js 16 upgrade guide",
+      "headings": [
+        {
+          "id": "pain-is-usually-boundary-confusion",
+          "depth": 2,
+          "text": "Pain Is Usually Boundary Confusion"
+        },
+        {
+          "id": "async-request-apis",
+          "depth": 2,
+          "text": "Async Request APIs"
+        },
+        {
+          "id": "static-to-dynamic-surprises",
+          "depth": 2,
+          "text": "Static-To-Dynamic Surprises"
+        },
+        {
+          "id": "secrets-and-client-boundaries",
+          "depth": 2,
+          "text": "Secrets And Client Boundaries"
+        },
+        {
+          "id": "cache-debugging",
+          "depth": 2,
+          "text": "Cache Debugging"
+        },
+        {
+          "id": "one-minute-brief",
+          "depth": 2,
+          "text": "One-Minute Brief"
+        },
+        {
+          "id": "official-source-anchors",
+          "depth": 2,
+          "text": "Official Source Anchors"
+        }
+      ],
+      "mermaidBlocks": [],
+      "contentHash": "45a2ea9eb63c541e958eb892c0148092f00f2a64edfb0bb1f30ddd6e7357424b",
+      "readingMinutes": 2
+    },
+    {
+      "title": "Performance Architecture In Next.js 16",
+      "slug": "frontend/nextjs-16-performance-architecture",
+      "summary": "A senior guide to Turbopack, routing and prefetch changes, streaming, React Compiler, caching, and performance tradeoffs in Next.js 16.",
+      "track": "Front-End Development",
+      "topic": "Next.js Performance",
+      "difficulty": "senior",
+      "tags": [
+        "nextjs",
+        "performance",
+        "turbopack",
+        "prefetching",
+        "streaming"
+      ],
+      "prerequisites": [
+        "Web performance basics",
+        "Next.js routing",
+        "React rendering"
+      ],
+      "diagramRefs": [],
+      "status": "published",
+      "id": "fa95fc6dfefa",
+      "route": "/docs/frontend/nextjs-16-performance-architecture",
+      "sourcePath": "content/knowledge/frontend/nextjs-16-performance-architecture.md",
+      "bodyPath": "content/knowledge/frontend/nextjs-16-performance-architecture.md",
+      "markdown": "## Performance Is A System Property\n\nNext.js 16 ships important performance improvements, including stable Turbopack, enhanced routing and prefetch behavior, Cache Components, and React 19.2 support. None of that removes architecture work. A fast framework can still serve slow pages if teams cache the wrong data, stream the wrong boundary, ship too much client JavaScript, or refetch data after hydration.\n\nMeasure performance by user job: time to a useful shell, time to personalized content, navigation responsiveness, origin pressure, and error recovery.\n\n## Turbopack And Build Feedback\n\nTurbopack being stable and default in newer projects changes local and build feedback loops. Faster compile and refresh cycles help teams iterate, but production review still needs CI parity and package compatibility checks. If a webpack customization exists, migration must verify equivalent behavior.\n\n## Routing And Prefetching\n\nEnhanced routing deduplicates shared layout work and fetches less redundant route data during navigation. This is valuable for large apps with many sibling links under a shared layout. You may observe more granular prefetch requests while total transferred data falls.\n\nDo not disable prefetching because a network panel looks unfamiliar. First check total bytes, navigation latency, and origin load.\n\n## Streaming And Useful Shells\n\nStreaming is most powerful when the first shell is useful. If the route streams a header, navigation, filters, and stable layout while a personalized panel resolves, users feel progress. If the route streams a blank page with a spinner, users feel delay.\n\n## Cache For Latency And Load\n\nCache Components can cut origin work, but caching is only a performance win when correctness survives. The highest-value caches are shared, expensive, stable, and easy to invalidate. The riskiest caches are permissioned, personalized, or tied to writes without clear tags.\n\n## One-Minute Brief\n\nNext.js 16 performance is not one feature. Turbopack improves feedback, routing improves navigation payloads, streaming improves perceived speed, and Cache Components reduce repeated work. The senior job is choosing the boundary that preserves correctness.\n\n## Official Source Anchors\nThis lesson is anchored only to official Next.js documentation and release material, plus npm registry metadata for the latest published 16.x package version checked during authoring.\n- [Next.js 16 release notes](https://nextjs.org/blog/next-16)\n- [Route Segment Config](https://nextjs.org/docs/app/api-reference/file-conventions/route-segment-config)\n- [Caching with Cache Components](https://nextjs.org/docs/app/getting-started/caching)\n- [Migrating to Cache Components](https://nextjs.org/docs/app/guides/migrating-to-cache-components)\n- [Fetching Data](https://nextjs.org/docs/app/getting-started/fetching-data)\n- [fetch API reference](https://nextjs.org/docs/app/api-reference/functions/fetch)\n- [updateTag API reference](https://nextjs.org/docs/app/api-reference/functions/updateTag)\n- [revalidateTag API reference](https://nextjs.org/docs/app/api-reference/functions/revalidateTag)\n- [Next.js 16 upgrade guide](https://nextjs.org/docs/app/guides/upgrading/version-16)",
+      "plainText": "Performance Is A System Property Next.js 16 ships important performance improvements, including stable Turbopack, enhanced routing and prefetch behavior, Cache Components, and React 19.2 support. None of that removes architecture work. A fast framework can still serve slow pages if teams cache the wrong data, stream the wrong boundary, ship too much client JavaScript, or refetch data after hydration. Measure performance by user job: time to a useful shell, time to personalized content, navigation responsiveness, origin pressure, and error recovery. Turbopack And Build Feedback Turbopack being stable and default in newer projects changes local and build feedback loops. Faster compile and refresh cycles help teams iterate, but production review still needs CI parity and package compatibility checks. If a webpack customization exists, migration must verify equivalent behavior. Routing And Prefetching Enhanced routing deduplicates shared layout work and fetches less redundant route data during navigation. This is valuable for large apps with many sibling links under a shared layout. You may observe more granular prefetch requests while total transferred data falls. Do not disable prefetching because a network panel looks unfamiliar. First check total bytes, navigation latency, and origin load. Streaming And Useful Shells Streaming is most powerful when the first shell is useful. If the route streams a header, navigation, filters, and stable layout while a personalized panel resolves, users feel progress. If the route streams a blank page with a spinner, users feel delay. Cache For Latency And Load Cache Components can cut origin work, but caching is only a performance win when correctness survives. The highest-value caches are shared, expensive, stable, and easy to invalidate. The riskiest caches are permissioned, personalized, or tied to writes without clear tags. One-Minute Brief Next.js 16 performance is not one feature. Turbopack improves feedback, routing improves navigation payloads, streaming improves perceived speed, and Cache Components reduce repeated work. The senior job is choosing the boundary that preserves correctness. Official Source Anchors This lesson is anchored only to official Next.js documentation and release material, plus npm registry metadata for the latest published 16.x package version checked during authoring. Next.js 16 release notesRoute Segment ConfigCaching with Cache ComponentsMigrating to Cache ComponentsFetching Datafetch API referenceupdateTag API referencerevalidateTag API referenceNext.js 16 upgrade guide",
+      "headings": [
+        {
+          "id": "performance-is-a-system-property",
+          "depth": 2,
+          "text": "Performance Is A System Property"
+        },
+        {
+          "id": "turbopack-and-build-feedback",
+          "depth": 2,
+          "text": "Turbopack And Build Feedback"
+        },
+        {
+          "id": "routing-and-prefetching",
+          "depth": 2,
+          "text": "Routing And Prefetching"
+        },
+        {
+          "id": "streaming-and-useful-shells",
+          "depth": 2,
+          "text": "Streaming And Useful Shells"
+        },
+        {
+          "id": "cache-for-latency-and-load",
+          "depth": 2,
+          "text": "Cache For Latency And Load"
+        },
+        {
+          "id": "one-minute-brief",
+          "depth": 2,
+          "text": "One-Minute Brief"
+        },
+        {
+          "id": "official-source-anchors",
+          "depth": 2,
+          "text": "Official Source Anchors"
+        }
+      ],
+      "mermaidBlocks": [],
+      "contentHash": "124926c838a3f6c9ced840695087e246f9d6f81f01b11f3c01ce295c48fcf06e",
+      "readingMinutes": 2
+    },
+    {
+      "title": "Next.js 16 Rendering Model For App Router Engineers",
+      "slug": "frontend/nextjs-16-rendering-model",
+      "summary": "A hard-level model of Next.js 16 rendering, Server Components, request-time work, Suspense, streaming, and Partial Prerendering tradeoffs.",
+      "track": "Front-End Development",
+      "topic": "Next.js Rendering",
+      "difficulty": "senior",
+      "tags": [
+        "nextjs",
+        "app-router",
+        "server-components",
+        "ssr",
+        "streaming"
+      ],
+      "prerequisites": [
+        "Next.js App Router experience",
+        "React Server Components",
+        "Production React debugging"
+      ],
+      "diagramRefs": [],
+      "status": "published",
+      "id": "62d5f93d61b1",
+      "route": "/docs/frontend/nextjs-16-rendering-model",
+      "sourcePath": "content/knowledge/frontend/nextjs-16-rendering-model.md",
+      "bodyPath": "content/knowledge/frontend/nextjs-16-rendering-model.md",
+      "markdown": "## The Production Mental Model\n\nNext.js 16 should be read as a React Server Components application framework first, not as a page-level static-or-dynamic switchboard. A route is composed from layouts, pages, Server Components, Client Components, data functions, and Suspense boundaries. The senior question is which parts can be produced before a request, which parts need request-time data, and which parts should be cached after their first expensive render.\n\nServer Components execute on the server and can read server-only dependencies. Client Components own browser state, event handlers, and effects. Moving code across that boundary changes bundle size, secret exposure, data timing, and where errors appear. Treat the boundary as an architecture decision, not a syntax preference.\n\n## SSR Is Not One Thing\n\n- request-time rendering for uncached data, cookies, headers, or connection-bound work\n- prerendered static shells that stream dynamic holes later\n- cached Server Component output reused across requests\n- Client Component hydration and later client-side data refresh\n\nThose modes have different latency, correctness, CDN, observability, and debugging consequences. A route can have a fast shell, a delayed personalized section, and a cached expensive recommendation block at the same time.\n\n## Suspense Is A Boundary Contract\n\nSuspense is not only a loading spinner. In Next.js 16 with Cache Components, it is how uncached request-time work can be isolated from a static shell. If a component reads request data or waits for uncached data, the nearest useful Suspense boundary defines what users see while that work runs.\n\nThe practical review question is whether the fallback preserves layout, intent, and interaction. A compact skeleton or stable fallback tells users which part is still resolving while the rest of the page remains useful.\n\n## Partial Prerendering Lens\n\nPartial Prerendering ends the old false choice between fully static and fully dynamic pages. Stable route parts can be included in the static shell, while runtime parts stream through Suspense. Cache Components makes that model explicit: cache what should be reused, leave request-specific work dynamic, and put real boundaries around the dynamic parts.\n\n## Senior Review Checklist\n\n- Which data is user-specific, tenant-specific, locale-specific, or globally shared?\n- Which parts need request-time APIs such as cookies, headers, search params, or connection-bound work?\n- Which expensive work can be cached without creating stale user-visible state?\n- Where should Suspense boundaries preserve the static shell and avoid layout jumps?\n- Which code moved to the browser, and did that expose secrets or increase bundle cost?\n\n## One-Minute Brief\n\nNext.js 16 rendering is a composition problem. Do not ask whether the page is static or dynamic. Ask which subtrees are cached, which subtrees are request-time, and which boundary makes the waiting state honest.\n\n## Official Source Anchors\nThis lesson is anchored only to official Next.js documentation and release material, plus npm registry metadata for the latest published 16.x package version checked during authoring.\n- [Next.js 16 release notes](https://nextjs.org/blog/next-16)\n- [Route Segment Config](https://nextjs.org/docs/app/api-reference/file-conventions/route-segment-config)\n- [Caching with Cache Components](https://nextjs.org/docs/app/getting-started/caching)\n- [Migrating to Cache Components](https://nextjs.org/docs/app/guides/migrating-to-cache-components)\n- [Fetching Data](https://nextjs.org/docs/app/getting-started/fetching-data)\n- [fetch API reference](https://nextjs.org/docs/app/api-reference/functions/fetch)\n- [updateTag API reference](https://nextjs.org/docs/app/api-reference/functions/updateTag)\n- [revalidateTag API reference](https://nextjs.org/docs/app/api-reference/functions/revalidateTag)\n- [Next.js 16 upgrade guide](https://nextjs.org/docs/app/guides/upgrading/version-16)",
+      "plainText": "The Production Mental Model Next.js 16 should be read as a React Server Components application framework first, not as a page-level static-or-dynamic switchboard. A route is composed from layouts, pages, Server Components, Client Components, data functions, and Suspense boundaries. The senior question is which parts can be produced before a request, which parts need request-time data, and which parts should be cached after their first expensive render. Server Components execute on the server and can read server-only dependencies. Client Components own browser state, event handlers, and effects. Moving code across that boundary changes bundle size, secret exposure, data timing, and where errors appear. Treat the boundary as an architecture decision, not a syntax preference. SSR Is Not One Thing request-time rendering for uncached data, cookies, headers, or connection-bound workprerendered static shells that stream dynamic holes latercached Server Component output reused across requestsClient Component hydration and later client-side data refresh Those modes have different latency, correctness, CDN, observability, and debugging consequences. A route can have a fast shell, a delayed personalized section, and a cached expensive recommendation block at the same time. Suspense Is A Boundary Contract Suspense is not only a loading spinner. In Next.js 16 with Cache Components, it is how uncached request-time work can be isolated from a static shell. If a component reads request data or waits for uncached data, the nearest useful Suspense boundary defines what users see while that work runs. The practical review question is whether the fallback preserves layout, intent, and interaction. A compact skeleton or stable fallback tells users which part is still resolving while the rest of the page remains useful. Partial Prerendering Lens Partial Prerendering ends the old false choice between fully static and fully dynamic pages. Stable route parts can be included in the static shell, while runtime parts stream through Suspense. Cache Components makes that model explicit: cache what should be reused, leave request-specific work dynamic, and put real boundaries around the dynamic parts. Senior Review Checklist Which data is user-specific, tenant-specific, locale-specific, or globally shared?Which parts need request-time APIs such as cookies, headers, search params, or connection-bound work?Which expensive work can be cached without creating stale user-visible state?Where should Suspense boundaries preserve the static shell and avoid layout jumps?Which code moved to the browser, and did that expose secrets or increase bundle cost? One-Minute Brief Next.js 16 rendering is a composition problem. Do not ask whether the page is static or dynamic. Ask which subtrees are cached, which subtrees are request-time, and which boundary makes the waiting state honest. Official Source Anchors This lesson is anchored only to official Next.js documentation and release material, plus npm registry metadata for the latest published 16.x package version checked during authoring. Next.js 16 release notesRoute Segment ConfigCaching with Cache ComponentsMigrating to Cache ComponentsFetching Datafetch API referenceupdateTag API referencerevalidateTag API referenceNext.js 16 upgrade guide",
+      "headings": [
+        {
+          "id": "the-production-mental-model",
+          "depth": 2,
+          "text": "The Production Mental Model"
+        },
+        {
+          "id": "ssr-is-not-one-thing",
+          "depth": 2,
+          "text": "SSR Is Not One Thing"
+        },
+        {
+          "id": "suspense-is-a-boundary-contract",
+          "depth": 2,
+          "text": "Suspense Is A Boundary Contract"
+        },
+        {
+          "id": "partial-prerendering-lens",
+          "depth": 2,
+          "text": "Partial Prerendering Lens"
+        },
+        {
+          "id": "senior-review-checklist",
+          "depth": 2,
+          "text": "Senior Review Checklist"
+        },
+        {
+          "id": "one-minute-brief",
+          "depth": 2,
+          "text": "One-Minute Brief"
+        },
+        {
+          "id": "official-source-anchors",
+          "depth": 2,
+          "text": "Official Source Anchors"
+        }
+      ],
+      "mermaidBlocks": [],
+      "contentHash": "de8dc15ad4cb3d3edeb6ea756b85917e97949cccb0a5bd6f7db5f7acf616761b",
+      "readingMinutes": 3
+    },
+    {
       "title": "Python Async Testing And Production Standards For JS Engineers",
       "slug": "programming/python-async-testing-production",
       "summary": "Senior Python guidance for asyncio, blocking work, test boundaries, style standards, and production maintainability from a JavaScript and TypeScript perspective.",
@@ -1428,6 +1972,141 @@
     }
   ],
   "learningPaths": [
+    {
+      "slug": "advanced-nextjs-16",
+      "title": "Advanced Next.js 16",
+      "summary": "A hard front-end development path for experienced Next.js engineers covering rendering, caching, force-dynamic, invalidation, performance, and migration pain points in Next.js 16.",
+      "kind": "skill",
+      "category": "Front-End Development",
+      "audience": "Experienced Next.js App Router engineers who already ship production React applications and need hard-level caching, SSR, rendering, and migration judgment.",
+      "status": "published",
+      "units": [
+        {
+          "slug": "nextjs-16-rendering-model",
+          "title": "Rendering Model",
+          "summary": "Model Server Components, streaming, request-time work, and Suspense boundaries in Next.js 16.",
+          "nodes": [
+            {
+              "kind": "document",
+              "slug": "frontend/nextjs-16-rendering-model"
+            },
+            {
+              "kind": "exercise",
+              "slug": "frontend/nextjs-16-rendering-model-questionnaire"
+            }
+          ]
+        },
+        {
+          "slug": "nextjs-16-force-dynamic",
+          "title": "force-dynamic In Context",
+          "summary": "Learn what force-dynamic meant before Cache Components and how to review it now.",
+          "nodes": [
+            {
+              "kind": "document",
+              "slug": "frontend/nextjs-16-force-dynamic"
+            },
+            {
+              "kind": "exercise",
+              "slug": "frontend/nextjs-16-force-dynamic-questionnaire"
+            }
+          ]
+        },
+        {
+          "slug": "nextjs-16-cache-components",
+          "title": "Cache Components",
+          "summary": "Use explicit cache scopes, lifetimes, tags, and keys for production-safe reuse.",
+          "nodes": [
+            {
+              "kind": "document",
+              "slug": "frontend/nextjs-16-cache-components"
+            },
+            {
+              "kind": "exercise",
+              "slug": "frontend/nextjs-16-cache-components-questionnaire"
+            }
+          ]
+        },
+        {
+          "slug": "nextjs-16-data-fetching-caching",
+          "title": "Data Fetching And Caching",
+          "summary": "Separate request memoization, persistent server cache, browser cache, and stale data contracts.",
+          "nodes": [
+            {
+              "kind": "document",
+              "slug": "frontend/nextjs-16-data-fetching-caching"
+            },
+            {
+              "kind": "exercise",
+              "slug": "frontend/nextjs-16-data-fetching-caching-questionnaire"
+            }
+          ]
+        },
+        {
+          "slug": "nextjs-16-invalidation-mutations",
+          "title": "Invalidation And Mutations",
+          "summary": "Connect Server Actions, updateTag, revalidateTag, and mutation correctness.",
+          "nodes": [
+            {
+              "kind": "document",
+              "slug": "frontend/nextjs-16-invalidation-mutations"
+            },
+            {
+              "kind": "exercise",
+              "slug": "frontend/nextjs-16-invalidation-mutations-questionnaire"
+            }
+          ]
+        },
+        {
+          "slug": "nextjs-16-painful-production-lessons",
+          "title": "Production Pain Points",
+          "summary": "Diagnose boundary bugs involving request APIs, client bundles, secrets, and stale cache state.",
+          "nodes": [
+            {
+              "kind": "document",
+              "slug": "frontend/nextjs-16-painful-production-lessons"
+            },
+            {
+              "kind": "exercise",
+              "slug": "frontend/nextjs-16-painful-production-lessons-questionnaire"
+            }
+          ]
+        },
+        {
+          "slug": "nextjs-16-performance-architecture",
+          "title": "Performance Architecture",
+          "summary": "Review Turbopack, routing, prefetching, streaming, and cache decisions as one performance system.",
+          "nodes": [
+            {
+              "kind": "document",
+              "slug": "frontend/nextjs-16-performance-architecture"
+            },
+            {
+              "kind": "exercise",
+              "slug": "frontend/nextjs-16-performance-architecture-questionnaire"
+            }
+          ]
+        },
+        {
+          "slug": "nextjs-16-migration-review",
+          "title": "Migration Review",
+          "summary": "Plan a Next.js 16 migration around behavior, rollout risk, and official upgrade paths.",
+          "nodes": [
+            {
+              "kind": "document",
+              "slug": "frontend/nextjs-16-migration-review"
+            },
+            {
+              "kind": "exercise",
+              "slug": "frontend/nextjs-16-migration-review-questionnaire"
+            }
+          ]
+        }
+      ],
+      "id": "ef4abdfb3dc4",
+      "route": "/paths/advanced-nextjs-16",
+      "sourcePath": "content/learning-paths/advanced-nextjs-16.json",
+      "contentHash": "b83b09c6b82b879238ab92f3b2fe1681e2335ae9de51eb60355ca2db3c417cf8"
+    },
     {
       "slug": "ai-engineering-langfuse-langchain",
       "title": "Langfuse And LangChain AI Engineering",
@@ -3187,6 +3866,1300 @@
       "contentHash": "54a0b1692aca5a89ade666d60e7922ad5dc7cbeb12523c9af9bd53e38f4a888c"
     },
     {
+      "slug": "frontend/nextjs-16-cache-components-questionnaire",
+      "title": "Next.js 16 Cache Components Questionnaire",
+      "documentSlug": "frontend/nextjs-16-cache-components",
+      "concept": "Cache Components in Next.js 16",
+      "difficulty": "principal",
+      "tags": [
+        "nextjs",
+        "cache-components",
+        "cachelife",
+        "cachetag"
+      ],
+      "status": "published",
+      "type": "questionnaire",
+      "questions": [
+        {
+          "id": "smallest-unit",
+          "prompt": "What is the safest default cache boundary for a mixed dashboard page?",
+          "explanation": "The smallest honest cached scope avoids leaking request-specific behavior into shared output.",
+          "kind": "choice",
+          "options": [
+            {
+              "id": "page",
+              "label": "Cache the entire page because one widget is expensive.",
+              "isCorrect": false
+            },
+            {
+              "id": "function",
+              "label": "Cache the shared expensive data function with explicit key dimensions and tags.",
+              "isCorrect": true
+            },
+            {
+              "id": "client",
+              "label": "Move the expensive widget to the browser so it avoids server cache rules.",
+              "isCorrect": false
+            }
+          ]
+        },
+        {
+          "id": "directive",
+          "prompt": "Fill the directive that marks cacheable work.",
+          "explanation": "Cache Components uses the use cache directive for explicit caching.",
+          "kind": "cloze",
+          "template": "A cached function or component starts with {{blank}} inside the cacheable scope.",
+          "acceptedAnswers": [
+            "use cache",
+            "\"use cache\"",
+            "'use cache'"
+          ]
+        },
+        {
+          "id": "cache-design-order",
+          "prompt": "Order a serious cache design review.",
+          "explanation": "Sharing and key safety come before freshness and invalidation details.",
+          "kind": "ordering",
+          "items": [
+            {
+              "id": "share",
+              "label": "Decide whether output can be shared"
+            },
+            {
+              "id": "key",
+              "label": "Name key dimensions such as tenant and locale"
+            },
+            {
+              "id": "life",
+              "label": "Choose cacheLife based on stale budget"
+            },
+            {
+              "id": "tag",
+              "label": "Attach cacheTag values for invalidation"
+            }
+          ],
+          "correctOrder": [
+            "share",
+            "key",
+            "life",
+            "tag"
+          ]
+        },
+        {
+          "id": "cache-match",
+          "prompt": "Match each Cache Components API to its role.",
+          "explanation": "The directive, lifetime, and tags form the core cache contract.",
+          "kind": "matching",
+          "pairs": [
+            {
+              "id": "use-cache",
+              "prompt": "use cache",
+              "match": "marks output as cacheable"
+            },
+            {
+              "id": "cache-life",
+              "prompt": "cacheLife",
+              "match": "sets freshness lifetime"
+            },
+            {
+              "id": "cache-tag",
+              "prompt": "cacheTag",
+              "match": "labels cached output for invalidation"
+            }
+          ]
+        },
+        {
+          "id": "unsafe-key",
+          "prompt": "Which cached function is most dangerous?",
+          "explanation": "A missing tenant dimension can leak or mix data across users.",
+          "kind": "choice",
+          "options": [
+            {
+              "id": "locale",
+              "label": "A public docs query keyed by slug and locale.",
+              "isCorrect": false
+            },
+            {
+              "id": "tenantless",
+              "label": "A tenant dashboard query whose cache key omits tenant identity.",
+              "isCorrect": true
+            },
+            {
+              "id": "catalog",
+              "label": "A shared catalog query tagged by product id.",
+              "isCorrect": false
+            }
+          ]
+        },
+        {
+          "id": "migration-order",
+          "prompt": "Order the migration from previous implicit caching.",
+          "explanation": "Do not recreate old route-wide caching. Rebuild explicit local cache contracts.",
+          "kind": "ordering",
+          "items": [
+            {
+              "id": "remove",
+              "label": "Remove obsolete broad segment configs"
+            },
+            {
+              "id": "observe",
+              "label": "Let runtime or uncached access errors reveal boundaries"
+            },
+            {
+              "id": "localize",
+              "label": "Add use cache near stable reusable work"
+            },
+            {
+              "id": "invalidate",
+              "label": "Add tags and mutation invalidation"
+            }
+          ],
+          "correctOrder": [
+            "remove",
+            "observe",
+            "localize",
+            "invalidate"
+          ]
+        }
+      ],
+      "id": "c1614069cd35",
+      "route": "/practice/frontend/nextjs-16-cache-components-questionnaire",
+      "sourcePath": "content/exercises/frontend/nextjs-16-cache-components-questionnaire.json",
+      "contentHash": "6a082ff30f59b1ecb462c12c73fd21370914ac3c359ec869d79b3c5c7db40ef5"
+    },
+    {
+      "slug": "frontend/nextjs-16-data-fetching-caching-questionnaire",
+      "title": "Next.js 16 Data Fetching And Caching Questionnaire",
+      "documentSlug": "frontend/nextjs-16-data-fetching-caching",
+      "concept": "Data fetching and cache layers",
+      "difficulty": "principal",
+      "tags": [
+        "nextjs",
+        "fetch",
+        "data-cache",
+        "stale-data"
+      ],
+      "status": "published",
+      "type": "questionnaire",
+      "questions": [
+        {
+          "id": "reuse-layer",
+          "prompt": "A request is deduped during one render pass. What can you conclude?",
+          "explanation": "Request memoization, persistent framework cache, browser cache, and CDN cache are different layers.",
+          "kind": "choice",
+          "options": [
+            {
+              "id": "persistent",
+              "label": "It is now persistently cached across requests.",
+              "isCorrect": false
+            },
+            {
+              "id": "same-layer",
+              "label": "Only the current render avoided duplicate work unless a persistent cache was also configured.",
+              "isCorrect": true
+            },
+            {
+              "id": "cdn",
+              "label": "The CDN will serve the same response to all users.",
+              "isCorrect": false
+            }
+          ]
+        },
+        {
+          "id": "stale-budget",
+          "prompt": "Fill the product term that must be named before caching.",
+          "explanation": "Caching is a product contract about acceptable staleness, not only a performance trick.",
+          "kind": "cloze",
+          "template": "Before caching a read, name the acceptable {{blank}} for users.",
+          "acceptedAnswers": [
+            "stale budget",
+            "staleness budget",
+            "freshness budget"
+          ]
+        },
+        {
+          "id": "fetch-review-order",
+          "prompt": "Order a server fetch review.",
+          "explanation": "A fetch review needs cache context, sharing safety, invalidation, and failure behavior.",
+          "kind": "ordering",
+          "items": [
+            {
+              "id": "scope",
+              "label": "Identify whether fetch is inside a cached scope"
+            },
+            {
+              "id": "share",
+              "label": "Verify whether the response can be shared"
+            },
+            {
+              "id": "invalidate",
+              "label": "Name the invalidation event"
+            },
+            {
+              "id": "fallback",
+              "label": "Define slow-origin or error behavior"
+            }
+          ],
+          "correctOrder": [
+            "scope",
+            "share",
+            "invalidate",
+            "fallback"
+          ]
+        },
+        {
+          "id": "layer-match",
+          "prompt": "Match the cache layer to the risk.",
+          "explanation": "Debugging stale data starts by locating the layer that served the stale response.",
+          "kind": "matching",
+          "pairs": [
+            {
+              "id": "memo",
+              "prompt": "render-pass memoization",
+              "match": "dedupes duplicate work inside one render"
+            },
+            {
+              "id": "persistent",
+              "prompt": "persistent framework cache",
+              "match": "reuses output across requests"
+            },
+            {
+              "id": "browser",
+              "prompt": "browser cache",
+              "match": "can serve client-held HTTP responses"
+            }
+          ]
+        },
+        {
+          "id": "nostore-review",
+          "prompt": "When is no-store behavior the best answer?",
+          "explanation": "No-store is right for genuinely unreusable data, not as a substitute for finding a bad cache key.",
+          "kind": "choice",
+          "options": [
+            {
+              "id": "unknown",
+              "label": "When nobody understands which cache is stale.",
+              "isCorrect": false
+            },
+            {
+              "id": "sensitive",
+              "label": "When data cannot be safely reused and must be read fresh per request.",
+              "isCorrect": true
+            },
+            {
+              "id": "all",
+              "label": "For every dashboard because dashboards are always dynamic.",
+              "isCorrect": false
+            }
+          ]
+        },
+        {
+          "id": "incident-order",
+          "prompt": "Order a stale data incident packet.",
+          "explanation": "The packet ties user-visible stale state to a read, a write, and an expected freshness contract.",
+          "kind": "ordering",
+          "items": [
+            {
+              "id": "route",
+              "label": "Name route and component with stale state"
+            },
+            {
+              "id": "read",
+              "label": "Identify the read function and cache layer"
+            },
+            {
+              "id": "write",
+              "label": "Identify the mutation or source update"
+            },
+            {
+              "id": "contract",
+              "label": "Compare observed stale state to product contract"
+            }
+          ],
+          "correctOrder": [
+            "route",
+            "read",
+            "write",
+            "contract"
+          ]
+        }
+      ],
+      "id": "24aa43ad5ca6",
+      "route": "/practice/frontend/nextjs-16-data-fetching-caching-questionnaire",
+      "sourcePath": "content/exercises/frontend/nextjs-16-data-fetching-caching-questionnaire.json",
+      "contentHash": "445f094981c530dde5b528a62f31b9822c1df9eedaea19f7945e20e645cc7783"
+    },
+    {
+      "slug": "frontend/nextjs-16-force-dynamic-questionnaire",
+      "title": "Next.js 16 force-dynamic Questionnaire",
+      "documentSlug": "frontend/nextjs-16-force-dynamic",
+      "concept": "force-dynamic and route segment config",
+      "difficulty": "senior",
+      "tags": [
+        "nextjs",
+        "force-dynamic",
+        "cache-components",
+        "ssr"
+      ],
+      "status": "published",
+      "type": "questionnaire",
+      "questions": [
+        {
+          "id": "meaning",
+          "prompt": "In the previous App Router caching model, what did export const dynamic equals force-dynamic mean?",
+          "explanation": "The previous-model setting forced request-time rendering and made the segment behave like force-no-store for fetch caching.",
+          "kind": "choice",
+          "options": [
+            {
+              "id": "client-only",
+              "label": "Render the page only in the browser and skip Server Components.",
+              "isCorrect": false
+            },
+            {
+              "id": "request-no-store",
+              "label": "Render the route at request time and force segment fetches away from persistent cache.",
+              "isCorrect": true
+            },
+            {
+              "id": "static-shell",
+              "label": "Prebuild the route shell and cache every fetch forever.",
+              "isCorrect": false
+            }
+          ]
+        },
+        {
+          "id": "next-16-answer",
+          "prompt": "Fill the migration action for Cache Components apps.",
+          "explanation": "Official migration guidance says force-dynamic is not needed under Cache Components.",
+          "kind": "cloze",
+          "template": "With Cache Components, force-dynamic is usually {{blank}} because pages are dynamic by default.",
+          "acceptedAnswers": [
+            "not needed",
+            "unnecessary",
+            "removed"
+          ]
+        },
+        {
+          "id": "migration-order",
+          "prompt": "Order a safe force-dynamic migration review.",
+          "explanation": "The flag may have masked real stale data or auth behavior, so understand the intent before removing it.",
+          "kind": "ordering",
+          "items": [
+            {
+              "id": "reason",
+              "label": "Find why the flag was added"
+            },
+            {
+              "id": "model",
+              "label": "Confirm whether Cache Components is enabled"
+            },
+            {
+              "id": "replace",
+              "label": "Replace broad behavior with local cache or runtime boundaries"
+            },
+            {
+              "id": "measure",
+              "label": "Measure freshness and latency after removal"
+            }
+          ],
+          "correctOrder": [
+            "reason",
+            "model",
+            "replace",
+            "measure"
+          ]
+        },
+        {
+          "id": "config-match",
+          "prompt": "Match each previous-model route setting to its modern review.",
+          "explanation": "Cache Components moves caching policy from broad segment settings to explicit cache boundaries.",
+          "kind": "matching",
+          "pairs": [
+            {
+              "id": "dynamic",
+              "prompt": "dynamic = force-dynamic",
+              "match": "usually remove under Cache Components"
+            },
+            {
+              "id": "revalidate",
+              "prompt": "revalidate",
+              "match": "move freshness to cacheLife"
+            },
+            {
+              "id": "fetchcache",
+              "prompt": "fetchCache",
+              "match": "replace with explicit cached scopes"
+            }
+          ]
+        },
+        {
+          "id": "bad-fix",
+          "prompt": "A dashboard is stale after a mutation. What is the weakest fix?",
+          "explanation": "force-dynamic can hide the stale-cache source while throwing away useful caching for the whole route.",
+          "kind": "choice",
+          "options": [
+            {
+              "id": "tag",
+              "label": "Tag the cached read and invalidate that tag from the mutation.",
+              "isCorrect": false
+            },
+            {
+              "id": "scope",
+              "label": "Identify the cached function that serves stale data.",
+              "isCorrect": false
+            },
+            {
+              "id": "hammer",
+              "label": "Add force-dynamic to the whole route without finding the stale cache.",
+              "isCorrect": true
+            }
+          ]
+        },
+        {
+          "id": "decision-order",
+          "prompt": "Order the decision tree for a legacy force-dynamic route.",
+          "explanation": "The replacement is a precise route behavior contract, not a blind flag deletion.",
+          "kind": "ordering",
+          "items": [
+            {
+              "id": "cachecomponents",
+              "label": "Check Cache Components adoption"
+            },
+            {
+              "id": "runtime",
+              "label": "Identify true request-time dependencies"
+            },
+            {
+              "id": "cached",
+              "label": "Identify reusable shared work"
+            },
+            {
+              "id": "document",
+              "label": "Document the final route behavior"
+            }
+          ],
+          "correctOrder": [
+            "cachecomponents",
+            "runtime",
+            "cached",
+            "document"
+          ]
+        }
+      ],
+      "id": "92473867d954",
+      "route": "/practice/frontend/nextjs-16-force-dynamic-questionnaire",
+      "sourcePath": "content/exercises/frontend/nextjs-16-force-dynamic-questionnaire.json",
+      "contentHash": "2b4e3f58d41c7ba786859d4674a1b8a62248140840d02c5ba474a11ec4e231f2"
+    },
+    {
+      "slug": "frontend/nextjs-16-invalidation-mutations-questionnaire",
+      "title": "Next.js 16 Invalidation And Mutations Questionnaire",
+      "documentSlug": "frontend/nextjs-16-invalidation-mutations",
+      "concept": "Mutation-driven cache invalidation",
+      "difficulty": "principal",
+      "tags": [
+        "nextjs",
+        "server-actions",
+        "updatetag",
+        "revalidatetag"
+      ],
+      "status": "published",
+      "type": "questionnaire",
+      "questions": [
+        {
+          "id": "update-tag-use",
+          "prompt": "When should updateTag be preferred?",
+          "explanation": "updateTag is for Server Actions and immediate expiration so the next read waits for fresh data.",
+          "kind": "choice",
+          "options": [
+            {
+              "id": "server-action-fresh",
+              "label": "Inside a Server Action when the actor needs read-your-own-writes.",
+              "isCorrect": true
+            },
+            {
+              "id": "webhook-swr",
+              "label": "Inside a third-party webhook when stale-while-revalidate is preferred.",
+              "isCorrect": false
+            },
+            {
+              "id": "client",
+              "label": "Inside a Client Component after an optimistic click.",
+              "isCorrect": false
+            }
+          ]
+        },
+        {
+          "id": "revalidate-profile",
+          "prompt": "Fill the profile commonly used for stale-while-revalidate tag behavior.",
+          "explanation": "The max profile marks tagged content stale and lets the next visit use stale-while-revalidate semantics.",
+          "kind": "cloze",
+          "template": "Use revalidateTag(tag, {{blank}}) when stale-while-revalidate is acceptable.",
+          "acceptedAnswers": [
+            "\"max\"",
+            "'max'",
+            "max"
+          ]
+        },
+        {
+          "id": "mutation-order",
+          "prompt": "Order a mutation with cache correctness.",
+          "explanation": "The mutation is not complete until affected cached reads have the intended freshness behavior.",
+          "kind": "ordering",
+          "items": [
+            {
+              "id": "validate",
+              "label": "Validate authorization and input"
+            },
+            {
+              "id": "write",
+              "label": "Commit the database write"
+            },
+            {
+              "id": "invalidate",
+              "label": "Invalidate exactly affected cache tags"
+            },
+            {
+              "id": "refresh",
+              "label": "Return or refresh the user-visible read path"
+            }
+          ],
+          "correctOrder": [
+            "validate",
+            "write",
+            "invalidate",
+            "refresh"
+          ]
+        },
+        {
+          "id": "api-match",
+          "prompt": "Match each invalidation API to the context.",
+          "explanation": "API choice depends on runtime context and the freshness experience expected by users.",
+          "kind": "matching",
+          "pairs": [
+            {
+              "id": "update",
+              "prompt": "updateTag",
+              "match": "Server Action immediate expiration"
+            },
+            {
+              "id": "revalidate",
+              "prompt": "revalidateTag",
+              "match": "Route Handler or stale-while-revalidate invalidation"
+            },
+            {
+              "id": "path",
+              "prompt": "revalidatePath",
+              "match": "path-specific revalidation"
+            }
+          ]
+        },
+        {
+          "id": "tag-scope",
+          "prompt": "Which tag design is strongest for renaming one project in an org list?",
+          "explanation": "A rename affects both entity detail and list views that render the name.",
+          "kind": "choice",
+          "options": [
+            {
+              "id": "global",
+              "label": "Invalidate a global all-data tag for every route.",
+              "isCorrect": false
+            },
+            {
+              "id": "entity-and-list",
+              "label": "Invalidate project id and org project-list tags touched by the rename.",
+              "isCorrect": true
+            },
+            {
+              "id": "detail-only",
+              "label": "Invalidate only the detail tag and ignore lists.",
+              "isCorrect": false
+            }
+          ]
+        },
+        {
+          "id": "webhook-order",
+          "prompt": "Order a webhook invalidation review.",
+          "explanation": "External invalidation needs authorization, deterministic tag mapping, and failure handling.",
+          "kind": "ordering",
+          "items": [
+            {
+              "id": "auth",
+              "label": "Authenticate and dedupe the webhook"
+            },
+            {
+              "id": "map",
+              "label": "Map external entity to cache tags"
+            },
+            {
+              "id": "revalidate",
+              "label": "Call revalidateTag with intended profile"
+            },
+            {
+              "id": "retry",
+              "label": "Record retry or dead-letter behavior"
+            }
+          ],
+          "correctOrder": [
+            "auth",
+            "map",
+            "revalidate",
+            "retry"
+          ]
+        }
+      ],
+      "id": "c378d8cacf5b",
+      "route": "/practice/frontend/nextjs-16-invalidation-mutations-questionnaire",
+      "sourcePath": "content/exercises/frontend/nextjs-16-invalidation-mutations-questionnaire.json",
+      "contentHash": "40163a9a8d157408820b5d37f98ca09b679dcc51d0196212c103dca119f86dd7"
+    },
+    {
+      "slug": "frontend/nextjs-16-migration-review-questionnaire",
+      "title": "Next.js 16 Migration Review Questionnaire",
+      "documentSlug": "frontend/nextjs-16-migration-review",
+      "concept": "Next.js 16 migration review",
+      "difficulty": "senior",
+      "tags": [
+        "nextjs",
+        "migration",
+        "upgrade",
+        "proxy"
+      ],
+      "status": "published",
+      "type": "questionnaire",
+      "questions": [
+        {
+          "id": "migration-risk",
+          "prompt": "What is the strongest migration stance for a production Next.js 16 upgrade?",
+          "explanation": "Version 16 touches behavior that can affect correctness, not only syntax.",
+          "kind": "choice",
+          "options": [
+            {
+              "id": "deps",
+              "label": "Treat it as only a dependency bump if TypeScript compiles.",
+              "isCorrect": false
+            },
+            {
+              "id": "risk",
+              "label": "Treat it as a cache, request API, routing, proxy, and rollout risk review.",
+              "isCorrect": true
+            },
+            {
+              "id": "rewrite",
+              "label": "Rewrite all routes to Client Components before upgrading.",
+              "isCorrect": false
+            }
+          ]
+        },
+        {
+          "id": "proxy-file",
+          "prompt": "Fill the new file convention replacing middleware naming direction.",
+          "explanation": "The proxy naming makes network-boundary behavior more explicit than middleware.",
+          "kind": "cloze",
+          "template": "Next.js 16 uses {{blank}} to make the network boundary clearer.",
+          "acceptedAnswers": [
+            "proxy.ts",
+            "proxy"
+          ]
+        },
+        {
+          "id": "upgrade-order",
+          "prompt": "Order a safe Next.js 16 migration.",
+          "explanation": "Codemods are helpful, but behavior audits and rollout checks make the migration safe.",
+          "kind": "ordering",
+          "items": [
+            {
+              "id": "baseline",
+              "label": "Record current versions and route behavior"
+            },
+            {
+              "id": "codemod",
+              "label": "Run official codemod in a branch"
+            },
+            {
+              "id": "audit",
+              "label": "Audit cache configs, async request APIs, and proxy behavior"
+            },
+            {
+              "id": "rollout",
+              "label": "Roll out with stale data and navigation monitoring"
+            }
+          ],
+          "correctOrder": [
+            "baseline",
+            "codemod",
+            "audit",
+            "rollout"
+          ]
+        },
+        {
+          "id": "migration-match",
+          "prompt": "Match the migration area to the review question.",
+          "explanation": "A migration review maps each changed framework area to concrete app behavior.",
+          "kind": "matching",
+          "pairs": [
+            {
+              "id": "cache",
+              "prompt": "Cache Components",
+              "match": "which old route configs should become local cached scopes"
+            },
+            {
+              "id": "request",
+              "prompt": "async request APIs",
+              "match": "which code now awaits request-bound values"
+            },
+            {
+              "id": "proxy",
+              "prompt": "proxy.ts",
+              "match": "which network-boundary logic runs before routes"
+            }
+          ]
+        },
+        {
+          "id": "bad-migration",
+          "prompt": "Which migration PR is riskiest?",
+          "explanation": "Legacy route configs may encode stale-data or auth fixes. Removing them requires intent review.",
+          "kind": "choice",
+          "options": [
+            {
+              "id": "table",
+              "label": "One that documents route behavior before and after.",
+              "isCorrect": false
+            },
+            {
+              "id": "blind",
+              "label": "One that deletes force-dynamic everywhere without checking why it existed.",
+              "isCorrect": true
+            },
+            {
+              "id": "tests",
+              "label": "One that adds browser coverage for dynamic and cached journeys.",
+              "isCorrect": false
+            }
+          ]
+        },
+        {
+          "id": "release-order",
+          "prompt": "Order release checks after the code compiles.",
+          "explanation": "Release readiness combines automated checks with production observability and rollback discipline.",
+          "kind": "ordering",
+          "items": [
+            {
+              "id": "typecheck",
+              "label": "Run typecheck, lint, unit, and content checks"
+            },
+            {
+              "id": "browser",
+              "label": "Run browser journeys for forms, auth, images, and cached routes"
+            },
+            {
+              "id": "observe",
+              "label": "Monitor stale data, navigation, server errors, and build timings"
+            },
+            {
+              "id": "rollback",
+              "label": "Keep rollback and dependency pin path ready"
+            }
+          ],
+          "correctOrder": [
+            "typecheck",
+            "browser",
+            "observe",
+            "rollback"
+          ]
+        }
+      ],
+      "id": "219cc85fa05b",
+      "route": "/practice/frontend/nextjs-16-migration-review-questionnaire",
+      "sourcePath": "content/exercises/frontend/nextjs-16-migration-review-questionnaire.json",
+      "contentHash": "1ff08628b08d88e2ce84c748cfbaaaf2af74fbdaea9bb963f0c865f1b7284052"
+    },
+    {
+      "slug": "frontend/nextjs-16-painful-production-lessons-questionnaire",
+      "title": "Next.js 16 Painful Production Lessons Questionnaire",
+      "documentSlug": "frontend/nextjs-16-painful-production-lessons",
+      "concept": "Next.js production boundary failures",
+      "difficulty": "principal",
+      "tags": [
+        "nextjs",
+        "production",
+        "debugging",
+        "security"
+      ],
+      "status": "published",
+      "type": "questionnaire",
+      "questions": [
+        {
+          "id": "boundary-bug",
+          "prompt": "Which bug is the clearest client/server boundary failure?",
+          "explanation": "Client bundle boundaries must not pull server-only code or secrets into browser-reachable modules.",
+          "kind": "choice",
+          "options": [
+            {
+              "id": "secret-import",
+              "label": "A Client Component imports a module that pulls in a server-only admin SDK.",
+              "isCorrect": true
+            },
+            {
+              "id": "fallback",
+              "label": "A Suspense fallback uses a skeleton instead of a spinner.",
+              "isCorrect": false
+            },
+            {
+              "id": "server-read",
+              "label": "A Server Component reads from the database.",
+              "isCorrect": false
+            }
+          ]
+        },
+        {
+          "id": "request-api",
+          "prompt": "Fill the kind of data represented by params, headers, cookies, and search params.",
+          "explanation": "Request APIs are tied to the current request and need explicit runtime boundaries.",
+          "kind": "cloze",
+          "template": "Modern Next.js treats these APIs as {{blank}} data that should not be smuggled into cached work.",
+          "acceptedAnswers": [
+            "request-time",
+            "request time",
+            "runtime"
+          ]
+        },
+        {
+          "id": "stale-debug-order",
+          "prompt": "Order a cache debugging incident packet.",
+          "explanation": "Randomly adding no-store hides the root cause. Trace stale state through read and write ownership.",
+          "kind": "ordering",
+          "items": [
+            {
+              "id": "visible",
+              "label": "Capture the user-visible stale state"
+            },
+            {
+              "id": "read",
+              "label": "Find the cached read and its tags"
+            },
+            {
+              "id": "mutation",
+              "label": "Find the write that should invalidate it"
+            },
+            {
+              "id": "fix",
+              "label": "Fix the tag, key, or boundary with a regression test"
+            }
+          ],
+          "correctOrder": [
+            "visible",
+            "read",
+            "mutation",
+            "fix"
+          ]
+        },
+        {
+          "id": "failure-match",
+          "prompt": "Match each failure to the likely boundary.",
+          "explanation": "Boundary classification makes production debugging faster and less superstitious.",
+          "kind": "matching",
+          "pairs": [
+            {
+              "id": "secret",
+              "prompt": "Secret in browser bundle",
+              "match": "client/server import boundary"
+            },
+            {
+              "id": "stale",
+              "prompt": "Old data after successful write",
+              "match": "cache invalidation boundary"
+            },
+            {
+              "id": "blank",
+              "prompt": "Whole page blocked by one slow panel",
+              "match": "Suspense boundary too broad"
+            }
+          ]
+        },
+        {
+          "id": "static-dynamic",
+          "prompt": "A route expected to be static reads headers in a child component. What is the best response?",
+          "explanation": "The runtime read is a design signal. Narrow and document the dynamic boundary.",
+          "kind": "choice",
+          "options": [
+            {
+              "id": "ignore",
+              "label": "Ignore the warning because the child is deeply nested.",
+              "isCorrect": false
+            },
+            {
+              "id": "decide",
+              "label": "Decide where the request-time boundary belongs and isolate it with Suspense if needed.",
+              "isCorrect": true
+            },
+            {
+              "id": "client",
+              "label": "Move the child to a Client Component to hide the server warning.",
+              "isCorrect": false
+            }
+          ]
+        },
+        {
+          "id": "security-order",
+          "prompt": "Order a Client Component security review.",
+          "explanation": "Client boundary safety starts with import reachability, then data minimization and build verification.",
+          "kind": "ordering",
+          "items": [
+            {
+              "id": "imports",
+              "label": "Inspect imports reachable from the client boundary"
+            },
+            {
+              "id": "secrets",
+              "label": "Remove server-only secrets and SDKs"
+            },
+            {
+              "id": "data",
+              "label": "Pass only validated minimal data as props"
+            },
+            {
+              "id": "bundle",
+              "label": "Verify bundle and behavior in build output"
+            }
+          ],
+          "correctOrder": [
+            "imports",
+            "secrets",
+            "data",
+            "bundle"
+          ]
+        }
+      ],
+      "id": "586cc175a36c",
+      "route": "/practice/frontend/nextjs-16-painful-production-lessons-questionnaire",
+      "sourcePath": "content/exercises/frontend/nextjs-16-painful-production-lessons-questionnaire.json",
+      "contentHash": "9f60bb586f35b1a7d383b735f1dfb954fe85e600ff15d8303986bf40a1cebad3"
+    },
+    {
+      "slug": "frontend/nextjs-16-performance-architecture-questionnaire",
+      "title": "Next.js 16 Performance Architecture Questionnaire",
+      "documentSlug": "frontend/nextjs-16-performance-architecture",
+      "concept": "Next.js performance architecture",
+      "difficulty": "senior",
+      "tags": [
+        "nextjs",
+        "performance",
+        "turbopack",
+        "streaming"
+      ],
+      "status": "published",
+      "type": "questionnaire",
+      "questions": [
+        {
+          "id": "prefetch-review",
+          "prompt": "Next.js 16 shows more granular prefetch requests in dev tools. What should a senior engineer check first?",
+          "explanation": "Enhanced routing can reduce total transfer while changing request shape. Measure outcomes, not only request count.",
+          "kind": "choice",
+          "options": [
+            {
+              "id": "disable",
+              "label": "Disable prefetching because more requests always means worse performance.",
+              "isCorrect": false
+            },
+            {
+              "id": "outcomes",
+              "label": "Compare total transferred bytes, navigation latency, and origin load.",
+              "isCorrect": true
+            },
+            {
+              "id": "force",
+              "label": "Force every route to dynamic rendering.",
+              "isCorrect": false
+            }
+          ]
+        },
+        {
+          "id": "useful-shell",
+          "prompt": "Fill the performance target for streamed routes.",
+          "explanation": "A useful shell gives users structure while dynamic content resolves.",
+          "kind": "cloze",
+          "template": "Streaming works best when the first response is a useful {{blank}}, not a blank page.",
+          "acceptedAnswers": [
+            "shell",
+            "static shell",
+            "route shell"
+          ]
+        },
+        {
+          "id": "perf-review-order",
+          "prompt": "Order a performance architecture review.",
+          "explanation": "Performance work should optimize a measured user path and protect it from regression.",
+          "kind": "ordering",
+          "items": [
+            {
+              "id": "job",
+              "label": "Name the user job and critical path"
+            },
+            {
+              "id": "measure",
+              "label": "Measure shell, dynamic content, and navigation timing"
+            },
+            {
+              "id": "boundary",
+              "label": "Choose cache and Suspense boundaries"
+            },
+            {
+              "id": "regressions",
+              "label": "Protect with browser and build checks"
+            }
+          ],
+          "correctOrder": [
+            "job",
+            "measure",
+            "boundary",
+            "regressions"
+          ]
+        },
+        {
+          "id": "perf-match",
+          "prompt": "Match each Next.js 16 feature to the performance lever.",
+          "explanation": "Each feature affects a different part of the performance system.",
+          "kind": "matching",
+          "pairs": [
+            {
+              "id": "turbopack",
+              "prompt": "Turbopack",
+              "match": "faster dev and production build feedback"
+            },
+            {
+              "id": "routing",
+              "prompt": "enhanced routing",
+              "match": "deduplicated layout and incremental prefetch payloads"
+            },
+            {
+              "id": "cache-components",
+              "prompt": "Cache Components",
+              "match": "less repeated server work for safe shared output"
+            }
+          ]
+        },
+        {
+          "id": "bad-streaming",
+          "prompt": "Which streaming design is weakest?",
+          "explanation": "A broad fallback throws away the useful shell and makes streaming feel like blocking.",
+          "kind": "choice",
+          "options": [
+            {
+              "id": "small",
+              "label": "Wrap only the slow personalized panel and keep navigation stable.",
+              "isCorrect": false
+            },
+            {
+              "id": "whole",
+              "label": "Wrap the entire page in one fallback because one widget is slow.",
+              "isCorrect": true
+            },
+            {
+              "id": "skeleton",
+              "label": "Use stable dimensions for a delayed analytics chart.",
+              "isCorrect": false
+            }
+          ]
+        },
+        {
+          "id": "turbopack-order",
+          "prompt": "Order a Turbopack migration review for a customized app.",
+          "explanation": "Faster defaults still need compatibility review when the app has custom bundler assumptions.",
+          "kind": "ordering",
+          "items": [
+            {
+              "id": "custom",
+              "label": "Inventory webpack and loader assumptions"
+            },
+            {
+              "id": "build",
+              "label": "Run dev and production builds under Turbopack"
+            },
+            {
+              "id": "journeys",
+              "label": "Exercise routes that depend on custom bundling"
+            },
+            {
+              "id": "optout",
+              "label": "Document opt-out only if parity fails"
+            }
+          ],
+          "correctOrder": [
+            "custom",
+            "build",
+            "journeys",
+            "optout"
+          ]
+        }
+      ],
+      "id": "9874d6d8c4e1",
+      "route": "/practice/frontend/nextjs-16-performance-architecture-questionnaire",
+      "sourcePath": "content/exercises/frontend/nextjs-16-performance-architecture-questionnaire.json",
+      "contentHash": "0a0392750bf296f54c2d9bf85aa03e9eab4da03ecd632b37d43575d194ba7d1e"
+    },
+    {
+      "slug": "frontend/nextjs-16-rendering-model-questionnaire",
+      "title": "Next.js 16 Rendering Model Questionnaire",
+      "documentSlug": "frontend/nextjs-16-rendering-model",
+      "concept": "Next.js 16 rendering model",
+      "difficulty": "senior",
+      "tags": [
+        "nextjs",
+        "app-router",
+        "server-components",
+        "ssr"
+      ],
+      "status": "published",
+      "type": "questionnaire",
+      "questions": [
+        {
+          "id": "composition-review",
+          "prompt": "What is the strongest rendering review note for a Next.js 16 App Router page?",
+          "explanation": "Next.js 16 rendering is compositional. The safe review identifies cache, runtime, Suspense, and client boundaries per subtree.",
+          "kind": "choice",
+          "options": [
+            {
+              "id": "whole-page",
+              "label": "Classify the whole page as either SSR or static and stop there.",
+              "isCorrect": false
+            },
+            {
+              "id": "subtree-boundaries",
+              "label": "Classify each subtree by cached, request-time, and client-owned behavior.",
+              "isCorrect": true
+            },
+            {
+              "id": "client-first",
+              "label": "Move uncertain data work to Client Components to avoid server rendering decisions.",
+              "isCorrect": false
+            }
+          ]
+        },
+        {
+          "id": "suspense-boundary",
+          "prompt": "Fill the boundary primitive that isolates delayed request-time UI.",
+          "explanation": "Suspense defines the loading contract for uncached runtime work while preserving useful shell content.",
+          "kind": "cloze",
+          "template": "Use {{blank}} around the smallest uncached runtime subtree that can stream behind a stable shell.",
+          "acceptedAnswers": [
+            "Suspense",
+            "React Suspense"
+          ]
+        },
+        {
+          "id": "route-review-order",
+          "prompt": "Order a route rendering review.",
+          "explanation": "Start from data ownership, then choose rendering boundaries, then prove the user-visible behavior.",
+          "kind": "ordering",
+          "items": [
+            {
+              "id": "data",
+              "label": "List data sources and ownership"
+            },
+            {
+              "id": "classify",
+              "label": "Classify cached, request-time, and client-only subtrees"
+            },
+            {
+              "id": "fallbacks",
+              "label": "Place Suspense fallbacks around slow dynamic parts"
+            },
+            {
+              "id": "verify",
+              "label": "Verify shell, streaming, and hydration behavior in browser tests"
+            }
+          ],
+          "correctOrder": [
+            "data",
+            "classify",
+            "fallbacks",
+            "verify"
+          ]
+        },
+        {
+          "id": "rendering-match",
+          "prompt": "Match each rendering concern to the right review lens.",
+          "explanation": "Each boundary has a different operational consequence for data access, bundle size, and loading behavior.",
+          "kind": "matching",
+          "pairs": [
+            {
+              "id": "server-component",
+              "prompt": "Server Component",
+              "match": "server data and private dependencies"
+            },
+            {
+              "id": "client-component",
+              "prompt": "Client Component",
+              "match": "browser state and event handlers"
+            },
+            {
+              "id": "suspense",
+              "prompt": "Suspense boundary",
+              "match": "fallback for delayed runtime subtree"
+            }
+          ]
+        },
+        {
+          "id": "ppr-risk",
+          "prompt": "Which route is the best candidate for a static shell plus streamed dynamic section?",
+          "explanation": "Partial prerendering shines when stable shell content can be shown while a smaller request-time section resolves.",
+          "kind": "choice",
+          "options": [
+            {
+              "id": "stable-with-personal",
+              "label": "A product page with stable content and a personalized inventory panel.",
+              "isCorrect": true
+            },
+            {
+              "id": "secret-admin",
+              "label": "An admin route where every section depends on per-user permissions.",
+              "isCorrect": false
+            },
+            {
+              "id": "client-game",
+              "label": "A fully client-side canvas game with no server data.",
+              "isCorrect": false
+            }
+          ]
+        },
+        {
+          "id": "boundary-debug-order",
+          "prompt": "Order the debugging path when a route unexpectedly becomes runtime-bound.",
+          "explanation": "Find the runtime source, narrow the boundary, and test the visible outcome.",
+          "kind": "ordering",
+          "items": [
+            {
+              "id": "locate",
+              "label": "Locate request-time API or uncached data access"
+            },
+            {
+              "id": "scope",
+              "label": "Decide whether only a subtree needs runtime work"
+            },
+            {
+              "id": "wrap",
+              "label": "Wrap the runtime subtree with a meaningful Suspense fallback"
+            },
+            {
+              "id": "test",
+              "label": "Test the shell and delayed content on mobile"
+            }
+          ],
+          "correctOrder": [
+            "locate",
+            "scope",
+            "wrap",
+            "test"
+          ]
+        }
+      ],
+      "id": "bb28df7d0941",
+      "route": "/practice/frontend/nextjs-16-rendering-model-questionnaire",
+      "sourcePath": "content/exercises/frontend/nextjs-16-rendering-model-questionnaire.json",
+      "contentHash": "23d7cb4056514c56b25ae5b429328526c3841b55850849f28a23f6efc819eae4"
+    },
+    {
       "slug": "programming/python-async-questionnaire",
       "title": "Python Async Testing And Production Questionnaire",
       "documentSlug": "programming/python-async-testing-production",
@@ -3901,6 +5874,1388 @@
     }
   ],
   "passiveFlashcardFeeds": [
+    {
+      "slug": "advanced-nextjs-16",
+      "pathSlug": "advanced-nextjs-16",
+      "title": "Advanced Next.js 16 One-Minute Briefs",
+      "summary": "A vertical one-minute brief feed for experienced Next.js engineers reviewing rendering, caching, invalidation, performance, migration, and production failure modes.",
+      "audience": "Experienced Next.js App Router engineers replacing idle social scrolling with hard production review cards.",
+      "status": "published",
+      "cards": [
+        {
+          "id": "nextjs-16-rendering-model-concept-01",
+          "type": "concept",
+          "title": "Rendering Model: Boundary First",
+          "prompt": "Classify the boundary before changing the flag.",
+          "explanation": "Rendering Model: A Next.js review starts by naming cached, request-time, and client-owned work. Flags are implementation details after the boundary is clear.",
+          "difficulty": "principal",
+          "tags": [
+            "nextjs",
+            "nextjs-16",
+            "frontend"
+          ],
+          "sourceDocSlug": "frontend/nextjs-16-rendering-model"
+        },
+        {
+          "id": "nextjs-16-rendering-model-concept-02",
+          "type": "concept",
+          "title": "Rendering Model: Freshness Is Product",
+          "prompt": "Fresh data is not always required, but stale state must be named.",
+          "explanation": "Rendering Model: A cache is safe only when the product accepts the stale state or the mutation path invalidates it quickly enough.",
+          "difficulty": "senior",
+          "tags": [
+            "nextjs",
+            "nextjs-16",
+            "frontend"
+          ],
+          "sourceDocSlug": "frontend/nextjs-16-rendering-model"
+        },
+        {
+          "id": "nextjs-16-rendering-model-practical-03",
+          "type": "practical",
+          "title": "Rendering Model: Trace The Read",
+          "prompt": "When data is stale, find the read function before changing route config.",
+          "explanation": "Rendering Model: Adding broad no-store behavior can hide the actual stale cache key or missing tag. Trace route, component, read, tag, and mutation.",
+          "difficulty": "senior",
+          "tags": [
+            "nextjs",
+            "nextjs-16",
+            "frontend"
+          ],
+          "sourceDocSlug": "frontend/nextjs-16-rendering-model"
+        },
+        {
+          "id": "nextjs-16-rendering-model-practical-04",
+          "type": "practical",
+          "title": "Rendering Model: Narrow Suspense",
+          "prompt": "Wrap the slow runtime subtree, not the whole page.",
+          "explanation": "Rendering Model: A tight Suspense boundary preserves the useful shell and makes streaming feel intentional instead of broken.",
+          "difficulty": "senior",
+          "tags": [
+            "nextjs",
+            "nextjs-16",
+            "frontend"
+          ],
+          "sourceDocSlug": "frontend/nextjs-16-rendering-model"
+        },
+        {
+          "id": "nextjs-16-rendering-model-snippet-05",
+          "type": "snippet",
+          "title": "Rendering Model: Explicit Cache Snippet",
+          "prompt": "Use cache close to reusable work.",
+          "explanation": "Rendering Model: Function-level caching keeps reuse policy near the data access and away from unrelated request-time UI.",
+          "difficulty": "senior",
+          "tags": [
+            "nextjs",
+            "nextjs-16",
+            "typescript"
+          ],
+          "sourceDocSlug": "frontend/nextjs-16-rendering-model",
+          "code": "async function getNav() {\n  'use cache';\n  cacheLife('hours');\n  cacheTag('nav');\n}"
+        },
+        {
+          "id": "nextjs-16-rendering-model-snippet-06",
+          "type": "snippet",
+          "title": "Rendering Model: Runtime Snippet",
+          "prompt": "Request-specific work should stay outside cached scopes.",
+          "explanation": "Rendering Model: Runtime APIs such as cookies, headers, or connection-bound work describe the current request and should not silently affect shared cache output.",
+          "difficulty": "principal",
+          "tags": [
+            "nextjs",
+            "nextjs-16",
+            "typescript"
+          ],
+          "sourceDocSlug": "frontend/nextjs-16-rendering-model",
+          "code": "const theme = (await cookies()).get('theme')?.value;"
+        },
+        {
+          "id": "nextjs-16-rendering-model-interview-07",
+          "type": "interview",
+          "title": "Rendering Model: Explain The Boundary",
+          "prompt": "How would you explain cached versus request-time work to a team migrating to Next.js 16?",
+          "explanation": "Rendering Model: A strong answer says pages are dynamic by default with Cache Components, reusable work opts into cache, and Suspense protects the shell while runtime work resolves.",
+          "difficulty": "senior",
+          "tags": [
+            "nextjs",
+            "nextjs-16",
+            "frontend"
+          ],
+          "sourceDocSlug": "frontend/nextjs-16-rendering-model"
+        },
+        {
+          "id": "nextjs-16-rendering-model-interview-08",
+          "type": "interview",
+          "title": "Rendering Model: Debug Stale Data",
+          "prompt": "A user saves a record and still sees the old value. What do you inspect first?",
+          "explanation": "Rendering Model: Inspect the read function, cache tags, mutation invalidation, and whether the UX requires updateTag rather than stale-while-revalidate.",
+          "difficulty": "senior",
+          "tags": [
+            "nextjs",
+            "nextjs-16",
+            "frontend"
+          ],
+          "sourceDocSlug": "frontend/nextjs-16-rendering-model"
+        },
+        {
+          "id": "nextjs-16-rendering-model-concept-09",
+          "type": "concept",
+          "title": "Rendering Model: Key Dimensions",
+          "prompt": "Tenant, locale, permissions, and variants are cache key dimensions.",
+          "explanation": "Rendering Model: If output changes with a dimension, the cached scope must include it or avoid sharing that output.",
+          "difficulty": "senior",
+          "tags": [
+            "nextjs",
+            "nextjs-16",
+            "frontend"
+          ],
+          "sourceDocSlug": "frontend/nextjs-16-rendering-model"
+        },
+        {
+          "id": "nextjs-16-rendering-model-practical-10",
+          "type": "practical",
+          "title": "Rendering Model: Migration Packet",
+          "prompt": "Every migration PR should explain route behavior before and after.",
+          "explanation": "Rendering Model: For Next.js 16, behavior review matters as much as codemod output because caching and request APIs affect user-visible correctness.",
+          "difficulty": "senior",
+          "tags": [
+            "nextjs",
+            "nextjs-16",
+            "frontend"
+          ],
+          "sourceDocSlug": "frontend/nextjs-16-rendering-model"
+        },
+        {
+          "id": "nextjs-16-rendering-model-snippet-11",
+          "type": "snippet",
+          "title": "Rendering Model: Tag Invalidation Snippet",
+          "prompt": "Tags should match the reads a mutation makes stale.",
+          "explanation": "Rendering Model: Precise tags avoid both stale pages and global invalidation storms.",
+          "difficulty": "principal",
+          "tags": [
+            "nextjs",
+            "nextjs-16",
+            "typescript"
+          ],
+          "sourceDocSlug": "frontend/nextjs-16-rendering-model",
+          "code": "updateTag('project:' + projectId);\nupdateTag('org:' + orgId + ':projects');"
+        },
+        {
+          "id": "nextjs-16-rendering-model-interview-12",
+          "type": "interview",
+          "title": "Rendering Model: force-dynamic Review",
+          "prompt": "When should you keep force-dynamic in a Next.js 16 codebase?",
+          "explanation": "Rendering Model: In Cache Components apps, usually you remove it. If the app still uses the previous model, keeping it requires a documented route-wide request-time and no-store contract.",
+          "difficulty": "senior",
+          "tags": [
+            "nextjs",
+            "nextjs-16",
+            "frontend"
+          ],
+          "sourceDocSlug": "frontend/nextjs-16-rendering-model"
+        },
+        {
+          "id": "nextjs-16-force-dynamic-concept-01",
+          "type": "concept",
+          "title": "force-dynamic In Context: Boundary First",
+          "prompt": "Classify the boundary before changing the flag.",
+          "explanation": "force-dynamic In Context: A Next.js review starts by naming cached, request-time, and client-owned work. Flags are implementation details after the boundary is clear.",
+          "difficulty": "principal",
+          "tags": [
+            "nextjs",
+            "nextjs-16",
+            "frontend"
+          ],
+          "sourceDocSlug": "frontend/nextjs-16-force-dynamic"
+        },
+        {
+          "id": "nextjs-16-force-dynamic-concept-02",
+          "type": "concept",
+          "title": "force-dynamic In Context: Freshness Is Product",
+          "prompt": "Fresh data is not always required, but stale state must be named.",
+          "explanation": "force-dynamic In Context: A cache is safe only when the product accepts the stale state or the mutation path invalidates it quickly enough.",
+          "difficulty": "senior",
+          "tags": [
+            "nextjs",
+            "nextjs-16",
+            "frontend"
+          ],
+          "sourceDocSlug": "frontend/nextjs-16-force-dynamic"
+        },
+        {
+          "id": "nextjs-16-force-dynamic-practical-03",
+          "type": "practical",
+          "title": "force-dynamic In Context: Trace The Read",
+          "prompt": "When data is stale, find the read function before changing route config.",
+          "explanation": "force-dynamic In Context: Adding broad no-store behavior can hide the actual stale cache key or missing tag. Trace route, component, read, tag, and mutation.",
+          "difficulty": "senior",
+          "tags": [
+            "nextjs",
+            "nextjs-16",
+            "frontend"
+          ],
+          "sourceDocSlug": "frontend/nextjs-16-force-dynamic"
+        },
+        {
+          "id": "nextjs-16-force-dynamic-practical-04",
+          "type": "practical",
+          "title": "force-dynamic In Context: Narrow Suspense",
+          "prompt": "Wrap the slow runtime subtree, not the whole page.",
+          "explanation": "force-dynamic In Context: A tight Suspense boundary preserves the useful shell and makes streaming feel intentional instead of broken.",
+          "difficulty": "senior",
+          "tags": [
+            "nextjs",
+            "nextjs-16",
+            "frontend"
+          ],
+          "sourceDocSlug": "frontend/nextjs-16-force-dynamic"
+        },
+        {
+          "id": "nextjs-16-force-dynamic-snippet-05",
+          "type": "snippet",
+          "title": "force-dynamic In Context: Explicit Cache Snippet",
+          "prompt": "Use cache close to reusable work.",
+          "explanation": "force-dynamic In Context: Function-level caching keeps reuse policy near the data access and away from unrelated request-time UI.",
+          "difficulty": "senior",
+          "tags": [
+            "nextjs",
+            "nextjs-16",
+            "typescript"
+          ],
+          "sourceDocSlug": "frontend/nextjs-16-force-dynamic",
+          "code": "async function getNav() {\n  'use cache';\n  cacheLife('hours');\n  cacheTag('nav');\n}"
+        },
+        {
+          "id": "nextjs-16-force-dynamic-snippet-06",
+          "type": "snippet",
+          "title": "force-dynamic In Context: Runtime Snippet",
+          "prompt": "Request-specific work should stay outside cached scopes.",
+          "explanation": "force-dynamic In Context: Runtime APIs such as cookies, headers, or connection-bound work describe the current request and should not silently affect shared cache output.",
+          "difficulty": "principal",
+          "tags": [
+            "nextjs",
+            "nextjs-16",
+            "typescript"
+          ],
+          "sourceDocSlug": "frontend/nextjs-16-force-dynamic",
+          "code": "const theme = (await cookies()).get('theme')?.value;"
+        },
+        {
+          "id": "nextjs-16-force-dynamic-interview-07",
+          "type": "interview",
+          "title": "force-dynamic In Context: Explain The Boundary",
+          "prompt": "How would you explain cached versus request-time work to a team migrating to Next.js 16?",
+          "explanation": "force-dynamic In Context: A strong answer says pages are dynamic by default with Cache Components, reusable work opts into cache, and Suspense protects the shell while runtime work resolves.",
+          "difficulty": "senior",
+          "tags": [
+            "nextjs",
+            "nextjs-16",
+            "frontend"
+          ],
+          "sourceDocSlug": "frontend/nextjs-16-force-dynamic"
+        },
+        {
+          "id": "nextjs-16-force-dynamic-interview-08",
+          "type": "interview",
+          "title": "force-dynamic In Context: Debug Stale Data",
+          "prompt": "A user saves a record and still sees the old value. What do you inspect first?",
+          "explanation": "force-dynamic In Context: Inspect the read function, cache tags, mutation invalidation, and whether the UX requires updateTag rather than stale-while-revalidate.",
+          "difficulty": "senior",
+          "tags": [
+            "nextjs",
+            "nextjs-16",
+            "frontend"
+          ],
+          "sourceDocSlug": "frontend/nextjs-16-force-dynamic"
+        },
+        {
+          "id": "nextjs-16-force-dynamic-concept-09",
+          "type": "concept",
+          "title": "force-dynamic In Context: Key Dimensions",
+          "prompt": "Tenant, locale, permissions, and variants are cache key dimensions.",
+          "explanation": "force-dynamic In Context: If output changes with a dimension, the cached scope must include it or avoid sharing that output.",
+          "difficulty": "senior",
+          "tags": [
+            "nextjs",
+            "nextjs-16",
+            "frontend"
+          ],
+          "sourceDocSlug": "frontend/nextjs-16-force-dynamic"
+        },
+        {
+          "id": "nextjs-16-force-dynamic-practical-10",
+          "type": "practical",
+          "title": "force-dynamic In Context: Migration Packet",
+          "prompt": "Every migration PR should explain route behavior before and after.",
+          "explanation": "force-dynamic In Context: For Next.js 16, behavior review matters as much as codemod output because caching and request APIs affect user-visible correctness.",
+          "difficulty": "senior",
+          "tags": [
+            "nextjs",
+            "nextjs-16",
+            "frontend"
+          ],
+          "sourceDocSlug": "frontend/nextjs-16-force-dynamic"
+        },
+        {
+          "id": "nextjs-16-force-dynamic-snippet-11",
+          "type": "snippet",
+          "title": "force-dynamic In Context: Tag Invalidation Snippet",
+          "prompt": "Tags should match the reads a mutation makes stale.",
+          "explanation": "force-dynamic In Context: Precise tags avoid both stale pages and global invalidation storms.",
+          "difficulty": "principal",
+          "tags": [
+            "nextjs",
+            "nextjs-16",
+            "typescript"
+          ],
+          "sourceDocSlug": "frontend/nextjs-16-force-dynamic",
+          "code": "updateTag('project:' + projectId);\nupdateTag('org:' + orgId + ':projects');"
+        },
+        {
+          "id": "nextjs-16-force-dynamic-interview-12",
+          "type": "interview",
+          "title": "force-dynamic In Context: force-dynamic Review",
+          "prompt": "When should you keep force-dynamic in a Next.js 16 codebase?",
+          "explanation": "force-dynamic In Context: In Cache Components apps, usually you remove it. If the app still uses the previous model, keeping it requires a documented route-wide request-time and no-store contract.",
+          "difficulty": "senior",
+          "tags": [
+            "nextjs",
+            "nextjs-16",
+            "frontend"
+          ],
+          "sourceDocSlug": "frontend/nextjs-16-force-dynamic"
+        },
+        {
+          "id": "nextjs-16-cache-components-concept-01",
+          "type": "concept",
+          "title": "Cache Components: Boundary First",
+          "prompt": "Classify the boundary before changing the flag.",
+          "explanation": "Cache Components: A Next.js review starts by naming cached, request-time, and client-owned work. Flags are implementation details after the boundary is clear.",
+          "difficulty": "principal",
+          "tags": [
+            "nextjs",
+            "nextjs-16",
+            "frontend"
+          ],
+          "sourceDocSlug": "frontend/nextjs-16-cache-components"
+        },
+        {
+          "id": "nextjs-16-cache-components-concept-02",
+          "type": "concept",
+          "title": "Cache Components: Freshness Is Product",
+          "prompt": "Fresh data is not always required, but stale state must be named.",
+          "explanation": "Cache Components: A cache is safe only when the product accepts the stale state or the mutation path invalidates it quickly enough.",
+          "difficulty": "principal",
+          "tags": [
+            "nextjs",
+            "nextjs-16",
+            "frontend"
+          ],
+          "sourceDocSlug": "frontend/nextjs-16-cache-components"
+        },
+        {
+          "id": "nextjs-16-cache-components-practical-03",
+          "type": "practical",
+          "title": "Cache Components: Trace The Read",
+          "prompt": "When data is stale, find the read function before changing route config.",
+          "explanation": "Cache Components: Adding broad no-store behavior can hide the actual stale cache key or missing tag. Trace route, component, read, tag, and mutation.",
+          "difficulty": "principal",
+          "tags": [
+            "nextjs",
+            "nextjs-16",
+            "frontend"
+          ],
+          "sourceDocSlug": "frontend/nextjs-16-cache-components"
+        },
+        {
+          "id": "nextjs-16-cache-components-practical-04",
+          "type": "practical",
+          "title": "Cache Components: Narrow Suspense",
+          "prompt": "Wrap the slow runtime subtree, not the whole page.",
+          "explanation": "Cache Components: A tight Suspense boundary preserves the useful shell and makes streaming feel intentional instead of broken.",
+          "difficulty": "principal",
+          "tags": [
+            "nextjs",
+            "nextjs-16",
+            "frontend"
+          ],
+          "sourceDocSlug": "frontend/nextjs-16-cache-components"
+        },
+        {
+          "id": "nextjs-16-cache-components-snippet-05",
+          "type": "snippet",
+          "title": "Cache Components: Explicit Cache Snippet",
+          "prompt": "Use cache close to reusable work.",
+          "explanation": "Cache Components: Function-level caching keeps reuse policy near the data access and away from unrelated request-time UI.",
+          "difficulty": "principal",
+          "tags": [
+            "nextjs",
+            "nextjs-16",
+            "typescript"
+          ],
+          "sourceDocSlug": "frontend/nextjs-16-cache-components",
+          "code": "async function getNav() {\n  'use cache';\n  cacheLife('hours');\n  cacheTag('nav');\n}"
+        },
+        {
+          "id": "nextjs-16-cache-components-snippet-06",
+          "type": "snippet",
+          "title": "Cache Components: Runtime Snippet",
+          "prompt": "Request-specific work should stay outside cached scopes.",
+          "explanation": "Cache Components: Runtime APIs such as cookies, headers, or connection-bound work describe the current request and should not silently affect shared cache output.",
+          "difficulty": "principal",
+          "tags": [
+            "nextjs",
+            "nextjs-16",
+            "typescript"
+          ],
+          "sourceDocSlug": "frontend/nextjs-16-cache-components",
+          "code": "const theme = (await cookies()).get('theme')?.value;"
+        },
+        {
+          "id": "nextjs-16-cache-components-interview-07",
+          "type": "interview",
+          "title": "Cache Components: Explain The Boundary",
+          "prompt": "How would you explain cached versus request-time work to a team migrating to Next.js 16?",
+          "explanation": "Cache Components: A strong answer says pages are dynamic by default with Cache Components, reusable work opts into cache, and Suspense protects the shell while runtime work resolves.",
+          "difficulty": "principal",
+          "tags": [
+            "nextjs",
+            "nextjs-16",
+            "frontend"
+          ],
+          "sourceDocSlug": "frontend/nextjs-16-cache-components"
+        },
+        {
+          "id": "nextjs-16-cache-components-interview-08",
+          "type": "interview",
+          "title": "Cache Components: Debug Stale Data",
+          "prompt": "A user saves a record and still sees the old value. What do you inspect first?",
+          "explanation": "Cache Components: Inspect the read function, cache tags, mutation invalidation, and whether the UX requires updateTag rather than stale-while-revalidate.",
+          "difficulty": "principal",
+          "tags": [
+            "nextjs",
+            "nextjs-16",
+            "frontend"
+          ],
+          "sourceDocSlug": "frontend/nextjs-16-cache-components"
+        },
+        {
+          "id": "nextjs-16-cache-components-concept-09",
+          "type": "concept",
+          "title": "Cache Components: Key Dimensions",
+          "prompt": "Tenant, locale, permissions, and variants are cache key dimensions.",
+          "explanation": "Cache Components: If output changes with a dimension, the cached scope must include it or avoid sharing that output.",
+          "difficulty": "principal",
+          "tags": [
+            "nextjs",
+            "nextjs-16",
+            "frontend"
+          ],
+          "sourceDocSlug": "frontend/nextjs-16-cache-components"
+        },
+        {
+          "id": "nextjs-16-cache-components-practical-10",
+          "type": "practical",
+          "title": "Cache Components: Migration Packet",
+          "prompt": "Every migration PR should explain route behavior before and after.",
+          "explanation": "Cache Components: For Next.js 16, behavior review matters as much as codemod output because caching and request APIs affect user-visible correctness.",
+          "difficulty": "principal",
+          "tags": [
+            "nextjs",
+            "nextjs-16",
+            "frontend"
+          ],
+          "sourceDocSlug": "frontend/nextjs-16-cache-components"
+        },
+        {
+          "id": "nextjs-16-cache-components-snippet-11",
+          "type": "snippet",
+          "title": "Cache Components: Tag Invalidation Snippet",
+          "prompt": "Tags should match the reads a mutation makes stale.",
+          "explanation": "Cache Components: Precise tags avoid both stale pages and global invalidation storms.",
+          "difficulty": "principal",
+          "tags": [
+            "nextjs",
+            "nextjs-16",
+            "typescript"
+          ],
+          "sourceDocSlug": "frontend/nextjs-16-cache-components",
+          "code": "updateTag('project:' + projectId);\nupdateTag('org:' + orgId + ':projects');"
+        },
+        {
+          "id": "nextjs-16-cache-components-interview-12",
+          "type": "interview",
+          "title": "Cache Components: force-dynamic Review",
+          "prompt": "When should you keep force-dynamic in a Next.js 16 codebase?",
+          "explanation": "Cache Components: In Cache Components apps, usually you remove it. If the app still uses the previous model, keeping it requires a documented route-wide request-time and no-store contract.",
+          "difficulty": "principal",
+          "tags": [
+            "nextjs",
+            "nextjs-16",
+            "frontend"
+          ],
+          "sourceDocSlug": "frontend/nextjs-16-cache-components"
+        },
+        {
+          "id": "nextjs-16-data-fetching-caching-concept-01",
+          "type": "concept",
+          "title": "Data Fetching And Caching: Boundary First",
+          "prompt": "Classify the boundary before changing the flag.",
+          "explanation": "Data Fetching And Caching: A Next.js review starts by naming cached, request-time, and client-owned work. Flags are implementation details after the boundary is clear.",
+          "difficulty": "principal",
+          "tags": [
+            "nextjs",
+            "nextjs-16",
+            "frontend"
+          ],
+          "sourceDocSlug": "frontend/nextjs-16-data-fetching-caching"
+        },
+        {
+          "id": "nextjs-16-data-fetching-caching-concept-02",
+          "type": "concept",
+          "title": "Data Fetching And Caching: Freshness Is Product",
+          "prompt": "Fresh data is not always required, but stale state must be named.",
+          "explanation": "Data Fetching And Caching: A cache is safe only when the product accepts the stale state or the mutation path invalidates it quickly enough.",
+          "difficulty": "principal",
+          "tags": [
+            "nextjs",
+            "nextjs-16",
+            "frontend"
+          ],
+          "sourceDocSlug": "frontend/nextjs-16-data-fetching-caching"
+        },
+        {
+          "id": "nextjs-16-data-fetching-caching-practical-03",
+          "type": "practical",
+          "title": "Data Fetching And Caching: Trace The Read",
+          "prompt": "When data is stale, find the read function before changing route config.",
+          "explanation": "Data Fetching And Caching: Adding broad no-store behavior can hide the actual stale cache key or missing tag. Trace route, component, read, tag, and mutation.",
+          "difficulty": "principal",
+          "tags": [
+            "nextjs",
+            "nextjs-16",
+            "frontend"
+          ],
+          "sourceDocSlug": "frontend/nextjs-16-data-fetching-caching"
+        },
+        {
+          "id": "nextjs-16-data-fetching-caching-practical-04",
+          "type": "practical",
+          "title": "Data Fetching And Caching: Narrow Suspense",
+          "prompt": "Wrap the slow runtime subtree, not the whole page.",
+          "explanation": "Data Fetching And Caching: A tight Suspense boundary preserves the useful shell and makes streaming feel intentional instead of broken.",
+          "difficulty": "principal",
+          "tags": [
+            "nextjs",
+            "nextjs-16",
+            "frontend"
+          ],
+          "sourceDocSlug": "frontend/nextjs-16-data-fetching-caching"
+        },
+        {
+          "id": "nextjs-16-data-fetching-caching-snippet-05",
+          "type": "snippet",
+          "title": "Data Fetching And Caching: Explicit Cache Snippet",
+          "prompt": "Use cache close to reusable work.",
+          "explanation": "Data Fetching And Caching: Function-level caching keeps reuse policy near the data access and away from unrelated request-time UI.",
+          "difficulty": "principal",
+          "tags": [
+            "nextjs",
+            "nextjs-16",
+            "typescript"
+          ],
+          "sourceDocSlug": "frontend/nextjs-16-data-fetching-caching",
+          "code": "async function getNav() {\n  'use cache';\n  cacheLife('hours');\n  cacheTag('nav');\n}"
+        },
+        {
+          "id": "nextjs-16-data-fetching-caching-snippet-06",
+          "type": "snippet",
+          "title": "Data Fetching And Caching: Runtime Snippet",
+          "prompt": "Request-specific work should stay outside cached scopes.",
+          "explanation": "Data Fetching And Caching: Runtime APIs such as cookies, headers, or connection-bound work describe the current request and should not silently affect shared cache output.",
+          "difficulty": "principal",
+          "tags": [
+            "nextjs",
+            "nextjs-16",
+            "typescript"
+          ],
+          "sourceDocSlug": "frontend/nextjs-16-data-fetching-caching",
+          "code": "const theme = (await cookies()).get('theme')?.value;"
+        },
+        {
+          "id": "nextjs-16-data-fetching-caching-interview-07",
+          "type": "interview",
+          "title": "Data Fetching And Caching: Explain The Boundary",
+          "prompt": "How would you explain cached versus request-time work to a team migrating to Next.js 16?",
+          "explanation": "Data Fetching And Caching: A strong answer says pages are dynamic by default with Cache Components, reusable work opts into cache, and Suspense protects the shell while runtime work resolves.",
+          "difficulty": "principal",
+          "tags": [
+            "nextjs",
+            "nextjs-16",
+            "frontend"
+          ],
+          "sourceDocSlug": "frontend/nextjs-16-data-fetching-caching"
+        },
+        {
+          "id": "nextjs-16-data-fetching-caching-interview-08",
+          "type": "interview",
+          "title": "Data Fetching And Caching: Debug Stale Data",
+          "prompt": "A user saves a record and still sees the old value. What do you inspect first?",
+          "explanation": "Data Fetching And Caching: Inspect the read function, cache tags, mutation invalidation, and whether the UX requires updateTag rather than stale-while-revalidate.",
+          "difficulty": "principal",
+          "tags": [
+            "nextjs",
+            "nextjs-16",
+            "frontend"
+          ],
+          "sourceDocSlug": "frontend/nextjs-16-data-fetching-caching"
+        },
+        {
+          "id": "nextjs-16-data-fetching-caching-concept-09",
+          "type": "concept",
+          "title": "Data Fetching And Caching: Key Dimensions",
+          "prompt": "Tenant, locale, permissions, and variants are cache key dimensions.",
+          "explanation": "Data Fetching And Caching: If output changes with a dimension, the cached scope must include it or avoid sharing that output.",
+          "difficulty": "principal",
+          "tags": [
+            "nextjs",
+            "nextjs-16",
+            "frontend"
+          ],
+          "sourceDocSlug": "frontend/nextjs-16-data-fetching-caching"
+        },
+        {
+          "id": "nextjs-16-data-fetching-caching-practical-10",
+          "type": "practical",
+          "title": "Data Fetching And Caching: Migration Packet",
+          "prompt": "Every migration PR should explain route behavior before and after.",
+          "explanation": "Data Fetching And Caching: For Next.js 16, behavior review matters as much as codemod output because caching and request APIs affect user-visible correctness.",
+          "difficulty": "principal",
+          "tags": [
+            "nextjs",
+            "nextjs-16",
+            "frontend"
+          ],
+          "sourceDocSlug": "frontend/nextjs-16-data-fetching-caching"
+        },
+        {
+          "id": "nextjs-16-data-fetching-caching-snippet-11",
+          "type": "snippet",
+          "title": "Data Fetching And Caching: Tag Invalidation Snippet",
+          "prompt": "Tags should match the reads a mutation makes stale.",
+          "explanation": "Data Fetching And Caching: Precise tags avoid both stale pages and global invalidation storms.",
+          "difficulty": "principal",
+          "tags": [
+            "nextjs",
+            "nextjs-16",
+            "typescript"
+          ],
+          "sourceDocSlug": "frontend/nextjs-16-data-fetching-caching",
+          "code": "updateTag('project:' + projectId);\nupdateTag('org:' + orgId + ':projects');"
+        },
+        {
+          "id": "nextjs-16-data-fetching-caching-interview-12",
+          "type": "interview",
+          "title": "Data Fetching And Caching: force-dynamic Review",
+          "prompt": "When should you keep force-dynamic in a Next.js 16 codebase?",
+          "explanation": "Data Fetching And Caching: In Cache Components apps, usually you remove it. If the app still uses the previous model, keeping it requires a documented route-wide request-time and no-store contract.",
+          "difficulty": "principal",
+          "tags": [
+            "nextjs",
+            "nextjs-16",
+            "frontend"
+          ],
+          "sourceDocSlug": "frontend/nextjs-16-data-fetching-caching"
+        },
+        {
+          "id": "nextjs-16-invalidation-mutations-concept-01",
+          "type": "concept",
+          "title": "Invalidation And Mutations: Boundary First",
+          "prompt": "Classify the boundary before changing the flag.",
+          "explanation": "Invalidation And Mutations: A Next.js review starts by naming cached, request-time, and client-owned work. Flags are implementation details after the boundary is clear.",
+          "difficulty": "principal",
+          "tags": [
+            "nextjs",
+            "nextjs-16",
+            "frontend"
+          ],
+          "sourceDocSlug": "frontend/nextjs-16-invalidation-mutations"
+        },
+        {
+          "id": "nextjs-16-invalidation-mutations-concept-02",
+          "type": "concept",
+          "title": "Invalidation And Mutations: Freshness Is Product",
+          "prompt": "Fresh data is not always required, but stale state must be named.",
+          "explanation": "Invalidation And Mutations: A cache is safe only when the product accepts the stale state or the mutation path invalidates it quickly enough.",
+          "difficulty": "principal",
+          "tags": [
+            "nextjs",
+            "nextjs-16",
+            "frontend"
+          ],
+          "sourceDocSlug": "frontend/nextjs-16-invalidation-mutations"
+        },
+        {
+          "id": "nextjs-16-invalidation-mutations-practical-03",
+          "type": "practical",
+          "title": "Invalidation And Mutations: Trace The Read",
+          "prompt": "When data is stale, find the read function before changing route config.",
+          "explanation": "Invalidation And Mutations: Adding broad no-store behavior can hide the actual stale cache key or missing tag. Trace route, component, read, tag, and mutation.",
+          "difficulty": "principal",
+          "tags": [
+            "nextjs",
+            "nextjs-16",
+            "frontend"
+          ],
+          "sourceDocSlug": "frontend/nextjs-16-invalidation-mutations"
+        },
+        {
+          "id": "nextjs-16-invalidation-mutations-practical-04",
+          "type": "practical",
+          "title": "Invalidation And Mutations: Narrow Suspense",
+          "prompt": "Wrap the slow runtime subtree, not the whole page.",
+          "explanation": "Invalidation And Mutations: A tight Suspense boundary preserves the useful shell and makes streaming feel intentional instead of broken.",
+          "difficulty": "principal",
+          "tags": [
+            "nextjs",
+            "nextjs-16",
+            "frontend"
+          ],
+          "sourceDocSlug": "frontend/nextjs-16-invalidation-mutations"
+        },
+        {
+          "id": "nextjs-16-invalidation-mutations-snippet-05",
+          "type": "snippet",
+          "title": "Invalidation And Mutations: Explicit Cache Snippet",
+          "prompt": "Use cache close to reusable work.",
+          "explanation": "Invalidation And Mutations: Function-level caching keeps reuse policy near the data access and away from unrelated request-time UI.",
+          "difficulty": "principal",
+          "tags": [
+            "nextjs",
+            "nextjs-16",
+            "typescript"
+          ],
+          "sourceDocSlug": "frontend/nextjs-16-invalidation-mutations",
+          "code": "async function getNav() {\n  'use cache';\n  cacheLife('hours');\n  cacheTag('nav');\n}"
+        },
+        {
+          "id": "nextjs-16-invalidation-mutations-snippet-06",
+          "type": "snippet",
+          "title": "Invalidation And Mutations: Runtime Snippet",
+          "prompt": "Request-specific work should stay outside cached scopes.",
+          "explanation": "Invalidation And Mutations: Runtime APIs such as cookies, headers, or connection-bound work describe the current request and should not silently affect shared cache output.",
+          "difficulty": "principal",
+          "tags": [
+            "nextjs",
+            "nextjs-16",
+            "typescript"
+          ],
+          "sourceDocSlug": "frontend/nextjs-16-invalidation-mutations",
+          "code": "const theme = (await cookies()).get('theme')?.value;"
+        },
+        {
+          "id": "nextjs-16-invalidation-mutations-interview-07",
+          "type": "interview",
+          "title": "Invalidation And Mutations: Explain The Boundary",
+          "prompt": "How would you explain cached versus request-time work to a team migrating to Next.js 16?",
+          "explanation": "Invalidation And Mutations: A strong answer says pages are dynamic by default with Cache Components, reusable work opts into cache, and Suspense protects the shell while runtime work resolves.",
+          "difficulty": "principal",
+          "tags": [
+            "nextjs",
+            "nextjs-16",
+            "frontend"
+          ],
+          "sourceDocSlug": "frontend/nextjs-16-invalidation-mutations"
+        },
+        {
+          "id": "nextjs-16-invalidation-mutations-interview-08",
+          "type": "interview",
+          "title": "Invalidation And Mutations: Debug Stale Data",
+          "prompt": "A user saves a record and still sees the old value. What do you inspect first?",
+          "explanation": "Invalidation And Mutations: Inspect the read function, cache tags, mutation invalidation, and whether the UX requires updateTag rather than stale-while-revalidate.",
+          "difficulty": "principal",
+          "tags": [
+            "nextjs",
+            "nextjs-16",
+            "frontend"
+          ],
+          "sourceDocSlug": "frontend/nextjs-16-invalidation-mutations"
+        },
+        {
+          "id": "nextjs-16-invalidation-mutations-concept-09",
+          "type": "concept",
+          "title": "Invalidation And Mutations: Key Dimensions",
+          "prompt": "Tenant, locale, permissions, and variants are cache key dimensions.",
+          "explanation": "Invalidation And Mutations: If output changes with a dimension, the cached scope must include it or avoid sharing that output.",
+          "difficulty": "principal",
+          "tags": [
+            "nextjs",
+            "nextjs-16",
+            "frontend"
+          ],
+          "sourceDocSlug": "frontend/nextjs-16-invalidation-mutations"
+        },
+        {
+          "id": "nextjs-16-invalidation-mutations-practical-10",
+          "type": "practical",
+          "title": "Invalidation And Mutations: Migration Packet",
+          "prompt": "Every migration PR should explain route behavior before and after.",
+          "explanation": "Invalidation And Mutations: For Next.js 16, behavior review matters as much as codemod output because caching and request APIs affect user-visible correctness.",
+          "difficulty": "principal",
+          "tags": [
+            "nextjs",
+            "nextjs-16",
+            "frontend"
+          ],
+          "sourceDocSlug": "frontend/nextjs-16-invalidation-mutations"
+        },
+        {
+          "id": "nextjs-16-invalidation-mutations-snippet-11",
+          "type": "snippet",
+          "title": "Invalidation And Mutations: Tag Invalidation Snippet",
+          "prompt": "Tags should match the reads a mutation makes stale.",
+          "explanation": "Invalidation And Mutations: Precise tags avoid both stale pages and global invalidation storms.",
+          "difficulty": "principal",
+          "tags": [
+            "nextjs",
+            "nextjs-16",
+            "typescript"
+          ],
+          "sourceDocSlug": "frontend/nextjs-16-invalidation-mutations",
+          "code": "updateTag('project:' + projectId);\nupdateTag('org:' + orgId + ':projects');"
+        },
+        {
+          "id": "nextjs-16-invalidation-mutations-interview-12",
+          "type": "interview",
+          "title": "Invalidation And Mutations: force-dynamic Review",
+          "prompt": "When should you keep force-dynamic in a Next.js 16 codebase?",
+          "explanation": "Invalidation And Mutations: In Cache Components apps, usually you remove it. If the app still uses the previous model, keeping it requires a documented route-wide request-time and no-store contract.",
+          "difficulty": "principal",
+          "tags": [
+            "nextjs",
+            "nextjs-16",
+            "frontend"
+          ],
+          "sourceDocSlug": "frontend/nextjs-16-invalidation-mutations"
+        },
+        {
+          "id": "nextjs-16-painful-production-lessons-concept-01",
+          "type": "concept",
+          "title": "Production Pain Points: Boundary First",
+          "prompt": "Classify the boundary before changing the flag.",
+          "explanation": "Production Pain Points: A Next.js review starts by naming cached, request-time, and client-owned work. Flags are implementation details after the boundary is clear.",
+          "difficulty": "principal",
+          "tags": [
+            "nextjs",
+            "nextjs-16",
+            "frontend"
+          ],
+          "sourceDocSlug": "frontend/nextjs-16-painful-production-lessons"
+        },
+        {
+          "id": "nextjs-16-painful-production-lessons-concept-02",
+          "type": "concept",
+          "title": "Production Pain Points: Freshness Is Product",
+          "prompt": "Fresh data is not always required, but stale state must be named.",
+          "explanation": "Production Pain Points: A cache is safe only when the product accepts the stale state or the mutation path invalidates it quickly enough.",
+          "difficulty": "principal",
+          "tags": [
+            "nextjs",
+            "nextjs-16",
+            "frontend"
+          ],
+          "sourceDocSlug": "frontend/nextjs-16-painful-production-lessons"
+        },
+        {
+          "id": "nextjs-16-painful-production-lessons-practical-03",
+          "type": "practical",
+          "title": "Production Pain Points: Trace The Read",
+          "prompt": "When data is stale, find the read function before changing route config.",
+          "explanation": "Production Pain Points: Adding broad no-store behavior can hide the actual stale cache key or missing tag. Trace route, component, read, tag, and mutation.",
+          "difficulty": "principal",
+          "tags": [
+            "nextjs",
+            "nextjs-16",
+            "frontend"
+          ],
+          "sourceDocSlug": "frontend/nextjs-16-painful-production-lessons"
+        },
+        {
+          "id": "nextjs-16-painful-production-lessons-practical-04",
+          "type": "practical",
+          "title": "Production Pain Points: Narrow Suspense",
+          "prompt": "Wrap the slow runtime subtree, not the whole page.",
+          "explanation": "Production Pain Points: A tight Suspense boundary preserves the useful shell and makes streaming feel intentional instead of broken.",
+          "difficulty": "principal",
+          "tags": [
+            "nextjs",
+            "nextjs-16",
+            "frontend"
+          ],
+          "sourceDocSlug": "frontend/nextjs-16-painful-production-lessons"
+        },
+        {
+          "id": "nextjs-16-painful-production-lessons-snippet-05",
+          "type": "snippet",
+          "title": "Production Pain Points: Explicit Cache Snippet",
+          "prompt": "Use cache close to reusable work.",
+          "explanation": "Production Pain Points: Function-level caching keeps reuse policy near the data access and away from unrelated request-time UI.",
+          "difficulty": "principal",
+          "tags": [
+            "nextjs",
+            "nextjs-16",
+            "typescript"
+          ],
+          "sourceDocSlug": "frontend/nextjs-16-painful-production-lessons",
+          "code": "async function getNav() {\n  'use cache';\n  cacheLife('hours');\n  cacheTag('nav');\n}"
+        },
+        {
+          "id": "nextjs-16-painful-production-lessons-snippet-06",
+          "type": "snippet",
+          "title": "Production Pain Points: Runtime Snippet",
+          "prompt": "Request-specific work should stay outside cached scopes.",
+          "explanation": "Production Pain Points: Runtime APIs such as cookies, headers, or connection-bound work describe the current request and should not silently affect shared cache output.",
+          "difficulty": "principal",
+          "tags": [
+            "nextjs",
+            "nextjs-16",
+            "typescript"
+          ],
+          "sourceDocSlug": "frontend/nextjs-16-painful-production-lessons",
+          "code": "const theme = (await cookies()).get('theme')?.value;"
+        },
+        {
+          "id": "nextjs-16-painful-production-lessons-interview-07",
+          "type": "interview",
+          "title": "Production Pain Points: Explain The Boundary",
+          "prompt": "How would you explain cached versus request-time work to a team migrating to Next.js 16?",
+          "explanation": "Production Pain Points: A strong answer says pages are dynamic by default with Cache Components, reusable work opts into cache, and Suspense protects the shell while runtime work resolves.",
+          "difficulty": "principal",
+          "tags": [
+            "nextjs",
+            "nextjs-16",
+            "frontend"
+          ],
+          "sourceDocSlug": "frontend/nextjs-16-painful-production-lessons"
+        },
+        {
+          "id": "nextjs-16-painful-production-lessons-interview-08",
+          "type": "interview",
+          "title": "Production Pain Points: Debug Stale Data",
+          "prompt": "A user saves a record and still sees the old value. What do you inspect first?",
+          "explanation": "Production Pain Points: Inspect the read function, cache tags, mutation invalidation, and whether the UX requires updateTag rather than stale-while-revalidate.",
+          "difficulty": "principal",
+          "tags": [
+            "nextjs",
+            "nextjs-16",
+            "frontend"
+          ],
+          "sourceDocSlug": "frontend/nextjs-16-painful-production-lessons"
+        },
+        {
+          "id": "nextjs-16-painful-production-lessons-concept-09",
+          "type": "concept",
+          "title": "Production Pain Points: Key Dimensions",
+          "prompt": "Tenant, locale, permissions, and variants are cache key dimensions.",
+          "explanation": "Production Pain Points: If output changes with a dimension, the cached scope must include it or avoid sharing that output.",
+          "difficulty": "principal",
+          "tags": [
+            "nextjs",
+            "nextjs-16",
+            "frontend"
+          ],
+          "sourceDocSlug": "frontend/nextjs-16-painful-production-lessons"
+        },
+        {
+          "id": "nextjs-16-painful-production-lessons-practical-10",
+          "type": "practical",
+          "title": "Production Pain Points: Migration Packet",
+          "prompt": "Every migration PR should explain route behavior before and after.",
+          "explanation": "Production Pain Points: For Next.js 16, behavior review matters as much as codemod output because caching and request APIs affect user-visible correctness.",
+          "difficulty": "principal",
+          "tags": [
+            "nextjs",
+            "nextjs-16",
+            "frontend"
+          ],
+          "sourceDocSlug": "frontend/nextjs-16-painful-production-lessons"
+        },
+        {
+          "id": "nextjs-16-painful-production-lessons-snippet-11",
+          "type": "snippet",
+          "title": "Production Pain Points: Tag Invalidation Snippet",
+          "prompt": "Tags should match the reads a mutation makes stale.",
+          "explanation": "Production Pain Points: Precise tags avoid both stale pages and global invalidation storms.",
+          "difficulty": "principal",
+          "tags": [
+            "nextjs",
+            "nextjs-16",
+            "typescript"
+          ],
+          "sourceDocSlug": "frontend/nextjs-16-painful-production-lessons",
+          "code": "updateTag('project:' + projectId);\nupdateTag('org:' + orgId + ':projects');"
+        },
+        {
+          "id": "nextjs-16-painful-production-lessons-interview-12",
+          "type": "interview",
+          "title": "Production Pain Points: force-dynamic Review",
+          "prompt": "When should you keep force-dynamic in a Next.js 16 codebase?",
+          "explanation": "Production Pain Points: In Cache Components apps, usually you remove it. If the app still uses the previous model, keeping it requires a documented route-wide request-time and no-store contract.",
+          "difficulty": "principal",
+          "tags": [
+            "nextjs",
+            "nextjs-16",
+            "frontend"
+          ],
+          "sourceDocSlug": "frontend/nextjs-16-painful-production-lessons"
+        },
+        {
+          "id": "nextjs-16-performance-architecture-concept-01",
+          "type": "concept",
+          "title": "Performance Architecture: Boundary First",
+          "prompt": "Classify the boundary before changing the flag.",
+          "explanation": "Performance Architecture: A Next.js review starts by naming cached, request-time, and client-owned work. Flags are implementation details after the boundary is clear.",
+          "difficulty": "principal",
+          "tags": [
+            "nextjs",
+            "nextjs-16",
+            "frontend"
+          ],
+          "sourceDocSlug": "frontend/nextjs-16-performance-architecture"
+        },
+        {
+          "id": "nextjs-16-performance-architecture-concept-02",
+          "type": "concept",
+          "title": "Performance Architecture: Freshness Is Product",
+          "prompt": "Fresh data is not always required, but stale state must be named.",
+          "explanation": "Performance Architecture: A cache is safe only when the product accepts the stale state or the mutation path invalidates it quickly enough.",
+          "difficulty": "senior",
+          "tags": [
+            "nextjs",
+            "nextjs-16",
+            "frontend"
+          ],
+          "sourceDocSlug": "frontend/nextjs-16-performance-architecture"
+        },
+        {
+          "id": "nextjs-16-performance-architecture-practical-03",
+          "type": "practical",
+          "title": "Performance Architecture: Trace The Read",
+          "prompt": "When data is stale, find the read function before changing route config.",
+          "explanation": "Performance Architecture: Adding broad no-store behavior can hide the actual stale cache key or missing tag. Trace route, component, read, tag, and mutation.",
+          "difficulty": "senior",
+          "tags": [
+            "nextjs",
+            "nextjs-16",
+            "frontend"
+          ],
+          "sourceDocSlug": "frontend/nextjs-16-performance-architecture"
+        },
+        {
+          "id": "nextjs-16-performance-architecture-practical-04",
+          "type": "practical",
+          "title": "Performance Architecture: Narrow Suspense",
+          "prompt": "Wrap the slow runtime subtree, not the whole page.",
+          "explanation": "Performance Architecture: A tight Suspense boundary preserves the useful shell and makes streaming feel intentional instead of broken.",
+          "difficulty": "senior",
+          "tags": [
+            "nextjs",
+            "nextjs-16",
+            "frontend"
+          ],
+          "sourceDocSlug": "frontend/nextjs-16-performance-architecture"
+        },
+        {
+          "id": "nextjs-16-performance-architecture-snippet-05",
+          "type": "snippet",
+          "title": "Performance Architecture: Explicit Cache Snippet",
+          "prompt": "Use cache close to reusable work.",
+          "explanation": "Performance Architecture: Function-level caching keeps reuse policy near the data access and away from unrelated request-time UI.",
+          "difficulty": "senior",
+          "tags": [
+            "nextjs",
+            "nextjs-16",
+            "typescript"
+          ],
+          "sourceDocSlug": "frontend/nextjs-16-performance-architecture",
+          "code": "async function getNav() {\n  'use cache';\n  cacheLife('hours');\n  cacheTag('nav');\n}"
+        },
+        {
+          "id": "nextjs-16-performance-architecture-snippet-06",
+          "type": "snippet",
+          "title": "Performance Architecture: Runtime Snippet",
+          "prompt": "Request-specific work should stay outside cached scopes.",
+          "explanation": "Performance Architecture: Runtime APIs such as cookies, headers, or connection-bound work describe the current request and should not silently affect shared cache output.",
+          "difficulty": "principal",
+          "tags": [
+            "nextjs",
+            "nextjs-16",
+            "typescript"
+          ],
+          "sourceDocSlug": "frontend/nextjs-16-performance-architecture",
+          "code": "const theme = (await cookies()).get('theme')?.value;"
+        },
+        {
+          "id": "nextjs-16-performance-architecture-interview-07",
+          "type": "interview",
+          "title": "Performance Architecture: Explain The Boundary",
+          "prompt": "How would you explain cached versus request-time work to a team migrating to Next.js 16?",
+          "explanation": "Performance Architecture: A strong answer says pages are dynamic by default with Cache Components, reusable work opts into cache, and Suspense protects the shell while runtime work resolves.",
+          "difficulty": "senior",
+          "tags": [
+            "nextjs",
+            "nextjs-16",
+            "frontend"
+          ],
+          "sourceDocSlug": "frontend/nextjs-16-performance-architecture"
+        },
+        {
+          "id": "nextjs-16-performance-architecture-interview-08",
+          "type": "interview",
+          "title": "Performance Architecture: Debug Stale Data",
+          "prompt": "A user saves a record and still sees the old value. What do you inspect first?",
+          "explanation": "Performance Architecture: Inspect the read function, cache tags, mutation invalidation, and whether the UX requires updateTag rather than stale-while-revalidate.",
+          "difficulty": "senior",
+          "tags": [
+            "nextjs",
+            "nextjs-16",
+            "frontend"
+          ],
+          "sourceDocSlug": "frontend/nextjs-16-performance-architecture"
+        },
+        {
+          "id": "nextjs-16-performance-architecture-concept-09",
+          "type": "concept",
+          "title": "Performance Architecture: Key Dimensions",
+          "prompt": "Tenant, locale, permissions, and variants are cache key dimensions.",
+          "explanation": "Performance Architecture: If output changes with a dimension, the cached scope must include it or avoid sharing that output.",
+          "difficulty": "senior",
+          "tags": [
+            "nextjs",
+            "nextjs-16",
+            "frontend"
+          ],
+          "sourceDocSlug": "frontend/nextjs-16-performance-architecture"
+        },
+        {
+          "id": "nextjs-16-performance-architecture-practical-10",
+          "type": "practical",
+          "title": "Performance Architecture: Migration Packet",
+          "prompt": "Every migration PR should explain route behavior before and after.",
+          "explanation": "Performance Architecture: For Next.js 16, behavior review matters as much as codemod output because caching and request APIs affect user-visible correctness.",
+          "difficulty": "senior",
+          "tags": [
+            "nextjs",
+            "nextjs-16",
+            "frontend"
+          ],
+          "sourceDocSlug": "frontend/nextjs-16-performance-architecture"
+        },
+        {
+          "id": "nextjs-16-performance-architecture-snippet-11",
+          "type": "snippet",
+          "title": "Performance Architecture: Tag Invalidation Snippet",
+          "prompt": "Tags should match the reads a mutation makes stale.",
+          "explanation": "Performance Architecture: Precise tags avoid both stale pages and global invalidation storms.",
+          "difficulty": "principal",
+          "tags": [
+            "nextjs",
+            "nextjs-16",
+            "typescript"
+          ],
+          "sourceDocSlug": "frontend/nextjs-16-performance-architecture",
+          "code": "updateTag('project:' + projectId);\nupdateTag('org:' + orgId + ':projects');"
+        },
+        {
+          "id": "nextjs-16-performance-architecture-interview-12",
+          "type": "interview",
+          "title": "Performance Architecture: force-dynamic Review",
+          "prompt": "When should you keep force-dynamic in a Next.js 16 codebase?",
+          "explanation": "Performance Architecture: In Cache Components apps, usually you remove it. If the app still uses the previous model, keeping it requires a documented route-wide request-time and no-store contract.",
+          "difficulty": "senior",
+          "tags": [
+            "nextjs",
+            "nextjs-16",
+            "frontend"
+          ],
+          "sourceDocSlug": "frontend/nextjs-16-performance-architecture"
+        },
+        {
+          "id": "nextjs-16-migration-review-concept-01",
+          "type": "concept",
+          "title": "Migration Review: Boundary First",
+          "prompt": "Classify the boundary before changing the flag.",
+          "explanation": "Migration Review: A Next.js review starts by naming cached, request-time, and client-owned work. Flags are implementation details after the boundary is clear.",
+          "difficulty": "principal",
+          "tags": [
+            "nextjs",
+            "nextjs-16",
+            "frontend"
+          ],
+          "sourceDocSlug": "frontend/nextjs-16-migration-review"
+        },
+        {
+          "id": "nextjs-16-migration-review-concept-02",
+          "type": "concept",
+          "title": "Migration Review: Freshness Is Product",
+          "prompt": "Fresh data is not always required, but stale state must be named.",
+          "explanation": "Migration Review: A cache is safe only when the product accepts the stale state or the mutation path invalidates it quickly enough.",
+          "difficulty": "senior",
+          "tags": [
+            "nextjs",
+            "nextjs-16",
+            "frontend"
+          ],
+          "sourceDocSlug": "frontend/nextjs-16-migration-review"
+        },
+        {
+          "id": "nextjs-16-migration-review-practical-03",
+          "type": "practical",
+          "title": "Migration Review: Trace The Read",
+          "prompt": "When data is stale, find the read function before changing route config.",
+          "explanation": "Migration Review: Adding broad no-store behavior can hide the actual stale cache key or missing tag. Trace route, component, read, tag, and mutation.",
+          "difficulty": "senior",
+          "tags": [
+            "nextjs",
+            "nextjs-16",
+            "frontend"
+          ],
+          "sourceDocSlug": "frontend/nextjs-16-migration-review"
+        },
+        {
+          "id": "nextjs-16-migration-review-practical-04",
+          "type": "practical",
+          "title": "Migration Review: Narrow Suspense",
+          "prompt": "Wrap the slow runtime subtree, not the whole page.",
+          "explanation": "Migration Review: A tight Suspense boundary preserves the useful shell and makes streaming feel intentional instead of broken.",
+          "difficulty": "senior",
+          "tags": [
+            "nextjs",
+            "nextjs-16",
+            "frontend"
+          ],
+          "sourceDocSlug": "frontend/nextjs-16-migration-review"
+        },
+        {
+          "id": "nextjs-16-migration-review-snippet-05",
+          "type": "snippet",
+          "title": "Migration Review: Explicit Cache Snippet",
+          "prompt": "Use cache close to reusable work.",
+          "explanation": "Migration Review: Function-level caching keeps reuse policy near the data access and away from unrelated request-time UI.",
+          "difficulty": "senior",
+          "tags": [
+            "nextjs",
+            "nextjs-16",
+            "typescript"
+          ],
+          "sourceDocSlug": "frontend/nextjs-16-migration-review",
+          "code": "async function getNav() {\n  'use cache';\n  cacheLife('hours');\n  cacheTag('nav');\n}"
+        },
+        {
+          "id": "nextjs-16-migration-review-snippet-06",
+          "type": "snippet",
+          "title": "Migration Review: Runtime Snippet",
+          "prompt": "Request-specific work should stay outside cached scopes.",
+          "explanation": "Migration Review: Runtime APIs such as cookies, headers, or connection-bound work describe the current request and should not silently affect shared cache output.",
+          "difficulty": "principal",
+          "tags": [
+            "nextjs",
+            "nextjs-16",
+            "typescript"
+          ],
+          "sourceDocSlug": "frontend/nextjs-16-migration-review",
+          "code": "const theme = (await cookies()).get('theme')?.value;"
+        },
+        {
+          "id": "nextjs-16-migration-review-interview-07",
+          "type": "interview",
+          "title": "Migration Review: Explain The Boundary",
+          "prompt": "How would you explain cached versus request-time work to a team migrating to Next.js 16?",
+          "explanation": "Migration Review: A strong answer says pages are dynamic by default with Cache Components, reusable work opts into cache, and Suspense protects the shell while runtime work resolves.",
+          "difficulty": "senior",
+          "tags": [
+            "nextjs",
+            "nextjs-16",
+            "frontend"
+          ],
+          "sourceDocSlug": "frontend/nextjs-16-migration-review"
+        },
+        {
+          "id": "nextjs-16-migration-review-interview-08",
+          "type": "interview",
+          "title": "Migration Review: Debug Stale Data",
+          "prompt": "A user saves a record and still sees the old value. What do you inspect first?",
+          "explanation": "Migration Review: Inspect the read function, cache tags, mutation invalidation, and whether the UX requires updateTag rather than stale-while-revalidate.",
+          "difficulty": "senior",
+          "tags": [
+            "nextjs",
+            "nextjs-16",
+            "frontend"
+          ],
+          "sourceDocSlug": "frontend/nextjs-16-migration-review"
+        },
+        {
+          "id": "nextjs-16-migration-review-concept-09",
+          "type": "concept",
+          "title": "Migration Review: Key Dimensions",
+          "prompt": "Tenant, locale, permissions, and variants are cache key dimensions.",
+          "explanation": "Migration Review: If output changes with a dimension, the cached scope must include it or avoid sharing that output.",
+          "difficulty": "senior",
+          "tags": [
+            "nextjs",
+            "nextjs-16",
+            "frontend"
+          ],
+          "sourceDocSlug": "frontend/nextjs-16-migration-review"
+        },
+        {
+          "id": "nextjs-16-migration-review-practical-10",
+          "type": "practical",
+          "title": "Migration Review: Migration Packet",
+          "prompt": "Every migration PR should explain route behavior before and after.",
+          "explanation": "Migration Review: For Next.js 16, behavior review matters as much as codemod output because caching and request APIs affect user-visible correctness.",
+          "difficulty": "senior",
+          "tags": [
+            "nextjs",
+            "nextjs-16",
+            "frontend"
+          ],
+          "sourceDocSlug": "frontend/nextjs-16-migration-review"
+        },
+        {
+          "id": "nextjs-16-migration-review-snippet-11",
+          "type": "snippet",
+          "title": "Migration Review: Tag Invalidation Snippet",
+          "prompt": "Tags should match the reads a mutation makes stale.",
+          "explanation": "Migration Review: Precise tags avoid both stale pages and global invalidation storms.",
+          "difficulty": "principal",
+          "tags": [
+            "nextjs",
+            "nextjs-16",
+            "typescript"
+          ],
+          "sourceDocSlug": "frontend/nextjs-16-migration-review",
+          "code": "updateTag('project:' + projectId);\nupdateTag('org:' + orgId + ':projects');"
+        },
+        {
+          "id": "nextjs-16-migration-review-interview-12",
+          "type": "interview",
+          "title": "Migration Review: force-dynamic Review",
+          "prompt": "When should you keep force-dynamic in a Next.js 16 codebase?",
+          "explanation": "Migration Review: In Cache Components apps, usually you remove it. If the app still uses the previous model, keeping it requires a documented route-wide request-time and no-store contract.",
+          "difficulty": "senior",
+          "tags": [
+            "nextjs",
+            "nextjs-16",
+            "frontend"
+          ],
+          "sourceDocSlug": "frontend/nextjs-16-migration-review"
+        }
+      ],
+      "id": "ef4abdfb3dc4",
+      "route": "/paths/advanced-nextjs-16/flashcards",
+      "sourcePath": "content/flashcard-feeds/advanced-nextjs-16.json",
+      "contentHash": "8807ce55ea48cd880dc7b8a3360cb1a592c53e55fd7d3e9f01b2161804e94c97"
+    },
     {
       "slug": "ai-engineering-langfuse-langchain",
       "pathSlug": "ai-engineering-langfuse-langchain",
@@ -12934,6 +16289,25 @@
         "Fuzzy Search",
         "Indexes",
         "Search Queries"
+      ]
+    },
+    {
+      "name": "Front-End Development",
+      "slug": "front-end-development",
+      "documentCount": 8,
+      "difficulties": [
+        "senior",
+        "principal"
+      ],
+      "topics": [
+        "Next.js Caching",
+        "Next.js Data Fetching",
+        "Next.js Invalidation",
+        "Next.js Migration",
+        "Next.js Performance",
+        "Next.js Production",
+        "Next.js Rendering",
+        "Next.js Route Segment Config"
       ]
     },
     {

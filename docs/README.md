@@ -21,6 +21,7 @@ Conventions:
 - `docs/features/programming-language-refresh.md` owns reusable programming-language refresh paths, starting with Python for TypeScript and JavaScript engineers.
 - `docs/features/llm-application-engineering.md` owns the Langfuse and LangChain AI engineering path, including local lessons, diagrams, quizzes, passive flashcards, and non-executable coding challenge sections.
 - `docs/features/database-indexes-learning-path.md` owns the database indexes and PostgreSQL search path, including local lessons, quizzes, passive flashcards, and future SQL editor roadmap boundaries.
+- `docs/features/advanced-nextjs-16-learning-path.md` owns the hard Front-End Development skill path for Next.js 16 rendering, caching, `force-dynamic`, invalidation, performance, migration, quizzes, and one-minute brief cards.
 - `docs/features/interview-coding-catalog.md` owns the reported-public company interview coding catalog and guided solution walkthroughs.
 - `docs/plans/<feature>/...` is the repo-local home for durable implementation plans when a plan needs to outlive one thread.
 
@@ -36,6 +37,8 @@ Content authoring surfaces:
 AI engineering lesson content under `content/knowledge/ai-engineering/` must stay aligned with primary or standards-oriented sources such as official Langfuse docs, official LangChain and LangGraph docs, OpenTelemetry, OWASP, and NIST. Coding challenge sections in those lessons are authored as non-executable prompts until a future code editor feature adds an executable challenge contract.
 
 Database index lesson content under `content/knowledge/databases/` must stay aligned with primary or official sources such as PostgreSQL documentation and Drizzle documentation. SQL query practice remains non-executable roadmap work until a future SQL editor feature adds a validated demo-data contract.
+
+Front-End Development lesson content under `content/knowledge/frontend/` must stay aligned with official framework documentation and release notes. The Advanced Next.js 16 path uses official Next.js docs, official Next.js release posts, and npm registry package metadata as source anchors.
 
 Maintenance rules:
 

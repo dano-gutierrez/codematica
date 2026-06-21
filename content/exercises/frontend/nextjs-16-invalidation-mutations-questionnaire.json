@@ -1,0 +1,158 @@
+{
+  "slug": "frontend/nextjs-16-invalidation-mutations-questionnaire",
+  "title": "Next.js 16 Invalidation And Mutations Questionnaire",
+  "type": "questionnaire",
+  "documentSlug": "frontend/nextjs-16-invalidation-mutations",
+  "concept": "Mutation-driven cache invalidation",
+  "difficulty": "principal",
+  "tags": [
+    "nextjs",
+    "server-actions",
+    "updatetag",
+    "revalidatetag"
+  ],
+  "status": "published",
+  "questions": [
+    {
+      "id": "update-tag-use",
+      "kind": "choice",
+      "prompt": "When should updateTag be preferred?",
+      "options": [
+        {
+          "id": "server-action-fresh",
+          "label": "Inside a Server Action when the actor needs read-your-own-writes.",
+          "isCorrect": true
+        },
+        {
+          "id": "webhook-swr",
+          "label": "Inside a third-party webhook when stale-while-revalidate is preferred.",
+          "isCorrect": false
+        },
+        {
+          "id": "client",
+          "label": "Inside a Client Component after an optimistic click.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "updateTag is for Server Actions and immediate expiration so the next read waits for fresh data."
+    },
+    {
+      "id": "revalidate-profile",
+      "kind": "cloze",
+      "prompt": "Fill the profile commonly used for stale-while-revalidate tag behavior.",
+      "template": "Use revalidateTag(tag, {{blank}}) when stale-while-revalidate is acceptable.",
+      "acceptedAnswers": [
+        "\"max\"",
+        "'max'",
+        "max"
+      ],
+      "explanation": "The max profile marks tagged content stale and lets the next visit use stale-while-revalidate semantics."
+    },
+    {
+      "id": "mutation-order",
+      "kind": "ordering",
+      "prompt": "Order a mutation with cache correctness.",
+      "items": [
+        {
+          "id": "validate",
+          "label": "Validate authorization and input"
+        },
+        {
+          "id": "write",
+          "label": "Commit the database write"
+        },
+        {
+          "id": "invalidate",
+          "label": "Invalidate exactly affected cache tags"
+        },
+        {
+          "id": "refresh",
+          "label": "Return or refresh the user-visible read path"
+        }
+      ],
+      "correctOrder": [
+        "validate",
+        "write",
+        "invalidate",
+        "refresh"
+      ],
+      "explanation": "The mutation is not complete until affected cached reads have the intended freshness behavior."
+    },
+    {
+      "id": "api-match",
+      "kind": "matching",
+      "prompt": "Match each invalidation API to the context.",
+      "pairs": [
+        {
+          "id": "update",
+          "prompt": "updateTag",
+          "match": "Server Action immediate expiration"
+        },
+        {
+          "id": "revalidate",
+          "prompt": "revalidateTag",
+          "match": "Route Handler or stale-while-revalidate invalidation"
+        },
+        {
+          "id": "path",
+          "prompt": "revalidatePath",
+          "match": "path-specific revalidation"
+        }
+      ],
+      "explanation": "API choice depends on runtime context and the freshness experience expected by users."
+    },
+    {
+      "id": "tag-scope",
+      "kind": "choice",
+      "prompt": "Which tag design is strongest for renaming one project in an org list?",
+      "options": [
+        {
+          "id": "global",
+          "label": "Invalidate a global all-data tag for every route.",
+          "isCorrect": false
+        },
+        {
+          "id": "entity-and-list",
+          "label": "Invalidate project id and org project-list tags touched by the rename.",
+          "isCorrect": true
+        },
+        {
+          "id": "detail-only",
+          "label": "Invalidate only the detail tag and ignore lists.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "A rename affects both entity detail and list views that render the name."
+    },
+    {
+      "id": "webhook-order",
+      "kind": "ordering",
+      "prompt": "Order a webhook invalidation review.",
+      "items": [
+        {
+          "id": "auth",
+          "label": "Authenticate and dedupe the webhook"
+        },
+        {
+          "id": "map",
+          "label": "Map external entity to cache tags"
+        },
+        {
+          "id": "revalidate",
+          "label": "Call revalidateTag with intended profile"
+        },
+        {
+          "id": "retry",
+          "label": "Record retry or dead-letter behavior"
+        }
+      ],
+      "correctOrder": [
+        "auth",
+        "map",
+        "revalidate",
+        "retry"
+      ],
+      "explanation": "External invalidation needs authorization, deterministic tag mapping, and failure handling."
+    }
+  ]
+}

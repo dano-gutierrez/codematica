@@ -1,0 +1,1378 @@
+{
+  "slug": "advanced-nextjs-16",
+  "pathSlug": "advanced-nextjs-16",
+  "title": "Advanced Next.js 16 One-Minute Briefs",
+  "summary": "A vertical one-minute brief feed for experienced Next.js engineers reviewing rendering, caching, invalidation, performance, migration, and production failure modes.",
+  "audience": "Experienced Next.js App Router engineers replacing idle social scrolling with hard production review cards.",
+  "status": "published",
+  "cards": [
+    {
+      "id": "nextjs-16-rendering-model-concept-01",
+      "type": "concept",
+      "title": "Rendering Model: Boundary First",
+      "prompt": "Classify the boundary before changing the flag.",
+      "explanation": "Rendering Model: A Next.js review starts by naming cached, request-time, and client-owned work. Flags are implementation details after the boundary is clear.",
+      "difficulty": "principal",
+      "tags": [
+        "nextjs",
+        "nextjs-16",
+        "frontend"
+      ],
+      "sourceDocSlug": "frontend/nextjs-16-rendering-model"
+    },
+    {
+      "id": "nextjs-16-rendering-model-concept-02",
+      "type": "concept",
+      "title": "Rendering Model: Freshness Is Product",
+      "prompt": "Fresh data is not always required, but stale state must be named.",
+      "explanation": "Rendering Model: A cache is safe only when the product accepts the stale state or the mutation path invalidates it quickly enough.",
+      "difficulty": "senior",
+      "tags": [
+        "nextjs",
+        "nextjs-16",
+        "frontend"
+      ],
+      "sourceDocSlug": "frontend/nextjs-16-rendering-model"
+    },
+    {
+      "id": "nextjs-16-rendering-model-practical-03",
+      "type": "practical",
+      "title": "Rendering Model: Trace The Read",
+      "prompt": "When data is stale, find the read function before changing route config.",
+      "explanation": "Rendering Model: Adding broad no-store behavior can hide the actual stale cache key or missing tag. Trace route, component, read, tag, and mutation.",
+      "difficulty": "senior",
+      "tags": [
+        "nextjs",
+        "nextjs-16",
+        "frontend"
+      ],
+      "sourceDocSlug": "frontend/nextjs-16-rendering-model"
+    },
+    {
+      "id": "nextjs-16-rendering-model-practical-04",
+      "type": "practical",
+      "title": "Rendering Model: Narrow Suspense",
+      "prompt": "Wrap the slow runtime subtree, not the whole page.",
+      "explanation": "Rendering Model: A tight Suspense boundary preserves the useful shell and makes streaming feel intentional instead of broken.",
+      "difficulty": "senior",
+      "tags": [
+        "nextjs",
+        "nextjs-16",
+        "frontend"
+      ],
+      "sourceDocSlug": "frontend/nextjs-16-rendering-model"
+    },
+    {
+      "id": "nextjs-16-rendering-model-snippet-05",
+      "type": "snippet",
+      "title": "Rendering Model: Explicit Cache Snippet",
+      "prompt": "Use cache close to reusable work.",
+      "explanation": "Rendering Model: Function-level caching keeps reuse policy near the data access and away from unrelated request-time UI.",
+      "difficulty": "senior",
+      "tags": [
+        "nextjs",
+        "nextjs-16",
+        "typescript"
+      ],
+      "sourceDocSlug": "frontend/nextjs-16-rendering-model",
+      "code": "async function getNav() {\n  'use cache';\n  cacheLife('hours');\n  cacheTag('nav');\n}"
+    },
+    {
+      "id": "nextjs-16-rendering-model-snippet-06",
+      "type": "snippet",
+      "title": "Rendering Model: Runtime Snippet",
+      "prompt": "Request-specific work should stay outside cached scopes.",
+      "explanation": "Rendering Model: Runtime APIs such as cookies, headers, or connection-bound work describe the current request and should not silently affect shared cache output.",
+      "difficulty": "principal",
+      "tags": [
+        "nextjs",
+        "nextjs-16",
+        "typescript"
+      ],
+      "sourceDocSlug": "frontend/nextjs-16-rendering-model",
+      "code": "const theme = (await cookies()).get('theme')?.value;"
+    },
+    {
+      "id": "nextjs-16-rendering-model-interview-07",
+      "type": "interview",
+      "title": "Rendering Model: Explain The Boundary",
+      "prompt": "How would you explain cached versus request-time work to a team migrating to Next.js 16?",
+      "explanation": "Rendering Model: A strong answer says pages are dynamic by default with Cache Components, reusable work opts into cache, and Suspense protects the shell while runtime work resolves.",
+      "difficulty": "senior",
+      "tags": [
+        "nextjs",
+        "nextjs-16",
+        "frontend"
+      ],
+      "sourceDocSlug": "frontend/nextjs-16-rendering-model"
+    },
+    {
+      "id": "nextjs-16-rendering-model-interview-08",
+      "type": "interview",
+      "title": "Rendering Model: Debug Stale Data",
+      "prompt": "A user saves a record and still sees the old value. What do you inspect first?",
+      "explanation": "Rendering Model: Inspect the read function, cache tags, mutation invalidation, and whether the UX requires updateTag rather than stale-while-revalidate.",
+      "difficulty": "senior",
+      "tags": [
+        "nextjs",
+        "nextjs-16",
+        "frontend"
+      ],
+      "sourceDocSlug": "frontend/nextjs-16-rendering-model"
+    },
+    {
+      "id": "nextjs-16-rendering-model-concept-09",
+      "type": "concept",
+      "title": "Rendering Model: Key Dimensions",
+      "prompt": "Tenant, locale, permissions, and variants are cache key dimensions.",
+      "explanation": "Rendering Model: If output changes with a dimension, the cached scope must include it or avoid sharing that output.",
+      "difficulty": "senior",
+      "tags": [
+        "nextjs",
+        "nextjs-16",
+        "frontend"
+      ],
+      "sourceDocSlug": "frontend/nextjs-16-rendering-model"
+    },
+    {
+      "id": "nextjs-16-rendering-model-practical-10",
+      "type": "practical",
+      "title": "Rendering Model: Migration Packet",
+      "prompt": "Every migration PR should explain route behavior before and after.",
+      "explanation": "Rendering Model: For Next.js 16, behavior review matters as much as codemod output because caching and request APIs affect user-visible correctness.",
+      "difficulty": "senior",
+      "tags": [
+        "nextjs",
+        "nextjs-16",
+        "frontend"
+      ],
+      "sourceDocSlug": "frontend/nextjs-16-rendering-model"
+    },
+    {
+      "id": "nextjs-16-rendering-model-snippet-11",
+      "type": "snippet",
+      "title": "Rendering Model: Tag Invalidation Snippet",
+      "prompt": "Tags should match the reads a mutation makes stale.",
+      "explanation": "Rendering Model: Precise tags avoid both stale pages and global invalidation storms.",
+      "difficulty": "principal",
+      "tags": [
+        "nextjs",
+        "nextjs-16",
+        "typescript"
+      ],
+      "sourceDocSlug": "frontend/nextjs-16-rendering-model",
+      "code": "updateTag('project:' + projectId);\nupdateTag('org:' + orgId + ':projects');"
+    },
+    {
+      "id": "nextjs-16-rendering-model-interview-12",
+      "type": "interview",
+      "title": "Rendering Model: force-dynamic Review",
+      "prompt": "When should you keep force-dynamic in a Next.js 16 codebase?",
+      "explanation": "Rendering Model: In Cache Components apps, usually you remove it. If the app still uses the previous model, keeping it requires a documented route-wide request-time and no-store contract.",
+      "difficulty": "senior",
+      "tags": [
+        "nextjs",
+        "nextjs-16",
+        "frontend"
+      ],
+      "sourceDocSlug": "frontend/nextjs-16-rendering-model"
+    },
+    {
+      "id": "nextjs-16-force-dynamic-concept-01",
+      "type": "concept",
+      "title": "force-dynamic In Context: Boundary First",
+      "prompt": "Classify the boundary before changing the flag.",
+      "explanation": "force-dynamic In Context: A Next.js review starts by naming cached, request-time, and client-owned work. Flags are implementation details after the boundary is clear.",
+      "difficulty": "principal",
+      "tags": [
+        "nextjs",
+        "nextjs-16",
+        "frontend"
+      ],
+      "sourceDocSlug": "frontend/nextjs-16-force-dynamic"
+    },
+    {
+      "id": "nextjs-16-force-dynamic-concept-02",
+      "type": "concept",
+      "title": "force-dynamic In Context: Freshness Is Product",
+      "prompt": "Fresh data is not always required, but stale state must be named.",
+      "explanation": "force-dynamic In Context: A cache is safe only when the product accepts the stale state or the mutation path invalidates it quickly enough.",
+      "difficulty": "senior",
+      "tags": [
+        "nextjs",
+        "nextjs-16",
+        "frontend"
+      ],
+      "sourceDocSlug": "frontend/nextjs-16-force-dynamic"
+    },
+    {
+      "id": "nextjs-16-force-dynamic-practical-03",
+      "type": "practical",
+      "title": "force-dynamic In Context: Trace The Read",
+      "prompt": "When data is stale, find the read function before changing route config.",
+      "explanation": "force-dynamic In Context: Adding broad no-store behavior can hide the actual stale cache key or missing tag. Trace route, component, read, tag, and mutation.",
+      "difficulty": "senior",
+      "tags": [
+        "nextjs",
+        "nextjs-16",
+        "frontend"
+      ],
+      "sourceDocSlug": "frontend/nextjs-16-force-dynamic"
+    },
+    {
+      "id": "nextjs-16-force-dynamic-practical-04",
+      "type": "practical",
+      "title": "force-dynamic In Context: Narrow Suspense",
+      "prompt": "Wrap the slow runtime subtree, not the whole page.",
+      "explanation": "force-dynamic In Context: A tight Suspense boundary preserves the useful shell and makes streaming feel intentional instead of broken.",
+      "difficulty": "senior",
+      "tags": [
+        "nextjs",
+        "nextjs-16",
+        "frontend"
+      ],
+      "sourceDocSlug": "frontend/nextjs-16-force-dynamic"
+    },
+    {
+      "id": "nextjs-16-force-dynamic-snippet-05",
+      "type": "snippet",
+      "title": "force-dynamic In Context: Explicit Cache Snippet",
+      "prompt": "Use cache close to reusable work.",
+      "explanation": "force-dynamic In Context: Function-level caching keeps reuse policy near the data access and away from unrelated request-time UI.",
+      "difficulty": "senior",
+      "tags": [
+        "nextjs",
+        "nextjs-16",
+        "typescript"
+      ],
+      "sourceDocSlug": "frontend/nextjs-16-force-dynamic",
+      "code": "async function getNav() {\n  'use cache';\n  cacheLife('hours');\n  cacheTag('nav');\n}"
+    },
+    {
+      "id": "nextjs-16-force-dynamic-snippet-06",
+      "type": "snippet",
+      "title": "force-dynamic In Context: Runtime Snippet",
+      "prompt": "Request-specific work should stay outside cached scopes.",
+      "explanation": "force-dynamic In Context: Runtime APIs such as cookies, headers, or connection-bound work describe the current request and should not silently affect shared cache output.",
+      "difficulty": "principal",
+      "tags": [
+        "nextjs",
+        "nextjs-16",
+        "typescript"
+      ],
+      "sourceDocSlug": "frontend/nextjs-16-force-dynamic",
+      "code": "const theme = (await cookies()).get('theme')?.value;"
+    },
+    {
+      "id": "nextjs-16-force-dynamic-interview-07",
+      "type": "interview",
+      "title": "force-dynamic In Context: Explain The Boundary",
+      "prompt": "How would you explain cached versus request-time work to a team migrating to Next.js 16?",
+      "explanation": "force-dynamic In Context: A strong answer says pages are dynamic by default with Cache Components, reusable work opts into cache, and Suspense protects the shell while runtime work resolves.",
+      "difficulty": "senior",
+      "tags": [
+        "nextjs",
+        "nextjs-16",
+        "frontend"
+      ],
+      "sourceDocSlug": "frontend/nextjs-16-force-dynamic"
+    },
+    {
+      "id": "nextjs-16-force-dynamic-interview-08",
+      "type": "interview",
+      "title": "force-dynamic In Context: Debug Stale Data",
+      "prompt": "A user saves a record and still sees the old value. What do you inspect first?",
+      "explanation": "force-dynamic In Context: Inspect the read function, cache tags, mutation invalidation, and whether the UX requires updateTag rather than stale-while-revalidate.",
+      "difficulty": "senior",
+      "tags": [
+        "nextjs",
+        "nextjs-16",
+        "frontend"
+      ],
+      "sourceDocSlug": "frontend/nextjs-16-force-dynamic"
+    },
+    {
+      "id": "nextjs-16-force-dynamic-concept-09",
+      "type": "concept",
+      "title": "force-dynamic In Context: Key Dimensions",
+      "prompt": "Tenant, locale, permissions, and variants are cache key dimensions.",
+      "explanation": "force-dynamic In Context: If output changes with a dimension, the cached scope must include it or avoid sharing that output.",
+      "difficulty": "senior",
+      "tags": [
+        "nextjs",
+        "nextjs-16",
+        "frontend"
+      ],
+      "sourceDocSlug": "frontend/nextjs-16-force-dynamic"
+    },
+    {
+      "id": "nextjs-16-force-dynamic-practical-10",
+      "type": "practical",
+      "title": "force-dynamic In Context: Migration Packet",
+      "prompt": "Every migration PR should explain route behavior before and after.",
+      "explanation": "force-dynamic In Context: For Next.js 16, behavior review matters as much as codemod output because caching and request APIs affect user-visible correctness.",
+      "difficulty": "senior",
+      "tags": [
+        "nextjs",
+        "nextjs-16",
+        "frontend"
+      ],
+      "sourceDocSlug": "frontend/nextjs-16-force-dynamic"
+    },
+    {
+      "id": "nextjs-16-force-dynamic-snippet-11",
+      "type": "snippet",
+      "title": "force-dynamic In Context: Tag Invalidation Snippet",
+      "prompt": "Tags should match the reads a mutation makes stale.",
+      "explanation": "force-dynamic In Context: Precise tags avoid both stale pages and global invalidation storms.",
+      "difficulty": "principal",
+      "tags": [
+        "nextjs",
+        "nextjs-16",
+        "typescript"
+      ],
+      "sourceDocSlug": "frontend/nextjs-16-force-dynamic",
+      "code": "updateTag('project:' + projectId);\nupdateTag('org:' + orgId + ':projects');"
+    },
+    {
+      "id": "nextjs-16-force-dynamic-interview-12",
+      "type": "interview",
+      "title": "force-dynamic In Context: force-dynamic Review",
+      "prompt": "When should you keep force-dynamic in a Next.js 16 codebase?",
+      "explanation": "force-dynamic In Context: In Cache Components apps, usually you remove it. If the app still uses the previous model, keeping it requires a documented route-wide request-time and no-store contract.",
+      "difficulty": "senior",
+      "tags": [
+        "nextjs",
+        "nextjs-16",
+        "frontend"
+      ],
+      "sourceDocSlug": "frontend/nextjs-16-force-dynamic"
+    },
+    {
+      "id": "nextjs-16-cache-components-concept-01",
+      "type": "concept",
+      "title": "Cache Components: Boundary First",
+      "prompt": "Classify the boundary before changing the flag.",
+      "explanation": "Cache Components: A Next.js review starts by naming cached, request-time, and client-owned work. Flags are implementation details after the boundary is clear.",
+      "difficulty": "principal",
+      "tags": [
+        "nextjs",
+        "nextjs-16",
+        "frontend"
+      ],
+      "sourceDocSlug": "frontend/nextjs-16-cache-components"
+    },
+    {
+      "id": "nextjs-16-cache-components-concept-02",
+      "type": "concept",
+      "title": "Cache Components: Freshness Is Product",
+      "prompt": "Fresh data is not always required, but stale state must be named.",
+      "explanation": "Cache Components: A cache is safe only when the product accepts the stale state or the mutation path invalidates it quickly enough.",
+      "difficulty": "principal",
+      "tags": [
+        "nextjs",
+        "nextjs-16",
+        "frontend"
+      ],
+      "sourceDocSlug": "frontend/nextjs-16-cache-components"
+    },
+    {
+      "id": "nextjs-16-cache-components-practical-03",
+      "type": "practical",
+      "title": "Cache Components: Trace The Read",
+      "prompt": "When data is stale, find the read function before changing route config.",
+      "explanation": "Cache Components: Adding broad no-store behavior can hide the actual stale cache key or missing tag. Trace route, component, read, tag, and mutation.",
+      "difficulty": "principal",
+      "tags": [
+        "nextjs",
+        "nextjs-16",
+        "frontend"
+      ],
+      "sourceDocSlug": "frontend/nextjs-16-cache-components"
+    },
+    {
+      "id": "nextjs-16-cache-components-practical-04",
+      "type": "practical",
+      "title": "Cache Components: Narrow Suspense",
+      "prompt": "Wrap the slow runtime subtree, not the whole page.",
+      "explanation": "Cache Components: A tight Suspense boundary preserves the useful shell and makes streaming feel intentional instead of broken.",
+      "difficulty": "principal",
+      "tags": [
+        "nextjs",
+        "nextjs-16",
+        "frontend"
+      ],
+      "sourceDocSlug": "frontend/nextjs-16-cache-components"
+    },
+    {
+      "id": "nextjs-16-cache-components-snippet-05",
+      "type": "snippet",
+      "title": "Cache Components: Explicit Cache Snippet",
+      "prompt": "Use cache close to reusable work.",
+      "explanation": "Cache Components: Function-level caching keeps reuse policy near the data access and away from unrelated request-time UI.",
+      "difficulty": "principal",
+      "tags": [
+        "nextjs",
+        "nextjs-16",
+        "typescript"
+      ],
+      "sourceDocSlug": "frontend/nextjs-16-cache-components",
+      "code": "async function getNav() {\n  'use cache';\n  cacheLife('hours');\n  cacheTag('nav');\n}"
+    },
+    {
+      "id": "nextjs-16-cache-components-snippet-06",
+      "type": "snippet",
+      "title": "Cache Components: Runtime Snippet",
+      "prompt": "Request-specific work should stay outside cached scopes.",
+      "explanation": "Cache Components: Runtime APIs such as cookies, headers, or connection-bound work describe the current request and should not silently affect shared cache output.",
+      "difficulty": "principal",
+      "tags": [
+        "nextjs",
+        "nextjs-16",
+        "typescript"
+      ],
+      "sourceDocSlug": "frontend/nextjs-16-cache-components",
+      "code": "const theme = (await cookies()).get('theme')?.value;"
+    },
+    {
+      "id": "nextjs-16-cache-components-interview-07",
+      "type": "interview",
+      "title": "Cache Components: Explain The Boundary",
+      "prompt": "How would you explain cached versus request-time work to a team migrating to Next.js 16?",
+      "explanation": "Cache Components: A strong answer says pages are dynamic by default with Cache Components, reusable work opts into cache, and Suspense protects the shell while runtime work resolves.",
+      "difficulty": "principal",
+      "tags": [
+        "nextjs",
+        "nextjs-16",
+        "frontend"
+      ],
+      "sourceDocSlug": "frontend/nextjs-16-cache-components"
+    },
+    {
+      "id": "nextjs-16-cache-components-interview-08",
+      "type": "interview",
+      "title": "Cache Components: Debug Stale Data",
+      "prompt": "A user saves a record and still sees the old value. What do you inspect first?",
+      "explanation": "Cache Components: Inspect the read function, cache tags, mutation invalidation, and whether the UX requires updateTag rather than stale-while-revalidate.",
+      "difficulty": "principal",
+      "tags": [
+        "nextjs",
+        "nextjs-16",
+        "frontend"
+      ],
+      "sourceDocSlug": "frontend/nextjs-16-cache-components"
+    },
+    {
+      "id": "nextjs-16-cache-components-concept-09",
+      "type": "concept",
+      "title": "Cache Components: Key Dimensions",
+      "prompt": "Tenant, locale, permissions, and variants are cache key dimensions.",
+      "explanation": "Cache Components: If output changes with a dimension, the cached scope must include it or avoid sharing that output.",
+      "difficulty": "principal",
+      "tags": [
+        "nextjs",
+        "nextjs-16",
+        "frontend"
+      ],
+      "sourceDocSlug": "frontend/nextjs-16-cache-components"
+    },
+    {
+      "id": "nextjs-16-cache-components-practical-10",
+      "type": "practical",
+      "title": "Cache Components: Migration Packet",
+      "prompt": "Every migration PR should explain route behavior before and after.",
+      "explanation": "Cache Components: For Next.js 16, behavior review matters as much as codemod output because caching and request APIs affect user-visible correctness.",
+      "difficulty": "principal",
+      "tags": [
+        "nextjs",
+        "nextjs-16",
+        "frontend"
+      ],
+      "sourceDocSlug": "frontend/nextjs-16-cache-components"
+    },
+    {
+      "id": "nextjs-16-cache-components-snippet-11",
+      "type": "snippet",
+      "title": "Cache Components: Tag Invalidation Snippet",
+      "prompt": "Tags should match the reads a mutation makes stale.",
+      "explanation": "Cache Components: Precise tags avoid both stale pages and global invalidation storms.",
+      "difficulty": "principal",
+      "tags": [
+        "nextjs",
+        "nextjs-16",
+        "typescript"
+      ],
+      "sourceDocSlug": "frontend/nextjs-16-cache-components",
+      "code": "updateTag('project:' + projectId);\nupdateTag('org:' + orgId + ':projects');"
+    },
+    {
+      "id": "nextjs-16-cache-components-interview-12",
+      "type": "interview",
+      "title": "Cache Components: force-dynamic Review",
+      "prompt": "When should you keep force-dynamic in a Next.js 16 codebase?",
+      "explanation": "Cache Components: In Cache Components apps, usually you remove it. If the app still uses the previous model, keeping it requires a documented route-wide request-time and no-store contract.",
+      "difficulty": "principal",
+      "tags": [
+        "nextjs",
+        "nextjs-16",
+        "frontend"
+      ],
+      "sourceDocSlug": "frontend/nextjs-16-cache-components"
+    },
+    {
+      "id": "nextjs-16-data-fetching-caching-concept-01",
+      "type": "concept",
+      "title": "Data Fetching And Caching: Boundary First",
+      "prompt": "Classify the boundary before changing the flag.",
+      "explanation": "Data Fetching And Caching: A Next.js review starts by naming cached, request-time, and client-owned work. Flags are implementation details after the boundary is clear.",
+      "difficulty": "principal",
+      "tags": [
+        "nextjs",
+        "nextjs-16",
+        "frontend"
+      ],
+      "sourceDocSlug": "frontend/nextjs-16-data-fetching-caching"
+    },
+    {
+      "id": "nextjs-16-data-fetching-caching-concept-02",
+      "type": "concept",
+      "title": "Data Fetching And Caching: Freshness Is Product",
+      "prompt": "Fresh data is not always required, but stale state must be named.",
+      "explanation": "Data Fetching And Caching: A cache is safe only when the product accepts the stale state or the mutation path invalidates it quickly enough.",
+      "difficulty": "principal",
+      "tags": [
+        "nextjs",
+        "nextjs-16",
+        "frontend"
+      ],
+      "sourceDocSlug": "frontend/nextjs-16-data-fetching-caching"
+    },
+    {
+      "id": "nextjs-16-data-fetching-caching-practical-03",
+      "type": "practical",
+      "title": "Data Fetching And Caching: Trace The Read",
+      "prompt": "When data is stale, find the read function before changing route config.",
+      "explanation": "Data Fetching And Caching: Adding broad no-store behavior can hide the actual stale cache key or missing tag. Trace route, component, read, tag, and mutation.",
+      "difficulty": "principal",
+      "tags": [
+        "nextjs",
+        "nextjs-16",
+        "frontend"
+      ],
+      "sourceDocSlug": "frontend/nextjs-16-data-fetching-caching"
+    },
+    {
+      "id": "nextjs-16-data-fetching-caching-practical-04",
+      "type": "practical",
+      "title": "Data Fetching And Caching: Narrow Suspense",
+      "prompt": "Wrap the slow runtime subtree, not the whole page.",
+      "explanation": "Data Fetching And Caching: A tight Suspense boundary preserves the useful shell and makes streaming feel intentional instead of broken.",
+      "difficulty": "principal",
+      "tags": [
+        "nextjs",
+        "nextjs-16",
+        "frontend"
+      ],
+      "sourceDocSlug": "frontend/nextjs-16-data-fetching-caching"
+    },
+    {
+      "id": "nextjs-16-data-fetching-caching-snippet-05",
+      "type": "snippet",
+      "title": "Data Fetching And Caching: Explicit Cache Snippet",
+      "prompt": "Use cache close to reusable work.",
+      "explanation": "Data Fetching And Caching: Function-level caching keeps reuse policy near the data access and away from unrelated request-time UI.",
+      "difficulty": "principal",
+      "tags": [
+        "nextjs",
+        "nextjs-16",
+        "typescript"
+      ],
+      "sourceDocSlug": "frontend/nextjs-16-data-fetching-caching",
+      "code": "async function getNav() {\n  'use cache';\n  cacheLife('hours');\n  cacheTag('nav');\n}"
+    },
+    {
+      "id": "nextjs-16-data-fetching-caching-snippet-06",
+      "type": "snippet",
+      "title": "Data Fetching And Caching: Runtime Snippet",
+      "prompt": "Request-specific work should stay outside cached scopes.",
+      "explanation": "Data Fetching And Caching: Runtime APIs such as cookies, headers, or connection-bound work describe the current request and should not silently affect shared cache output.",
+      "difficulty": "principal",
+      "tags": [
+        "nextjs",
+        "nextjs-16",
+        "typescript"
+      ],
+      "sourceDocSlug": "frontend/nextjs-16-data-fetching-caching",
+      "code": "const theme = (await cookies()).get('theme')?.value;"
+    },
+    {
+      "id": "nextjs-16-data-fetching-caching-interview-07",
+      "type": "interview",
+      "title": "Data Fetching And Caching: Explain The Boundary",
+      "prompt": "How would you explain cached versus request-time work to a team migrating to Next.js 16?",
+      "explanation": "Data Fetching And Caching: A strong answer says pages are dynamic by default with Cache Components, reusable work opts into cache, and Suspense protects the shell while runtime work resolves.",
+      "difficulty": "principal",
+      "tags": [
+        "nextjs",
+        "nextjs-16",
+        "frontend"
+      ],
+      "sourceDocSlug": "frontend/nextjs-16-data-fetching-caching"
+    },
+    {
+      "id": "nextjs-16-data-fetching-caching-interview-08",
+      "type": "interview",
+      "title": "Data Fetching And Caching: Debug Stale Data",
+      "prompt": "A user saves a record and still sees the old value. What do you inspect first?",
+      "explanation": "Data Fetching And Caching: Inspect the read function, cache tags, mutation invalidation, and whether the UX requires updateTag rather than stale-while-revalidate.",
+      "difficulty": "principal",
+      "tags": [
+        "nextjs",
+        "nextjs-16",
+        "frontend"
+      ],
+      "sourceDocSlug": "frontend/nextjs-16-data-fetching-caching"
+    },
+    {
+      "id": "nextjs-16-data-fetching-caching-concept-09",
+      "type": "concept",
+      "title": "Data Fetching And Caching: Key Dimensions",
+      "prompt": "Tenant, locale, permissions, and variants are cache key dimensions.",
+      "explanation": "Data Fetching And Caching: If output changes with a dimension, the cached scope must include it or avoid sharing that output.",
+      "difficulty": "principal",
+      "tags": [
+        "nextjs",
+        "nextjs-16",
+        "frontend"
+      ],
+      "sourceDocSlug": "frontend/nextjs-16-data-fetching-caching"
+    },
+    {
+      "id": "nextjs-16-data-fetching-caching-practical-10",
+      "type": "practical",
+      "title": "Data Fetching And Caching: Migration Packet",
+      "prompt": "Every migration PR should explain route behavior before and after.",
+      "explanation": "Data Fetching And Caching: For Next.js 16, behavior review matters as much as codemod output because caching and request APIs affect user-visible correctness.",
+      "difficulty": "principal",
+      "tags": [
+        "nextjs",
+        "nextjs-16",
+        "frontend"
+      ],
+      "sourceDocSlug": "frontend/nextjs-16-data-fetching-caching"
+    },
+    {
+      "id": "nextjs-16-data-fetching-caching-snippet-11",
+      "type": "snippet",
+      "title": "Data Fetching And Caching: Tag Invalidation Snippet",
+      "prompt": "Tags should match the reads a mutation makes stale.",
+      "explanation": "Data Fetching And Caching: Precise tags avoid both stale pages and global invalidation storms.",
+      "difficulty": "principal",
+      "tags": [
+        "nextjs",
+        "nextjs-16",
+        "typescript"
+      ],
+      "sourceDocSlug": "frontend/nextjs-16-data-fetching-caching",
+      "code": "updateTag('project:' + projectId);\nupdateTag('org:' + orgId + ':projects');"
+    },
+    {
+      "id": "nextjs-16-data-fetching-caching-interview-12",
+      "type": "interview",
+      "title": "Data Fetching And Caching: force-dynamic Review",
+      "prompt": "When should you keep force-dynamic in a Next.js 16 codebase?",
+      "explanation": "Data Fetching And Caching: In Cache Components apps, usually you remove it. If the app still uses the previous model, keeping it requires a documented route-wide request-time and no-store contract.",
+      "difficulty": "principal",
+      "tags": [
+        "nextjs",
+        "nextjs-16",
+        "frontend"
+      ],
+      "sourceDocSlug": "frontend/nextjs-16-data-fetching-caching"
+    },
+    {
+      "id": "nextjs-16-invalidation-mutations-concept-01",
+      "type": "concept",
+      "title": "Invalidation And Mutations: Boundary First",
+      "prompt": "Classify the boundary before changing the flag.",
+      "explanation": "Invalidation And Mutations: A Next.js review starts by naming cached, request-time, and client-owned work. Flags are implementation details after the boundary is clear.",
+      "difficulty": "principal",
+      "tags": [
+        "nextjs",
+        "nextjs-16",
+        "frontend"
+      ],
+      "sourceDocSlug": "frontend/nextjs-16-invalidation-mutations"
+    },
+    {
+      "id": "nextjs-16-invalidation-mutations-concept-02",
+      "type": "concept",
+      "title": "Invalidation And Mutations: Freshness Is Product",
+      "prompt": "Fresh data is not always required, but stale state must be named.",
+      "explanation": "Invalidation And Mutations: A cache is safe only when the product accepts the stale state or the mutation path invalidates it quickly enough.",
+      "difficulty": "principal",
+      "tags": [
+        "nextjs",
+        "nextjs-16",
+        "frontend"
+      ],
+      "sourceDocSlug": "frontend/nextjs-16-invalidation-mutations"
+    },
+    {
+      "id": "nextjs-16-invalidation-mutations-practical-03",
+      "type": "practical",
+      "title": "Invalidation And Mutations: Trace The Read",
+      "prompt": "When data is stale, find the read function before changing route config.",
+      "explanation": "Invalidation And Mutations: Adding broad no-store behavior can hide the actual stale cache key or missing tag. Trace route, component, read, tag, and mutation.",
+      "difficulty": "principal",
+      "tags": [
+        "nextjs",
+        "nextjs-16",
+        "frontend"
+      ],
+      "sourceDocSlug": "frontend/nextjs-16-invalidation-mutations"
+    },
+    {
+      "id": "nextjs-16-invalidation-mutations-practical-04",
+      "type": "practical",
+      "title": "Invalidation And Mutations: Narrow Suspense",
+      "prompt": "Wrap the slow runtime subtree, not the whole page.",
+      "explanation": "Invalidation And Mutations: A tight Suspense boundary preserves the useful shell and makes streaming feel intentional instead of broken.",
+      "difficulty": "principal",
+      "tags": [
+        "nextjs",
+        "nextjs-16",
+        "frontend"
+      ],
+      "sourceDocSlug": "frontend/nextjs-16-invalidation-mutations"
+    },
+    {
+      "id": "nextjs-16-invalidation-mutations-snippet-05",
+      "type": "snippet",
+      "title": "Invalidation And Mutations: Explicit Cache Snippet",
+      "prompt": "Use cache close to reusable work.",
+      "explanation": "Invalidation And Mutations: Function-level caching keeps reuse policy near the data access and away from unrelated request-time UI.",
+      "difficulty": "principal",
+      "tags": [
+        "nextjs",
+        "nextjs-16",
+        "typescript"
+      ],
+      "sourceDocSlug": "frontend/nextjs-16-invalidation-mutations",
+      "code": "async function getNav() {\n  'use cache';\n  cacheLife('hours');\n  cacheTag('nav');\n}"
+    },
+    {
+      "id": "nextjs-16-invalidation-mutations-snippet-06",
+      "type": "snippet",
+      "title": "Invalidation And Mutations: Runtime Snippet",
+      "prompt": "Request-specific work should stay outside cached scopes.",
+      "explanation": "Invalidation And Mutations: Runtime APIs such as cookies, headers, or connection-bound work describe the current request and should not silently affect shared cache output.",
+      "difficulty": "principal",
+      "tags": [
+        "nextjs",
+        "nextjs-16",
+        "typescript"
+      ],
+      "sourceDocSlug": "frontend/nextjs-16-invalidation-mutations",
+      "code": "const theme = (await cookies()).get('theme')?.value;"
+    },
+    {
+      "id": "nextjs-16-invalidation-mutations-interview-07",
+      "type": "interview",
+      "title": "Invalidation And Mutations: Explain The Boundary",
+      "prompt": "How would you explain cached versus request-time work to a team migrating to Next.js 16?",
+      "explanation": "Invalidation And Mutations: A strong answer says pages are dynamic by default with Cache Components, reusable work opts into cache, and Suspense protects the shell while runtime work resolves.",
+      "difficulty": "principal",
+      "tags": [
+        "nextjs",
+        "nextjs-16",
+        "frontend"
+      ],
+      "sourceDocSlug": "frontend/nextjs-16-invalidation-mutations"
+    },
+    {
+      "id": "nextjs-16-invalidation-mutations-interview-08",
+      "type": "interview",
+      "title": "Invalidation And Mutations: Debug Stale Data",
+      "prompt": "A user saves a record and still sees the old value. What do you inspect first?",
+      "explanation": "Invalidation And Mutations: Inspect the read function, cache tags, mutation invalidation, and whether the UX requires updateTag rather than stale-while-revalidate.",
+      "difficulty": "principal",
+      "tags": [
+        "nextjs",
+        "nextjs-16",
+        "frontend"
+      ],
+      "sourceDocSlug": "frontend/nextjs-16-invalidation-mutations"
+    },
+    {
+      "id": "nextjs-16-invalidation-mutations-concept-09",
+      "type": "concept",
+      "title": "Invalidation And Mutations: Key Dimensions",
+      "prompt": "Tenant, locale, permissions, and variants are cache key dimensions.",
+      "explanation": "Invalidation And Mutations: If output changes with a dimension, the cached scope must include it or avoid sharing that output.",
+      "difficulty": "principal",
+      "tags": [
+        "nextjs",
+        "nextjs-16",
+        "frontend"
+      ],
+      "sourceDocSlug": "frontend/nextjs-16-invalidation-mutations"
+    },
+    {
+      "id": "nextjs-16-invalidation-mutations-practical-10",
+      "type": "practical",
+      "title": "Invalidation And Mutations: Migration Packet",
+      "prompt": "Every migration PR should explain route behavior before and after.",
+      "explanation": "Invalidation And Mutations: For Next.js 16, behavior review matters as much as codemod output because caching and request APIs affect user-visible correctness.",
+      "difficulty": "principal",
+      "tags": [
+        "nextjs",
+        "nextjs-16",
+        "frontend"
+      ],
+      "sourceDocSlug": "frontend/nextjs-16-invalidation-mutations"
+    },
+    {
+      "id": "nextjs-16-invalidation-mutations-snippet-11",
+      "type": "snippet",
+      "title": "Invalidation And Mutations: Tag Invalidation Snippet",
+      "prompt": "Tags should match the reads a mutation makes stale.",
+      "explanation": "Invalidation And Mutations: Precise tags avoid both stale pages and global invalidation storms.",
+      "difficulty": "principal",
+      "tags": [
+        "nextjs",
+        "nextjs-16",
+        "typescript"
+      ],
+      "sourceDocSlug": "frontend/nextjs-16-invalidation-mutations",
+      "code": "updateTag('project:' + projectId);\nupdateTag('org:' + orgId + ':projects');"
+    },
+    {
+      "id": "nextjs-16-invalidation-mutations-interview-12",
+      "type": "interview",
+      "title": "Invalidation And Mutations: force-dynamic Review",
+      "prompt": "When should you keep force-dynamic in a Next.js 16 codebase?",
+      "explanation": "Invalidation And Mutations: In Cache Components apps, usually you remove it. If the app still uses the previous model, keeping it requires a documented route-wide request-time and no-store contract.",
+      "difficulty": "principal",
+      "tags": [
+        "nextjs",
+        "nextjs-16",
+        "frontend"
+      ],
+      "sourceDocSlug": "frontend/nextjs-16-invalidation-mutations"
+    },
+    {
+      "id": "nextjs-16-painful-production-lessons-concept-01",
+      "type": "concept",
+      "title": "Production Pain Points: Boundary First",
+      "prompt": "Classify the boundary before changing the flag.",
+      "explanation": "Production Pain Points: A Next.js review starts by naming cached, request-time, and client-owned work. Flags are implementation details after the boundary is clear.",
+      "difficulty": "principal",
+      "tags": [
+        "nextjs",
+        "nextjs-16",
+        "frontend"
+      ],
+      "sourceDocSlug": "frontend/nextjs-16-painful-production-lessons"
+    },
+    {
+      "id": "nextjs-16-painful-production-lessons-concept-02",
+      "type": "concept",
+      "title": "Production Pain Points: Freshness Is Product",
+      "prompt": "Fresh data is not always required, but stale state must be named.",
+      "explanation": "Production Pain Points: A cache is safe only when the product accepts the stale state or the mutation path invalidates it quickly enough.",
+      "difficulty": "principal",
+      "tags": [
+        "nextjs",
+        "nextjs-16",
+        "frontend"
+      ],
+      "sourceDocSlug": "frontend/nextjs-16-painful-production-lessons"
+    },
+    {
+      "id": "nextjs-16-painful-production-lessons-practical-03",
+      "type": "practical",
+      "title": "Production Pain Points: Trace The Read",
+      "prompt": "When data is stale, find the read function before changing route config.",
+      "explanation": "Production Pain Points: Adding broad no-store behavior can hide the actual stale cache key or missing tag. Trace route, component, read, tag, and mutation.",
+      "difficulty": "principal",
+      "tags": [
+        "nextjs",
+        "nextjs-16",
+        "frontend"
+      ],
+      "sourceDocSlug": "frontend/nextjs-16-painful-production-lessons"
+    },
+    {
+      "id": "nextjs-16-painful-production-lessons-practical-04",
+      "type": "practical",
+      "title": "Production Pain Points: Narrow Suspense",
+      "prompt": "Wrap the slow runtime subtree, not the whole page.",
+      "explanation": "Production Pain Points: A tight Suspense boundary preserves the useful shell and makes streaming feel intentional instead of broken.",
+      "difficulty": "principal",
+      "tags": [
+        "nextjs",
+        "nextjs-16",
+        "frontend"
+      ],
+      "sourceDocSlug": "frontend/nextjs-16-painful-production-lessons"
+    },
+    {
+      "id": "nextjs-16-painful-production-lessons-snippet-05",
+      "type": "snippet",
+      "title": "Production Pain Points: Explicit Cache Snippet",
+      "prompt": "Use cache close to reusable work.",
+      "explanation": "Production Pain Points: Function-level caching keeps reuse policy near the data access and away from unrelated request-time UI.",
+      "difficulty": "principal",
+      "tags": [
+        "nextjs",
+        "nextjs-16",
+        "typescript"
+      ],
+      "sourceDocSlug": "frontend/nextjs-16-painful-production-lessons",
+      "code": "async function getNav() {\n  'use cache';\n  cacheLife('hours');\n  cacheTag('nav');\n}"
+    },
+    {
+      "id": "nextjs-16-painful-production-lessons-snippet-06",
+      "type": "snippet",
+      "title": "Production Pain Points: Runtime Snippet",
+      "prompt": "Request-specific work should stay outside cached scopes.",
+      "explanation": "Production Pain Points: Runtime APIs such as cookies, headers, or connection-bound work describe the current request and should not silently affect shared cache output.",
+      "difficulty": "principal",
+      "tags": [
+        "nextjs",
+        "nextjs-16",
+        "typescript"
+      ],
+      "sourceDocSlug": "frontend/nextjs-16-painful-production-lessons",
+      "code": "const theme = (await cookies()).get('theme')?.value;"
+    },
+    {
+      "id": "nextjs-16-painful-production-lessons-interview-07",
+      "type": "interview",
+      "title": "Production Pain Points: Explain The Boundary",
+      "prompt": "How would you explain cached versus request-time work to a team migrating to Next.js 16?",
+      "explanation": "Production Pain Points: A strong answer says pages are dynamic by default with Cache Components, reusable work opts into cache, and Suspense protects the shell while runtime work resolves.",
+      "difficulty": "principal",
+      "tags": [
+        "nextjs",
+        "nextjs-16",
+        "frontend"
+      ],
+      "sourceDocSlug": "frontend/nextjs-16-painful-production-lessons"
+    },
+    {
+      "id": "nextjs-16-painful-production-lessons-interview-08",
+      "type": "interview",
+      "title": "Production Pain Points: Debug Stale Data",
+      "prompt": "A user saves a record and still sees the old value. What do you inspect first?",
+      "explanation": "Production Pain Points: Inspect the read function, cache tags, mutation invalidation, and whether the UX requires updateTag rather than stale-while-revalidate.",
+      "difficulty": "principal",
+      "tags": [
+        "nextjs",
+        "nextjs-16",
+        "frontend"
+      ],
+      "sourceDocSlug": "frontend/nextjs-16-painful-production-lessons"
+    },
+    {
+      "id": "nextjs-16-painful-production-lessons-concept-09",
+      "type": "concept",
+      "title": "Production Pain Points: Key Dimensions",
+      "prompt": "Tenant, locale, permissions, and variants are cache key dimensions.",
+      "explanation": "Production Pain Points: If output changes with a dimension, the cached scope must include it or avoid sharing that output.",
+      "difficulty": "principal",
+      "tags": [
+        "nextjs",
+        "nextjs-16",
+        "frontend"
+      ],
+      "sourceDocSlug": "frontend/nextjs-16-painful-production-lessons"
+    },
+    {
+      "id": "nextjs-16-painful-production-lessons-practical-10",
+      "type": "practical",
+      "title": "Production Pain Points: Migration Packet",
+      "prompt": "Every migration PR should explain route behavior before and after.",
+      "explanation": "Production Pain Points: For Next.js 16, behavior review matters as much as codemod output because caching and request APIs affect user-visible correctness.",
+      "difficulty": "principal",
+      "tags": [
+        "nextjs",
+        "nextjs-16",
+        "frontend"
+      ],
+      "sourceDocSlug": "frontend/nextjs-16-painful-production-lessons"
+    },
+    {
+      "id": "nextjs-16-painful-production-lessons-snippet-11",
+      "type": "snippet",
+      "title": "Production Pain Points: Tag Invalidation Snippet",
+      "prompt": "Tags should match the reads a mutation makes stale.",
+      "explanation": "Production Pain Points: Precise tags avoid both stale pages and global invalidation storms.",
+      "difficulty": "principal",
+      "tags": [
+        "nextjs",
+        "nextjs-16",
+        "typescript"
+      ],
+      "sourceDocSlug": "frontend/nextjs-16-painful-production-lessons",
+      "code": "updateTag('project:' + projectId);\nupdateTag('org:' + orgId + ':projects');"
+    },
+    {
+      "id": "nextjs-16-painful-production-lessons-interview-12",
+      "type": "interview",
+      "title": "Production Pain Points: force-dynamic Review",
+      "prompt": "When should you keep force-dynamic in a Next.js 16 codebase?",
+      "explanation": "Production Pain Points: In Cache Components apps, usually you remove it. If the app still uses the previous model, keeping it requires a documented route-wide request-time and no-store contract.",
+      "difficulty": "principal",
+      "tags": [
+        "nextjs",
+        "nextjs-16",
+        "frontend"
+      ],
+      "sourceDocSlug": "frontend/nextjs-16-painful-production-lessons"
+    },
+    {
+      "id": "nextjs-16-performance-architecture-concept-01",
+      "type": "concept",
+      "title": "Performance Architecture: Boundary First",
+      "prompt": "Classify the boundary before changing the flag.",
+      "explanation": "Performance Architecture: A Next.js review starts by naming cached, request-time, and client-owned work. Flags are implementation details after the boundary is clear.",
+      "difficulty": "principal",
+      "tags": [
+        "nextjs",
+        "nextjs-16",
+        "frontend"
+      ],
+      "sourceDocSlug": "frontend/nextjs-16-performance-architecture"
+    },
+    {
+      "id": "nextjs-16-performance-architecture-concept-02",
+      "type": "concept",
+      "title": "Performance Architecture: Freshness Is Product",
+      "prompt": "Fresh data is not always required, but stale state must be named.",
+      "explanation": "Performance Architecture: A cache is safe only when the product accepts the stale state or the mutation path invalidates it quickly enough.",
+      "difficulty": "senior",
+      "tags": [
+        "nextjs",
+        "nextjs-16",
+        "frontend"
+      ],
+      "sourceDocSlug": "frontend/nextjs-16-performance-architecture"
+    },
+    {
+      "id": "nextjs-16-performance-architecture-practical-03",
+      "type": "practical",
+      "title": "Performance Architecture: Trace The Read",
+      "prompt": "When data is stale, find the read function before changing route config.",
+      "explanation": "Performance Architecture: Adding broad no-store behavior can hide the actual stale cache key or missing tag. Trace route, component, read, tag, and mutation.",
+      "difficulty": "senior",
+      "tags": [
+        "nextjs",
+        "nextjs-16",
+        "frontend"
+      ],
+      "sourceDocSlug": "frontend/nextjs-16-performance-architecture"
+    },
+    {
+      "id": "nextjs-16-performance-architecture-practical-04",
+      "type": "practical",
+      "title": "Performance Architecture: Narrow Suspense",
+      "prompt": "Wrap the slow runtime subtree, not the whole page.",
+      "explanation": "Performance Architecture: A tight Suspense boundary preserves the useful shell and makes streaming feel intentional instead of broken.",
+      "difficulty": "senior",
+      "tags": [
+        "nextjs",
+        "nextjs-16",
+        "frontend"
+      ],
+      "sourceDocSlug": "frontend/nextjs-16-performance-architecture"
+    },
+    {
+      "id": "nextjs-16-performance-architecture-snippet-05",
+      "type": "snippet",
+      "title": "Performance Architecture: Explicit Cache Snippet",
+      "prompt": "Use cache close to reusable work.",
+      "explanation": "Performance Architecture: Function-level caching keeps reuse policy near the data access and away from unrelated request-time UI.",
+      "difficulty": "senior",
+      "tags": [
+        "nextjs",
+        "nextjs-16",
+        "typescript"
+      ],
+      "sourceDocSlug": "frontend/nextjs-16-performance-architecture",
+      "code": "async function getNav() {\n  'use cache';\n  cacheLife('hours');\n  cacheTag('nav');\n}"
+    },
+    {
+      "id": "nextjs-16-performance-architecture-snippet-06",
+      "type": "snippet",
+      "title": "Performance Architecture: Runtime Snippet",
+      "prompt": "Request-specific work should stay outside cached scopes.",
+      "explanation": "Performance Architecture: Runtime APIs such as cookies, headers, or connection-bound work describe the current request and should not silently affect shared cache output.",
+      "difficulty": "principal",
+      "tags": [
+        "nextjs",
+        "nextjs-16",
+        "typescript"
+      ],
+      "sourceDocSlug": "frontend/nextjs-16-performance-architecture",
+      "code": "const theme = (await cookies()).get('theme')?.value;"
+    },
+    {
+      "id": "nextjs-16-performance-architecture-interview-07",
+      "type": "interview",
+      "title": "Performance Architecture: Explain The Boundary",
+      "prompt": "How would you explain cached versus request-time work to a team migrating to Next.js 16?",
+      "explanation": "Performance Architecture: A strong answer says pages are dynamic by default with Cache Components, reusable work opts into cache, and Suspense protects the shell while runtime work resolves.",
+      "difficulty": "senior",
+      "tags": [
+        "nextjs",
+        "nextjs-16",
+        "frontend"
+      ],
+      "sourceDocSlug": "frontend/nextjs-16-performance-architecture"
+    },
+    {
+      "id": "nextjs-16-performance-architecture-interview-08",
+      "type": "interview",
+      "title": "Performance Architecture: Debug Stale Data",
+      "prompt": "A user saves a record and still sees the old value. What do you inspect first?",
+      "explanation": "Performance Architecture: Inspect the read function, cache tags, mutation invalidation, and whether the UX requires updateTag rather than stale-while-revalidate.",
+      "difficulty": "senior",
+      "tags": [
+        "nextjs",
+        "nextjs-16",
+        "frontend"
+      ],
+      "sourceDocSlug": "frontend/nextjs-16-performance-architecture"
+    },
+    {
+      "id": "nextjs-16-performance-architecture-concept-09",
+      "type": "concept",
+      "title": "Performance Architecture: Key Dimensions",
+      "prompt": "Tenant, locale, permissions, and variants are cache key dimensions.",
+      "explanation": "Performance Architecture: If output changes with a dimension, the cached scope must include it or avoid sharing that output.",
+      "difficulty": "senior",
+      "tags": [
+        "nextjs",
+        "nextjs-16",
+        "frontend"
+      ],
+      "sourceDocSlug": "frontend/nextjs-16-performance-architecture"
+    },
+    {
+      "id": "nextjs-16-performance-architecture-practical-10",
+      "type": "practical",
+      "title": "Performance Architecture: Migration Packet",
+      "prompt": "Every migration PR should explain route behavior before and after.",
+      "explanation": "Performance Architecture: For Next.js 16, behavior review matters as much as codemod output because caching and request APIs affect user-visible correctness.",
+      "difficulty": "senior",
+      "tags": [
+        "nextjs",
+        "nextjs-16",
+        "frontend"
+      ],
+      "sourceDocSlug": "frontend/nextjs-16-performance-architecture"
+    },
+    {
+      "id": "nextjs-16-performance-architecture-snippet-11",
+      "type": "snippet",
+      "title": "Performance Architecture: Tag Invalidation Snippet",
+      "prompt": "Tags should match the reads a mutation makes stale.",
+      "explanation": "Performance Architecture: Precise tags avoid both stale pages and global invalidation storms.",
+      "difficulty": "principal",
+      "tags": [
+        "nextjs",
+        "nextjs-16",
+        "typescript"
+      ],
+      "sourceDocSlug": "frontend/nextjs-16-performance-architecture",
+      "code": "updateTag('project:' + projectId);\nupdateTag('org:' + orgId + ':projects');"
+    },
+    {
+      "id": "nextjs-16-performance-architecture-interview-12",
+      "type": "interview",
+      "title": "Performance Architecture: force-dynamic Review",
+      "prompt": "When should you keep force-dynamic in a Next.js 16 codebase?",
+      "explanation": "Performance Architecture: In Cache Components apps, usually you remove it. If the app still uses the previous model, keeping it requires a documented route-wide request-time and no-store contract.",
+      "difficulty": "senior",
+      "tags": [
+        "nextjs",
+        "nextjs-16",
+        "frontend"
+      ],
+      "sourceDocSlug": "frontend/nextjs-16-performance-architecture"
+    },
+    {
+      "id": "nextjs-16-migration-review-concept-01",
+      "type": "concept",
+      "title": "Migration Review: Boundary First",
+      "prompt": "Classify the boundary before changing the flag.",
+      "explanation": "Migration Review: A Next.js review starts by naming cached, request-time, and client-owned work. Flags are implementation details after the boundary is clear.",
+      "difficulty": "principal",
+      "tags": [
+        "nextjs",
+        "nextjs-16",
+        "frontend"
+      ],
+      "sourceDocSlug": "frontend/nextjs-16-migration-review"
+    },
+    {
+      "id": "nextjs-16-migration-review-concept-02",
+      "type": "concept",
+      "title": "Migration Review: Freshness Is Product",
+      "prompt": "Fresh data is not always required, but stale state must be named.",
+      "explanation": "Migration Review: A cache is safe only when the product accepts the stale state or the mutation path invalidates it quickly enough.",
+      "difficulty": "senior",
+      "tags": [
+        "nextjs",
+        "nextjs-16",
+        "frontend"
+      ],
+      "sourceDocSlug": "frontend/nextjs-16-migration-review"
+    },
+    {
+      "id": "nextjs-16-migration-review-practical-03",
+      "type": "practical",
+      "title": "Migration Review: Trace The Read",
+      "prompt": "When data is stale, find the read function before changing route config.",
+      "explanation": "Migration Review: Adding broad no-store behavior can hide the actual stale cache key or missing tag. Trace route, component, read, tag, and mutation.",
+      "difficulty": "senior",
+      "tags": [
+        "nextjs",
+        "nextjs-16",
+        "frontend"
+      ],
+      "sourceDocSlug": "frontend/nextjs-16-migration-review"
+    },
+    {
+      "id": "nextjs-16-migration-review-practical-04",
+      "type": "practical",
+      "title": "Migration Review: Narrow Suspense",
+      "prompt": "Wrap the slow runtime subtree, not the whole page.",
+      "explanation": "Migration Review: A tight Suspense boundary preserves the useful shell and makes streaming feel intentional instead of broken.",
+      "difficulty": "senior",
+      "tags": [
+        "nextjs",
+        "nextjs-16",
+        "frontend"
+      ],
+      "sourceDocSlug": "frontend/nextjs-16-migration-review"
+    },
+    {
+      "id": "nextjs-16-migration-review-snippet-05",
+      "type": "snippet",
+      "title": "Migration Review: Explicit Cache Snippet",
+      "prompt": "Use cache close to reusable work.",
+      "explanation": "Migration Review: Function-level caching keeps reuse policy near the data access and away from unrelated request-time UI.",
+      "difficulty": "senior",
+      "tags": [
+        "nextjs",
+        "nextjs-16",
+        "typescript"
+      ],
+      "sourceDocSlug": "frontend/nextjs-16-migration-review",
+      "code": "async function getNav() {\n  'use cache';\n  cacheLife('hours');\n  cacheTag('nav');\n}"
+    },
+    {
+      "id": "nextjs-16-migration-review-snippet-06",
+      "type": "snippet",
+      "title": "Migration Review: Runtime Snippet",
+      "prompt": "Request-specific work should stay outside cached scopes.",
+      "explanation": "Migration Review: Runtime APIs such as cookies, headers, or connection-bound work describe the current request and should not silently affect shared cache output.",
+      "difficulty": "principal",
+      "tags": [
+        "nextjs",
+        "nextjs-16",
+        "typescript"
+      ],
+      "sourceDocSlug": "frontend/nextjs-16-migration-review",
+      "code": "const theme = (await cookies()).get('theme')?.value;"
+    },
+    {
+      "id": "nextjs-16-migration-review-interview-07",
+      "type": "interview",
+      "title": "Migration Review: Explain The Boundary",
+      "prompt": "How would you explain cached versus request-time work to a team migrating to Next.js 16?",
+      "explanation": "Migration Review: A strong answer says pages are dynamic by default with Cache Components, reusable work opts into cache, and Suspense protects the shell while runtime work resolves.",
+      "difficulty": "senior",
+      "tags": [
+        "nextjs",
+        "nextjs-16",
+        "frontend"
+      ],
+      "sourceDocSlug": "frontend/nextjs-16-migration-review"
+    },
+    {
+      "id": "nextjs-16-migration-review-interview-08",
+      "type": "interview",
+      "title": "Migration Review: Debug Stale Data",
+      "prompt": "A user saves a record and still sees the old value. What do you inspect first?",
+      "explanation": "Migration Review: Inspect the read function, cache tags, mutation invalidation, and whether the UX requires updateTag rather than stale-while-revalidate.",
+      "difficulty": "senior",
+      "tags": [
+        "nextjs",
+        "nextjs-16",
+        "frontend"
+      ],
+      "sourceDocSlug": "frontend/nextjs-16-migration-review"
+    },
+    {
+      "id": "nextjs-16-migration-review-concept-09",
+      "type": "concept",
+      "title": "Migration Review: Key Dimensions",
+      "prompt": "Tenant, locale, permissions, and variants are cache key dimensions.",
+      "explanation": "Migration Review: If output changes with a dimension, the cached scope must include it or avoid sharing that output.",
+      "difficulty": "senior",
+      "tags": [
+        "nextjs",
+        "nextjs-16",
+        "frontend"
+      ],
+      "sourceDocSlug": "frontend/nextjs-16-migration-review"
+    },
+    {
+      "id": "nextjs-16-migration-review-practical-10",
+      "type": "practical",
+      "title": "Migration Review: Migration Packet",
+      "prompt": "Every migration PR should explain route behavior before and after.",
+      "explanation": "Migration Review: For Next.js 16, behavior review matters as much as codemod output because caching and request APIs affect user-visible correctness.",
+      "difficulty": "senior",
+      "tags": [
+        "nextjs",
+        "nextjs-16",
+        "frontend"
+      ],
+      "sourceDocSlug": "frontend/nextjs-16-migration-review"
+    },
+    {
+      "id": "nextjs-16-migration-review-snippet-11",
+      "type": "snippet",
+      "title": "Migration Review: Tag Invalidation Snippet",
+      "prompt": "Tags should match the reads a mutation makes stale.",
+      "explanation": "Migration Review: Precise tags avoid both stale pages and global invalidation storms.",
+      "difficulty": "principal",
+      "tags": [
+        "nextjs",
+        "nextjs-16",
+        "typescript"
+      ],
+      "sourceDocSlug": "frontend/nextjs-16-migration-review",
+      "code": "updateTag('project:' + projectId);\nupdateTag('org:' + orgId + ':projects');"
+    },
+    {
+      "id": "nextjs-16-migration-review-interview-12",
+      "type": "interview",
+      "title": "Migration Review: force-dynamic Review",
+      "prompt": "When should you keep force-dynamic in a Next.js 16 codebase?",
+      "explanation": "Migration Review: In Cache Components apps, usually you remove it. If the app still uses the previous model, keeping it requires a documented route-wide request-time and no-store contract.",
+      "difficulty": "senior",
+      "tags": [
+        "nextjs",
+        "nextjs-16",
+        "frontend"
+      ],
+      "sourceDocSlug": "frontend/nextjs-16-migration-review"
+    }
+  ]
+}

@@ -1,0 +1,157 @@
+{
+  "slug": "frontend/nextjs-16-migration-review-questionnaire",
+  "title": "Next.js 16 Migration Review Questionnaire",
+  "type": "questionnaire",
+  "documentSlug": "frontend/nextjs-16-migration-review",
+  "concept": "Next.js 16 migration review",
+  "difficulty": "senior",
+  "tags": [
+    "nextjs",
+    "migration",
+    "upgrade",
+    "proxy"
+  ],
+  "status": "published",
+  "questions": [
+    {
+      "id": "migration-risk",
+      "kind": "choice",
+      "prompt": "What is the strongest migration stance for a production Next.js 16 upgrade?",
+      "options": [
+        {
+          "id": "deps",
+          "label": "Treat it as only a dependency bump if TypeScript compiles.",
+          "isCorrect": false
+        },
+        {
+          "id": "risk",
+          "label": "Treat it as a cache, request API, routing, proxy, and rollout risk review.",
+          "isCorrect": true
+        },
+        {
+          "id": "rewrite",
+          "label": "Rewrite all routes to Client Components before upgrading.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "Version 16 touches behavior that can affect correctness, not only syntax."
+    },
+    {
+      "id": "proxy-file",
+      "kind": "cloze",
+      "prompt": "Fill the new file convention replacing middleware naming direction.",
+      "template": "Next.js 16 uses {{blank}} to make the network boundary clearer.",
+      "acceptedAnswers": [
+        "proxy.ts",
+        "proxy"
+      ],
+      "explanation": "The proxy naming makes network-boundary behavior more explicit than middleware."
+    },
+    {
+      "id": "upgrade-order",
+      "kind": "ordering",
+      "prompt": "Order a safe Next.js 16 migration.",
+      "items": [
+        {
+          "id": "baseline",
+          "label": "Record current versions and route behavior"
+        },
+        {
+          "id": "codemod",
+          "label": "Run official codemod in a branch"
+        },
+        {
+          "id": "audit",
+          "label": "Audit cache configs, async request APIs, and proxy behavior"
+        },
+        {
+          "id": "rollout",
+          "label": "Roll out with stale data and navigation monitoring"
+        }
+      ],
+      "correctOrder": [
+        "baseline",
+        "codemod",
+        "audit",
+        "rollout"
+      ],
+      "explanation": "Codemods are helpful, but behavior audits and rollout checks make the migration safe."
+    },
+    {
+      "id": "migration-match",
+      "kind": "matching",
+      "prompt": "Match the migration area to the review question.",
+      "pairs": [
+        {
+          "id": "cache",
+          "prompt": "Cache Components",
+          "match": "which old route configs should become local cached scopes"
+        },
+        {
+          "id": "request",
+          "prompt": "async request APIs",
+          "match": "which code now awaits request-bound values"
+        },
+        {
+          "id": "proxy",
+          "prompt": "proxy.ts",
+          "match": "which network-boundary logic runs before routes"
+        }
+      ],
+      "explanation": "A migration review maps each changed framework area to concrete app behavior."
+    },
+    {
+      "id": "bad-migration",
+      "kind": "choice",
+      "prompt": "Which migration PR is riskiest?",
+      "options": [
+        {
+          "id": "table",
+          "label": "One that documents route behavior before and after.",
+          "isCorrect": false
+        },
+        {
+          "id": "blind",
+          "label": "One that deletes force-dynamic everywhere without checking why it existed.",
+          "isCorrect": true
+        },
+        {
+          "id": "tests",
+          "label": "One that adds browser coverage for dynamic and cached journeys.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "Legacy route configs may encode stale-data or auth fixes. Removing them requires intent review."
+    },
+    {
+      "id": "release-order",
+      "kind": "ordering",
+      "prompt": "Order release checks after the code compiles.",
+      "items": [
+        {
+          "id": "typecheck",
+          "label": "Run typecheck, lint, unit, and content checks"
+        },
+        {
+          "id": "browser",
+          "label": "Run browser journeys for forms, auth, images, and cached routes"
+        },
+        {
+          "id": "observe",
+          "label": "Monitor stale data, navigation, server errors, and build timings"
+        },
+        {
+          "id": "rollback",
+          "label": "Keep rollback and dependency pin path ready"
+        }
+      ],
+      "correctOrder": [
+        "typecheck",
+        "browser",
+        "observe",
+        "rollback"
+      ],
+      "explanation": "Release readiness combines automated checks with production observability and rollback discipline."
+    }
+  ]
+}

@@ -1,0 +1,158 @@
+{
+  "slug": "frontend/nextjs-16-cache-components-questionnaire",
+  "title": "Next.js 16 Cache Components Questionnaire",
+  "type": "questionnaire",
+  "documentSlug": "frontend/nextjs-16-cache-components",
+  "concept": "Cache Components in Next.js 16",
+  "difficulty": "principal",
+  "tags": [
+    "nextjs",
+    "cache-components",
+    "cachelife",
+    "cachetag"
+  ],
+  "status": "published",
+  "questions": [
+    {
+      "id": "smallest-unit",
+      "kind": "choice",
+      "prompt": "What is the safest default cache boundary for a mixed dashboard page?",
+      "options": [
+        {
+          "id": "page",
+          "label": "Cache the entire page because one widget is expensive.",
+          "isCorrect": false
+        },
+        {
+          "id": "function",
+          "label": "Cache the shared expensive data function with explicit key dimensions and tags.",
+          "isCorrect": true
+        },
+        {
+          "id": "client",
+          "label": "Move the expensive widget to the browser so it avoids server cache rules.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "The smallest honest cached scope avoids leaking request-specific behavior into shared output."
+    },
+    {
+      "id": "directive",
+      "kind": "cloze",
+      "prompt": "Fill the directive that marks cacheable work.",
+      "template": "A cached function or component starts with {{blank}} inside the cacheable scope.",
+      "acceptedAnswers": [
+        "use cache",
+        "\"use cache\"",
+        "'use cache'"
+      ],
+      "explanation": "Cache Components uses the use cache directive for explicit caching."
+    },
+    {
+      "id": "cache-design-order",
+      "kind": "ordering",
+      "prompt": "Order a serious cache design review.",
+      "items": [
+        {
+          "id": "share",
+          "label": "Decide whether output can be shared"
+        },
+        {
+          "id": "key",
+          "label": "Name key dimensions such as tenant and locale"
+        },
+        {
+          "id": "life",
+          "label": "Choose cacheLife based on stale budget"
+        },
+        {
+          "id": "tag",
+          "label": "Attach cacheTag values for invalidation"
+        }
+      ],
+      "correctOrder": [
+        "share",
+        "key",
+        "life",
+        "tag"
+      ],
+      "explanation": "Sharing and key safety come before freshness and invalidation details."
+    },
+    {
+      "id": "cache-match",
+      "kind": "matching",
+      "prompt": "Match each Cache Components API to its role.",
+      "pairs": [
+        {
+          "id": "use-cache",
+          "prompt": "use cache",
+          "match": "marks output as cacheable"
+        },
+        {
+          "id": "cache-life",
+          "prompt": "cacheLife",
+          "match": "sets freshness lifetime"
+        },
+        {
+          "id": "cache-tag",
+          "prompt": "cacheTag",
+          "match": "labels cached output for invalidation"
+        }
+      ],
+      "explanation": "The directive, lifetime, and tags form the core cache contract."
+    },
+    {
+      "id": "unsafe-key",
+      "kind": "choice",
+      "prompt": "Which cached function is most dangerous?",
+      "options": [
+        {
+          "id": "locale",
+          "label": "A public docs query keyed by slug and locale.",
+          "isCorrect": false
+        },
+        {
+          "id": "tenantless",
+          "label": "A tenant dashboard query whose cache key omits tenant identity.",
+          "isCorrect": true
+        },
+        {
+          "id": "catalog",
+          "label": "A shared catalog query tagged by product id.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "A missing tenant dimension can leak or mix data across users."
+    },
+    {
+      "id": "migration-order",
+      "kind": "ordering",
+      "prompt": "Order the migration from previous implicit caching.",
+      "items": [
+        {
+          "id": "remove",
+          "label": "Remove obsolete broad segment configs"
+        },
+        {
+          "id": "observe",
+          "label": "Let runtime or uncached access errors reveal boundaries"
+        },
+        {
+          "id": "localize",
+          "label": "Add use cache near stable reusable work"
+        },
+        {
+          "id": "invalidate",
+          "label": "Add tags and mutation invalidation"
+        }
+      ],
+      "correctOrder": [
+        "remove",
+        "observe",
+        "localize",
+        "invalidate"
+      ],
+      "explanation": "Do not recreate old route-wide caching. Rebuild explicit local cache contracts."
+    }
+  ]
+}

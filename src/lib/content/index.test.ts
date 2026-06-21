@@ -125,6 +125,56 @@ describe("generated content index", () => {
     expect(feed?.cards.some((card) => card.code?.includes("gin_trgm_ops"))).toBe(true);
   });
 
+  it("loads the Advanced Next.js 16 hard-only path", () => {
+    const path = getLearningPathBySlug("advanced-nextjs-16");
+    const forceDynamicDocument = getDocumentBySlug("frontend/nextjs-16-force-dynamic");
+    const forceDynamicQuiz = getExerciseBySlug("frontend/nextjs-16-force-dynamic-questionnaire");
+    const feed = getPassiveFlashcardFeedByPathSlug("advanced-nextjs-16");
+
+    const expectedNodes = [
+      "frontend/nextjs-16-rendering-model",
+      "frontend/nextjs-16-rendering-model-questionnaire",
+      "frontend/nextjs-16-force-dynamic",
+      "frontend/nextjs-16-force-dynamic-questionnaire",
+      "frontend/nextjs-16-cache-components",
+      "frontend/nextjs-16-cache-components-questionnaire",
+      "frontend/nextjs-16-data-fetching-caching",
+      "frontend/nextjs-16-data-fetching-caching-questionnaire",
+      "frontend/nextjs-16-invalidation-mutations",
+      "frontend/nextjs-16-invalidation-mutations-questionnaire",
+      "frontend/nextjs-16-painful-production-lessons",
+      "frontend/nextjs-16-painful-production-lessons-questionnaire",
+      "frontend/nextjs-16-performance-architecture",
+      "frontend/nextjs-16-performance-architecture-questionnaire",
+      "frontend/nextjs-16-migration-review",
+      "frontend/nextjs-16-migration-review-questionnaire",
+    ];
+
+    expect(path?.title).toBe("Advanced Next.js 16");
+    expect(path?.category).toBe("Front-End Development");
+    expect(path?.route).toBe("/paths/advanced-nextjs-16");
+    expect(path?.units).toHaveLength(8);
+    expect(path?.units.flatMap((unit) => unit.nodes).map((node) => node.slug)).toEqual(expectedNodes);
+
+    expect(forceDynamicDocument?.track).toBe("Front-End Development");
+    expect(forceDynamicDocument?.difficulty).toBe("senior");
+    expect(forceDynamicDocument?.markdown).toContain("export const dynamic = 'force-dynamic';");
+    expect(forceDynamicDocument?.markdown).toContain("pages are dynamic by default");
+    expect(forceDynamicDocument?.markdown).toContain("https://nextjs.org/docs/app/guides/migrating-to-cache-components");
+
+    expect(forceDynamicQuiz?.type).toBe("questionnaire");
+    expect(forceDynamicQuiz?.difficulty).toBe("senior");
+    expect(forceDynamicQuiz?.route).toBe("/practice/frontend/nextjs-16-force-dynamic-questionnaire");
+    expect(forceDynamicQuiz && "questions" in forceDynamicQuiz ? forceDynamicQuiz.questions : []).toHaveLength(6);
+
+    expect(feed?.title).toBe("Advanced Next.js 16 One-Minute Briefs");
+    expect(feed?.route).toBe("/paths/advanced-nextjs-16/flashcards");
+    expect(feed?.cards).toHaveLength(96);
+    expect(feed?.cards.map((card) => card.type)).toEqual(expect.arrayContaining(["concept", "practical", "snippet", "interview"]));
+    expect(feed?.cards.every((card) => card.difficulty === "senior" || card.difficulty === "principal")).toBe(true);
+    expect(feed?.cards.some((card) => card.code?.includes("'use cache'"))).toBe(true);
+  });
+
   it("resolves diagram references from article frontmatter", () => {
     const document = getDocumentBySlug("system-design/cache-invalidation");
 
@@ -159,6 +209,12 @@ describe("generated content index", () => {
   it("resolves the next node route through the database indexes path", () => {
     expect(getNextPathNodeRoute("database-indexes-and-search", { kind: "document", slug: "databases/trigram-fuzzy-indexes" })).toBe(
       "/practice/databases/trigram-fuzzy-indexes-questionnaire?path=database-indexes-and-search",
+    );
+  });
+
+  it("resolves the next node route through the Advanced Next.js 16 path", () => {
+    expect(getNextPathNodeRoute("advanced-nextjs-16", { kind: "document", slug: "frontend/nextjs-16-force-dynamic" })).toBe(
+      "/practice/frontend/nextjs-16-force-dynamic-questionnaire?path=advanced-nextjs-16",
     );
   });
 
