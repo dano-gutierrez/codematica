@@ -1,0 +1,444 @@
+"use client";
+
+import Link from "next/link";
+import { ArrowRight, CheckCircle2, RotateCcw, Sparkles } from "lucide-react";
+import { useState } from "react";
+import type { PointerEvent } from "react";
+import { DifficultyPill } from "@/components/DifficultyPill";
+import { QuestionnaireSession } from "@/components/QuestionnaireSession";
+import { getLanguageCharacterBySlug } from "@/lib/content";
+import type { LanguageStrokePoint, LearningExercise } from "@/lib/content/schema";
+import { checkWritingAttempt, getAssistedStrokeCompletion, normalizeWritingStroke, type WritingCheckResult, type WritingStroke } from "@codematica/core/language-writing";
+import type { ProgressStatus } from "@/lib/progress/progress";
+import { cn } from "@/lib/utils";
+
+type PracticeProgressHandler = (status: ProgressStatus, position: Record<string, unknown>) => void;
+
+export function PracticeCard({
+  exercise,
+  nextHref,
+  onProgressEvent,
+}: {
+  exercise: LearningExercise;
+  nextHref?: string;
+  onProgressEvent?: PracticeProgressHandler;
+}) {
+  return (
+    <section className="rounded-lg border-2 border-b-4 border-[#d5e2e8] bg-white p-5 sm:p-7" data-testid="practice-card">
+      <div className="flex flex-wrap items-center gap-2">
+        <span className="inline-flex items-center gap-1 rounded-lg border-2 border-b-4 border-[#d5e2e8] bg-[#f6fbfc] px-2.5 py-1 text-xs font-extrabold text-[#5840b8]">
+          <Sparkles className="h-3.5 w-3.5" aria-hidden="true" />
+          {exerciseKindLabel(exercise)}
+        </span>
+        <DifficultyPill difficulty={exercise.difficulty} />
+        <span className="rounded-lg bg-[#eaf7f4] px-2.5 py-1 text-xs font-extrabold text-[#007c78]">{exercise.concept}</span>
+      </div>
+
+      <h1 className="mt-5 text-3xl font-extrabold leading-tight tracking-normal text-[#263238] sm:text-5xl">{exercise.title}</h1>
+
+      {exercise.type === "flashcard" ? (
+        <Flashcard exercise={exercise} nextHref={nextHref} onProgressEvent={onProgressEvent} />
+      ) : exercise.type === "cloze" ? (
+        <ClozeCard exercise={exercise} nextHref={nextHref} onProgressEvent={onProgressEvent} />
+      ) : exercise.type === "writing" ? (
+        <WritingCard exercise={exercise} nextHref={nextHref} onProgressEvent={onProgressEvent} />
+      ) : (
+        <QuestionnaireSession exercise={exercise} nextHref={nextHref} onProgressEvent={onProgressEvent} />
+      )}
+    </section>
+  );
+}
+
+function exerciseKindLabel(exercise: LearningExercise) {
+  if (exercise.type === "flashcard") {
+    return "Flashcard";
+  }
+
+  if (exercise.type === "cloze") {
+    return "Fill the gap";
+  }
+
+  if (exercise.type === "writing") {
+    return "Writing";
+  }
+
+  return "Questionnaire";
+}
+
+function Flashcard({
+  exercise,
+  nextHref,
+  onProgressEvent,
+}: {
+  exercise: Extract<LearningExercise, { type: "flashcard" }>;
+  nextHref?: string;
+  onProgressEvent?: PracticeProgressHandler;
+}) {
+  const [isRevealed, setIsRevealed] = useState(false);
+
+  function revealAnswer() {
+    setIsRevealed(true);
+    onProgressEvent?.("completed", { revealed: true });
+  }
+
+  return (
+    <div className="mt-6">
+      <p className="text-lg font-bold leading-8 text-[#33434b]">{exercise.prompt}</p>
+
+      {isRevealed ? (
+        <div className="mt-5 grid gap-3 rounded-lg border-2 border-[#d5e2e8] bg-[#f6fbfc] p-4">
+          <p className="text-xs font-extrabold uppercase text-[#68737d]">Answer</p>
+          <p className="text-lg font-extrabold leading-8 text-[#263238]">{exercise.answer}</p>
+          <p className="text-sm font-semibold leading-6 text-[#68737d]">{exercise.explanation}</p>
+        </div>
+      ) : null}
+
+      <div className="mt-6 flex flex-wrap gap-3">
+        <button
+          type="button"
+          onClick={revealAnswer}
+          className="inline-flex min-h-12 items-center gap-2 rounded-lg border-2 border-b-4 border-[#00645f] bg-[#007c78] px-4 py-2 text-sm font-extrabold text-white transition hover:-translate-y-0.5 disabled:cursor-default disabled:opacity-65 disabled:hover:translate-y-0"
+          disabled={isRevealed}
+        >
+          <CheckCircle2 className="h-4 w-4" aria-hidden="true" />
+          Reveal answer
+        </button>
+        {isRevealed ? (
+          <button
+            type="button"
+            onClick={() => setIsRevealed(false)}
+            className="inline-flex min-h-12 items-center gap-2 rounded-lg border-2 border-b-4 border-[#d5e2e8] bg-white px-4 py-2 text-sm font-extrabold text-[#263238]"
+          >
+            <RotateCcw className="h-4 w-4" aria-hidden="true" />
+            Reset
+          </button>
+        ) : null}
+        {isRevealed && nextHref ? <NextLink href={nextHref} /> : null}
+      </div>
+    </div>
+  );
+}
+
+function ClozeCard({
+  exercise,
+  nextHref,
+  onProgressEvent,
+}: {
+  exercise: Extract<LearningExercise, { type: "cloze" }>;
+  nextHref?: string;
+  onProgressEvent?: PracticeProgressHandler;
+}) {
+  const [answer, setAnswer] = useState("");
+  const [result, setResult] = useState<"correct" | "incorrect" | undefined>();
+  const [prefix, suffix] = exercise.template.split("{{blank}}");
+  const normalizedAnswer = answer.trim().toLowerCase();
+  const isCorrect = exercise.acceptedAnswers.some((acceptedAnswer) => acceptedAnswer.trim().toLowerCase() === normalizedAnswer);
+
+  function checkAnswer() {
+    setResult(isCorrect ? "correct" : "incorrect");
+
+    if (isCorrect) {
+      onProgressEvent?.("completed", { correct: true });
+    }
+  }
+
+  return (
+    <div className="mt-6">
+      <p className="text-lg font-bold leading-8 text-[#33434b]">{exercise.prompt}</p>
+
+      <div className="mt-5 rounded-lg border-2 border-[#d5e2e8] bg-[#f6fbfc] p-4 text-lg font-extrabold leading-9 text-[#263238]">
+        <span>{prefix}</span>
+        <label className="mx-1 inline-grid min-w-[12rem] align-middle">
+          <span className="sr-only">Answer</span>
+          <input
+            value={answer}
+            onChange={(event) => {
+              setAnswer(event.target.value);
+              setResult(undefined);
+            }}
+            aria-label="Answer"
+            className="h-11 rounded-lg border-2 border-b-4 border-[#d5e2e8] bg-white px-3 text-base font-extrabold text-[#263238] outline-none focus:border-[#007c78]"
+            data-testid="cloze-answer-input"
+          />
+        </label>
+        <span>{suffix}</span>
+      </div>
+
+      {result ? (
+        <div
+          className={cn(
+            "mt-5 rounded-lg border-2 border-b-4 p-4",
+            result === "correct" ? "border-[#6dd8cf] bg-[#e8f8f6]" : "border-[#f7cf5d] bg-[#fff5d6]",
+          )}
+          data-testid="cloze-feedback"
+        >
+          <p className={cn("text-sm font-extrabold", result === "correct" ? "text-[#007c78]" : "text-[#7a5200]")}>
+            {result === "correct" ? "Correct" : "Try again"}
+          </p>
+          <p className="mt-2 text-sm font-semibold leading-6 text-[#33434b]">{exercise.explanation}</p>
+        </div>
+      ) : null}
+
+      <div className="mt-6 flex flex-wrap gap-3">
+        <button
+          type="button"
+          onClick={checkAnswer}
+          className="inline-flex min-h-12 items-center gap-2 rounded-lg border-2 border-b-4 border-[#00645f] bg-[#007c78] px-4 py-2 text-sm font-extrabold text-white transition hover:-translate-y-0.5"
+        >
+          <CheckCircle2 className="h-4 w-4" aria-hidden="true" />
+          Check answer
+        </button>
+        {result && nextHref ? <NextLink href={nextHref} /> : null}
+      </div>
+    </div>
+  );
+}
+
+function WritingCard({
+  exercise,
+  nextHref,
+  onProgressEvent,
+}: {
+  exercise: Extract<LearningExercise, { type: "writing" }>;
+  nextHref?: string;
+  onProgressEvent?: PracticeProgressHandler;
+}) {
+  const characters = exercise.characterSlugs.flatMap((slug) => {
+    const character = getLanguageCharacterBySlug(slug);
+    return character ? [character] : [];
+  });
+  const [mode, setMode] = useState<"assisted" | "free">(exercise.modes.includes("assisted") ? "assisted" : "free");
+  const [characterIndex, setCharacterIndex] = useState(0);
+  const [strokes, setStrokes] = useState<WritingStroke[]>([]);
+  const [currentStroke, setCurrentStroke] = useState<WritingStroke | undefined>();
+  const [result, setResult] = useState<WritingCheckResult | undefined>();
+  const character = characters[characterIndex];
+
+  function resetForCharacter(nextIndex = characterIndex) {
+    setCharacterIndex(nextIndex);
+    setStrokes([]);
+    setCurrentStroke(undefined);
+    setResult(undefined);
+  }
+
+  function startStroke(event: PointerEvent<SVGSVGElement>) {
+    if (result) {
+      return;
+    }
+
+    event.currentTarget.setPointerCapture(event.pointerId);
+    setCurrentStroke({ points: [svgPoint(event)] });
+  }
+
+  function moveStroke(event: PointerEvent<SVGSVGElement>) {
+    if (!currentStroke || result) {
+      return;
+    }
+
+    setCurrentStroke((stroke) => (stroke ? { points: [...stroke.points, svgPoint(event)] } : stroke));
+  }
+
+  function endStroke(event: PointerEvent<SVGSVGElement>) {
+    if (!character || !currentStroke || result) {
+      setCurrentStroke(undefined);
+      return;
+    }
+
+    const normalizedStroke = normalizeWritingStroke(currentStroke);
+    const expectedStroke = character.strokes[strokes.length];
+    const shouldSnap =
+      mode === "assisted" && expectedStroke ? getAssistedStrokeCompletion(expectedStroke, normalizedStroke).shouldComplete : false;
+    const nextStroke = shouldSnap && expectedStroke ? { points: expectedStroke.points } : normalizedStroke;
+
+    if (event.currentTarget.hasPointerCapture(event.pointerId)) {
+      event.currentTarget.releasePointerCapture(event.pointerId);
+    }
+
+    setStrokes((value) => [...value, nextStroke]);
+    setCurrentStroke(undefined);
+  }
+
+  function checkCurrentCharacter() {
+    if (!character) {
+      return;
+    }
+
+    const nextResult = checkWritingAttempt({
+      expectedStrokes: character.strokes,
+      actualStrokes: strokes,
+      mode,
+    });
+    setResult(nextResult);
+
+    if (nextResult.isCorrect && characterIndex + 1 >= characters.length) {
+      onProgressEvent?.("completed", { mode, characterSlug: character.slug, passed: true });
+    }
+  }
+
+  if (!character) {
+    return <p className="mt-6 text-sm font-bold text-[#68737d]">This writing exercise has no available characters.</p>;
+  }
+
+  return (
+    <div className="mt-6" data-testid="writing-practice">
+      <p className="text-lg font-bold leading-8 text-[#33434b]">{exercise.prompt}</p>
+
+      <div className="mt-5 flex flex-wrap gap-2">
+        {exercise.modes.includes("assisted") ? (
+          <button
+            type="button"
+            onClick={() => setMode("assisted")}
+            className={cn(
+              "min-h-11 rounded-lg border-2 border-b-4 px-3 py-2 text-sm font-extrabold",
+              mode === "assisted" ? "border-[#00645f] bg-[#007c78] text-white" : "border-[#d5e2e8] bg-white text-[#263238]",
+            )}
+            data-testid="writing-mode-assisted"
+          >
+            Assisted
+          </button>
+        ) : null}
+        {exercise.modes.includes("free") ? (
+          <button
+            type="button"
+            onClick={() => setMode("free")}
+            className={cn(
+              "min-h-11 rounded-lg border-2 border-b-4 px-3 py-2 text-sm font-extrabold",
+              mode === "free" ? "border-[#1d4e9e] bg-[#245fba] text-white" : "border-[#d5e2e8] bg-white text-[#263238]",
+            )}
+            data-testid="writing-mode-free"
+          >
+            Free
+          </button>
+        ) : null}
+      </div>
+
+      <div className="mt-5 grid gap-5 lg:grid-cols-[18rem_minmax(0,1fr)]">
+        <div className="rounded-lg border-2 border-[#d5e2e8] bg-[#f6fbfc] p-4">
+          <p className="text-xs font-extrabold uppercase text-[#68737d]">
+            Character {characterIndex + 1} of {characters.length}
+          </p>
+          <p className="mt-2 text-7xl font-extrabold leading-none text-[#263238]">{character.glyph}</p>
+          <p className="mt-3 text-xl font-extrabold text-[#263238]">
+            {character.romaji} /{character.ipa}/
+          </p>
+          <p className="mt-2 text-sm font-semibold leading-6 text-[#68737d]">{character.meanings.join(", ")}</p>
+        </div>
+
+        <div className="grid gap-3">
+          <svg
+            viewBox="0 0 100 100"
+            role="img"
+            aria-label={`Writing pad for ${character.title}`}
+            onPointerDown={startStroke}
+            onPointerMove={moveStroke}
+            onPointerUp={endStroke}
+            onPointerCancel={endStroke}
+            className="aspect-square w-full max-w-[22rem] touch-none rounded-lg border-2 border-b-4 border-[#d5e2e8] bg-white"
+            data-testid="writing-pad"
+          >
+            <path d="M 50 0 L 50 100 M 0 50 L 100 50" stroke="#e4edf1" strokeWidth="0.8" fill="none" />
+            {mode === "assisted"
+              ? character.strokes.map((stroke) => (
+                  <path key={stroke.id} d={pointsToPath(stroke.points)} stroke="#d5e2e8" strokeWidth="5" strokeLinecap="round" strokeLinejoin="round" fill="none" />
+                ))
+              : null}
+            <text x="50" y="58" textAnchor="middle" fontSize="48" fill={mode === "assisted" ? "rgba(38,50,56,0.08)" : "transparent"}>
+              {character.glyph}
+            </text>
+            {[...strokes, ...(currentStroke ? [currentStroke] : [])].map((stroke, index) => (
+              <path key={`${index}-${stroke.points.length}`} d={pointsToPath(stroke.points)} stroke="#263238" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round" fill="none" />
+            ))}
+          </svg>
+
+          {result ? (
+            <div
+              className={cn(
+                "rounded-lg border-2 border-b-4 p-4",
+                result.isCorrect ? "border-[#6dd8cf] bg-[#e8f8f6]" : "border-[#f7cf5d] bg-[#fff5d6]",
+              )}
+              data-testid="writing-feedback"
+            >
+              <p className={cn("text-sm font-extrabold", result.isCorrect ? "text-[#007c78]" : "text-[#7a5200]")}>
+                {result.isCorrect ? "Correct" : "Review this"}
+              </p>
+              <p className="mt-2 text-sm font-semibold leading-6 text-[#33434b]">{result.feedback}</p>
+              <p className="mt-1 text-xs font-extrabold uppercase text-[#68737d]">Score {result.score}</p>
+            </div>
+          ) : null}
+        </div>
+      </div>
+
+      <div className="mt-6 flex flex-wrap gap-3">
+        <button
+          type="button"
+          onClick={() => setStrokes((value) => value.slice(0, -1))}
+          disabled={strokes.length === 0 || Boolean(result)}
+          className="inline-flex min-h-12 items-center gap-2 rounded-lg border-2 border-b-4 border-[#d5e2e8] bg-white px-4 py-2 text-sm font-extrabold text-[#263238] disabled:opacity-45"
+        >
+          Undo
+        </button>
+        <button
+          type="button"
+          onClick={() => resetForCharacter()}
+          className="inline-flex min-h-12 items-center gap-2 rounded-lg border-2 border-b-4 border-[#d5e2e8] bg-white px-4 py-2 text-sm font-extrabold text-[#263238]"
+        >
+          Clear
+        </button>
+        <button
+          type="button"
+          onClick={checkCurrentCharacter}
+          disabled={strokes.length === 0 || Boolean(result)}
+          className="inline-flex min-h-12 items-center gap-2 rounded-lg border-2 border-b-4 border-[#00645f] bg-[#007c78] px-4 py-2 text-sm font-extrabold text-white disabled:opacity-45"
+          data-testid="writing-check"
+        >
+          <CheckCircle2 className="h-4 w-4" aria-hidden="true" />
+          Check
+        </button>
+        {result?.isCorrect && characterIndex + 1 < characters.length ? (
+          <button
+            type="button"
+            onClick={() => {
+              const nextIndex = characterIndex + 1;
+              onProgressEvent?.("started", { mode, characterSlug: characters[nextIndex]?.slug });
+              resetForCharacter(nextIndex);
+            }}
+            className="inline-flex min-h-12 items-center gap-2 rounded-lg border-2 border-b-4 border-[#1d4e9e] bg-[#245fba] px-4 py-2 text-sm font-extrabold text-white"
+            data-testid="writing-next-character"
+          >
+            Next character
+          </button>
+        ) : null}
+        {result?.isCorrect && characterIndex + 1 >= characters.length && nextHref ? <NextLink href={nextHref} /> : null}
+      </div>
+    </div>
+  );
+}
+
+function NextLink({ href }: { href: string }) {
+  return (
+    <Link
+      href={href}
+      className="inline-flex min-h-12 items-center gap-2 rounded-lg border-2 border-b-4 border-[#1d4e9e] bg-[#245fba] px-4 py-2 text-sm font-extrabold text-white transition hover:-translate-y-0.5"
+    >
+      Next node
+      <ArrowRight className="h-4 w-4" aria-hidden="true" />
+    </Link>
+  );
+}
+
+function svgPoint(event: PointerEvent<SVGSVGElement>): LanguageStrokePoint {
+  const rect = event.currentTarget.getBoundingClientRect();
+  const x = ((event.clientX - rect.left) / Math.max(rect.width, 1)) * 100;
+  const y = ((event.clientY - rect.top) / Math.max(rect.height, 1)) * 100;
+
+  return [Math.min(100, Math.max(0, x)), Math.min(100, Math.max(0, y))];
+}
+
+function pointsToPath(points: LanguageStrokePoint[]) {
+  if (points.length === 0) {
+    return "";
+  }
+
+  const [first, ...rest] = points;
+  return [`M ${first[0]} ${first[1]}`, ...rest.map((point) => `L ${point[0]} ${point[1]}`)].join(" ");
+}

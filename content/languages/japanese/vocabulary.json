@@ -1,0 +1,61 @@
+{
+  "kind": "vocabulary",
+  "language": "ja",
+  "items": [
+    {
+      "slug": "japanese/vocabulary/japan",
+      "expression": "日本",
+      "reading": "にほん",
+      "romaji": "nihon",
+      "ipa": "ɲihoɴ",
+      "meanings": ["Japan"],
+      "characterSlugs": ["japanese/kanji/day", "japanese/kanji/book"],
+      "tags": ["country", "n5", "kanji"],
+      "status": "published"
+    },
+    {
+      "slug": "japanese/vocabulary/person",
+      "expression": "人",
+      "reading": "ひと",
+      "romaji": "hito",
+      "ipa": "çito",
+      "meanings": ["person"],
+      "characterSlugs": ["japanese/kanji/person"],
+      "tags": ["people", "n5", "kanji"],
+      "status": "published"
+    },
+    {
+      "slug": "japanese/vocabulary/mountain",
+      "expression": "山",
+      "reading": "やま",
+      "romaji": "yama",
+      "ipa": "jama",
+      "meanings": ["mountain"],
+      "characterSlugs": ["japanese/kanji/mountain"],
+      "tags": ["nature", "n5", "kanji"],
+      "status": "published"
+    },
+    {
+      "slug": "japanese/vocabulary/water",
+      "expression": "水",
+      "reading": "みず",
+      "romaji": "mizu",
+      "ipa": "mizɯ",
+      "meanings": ["water"],
+      "characterSlugs": ["japanese/kanji/water"],
+      "tags": ["nature", "n5", "kanji"],
+      "status": "published"
+    },
+    {
+      "slug": "japanese/vocabulary/big",
+      "expression": "大きい",
+      "reading": "おおきい",
+      "romaji": "ookii",
+      "ipa": "oːkiː",
+      "meanings": ["big", "large"],
+      "characterSlugs": ["japanese/kanji/big", "japanese/hiragana/o", "japanese/hiragana/i"],
+      "tags": ["adjective", "n5", "kanji"],
+      "status": "published"
+    }
+  ]
+}

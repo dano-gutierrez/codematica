@@ -3,10 +3,10 @@
 ## Snapshot
 
 - Status: `proposed`
-- Last updated: `2026-05-30`
+- Last updated: `2026-06-21`
 - Owner thread: `n/a`
-- Current state: Learning paths, flashcards, cloze practice, questionnaires, passive flashcard feeds, and interview walkthroughs have a local-first MVP; deeper gamification remains planned.
-- Target outcome: Later versions add AI study assistance, broader quiz loops, visual system design practice, code challenges, auth, durable progress, and native-ready APIs.
+- Current state: Learning paths, flashcards, cloze practice, questionnaires, passive flashcard feeds, interview walkthroughs, and an Expo native foundation have a local-first MVP; deeper gamification remains planned.
+- Target outcome: Later versions add AI study assistance, broader quiz loops, visual system design practice, code challenges, deeper gamification, and native-ready APIs.
 - Code touchpoints:
   - `docs/engineering-overview.md`
   - `docs/features/learning-paths-and-practice.md`
@@ -20,8 +20,8 @@ Codematica should grow from a path-first engineering study system into a deeper 
 ## Outcome / Contract
 
 - Roadmap work must preserve repo Markdown as the canonical authoring source for documents until a later decision changes it.
-- Learning paths and exercises should remain local structured content until auth or hosted authoring justifies a backend contract.
-- Auth and durable progress should be added before multi-device scoring matters.
+- Learning paths and exercises should remain local structured content until hosted authoring justifies a backend contract.
+- Basic Auth and resume progress exist; scoring, mastery, streaks, and review queues should build on that contract.
 - AI features should read from validated content/index data rather than scraping rendered pages.
 
 ## Planned Feature Areas
@@ -34,8 +34,8 @@ Codematica should grow from a path-first engineering study system into a deeper 
 - Editable JS/TS coding challenges with compilation or execution sandboxing.
 - SQL query practice with an in-app editor backed by deterministic demo data, read-only validation, expected result checks, and a dedicated feature contract before any executable SQL schema or UI is added.
 - Real-time score feedback in a gaming style.
-- Auth, profiles, saved progress, gated levels, streaks, achievements, leaderboards, and optional paywall boundaries.
-- Native client migration path once web contracts stabilize.
+- Gated levels, streaks, achievements, leaderboards, richer profiles, durable scoring, and optional paywall boundaries.
+- Native feature hardening on top of the Expo foundation: offline updates, mobile E2E, app-store packaging, and native-first study ergonomics.
 
 ## Test Plan
 

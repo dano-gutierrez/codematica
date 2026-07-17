@@ -7,14 +7,31 @@ export default tseslint.config(
   {
     ignores: [
       ".next/**",
+      "apps/web/.next/**",
+      "apps/mobile/.expo/**",
       "coverage/**",
       "node_modules/**",
       "playwright-report/**",
+      "apps/web/playwright-report/**",
       "test-results/**",
+      "apps/web/test-results/**",
     ],
   },
   js.configs.recommended,
   ...tseslint.configs.recommended,
+  {
+    files: ["**/*.cjs"],
+    languageOptions: {
+      ecmaVersion: 2022,
+      sourceType: "commonjs",
+      globals: {
+        ...globals.node,
+      },
+    },
+    rules: {
+      "@typescript-eslint/no-require-imports": "off",
+    },
+  },
   {
     files: ["**/*.{ts,tsx}"],
     languageOptions: {

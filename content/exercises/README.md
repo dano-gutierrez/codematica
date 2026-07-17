@@ -3,13 +3,14 @@
 This folder contains manually authored practice prompts for Codematica learning paths.
 
 - Author exercises as `.json` files under concept folders.
-- Supported `type` values are `flashcard`, `cloze`, and `questionnaire`.
+- Supported `type` values are `flashcard`, `cloze`, `questionnaire`, and `writing`.
 - Flashcards require `prompt`, `answer`, and `explanation`.
 - Cloze prompts require `prompt`, `template`, `acceptedAnswers`, and `explanation`.
 - A cloze `template` must contain exactly one `{{blank}}` token.
 - Questionnaires require `questions[]` with unique question IDs.
 - Questionnaire question `kind` values are `choice`, `cloze`, `ordering`, and `matching`.
 - Choice questions require exactly one correct option, ordering questions require a `correctOrder` containing every item ID exactly once, and matching questions require unique pair IDs.
+- Writing exercises require `characterSlugs`, `modes`, `prompt`, and `explanation`; referenced character slugs must exist in `content/languages/`.
 - `documentSlug` must reference an existing Markdown document.
 - Non-executable coding challenges currently belong inside Markdown lessons as challenge sections with starter code and acceptance checks. Do not model executable challenges in exercise JSON until a future code editor feature adds that schema.
 - Database SQL query practice is future work. Until a dedicated SQL editor feature defines demo data, validation, and allowed SQL behavior, database path practice should use the existing questionnaire model.

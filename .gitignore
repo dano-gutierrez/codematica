@@ -146,3 +146,9 @@ vite.config.ts.timestamp-*
 playwright-report/
 test-results/
 e2e/playwright-report/
+
+# Expo native generation and local credentials
+apps/mobile/.expo/
+apps/mobile/android/
+apps/mobile/ios/
+apps/mobile/credentials/

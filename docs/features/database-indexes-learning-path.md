@@ -12,10 +12,10 @@
   - `content/exercises/databases/*.json`
   - `content/learning-paths/database-indexes-and-search.json`
   - `content/flashcard-feeds/database-indexes-and-search.json`
-  - `src/lib/content/index.test.ts`
+  - `packages/core/src/content/index.test.ts`
 - Primary tests:
-  - `src/lib/content/index.test.ts`
-  - `e2e/specs/database-indexes.regression.spec.ts`
+  - `packages/core/src/content/index.test.ts`
+  - `apps/web/e2e/specs/database-indexes.regression.spec.ts`
 
 ## One-Minute Brief
 
@@ -76,7 +76,7 @@ The shipped path includes:
 ### Data Model And Persistence
 
 - No schema changes are introduced.
-- `src/generated/content-index.json` includes the new documents, exercises, path, and passive feed after `npm run content:index`.
+- `packages/core/src/generated/content-index.json` includes the new documents, exercises, path, and passive feed after `npm run content:index`.
 - The path, exercises, and feed remain local JSON artifacts.
 
 ### Business Logic
@@ -97,8 +97,8 @@ The shipped path includes:
 - `content/exercises/databases/*.json`: questionnaire practice for each lesson.
 - `content/learning-paths/database-indexes-and-search.json`: ordered path units and nodes.
 - `content/flashcard-feeds/database-indexes-and-search.json`: passive mobile review cards.
-- `src/generated/content-index.json`: generated artifact; regenerate, do not hand-edit.
-- `e2e/specs/database-indexes.regression.spec.ts`: mobile path, search, questionnaire, and passive-feed coverage.
+- `packages/core/src/generated/content-index.json`: generated artifact; regenerate, do not hand-edit.
+- `apps/web/e2e/specs/database-indexes.regression.spec.ts`: mobile path, search, questionnaire, and passive-feed coverage.
 
 ## Test Plan
 
@@ -124,4 +124,4 @@ The shipped path includes:
 
 ## Thread Handoff Prompt
 
-`Read docs/codex-context.md and docs/features/database-indexes-learning-path.md first. Compare the documented database indexes path contract against content/knowledge/databases, content/exercises/databases, content/learning-paths/database-indexes-and-search.json, content/flashcard-feeds/database-indexes-and-search.json, src/lib/content/index.test.ts, and e2e/specs/database-indexes.regression.spec.ts, then update tests and docs with any behavior changes.`
+`Read docs/codex-context.md and docs/features/database-indexes-learning-path.md first. Compare the documented database indexes path contract against content/knowledge/databases, content/exercises/databases, content/learning-paths/database-indexes-and-search.json, content/flashcard-feeds/database-indexes-and-search.json, packages/core/src/content/index.test.ts, and apps/web/e2e/specs/database-indexes.regression.spec.ts, then update tests and docs with any behavior changes.`

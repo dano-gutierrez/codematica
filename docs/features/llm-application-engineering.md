@@ -14,9 +14,9 @@
   - `content/learning-paths/ai-engineering-langfuse-langchain.json`
   - `content/flashcard-feeds/ai-engineering-langfuse-langchain.json`
 - Primary tests:
-  - `src/lib/content/index.test.ts`
-  - `src/lib/search.test.ts`
-  - `e2e/specs/ai-engineering.regression.spec.ts`
+  - `packages/core/src/content/index.test.ts`
+  - `packages/core/src/search.test.ts`
+  - `apps/web/e2e/specs/ai-engineering.regression.spec.ts`
 
 ## One-Minute Brief
 
@@ -53,7 +53,7 @@ The feature is shipped as local content and generated-index data. The app reuses
 - `content/learning-paths/ai-engineering-langfuse-langchain.json`: ordered path units and nodes.
 - `content/exercises/ai-engineering/*.json`: active questionnaires for the path.
 - `content/flashcard-feeds/ai-engineering-langfuse-langchain.json`: passive review cards.
-- `src/generated/content-index.json`: regenerated local runtime index.
+- `packages/core/src/generated/content-index.json`: regenerated local runtime index.
 
 ## Test Plan
 
@@ -94,4 +94,4 @@ The feature is shipped as local content and generated-index data. The app reuses
 
 ## Thread Handoff Prompt
 
-`Read docs/codex-context.md and docs/features/llm-application-engineering.md first. Compare the documented AI engineering path contract against content/knowledge/ai-engineering, content/exercises/ai-engineering, content/diagrams/ai-engineering, content/learning-paths/ai-engineering-langfuse-langchain.json, content/flashcard-feeds/ai-engineering-langfuse-langchain.json, src/lib/content/index.test.ts, src/lib/search.test.ts, and e2e/specs/ai-engineering.regression.spec.ts, then update content, tests, generated index, and docs together.`
+`Read docs/codex-context.md and docs/features/llm-application-engineering.md first. Compare the documented AI engineering path contract against content/knowledge/ai-engineering, content/exercises/ai-engineering, content/diagrams/ai-engineering, content/learning-paths/ai-engineering-langfuse-langchain.json, content/flashcard-feeds/ai-engineering-langfuse-langchain.json, packages/core/src/content/index.test.ts, packages/core/src/search.test.ts, and apps/web/e2e/specs/ai-engineering.regression.spec.ts, then update content, tests, generated index, and docs together.`

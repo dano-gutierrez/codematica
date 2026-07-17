@@ -1,0 +1,20 @@
+{
+  "slug": "languages/japanese-hiragana-vowels-writing",
+  "title": "Hiragana Vowel Writing",
+  "type": "writing",
+  "documentSlug": "languages/japanese-writing-systems",
+  "concept": "Hiragana vowels",
+  "difficulty": "foundation",
+  "tags": ["japanese", "hiragana", "handwriting"],
+  "status": "published",
+  "prompt": "Write each hiragana vowel with correct stroke order and shape.",
+  "characterSlugs": [
+    "japanese/hiragana/a",
+    "japanese/hiragana/i",
+    "japanese/hiragana/u",
+    "japanese/hiragana/e",
+    "japanese/hiragana/o"
+  ],
+  "modes": ["assisted", "free"],
+  "explanation": "Hiragana vowels are the first sound row. Practice assisted tracing first, then free writing."
+}
