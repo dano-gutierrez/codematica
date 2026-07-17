@@ -349,6 +349,7 @@ All sessions should reuse and, when necessary, expand these existing components 
 - `docs/README.md` is the docs hub.
 - `docs/features/README.md` explains feature-doc maintenance.
 - `docs/features/_template.md` is the required starting point for new feature docs.
+- `docs/runbooks/` contains operational release and deployment procedures that are repeatable but not product-feature contracts.
 - Update the closest README when adding a durable folder, workflow, script, command, testing lane, content convention, or integration.
 
 ---
