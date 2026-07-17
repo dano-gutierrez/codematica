@@ -23,6 +23,8 @@ Codematica now uses an npm workspace model. The existing Next app lives in `apps
 
 The native app bundles `packages/core/src/generated/content-index.json`, so anonymous browsing, search, reading, and practice work offline until the next app or update release. Supabase remains optional for anonymous use and is used only for native Auth/progress sync when anon-safe `EXPO_PUBLIC_*` env vars are configured.
 
+Detailed Play Console, Apple Developer Program, App Store Connect, EAS credential, metadata, and first-release steps live in `docs/runbooks/native-store-publishing.md`.
+
 ## Outcome / Contract
 
 - Keep web production on Next/Vercel; do not replace it with Expo web.

@@ -114,6 +114,8 @@ npm run mobile:submit:all
 
 The checked-in submit profile sends Android builds to the Play internal track first. Move to alpha, beta, or production only after Play Console metadata, screenshots, privacy/data-safety forms, and tester/release settings are ready. iOS submissions go to App Store Connect/TestFlight; release to the public App Store still requires selecting the build and submitting it for App Review in App Store Connect.
 
+Full Play Console, Apple Developer Program, App Store Connect, EAS credentials, metadata, and first-release account setup steps are documented in `../../docs/runbooks/native-store-publishing.md`.
+
 References:
 
 - https://docs.expo.dev/build/eas-json/

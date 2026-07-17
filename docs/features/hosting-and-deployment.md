@@ -27,6 +27,8 @@ Supabase remains the backend scaffold and manual sync destination for content se
 
 The native Android/iOS app is configured for Expo/EAS internal builds, production builds, and EAS Submit from `apps/mobile`. It bundles the same generated content index through `@codematica/core` and uses the same optional Supabase progress tables through a native anon-safe client.
 
+Detailed Play Console, Apple Developer Program, App Store Connect, EAS credential, metadata, and first-release steps live in `docs/runbooks/native-store-publishing.md`.
+
 ## Outcome / Contract
 
 - Vercel imports `dano-gutierrez/codematica` and deploys the `main` branch as production.
@@ -128,6 +130,7 @@ The app builds locally with `npm run build`. Content pages have been refactored 
 - `apps/mobile/eas.json`: native internal, production, e2e, and submit profiles.
 - `apps/mobile/app.config.ts`: native store identifiers, version counters, icon/splash assets, and EAS project linkage.
 - `apps/mobile/assets/`: native icon, adaptive icon, and splash assets.
+- `docs/runbooks/native-store-publishing.md`: operational native store account and first-release runbook.
 
 ## Test Plan
 
@@ -155,7 +158,7 @@ The app builds locally with `npm run build`. Content pages have been refactored 
 ## Documentation Updates
 
 - `docs/README.md`: Adds this feature doc to the reading map.
-- Nested READMEs: n/a.
+- `apps/mobile/README.md`: Points to the native store publishing runbook.
 - `docs/engineering-overview.md`: Adds the hosting model, Vercel build boundary, and static-first route behavior.
 
 ## Thread Handoff Prompt

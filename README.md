@@ -87,6 +87,8 @@ npm run mobile:submit:ios
 
 Android submission defaults to the Play internal track. iOS submission uploads to App Store Connect/TestFlight; public App Store release still requires selecting the build and submitting it for review in App Store Connect. Detailed native instructions live in `apps/mobile/README.md`.
 
+Full account setup and publishing steps live in `docs/runbooks/native-store-publishing.md`. Public app-store publishing is not fully free: Google Play Console requires a one-time developer registration fee, and App Store distribution requires Apple Developer Program membership unless Apple grants a fee waiver.
+
 ## Useful Commands
 
 ```bash

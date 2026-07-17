@@ -27,6 +27,7 @@ Conventions:
 - `docs/features/hosting-and-deployment.md` owns the Vercel free-tier deployment contract, static-first hosting posture, Expo build/submit posture, and manual Supabase sync boundary.
 - `docs/features/native-mobile-deployment.md` owns the Expo Router Android/iOS app, workspace sharing model, native auth/progress behavior, and mobile test/build lanes.
 - `docs/features/japanese-language-learning.md` owns the Japanese human-language path, local language catalogs, IPA display, and assisted/free handwriting practice.
+- `docs/runbooks/native-store-publishing.md` owns the operational checklist for Play Console, Apple Developer Program, App Store Connect, EAS credentials, first native builds, and first submissions.
 - `docs/plans/<feature>/...` is the repo-local home for durable implementation plans when a plan needs to outlive one thread.
 
 Content authoring surfaces:
