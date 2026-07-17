@@ -37,6 +37,7 @@ The first hosted web target is Vercel Hobby on the Vercel-provided URL. Vercel r
 - `apps/web/src/app/login/page.tsx`: web Supabase Auth login route
 - `apps/web/src/app/auth/**/route.ts`: web OAuth callback and sign-out routes
 - `apps/web/src/app/api/progress/**/route.ts`: web authenticated progress summary/upsert/sync endpoints
+- `apps/web/src/app/api/subscription/**/route.ts`: proposed subscription status, protected content, and RevenueCat webhook endpoints
 - `apps/web/src/components/`: legacy web/Tailwind components and client wrappers
 - `apps/web/src/lib/supabase/`: web Supabase SSR/browser/proxy helpers
 - `apps/web/e2e/specs/`: Playwright web mobile workflows
@@ -85,6 +86,7 @@ The first hosted web target is Vercel Hobby on the Vercel-provided URL. Vercel r
 - `docs/features/advanced-nextjs-16-learning-path.md`: hard Front-End Development skill path for Next.js 16 rendering, caching, `force-dynamic`, invalidation, production pain points, performance, migration, quizzes, and one-minute brief cards.
 - `docs/features/interview-coding-catalog.md`: reported-public company coding catalog and guided multi-language solution walkthroughs.
 - `docs/features/auth-and-progress.md`: Supabase Auth, minimal profiles, saved progress, local progress buffering, and Keep reading UI.
+- `docs/features/subscriptions-and-content-gating.md`: proposed RevenueCat/Stripe/Apple/Google subscription model, strict paid content gating, entitlement cache, and paywall implementation plan.
 - `docs/features/future-roadmap.md`: planned AI, flashcard, blueprint, code challenge, deeper gamification, and native app directions.
 - `docs/features/hosting-and-deployment.md`: Vercel free-tier deployment, static-first hosting behavior, EAS build/submit posture, and manual Supabase sync boundaries.
 - `docs/features/native-mobile-deployment.md`: Expo Router Android/iOS app, shared workspace packages, native auth/progress, offline index bundling, and EAS build/submit workflows.
