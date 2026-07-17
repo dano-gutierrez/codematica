@@ -1,44 +1,35 @@
 {
+  "extends": "./tsconfig.base.json",
   "compilerOptions": {
-    "target": "ES2022",
-    "lib": [
-      "dom",
-      "dom.iterable",
-      "es2022"
-    ],
-    "allowJs": false,
-    "skipLibCheck": true,
-    "strict": true,
-    "noEmit": true,
-    "esModuleInterop": true,
-    "module": "esnext",
-    "moduleResolution": "bundler",
-    "resolveJsonModule": true,
-    "isolatedModules": true,
-    "jsx": "react-jsx",
-    "incremental": true,
-    "plugins": [
-      {
-        "name": "next"
-      }
-    ],
+    "baseUrl": ".",
     "paths": {
       "@/*": [
-        "./src/*"
+        "./apps/web/src/*"
+      ],
+      "@codematica/core": [
+        "./packages/core/src/index.ts"
+      ],
+      "@codematica/core/*": [
+        "./packages/core/src/*"
+      ],
+      "@codematica/ui": [
+        "./packages/ui/src/index.ts"
+      ],
+      "@codematica/ui/*": [
+        "./packages/ui/src/*"
       ]
     }
   },
   "include": [
-    "next-env.d.ts",
-    "**/*.ts",
-    "**/*.tsx",
-    ".next/types/**/*.ts",
-    "next.config.ts",
-    "vitest.config.ts",
-    "e2e/**/*.ts",
-    ".next/dev/types/**/*.ts"
+    "apps/**/*.ts",
+    "apps/**/*.tsx",
+    "packages/**/*.ts",
+    "packages/**/*.tsx",
+    "scripts/**/*.ts",
+    "vitest.config.ts"
   ],
   "exclude": [
-    "node_modules"
+    "node_modules",
+    "apps/web/.next"
   ]
 }

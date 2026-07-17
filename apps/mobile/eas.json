@@ -1,0 +1,46 @@
+{
+  "$schema": "https://raw.githubusercontent.com/expo/eas-cli/main/packages/eas-json/schema/eas.schema.json",
+  "cli": {
+    "version": ">= 20.5.1"
+  },
+  "build": {
+    "development": {
+      "developmentClient": true,
+      "distribution": "internal",
+      "channel": "development"
+    },
+    "preview": {
+      "distribution": "internal",
+      "channel": "preview",
+      "android": {
+        "buildType": "apk"
+      }
+    },
+    "production": {
+      "autoIncrement": true,
+      "channel": "production",
+      "android": {
+        "buildType": "app-bundle"
+      }
+    },
+    "e2e-test": {
+      "developmentClient": true,
+      "distribution": "internal",
+      "channel": "e2e-test"
+    }
+  },
+  "submit": {
+    "preview": {
+      "android": {
+        "track": "internal"
+      },
+      "ios": {}
+    },
+    "production": {
+      "android": {
+        "track": "internal"
+      },
+      "ios": {}
+    }
+  }
+}

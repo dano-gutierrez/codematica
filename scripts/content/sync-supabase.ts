@@ -1,5 +1,5 @@
 import { createClient } from "@supabase/supabase-js";
-import { buildContentIndex } from "../../src/lib/content/build-index";
+import { buildContentIndex } from "../../packages/core/src/content/build-index";
 
 const supabaseUrl = process.env.SUPABASE_URL;
 const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;

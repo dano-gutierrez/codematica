@@ -1,0 +1,620 @@
+{
+  "kind": "characters",
+  "language": "ja",
+  "items": [
+    {
+      "slug": "japanese/hiragana/a",
+      "writingSystem": "hiragana",
+      "glyph": "あ",
+      "title": "Hiragana A",
+      "summary": "The hiragana vowel sound a.",
+      "meanings": ["a sound"],
+      "readings": [{ "label": "hiragana", "value": "あ", "ipa": "a" }],
+      "romaji": "a",
+      "ipa": "a",
+      "tags": ["kana", "vowel", "hiragana"],
+      "status": "published",
+      "strokes": [
+        { "id": "s1", "points": [[32, 28], [68, 28]] },
+        { "id": "s2", "points": [[48, 18], [42, 70]] },
+        { "id": "s3", "points": [[72, 40], [52, 86], [25, 66], [60, 46]] }
+      ]
+    },
+    {
+      "slug": "japanese/hiragana/i",
+      "writingSystem": "hiragana",
+      "glyph": "い",
+      "title": "Hiragana I",
+      "summary": "The hiragana vowel sound i.",
+      "meanings": ["i sound"],
+      "readings": [{ "label": "hiragana", "value": "い", "ipa": "i" }],
+      "romaji": "i",
+      "ipa": "i",
+      "tags": ["kana", "vowel", "hiragana"],
+      "status": "published",
+      "strokes": [
+        { "id": "s1", "points": [[35, 25], [30, 68], [42, 78]] },
+        { "id": "s2", "points": [[62, 30], [74, 62]] }
+      ]
+    },
+    {
+      "slug": "japanese/hiragana/u",
+      "writingSystem": "hiragana",
+      "glyph": "う",
+      "title": "Hiragana U",
+      "summary": "The hiragana vowel sound u.",
+      "meanings": ["u sound"],
+      "readings": [{ "label": "hiragana", "value": "う", "ipa": "ɯ" }],
+      "romaji": "u",
+      "ipa": "ɯ",
+      "tags": ["kana", "vowel", "hiragana"],
+      "status": "published",
+      "strokes": [
+        { "id": "s1", "points": [[42, 22], [58, 24]] },
+        { "id": "s2", "points": [[32, 42], [66, 40], [58, 76], [34, 82]] }
+      ]
+    },
+    {
+      "slug": "japanese/hiragana/e",
+      "writingSystem": "hiragana",
+      "glyph": "え",
+      "title": "Hiragana E",
+      "summary": "The hiragana vowel sound e.",
+      "meanings": ["e sound"],
+      "readings": [{ "label": "hiragana", "value": "え", "ipa": "e" }],
+      "romaji": "e",
+      "ipa": "e",
+      "tags": ["kana", "vowel", "hiragana"],
+      "status": "published",
+      "strokes": [
+        { "id": "s1", "points": [[43, 22], [58, 25]] },
+        { "id": "s2", "points": [[34, 44], [67, 42], [44, 65], [62, 82], [76, 72]] }
+      ]
+    },
+    {
+      "slug": "japanese/hiragana/o",
+      "writingSystem": "hiragana",
+      "glyph": "お",
+      "title": "Hiragana O",
+      "summary": "The hiragana vowel sound o.",
+      "meanings": ["o sound"],
+      "readings": [{ "label": "hiragana", "value": "お", "ipa": "o" }],
+      "romaji": "o",
+      "ipa": "o",
+      "tags": ["kana", "vowel", "hiragana"],
+      "status": "published",
+      "strokes": [
+        { "id": "s1", "points": [[30, 32], [68, 32]] },
+        { "id": "s2", "points": [[48, 20], [44, 80], [28, 70], [56, 46], [74, 66]] },
+        { "id": "s3", "points": [[67, 22], [76, 32]] }
+      ]
+    },
+    {
+      "slug": "japanese/katakana/a",
+      "writingSystem": "katakana",
+      "glyph": "ア",
+      "title": "Katakana A",
+      "summary": "The katakana vowel sound a.",
+      "meanings": ["a sound"],
+      "readings": [{ "label": "katakana", "value": "ア", "ipa": "a" }],
+      "romaji": "a",
+      "ipa": "a",
+      "tags": ["kana", "vowel", "katakana"],
+      "status": "published",
+      "strokes": [
+        { "id": "s1", "points": [[22, 25], [78, 25], [60, 48]] },
+        { "id": "s2", "points": [[50, 38], [43, 82]] }
+      ]
+    },
+    {
+      "slug": "japanese/katakana/i",
+      "writingSystem": "katakana",
+      "glyph": "イ",
+      "title": "Katakana I",
+      "summary": "The katakana vowel sound i.",
+      "meanings": ["i sound"],
+      "readings": [{ "label": "katakana", "value": "イ", "ipa": "i" }],
+      "romaji": "i",
+      "ipa": "i",
+      "tags": ["kana", "vowel", "katakana"],
+      "status": "published",
+      "strokes": [
+        { "id": "s1", "points": [[72, 18], [30, 54]] },
+        { "id": "s2", "points": [[50, 42], [50, 84]] }
+      ]
+    },
+    {
+      "slug": "japanese/katakana/u",
+      "writingSystem": "katakana",
+      "glyph": "ウ",
+      "title": "Katakana U",
+      "summary": "The katakana vowel sound u.",
+      "meanings": ["u sound"],
+      "readings": [{ "label": "katakana", "value": "ウ", "ipa": "ɯ" }],
+      "romaji": "u",
+      "ipa": "ɯ",
+      "tags": ["kana", "vowel", "katakana"],
+      "status": "published",
+      "strokes": [
+        { "id": "s1", "points": [[50, 16], [50, 30]] },
+        { "id": "s2", "points": [[28, 30], [72, 30], [62, 76], [36, 84]] }
+      ]
+    },
+    {
+      "slug": "japanese/katakana/e",
+      "writingSystem": "katakana",
+      "glyph": "エ",
+      "title": "Katakana E",
+      "summary": "The katakana vowel sound e.",
+      "meanings": ["e sound"],
+      "readings": [{ "label": "katakana", "value": "エ", "ipa": "e" }],
+      "romaji": "e",
+      "ipa": "e",
+      "tags": ["kana", "vowel", "katakana"],
+      "status": "published",
+      "strokes": [
+        { "id": "s1", "points": [[30, 28], [70, 28]] },
+        { "id": "s2", "points": [[50, 30], [50, 72]] },
+        { "id": "s3", "points": [[24, 74], [76, 74]] }
+      ]
+    },
+    {
+      "slug": "japanese/katakana/o",
+      "writingSystem": "katakana",
+      "glyph": "オ",
+      "title": "Katakana O",
+      "summary": "The katakana vowel sound o.",
+      "meanings": ["o sound"],
+      "readings": [{ "label": "katakana", "value": "オ", "ipa": "o" }],
+      "romaji": "o",
+      "ipa": "o",
+      "tags": ["kana", "vowel", "katakana"],
+      "status": "published",
+      "strokes": [
+        { "id": "s1", "points": [[26, 34], [76, 34]] },
+        { "id": "s2", "points": [[60, 18], [40, 82]] },
+        { "id": "s3", "points": [[58, 42], [74, 66]] }
+      ]
+    },
+    {
+      "slug": "japanese/kanji/one",
+      "writingSystem": "kanji",
+      "glyph": "一",
+      "title": "Kanji One",
+      "summary": "The kanji for the number one.",
+      "meanings": ["one"],
+      "readings": [{ "label": "on", "value": "いち", "ipa": "itɕi" }],
+      "romaji": "ichi",
+      "ipa": "itɕi",
+      "tags": ["kanji", "number", "n5"],
+      "status": "published",
+      "strokes": [{ "id": "s1", "points": [[18, 50], [82, 50]] }]
+    },
+    {
+      "slug": "japanese/kanji/two",
+      "writingSystem": "kanji",
+      "glyph": "二",
+      "title": "Kanji Two",
+      "summary": "The kanji for the number two.",
+      "meanings": ["two"],
+      "readings": [{ "label": "on", "value": "に", "ipa": "ɲi" }],
+      "romaji": "ni",
+      "ipa": "ɲi",
+      "tags": ["kanji", "number", "n5"],
+      "status": "published",
+      "strokes": [
+        { "id": "s1", "points": [[26, 35], [72, 35]] },
+        { "id": "s2", "points": [[18, 68], [82, 68]] }
+      ]
+    },
+    {
+      "slug": "japanese/kanji/three",
+      "writingSystem": "kanji",
+      "glyph": "三",
+      "title": "Kanji Three",
+      "summary": "The kanji for the number three.",
+      "meanings": ["three"],
+      "readings": [{ "label": "on", "value": "さん", "ipa": "saɴ" }],
+      "romaji": "san",
+      "ipa": "saɴ",
+      "tags": ["kanji", "number", "n5"],
+      "status": "published",
+      "strokes": [
+        { "id": "s1", "points": [[30, 28], [70, 28]] },
+        { "id": "s2", "points": [[25, 50], [75, 50]] },
+        { "id": "s3", "points": [[18, 74], [82, 74]] }
+      ]
+    },
+    {
+      "slug": "japanese/kanji/four",
+      "writingSystem": "kanji",
+      "glyph": "四",
+      "title": "Kanji Four",
+      "summary": "The kanji for the number four.",
+      "meanings": ["four"],
+      "readings": [{ "label": "on", "value": "し", "ipa": "ɕi" }],
+      "romaji": "shi",
+      "ipa": "ɕi",
+      "tags": ["kanji", "number", "n5"],
+      "status": "published",
+      "strokes": [
+        { "id": "s1", "points": [[25, 25], [25, 78]] },
+        { "id": "s2", "points": [[25, 25], [76, 25], [76, 78]] },
+        { "id": "s3", "points": [[44, 32], [36, 66]] },
+        { "id": "s4", "points": [[57, 34], [57, 66]] },
+        { "id": "s5", "points": [[25, 78], [76, 78]] }
+      ]
+    },
+    {
+      "slug": "japanese/kanji/five",
+      "writingSystem": "kanji",
+      "glyph": "五",
+      "title": "Kanji Five",
+      "summary": "The kanji for the number five.",
+      "meanings": ["five"],
+      "readings": [{ "label": "on", "value": "ご", "ipa": "ɡo" }],
+      "romaji": "go",
+      "ipa": "ɡo",
+      "tags": ["kanji", "number", "n5"],
+      "status": "published",
+      "strokes": [
+        { "id": "s1", "points": [[25, 24], [76, 24]] },
+        { "id": "s2", "points": [[50, 25], [42, 56]] },
+        { "id": "s3", "points": [[34, 56], [70, 56]] },
+        { "id": "s4", "points": [[22, 78], [82, 78]] }
+      ]
+    },
+    {
+      "slug": "japanese/kanji/six",
+      "writingSystem": "kanji",
+      "glyph": "六",
+      "title": "Kanji Six",
+      "summary": "The kanji for the number six.",
+      "meanings": ["six"],
+      "readings": [{ "label": "on", "value": "ろく", "ipa": "ɾokɯ" }],
+      "romaji": "roku",
+      "ipa": "ɾokɯ",
+      "tags": ["kanji", "number", "n5"],
+      "status": "published",
+      "strokes": [
+        { "id": "s1", "points": [[50, 18], [50, 32]] },
+        { "id": "s2", "points": [[24, 38], [78, 38]] },
+        { "id": "s3", "points": [[40, 50], [25, 82]] },
+        { "id": "s4", "points": [[61, 50], [80, 82]] }
+      ]
+    },
+    {
+      "slug": "japanese/kanji/seven",
+      "writingSystem": "kanji",
+      "glyph": "七",
+      "title": "Kanji Seven",
+      "summary": "The kanji for the number seven.",
+      "meanings": ["seven"],
+      "readings": [{ "label": "on", "value": "しち", "ipa": "ɕitɕi" }],
+      "romaji": "shichi",
+      "ipa": "ɕitɕi",
+      "tags": ["kanji", "number", "n5"],
+      "status": "published",
+      "strokes": [
+        { "id": "s1", "points": [[18, 42], [82, 34]] },
+        { "id": "s2", "points": [[45, 20], [45, 78], [76, 78]] }
+      ]
+    },
+    {
+      "slug": "japanese/kanji/eight",
+      "writingSystem": "kanji",
+      "glyph": "八",
+      "title": "Kanji Eight",
+      "summary": "The kanji for the number eight.",
+      "meanings": ["eight"],
+      "readings": [{ "label": "on", "value": "はち", "ipa": "hatɕi" }],
+      "romaji": "hachi",
+      "ipa": "hatɕi",
+      "tags": ["kanji", "number", "n5"],
+      "status": "published",
+      "strokes": [
+        { "id": "s1", "points": [[42, 28], [26, 82]] },
+        { "id": "s2", "points": [[56, 28], [78, 82]] }
+      ]
+    },
+    {
+      "slug": "japanese/kanji/nine",
+      "writingSystem": "kanji",
+      "glyph": "九",
+      "title": "Kanji Nine",
+      "summary": "The kanji for the number nine.",
+      "meanings": ["nine"],
+      "readings": [{ "label": "on", "value": "きゅう", "ipa": "kʲɯː" }],
+      "romaji": "kyuu",
+      "ipa": "kʲɯː",
+      "tags": ["kanji", "number", "n5"],
+      "status": "published",
+      "strokes": [
+        { "id": "s1", "points": [[28, 38], [70, 38]] },
+        { "id": "s2", "points": [[52, 18], [44, 74], [70, 82], [82, 62]] }
+      ]
+    },
+    {
+      "slug": "japanese/kanji/ten",
+      "writingSystem": "kanji",
+      "glyph": "十",
+      "title": "Kanji Ten",
+      "summary": "The kanji for the number ten.",
+      "meanings": ["ten"],
+      "readings": [{ "label": "on", "value": "じゅう", "ipa": "dʑɯː" }],
+      "romaji": "juu",
+      "ipa": "dʑɯː",
+      "tags": ["kanji", "number", "n5"],
+      "status": "published",
+      "strokes": [
+        { "id": "s1", "points": [[22, 48], [78, 48]] },
+        { "id": "s2", "points": [[50, 18], [50, 84]] }
+      ]
+    },
+    {
+      "slug": "japanese/kanji/day",
+      "writingSystem": "kanji",
+      "glyph": "日",
+      "title": "Kanji Day",
+      "summary": "The kanji for day or sun.",
+      "meanings": ["day", "sun"],
+      "readings": [{ "label": "kun", "value": "ひ", "ipa": "çi" }],
+      "romaji": "hi",
+      "ipa": "çi",
+      "tags": ["kanji", "time", "n5"],
+      "status": "published",
+      "strokes": [
+        { "id": "s1", "points": [[30, 22], [30, 82]] },
+        { "id": "s2", "points": [[30, 22], [72, 22], [72, 82]] },
+        { "id": "s3", "points": [[30, 52], [72, 52]] },
+        { "id": "s4", "points": [[30, 82], [72, 82]] }
+      ]
+    },
+    {
+      "slug": "japanese/kanji/month",
+      "writingSystem": "kanji",
+      "glyph": "月",
+      "title": "Kanji Month",
+      "summary": "The kanji for month or moon.",
+      "meanings": ["month", "moon"],
+      "readings": [{ "label": "kun", "value": "つき", "ipa": "tsɯki" }],
+      "romaji": "tsuki",
+      "ipa": "tsɯki",
+      "tags": ["kanji", "time", "n5"],
+      "status": "published",
+      "strokes": [
+        { "id": "s1", "points": [[34, 20], [34, 84]] },
+        { "id": "s2", "points": [[34, 20], [72, 20], [72, 84]] },
+        { "id": "s3", "points": [[34, 46], [72, 46]] },
+        { "id": "s4", "points": [[34, 66], [72, 66]] }
+      ]
+    },
+    {
+      "slug": "japanese/kanji/fire",
+      "writingSystem": "kanji",
+      "glyph": "火",
+      "title": "Kanji Fire",
+      "summary": "The kanji for fire.",
+      "meanings": ["fire"],
+      "readings": [{ "label": "kun", "value": "ひ", "ipa": "çi" }],
+      "romaji": "hi",
+      "ipa": "çi",
+      "tags": ["kanji", "nature", "n5"],
+      "status": "published",
+      "strokes": [
+        { "id": "s1", "points": [[38, 34], [25, 60]] },
+        { "id": "s2", "points": [[62, 32], [76, 56]] },
+        { "id": "s3", "points": [[50, 18], [44, 66], [25, 84]] },
+        { "id": "s4", "points": [[50, 48], [78, 84]] }
+      ]
+    },
+    {
+      "slug": "japanese/kanji/water",
+      "writingSystem": "kanji",
+      "glyph": "水",
+      "title": "Kanji Water",
+      "summary": "The kanji for water.",
+      "meanings": ["water"],
+      "readings": [{ "label": "kun", "value": "みず", "ipa": "mizɯ" }],
+      "romaji": "mizu",
+      "ipa": "mizɯ",
+      "tags": ["kanji", "nature", "n5"],
+      "status": "published",
+      "strokes": [
+        { "id": "s1", "points": [[50, 18], [50, 84]] },
+        { "id": "s2", "points": [[28, 42], [44, 52]] },
+        { "id": "s3", "points": [[74, 36], [54, 56]] },
+        { "id": "s4", "points": [[50, 56], [24, 84]] },
+        { "id": "s5", "points": [[52, 56], [78, 84]] }
+      ]
+    },
+    {
+      "slug": "japanese/kanji/tree",
+      "writingSystem": "kanji",
+      "glyph": "木",
+      "title": "Kanji Tree",
+      "summary": "The kanji for tree or wood.",
+      "meanings": ["tree", "wood"],
+      "readings": [{ "label": "kun", "value": "き", "ipa": "ki" }],
+      "romaji": "ki",
+      "ipa": "ki",
+      "tags": ["kanji", "nature", "n5"],
+      "status": "published",
+      "strokes": [
+        { "id": "s1", "points": [[24, 42], [78, 42]] },
+        { "id": "s2", "points": [[50, 18], [50, 84]] },
+        { "id": "s3", "points": [[48, 45], [24, 82]] },
+        { "id": "s4", "points": [[52, 45], [78, 82]] }
+      ]
+    },
+    {
+      "slug": "japanese/kanji/gold",
+      "writingSystem": "kanji",
+      "glyph": "金",
+      "title": "Kanji Gold",
+      "summary": "The kanji for gold or money.",
+      "meanings": ["gold", "money"],
+      "readings": [{ "label": "kun", "value": "かね", "ipa": "kane" }],
+      "romaji": "kane",
+      "ipa": "kane",
+      "tags": ["kanji", "nature", "n5"],
+      "status": "published",
+      "strokes": [
+        { "id": "s1", "points": [[50, 18], [28, 42]] },
+        { "id": "s2", "points": [[50, 18], [74, 42]] },
+        { "id": "s3", "points": [[34, 44], [68, 44]] },
+        { "id": "s4", "points": [[42, 54], [58, 54]] },
+        { "id": "s5", "points": [[28, 66], [72, 66]] },
+        { "id": "s6", "points": [[40, 66], [32, 82]] },
+        { "id": "s7", "points": [[60, 66], [70, 82]] },
+        { "id": "s8", "points": [[24, 84], [78, 84]] }
+      ]
+    },
+    {
+      "slug": "japanese/kanji/earth",
+      "writingSystem": "kanji",
+      "glyph": "土",
+      "title": "Kanji Earth",
+      "summary": "The kanji for earth or soil.",
+      "meanings": ["earth", "soil"],
+      "readings": [{ "label": "kun", "value": "つち", "ipa": "tsɯtɕi" }],
+      "romaji": "tsuchi",
+      "ipa": "tsɯtɕi",
+      "tags": ["kanji", "nature", "n5"],
+      "status": "published",
+      "strokes": [
+        { "id": "s1", "points": [[26, 44], [74, 44]] },
+        { "id": "s2", "points": [[50, 20], [50, 78]] },
+        { "id": "s3", "points": [[18, 80], [82, 80]] }
+      ]
+    },
+    {
+      "slug": "japanese/kanji/person",
+      "writingSystem": "kanji",
+      "glyph": "人",
+      "title": "Kanji Person",
+      "summary": "The kanji for person.",
+      "meanings": ["person", "human"],
+      "readings": [{ "label": "kun", "value": "ひと", "ipa": "çito" }],
+      "romaji": "hito",
+      "ipa": "çito",
+      "tags": ["kanji", "people", "n5"],
+      "status": "published",
+      "strokes": [
+        { "id": "s1", "points": [[48, 20], [34, 82]] },
+        { "id": "s2", "points": [[50, 22], [74, 84]] }
+      ]
+    },
+    {
+      "slug": "japanese/kanji/big",
+      "writingSystem": "kanji",
+      "glyph": "大",
+      "title": "Kanji Big",
+      "summary": "The kanji for big or large.",
+      "meanings": ["big", "large"],
+      "readings": [{ "label": "kun", "value": "おお", "ipa": "oː" }],
+      "romaji": "oo",
+      "ipa": "oː",
+      "tags": ["kanji", "adjective", "n5"],
+      "status": "published",
+      "strokes": [
+        { "id": "s1", "points": [[24, 44], [78, 44]] },
+        { "id": "s2", "points": [[50, 18], [42, 62], [26, 84]] },
+        { "id": "s3", "points": [[51, 45], [78, 84]] }
+      ]
+    },
+    {
+      "slug": "japanese/kanji/small",
+      "writingSystem": "kanji",
+      "glyph": "小",
+      "title": "Kanji Small",
+      "summary": "The kanji for small.",
+      "meanings": ["small"],
+      "readings": [{ "label": "kun", "value": "ちい", "ipa": "tɕiː" }],
+      "romaji": "chii",
+      "ipa": "tɕiː",
+      "tags": ["kanji", "adjective", "n5"],
+      "status": "published",
+      "strokes": [
+        { "id": "s1", "points": [[50, 20], [50, 84]] },
+        { "id": "s2", "points": [[34, 46], [22, 68]] },
+        { "id": "s3", "points": [[66, 46], [80, 68]] }
+      ]
+    },
+    {
+      "slug": "japanese/kanji/middle",
+      "writingSystem": "kanji",
+      "glyph": "中",
+      "title": "Kanji Middle",
+      "summary": "The kanji for middle or inside.",
+      "meanings": ["middle", "inside"],
+      "readings": [{ "label": "on", "value": "ちゅう", "ipa": "tɕɯː" }],
+      "romaji": "chuu",
+      "ipa": "tɕɯː",
+      "tags": ["kanji", "position", "n5"],
+      "status": "published",
+      "strokes": [
+        { "id": "s1", "points": [[28, 28], [28, 70]] },
+        { "id": "s2", "points": [[28, 28], [72, 28], [72, 70]] },
+        { "id": "s3", "points": [[28, 70], [72, 70]] },
+        { "id": "s4", "points": [[50, 16], [50, 86]] }
+      ]
+    },
+    {
+      "slug": "japanese/kanji/book",
+      "writingSystem": "kanji",
+      "glyph": "本",
+      "title": "Kanji Book",
+      "summary": "The kanji for book or origin.",
+      "meanings": ["book", "origin"],
+      "readings": [{ "label": "on", "value": "ほん", "ipa": "hoɴ" }],
+      "romaji": "hon",
+      "ipa": "hoɴ",
+      "tags": ["kanji", "object", "n5"],
+      "status": "published",
+      "strokes": [
+        { "id": "s1", "points": [[24, 38], [78, 38]] },
+        { "id": "s2", "points": [[50, 16], [50, 86]] },
+        { "id": "s3", "points": [[48, 40], [24, 76]] },
+        { "id": "s4", "points": [[52, 40], [78, 76]] },
+        { "id": "s5", "points": [[36, 66], [64, 66]] }
+      ]
+    },
+    {
+      "slug": "japanese/kanji/mountain",
+      "writingSystem": "kanji",
+      "glyph": "山",
+      "title": "Kanji Mountain",
+      "summary": "The kanji for mountain.",
+      "meanings": ["mountain"],
+      "readings": [{ "label": "kun", "value": "やま", "ipa": "jama" }],
+      "romaji": "yama",
+      "ipa": "jama",
+      "tags": ["kanji", "nature", "n5"],
+      "status": "published",
+      "strokes": [
+        { "id": "s1", "points": [[50, 24], [50, 76]] },
+        { "id": "s2", "points": [[26, 46], [26, 78], [74, 78]] },
+        { "id": "s3", "points": [[74, 46], [74, 78]] }
+      ]
+    },
+    {
+      "slug": "japanese/kanji/river",
+      "writingSystem": "kanji",
+      "glyph": "川",
+      "title": "Kanji River",
+      "summary": "The kanji for river.",
+      "meanings": ["river"],
+      "readings": [{ "label": "kun", "value": "かわ", "ipa": "kawa" }],
+      "romaji": "kawa",
+      "ipa": "kawa",
+      "tags": ["kanji", "nature", "n5"],
+      "status": "published",
+      "strokes": [
+        { "id": "s1", "points": [[32, 24], [28, 80]] },
+        { "id": "s2", "points": [[50, 22], [50, 82]] },
+        { "id": "s3", "points": [[68, 24], [72, 80]] }
+      ]
+    }
+  ]
+}

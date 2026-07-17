@@ -3,24 +3,24 @@
 ## Snapshot
 
 - Status: `shipped`
-- Last updated: `2026-06-01`
+- Last updated: `2026-06-21`
 - Owner thread: `n/a`
 - Current state: Python ships as the first senior language-refresh path for TypeScript and JavaScript engineers, with questionnaires and a passive flashcard feed.
-- Target outcome: Users can search Python refresh docs, follow a path, complete transient mobile questionnaires, and review a path-scoped flashcard feed without auth or Supabase.
+- Target outcome: Users can search Python refresh docs, follow a path, complete transient mobile questionnaires, and review a path-scoped flashcard feed without requiring auth or Supabase.
 - Code touchpoints:
   - `content/knowledge/programming/python-*.md`
   - `content/exercises/programming/python-*.json`
   - `content/flashcard-feeds/python-for-ts-js-engineers.json`
   - `content/learning-paths/python-for-ts-js-engineers.json`
-  - `src/components/PassiveFlashcardFeed.tsx`
-  - `src/components/QuestionnaireSession.tsx`
+  - `apps/web/src/components/PassiveFlashcardFeed.tsx`
+  - `apps/web/src/components/QuestionnaireSession.tsx`
 - Primary tests:
-  - `src/lib/content/index.test.ts`
-  - `src/lib/practice/questionnaire.test.ts`
-  - `src/lib/flashcards/passive.test.ts`
-  - `src/components/PracticeCard.test.tsx`
-  - `src/components/PassiveFlashcardFeed.test.tsx`
-  - `e2e/specs/python-refresh.regression.spec.ts`
+  - `packages/core/src/content/index.test.ts`
+  - `packages/core/src/practice/questionnaire.test.ts`
+  - `packages/core/src/flashcards/passive.test.ts`
+  - `apps/web/src/components/PracticeCard.test.tsx`
+  - `apps/web/src/components/PassiveFlashcardFeed.test.tsx`
+  - `apps/web/e2e/specs/python-refresh.regression.spec.ts`
 
 ## One-Minute Brief
 
@@ -33,8 +33,8 @@ Language refresh paths are skill paths that teach one programming language from 
 - Python passive review cards are canonical feed JSON under `content/flashcard-feeds/`.
 - The path `python-for-ts-js-engineers` alternates each Markdown document with a questionnaire for the same concept.
 - The passive feed route is `/paths/python-for-ts-js-engineers/flashcards`.
-- Questionnaires are local-only, randomized per attempt, one question per screen, and do not store score, completion, streaks, or progress.
-- Passive flashcards are local-only, use the shared highlighted code theme for snippet cards, and do not store read state, mastery, score, streaks, or progress.
+- Questionnaires are local content, randomized per attempt, one question per screen, and do not store answers, scores, streaks, or mastery.
+- Passive flashcards are local content, use the shared highlighted code theme for snippet cards, and do not store mastery, score, or streaks.
 - Python guidance should stay aligned with official Python and PyPA references when docs are updated.
 
 ## Python V1 Content
@@ -66,6 +66,6 @@ The passive feed contains 320 senior cards for short mobile refresh sessions. Ca
 
 ## Assumptions
 
-- Language refresh content remains local-first Markdown plus structured JSON until hosted authoring or durable progress exists.
+- Language refresh content remains local-first Markdown plus structured JSON until hosted authoring exists. Optional resume/completion progress is owned by `docs/features/auth-and-progress.md`.
 - Python v1 is intentionally senior-level and written for TypeScript/JavaScript engineers, not absolute beginners.
 - New language refresh paths should reuse the questionnaire type for active practice and the passive feed type for scroll-only review instead of adding one-off route surfaces.

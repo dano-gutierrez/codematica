@@ -1,0 +1,30 @@
+{
+  "slug": "japanese-foundations",
+  "title": "Japanese Foundations",
+  "summary": "A beginner Japanese path for kana, starter kanji, IPA pronunciation support, and handwriting practice.",
+  "kind": "skill",
+  "category": "Languages",
+  "audience": "English-speaking beginners learning Japanese on mobile, tablet, and web.",
+  "status": "published",
+  "units": [
+    {
+      "slug": "writing-systems",
+      "title": "Writing Systems",
+      "summary": "Learn hiragana, katakana, kanji, IPA aids, and the assisted-to-free handwriting loop.",
+      "nodes": [
+        { "kind": "document", "slug": "languages/japanese-writing-systems" },
+        { "kind": "exercise", "slug": "languages/japanese-hiragana-vowels-writing" },
+        { "kind": "exercise", "slug": "languages/japanese-katakana-vowels-writing" }
+      ]
+    },
+    {
+      "slug": "starter-kanji",
+      "title": "Starter Kanji",
+      "summary": "Practice beginner kanji for numbers, nature, people, size, position, books, mountains, and rivers.",
+      "nodes": [
+        { "kind": "document", "slug": "languages/japanese-starter-kanji" },
+        { "kind": "exercise", "slug": "languages/japanese-starter-kanji-writing" }
+      ]
+    }
+  ]
+}

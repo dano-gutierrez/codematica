@@ -1,0 +1,28 @@
+import { describe, expect, it } from "vitest";
+import { getContentIndex, getLanguageCharacterBySlug, getLanguageVocabularyBySlug } from "../content";
+import { getJapaneseCharacterGroups, searchJapanese } from "./japanese";
+
+describe("Japanese language helpers", () => {
+  it("loads Japanese characters and vocabulary from the generated index", () => {
+    const index = getContentIndex();
+    const groups = getJapaneseCharacterGroups(index);
+
+    expect(index.schemaVersion).toBe(5);
+    expect(groups.hiragana.some((item) => item.glyph === "あ" && item.ipa === "a")).toBe(true);
+    expect(groups.katakana.some((item) => item.glyph === "ア" && item.ipa === "a")).toBe(true);
+    expect(groups.kanji.some((item) => item.glyph === "人")).toBe(true);
+    expect(getLanguageCharacterBySlug("japanese/kanji/person")?.strokes).toHaveLength(2);
+    expect(getLanguageVocabularyBySlug("japanese/vocabulary/japan")?.ipa).toBe("ɲihoɴ");
+    expect(getLanguageCharacterBySlug("japanese/kanji/water")?.route).toBe("/languages/japanese/characters/kanji/water");
+    expect(getLanguageVocabularyBySlug("japanese/vocabulary/water")?.route).toBe("/languages/japanese/vocabulary/water");
+  });
+
+  it("searches by glyph, romaji, IPA, meaning, and vocabulary expression", () => {
+    const index = getContentIndex();
+
+    expect(searchJapanese(index, "あ")[0]).toMatchObject({ kind: "character", item: expect.objectContaining({ glyph: "あ" }) });
+    expect(searchJapanese(index, "water")[0]).toMatchObject({ item: expect.objectContaining({ glyph: "水" }) });
+    expect(searchJapanese(index, "ɲihoɴ")[0]).toMatchObject({ kind: "vocabulary", item: expect.objectContaining({ expression: "日本" }) });
+    expect(searchJapanese(index, "nihon")[0]).toMatchObject({ kind: "vocabulary", item: expect.objectContaining({ expression: "日本" }) });
+  });
+});

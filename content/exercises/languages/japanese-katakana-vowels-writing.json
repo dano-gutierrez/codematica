@@ -1,0 +1,20 @@
+{
+  "slug": "languages/japanese-katakana-vowels-writing",
+  "title": "Katakana Vowel Writing",
+  "type": "writing",
+  "documentSlug": "languages/japanese-writing-systems",
+  "concept": "Katakana vowels",
+  "difficulty": "foundation",
+  "tags": ["japanese", "katakana", "handwriting"],
+  "status": "published",
+  "prompt": "Write each katakana vowel with correct stroke order and shape.",
+  "characterSlugs": [
+    "japanese/katakana/a",
+    "japanese/katakana/i",
+    "japanese/katakana/u",
+    "japanese/katakana/e",
+    "japanese/katakana/o"
+  ],
+  "modes": ["assisted", "free"],
+  "explanation": "Katakana uses the same vowel sounds as hiragana but a sharper visual system."
+}

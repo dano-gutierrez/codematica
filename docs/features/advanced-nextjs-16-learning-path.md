@@ -3,7 +3,7 @@
 ## Snapshot
 
 - Status: `shipped`
-- Last updated: `2026-06-18`
+- Last updated: `2026-06-21`
 - Owner thread: `n/a`
 - Current state: A published `advanced-nextjs-16` skill path ships with eight hard Next.js lessons, eight questionnaires, and a passive one-minute brief feed.
 - Target outcome: Experienced Next.js engineers can study rendering, caching, `force-dynamic`, invalidation, production pain points, performance, and migration behavior for Next.js 16 without Supabase or remote services.
@@ -12,10 +12,10 @@
   - `content/exercises/frontend/*.json`
   - `content/learning-paths/advanced-nextjs-16.json`
   - `content/flashcard-feeds/advanced-nextjs-16.json`
-  - `src/lib/content/index.test.ts`
+  - `packages/core/src/content/index.test.ts`
 - Primary tests:
-  - `src/lib/content/index.test.ts`
-  - `e2e/specs/advanced-nextjs-16.regression.spec.ts`
+  - `packages/core/src/content/index.test.ts`
+  - `apps/web/e2e/specs/advanced-nextjs-16.regression.spec.ts`
 
 ## One-Minute Brief
 
@@ -80,14 +80,14 @@ The shipped path includes:
 - The path appears on the path home with the existing `LearningPathMap` UI.
 - Each article is available through `/docs/[...slug]` and `/browse` search.
 - Each questionnaire uses the existing one-question-at-a-time mobile flow.
-- The passive feed shows one short production review card per mobile viewport and stores no read state.
+- The passive feed shows one short production review card per mobile viewport. Optional latest-card resume state is owned by `docs/features/auth-and-progress.md`.
 
 ### Data Model And Persistence
 
 - No schema changes are introduced.
-- `src/generated/content-index.json` includes the new documents, exercises, path, and passive feed after `npm run content:index`.
+- `packages/core/src/generated/content-index.json` includes the new documents, exercises, path, and passive feed after `npm run content:index`.
 - The path, exercises, and feed remain local content artifacts.
-- No user state is persisted.
+- Auth/progress may persist resume/completion milestones. It does not persist practice answers, scores, or mastery state.
 
 ### Business Logic
 
@@ -108,8 +108,8 @@ The shipped path includes:
 - `content/exercises/frontend/*.json`: hard questionnaires for each lesson.
 - `content/learning-paths/advanced-nextjs-16.json`: ordered path units and nodes.
 - `content/flashcard-feeds/advanced-nextjs-16.json`: passive mobile one-minute brief cards.
-- `src/generated/content-index.json`: generated artifact; regenerate, do not hand-edit.
-- `e2e/specs/advanced-nextjs-16.regression.spec.ts`: mobile path, search, questionnaire, and passive-feed coverage.
+- `packages/core/src/generated/content-index.json`: generated artifact; regenerate, do not hand-edit.
+- `apps/web/e2e/specs/advanced-nextjs-16.regression.spec.ts`: mobile path, search, questionnaire, and passive-feed coverage.
 
 ## Test Plan
 
@@ -119,7 +119,7 @@ The shipped path includes:
 
 ## Open Questions
 
-- Which future progress events should become durable once auth exists?
+- Which scoring, mastery, and review-queue events should become durable after basic progress?
 - Should a future code-runner feature add small Next.js review challenges for route and cache snippets?
 
 ## Decision Log
@@ -136,4 +136,4 @@ The shipped path includes:
 
 ## Thread Handoff Prompt
 
-`Read docs/codex-context.md and docs/features/advanced-nextjs-16-learning-path.md first. Compare the documented Advanced Next.js 16 path contract against content/knowledge/frontend, content/exercises/frontend, content/learning-paths/advanced-nextjs-16.json, content/flashcard-feeds/advanced-nextjs-16.json, src/lib/content/index.test.ts, and e2e/specs/advanced-nextjs-16.regression.spec.ts, then update tests and docs with any behavior changes.`
+`Read docs/codex-context.md and docs/features/advanced-nextjs-16-learning-path.md first. Compare the documented Advanced Next.js 16 path contract against content/knowledge/frontend, content/exercises/frontend, content/learning-paths/advanced-nextjs-16.json, content/flashcard-feeds/advanced-nextjs-16.json, packages/core/src/content/index.test.ts, and apps/web/e2e/specs/advanced-nextjs-16.regression.spec.ts, then update tests and docs with any behavior changes.`

@@ -6,9 +6,9 @@ Instructions for AI agents working on this codebase.
 
 ## What This App Is
 
-Codematica is a gamified software engineering knowledge base. V1 is a mobile-first Next.js web app that browses, renders, and searches AI-authored Markdown content about system design, programming, coding, and production engineering.
+Codematica is a gamified learning app. V1 is a mobile-first Next.js web app plus an Expo Router Android/iOS app that browse, render, search, and practice AI-authored Markdown and structured study content about system design, programming, coding, production engineering, and beginner human languages.
 
-Markdown files are the durable source of truth. Supabase is scaffolded as an optional sync and search backend, but the app must run from the local generated content index without requiring Supabase credentials.
+Markdown files are the durable source of truth. Supabase is scaffolded as an optional sync/search backend and is used for optional Auth/progress when public runtime env vars are configured, but the app must run from the local generated content index without requiring Supabase credentials for anonymous browsing.
 
 Future product areas include:
 
@@ -18,9 +18,10 @@ Future product areas include:
 - Mermaid authoring and diagram generation from the app
 - code snaps and later editable/compiled JS/TS challenges
 - Duolingo-style scoring, progress, streaks, and challenge loops
-- auth, profiles, saved progress, and eventually native clients
+- expanded Japanese language study with sound, larger dictionaries, and richer writing drills
+- richer profiles, deeper saved progress/scoring, and eventually native clients
 
-Frontend is a Next.js App Router app. Content indexing is local-first. Supabase is currently optional infrastructure for later hosted search, auth, progress, and AI workflows.
+Frontend is split across `apps/web` for Next.js App Router and `apps/mobile` for Expo Router. Shared content/search/practice/progress logic lives in `packages/core`; shared native screens live in `packages/ui`. Content indexing is local-first. Supabase is optional infrastructure for hosted search, Auth/progress, and later AI workflows.
 
 ## Where To Start Reading
 
@@ -28,19 +29,21 @@ Frontend is a Next.js App Router app. Content indexing is local-first. Supabase 
 - `docs/codex-context.md`: cross-thread context, repo map, and source-of-truth rules
 - `docs/engineering-overview.md`: architecture, content flow, and Mermaid diagrams
 - `docs/features/markdown-knowledge-browser.md`: V1 browser contract
+- `docs/features/native-mobile-deployment.md`: Expo native app and workspace sharing contract
 - `content/knowledge/`: canonical Markdown articles
 - `content/diagrams/`: canonical Mermaid diagram files
-- `src/lib/content/`: parsing, validation, and indexing
-- `src/lib/search.ts`: fuzzy search behavior
-- `src/components/KnowledgeBrowser.tsx`: main browser UI
+- `content/languages/`: canonical human-language character and vocabulary catalogs
+- `packages/core/src/content/`: parsing, validation, and indexing
+- `packages/core/src/search.ts`: fuzzy search behavior
+- `apps/web/src/components/KnowledgeBrowser.tsx`: main browser UI
 
 ## Mental Model
 
 - Markdown is canonical. The generated index is an artifact, not an authoring surface.
-- The app must remain useful without Supabase until a feature explicitly requires durable remote state.
-- Routing is content-oriented: `/` browses the index, `/docs/[...slug]` renders articles, and `/diagrams/[...slug]` renders external Mermaid diagrams.
-- Content boundaries are schema-validated. Authored Markdown frontmatter is untrusted until it passes `src/lib/content/schema.ts`.
-- Search currently runs client-side from `src/generated/content-index.json`; future Supabase-backed search should preserve the same user-facing behavior unless a feature doc changes the contract.
+- The app must remain useful without Supabase for anonymous browsing. Cross-device Auth/progress requires Supabase runtime env vars.
+- Routing is content-oriented: `/` shows the learning path map, `/browse` browses the index, `/docs/[...slug]` renders articles, `/diagrams/[...slug]` renders external Mermaid diagrams, and `/languages/japanese` opens the Japanese language study hub.
+- Content boundaries are schema-validated. Authored Markdown frontmatter is untrusted until it passes `packages/core/src/content/schema.ts`.
+- Search currently runs client-side from `packages/core/src/generated/content-index.json`; future Supabase-backed search should preserve the same user-facing behavior unless a feature doc changes the contract.
 - Gamification is intentionally light in V1: tracks, difficulty, progress-ready metadata, and learning UI are present before durable scoring/auth.
 
 ## Data Protection
@@ -55,20 +58,21 @@ Frontend is a Next.js App Router app. Content indexing is local-first. Supabase 
 
 - Canonical knowledge content lives in `content/knowledge/**/**/*.md`.
 - Canonical external Mermaid diagrams live in `content/diagrams/**/*.mmd` or `content/diagrams/**/*.mermaid`.
-- `src/generated/content-index.json` is generated by `npm run content:index`.
+- Canonical human-language character and vocabulary catalogs live in `content/languages/**/*.json`.
+- `packages/core/src/generated/content-index.json` is generated by `npm run content:index`.
 - Do not hand-edit generated content index output.
 - AI-authored knowledge files must remain plain Markdown, not MDX, unless a future feature doc explicitly changes the content execution model.
-- All Markdown frontmatter must pass the Zod contract in `src/lib/content/schema.ts`.
+- All Markdown frontmatter must pass the Zod contract in `packages/core/src/content/schema.ts`.
 - Every durable content feature, content model change, or new content workflow must update the relevant feature doc and the closest applicable README.
 
 ## Persistence And Backend
 
-- V1 runtime reads the generated local content index.
-- Supabase is optional for V1 runtime. Do not make local browsing depend on a remote database.
+- V1 web and native runtimes read the generated local content index from `packages/core`.
+- Supabase is optional for anonymous browsing. Do not make local browsing depend on a remote database.
 - Treat repo Markdown as canonical even after enabling Supabase sync.
 - `scripts/content/sync-supabase.ts` is the optional sync path.
 - `supabase/migrations/` contains optional future tables and RPCs for hosted document/diagram search.
-- Browser code should use anon-safe clients only when a later feature explicitly requires Supabase reads.
+- Browser code must use anon-safe Supabase clients only. Never use service role keys outside server-only scripts.
 - Server-only scripts may use service role keys through environment variables; never commit secrets.
 
 ## Current Realities And Gotchas
@@ -77,7 +81,7 @@ Frontend is a Next.js App Router app. Content indexing is local-first. Supabase 
 - The UI is mobile-first and currently styled as a bright gamified learning app.
 - Search is fuzzy-only in the UI. Do not reintroduce an exact/fuzzy toggle without updating the feature doc and tests.
 - Mermaid exists in two forms: embedded fenced blocks inside Markdown and external `.mmd` / `.mermaid` files referenced by frontmatter.
-- `src/generated/content-index.json` may change when parser logic or content changes; regenerate it intentionally with `npm run content:index`.
+- `packages/core/src/generated/content-index.json` may change when parser logic or content changes; regenerate it intentionally with `npm run content:index`.
 - Next dev HMR allows `127.0.0.1` through `allowedDevOrigins` in `next.config.ts`.
 
 ---
@@ -141,8 +145,8 @@ E2E coverage is required for important user-facing workflows, but it complements
 
 | Component | Location | Purpose |
 |-----------|----------|---------|
-| Playwright config | `e2e/playwright.config.ts` | Test runner config, mobile project, and web server |
-| Test specs | `e2e/specs/*.{smoke,regression}.spec.ts` | Browser-level test files |
+| Playwright config | `apps/web/e2e/playwright.config.ts` | Test runner config, mobile project, and web server |
+| Test specs | `apps/web/e2e/specs/*.{smoke,regression}.spec.ts` | Browser-level test files |
 | Test results | `test-results/` | Failure screenshots, traces, and videos; ignored by git |
 | HTML report | `playwright-report/` | Local report output; ignored by git |
 | Content fixtures | `content/knowledge/`, `content/diagrams/` | Real starter content used by smoke tests |
@@ -169,13 +173,13 @@ test("@regression verifies fuzzy search ranks title matches first", async ({ pag
 #### Step 2: Create the test file
 
 ```text
-e2e/specs/my-feature.regression.spec.ts
+apps/web/e2e/specs/my-feature.regression.spec.ts
 ```
 
 #### Step 3: Use deterministic content and setup
 
 - Prefer existing starter content when it proves the behavior.
-- If a test needs new content, add small deterministic Markdown/diagram fixtures and update `src/generated/content-index.json` with `npm run content:index`.
+- If a test needs new content, add small deterministic Markdown/diagram fixtures and update `packages/core/src/generated/content-index.json` with `npm run content:index`.
 - Do not depend on remote Supabase for V1 E2E unless the feature explicitly requires it.
 
 #### Step 4: Use existing helpers and stable selectors
@@ -208,7 +212,7 @@ test("@regression reads an article and opens its diagram", async ({ page }) => {
 #### If a `data-testid` changed
 
 1. Update the selector in the test.
-2. Search all test files for the old testid: `rg "old-testid" e2e/ src/`.
+2. Search all test files for the old testid: `rg "old-testid" apps/web/e2e/ apps/web/src/`.
 3. Update helpers or page objects if the testid is used there.
 
 #### If a UI flow changed
@@ -218,7 +222,7 @@ test("@regression reads an article and opens its diagram", async ({ page }) => {
 3. Run the modified test locally before calling the task complete:
 
 ```bash
-npx playwright test --config=e2e/playwright.config.ts e2e/specs/my-test.regression.spec.ts
+npx playwright test --config=apps/web/e2e/playwright.config.ts apps/web/e2e/specs/my-test.regression.spec.ts
 ```
 
 #### If content, generated index, or schema changed
@@ -235,13 +239,13 @@ npx playwright test --config=e2e/playwright.config.ts e2e/specs/my-test.regressi
 npm run e2e:smoke
 
 # Specific test file
-npx playwright test --config=e2e/playwright.config.ts e2e/specs/knowledge-browser.smoke.spec.ts
+npx playwright test --config=apps/web/e2e/playwright.config.ts apps/web/e2e/specs/knowledge-browser.smoke.spec.ts
 
 # Headed browser for visual debugging
-npx playwright test --config=e2e/playwright.config.ts --headed e2e/specs/knowledge-browser.smoke.spec.ts
+npx playwright test --config=apps/web/e2e/playwright.config.ts --headed apps/web/e2e/specs/knowledge-browser.smoke.spec.ts
 
 # Playwright UI mode
-npx playwright test --config=e2e/playwright.config.ts --ui
+npx playwright test --config=apps/web/e2e/playwright.config.ts --ui
 ```
 
 ### Key Rules
@@ -259,7 +263,7 @@ npx playwright test --config=e2e/playwright.config.ts --ui
 ### Vitest
 
 - Config: `vitest.config.ts`
-- Test files: `src/**/*.{test,spec}.{ts,tsx}`, `scripts/**/*.{test,spec}.ts`
+- Test files: `apps/web/src/**/*.{test,spec}.{ts,tsx}`, `packages/core/src/**/*.{test,spec}.ts`, `packages/ui/src/**/*.{test,spec}.{ts,tsx}`, `scripts/**/*.{test,spec}.ts`
 - Run: `npm test` for the full Vitest suite, `npm run test:watch` for watch mode, and `npx vitest run path/to/file.test.ts` for a targeted TDD loop.
 
 ### What To Test Where
@@ -287,7 +291,7 @@ Rule of thumb: if you can test it without a browser, do it in Vitest first. Use 
 
 ### React Components
 
-- Reuse existing components before creating new ones. Start every UI task by checking `src/components/` and nearby route usage for a component or pattern to extend.
+- Reuse existing components before creating new ones. Start every UI task by checking `apps/web/src/components/` and nearby route usage for a component or pattern to extend.
 - Prefer adding a small prop, slot, or composition path to an existing component over creating another bespoke component for the same behavior. Less code is good. Reusing is good. Abstracting repeated UI and logic is good.
 - Create a new component only when no existing component can reasonably own the behavior, state, styling, or accessibility contract. If you create one, add it to the reusable component inventory in this file and update the relevant docs.
 - Use `data-testid` on any element that E2E tests interact with.
@@ -301,28 +305,37 @@ Rule of thumb: if you can test it without a browser, do it in Vitest first. Use 
 
 All sessions should reuse and, when necessary, expand these existing components instead of rebuilding equivalent UI from scratch:
 
-- `src/components/BackButton.tsx`: shared client-side back navigation button with an optional label.
-- `src/components/CodeBlock.tsx`: shared language-aware code block renderer for Markdown, interview solutions, flashcard code, and Mermaid source fallbacks.
-- `src/components/DifficultyPill.tsx`: shared difficulty badge for beginner, intermediate, and advanced content.
-- `src/components/Dropdown.tsx`: custom Radix-backed dropdown primitive for filters and select-style controls; use this instead of native selects or one-off dropdowns.
-- `src/components/InterviewCatalog.tsx`: interview catalog, company detail page UI, shared interview header, company tiles, question cards, and supporting interview stats.
-- `src/components/InterviewQuestionSession.tsx`: guided coding interview walkthrough with solution track navigation, language switching, Mermaid rendering, and code rendering.
-- `src/components/KnowledgeBrowser.tsx`: generated content browser with search, track filters, difficulty filters, and result cards.
-- `src/components/LearningPathMap.tsx`: learning path home and detail views, path overview stats, and path node display.
-- `src/components/MarkdownRenderer.tsx`: safe Markdown renderer with GFM, shared code block rendering, and embedded Mermaid support.
-- `src/components/MermaidBlock.tsx`: client-side Mermaid renderer with loading, error, and source fallback states.
-- `src/components/PassiveFlashcardFeed.tsx`: path-scoped passive flashcard feed UI for scroll-only review.
-- `src/components/PracticeCard.tsx`: flashcard, cloze, and questionnaire practice shell with next-node navigation.
-- `src/components/QuestionnaireSession.tsx`: interactive questionnaire session UI, transient answer state, grading feedback, and next-node navigation.
-- `src/components/RandomInterviewButton.tsx`: randomized interview question CTA for interview practice surfaces.
+- `apps/web/src/components/BackButton.tsx`: shared client-side back navigation button with an optional label.
+- `apps/web/src/components/CodeBlock.tsx`: shared language-aware code block renderer for Markdown, interview solutions, flashcard code, and Mermaid source fallbacks.
+- `apps/web/src/components/DifficultyPill.tsx`: shared difficulty badge for beginner, intermediate, and advanced content.
+- `apps/web/src/components/Dropdown.tsx`: custom Radix-backed dropdown primitive for filters and select-style controls; use this instead of native selects or one-off dropdowns.
+- `apps/web/src/components/InterviewCatalog.tsx`: interview catalog, company detail page UI, shared interview header, company tiles, question cards, and supporting interview stats.
+- `apps/web/src/components/InterviewQuestionSession.tsx`: guided coding interview walkthrough with solution track navigation, language switching, Mermaid rendering, and code rendering.
+- `apps/web/src/components/JapaneseLanguageBrowser.tsx`: Japanese language lookup hub with character/vocabulary search, IPA display, and links into the Japanese Foundations path.
+- `apps/web/src/components/KeepReadingSection.tsx`: home-page resume panel backed by signed-in Supabase progress or signed-out local progress.
+- `apps/web/src/components/KnowledgeBrowser.tsx`: generated content browser with search, track filters, difficulty filters, and result cards.
+- `apps/web/src/components/LearningPathMap.tsx`: learning path home and detail views, path overview stats, and path node display.
+- `apps/web/src/components/LoginForm.tsx`: Supabase Auth UI for Google, Apple-ready, and email/password flows.
+- `apps/web/src/components/MarkdownRenderer.tsx`: safe Markdown renderer with GFM, shared code block rendering, and embedded Mermaid support.
+- `apps/web/src/components/MermaidBlock.tsx`: client-side Mermaid renderer with loading, error, and source fallback states.
+- `apps/web/src/components/PassiveFlashcardFeed.tsx`: path-scoped passive flashcard feed UI for scroll-only review.
+- `apps/web/src/components/ProgressTrackers.tsx`: invisible document and diagram progress trackers for the optional auth/progress layer.
+- `apps/web/src/components/SaveProgressPrompt.tsx`: global signed-out prompt for saving locally buffered progress after use.
+- `apps/web/src/components/PathScopedNextLink.tsx`: client-side path query reader for static document and diagram next-node links.
+- `apps/web/src/components/PathScopedPracticeCard.tsx`: client-side path query adapter that passes next-node links into `PracticeCard` without making practice pages dynamic.
+- `apps/web/src/components/PracticeCard.tsx`: flashcard, cloze, questionnaire, and writing practice shell with next-node navigation.
+- `apps/web/src/components/QuestionnaireSession.tsx`: interactive questionnaire session UI, transient answer state, grading feedback, and next-node navigation.
+- `apps/web/src/components/RandomInterviewButton.tsx`: randomized interview question CTA for interview practice surfaces.
+- `packages/ui/src/screens.tsx`: shared React Native-compatible screens for Expo path, browse, reader, diagram, practice, passive flashcard, interview, Japanese language lookup/detail, login, Keep reading, and save-progress surfaces.
+- `packages/ui/src/tokens.ts`: shared native design tokens for React Native screens.
 
 ### Content And Search
 
 - Plain Markdown is the default authoring format.
 - Keep parsing, validation, and ranking logic pure where practical.
 - Use structured schemas/parsers for content instead of ad hoc string manipulation.
-- Regenerate `src/generated/content-index.json` after content or parser changes.
-- Do not scatter content contract assumptions across components; centralize them in `src/lib/content/schema.ts` and parser/indexing modules.
+- Regenerate `packages/core/src/generated/content-index.json` after content or parser changes.
+- Do not scatter content contract assumptions across components; centralize them in `packages/core/src/content/schema.ts` and parser/indexing modules.
 
 ### Supabase
 
@@ -336,6 +349,7 @@ All sessions should reuse and, when necessary, expand these existing components 
 - `docs/README.md` is the docs hub.
 - `docs/features/README.md` explains feature-doc maintenance.
 - `docs/features/_template.md` is the required starting point for new feature docs.
+- `docs/runbooks/` contains operational release and deployment procedures that are repeatable but not product-feature contracts.
 - Update the closest README when adding a durable folder, workflow, script, command, testing lane, content convention, or integration.
 
 ---
@@ -348,11 +362,15 @@ All sessions should reuse and, when necessary, expand these existing components 
 - Fast TDD loop:
   - `npx vitest run path/to/file.test.ts` for targeted unit/integration work
   - `npm test` for the broader Vitest suite
-  - `npx playwright test --config=e2e/playwright.config.ts e2e/specs/my-test.regression.spec.ts` for targeted browser work
+  - `npx playwright test --config=apps/web/e2e/playwright.config.ts apps/web/e2e/specs/my-test.regression.spec.ts` for targeted browser work
 - Before calling work complete, run the relevant automated tests for every layer you touched.
 - Use `npm run content:check` after content/index/schema changes.
 - Use `npm run typecheck` after TypeScript changes.
 - Use `npm run lint` after code changes.
 - Use `npm test` for the broader Vitest suite.
+- Use `npm run test:mobile` after changing `apps/mobile` or `packages/ui`.
+- Use `npm run mobile:doctor` before native build work.
+- Use `npm run mobile:build:preview` for the first EAS internal native build after credentials are configured.
+- Use `npm run mobile:build:android`, `npm run mobile:build:ios`, `npm run mobile:submit:android`, and `npm run mobile:submit:ios` only after the relevant store records, credentials, metadata, screenshots, and review forms are ready.
 - Use `npm run e2e:smoke` for the critical end-to-end path.
 - If you change shared business logic, content parsing, indexing, search, rendering, Supabase sync, or migrations, do not stop at E2E only; add or update matching Vitest coverage too.
