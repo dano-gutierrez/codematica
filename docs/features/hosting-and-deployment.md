@@ -32,7 +32,7 @@ Detailed Play Console, Apple Developer Program, App Store Connect, EAS credentia
 ## Outcome / Contract
 
 - Vercel imports `dano-gutierrez/codematica` and deploys the `main` branch as production.
-- `vercel.json` owns the deployment defaults: Next.js framework, `npm ci`, and `npm run build`.
+- `vercel.json` owns the deployment defaults: Next.js framework, `npm ci`, `npm run build`, and the workspace output directory `apps/web/.next`.
 - `package.json` pins Node to `22.x` so local and hosted builds do not silently drift with Vercel defaults.
 - npm workspaces own app/package boundaries: `apps/web`, `apps/mobile`, `packages/core`, and `packages/ui`.
 - The hosted V1 app does not require Supabase env vars for anonymous browsing.
@@ -79,7 +79,7 @@ The app builds locally with `npm run build`. Content pages have been refactored 
 
 - Import the GitHub repo into Vercel from `dano-gutierrez/codematica`.
 - Keep the project root as `/`.
-- Use the repo config: framework `nextjs`, install command `npm ci`, build command `npm run build`.
+- Use the repo config: framework `nextjs`, install command `npm ci`, build command `npm run build`, and output directory `apps/web/.next`.
 - Keep production branch as `main`.
 - Configure Vercel Supabase runtime env vars only when enabling Auth/progress.
 - After deployment, smoke-check `/`, `/browse`, one `/docs/...` route, one `/diagrams/...` route, and one `/practice/...` route.
@@ -121,7 +121,7 @@ The app builds locally with `npm run build`. Content pages have been refactored 
 
 ## Code Touchpoints
 
-- `vercel.json`: Vercel project build defaults.
+- `vercel.json`: Vercel project build defaults, including `outputDirectory: "apps/web/.next"` so Vercel serves the workspace Next output instead of looking for root `.next`.
 - `package.json`: Node engine pin and build command.
 - `.env.example`: public auth/progress variables and server-only Supabase sync variable names.
 - `packages/core/src/content/index.ts`: generated index access and path-node route helpers.
@@ -154,6 +154,7 @@ The app builds locally with `npm run build`. Content pages have been refactored 
 - `2026-06-21`: Move path-scoped next-node selection from server `searchParams` to client wrappers so content pages remain static-first.
 - `2026-07-11`: Add npm workspaces, shared core/UI packages, and Expo/EAS internal native build configuration while preserving Vercel as the web production target.
 - `2026-07-11`: Add native app identity, store assets, production EAS build profiles, submit profiles, and root scripts for Play Console/App Store Connect publishing prep.
+- `2026-07-17`: Set Vercel `outputDirectory` to `apps/web/.next` after the Next app moved into the `apps/web` workspace.
 
 ## Documentation Updates
 
