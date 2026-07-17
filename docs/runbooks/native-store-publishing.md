@@ -49,6 +49,21 @@ Prepare these release assets and policies:
 - Data inventory for Supabase Auth/progress, local progress storage, crash diagnostics, analytics if added later, and third-party SDKs.
 - Reviewer test account if login is required to inspect any app functionality.
 
+If subscriptions are in scope for the release, also decide these RevenueCat/product values before creating store products:
+
+```bash
+REVENUECAT_ENTITLEMENT_ID=all_access
+REVENUECAT_OFFERING_ID=default
+CODEMATICA_MONTHLY_PRODUCT_ID=codematica_all_access_monthly
+CODEMATICA_ANNUAL_PRODUCT_ID=codematica_all_access_annual
+CODEMATICA_GOOGLE_SUBSCRIPTION_ID=codematica_all_access
+CODEMATICA_GOOGLE_MONTHLY_BASE_PLAN_ID=monthly
+CODEMATICA_GOOGLE_ANNUAL_BASE_PLAN_ID=annual
+CODEMATICA_MONTHLY_INTRO_OFFER_ID=monthly_intro_099_first_month
+```
+
+Use stable product ids. Renaming products after Apple, Google, Stripe, and RevenueCat are connected creates avoidable reconciliation and support work.
+
 ## Repo Release Prep
 
 Run these checks before creating store builds:
@@ -95,6 +110,157 @@ For the first Android upload, let Google Play App Signing manage the app signing
 
 For iOS, let EAS manage the distribution certificate and provisioning profile unless the Apple team already has a signing process.
 
+## RevenueCat Subscription Setup
+
+RevenueCat is the planned cross-platform entitlement authority for Codematica subscriptions. Set it up after the Apple, Google, and Stripe account shells exist, but before wiring production paywalls in the apps.
+
+Official starting points:
+
+- RevenueCat Expo SDK: https://www.revenuecat.com/docs/getting-started/installation/expo
+- RevenueCat store connections: https://www.revenuecat.com/docs/projects/connect-a-store
+- RevenueCat Stripe Billing: https://www.revenuecat.com/docs/web/integrations/stripe
+- RevenueCat webhooks: https://www.revenuecat.com/docs/integrations/webhooks
+
+Create the RevenueCat project:
+
+1. Create or sign in to the RevenueCat account that should own Codematica billing.
+2. Create a project named `Codematica`.
+3. Add iOS, Android, and Web apps.
+4. Use Supabase `auth.users.id` as the RevenueCat App User ID in app code and backend reconciliation.
+5. Create entitlement `all_access`.
+6. Create offering `default`.
+7. Create packages `monthly` and `annual`.
+8. Keep separate development/test-store and production API keys. Store public SDK keys in EAS/Vercel env vars, not in source files.
+
+Connect Apple App Store to RevenueCat:
+
+1. Create the App Store Connect app and subscription products first.
+2. In RevenueCat, add the iOS app with bundle id `com.codematica.app`.
+3. Add the App Store app shared secret if required for the chosen StoreKit/receipt-validation path.
+4. Create and upload the in-app purchase key required by current RevenueCat StoreKit 2 transaction processing.
+5. Create and upload an App Store Connect API key with sufficient access so RevenueCat can fetch products and read subscription state.
+6. Import or map Apple products:
+   - `codematica_all_access_monthly`
+   - `codematica_all_access_annual`
+7. Attach both products to entitlement `all_access` and offering `default`.
+
+Connect Google Play to RevenueCat:
+
+1. Upload an internal Android build to Play Console if subscription product setup is blocked until an artifact exists.
+2. Create the Google Play subscription and base plans in Play Console.
+3. Create Google Play service credentials for RevenueCat and upload the JSON key in the Android app settings in RevenueCat.
+4. Configure Google real-time developer notifications if required by RevenueCat setup checks.
+5. Import or map Google products:
+   - Subscription id: `codematica_all_access`
+   - Base plan ids: `monthly`, `annual`
+   - Intro offer id: `monthly_intro_099_first_month`
+6. Attach the monthly and annual purchase options to entitlement `all_access` and offering `default`.
+
+Connect Stripe Billing to RevenueCat for web:
+
+1. Create or activate the Stripe account and complete business, bank, tax, and identity onboarding.
+2. Create product `Codematica All Access`.
+3. Create recurring monthly and annual prices for US launch.
+4. Configure the first-month `$0.99` introductory path for the monthly package.
+5. Configure Stripe Customer Portal for subscription management.
+6. Connect Stripe to RevenueCat from RevenueCat account settings or project billing settings.
+7. Import Stripe products/prices into RevenueCat and map them to the same `all_access` entitlement and `default` offering.
+8. Add production payment domains before using Apple Pay or Google Pay in web checkout.
+
+Configure RevenueCat webhooks:
+
+1. Add a webhook endpoint such as `https://<web-origin>/api/subscription/revenuecat/webhook`.
+2. Store the webhook authorization token/signing secret in Vercel server env vars only.
+3. Handle webhook events idempotently in the app backend and persist raw events for audit/debugging.
+4. Use webhook-confirmed entitlement state for server-side content access. Do not grant durable access only because a client says checkout succeeded.
+
+RevenueCat launch checks:
+
+- The RevenueCat dashboard shows all three platform apps connected.
+- Each platform product maps to `all_access`.
+- The default offering returns monthly and annual packages in sandbox/test builds.
+- Apple sandbox purchase, Google license-test purchase, and Stripe test-mode purchase all activate the same Supabase user id.
+- Restore purchases refreshes entitlement on iOS and Android.
+- A canceled/refunded/expired test subscription removes protected content access after the provider state changes.
+- The web backend can still deny private content when RevenueCat or Supabase is unavailable instead of failing open.
+
+## Supabase Auth And Progress Setup
+
+Codematica must remain usable without login, but production store builds should have Auth configured before publishing any release that advertises cross-device progress sync.
+
+Use one Supabase project per production environment. Before enabling login in a public build:
+
+1. Apply all migrations in `supabase/migrations/`, including the Auth/progress tables and RLS policies.
+2. Confirm anonymous browsing still works without Supabase env vars.
+3. Enable only anon-safe public keys in client runtimes. Never expose `SUPABASE_SERVICE_ROLE_KEY` in web, native, Vercel client env, or EAS client env.
+4. Create at least one reviewer test account if a store reviewer needs to inspect signed-in progress sync.
+
+Configure Supabase Auth URL settings:
+
+```bash
+WEB_ORIGIN=https://your-production-web-domain.example
+SUPABASE_PROJECT_REF=your-project-ref
+SUPABASE_AUTH_CALLBACK=https://$SUPABASE_PROJECT_REF.supabase.co/auth/v1/callback
+NATIVE_AUTH_REDIRECT=codematica://auth/callback
+```
+
+In Supabase Dashboard > Authentication > URL Configuration:
+
+1. Set Site URL to the production web origin, for example `$WEB_ORIGIN`.
+2. Add web callback redirects:
+   - `$WEB_ORIGIN/auth/callback`
+   - `http://127.0.0.1:3100/auth/callback` for local web development
+   - `http://localhost:3100/auth/callback` only if localhost is used locally
+3. Add native callback redirects:
+   - `$NATIVE_AUTH_REDIRECT`
+   - `codematica://**` only while validating all native email/OAuth callback variants; prefer exact production redirect URLs once the final paths are known.
+
+Configure web runtime env in Vercel and local `.env`:
+
+```bash
+NEXT_PUBLIC_SUPABASE_URL=https://your-project-ref.supabase.co
+NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=sb_publishable_or_anon_safe_key
+NEXT_PUBLIC_AUTH_APPLE_ENABLED=false
+```
+
+Set `NEXT_PUBLIC_AUTH_APPLE_ENABLED=true` only after the Apple provider works end to end in Supabase and the Apple Developer account.
+
+Configure native runtime env before EAS builds:
+
+```bash
+EXPO_PUBLIC_SUPABASE_URL=https://your-project-ref.supabase.co
+EXPO_PUBLIC_SUPABASE_PUBLISHABLE_KEY=sb_publishable_or_anon_safe_key
+EXPO_PUBLIC_AUTH_APPLE_ENABLED=false
+```
+
+`EXPO_PUBLIC_*` values are bundled into the native JavaScript runtime, so treat them as public. If storing them in EAS environment variables, use plain text or sensitive visibility, not secret visibility, and make sure the build profile uses the intended EAS environment. OAuth deep links require a development build or standalone build with the final `EXPO_APP_SCHEME`; Expo Go is not a reliable test target for the store OAuth path.
+
+Configure email/password:
+
+1. Enable Email in Supabase Auth providers.
+2. Configure a production SMTP provider before public launch. Supabase's default test email sender is not appropriate for production traffic or store-review reliability.
+3. Confirm sign-up confirmation links redirect to the web callback and native callback as expected.
+
+Configure Google sign-in:
+
+1. In Google Cloud Console, create an OAuth client for a Web application.
+2. Add authorized JavaScript origins for the production web origin and any local development origins that will be used.
+3. Add the Supabase project callback URL as an authorized redirect URI: `$SUPABASE_AUTH_CALLBACK`.
+4. Copy the Google Client ID and Client Secret into Supabase Dashboard > Authentication > Providers > Google.
+5. Test Google sign-in from web and from an installed native development build.
+
+Configure Apple sign-in only after Apple Developer Program enrollment:
+
+1. Use the final `EXPO_APP_IDENTIFIER` as the Apple App ID / Bundle ID and enable the Sign in with Apple capability.
+2. Create a Services ID for the web/OAuth flow, for example `com.codematica.app.web`, attached to the app.
+3. In the Services ID Website URLs, use the Supabase project domain and callback URL:
+   - Domain: `your-project-ref.supabase.co`
+   - Redirect URL: `$SUPABASE_AUTH_CALLBACK`
+4. Create and securely store the Apple signing key `.p8` file, Key ID, and Team ID.
+5. Add the Services ID, Team ID, Key ID, and generated client secret to Supabase Dashboard > Authentication > Providers > Apple. If multiple client IDs are configured, keep the Services ID first so the web OAuth flow works.
+6. Create a recurring reminder to rotate the Apple OAuth client secret every 6 months. Missing this rotation breaks Apple OAuth sign-in.
+7. After validation, set `NEXT_PUBLIC_AUTH_APPLE_ENABLED=true` for web. For native store builds, either configure Apple successfully before release or gate/remove the native Apple button before submission.
+
 ## Google Play Console Account
 
 Official starting point: https://support.google.com/googleplay/android-developer/answer/6112435
@@ -129,6 +295,15 @@ Official app setup guide: https://support.google.com/googleplay/android-develope
    - Pricing and availability: launch countries/regions.
 4. Use internal testing first, then closed testing, then production.
 5. Use Play App Signing for the first app bundle upload.
+
+For subscription releases, also complete Play Console monetization setup before public review:
+
+1. Create subscription `codematica_all_access`.
+2. Add auto-renewing base plan `monthly` priced at US `$9.99/month`.
+3. Add auto-renewing base plan `annual` priced at US `$79.99/year`.
+4. Add offer `monthly_intro_099_first_month` for eligible new subscribers at US `$0.99` for the first monthly billing period.
+5. Limit initial paid availability to the United States unless the subscription feature doc changes launch regions.
+6. Add license testers and verify the primary tester account on the Android device before purchase testing.
 
 Google Play Data safety note: Google says every published app needs a Data safety form, including apps on closed, open, or production testing tracks. Apps exclusively active on internal testing are exempt from showing Data safety, but complete the form before broader testing/release.
 
@@ -195,6 +370,16 @@ Official App Store Connect app record guide: https://developer.apple.com/help/ap
 
 Apple requires a privacy policy URL for iOS apps and requires App Store Connect privacy disclosures for App Store distribution.
 
+For subscription releases, also complete App Store Connect monetization setup before review:
+
+1. Accept paid-app agreements and complete banking/tax forms.
+2. Create subscription group `Codematica All Access`.
+3. Create monthly auto-renewable subscription `codematica_all_access_monthly` priced at US `$9.99/month`.
+4. Create annual auto-renewable subscription `codematica_all_access_annual` priced at US `$79.99/year`.
+5. Configure the monthly introductory offer at US `$0.99` for the first billing period in the United States.
+6. Add subscription review metadata and screenshot if App Store Connect requires it.
+7. Include a reviewer account or instructions that can exercise the paywall, purchase, restore, and subscribed-content states.
+
 ## iOS EAS Build And Submit
 
 Configure credentials:
@@ -258,22 +443,32 @@ Data currently expected for privacy forms:
 
 1. Confirm `EXPO_APP_IDENTIFIER`.
 2. Publish or draft a privacy policy URL.
-3. Create Expo/EAS project.
-4. Create Google Play Console account and app.
-5. Create Apple Developer Program membership and App Store Connect app, if iOS is in scope now.
-6. Configure EAS Android/iOS credentials.
-7. Run validation commands.
-8. Build preview builds for device testing.
-9. Build production Android/iOS artifacts.
-10. Submit Android to Play internal testing and iOS to TestFlight.
-11. Complete metadata and privacy forms in both dashboards.
-12. Run tester install checks.
-13. Move Android through required closed testing if using a new personal Play account.
-14. Submit iOS for App Review.
-15. Promote Android to production when Play Console allows production access.
+3. Apply Supabase migrations and configure Auth URL settings.
+4. Configure email/password, Google, and Apple providers as needed for the release.
+5. Create Expo/EAS project.
+6. Create Google Play Console account and app.
+7. Create Apple Developer Program membership and App Store Connect app, if iOS is in scope now.
+8. Configure EAS Android/iOS credentials.
+9. Run validation commands.
+10. Build preview builds for device testing.
+11. Test Auth and signed-in progress sync on web and native preview builds.
+12. Build production Android/iOS artifacts.
+13. Submit Android to Play internal testing and iOS to TestFlight.
+14. Complete metadata and privacy forms in both dashboards.
+15. Run tester install checks.
+16. Move Android through required closed testing if using a new personal Play account.
+17. Submit iOS for App Review.
+18. Promote Android to production when Play Console allows production access.
 
 ## References
 
+- Supabase Auth redirect URLs: https://supabase.com/docs/guides/auth/redirect-urls
+- Supabase native mobile deep linking: https://supabase.com/docs/guides/auth/native-mobile-deep-linking
+- Supabase Google Auth: https://supabase.com/docs/guides/auth/social-login/auth-google
+- Supabase Apple Auth: https://supabase.com/docs/guides/auth/social-login/auth-apple
+- Expo EAS environment variables: https://docs.expo.dev/eas/environment-variables/
+- Expo deep linking: https://docs.expo.dev/linking/into-your-app/
+- Expo authentication guide: https://docs.expo.dev/guides/authentication/
 - Google Play Console getting started: https://support.google.com/googleplay/android-developer/answer/6112435
 - Google Play required account information: https://support.google.com/googleplay/android-developer/answer/13628312
 - Google Play account type requirements: https://support.google.com/googleplay/android-developer/answer/13634885
