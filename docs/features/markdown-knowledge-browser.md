@@ -39,7 +39,7 @@ The V1 app is a searchable study browser. Content authors create plain Markdown 
 
 ## Current State
 
-The feature is implemented with a small starter content set. Supabase has an optional schema and sync script but is not used by the browser runtime.
+The feature is implemented with a growing local content set. The Mermaid authoring path exercises embedded rendering across 11 diagram families while retaining source and error states. Supabase has an optional schema and sync script but is not used by the browser runtime.
 
 ## Scope
 

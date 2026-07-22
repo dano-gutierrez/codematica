@@ -10,6 +10,7 @@ This folder contains curated role and skill paths for Codematica.
 - Database index paths should pair source-anchored Markdown lessons with questionnaires and passive flashcard feeds. SQL query editor practice is future work and should not be modeled as executable path nodes yet.
 - Front-End Development paths should pair official-source-anchored framework lessons with hard questionnaires and passive one-minute brief feeds when the path is intended for vertical scroll review.
 - Algorithm paths should pair explanatory Markdown with readable language examples, selection-focused questionnaires, passive review, and relevant guided interview prompts. The BFS/DFS path uses this contract for graph traversal.
+- Diagram-authoring paths should pair rendered source examples with diagram-selection guidance, choice-only knowledge checks, and passive review; the Mermaid path uses the deployed renderer for browser validation.
 - The Advanced Next.js 16 path is hard-only and targets experienced App Router engineers; keep factual claims aligned with official Next.js docs, official release notes, and npm registry version metadata.
 - Human-language paths should pair Markdown lessons with language catalogs and `writing` exercise nodes so web and Expo routes share the same study sequence.
 - Path-scoped passive flashcard feeds live in `content/flashcard-feeds/` and should not be added to ordered `units[].nodes[]`.

@@ -307,4 +307,51 @@ describe("generated content index", () => {
     expect(shortestPath?.tags).toContain("bfs");
     expect(courseSchedule?.solutionTracks.map((track) => track.id)).toEqual(["dfs-color-cycle", "bfs-kahn-order"]);
   });
+
+  it("loads the Mermaid authoring path with progressive examples and choice-only questionnaires", () => {
+    const path = getLearningPathBySlug("mermaid-diagram-authoring");
+    const fundamentals = getDocumentBySlug("programming/mermaid-syntax-fundamentals");
+    const software = getDocumentBySlug("programming/mermaid-software-diagrams");
+    const planning = getDocumentBySlug("programming/mermaid-planning-and-data-diagrams");
+    const questionnaires = [
+      getExerciseBySlug("programming/mermaid-syntax-fundamentals-questionnaire"),
+      getExerciseBySlug("programming/mermaid-software-diagrams-questionnaire"),
+      getExerciseBySlug("programming/mermaid-planning-and-data-diagrams-questionnaire"),
+    ];
+    const feed = getPassiveFlashcardFeedByPathSlug("mermaid-diagram-authoring");
+
+    expect(path?.title).toBe("Reading And Writing Mermaid Diagrams");
+    expect(path?.units.flatMap((unit) => unit.nodes).map((node) => node.slug)).toEqual([
+      "programming/mermaid-syntax-fundamentals",
+      "programming/mermaid-syntax-fundamentals-questionnaire",
+      "programming/mermaid-software-diagrams",
+      "programming/mermaid-software-diagrams-questionnaire",
+      "programming/mermaid-planning-and-data-diagrams",
+      "programming/mermaid-planning-and-data-diagrams-questionnaire",
+    ]);
+    expect(fundamentals?.mermaidBlocks.length).toBeGreaterThanOrEqual(3);
+    expect(software?.mermaidBlocks.length).toBeGreaterThanOrEqual(4);
+    expect(planning?.mermaidBlocks.length).toBeGreaterThanOrEqual(5);
+    expect(fundamentals?.markdown).toContain("flowchart LR");
+    expect(software?.markdown).toContain("sequenceDiagram");
+    expect(software?.markdown).toContain("erDiagram");
+    expect(planning?.markdown).toContain("gantt");
+    expect(planning?.markdown).toContain("mindmap");
+
+    for (const questionnaire of questionnaires) {
+      expect(questionnaire?.type).toBe("questionnaire");
+      const questions = questionnaire?.type === "questionnaire" ? questionnaire.questions : [];
+      expect(questions.length).toBeGreaterThanOrEqual(6);
+      expect(questions.every((question) => question.kind === "choice")).toBe(true);
+      for (const question of questions) {
+        if (question.kind !== "choice") continue;
+        expect(question.options.filter((option) => option.isCorrect)).toHaveLength(1);
+        expect(question.explanation).toContain("Incorrect options:");
+      }
+    }
+
+    expect(feed?.route).toBe("/paths/mermaid-diagram-authoring/flashcards");
+    expect(feed?.cards.length).toBeGreaterThanOrEqual(16);
+    expect(feed?.cards.map((card) => card.type)).toEqual(expect.arrayContaining(["concept", "practical", "snippet", "interview"]));
+  });
 });

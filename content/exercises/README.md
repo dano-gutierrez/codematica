@@ -16,6 +16,7 @@ This folder contains manually authored practice prompts for Codematica learning 
 - Database SQL query practice is future work. Until a dedicated SQL editor feature defines demo data, validation, and allowed SQL behavior, database path practice should use the existing questionnaire model.
 - Advanced Next.js 16 practice should stay hard-only (`senior` or `principal`) and test production judgment about rendering, caching, invalidation, migration, and boundary failures instead of basic API recall.
 - BFS/DFS questionnaires should test traversal invariants, visited timing, complexity, recursion risk, hidden graph modeling, and algorithm selection instead of code punctuation.
+- Mermaid authoring questionnaires are choice-only, require exactly one correct option, and must explain why every distractor is incorrect instead of only restating the right answer.
 
 Exercise generation, executable code validation, executable SQL validation, AI feedback, scoring, persisted progress, and review queues are future work. Run `npm run content:check` before committing exercise changes.
 

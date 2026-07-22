@@ -46,7 +46,7 @@ Codematica uses learning paths as the main study surface. Paths are inspired by 
 
 ## Current State
 
-The shipped content includes skill and role paths using Markdown articles, external Mermaid diagrams, flashcards, cloze prompts, questionnaires, and passive flashcard feeds. The BFS/DFS Programming path reuses these surfaces for two lessons, two questionnaires, and a scrolling review feed. Supabase remains optional for browsing and does not store authored paths, exercises, or passive feeds. Saved resume/completion state is owned by the auth/progress feature.
+The shipped content includes skill and role paths using Markdown articles, external and embedded Mermaid diagrams, flashcards, cloze prompts, questionnaires, and passive flashcard feeds. The BFS/DFS Programming path reuses these surfaces for graph traversal, while the Mermaid authoring path uses them for three source-first lessons, choice-only questionnaires, and scrolling review. Supabase remains optional for browsing and does not store authored paths, exercises, or passive feeds. Saved resume/completion state is owned by the auth/progress feature.
 
 ## Scope
 
@@ -159,6 +159,7 @@ The shipped content includes skill and role paths using Markdown articles, exter
 - `2026-06-21`: Move path-scoped next-node selection into client wrappers so content and practice pages remain static-first for hosting.
 - `2026-07-11`: Add `writing` exercises for Japanese handwriting while keeping raw strokes transient and validated against local language catalogs.
 - `2026-07-21`: Add the BFS/DFS Programming path with lessons, questionnaires, and a passive scrolling review feed using existing components.
+- `2026-07-21`: Add the Mermaid authoring path with progressive rendered examples, three choice-only questionnaires, and passive review using existing components.
 
 ## Documentation Updates
 

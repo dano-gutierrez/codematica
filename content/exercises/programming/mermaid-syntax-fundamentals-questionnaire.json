@@ -1,0 +1,100 @@
+{
+  "slug": "programming/mermaid-syntax-fundamentals-questionnaire",
+  "title": "Mermaid Syntax Fundamentals Questionnaire",
+  "type": "questionnaire",
+  "documentSlug": "programming/mermaid-syntax-fundamentals",
+  "concept": "Reading and writing Mermaid flowchart syntax",
+  "difficulty": "foundation",
+  "tags": ["mermaid", "flowcharts", "diagrams", "documentation"],
+  "status": "published",
+  "questions": [
+    {
+      "id": "left-right-declaration",
+      "kind": "choice",
+      "prompt": "Which first line declares a flowchart whose main reading direction is left to right?",
+      "options": [
+        { "id": "flowchart-lr", "label": "flowchart LR", "isCorrect": true },
+        { "id": "sequence-lr", "label": "sequenceDiagram LR", "isCorrect": false },
+        { "id": "flowchart-td", "label": "flowchart TD", "isCorrect": false }
+      ],
+      "explanation": "Correct: `flowchart LR` selects the flowchart grammar and left-to-right direction. Incorrect options: `sequenceDiagram LR` selects the wrong diagram family and does not use flowchart direction this way; `flowchart TD` is valid but requests top-to-bottom layout."
+    },
+    {
+      "id": "node-id-label",
+      "kind": "choice",
+      "prompt": "In `Gateway[API gateway]`, which part should other Mermaid edges reuse to reference the same node?",
+      "options": [
+        { "id": "gateway-id", "label": "Gateway", "isCorrect": true },
+        { "id": "api-label", "label": "API gateway", "isCorrect": false },
+        { "id": "brackets", "label": "The square brackets", "isCorrect": false }
+      ],
+      "explanation": "Correct: `Gateway` is the stable node ID used in relationships. Incorrect options: `API gateway` is the human-facing label and may change; the square brackets select the rectangular label syntax but are not an identifier."
+    },
+    {
+      "id": "decision-shape",
+      "kind": "choice",
+      "prompt": "Which definition creates a decision node that asks whether input is valid?",
+      "options": [
+        { "id": "diamond", "label": "Valid{Input valid?}", "isCorrect": true },
+        { "id": "database", "label": "Valid[(Input valid?)]", "isCorrect": false },
+        { "id": "terminal", "label": "Valid([Input valid?])", "isCorrect": false }
+      ],
+      "explanation": "Correct: braces create the decision diamond used for branching. Incorrect options: `[(...)]` is a database cylinder; `([...])` is a rounded terminal/process shape and does not visually communicate a decision."
+    },
+    {
+      "id": "edge-label",
+      "kind": "choice",
+      "prompt": "Which line labels the outgoing branch from `Valid` to `Save` with the word Yes?",
+      "options": [
+        { "id": "pipe-label", "label": "Valid -->|Yes| Save", "isCorrect": true },
+        { "id": "node-label", "label": "Valid[Yes] --> Save", "isCorrect": false },
+        { "id": "comment-label", "label": "Valid --> Save %% Yes", "isCorrect": false }
+      ],
+      "explanation": "Correct: text between pipes labels the edge itself. Incorrect options: `Valid[Yes]` changes the node's visible label; `%% Yes` is a source comment and is not rendered as a branch label."
+    },
+    {
+      "id": "subgraph-boundary",
+      "kind": "choice",
+      "prompt": "What is the clearest Mermaid construct for grouping several nodes inside a named service boundary?",
+      "options": [
+        { "id": "subgraph", "label": "subgraph Services ... end", "isCorrect": true },
+        { "id": "classdef", "label": "classDef Services ...", "isCorrect": false },
+        { "id": "note", "label": "Note over Services", "isCorrect": false }
+      ],
+      "explanation": "Correct: `subgraph ... end` creates a rendered group around contained nodes. Incorrect options: `classDef` defines reusable styling rather than a boundary; `Note over` belongs to sequence diagrams and annotates participants instead of grouping flowchart nodes."
+    },
+    {
+      "id": "comment-syntax",
+      "kind": "choice",
+      "prompt": "Which line adds a Mermaid source comment that should not become a visible diagram element?",
+      "options": [
+        { "id": "percent-comment", "label": "%% Retry edge is asynchronous", "isCorrect": true },
+        { "id": "slash-comment", "label": "// Retry edge is asynchronous", "isCorrect": false },
+        { "id": "hash-comment", "label": "# Retry edge is asynchronous", "isCorrect": false }
+      ],
+      "explanation": "Correct: Mermaid line comments begin with `%%`. Incorrect options: `//` is common in programming languages but not the Mermaid line-comment marker; `#` is used by formats such as Markdown or YAML but is not the general Mermaid comment syntax."
+    },
+    {
+      "id": "lowercase-end-risk",
+      "kind": "choice",
+      "prompt": "Why should a flowchart author avoid using bare lowercase `end` as a node definition?",
+      "options": [
+        { "id": "reserved", "label": "It can be parsed as the keyword that closes a subgraph.", "isCorrect": true },
+        { "id": "direction", "label": "It forces the flowchart direction to right-to-left.", "isCorrect": false },
+        { "id": "database-only", "label": "It is reserved exclusively for database shapes.", "isCorrect": false }
+      ],
+      "explanation": "Correct: lowercase `end` is parser-sensitive because it terminates subgraphs; quote or capitalize display text instead. Incorrect options: direction comes from declarations such as `LR`; database shapes use bracket syntax and do not reserve the word `end`."
+    },
+    {
+      "id": "debugging-first-step",
+      "kind": "choice",
+      "prompt": "A large flowchart stops rendering after several edits. What is the strongest first debugging move?",
+      "options": [
+        { "id": "reduce", "label": "Reduce it to the declaration and one valid relationship, then add lines back.", "isCorrect": true },
+        { "id": "restyle", "label": "Add more classDef colors until the failing line becomes visible.", "isCorrect": false },
+        { "id": "screenshot", "label": "Replace the source with a screenshot so the parser is bypassed.", "isCorrect": false }
+      ],
+      "explanation": "Correct: minimizing the source isolates the first failing statement and preserves a reproducible text diagram. Incorrect options: styling does not locate grammar errors; replacing source with a screenshot abandons maintainability and does not explain the failure."
+    }
+  ]
+}

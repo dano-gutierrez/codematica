@@ -23,6 +23,7 @@ Conventions:
 - `docs/features/database-indexes-learning-path.md` owns the database indexes and PostgreSQL search path, including local lessons, quizzes, passive flashcards, and future SQL editor roadmap boundaries.
 - `docs/features/advanced-nextjs-16-learning-path.md` owns the hard Front-End Development skill path for Next.js 16 rendering, caching, `force-dynamic`, invalidation, performance, migration, quizzes, and one-minute brief cards.
 - `docs/features/bfs-dfs-learning-path.md` owns the Programming skill path for BFS/DFS fundamentals, Python and TypeScript examples, questionnaires, scrolling review, and guided graph interview comparisons.
+- `docs/features/mermaid-diagram-authoring.md` owns the Mermaid reading/writing skill path, progressive rendered examples, choice-only questionnaires, scrolling review, and diagram-selection guidance.
 - `docs/features/interview-coding-catalog.md` owns the reported-public company interview coding catalog and guided solution walkthroughs.
 - `docs/features/auth-and-progress.md` owns Supabase Auth, user profile minimalism, saved progress, anonymous progress buffering, and Keep reading behavior.
 - `docs/features/subscriptions-and-content-gating.md` owns the proposed RevenueCat/Stripe/Apple/Google subscription model, strict paid content gating, entitlement cache, and paywall implementation plan.
