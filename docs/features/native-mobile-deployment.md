@@ -3,7 +3,7 @@
 ## Snapshot
 
 - Status: `in_progress`
-- Last updated: `2026-07-11`
+- Last updated: `2026-07-22`
 - Owner thread: `n/a`
 - Current state: The repo has an Expo Router app in `apps/mobile`, shared runtime logic in `packages/core`, shared React Native screens in `packages/ui`, EAS build profiles, EAS submit profiles, configurable store identifiers, and native icon/splash assets.
 - Target outcome: Codematica can run locally on web/Android/iOS, ship Android and iOS internal builds, and prepare Play Console/App Store Connect submissions while preserving the existing Next/Vercel mobile web app and coding shared product behavior once.
@@ -21,7 +21,7 @@
 
 Codematica now uses an npm workspace model. The existing Next app lives in `apps/web`. The native Android/iOS app lives in `apps/mobile` and uses Expo Router. Shared content, search, practice, interview, and progress contracts live in `packages/core`; shared React Native-compatible screens and design tokens live in `packages/ui`.
 
-The native app bundles `packages/core/src/generated/content-index.json`, so anonymous browsing, search, reading, and practice work offline until the next app or update release. Supabase remains optional for anonymous use and is used only for native Auth/progress sync when anon-safe `EXPO_PUBLIC_*` env vars are configured.
+The native app bundles `packages/core/src/generated/content-index.json`, so home discovery, cross-section search, browsing, reading, language lookup, and practice work offline until the next app or update release. Supabase remains optional for anonymous use and is used only for native Auth/progress sync when anon-safe `EXPO_PUBLIC_*` env vars are configured.
 
 Detailed Play Console, Apple Developer Program, App Store Connect, EAS credential, metadata, and first-release steps live in `docs/runbooks/native-store-publishing.md`.
 
@@ -120,7 +120,7 @@ Store-side setup still required:
 
 ## Current Implementation
 
-- `apps/mobile/app/` mirrors the web route set for paths, browse, docs, diagrams, practice, interviews, login, and OAuth callback.
+- `apps/mobile/app/` mirrors the web route set for discovery home, section catalogs, path details, browse, docs, diagrams, practice, languages, interviews, login, and OAuth callback.
 - `apps/mobile/src/lib/adapters.tsx` adapts Expo Router navigation, native Supabase Auth, and native progress recording to `@codematica/ui`.
 - `apps/mobile/src/lib/progress.ts` writes signed-in progress through the shared Supabase/RLS contract and buffers signed-out progress locally.
 - `apps/mobile/src/lib/supabase.ts` creates the native Supabase anon client with Expo SecureStore-backed session persistence.
@@ -128,7 +128,7 @@ Store-side setup still required:
 - `apps/mobile/eas.json` owns development, preview, production, e2e-test, and submit profiles.
 - `apps/mobile/assets/` stores the native icon, adaptive icon, and splash assets used by app store builds.
 - `apps/mobile/app/languages/japanese/**` mirrors the web Japanese lookup/detail routes.
-- `packages/core/src/` exports content schemas, generated index access, search, questionnaire logic, handwriting scoring, language helpers, passive flashcard helpers, interview helpers, and progress helpers.
+- `packages/core/src/` exports content schemas, generated index access, library/discovery search, curated-home resolution, questionnaire logic, handwriting scoring, language helpers, passive flashcard helpers, interview helpers, and progress helpers.
 - `packages/ui/src/screens.tsx` exports the shared React Native screen set for current web parity, including Japanese lookup and writing practice.
 - Native writing practice uses `react-native-svg` for the stroke pad and keeps raw strokes transient.
 

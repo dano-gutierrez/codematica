@@ -1,0 +1,100 @@
+{
+  "slug": "programming/mermaid-planning-and-data-diagrams-questionnaire",
+  "title": "Mermaid Planning And Data Diagrams Questionnaire",
+  "type": "questionnaire",
+  "documentSlug": "programming/mermaid-planning-and-data-diagrams",
+  "concept": "Choosing, writing, and reviewing planning and data-oriented Mermaid diagrams",
+  "difficulty": "practitioner",
+  "tags": ["mermaid", "gantt", "journey", "charts", "documentation"],
+  "status": "published",
+  "questions": [
+    {
+      "id": "gantt-purpose",
+      "kind": "choice",
+      "prompt": "Which question is a Gantt diagram best equipped to answer?",
+      "options": [
+        { "id": "schedule", "label": "When do tasks occur, how long do they take, and which tasks depend on others?", "isCorrect": true },
+        { "id": "cardinality", "label": "How many orders may belong to one customer?", "isCorrect": false },
+        { "id": "message-order", "label": "Which API participant sends the third runtime message?", "isCorrect": false }
+      ],
+      "explanation": "Correct: Gantt encodes dates, durations, task status, and dependencies. Incorrect options: record cardinality belongs in an ER diagram; participant message order belongs in a sequence diagram."
+    },
+    {
+      "id": "gantt-after",
+      "kind": "choice",
+      "prompt": "What does `Review :review, after examples, 2d` mean in a Mermaid Gantt task?",
+      "options": [
+        { "id": "dependency", "label": "The review task starts after the task whose ID is examples and lasts two days.", "isCorrect": true },
+        { "id": "two-hours", "label": "The review starts two hours before examples.", "isCorrect": false },
+        { "id": "section", "label": "The line creates a new section named examples.", "isCorrect": false }
+      ],
+      "explanation": "Correct: `after examples` is a task dependency and `2d` is duration. Incorrect options: `2d` means days and the direction is after, not before; sections require the `section` keyword."
+    },
+    {
+      "id": "journey-task",
+      "kind": "choice",
+      "prompt": "Which line correctly defines a user-journey task with score 5 and two participating actors?",
+      "options": [
+        { "id": "journey-syntax", "label": "See diagram render: 5: Learner, Renderer", "isCorrect": true },
+        { "id": "flow-edge", "label": "Learner -->|5| Renderer", "isCorrect": false },
+        { "id": "gantt-task", "label": "See diagram render :done, 5d", "isCorrect": false }
+      ],
+      "explanation": "Correct: journey tasks use `Task: score: actor list`. Incorrect options: the arrow is flowchart syntax and does not encode a journey score; `:done, 5d` is Gantt task metadata."
+    },
+    {
+      "id": "pie-fit",
+      "kind": "choice",
+      "prompt": "Which dataset is the best fit for a pie chart?",
+      "options": [
+        { "id": "few-parts", "label": "Four mutually exclusive categories that together make up all review findings.", "isCorrect": true },
+        { "id": "time-series", "label": "Request latency measured every minute for a week.", "isCorrect": false },
+        { "id": "negative-values", "label": "Monthly gains and losses containing positive and negative values.", "isCorrect": false }
+      ],
+      "explanation": "Correct: a few categories forming one whole suit part-to-whole comparison. Incorrect options: a time series needs an axis-based chart; negative values do not form meaningful pie-slice proportions."
+    },
+    {
+      "id": "mindmap-indent",
+      "kind": "choice",
+      "prompt": "What determines parent-child hierarchy in a Mermaid mindmap?",
+      "options": [
+        { "id": "indentation", "label": "Indentation beneath the parent node", "isCorrect": true },
+        { "id": "arrows", "label": "Explicit `-->` arrows between every item", "isCorrect": false },
+        { "id": "dates", "label": "Chronological dates before every item", "isCorrect": false }
+      ],
+      "explanation": "Correct: mindmaps are indentation-sensitive and nesting defines hierarchy. Incorrect options: explicit arrows belong to flow-like grammars; dated events belong to timeline or Gantt diagrams."
+    },
+    {
+      "id": "timeline-vs-gantt",
+      "kind": "choice",
+      "prompt": "Why choose a timeline instead of a Gantt chart for a short history of architecture decisions?",
+      "options": [
+        { "id": "chronology", "label": "The explanation needs ordered events but not task durations or dependency scheduling.", "isCorrect": true },
+        { "id": "database", "label": "Timeline automatically validates database foreign keys.", "isCorrect": false },
+        { "id": "runtime", "label": "Timeline shows request messages along participant lifelines.", "isCorrect": false }
+      ],
+      "explanation": "Correct: timeline emphasizes chronology without schedule mechanics. Incorrect options: no Mermaid timeline validates database constraints; lifelines and runtime messages are sequence-diagram concepts."
+    },
+    {
+      "id": "gitgraph-purpose",
+      "kind": "choice",
+      "prompt": "What is the strongest use for a hand-authored Mermaid Git graph?",
+      "options": [
+        { "id": "strategy", "label": "Explain a focused branching and merge strategy with only the relevant commits.", "isCorrect": true },
+        { "id": "exact-history", "label": "Replace the repository as the authoritative record of every commit hash.", "isCorrect": false },
+        { "id": "schema", "label": "Document database table cardinality.", "isCorrect": false }
+      ],
+      "explanation": "Correct: Git graph is effective for a simplified branch-and-merge story. Incorrect options: Git itself remains the source of exact history; database cardinality belongs in an ER diagram."
+    },
+    {
+      "id": "version-sensitive-review",
+      "kind": "choice",
+      "prompt": "A newer diagram family works in the Mermaid Live Editor but fails in the app. What should the author check first?",
+      "options": [
+        { "id": "host-version", "label": "The Mermaid version and configuration actually deployed by the app", "isCorrect": true },
+        { "id": "more-nodes", "label": "Whether adding more nodes makes the parser discover the grammar", "isCorrect": false },
+        { "id": "rename-markdown", "label": "Whether the Markdown file can be renamed to an image extension", "isCorrect": false }
+      ],
+      "explanation": "Correct: syntax support belongs to the host's installed Mermaid version and configuration. Incorrect options: extra nodes cannot add parser support; renaming source does not turn text into a rendered image or solve compatibility."
+    }
+  ]
+}

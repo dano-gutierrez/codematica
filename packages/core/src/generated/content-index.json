@@ -1,5 +1,5 @@
 {
-  "schemaVersion": 5,
+  "schemaVersion": 6,
   "documents": [
     {
       "title": "LangChain Agents LangGraph And Operations",
@@ -1527,6 +1527,447 @@
       "readingMinutes": 1
     },
     {
+      "title": "Breadth-First Search And Depth-First Search Fundamentals",
+      "slug": "programming/bfs-dfs-fundamentals",
+      "summary": "Learn the shared graph traversal model, queue-based BFS, recursive and iterative DFS, complexity, correctness, and practical selection rules with readable Python and TypeScript.",
+      "track": "Programming",
+      "topic": "Algorithms",
+      "difficulty": "foundation",
+      "tags": [
+        "algorithms",
+        "graphs",
+        "trees",
+        "bfs",
+        "dfs"
+      ],
+      "prerequisites": [
+        "Arrays and sets",
+        "Queues and stacks"
+      ],
+      "diagramRefs": [],
+      "status": "published",
+      "id": "6620f6277ef2",
+      "route": "/docs/programming/bfs-dfs-fundamentals",
+      "sourcePath": "content/knowledge/programming/bfs-dfs-fundamentals.md",
+      "bodyPath": "content/knowledge/programming/bfs-dfs-fundamentals.md",
+      "markdown": "## The Shared Traversal Idea\n\nA graph is a set of **vertices** (or nodes) connected by **edges**. Trees, dependency maps, social networks, maps, and two-dimensional grids can all be treated as graphs. Breadth-first search (BFS) and depth-first search (DFS) differ in the order in which they explore that graph, but both follow the same safe skeleton:\n\n1. Choose a starting node.\n2. Remember which nodes have already been discovered.\n3. Repeatedly take one discovered node, inspect it, and discover its unvisited neighbors.\n4. Stop when the target is found or no reachable node remains.\n\nThe visited set is part of the algorithm, not an optional optimization. A general graph may contain cycles. Without visited tracking, an edge such as `A -> B -> A` can make traversal repeat forever.\n\n## Breadth-First Search\n\nBFS explores in layers: first distance zero from the start, then distance one, then distance two, and so on. A **queue** provides exactly this first-in, first-out order. The first node discovered is also the first one expanded.\n\nThis layer guarantee makes BFS the standard choice for the shortest number of edges in an **unweighted** graph. It does not automatically solve weighted shortest paths; different edge costs require an algorithm such as Dijkstra's.\n\n```python\nfrom collections import deque\n\ndef bfs(graph: dict[str, list[str]], start: str) -> list[str]:\n    order: list[str] = []\n    queue = deque([start])\n    visited = {start}\n\n    while queue:\n        node = queue.popleft()\n        order.append(node)\n\n        for neighbor in graph.get(node, []):\n            if neighbor in visited:\n                continue\n            visited.add(neighbor)  # mark when enqueued\n            queue.append(neighbor)\n\n    return order\n```\n\nMark a node visited when it enters the queue. Marking it only when removed allows several parents to enqueue the same node, wasting memory and work.\n\n```typescript\nexport function bfs(\n  graph: Map<string, string[]>,\n  start: string,\n): string[] {\n  const order: string[] = [];\n  const queue: string[] = [start];\n  const visited = new Set<string>([start]);\n\n  for (let head = 0; head < queue.length; head += 1) {\n    const node = queue[head];\n    order.push(node);\n\n    for (const neighbor of graph.get(node) ?? []) {\n      if (visited.has(neighbor)) continue;\n      visited.add(neighbor);\n      queue.push(neighbor);\n    }\n  }\n\n  return order;\n}\n```\n\nThe TypeScript example uses a moving `head` instead of `shift()`. Removing the first array item repeatedly can require reindexing the remaining items; advancing an index keeps queue operations simple and efficient.\n\n## Depth-First Search\n\nDFS follows one route as far as it can, then backtracks to the most recent branch with unexplored neighbors. Recursion expresses that idea directly because the call stack remembers the route.\n\n```python\ndef dfs(graph: dict[str, list[str]], start: str) -> list[str]:\n    order: list[str] = []\n    visited: set[str] = set()\n\n    def visit(node: str) -> None:\n        if node in visited:\n            return\n        visited.add(node)\n        order.append(node)\n\n        for neighbor in graph.get(node, []):\n            visit(neighbor)\n\n    visit(start)\n    return order\n```\n\n```typescript\nexport function dfs(\n  graph: Map<string, string[]>,\n  start: string,\n): string[] {\n  const order: string[] = [];\n  const visited = new Set<string>();\n\n  function visit(node: string): void {\n    if (visited.has(node)) return;\n    visited.add(node);\n    order.push(node);\n\n    for (const neighbor of graph.get(node) ?? []) {\n      visit(neighbor);\n    }\n  }\n\n  visit(start);\n  return order;\n}\n```\n\nRecursive DFS is compact and readable when the maximum depth is safely bounded. A very deep chain can exceed the language runtime's call-stack limit. Use an explicit stack when input depth is large or untrusted:\n\n```python\ndef dfs_iterative(graph: dict[str, list[str]], start: str) -> list[str]:\n    order = []\n    stack = [start]\n    visited = set()\n\n    while stack:\n        node = stack.pop()\n        if node in visited:\n            continue\n        visited.add(node)\n        order.append(node)\n\n        # Reverse so the first neighbor is processed first.\n        stack.extend(reversed(graph.get(node, [])))\n\n    return order\n```\n\n## Complexity\n\nWith an adjacency list, BFS and DFS both take `O(V + E)` time: every reachable vertex is processed once and every outgoing edge is inspected once. Both need `O(V)` visited storage in the worst case.\n\nTheir temporary memory shapes differ:\n\n- BFS holds a frontier. On a wide tree, that queue can contain many nodes at once.\n- DFS holds a path plus pending branches. On a deep tree, the stack can grow to the tree height.\n\nBig-O describes the worst case, but the graph's shape decides which memory profile matters in practice.\n\n## Choose By The Question\n\nChoose BFS when the question asks for the nearest target, minimum number of unweighted steps, level order, or all nodes at a given distance. Choose DFS when the question asks whether a route exists, needs backtracking, naturally processes a whole component, or depends on entry/exit ordering such as cycle detection and topological reasoning.\n\nIf either traversal is correct, prefer the version whose invariant is easiest to explain. “The queue contains the next distance layer” and “the recursive call completely processes one subtree” are both strong interview explanations.\n\n## Common Mistakes\n\n- Forgetting visited state in a cyclic graph.\n- Marking BFS nodes too late and enqueuing duplicates.\n- Using DFS for an unweighted shortest path without exploring every possible route.\n- Using recursive DFS on an input whose depth can overflow the call stack.\n- Assuming traversal order is unique when neighbor order is not specified.\n- Mutating the input grid without stating that the caller permits it.\n\n## Reference Anchors\n\n- [Python deque](https://docs.python.org/3/library/collections.html#collections.deque)\n- [JavaScript Set](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Set)",
+      "plainText": "The Shared Traversal Idea A graph is a set of vertices (or nodes) connected by edges. Trees, dependency maps, social networks, maps, and two-dimensional grids can all be treated as graphs. Breadth-first search (BFS) and depth-first search (DFS) differ in the order in which they explore that graph, but both follow the same safe skeleton: Choose a starting node.Remember which nodes have already been discovered.Repeatedly take one discovered node, inspect it, and discover its unvisited neighbors.Stop when the target is found or no reachable node remains. The visited set is part of the algorithm, not an optional optimization. A general graph may contain cycles. Without visited tracking, an edge such as A -> B -> A can make traversal repeat forever. Breadth-First Search BFS explores in layers: first distance zero from the start, then distance one, then distance two, and so on. A queue provides exactly this first-in, first-out order. The first node discovered is also the first one expanded. This layer guarantee makes BFS the standard choice for the shortest number of edges in an unweighted graph. It does not automatically solve weighted shortest paths; different edge costs require an algorithm such as Dijkstra's. from collections import deque def bfs(graph: dict[str, list[str]], start: str) -> list[str]: order: list[str] = [] queue = deque([start]) visited = {start} while queue: node = queue.popleft() order.append(node) for neighbor in graph.get(node, []): if neighbor in visited: continue visited.add(neighbor) # mark when enqueued queue.append(neighbor) return order Mark a node visited when it enters the queue. Marking it only when removed allows several parents to enqueue the same node, wasting memory and work. export function bfs( graph: Map<string, string[]>, start: string, ): string[] { const order: string[] = []; const queue: string[] = [start]; const visited = new Set<string>([start]); for (let head = 0; head < queue.length; head += 1) { const node = queue[head]; order.push(node); for (const neighbor of graph.get(node) ?? []) { if (visited.has(neighbor)) continue; visited.add(neighbor); queue.push(neighbor); } } return order; } The TypeScript example uses a moving head instead of shift(). Removing the first array item repeatedly can require reindexing the remaining items; advancing an index keeps queue operations simple and efficient. Depth-First Search DFS follows one route as far as it can, then backtracks to the most recent branch with unexplored neighbors. Recursion expresses that idea directly because the call stack remembers the route. def dfs(graph: dict[str, list[str]], start: str) -> list[str]: order: list[str] = [] visited: set[str] = set() def visit(node: str) -> None: if node in visited: return visited.add(node) order.append(node) for neighbor in graph.get(node, []): visit(neighbor) visit(start) return order export function dfs( graph: Map<string, string[]>, start: string, ): string[] { const order: string[] = []; const visited = new Set<string>(); function visit(node: string): void { if (visited.has(node)) return; visited.add(node); order.push(node); for (const neighbor of graph.get(node) ?? []) { visit(neighbor); } } visit(start); return order; } Recursive DFS is compact and readable when the maximum depth is safely bounded. A very deep chain can exceed the language runtime's call-stack limit. Use an explicit stack when input depth is large or untrusted: def dfs_iterative(graph: dict[str, list[str]], start: str) -> list[str]: order = [] stack = [start] visited = set() while stack: node = stack.pop() if node in visited: continue visited.add(node) order.append(node) # Reverse so the first neighbor is processed first. stack.extend(reversed(graph.get(node, []))) return order Complexity With an adjacency list, BFS and DFS both take O(V + E) time: every reachable vertex is processed once and every outgoing edge is inspected once. Both need O(V) visited storage in the worst case. Their temporary memory shapes differ: BFS holds a frontier. On a wide tree, that queue can contain many nodes at once.DFS holds a path plus pending branches. On a deep tree, the stack can grow to the tree height. Big-O describes the worst case, but the graph's shape decides which memory profile matters in practice. Choose By The Question Choose BFS when the question asks for the nearest target, minimum number of unweighted steps, level order, or all nodes at a given distance. Choose DFS when the question asks whether a route exists, needs backtracking, naturally processes a whole component, or depends on entry/exit ordering such as cycle detection and topological reasoning. If either traversal is correct, prefer the version whose invariant is easiest to explain. “The queue contains the next distance layer” and “the recursive call completely processes one subtree” are both strong interview explanations. Common Mistakes Forgetting visited state in a cyclic graph.Marking BFS nodes too late and enqueuing duplicates.Using DFS for an unweighted shortest path without exploring every possible route.Using recursive DFS on an input whose depth can overflow the call stack.Assuming traversal order is unique when neighbor order is not specified.Mutating the input grid without stating that the caller permits it. Reference Anchors Python dequeJavaScript Set",
+      "headings": [
+        {
+          "id": "the-shared-traversal-idea",
+          "depth": 2,
+          "text": "The Shared Traversal Idea"
+        },
+        {
+          "id": "breadth-first-search",
+          "depth": 2,
+          "text": "Breadth-First Search"
+        },
+        {
+          "id": "depth-first-search",
+          "depth": 2,
+          "text": "Depth-First Search"
+        },
+        {
+          "id": "complexity",
+          "depth": 2,
+          "text": "Complexity"
+        },
+        {
+          "id": "choose-by-the-question",
+          "depth": 2,
+          "text": "Choose By The Question"
+        },
+        {
+          "id": "common-mistakes",
+          "depth": 2,
+          "text": "Common Mistakes"
+        },
+        {
+          "id": "reference-anchors",
+          "depth": 2,
+          "text": "Reference Anchors"
+        }
+      ],
+      "mermaidBlocks": [],
+      "contentHash": "146a09b8aef431db951e0ab02b338a72d5759074aa823eb668167ec26d22ff75",
+      "readingMinutes": 4
+    },
+    {
+      "title": "BFS And DFS Interview Patterns",
+      "slug": "programming/bfs-dfs-interview-patterns",
+      "summary": "Apply BFS and DFS to grid components, unweighted shortest paths, dependency cycles, and interview tradeoffs with side-by-side Python and TypeScript solutions.",
+      "track": "Programming",
+      "topic": "Algorithms",
+      "difficulty": "practitioner",
+      "tags": [
+        "algorithms",
+        "interviews",
+        "graphs",
+        "bfs",
+        "dfs"
+      ],
+      "prerequisites": [
+        "Breadth-First Search And Depth-First Search Fundamentals"
+      ],
+      "diagramRefs": [],
+      "status": "published",
+      "id": "0d6442e83d3f",
+      "route": "/docs/programming/bfs-dfs-interview-patterns",
+      "sourcePath": "content/knowledge/programming/bfs-dfs-interview-patterns.md",
+      "bodyPath": "content/knowledge/programming/bfs-dfs-interview-patterns.md",
+      "markdown": "## Recognize The Hidden Graph\n\nInterview prompts rarely say “run graph traversal.” Instead, they describe relationships:\n\n- A grid cell connects to its up, down, left, and right neighbors.\n- A word connects to every valid one-letter transformation.\n- A course connects to the courses that depend on it.\n- A tree node connects to its children and sometimes its parent.\n\nBefore coding, name the node, name the edge, and decide when a node becomes visited. That short translation prevents most traversal bugs.\n\n## Pattern One: Count Connected Components\n\nIn **Number Of Islands**, each land cell is a node and an edge joins orthogonally adjacent land. Scan every cell. When an unvisited land cell appears, a new component has been found; traverse from it to mark the entire island.\n\n### BFS Version\n\n```python\nfrom collections import deque\n\ndef count_islands_bfs(grid: list[list[str]]) -> int:\n    rows, cols = len(grid), len(grid[0])\n    visited: set[tuple[int, int]] = set()\n    islands = 0\n\n    for row in range(rows):\n        for col in range(cols):\n            if grid[row][col] != \"1\" or (row, col) in visited:\n                continue\n\n            islands += 1\n            visited.add((row, col))\n            queue = deque([(row, col)])\n\n            while queue:\n                current_row, current_col = queue.popleft()\n                for dr, dc in ((1, 0), (-1, 0), (0, 1), (0, -1)):\n                    next_row = current_row + dr\n                    next_col = current_col + dc\n                    if not (0 <= next_row < rows and 0 <= next_col < cols):\n                        continue\n                    if grid[next_row][next_col] != \"1\":\n                        continue\n                    if (next_row, next_col) in visited:\n                        continue\n                    visited.add((next_row, next_col))\n                    queue.append((next_row, next_col))\n\n    return islands\n```\n\n```typescript\nexport function countIslandsBfs(grid: string[][]): number {\n  const rows = grid.length;\n  const cols = grid[0].length;\n  const visited = new Set<string>();\n  const key = (row: number, col: number) => `${row},${col}`;\n  const directions = [[1, 0], [-1, 0], [0, 1], [0, -1]];\n  let islands = 0;\n\n  for (let row = 0; row < rows; row += 1) {\n    for (let col = 0; col < cols; col += 1) {\n      if (grid[row][col] !== \"1\" || visited.has(key(row, col))) continue;\n      islands += 1;\n      const queue: Array<[number, number]> = [[row, col]];\n      visited.add(key(row, col));\n\n      for (let head = 0; head < queue.length; head += 1) {\n        const [currentRow, currentCol] = queue[head];\n        for (const [dr, dc] of directions) {\n          const nextRow = currentRow + dr;\n          const nextCol = currentCol + dc;\n          const inBounds = nextRow >= 0 && nextRow < rows && nextCol >= 0 && nextCol < cols;\n          if (!inBounds || grid[nextRow][nextCol] !== \"1\" || visited.has(key(nextRow, nextCol))) continue;\n          visited.add(key(nextRow, nextCol));\n          queue.push([nextRow, nextCol]);\n        }\n      }\n    }\n  }\n\n  return islands;\n}\n```\n\n### DFS Version\n\n```python\ndef count_islands_dfs(grid: list[list[str]]) -> int:\n    rows, cols = len(grid), len(grid[0])\n    visited = set()\n\n    def visit(row: int, col: int) -> None:\n        if not (0 <= row < rows and 0 <= col < cols):\n            return\n        if grid[row][col] != \"1\" or (row, col) in visited:\n            return\n        visited.add((row, col))\n        visit(row + 1, col)\n        visit(row - 1, col)\n        visit(row, col + 1)\n        visit(row, col - 1)\n\n    islands = 0\n    for row in range(rows):\n        for col in range(cols):\n            if grid[row][col] == \"1\" and (row, col) not in visited:\n                islands += 1\n                visit(row, col)\n    return islands\n```\n\n```typescript\nexport function countIslandsDfs(grid: string[][]): number {\n  const rows = grid.length;\n  const cols = grid[0].length;\n  const visited = new Set<string>();\n  const key = (row: number, col: number) => `${row},${col}`;\n\n  function visit(row: number, col: number): void {\n    const inBounds = row >= 0 && row < rows && col >= 0 && col < cols;\n    if (!inBounds || grid[row][col] !== \"1\" || visited.has(key(row, col))) return;\n    visited.add(key(row, col));\n    visit(row + 1, col);\n    visit(row - 1, col);\n    visit(row, col + 1);\n    visit(row, col - 1);\n  }\n\n  let islands = 0;\n  for (let row = 0; row < rows; row += 1) {\n    for (let col = 0; col < cols; col += 1) {\n      if (grid[row][col] === \"1\" && !visited.has(key(row, col))) {\n        islands += 1;\n        visit(row, col);\n      }\n    }\n  }\n  return islands;\n}\n```\n\n## BFS Versus DFS For The Same Problem\n\nBoth island solutions run in `O(rows * cols)` time and use `O(rows * cols)` worst-case auxiliary space. Neither has an asymptotic advantage here because the problem asks for components, not a shortest path.\n\nThe practical differences are more interesting:\n\n| Concern | BFS | DFS |\n| --- | --- | --- |\n| Core invariant | Queue holds the discovered frontier | One call fully explores one connected branch |\n| Readability | More explicit state and loop structure | Recursive version closely matches the definition of a component |\n| Memory shape | Can hold a wide frontier | Can hold a deep recursion chain |\n| Runtime risk | No call-stack overflow | Large solid grids can exceed recursion limits |\n| Best interview use | When you want an iterative, depth-safe implementation | When constraints make recursion safe and brevity helps explanation |\n\nFor this prompt, choose the version you can implement and explain reliably. If input dimensions are large, iterative BFS or iterative DFS is safer than recursive DFS.\n\n## Pattern Two: Shortest Unweighted Path\n\nFor a shortest path in a binary matrix, BFS has a correctness shortcut: the first time the destination leaves the queue, no shorter path can still be waiting. DFS does not have this guarantee. A DFS solution must enumerate possible simple paths or add more complex pruning, so it is usually less readable and can take exponential time.\n\nThe interview signal is the word **shortest** combined with equal-cost moves. That points to BFS.\n\n## Pattern Three: Dependency Cycles\n\nCourse scheduling turns prerequisites into a directed graph. Two classic answers expose different viewpoints:\n\n- DFS colors nodes as unseen, visiting, or complete. Reaching a visiting node finds a back edge and therefore a cycle.\n- Kahn's algorithm uses BFS over nodes with zero incoming edges. If fewer than all courses can be removed, a cycle prevented the remaining nodes from becoming ready.\n\nBoth run in `O(V + E)` time. DFS is often compact for “does a cycle exist?” Kahn's algorithm is often easier when the next requirement is to return a valid course order.\n\n## Interview Questions To Practice\n\nThe guided interview catalog includes:\n\n1. **Number Of Islands** — compare BFS and DFS flood fill directly.\n2. **Shortest Path In A Binary Matrix** — explain why BFS provides the optimal unweighted path.\n3. **Course Schedule** — compare DFS cycle coloring with BFS topological processing.\n4. **Word Ladder** — model words as nodes and one-letter changes as equal-cost edges.\n\nFor every solution, state the graph model, traversal invariant, visited timing, and complexity before writing code. Those four points make the implementation easier to review and debug.\n\n## Reference Anchors\n\n- [Python deque](https://docs.python.org/3/library/collections.html#collections.deque)\n- [JavaScript Set](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Set)",
+      "plainText": "Recognize The Hidden Graph Interview prompts rarely say “run graph traversal.” Instead, they describe relationships: A grid cell connects to its up, down, left, and right neighbors.A word connects to every valid one-letter transformation.A course connects to the courses that depend on it.A tree node connects to its children and sometimes its parent. Before coding, name the node, name the edge, and decide when a node becomes visited. That short translation prevents most traversal bugs. Pattern One: Count Connected Components In Number Of Islands, each land cell is a node and an edge joins orthogonally adjacent land. Scan every cell. When an unvisited land cell appears, a new component has been found; traverse from it to mark the entire island. BFS Version from collections import deque def count_islands_bfs(grid: list[list[str]]) -> int: rows, cols = len(grid), len(grid[0]) visited: set[tuple[int, int]] = set() islands = 0 for row in range(rows): for col in range(cols): if grid[row][col] != \"1\" or (row, col) in visited: continue islands += 1 visited.add((row, col)) queue = deque([(row, col)]) while queue: current_row, current_col = queue.popleft() for dr, dc in ((1, 0), (-1, 0), (0, 1), (0, -1)): next_row = current_row + dr next_col = current_col + dc if not (0 <= next_row < rows and 0 <= next_col < cols): continue if grid[next_row][next_col] != \"1\": continue if (next_row, next_col) in visited: continue visited.add((next_row, next_col)) queue.append((next_row, next_col)) return islands export function countIslandsBfs(grid: string[][]): number { const rows = grid.length; const cols = grid[0].length; const visited = new Set<string>(); const key = (row: number, col: number) => `${row},${col}`; const directions = [[1, 0], [-1, 0], [0, 1], [0, -1]]; let islands = 0; for (let row = 0; row < rows; row += 1) { for (let col = 0; col < cols; col += 1) { if (grid[row][col] !== \"1\" || visited.has(key(row, col))) continue; islands += 1; const queue: Array<[number, number]> = [[row, col]]; visited.add(key(row, col)); for (let head = 0; head < queue.length; head += 1) { const [currentRow, currentCol] = queue[head]; for (const [dr, dc] of directions) { const nextRow = currentRow + dr; const nextCol = currentCol + dc; const inBounds = nextRow >= 0 && nextRow < rows && nextCol >= 0 && nextCol < cols; if (!inBounds || grid[nextRow][nextCol] !== \"1\" || visited.has(key(nextRow, nextCol))) continue; visited.add(key(nextRow, nextCol)); queue.push([nextRow, nextCol]); } } } } return islands; } DFS Version def count_islands_dfs(grid: list[list[str]]) -> int: rows, cols = len(grid), len(grid[0]) visited = set() def visit(row: int, col: int) -> None: if not (0 <= row < rows and 0 <= col < cols): return if grid[row][col] != \"1\" or (row, col) in visited: return visited.add((row, col)) visit(row + 1, col) visit(row - 1, col) visit(row, col + 1) visit(row, col - 1) islands = 0 for row in range(rows): for col in range(cols): if grid[row][col] == \"1\" and (row, col) not in visited: islands += 1 visit(row, col) return islands export function countIslandsDfs(grid: string[][]): number { const rows = grid.length; const cols = grid[0].length; const visited = new Set<string>(); const key = (row: number, col: number) => `${row},${col}`; function visit(row: number, col: number): void { const inBounds = row >= 0 && row < rows && col >= 0 && col < cols; if (!inBounds || grid[row][col] !== \"1\" || visited.has(key(row, col))) return; visited.add(key(row, col)); visit(row + 1, col); visit(row - 1, col); visit(row, col + 1); visit(row, col - 1); } let islands = 0; for (let row = 0; row < rows; row += 1) { for (let col = 0; col < cols; col += 1) { if (grid[row][col] === \"1\" && !visited.has(key(row, col))) { islands += 1; visit(row, col); } } } return islands; } BFS Versus DFS For The Same Problem Both island solutions run in O(rows * cols) time and use O(rows * cols) worst-case auxiliary space. Neither has an asymptotic advantage here because the problem asks for components, not a shortest path. The practical differences are more interesting: | Concern | BFS | DFS | | --- | --- | --- | | Core invariant | Queue holds the discovered frontier | One call fully explores one connected branch | | Readability | More explicit state and loop structure | Recursive version closely matches the definition of a component | | Memory shape | Can hold a wide frontier | Can hold a deep recursion chain | | Runtime risk | No call-stack overflow | Large solid grids can exceed recursion limits | | Best interview use | When you want an iterative, depth-safe implementation | When constraints make recursion safe and brevity helps explanation | For this prompt, choose the version you can implement and explain reliably. If input dimensions are large, iterative BFS or iterative DFS is safer than recursive DFS. Pattern Two: Shortest Unweighted Path For a shortest path in a binary matrix, BFS has a correctness shortcut: the first time the destination leaves the queue, no shorter path can still be waiting. DFS does not have this guarantee. A DFS solution must enumerate possible simple paths or add more complex pruning, so it is usually less readable and can take exponential time. The interview signal is the word shortest combined with equal-cost moves. That points to BFS. Pattern Three: Dependency Cycles Course scheduling turns prerequisites into a directed graph. Two classic answers expose different viewpoints: DFS colors nodes as unseen, visiting, or complete. Reaching a visiting node finds a back edge and therefore a cycle.Kahn's algorithm uses BFS over nodes with zero incoming edges. If fewer than all courses can be removed, a cycle prevented the remaining nodes from becoming ready. Both run in O(V + E) time. DFS is often compact for “does a cycle exist?” Kahn's algorithm is often easier when the next requirement is to return a valid course order. Interview Questions To Practice The guided interview catalog includes: Number Of Islands — compare BFS and DFS flood fill directly.Shortest Path In A Binary Matrix — explain why BFS provides the optimal unweighted path.Course Schedule — compare DFS cycle coloring with BFS topological processing.Word Ladder — model words as nodes and one-letter changes as equal-cost edges. For every solution, state the graph model, traversal invariant, visited timing, and complexity before writing code. Those four points make the implementation easier to review and debug. Reference Anchors Python dequeJavaScript Set",
+      "headings": [
+        {
+          "id": "recognize-the-hidden-graph",
+          "depth": 2,
+          "text": "Recognize The Hidden Graph"
+        },
+        {
+          "id": "pattern-one-count-connected-components",
+          "depth": 2,
+          "text": "Pattern One: Count Connected Components"
+        },
+        {
+          "id": "bfs-version",
+          "depth": 3,
+          "text": "BFS Version"
+        },
+        {
+          "id": "dfs-version",
+          "depth": 3,
+          "text": "DFS Version"
+        },
+        {
+          "id": "bfs-versus-dfs-for-the-same-problem",
+          "depth": 2,
+          "text": "BFS Versus DFS For The Same Problem"
+        },
+        {
+          "id": "pattern-two-shortest-unweighted-path",
+          "depth": 2,
+          "text": "Pattern Two: Shortest Unweighted Path"
+        },
+        {
+          "id": "pattern-three-dependency-cycles",
+          "depth": 2,
+          "text": "Pattern Three: Dependency Cycles"
+        },
+        {
+          "id": "interview-questions-to-practice",
+          "depth": 2,
+          "text": "Interview Questions To Practice"
+        },
+        {
+          "id": "reference-anchors",
+          "depth": 2,
+          "text": "Reference Anchors"
+        }
+      ],
+      "mermaidBlocks": [],
+      "contentHash": "52056d492fc0151230f64270a6741532299061065f2da6cfeec48aa7146ee860",
+      "readingMinutes": 5
+    },
+    {
+      "title": "Mermaid Planning, Data, And Advanced Diagram Authoring",
+      "slug": "programming/mermaid-planning-and-data-diagrams",
+      "summary": "Write Gantt, user journey, pie, mindmap, timeline, and Git graph diagrams, discover additional Mermaid families, and apply practical debugging and review techniques.",
+      "track": "Programming",
+      "topic": "Technical Documentation",
+      "difficulty": "practitioner",
+      "tags": [
+        "mermaid",
+        "gantt",
+        "journey",
+        "charts",
+        "documentation"
+      ],
+      "prerequisites": [
+        "Mermaid Diagrams For Software Structure And Behavior"
+      ],
+      "diagramRefs": [],
+      "status": "published",
+      "id": "eea492bb7305",
+      "route": "/docs/programming/mermaid-planning-and-data-diagrams",
+      "sourcePath": "content/knowledge/programming/mermaid-planning-and-data-diagrams.md",
+      "bodyPath": "content/knowledge/programming/mermaid-planning-and-data-diagrams.md",
+      "markdown": "## Beyond Boxes And Arrows\n\nNot every explanation is a system topology. Mermaid also includes grammars for schedules, user experience, proportions, hierarchy, chronology, and version-control history. These specialized diagrams are effective because they encode meaning directly. A Gantt task has a duration; a journey step has a score and actors; a pie slice has a numeric value.\n\nThe tradeoff is that each grammar has its own rules. Always begin with the declaration, then check that the data shape matches the question.\n\n## Gantt: Work Across Time\n\n```mermaid\ngantt\n  title Mermaid learning module\n  dateFormat YYYY-MM-DD\n  excludes weekends\n\n  section Content\n  Outline lessons       :done, outline, 2026-07-20, 1d\n  Write examples        :active, examples, after outline, 3d\n  Review explanations   :review, after examples, 2d\n\n  section Validation\n  Render diagrams       :render, after examples, 1d\n  Run browser tests     :test, after render, 1d\n  Publish module        :milestone, publish, after test, 0d\n```\n\nUse Gantt when dates, durations, dependencies, and parallel work matter.\n\n- `dateFormat` tells Mermaid how to parse dates.\n- `section` groups related work.\n- A task line is `Label :metadata`.\n- IDs such as `outline` let later tasks use `after outline`.\n- Status markers include `done`, `active`, `crit`, and `milestone`.\n- `excludes weekends` adjusts task duration across excluded days; it does not cut a hole inside one continuous task bar.\n\nA Gantt chart is not a replacement for a project system. It is a documentation snapshot. Keep its dates owned and reviewed, or it will become confident-looking stale data.\n\n## User Journey: Experience By Actor\n\n```mermaid\njourney\n  title First article reading experience\n  section Discover\n    Open learning path: 5: Learner\n    Choose a lesson: 4: Learner\n  section Read\n    Scan the outline: 4: Learner\n    Compare diagram and source: 5: Learner\n    Hit a syntax error: 2: Learner, Renderer\n  section Recover\n    Read the error state: 3: Learner, Renderer\n    Fix one source line: 4: Learner\n    See the diagram render: 5: Learner, Renderer\n```\n\nUser journeys emphasize experience rather than implementation. Each task uses:\n\n```text\nTask name: score: actor, another actor\n```\n\nScores range from 1 to 5 in the conventional Mermaid journey model. Use them consistently within one diagram. A score is an author judgment, not measured analytics unless the text says where the measurement came from.\n\nJourney diagrams become especially useful when a failure and recovery path matter. A flowchart might show what the system does; the journey shows how that sequence feels to the learner and which actors participate.\n\n## Pie: A Small Part-To-Whole Story\n\n```mermaid\npie showData\n  title Diagram review findings\n  \"Unclear labels\" : 42\n  \"Too much detail\" : 28\n  \"Mixed abstraction\" : 18\n  \"Syntax errors\" : 12\n```\n\nUse a pie chart only when categories form a meaningful whole and there are few enough slices to compare. Values do not need to be written as percentages; Mermaid calculates the proportions.\n\nAvoid pie charts for values over time, many similar categories, negative values, or comparisons where exact differences matter. An XY chart or table is usually clearer in those cases. Example numbers should be labeled as illustrative when they are not real measurements.\n\n## Mindmap: Hierarchy And Brainstorming\n\n```mermaid\nmindmap\n  root((Mermaid diagrams))\n    Software behavior\n      Flowchart\n      Sequence\n      State\n    Software structure\n      Class\n      Entity relationship\n      Architecture\n    Planning and communication\n      Gantt\n      Journey\n      Timeline\n    Data display\n      Pie\n      XY chart\n      Sankey\n```\n\nMindmaps are indentation-based. The hierarchy comes from whitespace, so consistent indentation is semantic, not cosmetic. They work well for topic maps, discovery, taxonomies, and decomposing a broad idea.\n\nA mindmap does not express time, cardinality, or runtime message order. If branches begin to need arrows and conditions, move to a flowchart.\n\n## Timeline: Chronology Without Task Durations\n\n```mermaid\ntimeline\n  title Diagram authoring maturity\n  First draft : Draw one happy-path flow\n  Review : Add decisions and name boundaries\n  Validation : Render every block and test mobile overflow\n  Maintenance : Update source with the behavior change\n              : Delete stale details\n```\n\nTimeline syntax focuses on ordered periods or events. A period can have multiple events by adding another indented `: event` line. Use it for releases, incidents, decisions, or historical context when task duration and dependency math are unnecessary.\n\nMermaid's official documentation labels timeline as experimental, meaning parts of its syntax or capabilities may evolve. Keep version-sensitive diagrams small and run them through the same renderer used by your application.\n\n## Git Graph: Branch And Merge History\n\n```mermaid\ngitGraph LR:\n  commit id: \"path skeleton\"\n  branch lesson\n  checkout lesson\n  commit id: \"add examples\"\n  commit id: \"add quiz\"\n  checkout main\n  commit id: \"docs update\"\n  merge lesson id: \"merge learning module\"\n```\n\nGit graph diagrams explain a branching story, not every commit in a real repository. Use `branch`, `checkout`, `commit`, `merge`, and optionally `cherry-pick` to show the operations relevant to the lesson.\n\nIf readers need exact repository history, link to Git instead. A hand-authored Git graph should explain a strategy such as feature branching, release stabilization, or a hotfix flow.\n\n## More Diagram Families To Recognize\n\nMermaid's official syntax catalog includes more specialized options. Availability can depend on the Mermaid version used by the host application.\n\n| Family | Use it for |\n| --- | --- |\n| Quadrant chart | Positioning items across two scored axes |\n| Requirement diagram | Requirements, elements, and verify/satisfy/trace relationships |\n| Architecture diagram | Services, groups, junctions, and infrastructure relationships |\n| C4 diagram | Context, container, component, and deployment views; Mermaid marks this area experimental |\n| XY chart | Numeric lines and bars along axes |\n| Sankey | Quantitative flow between stages |\n| Block diagram | Manually structured block layouts |\n| Packet | Bit-field and network packet layouts |\n| Kanban | Work items grouped by workflow columns |\n| Radar | Comparing several dimensions across series |\n| Treemap | Hierarchical part-to-whole area |\n| Ishikawa | Cause-and-effect or fishbone analysis |\n\nDo not choose an exotic grammar merely because it exists. Choose it when its visual rules directly answer the reader's question and your deployed Mermaid version supports it.\n\n## Debugging A Diagram That Will Not Render\n\nWork from the parser outward:\n\n1. Confirm the opening fence is `mermaid` and the closing fence exists.\n2. Confirm the first meaningful source line is a valid diagram declaration.\n3. Reduce the source to the declaration and one valid statement.\n4. Add statements back until the error returns.\n5. Check reserved words, quotes, indentation-sensitive grammars, and balanced `end` blocks.\n6. Test the exact Mermaid version and configuration used by the application.\n7. Keep the source fallback visible so readers are not left with an empty box.\n\nUnknown grammar keywords usually fail parsing. Some unsupported parameters may instead be ignored, which is more dangerous because the diagram renders without the requested meaning. Review the output, not only the absence of errors.\n\n## Advanced Readability Rules\n\n- **One question per diagram.** A document may contain several diagrams at different abstraction levels.\n- **Name relationships.** “publishes,” “depends on,” and “contains” are more useful than unlabeled lines.\n- **Keep source order intentional.** Source order influences layout and is how reviewers read the diff.\n- **Use styling sparingly.** Color should carry a small semantic vocabulary, such as failure or external ownership.\n- **Prefer stable IDs.** Changing labels should not require rewriting every edge.\n- **State omitted detail.** A diagram is a model, not the entire system.\n- **Test narrow screens.** Wide diagrams need a deliberate scrolling or splitting strategy.\n- **Treat text as untrusted.** Rendering hosts should use safe security settings when content can come from outside the repository.\n\n## A Final Selection Checklist\n\n- Process or branching logic: **flowchart**.\n- Runtime collaboration over time: **sequence**.\n- Static types and type relationships: **class**.\n- Legal lifecycle transitions: **state**.\n- Data entities and cardinality: **ER**.\n- Tasks, dates, and dependencies: **Gantt**.\n- User experience with actors and scores: **journey**.\n- Small part-to-whole comparison: **pie**.\n- Hierarchical idea map: **mindmap**.\n- Ordered historical events: **timeline**.\n- Branch and merge teaching story: **Git graph**.\n\n## Reference Anchors\n\n- [Mermaid diagram syntax catalog](https://mermaid.js.org/intro/syntax-reference.html)\n- [Official Gantt syntax](https://mermaid.js.org/syntax/gantt.html)\n- [Official user journey syntax](https://mermaid.js.org/syntax/userJourney.html)\n- [Official pie chart syntax](https://mermaid.js.org/syntax/pie.html)\n- [Official mindmap syntax](https://mermaid.js.org/syntax/mindmap.html)\n- [Official timeline syntax](https://mermaid.js.org/syntax/timeline.html)\n- [Official Git graph syntax](https://mermaid.js.org/syntax/gitgraph.html)",
+      "plainText": "Beyond Boxes And Arrows Not every explanation is a system topology. Mermaid also includes grammars for schedules, user experience, proportions, hierarchy, chronology, and version-control history. These specialized diagrams are effective because they encode meaning directly. A Gantt task has a duration; a journey step has a score and actors; a pie slice has a numeric value. The tradeoff is that each grammar has its own rules. Always begin with the declaration, then check that the data shape matches the question. Gantt: Work Across Time gantt title Mermaid learning module dateFormat YYYY-MM-DD excludes weekends section Content Outline lessons :done, outline, 2026-07-20, 1d Write examples :active, examples, after outline, 3d Review explanations :review, after examples, 2d section Validation Render diagrams :render, after examples, 1d Run browser tests :test, after render, 1d Publish module :milestone, publish, after test, 0d Use Gantt when dates, durations, dependencies, and parallel work matter. dateFormat tells Mermaid how to parse dates.section groups related work.A task line is Label :metadata.IDs such as outline let later tasks use after outline.Status markers include done, active, crit, and milestone.excludes weekends adjusts task duration across excluded days; it does not cut a hole inside one continuous task bar. A Gantt chart is not a replacement for a project system. It is a documentation snapshot. Keep its dates owned and reviewed, or it will become confident-looking stale data. User Journey: Experience By Actor journey title First article reading experience section Discover Open learning path: 5: Learner Choose a lesson: 4: Learner section Read Scan the outline: 4: Learner Compare diagram and source: 5: Learner Hit a syntax error: 2: Learner, Renderer section Recover Read the error state: 3: Learner, Renderer Fix one source line: 4: Learner See the diagram render: 5: Learner, Renderer User journeys emphasize experience rather than implementation. Each task uses: Task name: score: actor, another actor Scores range from 1 to 5 in the conventional Mermaid journey model. Use them consistently within one diagram. A score is an author judgment, not measured analytics unless the text says where the measurement came from. Journey diagrams become especially useful when a failure and recovery path matter. A flowchart might show what the system does; the journey shows how that sequence feels to the learner and which actors participate. Pie: A Small Part-To-Whole Story pie showData title Diagram review findings \"Unclear labels\" : 42 \"Too much detail\" : 28 \"Mixed abstraction\" : 18 \"Syntax errors\" : 12 Use a pie chart only when categories form a meaningful whole and there are few enough slices to compare. Values do not need to be written as percentages; Mermaid calculates the proportions. Avoid pie charts for values over time, many similar categories, negative values, or comparisons where exact differences matter. An XY chart or table is usually clearer in those cases. Example numbers should be labeled as illustrative when they are not real measurements. Mindmap: Hierarchy And Brainstorming mindmap root((Mermaid diagrams)) Software behavior Flowchart Sequence State Software structure Class Entity relationship Architecture Planning and communication Gantt Journey Timeline Data display Pie XY chart Sankey Mindmaps are indentation-based. The hierarchy comes from whitespace, so consistent indentation is semantic, not cosmetic. They work well for topic maps, discovery, taxonomies, and decomposing a broad idea. A mindmap does not express time, cardinality, or runtime message order. If branches begin to need arrows and conditions, move to a flowchart. Timeline: Chronology Without Task Durations timeline title Diagram authoring maturity First draft : Draw one happy-path flow Review : Add decisions and name boundaries Validation : Render every block and test mobile overflow Maintenance : Update source with the behavior change : Delete stale details Timeline syntax focuses on ordered periods or events. A period can have multiple events by adding another indented : event line. Use it for releases, incidents, decisions, or historical context when task duration and dependency math are unnecessary. Mermaid's official documentation labels timeline as experimental, meaning parts of its syntax or capabilities may evolve. Keep version-sensitive diagrams small and run them through the same renderer used by your application. Git Graph: Branch And Merge History gitGraph LR: commit id: \"path skeleton\" branch lesson checkout lesson commit id: \"add examples\" commit id: \"add quiz\" checkout main commit id: \"docs update\" merge lesson id: \"merge learning module\" Git graph diagrams explain a branching story, not every commit in a real repository. Use branch, checkout, commit, merge, and optionally cherry-pick to show the operations relevant to the lesson. If readers need exact repository history, link to Git instead. A hand-authored Git graph should explain a strategy such as feature branching, release stabilization, or a hotfix flow. More Diagram Families To Recognize Mermaid's official syntax catalog includes more specialized options. Availability can depend on the Mermaid version used by the host application. | Family | Use it for | | --- | --- | | Quadrant chart | Positioning items across two scored axes | | Requirement diagram | Requirements, elements, and verify/satisfy/trace relationships | | Architecture diagram | Services, groups, junctions, and infrastructure relationships | | C4 diagram | Context, container, component, and deployment views; Mermaid marks this area experimental | | XY chart | Numeric lines and bars along axes | | Sankey | Quantitative flow between stages | | Block diagram | Manually structured block layouts | | Packet | Bit-field and network packet layouts | | Kanban | Work items grouped by workflow columns | | Radar | Comparing several dimensions across series | | Treemap | Hierarchical part-to-whole area | | Ishikawa | Cause-and-effect or fishbone analysis | Do not choose an exotic grammar merely because it exists. Choose it when its visual rules directly answer the reader's question and your deployed Mermaid version supports it. Debugging A Diagram That Will Not Render Work from the parser outward: Confirm the opening fence is mermaid and the closing fence exists.Confirm the first meaningful source line is a valid diagram declaration.Reduce the source to the declaration and one valid statement.Add statements back until the error returns.Check reserved words, quotes, indentation-sensitive grammars, and balanced end blocks.Test the exact Mermaid version and configuration used by the application.Keep the source fallback visible so readers are not left with an empty box. Unknown grammar keywords usually fail parsing. Some unsupported parameters may instead be ignored, which is more dangerous because the diagram renders without the requested meaning. Review the output, not only the absence of errors. Advanced Readability Rules One question per diagram. A document may contain several diagrams at different abstraction levels.Name relationships. “publishes,” “depends on,” and “contains” are more useful than unlabeled lines.Keep source order intentional. Source order influences layout and is how reviewers read the diff.Use styling sparingly. Color should carry a small semantic vocabulary, such as failure or external ownership.Prefer stable IDs. Changing labels should not require rewriting every edge.State omitted detail. A diagram is a model, not the entire system.Test narrow screens. Wide diagrams need a deliberate scrolling or splitting strategy.Treat text as untrusted. Rendering hosts should use safe security settings when content can come from outside the repository. A Final Selection Checklist Process or branching logic: flowchart.Runtime collaboration over time: sequence.Static types and type relationships: class.Legal lifecycle transitions: state.Data entities and cardinality: ER.Tasks, dates, and dependencies: Gantt.User experience with actors and scores: journey.Small part-to-whole comparison: pie.Hierarchical idea map: mindmap.Ordered historical events: timeline.Branch and merge teaching story: Git graph. Reference Anchors Mermaid diagram syntax catalogOfficial Gantt syntaxOfficial user journey syntaxOfficial pie chart syntaxOfficial mindmap syntaxOfficial timeline syntaxOfficial Git graph syntax",
+      "headings": [
+        {
+          "id": "beyond-boxes-and-arrows",
+          "depth": 2,
+          "text": "Beyond Boxes And Arrows"
+        },
+        {
+          "id": "gantt-work-across-time",
+          "depth": 2,
+          "text": "Gantt: Work Across Time"
+        },
+        {
+          "id": "user-journey-experience-by-actor",
+          "depth": 2,
+          "text": "User Journey: Experience By Actor"
+        },
+        {
+          "id": "pie-a-small-part-to-whole-story",
+          "depth": 2,
+          "text": "Pie: A Small Part-To-Whole Story"
+        },
+        {
+          "id": "mindmap-hierarchy-and-brainstorming",
+          "depth": 2,
+          "text": "Mindmap: Hierarchy And Brainstorming"
+        },
+        {
+          "id": "timeline-chronology-without-task-durations",
+          "depth": 2,
+          "text": "Timeline: Chronology Without Task Durations"
+        },
+        {
+          "id": "git-graph-branch-and-merge-history",
+          "depth": 2,
+          "text": "Git Graph: Branch And Merge History"
+        },
+        {
+          "id": "more-diagram-families-to-recognize",
+          "depth": 2,
+          "text": "More Diagram Families To Recognize"
+        },
+        {
+          "id": "debugging-a-diagram-that-will-not-render",
+          "depth": 2,
+          "text": "Debugging A Diagram That Will Not Render"
+        },
+        {
+          "id": "advanced-readability-rules",
+          "depth": 2,
+          "text": "Advanced Readability Rules"
+        },
+        {
+          "id": "a-final-selection-checklist",
+          "depth": 2,
+          "text": "A Final Selection Checklist"
+        },
+        {
+          "id": "reference-anchors",
+          "depth": 2,
+          "text": "Reference Anchors"
+        }
+      ],
+      "mermaidBlocks": [
+        {
+          "id": "embedded-1",
+          "source": "gantt\n  title Mermaid learning module\n  dateFormat YYYY-MM-DD\n  excludes weekends\n\n  section Content\n  Outline lessons       :done, outline, 2026-07-20, 1d\n  Write examples        :active, examples, after outline, 3d\n  Review explanations   :review, after examples, 2d\n\n  section Validation\n  Render diagrams       :render, after examples, 1d\n  Run browser tests     :test, after render, 1d\n  Publish module        :milestone, publish, after test, 0d"
+        },
+        {
+          "id": "embedded-2",
+          "source": "journey\n  title First article reading experience\n  section Discover\n    Open learning path: 5: Learner\n    Choose a lesson: 4: Learner\n  section Read\n    Scan the outline: 4: Learner\n    Compare diagram and source: 5: Learner\n    Hit a syntax error: 2: Learner, Renderer\n  section Recover\n    Read the error state: 3: Learner, Renderer\n    Fix one source line: 4: Learner\n    See the diagram render: 5: Learner, Renderer"
+        },
+        {
+          "id": "embedded-3",
+          "source": "pie showData\n  title Diagram review findings\n  \"Unclear labels\" : 42\n  \"Too much detail\" : 28\n  \"Mixed abstraction\" : 18\n  \"Syntax errors\" : 12"
+        },
+        {
+          "id": "embedded-4",
+          "source": "mindmap\n  root((Mermaid diagrams))\n    Software behavior\n      Flowchart\n      Sequence\n      State\n    Software structure\n      Class\n      Entity relationship\n      Architecture\n    Planning and communication\n      Gantt\n      Journey\n      Timeline\n    Data display\n      Pie\n      XY chart\n      Sankey"
+        },
+        {
+          "id": "embedded-5",
+          "source": "timeline\n  title Diagram authoring maturity\n  First draft : Draw one happy-path flow\n  Review : Add decisions and name boundaries\n  Validation : Render every block and test mobile overflow\n  Maintenance : Update source with the behavior change\n              : Delete stale details"
+        },
+        {
+          "id": "embedded-6",
+          "source": "gitGraph LR:\n  commit id: \"path skeleton\"\n  branch lesson\n  checkout lesson\n  commit id: \"add examples\"\n  commit id: \"add quiz\"\n  checkout main\n  commit id: \"docs update\"\n  merge lesson id: \"merge learning module\""
+        }
+      ],
+      "contentHash": "a4d0cf249e3454fe2fcf9d7730db05cc3f2930f4dcc8e53c6e6937972c3129e6",
+      "readingMinutes": 6
+    },
+    {
+      "title": "Mermaid Diagrams For Software Structure And Behavior",
+      "slug": "programming/mermaid-software-diagrams",
+      "summary": "Learn when and how to write sequence, class, state, and entity-relationship diagrams, including messages, alternatives, composition, transitions, attributes, and cardinality.",
+      "track": "Programming",
+      "topic": "Technical Documentation",
+      "difficulty": "practitioner",
+      "tags": [
+        "mermaid",
+        "sequence-diagrams",
+        "class-diagrams",
+        "state-diagrams",
+        "er-diagrams"
+      ],
+      "prerequisites": [
+        "Mermaid Syntax And Flowchart Fundamentals"
+      ],
+      "diagramRefs": [],
+      "status": "published",
+      "id": "3eabd2c6625c",
+      "route": "/docs/programming/mermaid-software-diagrams",
+      "sourcePath": "content/knowledge/programming/mermaid-software-diagrams.md",
+      "bodyPath": "content/knowledge/programming/mermaid-software-diagrams.md",
+      "markdown": "## Choose The Question, Then The Grammar\n\nFour software diagram families are often confused because all of them contain boxes and lines. Their questions are different:\n\n| Diagram | Best question | Main visual meaning |\n| --- | --- | --- |\n| Sequence | Who talks to whom, and in what order? | Time flows downward through messages |\n| Class | What static types and relationships exist? | Structure, operations, inheritance, composition |\n| State | Which states and transitions are legal? | Behavior over one lifecycle |\n| Entity relationship | How can data records relate? | Entities, attributes, and cardinality |\n\nDo not use a class diagram to explain runtime request order. Do not use a sequence diagram as a database schema. A precise grammar makes a diagram shorter because the reader already understands what each line means.\n\n## Sequence Diagram: Runtime Collaboration\n\n```mermaid\nsequenceDiagram\n  autonumber\n  actor User\n  participant Web as Web app\n  participant API as Orders API\n  participant DB as Database\n\n  User->>Web: Submit order\n  Web->>API: POST /orders\n  API->>DB: Insert pending order\n  DB-->>API: Order id\n\n  alt Inventory available\n    API-->>Web: 201 Created\n    Web-->>User: Show confirmation\n  else Inventory unavailable\n    API-->>Web: 409 Conflict\n    Web-->>User: Explain unavailable items\n  end\n```\n\nRead a sequence diagram from top to bottom. Participants form vertical lifelines; each arrow is a message at a point in time.\n\n- `actor` gives a participant a person-like role.\n- `participant API as Orders API` keeps a short source ID while showing a readable label.\n- `->>` is a solid message arrow.\n- `-->>` is a dashed response-style arrow in this documentation convention.\n- `alt`, `else`, and `end` show mutually exclusive branches.\n- `loop`, `opt`, `par`, and `critical` can express repetition, optional work, parallel work, and critical regions.\n- `Note over API,DB: ...` can explain a subtle boundary without inventing another message.\n\nSequence diagrams become unreadable when they narrate every function call. Keep participants at the abstraction level needed by the question. A system overview might show browser, API, database, and provider. A detailed service diagram might show controller, use case, repository, and event publisher. Mixing both levels creates noise.\n\n## Class Diagram: Static Design\n\n```mermaid\nclassDiagram\n  class Order {\n    +string id\n    +OrderStatus status\n    +addLine(productId, quantity)\n    +total() Money\n  }\n\n  class OrderLine {\n    +string productId\n    +int quantity\n    +subtotal() Money\n  }\n\n  class PaymentGateway {\n    <<interface>>\n    +charge(orderId, amount) PaymentResult\n  }\n\n  class StripeGateway {\n    +charge(orderId, amount) PaymentResult\n  }\n\n  Order \"1\" *-- \"1..*\" OrderLine : contains\n  PaymentGateway <|.. StripeGateway : realizes\n  Order ..> PaymentGateway : requests payment\n```\n\nA class diagram explains structure that exists independently of one request:\n\n- A class body contains attributes and operations.\n- `+` means public in UML-style notation; `-` means private; `#` means protected.\n- `*--` means composition: the whole strongly owns the part.\n- `o--` means aggregation: a looser whole-part relationship.\n- `<|--` means inheritance.\n- `<|..` means realization or interface implementation.\n- `..>` means dependency.\n- Quoted values near an association express multiplicity, such as one order containing one or more lines.\n\nDo not copy every field and method from production code. A useful class diagram selects the types and relationships needed for one design discussion. Generated “all classes” diagrams usually reproduce complexity without explaining it.\n\n## State Diagram: One Lifecycle\n\n```mermaid\nstateDiagram-v2\n  [*] --> Draft\n  Draft --> PendingPayment : submit\n\n  state PendingPayment {\n    [*] --> Authorizing\n    Authorizing --> Retrying : temporary failure\n    Retrying --> Authorizing : retry\n    Authorizing --> Authorized : approved\n  }\n\n  PendingPayment --> Confirmed : payment authorized\n  PendingPayment --> Cancelled : retries exhausted\n  Draft --> Cancelled : abandon\n  Confirmed --> Refunded : refund approved\n  Cancelled --> [*]\n  Refunded --> [*]\n```\n\nState diagrams answer “what may happen next?” rather than “what happened in this one trace.”\n\n- `stateDiagram-v2` selects the current state grammar.\n- `[*]` represents the initial or terminal pseudostate depending on arrow direction.\n- `A --> B : event` declares a transition and labels its trigger or condition.\n- `state Name { ... }` creates a composite state with internal states.\n\nA state is a durable condition, not a temporary method call. “Pending payment” is a state if the order can remain there and behavior depends on it. “Call payment API” is an action and belongs on a transition or in a sequence diagram.\n\nReview every state diagram for impossible or missing transitions. Can a confirmed order return to draft? Can a cancelled payment later become authorized through a delayed callback? The diagram should expose those product decisions.\n\n## Entity-Relationship Diagram: Data Cardinality\n\n```mermaid\nerDiagram\n  CUSTOMER ||--o{ ORDER : places\n  ORDER ||--|{ ORDER_LINE : contains\n  PRODUCT ||--o{ ORDER_LINE : appears_in\n\n  CUSTOMER {\n    uuid id PK\n    string email UK\n    datetime created_at\n  }\n\n  ORDER {\n    uuid id PK\n    uuid customer_id FK\n    string status\n  }\n\n  ORDER_LINE {\n    uuid order_id PK, FK\n    uuid product_id PK, FK\n    int quantity\n  }\n\n  PRODUCT {\n    uuid id PK\n    string sku UK\n  }\n```\n\nCrow's-foot markers describe minimum and maximum cardinality at each end:\n\n- `||` means exactly one.\n- `o|` or `|o` means zero or one, depending on which side it appears.\n- `o{` or `}o` means zero or more.\n- `|{` or `}|` means one or more.\n- `--` draws an identifying relationship; `..` draws a non-identifying relationship.\n\nRead `CUSTOMER ||--o{ ORDER : places` as: one customer can place zero or more orders, and each order belongs to exactly one customer. The label is read from the first entity toward the second.\n\nAttributes use `type name` plus optional keys such as `PK`, `FK`, and `UK`. Mermaid does not validate your database engine's real types or constraints. The diagram communicates a model; migrations and database tests enforce it.\n\n## Comparing Similar-Looking Relationships\n\n- Use a **sequence message** when order in time matters.\n- Use a **class dependency** when one type knows about or calls another.\n- Use a **state transition** when one entity changes durable condition.\n- Use an **ER relationship** when record cardinality matters.\n\nFor example, “Order calls PaymentGateway” is a class dependency. “Orders API sends charge” is a sequence message. “Pending becomes confirmed” is a state transition. “Customer has many Orders” is an ER relationship. Those are four different facts and may deserve four focused diagrams.\n\n## Authoring From Easy To Hard\n\nFor each family, begin with the smallest useful truth:\n\n1. Sequence: two participants and one message.\n2. Class: two classes and one relationship.\n3. State: start, one state, and end.\n4. ER: two entities and one cardinality relationship.\n\nRender, check the meaning, and only then add alternatives, composite states, attributes, or multiplicities. When a complex diagram fails, temporarily remove the latest block instead of rewriting everything.\n\n## Reference Anchors\n\n- [Official sequence diagram syntax](https://mermaid.js.org/syntax/sequenceDiagram.html)\n- [Official class diagram syntax](https://mermaid.js.org/syntax/classDiagram.html)\n- [Official state diagram syntax](https://mermaid.js.org/syntax/stateDiagram.html)\n- [Official entity-relationship syntax](https://mermaid.js.org/syntax/entityRelationshipDiagram.html)",
+      "plainText": "Choose The Question, Then The Grammar Four software diagram families are often confused because all of them contain boxes and lines. Their questions are different: | Diagram | Best question | Main visual meaning | | --- | --- | --- | | Sequence | Who talks to whom, and in what order? | Time flows downward through messages | | Class | What static types and relationships exist? | Structure, operations, inheritance, composition | | State | Which states and transitions are legal? | Behavior over one lifecycle | | Entity relationship | How can data records relate? | Entities, attributes, and cardinality | Do not use a class diagram to explain runtime request order. Do not use a sequence diagram as a database schema. A precise grammar makes a diagram shorter because the reader already understands what each line means. Sequence Diagram: Runtime Collaboration sequenceDiagram autonumber actor User participant Web as Web app participant API as Orders API participant DB as Database User->>Web: Submit order Web->>API: POST /orders API->>DB: Insert pending order DB-->>API: Order id alt Inventory available API-->>Web: 201 Created Web-->>User: Show confirmation else Inventory unavailable API-->>Web: 409 Conflict Web-->>User: Explain unavailable items end Read a sequence diagram from top to bottom. Participants form vertical lifelines; each arrow is a message at a point in time. actor gives a participant a person-like role.participant API as Orders API keeps a short source ID while showing a readable label.->> is a solid message arrow.-->> is a dashed response-style arrow in this documentation convention.alt, else, and end show mutually exclusive branches.loop, opt, par, and critical can express repetition, optional work, parallel work, and critical regions.Note over API,DB: ... can explain a subtle boundary without inventing another message. Sequence diagrams become unreadable when they narrate every function call. Keep participants at the abstraction level needed by the question. A system overview might show browser, API, database, and provider. A detailed service diagram might show controller, use case, repository, and event publisher. Mixing both levels creates noise. Class Diagram: Static Design classDiagram class Order { +string id +OrderStatus status +addLine(productId, quantity) +total() Money } class OrderLine { +string productId +int quantity +subtotal() Money } class PaymentGateway { <<interface>> +charge(orderId, amount) PaymentResult } class StripeGateway { +charge(orderId, amount) PaymentResult } Order \"1\" *-- \"1..*\" OrderLine : contains PaymentGateway <|.. StripeGateway : realizes Order ..> PaymentGateway : requests payment A class diagram explains structure that exists independently of one request: A class body contains attributes and operations.+ means public in UML-style notation; - means private; # means protected.*-- means composition: the whole strongly owns the part.o-- means aggregation: a looser whole-part relationship.<|-- means inheritance.<|.. means realization or interface implementation...> means dependency.Quoted values near an association express multiplicity, such as one order containing one or more lines. Do not copy every field and method from production code. A useful class diagram selects the types and relationships needed for one design discussion. Generated “all classes” diagrams usually reproduce complexity without explaining it. State Diagram: One Lifecycle stateDiagram-v2 [*] --> Draft Draft --> PendingPayment : submit state PendingPayment { [*] --> Authorizing Authorizing --> Retrying : temporary failure Retrying --> Authorizing : retry Authorizing --> Authorized : approved } PendingPayment --> Confirmed : payment authorized PendingPayment --> Cancelled : retries exhausted Draft --> Cancelled : abandon Confirmed --> Refunded : refund approved Cancelled --> [*] Refunded --> [*] State diagrams answer “what may happen next?” rather than “what happened in this one trace.” stateDiagram-v2 selects the current state grammar.[*] represents the initial or terminal pseudostate depending on arrow direction.A --> B : event declares a transition and labels its trigger or condition.state Name { ... } creates a composite state with internal states. A state is a durable condition, not a temporary method call. “Pending payment” is a state if the order can remain there and behavior depends on it. “Call payment API” is an action and belongs on a transition or in a sequence diagram. Review every state diagram for impossible or missing transitions. Can a confirmed order return to draft? Can a cancelled payment later become authorized through a delayed callback? The diagram should expose those product decisions. Entity-Relationship Diagram: Data Cardinality erDiagram CUSTOMER ||--o{ ORDER : places ORDER ||--|{ ORDER_LINE : contains PRODUCT ||--o{ ORDER_LINE : appears_in CUSTOMER { uuid id PK string email UK datetime created_at } ORDER { uuid id PK uuid customer_id FK string status } ORDER_LINE { uuid order_id PK, FK uuid product_id PK, FK int quantity } PRODUCT { uuid id PK string sku UK } Crow's-foot markers describe minimum and maximum cardinality at each end: || means exactly one.o| or |o means zero or one, depending on which side it appears.o{ or }o means zero or more.|{ or }| means one or more.-- draws an identifying relationship; .. draws a non-identifying relationship. Read CUSTOMER ||--o{ ORDER : places as: one customer can place zero or more orders, and each order belongs to exactly one customer. The label is read from the first entity toward the second. Attributes use type name plus optional keys such as PK, FK, and UK. Mermaid does not validate your database engine's real types or constraints. The diagram communicates a model; migrations and database tests enforce it. Comparing Similar-Looking Relationships Use a sequence message when order in time matters.Use a class dependency when one type knows about or calls another.Use a state transition when one entity changes durable condition.Use an ER relationship when record cardinality matters. For example, “Order calls PaymentGateway” is a class dependency. “Orders API sends charge” is a sequence message. “Pending becomes confirmed” is a state transition. “Customer has many Orders” is an ER relationship. Those are four different facts and may deserve four focused diagrams. Authoring From Easy To Hard For each family, begin with the smallest useful truth: Sequence: two participants and one message.Class: two classes and one relationship.State: start, one state, and end.ER: two entities and one cardinality relationship. Render, check the meaning, and only then add alternatives, composite states, attributes, or multiplicities. When a complex diagram fails, temporarily remove the latest block instead of rewriting everything. Reference Anchors Official sequence diagram syntaxOfficial class diagram syntaxOfficial state diagram syntaxOfficial entity-relationship syntax",
+      "headings": [
+        {
+          "id": "choose-the-question-then-the-grammar",
+          "depth": 2,
+          "text": "Choose The Question, Then The Grammar"
+        },
+        {
+          "id": "sequence-diagram-runtime-collaboration",
+          "depth": 2,
+          "text": "Sequence Diagram: Runtime Collaboration"
+        },
+        {
+          "id": "class-diagram-static-design",
+          "depth": 2,
+          "text": "Class Diagram: Static Design"
+        },
+        {
+          "id": "state-diagram-one-lifecycle",
+          "depth": 2,
+          "text": "State Diagram: One Lifecycle"
+        },
+        {
+          "id": "entity-relationship-diagram-data-cardinality",
+          "depth": 2,
+          "text": "Entity-Relationship Diagram: Data Cardinality"
+        },
+        {
+          "id": "comparing-similar-looking-relationships",
+          "depth": 2,
+          "text": "Comparing Similar-Looking Relationships"
+        },
+        {
+          "id": "authoring-from-easy-to-hard",
+          "depth": 2,
+          "text": "Authoring From Easy To Hard"
+        },
+        {
+          "id": "reference-anchors",
+          "depth": 2,
+          "text": "Reference Anchors"
+        }
+      ],
+      "mermaidBlocks": [
+        {
+          "id": "embedded-1",
+          "source": "sequenceDiagram\n  autonumber\n  actor User\n  participant Web as Web app\n  participant API as Orders API\n  participant DB as Database\n\n  User->>Web: Submit order\n  Web->>API: POST /orders\n  API->>DB: Insert pending order\n  DB-->>API: Order id\n\n  alt Inventory available\n    API-->>Web: 201 Created\n    Web-->>User: Show confirmation\n  else Inventory unavailable\n    API-->>Web: 409 Conflict\n    Web-->>User: Explain unavailable items\n  end"
+        },
+        {
+          "id": "embedded-2",
+          "source": "classDiagram\n  class Order {\n    +string id\n    +OrderStatus status\n    +addLine(productId, quantity)\n    +total() Money\n  }\n\n  class OrderLine {\n    +string productId\n    +int quantity\n    +subtotal() Money\n  }\n\n  class PaymentGateway {\n    <<interface>>\n    +charge(orderId, amount) PaymentResult\n  }\n\n  class StripeGateway {\n    +charge(orderId, amount) PaymentResult\n  }\n\n  Order \"1\" *-- \"1..*\" OrderLine : contains\n  PaymentGateway <|.. StripeGateway : realizes\n  Order ..> PaymentGateway : requests payment"
+        },
+        {
+          "id": "embedded-3",
+          "source": "stateDiagram-v2\n  [*] --> Draft\n  Draft --> PendingPayment : submit\n\n  state PendingPayment {\n    [*] --> Authorizing\n    Authorizing --> Retrying : temporary failure\n    Retrying --> Authorizing : retry\n    Authorizing --> Authorized : approved\n  }\n\n  PendingPayment --> Confirmed : payment authorized\n  PendingPayment --> Cancelled : retries exhausted\n  Draft --> Cancelled : abandon\n  Confirmed --> Refunded : refund approved\n  Cancelled --> [*]\n  Refunded --> [*]"
+        },
+        {
+          "id": "embedded-4",
+          "source": "erDiagram\n  CUSTOMER ||--o{ ORDER : places\n  ORDER ||--|{ ORDER_LINE : contains\n  PRODUCT ||--o{ ORDER_LINE : appears_in\n\n  CUSTOMER {\n    uuid id PK\n    string email UK\n    datetime created_at\n  }\n\n  ORDER {\n    uuid id PK\n    uuid customer_id FK\n    string status\n  }\n\n  ORDER_LINE {\n    uuid order_id PK, FK\n    uuid product_id PK, FK\n    int quantity\n  }\n\n  PRODUCT {\n    uuid id PK\n    string sku UK\n  }"
+        }
+      ],
+      "contentHash": "2aba1cd5a3adbb634908891c68ca9688efb1302b764294dffe638a9dec70448d",
+      "readingMinutes": 5
+    },
+    {
+      "title": "Mermaid Syntax And Flowchart Fundamentals",
+      "slug": "programming/mermaid-syntax-fundamentals",
+      "summary": "Learn to read and write Mermaid blocks through declarations, node IDs, visible labels, directions, shapes, edges, decisions, subgraphs, comments, and maintainable flowchart structure.",
+      "track": "Programming",
+      "topic": "Technical Documentation",
+      "difficulty": "foundation",
+      "tags": [
+        "mermaid",
+        "diagrams",
+        "flowcharts",
+        "documentation",
+        "architecture"
+      ],
+      "prerequisites": [
+        "Basic Markdown code fences"
+      ],
+      "diagramRefs": [],
+      "status": "published",
+      "id": "dd36e2aabfc3",
+      "route": "/docs/programming/mermaid-syntax-fundamentals",
+      "sourcePath": "content/knowledge/programming/mermaid-syntax-fundamentals.md",
+      "bodyPath": "content/knowledge/programming/mermaid-syntax-fundamentals.md",
+      "markdown": "## Why Diagrams As Text\n\nMermaid turns a text definition into a diagram. That matters because text can live beside Markdown and code, participate in normal review, show meaningful diffs, and change without dragging shapes around a canvas. The source remains the durable explanation; the rendered SVG is a view of that source.\n\nA diagram is useful only when it answers a question. Before writing syntax, finish this sentence:\n\n> This diagram helps the reader understand **_____**.\n\nIf the answer is “the order of a request,” choose a flowchart or sequence diagram. If it is “which states are legal,” choose a state diagram. If it is “how records relate,” choose an entity-relationship diagram. Choosing the diagram family is part of writing clearly.\n\n## Read A Mermaid Block In Three Layers\n\nEvery Mermaid definition can be read in three layers:\n\n1. **Declaration:** the first meaningful line selects the grammar, such as `flowchart`, `sequenceDiagram`, or `erDiagram`.\n2. **Things:** later lines declare nodes, participants, states, entities, tasks, or data points.\n3. **Relationships:** arrows, transitions, messages, cardinalities, and indentation explain how those things connect.\n\nIn Codematica, a fenced block whose language is `mermaid` renders as a diagram. Expand **Source** beneath any example to compare the text with its output.\n\n## Easy: A Three-Step Flow\n\n```mermaid\nflowchart LR\n  Start([Start]) --> Read[Read request]\n  Read --> Reply[Return response]\n  Reply --> Done([Done])\n```\n\nRead the first line left to right:\n\n- `flowchart` selects the flowchart grammar.\n- `LR` asks the layout engine to arrange the main flow from left to right.\n- `Start` is a stable node ID used by relationships.\n- `([Start])` gives that node a visible label and a rounded terminal shape.\n- `-->` is a directed edge.\n\nIDs and labels serve different jobs. An ID should be short and stable; the label should explain the idea to a human. Reusing an ID refers to the same node instead of creating a copy.\n\n### Direction Choices\n\nFlowcharts commonly use:\n\n- `TD` or `TB`: top to bottom, useful for long procedures and mobile reading.\n- `LR`: left to right, useful for pipelines and request paths.\n- `RL`: right to left.\n- `BT`: bottom to top.\n\nDirection is a request to the layout engine, not pixel positioning. Mermaid decides exact coordinates.\n\n## Medium: Decisions, Labels, And Data\n\n```mermaid\nflowchart TD\n  Request[Receive request] --> Valid{Input valid?}\n  Valid -->|Yes| Save[(Store record)]\n  Valid -->|No| Explain[Return validation errors]\n  Save --> Success([Created])\n  Explain --> Finish([Finished])\n```\n\nThis example introduces semantic shapes and edge labels:\n\n- `Task[Text]` creates a rectangular process.\n- `Choice{Text}` creates a decision diamond.\n- `Store[(Text)]` creates a cylindrical database shape.\n- `([Text])` creates a rounded terminal.\n- `-->|Yes|` labels the decision branch.\n\nShapes are visual vocabulary, not decoration. A diamond should mean a branch. A database cylinder should mean stored data. If every node uses a different shape, readers spend effort decoding style instead of understanding the system.\n\nUseful edge forms include `-->` for a directed relationship, `---` for an undirected connection, `-.->` for a dotted directed relationship, and `==>` for a stronger rendered edge. Prefer one dominant edge meaning and label exceptions.\n\n## Harder: Boundaries, Fan-Out, And Failure\n\n```mermaid\nflowchart LR\n  User([User]) --> Web[Web application]\n\n  subgraph Edge[Edge boundary]\n    Gateway[API gateway]\n    Limit{Rate allowed?}\n  end\n\n  subgraph Services[Service boundary]\n    Orders[Order service]\n    Queue[[Event queue]]\n    Worker[Payment worker]\n  end\n\n  Web --> Gateway\n  Gateway --> Limit\n  Limit -->|Yes| Orders\n  Limit -->|No| Rejected[429 response]\n  Orders --> OrdersDb[(Orders database)]\n  Orders --> Queue\n  Queue -. asynchronous .-> Worker\n  Worker --> Provider[Payment provider]\n  Provider -->|Failure| Retry[Retry policy]\n  Retry --> Queue\n\n  classDef failure fill:#fff2c2,stroke:#c48600,color:#263238\n  class Rejected,Retry failure\n```\n\nThe diagram is more advanced, but its source stays readable because it has boundaries and a main story:\n\n- `subgraph ... end` groups nodes into a named boundary.\n- One edge enters each boundary before the flow fans out.\n- The dotted asynchronous edge communicates a different relationship.\n- The failure class is reused instead of repeating styles.\n\nThe best way to create this diagram is incrementally. First render `User --> Web --> Gateway --> Orders`. Add the decision. Then add storage and asynchronous work. Finally add the failure loop. Rendering after each small change makes syntax errors easy to locate.\n\n## Comments, Quoting, And Parser Safety\n\nUse `%%` for a line comment:\n\n```text\n%% Explain why this unusual retry edge exists.\nWorker --> Retry\n```\n\nQuote labels containing punctuation or parser-sensitive words:\n\n```text\nFinish[\"End request safely\"]\n```\n\nMermaid's official flowchart documentation warns that lowercase `end` can break a flowchart because `end` closes a subgraph. Use a different ID, capitalize the word, or quote it as display text. Similarly, do not build node IDs from full sentences. Keep IDs simple and put prose in labels.\n\n## A Reliable Authoring Loop\n\n1. Write the question the diagram must answer.\n2. Pick the diagram family before writing relationships.\n3. Add the declaration and two connected things.\n4. Render immediately.\n5. Add one relationship or boundary at a time.\n6. Replace vague labels such as “process” with domain language.\n7. Remove details that do not support the question.\n8. Review the source and the rendered result at a narrow viewport.\n\n## Readability Review\n\nAsk these questions before merging a diagram:\n\n- Is the intended reading direction obvious?\n- Does every arrow have a consistent meaning?\n- Are decisions phrased as questions with labeled outcomes?\n- Do boundaries reflect real ownership or trust boundaries?\n- Can the source be changed without deciphering generated IDs?\n- Would deleting one-third of the nodes make the explanation clearer?\n\nComplexity is not the number of nodes. Complexity is the amount of context a reader must hold at once. Several focused diagrams are usually better than one “everything architecture” diagram.\n\n## Reference Anchors\n\n- [Mermaid diagram syntax reference](https://mermaid.js.org/intro/syntax-reference.html)\n- [Official flowchart syntax](https://mermaid.js.org/syntax/flowchart.html)\n- [Official Mermaid examples](https://mermaid.js.org/syntax/examples.html)",
+      "plainText": "Why Diagrams As Text Mermaid turns a text definition into a diagram. That matters because text can live beside Markdown and code, participate in normal review, show meaningful diffs, and change without dragging shapes around a canvas. The source remains the durable explanation; the rendered SVG is a view of that source. A diagram is useful only when it answers a question. Before writing syntax, finish this sentence: This diagram helps the reader understand _____. If the answer is “the order of a request,” choose a flowchart or sequence diagram. If it is “which states are legal,” choose a state diagram. If it is “how records relate,” choose an entity-relationship diagram. Choosing the diagram family is part of writing clearly. Read A Mermaid Block In Three Layers Every Mermaid definition can be read in three layers: Declaration: the first meaningful line selects the grammar, such as flowchart, sequenceDiagram, or erDiagram.Things: later lines declare nodes, participants, states, entities, tasks, or data points.Relationships: arrows, transitions, messages, cardinalities, and indentation explain how those things connect. In Codematica, a fenced block whose language is mermaid renders as a diagram. Expand Source beneath any example to compare the text with its output. Easy: A Three-Step Flow flowchart LR Start([Start]) --> Read[Read request] Read --> Reply[Return response] Reply --> Done([Done]) Read the first line left to right: flowchart selects the flowchart grammar.LR asks the layout engine to arrange the main flow from left to right.Start is a stable node ID used by relationships.([Start]) gives that node a visible label and a rounded terminal shape.--> is a directed edge. IDs and labels serve different jobs. An ID should be short and stable; the label should explain the idea to a human. Reusing an ID refers to the same node instead of creating a copy. Direction Choices Flowcharts commonly use: TD or TB: top to bottom, useful for long procedures and mobile reading.LR: left to right, useful for pipelines and request paths.RL: right to left.BT: bottom to top. Direction is a request to the layout engine, not pixel positioning. Mermaid decides exact coordinates. Medium: Decisions, Labels, And Data flowchart TD Request[Receive request] --> Valid{Input valid?} Valid -->|Yes| Save[(Store record)] Valid -->|No| Explain[Return validation errors] Save --> Success([Created]) Explain --> Finish([Finished]) This example introduces semantic shapes and edge labels: Task[Text] creates a rectangular process.Choice{Text} creates a decision diamond.Store[(Text)] creates a cylindrical database shape.([Text]) creates a rounded terminal.-->|Yes| labels the decision branch. Shapes are visual vocabulary, not decoration. A diamond should mean a branch. A database cylinder should mean stored data. If every node uses a different shape, readers spend effort decoding style instead of understanding the system. Useful edge forms include --> for a directed relationship, --- for an undirected connection, -.-> for a dotted directed relationship, and ==> for a stronger rendered edge. Prefer one dominant edge meaning and label exceptions. Harder: Boundaries, Fan-Out, And Failure flowchart LR User([User]) --> Web[Web application] subgraph Edge[Edge boundary] Gateway[API gateway] Limit{Rate allowed?} end subgraph Services[Service boundary] Orders[Order service] Queue[[Event queue]] Worker[Payment worker] end Web --> Gateway Gateway --> Limit Limit -->|Yes| Orders Limit -->|No| Rejected[429 response] Orders --> OrdersDb[(Orders database)] Orders --> Queue Queue -. asynchronous .-> Worker Worker --> Provider[Payment provider] Provider -->|Failure| Retry[Retry policy] Retry --> Queue classDef failure fill:#fff2c2,stroke:#c48600,color:#263238 class Rejected,Retry failure The diagram is more advanced, but its source stays readable because it has boundaries and a main story: subgraph ... end groups nodes into a named boundary.One edge enters each boundary before the flow fans out.The dotted asynchronous edge communicates a different relationship.The failure class is reused instead of repeating styles. The best way to create this diagram is incrementally. First render User --> Web --> Gateway --> Orders. Add the decision. Then add storage and asynchronous work. Finally add the failure loop. Rendering after each small change makes syntax errors easy to locate. Comments, Quoting, And Parser Safety Use %% for a line comment: %% Explain why this unusual retry edge exists. Worker --> Retry Quote labels containing punctuation or parser-sensitive words: Finish[\"End request safely\"] Mermaid's official flowchart documentation warns that lowercase end can break a flowchart because end closes a subgraph. Use a different ID, capitalize the word, or quote it as display text. Similarly, do not build node IDs from full sentences. Keep IDs simple and put prose in labels. A Reliable Authoring Loop Write the question the diagram must answer.Pick the diagram family before writing relationships.Add the declaration and two connected things.Render immediately.Add one relationship or boundary at a time.Replace vague labels such as “process” with domain language.Remove details that do not support the question.Review the source and the rendered result at a narrow viewport. Readability Review Ask these questions before merging a diagram: Is the intended reading direction obvious?Does every arrow have a consistent meaning?Are decisions phrased as questions with labeled outcomes?Do boundaries reflect real ownership or trust boundaries?Can the source be changed without deciphering generated IDs?Would deleting one-third of the nodes make the explanation clearer? Complexity is not the number of nodes. Complexity is the amount of context a reader must hold at once. Several focused diagrams are usually better than one “everything architecture” diagram. Reference Anchors Mermaid diagram syntax referenceOfficial flowchart syntaxOfficial Mermaid examples",
+      "headings": [
+        {
+          "id": "why-diagrams-as-text",
+          "depth": 2,
+          "text": "Why Diagrams As Text"
+        },
+        {
+          "id": "read-a-mermaid-block-in-three-layers",
+          "depth": 2,
+          "text": "Read A Mermaid Block In Three Layers"
+        },
+        {
+          "id": "easy-a-three-step-flow",
+          "depth": 2,
+          "text": "Easy: A Three-Step Flow"
+        },
+        {
+          "id": "direction-choices",
+          "depth": 3,
+          "text": "Direction Choices"
+        },
+        {
+          "id": "medium-decisions-labels-and-data",
+          "depth": 2,
+          "text": "Medium: Decisions, Labels, And Data"
+        },
+        {
+          "id": "harder-boundaries-fan-out-and-failure",
+          "depth": 2,
+          "text": "Harder: Boundaries, Fan-Out, And Failure"
+        },
+        {
+          "id": "comments-quoting-and-parser-safety",
+          "depth": 2,
+          "text": "Comments, Quoting, And Parser Safety"
+        },
+        {
+          "id": "a-reliable-authoring-loop",
+          "depth": 2,
+          "text": "A Reliable Authoring Loop"
+        },
+        {
+          "id": "readability-review",
+          "depth": 2,
+          "text": "Readability Review"
+        },
+        {
+          "id": "reference-anchors",
+          "depth": 2,
+          "text": "Reference Anchors"
+        }
+      ],
+      "mermaidBlocks": [
+        {
+          "id": "embedded-1",
+          "source": "flowchart LR\n  Start([Start]) --> Read[Read request]\n  Read --> Reply[Return response]\n  Reply --> Done([Done])"
+        },
+        {
+          "id": "embedded-2",
+          "source": "flowchart TD\n  Request[Receive request] --> Valid{Input valid?}\n  Valid -->|Yes| Save[(Store record)]\n  Valid -->|No| Explain[Return validation errors]\n  Save --> Success([Created])\n  Explain --> Finish([Finished])"
+        },
+        {
+          "id": "embedded-3",
+          "source": "flowchart LR\n  User([User]) --> Web[Web application]\n\n  subgraph Edge[Edge boundary]\n    Gateway[API gateway]\n    Limit{Rate allowed?}\n  end\n\n  subgraph Services[Service boundary]\n    Orders[Order service]\n    Queue[[Event queue]]\n    Worker[Payment worker]\n  end\n\n  Web --> Gateway\n  Gateway --> Limit\n  Limit -->|Yes| Orders\n  Limit -->|No| Rejected[429 response]\n  Orders --> OrdersDb[(Orders database)]\n  Orders --> Queue\n  Queue -. asynchronous .-> Worker\n  Worker --> Provider[Payment provider]\n  Provider -->|Failure| Retry[Retry policy]\n  Retry --> Queue\n\n  classDef failure fill:#fff2c2,stroke:#c48600,color:#263238\n  class Rejected,Retry failure"
+        }
+      ],
+      "contentHash": "b707a792426312765b02471c312519056dd38e2d2a6f62a9bea2b1200e0d26da",
+      "readingMinutes": 4
+    },
+    {
       "title": "Python Async Testing And Production Standards For JS Engineers",
       "slug": "programming/python-async-testing-production",
       "summary": "Senior Python guidance for asyncio, blocking work, test boundaries, style standards, and production maintainability from a JavaScript and TypeScript perspective.",
@@ -2374,6 +2815,51 @@
       "contentHash": "3e7445d67ddfdf2d1866944f397cac1daa13397f2663c78ff4ba140210fee9f0"
     },
     {
+      "slug": "breadth-first-and-depth-first-search",
+      "title": "Breadth-First Search And Depth-First Search",
+      "summary": "Learn BFS and DFS from first principles, implement both in Python and TypeScript, and choose the right traversal in graph, tree, grid, and interview problems.",
+      "kind": "skill",
+      "category": "Programming",
+      "audience": "Developers preparing for coding interviews or strengthening practical graph and tree traversal fundamentals.",
+      "status": "published",
+      "units": [
+        {
+          "slug": "bfs-dfs-fundamentals",
+          "title": "BFS And DFS Fundamentals",
+          "summary": "Build a shared traversal mental model, then compare queue-based BFS with stack-based or recursive DFS.",
+          "nodes": [
+            {
+              "kind": "document",
+              "slug": "programming/bfs-dfs-fundamentals"
+            },
+            {
+              "kind": "exercise",
+              "slug": "programming/bfs-dfs-fundamentals-questionnaire"
+            }
+          ]
+        },
+        {
+          "slug": "bfs-dfs-interview-patterns",
+          "title": "Interview Patterns And Tradeoffs",
+          "summary": "Apply traversal to grids, shortest paths, dependencies, and problems where BFS and DFS are both correct but behave differently.",
+          "nodes": [
+            {
+              "kind": "document",
+              "slug": "programming/bfs-dfs-interview-patterns"
+            },
+            {
+              "kind": "exercise",
+              "slug": "programming/bfs-dfs-interview-patterns-questionnaire"
+            }
+          ]
+        }
+      ],
+      "id": "8f99820e789a",
+      "route": "/paths/breadth-first-and-depth-first-search",
+      "sourcePath": "content/learning-paths/breadth-first-and-depth-first-search.json",
+      "contentHash": "3daa64c6341209517a8304d7b208f079b5654428449edb916fc1f66054050231"
+    },
+    {
       "slug": "database-indexes-and-search",
       "title": "Database Indexes And Search",
       "summary": "Learn how database indexes, PostgreSQL full text search, trigram fuzzy matching, and hybrid search queries behave under production constraints.",
@@ -2496,6 +2982,66 @@
       "route": "/paths/japanese-foundations",
       "sourcePath": "content/learning-paths/japanese-foundations.json",
       "contentHash": "c2ede6a912b4057988c39a0fb36b1d761cde46cccc905f42bb3db45fc38e5d17"
+    },
+    {
+      "slug": "mermaid-diagram-authoring",
+      "title": "Reading And Writing Mermaid Diagrams",
+      "summary": "Learn Mermaid from readable flowcharts through software models, planning charts, and advanced documentation patterns with rendered examples and source-first practice.",
+      "kind": "skill",
+      "category": "Programming",
+      "audience": "Developers, technical writers, and system designers who want maintainable diagrams that live beside code and documentation.",
+      "status": "published",
+      "units": [
+        {
+          "slug": "mermaid-syntax-fundamentals",
+          "title": "Syntax And Flowchart Fundamentals",
+          "summary": "Read Mermaid declarations, node IDs, labels, shapes, edges, directions, decisions, and subgraphs from easy to detailed flowcharts.",
+          "nodes": [
+            {
+              "kind": "document",
+              "slug": "programming/mermaid-syntax-fundamentals"
+            },
+            {
+              "kind": "exercise",
+              "slug": "programming/mermaid-syntax-fundamentals-questionnaire"
+            }
+          ]
+        },
+        {
+          "slug": "mermaid-software-diagrams",
+          "title": "Software Structure And Behavior",
+          "summary": "Choose and write sequence, class, state, and entity-relationship diagrams for different software questions.",
+          "nodes": [
+            {
+              "kind": "document",
+              "slug": "programming/mermaid-software-diagrams"
+            },
+            {
+              "kind": "exercise",
+              "slug": "programming/mermaid-software-diagrams-questionnaire"
+            }
+          ]
+        },
+        {
+          "slug": "mermaid-planning-and-data-diagrams",
+          "title": "Planning, Data, And Advanced Authoring",
+          "summary": "Use Gantt, user journey, pie, mindmap, timeline, and Git graph diagrams, then debug and review complex diagram source.",
+          "nodes": [
+            {
+              "kind": "document",
+              "slug": "programming/mermaid-planning-and-data-diagrams"
+            },
+            {
+              "kind": "exercise",
+              "slug": "programming/mermaid-planning-and-data-diagrams-questionnaire"
+            }
+          ]
+        }
+      ],
+      "id": "037abdef0a26",
+      "route": "/paths/mermaid-diagram-authoring",
+      "sourcePath": "content/learning-paths/mermaid-diagram-authoring.json",
+      "contentHash": "f1246ed1346c18a7d8f51050e77e7662318cc55f49e87a68b22560ce668a373e"
     },
     {
       "slug": "python-for-ts-js-engineers",
@@ -5407,6 +5953,924 @@
       "route": "/practice/languages/japanese-starter-kanji-writing",
       "sourcePath": "content/exercises/languages/japanese-starter-kanji-writing.json",
       "contentHash": "718284e8cba3598f303a778cdc223e89fe2f38fd4b29195dc62269ea924f4d63"
+    },
+    {
+      "slug": "programming/bfs-dfs-fundamentals-questionnaire",
+      "title": "BFS And DFS Fundamentals Questionnaire",
+      "documentSlug": "programming/bfs-dfs-fundamentals",
+      "concept": "Breadth-first and depth-first traversal fundamentals",
+      "difficulty": "foundation",
+      "tags": [
+        "algorithms",
+        "graphs",
+        "bfs",
+        "dfs"
+      ],
+      "status": "published",
+      "type": "questionnaire",
+      "questions": [
+        {
+          "id": "bfs-structure",
+          "prompt": "Which data structure gives breadth-first search its level-by-level exploration order?",
+          "explanation": "A FIFO queue expands nodes in the same order they were discovered, preserving increasing distance layers.",
+          "kind": "choice",
+          "options": [
+            {
+              "id": "queue",
+              "label": "A first-in, first-out queue",
+              "isCorrect": true
+            },
+            {
+              "id": "stack",
+              "label": "A last-in, first-out stack",
+              "isCorrect": false
+            },
+            {
+              "id": "heap",
+              "label": "A max heap ordered by node value",
+              "isCorrect": false
+            }
+          ]
+        },
+        {
+          "id": "dfs-structure",
+          "prompt": "Name the implicit data structure used by a recursive depth-first search.",
+          "explanation": "Each recursive call waits while a deeper neighbor is explored, so the runtime call stack remembers the path.",
+          "kind": "cloze",
+          "template": "Recursive DFS stores its active path in the {{blank}}.",
+          "acceptedAnswers": [
+            "call stack",
+            "runtime call stack",
+            "stack"
+          ]
+        },
+        {
+          "id": "bfs-visited-timing",
+          "prompt": "Order the safe steps for discovering one previously unseen BFS neighbor.",
+          "explanation": "Marking before enqueueing prevents another parent from adding the same node to the queue.",
+          "kind": "ordering",
+          "items": [
+            {
+              "id": "check",
+              "label": "Check whether the neighbor is unvisited"
+            },
+            {
+              "id": "mark",
+              "label": "Mark the neighbor visited"
+            },
+            {
+              "id": "enqueue",
+              "label": "Enqueue the neighbor"
+            }
+          ],
+          "correctOrder": [
+            "check",
+            "mark",
+            "enqueue"
+          ]
+        },
+        {
+          "id": "traversal-use",
+          "prompt": "Match each traversal to the problem shape it naturally expresses.",
+          "explanation": "Traversal order matters when a prompt needs distance layers; plain reachability can use either traversal.",
+          "kind": "matching",
+          "pairs": [
+            {
+              "id": "bfs",
+              "prompt": "BFS",
+              "match": "minimum edges in an unweighted graph"
+            },
+            {
+              "id": "dfs",
+              "prompt": "DFS",
+              "match": "explore one component by backtracking"
+            },
+            {
+              "id": "either",
+              "prompt": "Either traversal",
+              "match": "reachability when no shortest path is requested"
+            }
+          ]
+        },
+        {
+          "id": "shared-complexity",
+          "prompt": "With an adjacency list and correct visited tracking, what is the time complexity of BFS and DFS?",
+          "explanation": "Each reachable vertex is processed once and each outgoing adjacency-list edge is inspected once.",
+          "kind": "choice",
+          "options": [
+            {
+              "id": "vertices-edges",
+              "label": "O(V + E)",
+              "isCorrect": true
+            },
+            {
+              "id": "vertices-squared",
+              "label": "Always O(V squared)",
+              "isCorrect": false
+            },
+            {
+              "id": "edges-log",
+              "label": "O(E log V)",
+              "isCorrect": false
+            }
+          ]
+        },
+        {
+          "id": "recursion-risk",
+          "prompt": "A graph may be one extremely deep chain supplied by a user. Which DFS implementation avoids runtime recursion depth limits?",
+          "explanation": "An explicit stack lives in normal program memory and avoids relying on the runtime's limited call stack.",
+          "kind": "choice",
+          "options": [
+            {
+              "id": "iterative",
+              "label": "Iterative DFS with an explicit stack",
+              "isCorrect": true
+            },
+            {
+              "id": "recursive",
+              "label": "Recursive DFS without a depth bound",
+              "isCorrect": false
+            },
+            {
+              "id": "no-visited",
+              "label": "DFS without a visited set",
+              "isCorrect": false
+            }
+          ]
+        }
+      ],
+      "id": "b80073bb3477",
+      "route": "/practice/programming/bfs-dfs-fundamentals-questionnaire",
+      "sourcePath": "content/exercises/programming/bfs-dfs-fundamentals-questionnaire.json",
+      "contentHash": "2d1fb89aaf65fdf4eac712355a2f758dcadd7a3af17a585475caccbcc6b39889"
+    },
+    {
+      "slug": "programming/bfs-dfs-interview-patterns-questionnaire",
+      "title": "BFS And DFS Interview Patterns Questionnaire",
+      "documentSlug": "programming/bfs-dfs-interview-patterns",
+      "concept": "Graph traversal interview selection and tradeoffs",
+      "difficulty": "practitioner",
+      "tags": [
+        "algorithms",
+        "interviews",
+        "graphs",
+        "bfs",
+        "dfs"
+      ],
+      "status": "published",
+      "type": "questionnaire",
+      "questions": [
+        {
+          "id": "hidden-grid-graph",
+          "prompt": "Match each grid graph term to its Number Of Islands meaning.",
+          "explanation": "Translating the grid into nodes, edges, and components makes the required traversal direct.",
+          "kind": "matching",
+          "pairs": [
+            {
+              "id": "vertex",
+              "prompt": "Vertex",
+              "match": "one land cell"
+            },
+            {
+              "id": "edge",
+              "prompt": "Edge",
+              "match": "orthogonal land adjacency"
+            },
+            {
+              "id": "component",
+              "prompt": "Connected component",
+              "match": "one complete island"
+            }
+          ]
+        },
+        {
+          "id": "islands-equivalence",
+          "prompt": "Why are BFS and DFS both correct for counting islands?",
+          "explanation": "The answer depends on complete component discovery, not the internal order used to visit that component.",
+          "kind": "choice",
+          "options": [
+            {
+              "id": "component",
+              "label": "Both can visit every cell in one connected component before the outer scan continues.",
+              "isCorrect": true
+            },
+            {
+              "id": "shortest",
+              "label": "Both always find identical shortest paths through an island.",
+              "isCorrect": false
+            },
+            {
+              "id": "sorted",
+              "label": "Both sort land cells before visiting them.",
+              "isCorrect": false
+            }
+          ]
+        },
+        {
+          "id": "shortest-unweighted",
+          "prompt": "Fill the traversal that guarantees the first discovered equal-cost shortest route.",
+          "explanation": "BFS processes every route of distance d before it processes any route of distance d plus one.",
+          "kind": "cloze",
+          "template": "For the minimum number of moves in an unweighted graph, start with {{blank}}.",
+          "acceptedAnswers": [
+            "BFS",
+            "breadth-first search",
+            "breadth first search"
+          ]
+        },
+        {
+          "id": "course-dfs-colors",
+          "prompt": "Order the DFS color states for a course with no detected cycle.",
+          "explanation": "An edge to a visiting node is a back edge; a complete node has already been proven cycle-free.",
+          "kind": "ordering",
+          "items": [
+            {
+              "id": "unseen",
+              "label": "Unseen"
+            },
+            {
+              "id": "visiting",
+              "label": "Visiting on the active path"
+            },
+            {
+              "id": "complete",
+              "label": "Complete after dependencies return"
+            }
+          ],
+          "correctOrder": [
+            "unseen",
+            "visiting",
+            "complete"
+          ]
+        },
+        {
+          "id": "kahn-signal",
+          "prompt": "What tells Kahn's BFS topological algorithm that the prerequisite graph contains a cycle?",
+          "explanation": "Nodes in or behind a cycle never reach zero indegree, so they cannot all be removed from the graph.",
+          "kind": "choice",
+          "options": [
+            {
+              "id": "fewer",
+              "label": "It processes fewer courses than the total number of courses.",
+              "isCorrect": true
+            },
+            {
+              "id": "empty-start",
+              "label": "Its initial queue contains every course.",
+              "isCorrect": false
+            },
+            {
+              "id": "negative",
+              "label": "A course receives a negative indegree.",
+              "isCorrect": false
+            }
+          ]
+        },
+        {
+          "id": "island-runtime-risk",
+          "prompt": "On a huge solid grid, what practical risk most clearly distinguishes recursive DFS from iterative BFS?",
+          "explanation": "Both algorithms are correct, but an enormous recursive path can exceed language call-stack limits.",
+          "kind": "choice",
+          "options": [
+            {
+              "id": "stack-overflow",
+              "label": "Recursive DFS can overflow the runtime call stack.",
+              "isCorrect": true
+            },
+            {
+              "id": "wrong-count",
+              "label": "Recursive DFS necessarily counts the island incorrectly.",
+              "isCorrect": false
+            },
+            {
+              "id": "weighted",
+              "label": "BFS changes every grid edge into a weighted edge.",
+              "isCorrect": false
+            }
+          ]
+        }
+      ],
+      "id": "0f9400690eb5",
+      "route": "/practice/programming/bfs-dfs-interview-patterns-questionnaire",
+      "sourcePath": "content/exercises/programming/bfs-dfs-interview-patterns-questionnaire.json",
+      "contentHash": "fac699d4e63df12a584beb8730cca897b311df8734e8a177ffa6afad35d1a9d5"
+    },
+    {
+      "slug": "programming/mermaid-planning-and-data-diagrams-questionnaire",
+      "title": "Mermaid Planning And Data Diagrams Questionnaire",
+      "documentSlug": "programming/mermaid-planning-and-data-diagrams",
+      "concept": "Choosing, writing, and reviewing planning and data-oriented Mermaid diagrams",
+      "difficulty": "practitioner",
+      "tags": [
+        "mermaid",
+        "gantt",
+        "journey",
+        "charts",
+        "documentation"
+      ],
+      "status": "published",
+      "type": "questionnaire",
+      "questions": [
+        {
+          "id": "gantt-purpose",
+          "prompt": "Which question is a Gantt diagram best equipped to answer?",
+          "explanation": "Correct: Gantt encodes dates, durations, task status, and dependencies. Incorrect options: record cardinality belongs in an ER diagram; participant message order belongs in a sequence diagram.",
+          "kind": "choice",
+          "options": [
+            {
+              "id": "schedule",
+              "label": "When do tasks occur, how long do they take, and which tasks depend on others?",
+              "isCorrect": true
+            },
+            {
+              "id": "cardinality",
+              "label": "How many orders may belong to one customer?",
+              "isCorrect": false
+            },
+            {
+              "id": "message-order",
+              "label": "Which API participant sends the third runtime message?",
+              "isCorrect": false
+            }
+          ]
+        },
+        {
+          "id": "gantt-after",
+          "prompt": "What does `Review :review, after examples, 2d` mean in a Mermaid Gantt task?",
+          "explanation": "Correct: `after examples` is a task dependency and `2d` is duration. Incorrect options: `2d` means days and the direction is after, not before; sections require the `section` keyword.",
+          "kind": "choice",
+          "options": [
+            {
+              "id": "dependency",
+              "label": "The review task starts after the task whose ID is examples and lasts two days.",
+              "isCorrect": true
+            },
+            {
+              "id": "two-hours",
+              "label": "The review starts two hours before examples.",
+              "isCorrect": false
+            },
+            {
+              "id": "section",
+              "label": "The line creates a new section named examples.",
+              "isCorrect": false
+            }
+          ]
+        },
+        {
+          "id": "journey-task",
+          "prompt": "Which line correctly defines a user-journey task with score 5 and two participating actors?",
+          "explanation": "Correct: journey tasks use `Task: score: actor list`. Incorrect options: the arrow is flowchart syntax and does not encode a journey score; `:done, 5d` is Gantt task metadata.",
+          "kind": "choice",
+          "options": [
+            {
+              "id": "journey-syntax",
+              "label": "See diagram render: 5: Learner, Renderer",
+              "isCorrect": true
+            },
+            {
+              "id": "flow-edge",
+              "label": "Learner -->|5| Renderer",
+              "isCorrect": false
+            },
+            {
+              "id": "gantt-task",
+              "label": "See diagram render :done, 5d",
+              "isCorrect": false
+            }
+          ]
+        },
+        {
+          "id": "pie-fit",
+          "prompt": "Which dataset is the best fit for a pie chart?",
+          "explanation": "Correct: a few categories forming one whole suit part-to-whole comparison. Incorrect options: a time series needs an axis-based chart; negative values do not form meaningful pie-slice proportions.",
+          "kind": "choice",
+          "options": [
+            {
+              "id": "few-parts",
+              "label": "Four mutually exclusive categories that together make up all review findings.",
+              "isCorrect": true
+            },
+            {
+              "id": "time-series",
+              "label": "Request latency measured every minute for a week.",
+              "isCorrect": false
+            },
+            {
+              "id": "negative-values",
+              "label": "Monthly gains and losses containing positive and negative values.",
+              "isCorrect": false
+            }
+          ]
+        },
+        {
+          "id": "mindmap-indent",
+          "prompt": "What determines parent-child hierarchy in a Mermaid mindmap?",
+          "explanation": "Correct: mindmaps are indentation-sensitive and nesting defines hierarchy. Incorrect options: explicit arrows belong to flow-like grammars; dated events belong to timeline or Gantt diagrams.",
+          "kind": "choice",
+          "options": [
+            {
+              "id": "indentation",
+              "label": "Indentation beneath the parent node",
+              "isCorrect": true
+            },
+            {
+              "id": "arrows",
+              "label": "Explicit `-->` arrows between every item",
+              "isCorrect": false
+            },
+            {
+              "id": "dates",
+              "label": "Chronological dates before every item",
+              "isCorrect": false
+            }
+          ]
+        },
+        {
+          "id": "timeline-vs-gantt",
+          "prompt": "Why choose a timeline instead of a Gantt chart for a short history of architecture decisions?",
+          "explanation": "Correct: timeline emphasizes chronology without schedule mechanics. Incorrect options: no Mermaid timeline validates database constraints; lifelines and runtime messages are sequence-diagram concepts.",
+          "kind": "choice",
+          "options": [
+            {
+              "id": "chronology",
+              "label": "The explanation needs ordered events but not task durations or dependency scheduling.",
+              "isCorrect": true
+            },
+            {
+              "id": "database",
+              "label": "Timeline automatically validates database foreign keys.",
+              "isCorrect": false
+            },
+            {
+              "id": "runtime",
+              "label": "Timeline shows request messages along participant lifelines.",
+              "isCorrect": false
+            }
+          ]
+        },
+        {
+          "id": "gitgraph-purpose",
+          "prompt": "What is the strongest use for a hand-authored Mermaid Git graph?",
+          "explanation": "Correct: Git graph is effective for a simplified branch-and-merge story. Incorrect options: Git itself remains the source of exact history; database cardinality belongs in an ER diagram.",
+          "kind": "choice",
+          "options": [
+            {
+              "id": "strategy",
+              "label": "Explain a focused branching and merge strategy with only the relevant commits.",
+              "isCorrect": true
+            },
+            {
+              "id": "exact-history",
+              "label": "Replace the repository as the authoritative record of every commit hash.",
+              "isCorrect": false
+            },
+            {
+              "id": "schema",
+              "label": "Document database table cardinality.",
+              "isCorrect": false
+            }
+          ]
+        },
+        {
+          "id": "version-sensitive-review",
+          "prompt": "A newer diagram family works in the Mermaid Live Editor but fails in the app. What should the author check first?",
+          "explanation": "Correct: syntax support belongs to the host's installed Mermaid version and configuration. Incorrect options: extra nodes cannot add parser support; renaming source does not turn text into a rendered image or solve compatibility.",
+          "kind": "choice",
+          "options": [
+            {
+              "id": "host-version",
+              "label": "The Mermaid version and configuration actually deployed by the app",
+              "isCorrect": true
+            },
+            {
+              "id": "more-nodes",
+              "label": "Whether adding more nodes makes the parser discover the grammar",
+              "isCorrect": false
+            },
+            {
+              "id": "rename-markdown",
+              "label": "Whether the Markdown file can be renamed to an image extension",
+              "isCorrect": false
+            }
+          ]
+        }
+      ],
+      "id": "f4301a4c4f00",
+      "route": "/practice/programming/mermaid-planning-and-data-diagrams-questionnaire",
+      "sourcePath": "content/exercises/programming/mermaid-planning-and-data-diagrams-questionnaire.json",
+      "contentHash": "44febd411ae1de79da97e382b7f0f601b6d4a385b117e419817201fbbf8095fe"
+    },
+    {
+      "slug": "programming/mermaid-software-diagrams-questionnaire",
+      "title": "Mermaid Software Diagrams Questionnaire",
+      "documentSlug": "programming/mermaid-software-diagrams",
+      "concept": "Choosing and authoring software-oriented Mermaid diagrams",
+      "difficulty": "practitioner",
+      "tags": [
+        "mermaid",
+        "sequence-diagrams",
+        "class-diagrams",
+        "state-diagrams",
+        "er-diagrams"
+      ],
+      "status": "published",
+      "type": "questionnaire",
+      "questions": [
+        {
+          "id": "runtime-order-family",
+          "prompt": "Which diagram best explains who sends each message during an order request and in what order?",
+          "explanation": "Correct: a sequence diagram places messages along a top-to-bottom time axis. Incorrect options: a class diagram describes static types and relationships; an ER diagram describes data entities and cardinality, not runtime order.",
+          "kind": "choice",
+          "options": [
+            {
+              "id": "sequence",
+              "label": "Sequence diagram",
+              "isCorrect": true
+            },
+            {
+              "id": "class",
+              "label": "Class diagram",
+              "isCorrect": false
+            },
+            {
+              "id": "er",
+              "label": "Entity-relationship diagram",
+              "isCorrect": false
+            }
+          ]
+        },
+        {
+          "id": "sequence-alternative",
+          "prompt": "Which sequence-diagram block expresses two mutually exclusive outcomes such as approved and rejected?",
+          "explanation": "Correct: `alt` and `else` model alternative branches. Incorrect options: `loop` communicates repetition; `par` communicates concurrent branches rather than exclusive outcomes.",
+          "kind": "choice",
+          "options": [
+            {
+              "id": "alt",
+              "label": "alt ... else ... end",
+              "isCorrect": true
+            },
+            {
+              "id": "loop",
+              "label": "loop ... end",
+              "isCorrect": false
+            },
+            {
+              "id": "par",
+              "label": "par ... and ... end",
+              "isCorrect": false
+            }
+          ]
+        },
+        {
+          "id": "class-composition",
+          "prompt": "Which class relationship says an Order strongly owns its OrderLine parts?",
+          "explanation": "Correct: `*--` is composition, a strong whole-part relationship. Incorrect options: `..>` is a dependency without ownership; `<|--` means inheritance and would claim an OrderLine is a kind of Order.",
+          "kind": "choice",
+          "options": [
+            {
+              "id": "composition",
+              "label": "Order *-- OrderLine",
+              "isCorrect": true
+            },
+            {
+              "id": "dependency",
+              "label": "Order ..> OrderLine",
+              "isCorrect": false
+            },
+            {
+              "id": "inheritance",
+              "label": "Order <|-- OrderLine",
+              "isCorrect": false
+            }
+          ]
+        },
+        {
+          "id": "class-interface",
+          "prompt": "Which relationship most clearly shows StripeGateway realizing the PaymentGateway interface?",
+          "explanation": "Correct: `<|..` is Mermaid's UML-style realization relationship. Incorrect options: composition means strong ownership; a plain solid link does not communicate interface implementation.",
+          "kind": "choice",
+          "options": [
+            {
+              "id": "realization",
+              "label": "PaymentGateway <|.. StripeGateway",
+              "isCorrect": true
+            },
+            {
+              "id": "composition",
+              "label": "PaymentGateway *-- StripeGateway",
+              "isCorrect": false
+            },
+            {
+              "id": "plain-link",
+              "label": "PaymentGateway -- StripeGateway",
+              "isCorrect": false
+            }
+          ]
+        },
+        {
+          "id": "state-start-end",
+          "prompt": "In a state diagram, which line declares Draft as the initial state?",
+          "explanation": "Correct: an arrow from `[*]` enters the initial state. Incorrect options: an arrow into `[*]` marks a terminal transition; `actor` is sequence-diagram syntax and does not declare state-machine entry.",
+          "kind": "choice",
+          "options": [
+            {
+              "id": "start-arrow",
+              "label": "[*] --> Draft",
+              "isCorrect": true
+            },
+            {
+              "id": "end-arrow",
+              "label": "Draft --> [*]",
+              "isCorrect": false
+            },
+            {
+              "id": "sequence-actor",
+              "label": "actor Draft",
+              "isCorrect": false
+            }
+          ]
+        },
+        {
+          "id": "composite-state",
+          "prompt": "What does `state PendingPayment { ... }` communicate in `stateDiagram-v2`?",
+          "explanation": "Correct: the braced state body defines a composite state with nested states. Incorrect options: database attributes belong to ER syntax; parallel messages belong to a sequence `par` block.",
+          "kind": "choice",
+          "options": [
+            {
+              "id": "composite",
+              "label": "PendingPayment contains an internal state machine.",
+              "isCorrect": true
+            },
+            {
+              "id": "database",
+              "label": "PendingPayment is a database entity with attributes.",
+              "isCorrect": false
+            },
+            {
+              "id": "parallel-message",
+              "label": "PendingPayment sends parallel sequence messages.",
+              "isCorrect": false
+            }
+          ]
+        },
+        {
+          "id": "er-cardinality",
+          "prompt": "How should `CUSTOMER ||--o{ ORDER : places` be read?",
+          "explanation": "Correct: `||` is exactly one and `o{` is zero or more. Incorrect options: the reversed cardinalities contradict the markers; ER relationships describe data associations, not runtime messages.",
+          "kind": "choice",
+          "options": [
+            {
+              "id": "one-many",
+              "label": "Each order has exactly one customer; a customer may have zero or many orders.",
+              "isCorrect": true
+            },
+            {
+              "id": "many-one",
+              "label": "Each order has many customers; a customer must have exactly one order.",
+              "isCorrect": false
+            },
+            {
+              "id": "runtime",
+              "label": "Customer sends an asynchronous runtime message to Order.",
+              "isCorrect": false
+            }
+          ]
+        },
+        {
+          "id": "choose-state-not-sequence",
+          "prompt": "The team needs to decide whether a cancelled order may later become confirmed. Which diagram is the best primary tool?",
+          "explanation": "Correct: a state diagram exposes legal and forbidden lifecycle transitions. Incorrect options: one successful sequence does not enumerate lifecycle rules; method structure does not prove which state changes are allowed.",
+          "kind": "choice",
+          "options": [
+            {
+              "id": "state",
+              "label": "State diagram",
+              "isCorrect": true
+            },
+            {
+              "id": "sequence",
+              "label": "Sequence diagram of one successful request",
+              "isCorrect": false
+            },
+            {
+              "id": "class",
+              "label": "Class diagram listing Order methods",
+              "isCorrect": false
+            }
+          ]
+        }
+      ],
+      "id": "08852f48f48a",
+      "route": "/practice/programming/mermaid-software-diagrams-questionnaire",
+      "sourcePath": "content/exercises/programming/mermaid-software-diagrams-questionnaire.json",
+      "contentHash": "fa9c7a60defa2e6a5d82b787afd4669f0d76c842a10abb84b715a554c7676103"
+    },
+    {
+      "slug": "programming/mermaid-syntax-fundamentals-questionnaire",
+      "title": "Mermaid Syntax Fundamentals Questionnaire",
+      "documentSlug": "programming/mermaid-syntax-fundamentals",
+      "concept": "Reading and writing Mermaid flowchart syntax",
+      "difficulty": "foundation",
+      "tags": [
+        "mermaid",
+        "flowcharts",
+        "diagrams",
+        "documentation"
+      ],
+      "status": "published",
+      "type": "questionnaire",
+      "questions": [
+        {
+          "id": "left-right-declaration",
+          "prompt": "Which first line declares a flowchart whose main reading direction is left to right?",
+          "explanation": "Correct: `flowchart LR` selects the flowchart grammar and left-to-right direction. Incorrect options: `sequenceDiagram LR` selects the wrong diagram family and does not use flowchart direction this way; `flowchart TD` is valid but requests top-to-bottom layout.",
+          "kind": "choice",
+          "options": [
+            {
+              "id": "flowchart-lr",
+              "label": "flowchart LR",
+              "isCorrect": true
+            },
+            {
+              "id": "sequence-lr",
+              "label": "sequenceDiagram LR",
+              "isCorrect": false
+            },
+            {
+              "id": "flowchart-td",
+              "label": "flowchart TD",
+              "isCorrect": false
+            }
+          ]
+        },
+        {
+          "id": "node-id-label",
+          "prompt": "In `Gateway[API gateway]`, which part should other Mermaid edges reuse to reference the same node?",
+          "explanation": "Correct: `Gateway` is the stable node ID used in relationships. Incorrect options: `API gateway` is the human-facing label and may change; the square brackets select the rectangular label syntax but are not an identifier.",
+          "kind": "choice",
+          "options": [
+            {
+              "id": "gateway-id",
+              "label": "Gateway",
+              "isCorrect": true
+            },
+            {
+              "id": "api-label",
+              "label": "API gateway",
+              "isCorrect": false
+            },
+            {
+              "id": "brackets",
+              "label": "The square brackets",
+              "isCorrect": false
+            }
+          ]
+        },
+        {
+          "id": "decision-shape",
+          "prompt": "Which definition creates a decision node that asks whether input is valid?",
+          "explanation": "Correct: braces create the decision diamond used for branching. Incorrect options: `[(...)]` is a database cylinder; `([...])` is a rounded terminal/process shape and does not visually communicate a decision.",
+          "kind": "choice",
+          "options": [
+            {
+              "id": "diamond",
+              "label": "Valid{Input valid?}",
+              "isCorrect": true
+            },
+            {
+              "id": "database",
+              "label": "Valid[(Input valid?)]",
+              "isCorrect": false
+            },
+            {
+              "id": "terminal",
+              "label": "Valid([Input valid?])",
+              "isCorrect": false
+            }
+          ]
+        },
+        {
+          "id": "edge-label",
+          "prompt": "Which line labels the outgoing branch from `Valid` to `Save` with the word Yes?",
+          "explanation": "Correct: text between pipes labels the edge itself. Incorrect options: `Valid[Yes]` changes the node's visible label; `%% Yes` is a source comment and is not rendered as a branch label.",
+          "kind": "choice",
+          "options": [
+            {
+              "id": "pipe-label",
+              "label": "Valid -->|Yes| Save",
+              "isCorrect": true
+            },
+            {
+              "id": "node-label",
+              "label": "Valid[Yes] --> Save",
+              "isCorrect": false
+            },
+            {
+              "id": "comment-label",
+              "label": "Valid --> Save %% Yes",
+              "isCorrect": false
+            }
+          ]
+        },
+        {
+          "id": "subgraph-boundary",
+          "prompt": "What is the clearest Mermaid construct for grouping several nodes inside a named service boundary?",
+          "explanation": "Correct: `subgraph ... end` creates a rendered group around contained nodes. Incorrect options: `classDef` defines reusable styling rather than a boundary; `Note over` belongs to sequence diagrams and annotates participants instead of grouping flowchart nodes.",
+          "kind": "choice",
+          "options": [
+            {
+              "id": "subgraph",
+              "label": "subgraph Services ... end",
+              "isCorrect": true
+            },
+            {
+              "id": "classdef",
+              "label": "classDef Services ...",
+              "isCorrect": false
+            },
+            {
+              "id": "note",
+              "label": "Note over Services",
+              "isCorrect": false
+            }
+          ]
+        },
+        {
+          "id": "comment-syntax",
+          "prompt": "Which line adds a Mermaid source comment that should not become a visible diagram element?",
+          "explanation": "Correct: Mermaid line comments begin with `%%`. Incorrect options: `//` is common in programming languages but not the Mermaid line-comment marker; `#` is used by formats such as Markdown or YAML but is not the general Mermaid comment syntax.",
+          "kind": "choice",
+          "options": [
+            {
+              "id": "percent-comment",
+              "label": "%% Retry edge is asynchronous",
+              "isCorrect": true
+            },
+            {
+              "id": "slash-comment",
+              "label": "// Retry edge is asynchronous",
+              "isCorrect": false
+            },
+            {
+              "id": "hash-comment",
+              "label": "# Retry edge is asynchronous",
+              "isCorrect": false
+            }
+          ]
+        },
+        {
+          "id": "lowercase-end-risk",
+          "prompt": "Why should a flowchart author avoid using bare lowercase `end` as a node definition?",
+          "explanation": "Correct: lowercase `end` is parser-sensitive because it terminates subgraphs; quote or capitalize display text instead. Incorrect options: direction comes from declarations such as `LR`; database shapes use bracket syntax and do not reserve the word `end`.",
+          "kind": "choice",
+          "options": [
+            {
+              "id": "reserved",
+              "label": "It can be parsed as the keyword that closes a subgraph.",
+              "isCorrect": true
+            },
+            {
+              "id": "direction",
+              "label": "It forces the flowchart direction to right-to-left.",
+              "isCorrect": false
+            },
+            {
+              "id": "database-only",
+              "label": "It is reserved exclusively for database shapes.",
+              "isCorrect": false
+            }
+          ]
+        },
+        {
+          "id": "debugging-first-step",
+          "prompt": "A large flowchart stops rendering after several edits. What is the strongest first debugging move?",
+          "explanation": "Correct: minimizing the source isolates the first failing statement and preserves a reproducible text diagram. Incorrect options: styling does not locate grammar errors; replacing source with a screenshot abandons maintainability and does not explain the failure.",
+          "kind": "choice",
+          "options": [
+            {
+              "id": "reduce",
+              "label": "Reduce it to the declaration and one valid relationship, then add lines back.",
+              "isCorrect": true
+            },
+            {
+              "id": "restyle",
+              "label": "Add more classDef colors until the failing line becomes visible.",
+              "isCorrect": false
+            },
+            {
+              "id": "screenshot",
+              "label": "Replace the source with a screenshot so the parser is bypassed.",
+              "isCorrect": false
+            }
+          ]
+        }
+      ],
+      "id": "eafcf52c52ec",
+      "route": "/practice/programming/mermaid-syntax-fundamentals-questionnaire",
+      "sourcePath": "content/exercises/programming/mermaid-syntax-fundamentals-questionnaire.json",
+      "contentHash": "b2492e82b03b251aec550b30d94d0a164acf7fb5c74844d768406207def14115"
     },
     {
       "slug": "programming/python-async-questionnaire",
@@ -11371,6 +12835,246 @@
       "contentHash": "2ee4db15d6f478fb34e7a687d43f6478d181a80bf7d90d61ec67c44f93b4c3d2"
     },
     {
+      "slug": "breadth-first-and-depth-first-search",
+      "pathSlug": "breadth-first-and-depth-first-search",
+      "title": "BFS And DFS Scrolling Review",
+      "summary": "Short traversal concepts, implementation reminders, code snippets, and interview prompts for mobile review.",
+      "audience": "Developers learning graph traversal or preparing BFS and DFS coding interview patterns.",
+      "status": "published",
+      "cards": [
+        {
+          "id": "bfs-uses-a-queue",
+          "type": "concept",
+          "title": "BFS Uses A Queue",
+          "prompt": "Breadth-first search expands nodes in first-in, first-out discovery order.",
+          "explanation": "The queue preserves distance layers, so every node d edges away is expanded before any node d plus one edges away.",
+          "difficulty": "foundation",
+          "tags": [
+            "bfs",
+            "queue",
+            "graphs"
+          ],
+          "sourceDocSlug": "programming/bfs-dfs-fundamentals"
+        },
+        {
+          "id": "dfs-uses-a-stack",
+          "type": "concept",
+          "title": "DFS Uses A Stack",
+          "prompt": "Depth-first search follows one branch before it backtracks.",
+          "explanation": "Recursion uses the runtime call stack; iterative DFS makes the same pending path explicit with a stack collection.",
+          "difficulty": "foundation",
+          "tags": [
+            "dfs",
+            "stack",
+            "graphs"
+          ],
+          "sourceDocSlug": "programming/bfs-dfs-fundamentals"
+        },
+        {
+          "id": "visited-prevents-cycles",
+          "type": "concept",
+          "title": "Visited Prevents Cycles",
+          "prompt": "A general graph traversal needs a record of nodes already discovered.",
+          "explanation": "Without visited state, a cycle can repeat forever and shared neighbors can be processed many times.",
+          "difficulty": "foundation",
+          "tags": [
+            "graphs",
+            "visited",
+            "correctness"
+          ],
+          "sourceDocSlug": "programming/bfs-dfs-fundamentals"
+        },
+        {
+          "id": "shortest-means-bfs",
+          "type": "practical",
+          "title": "Shortest Often Means BFS",
+          "prompt": "Equal-cost moves plus a minimum-step question are the classic BFS signal.",
+          "explanation": "BFS explores increasing path lengths. The first target discovery is optimal when every edge has the same cost.",
+          "difficulty": "foundation",
+          "tags": [
+            "bfs",
+            "shortest-path",
+            "interviews"
+          ],
+          "sourceDocSlug": "programming/bfs-dfs-interview-patterns"
+        },
+        {
+          "id": "weighted-path-warning",
+          "type": "practical",
+          "title": "Weights Change The Algorithm",
+          "prompt": "Plain BFS does not solve shortest paths with different edge costs.",
+          "explanation": "The layer number counts edges, not total weight. Nonnegative weighted paths usually call for Dijkstra's algorithm.",
+          "difficulty": "practitioner",
+          "tags": [
+            "bfs",
+            "weighted-graphs",
+            "shortest-path"
+          ],
+          "sourceDocSlug": "programming/bfs-dfs-fundamentals"
+        },
+        {
+          "id": "mark-before-enqueue",
+          "type": "practical",
+          "title": "Mark Before Enqueue",
+          "prompt": "Mark a BFS neighbor visited at the moment it enters the queue.",
+          "explanation": "Early marking prevents two parents in the same frontier from enqueueing the same shared neighbor.",
+          "difficulty": "foundation",
+          "tags": [
+            "bfs",
+            "queue",
+            "performance"
+          ],
+          "sourceDocSlug": "programming/bfs-dfs-fundamentals"
+        },
+        {
+          "id": "typescript-queue-head",
+          "type": "snippet",
+          "title": "TypeScript Queue Head",
+          "prompt": "Advance a head index instead of repeatedly shifting an array-backed queue.",
+          "explanation": "The array keeps queued values while head identifies the next item, avoiding repeated front removal and reindexing.",
+          "difficulty": "foundation",
+          "tags": [
+            "typescript",
+            "bfs",
+            "queue"
+          ],
+          "sourceDocSlug": "programming/bfs-dfs-fundamentals",
+          "code": "for (let head = 0; head < queue.length; head += 1) {\n  const node = queue[head];\n}"
+        },
+        {
+          "id": "python-deque-pop",
+          "type": "snippet",
+          "title": "Python Queue Pop",
+          "prompt": "Python deque provides efficient removal from the front of the BFS queue.",
+          "explanation": "Use popleft for FIFO order; list pop without an index removes from the end and behaves like a stack.",
+          "difficulty": "foundation",
+          "tags": [
+            "python",
+            "bfs",
+            "deque"
+          ],
+          "sourceDocSlug": "programming/bfs-dfs-fundamentals",
+          "code": "from collections import deque\nqueue = deque([start])\nnode = queue.popleft()"
+        },
+        {
+          "id": "iterative-dfs-safety",
+          "type": "practical",
+          "title": "Depth Can Break Recursion",
+          "prompt": "Use iterative DFS when graph depth is large or controlled by untrusted input.",
+          "explanation": "An explicit stack preserves DFS behavior without depending on the runtime's limited recursive call stack.",
+          "difficulty": "practitioner",
+          "tags": [
+            "dfs",
+            "stack",
+            "reliability"
+          ],
+          "sourceDocSlug": "programming/bfs-dfs-fundamentals"
+        },
+        {
+          "id": "islands-hidden-graph",
+          "type": "interview",
+          "title": "Grid Becomes A Graph",
+          "prompt": "In Number Of Islands, what are the vertices, edges, and connected components?",
+          "explanation": "Land cells are vertices, orthogonal land adjacencies are edges, and each maximal connected component is one island.",
+          "difficulty": "practitioner",
+          "tags": [
+            "grids",
+            "components",
+            "interviews"
+          ],
+          "sourceDocSlug": "programming/bfs-dfs-interview-patterns"
+        },
+        {
+          "id": "islands-two-valid-answers",
+          "type": "interview",
+          "title": "Two Correct Island Traversals",
+          "prompt": "BFS and DFS both count islands in O(rows times cols) time.",
+          "explanation": "The prompt needs complete component discovery, so internal traversal order does not change the count; memory shape and recursion safety differ.",
+          "difficulty": "practitioner",
+          "tags": [
+            "bfs",
+            "dfs",
+            "grids"
+          ],
+          "sourceDocSlug": "programming/bfs-dfs-interview-patterns"
+        },
+        {
+          "id": "course-dfs-cycle",
+          "type": "interview",
+          "title": "DFS Finds Back Edges",
+          "prompt": "A prerequisite edge to a node on the active DFS path proves a directed cycle.",
+          "explanation": "The visiting color means that dependency has not finished; reaching it again closes a cycle in the active chain.",
+          "difficulty": "practitioner",
+          "tags": [
+            "dfs",
+            "cycles",
+            "dependencies"
+          ],
+          "sourceDocSlug": "programming/bfs-dfs-interview-patterns"
+        },
+        {
+          "id": "course-kahn-bfs",
+          "type": "interview",
+          "title": "Kahn Starts At Zero",
+          "prompt": "BFS topological processing begins with every course whose indegree is zero.",
+          "explanation": "Removing ready courses can make dependents ready. A cycle leaves some courses with positive indegree forever.",
+          "difficulty": "practitioner",
+          "tags": [
+            "bfs",
+            "topological-sort",
+            "dependencies"
+          ],
+          "sourceDocSlug": "programming/bfs-dfs-interview-patterns"
+        },
+        {
+          "id": "both-linear",
+          "type": "concept",
+          "title": "Both Are Linear",
+          "prompt": "Adjacency-list BFS and DFS both take O(V + E) time with visited tracking.",
+          "explanation": "Every reachable vertex is processed once, and every adjacency-list edge is inspected a constant number of times.",
+          "difficulty": "foundation",
+          "tags": [
+            "complexity",
+            "bfs",
+            "dfs"
+          ],
+          "sourceDocSlug": "programming/bfs-dfs-fundamentals"
+        },
+        {
+          "id": "memory-shape",
+          "type": "concept",
+          "title": "Shape Drives Memory",
+          "prompt": "BFS stores a frontier; DFS stores an active path and pending branches.",
+          "explanation": "Wide graphs pressure a BFS queue, while deep graphs pressure a DFS stack even though both have O(V) worst-case space.",
+          "difficulty": "practitioner",
+          "tags": [
+            "complexity",
+            "memory",
+            "graphs"
+          ],
+          "sourceDocSlug": "programming/bfs-dfs-fundamentals"
+        },
+        {
+          "id": "state-the-invariant",
+          "type": "interview",
+          "title": "Explain Before Coding",
+          "prompt": "State the node, edge, visited rule, and traversal invariant before implementation.",
+          "explanation": "A precise model turns a story problem into a standard traversal and gives the interviewer a clear correctness argument.",
+          "difficulty": "practitioner",
+          "tags": [
+            "interviews",
+            "communication",
+            "graphs"
+          ],
+          "sourceDocSlug": "programming/bfs-dfs-interview-patterns"
+        }
+      ],
+      "id": "8f99820e789a",
+      "route": "/paths/breadth-first-and-depth-first-search/flashcards",
+      "sourcePath": "content/flashcard-feeds/breadth-first-and-depth-first-search.json",
+      "contentHash": "a399ef26c36d6664f0fac748109b0e1170a3979838d521217eab4e606cf8c8df"
+    },
+    {
       "slug": "database-indexes-and-search",
       "pathSlug": "database-indexes-and-search",
       "title": "Database Indexes And Search Flashcard Feed",
@@ -11839,6 +13543,276 @@
       "route": "/paths/database-indexes-and-search/flashcards",
       "sourcePath": "content/flashcard-feeds/database-indexes-and-search.json",
       "contentHash": "cb831234ec7404130e8047cae92673cffc05ee528c994880528b6b99f62d62f4"
+    },
+    {
+      "slug": "mermaid-diagram-authoring",
+      "pathSlug": "mermaid-diagram-authoring",
+      "title": "Mermaid Diagram Authoring Scrolling Review",
+      "summary": "Short Mermaid syntax, selection, debugging, and readability briefs for reviewing diagram authoring one screen at a time.",
+      "audience": "Developers and technical writers learning to read, create, and maintain Mermaid diagrams.",
+      "status": "published",
+      "cards": [
+        {
+          "id": "declaration-comes-first",
+          "type": "concept",
+          "title": "Declaration Comes First",
+          "prompt": "The first meaningful line selects the Mermaid grammar for every statement that follows.",
+          "explanation": "Use declarations such as flowchart, sequenceDiagram, classDiagram, stateDiagram-v2, or erDiagram before writing relationships.",
+          "difficulty": "foundation",
+          "tags": [
+            "mermaid",
+            "syntax",
+            "diagrams"
+          ],
+          "sourceDocSlug": "programming/mermaid-syntax-fundamentals"
+        },
+        {
+          "id": "id-versus-label",
+          "type": "concept",
+          "title": "IDs Are Not Labels",
+          "prompt": "Keep source IDs short and stable while visible labels explain the domain idea.",
+          "explanation": "In Gateway[API gateway], edges reuse Gateway. The human-facing API gateway label can evolve without changing every relationship.",
+          "difficulty": "foundation",
+          "tags": [
+            "flowchart",
+            "nodes",
+            "readability"
+          ],
+          "sourceDocSlug": "programming/mermaid-syntax-fundamentals"
+        },
+        {
+          "id": "direction-is-layout",
+          "type": "concept",
+          "title": "Direction Guides Layout",
+          "prompt": "LR, TD, TB, RL, and BT request a reading direction rather than fixed coordinates.",
+          "explanation": "Mermaid's layout engine positions nodes. Authors describe relationships and a preferred direction instead of placing pixels manually.",
+          "difficulty": "foundation",
+          "tags": [
+            "flowchart",
+            "layout",
+            "syntax"
+          ],
+          "sourceDocSlug": "programming/mermaid-syntax-fundamentals"
+        },
+        {
+          "id": "labeled-decision-snippet",
+          "type": "snippet",
+          "title": "Label Decision Outcomes",
+          "prompt": "A decision reads faster when every outgoing edge names its outcome.",
+          "explanation": "The diamond asks one question while Yes and No live on the relationships that represent the possible answers.",
+          "difficulty": "foundation",
+          "tags": [
+            "flowchart",
+            "decisions",
+            "syntax"
+          ],
+          "sourceDocSlug": "programming/mermaid-syntax-fundamentals",
+          "code": "Valid{Input valid?}\nValid -->|Yes| Save\nValid -->|No| Explain"
+        },
+        {
+          "id": "subgraphs-mean-boundaries",
+          "type": "practical",
+          "title": "Group Real Boundaries",
+          "prompt": "Use subgraphs for ownership, trust, deployment, or domain boundaries—not decoration.",
+          "explanation": "A named boundary should help the reader reason about responsibility or communication across it.",
+          "difficulty": "practitioner",
+          "tags": [
+            "flowchart",
+            "subgraph",
+            "architecture"
+          ],
+          "sourceDocSlug": "programming/mermaid-syntax-fundamentals"
+        },
+        {
+          "id": "sequence-means-time",
+          "type": "concept",
+          "title": "Sequence Means Time",
+          "prompt": "Read sequence participants across the top and messages from top to bottom.",
+          "explanation": "Sequence diagrams answer who communicates at each point in a scenario; they are not static dependency maps.",
+          "difficulty": "foundation",
+          "tags": [
+            "sequence-diagram",
+            "messages",
+            "runtime"
+          ],
+          "sourceDocSlug": "programming/mermaid-software-diagrams"
+        },
+        {
+          "id": "alt-loop-par",
+          "type": "snippet",
+          "title": "Sequence Control Blocks",
+          "prompt": "Choose alt for alternatives, loop for repetition, and par for concurrent work.",
+          "explanation": "Each block communicates a different runtime rule; using the precise block reduces prose and ambiguity.",
+          "difficulty": "practitioner",
+          "tags": [
+            "sequence-diagram",
+            "control-flow",
+            "syntax"
+          ],
+          "sourceDocSlug": "programming/mermaid-software-diagrams",
+          "code": "alt Approved\n  API-->>Web: 201\nelse Rejected\n  API-->>Web: 409\nend"
+        },
+        {
+          "id": "class-is-static",
+          "type": "concept",
+          "title": "Class Diagrams Are Static",
+          "prompt": "Class diagrams show types, members, inheritance, composition, and dependencies.",
+          "explanation": "They explain structure independent of one request. Use a sequence diagram when message order is the real question.",
+          "difficulty": "practitioner",
+          "tags": [
+            "class-diagram",
+            "uml",
+            "structure"
+          ],
+          "sourceDocSlug": "programming/mermaid-software-diagrams"
+        },
+        {
+          "id": "state-means-legal-next",
+          "type": "concept",
+          "title": "State Means Legal Next",
+          "prompt": "A state diagram makes lifecycle transitions and forbidden paths reviewable.",
+          "explanation": "Durable conditions belong in states; temporary calls and responses belong in actions or sequence messages.",
+          "difficulty": "practitioner",
+          "tags": [
+            "state-diagram",
+            "lifecycle",
+            "transitions"
+          ],
+          "sourceDocSlug": "programming/mermaid-software-diagrams"
+        },
+        {
+          "id": "er-cardinality-markers",
+          "type": "snippet",
+          "title": "Read Crow's Foot",
+          "prompt": "Exactly one customer may own zero or more orders in this relationship.",
+          "explanation": "The customer-side double bar means exactly one; the order-side circle and crow's foot mean zero or many.",
+          "difficulty": "practitioner",
+          "tags": [
+            "er-diagram",
+            "cardinality",
+            "data-modeling"
+          ],
+          "sourceDocSlug": "programming/mermaid-software-diagrams",
+          "code": "CUSTOMER ||--o{ ORDER : places"
+        },
+        {
+          "id": "gantt-needs-ownership",
+          "type": "practical",
+          "title": "Schedules Become Stale",
+          "prompt": "A Gantt diagram is a maintained documentation snapshot, not a project-management backend.",
+          "explanation": "Assign ownership and review dates, durations, and dependencies whenever the underlying plan changes.",
+          "difficulty": "practitioner",
+          "tags": [
+            "gantt",
+            "planning",
+            "maintenance"
+          ],
+          "sourceDocSlug": "programming/mermaid-planning-and-data-diagrams"
+        },
+        {
+          "id": "journey-scores-are-claims",
+          "type": "practical",
+          "title": "Journey Scores Need Context",
+          "prompt": "A journey score is an author judgment unless its measurement source is named.",
+          "explanation": "Use the 1-to-5 scale consistently and avoid presenting illustrative sentiment as product analytics.",
+          "difficulty": "practitioner",
+          "tags": [
+            "journey",
+            "user-experience",
+            "evidence"
+          ],
+          "sourceDocSlug": "programming/mermaid-planning-and-data-diagrams"
+        },
+        {
+          "id": "pie-needs-whole",
+          "type": "practical",
+          "title": "Pie Needs A Whole",
+          "prompt": "Use pie charts for a few categories that form one meaningful total.",
+          "explanation": "Time series, negative values, and many similar slices need an axis-based chart or table instead.",
+          "difficulty": "foundation",
+          "tags": [
+            "pie-chart",
+            "data",
+            "readability"
+          ],
+          "sourceDocSlug": "programming/mermaid-planning-and-data-diagrams"
+        },
+        {
+          "id": "mindmap-is-indented",
+          "type": "snippet",
+          "title": "Mindmaps Use Indentation",
+          "prompt": "Whitespace defines hierarchy in a Mermaid mindmap.",
+          "explanation": "Consistent indentation is semantic. Use a flowchart instead when branches need explicit arrows or decisions.",
+          "difficulty": "foundation",
+          "tags": [
+            "mindmap",
+            "hierarchy",
+            "syntax"
+          ],
+          "sourceDocSlug": "programming/mermaid-planning-and-data-diagrams",
+          "code": "mindmap\n  root((Diagrams))\n    Behavior\n      Sequence\n      State"
+        },
+        {
+          "id": "timeline-versus-gantt",
+          "type": "concept",
+          "title": "Timeline Is Not Gantt",
+          "prompt": "Use timeline for chronology; use Gantt when durations and dependencies matter.",
+          "explanation": "Both involve time, but only the Gantt grammar models scheduled work and dependency-driven starts.",
+          "difficulty": "foundation",
+          "tags": [
+            "timeline",
+            "gantt",
+            "selection"
+          ],
+          "sourceDocSlug": "programming/mermaid-planning-and-data-diagrams"
+        },
+        {
+          "id": "debug-by-reduction",
+          "type": "interview",
+          "title": "Reduce Before Repairing",
+          "prompt": "How would you isolate one syntax error inside a large Mermaid block?",
+          "explanation": "Keep the declaration and one valid statement, then restore lines until the first failing addition identifies the parser boundary.",
+          "difficulty": "practitioner",
+          "tags": [
+            "debugging",
+            "mermaid",
+            "interview"
+          ],
+          "sourceDocSlug": "programming/mermaid-planning-and-data-diagrams"
+        },
+        {
+          "id": "one-question-per-diagram",
+          "type": "interview",
+          "title": "One Question Per Diagram",
+          "prompt": "What is the fastest way to improve an everything-architecture diagram?",
+          "explanation": "Split it into focused views with explicit questions and consistent abstraction levels instead of adding more color or smaller text.",
+          "difficulty": "practitioner",
+          "tags": [
+            "architecture",
+            "readability",
+            "interview"
+          ],
+          "sourceDocSlug": "programming/mermaid-planning-and-data-diagrams"
+        },
+        {
+          "id": "host-version-matters",
+          "type": "practical",
+          "title": "Test The Host Version",
+          "prompt": "A diagram working in a current editor may fail in an application with an older Mermaid dependency.",
+          "explanation": "Version-sensitive and experimental grammars must be tested with the same package version, configuration, and security mode as production.",
+          "difficulty": "practitioner",
+          "tags": [
+            "compatibility",
+            "mermaid",
+            "testing"
+          ],
+          "sourceDocSlug": "programming/mermaid-planning-and-data-diagrams"
+        }
+      ],
+      "id": "037abdef0a26",
+      "route": "/paths/mermaid-diagram-authoring/flashcards",
+      "sourcePath": "content/flashcard-feeds/mermaid-diagram-authoring.json",
+      "contentHash": "a82f67bfdd9e899a57d5298f4931036f1522a70bc299ce745b59c687658de80f"
     },
     {
       "slug": "python-for-ts-js-engineers",
@@ -17814,12 +19788,361 @@
           "route": "/interviews/google/median-two-sorted-arrays",
           "companySlug": "google",
           "companyName": "Google"
+        },
+        {
+          "slug": "number-of-islands",
+          "title": "Number Of Islands",
+          "summary": "Count connected groups of land in a rectangular grid and compare breadth-first with depth-first flood fill.",
+          "prompt": "Given a rectangular grid containing 1 for land and 0 for water, return the number of orthogonally connected islands. Solve it once with breadth-first search and once with depth-first search, then explain the practical tradeoffs.",
+          "difficulty": "practitioner",
+          "tags": [
+            "graphs",
+            "grids",
+            "bfs",
+            "dfs",
+            "connected-components"
+          ],
+          "sourceLinks": [
+            {
+              "label": "InterviewQuery Google guide",
+              "url": "https://www.interviewquery.com/interview-guides/google-software-engineer"
+            }
+          ],
+          "resources": [],
+          "examples": [
+            {
+              "input": "grid = [[1,1,0,0],[1,0,0,1],[0,0,1,1]]",
+              "output": "2",
+              "explanation": "The upper-left land cells form one island and the lower-right land cells form another."
+            }
+          ],
+          "constraints": [
+            "Only horizontal and vertical neighbors are connected.",
+            "The input grid has at least one row and one column."
+          ],
+          "diagrams": [
+            {
+              "title": "Two connected components",
+              "mermaid": "flowchart LR\n  A[Top-left land] --- B[Top-left neighbor]\n  C[Bottom-right land] --- D[Right neighbor]\n  A ~~~ C"
+            }
+          ],
+          "solutionTracks": [
+            {
+              "id": "bfs-flood-fill",
+              "title": "BFS Flood Fill",
+              "summary": "Scan for unvisited land, count a new island, then use a queue to mark that entire connected component.",
+              "steps": [
+                {
+                  "title": "Scan every cell",
+                  "explanation": "An unvisited land cell begins a connected component that has not been counted yet."
+                },
+                {
+                  "title": "Queue the component",
+                  "explanation": "Mark the starting cell visited and process orthogonal land neighbors in FIFO order."
+                },
+                {
+                  "title": "Count each start once",
+                  "explanation": "The outer scan increments only when it finds land that no previous flood fill reached."
+                }
+              ],
+              "explanation": "BFS marks every land cell in one connected component before the scan can count it again. It avoids recursion depth risk, though its queue can grow with a wide island frontier.",
+              "complexity": {
+                "time": "O(rows * cols)",
+                "space": "O(rows * cols) worst case"
+              },
+              "languages": {
+                "python": {
+                  "label": "Python",
+                  "code": "from collections import deque\n\ndef num_islands_bfs(grid):\n    rows, cols = len(grid), len(grid[0])\n    seen = set()\n    islands = 0\n    for r in range(rows):\n        for c in range(cols):\n            if grid[r][c] != '1' or (r, c) in seen:\n                continue\n            islands += 1\n            seen.add((r, c))\n            queue = deque([(r, c)])\n            while queue:\n                cr, cc = queue.popleft()\n                for dr, dc in ((1, 0), (-1, 0), (0, 1), (0, -1)):\n                    nr, nc = cr + dr, cc + dc\n                    valid = 0 <= nr < rows and 0 <= nc < cols\n                    if valid and grid[nr][nc] == '1' and (nr, nc) not in seen:\n                        seen.add((nr, nc))\n                        queue.append((nr, nc))\n    return islands"
+                },
+                "typescript": {
+                  "label": "TypeScript",
+                  "code": "export function numIslandsBfs(grid: string[][]): number {\n  const rows = grid.length, cols = grid[0].length;\n  const seen = new Set<string>();\n  const key = (r: number, c: number) => `${r},${c}`;\n  const dirs = [[1, 0], [-1, 0], [0, 1], [0, -1]];\n  let islands = 0;\n  for (let r = 0; r < rows; r += 1) for (let c = 0; c < cols; c += 1) {\n    if (grid[r][c] !== '1' || seen.has(key(r, c))) continue;\n    islands += 1;\n    const queue: Array<[number, number]> = [[r, c]];\n    seen.add(key(r, c));\n    for (let head = 0; head < queue.length; head += 1) {\n      const [cr, cc] = queue[head];\n      for (const [dr, dc] of dirs) {\n        const nr = cr + dr, nc = cc + dc;\n        const valid = nr >= 0 && nr < rows && nc >= 0 && nc < cols;\n        if (valid && grid[nr][nc] === '1' && !seen.has(key(nr, nc))) {\n          seen.add(key(nr, nc));\n          queue.push([nr, nc]);\n        }\n      }\n    }\n  }\n  return islands;\n}"
+                },
+                "java": {
+                  "label": "Java",
+                  "code": "int numIslandsBfs(char[][] grid) {\n  int rows = grid.length, cols = grid[0].length, islands = 0;\n  boolean[][] seen = new boolean[rows][cols];\n  int[][] dirs = {{1,0},{-1,0},{0,1},{0,-1}};\n  for (int r = 0; r < rows; r++) for (int c = 0; c < cols; c++) {\n    if (grid[r][c] != '1' || seen[r][c]) continue;\n    islands++;\n    Queue<int[]> queue = new ArrayDeque<>();\n    queue.add(new int[]{r, c}); seen[r][c] = true;\n    while (!queue.isEmpty()) {\n      int[] cell = queue.remove();\n      for (int[] d : dirs) {\n        int nr = cell[0] + d[0], nc = cell[1] + d[1];\n        if (nr >= 0 && nr < rows && nc >= 0 && nc < cols && grid[nr][nc] == '1' && !seen[nr][nc]) {\n          seen[nr][nc] = true; queue.add(new int[]{nr, nc});\n        }\n      }\n    }\n  }\n  return islands;\n}"
+                }
+              }
+            },
+            {
+              "id": "dfs-flood-fill",
+              "title": "DFS Flood Fill",
+              "summary": "Scan for unvisited land, count a new island, then recursively consume that entire connected component.",
+              "steps": [
+                {
+                  "title": "Define the boundary",
+                  "explanation": "Return when a cell is outside the grid, water, or already visited."
+                },
+                {
+                  "title": "Explore one branch",
+                  "explanation": "Mark land and recursively visit its four orthogonal neighbors before returning."
+                },
+                {
+                  "title": "Count component roots",
+                  "explanation": "Each outer-scan land cell still unseen is the root of one newly counted island."
+                }
+              ],
+              "explanation": "Recursive DFS closely matches the definition of a connected component and is shorter to read. It has the same asymptotic cost as BFS, but one enormous island can overflow the runtime call stack.",
+              "complexity": {
+                "time": "O(rows * cols)",
+                "space": "O(rows * cols) worst case"
+              },
+              "languages": {
+                "python": {
+                  "label": "Python",
+                  "code": "def num_islands_dfs(grid):\n    rows, cols = len(grid), len(grid[0])\n    seen = set()\n    def visit(r, c):\n        valid = 0 <= r < rows and 0 <= c < cols\n        if not valid or grid[r][c] != '1' or (r, c) in seen:\n            return\n        seen.add((r, c))\n        visit(r + 1, c)\n        visit(r - 1, c)\n        visit(r, c + 1)\n        visit(r, c - 1)\n    islands = 0\n    for r in range(rows):\n        for c in range(cols):\n            if grid[r][c] == '1' and (r, c) not in seen:\n                islands += 1\n                visit(r, c)\n    return islands"
+                },
+                "typescript": {
+                  "label": "TypeScript",
+                  "code": "export function numIslandsDfs(grid: string[][]): number {\n  const rows = grid.length, cols = grid[0].length;\n  const seen = new Set<string>();\n  const key = (r: number, c: number) => `${r},${c}`;\n  function visit(r: number, c: number): void {\n    const valid = r >= 0 && r < rows && c >= 0 && c < cols;\n    if (!valid || grid[r][c] !== '1' || seen.has(key(r, c))) return;\n    seen.add(key(r, c));\n    visit(r + 1, c); visit(r - 1, c); visit(r, c + 1); visit(r, c - 1);\n  }\n  let islands = 0;\n  for (let r = 0; r < rows; r += 1) for (let c = 0; c < cols; c += 1) {\n    if (grid[r][c] === '1' && !seen.has(key(r, c))) { islands += 1; visit(r, c); }\n  }\n  return islands;\n}"
+                },
+                "java": {
+                  "label": "Java",
+                  "code": "int numIslandsDfs(char[][] grid) {\n  boolean[][] seen = new boolean[grid.length][grid[0].length];\n  int islands = 0;\n  for (int r = 0; r < grid.length; r++) for (int c = 0; c < grid[0].length; c++) {\n    if (grid[r][c] == '1' && !seen[r][c]) { islands++; visit(grid, seen, r, c); }\n  }\n  return islands;\n}\nvoid visit(char[][] grid, boolean[][] seen, int r, int c) {\n  if (r < 0 || r == grid.length || c < 0 || c == grid[0].length || grid[r][c] != '1' || seen[r][c]) return;\n  seen[r][c] = true;\n  visit(grid, seen, r + 1, c); visit(grid, seen, r - 1, c);\n  visit(grid, seen, r, c + 1); visit(grid, seen, r, c - 1);\n}"
+                }
+              }
+            }
+          ],
+          "id": "a5996825b97d",
+          "route": "/interviews/google/number-of-islands",
+          "companySlug": "google",
+          "companyName": "Google"
+        },
+        {
+          "slug": "shortest-path-binary-matrix",
+          "title": "Shortest Path In A Binary Matrix",
+          "summary": "Find the minimum number of equal-cost moves through open cells in a square matrix.",
+          "prompt": "Given a square binary grid, return the length of the shortest clear path from the top-left cell to the bottom-right cell using eight-direction movement, or -1 when no path exists.",
+          "difficulty": "practitioner",
+          "tags": [
+            "graphs",
+            "grids",
+            "bfs",
+            "shortest-path"
+          ],
+          "sourceLinks": [
+            {
+              "label": "InterviewQuery Google guide",
+              "url": "https://www.interviewquery.com/interview-guides/google-software-engineer"
+            }
+          ],
+          "resources": [],
+          "examples": [
+            {
+              "input": "grid = [[0,1],[1,0]]",
+              "output": "2",
+              "explanation": "A diagonal move reaches the destination in a path containing two cells."
+            }
+          ],
+          "constraints": [
+            "Zero cells are open and one cells are blocked.",
+            "Every legal move has equal cost."
+          ],
+          "diagrams": [],
+          "solutionTracks": [
+            {
+              "id": "layered-bfs",
+              "title": "Layered BFS",
+              "summary": "Explore all grid positions at one path length before advancing to the next length.",
+              "steps": [
+                {
+                  "title": "Reject blocked endpoints",
+                  "explanation": "No route can exist when either the start or destination cell is blocked."
+                },
+                {
+                  "title": "Expand one distance layer",
+                  "explanation": "Queue each unseen open neighbor with a distance one greater than its parent."
+                },
+                {
+                  "title": "Return first destination",
+                  "explanation": "BFS guarantees that the first destination removed from the queue has minimum distance."
+                }
+              ],
+              "explanation": "The grid is an unweighted graph because every move costs one. BFS processes paths in nondecreasing length, so it can return as soon as the destination is reached.",
+              "complexity": {
+                "time": "O(n^2)",
+                "space": "O(n^2)"
+              },
+              "languages": {
+                "python": {
+                  "label": "Python",
+                  "code": "from collections import deque\n\ndef shortest_path(grid):\n    n = len(grid)\n    if grid[0][0] or grid[n - 1][n - 1]:\n        return -1\n    queue = deque([(0, 0, 1)])\n    seen = {(0, 0)}\n    while queue:\n        r, c, distance = queue.popleft()\n        if (r, c) == (n - 1, n - 1):\n            return distance\n        for dr in (-1, 0, 1):\n            for dc in (-1, 0, 1):\n                nr, nc = r + dr, c + dc\n                valid = 0 <= nr < n and 0 <= nc < n\n                if valid and not grid[nr][nc] and (nr, nc) not in seen:\n                    seen.add((nr, nc))\n                    queue.append((nr, nc, distance + 1))\n    return -1"
+                },
+                "typescript": {
+                  "label": "TypeScript",
+                  "code": "export function shortestPath(grid: number[][]): number {\n  const n = grid.length;\n  if (grid[0][0] || grid[n - 1][n - 1]) return -1;\n  const queue: Array<[number, number, number]> = [[0, 0, 1]];\n  const seen = new Set<string>(['0,0']);\n  for (let head = 0; head < queue.length; head += 1) {\n    const [r, c, distance] = queue[head];\n    if (r === n - 1 && c === n - 1) return distance;\n    for (let dr = -1; dr <= 1; dr += 1) for (let dc = -1; dc <= 1; dc += 1) {\n      const nr = r + dr, nc = c + dc, key = `${nr},${nc}`;\n      if (nr >= 0 && nr < n && nc >= 0 && nc < n && grid[nr][nc] === 0 && !seen.has(key)) {\n        seen.add(key); queue.push([nr, nc, distance + 1]);\n      }\n    }\n  }\n  return -1;\n}"
+                },
+                "java": {
+                  "label": "Java",
+                  "code": "int shortestPath(int[][] grid) {\n  int n = grid.length;\n  if (grid[0][0] == 1 || grid[n-1][n-1] == 1) return -1;\n  Queue<int[]> queue = new ArrayDeque<>();\n  queue.add(new int[]{0,0,1}); grid[0][0] = 1;\n  while (!queue.isEmpty()) {\n    int[] cur = queue.remove();\n    if (cur[0] == n-1 && cur[1] == n-1) return cur[2];\n    for (int dr=-1; dr<=1; dr++) for (int dc=-1; dc<=1; dc++) {\n      int r=cur[0]+dr, c=cur[1]+dc;\n      if (r>=0 && r<n && c>=0 && c<n && grid[r][c]==0) { grid[r][c]=1; queue.add(new int[]{r,c,cur[2]+1}); }\n    }\n  }\n  return -1;\n}"
+                }
+              }
+            },
+            {
+              "id": "in-place-layer-bfs",
+              "title": "In-Place Layer BFS",
+              "summary": "Reuse the mutable grid as visited state and count one complete queue layer for each path length.",
+              "steps": [
+                {
+                  "title": "Mark the start",
+                  "explanation": "Change the starting open cell to blocked so it cannot be enqueued again."
+                },
+                {
+                  "title": "Process one layer",
+                  "explanation": "Every cell currently in the queue has the same shortest path length from the start."
+                },
+                {
+                  "title": "Advance the distance",
+                  "explanation": "After one queue layer finishes, increment the path length before expanding the next layer."
+                }
+              ],
+              "explanation": "This BFS keeps the same shortest-path invariant but stores visited state in the grid. It uses less auxiliary bookkeeping, though mutating caller-owned input must be allowed and stated clearly.",
+              "complexity": {
+                "time": "O(n^2)",
+                "space": "O(n^2) queue worst case"
+              },
+              "languages": {
+                "python": {
+                  "label": "Python",
+                  "code": "from collections import deque\n\ndef shortest_path_in_place(grid):\n    n = len(grid)\n    if grid[0][0] or grid[n - 1][n - 1]: return -1\n    queue = deque([(0, 0)])\n    grid[0][0] = 1\n    distance = 1\n    while queue:\n        for _ in range(len(queue)):\n            r, c = queue.popleft()\n            if (r, c) == (n - 1, n - 1): return distance\n            for dr in (-1, 0, 1):\n                for dc in (-1, 0, 1):\n                    nr, nc = r + dr, c + dc\n                    if 0 <= nr < n and 0 <= nc < n and grid[nr][nc] == 0:\n                        grid[nr][nc] = 1\n                        queue.append((nr, nc))\n        distance += 1\n    return -1"
+                },
+                "typescript": {
+                  "label": "TypeScript",
+                  "code": "export function shortestPathInPlace(grid: number[][]): number {\n  const n = grid.length;\n  if (grid[0][0] || grid[n - 1][n - 1]) return -1;\n  let queue: Array<[number, number]> = [[0, 0]];\n  grid[0][0] = 1;\n  for (let distance = 1; queue.length; distance += 1) {\n    const next: Array<[number, number]> = [];\n    for (const [r, c] of queue) {\n      if (r === n - 1 && c === n - 1) return distance;\n      for (let dr = -1; dr <= 1; dr += 1) for (let dc = -1; dc <= 1; dc += 1) {\n        const nr = r + dr, nc = c + dc;\n        if (nr >= 0 && nr < n && nc >= 0 && nc < n && grid[nr][nc] === 0) {\n          grid[nr][nc] = 1; next.push([nr, nc]);\n        }\n      }\n    }\n    queue = next;\n  }\n  return -1;\n}"
+                },
+                "java": {
+                  "label": "Java",
+                  "code": "int shortestPathInPlace(int[][] grid) {\n  int n=grid.length; if(grid[0][0]==1||grid[n-1][n-1]==1)return -1;\n  Queue<int[]> queue=new ArrayDeque<>(); queue.add(new int[]{0,0}); grid[0][0]=1;\n  for(int distance=1;!queue.isEmpty();distance++){\n    for(int size=queue.size();size>0;size--){\n      int[] cell=queue.remove(); if(cell[0]==n-1&&cell[1]==n-1)return distance;\n      for(int dr=-1;dr<=1;dr++)for(int dc=-1;dc<=1;dc++){\n        int r=cell[0]+dr,c=cell[1]+dc;\n        if(r>=0&&r<n&&c>=0&&c<n&&grid[r][c]==0){grid[r][c]=1;queue.add(new int[]{r,c});}\n      }\n    }\n  }\n  return -1;\n}"
+                }
+              }
+            }
+          ],
+          "id": "8ca43b9f21f0",
+          "route": "/interviews/google/shortest-path-binary-matrix",
+          "companySlug": "google",
+          "companyName": "Google"
+        },
+        {
+          "slug": "course-schedule",
+          "title": "Course Schedule",
+          "summary": "Decide whether every course can be completed by detecting a cycle in the prerequisite graph.",
+          "prompt": "Given a course count and prerequisite pairs, return whether all courses can be completed. Compare depth-first cycle coloring with breadth-first topological processing.",
+          "difficulty": "practitioner",
+          "tags": [
+            "graphs",
+            "bfs",
+            "dfs",
+            "topological-sort",
+            "cycle-detection"
+          ],
+          "sourceLinks": [
+            {
+              "label": "InterviewQuery Google guide",
+              "url": "https://www.interviewquery.com/interview-guides/google-software-engineer"
+            }
+          ],
+          "resources": [],
+          "examples": [
+            {
+              "input": "courses = 2, prerequisites = [[1,0],[0,1]]",
+              "output": "false",
+              "explanation": "Each course requires the other, so neither dependency chain can finish."
+            }
+          ],
+          "constraints": [
+            "Courses are numbered from zero through course count minus one.",
+            "Duplicate prerequisite pairs may be ignored."
+          ],
+          "diagrams": [],
+          "solutionTracks": [
+            {
+              "id": "dfs-color-cycle",
+              "title": "DFS Three-Color Cycle Detection",
+              "summary": "Color each course unseen, visiting, or complete and reject any edge back to the active DFS path.",
+              "steps": [
+                {
+                  "title": "Enter as visiting",
+                  "explanation": "Mark a course as active before recursively checking every dependent course."
+                },
+                {
+                  "title": "Detect a back edge",
+                  "explanation": "An edge to another visiting course closes a directed cycle on the current path."
+                },
+                {
+                  "title": "Finish as complete",
+                  "explanation": "After every dependency returns safely, mark the course complete so later searches can reuse the result."
+                }
+              ],
+              "explanation": "A directed cycle exists exactly when DFS reaches a node already on its active path. Complete nodes have already been proven safe and need no repeated exploration.",
+              "complexity": {
+                "time": "O(V + E)",
+                "space": "O(V + E)"
+              },
+              "languages": {
+                "python": {
+                  "label": "Python",
+                  "code": "def can_finish_dfs(count, prerequisites):\n    graph = [[] for _ in range(count)]\n    for course, need in prerequisites: graph[need].append(course)\n    color = [0] * count\n    def visit(course):\n        if color[course] == 1: return False\n        if color[course] == 2: return True\n        color[course] = 1\n        if any(not visit(next_course) for next_course in graph[course]): return False\n        color[course] = 2\n        return True\n    return all(visit(course) for course in range(count))"
+                },
+                "typescript": {
+                  "label": "TypeScript",
+                  "code": "export function canFinishDfs(count: number, prerequisites: number[][]): boolean {\n  const graph = Array.from({ length: count }, () => [] as number[]);\n  for (const [course, need] of prerequisites) graph[need].push(course);\n  const color = Array(count).fill(0);\n  function visit(course: number): boolean {\n    if (color[course] === 1) return false;\n    if (color[course] === 2) return true;\n    color[course] = 1;\n    for (const next of graph[course]) if (!visit(next)) return false;\n    color[course] = 2;\n    return true;\n  }\n  return graph.every((_, course) => visit(course));\n}"
+                },
+                "java": {
+                  "label": "Java",
+                  "code": "boolean canFinishDfs(int count, int[][] prerequisites) {\n  List<Integer>[] graph = new List[count];\n  for(int i=0;i<count;i++) graph[i]=new ArrayList<>();\n  for(int[] edge:prerequisites) graph[edge[1]].add(edge[0]);\n  int[] color=new int[count];\n  for(int course=0;course<count;course++) if(!visit(course,graph,color)) return false;\n  return true;\n}\nboolean visit(int course,List<Integer>[] graph,int[] color){\n  if(color[course]==1)return false; if(color[course]==2)return true; color[course]=1;\n  for(int next:graph[course]) if(!visit(next,graph,color))return false;\n  color[course]=2; return true;\n}"
+                }
+              }
+            },
+            {
+              "id": "bfs-kahn-order",
+              "title": "BFS Kahn Topological Processing",
+              "summary": "Queue every course with zero prerequisites and remove completed prerequisite edges until no ready course remains.",
+              "steps": [
+                {
+                  "title": "Count incoming edges",
+                  "explanation": "Indegree records how many unmet prerequisites prevent each course from becoming ready."
+                },
+                {
+                  "title": "Queue ready courses",
+                  "explanation": "Every zero-indegree course can be completed immediately and processed in BFS order."
+                },
+                {
+                  "title": "Compare processed total",
+                  "explanation": "If all courses are removed, the graph is acyclic; a cycle leaves some indegrees positive."
+                }
+              ],
+              "explanation": "Kahn's algorithm repeatedly removes nodes that have no remaining prerequisites. A directed cycle has no removable starting point inside the cycle, so the final processed count exposes it.",
+              "complexity": {
+                "time": "O(V + E)",
+                "space": "O(V + E)"
+              },
+              "languages": {
+                "python": {
+                  "label": "Python",
+                  "code": "from collections import deque\n\ndef can_finish_bfs(count, prerequisites):\n    graph = [[] for _ in range(count)]\n    indegree = [0] * count\n    for course, need in prerequisites:\n        graph[need].append(course)\n        indegree[course] += 1\n    queue = deque(course for course in range(count) if indegree[course] == 0)\n    completed = 0\n    while queue:\n        course = queue.popleft()\n        completed += 1\n        for next_course in graph[course]:\n            indegree[next_course] -= 1\n            if indegree[next_course] == 0: queue.append(next_course)\n    return completed == count"
+                },
+                "typescript": {
+                  "label": "TypeScript",
+                  "code": "export function canFinishBfs(count: number, prerequisites: number[][]): boolean {\n  const graph = Array.from({ length: count }, () => [] as number[]);\n  const indegree = Array(count).fill(0);\n  for (const [course, need] of prerequisites) { graph[need].push(course); indegree[course] += 1; }\n  const queue = indegree.flatMap((degree, course) => degree === 0 ? [course] : []);\n  let completed = 0;\n  for (let head = 0; head < queue.length; head += 1) {\n    const course = queue[head]; completed += 1;\n    for (const next of graph[course]) if (--indegree[next] === 0) queue.push(next);\n  }\n  return completed === count;\n}"
+                },
+                "java": {
+                  "label": "Java",
+                  "code": "boolean canFinishBfs(int count, int[][] prerequisites) {\n  List<Integer>[] graph=new List[count]; int[] indegree=new int[count];\n  for(int i=0;i<count;i++)graph[i]=new ArrayList<>();\n  for(int[] edge:prerequisites){graph[edge[1]].add(edge[0]);indegree[edge[0]]++;}\n  Queue<Integer> queue=new ArrayDeque<>();\n  for(int i=0;i<count;i++)if(indegree[i]==0)queue.add(i);\n  int completed=0;\n  while(!queue.isEmpty()){int course=queue.remove();completed++;for(int next:graph[course])if(--indegree[next]==0)queue.add(next);}\n  return completed==count;\n}"
+                }
+              }
+            }
+          ],
+          "id": "d345aad48633",
+          "route": "/interviews/google/course-schedule",
+          "companySlug": "google",
+          "companyName": "Google"
         }
       ],
       "id": "bbdefa2950f4",
       "route": "/interviews/google",
       "sourcePath": "content/interviews/google.json",
-      "contentHash": "c9ae246caa4be2cdc9727bf7e47e66b551f9749648fd823976cd83de984b8e00"
+      "contentHash": "d46c2b91f7d19e4ec220d7285f309b6ec5fdc12f940e914cdcf7748060b523a4"
     },
     {
       "slug": "meta",
@@ -19311,12 +21634,16 @@
     {
       "name": "Programming",
       "slug": "programming",
-      "documentCount": 5,
+      "documentCount": 10,
       "difficulties": [
+        "foundation",
+        "practitioner",
         "senior"
       ],
       "topics": [
+        "Algorithms",
         "Python",
+        "Technical Documentation",
         "TypeScript"
       ]
     },
@@ -19342,5 +21669,99 @@
         "Caching"
       ]
     }
-  ]
+  ],
+  "homeDiscovery": {
+    "sections": {
+      "paths": [
+        {
+          "kind": "path",
+          "slug": "system-design-fundamentals"
+        },
+        {
+          "kind": "path",
+          "slug": "ai-engineering-langfuse-langchain"
+        },
+        {
+          "kind": "path",
+          "slug": "python-for-ts-js-engineers"
+        },
+        {
+          "kind": "path",
+          "slug": "japanese-foundations"
+        }
+      ],
+      "lessons": [
+        {
+          "kind": "document",
+          "slug": "system-design/cache-invalidation"
+        },
+        {
+          "kind": "document",
+          "slug": "programming/bfs-dfs-fundamentals"
+        },
+        {
+          "kind": "document",
+          "slug": "ai-engineering/langfuse-tracing-fundamentals"
+        },
+        {
+          "kind": "document",
+          "slug": "languages/japanese-writing-systems"
+        }
+      ],
+      "interviews": [
+        {
+          "kind": "interview-question",
+          "slug": "google/number-of-islands"
+        },
+        {
+          "kind": "interview-question",
+          "slug": "amazon/lru-cache"
+        },
+        {
+          "kind": "interview-question",
+          "slug": "meta/binary-tree-vertical-columns"
+        },
+        {
+          "kind": "interview-question",
+          "slug": "uber/meeting-rooms-ii"
+        }
+      ],
+      "practice": [
+        {
+          "kind": "exercise",
+          "slug": "system-design/cache-product-contract"
+        },
+        {
+          "kind": "exercise",
+          "slug": "programming/bfs-dfs-fundamentals-questionnaire"
+        },
+        {
+          "kind": "exercise",
+          "slug": "languages/japanese-hiragana-vowels-writing"
+        },
+        {
+          "kind": "flashcard-feed",
+          "slug": "python-for-ts-js-engineers"
+        }
+      ],
+      "languages": [
+        {
+          "kind": "language-hub",
+          "slug": "japanese"
+        },
+        {
+          "kind": "language-character",
+          "slug": "japanese/kanji/water"
+        },
+        {
+          "kind": "language-vocabulary",
+          "slug": "japanese/vocabulary/japan"
+        },
+        {
+          "kind": "language-vocabulary",
+          "slug": "japanese/vocabulary/person"
+        }
+      ]
+    }
+  }
 }

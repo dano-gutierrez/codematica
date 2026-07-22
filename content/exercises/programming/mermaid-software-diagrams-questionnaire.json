@@ -1,0 +1,100 @@
+{
+  "slug": "programming/mermaid-software-diagrams-questionnaire",
+  "title": "Mermaid Software Diagrams Questionnaire",
+  "type": "questionnaire",
+  "documentSlug": "programming/mermaid-software-diagrams",
+  "concept": "Choosing and authoring software-oriented Mermaid diagrams",
+  "difficulty": "practitioner",
+  "tags": ["mermaid", "sequence-diagrams", "class-diagrams", "state-diagrams", "er-diagrams"],
+  "status": "published",
+  "questions": [
+    {
+      "id": "runtime-order-family",
+      "kind": "choice",
+      "prompt": "Which diagram best explains who sends each message during an order request and in what order?",
+      "options": [
+        { "id": "sequence", "label": "Sequence diagram", "isCorrect": true },
+        { "id": "class", "label": "Class diagram", "isCorrect": false },
+        { "id": "er", "label": "Entity-relationship diagram", "isCorrect": false }
+      ],
+      "explanation": "Correct: a sequence diagram places messages along a top-to-bottom time axis. Incorrect options: a class diagram describes static types and relationships; an ER diagram describes data entities and cardinality, not runtime order."
+    },
+    {
+      "id": "sequence-alternative",
+      "kind": "choice",
+      "prompt": "Which sequence-diagram block expresses two mutually exclusive outcomes such as approved and rejected?",
+      "options": [
+        { "id": "alt", "label": "alt ... else ... end", "isCorrect": true },
+        { "id": "loop", "label": "loop ... end", "isCorrect": false },
+        { "id": "par", "label": "par ... and ... end", "isCorrect": false }
+      ],
+      "explanation": "Correct: `alt` and `else` model alternative branches. Incorrect options: `loop` communicates repetition; `par` communicates concurrent branches rather than exclusive outcomes."
+    },
+    {
+      "id": "class-composition",
+      "kind": "choice",
+      "prompt": "Which class relationship says an Order strongly owns its OrderLine parts?",
+      "options": [
+        { "id": "composition", "label": "Order *-- OrderLine", "isCorrect": true },
+        { "id": "dependency", "label": "Order ..> OrderLine", "isCorrect": false },
+        { "id": "inheritance", "label": "Order <|-- OrderLine", "isCorrect": false }
+      ],
+      "explanation": "Correct: `*--` is composition, a strong whole-part relationship. Incorrect options: `..>` is a dependency without ownership; `<|--` means inheritance and would claim an OrderLine is a kind of Order."
+    },
+    {
+      "id": "class-interface",
+      "kind": "choice",
+      "prompt": "Which relationship most clearly shows StripeGateway realizing the PaymentGateway interface?",
+      "options": [
+        { "id": "realization", "label": "PaymentGateway <|.. StripeGateway", "isCorrect": true },
+        { "id": "composition", "label": "PaymentGateway *-- StripeGateway", "isCorrect": false },
+        { "id": "plain-link", "label": "PaymentGateway -- StripeGateway", "isCorrect": false }
+      ],
+      "explanation": "Correct: `<|..` is Mermaid's UML-style realization relationship. Incorrect options: composition means strong ownership; a plain solid link does not communicate interface implementation."
+    },
+    {
+      "id": "state-start-end",
+      "kind": "choice",
+      "prompt": "In a state diagram, which line declares Draft as the initial state?",
+      "options": [
+        { "id": "start-arrow", "label": "[*] --> Draft", "isCorrect": true },
+        { "id": "end-arrow", "label": "Draft --> [*]", "isCorrect": false },
+        { "id": "sequence-actor", "label": "actor Draft", "isCorrect": false }
+      ],
+      "explanation": "Correct: an arrow from `[*]` enters the initial state. Incorrect options: an arrow into `[*]` marks a terminal transition; `actor` is sequence-diagram syntax and does not declare state-machine entry."
+    },
+    {
+      "id": "composite-state",
+      "kind": "choice",
+      "prompt": "What does `state PendingPayment { ... }` communicate in `stateDiagram-v2`?",
+      "options": [
+        { "id": "composite", "label": "PendingPayment contains an internal state machine.", "isCorrect": true },
+        { "id": "database", "label": "PendingPayment is a database entity with attributes.", "isCorrect": false },
+        { "id": "parallel-message", "label": "PendingPayment sends parallel sequence messages.", "isCorrect": false }
+      ],
+      "explanation": "Correct: the braced state body defines a composite state with nested states. Incorrect options: database attributes belong to ER syntax; parallel messages belong to a sequence `par` block."
+    },
+    {
+      "id": "er-cardinality",
+      "kind": "choice",
+      "prompt": "How should `CUSTOMER ||--o{ ORDER : places` be read?",
+      "options": [
+        { "id": "one-many", "label": "Each order has exactly one customer; a customer may have zero or many orders.", "isCorrect": true },
+        { "id": "many-one", "label": "Each order has many customers; a customer must have exactly one order.", "isCorrect": false },
+        { "id": "runtime", "label": "Customer sends an asynchronous runtime message to Order.", "isCorrect": false }
+      ],
+      "explanation": "Correct: `||` is exactly one and `o{` is zero or more. Incorrect options: the reversed cardinalities contradict the markers; ER relationships describe data associations, not runtime messages."
+    },
+    {
+      "id": "choose-state-not-sequence",
+      "kind": "choice",
+      "prompt": "The team needs to decide whether a cancelled order may later become confirmed. Which diagram is the best primary tool?",
+      "options": [
+        { "id": "state", "label": "State diagram", "isCorrect": true },
+        { "id": "sequence", "label": "Sequence diagram of one successful request", "isCorrect": false },
+        { "id": "class", "label": "Class diagram listing Order methods", "isCorrect": false }
+      ],
+      "explanation": "Correct: a state diagram exposes legal and forbidden lifecycle transitions. Incorrect options: one successful sequence does not enumerate lifecycle rules; method structure does not prove which state changes are allowed."
+    }
+  ]
+}

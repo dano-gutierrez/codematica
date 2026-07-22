@@ -7,7 +7,7 @@ describe("Japanese language helpers", () => {
     const index = getContentIndex();
     const groups = getJapaneseCharacterGroups(index);
 
-    expect(index.schemaVersion).toBe(5);
+    expect(index.schemaVersion).toBe(6);
     expect(groups.hiragana.some((item) => item.glyph === "あ" && item.ipa === "a")).toBe(true);
     expect(groups.katakana.some((item) => item.glyph === "ア" && item.ipa === "a")).toBe(true);
     expect(groups.kanji.some((item) => item.glyph === "人")).toBe(true);

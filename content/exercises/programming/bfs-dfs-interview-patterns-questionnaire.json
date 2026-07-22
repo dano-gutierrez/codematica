@@ -1,0 +1,76 @@
+{
+  "slug": "programming/bfs-dfs-interview-patterns-questionnaire",
+  "title": "BFS And DFS Interview Patterns Questionnaire",
+  "type": "questionnaire",
+  "documentSlug": "programming/bfs-dfs-interview-patterns",
+  "concept": "Graph traversal interview selection and tradeoffs",
+  "difficulty": "practitioner",
+  "tags": ["algorithms", "interviews", "graphs", "bfs", "dfs"],
+  "status": "published",
+  "questions": [
+    {
+      "id": "hidden-grid-graph",
+      "kind": "matching",
+      "prompt": "Match each grid graph term to its Number Of Islands meaning.",
+      "pairs": [
+        { "id": "vertex", "prompt": "Vertex", "match": "one land cell" },
+        { "id": "edge", "prompt": "Edge", "match": "orthogonal land adjacency" },
+        { "id": "component", "prompt": "Connected component", "match": "one complete island" }
+      ],
+      "explanation": "Translating the grid into nodes, edges, and components makes the required traversal direct."
+    },
+    {
+      "id": "islands-equivalence",
+      "kind": "choice",
+      "prompt": "Why are BFS and DFS both correct for counting islands?",
+      "options": [
+        { "id": "component", "label": "Both can visit every cell in one connected component before the outer scan continues.", "isCorrect": true },
+        { "id": "shortest", "label": "Both always find identical shortest paths through an island.", "isCorrect": false },
+        { "id": "sorted", "label": "Both sort land cells before visiting them.", "isCorrect": false }
+      ],
+      "explanation": "The answer depends on complete component discovery, not the internal order used to visit that component."
+    },
+    {
+      "id": "shortest-unweighted",
+      "kind": "cloze",
+      "prompt": "Fill the traversal that guarantees the first discovered equal-cost shortest route.",
+      "template": "For the minimum number of moves in an unweighted graph, start with {{blank}}.",
+      "acceptedAnswers": ["BFS", "breadth-first search", "breadth first search"],
+      "explanation": "BFS processes every route of distance d before it processes any route of distance d plus one."
+    },
+    {
+      "id": "course-dfs-colors",
+      "kind": "ordering",
+      "prompt": "Order the DFS color states for a course with no detected cycle.",
+      "items": [
+        { "id": "unseen", "label": "Unseen" },
+        { "id": "visiting", "label": "Visiting on the active path" },
+        { "id": "complete", "label": "Complete after dependencies return" }
+      ],
+      "correctOrder": ["unseen", "visiting", "complete"],
+      "explanation": "An edge to a visiting node is a back edge; a complete node has already been proven cycle-free."
+    },
+    {
+      "id": "kahn-signal",
+      "kind": "choice",
+      "prompt": "What tells Kahn's BFS topological algorithm that the prerequisite graph contains a cycle?",
+      "options": [
+        { "id": "fewer", "label": "It processes fewer courses than the total number of courses.", "isCorrect": true },
+        { "id": "empty-start", "label": "Its initial queue contains every course.", "isCorrect": false },
+        { "id": "negative", "label": "A course receives a negative indegree.", "isCorrect": false }
+      ],
+      "explanation": "Nodes in or behind a cycle never reach zero indegree, so they cannot all be removed from the graph."
+    },
+    {
+      "id": "island-runtime-risk",
+      "kind": "choice",
+      "prompt": "On a huge solid grid, what practical risk most clearly distinguishes recursive DFS from iterative BFS?",
+      "options": [
+        { "id": "stack-overflow", "label": "Recursive DFS can overflow the runtime call stack.", "isCorrect": true },
+        { "id": "wrong-count", "label": "Recursive DFS necessarily counts the island incorrectly.", "isCorrect": false },
+        { "id": "weighted", "label": "BFS changes every grid edge into a weighted edge.", "isCorrect": false }
+      ],
+      "explanation": "Both algorithms are correct, but an enormous recursive path can exceed language call-stack limits."
+    }
+  ]
+}

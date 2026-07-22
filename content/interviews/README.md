@@ -10,6 +10,7 @@ This folder contains local-first interview coding catalog files.
 - Each solution track must include guided `steps`, final `explanation`, `complexity`, and code for `python`, `typescript`, and `java`.
 - Use `diagrams[]` for optional Mermaid diagrams that clarify a data structure or flow.
 - Prompts and explanations must be Codematica rewrites, not copied from source pages.
+- When two algorithms correctly solve the same prompt, solution tracks should explain asymptotic performance, practical memory shape, readability, and runtime risks rather than presenting code alone.
 - Keep wording clear that this is reported/public prep, not an official company question bank.
 
 Run `npm run content:check` after editing interview files.

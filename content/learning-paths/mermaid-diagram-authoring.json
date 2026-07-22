@@ -1,0 +1,38 @@
+{
+  "slug": "mermaid-diagram-authoring",
+  "title": "Reading And Writing Mermaid Diagrams",
+  "summary": "Learn Mermaid from readable flowcharts through software models, planning charts, and advanced documentation patterns with rendered examples and source-first practice.",
+  "kind": "skill",
+  "category": "Programming",
+  "audience": "Developers, technical writers, and system designers who want maintainable diagrams that live beside code and documentation.",
+  "status": "published",
+  "units": [
+    {
+      "slug": "mermaid-syntax-fundamentals",
+      "title": "Syntax And Flowchart Fundamentals",
+      "summary": "Read Mermaid declarations, node IDs, labels, shapes, edges, directions, decisions, and subgraphs from easy to detailed flowcharts.",
+      "nodes": [
+        { "kind": "document", "slug": "programming/mermaid-syntax-fundamentals" },
+        { "kind": "exercise", "slug": "programming/mermaid-syntax-fundamentals-questionnaire" }
+      ]
+    },
+    {
+      "slug": "mermaid-software-diagrams",
+      "title": "Software Structure And Behavior",
+      "summary": "Choose and write sequence, class, state, and entity-relationship diagrams for different software questions.",
+      "nodes": [
+        { "kind": "document", "slug": "programming/mermaid-software-diagrams" },
+        { "kind": "exercise", "slug": "programming/mermaid-software-diagrams-questionnaire" }
+      ]
+    },
+    {
+      "slug": "mermaid-planning-and-data-diagrams",
+      "title": "Planning, Data, And Advanced Authoring",
+      "summary": "Use Gantt, user journey, pie, mindmap, timeline, and Git graph diagrams, then debug and review complex diagram source.",
+      "nodes": [
+        { "kind": "document", "slug": "programming/mermaid-planning-and-data-diagrams" },
+        { "kind": "exercise", "slug": "programming/mermaid-planning-and-data-diagrams-questionnaire" }
+      ]
+    }
+  ]
+}

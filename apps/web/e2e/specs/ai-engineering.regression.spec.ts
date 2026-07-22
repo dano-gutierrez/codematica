@@ -8,7 +8,7 @@ test("@regression mobile user studies Langfuse tracing and opens the AI flashcar
       () => 0.999999;
   });
 
-  await page.goto("/");
+  await page.goto("/paths");
   await expect(page.getByTestId("path-card-ai-engineering-langfuse-langchain")).toContainText("Langfuse And LangChain AI Engineering");
 
   await page.getByTestId("path-card-ai-engineering-langfuse-langchain").getByRole("link", { name: /Open path/i }).click();

@@ -2,9 +2,16 @@ import { expect, test } from "@playwright/test";
 
 test("@smoke mobile user can follow a path, practice, search, and open a diagram", async ({ page }) => {
   await page.goto("/");
-  await expect(page.getByTestId("path-home")).toBeVisible();
-  await expect(page.getByTestId("path-card-system-design-fundamentals")).toContainText("System Design Fundamentals");
-  await expect(page.getByRole("link", { name: /Open path/i }).first()).toHaveCSS("color", "rgb(255, 255, 255)");
+  await expect(page.getByTestId("discovery-home")).toBeVisible();
+  await expect(page.getByTestId("home-section-languages")).toContainText("Japanese");
+  await page.getByTestId("home-view-all-paths").click();
+  await expect(page).toHaveURL(/\/paths$/);
+  await expect(page.getByTestId("path-catalog")).toBeVisible();
+  const systemDesignPath = page.getByTestId("path-card-system-design-fundamentals");
+  await expect(systemDesignPath).toContainText("System Design Fundamentals");
+  await expect(systemDesignPath.getByRole("link", { name: /Open path/i })).toHaveCSS("color", "rgb(255, 255, 255)");
+  await systemDesignPath.getByRole("link", { name: /Open path/i }).click();
+  await expect(page.getByTestId("path-detail")).toBeVisible();
 
   await page.getByTestId("path-node-document-system-design-cache-invalidation").first().click();
   await expect(page.getByTestId("document-page")).toBeVisible();
@@ -26,7 +33,7 @@ test("@smoke mobile user can follow a path, practice, search, and open a diagram
 
   await page.goto("/browse");
   await expect(page.getByTestId("knowledge-browser")).toBeVisible();
-  await expect(page.getByTestId("content-library-paths-link")).toContainText("Learning paths");
+  await expect(page.getByRole("link", { name: "Paths", exact: true })).toHaveAttribute("href", "/paths");
   await expect(page.getByTestId("search-mode-exact")).toHaveCount(0);
   await expect(page.getByTestId("search-mode-fuzzy")).toHaveCount(0);
 

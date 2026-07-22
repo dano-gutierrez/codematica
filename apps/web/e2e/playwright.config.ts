@@ -3,6 +3,7 @@ import { defineConfig, devices } from "@playwright/test";
 export default defineConfig({
   testDir: "./specs",
   timeout: 30_000,
+  workers: 4,
   expect: {
     timeout: 10_000,
   },

@@ -334,7 +334,7 @@ describe("buildContentIndex", () => {
 
     const index = await buildContentIndex({ rootDir });
 
-    expect(index.schemaVersion).toBe(5);
+    expect(index.schemaVersion).toBe(6);
     expect(index.documents).toHaveLength(1);
     expect(index.diagrams).toHaveLength(1);
     expect(index.exercises).toEqual([
@@ -652,7 +652,7 @@ describe("buildContentIndex", () => {
 
     const index = await buildContentIndex({ rootDir });
 
-    expect(index.schemaVersion).toBe(5);
+    expect(index.schemaVersion).toBe(6);
     expect(index.interviewCompanies).toEqual([
       expect.objectContaining({
         slug: "amazon",

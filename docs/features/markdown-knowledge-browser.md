@@ -3,7 +3,7 @@
 ## Snapshot
 
 - Status: `shipped`
-- Last updated: `2026-07-11`
+- Last updated: `2026-07-22`
 - Owner thread: `n/a`
 - Current state: The content library lives at `/browse` and reads a generated local index from repo-authored Markdown, Mermaid, path, exercise, passive flashcard feed, and interview files.
 - Target outcome: Users can browse, search, read articles, and render diagrams on mobile without Supabase credentials.
@@ -32,14 +32,15 @@ The V1 app is a searchable study browser. Content authors create plain Markdown 
 - Markdown frontmatter must be validated before the index is generated.
 - Search must be fuzzy by default with no exact/fuzzy toggle in the UI.
 - Fuzzy search must weight title, tags, and headings above body text.
-- Track and difficulty filters use the reusable Radix-backed `Dropdown` component, not native select styling.
+- Track, difficulty, and document/diagram filters use the reusable Radix-backed `Dropdown` component, not native select styling.
+- The library returns the full filtered local result set rather than truncating at 30 items.
 - Embedded Mermaid blocks and external diagram files must render with source/error states.
 - Fenced code blocks render with the shared language-aware code theme instead of unstyled browser defaults.
 - `packages/core/src/generated/content-index.json` must not be edited manually.
 
 ## Current State
 
-The feature is implemented with a small starter content set. Supabase has an optional schema and sync script but is not used by the browser runtime.
+The feature is implemented with a growing local content set. The Mermaid authoring path exercises embedded rendering across 11 diagram families while retaining source and error states. Supabase has an optional schema and sync script but is not used by the browser runtime.
 
 ## Scope
 
@@ -68,7 +69,7 @@ The feature is implemented with a small starter content set. Supabase has an opt
 
 ### UI / UX
 
-- `/browse` shows the usable content library immediately and links back to the learning path map.
+- `/browse` shows the usable content library immediately and links to the discovery home and `/paths` catalog through shared navigation.
 - `/` shows the learning path map.
 - `/docs/[...slug]` renders one article with metadata, outline, Markdown body, and referenced diagrams.
 - `/diagrams/[...slug]` renders one standalone Mermaid diagram.
@@ -123,6 +124,7 @@ The feature is implemented with a small starter content set. Supabase has an opt
 - `2026-05-30`: Move the browser from `/` to `/browse` so `/` can become the learning path map.
 - `2026-06-21`: Keep article and diagram routes static-first by moving path-scoped next-link selection to a small client wrapper.
 - `2026-07-11`: Move generated index access and search into `@codematica/core` so web and native share the same content/search contract.
+- `2026-07-22`: Add the lesson/diagram type filter and remove the 30-result presentation cap.
 
 ## Thread Handoff Prompt
 
