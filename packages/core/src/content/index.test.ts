@@ -83,6 +83,32 @@ describe("generated content index", () => {
     expect(feed?.cards.some((card) => card.code?.includes("def "))).toBe(true);
   });
 
+  it("loads the BFS and DFS learning path, questionnaires, and scrolling review feed", () => {
+    const path = getLearningPathBySlug("breadth-first-and-depth-first-search");
+    const fundamentals = getDocumentBySlug("programming/bfs-dfs-fundamentals");
+    const applications = getDocumentBySlug("programming/bfs-dfs-interview-patterns");
+    const fundamentalsQuiz = getExerciseBySlug("programming/bfs-dfs-fundamentals-questionnaire");
+    const applicationsQuiz = getExerciseBySlug("programming/bfs-dfs-interview-patterns-questionnaire");
+    const feed = getPassiveFlashcardFeedByPathSlug("breadth-first-and-depth-first-search");
+
+    expect(path?.title).toBe("Breadth-First Search And Depth-First Search");
+    expect(path?.units.flatMap((unit) => unit.nodes).map((node) => node.slug)).toEqual([
+      "programming/bfs-dfs-fundamentals",
+      "programming/bfs-dfs-fundamentals-questionnaire",
+      "programming/bfs-dfs-interview-patterns",
+      "programming/bfs-dfs-interview-patterns-questionnaire",
+    ]);
+    expect(fundamentals?.markdown).toContain("from collections import deque");
+    expect(fundamentals?.markdown).toContain("export function bfs");
+    expect(applications?.markdown).toContain("Number Of Islands");
+    expect(applications?.markdown).toContain("BFS Versus DFS");
+    expect(fundamentalsQuiz?.type).toBe("questionnaire");
+    expect(applicationsQuiz?.type).toBe("questionnaire");
+    expect(feed?.route).toBe("/paths/breadth-first-and-depth-first-search/flashcards");
+    expect(feed?.cards.length).toBeGreaterThanOrEqual(12);
+    expect(feed?.cards.map((card) => card.type)).toEqual(expect.arrayContaining(["concept", "practical", "snippet", "interview"]));
+  });
+
   it("loads the Langfuse and LangChain AI engineering path", () => {
     const path = getLearningPathBySlug("ai-engineering-langfuse-langchain");
     const tracingDocument = getDocumentBySlug("ai-engineering/langfuse-tracing-fundamentals");
@@ -268,5 +294,17 @@ describe("generated content index", () => {
         java: expect.objectContaining({ code: expect.any(String) }),
       }),
     );
+  });
+
+  it("loads graph-search interview questions with BFS and DFS solution tracks", () => {
+    const islands = getInterviewQuestionBySlug("google", "number-of-islands");
+    const shortestPath = getInterviewQuestionBySlug("google", "shortest-path-binary-matrix");
+    const courseSchedule = getInterviewQuestionBySlug("google", "course-schedule");
+
+    expect(islands?.solutionTracks.map((track) => track.id)).toEqual(["bfs-flood-fill", "dfs-flood-fill"]);
+    expect(islands?.solutionTracks.every((track) => track.languages.python.code.length > 0)).toBe(true);
+    expect(islands?.solutionTracks.every((track) => track.languages.typescript.code.length > 0)).toBe(true);
+    expect(shortestPath?.tags).toContain("bfs");
+    expect(courseSchedule?.solutionTracks.map((track) => track.id)).toEqual(["dfs-color-cycle", "bfs-kahn-order"]);
   });
 });

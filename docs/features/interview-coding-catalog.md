@@ -61,7 +61,7 @@ Seed content uses public/community-reported prep references such as InterviewQue
 ## Test Plan
 
 - Unit: schema validation, duplicate company/question/solution IDs, required source links, and required language code.
-- Integration: generated index loads eight companies, 24 questions, and lookup helpers resolve company and question routes.
+- Integration: generated index loads eight companies, 27 questions, including the BFS/DFS graph-search additions, and lookup helpers resolve company and question routes.
 - Component: guided walkthrough advances steps, switches language, shows highlighted final code/explanation, and restarts on a different solution track.
 - E2E: user opens `/interviews`, uses random navigation, opens Amazon, starts Two Sum, advances steps, switches language, and reaches the final explanation.
 

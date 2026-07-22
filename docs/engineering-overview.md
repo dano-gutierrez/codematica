@@ -109,6 +109,8 @@ The database indexes and search path teaches production index judgment, PostgreS
 
 The Advanced Next.js 16 path is the first Front-End Development skill slice. It pairs hard-only searchable Markdown lessons, senior/principal questionnaires, and one-minute passive brief cards for App Router rendering, `force-dynamic`, Cache Components, data fetching, invalidation, production failure modes, performance architecture, and migration review. Next.js content must stay anchored to official Next.js documentation, official release notes, and npm registry version metadata.
 
+The Breadth-First Search And Depth-First Search path is the graph-traversal Programming slice. It pairs searchable Markdown lessons and readable Python/TypeScript code with questionnaires, a passive scrolling review feed, and guided Google interview prompts for connected components, unweighted shortest paths, and dependency cycles. Number Of Islands deliberately includes both BFS and DFS tracks so learners can compare equivalent asymptotic performance with different readability and memory risks.
+
 The Japanese Foundations path is the first human-language slice. It pairs local Japanese language catalogs, Markdown lessons, and writing exercises for hiragana/katakana vowels, starter kanji, IPA display, assisted tracing, and free handwriting checks across web and Expo.
 
 Progress is user state, not authored content. Signed-in progress is stored in Supabase; signed-out progress is buffered in browser local storage on web and native local storage on Expo, then can sync after login. Progress does not store answers, scores, streaks, mastery, or full session history.
@@ -134,7 +136,7 @@ Progress is user state, not authored content. Signed-in progress is stored in Su
 
 ## Testing Model
 
-Unit tests cover schema validation, parser behavior, fuzzy search, snippets, questionnaire shuffling/checking, handwriting scoring, interview solution selection, path/exercise/language/interview validation, progress payload validation, anonymous progress buffering, and diagram indexing. Integration tests cover generated index loading and renderer behavior, including the Python refresh path, Langfuse/LangChain AI engineering path, database indexes path, Advanced Next.js 16 path, and Japanese Foundations path. Playwright smoke and regression tests cover the web mobile path, practice, browser, questionnaire, interview, flashcard, one-minute brief feed, signed-out progress, and diagram journeys. Mobile Jest tests cover shared React Native screens against the bundled generated index, including Japanese lookup and writing practice shell.
+Unit tests cover schema validation, parser behavior, fuzzy search, snippets, questionnaire shuffling/checking, handwriting scoring, interview solution selection, path/exercise/language/interview validation, progress payload validation, anonymous progress buffering, and diagram indexing. Integration tests cover generated index loading and renderer behavior, including the Python refresh path, BFS/DFS path, Langfuse/LangChain AI engineering path, database indexes path, Advanced Next.js 16 path, and Japanese Foundations path. Playwright smoke and regression tests cover the web mobile path, practice, browser, questionnaire, interview, flashcard, one-minute brief feed, BFS/DFS study journey, signed-out progress, and diagram journeys. Mobile Jest tests cover shared React Native screens against the bundled generated index, including Japanese lookup and writing practice shell.
 
 ## Future Architecture Direction
 

@@ -1,0 +1,172 @@
+{
+  "slug": "breadth-first-and-depth-first-search",
+  "pathSlug": "breadth-first-and-depth-first-search",
+  "title": "BFS And DFS Scrolling Review",
+  "summary": "Short traversal concepts, implementation reminders, code snippets, and interview prompts for mobile review.",
+  "audience": "Developers learning graph traversal or preparing BFS and DFS coding interview patterns.",
+  "status": "published",
+  "cards": [
+    {
+      "id": "bfs-uses-a-queue",
+      "type": "concept",
+      "title": "BFS Uses A Queue",
+      "prompt": "Breadth-first search expands nodes in first-in, first-out discovery order.",
+      "explanation": "The queue preserves distance layers, so every node d edges away is expanded before any node d plus one edges away.",
+      "difficulty": "foundation",
+      "tags": ["bfs", "queue", "graphs"],
+      "sourceDocSlug": "programming/bfs-dfs-fundamentals"
+    },
+    {
+      "id": "dfs-uses-a-stack",
+      "type": "concept",
+      "title": "DFS Uses A Stack",
+      "prompt": "Depth-first search follows one branch before it backtracks.",
+      "explanation": "Recursion uses the runtime call stack; iterative DFS makes the same pending path explicit with a stack collection.",
+      "difficulty": "foundation",
+      "tags": ["dfs", "stack", "graphs"],
+      "sourceDocSlug": "programming/bfs-dfs-fundamentals"
+    },
+    {
+      "id": "visited-prevents-cycles",
+      "type": "concept",
+      "title": "Visited Prevents Cycles",
+      "prompt": "A general graph traversal needs a record of nodes already discovered.",
+      "explanation": "Without visited state, a cycle can repeat forever and shared neighbors can be processed many times.",
+      "difficulty": "foundation",
+      "tags": ["graphs", "visited", "correctness"],
+      "sourceDocSlug": "programming/bfs-dfs-fundamentals"
+    },
+    {
+      "id": "shortest-means-bfs",
+      "type": "practical",
+      "title": "Shortest Often Means BFS",
+      "prompt": "Equal-cost moves plus a minimum-step question are the classic BFS signal.",
+      "explanation": "BFS explores increasing path lengths. The first target discovery is optimal when every edge has the same cost.",
+      "difficulty": "foundation",
+      "tags": ["bfs", "shortest-path", "interviews"],
+      "sourceDocSlug": "programming/bfs-dfs-interview-patterns"
+    },
+    {
+      "id": "weighted-path-warning",
+      "type": "practical",
+      "title": "Weights Change The Algorithm",
+      "prompt": "Plain BFS does not solve shortest paths with different edge costs.",
+      "explanation": "The layer number counts edges, not total weight. Nonnegative weighted paths usually call for Dijkstra's algorithm.",
+      "difficulty": "practitioner",
+      "tags": ["bfs", "weighted-graphs", "shortest-path"],
+      "sourceDocSlug": "programming/bfs-dfs-fundamentals"
+    },
+    {
+      "id": "mark-before-enqueue",
+      "type": "practical",
+      "title": "Mark Before Enqueue",
+      "prompt": "Mark a BFS neighbor visited at the moment it enters the queue.",
+      "explanation": "Early marking prevents two parents in the same frontier from enqueueing the same shared neighbor.",
+      "difficulty": "foundation",
+      "tags": ["bfs", "queue", "performance"],
+      "sourceDocSlug": "programming/bfs-dfs-fundamentals"
+    },
+    {
+      "id": "typescript-queue-head",
+      "type": "snippet",
+      "title": "TypeScript Queue Head",
+      "prompt": "Advance a head index instead of repeatedly shifting an array-backed queue.",
+      "explanation": "The array keeps queued values while head identifies the next item, avoiding repeated front removal and reindexing.",
+      "difficulty": "foundation",
+      "tags": ["typescript", "bfs", "queue"],
+      "sourceDocSlug": "programming/bfs-dfs-fundamentals",
+      "code": "for (let head = 0; head < queue.length; head += 1) {\n  const node = queue[head];\n}"
+    },
+    {
+      "id": "python-deque-pop",
+      "type": "snippet",
+      "title": "Python Queue Pop",
+      "prompt": "Python deque provides efficient removal from the front of the BFS queue.",
+      "explanation": "Use popleft for FIFO order; list pop without an index removes from the end and behaves like a stack.",
+      "difficulty": "foundation",
+      "tags": ["python", "bfs", "deque"],
+      "sourceDocSlug": "programming/bfs-dfs-fundamentals",
+      "code": "from collections import deque\nqueue = deque([start])\nnode = queue.popleft()"
+    },
+    {
+      "id": "iterative-dfs-safety",
+      "type": "practical",
+      "title": "Depth Can Break Recursion",
+      "prompt": "Use iterative DFS when graph depth is large or controlled by untrusted input.",
+      "explanation": "An explicit stack preserves DFS behavior without depending on the runtime's limited recursive call stack.",
+      "difficulty": "practitioner",
+      "tags": ["dfs", "stack", "reliability"],
+      "sourceDocSlug": "programming/bfs-dfs-fundamentals"
+    },
+    {
+      "id": "islands-hidden-graph",
+      "type": "interview",
+      "title": "Grid Becomes A Graph",
+      "prompt": "In Number Of Islands, what are the vertices, edges, and connected components?",
+      "explanation": "Land cells are vertices, orthogonal land adjacencies are edges, and each maximal connected component is one island.",
+      "difficulty": "practitioner",
+      "tags": ["grids", "components", "interviews"],
+      "sourceDocSlug": "programming/bfs-dfs-interview-patterns"
+    },
+    {
+      "id": "islands-two-valid-answers",
+      "type": "interview",
+      "title": "Two Correct Island Traversals",
+      "prompt": "BFS and DFS both count islands in O(rows times cols) time.",
+      "explanation": "The prompt needs complete component discovery, so internal traversal order does not change the count; memory shape and recursion safety differ.",
+      "difficulty": "practitioner",
+      "tags": ["bfs", "dfs", "grids"],
+      "sourceDocSlug": "programming/bfs-dfs-interview-patterns"
+    },
+    {
+      "id": "course-dfs-cycle",
+      "type": "interview",
+      "title": "DFS Finds Back Edges",
+      "prompt": "A prerequisite edge to a node on the active DFS path proves a directed cycle.",
+      "explanation": "The visiting color means that dependency has not finished; reaching it again closes a cycle in the active chain.",
+      "difficulty": "practitioner",
+      "tags": ["dfs", "cycles", "dependencies"],
+      "sourceDocSlug": "programming/bfs-dfs-interview-patterns"
+    },
+    {
+      "id": "course-kahn-bfs",
+      "type": "interview",
+      "title": "Kahn Starts At Zero",
+      "prompt": "BFS topological processing begins with every course whose indegree is zero.",
+      "explanation": "Removing ready courses can make dependents ready. A cycle leaves some courses with positive indegree forever.",
+      "difficulty": "practitioner",
+      "tags": ["bfs", "topological-sort", "dependencies"],
+      "sourceDocSlug": "programming/bfs-dfs-interview-patterns"
+    },
+    {
+      "id": "both-linear",
+      "type": "concept",
+      "title": "Both Are Linear",
+      "prompt": "Adjacency-list BFS and DFS both take O(V + E) time with visited tracking.",
+      "explanation": "Every reachable vertex is processed once, and every adjacency-list edge is inspected a constant number of times.",
+      "difficulty": "foundation",
+      "tags": ["complexity", "bfs", "dfs"],
+      "sourceDocSlug": "programming/bfs-dfs-fundamentals"
+    },
+    {
+      "id": "memory-shape",
+      "type": "concept",
+      "title": "Shape Drives Memory",
+      "prompt": "BFS stores a frontier; DFS stores an active path and pending branches.",
+      "explanation": "Wide graphs pressure a BFS queue, while deep graphs pressure a DFS stack even though both have O(V) worst-case space.",
+      "difficulty": "practitioner",
+      "tags": ["complexity", "memory", "graphs"],
+      "sourceDocSlug": "programming/bfs-dfs-fundamentals"
+    },
+    {
+      "id": "state-the-invariant",
+      "type": "interview",
+      "title": "Explain Before Coding",
+      "prompt": "State the node, edge, visited rule, and traversal invariant before implementation.",
+      "explanation": "A precise model turns a story problem into a standard traversal and gives the interviewer a clear correctness argument.",
+      "difficulty": "practitioner",
+      "tags": ["interviews", "communication", "graphs"],
+      "sourceDocSlug": "programming/bfs-dfs-interview-patterns"
+    }
+  ]
+}

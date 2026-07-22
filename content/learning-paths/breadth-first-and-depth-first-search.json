@@ -1,0 +1,29 @@
+{
+  "slug": "breadth-first-and-depth-first-search",
+  "title": "Breadth-First Search And Depth-First Search",
+  "summary": "Learn BFS and DFS from first principles, implement both in Python and TypeScript, and choose the right traversal in graph, tree, grid, and interview problems.",
+  "kind": "skill",
+  "category": "Programming",
+  "audience": "Developers preparing for coding interviews or strengthening practical graph and tree traversal fundamentals.",
+  "status": "published",
+  "units": [
+    {
+      "slug": "bfs-dfs-fundamentals",
+      "title": "BFS And DFS Fundamentals",
+      "summary": "Build a shared traversal mental model, then compare queue-based BFS with stack-based or recursive DFS.",
+      "nodes": [
+        { "kind": "document", "slug": "programming/bfs-dfs-fundamentals" },
+        { "kind": "exercise", "slug": "programming/bfs-dfs-fundamentals-questionnaire" }
+      ]
+    },
+    {
+      "slug": "bfs-dfs-interview-patterns",
+      "title": "Interview Patterns And Tradeoffs",
+      "summary": "Apply traversal to grids, shortest paths, dependencies, and problems where BFS and DFS are both correct but behave differently.",
+      "nodes": [
+        { "kind": "document", "slug": "programming/bfs-dfs-interview-patterns" },
+        { "kind": "exercise", "slug": "programming/bfs-dfs-interview-patterns-questionnaire" }
+      ]
+    }
+  ]
+}
