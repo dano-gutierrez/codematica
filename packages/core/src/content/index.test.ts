@@ -18,7 +18,7 @@ describe("generated content index", () => {
   it("loads starter documents and diagrams", () => {
     const index = getContentIndex();
 
-    expect(index.schemaVersion).toBe(5);
+    expect(index.schemaVersion).toBe(6);
     expect(index.documents.length).toBeGreaterThanOrEqual(3);
     expect(index.diagrams.length).toBeGreaterThanOrEqual(2);
     expect(index.learningPaths.length).toBeGreaterThanOrEqual(2);

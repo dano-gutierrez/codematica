@@ -1,5 +1,5 @@
 {
-  "schemaVersion": 5,
+  "schemaVersion": 6,
   "documents": [
     {
       "title": "LangChain Agents LangGraph And Operations",
@@ -21669,5 +21669,99 @@
         "Caching"
       ]
     }
-  ]
+  ],
+  "homeDiscovery": {
+    "sections": {
+      "paths": [
+        {
+          "kind": "path",
+          "slug": "system-design-fundamentals"
+        },
+        {
+          "kind": "path",
+          "slug": "ai-engineering-langfuse-langchain"
+        },
+        {
+          "kind": "path",
+          "slug": "python-for-ts-js-engineers"
+        },
+        {
+          "kind": "path",
+          "slug": "japanese-foundations"
+        }
+      ],
+      "lessons": [
+        {
+          "kind": "document",
+          "slug": "system-design/cache-invalidation"
+        },
+        {
+          "kind": "document",
+          "slug": "programming/bfs-dfs-fundamentals"
+        },
+        {
+          "kind": "document",
+          "slug": "ai-engineering/langfuse-tracing-fundamentals"
+        },
+        {
+          "kind": "document",
+          "slug": "languages/japanese-writing-systems"
+        }
+      ],
+      "interviews": [
+        {
+          "kind": "interview-question",
+          "slug": "google/number-of-islands"
+        },
+        {
+          "kind": "interview-question",
+          "slug": "amazon/lru-cache"
+        },
+        {
+          "kind": "interview-question",
+          "slug": "meta/binary-tree-vertical-columns"
+        },
+        {
+          "kind": "interview-question",
+          "slug": "uber/meeting-rooms-ii"
+        }
+      ],
+      "practice": [
+        {
+          "kind": "exercise",
+          "slug": "system-design/cache-product-contract"
+        },
+        {
+          "kind": "exercise",
+          "slug": "programming/bfs-dfs-fundamentals-questionnaire"
+        },
+        {
+          "kind": "exercise",
+          "slug": "languages/japanese-hiragana-vowels-writing"
+        },
+        {
+          "kind": "flashcard-feed",
+          "slug": "python-for-ts-js-engineers"
+        }
+      ],
+      "languages": [
+        {
+          "kind": "language-hub",
+          "slug": "japanese"
+        },
+        {
+          "kind": "language-character",
+          "slug": "japanese/kanji/water"
+        },
+        {
+          "kind": "language-vocabulary",
+          "slug": "japanese/vocabulary/japan"
+        },
+        {
+          "kind": "language-vocabulary",
+          "slug": "japanese/vocabulary/person"
+        }
+      ]
+    }
+  }
 }

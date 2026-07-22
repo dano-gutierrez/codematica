@@ -306,6 +306,7 @@ Rule of thumb: if you can test it without a browser, do it in Vitest first. Use 
 All sessions should reuse and, when necessary, expand these existing components instead of rebuilding equivalent UI from scratch:
 
 - `apps/web/src/components/BackButton.tsx`: shared client-side back navigation button with an optional label.
+- `apps/web/src/components/AppHeader.tsx`: shared responsive web header with stable navigation to discovery and section catalogs.
 - `apps/web/src/components/CodeBlock.tsx`: shared language-aware code block renderer for Markdown, interview solutions, flashcard code, and Mermaid source fallbacks.
 - `apps/web/src/components/DifficultyPill.tsx`: shared difficulty badge for beginner, intermediate, and advanced content.
 - `apps/web/src/components/Dropdown.tsx`: custom Radix-backed dropdown primitive for filters and select-style controls; use this instead of native selects or one-off dropdowns.
@@ -313,6 +314,7 @@ All sessions should reuse and, when necessary, expand these existing components 
 - `apps/web/src/components/InterviewQuestionSession.tsx`: guided coding interview walkthrough with solution track navigation, language switching, Mermaid rendering, and code rendering.
 - `apps/web/src/components/JapaneseLanguageBrowser.tsx`: Japanese language lookup hub with character/vocabulary search, IPA display, and links into the Japanese Foundations path.
 - `apps/web/src/components/KeepReadingSection.tsx`: home-page resume panel backed by signed-in Supabase progress or signed-out local progress.
+- `apps/web/src/components/HomeDiscovery.tsx`: cross-section home search, curated section rows, section headings, and reusable discovery cards.
 - `apps/web/src/components/KnowledgeBrowser.tsx`: generated content browser with search, track filters, difficulty filters, and result cards.
 - `apps/web/src/components/LearningPathMap.tsx`: learning path home and detail views, path overview stats, and path node display.
 - `apps/web/src/components/LoginForm.tsx`: Supabase Auth UI for Google, Apple-ready, and email/password flows.
@@ -321,6 +323,7 @@ All sessions should reuse and, when necessary, expand these existing components 
 - `apps/web/src/components/PassiveFlashcardFeed.tsx`: path-scoped passive flashcard feed UI for scroll-only review.
 - `apps/web/src/components/ProgressTrackers.tsx`: invisible document and diagram progress trackers for the optional auth/progress layer.
 - `apps/web/src/components/SaveProgressPrompt.tsx`: global signed-out prompt for saving locally buffered progress after use.
+- `apps/web/src/components/SectionCatalogs.tsx`: complete path, practice/review, and language catalog surfaces.
 - `apps/web/src/components/PathScopedNextLink.tsx`: client-side path query reader for static document and diagram next-node links.
 - `apps/web/src/components/PathScopedPracticeCard.tsx`: client-side path query adapter that passes next-node links into `PracticeCard` without making practice pages dynamic.
 - `apps/web/src/components/PracticeCard.tsx`: flashcard, cloze, questionnaire, and writing practice shell with next-node navigation.

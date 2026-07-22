@@ -8,7 +8,7 @@ test("@regression mobile user studies trigram indexes and opens the database fla
       () => 0.999999;
   });
 
-  await page.goto("/");
+  await page.goto("/paths");
   await expect(page.getByTestId("path-card-database-indexes-and-search")).toContainText("Database Indexes And Search");
 
   await page.getByTestId("path-card-database-indexes-and-search").getByRole("link", { name: /Open path/i }).click();

@@ -3,9 +3,9 @@
 ## Snapshot
 
 - Status: `shipped`
-- Last updated: `2026-06-21`
+- Last updated: `2026-07-22`
 - Owner thread: `n/a`
-- Current state: The home route is a path-first map backed by local path, exercise, and passive flashcard feed JSON indexed with Markdown documents.
+- Current state: The complete path catalog lives at `/paths`; path detail, exercise, and passive flashcard routes remain backed by local structured content.
 - Target outcome: Users can follow role and skill paths, open documents or diagrams, complete flashcard, cloze, questionnaire, or writing practice, and review passive path-scoped flashcards without requiring auth or Supabase.
 - Code touchpoints:
   - `packages/core/src/content/schema.ts`
@@ -34,13 +34,14 @@ Codematica uses learning paths as the main study surface. Paths are inspired by 
 
 ## Outcome / Contract
 
-- `/` shows a mobile-first path map, not the fuzzy browser.
+- `/` is the cross-section discovery home owned by `home-discovery.md`.
+- `/paths` shows every published learning path grouped by category with kind/category filters.
 - `/browse` preserves the content library, fuzzy search, track filter, and difficulty filter.
 - `/paths/[slug]` renders one role or skill path with ordered unit nodes.
 - `/paths/[slug]/flashcards` renders one passive flashcard feed when a path has a published feed.
 - `/practice/[...slug]` renders one flashcard, cloze prompt, questionnaire session, or writing exercise.
 - Exercise content is manually authored in `content/exercises/**/*.json`; path content is authored in `content/learning-paths/*.json`; passive flashcard feeds are authored in `content/flashcard-feeds/*.json`.
-- `packages/core/src/generated/content-index.json` has `schemaVersion: 5` and includes `learningPaths`, `exercises`, `passiveFlashcardFeeds`, `languageCharacters`, and `languageVocabulary`.
+- `packages/core/src/generated/content-index.json` has `schemaVersion: 6` and includes learning content plus validated home discovery curation.
 - Index generation fails on duplicate path, exercise, passive feed, language character, or language vocabulary slugs; missing node references; exercises pointing at missing documents; writing exercises pointing at missing language characters; invalid passive feed path or source document references; cloze templates without exactly one `{{blank}}`; or invalid questionnaire structure.
 - No node is locked, disabled, gated, or paywalled in this milestone. Optional saved progress is owned by `docs/features/auth-and-progress.md`.
 
@@ -53,7 +54,7 @@ The shipped content includes skill and role paths using Markdown articles, exter
 ### In Scope
 
 - role and skill learning paths
-- path-first home route
+- complete path catalog route
 - path detail route
 - flashcard reveal interaction
 - cloze answer checking
@@ -83,7 +84,7 @@ The shipped content includes skill and role paths using Markdown articles, exter
 
 ### UI / UX
 
-- Home shows path cards with node previews and a prominent `/browse` content-library link.
+- `/paths` shows compact path cards with category, kind, unit count, and content mix. Ordered node previews remain on path detail routes.
 - Path nodes can be documents, diagrams, or exercises and are always navigable.
 - Document and diagram nodes opened from a path preserve `?path=` and expose a next-node link when another node follows.
 - Path-scoped next-node links are selected client-side from build-time route maps so document, diagram, and practice pages can stay static-first.
@@ -160,6 +161,7 @@ The shipped content includes skill and role paths using Markdown articles, exter
 - `2026-07-11`: Add `writing` exercises for Japanese handwriting while keeping raw strokes transient and validated against local language catalogs.
 - `2026-07-21`: Add the BFS/DFS Programming path with lessons, questionnaires, and a passive scrolling review feed using existing components.
 - `2026-07-21`: Add the Mermaid authoring path with progressive rendered examples, three choice-only questionnaires, and passive review using existing components.
+- `2026-07-22`: Move the complete path catalog from `/` to `/paths`; the root is now the discovery hub owned by `home-discovery.md`.
 
 ## Documentation Updates
 

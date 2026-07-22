@@ -5,7 +5,7 @@ test("@regression studies BFS and DFS, reviews the feed, and opens the dual-solu
     (window as Window & { __codematicaPassiveFlashcardRandom?: () => number }).__codematicaPassiveFlashcardRandom = () => 0.999999;
   });
 
-  await page.goto("/");
+  await page.goto("/paths");
   const pathCard = page.getByTestId("path-card-breadth-first-and-depth-first-search");
   await expect(pathCard).toContainText("Breadth-First Search And Depth-First Search");
   await pathCard.getByRole("link", { name: /Open path/i }).click();

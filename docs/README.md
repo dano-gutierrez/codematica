@@ -17,7 +17,8 @@ Conventions:
 - `docs/features/<feature>.md` is the durable product and implementation contract for one feature.
 - `docs/features/_template.md` is the format new feature docs should follow.
 - `docs/features/README.md` explains how threads should consume and maintain feature docs.
-- `docs/features/learning-paths-and-practice.md` owns the path-first home, local path JSON, local exercise JSON, and practice routes.
+- `docs/features/home-discovery.md` owns the cross-section home, global local search, curated rows, section themes, and full catalog routes.
+- `docs/features/learning-paths-and-practice.md` owns local path JSON, path detail, local exercise JSON, and practice sessions.
 - `docs/features/programming-language-refresh.md` owns reusable programming-language refresh paths, starting with Python for TypeScript and JavaScript engineers.
 - `docs/features/llm-application-engineering.md` owns the Langfuse and LangChain AI engineering path, including local lessons, diagrams, quizzes, passive flashcards, and non-executable coding challenge sections.
 - `docs/features/database-indexes-learning-path.md` owns the database indexes and PostgreSQL search path, including local lessons, quizzes, passive flashcards, and future SQL editor roadmap boundaries.
@@ -42,6 +43,7 @@ Content authoring surfaces:
 - `content/flashcard-feeds/`: path-scoped passive flashcard feed JSON.
 - `content/interviews/`: company-scoped interview coding catalog JSON.
 - `content/languages/`: human-language character and vocabulary catalogs.
+- `content/discovery/`: validated editorial curation for discovery surfaces.
 
 Workspace surfaces:
 

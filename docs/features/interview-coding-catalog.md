@@ -3,7 +3,7 @@
 ## Snapshot
 
 - Status: `shipped`
-- Last updated: `2026-06-21`
+- Last updated: `2026-07-22`
 - Owner thread: `n/a`
 - Current state: The app has a local-first interview coding catalog with company pages, reported-public source links, random question navigation, and guided multi-language solution walkthroughs.
 - Target outcome: Users can choose a major tech company, open available coding prompts, advance through a step-by-step solution, and review Python, TypeScript, or Java code without requiring auth, Supabase, or a compiler.
@@ -29,7 +29,7 @@ The interview catalog is a local content surface for coding interview preparatio
 
 ## Outcome / Contract
 
-- `/interviews` shows company text-logo tiles and a random-question button.
+- `/interviews` shows company text-logo tiles, a random-question button, and every question with search, company, and difficulty filters.
 - `/interviews/[company]` shows all available coding questions for one company.
 - `/interviews/[company]/[question]` shows the prompt, examples, constraints, diagrams when present, and the guided solution session.
 - The guided session defaults to Python, lets users switch to TypeScript or Java, reveals one step per `Next`, and renders final code with language-aware highlighting.
@@ -44,7 +44,7 @@ The interview catalog is a local content surface for coding interview preparatio
 - `logo.src` points to a local SVG under `/company-logos/` so the catalog does not depend on remote image loading.
 - Every question has `sourceLinks`, `examples`, `constraints`, optional Mermaid `diagrams`, and at least two `solutionTracks`.
 - Every solution track requires `steps`, `explanation`, `complexity`, and `languages.python`, `languages.typescript`, and `languages.java`.
-- Generated index schema version is `4` and includes `interviewCompanies`.
+- Generated index schema version is `6` and includes interview companies plus validated home discovery curation.
 
 ## Future Versions
 
@@ -63,7 +63,7 @@ Seed content uses public/community-reported prep references such as InterviewQue
 - Unit: schema validation, duplicate company/question/solution IDs, required source links, and required language code.
 - Integration: generated index loads eight companies, 27 questions, including the BFS/DFS graph-search additions, and lookup helpers resolve company and question routes.
 - Component: guided walkthrough advances steps, switches language, shows highlighted final code/explanation, and restarts on a different solution track.
-- E2E: user opens `/interviews`, uses random navigation, opens Amazon, starts Two Sum, advances steps, switches language, and reaches the final explanation.
+- E2E: user opens `/interviews`, sees the complete question catalog, uses random navigation, opens Amazon, starts Two Sum, advances steps, switches language, and reaches the final explanation.
 
 ## Thread Handoff Prompt
 

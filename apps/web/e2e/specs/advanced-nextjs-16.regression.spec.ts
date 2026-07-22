@@ -16,7 +16,7 @@ test("@regression mobile user studies force-dynamic and opens the Next.js brief 
     ).__codematicaPassiveFlashcardRandom = () => 0.999999;
   });
 
-  await page.goto("/");
+  await page.goto("/paths");
   await expect(page.getByTestId("path-card-advanced-nextjs-16")).toContainText("Advanced Next.js 16");
 
   await page.getByTestId("path-card-advanced-nextjs-16").getByRole("link", { name: /Open path/i }).click();

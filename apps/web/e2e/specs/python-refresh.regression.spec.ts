@@ -5,7 +5,7 @@ test("@regression mobile user searches Python docs and completes a deterministic
     (window as Window & { __codematicaQuestionnaireRandom?: () => number }).__codematicaQuestionnaireRandom = () => 0.99;
   });
 
-  await page.goto("/");
+  await page.goto("/paths");
   await expect(page.getByTestId("path-card-python-for-ts-js-engineers")).toContainText("Python For TypeScript And JavaScript Engineers");
 
   await page.getByTestId("path-card-python-for-ts-js-engineers").getByRole("link", { name: /Open path/i }).click();
@@ -20,7 +20,7 @@ test("@regression mobile user searches Python docs and completes a deterministic
   await expect(page.getByTestId("path-detail")).toBeVisible();
 
   await page.goto("/browse");
-  await expect(page.getByTestId("content-library-paths-link")).toBeVisible();
+  await expect(page.getByRole("link", { name: "Paths", exact: true })).toHaveAttribute("href", "/paths");
   await page.getByTestId("knowledge-search-input").fill("pyproject.toml");
   await expect(page.getByTestId("search-results")).toContainText("Python Packaging And Environments");
 

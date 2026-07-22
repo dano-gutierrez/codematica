@@ -13,7 +13,7 @@ test("@regression signed-out users can learn and see local keep-reading progress
 
   await test.step("resume from the home keep-reading section", async () => {
     await page.goto("/");
-    await expect(page.getByTestId("path-home")).toBeVisible();
+    await expect(page.getByTestId("discovery-home")).toBeVisible();
     await expect(page.getByTestId("keep-reading-section")).toContainText("Cache Invalidation Under Product Pressure");
   });
 

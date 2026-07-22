@@ -1,8 +1,9 @@
 "use client";
 
 import Link from "next/link";
-import { BookOpen, CheckCircle2, GitBranch, Map, Network, Search, Sparkles } from "lucide-react";
+import { BookOpen, CheckCircle2, GitBranch, Network, Search, Sparkles } from "lucide-react";
 import { useMemo, useState } from "react";
+import { AppHeader } from "@/components/AppHeader";
 import { DifficultyPill } from "@/components/DifficultyPill";
 import { Dropdown, type DropdownOption } from "@/components/Dropdown";
 import type { ContentIndex, Difficulty } from "@/lib/content/schema";
@@ -28,6 +29,7 @@ export function KnowledgeBrowser({ index }: { index: ContentIndex }) {
   const [query, setQuery] = useState("");
   const [track, setTrack] = useState("all");
   const [difficulty, setDifficulty] = useState<"all" | Difficulty>("all");
+  const [kind, setKind] = useState<"all" | "document" | "diagram">("all");
 
   const trackOptions = useMemo(
     () => [
@@ -46,42 +48,14 @@ export function KnowledgeBrowser({ index }: { index: ContentIndex }) {
       searchContent(index, query, {
         track: track === "all" ? undefined : track,
         difficulty: difficulty === "all" ? undefined : difficulty,
+        kind: kind === "all" ? undefined : kind,
       }),
-    [difficulty, index, query, track],
+    [difficulty, index, kind, query, track],
   );
-
-  const visibleResults = results.slice(0, 30);
 
   return (
     <main className="min-h-screen pb-12" data-testid="knowledge-browser">
-      <header className="border-b-2 border-[#d5e2e8] bg-white px-4 py-4">
-        <div className="mx-auto flex w-full max-w-7xl items-center justify-between gap-4">
-          <Link href="/" className="flex min-w-0 items-center gap-3" aria-label="Codematica home">
-            <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg border-2 border-b-4 border-[#00645f] bg-[#007c78]">
-              <Network className="h-5 w-5 text-white" aria-hidden="true" />
-            </span>
-            <span className="min-w-0">
-              <span className="block truncate text-xl font-extrabold text-[#007c78]">Codematica</span>
-              <span className="block truncate text-xs font-extrabold uppercase text-[#68737d]">Software engineering map</span>
-            </span>
-          </Link>
-          <div className="flex items-center gap-2 text-sm font-extrabold text-[#33434b]">
-            <Link
-              href="/"
-              className="inline-flex min-h-10 items-center gap-2 rounded-lg border-2 border-b-4 border-[#d5e2e8] bg-white px-3 py-2 text-sm font-extrabold text-[#263238]"
-              data-testid="content-library-paths-link"
-            >
-              <Map className="h-4 w-4 text-[#007c78]" aria-hidden="true" />
-              Learning paths
-            </Link>
-            <span className="hidden rounded-lg border-2 border-b-4 border-[#d5e2e8] bg-white px-3 py-2 sm:inline-flex">{index.documents.length} docs</span>
-            <span className="hidden rounded-lg border-2 border-b-4 border-[#d5e2e8] bg-white px-3 py-2 sm:inline-flex">{index.diagrams.length} diagrams</span>
-            <Link href="/login" className="hidden rounded-lg border-2 border-b-4 border-[#d5e2e8] bg-white px-3 py-2 text-sm font-extrabold text-[#263238] sm:inline-flex">
-              Sign in
-            </Link>
-          </div>
-        </div>
-      </header>
+      <AppHeader subtitle="Lessons & diagrams" />
 
       <section className="mx-auto w-full max-w-7xl px-4 py-6 sm:py-8">
         <div className="grid gap-5 lg:grid-cols-[minmax(0,1fr)_20rem]">
@@ -107,7 +81,7 @@ export function KnowledgeBrowser({ index }: { index: ContentIndex }) {
                 </label>
               </div>
 
-              <div className="grid gap-3 sm:grid-cols-2">
+              <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
                 <Dropdown
                   label="Track"
                   value={track}
@@ -124,11 +98,23 @@ export function KnowledgeBrowser({ index }: { index: ContentIndex }) {
                   testId="difficulty-filter"
                   icon={<CheckCircle2 className="h-4 w-4" aria-hidden="true" />}
                 />
+                <Dropdown
+                  label="Content type"
+                  value={kind}
+                  options={[
+                    { value: "all", label: "Lessons & diagrams", description: "Every library item" },
+                    { value: "document", label: "Lessons", description: `${index.documents.length} Markdown guides` },
+                    { value: "diagram", label: "Diagrams", description: `${index.diagrams.length} visual guides` },
+                  ]}
+                  onValueChange={(nextKind) => setKind(nextKind as "all" | "document" | "diagram")}
+                  testId="content-type-filter"
+                  icon={<BookOpen className="h-4 w-4" aria-hidden="true" />}
+                />
               </div>
             </div>
 
             <div className="mt-7 grid gap-3" data-testid="search-results">
-              {visibleResults.map((result) => (
+              {results.map((result) => (
                 <Link
                   key={`${result.kind}-${result.id}`}
                   href={result.route}
@@ -154,7 +140,7 @@ export function KnowledgeBrowser({ index }: { index: ContentIndex }) {
                   </div>
                 </Link>
               ))}
-              {visibleResults.length === 0 ? (
+              {results.length === 0 ? (
                 <div className="rounded-lg border-2 border-b-4 border-[#d5e2e8] bg-white p-5 text-sm font-bold text-[#68737d]" data-testid="empty-results">
                   No indexed nodes match the current filters.
                 </div>

@@ -1,7 +1,7 @@
-import { fireEvent, render } from "@testing-library/react-native";
+import { fireEvent, render, waitFor } from "@testing-library/react-native";
 import { getContentIndex, getExerciseBySlug } from "@codematica/core";
 import type { CodematicaAdapters } from "@codematica/ui";
-import { BrowseScreen, JapaneseLanguageHubScreen, PracticeScreen } from "@codematica/ui";
+import { BrowseScreen, HomeDiscoveryScreen, JapaneseLanguageHubScreen, PracticeScreen } from "@codematica/ui";
 
 const adapters: CodematicaAdapters = {
   navigation: {
@@ -24,6 +24,18 @@ describe("mobile shared screens", () => {
 
     expect(view.getByTestId("mobile-search-results")).toBeOnTheScreen();
     expect(view.getByText(/Cache Invalidation/i)).toBeOnTheScreen();
+  });
+
+  it("shows every discovery section and searches across them", async () => {
+    const view = await render(<HomeDiscoveryScreen index={getContentIndex()} adapters={adapters} />);
+
+    expect(view.getByTestId("mobile-home-section-paths")).toBeOnTheScreen();
+    expect(view.getByTestId("mobile-home-section-languages")).toBeOnTheScreen();
+
+    fireEvent.changeText(view.getByTestId("mobile-home-global-search"), "Number Of Islands");
+
+    await waitFor(() => expect(view.getByTestId("mobile-home-search-results")).toBeOnTheScreen());
+    expect(view.getByText("Number Of Islands")).toBeOnTheScreen();
   });
 
   it("reveals a flashcard answer and records completion", async () => {

@@ -3,7 +3,7 @@
 ## Snapshot
 
 - Status: `shipped`
-- Last updated: `2026-07-11`
+- Last updated: `2026-07-22`
 - Owner thread: `n/a`
 - Current state: Japanese foundations ship as local language data, Markdown lessons, writing exercises, web routes, Expo routes, and shared handwriting scoring.
 - Target outcome: Users can search beginner Japanese characters/vocabulary and practice assisted or free handwriting on web and native without Supabase credentials.
@@ -29,7 +29,8 @@ The feature reuses the Expo workspace architecture. Shared content contracts, se
 
 ## Outcome / Contract
 
-- `/languages/japanese` shows the web Japanese search and study hub.
+- `/languages` makes Japanese visible in the scalable language directory.
+- `/languages/japanese` shows the web Japanese search and study hub using the Languages section theme.
 - Expo route `/languages/japanese` shows the shared native Japanese hub.
 - `/languages/japanese/characters/[...slug]` and `/languages/japanese/vocabulary/[...slug]` render detail pages from the generated index on web and native.
 - `japanese-foundations` appears as a normal learning path and uses ordered document/exercise nodes.

@@ -15,7 +15,7 @@ test("@regression mobile user searches Japanese and opens a writing drill", asyn
   await expect(page.getByTestId("japanese-vocabulary-page")).toBeVisible();
   await expect(page.getByRole("heading", { name: "mizu" })).toBeVisible();
 
-  await page.goto("/");
+  await page.goto("/paths");
   await expect(page.getByTestId("path-card-japanese-foundations")).toContainText("Japanese Foundations");
   await page.getByTestId("path-card-japanese-foundations").getByRole("link", { name: /Open path/i }).click();
   await expect(page.getByTestId("path-detail")).toBeVisible();
