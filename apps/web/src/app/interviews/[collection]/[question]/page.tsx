@@ -5,40 +5,40 @@ import { ArrowLeft } from "lucide-react";
 import { DifficultyPill } from "@/components/DifficultyPill";
 import { InterviewHeader } from "@/components/InterviewCatalog";
 import { InterviewQuestionSession } from "@/components/InterviewQuestionSession";
-import { getContentIndex, getInterviewCompanyBySlug, getInterviewQuestionBySlug } from "@/lib/content";
+import { getContentIndex, getInterviewCollectionBySlug, getInterviewQuestionBySlug } from "@/lib/content";
 
 type InterviewQuestionPageProps = {
   params: Promise<{
-    company: string;
+    collection: string;
     question: string;
   }>;
 };
 
 export function generateStaticParams() {
-  return getContentIndex().interviewCompanies.flatMap((company) =>
-    company.questions.map((question) => ({
-      company: company.slug,
+  return getContentIndex().interviewCollections.flatMap((collection) =>
+    collection.questions.map((question) => ({
+      collection: collection.slug,
       question: question.slug,
     })),
   );
 }
 
 export async function generateMetadata({ params }: InterviewQuestionPageProps): Promise<Metadata> {
-  const { company: companySlug, question: questionSlug } = await params;
-  const question = getInterviewQuestionBySlug(companySlug, questionSlug);
+  const { collection: collectionSlug, question: questionSlug } = await params;
+  const question = getInterviewQuestionBySlug(collectionSlug, questionSlug);
 
   return {
-    title: question ? `${question.title} - ${question.companyName} Interview Prep - Codematica` : "Interview question not found - Codematica",
+    title: question ? `${question.title} - ${question.collectionName} - Codematica` : "Interview question not found - Codematica",
     description: question?.summary,
   };
 }
 
 export default async function InterviewQuestionPage({ params }: InterviewQuestionPageProps) {
-  const { company: companySlug, question: questionSlug } = await params;
-  const company = getInterviewCompanyBySlug(companySlug);
-  const question = getInterviewQuestionBySlug(companySlug, questionSlug);
+  const { collection: collectionSlug, question: questionSlug } = await params;
+  const collection = getInterviewCollectionBySlug(collectionSlug);
+  const question = getInterviewQuestionBySlug(collectionSlug, questionSlug);
 
-  if (!company || !question) {
+  if (!collection || !question) {
     notFound();
   }
 
@@ -48,17 +48,17 @@ export default async function InterviewQuestionPage({ params }: InterviewQuestio
 
       <section className="mx-auto w-full max-w-5xl px-4 py-6 sm:py-8">
         <Link
-          href={company.route}
+          href={collection.route}
           className="inline-flex items-center gap-2 rounded-lg border-2 border-b-4 border-[#d5e2e8] bg-white px-3 py-2 text-sm font-extrabold text-[#263238]"
         >
           <ArrowLeft className="h-4 w-4" aria-hidden="true" />
-          {company.name}
+          {collection.name}
         </Link>
 
         <div className="mt-6 rounded-lg border-2 border-b-4 border-[#d5e2e8] bg-white p-5 sm:p-7">
           <div className="flex flex-wrap items-center gap-2">
             <span className="rounded-lg border-2 border-b-4 border-[#d5e2e8] bg-[#f6fbfc] px-2.5 py-1 text-xs font-extrabold uppercase text-[#007c78]">
-              {company.name}
+              {collection.name}
             </span>
             <DifficultyPill difficulty={question.difficulty} />
             {question.tags.slice(0, 4).map((tag) => (

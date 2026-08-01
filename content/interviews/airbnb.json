@@ -1,10 +1,12 @@
 {
+  "kind": "company",
   "slug": "airbnb",
   "name": "Airbnb",
   "summary": "Practice string, file-system, and graph-ordering problems often seen in Airbnb-style interview prep.",
   "status": "published",
   "questions": [
     {
+      "kind": "algorithm",
       "slug": "palindrome-pairs",
       "title": "Palindrome Pairs",
       "summary": "Find all ordered pairs of words that form a palindrome when concatenated.",
@@ -113,6 +115,7 @@
       ]
     },
     {
+      "kind": "algorithm",
       "slug": "in-memory-file-system",
       "title": "In-Memory File System",
       "summary": "Design a small file system API with directory listing and file content operations.",
@@ -225,6 +228,7 @@
       ]
     },
     {
+      "kind": "algorithm",
       "slug": "alien-dictionary",
       "title": "Alien Dictionary",
       "summary": "Infer a valid character order from words sorted by an unknown alphabet.",

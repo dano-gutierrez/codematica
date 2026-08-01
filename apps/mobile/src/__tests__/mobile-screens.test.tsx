@@ -1,7 +1,7 @@
 import { fireEvent, render, waitFor } from "@testing-library/react-native";
-import { getContentIndex, getExerciseBySlug } from "@codematica/core";
+import { getContentIndex, getExerciseBySlug, getInterviewQuestionBySlug } from "@codematica/core";
 import type { CodematicaAdapters } from "@codematica/ui";
-import { BrowseScreen, HomeDiscoveryScreen, JapaneseLanguageHubScreen, PracticeScreen } from "@codematica/ui";
+import { BrowseScreen, HomeDiscoveryScreen, InterviewCatalogScreen, InterviewQuestionScreen, JapaneseLanguageHubScreen, PracticeScreen } from "@codematica/ui";
 
 const adapters: CodematicaAdapters = {
   navigation: {
@@ -70,5 +70,21 @@ describe("mobile shared screens", () => {
 
     expect(view.getByTestId("mobile-writing-practice")).toBeOnTheScreen();
     expect(view.getByTestId("mobile-writing-pad")).toBeOnTheScreen();
+  });
+
+  it("groups real-world interviews and renders web exercises as read-only source", async () => {
+    const catalog = await render(<InterviewCatalogScreen index={getContentIndex()} adapters={adapters} />);
+    expect(catalog.getByTestId("mobile-real-world-interview-list")).toBeOnTheScreen();
+    expect(catalog.getAllByText("Real-world interviews").length).toBeGreaterThan(0);
+
+    const question = getInterviewQuestionBySlug("real-world", "mondrian-composition-generator");
+    expect(question?.kind).toBe("web");
+    const detail = await render(<InterviewQuestionScreen question={question!} adapters={adapters} />);
+
+    expect(detail.getByTestId("mobile-web-interview-evaluation")).toBeOnTheScreen();
+    expect(detail.getByTestId("mobile-web-interview-red-flags")).toBeOnTheScreen();
+    expect(detail.getAllByText("Weighted CSS Grid").length).toBeGreaterThan(0);
+    expect(detail.getByText("Interactive runner available on web")).toBeOnTheScreen();
+    expect(detail.getByText(/createGridComposition/)).toBeOnTheScreen();
   });
 });

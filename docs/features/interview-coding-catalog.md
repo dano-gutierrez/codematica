@@ -3,10 +3,10 @@
 ## Snapshot
 
 - Status: `shipped`
-- Last updated: `2026-07-22`
+- Last updated: `2026-08-01`
 - Owner thread: `n/a`
-- Current state: The app has a local-first interview coding catalog with company pages, reported-public source links, random question navigation, and guided multi-language solution walkthroughs.
-- Target outcome: Users can choose a major tech company, open available coding prompts, advance through a step-by-step solution, and review Python, TypeScript, or Java code without requiring auth, Supabase, or a compiler.
+- Current state: The app has company interview preparation plus an anonymous real-world section, guided algorithm walkthroughs, and runnable React/TypeScript web exercises.
+- Target outcome: Users can study public company patterns or authentic anonymous briefs, understand evaluation criteria and red flags, and run accepted frontend solutions without requiring auth or Supabase.
 - Code touchpoints:
   - `content/interviews/*.json`
   - `public/company-logos/*.svg`
@@ -14,6 +14,8 @@
   - `packages/core/src/content/build-index.ts`
   - `apps/web/src/components/InterviewCatalog.tsx`
   - `apps/web/src/components/InterviewQuestionSession.tsx`
+  - `apps/web/src/components/WebInterviewQuestionSession.tsx`
+  - `apps/web/src/components/WebPlayground.tsx`
   - `apps/web/src/components/CodeBlock.tsx`
   - `apps/web/src/app/interviews/**/page.tsx`
 - Primary tests:
@@ -25,32 +27,35 @@
 
 ## One-Minute Brief
 
-The interview catalog is a local content surface for coding interview preparation. Company entries are structured JSON, not remote data. Each question is rewritten for Codematica, tagged with community-reported/public source links, and includes two accepted solution tracks. Each solution track has guided steps, final explanation, complexity, and code in Python, TypeScript, and Java.
+The catalog stores typed interview collections as local JSON. Company algorithm questions retain guided multi-language walkthroughs. Anonymous real-world questions document interviewer intent, accepted signals, red flags, and runnable web projects. The first real-world exercise asks users to scope and generate a Piet Mondrian-style composition through three complete React/TypeScript approaches.
 
 ## Outcome / Contract
 
-- `/interviews` shows company text-logo tiles, a random-question button, and every question with search, company, and difficulty filters.
-- `/interviews/[company]` shows all available coding questions for one company.
-- `/interviews/[company]/[question]` shows the prompt, examples, constraints, diagrams when present, and the guided solution session.
+- `/interviews` separates anonymous real-world collections from company preparation, supports question search plus collection/difficulty filters, and lets random navigation choose from either.
+- `/interviews/[collection]` shows questions for a company or real-world collection; existing company URLs are unchanged.
+- `/interviews/[collection]/[question]` dispatches to an algorithm walkthrough or web exercise session.
 - The guided session defaults to Python, lets users switch to TypeScript or Java, reveals one step per `Next`, and renders final code with language-aware highlighting.
 - Starting or restarting a session selects a solution track at random and avoids immediately repeating the previous track when another track exists.
+- Web sessions expose every accepted approach explicitly, render comprehensive evaluation guidance, and mount one editable Sandpack project at a time.
+- Web playground edits are transient. Sandpack code runs in a cross-origin iframe and receives no Codematica auth, progress, or secret data.
+- Expo renders all web-exercise explanations and source files read-only; execution remains web-only.
 - Catalog language says the prompts are reported/public prep, not official company question banks.
-- Scoring, real-time compilation, and answer validation are out of scope for this MVP. Optional saved progress is owned by `docs/features/auth-and-progress.md`.
+- Scoring, grading, persistence of edits, backend execution, and native WebView execution remain out of scope.
 
 ## Data Model
 
-- `content/interviews/*.json` stores one company per file.
-- Every company has `slug`, `name`, `logo`, `summary`, `status`, and `questions`.
+- `content/interviews/*.json` stores one `company` or `real-world` collection per file.
+- Company collections require local logos and public source links. Real-world collections omit logos and require anonymous provenance notes.
 - `logo.src` points to a local SVG under `/company-logos/` so the catalog does not depend on remote image loading.
-- Every question has `sourceLinks`, `examples`, `constraints`, optional Mermaid `diagrams`, and at least two `solutionTracks`.
-- Every solution track requires `steps`, `explanation`, `complexity`, and `languages.python`, `languages.typescript`, and `languages.java`.
-- Generated index schema version is `6` and includes interview companies plus validated home discovery curation.
+- Algorithm questions require two tracks with `languages.python`, `languages.typescript`, and `languages.java`.
+- Web questions require at least three tracks plus structured evaluation guidance. Each track owns a reusable `WebExerciseProject` with runtime, file map, active/visible files, optional entry, and dependencies.
+- Every question has examples, constraints, optional Mermaid diagrams, and solution tracks appropriate to its discriminated kind.
+- Generated index schema version is `6` and includes generic `interviewCollections` plus validated home discovery curation.
 
 ## Future Versions
 
 - Add system design interview question packs beside coding prompts.
-- Let users code their own solution in the browser.
-- Add real-time compile/run validation for supported languages.
+- Add deterministic grading and authored tests on top of the shipped editable web runtime.
 - Add durable attempts, spaced repetition, and scoring on top of the basic auth/progress contract.
 - Consider hosted search or sync later, but keep repo JSON canonical unless a future feature doc changes the source of truth.
 
@@ -60,10 +65,11 @@ Seed content uses public/community-reported prep references such as InterviewQue
 
 ## Test Plan
 
-- Unit: schema validation, duplicate company/question/solution IDs, required source links, and required language code.
-- Integration: generated index loads eight companies, 27 questions, including the BFS/DFS graph-search additions, and lookup helpers resolve company and question routes.
-- Component: guided walkthrough advances steps, switches language, shows highlighted final code/explanation, and restarts on a different solution track.
-- E2E: user opens `/interviews`, sees the complete question catalog, uses random navigation, opens Amazon, starts Two Sum, advances steps, switches language, and reaches the final explanation.
+- Unit: collection discrimination, conditional provenance, safe project paths, active/visible file references, web track minimums, and algorithm language requirements.
+- Integration: generated index loads company and real-world collections, including graph-search additions, and resolves both route forms.
+- Component: algorithm walkthrough behavior remains stable; web sessions switch all approaches and map files into Run/Reset playground controls.
+- Native: real-world content and every source file remain available without executing the project.
+- E2E: catalog search/filter and the existing Amazon flow remain covered; the Mondrian flow verifies rubric content, three approaches, and live preview output.
 
 ## Thread Handoff Prompt
 

@@ -12,7 +12,7 @@ const index: ContentIndex = {
   languageCharacters: [],
   languageVocabulary: [],
   passiveFlashcardFeeds: [],
-  interviewCompanies: [],
+  interviewCollections: [],
   documents: [
     {
       id: "doc-cache",

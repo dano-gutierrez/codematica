@@ -3,7 +3,7 @@ import { promises as fs } from "node:fs";
 import path from "node:path";
 import { parseKnowledgeMarkdown } from "./parse-markdown";
 import {
-  interviewCompanyFileSchema,
+  interviewCollectionFileSchema,
   homeDiscoveryFileSchema,
   languageCatalogFileSchema,
   learningExerciseFileSchema,
@@ -12,7 +12,7 @@ import {
   type ContentIndex,
   type ContentTrack,
   type Difficulty,
-  type InterviewCompany,
+  type InterviewCollection,
   type HomeDiscovery,
   type KnowledgeDocument,
   type LanguageCharacter,
@@ -276,14 +276,14 @@ async function collectPassiveFlashcardFeeds(rootDir: string): Promise<PassiveFla
   );
 }
 
-async function collectInterviewCompanies(rootDir: string): Promise<InterviewCompany[]> {
+async function collectInterviewCollections(rootDir: string): Promise<InterviewCollection[]> {
   const interviewsDir = path.join(rootDir, "content", "interviews");
   const files = await walkFiles(interviewsDir, jsonExtensions);
 
   return Promise.all(
     files.map(async (filePath) => {
       const { raw, value } = await readJson(filePath);
-      const parsed = interviewCompanyFileSchema.parse(value);
+      const parsed = interviewCollectionFileSchema.parse(value);
       const sourcePath = relativeSourcePath(rootDir, filePath);
 
       return {
@@ -296,8 +296,9 @@ async function collectInterviewCompanies(rootDir: string): Promise<InterviewComp
           ...question,
           id: sha256(`${parsed.slug}/${question.slug}`).slice(0, 12),
           route: `/interviews/${parsed.slug}/${question.slug}`,
-          companySlug: parsed.slug,
-          companyName: parsed.name,
+          collectionSlug: parsed.slug,
+          collectionName: parsed.name,
+          collectionKind: parsed.kind,
         })),
       };
     }),
@@ -422,19 +423,27 @@ function assertUniqueValues(values: string[], label: string, sourcePath: string)
   }
 }
 
-function assertInterviewCompany(company: InterviewCompany) {
+function assertInterviewCollection(collection: InterviewCollection) {
   assertUniqueValues(
-    company.questions.map((question) => question.slug),
+    collection.questions.map((question) => question.slug),
     "interview question slug",
-    company.sourcePath,
+    collection.sourcePath,
   );
 
-  for (const question of company.questions) {
+  for (const question of collection.questions) {
     assertUniqueValues(
       question.solutionTracks.map((track) => track.id),
       `interview solution id in question "${question.slug}"`,
-      company.sourcePath,
+      collection.sourcePath,
     );
+
+    if (collection.kind === "company" && question.sourceLinks.length === 0) {
+      throw new Error(`${collection.sourcePath} company interview question "${question.slug}" must include a public source link.`);
+    }
+
+    if (collection.kind === "real-world" && !question.sourceNote) {
+      throw new Error(`${collection.sourcePath} real-world interview question "${question.slug}" must include an anonymous provenance source note.`);
+    }
   }
 }
 
@@ -458,7 +467,7 @@ function assertUniqueSlugs(
   languageVocabulary: LanguageVocabulary[],
   learningPaths: LearningPath[],
   passiveFlashcardFeeds: PassiveFlashcardFeed[],
-  interviewCompanies: InterviewCompany[],
+  interviewCollections: InterviewCollection[],
 ) {
   assertUniqueEntitySlugs(documents, "knowledge");
   assertUniqueEntitySlugs(diagrams, "diagram");
@@ -467,7 +476,7 @@ function assertUniqueSlugs(
   assertUniqueEntitySlugs(languageVocabulary, "language vocabulary");
   assertUniqueEntitySlugs(learningPaths, "learning path");
   assertUniqueEntitySlugs(passiveFlashcardFeeds, "passive flashcard feed");
-  assertUniqueEntitySlugs(interviewCompanies, "interview company");
+  assertUniqueEntitySlugs(interviewCollections, "interview collection");
 }
 
 function assertContentReferences(
@@ -478,7 +487,7 @@ function assertContentReferences(
   languageVocabulary: LanguageVocabulary[],
   learningPaths: LearningPath[],
   passiveFlashcardFeeds: PassiveFlashcardFeed[],
-  interviewCompanies: InterviewCompany[],
+  interviewCollections: InterviewCollection[],
 ) {
   const documentSlugs = new Set<string>();
   const diagramSlugs = new Set(diagrams.map((diagram) => diagram.slug));
@@ -547,8 +556,8 @@ function assertContentReferences(
     }
   }
 
-  for (const company of interviewCompanies) {
-    assertInterviewCompany(company);
+  for (const collection of interviewCollections) {
+    assertInterviewCollection(collection);
   }
 }
 
@@ -561,7 +570,7 @@ function assertHomeDiscoveryReferences(
   languageVocabulary: LanguageVocabulary[],
   learningPaths: LearningPath[],
   passiveFlashcardFeeds: PassiveFlashcardFeed[],
-  interviewCompanies: InterviewCompany[],
+  interviewCollections: InterviewCollection[],
 ) {
   const validKindsBySection = {
     paths: new Set(["path"]),
@@ -576,7 +585,7 @@ function assertHomeDiscoveryReferences(
     ...diagrams.map((item) => `diagram:${item.slug}`),
     ...exercises.map((item) => `exercise:${item.slug}`),
     ...passiveFlashcardFeeds.map((item) => `flashcard-feed:${item.slug}`),
-    ...interviewCompanies.flatMap((company) => company.questions.map((question) => `interview-question:${company.slug}/${question.slug}`)),
+    ...interviewCollections.flatMap((collection) => collection.questions.map((question) => `interview-question:${collection.slug}/${question.slug}`)),
     ...languageCharacters.map((item) => `language-character:${item.slug}`),
     ...languageVocabulary.map((item) => `language-vocabulary:${item.slug}`),
     ...(languageCharacters.some((item) => item.language === "ja") ? ["language-hub:japanese"] : []),
@@ -606,14 +615,14 @@ function assertHomeDiscoveryReferences(
 }
 
 export async function buildContentIndex({ rootDir }: BuildContentIndexOptions): Promise<ContentIndex> {
-  const [documents, diagrams, exercises, languageContent, learningPaths, passiveFlashcardFeeds, interviewCompanies, homeDiscovery] = await Promise.all([
+  const [documents, diagrams, exercises, languageContent, learningPaths, passiveFlashcardFeeds, interviewCollections, homeDiscovery] = await Promise.all([
     collectKnowledgeDocuments(rootDir),
     collectMermaidDiagrams(rootDir),
     collectLearningExercises(rootDir),
     collectLanguageContent(rootDir),
     collectLearningPaths(rootDir),
     collectPassiveFlashcardFeeds(rootDir),
-    collectInterviewCompanies(rootDir),
+    collectInterviewCollections(rootDir),
     collectHomeDiscovery(rootDir),
   ]);
 
@@ -624,7 +633,7 @@ export async function buildContentIndex({ rootDir }: BuildContentIndexOptions): 
   const sortedLanguageVocabulary = languageContent.languageVocabulary.sort((left, right) => left.slug.localeCompare(right.slug));
   const sortedLearningPaths = learningPaths.sort((left, right) => left.slug.localeCompare(right.slug));
   const sortedPassiveFlashcardFeeds = passiveFlashcardFeeds.sort((left, right) => left.slug.localeCompare(right.slug));
-  const sortedInterviewCompanies = interviewCompanies.sort((left, right) => left.name.localeCompare(right.name));
+  const sortedInterviewCollections = interviewCollections.sort((left, right) => left.name.localeCompare(right.name));
   assertUniqueSlugs(
     sortedDocuments,
     sortedDiagrams,
@@ -633,7 +642,7 @@ export async function buildContentIndex({ rootDir }: BuildContentIndexOptions): 
     sortedLanguageVocabulary,
     sortedLearningPaths,
     sortedPassiveFlashcardFeeds,
-    sortedInterviewCompanies,
+    sortedInterviewCollections,
   );
   assertContentReferences(
     sortedDocuments,
@@ -643,7 +652,7 @@ export async function buildContentIndex({ rootDir }: BuildContentIndexOptions): 
     sortedLanguageVocabulary,
     sortedLearningPaths,
     sortedPassiveFlashcardFeeds,
-    sortedInterviewCompanies,
+    sortedInterviewCollections,
   );
   assertHomeDiscoveryReferences(
     homeDiscovery,
@@ -654,7 +663,7 @@ export async function buildContentIndex({ rootDir }: BuildContentIndexOptions): 
     sortedLanguageVocabulary,
     sortedLearningPaths,
     sortedPassiveFlashcardFeeds,
-    sortedInterviewCompanies,
+    sortedInterviewCollections,
   );
 
   return {
@@ -666,7 +675,7 @@ export async function buildContentIndex({ rootDir }: BuildContentIndexOptions): 
     languageCharacters: sortedLanguageCharacters,
     languageVocabulary: sortedLanguageVocabulary,
     passiveFlashcardFeeds: sortedPassiveFlashcardFeeds,
-    interviewCompanies: sortedInterviewCompanies,
+    interviewCollections: sortedInterviewCollections,
     tracks: buildTracks(sortedDocuments),
     homeDiscovery,
   };

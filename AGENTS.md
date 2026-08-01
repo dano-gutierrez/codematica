@@ -16,7 +16,7 @@ Future product areas include:
 - flashcards for software engineering concepts
 - system design blueprints and visual creation mode
 - Mermaid authoring and diagram generation from the app
-- code snaps and later editable/compiled JS/TS challenges
+- code snaps and deeper grading/persistence on top of the editable React/TS playground
 - Duolingo-style scoring, progress, streaks, and challenge loops
 - expanded Japanese language study with sound, larger dictionaries, and richer writing drills
 - richer profiles, deeper saved progress/scoring, and eventually native clients
@@ -312,6 +312,8 @@ All sessions should reuse and, when necessary, expand these existing components 
 - `apps/web/src/components/Dropdown.tsx`: custom Radix-backed dropdown primitive for filters and select-style controls; use this instead of native selects or one-off dropdowns.
 - `apps/web/src/components/InterviewCatalog.tsx`: interview catalog, company detail page UI, shared interview header, company tiles, question cards, and supporting interview stats.
 - `apps/web/src/components/InterviewQuestionSession.tsx`: guided coding interview walkthrough with solution track navigation, language switching, Mermaid rendering, and code rendering.
+- `apps/web/src/components/WebInterviewQuestionSession.tsx`: real-world web interview rubric, accepted-approach navigation, and playground composition.
+- `apps/web/src/components/WebPlayground.tsx`: reusable Sandpack-backed multi-file React/TS, vanilla TS, and static editor/preview with Run and Reset controls.
 - `apps/web/src/components/JapaneseLanguageBrowser.tsx`: Japanese language lookup hub with character/vocabulary search, IPA display, and links into the Japanese Foundations path.
 - `apps/web/src/components/KeepReadingSection.tsx`: home-page resume panel backed by signed-in Supabase progress or signed-out local progress.
 - `apps/web/src/components/HomeDiscovery.tsx`: cross-section home search, curated section rows, section headings, and reusable discovery cards.

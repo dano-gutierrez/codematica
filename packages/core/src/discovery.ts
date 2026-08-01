@@ -1,7 +1,7 @@
 import Fuse from "fuse.js";
 import type { ContentIndex, ContentStatus, Difficulty, DiscoveryReferenceKind, DiscoverySectionId, LearningExercise } from "./content/schema";
 
-export type DiscoveryItemKind = DiscoveryReferenceKind | "interview-company";
+export type DiscoveryItemKind = DiscoveryReferenceKind | "interview-company" | "interview-collection";
 
 export type DiscoveryResult = {
   id: string;
@@ -142,32 +142,32 @@ export function createDiscoveryItems(index: ContentIndex): DiscoveryResult[] {
           searchText: [item.audience, ...item.cards.flatMap((card) => [card.title, card.prompt, ...card.tags])].join(" "),
         }),
       ),
-    ...index.interviewCompanies
-      .filter((company) => company.status === "published")
-      .flatMap((company) => [
+    ...index.interviewCollections
+      .filter((collection) => collection.status === "published")
+      .flatMap((collection) => [
         discoveryItem({
-          id: company.id,
-          sourceSlug: company.slug,
-          kind: "interview-company",
+          id: collection.id,
+          sourceSlug: collection.slug,
+          kind: collection.kind === "company" ? "interview-company" : "interview-collection",
           section: "interviews",
-          title: company.name,
-          summary: company.summary,
-          route: company.route,
-          eyebrow: `${company.questions.length} interview questions`,
-          status: company.status,
-          tags: [company.name, "interview"],
-          searchText: company.questions.map((question) => question.title).join(" "),
+          title: collection.name,
+          summary: collection.summary,
+          route: collection.route,
+          eyebrow: collection.kind === "company" ? `${collection.questions.length} interview questions` : `${collection.questions.length} real-world exercises`,
+          status: collection.status,
+          tags: [collection.name, "interview", collection.kind],
+          searchText: collection.questions.map((question) => question.title).join(" "),
         }),
-        ...company.questions.map((question) =>
+        ...collection.questions.map((question) =>
           discoveryItem({
             id: question.id,
-            sourceSlug: `${company.slug}/${question.slug}`,
+            sourceSlug: `${collection.slug}/${question.slug}`,
             kind: "interview-question",
             section: "interviews",
             title: question.title,
             summary: question.summary,
             route: question.route,
-            eyebrow: `${company.name} interview question`,
+            eyebrow: `${collection.name} interview question`,
             status: "published",
             difficulty: question.difficulty,
             tags: question.tags,

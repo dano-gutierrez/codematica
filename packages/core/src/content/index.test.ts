@@ -3,6 +3,7 @@ import {
   getContentIndex,
   getDocumentBySlug,
   getExerciseBySlug,
+  getInterviewCollectionBySlug,
   getInterviewCompanyBySlug,
   getInterviewQuestionBySlug,
   getLanguageCharacterBySlug,
@@ -23,7 +24,7 @@ describe("generated content index", () => {
     expect(index.diagrams.length).toBeGreaterThanOrEqual(2);
     expect(index.learningPaths.length).toBeGreaterThanOrEqual(2);
     expect(index.exercises.length).toBeGreaterThanOrEqual(4);
-    expect(index.interviewCompanies.length).toBeGreaterThanOrEqual(8);
+    expect(index.interviewCollections.length).toBeGreaterThanOrEqual(9);
     expect(index.passiveFlashcardFeeds.length).toBeGreaterThanOrEqual(1);
     expect(getDocumentBySlug("system-design/cache-invalidation")?.title).toBe("Cache Invalidation Under Product Pressure");
     expect(getLearningPathBySlug("system-design-fundamentals")?.title).toBe("System Design Fundamentals");
@@ -287,7 +288,8 @@ describe("generated content index", () => {
     expect(company?.route).toBe("/interviews/amazon");
     expect(question?.route).toBe("/interviews/amazon/two-sum-product-pair");
     expect(question?.solutionTracks).toHaveLength(2);
-    expect(question?.solutionTracks[0]?.languages).toEqual(
+    expect(question?.kind).toBe("algorithm");
+    expect(question?.kind === "algorithm" ? question.solutionTracks[0]?.languages : undefined).toEqual(
       expect.objectContaining({
         python: expect.objectContaining({ code: expect.any(String) }),
         typescript: expect.objectContaining({ code: expect.any(String) }),
@@ -296,14 +298,31 @@ describe("generated content index", () => {
     );
   });
 
+  it("resolves anonymous real-world web interviews and runnable projects", () => {
+    const collection = getInterviewCollectionBySlug("real-world");
+    const question = getInterviewQuestionBySlug("real-world", "mondrian-composition-generator");
+
+    expect(collection?.kind).toBe("real-world");
+    expect(getInterviewCompanyBySlug("real-world")).toBeUndefined();
+    expect(question?.kind).toBe("web");
+    expect(question?.route).toBe("/interviews/real-world/mondrian-composition-generator");
+    expect(question?.kind === "web" ? question.solutionTracks : []).toHaveLength(3);
+    expect(question?.kind === "web" ? question.solutionTracks.map((track) => track.project.runtime) : []).toEqual([
+      "react-ts",
+      "react-ts",
+      "react-ts",
+    ]);
+  });
+
   it("loads graph-search interview questions with BFS and DFS solution tracks", () => {
     const islands = getInterviewQuestionBySlug("google", "number-of-islands");
     const shortestPath = getInterviewQuestionBySlug("google", "shortest-path-binary-matrix");
     const courseSchedule = getInterviewQuestionBySlug("google", "course-schedule");
 
+    expect(islands?.kind).toBe("algorithm");
     expect(islands?.solutionTracks.map((track) => track.id)).toEqual(["bfs-flood-fill", "dfs-flood-fill"]);
-    expect(islands?.solutionTracks.every((track) => track.languages.python.code.length > 0)).toBe(true);
-    expect(islands?.solutionTracks.every((track) => track.languages.typescript.code.length > 0)).toBe(true);
+    expect(islands?.kind === "algorithm" && islands.solutionTracks.every((track) => track.languages.python.code.length > 0)).toBe(true);
+    expect(islands?.kind === "algorithm" && islands.solutionTracks.every((track) => track.languages.typescript.code.length > 0)).toBe(true);
     expect(shortestPath?.tags).toContain("bfs");
     expect(courseSchedule?.solutionTracks.map((track) => track.id)).toEqual(["dfs-color-cycle", "bfs-kahn-order"]);
   });

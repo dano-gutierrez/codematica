@@ -1,10 +1,12 @@
 {
+  "kind": "company",
   "slug": "uber",
   "name": "Uber",
   "summary": "Practice routing, scheduling, and connected-component prompts aligned with Uber-style interviews.",
   "status": "published",
   "questions": [
     {
+      "kind": "algorithm",
       "slug": "shortest-path-weighted-road-graph",
       "title": "Shortest Path In A Weighted Road Graph",
       "summary": "Compute the cheapest route between two nodes when every road weight is non-negative.",
@@ -117,6 +119,7 @@
       ]
     },
     {
+      "kind": "algorithm",
       "slug": "meeting-rooms-ii",
       "title": "Meeting Rooms II",
       "summary": "Find the minimum number of rooms needed for overlapping meetings.",
@@ -224,6 +227,7 @@
       ]
     },
     {
+      "kind": "algorithm",
       "slug": "connected-regions",
       "title": "Connected Regions",
       "summary": "Count groups of connected land cells in a grid.",

@@ -1,10 +1,12 @@
 {
+  "kind": "company",
   "slug": "google",
   "name": "Google",
   "summary": "Practice invariant-driven arrays, graph search, and binary-search prompts aligned with Google-style interviews.",
   "status": "published",
   "questions": [
     {
+      "kind": "algorithm",
       "slug": "subarray-sum-equals-k",
       "title": "Subarray Sum Equals K",
       "summary": "Count contiguous subarrays whose sum equals a target value.",
@@ -112,6 +114,7 @@
       ]
     },
     {
+      "kind": "algorithm",
       "slug": "word-ladder",
       "title": "Word Ladder",
       "summary": "Find the shortest one-letter-at-a-time transformation from one word to another.",
@@ -219,6 +222,7 @@
       ]
     },
     {
+      "kind": "algorithm",
       "slug": "median-two-sorted-arrays",
       "title": "Median Of Two Sorted Arrays",
       "summary": "Find the median of two sorted arrays without fully sorting their union.",

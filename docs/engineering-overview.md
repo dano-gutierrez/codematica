@@ -14,6 +14,7 @@ Codematica is a mobile-first learning app for system design, coding, programming
 - plain Markdown rendered with `react-markdown`
 - native Markdown rendered with React Native Markdown components
 - language-aware code highlighting with `highlight.js`
+- editable React/TypeScript web projects with Sandpack's cross-origin browser runtime
 - Mermaid rendered client-side on web and through a native WebView/source fallback on mobile
 - React Native SVG rendering for native handwriting/stroke surfaces
 - Fuse.js-style fuzzy search
@@ -99,7 +100,7 @@ Learning paths live in `content/learning-paths/*.json` and contain ordered units
 
 Passive flashcard feeds live in `content/flashcard-feeds/*.json` and attach short review cards to learning paths.
 
-Interview company catalogs live in `content/interviews/*.json`. Each company contains reported-public coding questions, public source links, examples, optional Mermaid diagrams, and at least two guided solution tracks with Python, TypeScript, and Java code.
+Interview collections live in `content/interviews/*.json` and are discriminated as `company` or `real-world`. Company algorithm questions retain reported-public links and guided Python, TypeScript, and Java tracks. Anonymous real-world questions require provenance notes and may provide structured evaluation rubrics plus at least three `WebExerciseProject` solutions. Web projects are authored locally, validated into the index, and executed only in Sandpack's cross-origin iframe; Expo shows the same files read-only.
 
 Human-language catalogs live in `content/languages/**/*.json`. Japanese v1 indexes beginner character and vocabulary data with glyphs, readings, romaji, IPA, meanings, and normalized stroke paths for handwriting practice.
 
@@ -134,9 +135,9 @@ Progress is user state, not authored content. Signed-in progress is stored in Su
 - `/languages/japanese`: Japanese lookup and study hub.
 - `/languages/japanese/characters/[...slug]`: one Japanese character detail route.
 - `/languages/japanese/vocabulary/[...slug]`: one Japanese vocabulary detail route.
-- `/interviews`: company interview coding catalog.
-- `/interviews/[company]`: one company's coding question list.
-- `/interviews/[company]/[question]`: one guided coding solution walkthrough.
+- `/interviews`: real-world and company interview collections.
+- `/interviews/[collection]`: one anonymous or company question list; existing company URL segments are unchanged.
+- `/interviews/[collection]/[question]`: a guided algorithm walkthrough or runnable web exercise.
 - `/docs/[...slug]`: one Markdown article.
 - `/diagrams/[...slug]`: one standalone Mermaid diagram.
 - `/login`: optional Supabase Auth sign-in and sign-up.

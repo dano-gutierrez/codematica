@@ -305,6 +305,7 @@ async function writeInterviewCompany(rootDir: string, slug: string, overrides: R
     filePath,
     JSON.stringify(
       {
+        kind: "company",
         slug,
         name: "Amazon",
         logo: {
@@ -315,6 +316,7 @@ async function writeInterviewCompany(rootDir: string, slug: string, overrides: R
         status: "published",
         questions: [
           {
+            kind: "algorithm",
             slug: "two-sum-product-pair",
             title: "Two Sum Product Pair",
             summary: "Find two values that add to a target while preserving their original positions.",
@@ -346,6 +348,77 @@ async function writeInterviewCompany(rootDir: string, slug: string, overrides: R
       2,
     ),
   );
+}
+
+async function writeRealWorldInterview(rootDir: string, overrides: Record<string, unknown> = {}) {
+  const filePath = path.join(rootDir, "content", "interviews", "real-world.json");
+  await mkdir(path.dirname(filePath), { recursive: true });
+  await writeFile(
+    filePath,
+    JSON.stringify(
+      {
+        kind: "real-world",
+        slug: "real-world",
+        name: "Real-world interviews",
+        summary: "Anonymous interview exercises based on real product-engineering sessions.",
+        status: "published",
+        questions: [
+          {
+            kind: "web",
+            slug: "mondrian-composition-generator",
+            title: "Generate a Mondrian-style Composition",
+            summary: "Build a bounded random composition with React, TypeScript, and browser layout primitives.",
+            prompt: "Create a browser-only application that generates a new Piet Mondrian-style composition whenever the page loads.",
+            difficulty: "senior",
+            tags: ["react", "typescript", "generative-art"],
+            sourceLinks: [],
+            sourceNote: "Based on a privately supplied real interview brief; the originating company is intentionally withheld.",
+            resources: [],
+            examples: [],
+            constraints: ["Use orthogonal geometry and bounded randomness."],
+            diagrams: [],
+            evaluation: {
+              intent: "Evaluate scoping, collaboration, visual decomposition, and maintainable implementation choices.",
+              expectedSignals: ["Separate pure generation from rendering."],
+              acceptanceCriteria: [{ title: "Bounded geometry", explanation: "Every generated region remains inside the composition." }],
+              redFlags: [{ title: "Randomize during render", explanation: "Unstable render output causes flicker and makes behavior difficult to test." }],
+            },
+            solutionTracks: [makeWebSolutionTrack("css-grid"), makeWebSolutionTrack("recursive-subdivision"), makeWebSolutionTrack("svg-geometry")],
+          },
+        ],
+        ...overrides,
+      },
+      null,
+      2,
+    ),
+  );
+}
+
+function makeWebSolutionTrack(id: string) {
+  return {
+    id,
+    title: `Web solution ${id}`,
+    summary: "Generate valid rectangular geometry with a pure helper and render it with browser-native primitives.",
+    steps: [
+      { title: "Generate geometry", explanation: "Create bounded geometry once from a seed so React rerenders remain stable." },
+      { title: "Render the result", explanation: "Map the generated model to declarative browser elements and accessible controls." },
+    ],
+    explanation: "The generator owns visual rules while the renderer only translates validated geometry into browser elements.",
+    acceptanceRationale: "This is acceptable because it delivers the scoped visual grammar and leaves explicit extension seams.",
+    tradeoffs: ["The MVP approximates the style instead of reproducing a specific painting."],
+    complexity: { time: "O(n)", space: "O(n)" },
+    project: {
+      runtime: "react-ts",
+      activeFile: "/App.tsx",
+      visibleFiles: ["/App.tsx", "/generator.ts", "/styles.css"],
+      files: {
+        "/App.tsx": { code: "export default function App() { return <main>Composition</main>; }" },
+        "/generator.ts": { code: "export function generate(seed: number) { return { seed }; }" },
+        "/styles.css": { code: "main { min-height: 20rem; background: #f6f1df; }" },
+      },
+      dependencies: {},
+    },
+  };
 }
 
 function makeSolutionTrack(id: string, title: string) {
@@ -773,7 +846,7 @@ describe("buildContentIndex", () => {
     const index = await buildContentIndex({ rootDir });
 
     expect(index.schemaVersion).toBe(6);
-    expect(index.interviewCompanies).toEqual([
+    expect(index.interviewCollections).toEqual([
       expect.objectContaining({
         slug: "amazon",
         route: "/interviews/amazon",
@@ -797,6 +870,121 @@ describe("buildContentIndex", () => {
         ],
       }),
     ]);
+  });
+
+  it("indexes anonymous real-world web interviews and reusable projects", async () => {
+    const rootDir = await makeTempRoot();
+    await writeRealWorldInterview(rootDir);
+
+    const index = await buildContentIndex({ rootDir });
+
+    expect(index.interviewCollections).toEqual([
+      expect.objectContaining({
+        kind: "real-world",
+        slug: "real-world",
+        questions: [
+          expect.objectContaining({
+            kind: "web",
+            slug: "mondrian-composition-generator",
+            sourceLinks: [],
+            sourceNote: expect.stringMatching(/company is intentionally withheld/i),
+            solutionTracks: expect.arrayContaining([
+              expect.objectContaining({
+                id: "css-grid",
+                project: expect.objectContaining({
+                  runtime: "react-ts",
+                  activeFile: "/App.tsx",
+                  visibleFiles: ["/App.tsx", "/generator.ts", "/styles.css"],
+                }),
+              }),
+            ]),
+          }),
+        ],
+      }),
+    ]);
+  });
+
+  it("requires three solution tracks for web interviews", async () => {
+    const rootDir = await makeTempRoot();
+    const question = {
+      kind: "web",
+      slug: "mondrian-composition-generator",
+      title: "Generate a Mondrian-style Composition",
+      summary: "Build a bounded random composition with React, TypeScript, and browser layout primitives.",
+      prompt: "Create a browser-only application that generates a new Piet Mondrian-style composition whenever the page loads.",
+      difficulty: "senior",
+      tags: ["react", "typescript"],
+      sourceLinks: [],
+      sourceNote: "Based on a privately supplied real interview brief; the originating company is intentionally withheld.",
+      evaluation: {
+        intent: "Evaluate practical frontend scoping and implementation choices.",
+        expectedSignals: ["Separate pure generation from rendering."],
+        acceptanceCriteria: [{ title: "Bounded geometry", explanation: "Every generated region stays inside the canvas." }],
+        redFlags: [{ title: "Render randomness", explanation: "Changing randomness on every render creates unstable output." }],
+      },
+      solutionTracks: [makeWebSolutionTrack("css-grid"), makeWebSolutionTrack("svg-geometry")],
+    };
+    await writeRealWorldInterview(rootDir, { questions: [question] });
+
+    await expect(buildContentIndex({ rootDir })).rejects.toThrow(/at least 3|too_small/i);
+  });
+
+  it("rejects unsafe or missing web project file paths", async () => {
+    const rootDir = await makeTempRoot();
+    const invalid = makeWebSolutionTrack("unsafe-path");
+    invalid.project.activeFile = "/missing.tsx";
+    (invalid.project.files as Record<string, { code: string }>)["../escape.ts"] = { code: "export const unsafe = true;" };
+    await writeRealWorldInterview(rootDir, {
+      questions: [
+        {
+          kind: "web",
+          slug: "mondrian-composition-generator",
+          title: "Generate a Mondrian-style Composition",
+          summary: "Build a bounded random composition with React, TypeScript, and browser layout primitives.",
+          prompt: "Create a browser-only application that generates a new Piet Mondrian-style composition whenever the page loads.",
+          difficulty: "senior",
+          tags: ["react", "typescript"],
+          sourceLinks: [],
+          sourceNote: "Based on a privately supplied real interview brief; the originating company is intentionally withheld.",
+          evaluation: {
+            intent: "Evaluate practical frontend scoping and implementation choices.",
+            expectedSignals: ["Separate pure generation from rendering."],
+            acceptanceCriteria: [{ title: "Bounded geometry", explanation: "Every generated region stays inside the canvas." }],
+            redFlags: [{ title: "Render randomness", explanation: "Changing randomness on every render creates unstable output." }],
+          },
+          solutionTracks: [invalid, makeWebSolutionTrack("recursive"), makeWebSolutionTrack("svg")],
+        },
+      ],
+    });
+
+    await expect(buildContentIndex({ rootDir })).rejects.toThrow(/project file path|active file/i);
+  });
+
+  it("requires anonymous provenance for real-world interviews", async () => {
+    const rootDir = await makeTempRoot();
+    await writeRealWorldInterview(rootDir, {
+      questions: [
+        {
+          kind: "web",
+          slug: "mondrian-composition-generator",
+          title: "Generate a Mondrian-style Composition",
+          summary: "Build a bounded random composition with React, TypeScript, and browser layout primitives.",
+          prompt: "Create a browser-only application that generates a new Piet Mondrian-style composition whenever the page loads.",
+          difficulty: "senior",
+          tags: ["react", "typescript"],
+          sourceLinks: [],
+          solutionTracks: [makeWebSolutionTrack("grid"), makeWebSolutionTrack("recursive"), makeWebSolutionTrack("svg")],
+          evaluation: {
+            intent: "Evaluate practical frontend scoping and implementation choices.",
+            expectedSignals: ["Separate pure generation from rendering."],
+            acceptanceCriteria: [{ title: "Bounded geometry", explanation: "Every generated region stays inside the canvas." }],
+            redFlags: [{ title: "Render randomness", explanation: "Changing randomness on every render creates unstable output." }],
+          },
+        },
+      ],
+    });
+
+    await expect(buildContentIndex({ rootDir })).rejects.toThrow(/provenance|source note/i);
   });
 
   it("fails when an interview question has no public source links", async () => {

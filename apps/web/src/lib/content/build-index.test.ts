@@ -653,7 +653,7 @@ describe("buildContentIndex", () => {
     const index = await buildContentIndex({ rootDir });
 
     expect(index.schemaVersion).toBe(6);
-    expect(index.interviewCompanies).toEqual([
+    expect(index.interviewCollections).toEqual([
       expect.objectContaining({
         slug: "amazon",
         route: "/interviews/amazon",

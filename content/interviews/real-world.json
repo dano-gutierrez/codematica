@@ -1,0 +1,303 @@
+{
+  "kind": "real-world",
+  "slug": "real-world",
+  "name": "Real-world interviews",
+  "summary": "Anonymous exercises adapted from real interview sessions, focused on product judgment, communication, and working frontend code.",
+  "status": "published",
+  "questions": [
+    {
+      "kind": "web",
+      "slug": "mondrian-composition-generator",
+      "title": "Generate a Mondrian-style Composition",
+      "summary": "Scope and build a browser-only React application that creates a fresh, bounded composition from constrained randomness.",
+      "prompt": "Build a browser-only application that generates a new composition on initial page load in the visual language associated with Piet Mondrian. Begin by collaborating on the characteristics worth imitating, choose an MVP that can be completed during the interview, and preserve clear extension seams for rules you defer. The result should be a static frontend application—no backend or saved data—but the generated composition itself must vary between page loads.",
+      "difficulty": "senior",
+      "tags": ["react", "typescript", "generative-art", "css", "svg", "frontend-design"],
+      "sourceLinks": [],
+      "sourceNote": "Adapted from a privately supplied real interview brief. The originating company and revealing source URL are intentionally withheld.",
+      "resources": [],
+      "examples": [],
+      "constraints": [
+        "Deliver a working browser-only MVP during a normal interview session.",
+        "Generate the composition once on initial load; React rerenders must not silently replace it.",
+        "Use only orthogonal divisions, bounded rectangles, consistent dark lines, and a restrained off-white, red, yellow, and blue palette.",
+        "Keep every generated region inside the composition and prevent unusably small regions.",
+        "Make the composition responsive and keep the generator separate from the renderer.",
+        "Explain which characteristics were deliberately deferred and how the design could add them later."
+      ],
+      "diagrams": [],
+      "evaluation": {
+        "intent": "The central challenge is not perfect art reproduction. It is turning an ambiguous visual request into a small deliverable contract, collaborating visibly on priorities, implementing stable geometry, and leaving a credible route toward more sophisticated composition rules without overbuilding the interview MVP.",
+        "expectedSignals": [
+          "Names the visual grammar before coding: orthogonal black lines, unequal rectangles, asymmetric balance, a warm light ground, and sparse primary-color accents.",
+          "Negotiates a concrete MVP and explicitly defers secondary traits such as merged regions, line hierarchy, texture, historical-period fidelity, and export.",
+          "Models generation as a pure or seed-driven transform so geometry can be inspected and tested independently from React rendering.",
+          "Constrains random choices with minimum sizes, weighted colors, bounded coordinates, and a fixed amount of work instead of trusting arbitrary Math.random calls.",
+          "Generates once per seed and changes the seed only for initial load or an explicit regenerate action, avoiding render-time instability.",
+          "Uses semantic controls, a useful accessible label for the visual output, stable keys, and a responsive composition surface.",
+          "Discusses how the selected renderer affects precision, readability, testing, export, and future visual rules.",
+          "Communicates tradeoffs while implementing and can identify the next highest-value refinement after the MVP works."
+        ],
+        "acceptanceCriteria": [
+          {
+            "title": "Orthogonal visual grammar",
+            "explanation": "The composition is made from horizontal and vertical divisions only; diagonals, circles, arbitrary polygons, and decorative gradients would change the requested visual language."
+          },
+          {
+            "title": "Consistent dark structure",
+            "explanation": "Black or near-black lines visibly organize the composition, render above fills where appropriate, and remain consistent enough to read as one system."
+          },
+          {
+            "title": "Asymmetric rectangles",
+            "explanation": "Rows, columns, or subdivisions have meaningfully unequal proportions, producing deliberate imbalance rather than a uniform checkerboard."
+          },
+          {
+            "title": "Restrained weighted palette",
+            "explanation": "Most area remains warm white or neutral while red, yellow, and blue appear as sparse accents; choosing every color uniformly produces visual noise."
+          },
+          {
+            "title": "Valid bounded geometry",
+            "explanation": "Coordinates and dimensions stay inside the canvas, have positive area, respect a practical minimum size, and never overlap unexpectedly."
+          },
+          {
+            "title": "Stable randomness",
+            "explanation": "A composition is created once for a seed and remains stable through unrelated React rerenders; reload or the explicit regenerate control creates the next result."
+          },
+          {
+            "title": "Responsive and accessible output",
+            "explanation": "The artwork scales to mobile and desktop without overflow, the regenerate control is keyboard accessible, and the otherwise abstract visual has an informative accessible name."
+          },
+          {
+            "title": "Extension seams",
+            "explanation": "Palette policy, geometry generation, seeded randomness, and rendering are separated well enough to add merged cells, stronger composition heuristics, export, or repeatable seeds later."
+          }
+        ],
+        "redFlags": [
+          {
+            "title": "Hardcodes one painting",
+            "explanation": "A fixed arrangement may look convincing but misses the required refresh-time generation and avoids the core modeling problem."
+          },
+          {
+            "title": "Randomizes during render",
+            "explanation": "Calling random generation directly in component rendering causes flicker, changes output after unrelated state updates, and behaves especially poorly under React Strict Mode."
+          },
+          {
+            "title": "Uses unconstrained geometry",
+            "explanation": "Independent random widths and positions commonly create overlaps, gaps, negative dimensions, or slivers too small to read, showing that invariants were never defined."
+          },
+          {
+            "title": "Mutates the DOM directly",
+            "explanation": "Imperative document queries and element mutation fight React ownership, complicate cleanup, and make the generator difficult to test or reuse."
+          },
+          {
+            "title": "Overbuilds before an MVP",
+            "explanation": "Starting with a custom canvas engine, physics, image analysis, or a large dependency stack risks finishing nothing and contradicts the explicit scoping portion of the interview."
+          },
+          {
+            "title": "Never states a scope",
+            "explanation": "Silently choosing characteristics prevents interviewer collaboration and makes it impossible to judge whether omissions were intentional or accidental."
+          },
+          {
+            "title": "Colors every cell uniformly",
+            "explanation": "Equal-probability primary colors create a noisy mosaic instead of the restrained negative space and sparse accents that define the target grammar."
+          },
+          {
+            "title": "Assumes one desktop size",
+            "explanation": "Fixed pixel coordinates without a scaling strategy make the deliverable unusable on the mobile-first product and reveal missing layout thinking."
+          },
+          {
+            "title": "Omits accessibility",
+            "explanation": "An unlabeled visual and icon-only regeneration control make the experience opaque to assistive technology even though the required semantics are inexpensive."
+          },
+          {
+            "title": "Entangles model and renderer",
+            "explanation": "Geometry hidden inside JSX or CSS string concatenation cannot be validated independently and makes future renderers or composition rules costly."
+          },
+          {
+            "title": "Cannot explain tradeoffs",
+            "explanation": "A polished artifact without discussion of renderer choice, deferred rules, or failure modes misses the communication and design dimensions of the rubric."
+          }
+        ]
+      },
+      "solutionTracks": [
+        {
+          "id": "weighted-css-grid",
+          "title": "Weighted CSS Grid",
+          "summary": "Generate unequal fractional tracks and a sparse weighted palette, then let CSS Grid own all layout and line spacing.",
+          "steps": [
+            {
+              "title": "Lock the MVP grammar",
+              "explanation": "Choose unequal rows and columns, one consistent black gap, a warm neutral ground, and exactly three primary-color accents as the deliverable subset."
+            },
+            {
+              "title": "Make randomness repeatable",
+              "explanation": "Create a small seeded random function so one seed always yields the same track weights, accent positions, and test result."
+            },
+            {
+              "title": "Generate constrained tracks",
+              "explanation": "Use bounded positive fractional weights rather than independent pixel positions; CSS Grid then guarantees full coverage without overlap."
+            },
+            {
+              "title": "Bias the palette",
+              "explanation": "Start every cell as warm white, shuffle valid cell indexes, and place one red, one blue, and one yellow accent to guarantee restraint and variety."
+            },
+            {
+              "title": "Render declaratively",
+              "explanation": "Map the generated cells to stable grid children and change the seed only on initial load or when the labeled regenerate button is pressed."
+            }
+          ],
+          "explanation": "CSS Grid is a strong interview MVP because its constraints solve the hardest geometry risks automatically: positive tracks cover the available surface, grid gaps become consistent lines, and cells cannot overlap. The TypeScript generator produces only track weights and color assignments, so visual policy stays testable and the React component remains a small projection of that model. A future pass can extend the model with row or column spans, palette periods, line weights, or composition scoring without replacing the basic boundary between generation and rendering.",
+          "acceptanceRationale": "This would be accepted because it delivers a recognizable, randomized, responsive result quickly; it demonstrates explicit visual scoping; and it uses browser-native layout constraints to prevent invalid geometry. The code is readable under interview pressure, randomness is stable, the palette is intentionally sparse, and the generator can evolve without direct DOM manipulation.",
+          "tradeoffs": [
+            "Independent grid cells make the first version read more like a structured mosaic than paintings with selectively merged regions.",
+            "One grid-wide gap produces a single line weight; historically inspired variation would require extra metadata or layered lines.",
+            "Fractional tracks are excellent for responsiveness but less convenient than SVG coordinates for exact export or geometry inspection.",
+            "Guaranteeing one of each accent is visually reliable but less organic than a richer composition-scoring policy."
+          ],
+          "complexity": {
+            "time": "O(rows × columns)",
+            "space": "O(rows × columns)"
+          },
+          "project": {
+            "runtime": "react-ts",
+            "activeFile": "/App.tsx",
+            "visibleFiles": ["/App.tsx", "/generator.ts", "/rng.ts", "/styles.css"],
+            "files": {
+              "/App.tsx": {
+                "code": "import { useMemo, useState } from 'react';\nimport { createGridComposition } from './generator';\nimport './styles.css';\n\nexport default function App() {\n  const [seed, setSeed] = useState(() => Date.now());\n  const composition = useMemo(() => createGridComposition(seed), [seed]);\n\n  return (\n    <main className=\"app-shell\">\n      <header>\n        <div>\n          <p className=\"eyebrow\">Weighted CSS Grid</p>\n          <h1>Constrained composition</h1>\n        </div>\n        <button type=\"button\" onClick={() => setSeed(Date.now())}>Regenerate</button>\n      </header>\n      <div\n        className=\"composition\"\n        role=\"img\"\n        aria-label=\"A generated composition of asymmetric rectangles separated by black lines\"\n        style={{\n          gridTemplateColumns: composition.columns.map((value) => `${value}fr`).join(' '),\n          gridTemplateRows: composition.rows.map((value) => `${value}fr`).join(' '),\n        }}\n      >\n        {composition.cells.map((cell) => (\n          <div key={cell.id} style={{ background: cell.color }} />\n        ))}\n      </div>\n      <p className=\"seed\">Seed {seed}</p>\n    </main>\n  );\n}\n"
+              },
+              "/generator.ts": {
+                "code": "import { mulberry32, shuffled } from './rng';\n\nconst NEUTRAL = '#f4f0df';\nconst ACCENTS = ['#d7261e', '#1357a6', '#f3c623'] as const;\n\nexport type GridComposition = {\n  rows: number[];\n  columns: number[];\n  cells: Array<{ id: string; color: string }>;\n};\n\nfunction trackWeights(count: number, random: () => number): number[] {\n  return Array.from({ length: count }, () => Number((0.7 + random() * 1.8).toFixed(3)));\n}\n\nexport function createGridComposition(seed: number): GridComposition {\n  const random = mulberry32(seed);\n  const rows = trackWeights(4 + Math.floor(random() * 2), random);\n  const columns = trackWeights(5 + Math.floor(random() * 2), random);\n  const cells = Array.from({ length: rows.length * columns.length }, (_, index) => ({\n    id: `cell-${index}`,\n    color: NEUTRAL,\n  }));\n  const accentIndexes = shuffled(cells.map((_, index) => index), random).slice(0, ACCENTS.length);\n  accentIndexes.forEach((cellIndex, index) => {\n    cells[cellIndex].color = ACCENTS[index];\n  });\n  return { rows, columns, cells };\n}\n"
+              },
+              "/rng.ts": {
+                "code": "export function mulberry32(seed: number): () => number {\n  let value = seed >>> 0;\n  return () => {\n    value += 0x6d2b79f5;\n    let next = value;\n    next = Math.imul(next ^ (next >>> 15), next | 1);\n    next ^= next + Math.imul(next ^ (next >>> 7), next | 61);\n    return ((next ^ (next >>> 14)) >>> 0) / 4294967296;\n  };\n}\n\nexport function shuffled<T>(values: T[], random: () => number): T[] {\n  const result = [...values];\n  for (let index = result.length - 1; index > 0; index -= 1) {\n    const swapIndex = Math.floor(random() * (index + 1));\n    [result[index], result[swapIndex]] = [result[swapIndex], result[index]];\n  }\n  return result;\n}\n"
+              },
+              "/styles.css": {
+                "code": "* { box-sizing: border-box; }\nbody { margin: 0; background: #ebe6d8; color: #171717; font-family: Inter, ui-sans-serif, system-ui, sans-serif; }\nbutton { border: 3px solid #111; background: #f3c623; padding: .7rem 1rem; font: inherit; font-weight: 800; cursor: pointer; }\nbutton:focus-visible { outline: 4px solid #1357a6; outline-offset: 3px; }\n.app-shell { width: min(100% - 2rem, 920px); margin: 0 auto; padding: 1.25rem 0 2rem; }\nheader { display: flex; align-items: end; justify-content: space-between; gap: 1rem; margin-bottom: 1rem; }\nh1, p { margin: 0; }\nh1 { font-size: clamp(1.5rem, 5vw, 2.7rem); }\n.eyebrow { margin-bottom: .3rem; color: #444; font-size: .75rem; font-weight: 900; letter-spacing: .12em; text-transform: uppercase; }\n.composition { display: grid; width: 100%; aspect-ratio: 4 / 3; overflow: hidden; border: 10px solid #111; gap: 9px; background: #111; box-shadow: 0 12px 28px rgb(0 0 0 / .16); }\n.seed { margin-top: .75rem; color: #555; font: 600 .8rem ui-monospace, monospace; overflow-wrap: anywhere; }\n@media (max-width: 520px) { header { align-items: stretch; flex-direction: column; } button { width: 100%; } .composition { border-width: 7px; gap: 6px; } }\n"
+              }
+            },
+            "dependencies": {}
+          }
+        },
+        {
+          "id": "recursive-rectangular-subdivision",
+          "title": "Recursive Rectangular Subdivision",
+          "summary": "Recursively split a normalized rectangle, then render the resulting leaf regions as absolutely positioned React elements.",
+          "steps": [
+            {
+              "title": "Define normalized geometry",
+              "explanation": "Represent every region as x, y, width, and height percentages so the model is renderer-independent and automatically responsive."
+            },
+            {
+              "title": "Choose bounded splits",
+              "explanation": "Split between 34% and 66% of the parent and stop by depth, probability, or minimum projected size so no leaf becomes unusable."
+            },
+            {
+              "title": "Bias the orientation",
+              "explanation": "Prefer vertical splits for wide rectangles and horizontal splits for tall rectangles, using randomness mainly when the aspect ratio is ambiguous."
+            },
+            {
+              "title": "Assign sparse accents",
+              "explanation": "Generate neutral leaves first, shuffle sufficiently large leaves, and assign the three primary accents to avoid coloring tiny fragments."
+            },
+            {
+              "title": "Project leaves into the DOM",
+              "explanation": "Render leaf rectangles with percentage positioning and consistent outlines while keeping the recursive algorithm entirely outside JSX."
+            }
+          ],
+          "explanation": "Binary space partitioning expresses the composition as a tree of intentional decisions instead of a flat uniform grid. Every split preserves the parent boundary, so the generated leaves cover the original rectangle without gaps or overlap. Aspect-ratio-aware orientation and bounded cut positions prevent most awkward slivers, while a depth and probability budget guarantees finite work. This design is especially extensible: internal nodes can later carry line weights, locked axes, merge decisions, or composition scores without changing the React renderer.",
+          "acceptanceRationale": "This would be accepted because it demonstrates stronger modeling while remaining interview-sized. The recursive invariant is easy to state—children exactly partition their parent—so correctness can be reasoned about locally. It yields more varied large and small regions than a uniform grid, keeps randomness constrained and repeatable, and makes deferred composition heuristics explicit rather than burying them in CSS.",
+          "tradeoffs": [
+            "Absolute-positioned leaves need careful outline treatment because adjacent borders can visually double or reveal subpixel seams.",
+            "A binary split tree cannot directly create every possible grid topology without later merging or cross-branch alignment rules.",
+            "Recursive code is conceptually richer than the CSS Grid MVP and may be harder to explain if interview time is very short.",
+            "Percentage rounding is responsive but can create tiny visual seams at some device pixel ratios."
+          ],
+          "complexity": {
+            "time": "O(number of leaf regions)",
+            "space": "O(number of leaf regions + recursion depth)"
+          },
+          "project": {
+            "runtime": "react-ts",
+            "activeFile": "/App.tsx",
+            "visibleFiles": ["/App.tsx", "/generator.ts", "/rng.ts", "/styles.css"],
+            "files": {
+              "/App.tsx": {
+                "code": "import { useMemo, useState } from 'react';\nimport { createSubdivision } from './generator';\nimport './styles.css';\n\nexport default function App() {\n  const [seed, setSeed] = useState(() => Date.now());\n  const regions = useMemo(() => createSubdivision(seed), [seed]);\n  return (\n    <main className=\"app-shell\">\n      <header>\n        <div><p className=\"eyebrow\">Recursive subdivision</p><h1>Partitioned canvas</h1></div>\n        <button type=\"button\" onClick={() => setSeed(Date.now())}>Regenerate</button>\n      </header>\n      <div className=\"composition\" role=\"img\" aria-label=\"A generated tree of asymmetric rectangular regions\">\n        {regions.map((region) => (\n          <div\n            key={region.id}\n            className=\"region\"\n            style={{ left: `${region.x}%`, top: `${region.y}%`, width: `${region.width}%`, height: `${region.height}%`, background: region.color }}\n          />\n        ))}\n      </div>\n      <p className=\"seed\">{regions.length} leaves · seed {seed}</p>\n    </main>\n  );\n}\n"
+              },
+              "/generator.ts": {
+                "code": "import { mulberry32, shuffled } from './rng';\n\nexport type Region = { id: string; x: number; y: number; width: number; height: number; color: string };\ntype Rect = Omit<Region, 'id' | 'color'>;\nconst NEUTRAL = '#f4f0df';\nconst ACCENTS = ['#d7261e', '#1357a6', '#f3c623'] as const;\n\nexport function createSubdivision(seed: number): Region[] {\n  const random = mulberry32(seed);\n  const leaves: Rect[] = [];\n  function split(rect: Rect, depth: number): void {\n    const shouldStop = depth >= 5 || (depth >= 2 && random() < 0.28) || Math.min(rect.width, rect.height) < 12;\n    if (shouldStop) { leaves.push(rect); return; }\n    const vertical = rect.width > rect.height * 1.18 ? true : rect.height > rect.width * 1.18 ? false : random() > 0.5;\n    const ratio = 0.34 + random() * 0.32;\n    if (vertical) {\n      const firstWidth = rect.width * ratio;\n      split({ ...rect, width: firstWidth }, depth + 1);\n      split({ x: rect.x + firstWidth, y: rect.y, width: rect.width - firstWidth, height: rect.height }, depth + 1);\n    } else {\n      const firstHeight = rect.height * ratio;\n      split({ ...rect, height: firstHeight }, depth + 1);\n      split({ x: rect.x, y: rect.y + firstHeight, width: rect.width, height: rect.height - firstHeight }, depth + 1);\n    }\n  }\n  split({ x: 0, y: 0, width: 100, height: 100 }, 0);\n  const regions: Region[] = leaves.map((rect, index) => ({ ...rect, id: `leaf-${index}`, color: NEUTRAL }));\n  const candidates = shuffled(regions.map((region, index) => ({ index, area: region.width * region.height })), random)\n    .filter(({ area }) => area > 250)\n    .slice(0, ACCENTS.length);\n  candidates.forEach(({ index }, accentIndex) => { regions[index].color = ACCENTS[accentIndex]; });\n  return regions;\n}\n"
+              },
+              "/rng.ts": {
+                "code": "export function mulberry32(seed: number): () => number {\n  let value = seed >>> 0;\n  return () => {\n    value += 0x6d2b79f5;\n    let next = value;\n    next = Math.imul(next ^ (next >>> 15), next | 1);\n    next ^= next + Math.imul(next ^ (next >>> 7), next | 61);\n    return ((next ^ (next >>> 14)) >>> 0) / 4294967296;\n  };\n}\nexport function shuffled<T>(values: T[], random: () => number): T[] {\n  const result = [...values];\n  for (let index = result.length - 1; index > 0; index -= 1) {\n    const target = Math.floor(random() * (index + 1));\n    [result[index], result[target]] = [result[target], result[index]];\n  }\n  return result;\n}\n"
+              },
+              "/styles.css": {
+                "code": "* { box-sizing: border-box; }\nbody { margin: 0; background: #e8e3d5; color: #171717; font-family: Inter, ui-sans-serif, system-ui, sans-serif; }\n.app-shell { width: min(100% - 2rem, 920px); margin: 0 auto; padding: 1.25rem 0 2rem; }\nheader { display: flex; align-items: end; justify-content: space-between; gap: 1rem; margin-bottom: 1rem; }\nh1, p { margin: 0; } h1 { font-size: clamp(1.5rem, 5vw, 2.7rem); }\n.eyebrow { margin-bottom: .3rem; color: #444; font-size: .75rem; font-weight: 900; letter-spacing: .12em; text-transform: uppercase; }\nbutton { border: 3px solid #111; background: #d7261e; color: white; padding: .7rem 1rem; font: inherit; font-weight: 800; cursor: pointer; }\nbutton:focus-visible { outline: 4px solid #1357a6; outline-offset: 3px; }\n.composition { position: relative; width: 100%; aspect-ratio: 4 / 3; overflow: hidden; border: 6px solid #111; background: #111; box-shadow: 0 12px 28px rgb(0 0 0 / .16); }\n.region { position: absolute; border: 5px solid #111; }\n.seed { margin-top: .75rem; color: #555; font: 600 .8rem ui-monospace, monospace; overflow-wrap: anywhere; }\n@media (max-width: 520px) { header { align-items: stretch; flex-direction: column; } button { width: 100%; } .region { border-width: 3px; } }\n"
+              }
+            },
+            "dependencies": {}
+          }
+        },
+        {
+          "id": "responsive-svg-geometry",
+          "title": "Responsive SVG Geometry",
+          "summary": "Generate normalized cut coordinates and render fills first, then crisp structural lines in a responsive SVG viewBox.",
+          "steps": [
+            {
+              "title": "Choose a normalized coordinate system",
+              "explanation": "Use a 100 by 75 viewBox so the generator works in stable units while the browser scales the final SVG responsively."
+            },
+            {
+              "title": "Generate minimum-safe cuts",
+              "explanation": "Produce positive weighted segments and normalize their cumulative positions, guaranteeing complete coverage and avoiding nearly coincident random coordinates."
+            },
+            {
+              "title": "Build cells from adjacent cuts",
+              "explanation": "Every neighboring x and y pair defines one valid non-overlapping rectangle whose width and height are positive by construction."
+            },
+            {
+              "title": "Assign controlled color",
+              "explanation": "Leave the field neutral and place exactly three shuffled accents, keeping color policy independent from coordinate generation."
+            },
+            {
+              "title": "Draw structure last",
+              "explanation": "Render colored rectangles before the horizontal and vertical line elements so joins remain crisp and line thickness stays visually consistent."
+            }
+          ],
+          "explanation": "SVG makes the model-to-pixels relationship explicit. Weighted segment normalization guarantees that cut coordinates are sorted, cover the viewBox, and produce valid rectangles. Rendering fills and structural lines as separate layers avoids doubled cell borders and makes line hierarchy easy to extend. The same geometry can be unit tested, serialized, downloaded, animated, or scored without consulting layout measurements, while the viewBox gives responsive scaling for free.",
+          "acceptanceRationale": "This would be accepted because it combines precise invariants with a concise browser-native renderer. It clearly separates geometry, palette, and drawing order; produces stable random output from a seed; scales cleanly across devices; and creates the most direct path to export or advanced line rules. The candidate can explain the additional SVG concepts without losing sight of the scoped MVP.",
+          "tradeoffs": [
+            "SVG introduces coordinate and drawing-order concepts that may be more machinery than a CSS-only MVP needs.",
+            "A full row-by-column cut model remains grid-like until later logic merges cells or terminates selected lines early.",
+            "Very thick responsive strokes may need vector-effect or breakpoint tuning if exact screen-space thickness matters.",
+            "Large compositions would create many SVG nodes, although the interview-sized region count is comfortably small."
+          ],
+          "complexity": {
+            "time": "O(rows × columns)",
+            "space": "O(rows × columns + rows + columns)"
+          },
+          "project": {
+            "runtime": "react-ts",
+            "activeFile": "/App.tsx",
+            "visibleFiles": ["/App.tsx", "/generator.ts", "/rng.ts", "/styles.css"],
+            "files": {
+              "/App.tsx": {
+                "code": "import { useMemo, useState } from 'react';\nimport { createSvgComposition } from './generator';\nimport './styles.css';\n\nexport default function App() {\n  const [seed, setSeed] = useState(() => Date.now());\n  const composition = useMemo(() => createSvgComposition(seed), [seed]);\n  return (\n    <main className=\"app-shell\">\n      <header>\n        <div><p className=\"eyebrow\">Responsive SVG</p><h1>Geometry and lines</h1></div>\n        <button type=\"button\" onClick={() => setSeed(Date.now())}>Regenerate</button>\n      </header>\n      <svg className=\"composition\" viewBox=\"0 0 100 75\" role=\"img\" aria-label=\"A generated SVG composition of asymmetric colored rectangles\">\n        <rect width=\"100\" height=\"75\" fill=\"#f4f0df\" />\n        {composition.cells.map((cell) => <rect key={cell.id} x={cell.x} y={cell.y} width={cell.width} height={cell.height} fill={cell.color} />)}\n        <g stroke=\"#111\" strokeWidth=\"2.2\">\n          {composition.xCuts.slice(1, -1).map((x) => <line key={`x-${x}`} x1={x} x2={x} y1=\"0\" y2=\"75\" />)}\n          {composition.yCuts.slice(1, -1).map((y) => <line key={`y-${y}`} x1=\"0\" x2=\"100\" y1={y} y2={y} />)}\n        </g>\n        <rect x=\"1.1\" y=\"1.1\" width=\"97.8\" height=\"72.8\" fill=\"none\" stroke=\"#111\" strokeWidth=\"2.2\" />\n      </svg>\n      <p className=\"seed\">Seed {seed}</p>\n    </main>\n  );\n}\n"
+              },
+              "/generator.ts": {
+                "code": "import { mulberry32, shuffled } from './rng';\n\ntype Cell = { id: string; x: number; y: number; width: number; height: number; color: string };\nexport type SvgComposition = { xCuts: number[]; yCuts: number[]; cells: Cell[] };\nconst NEUTRAL = '#f4f0df';\nconst ACCENTS = ['#d7261e', '#1357a6', '#f3c623'] as const;\n\nfunction cuts(total: number, segments: number, random: () => number): number[] {\n  const weights = Array.from({ length: segments }, () => 0.75 + random() * 1.7);\n  const sum = weights.reduce((value, weight) => value + weight, 0);\n  const result = [0];\n  weights.forEach((weight) => result.push(result[result.length - 1] + (weight / sum) * total));\n  result[result.length - 1] = total;\n  return result.map((value) => Number(value.toFixed(3)));\n}\n\nexport function createSvgComposition(seed: number): SvgComposition {\n  const random = mulberry32(seed);\n  const xCuts = cuts(100, 5 + Math.floor(random() * 2), random);\n  const yCuts = cuts(75, 4 + Math.floor(random() * 2), random);\n  const cells: Cell[] = [];\n  for (let row = 0; row < yCuts.length - 1; row += 1) {\n    for (let column = 0; column < xCuts.length - 1; column += 1) {\n      cells.push({ id: `${row}-${column}`, x: xCuts[column], y: yCuts[row], width: xCuts[column + 1] - xCuts[column], height: yCuts[row + 1] - yCuts[row], color: NEUTRAL });\n    }\n  }\n  shuffled(cells.map((_, index) => index), random).slice(0, ACCENTS.length).forEach((cellIndex, accentIndex) => {\n    cells[cellIndex].color = ACCENTS[accentIndex];\n  });\n  return { xCuts, yCuts, cells };\n}\n"
+              },
+              "/rng.ts": {
+                "code": "export function mulberry32(seed: number): () => number {\n  let value = seed >>> 0;\n  return () => {\n    value += 0x6d2b79f5;\n    let next = value;\n    next = Math.imul(next ^ (next >>> 15), next | 1);\n    next ^= next + Math.imul(next ^ (next >>> 7), next | 61);\n    return ((next ^ (next >>> 14)) >>> 0) / 4294967296;\n  };\n}\nexport function shuffled<T>(values: T[], random: () => number): T[] {\n  const result = [...values];\n  for (let index = result.length - 1; index > 0; index -= 1) {\n    const target = Math.floor(random() * (index + 1));\n    [result[index], result[target]] = [result[target], result[index]];\n  }\n  return result;\n}\n"
+              },
+              "/styles.css": {
+                "code": "* { box-sizing: border-box; }\nbody { margin: 0; background: #ece6d7; color: #171717; font-family: Inter, ui-sans-serif, system-ui, sans-serif; }\n.app-shell { width: min(100% - 2rem, 920px); margin: 0 auto; padding: 1.25rem 0 2rem; }\nheader { display: flex; align-items: end; justify-content: space-between; gap: 1rem; margin-bottom: 1rem; }\nh1, p { margin: 0; } h1 { font-size: clamp(1.5rem, 5vw, 2.7rem); }\n.eyebrow { margin-bottom: .3rem; color: #444; font-size: .75rem; font-weight: 900; letter-spacing: .12em; text-transform: uppercase; }\nbutton { border: 3px solid #111; background: #1357a6; color: white; padding: .7rem 1rem; font: inherit; font-weight: 800; cursor: pointer; }\nbutton:focus-visible { outline: 4px solid #d7261e; outline-offset: 3px; }\n.composition { display: block; width: 100%; height: auto; background: #f4f0df; box-shadow: 0 12px 28px rgb(0 0 0 / .16); }\n.seed { margin-top: .75rem; color: #555; font: 600 .8rem ui-monospace, monospace; overflow-wrap: anywhere; }\n@media (max-width: 520px) { header { align-items: stretch; flex-direction: column; } button { width: 100%; } }\n"
+              }
+            },
+            "dependencies": {}
+          }
+        }
+      ]
+    }
+  ]
+}

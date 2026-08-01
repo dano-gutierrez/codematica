@@ -35,6 +35,7 @@ Detailed Play Console, Apple Developer Program, App Store Connect, EAS credentia
 - Keep reusable native screens in `@codematica/ui` using React Native primitives, design tokens, and `StyleSheet`.
 - Native Supabase uses anon-safe public env vars and secure Expo session storage. Service role keys remain local/server-only.
 - Native Mermaid rendering uses a WebView when a bundled Mermaid runtime is provided and shows source fallback when unavailable.
+- Native real-world web interviews include complete rubrics, approaches, and selectable source files, but deliberately defer editing/execution to the Next.js Sandpack surface.
 - First release target is EAS internal distribution. Store submission readiness is configured in the repo, but actual Play Console/App Store Connect release requires account-owned app records, credentials, metadata, screenshots, and review forms outside the repo.
 
 ## Run And Build Commands
@@ -144,6 +145,7 @@ Store-side setup still required:
 ## Known Gaps
 
 - Native WebView Mermaid currently falls back to source unless a bundled Mermaid runtime string is supplied to the shared adapter.
+- React/TypeScript web exercise projects are read-only on native; there is no native WebView compiler/runtime.
 - Mobile E2E is documented as the target lane, but Maestro flows have not been added yet.
 - Store submission metadata, screenshots, privacy labels, and app review preparation remain account-side work and are not stored in this repo yet.
 - Public production release remains manual after EAS submission: Play internal track promotion happens in Play Console, and iOS App Store release happens in App Store Connect after TestFlight processing and App Review submission.

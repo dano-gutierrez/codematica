@@ -261,3 +261,28 @@ select {
 .code-block .hljs-operator {
   color: #b7c3cc;
 }
+
+.web-playground-layout {
+  min-height: 34rem;
+  border: 0 !important;
+  border-radius: 0 !important;
+}
+
+.web-playground-layout > :first-child,
+.web-playground-layout > :last-child {
+  min-width: 0;
+  min-height: 34rem;
+}
+
+@media (max-width: 767px) {
+  .web-playground-layout {
+    flex-direction: column !important;
+    min-height: 54rem;
+  }
+
+  .web-playground-layout > :first-child,
+  .web-playground-layout > :last-child {
+    width: 100% !important;
+    min-height: 27rem;
+  }
+}

@@ -4,12 +4,13 @@ import { useEffect, useMemo, useState } from "react";
 import { ArrowRight, RotateCcw } from "lucide-react";
 import { CodeBlock } from "@/components/CodeBlock";
 import { MermaidBlock } from "@/components/MermaidBlock";
-import type { InterviewQuestion, InterviewSolutionTrack } from "@/lib/content/schema";
+import { WebInterviewQuestionSession } from "@/components/WebInterviewQuestionSession";
+import type { InterviewAlgorithmSolutionTrack, InterviewQuestion } from "@/lib/content/schema";
 import { selectInterviewSolutionTrack } from "@/lib/interviews";
 import { recordProgress } from "@/lib/progress/client";
 import type { ProgressStatus } from "@/lib/progress/progress";
 
-type LanguageKey = keyof InterviewSolutionTrack["languages"];
+type LanguageKey = keyof InterviewAlgorithmSolutionTrack["languages"];
 
 const languageOptions: { value: LanguageKey; label: string }[] = [
   { value: "python", label: "Python" },
@@ -22,6 +23,20 @@ export function InterviewQuestionSession({
   onProgressEvent,
 }: {
   question: InterviewQuestion;
+  onProgressEvent?: (status: ProgressStatus, position: Record<string, unknown>) => void;
+}) {
+  if (question.kind === "web") {
+    return <WebInterviewQuestionSession question={question} />;
+  }
+
+  return <AlgorithmInterviewQuestionSession question={question} onProgressEvent={onProgressEvent} />;
+}
+
+function AlgorithmInterviewQuestionSession({
+  question,
+  onProgressEvent,
+}: {
+  question: Extract<InterviewQuestion, { kind: "algorithm" }>;
   onProgressEvent?: (status: ProgressStatus, position: Record<string, unknown>) => void;
 }) {
   const [track, setTrack] = useState(() => question.solutionTracks[0]);
@@ -75,11 +90,11 @@ export function InterviewQuestionSession({
     void recordProgress(
       {
         surface: "interview",
-        slug: `${question.companySlug}/${question.slug}`,
+        slug: `${question.collectionSlug}/${question.slug}`,
         title: question.title,
         summary: question.summary,
         href: question.route,
-        eyebrow: `${question.companyName} interview`,
+        eyebrow: `${question.collectionName} interview`,
       },
       status,
       position,

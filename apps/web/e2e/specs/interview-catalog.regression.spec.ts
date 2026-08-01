@@ -33,3 +33,39 @@ test("@regression opens the interview catalog and completes a guided coding walk
     await expect(page.getByTestId("interview-code")).toContainText("int[]");
   });
 });
+
+test("@regression explores the anonymous Mondrian interview and runs all web solutions", async ({ page }) => {
+  test.setTimeout(120_000);
+  await test.step("open the real-world collection", async () => {
+    await page.goto("/interviews");
+    await expect(page.getByTestId("real-world-interviews-section")).toContainText("Real-world interviews");
+    await expect(page.getByTestId("company-interviews-section")).toContainText("Company interview prep");
+    await page.getByTestId("interview-collection-card-real-world").click();
+    await expect(page.getByTestId("interview-collection-page")).toContainText("Anonymous real-world collection");
+    await page.getByTestId("interview-question-card-mondrian-composition-generator").click();
+  });
+
+  await test.step("review the evaluation intent and red flags", async () => {
+    await expect(page.getByRole("heading", { name: "Generate a Mondrian-style Composition" })).toBeVisible();
+    await expect(page.getByTestId("interview-evaluation-guide")).toContainText("ambiguous visual request");
+    await expect(page.getByRole("heading", { name: "Red flags and why they matter" })).toBeVisible();
+    await expect(page.getByText("Hardcodes one painting")).toBeVisible();
+  });
+
+  await test.step("run and compare all three solutions", async () => {
+    const preview = () => page.frameLocator('iframe[title="Sandpack Preview"]');
+    await expect(page.getByTestId("web-solution-detail")).toContainText("Weighted CSS Grid");
+    await expect(page.getByTestId("web-playground")).toBeVisible({ timeout: 30_000 });
+    await page.getByTestId("web-playground-run").click({ force: true });
+    await expect(preview().getByRole("img", { name: /generated composition/i })).toBeVisible({ timeout: 30_000 });
+
+    await page.getByTestId("web-solution-tab-recursive-rectangular-subdivision").click({ force: true });
+    await expect(page.getByTestId("web-solution-detail")).toContainText("Recursive Rectangular Subdivision");
+    await expect(preview().getByRole("img", { name: /generated tree/i })).toBeVisible({ timeout: 30_000 });
+
+    await page.getByTestId("web-solution-tab-responsive-svg-geometry").click({ force: true });
+    await expect(page.getByTestId("web-solution-detail")).toContainText("Responsive SVG Geometry");
+    await expect(preview().getByRole("img", { name: /generated SVG composition/i })).toBeVisible({ timeout: 30_000 });
+    await page.getByTestId("web-playground-reset").click({ force: true });
+  });
+});

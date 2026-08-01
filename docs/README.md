@@ -23,9 +23,10 @@ Conventions:
 - `docs/features/llm-application-engineering.md` owns the Langfuse and LangChain AI engineering path, including local lessons, diagrams, quizzes, passive flashcards, and non-executable coding challenge sections.
 - `docs/features/database-indexes-learning-path.md` owns the database indexes and PostgreSQL search path, including local lessons, quizzes, passive flashcards, and future SQL editor roadmap boundaries.
 - `docs/features/advanced-nextjs-16-learning-path.md` owns the hard Front-End Development skill path for Next.js 16 rendering, caching, `force-dynamic`, invalidation, performance, migration, quizzes, and one-minute brief cards.
+- `docs/features/interview-coding-catalog.md` owns company and anonymous real-world interview collections, guided algorithm walkthroughs, and accepted frontend solutions.
+- `docs/features/react-typescript-playground.md` owns the reusable web-project schema, Sandpack execution boundary, editor behavior, and native fallback.
 - `docs/features/bfs-dfs-learning-path.md` owns the Programming skill path for BFS/DFS fundamentals, Python and TypeScript examples, questionnaires, scrolling review, and guided graph interview comparisons.
 - `docs/features/mermaid-diagram-authoring.md` owns the Mermaid reading/writing skill path, progressive rendered examples, choice-only questionnaires, scrolling review, and diagram-selection guidance.
-- `docs/features/interview-coding-catalog.md` owns the reported-public company interview coding catalog and guided solution walkthroughs.
 - `docs/features/auth-and-progress.md` owns Supabase Auth, user profile minimalism, saved progress, anonymous progress buffering, and Keep reading behavior.
 - `docs/features/subscriptions-and-content-gating.md` owns the proposed RevenueCat/Stripe/Apple/Google subscription model, strict paid content gating, entitlement cache, and paywall implementation plan.
 - `docs/features/hosting-and-deployment.md` owns the Vercel free-tier deployment contract, static-first hosting posture, Expo build/submit posture, and manual Supabase sync boundary.
@@ -41,7 +42,7 @@ Content authoring surfaces:
 - `content/learning-paths/`: role and skill path JSON.
 - `content/exercises/`: flashcard, cloze, questionnaire, and writing practice JSON.
 - `content/flashcard-feeds/`: path-scoped passive flashcard feed JSON.
-- `content/interviews/`: company-scoped interview coding catalog JSON.
+- `content/interviews/`: company and anonymous real-world interview collection JSON, including validated web-project files.
 - `content/languages/`: human-language character and vocabulary catalogs.
 - `content/discovery/`: validated editorial curation for discovery surfaces.
 

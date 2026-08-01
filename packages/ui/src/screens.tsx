@@ -17,9 +17,9 @@ import {
   type Difficulty,
   type DiscoveryResult,
   type DiscoverySectionId,
-  type InterviewCompany,
+  type InterviewAlgorithmSolutionTrack,
+  type InterviewCollection,
   type InterviewQuestion,
-  type InterviewSolutionTrack,
   type KnowledgeDocument,
   type JapaneseSearchResult,
   type LanguageCharacter,
@@ -1237,17 +1237,31 @@ function PassiveFlashcard({ card, sequenceIndex }: { card: PassiveFlashcardCard;
 }
 
 export function InterviewCatalogScreen({ index, adapters }: { index: ContentIndex } & ScreenProps) {
+  const realWorld = index.interviewCollections.filter((collection) => collection.kind === "real-world");
+  const companies = index.interviewCollections.filter((collection) => collection.kind === "company");
+
   return (
     <AppScreen>
       <Header adapters={adapters} subtitle="Interview prep" />
       <Text style={styles.eyebrow}>Interview prep</Text>
-      <Text style={styles.heroTitle}>Practice reported-public coding questions.</Text>
+      <Text style={styles.heroTitle}>Practice real interview judgment and coding patterns.</Text>
+      <Text style={styles.cardTitle}>Real-world interviews</Text>
+      <View style={styles.stack} testID="mobile-real-world-interview-list">
+        {realWorld.map((collection) => (
+          <Pressable key={collection.slug} onPress={() => adapters.navigation.navigate(collection.route)} style={styles.card} testID={`mobile-collection-${collection.slug}`}>
+            <Text style={styles.cardTitle}>{collection.name}</Text>
+            <Text style={styles.mutedText}>{collection.summary}</Text>
+            <Pill label={`${collection.questions.length} exercises`} tone="amber" />
+          </Pressable>
+        ))}
+      </View>
+      <Text style={styles.cardTitle}>Company interview prep</Text>
       <View style={styles.stack} testID="mobile-interview-company-list">
-        {index.interviewCompanies.map((company) => (
-          <Pressable key={company.slug} onPress={() => adapters.navigation.navigate(company.route)} style={styles.card} testID={`mobile-company-${company.slug}`}>
-            <Text style={styles.cardTitle}>{company.name}</Text>
-            <Text style={styles.mutedText}>{company.summary}</Text>
-            <Pill label={`${company.questions.length} questions`} tone="blue" />
+        {companies.map((collection) => (
+          <Pressable key={collection.slug} onPress={() => adapters.navigation.navigate(collection.route)} style={styles.card} testID={`mobile-company-${collection.slug}`}>
+            <Text style={styles.cardTitle}>{collection.name}</Text>
+            <Text style={styles.mutedText}>{collection.summary}</Text>
+            <Pill label={`${collection.questions.length} questions`} tone="blue" />
           </Pressable>
         ))}
       </View>
@@ -1255,18 +1269,18 @@ export function InterviewCatalogScreen({ index, adapters }: { index: ContentInde
   );
 }
 
-export function InterviewCompanyScreen({ company, adapters }: { company: InterviewCompany } & ScreenProps) {
+export function InterviewCollectionScreen({ collection, adapters }: { collection: InterviewCollection } & ScreenProps) {
   return (
     <AppScreen>
-      <Header adapters={adapters} subtitle="Company questions" />
-      <Text style={styles.heroTitle}>{company.name}</Text>
-      <Text style={styles.heroCopy}>{company.summary}</Text>
+      <Header adapters={adapters} subtitle={collection.kind === "company" ? "Company questions" : "Real-world interviews"} />
+      <Text style={styles.heroTitle}>{collection.name}</Text>
+      <Text style={styles.heroCopy}>{collection.summary}</Text>
       <View style={styles.stack}>
-        {company.questions.map((question) => (
+        {collection.questions.map((question) => (
           <Pressable key={question.slug} onPress={() => adapters.navigation.navigate(question.route)} style={styles.card} testID={`mobile-question-${question.slug}`}>
             <View style={styles.pillRow}>
               <DifficultyPill difficulty={question.difficulty} />
-              <Pill label={question.companyName} tone="blue" />
+              <Pill label={question.collectionKind === "real-world" ? "Real-world" : question.collectionName} tone="blue" />
             </View>
             <Text style={styles.cardTitle}>{question.title}</Text>
             <Text style={styles.mutedText}>{question.summary}</Text>
@@ -1279,6 +1293,14 @@ export function InterviewCompanyScreen({ company, adapters }: { company: Intervi
 }
 
 export function InterviewQuestionScreen({ question, adapters }: { question: InterviewQuestion } & ScreenProps) {
+  if (question.kind === "web") {
+    return <WebInterviewQuestionScreen question={question} adapters={adapters} />;
+  }
+
+  return <AlgorithmInterviewQuestionScreen question={question} adapters={adapters} />;
+}
+
+function AlgorithmInterviewQuestionScreen({ question, adapters }: { question: Extract<InterviewQuestion, { kind: "algorithm" }> } & ScreenProps) {
   const [selectedTrackId, setSelectedTrackId] = useState(question.solutionTracks[0]?.id ?? "");
   const [language, setLanguage] = useState<"python" | "typescript" | "java">("python");
   const selectedTrack = question.solutionTracks.find((track) => track.id === selectedTrackId) ?? question.solutionTracks[0];
@@ -1288,7 +1310,7 @@ export function InterviewQuestionScreen({ question, adapters }: { question: Inte
       <Header adapters={adapters} subtitle="Interview question" />
       <View style={styles.pillRow}>
         <DifficultyPill difficulty={question.difficulty} />
-        <Pill label={question.companyName} tone="blue" />
+        <Pill label={question.collectionName} tone="blue" />
       </View>
       <Text style={styles.heroTitle}>{question.title}</Text>
       <Text style={styles.heroCopy}>{question.summary}</Text>
@@ -1326,7 +1348,7 @@ export function InterviewQuestionScreen({ question, adapters }: { question: Inte
   );
 }
 
-function SolutionTrack({ track, language }: { track: InterviewSolutionTrack; language: "python" | "typescript" | "java" }) {
+function SolutionTrack({ track, language }: { track: InterviewAlgorithmSolutionTrack; language: "python" | "typescript" | "java" }) {
   return (
     <View style={styles.card}>
       <Text style={styles.cardTitle}>{track.title}</Text>
@@ -1344,6 +1366,80 @@ function SolutionTrack({ track, language }: { track: InterviewSolutionTrack; lan
         <Pill label={`Space ${track.complexity.space}`} tone="green" />
       </View>
     </View>
+  );
+}
+
+function WebInterviewQuestionScreen({ question, adapters }: { question: Extract<InterviewQuestion, { kind: "web" }> } & ScreenProps) {
+  const [selectedTrackId, setSelectedTrackId] = useState(question.solutionTracks[0].id);
+  const selectedTrack = question.solutionTracks.find((track) => track.id === selectedTrackId) ?? question.solutionTracks[0];
+  const [selectedFile, setSelectedFile] = useState(selectedTrack.project.activeFile);
+  const activeFile = selectedTrack.project.files[selectedFile] ? selectedFile : selectedTrack.project.activeFile;
+
+  function selectTrack(trackId: string) {
+    const nextTrack = question.solutionTracks.find((track) => track.id === trackId) ?? question.solutionTracks[0];
+    setSelectedTrackId(nextTrack.id);
+    setSelectedFile(nextTrack.project.activeFile);
+  }
+
+  return (
+    <AppScreen>
+      <Header adapters={adapters} subtitle="Real-world interview" />
+      <View style={styles.pillRow}>
+        <DifficultyPill difficulty={question.difficulty} />
+        <Pill label="Real-world" tone="amber" />
+      </View>
+      <Text style={styles.heroTitle}>{question.title}</Text>
+      <Text style={styles.heroCopy}>{question.summary}</Text>
+      <Text style={styles.bodyText}>{question.prompt}</Text>
+
+      <View style={styles.card} testID="mobile-web-interview-evaluation">
+        <Text style={styles.cardTitle}>What the interviewer is assessing</Text>
+        <Text style={styles.bodyText}>{question.evaluation.intent}</Text>
+        {question.evaluation.expectedSignals.map((signal) => <Text key={signal} style={styles.mutedText}>• {signal}</Text>)}
+      </View>
+
+      <View style={styles.card}>
+        <Text style={styles.cardTitle}>Acceptance criteria</Text>
+        {question.evaluation.acceptanceCriteria.map((item) => (
+          <View key={item.title} style={styles.subPanel}><Text style={styles.cardTitle}>{item.title}</Text><Text style={styles.mutedText}>{item.explanation}</Text></View>
+        ))}
+      </View>
+
+      <View style={styles.card} testID="mobile-web-interview-red-flags">
+        <Text style={styles.cardTitle}>Red flags</Text>
+        {question.evaluation.redFlags.map((item) => (
+          <View key={item.title} style={styles.subPanel}><Text style={styles.cardTitle}>{item.title}</Text><Text style={styles.mutedText}>{item.explanation}</Text></View>
+        ))}
+      </View>
+
+      <HorizontalOptions
+        label="Approach"
+        options={question.solutionTracks.map((track) => ({ value: track.id, label: track.title }))}
+        value={selectedTrack.id}
+        onChange={selectTrack}
+      />
+      <View style={styles.card} testID="mobile-web-solution">
+        <Text style={styles.cardTitle}>{selectedTrack.title}</Text>
+        <Text style={styles.mutedText}>{selectedTrack.summary}</Text>
+        {selectedTrack.steps.map((step) => <View key={step.title} style={styles.subPanel}><Text style={styles.cardTitle}>{step.title}</Text><Text style={styles.mutedText}>{step.explanation}</Text></View>)}
+        <Text style={styles.bodyText}>{selectedTrack.explanation}</Text>
+        <Text style={styles.cardTitle}>Why it would be accepted</Text>
+        <Text style={styles.mutedText}>{selectedTrack.acceptanceRationale}</Text>
+        {selectedTrack.tradeoffs.map((tradeoff) => <Text key={tradeoff} style={styles.mutedText}>• {tradeoff}</Text>)}
+      </View>
+      <HorizontalOptions
+        label="Source file"
+        options={selectedTrack.project.visibleFiles.map((path) => ({ value: path, label: path.replace(/^\//, "") }))}
+        value={activeFile}
+        onChange={setSelectedFile}
+      />
+      <CodeBlock code={selectedTrack.project.files[activeFile].code} language={activeFile.split(".").pop()} />
+      <View style={styles.feedback} testID="mobile-web-playground-note">
+        <Text style={styles.feedbackTitle}>Interactive runner available on web</Text>
+        <Text style={styles.mutedText}>Native keeps every explanation and source file offline; editing and execution use the web playground.</Text>
+      </View>
+      {question.sourceNote ? <Text style={styles.mutedText}>{question.sourceNote}</Text> : null}
+    </AppScreen>
   );
 }
 
