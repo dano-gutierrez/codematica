@@ -17,7 +17,7 @@ This file carries durable repo context across Codex threads.
 
 ## Current Product Shape
 
-Codematica V1 is a mobile-first learning app with a Next.js web app and an Expo Router Android/iOS app. The home route is a path map built from local learning-path JSON with a Keep reading section. It renders plain Markdown articles, renders embedded and external Mermaid diagrams, supports flashcard, cloze, questionnaire, writing, passive flashcard, guided interview coding practice, and Japanese language lookup/practice, and preserves the content library at `/browse` from a generated local content index.
+Codematica V1 is a mobile-first learning app with a Next.js web app and an Expo Router Android/iOS app. The home route is a path map built from local learning-path JSON with a Keep reading section. It renders plain Markdown articles, embedded and external Mermaid diagrams, flashcard, cloze, questionnaire, writing, passive flashcard, guided interview coding practice, anonymous real-world web interviews, and Japanese language lookup/practice. React/TypeScript web exercises run through Sandpack on web and remain read-only on native.
 
 Supabase is used optionally for Auth and saved progress when public runtime env vars are configured. The app still browses and renders local content without Supabase credentials; signed-out progress is buffered locally.
 
@@ -31,7 +31,8 @@ The first hosted web target is Vercel Hobby on the Vercel-provided URL. Vercel r
 - `apps/web/src/app/paths/[slug]/flashcards/page.tsx`: web passive flashcard feed route
 - `apps/web/src/app/practice/[...slug]/page.tsx`: web flashcard, cloze, and questionnaire practice route
 - `apps/web/src/app/languages/japanese/**`: web Japanese language hub and detail routes
-- `apps/web/src/app/interviews/**/page.tsx`: web interview catalog, company, and question routes
+- `apps/web/src/app/interviews/**/page.tsx`: web interview collection and question routes
+- `apps/web/src/components/WebPlayground.tsx`: reusable isolated React/TS, vanilla TS, and static project editor/preview
 - `apps/web/src/app/docs/[...slug]/page.tsx`: web Markdown article route
 - `apps/web/src/app/diagrams/[...slug]/page.tsx`: web external Mermaid route
 - `apps/web/src/app/login/page.tsx`: web Supabase Auth login route
@@ -62,7 +63,7 @@ The first hosted web target is Vercel Hobby on the Vercel-provided URL. Vercel r
 - Preserve Markdown as the authoring source of truth.
 - Preserve learning path and exercise JSON as the local source of truth for study structure.
 - Preserve passive flashcard feed JSON as the local source of truth for scroll-only review.
-- Preserve interview catalog JSON as the local source of truth for reported/public coding prompt packs.
+- Preserve interview catalog JSON as the local source of truth for company preparation and anonymous real-world prompts, rubrics, and runnable project files.
 - Preserve language catalog JSON as the local source of truth for human-language character and vocabulary data.
 - Keep questionnaire answers transient; progress may store only current question index and completion.
 - Keep writing strokes transient; progress may store only coarse practice state such as mode, character slug, and completion.
@@ -84,7 +85,8 @@ The first hosted web target is Vercel Hobby on the Vercel-provided URL. Vercel r
 - `docs/features/llm-application-engineering.md`: Langfuse and LangChain AI engineering path, including LLM app architecture, tracing, evals, RAG, agents, risk governance, and non-executable coding challenge sections.
 - `docs/features/database-indexes-learning-path.md`: database indexes and PostgreSQL search path, including index fundamentals, full text search, trigram fuzzy matching, hybrid SQL search, quizzes, passive flashcards, and SQL editor roadmap boundaries.
 - `docs/features/advanced-nextjs-16-learning-path.md`: hard Front-End Development skill path for Next.js 16 rendering, caching, `force-dynamic`, invalidation, production pain points, performance, migration, quizzes, and one-minute brief cards.
-- `docs/features/interview-coding-catalog.md`: reported-public company coding catalog and guided multi-language solution walkthroughs.
+- `docs/features/interview-coding-catalog.md`: company and anonymous real-world interview collections, guided algorithm walkthroughs, and frontend solution sessions.
+- `docs/features/react-typescript-playground.md`: reusable WebExerciseProject schema, Sandpack isolation, editing behavior, and native fallback.
 - `docs/features/auth-and-progress.md`: Supabase Auth, minimal profiles, saved progress, local progress buffering, and Keep reading UI.
 - `docs/features/subscriptions-and-content-gating.md`: proposed RevenueCat/Stripe/Apple/Google subscription model, strict paid content gating, entitlement cache, and paywall implementation plan.
 - `docs/features/future-roadmap.md`: planned AI, flashcard, blueprint, code challenge, deeper gamification, and native app directions.

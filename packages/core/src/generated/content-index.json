@@ -1,5 +1,5 @@
 {
-  "schemaVersion": 5,
+  "schemaVersion": 6,
   "documents": [
     {
       "title": "LangChain Agents LangGraph And Operations",
@@ -16405,14 +16405,10 @@
       "contentHash": "bd6fea7e4efa2da09a97dd87c5cbc6c49f2130534493fea75972116062d7c6c4"
     }
   ],
-  "interviewCompanies": [
+  "interviewCollections": [
     {
       "slug": "airbnb",
       "name": "Airbnb",
-      "logo": {
-        "src": "/company-logos/airbnb.svg",
-        "alt": "Airbnb logo"
-      },
       "summary": "Practice string, file-system, and graph-ordering problems often seen in Airbnb-style interview prep.",
       "status": "published",
       "questions": [
@@ -16445,6 +16441,7 @@
             "Pairs are ordered and indexes must be distinct."
           ],
           "diagrams": [],
+          "kind": "algorithm",
           "solutionTracks": [
             {
               "id": "hash-split-check",
@@ -16525,8 +16522,9 @@
           ],
           "id": "2cc6a3184d23",
           "route": "/interviews/airbnb/palindrome-pairs",
-          "companySlug": "airbnb",
-          "companyName": "Airbnb"
+          "collectionSlug": "airbnb",
+          "collectionName": "Airbnb",
+          "collectionKind": "company"
         },
         {
           "slug": "in-memory-file-system",
@@ -16561,6 +16559,7 @@
               "mermaid": "flowchart TD\n  R[/] --> A[a]\n  A --> B[b]\n  B --> C[c file]"
             }
           ],
+          "kind": "algorithm",
           "solutionTracks": [
             {
               "id": "path-trie",
@@ -16641,8 +16640,9 @@
           ],
           "id": "d1e8058c6053",
           "route": "/interviews/airbnb/in-memory-file-system",
-          "companySlug": "airbnb",
-          "companyName": "Airbnb"
+          "collectionSlug": "airbnb",
+          "collectionName": "Airbnb",
+          "collectionKind": "company"
         },
         {
           "slug": "alien-dictionary",
@@ -16672,6 +16672,7 @@
             "A longer word before its own prefix is invalid."
           ],
           "diagrams": [],
+          "kind": "algorithm",
           "solutionTracks": [
             {
               "id": "topological-sort",
@@ -16752,22 +16753,24 @@
           ],
           "id": "d0c6780d5016",
           "route": "/interviews/airbnb/alien-dictionary",
-          "companySlug": "airbnb",
-          "companyName": "Airbnb"
+          "collectionSlug": "airbnb",
+          "collectionName": "Airbnb",
+          "collectionKind": "company"
         }
       ],
+      "kind": "company",
+      "logo": {
+        "src": "/company-logos/airbnb.svg",
+        "alt": "Airbnb logo"
+      },
       "id": "ab7d0a36ecbe",
       "route": "/interviews/airbnb",
       "sourcePath": "content/interviews/airbnb.json",
-      "contentHash": "8254c7de18d32ef3db0b7361b106309a6b67dda4a99709a01269a2d7490d3bfa"
+      "contentHash": "ace553a6b0b85ce200809b5707b00692a7bb2ad5f9b73a66fbee886474443369"
     },
     {
       "slug": "amazon",
       "name": "Amazon",
-      "logo": {
-        "src": "/company-logos/amazon.svg",
-        "alt": "Amazon logo"
-      },
       "summary": "Practice array, cache, and frequency-ranking problems common in Amazon-style interview prep.",
       "status": "published",
       "questions": [
@@ -16805,6 +16808,7 @@
               "mermaid": "flowchart LR\n  A[Read value] --> B[Need target - value]\n  B --> C{Seen?}\n  C -->|yes| D[Return pair]\n  C -->|no| E[Store index]"
             }
           ],
+          "kind": "algorithm",
           "solutionTracks": [
             {
               "id": "one-pass-map",
@@ -16885,8 +16889,9 @@
           ],
           "id": "72c8302fc5b7",
           "route": "/interviews/amazon/two-sum-product-pair",
-          "companySlug": "amazon",
-          "companyName": "Amazon"
+          "collectionSlug": "amazon",
+          "collectionName": "Amazon",
+          "collectionKind": "company"
         },
         {
           "slug": "lru-cache",
@@ -16922,6 +16927,7 @@
               "mermaid": "flowchart LR\n  M[Hash map key to node] --> N[Doubly linked list]\n  O[Oldest] --> A[Node]\n  A --> B[Newest]"
             }
           ],
+          "kind": "algorithm",
           "solutionTracks": [
             {
               "id": "hash-map-linked-list",
@@ -17002,8 +17008,9 @@
           ],
           "id": "e980737fe89f",
           "route": "/interviews/amazon/lru-cache",
-          "companySlug": "amazon",
-          "companyName": "Amazon"
+          "collectionSlug": "amazon",
+          "collectionName": "Amazon",
+          "collectionKind": "company"
         },
         {
           "slug": "top-k-frequent-items",
@@ -17034,6 +17041,7 @@
             "Any order is acceptable unless the prompt adds a tie-breaker."
           ],
           "diagrams": [],
+          "kind": "algorithm",
           "solutionTracks": [
             {
               "id": "frequency-min-heap",
@@ -17114,22 +17122,24 @@
           ],
           "id": "ccf5f436276f",
           "route": "/interviews/amazon/top-k-frequent-items",
-          "companySlug": "amazon",
-          "companyName": "Amazon"
+          "collectionSlug": "amazon",
+          "collectionName": "Amazon",
+          "collectionKind": "company"
         }
       ],
+      "kind": "company",
+      "logo": {
+        "src": "/company-logos/amazon.svg",
+        "alt": "Amazon logo"
+      },
       "id": "cbc62794911f",
       "route": "/interviews/amazon",
       "sourcePath": "content/interviews/amazon.json",
-      "contentHash": "4d89a0ac1b3a5fa26f059efae0f0ebcd62693f493eeec54b17f45706595730ac"
+      "contentHash": "9ffda29a6ccf0070cbc65840367e2f1bb39b791f7a993d2693c9000ee429f6c6"
     },
     {
       "slug": "apple",
       "name": "Apple",
-      "logo": {
-        "src": "/company-logos/apple.svg",
-        "alt": "Apple logo"
-      },
       "summary": "Practice clean data-structure fundamentals and edge-case-heavy prompts aligned with Apple-style interviews.",
       "status": "published",
       "questions": [
@@ -17161,6 +17171,7 @@
             "Do not allocate a second list in the iterative solution."
           ],
           "diagrams": [],
+          "kind": "algorithm",
           "solutionTracks": [
             {
               "id": "iterative-pointers",
@@ -17241,8 +17252,9 @@
           ],
           "id": "7b5dc8bcaf40",
           "route": "/interviews/apple/reverse-linked-list",
-          "companySlug": "apple",
-          "companyName": "Apple"
+          "collectionSlug": "apple",
+          "collectionName": "Apple",
+          "collectionKind": "company"
         },
         {
           "slug": "merge-intervals",
@@ -17272,6 +17284,7 @@
             "Intervals may arrive unsorted."
           ],
           "diagrams": [],
+          "kind": "algorithm",
           "solutionTracks": [
             {
               "id": "sort-and-merge",
@@ -17352,8 +17365,9 @@
           ],
           "id": "56c136c07f4b",
           "route": "/interviews/apple/merge-intervals",
-          "companySlug": "apple",
-          "companyName": "Apple"
+          "collectionSlug": "apple",
+          "collectionName": "Apple",
+          "collectionKind": "company"
         },
         {
           "slug": "validate-parentheses-stream",
@@ -17383,6 +17397,7 @@
             "Support parentheses, brackets, and braces in the stack solution."
           ],
           "diagrams": [],
+          "kind": "algorithm",
           "solutionTracks": [
             {
               "id": "stack-validation",
@@ -17463,22 +17478,24 @@
           ],
           "id": "82cc87b815c8",
           "route": "/interviews/apple/validate-parentheses-stream",
-          "companySlug": "apple",
-          "companyName": "Apple"
+          "collectionSlug": "apple",
+          "collectionName": "Apple",
+          "collectionKind": "company"
         }
       ],
+      "kind": "company",
+      "logo": {
+        "src": "/company-logos/apple.svg",
+        "alt": "Apple logo"
+      },
       "id": "3a7bd3e2360a",
       "route": "/interviews/apple",
       "sourcePath": "content/interviews/apple.json",
-      "contentHash": "069da9a429c42f87776d1aebb9406dde56a6020058ded88b35348dcc9fa1a307"
+      "contentHash": "be109c66052f87cec45eb0bdcd51c9dca5bcb67a89962162efdc683014f01aa6"
     },
     {
       "slug": "google",
       "name": "Google",
-      "logo": {
-        "src": "/company-logos/google.svg",
-        "alt": "Google logo"
-      },
       "summary": "Practice invariant-driven arrays, graph search, and binary-search prompts aligned with Google-style interviews.",
       "status": "published",
       "questions": [
@@ -17510,6 +17527,7 @@
             "Values may be negative, so sliding window is not sufficient."
           ],
           "diagrams": [],
+          "kind": "algorithm",
           "solutionTracks": [
             {
               "id": "prefix-sum-counts",
@@ -17590,8 +17608,9 @@
           ],
           "id": "86923023157a",
           "route": "/interviews/google/subarray-sum-equals-k",
-          "companySlug": "google",
-          "companyName": "Google"
+          "collectionSlug": "google",
+          "collectionName": "Google",
+          "collectionKind": "company"
         },
         {
           "slug": "word-ladder",
@@ -17621,6 +17640,7 @@
             "Every transformation has equal cost."
           ],
           "diagrams": [],
+          "kind": "algorithm",
           "solutionTracks": [
             {
               "id": "plain-bfs",
@@ -17701,8 +17721,9 @@
           ],
           "id": "a19caa61eac4",
           "route": "/interviews/google/word-ladder",
-          "companySlug": "google",
-          "companyName": "Google"
+          "collectionSlug": "google",
+          "collectionName": "Google",
+          "collectionKind": "company"
         },
         {
           "slug": "median-two-sorted-arrays",
@@ -17732,6 +17753,7 @@
             "The optimized solution should run in logarithmic time in the shorter array."
           ],
           "diagrams": [],
+          "kind": "algorithm",
           "solutionTracks": [
             {
               "id": "binary-partition",
@@ -17812,22 +17834,24 @@
           ],
           "id": "535718ba3820",
           "route": "/interviews/google/median-two-sorted-arrays",
-          "companySlug": "google",
-          "companyName": "Google"
+          "collectionSlug": "google",
+          "collectionName": "Google",
+          "collectionKind": "company"
         }
       ],
+      "kind": "company",
+      "logo": {
+        "src": "/company-logos/google.svg",
+        "alt": "Google logo"
+      },
       "id": "bbdefa2950f4",
       "route": "/interviews/google",
       "sourcePath": "content/interviews/google.json",
-      "contentHash": "c9ae246caa4be2cdc9727bf7e47e66b551f9749648fd823976cd83de984b8e00"
+      "contentHash": "f8b274b0acc5a55ecfbd8733de7179a6e7971ceaa29603af5a09d7ba216771e5"
     },
     {
       "slug": "meta",
       "name": "Meta",
-      "logo": {
-        "src": "/company-logos/meta.svg",
-        "alt": "Meta logo"
-      },
       "summary": "Practice string, tree, and traversal prompts aligned with Meta-style interview loops.",
       "status": "published",
       "questions": [
@@ -17860,6 +17884,7 @@
             "Treat the input as case-sensitive plain characters."
           ],
           "diagrams": [],
+          "kind": "algorithm",
           "solutionTracks": [
             {
               "id": "skip-left-or-right",
@@ -17940,8 +17965,9 @@
           ],
           "id": "e325f2fe0f72",
           "route": "/interviews/meta/valid-palindrome-with-one-deletion",
-          "companySlug": "meta",
-          "companyName": "Meta"
+          "collectionSlug": "meta",
+          "collectionName": "Meta",
+          "collectionKind": "company"
         },
         {
           "slug": "binary-tree-vertical-columns",
@@ -17977,6 +18003,7 @@
               "mermaid": "flowchart TD\n  A[Root col 0] --> B[Left col -1]\n  A --> C[Right col +1]\n  C --> D[Left child col 0]"
             }
           ],
+          "kind": "algorithm",
           "solutionTracks": [
             {
               "id": "bfs-column-order",
@@ -18057,8 +18084,9 @@
           ],
           "id": "d2f86254f034",
           "route": "/interviews/meta/binary-tree-vertical-columns",
-          "companySlug": "meta",
-          "companyName": "Meta"
+          "collectionSlug": "meta",
+          "collectionName": "Meta",
+          "collectionKind": "company"
         },
         {
           "slug": "minimum-remove-balanced-parentheses",
@@ -18088,6 +18116,7 @@
             "Keep all non-parenthesis characters in their original order."
           ],
           "diagrams": [],
+          "kind": "algorithm",
           "solutionTracks": [
             {
               "id": "stack-indexes",
@@ -18168,22 +18197,24 @@
           ],
           "id": "db34b6d083f2",
           "route": "/interviews/meta/minimum-remove-balanced-parentheses",
-          "companySlug": "meta",
-          "companyName": "Meta"
+          "collectionSlug": "meta",
+          "collectionName": "Meta",
+          "collectionKind": "company"
         }
       ],
+      "kind": "company",
+      "logo": {
+        "src": "/company-logos/meta.svg",
+        "alt": "Meta logo"
+      },
       "id": "ea3bd73e2b50",
       "route": "/interviews/meta",
       "sourcePath": "content/interviews/meta.json",
-      "contentHash": "138d6defb4b28c6057b84ae50fdde92a7c5b47a6181d437c9ee1148b98ebc089"
+      "contentHash": "06fc6b2f1206679798fc6b17700636a93e6770c9de69aa80abb84354698f51cc"
     },
     {
       "slug": "microsoft",
       "name": "Microsoft",
-      "logo": {
-        "src": "/company-logos/microsoft.svg",
-        "alt": "Microsoft logo"
-      },
       "summary": "Practice stack, tree-encoding, and dynamic-programming prompts aligned with Microsoft-style interviews.",
       "status": "published",
       "questions": [
@@ -18215,6 +18246,7 @@
             "All primary operations should be constant time."
           ],
           "diagrams": [],
+          "kind": "algorithm",
           "solutionTracks": [
             {
               "id": "value-and-min-stacks",
@@ -18295,8 +18327,9 @@
           ],
           "id": "63c6fbf8fb94",
           "route": "/interviews/microsoft/min-stack",
-          "companySlug": "microsoft",
-          "companyName": "Microsoft"
+          "collectionSlug": "microsoft",
+          "collectionName": "Microsoft",
+          "collectionKind": "company"
         },
         {
           "slug": "serialize-deserialize-binary-tree",
@@ -18326,6 +18359,7 @@
             "The serialized format only needs to be understood by your own deserializer."
           ],
           "diagrams": [],
+          "kind": "algorithm",
           "solutionTracks": [
             {
               "id": "preorder-null-markers",
@@ -18406,8 +18440,9 @@
           ],
           "id": "a05ef8a25e5e",
           "route": "/interviews/microsoft/serialize-deserialize-binary-tree",
-          "companySlug": "microsoft",
-          "companyName": "Microsoft"
+          "collectionSlug": "microsoft",
+          "collectionName": "Microsoft",
+          "collectionKind": "company"
         },
         {
           "slug": "longest-valid-parentheses",
@@ -18437,6 +18472,7 @@
             "The substring must be contiguous."
           ],
           "diagrams": [],
+          "kind": "algorithm",
           "solutionTracks": [
             {
               "id": "index-stack",
@@ -18517,22 +18553,24 @@
           ],
           "id": "9103055aba13",
           "route": "/interviews/microsoft/longest-valid-parentheses",
-          "companySlug": "microsoft",
-          "companyName": "Microsoft"
+          "collectionSlug": "microsoft",
+          "collectionName": "Microsoft",
+          "collectionKind": "company"
         }
       ],
+      "kind": "company",
+      "logo": {
+        "src": "/company-logos/microsoft.svg",
+        "alt": "Microsoft logo"
+      },
       "id": "9fbf261b62c1",
       "route": "/interviews/microsoft",
       "sourcePath": "content/interviews/microsoft.json",
-      "contentHash": "a5c0b6f632a0da576a2bf0383994f07985b91d5501c3352638c191162508e4e0"
+      "contentHash": "282f4adb59d269764ca7943a8d62043905de6571803a6bc504c3a4d8bd4858de"
     },
     {
       "slug": "netflix",
       "name": "Netflix",
-      "logo": {
-        "src": "/company-logos/netflix.svg",
-        "alt": "Netflix logo"
-      },
       "summary": "Practice cache-expiry, dependency-safety, and streaming-window prompts aligned with Netflix-style interviews.",
       "status": "published",
       "questions": [
@@ -18570,6 +18608,7 @@
               "mermaid": "stateDiagram-v2\n  [*] --> Fresh\n  Fresh --> Expired: now >= expiresAt\n  Expired --> Removed: cleanup or read"
             }
           ],
+          "kind": "algorithm",
           "solutionTracks": [
             {
               "id": "lazy-expiration",
@@ -18650,8 +18689,9 @@
           ],
           "id": "989d295cf7a3",
           "route": "/interviews/netflix/auto-expire-cache",
-          "companySlug": "netflix",
-          "companyName": "Netflix"
+          "collectionSlug": "netflix",
+          "collectionName": "Netflix",
+          "collectionKind": "company"
         },
         {
           "slug": "detect-cycle-dependency-graph",
@@ -18687,6 +18727,7 @@
               "mermaid": "flowchart LR\n  A --> B\n  B --> C\n  C --> A"
             }
           ],
+          "kind": "algorithm",
           "solutionTracks": [
             {
               "id": "dfs-coloring",
@@ -18767,8 +18808,9 @@
           ],
           "id": "8fbf545276fe",
           "route": "/interviews/netflix/detect-cycle-dependency-graph",
-          "companySlug": "netflix",
-          "companyName": "Netflix"
+          "collectionSlug": "netflix",
+          "collectionName": "Netflix",
+          "collectionKind": "company"
         },
         {
           "slug": "longest-distinct-viewing-window",
@@ -18798,6 +18840,7 @@
             "The window must be contiguous."
           ],
           "diagrams": [],
+          "kind": "algorithm",
           "solutionTracks": [
             {
               "id": "sliding-window-set",
@@ -18878,22 +18921,358 @@
           ],
           "id": "3f8a23c60ea8",
           "route": "/interviews/netflix/longest-distinct-viewing-window",
-          "companySlug": "netflix",
-          "companyName": "Netflix"
+          "collectionSlug": "netflix",
+          "collectionName": "Netflix",
+          "collectionKind": "company"
         }
       ],
+      "kind": "company",
+      "logo": {
+        "src": "/company-logos/netflix.svg",
+        "alt": "Netflix logo"
+      },
       "id": "13ed070478ef",
       "route": "/interviews/netflix",
       "sourcePath": "content/interviews/netflix.json",
-      "contentHash": "68f2acf3a7996fdb8c1a363a81e3385d902501f2e133e65e7ac7f2637b284673"
+      "contentHash": "9cb1b3e6ac67e939fa1199cdfaebec8696b65a08187b49c486d940b1d76e5a69"
+    },
+    {
+      "slug": "real-world",
+      "name": "Real-world interviews",
+      "summary": "Anonymous exercises adapted from real interview sessions, focused on product judgment, communication, and working frontend code.",
+      "status": "published",
+      "questions": [
+        {
+          "slug": "mondrian-composition-generator",
+          "title": "Generate a Mondrian-style Composition",
+          "summary": "Scope and build a browser-only React application that creates a fresh, bounded composition from constrained randomness.",
+          "prompt": "Build a browser-only application that generates a new composition on initial page load in the visual language associated with Piet Mondrian. Begin by collaborating on the characteristics worth imitating, choose an MVP that can be completed during the interview, and preserve clear extension seams for rules you defer. The result should be a static frontend application—no backend or saved data—but the generated composition itself must vary between page loads.",
+          "difficulty": "senior",
+          "tags": [
+            "react",
+            "typescript",
+            "generative-art",
+            "css",
+            "svg",
+            "frontend-design"
+          ],
+          "sourceLinks": [],
+          "sourceNote": "Adapted from a privately supplied real interview brief. The originating company and revealing source URL are intentionally withheld.",
+          "resources": [],
+          "examples": [],
+          "constraints": [
+            "Deliver a working browser-only MVP during a normal interview session.",
+            "Generate the composition once on initial load; React rerenders must not silently replace it.",
+            "Use only orthogonal divisions, bounded rectangles, consistent dark lines, and a restrained off-white, red, yellow, and blue palette.",
+            "Keep every generated region inside the composition and prevent unusably small regions.",
+            "Make the composition responsive and keep the generator separate from the renderer.",
+            "Explain which characteristics were deliberately deferred and how the design could add them later."
+          ],
+          "diagrams": [],
+          "kind": "web",
+          "evaluation": {
+            "intent": "The central challenge is not perfect art reproduction. It is turning an ambiguous visual request into a small deliverable contract, collaborating visibly on priorities, implementing stable geometry, and leaving a credible route toward more sophisticated composition rules without overbuilding the interview MVP.",
+            "expectedSignals": [
+              "Names the visual grammar before coding: orthogonal black lines, unequal rectangles, asymmetric balance, a warm light ground, and sparse primary-color accents.",
+              "Negotiates a concrete MVP and explicitly defers secondary traits such as merged regions, line hierarchy, texture, historical-period fidelity, and export.",
+              "Models generation as a pure or seed-driven transform so geometry can be inspected and tested independently from React rendering.",
+              "Constrains random choices with minimum sizes, weighted colors, bounded coordinates, and a fixed amount of work instead of trusting arbitrary Math.random calls.",
+              "Generates once per seed and changes the seed only for initial load or an explicit regenerate action, avoiding render-time instability.",
+              "Uses semantic controls, a useful accessible label for the visual output, stable keys, and a responsive composition surface.",
+              "Discusses how the selected renderer affects precision, readability, testing, export, and future visual rules.",
+              "Communicates tradeoffs while implementing and can identify the next highest-value refinement after the MVP works."
+            ],
+            "acceptanceCriteria": [
+              {
+                "title": "Orthogonal visual grammar",
+                "explanation": "The composition is made from horizontal and vertical divisions only; diagonals, circles, arbitrary polygons, and decorative gradients would change the requested visual language."
+              },
+              {
+                "title": "Consistent dark structure",
+                "explanation": "Black or near-black lines visibly organize the composition, render above fills where appropriate, and remain consistent enough to read as one system."
+              },
+              {
+                "title": "Asymmetric rectangles",
+                "explanation": "Rows, columns, or subdivisions have meaningfully unequal proportions, producing deliberate imbalance rather than a uniform checkerboard."
+              },
+              {
+                "title": "Restrained weighted palette",
+                "explanation": "Most area remains warm white or neutral while red, yellow, and blue appear as sparse accents; choosing every color uniformly produces visual noise."
+              },
+              {
+                "title": "Valid bounded geometry",
+                "explanation": "Coordinates and dimensions stay inside the canvas, have positive area, respect a practical minimum size, and never overlap unexpectedly."
+              },
+              {
+                "title": "Stable randomness",
+                "explanation": "A composition is created once for a seed and remains stable through unrelated React rerenders; reload or the explicit regenerate control creates the next result."
+              },
+              {
+                "title": "Responsive and accessible output",
+                "explanation": "The artwork scales to mobile and desktop without overflow, the regenerate control is keyboard accessible, and the otherwise abstract visual has an informative accessible name."
+              },
+              {
+                "title": "Extension seams",
+                "explanation": "Palette policy, geometry generation, seeded randomness, and rendering are separated well enough to add merged cells, stronger composition heuristics, export, or repeatable seeds later."
+              }
+            ],
+            "redFlags": [
+              {
+                "title": "Hardcodes one painting",
+                "explanation": "A fixed arrangement may look convincing but misses the required refresh-time generation and avoids the core modeling problem."
+              },
+              {
+                "title": "Randomizes during render",
+                "explanation": "Calling random generation directly in component rendering causes flicker, changes output after unrelated state updates, and behaves especially poorly under React Strict Mode."
+              },
+              {
+                "title": "Uses unconstrained geometry",
+                "explanation": "Independent random widths and positions commonly create overlaps, gaps, negative dimensions, or slivers too small to read, showing that invariants were never defined."
+              },
+              {
+                "title": "Mutates the DOM directly",
+                "explanation": "Imperative document queries and element mutation fight React ownership, complicate cleanup, and make the generator difficult to test or reuse."
+              },
+              {
+                "title": "Overbuilds before an MVP",
+                "explanation": "Starting with a custom canvas engine, physics, image analysis, or a large dependency stack risks finishing nothing and contradicts the explicit scoping portion of the interview."
+              },
+              {
+                "title": "Never states a scope",
+                "explanation": "Silently choosing characteristics prevents interviewer collaboration and makes it impossible to judge whether omissions were intentional or accidental."
+              },
+              {
+                "title": "Colors every cell uniformly",
+                "explanation": "Equal-probability primary colors create a noisy mosaic instead of the restrained negative space and sparse accents that define the target grammar."
+              },
+              {
+                "title": "Assumes one desktop size",
+                "explanation": "Fixed pixel coordinates without a scaling strategy make the deliverable unusable on the mobile-first product and reveal missing layout thinking."
+              },
+              {
+                "title": "Omits accessibility",
+                "explanation": "An unlabeled visual and icon-only regeneration control make the experience opaque to assistive technology even though the required semantics are inexpensive."
+              },
+              {
+                "title": "Entangles model and renderer",
+                "explanation": "Geometry hidden inside JSX or CSS string concatenation cannot be validated independently and makes future renderers or composition rules costly."
+              },
+              {
+                "title": "Cannot explain tradeoffs",
+                "explanation": "A polished artifact without discussion of renderer choice, deferred rules, or failure modes misses the communication and design dimensions of the rubric."
+              }
+            ]
+          },
+          "solutionTracks": [
+            {
+              "id": "weighted-css-grid",
+              "title": "Weighted CSS Grid",
+              "summary": "Generate unequal fractional tracks and a sparse weighted palette, then let CSS Grid own all layout and line spacing.",
+              "steps": [
+                {
+                  "title": "Lock the MVP grammar",
+                  "explanation": "Choose unequal rows and columns, one consistent black gap, a warm neutral ground, and exactly three primary-color accents as the deliverable subset."
+                },
+                {
+                  "title": "Make randomness repeatable",
+                  "explanation": "Create a small seeded random function so one seed always yields the same track weights, accent positions, and test result."
+                },
+                {
+                  "title": "Generate constrained tracks",
+                  "explanation": "Use bounded positive fractional weights rather than independent pixel positions; CSS Grid then guarantees full coverage without overlap."
+                },
+                {
+                  "title": "Bias the palette",
+                  "explanation": "Start every cell as warm white, shuffle valid cell indexes, and place one red, one blue, and one yellow accent to guarantee restraint and variety."
+                },
+                {
+                  "title": "Render declaratively",
+                  "explanation": "Map the generated cells to stable grid children and change the seed only on initial load or when the labeled regenerate button is pressed."
+                }
+              ],
+              "explanation": "CSS Grid is a strong interview MVP because its constraints solve the hardest geometry risks automatically: positive tracks cover the available surface, grid gaps become consistent lines, and cells cannot overlap. The TypeScript generator produces only track weights and color assignments, so visual policy stays testable and the React component remains a small projection of that model. A future pass can extend the model with row or column spans, palette periods, line weights, or composition scoring without replacing the basic boundary between generation and rendering.",
+              "acceptanceRationale": "This would be accepted because it delivers a recognizable, randomized, responsive result quickly; it demonstrates explicit visual scoping; and it uses browser-native layout constraints to prevent invalid geometry. The code is readable under interview pressure, randomness is stable, the palette is intentionally sparse, and the generator can evolve without direct DOM manipulation.",
+              "tradeoffs": [
+                "Independent grid cells make the first version read more like a structured mosaic than paintings with selectively merged regions.",
+                "One grid-wide gap produces a single line weight; historically inspired variation would require extra metadata or layered lines.",
+                "Fractional tracks are excellent for responsiveness but less convenient than SVG coordinates for exact export or geometry inspection.",
+                "Guaranteeing one of each accent is visually reliable but less organic than a richer composition-scoring policy."
+              ],
+              "complexity": {
+                "time": "O(rows × columns)",
+                "space": "O(rows × columns)"
+              },
+              "project": {
+                "runtime": "react-ts",
+                "files": {
+                  "/App.tsx": {
+                    "code": "import { useMemo, useState } from 'react';\nimport { createGridComposition } from './generator';\nimport './styles.css';\n\nexport default function App() {\n  const [seed, setSeed] = useState(() => Date.now());\n  const composition = useMemo(() => createGridComposition(seed), [seed]);\n\n  return (\n    <main className=\"app-shell\">\n      <header>\n        <div>\n          <p className=\"eyebrow\">Weighted CSS Grid</p>\n          <h1>Constrained composition</h1>\n        </div>\n        <button type=\"button\" onClick={() => setSeed(Date.now())}>Regenerate</button>\n      </header>\n      <div\n        className=\"composition\"\n        role=\"img\"\n        aria-label=\"A generated composition of asymmetric rectangles separated by black lines\"\n        style={{\n          gridTemplateColumns: composition.columns.map((value) => `${value}fr`).join(' '),\n          gridTemplateRows: composition.rows.map((value) => `${value}fr`).join(' '),\n        }}\n      >\n        {composition.cells.map((cell) => (\n          <div key={cell.id} style={{ background: cell.color }} />\n        ))}\n      </div>\n      <p className=\"seed\">Seed {seed}</p>\n    </main>\n  );\n}\n"
+                  },
+                  "/generator.ts": {
+                    "code": "import { mulberry32, shuffled } from './rng';\n\nconst NEUTRAL = '#f4f0df';\nconst ACCENTS = ['#d7261e', '#1357a6', '#f3c623'] as const;\n\nexport type GridComposition = {\n  rows: number[];\n  columns: number[];\n  cells: Array<{ id: string; color: string }>;\n};\n\nfunction trackWeights(count: number, random: () => number): number[] {\n  return Array.from({ length: count }, () => Number((0.7 + random() * 1.8).toFixed(3)));\n}\n\nexport function createGridComposition(seed: number): GridComposition {\n  const random = mulberry32(seed);\n  const rows = trackWeights(4 + Math.floor(random() * 2), random);\n  const columns = trackWeights(5 + Math.floor(random() * 2), random);\n  const cells = Array.from({ length: rows.length * columns.length }, (_, index) => ({\n    id: `cell-${index}`,\n    color: NEUTRAL,\n  }));\n  const accentIndexes = shuffled(cells.map((_, index) => index), random).slice(0, ACCENTS.length);\n  accentIndexes.forEach((cellIndex, index) => {\n    cells[cellIndex].color = ACCENTS[index];\n  });\n  return { rows, columns, cells };\n}\n"
+                  },
+                  "/rng.ts": {
+                    "code": "export function mulberry32(seed: number): () => number {\n  let value = seed >>> 0;\n  return () => {\n    value += 0x6d2b79f5;\n    let next = value;\n    next = Math.imul(next ^ (next >>> 15), next | 1);\n    next ^= next + Math.imul(next ^ (next >>> 7), next | 61);\n    return ((next ^ (next >>> 14)) >>> 0) / 4294967296;\n  };\n}\n\nexport function shuffled<T>(values: T[], random: () => number): T[] {\n  const result = [...values];\n  for (let index = result.length - 1; index > 0; index -= 1) {\n    const swapIndex = Math.floor(random() * (index + 1));\n    [result[index], result[swapIndex]] = [result[swapIndex], result[index]];\n  }\n  return result;\n}\n"
+                  },
+                  "/styles.css": {
+                    "code": "* { box-sizing: border-box; }\nbody { margin: 0; background: #ebe6d8; color: #171717; font-family: Inter, ui-sans-serif, system-ui, sans-serif; }\nbutton { border: 3px solid #111; background: #f3c623; padding: .7rem 1rem; font: inherit; font-weight: 800; cursor: pointer; }\nbutton:focus-visible { outline: 4px solid #1357a6; outline-offset: 3px; }\n.app-shell { width: min(100% - 2rem, 920px); margin: 0 auto; padding: 1.25rem 0 2rem; }\nheader { display: flex; align-items: end; justify-content: space-between; gap: 1rem; margin-bottom: 1rem; }\nh1, p { margin: 0; }\nh1 { font-size: clamp(1.5rem, 5vw, 2.7rem); }\n.eyebrow { margin-bottom: .3rem; color: #444; font-size: .75rem; font-weight: 900; letter-spacing: .12em; text-transform: uppercase; }\n.composition { display: grid; width: 100%; aspect-ratio: 4 / 3; overflow: hidden; border: 10px solid #111; gap: 9px; background: #111; box-shadow: 0 12px 28px rgb(0 0 0 / .16); }\n.seed { margin-top: .75rem; color: #555; font: 600 .8rem ui-monospace, monospace; overflow-wrap: anywhere; }\n@media (max-width: 520px) { header { align-items: stretch; flex-direction: column; } button { width: 100%; } .composition { border-width: 7px; gap: 6px; } }\n"
+                  }
+                },
+                "activeFile": "/App.tsx",
+                "visibleFiles": [
+                  "/App.tsx",
+                  "/generator.ts",
+                  "/rng.ts",
+                  "/styles.css"
+                ],
+                "dependencies": {}
+              }
+            },
+            {
+              "id": "recursive-rectangular-subdivision",
+              "title": "Recursive Rectangular Subdivision",
+              "summary": "Recursively split a normalized rectangle, then render the resulting leaf regions as absolutely positioned React elements.",
+              "steps": [
+                {
+                  "title": "Define normalized geometry",
+                  "explanation": "Represent every region as x, y, width, and height percentages so the model is renderer-independent and automatically responsive."
+                },
+                {
+                  "title": "Choose bounded splits",
+                  "explanation": "Split between 34% and 66% of the parent and stop by depth, probability, or minimum projected size so no leaf becomes unusable."
+                },
+                {
+                  "title": "Bias the orientation",
+                  "explanation": "Prefer vertical splits for wide rectangles and horizontal splits for tall rectangles, using randomness mainly when the aspect ratio is ambiguous."
+                },
+                {
+                  "title": "Assign sparse accents",
+                  "explanation": "Generate neutral leaves first, shuffle sufficiently large leaves, and assign the three primary accents to avoid coloring tiny fragments."
+                },
+                {
+                  "title": "Project leaves into the DOM",
+                  "explanation": "Render leaf rectangles with percentage positioning and consistent outlines while keeping the recursive algorithm entirely outside JSX."
+                }
+              ],
+              "explanation": "Binary space partitioning expresses the composition as a tree of intentional decisions instead of a flat uniform grid. Every split preserves the parent boundary, so the generated leaves cover the original rectangle without gaps or overlap. Aspect-ratio-aware orientation and bounded cut positions prevent most awkward slivers, while a depth and probability budget guarantees finite work. This design is especially extensible: internal nodes can later carry line weights, locked axes, merge decisions, or composition scores without changing the React renderer.",
+              "acceptanceRationale": "This would be accepted because it demonstrates stronger modeling while remaining interview-sized. The recursive invariant is easy to state—children exactly partition their parent—so correctness can be reasoned about locally. It yields more varied large and small regions than a uniform grid, keeps randomness constrained and repeatable, and makes deferred composition heuristics explicit rather than burying them in CSS.",
+              "tradeoffs": [
+                "Absolute-positioned leaves need careful outline treatment because adjacent borders can visually double or reveal subpixel seams.",
+                "A binary split tree cannot directly create every possible grid topology without later merging or cross-branch alignment rules.",
+                "Recursive code is conceptually richer than the CSS Grid MVP and may be harder to explain if interview time is very short.",
+                "Percentage rounding is responsive but can create tiny visual seams at some device pixel ratios."
+              ],
+              "complexity": {
+                "time": "O(number of leaf regions)",
+                "space": "O(number of leaf regions + recursion depth)"
+              },
+              "project": {
+                "runtime": "react-ts",
+                "files": {
+                  "/App.tsx": {
+                    "code": "import { useMemo, useState } from 'react';\nimport { createSubdivision } from './generator';\nimport './styles.css';\n\nexport default function App() {\n  const [seed, setSeed] = useState(() => Date.now());\n  const regions = useMemo(() => createSubdivision(seed), [seed]);\n  return (\n    <main className=\"app-shell\">\n      <header>\n        <div><p className=\"eyebrow\">Recursive subdivision</p><h1>Partitioned canvas</h1></div>\n        <button type=\"button\" onClick={() => setSeed(Date.now())}>Regenerate</button>\n      </header>\n      <div className=\"composition\" role=\"img\" aria-label=\"A generated tree of asymmetric rectangular regions\">\n        {regions.map((region) => (\n          <div\n            key={region.id}\n            className=\"region\"\n            style={{ left: `${region.x}%`, top: `${region.y}%`, width: `${region.width}%`, height: `${region.height}%`, background: region.color }}\n          />\n        ))}\n      </div>\n      <p className=\"seed\">{regions.length} leaves · seed {seed}</p>\n    </main>\n  );\n}\n"
+                  },
+                  "/generator.ts": {
+                    "code": "import { mulberry32, shuffled } from './rng';\n\nexport type Region = { id: string; x: number; y: number; width: number; height: number; color: string };\ntype Rect = Omit<Region, 'id' | 'color'>;\nconst NEUTRAL = '#f4f0df';\nconst ACCENTS = ['#d7261e', '#1357a6', '#f3c623'] as const;\n\nexport function createSubdivision(seed: number): Region[] {\n  const random = mulberry32(seed);\n  const leaves: Rect[] = [];\n  function split(rect: Rect, depth: number): void {\n    const shouldStop = depth >= 5 || (depth >= 2 && random() < 0.28) || Math.min(rect.width, rect.height) < 12;\n    if (shouldStop) { leaves.push(rect); return; }\n    const vertical = rect.width > rect.height * 1.18 ? true : rect.height > rect.width * 1.18 ? false : random() > 0.5;\n    const ratio = 0.34 + random() * 0.32;\n    if (vertical) {\n      const firstWidth = rect.width * ratio;\n      split({ ...rect, width: firstWidth }, depth + 1);\n      split({ x: rect.x + firstWidth, y: rect.y, width: rect.width - firstWidth, height: rect.height }, depth + 1);\n    } else {\n      const firstHeight = rect.height * ratio;\n      split({ ...rect, height: firstHeight }, depth + 1);\n      split({ x: rect.x, y: rect.y + firstHeight, width: rect.width, height: rect.height - firstHeight }, depth + 1);\n    }\n  }\n  split({ x: 0, y: 0, width: 100, height: 100 }, 0);\n  const regions: Region[] = leaves.map((rect, index) => ({ ...rect, id: `leaf-${index}`, color: NEUTRAL }));\n  const candidates = shuffled(regions.map((region, index) => ({ index, area: region.width * region.height })), random)\n    .filter(({ area }) => area > 250)\n    .slice(0, ACCENTS.length);\n  candidates.forEach(({ index }, accentIndex) => { regions[index].color = ACCENTS[accentIndex]; });\n  return regions;\n}\n"
+                  },
+                  "/rng.ts": {
+                    "code": "export function mulberry32(seed: number): () => number {\n  let value = seed >>> 0;\n  return () => {\n    value += 0x6d2b79f5;\n    let next = value;\n    next = Math.imul(next ^ (next >>> 15), next | 1);\n    next ^= next + Math.imul(next ^ (next >>> 7), next | 61);\n    return ((next ^ (next >>> 14)) >>> 0) / 4294967296;\n  };\n}\nexport function shuffled<T>(values: T[], random: () => number): T[] {\n  const result = [...values];\n  for (let index = result.length - 1; index > 0; index -= 1) {\n    const target = Math.floor(random() * (index + 1));\n    [result[index], result[target]] = [result[target], result[index]];\n  }\n  return result;\n}\n"
+                  },
+                  "/styles.css": {
+                    "code": "* { box-sizing: border-box; }\nbody { margin: 0; background: #e8e3d5; color: #171717; font-family: Inter, ui-sans-serif, system-ui, sans-serif; }\n.app-shell { width: min(100% - 2rem, 920px); margin: 0 auto; padding: 1.25rem 0 2rem; }\nheader { display: flex; align-items: end; justify-content: space-between; gap: 1rem; margin-bottom: 1rem; }\nh1, p { margin: 0; } h1 { font-size: clamp(1.5rem, 5vw, 2.7rem); }\n.eyebrow { margin-bottom: .3rem; color: #444; font-size: .75rem; font-weight: 900; letter-spacing: .12em; text-transform: uppercase; }\nbutton { border: 3px solid #111; background: #d7261e; color: white; padding: .7rem 1rem; font: inherit; font-weight: 800; cursor: pointer; }\nbutton:focus-visible { outline: 4px solid #1357a6; outline-offset: 3px; }\n.composition { position: relative; width: 100%; aspect-ratio: 4 / 3; overflow: hidden; border: 6px solid #111; background: #111; box-shadow: 0 12px 28px rgb(0 0 0 / .16); }\n.region { position: absolute; border: 5px solid #111; }\n.seed { margin-top: .75rem; color: #555; font: 600 .8rem ui-monospace, monospace; overflow-wrap: anywhere; }\n@media (max-width: 520px) { header { align-items: stretch; flex-direction: column; } button { width: 100%; } .region { border-width: 3px; } }\n"
+                  }
+                },
+                "activeFile": "/App.tsx",
+                "visibleFiles": [
+                  "/App.tsx",
+                  "/generator.ts",
+                  "/rng.ts",
+                  "/styles.css"
+                ],
+                "dependencies": {}
+              }
+            },
+            {
+              "id": "responsive-svg-geometry",
+              "title": "Responsive SVG Geometry",
+              "summary": "Generate normalized cut coordinates and render fills first, then crisp structural lines in a responsive SVG viewBox.",
+              "steps": [
+                {
+                  "title": "Choose a normalized coordinate system",
+                  "explanation": "Use a 100 by 75 viewBox so the generator works in stable units while the browser scales the final SVG responsively."
+                },
+                {
+                  "title": "Generate minimum-safe cuts",
+                  "explanation": "Produce positive weighted segments and normalize their cumulative positions, guaranteeing complete coverage and avoiding nearly coincident random coordinates."
+                },
+                {
+                  "title": "Build cells from adjacent cuts",
+                  "explanation": "Every neighboring x and y pair defines one valid non-overlapping rectangle whose width and height are positive by construction."
+                },
+                {
+                  "title": "Assign controlled color",
+                  "explanation": "Leave the field neutral and place exactly three shuffled accents, keeping color policy independent from coordinate generation."
+                },
+                {
+                  "title": "Draw structure last",
+                  "explanation": "Render colored rectangles before the horizontal and vertical line elements so joins remain crisp and line thickness stays visually consistent."
+                }
+              ],
+              "explanation": "SVG makes the model-to-pixels relationship explicit. Weighted segment normalization guarantees that cut coordinates are sorted, cover the viewBox, and produce valid rectangles. Rendering fills and structural lines as separate layers avoids doubled cell borders and makes line hierarchy easy to extend. The same geometry can be unit tested, serialized, downloaded, animated, or scored without consulting layout measurements, while the viewBox gives responsive scaling for free.",
+              "acceptanceRationale": "This would be accepted because it combines precise invariants with a concise browser-native renderer. It clearly separates geometry, palette, and drawing order; produces stable random output from a seed; scales cleanly across devices; and creates the most direct path to export or advanced line rules. The candidate can explain the additional SVG concepts without losing sight of the scoped MVP.",
+              "tradeoffs": [
+                "SVG introduces coordinate and drawing-order concepts that may be more machinery than a CSS-only MVP needs.",
+                "A full row-by-column cut model remains grid-like until later logic merges cells or terminates selected lines early.",
+                "Very thick responsive strokes may need vector-effect or breakpoint tuning if exact screen-space thickness matters.",
+                "Large compositions would create many SVG nodes, although the interview-sized region count is comfortably small."
+              ],
+              "complexity": {
+                "time": "O(rows × columns)",
+                "space": "O(rows × columns + rows + columns)"
+              },
+              "project": {
+                "runtime": "react-ts",
+                "files": {
+                  "/App.tsx": {
+                    "code": "import { useMemo, useState } from 'react';\nimport { createSvgComposition } from './generator';\nimport './styles.css';\n\nexport default function App() {\n  const [seed, setSeed] = useState(() => Date.now());\n  const composition = useMemo(() => createSvgComposition(seed), [seed]);\n  return (\n    <main className=\"app-shell\">\n      <header>\n        <div><p className=\"eyebrow\">Responsive SVG</p><h1>Geometry and lines</h1></div>\n        <button type=\"button\" onClick={() => setSeed(Date.now())}>Regenerate</button>\n      </header>\n      <svg className=\"composition\" viewBox=\"0 0 100 75\" role=\"img\" aria-label=\"A generated SVG composition of asymmetric colored rectangles\">\n        <rect width=\"100\" height=\"75\" fill=\"#f4f0df\" />\n        {composition.cells.map((cell) => <rect key={cell.id} x={cell.x} y={cell.y} width={cell.width} height={cell.height} fill={cell.color} />)}\n        <g stroke=\"#111\" strokeWidth=\"2.2\">\n          {composition.xCuts.slice(1, -1).map((x) => <line key={`x-${x}`} x1={x} x2={x} y1=\"0\" y2=\"75\" />)}\n          {composition.yCuts.slice(1, -1).map((y) => <line key={`y-${y}`} x1=\"0\" x2=\"100\" y1={y} y2={y} />)}\n        </g>\n        <rect x=\"1.1\" y=\"1.1\" width=\"97.8\" height=\"72.8\" fill=\"none\" stroke=\"#111\" strokeWidth=\"2.2\" />\n      </svg>\n      <p className=\"seed\">Seed {seed}</p>\n    </main>\n  );\n}\n"
+                  },
+                  "/generator.ts": {
+                    "code": "import { mulberry32, shuffled } from './rng';\n\ntype Cell = { id: string; x: number; y: number; width: number; height: number; color: string };\nexport type SvgComposition = { xCuts: number[]; yCuts: number[]; cells: Cell[] };\nconst NEUTRAL = '#f4f0df';\nconst ACCENTS = ['#d7261e', '#1357a6', '#f3c623'] as const;\n\nfunction cuts(total: number, segments: number, random: () => number): number[] {\n  const weights = Array.from({ length: segments }, () => 0.75 + random() * 1.7);\n  const sum = weights.reduce((value, weight) => value + weight, 0);\n  const result = [0];\n  weights.forEach((weight) => result.push(result[result.length - 1] + (weight / sum) * total));\n  result[result.length - 1] = total;\n  return result.map((value) => Number(value.toFixed(3)));\n}\n\nexport function createSvgComposition(seed: number): SvgComposition {\n  const random = mulberry32(seed);\n  const xCuts = cuts(100, 5 + Math.floor(random() * 2), random);\n  const yCuts = cuts(75, 4 + Math.floor(random() * 2), random);\n  const cells: Cell[] = [];\n  for (let row = 0; row < yCuts.length - 1; row += 1) {\n    for (let column = 0; column < xCuts.length - 1; column += 1) {\n      cells.push({ id: `${row}-${column}`, x: xCuts[column], y: yCuts[row], width: xCuts[column + 1] - xCuts[column], height: yCuts[row + 1] - yCuts[row], color: NEUTRAL });\n    }\n  }\n  shuffled(cells.map((_, index) => index), random).slice(0, ACCENTS.length).forEach((cellIndex, accentIndex) => {\n    cells[cellIndex].color = ACCENTS[accentIndex];\n  });\n  return { xCuts, yCuts, cells };\n}\n"
+                  },
+                  "/rng.ts": {
+                    "code": "export function mulberry32(seed: number): () => number {\n  let value = seed >>> 0;\n  return () => {\n    value += 0x6d2b79f5;\n    let next = value;\n    next = Math.imul(next ^ (next >>> 15), next | 1);\n    next ^= next + Math.imul(next ^ (next >>> 7), next | 61);\n    return ((next ^ (next >>> 14)) >>> 0) / 4294967296;\n  };\n}\nexport function shuffled<T>(values: T[], random: () => number): T[] {\n  const result = [...values];\n  for (let index = result.length - 1; index > 0; index -= 1) {\n    const target = Math.floor(random() * (index + 1));\n    [result[index], result[target]] = [result[target], result[index]];\n  }\n  return result;\n}\n"
+                  },
+                  "/styles.css": {
+                    "code": "* { box-sizing: border-box; }\nbody { margin: 0; background: #ece6d7; color: #171717; font-family: Inter, ui-sans-serif, system-ui, sans-serif; }\n.app-shell { width: min(100% - 2rem, 920px); margin: 0 auto; padding: 1.25rem 0 2rem; }\nheader { display: flex; align-items: end; justify-content: space-between; gap: 1rem; margin-bottom: 1rem; }\nh1, p { margin: 0; } h1 { font-size: clamp(1.5rem, 5vw, 2.7rem); }\n.eyebrow { margin-bottom: .3rem; color: #444; font-size: .75rem; font-weight: 900; letter-spacing: .12em; text-transform: uppercase; }\nbutton { border: 3px solid #111; background: #1357a6; color: white; padding: .7rem 1rem; font: inherit; font-weight: 800; cursor: pointer; }\nbutton:focus-visible { outline: 4px solid #d7261e; outline-offset: 3px; }\n.composition { display: block; width: 100%; height: auto; background: #f4f0df; box-shadow: 0 12px 28px rgb(0 0 0 / .16); }\n.seed { margin-top: .75rem; color: #555; font: 600 .8rem ui-monospace, monospace; overflow-wrap: anywhere; }\n@media (max-width: 520px) { header { align-items: stretch; flex-direction: column; } button { width: 100%; } }\n"
+                  }
+                },
+                "activeFile": "/App.tsx",
+                "visibleFiles": [
+                  "/App.tsx",
+                  "/generator.ts",
+                  "/rng.ts",
+                  "/styles.css"
+                ],
+                "dependencies": {}
+              }
+            }
+          ],
+          "id": "1e8155043e3c",
+          "route": "/interviews/real-world/mondrian-composition-generator",
+          "collectionSlug": "real-world",
+          "collectionName": "Real-world interviews",
+          "collectionKind": "real-world"
+        }
+      ],
+      "kind": "real-world",
+      "id": "52bc58153ddf",
+      "route": "/interviews/real-world",
+      "sourcePath": "content/interviews/real-world.json",
+      "contentHash": "12bc78cbc4b576c65330f3c2b3ee7e9ab9f92d946eb8634f69d1b7aaa622f53c"
     },
     {
       "slug": "uber",
       "name": "Uber",
-      "logo": {
-        "src": "/company-logos/uber.svg",
-        "alt": "Uber logo"
-      },
       "summary": "Practice routing, scheduling, and connected-component prompts aligned with Uber-style interviews.",
       "status": "published",
       "questions": [
@@ -18930,6 +19309,7 @@
               "mermaid": "flowchart LR\n  A((A)) -- 1 --> C((C))\n  C -- 2 --> B((B))\n  A -- 4 --> B"
             }
           ],
+          "kind": "algorithm",
           "solutionTracks": [
             {
               "id": "dijkstra-priority-queue",
@@ -19010,8 +19390,9 @@
           ],
           "id": "8c42bd5cfe93",
           "route": "/interviews/uber/shortest-path-weighted-road-graph",
-          "companySlug": "uber",
-          "companyName": "Uber"
+          "collectionSlug": "uber",
+          "collectionName": "Uber",
+          "collectionKind": "company"
         },
         {
           "slug": "meeting-rooms-ii",
@@ -19041,6 +19422,7 @@
             "A meeting ending at time t frees the room for another meeting starting at t."
           ],
           "diagrams": [],
+          "kind": "algorithm",
           "solutionTracks": [
             {
               "id": "end-time-min-heap",
@@ -19121,8 +19503,9 @@
           ],
           "id": "e471f21786b3",
           "route": "/interviews/uber/meeting-rooms-ii",
-          "companySlug": "uber",
-          "companyName": "Uber"
+          "collectionSlug": "uber",
+          "collectionName": "Uber",
+          "collectionKind": "company"
         },
         {
           "slug": "connected-regions",
@@ -19153,6 +19536,7 @@
             "Use four-direction adjacency unless the prompt says diagonal connections count."
           ],
           "diagrams": [],
+          "kind": "algorithm",
           "solutionTracks": [
             {
               "id": "grid-dfs",
@@ -19233,14 +19617,20 @@
           ],
           "id": "4e31fe4b53b1",
           "route": "/interviews/uber/connected-regions",
-          "companySlug": "uber",
-          "companyName": "Uber"
+          "collectionSlug": "uber",
+          "collectionName": "Uber",
+          "collectionKind": "company"
         }
       ],
+      "kind": "company",
+      "logo": {
+        "src": "/company-logos/uber.svg",
+        "alt": "Uber logo"
+      },
       "id": "74c860f63661",
       "route": "/interviews/uber",
       "sourcePath": "content/interviews/uber.json",
-      "contentHash": "91b74396a31656cd8fd89dc67fbb01a3fc86d7beab1624e8b7135dbf6a542e8e"
+      "contentHash": "c27d25d109e8c37174599f797c95fc384857bcd177e43d3f5cd47d36893bcda9"
     }
   ],
   "tracks": [

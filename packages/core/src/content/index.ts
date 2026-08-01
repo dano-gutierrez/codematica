@@ -47,12 +47,17 @@ export function getPassiveFlashcardFeedByPathSlug(pathSlug: string) {
   return contentIndex.passiveFlashcardFeeds.find((feed) => feed.pathSlug === pathSlug);
 }
 
-export function getInterviewCompanyBySlug(slug: string) {
-  return contentIndex.interviewCompanies.find((company) => company.slug === slug);
+export function getInterviewCollectionBySlug(slug: string) {
+  return contentIndex.interviewCollections.find((collection) => collection.slug === slug);
 }
 
-export function getInterviewQuestionBySlug(companySlug: string, questionSlug: string) {
-  return getInterviewCompanyBySlug(companySlug)?.questions.find((question) => question.slug === questionSlug);
+export function getInterviewCompanyBySlug(slug: string) {
+  const collection = getInterviewCollectionBySlug(slug);
+  return collection?.kind === "company" ? collection : undefined;
+}
+
+export function getInterviewQuestionBySlug(collectionSlug: string, questionSlug: string) {
+  return getInterviewCollectionBySlug(collectionSlug)?.questions.find((question) => question.slug === questionSlug);
 }
 
 export function getReferencedDiagrams(diagramRefs: string[]) {

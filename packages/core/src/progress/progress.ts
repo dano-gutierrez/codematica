@@ -146,9 +146,9 @@ export function createProgressDisplayItem(row: StoredProgressRow, index: Content
       : undefined;
   }
 
-  const [companySlug, questionSlug] = row.slug.split("/");
-  const company = index.interviewCompanies.find((item) => item.slug === companySlug);
-  const question = company?.questions.find((item) => item.slug === questionSlug);
+  const [collectionSlug, questionSlug] = row.slug.split("/");
+  const collection = index.interviewCollections.find((item) => item.slug === collectionSlug);
+  const question = collection?.questions.find((item) => item.slug === questionSlug);
 
   return question
     ? {
@@ -156,7 +156,7 @@ export function createProgressDisplayItem(row: StoredProgressRow, index: Content
         title: question.title,
         summary: question.summary,
         href: question.route,
-        eyebrow: `${question.companyName} interview`,
+        eyebrow: question.collectionKind === "real-world" ? "Real-world interview" : `${question.collectionName} interview`,
       }
     : undefined;
 }
@@ -227,10 +227,10 @@ function assertProgressContentExists(input: ProgressInput, index: ContentIndex) 
   }
 
   if (input.surface === "interview") {
-    const [companySlug, questionSlug] = input.slug.split("/");
-    const company = index.interviewCompanies.find((item) => item.slug === companySlug);
+    const [collectionSlug, questionSlug] = input.slug.split("/");
+    const collection = index.interviewCollections.find((item) => item.slug === collectionSlug);
 
-    if (!company?.questions.some((question) => question.slug === questionSlug)) {
+    if (!collection?.questions.some((question) => question.slug === questionSlug)) {
       throw new Error(`Unknown interview progress reference: ${input.slug}`);
     }
   }

@@ -1,10 +1,12 @@
 {
+  "kind": "company",
   "slug": "meta",
   "name": "Meta",
   "summary": "Practice string, tree, and traversal prompts aligned with Meta-style interview loops.",
   "status": "published",
   "questions": [
     {
+      "kind": "algorithm",
       "slug": "valid-palindrome-with-one-deletion",
       "title": "Valid Palindrome With One Deletion",
       "summary": "Decide whether a string can become a palindrome after deleting at most one character.",
@@ -113,6 +115,7 @@
       ]
     },
     {
+      "kind": "algorithm",
       "slug": "binary-tree-vertical-columns",
       "title": "Binary Tree Vertical Columns",
       "summary": "Group binary tree nodes by their vertical column from left to right.",
@@ -226,6 +229,7 @@
       ]
     },
     {
+      "kind": "algorithm",
       "slug": "minimum-remove-balanced-parentheses",
       "title": "Minimum Remove For Balanced Parentheses",
       "summary": "Remove the fewest parentheses needed to make a mixed string valid.",

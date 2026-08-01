@@ -40,7 +40,7 @@ Codematica uses learning paths as the main study surface. Paths are inspired by 
 - `/paths/[slug]/flashcards` renders one passive flashcard feed when a path has a published feed.
 - `/practice/[...slug]` renders one flashcard, cloze prompt, questionnaire session, or writing exercise.
 - Exercise content is manually authored in `content/exercises/**/*.json`; path content is authored in `content/learning-paths/*.json`; passive flashcard feeds are authored in `content/flashcard-feeds/*.json`.
-- `packages/core/src/generated/content-index.json` has `schemaVersion: 5` and includes `learningPaths`, `exercises`, `passiveFlashcardFeeds`, `languageCharacters`, and `languageVocabulary`.
+- `packages/core/src/generated/content-index.json` has `schemaVersion: 6` and includes `learningPaths`, `exercises`, `passiveFlashcardFeeds`, `languageCharacters`, `languageVocabulary`, and generic interview collections.
 - Index generation fails on duplicate path, exercise, passive feed, language character, or language vocabulary slugs; missing node references; exercises pointing at missing documents; writing exercises pointing at missing language characters; invalid passive feed path or source document references; cloze templates without exactly one `{{blank}}`; or invalid questionnaire structure.
 - No node is locked, disabled, gated, or paywalled in this milestone. Optional saved progress is owned by `docs/features/auth-and-progress.md`.
 
@@ -120,7 +120,7 @@ The shipped content includes skill and role paths using Markdown articles, exter
 ## Code Touchpoints
 
 - `packages/core/src/content/schema.ts`: schemas and generated index types.
-- `packages/core/src/content/build-index.ts`: path, exercise, passive flashcard feed, and language collection, validation, reference checks, and schema version 5 serialization.
+- `packages/core/src/content/build-index.ts`: path, exercise, passive flashcard feed, language, and interview collection validation, reference checks, and schema version 6 serialization.
 - `packages/core/src/content/index.ts`: lookup helpers and path-node route helpers.
 - `apps/web/src/components/LearningPathMap.tsx`: home and path detail UI.
 - `apps/web/src/components/PracticeCard.tsx`: flashcard, cloze, questionnaire, and writing shell.

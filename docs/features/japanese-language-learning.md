@@ -92,7 +92,7 @@ Vocabulary seed entries include `日本`, `人`, `山`, `水`, and `大きい`. 
 
 - `content/languages/japanese/characters.json` stores character metadata and normalized 0-100 stroke paths.
 - `content/languages/japanese/vocabulary.json` stores beginner vocabulary and references character slugs.
-- `ContentIndex` schema version is `5` and includes `languageCharacters` and `languageVocabulary`.
+- `ContentIndex` schema version is `6` and includes `languageCharacters` and `languageVocabulary` alongside the other generated catalogs.
 - `writing` exercises add `prompt`, `characterSlugs`, `modes`, and `explanation`.
 - Progress remains compatible with `user_progress_items.surface = 'practice'`.
 

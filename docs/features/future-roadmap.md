@@ -31,7 +31,7 @@ Codematica should grow from a path-first engineering study system into a deeper 
 - System design blueprints with visual structure, likely React Flow for editing and Mermaid import/export.
 - Mermaid authoring and diagram creation mode inside the app.
 - Code snaps for multiple languages.
-- Editable JS/TS coding challenges with compilation or execution sandboxing.
+- Deterministic grading, authored tests, saved drafts, and broader challenge types on top of the shipped editable React/TypeScript Sandpack runtime.
 - SQL query practice with an in-app editor backed by deterministic demo data, read-only validation, expected result checks, and a dedicated feature contract before any executable SQL schema or UI is added.
 - Real-time score feedback in a gaming style.
 - Gated levels, streaks, achievements, leaderboards, richer profiles, durable scoring, and optional paywall boundaries.

@@ -1,10 +1,12 @@
 {
+  "kind": "company",
   "slug": "apple",
   "name": "Apple",
   "summary": "Practice clean data-structure fundamentals and edge-case-heavy prompts aligned with Apple-style interviews.",
   "status": "published",
   "questions": [
     {
+      "kind": "algorithm",
       "slug": "reverse-linked-list",
       "title": "Reverse A Linked List",
       "summary": "Reverse a singly linked list and return the new head.",
@@ -112,6 +114,7 @@
       ]
     },
     {
+      "kind": "algorithm",
       "slug": "merge-intervals",
       "title": "Merge Intervals",
       "summary": "Combine overlapping intervals into the smallest set of non-overlapping ranges.",
@@ -219,6 +222,7 @@
       ]
     },
     {
+      "kind": "algorithm",
       "slug": "validate-parentheses-stream",
       "title": "Validate Parentheses Stream",
       "summary": "Check whether a stream of delimiters is balanced and properly nested.",

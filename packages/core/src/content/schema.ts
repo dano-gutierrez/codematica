@@ -275,7 +275,7 @@ const interviewSolutionStepSchema = z.object({
   explanation: z.string().min(20),
 });
 
-export const interviewSolutionTrackSchema = z.object({
+export const interviewAlgorithmSolutionTrackSchema = z.object({
   id: questionIdSchema,
   title: z.string().min(4),
   summary: z.string().min(20),
@@ -292,32 +292,122 @@ export const interviewSolutionTrackSchema = z.object({
   }),
 });
 
-export const interviewQuestionFileSchema = z.object({
+const webExerciseProjectPathSchema = z
+  .string()
+  .regex(/^\/(?!.*(?:^|\/)\.\.?(?:\/|$))[A-Za-z0-9._/-]+$/, "Use an absolute safe project file path without dot segments.");
+
+export const webExerciseProjectSchema = z
+  .object({
+    runtime: z.enum(["react-ts", "vanilla-ts", "static"]),
+    files: z.record(
+      webExerciseProjectPathSchema,
+      z.object({
+        code: z.string().min(10),
+        hidden: z.boolean().optional(),
+        readOnly: z.boolean().optional(),
+      }),
+    ),
+    activeFile: webExerciseProjectPathSchema,
+    visibleFiles: z.array(webExerciseProjectPathSchema).min(1),
+    entry: webExerciseProjectPathSchema.optional(),
+    dependencies: z.record(z.string().min(1), z.string().min(1)).default({}),
+  })
+  .superRefine((project, context) => {
+    const paths = new Set(Object.keys(project.files));
+
+    if (!paths.has(project.activeFile)) {
+      context.addIssue({ code: "custom", path: ["activeFile"], message: "Active file must exist in project files." });
+    }
+
+    if (project.entry && !paths.has(project.entry)) {
+      context.addIssue({ code: "custom", path: ["entry"], message: "Entry file must exist in project files." });
+    }
+
+    for (const visibleFile of project.visibleFiles) {
+      if (!paths.has(visibleFile)) {
+        context.addIssue({ code: "custom", path: ["visibleFiles"], message: `Visible file "${visibleFile}" must exist in project files.` });
+      }
+    }
+  });
+
+const interviewWebSolutionTrackSchema = z.object({
+  id: questionIdSchema,
+  title: z.string().min(4),
+  summary: z.string().min(20),
+  steps: z.array(interviewSolutionStepSchema).min(2),
+  explanation: z.string().min(40),
+  acceptanceRationale: z.string().min(40),
+  tradeoffs: z.array(z.string().min(20)).min(1),
+  complexity: z.object({
+    time: z.string().min(3),
+    space: z.string().min(3),
+  }),
+  project: webExerciseProjectSchema,
+});
+
+const interviewRubricItemSchema = z.object({
+  title: z.string().min(4),
+  explanation: z.string().min(20),
+});
+
+export const interviewEvaluationSchema = z.object({
+  intent: z.string().min(40),
+  expectedSignals: z.array(z.string().min(20)).min(1),
+  acceptanceCriteria: z.array(interviewRubricItemSchema).min(1),
+  redFlags: z.array(interviewRubricItemSchema).min(1),
+});
+
+const interviewQuestionBaseSchema = z.object({
   slug: slugSchema,
   title: z.string().min(4),
   summary: z.string().min(20),
   prompt: z.string().min(40),
   difficulty: difficultySchema,
   tags: z.array(z.string().min(2)).min(1),
-  sourceLinks: z.array(externalLinkSchema).min(1),
+  sourceLinks: z.array(externalLinkSchema).default([]),
+  sourceNote: z.string().min(20).optional(),
   resources: z.array(externalLinkSchema).default([]),
   examples: z.array(interviewExampleSchema).default([]),
   constraints: z.array(z.string().min(4)).default([]),
   diagrams: z.array(interviewDiagramSchema).default([]),
-  solutionTracks: z.array(interviewSolutionTrackSchema).min(2),
 });
 
-export const interviewCompanyFileSchema = z.object({
+export const interviewAlgorithmQuestionFileSchema = interviewQuestionBaseSchema.extend({
+  kind: z.literal("algorithm").default("algorithm"),
+  solutionTracks: z.array(interviewAlgorithmSolutionTrackSchema).min(2),
+});
+
+export const interviewWebQuestionFileSchema = interviewQuestionBaseSchema.extend({
+  kind: z.literal("web"),
+  evaluation: interviewEvaluationSchema,
+  solutionTracks: z.array(interviewWebSolutionTrackSchema).min(3),
+});
+
+export const interviewQuestionFileSchema = z.union([interviewWebQuestionFileSchema, interviewAlgorithmQuestionFileSchema]);
+
+const interviewCollectionBaseSchema = z.object({
   slug: slugSchema,
   name: z.string().min(2),
-  logo: z.object({
-    src: z.string().min(4),
-    alt: z.string().min(4),
-  }),
   summary: z.string().min(20),
   status: contentStatusSchema.default("draft"),
   questions: z.array(interviewQuestionFileSchema).min(1),
 });
+
+const interviewCompanyFileSchema = interviewCollectionBaseSchema.extend({
+  kind: z.literal("company").default("company"),
+  logo: z.object({
+    src: z.string().min(4),
+    alt: z.string().min(4),
+  }),
+});
+
+const realWorldInterviewFileSchema = interviewCollectionBaseSchema.extend({
+  kind: z.literal("real-world"),
+  logo: z.never().optional(),
+});
+
+export const interviewCollectionFileSchema = z.union([realWorldInterviewFileSchema, interviewCompanyFileSchema]);
+export { interviewCompanyFileSchema };
 
 export type Difficulty = z.infer<typeof difficultySchema>;
 export type ContentStatus = z.infer<typeof contentStatusSchema>;
@@ -339,9 +429,15 @@ export type LanguageCatalogFile = z.infer<typeof languageCatalogFileSchema>;
 export type PassiveFlashcardType = z.infer<typeof passiveFlashcardTypeSchema>;
 export type PassiveFlashcardCard = z.infer<typeof passiveFlashcardCardSchema>;
 export type PassiveFlashcardFeedFile = z.infer<typeof passiveFlashcardFeedFileSchema>;
-export type InterviewSolutionTrack = z.infer<typeof interviewSolutionTrackSchema>;
+export type WebExerciseProject = z.infer<typeof webExerciseProjectSchema>;
+export type InterviewAlgorithmSolutionTrack = z.infer<typeof interviewAlgorithmSolutionTrackSchema>;
+export type InterviewWebSolutionTrack = z.infer<typeof interviewWebSolutionTrackSchema>;
+export type InterviewSolutionTrack = InterviewAlgorithmSolutionTrack | InterviewWebSolutionTrack;
 export type InterviewQuestionFile = z.infer<typeof interviewQuestionFileSchema>;
+export type InterviewAlgorithmQuestionFile = z.infer<typeof interviewAlgorithmQuestionFileSchema>;
+export type InterviewWebQuestionFile = z.infer<typeof interviewWebQuestionFileSchema>;
 export type InterviewCompanyFile = z.infer<typeof interviewCompanyFileSchema>;
+export type InterviewCollectionFile = z.infer<typeof interviewCollectionFileSchema>;
 
 export type ContentHeading = {
   id: string;
@@ -405,17 +501,24 @@ export type PassiveFlashcardFeed = PassiveFlashcardFeedFile & {
 export type InterviewQuestion = InterviewQuestionFile & {
   id: string;
   route: string;
-  companySlug: string;
-  companyName: string;
+  collectionSlug: string;
+  collectionName: string;
+  collectionKind: InterviewCollectionFile["kind"];
 };
 
-export type InterviewCompany = Omit<InterviewCompanyFile, "questions"> & {
-  id: string;
-  route: string;
-  sourcePath: string;
-  contentHash: string;
-  questions: InterviewQuestion[];
-};
+type InterviewCollectionRuntime<TCollection extends InterviewCollectionFile> = TCollection extends InterviewCollectionFile
+  ? Omit<TCollection, "questions"> & {
+      id: string;
+      route: string;
+      sourcePath: string;
+      contentHash: string;
+      questions: InterviewQuestion[];
+    }
+  : never;
+
+export type InterviewCollection = InterviewCollectionRuntime<InterviewCollectionFile>;
+
+export type InterviewCompany = Extract<InterviewCollection, { kind: "company" }>;
 
 export type MermaidDiagram = {
   id: string;
@@ -436,7 +539,7 @@ export type ContentTrack = {
 };
 
 export type ContentIndex = {
-  schemaVersion: 5;
+  schemaVersion: 6;
   documents: KnowledgeDocument[];
   diagrams: MermaidDiagram[];
   learningPaths: LearningPath[];
@@ -444,6 +547,6 @@ export type ContentIndex = {
   languageCharacters: LanguageCharacter[];
   languageVocabulary: LanguageVocabulary[];
   passiveFlashcardFeeds: PassiveFlashcardFeed[];
-  interviewCompanies: InterviewCompany[];
+  interviewCollections: InterviewCollection[];
   tracks: ContentTrack[];
 };

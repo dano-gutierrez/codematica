@@ -6,8 +6,8 @@ import { pathParam } from "../../../src/lib/params";
 
 export default function InterviewQuestionRoute() {
   const adapters = useCodematicaAdapters();
-  const params = useLocalSearchParams<{ company?: string | string[]; question?: string | string[] }>();
-  const question = getInterviewQuestionBySlug(pathParam(params.company), pathParam(params.question));
+  const params = useLocalSearchParams<{ collection?: string | string[]; question?: string | string[] }>();
+  const question = getInterviewQuestionBySlug(pathParam(params.collection), pathParam(params.question));
 
   if (!question) {
     return <Redirect href="/+not-found" />;

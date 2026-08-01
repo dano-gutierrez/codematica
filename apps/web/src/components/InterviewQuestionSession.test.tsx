@@ -3,6 +3,7 @@ import { describe, expect, it, vi } from "vitest";
 import { InterviewQuestionSession } from "./InterviewQuestionSession";
 
 const question = {
+  kind: "algorithm" as const,
   id: "question-1",
   slug: "two-sum-product-pair",
   title: "Two Sum Product Pair",
@@ -11,8 +12,9 @@ const question = {
   difficulty: "foundation" as const,
   tags: ["arrays", "hash-map"],
   route: "/interviews/amazon/two-sum-product-pair",
-  companySlug: "amazon",
-  companyName: "Amazon",
+  collectionSlug: "amazon",
+  collectionName: "Amazon",
+  collectionKind: "company" as const,
   sourceLinks: [{ label: "Reported public Amazon list", url: "https://www.vervecopilot.com/blog/amazon-leetcode-interview-questions" }],
   resources: [],
   constraints: ["Return any one valid pair."],

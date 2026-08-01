@@ -1,10 +1,12 @@
 {
+  "kind": "company",
   "slug": "amazon",
   "name": "Amazon",
   "summary": "Practice array, cache, and frequency-ranking problems common in Amazon-style interview prep.",
   "status": "published",
   "questions": [
     {
+      "kind": "algorithm",
       "slug": "two-sum-product-pair",
       "title": "Two Sum Product Pair",
       "summary": "Find two input positions whose values add to a target.",
@@ -118,6 +120,7 @@
       ]
     },
     {
+      "kind": "algorithm",
       "slug": "lru-cache",
       "title": "LRU Cache",
       "summary": "Implement a fixed-capacity cache that evicts the least recently used key.",
@@ -231,6 +234,7 @@
       ]
     },
     {
+      "kind": "algorithm",
       "slug": "top-k-frequent-items",
       "title": "Top K Frequent Items",
       "summary": "Return the k values that appear most frequently in an input array.",

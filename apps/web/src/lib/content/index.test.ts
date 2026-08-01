@@ -16,12 +16,12 @@ describe("generated content index", () => {
   it("loads starter documents and diagrams", () => {
     const index = getContentIndex();
 
-    expect(index.schemaVersion).toBe(5);
+    expect(index.schemaVersion).toBe(6);
     expect(index.documents.length).toBeGreaterThanOrEqual(3);
     expect(index.diagrams.length).toBeGreaterThanOrEqual(2);
     expect(index.learningPaths.length).toBeGreaterThanOrEqual(2);
     expect(index.exercises.length).toBeGreaterThanOrEqual(4);
-    expect(index.interviewCompanies.length).toBeGreaterThanOrEqual(8);
+    expect(index.interviewCollections.length).toBeGreaterThanOrEqual(8);
     expect(index.passiveFlashcardFeeds.length).toBeGreaterThanOrEqual(1);
     expect(getDocumentBySlug("system-design/cache-invalidation")?.title).toBe("Cache Invalidation Under Product Pressure");
     expect(getLearningPathBySlug("system-design-fundamentals")?.title).toBe("System Design Fundamentals");
@@ -237,7 +237,7 @@ describe("generated content index", () => {
     expect(company?.route).toBe("/interviews/amazon");
     expect(question?.route).toBe("/interviews/amazon/two-sum-product-pair");
     expect(question?.solutionTracks).toHaveLength(2);
-    expect(question?.solutionTracks[0]?.languages).toEqual(
+    expect(question?.kind === "algorithm" ? question.solutionTracks[0]?.languages : undefined).toEqual(
       expect.objectContaining({
         python: expect.objectContaining({ code: expect.any(String) }),
         typescript: expect.objectContaining({ code: expect.any(String) }),

@@ -1,12 +1,14 @@
 import Link from "next/link";
-import { ArrowLeft, ArrowRight, Building2, Code2, Search } from "lucide-react";
+import { ArrowLeft, ArrowRight, Building2, Code2, PanelsTopLeft, Search } from "lucide-react";
 import { DifficultyPill } from "@/components/DifficultyPill";
 import { RandomInterviewButton } from "@/components/RandomInterviewButton";
-import type { ContentIndex, InterviewCompany, InterviewQuestion } from "@/lib/content/schema";
+import type { ContentIndex, InterviewCollection, InterviewCompany, InterviewQuestion } from "@/lib/content/schema";
 import { cn } from "@/lib/utils";
 
 export function InterviewCatalog({ index }: { index: ContentIndex }) {
-  const routes = index.interviewCompanies.flatMap((company) => company.questions.map((question) => question.route));
+  const routes = index.interviewCollections.flatMap((collection) => collection.questions.map((question) => question.route));
+  const realWorldCollections = index.interviewCollections.filter((collection) => collection.kind === "real-world");
+  const companies = index.interviewCollections.filter((collection): collection is InterviewCompany => collection.kind === "company");
 
   return (
     <main className="min-h-screen pb-12" data-testid="interview-catalog">
@@ -15,19 +17,31 @@ export function InterviewCatalog({ index }: { index: ContentIndex }) {
       <section className="mx-auto w-full max-w-7xl px-4 py-6 sm:py-8">
         <div className="grid gap-5 lg:grid-cols-[minmax(0,1fr)_19rem]">
           <div className="min-w-0">
-            <p className="text-sm font-extrabold uppercase text-[#007c78]">Reported public prep</p>
+            <p className="text-sm font-extrabold uppercase text-[#007c78]">Interview practice</p>
             <h1 className="mt-2 max-w-4xl text-4xl font-extrabold leading-tight tracking-normal text-[#263238] sm:text-6xl">
-              Practice coding loops by company signal.
+              Practice real interview judgment and coding patterns.
             </h1>
             <p className="mt-4 max-w-3xl text-base font-semibold leading-7 text-[#68737d]">
-              These are community-reported and public prep prompts rewritten for Codematica. They are not official company question banks.
+              Study anonymous real-world exercises alongside community-reported company preparation. Company prompts are not official question banks.
             </p>
 
-            <div className="mt-7 grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
-              {index.interviewCompanies.map((company) => (
+            <section className="mt-9" data-testid="real-world-interviews-section">
+              <p className="text-sm font-extrabold uppercase text-[#b4322a]">Real-world interviews</p>
+              <h2 className="mt-1 text-3xl font-extrabold text-[#263238]">Build from authentic, anonymous briefs.</h2>
+              <div className="mt-5 grid gap-4 sm:grid-cols-2">
+                {realWorldCollections.map((collection) => <CollectionTile key={collection.slug} collection={collection} />)}
+              </div>
+            </section>
+
+            <section className="mt-10" data-testid="company-interviews-section">
+              <p className="text-sm font-extrabold uppercase text-[#007c78]">Company interview prep</p>
+              <h2 className="mt-1 text-3xl font-extrabold text-[#263238]">Practice reported-public coding patterns.</h2>
+              <div className="mt-5 grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+              {companies.map((company) => (
                 <CompanyTile key={company.slug} company={company} />
               ))}
-            </div>
+              </div>
+            </section>
           </div>
 
           <aside className="grid h-fit gap-4 lg:sticky lg:top-5">
@@ -37,7 +51,8 @@ export function InterviewCatalog({ index }: { index: ContentIndex }) {
                 Catalog
               </h2>
               <div className="mt-4 grid gap-2 text-sm font-bold text-[#68737d]">
-                <StatRow label="Companies" value={index.interviewCompanies.length} />
+                <StatRow label="Real-world" value={realWorldCollections.length} />
+                <StatRow label="Companies" value={companies.length} />
                 <StatRow label="Questions" value={routes.length} />
                 <StatRow label="Languages" value={3} />
               </div>
@@ -50,9 +65,9 @@ export function InterviewCatalog({ index }: { index: ContentIndex }) {
   );
 }
 
-export function InterviewCompanyDetail({ company }: { company: InterviewCompany }) {
+export function InterviewCollectionDetail({ collection }: { collection: InterviewCollection }) {
   return (
-    <main className="min-h-screen pb-12" data-testid="interview-company-page">
+    <main className="min-h-screen pb-12" data-testid={collection.kind === "company" ? "interview-company-page" : "interview-collection-page"}>
       <InterviewHeader />
 
       <section className="mx-auto w-full max-w-6xl px-4 py-6 sm:py-8">
@@ -67,17 +82,17 @@ export function InterviewCompanyDetail({ company }: { company: InterviewCompany 
         <div className="mt-6 flex flex-col gap-5 sm:flex-row sm:items-start sm:justify-between">
           <div className="min-w-0">
             <span className="inline-flex items-center gap-2 rounded-lg border-2 border-b-4 border-[#d5e2e8] bg-white px-2.5 py-1 text-xs font-extrabold uppercase text-[#007c78]">
-              <Building2 className="h-3.5 w-3.5" aria-hidden="true" />
-              Company catalog
+              {collection.kind === "company" ? <Building2 className="h-3.5 w-3.5" aria-hidden="true" /> : <PanelsTopLeft className="h-3.5 w-3.5" aria-hidden="true" />}
+              {collection.kind === "company" ? "Company catalog" : "Anonymous real-world collection"}
             </span>
-            <h1 className="mt-4 text-4xl font-extrabold leading-tight tracking-normal text-[#263238] sm:text-6xl">{company.name}</h1>
-            <p className="mt-4 max-w-3xl text-lg font-semibold leading-8 text-[#68737d]">{company.summary}</p>
+            <h1 className="mt-4 text-4xl font-extrabold leading-tight tracking-normal text-[#263238] sm:text-6xl">{collection.name}</h1>
+            <p className="mt-4 max-w-3xl text-lg font-semibold leading-8 text-[#68737d]">{collection.summary}</p>
           </div>
-          <CompanyLogo company={company} className="h-20 w-20 p-3" />
+          {collection.kind === "company" ? <CompanyLogo company={collection} className="h-20 w-20 p-3" /> : <CollectionIcon className="h-20 w-20" />}
         </div>
 
         <div className="mt-8 grid gap-4" data-testid="interview-question-list">
-          {company.questions.map((question) => (
+          {collection.questions.map((question) => (
             <QuestionCard key={question.slug} question={question} />
           ))}
         </div>
@@ -133,6 +148,34 @@ function CompanyTile({ company }: { company: InterviewCompany }) {
   );
 }
 
+function CollectionTile({ collection }: { collection: InterviewCollection }) {
+  return (
+    <Link
+      href={collection.route}
+      className="grid min-h-48 grid-cols-[auto_minmax(0,1fr)] gap-4 rounded-lg border-2 border-b-4 border-[#d5e2e8] bg-white p-5 transition hover:-translate-y-0.5 hover:border-[#b4322a] hover:shadow-[0_8px_0_#d5e2e8]"
+      data-testid={`interview-collection-card-${collection.slug}`}
+    >
+      <CollectionIcon className="h-14 w-14" />
+      <span className="min-w-0">
+        <span className="block text-2xl font-extrabold text-[#263238]">{collection.name}</span>
+        <span className="mt-2 block text-sm font-semibold leading-6 text-[#68737d]">{collection.summary}</span>
+        <span className="mt-4 inline-flex items-center gap-2 text-sm font-extrabold text-[#b4322a]">
+          {collection.questions.length} {collection.questions.length === 1 ? "exercise" : "exercises"}
+          <ArrowRight className="h-4 w-4" aria-hidden="true" />
+        </span>
+      </span>
+    </Link>
+  );
+}
+
+function CollectionIcon({ className }: { className?: string }) {
+  return (
+    <span className={cn("flex shrink-0 items-center justify-center rounded-lg border-2 border-b-4 border-[#111] bg-[#f3c623]", className)} aria-hidden="true">
+      <PanelsTopLeft className="h-7 w-7 text-[#111]" />
+    </span>
+  );
+}
+
 function CompanyLogo({ company, className }: { company: InterviewCompany; className?: string }) {
   return (
     <span className={cn("flex shrink-0 items-center justify-center rounded-lg border-2 border-b-4 border-[#d5e2e8] bg-white", className)}>
@@ -165,7 +208,7 @@ function QuestionCard({ question }: { question: InterviewQuestion }) {
       <span className="mt-4 block text-2xl font-extrabold tracking-normal text-[#263238]">{question.title}</span>
       <span className="mt-2 block text-sm font-semibold leading-6 text-[#68737d]">{question.summary}</span>
       <span className="mt-4 inline-flex items-center gap-2 text-sm font-extrabold text-[#245fba]">
-        Start walkthrough
+        {question.kind === "web" ? "Explore solutions" : "Start walkthrough"}
         <ArrowRight className="h-4 w-4" aria-hidden="true" />
       </span>
     </Link>
