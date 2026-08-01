@@ -102,7 +102,7 @@ Passive flashcard feeds live in `content/flashcard-feeds/*.json` and attach shor
 
 Interview collections live in `content/interviews/*.json` and are discriminated as `company` or `real-world`. Company algorithm questions retain reported-public links and guided Python, TypeScript, and Java tracks. Anonymous real-world questions require provenance notes and may provide structured evaluation rubrics plus at least three `WebExerciseProject` solutions. Web projects are authored locally, validated into the index, and executed only in Sandpack's cross-origin iframe; Expo shows the same files read-only.
 
-Human-language catalogs live in `content/languages/**/*.json`. Japanese v1 indexes beginner character and vocabulary data with glyphs, readings, romaji, IPA, meanings, and normalized stroke paths for handwriting practice.
+Human-language catalogs live in `content/languages/**/*.json`. Japanese indexes full basic hiragana plus focused variants and starter kanji/vocabulary with glyphs, readings, learner romaji, distinct IME input sequences, IPA, structured phrase breakdowns, meanings, study order, and normalized stroke paths for handwriting practice.
 
 Home discovery curation lives in `content/discovery/home.json`. It references canonical published content by kind and slug; index generation validates every reference and serializes the ordered sections into content index schema version 6. `packages/core/src/discovery.ts` resolves those references and provides cross-section local search to web and native.
 
@@ -118,7 +118,7 @@ The Breadth-First Search And Depth-First Search path is the graph-traversal Prog
 
 The Reading And Writing Mermaid Diagrams path is the source-first technical documentation slice. It uses the existing embedded Mermaid renderer to pair 13 inspectable source blocks with browser-rendered output across flowchart, sequence, class, state, ER, Gantt, journey, pie, mindmap, timeline, and Git graph families. Three choice-only questionnaires enforce one correct option and explain every distractor; a passive feed reinforces selection, syntax, debugging, and readability.
 
-The Japanese Foundations path is the first human-language slice. It pairs local Japanese language catalogs, Markdown lessons, and writing exercises for hiragana/katakana vowels, starter kanji, IPA display, assisted tracing, and free handwriting checks across web and Expo.
+The Japanese Foundations path is the first human-language slice. It pairs local catalogs with lessons on writing systems and romaji-versus-IME input, row-grouped handwriting drills, dictionary-style character/vocabulary detail, numbered assisted tracing, and free handwriting checks across web and Expo.
 
 Progress is user state, not authored content. Signed-in progress is stored in Supabase; signed-out progress is buffered in browser local storage on web and native local storage on Expo, then can sync after login. Progress does not store answers, scores, streaks, mastery, or full session history.
 

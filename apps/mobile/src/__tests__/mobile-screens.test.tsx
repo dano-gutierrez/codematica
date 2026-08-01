@@ -1,7 +1,7 @@
 import { fireEvent, render, waitFor } from "@testing-library/react-native";
-import { getContentIndex, getExerciseBySlug, getInterviewQuestionBySlug } from "@codematica/core";
+import { getContentIndex, getExerciseBySlug, getInterviewQuestionBySlug, getJapaneseVocabularyForCharacter, getLanguageCharacterBySlug } from "@codematica/core";
 import type { CodematicaAdapters } from "@codematica/ui";
-import { BrowseScreen, HomeDiscoveryScreen, InterviewCatalogScreen, InterviewQuestionScreen, JapaneseLanguageHubScreen, PracticeScreen } from "@codematica/ui";
+import { BrowseScreen, HomeDiscoveryScreen, InterviewCatalogScreen, InterviewQuestionScreen, JapaneseCharacterDetailScreen, JapaneseLanguageHubScreen, MarkdownReader, PracticeScreen } from "@codematica/ui";
 
 const adapters: CodematicaAdapters = {
   navigation: {
@@ -58,7 +58,7 @@ describe("mobile shared screens", () => {
 
     fireEvent.changeText(view.getByTestId("mobile-japanese-search-input"), "water");
 
-    expect(view.getByTestId("mobile-japanese-results")).toBeOnTheScreen();
+    await waitFor(() => expect(view.getByTestId("mobile-japanese-results")).toBeOnTheScreen());
     expect(view.getAllByText("水").length).toBeGreaterThan(0);
   });
 
@@ -70,6 +70,23 @@ describe("mobile shared screens", () => {
 
     expect(view.getByTestId("mobile-writing-practice")).toBeOnTheScreen();
     expect(view.getByTestId("mobile-writing-pad")).toBeOnTheScreen();
+  });
+
+  it("embeds transient writing practice and related phrases on character details", async () => {
+    const character = getLanguageCharacterBySlug("japanese/hiragana/ha")!;
+    const relatedVocabulary = getJapaneseVocabularyForCharacter(getContentIndex(), character.slug);
+    const view = await render(<JapaneseCharacterDetailScreen character={character} relatedVocabulary={relatedVocabulary} adapters={adapters} />);
+
+    expect(view.getByTestId("mobile-japanese-character-practice")).toBeOnTheScreen();
+    expect(view.getByTestId("mobile-writing-pad")).toBeOnTheScreen();
+    expect(view.getByText("こんばんは")).toBeOnTheScreen();
+  });
+
+  it("routes internal Japanese lesson links through the native navigation adapter", async () => {
+    const view = await render(<MarkdownReader markdown="[は](/languages/japanese/characters/hiragana/ha)" adapters={adapters} />);
+
+    fireEvent.press(view.getByText("は"));
+    expect(adapters.navigation.navigate).toHaveBeenCalledWith("/languages/japanese/characters/hiragana/ha");
   });
 
   it("groups real-world interviews and renders web exercises as read-only source", async () => {

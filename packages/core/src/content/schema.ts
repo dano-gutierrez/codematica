@@ -177,6 +177,25 @@ export const languageStrokeSchema = z.object({
   points: z.array(languageStrokePointSchema).min(2),
 });
 
+export const languageExampleSegmentSchema = z.object({
+  text: z.string().min(1),
+  reading: z.string().min(1),
+  romaji: z.string().min(1),
+  meaning: z.string().min(1),
+  characterSlugs: z.array(slugSchema).default([]),
+});
+
+export const languageExampleSchema = z.object({
+  id: questionIdSchema,
+  japanese: z.string().min(1),
+  reading: z.string().min(1),
+  romaji: z.string().min(1),
+  inputSequences: z.array(z.string().min(1)).default([]),
+  translation: z.string().min(1),
+  explanation: z.string().min(10),
+  segments: z.array(languageExampleSegmentSchema).min(1),
+});
+
 export const languageCharacterFileItemSchema = z.object({
   slug: slugSchema,
   language: languageCodeSchema.default("ja"),
@@ -187,10 +206,13 @@ export const languageCharacterFileItemSchema = z.object({
   meanings: z.array(z.string().min(1)).min(1),
   readings: z.array(languageReadingSchema).min(1),
   romaji: z.string().min(1),
+  inputSequences: z.array(z.string().min(1)).default([]),
   ipa: z.string().min(1),
+  studyOrder: z.number().int().nonnegative().default(9999),
   tags: z.array(z.string().min(2)).min(1),
   status: contentStatusSchema.default("draft"),
   strokes: z.array(languageStrokeSchema).default([]),
+  examples: z.array(languageExampleSchema).default([]),
   sources: z.array(languageSourceSchema).default([]),
 });
 
@@ -200,9 +222,12 @@ export const languageVocabularyFileItemSchema = z.object({
   expression: z.string().min(1),
   reading: z.string().min(1),
   romaji: z.string().min(1),
+  inputSequences: z.array(z.string().min(1)).default([]),
   ipa: z.string().min(1),
   meanings: z.array(z.string().min(1)).min(1),
   characterSlugs: z.array(slugSchema).default([]),
+  segments: z.array(languageExampleSegmentSchema).default([]),
+  examples: z.array(languageExampleSchema).default([]),
   tags: z.array(z.string().min(2)).min(1),
   status: contentStatusSchema.default("draft"),
   sources: z.array(languageSourceSchema).default([]),
@@ -451,6 +476,8 @@ export type LanguageWritingSystem = z.infer<typeof languageWritingSystemSchema>;
 export type LanguageReading = z.infer<typeof languageReadingSchema>;
 export type LanguageStrokePoint = z.infer<typeof languageStrokePointSchema>;
 export type LanguageStroke = z.infer<typeof languageStrokeSchema>;
+export type LanguageExampleSegment = z.infer<typeof languageExampleSegmentSchema>;
+export type LanguageExample = z.infer<typeof languageExampleSchema>;
 export type LanguageCharacterFileItem = z.infer<typeof languageCharacterFileItemSchema>;
 export type LanguageVocabularyFileItem = z.infer<typeof languageVocabularyFileItemSchema>;
 export type LanguageCatalogFile = z.infer<typeof languageCatalogFileSchema>;
@@ -571,7 +598,7 @@ export type ContentTrack = {
 };
 
 export type ContentIndex = {
-  schemaVersion: 6;
+  schemaVersion: 7;
   documents: KnowledgeDocument[];
   diagrams: MermaidDiagram[];
   learningPaths: LearningPath[];

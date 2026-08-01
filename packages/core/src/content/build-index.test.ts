@@ -192,6 +192,27 @@ async function writeWritingExercise(rootDir: string, slug: string, overrides: Re
   );
 }
 
+async function writeLanguageVocabulary(rootDir: string, characterSlug = "japanese/kanji/one") {
+  const filePath = path.join(rootDir, "content", "languages", "japanese", "vocabulary.json");
+  await mkdir(path.dirname(filePath), { recursive: true });
+  await writeFile(filePath, JSON.stringify({
+    kind: "vocabulary",
+    language: "ja",
+    items: [{
+      slug: "japanese/vocabulary/one",
+      expression: "一",
+      reading: "いち",
+      romaji: "ichi",
+      ipa: "itɕi",
+      meanings: ["one"],
+      characterSlugs: ["japanese/kanji/one"],
+      segments: [{ text: "一", reading: "いち", romaji: "ichi", meaning: "one", characterSlugs: [characterSlug] }],
+      tags: ["number", "n5"],
+      status: "published",
+    }],
+  }, null, 2));
+}
+
 async function writeLearningPath(rootDir: string, slug: string, nodeSlug = "system-design/cache-invalidation") {
   const filePath = path.join(rootDir, "content", "learning-paths", `${slug}.json`);
   await mkdir(path.dirname(filePath), { recursive: true });
@@ -485,7 +506,7 @@ describe("buildContentIndex", () => {
 
     const index = await buildContentIndex({ rootDir });
 
-    expect(index.schemaVersion).toBe(6);
+    expect(index.schemaVersion).toBe(7);
     expect(index.documents).toHaveLength(1);
     expect(index.diagrams).toHaveLength(1);
     expect(index.exercises).toEqual([
@@ -648,6 +669,14 @@ describe("buildContentIndex", () => {
     await writeWritingExercise(rootDir, "languages/japanese-starter-kanji-writing", {
       characterSlugs: ["japanese/kanji/missing"],
     });
+
+    await expect(buildContentIndex({ rootDir })).rejects.toThrow(/references missing language character/);
+  });
+
+  it("fails when a vocabulary breakdown references a missing language character", async () => {
+    const rootDir = await makeTempRoot();
+    await writeLanguageCharacters(rootDir);
+    await writeLanguageVocabulary(rootDir, "japanese/kanji/missing");
 
     await expect(buildContentIndex({ rootDir })).rejects.toThrow(/references missing language character/);
   });
@@ -845,7 +874,7 @@ describe("buildContentIndex", () => {
 
     const index = await buildContentIndex({ rootDir });
 
-    expect(index.schemaVersion).toBe(6);
+    expect(index.schemaVersion).toBe(7);
     expect(index.interviewCollections).toEqual([
       expect.objectContaining({
         slug: "amazon",

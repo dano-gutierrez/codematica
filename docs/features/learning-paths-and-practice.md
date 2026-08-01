@@ -41,7 +41,7 @@ Codematica uses learning paths as the main study surface. Paths are inspired by 
 - `/paths/[slug]/flashcards` renders one passive flashcard feed when a path has a published feed.
 - `/practice/[...slug]` renders one flashcard, cloze prompt, questionnaire session, or writing exercise.
 - Exercise content is manually authored in `content/exercises/**/*.json`; path content is authored in `content/learning-paths/*.json`; passive flashcard feeds are authored in `content/flashcard-feeds/*.json`.
-- `packages/core/src/generated/content-index.json` has `schemaVersion: 6` and includes learning content, language catalogs, generic interview collections, and validated home discovery curation.
+- `packages/core/src/generated/content-index.json` has `schemaVersion: 7` and includes learning content, language catalogs, generic interview collections, and validated home discovery curation.
 - Index generation fails on duplicate path, exercise, passive feed, language character, or language vocabulary slugs; missing node references; exercises pointing at missing documents; writing exercises pointing at missing language characters; invalid passive feed path or source document references; cloze templates without exactly one `{{blank}}`; or invalid questionnaire structure.
 - No node is locked, disabled, gated, or paywalled in this milestone. Optional saved progress is owned by `docs/features/auth-and-progress.md`.
 

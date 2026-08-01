@@ -1,0 +1,59 @@
+{
+  "kind": "characters",
+  "language": "ja",
+  "items": [
+    {
+      "slug": "japanese/kanji/now",
+      "writingSystem": "kanji",
+      "glyph": "今",
+      "title": "Kanji Now",
+      "summary": "The kanji for now or the present, read kon in compounds such as konban.",
+      "meanings": ["now", "present"],
+      "readings": [
+        {"label": "on", "value": "こん", "ipa": "koɴ"},
+        {"label": "kun", "value": "いま", "ipa": "ima"}
+      ],
+      "romaji": "ima / kon",
+      "inputSequences": ["ima", "kon"],
+      "ipa": "ima",
+      "studyOrder": 1001,
+      "tags": ["kanji", "time", "greeting", "n5"],
+      "status": "published",
+      "strokes": [
+        {"id":"s1","points":[[50,15],[25,42]]},
+        {"id":"s2","points":[[50,15],[78,42]]},
+        {"id":"s3","points":[[34,45],[68,45],[58,55],[37,55]]},
+        {"id":"s4","points":[[45,55],[65,70],[48,84],[34,75]]}
+      ]
+    },
+    {
+      "slug": "japanese/kanji/evening",
+      "writingSystem": "kanji",
+      "glyph": "晩",
+      "title": "Kanji Evening",
+      "summary": "The kanji for evening, used with 今 in 今晩, this evening.",
+      "meanings": ["evening", "nightfall"],
+      "readings": [{"label": "on", "value": "ばん", "ipa": "baɴ"}],
+      "romaji": "ban",
+      "inputSequences": ["ban"],
+      "ipa": "baɴ",
+      "studyOrder": 1002,
+      "tags": ["kanji", "time", "greeting", "n5"],
+      "status": "published",
+      "strokes": [
+        {"id":"s1","points":[[18,27],[18,76]]},
+        {"id":"s2","points":[[18,28],[39,28]]},
+        {"id":"s3","points":[[19,50],[38,50]]},
+        {"id":"s4","points":[[18,76],[39,76]]},
+        {"id":"s5","points":[[56,16],[48,34]]},
+        {"id":"s6","points":[[51,25],[77,24],[67,37],[49,39]]},
+        {"id":"s7","points":[[60,39],[48,58]]},
+        {"id":"s8","points":[[60,39],[79,58]]},
+        {"id":"s9","points":[[47,58],[80,58]]},
+        {"id":"s10","points":[[62,57],[62,79]]},
+        {"id":"s11","points":[[46,68],[76,68]]},
+        {"id":"s12","points":[[75,58],[75,80],[83,82]]}
+      ]
+    }
+  ]
+}

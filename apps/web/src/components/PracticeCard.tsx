@@ -3,12 +3,11 @@
 import Link from "next/link";
 import { ArrowRight, CheckCircle2, RotateCcw, Sparkles } from "lucide-react";
 import { useState } from "react";
-import type { PointerEvent } from "react";
 import { DifficultyPill } from "@/components/DifficultyPill";
+import { JapaneseWritingPractice } from "@/components/JapaneseWritingPractice";
 import { QuestionnaireSession } from "@/components/QuestionnaireSession";
 import { getLanguageCharacterBySlug } from "@/lib/content";
-import type { LanguageStrokePoint, LearningExercise } from "@/lib/content/schema";
-import { checkWritingAttempt, getAssistedStrokeCompletion, normalizeWritingStroke, type WritingCheckResult, type WritingStroke } from "@codematica/core/language-writing";
+import type { LearningExercise } from "@/lib/content/schema";
 import type { ProgressStatus } from "@/lib/progress/progress";
 import { cn } from "@/lib/utils";
 
@@ -207,211 +206,7 @@ function WritingCard({
     const character = getLanguageCharacterBySlug(slug);
     return character ? [character] : [];
   });
-  const [mode, setMode] = useState<"assisted" | "free">(exercise.modes.includes("assisted") ? "assisted" : "free");
-  const [characterIndex, setCharacterIndex] = useState(0);
-  const [strokes, setStrokes] = useState<WritingStroke[]>([]);
-  const [currentStroke, setCurrentStroke] = useState<WritingStroke | undefined>();
-  const [result, setResult] = useState<WritingCheckResult | undefined>();
-  const character = characters[characterIndex];
-
-  function resetForCharacter(nextIndex = characterIndex) {
-    setCharacterIndex(nextIndex);
-    setStrokes([]);
-    setCurrentStroke(undefined);
-    setResult(undefined);
-  }
-
-  function startStroke(event: PointerEvent<SVGSVGElement>) {
-    if (result) {
-      return;
-    }
-
-    event.currentTarget.setPointerCapture(event.pointerId);
-    setCurrentStroke({ points: [svgPoint(event)] });
-  }
-
-  function moveStroke(event: PointerEvent<SVGSVGElement>) {
-    if (!currentStroke || result) {
-      return;
-    }
-
-    setCurrentStroke((stroke) => (stroke ? { points: [...stroke.points, svgPoint(event)] } : stroke));
-  }
-
-  function endStroke(event: PointerEvent<SVGSVGElement>) {
-    if (!character || !currentStroke || result) {
-      setCurrentStroke(undefined);
-      return;
-    }
-
-    const normalizedStroke = normalizeWritingStroke(currentStroke);
-    const expectedStroke = character.strokes[strokes.length];
-    const shouldSnap =
-      mode === "assisted" && expectedStroke ? getAssistedStrokeCompletion(expectedStroke, normalizedStroke).shouldComplete : false;
-    const nextStroke = shouldSnap && expectedStroke ? { points: expectedStroke.points } : normalizedStroke;
-
-    if (event.currentTarget.hasPointerCapture(event.pointerId)) {
-      event.currentTarget.releasePointerCapture(event.pointerId);
-    }
-
-    setStrokes((value) => [...value, nextStroke]);
-    setCurrentStroke(undefined);
-  }
-
-  function checkCurrentCharacter() {
-    if (!character) {
-      return;
-    }
-
-    const nextResult = checkWritingAttempt({
-      expectedStrokes: character.strokes,
-      actualStrokes: strokes,
-      mode,
-    });
-    setResult(nextResult);
-
-    if (nextResult.isCorrect && characterIndex + 1 >= characters.length) {
-      onProgressEvent?.("completed", { mode, characterSlug: character.slug, passed: true });
-    }
-  }
-
-  if (!character) {
-    return <p className="mt-6 text-sm font-bold text-[#68737d]">This writing exercise has no available characters.</p>;
-  }
-
-  return (
-    <div className="mt-6" data-testid="writing-practice">
-      <p className="text-lg font-bold leading-8 text-[#33434b]">{exercise.prompt}</p>
-
-      <div className="mt-5 flex flex-wrap gap-2">
-        {exercise.modes.includes("assisted") ? (
-          <button
-            type="button"
-            onClick={() => setMode("assisted")}
-            className={cn(
-              "min-h-11 rounded-lg border-2 border-b-4 px-3 py-2 text-sm font-extrabold",
-              mode === "assisted" ? "border-[#00645f] bg-[#007c78] text-white" : "border-[#d5e2e8] bg-white text-[#263238]",
-            )}
-            data-testid="writing-mode-assisted"
-          >
-            Assisted
-          </button>
-        ) : null}
-        {exercise.modes.includes("free") ? (
-          <button
-            type="button"
-            onClick={() => setMode("free")}
-            className={cn(
-              "min-h-11 rounded-lg border-2 border-b-4 px-3 py-2 text-sm font-extrabold",
-              mode === "free" ? "border-[#1d4e9e] bg-[#245fba] text-white" : "border-[#d5e2e8] bg-white text-[#263238]",
-            )}
-            data-testid="writing-mode-free"
-          >
-            Free
-          </button>
-        ) : null}
-      </div>
-
-      <div className="mt-5 grid gap-5 lg:grid-cols-[18rem_minmax(0,1fr)]">
-        <div className="rounded-lg border-2 border-[#d5e2e8] bg-[#f6fbfc] p-4">
-          <p className="text-xs font-extrabold uppercase text-[#68737d]">
-            Character {characterIndex + 1} of {characters.length}
-          </p>
-          <p className="mt-2 text-7xl font-extrabold leading-none text-[#263238]">{character.glyph}</p>
-          <p className="mt-3 text-xl font-extrabold text-[#263238]">
-            {character.romaji} /{character.ipa}/
-          </p>
-          <p className="mt-2 text-sm font-semibold leading-6 text-[#68737d]">{character.meanings.join(", ")}</p>
-        </div>
-
-        <div className="grid gap-3">
-          <svg
-            viewBox="0 0 100 100"
-            role="img"
-            aria-label={`Writing pad for ${character.title}`}
-            onPointerDown={startStroke}
-            onPointerMove={moveStroke}
-            onPointerUp={endStroke}
-            onPointerCancel={endStroke}
-            className="aspect-square w-full max-w-[22rem] touch-none rounded-lg border-2 border-b-4 border-[#d5e2e8] bg-white"
-            data-testid="writing-pad"
-          >
-            <path d="M 50 0 L 50 100 M 0 50 L 100 50" stroke="#e4edf1" strokeWidth="0.8" fill="none" />
-            {mode === "assisted"
-              ? character.strokes.map((stroke) => (
-                  <path key={stroke.id} d={pointsToPath(stroke.points)} stroke="#d5e2e8" strokeWidth="5" strokeLinecap="round" strokeLinejoin="round" fill="none" />
-                ))
-              : null}
-            <text x="50" y="58" textAnchor="middle" fontSize="48" fill={mode === "assisted" ? "rgba(38,50,56,0.08)" : "transparent"}>
-              {character.glyph}
-            </text>
-            {[...strokes, ...(currentStroke ? [currentStroke] : [])].map((stroke, index) => (
-              <path key={`${index}-${stroke.points.length}`} d={pointsToPath(stroke.points)} stroke="#263238" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round" fill="none" />
-            ))}
-          </svg>
-
-          {result ? (
-            <div
-              className={cn(
-                "rounded-lg border-2 border-b-4 p-4",
-                result.isCorrect ? "border-[#6dd8cf] bg-[#e8f8f6]" : "border-[#f7cf5d] bg-[#fff5d6]",
-              )}
-              data-testid="writing-feedback"
-            >
-              <p className={cn("text-sm font-extrabold", result.isCorrect ? "text-[#007c78]" : "text-[#7a5200]")}>
-                {result.isCorrect ? "Correct" : "Review this"}
-              </p>
-              <p className="mt-2 text-sm font-semibold leading-6 text-[#33434b]">{result.feedback}</p>
-              <p className="mt-1 text-xs font-extrabold uppercase text-[#68737d]">Score {result.score}</p>
-            </div>
-          ) : null}
-        </div>
-      </div>
-
-      <div className="mt-6 flex flex-wrap gap-3">
-        <button
-          type="button"
-          onClick={() => setStrokes((value) => value.slice(0, -1))}
-          disabled={strokes.length === 0 || Boolean(result)}
-          className="inline-flex min-h-12 items-center gap-2 rounded-lg border-2 border-b-4 border-[#d5e2e8] bg-white px-4 py-2 text-sm font-extrabold text-[#263238] disabled:opacity-45"
-        >
-          Undo
-        </button>
-        <button
-          type="button"
-          onClick={() => resetForCharacter()}
-          className="inline-flex min-h-12 items-center gap-2 rounded-lg border-2 border-b-4 border-[#d5e2e8] bg-white px-4 py-2 text-sm font-extrabold text-[#263238]"
-        >
-          Clear
-        </button>
-        <button
-          type="button"
-          onClick={checkCurrentCharacter}
-          disabled={strokes.length === 0 || Boolean(result)}
-          className="inline-flex min-h-12 items-center gap-2 rounded-lg border-2 border-b-4 border-[#00645f] bg-[#007c78] px-4 py-2 text-sm font-extrabold text-white disabled:opacity-45"
-          data-testid="writing-check"
-        >
-          <CheckCircle2 className="h-4 w-4" aria-hidden="true" />
-          Check
-        </button>
-        {result?.isCorrect && characterIndex + 1 < characters.length ? (
-          <button
-            type="button"
-            onClick={() => {
-              const nextIndex = characterIndex + 1;
-              onProgressEvent?.("started", { mode, characterSlug: characters[nextIndex]?.slug });
-              resetForCharacter(nextIndex);
-            }}
-            className="inline-flex min-h-12 items-center gap-2 rounded-lg border-2 border-b-4 border-[#1d4e9e] bg-[#245fba] px-4 py-2 text-sm font-extrabold text-white"
-            data-testid="writing-next-character"
-          >
-            Next character
-          </button>
-        ) : null}
-        {result?.isCorrect && characterIndex + 1 >= characters.length && nextHref ? <NextLink href={nextHref} /> : null}
-      </div>
-    </div>
-  );
+  return <JapaneseWritingPractice characters={characters} prompt={exercise.prompt} modes={exercise.modes} nextHref={nextHref} onProgressEvent={onProgressEvent} />;
 }
 
 function NextLink({ href }: { href: string }) {
@@ -424,21 +219,4 @@ function NextLink({ href }: { href: string }) {
       <ArrowRight className="h-4 w-4" aria-hidden="true" />
     </Link>
   );
-}
-
-function svgPoint(event: PointerEvent<SVGSVGElement>): LanguageStrokePoint {
-  const rect = event.currentTarget.getBoundingClientRect();
-  const x = ((event.clientX - rect.left) / Math.max(rect.width, 1)) * 100;
-  const y = ((event.clientY - rect.top) / Math.max(rect.height, 1)) * 100;
-
-  return [Math.min(100, Math.max(0, x)), Math.min(100, Math.max(0, y))];
-}
-
-function pointsToPath(points: LanguageStrokePoint[]) {
-  if (points.length === 0) {
-    return "";
-  }
-
-  const [first, ...rest] = points;
-  return [`M ${first[0]} ${first[1]}`, ...rest.map((point) => `L ${point[0]} ${point[1]}`)].join(" ");
 }

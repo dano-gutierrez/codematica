@@ -19,11 +19,20 @@ const systemOrder: Record<LanguageWritingSystem, number> = {
 };
 
 export function getJapaneseCharacterGroups(index: ContentIndex) {
+  const byStudyOrder = (left: LanguageCharacter, right: LanguageCharacter) =>
+    left.studyOrder - right.studyOrder || left.slug.localeCompare(right.slug);
+
   return {
-    hiragana: index.languageCharacters.filter((item) => item.language === "ja" && item.writingSystem === "hiragana" && item.status === "published"),
-    katakana: index.languageCharacters.filter((item) => item.language === "ja" && item.writingSystem === "katakana" && item.status === "published"),
-    kanji: index.languageCharacters.filter((item) => item.language === "ja" && item.writingSystem === "kanji" && item.status === "published"),
+    hiragana: index.languageCharacters.filter((item) => item.language === "ja" && item.writingSystem === "hiragana" && item.status === "published").sort(byStudyOrder),
+    katakana: index.languageCharacters.filter((item) => item.language === "ja" && item.writingSystem === "katakana" && item.status === "published").sort(byStudyOrder),
+    kanji: index.languageCharacters.filter((item) => item.language === "ja" && item.writingSystem === "kanji" && item.status === "published").sort(byStudyOrder),
   };
+}
+
+export function getJapaneseVocabularyForCharacter(index: ContentIndex, characterSlug: string) {
+  return index.languageVocabulary.filter(
+    (item) => item.language === "ja" && item.status === "published" && item.characterSlugs.includes(characterSlug),
+  );
 }
 
 export function searchJapanese(index: ContentIndex, query: string): JapaneseSearchResult[] {
@@ -64,18 +73,46 @@ function scoreJapaneseCharacter(item: LanguageCharacter, query: string) {
     item.glyph,
     item.title,
     item.romaji,
+    ...item.inputSequences,
     item.ipa,
     item.writingSystem,
     ...item.meanings,
     ...item.tags,
     ...item.readings.flatMap((reading) => [reading.label, reading.value, reading.ipa]),
+    ...item.examples.flatMap((example) => [
+      example.japanese,
+      example.reading,
+      example.romaji,
+      ...example.inputSequences,
+      example.translation,
+      example.explanation,
+      ...example.segments.flatMap((segment) => [segment.text, segment.reading, segment.romaji, segment.meaning]),
+    ]),
   ].map(normalizeSearchText);
 
   return scoreFields(fields, query);
 }
 
 function scoreJapaneseVocabulary(item: LanguageVocabulary, query: string) {
-  const fields = [item.expression, item.reading, item.romaji, item.ipa, ...item.meanings, ...item.tags].map(normalizeSearchText);
+  const fields = [
+    item.expression,
+    item.reading,
+    item.romaji,
+    ...item.inputSequences,
+    item.ipa,
+    ...item.meanings,
+    ...item.tags,
+    ...item.segments.flatMap((segment) => [segment.text, segment.reading, segment.romaji, segment.meaning]),
+    ...item.examples.flatMap((example) => [
+      example.japanese,
+      example.reading,
+      example.romaji,
+      ...example.inputSequences,
+      example.translation,
+      example.explanation,
+      ...example.segments.flatMap((segment) => [segment.text, segment.reading, segment.romaji, segment.meaning]),
+    ]),
+  ].map(normalizeSearchText);
 
   return scoreFields(fields, query);
 }

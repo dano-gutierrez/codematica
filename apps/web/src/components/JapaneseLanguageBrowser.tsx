@@ -39,21 +39,36 @@ export function JapaneseLanguageBrowser({ index }: { index: ContentIndex }) {
           />
         </label>
 
-        <div className="mt-7 grid gap-4" data-testid="japanese-search-results">
-          {results.map((result) => (
-            <JapaneseResult key={`${result.kind}-${result.item.slug}`} result={result} />
-          ))}
-        </div>
+        {query ? (
+          <div className="mt-7 grid gap-4" data-testid="japanese-search-results">
+            {results.map((result) => (
+              <JapaneseResult key={`${result.kind}-${result.item.slug}`} result={result} />
+            ))}
+          </div>
+        ) : null}
 
         {!query ? (
           <div className="mt-8 grid gap-5">
-            <CharacterSection title="Hiragana" characters={groups.hiragana} />
+            <CharacterSection title="Basic hiragana" characters={groups.hiragana.filter((character) => character.tags.includes("basic-hiragana"))} />
+            <CharacterSection title="Hiragana IME and sound extras" characters={groups.hiragana.filter((character) => character.tags.includes("supplement"))} />
             <CharacterSection title="Katakana" characters={groups.katakana} />
             <CharacterSection title="Starter kanji" characters={groups.kanji} />
+            <VocabularySection title="Beginner words and greetings" vocabulary={index.languageVocabulary.filter((item) => item.language === "ja" && item.status === "published")} />
           </div>
         ) : null}
       </section>
     </main>
+  );
+}
+
+function VocabularySection({ title, vocabulary }: { title: string; vocabulary: LanguageVocabulary[] }) {
+  return (
+    <section className="rounded-lg border-2 border-b-4 border-[#d5e2e8] bg-white p-4 sm:p-5">
+      <h2 className="text-2xl font-extrabold tracking-normal text-[#263238]">{title}</h2>
+      <div className="mt-4 grid gap-3 sm:grid-cols-2">
+        {vocabulary.map((item) => <VocabularyCard key={item.slug} vocabulary={item} />)}
+      </div>
+    </section>
   );
 }
 

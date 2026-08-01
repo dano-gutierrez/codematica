@@ -7,7 +7,7 @@ describe("Japanese language helpers", () => {
     const index = getContentIndex();
     const groups = getJapaneseCharacterGroups(index);
 
-    expect(index.schemaVersion).toBe(6);
+    expect(index.schemaVersion).toBe(7);
     expect(groups.hiragana.some((item) => item.glyph === "あ" && item.ipa === "a")).toBe(true);
     expect(groups.katakana.some((item) => item.glyph === "ア" && item.ipa === "a")).toBe(true);
     expect(groups.kanji.some((item) => item.glyph === "人")).toBe(true);
@@ -17,6 +17,15 @@ describe("Japanese language helpers", () => {
     expect(getLanguageVocabularyBySlug("japanese/vocabulary/water")?.route).toBe("/languages/japanese/vocabulary/water");
   });
 
+  it("orders the complete basic hiragana set by study order", () => {
+    const glyphs = getJapaneseCharacterGroups(getContentIndex()).hiragana
+      .filter((item) => item.tags.includes("basic-hiragana"))
+      .map((item) => item.glyph)
+      .join("");
+
+    expect(glyphs).toBe("あいうえおかきくけこさしすせそたちつてとなにぬねのはひふへほまみむめもやゆよらりるれろわをん");
+  });
+
   it("searches by glyph, romaji, IPA, meaning, and vocabulary expression", () => {
     const index = getContentIndex();
 
@@ -24,5 +33,7 @@ describe("Japanese language helpers", () => {
     expect(searchJapanese(index, "water")[0]).toMatchObject({ item: expect.objectContaining({ glyph: "水" }) });
     expect(searchJapanese(index, "ɲihoɴ")[0]).toMatchObject({ kind: "vocabulary", item: expect.objectContaining({ expression: "日本" }) });
     expect(searchJapanese(index, "nihon")[0]).toMatchObject({ kind: "vocabulary", item: expect.objectContaining({ expression: "日本" }) });
+    expect(searchJapanese(index, "konbanha")[0]).toMatchObject({ kind: "vocabulary", item: expect.objectContaining({ expression: "こんばんは" }) });
+    expect(searchJapanese(index, "konnichiha")[0]).toMatchObject({ kind: "vocabulary", item: expect.objectContaining({ expression: "こんにちは" }) });
   });
 });

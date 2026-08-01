@@ -517,9 +517,22 @@ function assertContentReferences(
   for (const vocabulary of languageVocabulary) {
     assertUniqueValues(vocabulary.characterSlugs, `language vocabulary character slug in "${vocabulary.slug}"`, vocabulary.sourcePath);
 
-    for (const characterSlug of vocabulary.characterSlugs) {
+    const nestedCharacterSlugs = [
+      ...vocabulary.segments.flatMap((segment) => segment.characterSlugs),
+      ...vocabulary.examples.flatMap((example) => example.segments.flatMap((segment) => segment.characterSlugs)),
+    ];
+
+    for (const characterSlug of [...vocabulary.characterSlugs, ...nestedCharacterSlugs]) {
       if (!languageCharacterSlugs.has(characterSlug)) {
         throw new Error(`${vocabulary.sourcePath} references missing language character "${characterSlug}"`);
+      }
+    }
+  }
+
+  for (const character of languageCharacters) {
+    for (const characterSlug of character.examples.flatMap((example) => example.segments.flatMap((segment) => segment.characterSlugs))) {
+      if (!languageCharacterSlugs.has(characterSlug)) {
+        throw new Error(`${character.sourcePath} references missing language character "${characterSlug}"`);
       }
     }
   }
@@ -667,7 +680,7 @@ export async function buildContentIndex({ rootDir }: BuildContentIndexOptions): 
   );
 
   return {
-    schemaVersion: 6,
+    schemaVersion: 7,
     documents: sortedDocuments,
     diagrams: sortedDiagrams,
     learningPaths: sortedLearningPaths,

@@ -37,7 +37,7 @@ The root route is a discovery surface rather than the complete learning-path cat
 - Home search covers paths, documents, diagrams, exercises, passive feeds, interview companies/questions, language characters, vocabulary, and language hubs without Supabase.
 - An active home query replaces curated rows with results grouped by section. Clearing it restores the curated home.
 - `content/discovery/home.json` owns editorial ordering. Index generation rejects missing, duplicate, or section-incompatible references.
-- Generated content index schema version `6` includes `homeDiscovery`.
+- Generated content index schema version `7` includes `homeDiscovery`.
 
 ## Detailed Behavior
 

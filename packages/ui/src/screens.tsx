@@ -43,9 +43,9 @@ import {
   type WritingStroke,
 } from "@codematica/core";
 import Markdown from "react-native-markdown-display";
-import Svg, { Path, Text as SvgText } from "react-native-svg";
+import Svg, { Circle, Path, Text as SvgText } from "react-native-svg";
 import { WebView } from "react-native-webview";
-import { useMemo, useState } from "react";
+import { Fragment, useMemo, useState } from "react";
 import type { ReactNode } from "react";
 import {
   FlatList,
@@ -463,16 +463,29 @@ export function JapaneseLanguageHubScreen({ index, adapters }: { index: ContentI
         style={styles.input}
         testID="mobile-japanese-search-input"
       />
-      <View style={styles.stack} testID="mobile-japanese-results">
-        {results.map((result) => (
-          <JapaneseResultCard key={`${result.kind}-${result.item.slug}`} result={result} adapters={adapters} />
-        ))}
-      </View>
+      {query ? (
+        <View style={styles.stack} testID="mobile-japanese-results">
+          {results.map((result) => (
+            <JapaneseResultCard key={`${result.kind}-${result.item.slug}`} result={result} adapters={adapters} />
+          ))}
+        </View>
+      ) : null}
       {!query ? (
         <View style={styles.stack}>
-          <CharacterStrip title="Hiragana" characters={groups.hiragana} adapters={adapters} />
+          <CharacterStrip title="Basic hiragana" characters={groups.hiragana.filter((character) => character.tags.includes("basic-hiragana"))} adapters={adapters} />
+          <CharacterStrip title="Hiragana IME and sound extras" characters={groups.hiragana.filter((character) => character.tags.includes("supplement"))} adapters={adapters} />
           <CharacterStrip title="Katakana" characters={groups.katakana} adapters={adapters} />
           <CharacterStrip title="Starter kanji" characters={groups.kanji} adapters={adapters} />
+          <View style={styles.card}>
+            <Text style={styles.cardTitle}>Beginner words and greetings</Text>
+            {index.languageVocabulary.filter((item) => item.language === "ja" && item.status === "published").map((vocabulary) => (
+              <Pressable key={vocabulary.slug} onPress={() => adapters.navigation.navigate(vocabulary.route)} style={styles.subPanel}>
+                <Text style={styles.japaneseGlyph}>{vocabulary.expression}</Text>
+                <Text style={styles.bodyText}>{vocabulary.romaji}</Text>
+                <Text style={styles.mutedText}>{vocabulary.meanings.join(", ")}</Text>
+              </Pressable>
+            ))}
+          </View>
         </View>
       ) : null}
     </AppScreen>
@@ -531,7 +544,26 @@ function VocabularyCard({ vocabulary, adapters }: { vocabulary: LanguageVocabula
   );
 }
 
-export function JapaneseCharacterDetailScreen({ character, adapters }: { character: LanguageCharacter } & ScreenProps) {
+export function JapaneseCharacterDetailScreen({ character, relatedVocabulary = [], adapters }: { character: LanguageCharacter; relatedVocabulary?: LanguageVocabulary[] } & ScreenProps) {
+  const writingExercise: Extract<LearningExercise, { type: "writing" }> = {
+    id: `character-${character.id}`,
+    slug: `${character.slug}/writing`,
+    route: character.route,
+    sourcePath: character.sourcePath,
+    contentHash: character.contentHash,
+    title: `Practice ${character.glyph}`,
+    type: "writing",
+    documentSlug: "languages/japanese-romaji-kana-input",
+    concept: "Single-character handwriting",
+    difficulty: "foundation",
+    tags: ["japanese", "handwriting"],
+    status: "published",
+    prompt: "Trace the highlighted strokes in order, then switch to free mode and write from memory.",
+    characterSlugs: [character.slug],
+    modes: ["assisted", "free"],
+    explanation: "This practice is transient and does not store raw stroke coordinates.",
+  };
+
   return (
     <AppScreen>
       <Header adapters={adapters} subtitle="Japanese character" />
@@ -545,6 +577,7 @@ export function JapaneseCharacterDetailScreen({ character, adapters }: { charact
         <Text style={styles.heroTitle}>{character.title}</Text>
         <Text style={styles.heroCopy}>{character.summary}</Text>
         <Text style={styles.cardTitle}>{character.meanings.join(", ")}</Text>
+        {character.inputSequences.length ? <Text style={styles.mutedText}>IME input: {character.inputSequences.join(" or ")}</Text> : null}
       </View>
       <View style={styles.card}>
         <Text style={styles.cardTitle}>Readings</Text>
@@ -559,12 +592,40 @@ export function JapaneseCharacterDetailScreen({ character, adapters }: { charact
         <View style={styles.writingPad}>
           <Svg width="100%" height="100%" viewBox="0 0 100 100">
             <Path d="M 50 0 L 50 100 M 0 50 L 100 50" stroke={colors.lineSoft} strokeWidth={0.8} fill="none" />
-            {character.strokes.map((stroke) => (
-              <Path key={stroke.id} d={pointsToPath(stroke.points)} stroke={colors.text} strokeWidth={4} strokeLinecap="round" strokeLinejoin="round" fill="none" />
+            {character.strokes.map((stroke, index) => (
+              <Fragment key={stroke.id}>
+                <Path d={pointsToPath(stroke.points)} stroke={colors.text} strokeWidth={4} strokeLinecap="round" strokeLinejoin="round" fill="none" />
+                <Circle cx={stroke.points[0][0]} cy={stroke.points[0][1]} r={4.5} fill={colors.accent} />
+                <SvgText x={stroke.points[0][0]} y={stroke.points[0][1] + 2} textAnchor="middle" fontSize={5} fontWeight="800" fill="#fff">{index + 1}</SvgText>
+              </Fragment>
             ))}
           </Svg>
         </View>
       </View>
+      <View style={styles.card} testID="mobile-japanese-character-practice">
+        <Text style={styles.cardTitle}>Practice writing {character.glyph}</Text>
+        <WritingPractice exercise={writingExercise} adapters={adapters} onProgress={() => undefined} />
+      </View>
+      {relatedVocabulary.length || character.examples.length ? (
+        <View style={styles.card} testID="mobile-japanese-character-examples">
+          <Text style={styles.cardTitle}>Words and examples</Text>
+          {relatedVocabulary.map((vocabulary) => (
+            <Pressable key={vocabulary.slug} onPress={() => adapters.navigation.navigate(vocabulary.route)} style={styles.subPanel}>
+              <Text style={styles.japaneseGlyph}>{vocabulary.expression}</Text>
+              <Text style={styles.bodyText}>{vocabulary.reading} · {vocabulary.romaji}</Text>
+              {vocabulary.inputSequences.length ? <Text style={styles.mutedText}>IME: {vocabulary.inputSequences.join(" or ")}</Text> : null}
+              <Text style={styles.mutedText}>{vocabulary.meanings.join(", ")}</Text>
+            </Pressable>
+          ))}
+          {character.examples.map((example) => (
+            <View key={example.id} style={styles.subPanel}>
+              <Text style={styles.cardTitle}>{example.japanese}</Text>
+              <Text style={styles.bodyText}>{example.romaji} — {example.translation}</Text>
+              <Text style={styles.mutedText}>{example.explanation}</Text>
+            </View>
+          ))}
+        </View>
+      ) : null}
     </AppScreen>
   );
 }
@@ -583,7 +644,40 @@ export function JapaneseVocabularyDetailScreen({ vocabulary, adapters }: { vocab
         <Text style={styles.heroTitle}>{vocabulary.romaji}</Text>
         <Text style={styles.heroCopy}>{vocabulary.reading}</Text>
         <Text style={styles.cardTitle}>{vocabulary.meanings.join(", ")}</Text>
+        {vocabulary.inputSequences.length ? <Text style={styles.mutedText}>IME input: {vocabulary.inputSequences.join(" or ")}</Text> : null}
       </View>
+      {vocabulary.segments.length ? (
+        <View style={styles.card} testID="mobile-japanese-vocabulary-breakdown">
+          <Text style={styles.cardTitle}>Kanji and hiragana breakdown</Text>
+          {vocabulary.segments.map((segment, index) => (
+            <View key={`${segment.text}-${index}`} style={styles.subPanel}>
+              <Text style={styles.japaneseGlyph}>{segment.text}</Text>
+              <Text style={styles.bodyText}>{segment.reading} · {segment.romaji}</Text>
+              <Text style={styles.mutedText}>{segment.meaning}</Text>
+              <View style={styles.pillRow}>
+                {segment.characterSlugs.flatMap((slug) => {
+                  const character = getLanguageCharacterBySlug(slug);
+                  return character ? [<Button key={slug} label={character.glyph} variant="ghost" onPress={() => adapters.navigation.navigate(character.route)} />] : [];
+                })}
+              </View>
+            </View>
+          ))}
+        </View>
+      ) : null}
+      {vocabulary.examples.length ? (
+        <View style={styles.card} testID="mobile-japanese-vocabulary-examples">
+          <Text style={styles.cardTitle}>Example phrases</Text>
+          {vocabulary.examples.map((example) => (
+            <View key={example.id} style={styles.subPanel}>
+              <Text style={styles.cardTitle}>{example.japanese}</Text>
+              <Text style={styles.bodyText}>{example.reading} · {example.romaji}</Text>
+              {example.inputSequences.length ? <Text style={styles.mutedText}>IME: {example.inputSequences.join(" or ")}</Text> : null}
+              <Text style={styles.bodyText}>{example.translation}</Text>
+              <Text style={styles.mutedText}>{example.explanation}</Text>
+            </View>
+          ))}
+        </View>
+      ) : null}
     </AppScreen>
   );
 }
@@ -811,6 +905,7 @@ function WritingPractice({
   const [strokes, setStrokes] = useState<WritingStroke[]>([]);
   const [currentStroke, setCurrentStroke] = useState<WritingStroke | undefined>();
   const [result, setResult] = useState<WritingCheckResult | undefined>();
+  const [assistedFeedback, setAssistedFeedback] = useState<string | undefined>();
   const character = characters[characterIndex];
 
   function resetForCharacter(nextIndex = characterIndex) {
@@ -818,6 +913,7 @@ function WritingPractice({
     setStrokes([]);
     setCurrentStroke(undefined);
     setResult(undefined);
+    setAssistedFeedback(undefined);
   }
 
   function startStroke(event: GestureResponderEvent) {
@@ -845,12 +941,19 @@ function WritingPractice({
 
     const normalizedStroke = normalizeWritingStroke(currentStroke);
     const expectedStroke = character.strokes[strokes.length];
-    const shouldSnap =
-      mode === "assisted" && expectedStroke ? getAssistedStrokeCompletion(expectedStroke, normalizedStroke).shouldComplete : false;
-    const nextStroke = shouldSnap && expectedStroke ? { points: expectedStroke.points } : normalizedStroke;
-
-    setStrokes((value) => [...value, nextStroke]);
+    if (mode === "assisted" && expectedStroke) {
+      const completion = getAssistedStrokeCompletion(expectedStroke, normalizedStroke);
+      if (!completion.shouldComplete) {
+        setCurrentStroke(undefined);
+        setAssistedFeedback(`Try stroke ${strokes.length + 1} again. Start at the numbered dot.`);
+        return;
+      }
+      setStrokes((value) => [...value, { points: expectedStroke.points }]);
+    } else {
+      setStrokes((value) => [...value, normalizedStroke]);
+    }
     setCurrentStroke(undefined);
+    setAssistedFeedback(undefined);
   }
 
   function checkCurrentCharacter() {
@@ -893,6 +996,7 @@ function WritingPractice({
         <Text style={styles.cardTitle}>
           {character.romaji} /{character.ipa}/
         </Text>
+        {character.inputSequences.length ? <Text style={styles.mutedText}>IME: {character.inputSequences.join(" or ")}</Text> : null}
         <Text style={styles.mutedText}>{character.meanings.join(", ")}</Text>
       </View>
       <View
@@ -907,16 +1011,20 @@ function WritingPractice({
         <Svg width="100%" height="100%" viewBox="0 0 100 100">
           <Path d="M 50 0 L 50 100 M 0 50 L 100 50" stroke={colors.lineSoft} strokeWidth={0.8} fill="none" />
           {mode === "assisted"
-            ? character.strokes.map((stroke) => <Path key={stroke.id} d={pointsToPath(stroke.points)} stroke={colors.line} strokeWidth={5} strokeLinecap="round" strokeLinejoin="round" fill="none" />)
+            ? character.strokes.slice(strokes.length).map((stroke, index) => <Path key={stroke.id} d={pointsToPath(stroke.points)} stroke={index === 0 ? colors.accent : colors.line} strokeWidth={index === 0 ? 5 : 3} strokeLinecap="round" strokeLinejoin="round" fill="none" />)
             : null}
-          <SvgText x="50" y="56" textAnchor="middle" fontSize="48" fill={mode === "assisted" ? "rgba(38,50,56,0.08)" : "transparent"}>
-            {character.glyph}
-          </SvgText>
+          {mode === "assisted" && character.strokes[strokes.length] ? (
+            <>
+              <Circle cx={character.strokes[strokes.length]!.points[0][0]} cy={character.strokes[strokes.length]!.points[0][1]} r={5} fill={colors.accent} />
+              <SvgText x={character.strokes[strokes.length]!.points[0][0]} y={character.strokes[strokes.length]!.points[0][1] + 2} textAnchor="middle" fontSize={6} fontWeight="800" fill="#fff">{strokes.length + 1}</SvgText>
+            </>
+          ) : null}
           {[...strokes, ...(currentStroke ? [currentStroke] : [])].map((stroke, index) => (
             <Path key={`${index}-${stroke.points.length}`} d={pointsToPath(stroke.points)} stroke={colors.text} strokeWidth={4} strokeLinecap="round" strokeLinejoin="round" fill="none" />
           ))}
         </Svg>
       </View>
+      {assistedFeedback ? <View style={styles.feedback} testID="mobile-writing-assisted-feedback"><Text style={styles.feedbackTitle}>{assistedFeedback}</Text></View> : null}
       {result ? (
         <View style={[styles.feedback, result.isCorrect ? styles.feedbackCorrect : styles.feedbackReview]} testID="mobile-writing-feedback">
           <Text style={styles.feedbackTitle}>{result.isCorrect ? "Correct" : "Review this"}</Text>
@@ -927,7 +1035,7 @@ function WritingPractice({
       <View style={styles.actionRow}>
         <Button label="Undo" variant="ghost" disabled={strokes.length === 0 || Boolean(result)} onPress={() => setStrokes((value) => value.slice(0, -1))} />
         <Button label="Clear" variant="ghost" onPress={() => resetForCharacter()} />
-        <Button label="Check" disabled={strokes.length === 0 || Boolean(result)} onPress={checkCurrentCharacter} testID="mobile-writing-check" />
+        <Button label="Check" disabled={strokes.length === 0 || Boolean(result) || strokes.length !== character.strokes.length} onPress={checkCurrentCharacter} testID="mobile-writing-check" />
       </View>
       {result?.isCorrect && characterIndex + 1 < characters.length ? (
         <Button
@@ -1533,7 +1641,18 @@ export function MarkdownReader({ markdown, adapters }: { markdown: string } & Sc
         block.kind === "mermaid" ? (
           <MermaidBlock key={`mermaid-${index}`} source={block.source} adapters={adapters} />
         ) : (
-          <Markdown key={`markdown-${index}`} style={markdownStyles}>
+          <Markdown
+            key={`markdown-${index}`}
+            style={markdownStyles}
+            onLinkPress={(href) => {
+              if (href.startsWith("/")) {
+                adapters.navigation.navigate(href);
+                return false;
+              }
+              adapters.navigation.openExternalUrl?.(href);
+              return false;
+            }}
+          >
             {block.source}
           </Markdown>
         ),

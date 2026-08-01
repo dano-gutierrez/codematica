@@ -5,6 +5,18 @@ test("@regression mobile user searches Japanese and opens a writing drill", asyn
   await expect(page.getByTestId("japanese-language-page")).toBeVisible();
   await expect(page.getByRole("heading", { name: /Practice kana, kanji, and writing/i })).toBeVisible();
 
+  await page.getByTestId("japanese-search-input").fill("konbanha");
+  await expect(page.getByTestId("japanese-vocabulary-japanese-vocabulary-good-evening")).toContainText("こんばんは");
+  await page.getByTestId("japanese-vocabulary-japanese-vocabulary-good-evening").click();
+  await expect(page.getByTestId("japanese-vocabulary-breakdown")).toContainText("topic particle");
+  await page.getByRole("link", { name: "Open Hiragana Ha" }).click();
+  await expect(page.getByTestId("japanese-character-practice")).toBeVisible();
+  await expect(page.getByTestId("writing-pad")).toBeVisible();
+  await page.getByTestId("writing-mode-free").click();
+  await expect(page.getByTestId("writing-mode-free")).toHaveCSS("color", "rgb(255, 255, 255)");
+
+  await page.goto("/languages/japanese");
+
   await page.getByTestId("japanese-search-input").fill("water");
   await expect(page.getByTestId("japanese-search-results")).toContainText("水");
   await expect(page.getByTestId("japanese-character-japanese-kanji-water")).toContainText("/mizɯ/");
@@ -19,6 +31,12 @@ test("@regression mobile user searches Japanese and opens a writing drill", asyn
   await expect(page.getByTestId("path-card-japanese-foundations")).toContainText("Japanese Foundations");
   await page.getByTestId("path-card-japanese-foundations").getByRole("link", { name: /Open path/i }).click();
   await expect(page.getByTestId("path-detail")).toBeVisible();
+  await expect(page.getByTestId("path-node-document-languages-japanese-romaji-kana-input")).toContainText("Romaji Is Not Kana Input");
+  await page.getByTestId("path-node-document-languages-japanese-romaji-kana-input").click();
+  await expect(page.getByTestId("markdown-renderer")).toContainText("konbanha");
+  await expect(page.getByRole("heading", { name: "The Three Particle Exceptions" })).toBeVisible();
+
+  await page.goto("/paths/japanese-foundations");
   await expect(page.getByTestId("path-node-exercise-languages-japanese-hiragana-vowels-writing")).toContainText("Writing");
 
   await page.getByTestId("path-node-exercise-languages-japanese-hiragana-vowels-writing").click();

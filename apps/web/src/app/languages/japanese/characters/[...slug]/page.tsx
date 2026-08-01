@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { getJapaneseVocabularyForCharacter } from "@codematica/core";
+import { JapaneseWritingPractice } from "@/components/JapaneseWritingPractice";
 import { getContentIndex, getLanguageCharacterBySlug } from "@/lib/content";
 import type { LanguageStrokePoint } from "@/lib/content/schema";
 
@@ -33,6 +35,7 @@ export default async function JapaneseCharacterPage({ params }: CharacterPagePro
   if (!character) {
     notFound();
   }
+  const relatedVocabulary = getJapaneseVocabularyForCharacter(getContentIndex(), character.slug);
 
   return (
     <main className="min-h-screen px-4 py-5 sm:py-8" data-testid="japanese-character-page">
@@ -50,6 +53,7 @@ export default async function JapaneseCharacterPage({ params }: CharacterPagePro
           <h1 className="mt-4 text-4xl font-extrabold leading-tight tracking-normal text-[#263238] sm:text-6xl">{character.title}</h1>
           <p className="mt-4 text-lg font-semibold leading-8 text-[#68737d]">{character.summary}</p>
           <p className="mt-4 text-2xl font-extrabold text-[#263238]">{character.meanings.join(", ")}</p>
+          {character.inputSequences.length ? <p className="mt-4 text-sm font-extrabold text-[#245fba]">IME input: {character.inputSequences.join(" or ")}</p> : null}
         </section>
 
         <section className="mt-5 rounded-lg border-2 border-b-4 border-[#d5e2e8] bg-white p-5">
@@ -67,11 +71,53 @@ export default async function JapaneseCharacterPage({ params }: CharacterPagePro
           <h2 className="text-2xl font-extrabold tracking-normal text-[#263238]">Stroke model</h2>
           <svg viewBox="0 0 100 100" className="mt-4 aspect-square w-full max-w-sm rounded-lg border-2 border-[#d5e2e8] bg-white">
             <path d="M 50 0 L 50 100 M 0 50 L 100 50" stroke="#e4edf1" strokeWidth="0.8" fill="none" />
-            {character.strokes.map((stroke) => (
-              <path key={stroke.id} d={pointsToPath(stroke.points)} stroke="#263238" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round" fill="none" />
-            ))}
+            {character.strokes.map((stroke, index) => {
+              const start = stroke.points[0];
+              return (
+                <g key={stroke.id}>
+                  <path d={pointsToPath(stroke.points)} stroke="#263238" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round" fill="none" />
+                  <circle cx={start[0]} cy={start[1]} r="4.5" fill="#007c78" />
+                  <text x={start[0]} y={start[1] + 1.8} textAnchor="middle" fontSize="5" fontWeight="800" fill="white">{index + 1}</text>
+                </g>
+              );
+            })}
           </svg>
         </section>
+
+        <section className="mt-5 rounded-lg border-2 border-b-4 border-[#d5e2e8] bg-white p-5" data-testid="japanese-character-practice">
+          <h2 className="text-2xl font-extrabold tracking-normal text-[#263238]">Practice writing {character.glyph}</h2>
+          <JapaneseWritingPractice characters={[character]} prompt="Trace the highlighted strokes in order, then switch to free mode and write from memory." />
+        </section>
+
+        {relatedVocabulary.length || character.examples.length ? (
+          <section className="mt-5 rounded-lg border-2 border-b-4 border-[#d5e2e8] bg-white p-5" data-testid="japanese-character-examples">
+            <h2 className="text-2xl font-extrabold tracking-normal text-[#263238]">Words and examples</h2>
+            <div className="mt-4 grid gap-4">
+              {relatedVocabulary.map((vocabulary) => (
+                <article key={vocabulary.slug} className="rounded-lg bg-[#f6fbfc] p-4">
+                  <Link href={vocabulary.route} className="text-2xl font-extrabold text-[#245fba]">{vocabulary.expression}</Link>
+                  <p className="mt-1 text-sm font-bold text-[#33434b]">{vocabulary.reading} · {vocabulary.romaji}</p>
+                  {vocabulary.inputSequences.length ? <p className="mt-1 text-xs font-extrabold text-[#7a5200]">IME: {vocabulary.inputSequences.join(" or ")}</p> : null}
+                  <p className="mt-2 text-sm font-semibold text-[#68737d]">{vocabulary.meanings.join(", ")}</p>
+                  {vocabulary.examples.map((example) => (
+                    <div key={example.id} className="mt-3 border-t border-[#d5e2e8] pt-3">
+                      <p className="font-extrabold text-[#263238]">{example.japanese}</p>
+                      <p className="text-sm font-bold text-[#33434b]">{example.romaji} — {example.translation}</p>
+                      <p className="mt-1 text-sm font-semibold text-[#68737d]">{example.explanation}</p>
+                    </div>
+                  ))}
+                </article>
+              ))}
+              {character.examples.map((example) => (
+                <article key={example.id} className="rounded-lg bg-[#f6fbfc] p-4">
+                  <p className="text-xl font-extrabold text-[#263238]">{example.japanese}</p>
+                  <p className="mt-1 text-sm font-bold text-[#33434b]">{example.reading} · {example.romaji} — {example.translation}</p>
+                  <p className="mt-2 text-sm font-semibold text-[#68737d]">{example.explanation}</p>
+                </article>
+              ))}
+            </div>
+          </section>
+        ) : null}
       </div>
     </main>
   );

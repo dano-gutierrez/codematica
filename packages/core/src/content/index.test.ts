@@ -19,7 +19,7 @@ describe("generated content index", () => {
   it("loads starter documents and diagrams", () => {
     const index = getContentIndex();
 
-    expect(index.schemaVersion).toBe(6);
+    expect(index.schemaVersion).toBe(7);
     expect(index.documents.length).toBeGreaterThanOrEqual(3);
     expect(index.diagrams.length).toBeGreaterThanOrEqual(2);
     expect(index.learningPaths.length).toBeGreaterThanOrEqual(2);
@@ -43,6 +43,13 @@ describe("generated content index", () => {
       "languages/japanese-writing-systems",
       "languages/japanese-hiragana-vowels-writing",
       "languages/japanese-katakana-vowels-writing",
+      "languages/japanese-romaji-kana-input",
+      "languages/japanese-romaji-kana-input-questionnaire",
+      "languages/japanese-hiragana-k-s-writing",
+      "languages/japanese-hiragana-t-n-writing",
+      "languages/japanese-hiragana-h-m-writing",
+      "languages/japanese-hiragana-y-r-w-writing",
+      "languages/japanese-hiragana-ime-exceptions-writing",
       "languages/japanese-starter-kanji",
       "languages/japanese-starter-kanji-writing",
     ]);

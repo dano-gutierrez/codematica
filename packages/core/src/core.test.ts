@@ -5,7 +5,7 @@ describe("@codematica/core", () => {
   it("loads the bundled generated index for shared runtimes", () => {
     const index = getContentIndex();
 
-    expect(index.schemaVersion).toBe(6);
+    expect(index.schemaVersion).toBe(7);
     expect(index.learningPaths.length).toBeGreaterThan(0);
     expect(index.documents.length).toBeGreaterThan(0);
   });

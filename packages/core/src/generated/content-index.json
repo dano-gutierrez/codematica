@@ -1,5 +1,5 @@
 {
-  "schemaVersion": 6,
+  "schemaVersion": 7,
   "documents": [
     {
       "title": "LangChain Agents LangGraph And Operations",
@@ -1551,6 +1551,72 @@
       "readingMinutes": 3
     },
     {
+      "title": "Romaji Is Not Kana Input",
+      "slug": "languages/japanese-romaji-kana-input",
+      "summary": "Learn why konbanwa is typed konbanha, how Japanese particles change pronunciation, and how romaji differs from IME keystrokes.",
+      "track": "Languages",
+      "topic": "Japanese",
+      "difficulty": "foundation",
+      "tags": [
+        "japanese",
+        "hiragana",
+        "romaji",
+        "ime",
+        "particles"
+      ],
+      "prerequisites": [
+        "Japanese Writing Systems For Beginners"
+      ],
+      "diagramRefs": [],
+      "status": "published",
+      "id": "051dc073323c",
+      "route": "/docs/languages/japanese-romaji-kana-input",
+      "sourcePath": "content/knowledge/languages/japanese-romaji-kana-input.md",
+      "bodyPath": "content/knowledge/languages/japanese-romaji-kana-input.md",
+      "markdown": "## The Short Answer\n\n`こんばんは` is pronounced and learner-romanized **konbanwa**, but a Japanese input method needs **konbanha** to produce the written [は](/languages/japanese/characters/hiragana/ha).\n\nNothing in the greeting changed from `wa` to `ha`. You are looking at two different jobs:\n\n- **Japanese spelling:** `こんばんは` tells you what is written.\n- **Pronunciation:** `こんばんわ` approximates what it sounds like.\n- **Learner romaji:** `konbanwa` tells you how to read it.\n- **IME keys:** `konbanha` tells the keyboard how to produce the spelling `こんばんは`.\n\nAn IME converts key sequences into kana. It is not judging the best way to romanize a Japanese sentence for a reader.\n\n## Why The Greeting Ends In は\n\nThe older, fuller expression began with **今晩は…**: “As for this evening…”. The rest of the sentence was eventually omitted, but the topic particle [は](/languages/japanese/characters/hiragana/ha) remained.\n\n- [今](/languages/japanese/characters/kanji/now) = now or this\n- [晩](/languages/japanese/characters/kanji/evening) = evening\n- [は](/languages/japanese/characters/hiragana/ha) = the topic particle, pronounced **wa**\n\nThe same pattern explains `こんにちは`, historically connected with **今日は…**, “As for today…”.\n\n## The Three Particle Exceptions\n\nWhen these kana are ordinary parts of words, use their normal sound. When they are particles, their pronunciation changes.\n\n- [は](/languages/japanese/characters/hiragana/ha) as a particle is pronounced `わ`, romanized `wa`, and typed `ha`. In the ordinary word `はな` (`hana`, flower), it keeps the sound `ha`.\n- [へ](/languages/japanese/characters/hiragana/he) as a particle is pronounced `え`, romanized `e`, and typed `he`. In `へや` (`heya`, room), it keeps the sound `he`.\n- [を](/languages/japanese/characters/hiragana/wo) is pronounced and romanized `o`, but typed `wo`. Beginners will see it almost entirely as a particle.\n\nThe topic particle `は` marks what the sentence is about. The direction particle `へ` points toward a destination. The object particle `を` marks what an action affects.\n\n## Read, Understand, Then Type\n\nThese examples keep learner romaji and IME input separate. Spaces make the grammar visible; an IME can usually accept the same keys without spaces.\n\n1. **今晩は。 / こんばんは。** Read `konbanwa`; type `konbanha`. 今晩 means “this evening,” and は is the topic particle.\n2. **今日は。 / こんにちは。** Read `konnichiwa`; type `konnichiha`. 今日 means “today,” and は is the topic particle.\n3. **わたしは日本人です。 / わたしはにほんじんです。** Read `watashi wa nihonjin desu`; type `watashiha nihonjin desu`. わたし is “I,” and 日本人 is “Japanese person.”\n4. **これは本です。 / これはほんです。** Read `kore wa hon desu`; type `koreha hon desu`. これ is “this,” and 本 is “book.”\n5. **山は大きいです。 / やまはおおきいです。** Read `yama wa ookii desu`; type `yamaha ookii desu`. 山 is “mountain,” and 大きい is “big.”\n6. **はなはきれいです。** Read `hana wa kirei desu`; type `hanaha kirei desu`. The first は is `ha` inside はな; the second is particle `wa`.\n7. **はははげんきです。** Read `haha wa genki desu`; type `hahaha genki desu`. はは means “mother”; the final は is the topic particle.\n8. **日本へいきます。 / にほんへいきます。** Read `nihon e ikimasu`; type `nihonhe ikimasu`. 日本 is Japan, へ means “toward,” and いきます means “go.”\n9. **山へいきます。 / やまへいきます。** Read `yama e ikimasu`; type `yamahe ikimasu`. The destination is the mountain.\n10. **へやへかえります。** Read `heya e kaerimasu`; type `heyahe kaerimasu`. The first へ is `he` in へや; the second is particle `e`.\n11. **水をのみます。 / みずをのみます。** Read `mizu o nomimasu`; type `mizuwo nomimasu`. 水 is water, を marks the object, and のみます means “drink.”\n12. **本をよみます。 / ほんをよみます。** Read `hon o yomimasu`; type `honwo yomimasu`. 本 is a book, and よみます means “read.”\n13. **これをください。** Read `kore o kudasai`; type `korewo kudasai`. It means “Please give me this.”\n14. **がっこう.** Read `gakkoo` or `gakkō`; type `gakkou`. Small [っ](/languages/japanese/characters/hiragana/small-tsu) doubles the next consonant, while こう supplies the long o sound.\n15. **きょう.** Read `kyoo` or `kyō`; type `kyou`. [き](/languages/japanese/characters/hiragana/ki) plus small [ょ](/languages/japanese/characters/hiragana/small-yo) makes `kyo`, and う lengthens the o sound.\n16. **おおきい.** Read `ookii` or `ōkii`; type `ookii`. The full input shows both long-vowel spellings.\n17. **せんぱい.** Read and type `senpai`; it may sound closer to `sempai`. The kana remains [ん](/languages/japanese/characters/hiragana/n).\n18. **れんあい.** Read `ren'ai`; commonly type `rennai`. The second n commits ん before the following vowel.\n\n## Hepburn Display And IME Aliases\n\nHepburn-style romaji helps an English-speaking beginner approximate the sound. Many IMEs also accept systematic aliases that follow the kana grid.\n\n- [し](/languages/japanese/characters/hiragana/shi): learner romaji `shi`; IME aliases `shi` and `si`.\n- [ち](/languages/japanese/characters/hiragana/chi): learner romaji `chi`; IME aliases `chi` and `ti`.\n- [つ](/languages/japanese/characters/hiragana/tsu): learner romaji `tsu`; IME aliases `tsu` and `tu`.\n- [ふ](/languages/japanese/characters/hiragana/fu): learner romaji `fu`; IME aliases `fu` and `hu`.\n- [じ](/languages/japanese/characters/hiragana/ji): learner romaji `ji`; IME aliases `ji` and `zi`.\n\nUse the learner romaji when explaining pronunciation. Use whichever accepted IME sequence reliably creates the intended kana when typing.\n\n## A Beginner Routine\n\n1. Read the Japanese spelling first.\n2. Identify whether は, へ, or を is a particle.\n3. Say the learner romaji aloud: wa, e, or o for those particles.\n4. When typing kana, enter ha, he, or wo so the IME creates the written particle.\n5. Tap any linked character above to inspect its reading, meaning, examples, stroke order, and writing practice.\n\n## Sources\n\n- [Agency for Cultural Affairs: 2025 Romanization Guidance](https://www.bunka.go.jp/seisaku/kokugo_nihongo/kokugo_shisaku/pdf/94340701_01.pdf) explicitly distinguishes romanizing the particles as `wa`, `e`, and `o` from typing `ha`, `he`, and `wo` in kana input.\n- [Japan Foundation: Spelling Rules of the Roman Alphabet](https://marugoto.jpf.go.jp/assets/docs/teacher/resource/starter_a/spelling_rules_of_the_Roman_alphabet.pdf) gives beginner romanization rules and IME-relevant examples.\n- [Kotobank: 今晩は](https://kotobank.jp/word/%E4%BB%8A%E6%99%A9%E3%81%AF-506576) documents the greeting as an abbreviated expression beginning with 今晩は.",
+      "plainText": "The Short Answer こんばんは is pronounced and learner-romanized konbanwa, but a Japanese input method needs konbanha to produce the written は. Nothing in the greeting changed from wa to ha. You are looking at two different jobs: Japanese spelling: こんばんは tells you what is written.Pronunciation: こんばんわ approximates what it sounds like.Learner romaji: konbanwa tells you how to read it.IME keys: konbanha tells the keyboard how to produce the spelling こんばんは. An IME converts key sequences into kana. It is not judging the best way to romanize a Japanese sentence for a reader. Why The Greeting Ends In は The older, fuller expression began with 今晩は…: “As for this evening…”. The rest of the sentence was eventually omitted, but the topic particle は remained. 今 = now or this晩 = eveningは = the topic particle, pronounced wa The same pattern explains こんにちは, historically connected with 今日は…, “As for today…”. The Three Particle Exceptions When these kana are ordinary parts of words, use their normal sound. When they are particles, their pronunciation changes. は as a particle is pronounced わ, romanized wa, and typed ha. In the ordinary word はな (hana, flower), it keeps the sound ha.へ as a particle is pronounced え, romanized e, and typed he. In へや (heya, room), it keeps the sound he.を is pronounced and romanized o, but typed wo. Beginners will see it almost entirely as a particle. The topic particle は marks what the sentence is about. The direction particle へ points toward a destination. The object particle を marks what an action affects. Read, Understand, Then Type These examples keep learner romaji and IME input separate. Spaces make the grammar visible; an IME can usually accept the same keys without spaces. 今晩は。 / こんばんは。 Read konbanwa; type konbanha. 今晩 means “this evening,” and は is the topic particle.今日は。 / こんにちは。 Read konnichiwa; type konnichiha. 今日 means “today,” and は is the topic particle.わたしは日本人です。 / わたしはにほんじんです。 Read watashi wa nihonjin desu; type watashiha nihonjin desu. わたし is “I,” and 日本人 is “Japanese person.”これは本です。 / これはほんです。 Read kore wa hon desu; type koreha hon desu. これ is “this,” and 本 is “book.”山は大きいです。 / やまはおおきいです。 Read yama wa ookii desu; type yamaha ookii desu. 山 is “mountain,” and 大きい is “big.”はなはきれいです。 Read hana wa kirei desu; type hanaha kirei desu. The first は is ha inside はな; the second is particle wa.はははげんきです。 Read haha wa genki desu; type hahaha genki desu. はは means “mother”; the final は is the topic particle.日本へいきます。 / にほんへいきます。 Read nihon e ikimasu; type nihonhe ikimasu. 日本 is Japan, へ means “toward,” and いきます means “go.”山へいきます。 / やまへいきます。 Read yama e ikimasu; type yamahe ikimasu. The destination is the mountain.へやへかえります。 Read heya e kaerimasu; type heyahe kaerimasu. The first へ is he in へや; the second is particle e.水をのみます。 / みずをのみます。 Read mizu o nomimasu; type mizuwo nomimasu. 水 is water, を marks the object, and のみます means “drink.”本をよみます。 / ほんをよみます。 Read hon o yomimasu; type honwo yomimasu. 本 is a book, and よみます means “read.”これをください。 Read kore o kudasai; type korewo kudasai. It means “Please give me this.”がっこう. Read gakkoo or gakkō; type gakkou. Small っ doubles the next consonant, while こう supplies the long o sound.きょう. Read kyoo or kyō; type kyou. き plus small ょ makes kyo, and う lengthens the o sound.おおきい. Read ookii or ōkii; type ookii. The full input shows both long-vowel spellings.せんぱい. Read and type senpai; it may sound closer to sempai. The kana remains ん.れんあい. Read ren'ai; commonly type rennai. The second n commits ん before the following vowel. Hepburn Display And IME Aliases Hepburn-style romaji helps an English-speaking beginner approximate the sound. Many IMEs also accept systematic aliases that follow the kana grid. し: learner romaji shi; IME aliases shi and si.ち: learner romaji chi; IME aliases chi and ti.つ: learner romaji tsu; IME aliases tsu and tu.ふ: learner romaji fu; IME aliases fu and hu.じ: learner romaji ji; IME aliases ji and zi. Use the learner romaji when explaining pronunciation. Use whichever accepted IME sequence reliably creates the intended kana when typing. A Beginner Routine Read the Japanese spelling first.Identify whether は, へ, or を is a particle.Say the learner romaji aloud: wa, e, or o for those particles.When typing kana, enter ha, he, or wo so the IME creates the written particle.Tap any linked character above to inspect its reading, meaning, examples, stroke order, and writing practice. Sources Agency for Cultural Affairs: 2025 Romanization Guidance explicitly distinguishes romanizing the particles as wa, e, and o from typing ha, he, and wo in kana input.Japan Foundation: Spelling Rules of the Roman Alphabet gives beginner romanization rules and IME-relevant examples.Kotobank: 今晩は documents the greeting as an abbreviated expression beginning with 今晩は.",
+      "headings": [
+        {
+          "id": "the-short-answer",
+          "depth": 2,
+          "text": "The Short Answer"
+        },
+        {
+          "id": "why-the-greeting-ends-in",
+          "depth": 2,
+          "text": "Why The Greeting Ends In は"
+        },
+        {
+          "id": "the-three-particle-exceptions",
+          "depth": 2,
+          "text": "The Three Particle Exceptions"
+        },
+        {
+          "id": "read-understand-then-type",
+          "depth": 2,
+          "text": "Read, Understand, Then Type"
+        },
+        {
+          "id": "hepburn-display-and-ime-aliases",
+          "depth": 2,
+          "text": "Hepburn Display And IME Aliases"
+        },
+        {
+          "id": "a-beginner-routine",
+          "depth": 2,
+          "text": "A Beginner Routine"
+        },
+        {
+          "id": "sources",
+          "depth": 2,
+          "text": "Sources"
+        }
+      ],
+      "mermaidBlocks": [],
+      "contentHash": "cf2a790114ba5578eb1c616e128143eb987f7bf633d61724c9136f95a138464c",
+      "readingMinutes": 4
+    },
+    {
       "title": "Japanese Starter Kanji",
       "slug": "languages/japanese-starter-kanji",
       "summary": "A first kanji set for numbers, nature words, people, size, position, books, mountains, and rivers.",
@@ -3090,6 +3156,41 @@
           ]
         },
         {
+          "slug": "romaji-and-kana-input",
+          "title": "Romaji And Kana Input",
+          "summary": "Separate Japanese spelling, pronunciation, learner romaji, and the keys an IME needs.",
+          "nodes": [
+            {
+              "kind": "document",
+              "slug": "languages/japanese-romaji-kana-input"
+            },
+            {
+              "kind": "exercise",
+              "slug": "languages/japanese-romaji-kana-input-questionnaire"
+            },
+            {
+              "kind": "exercise",
+              "slug": "languages/japanese-hiragana-k-s-writing"
+            },
+            {
+              "kind": "exercise",
+              "slug": "languages/japanese-hiragana-t-n-writing"
+            },
+            {
+              "kind": "exercise",
+              "slug": "languages/japanese-hiragana-h-m-writing"
+            },
+            {
+              "kind": "exercise",
+              "slug": "languages/japanese-hiragana-y-r-w-writing"
+            },
+            {
+              "kind": "exercise",
+              "slug": "languages/japanese-hiragana-ime-exceptions-writing"
+            }
+          ]
+        },
+        {
           "slug": "starter-kanji",
           "title": "Starter Kanji",
           "summary": "Practice beginner kanji for numbers, nature, people, size, position, books, mountains, and rivers.",
@@ -3108,7 +3209,7 @@
       "id": "084cfa357f0b",
       "route": "/paths/japanese-foundations",
       "sourcePath": "content/learning-paths/japanese-foundations.json",
-      "contentHash": "c2ede6a912b4057988c39a0fb36b1d761cde46cccc905f42bb3db45fc38e5d17"
+      "contentHash": "bba264f67aa7efc34deddb9a02d4b15fee48cdf8ad8560803293631c7263c64a"
     },
     {
       "slug": "mermaid-diagram-authoring",
@@ -6127,6 +6228,148 @@
       "contentHash": "23d7cb4056514c56b25ae5b429328526c3841b55850849f28a23f6efc819eae4"
     },
     {
+      "slug": "languages/japanese-hiragana-h-m-writing",
+      "title": "Hiragana H And M Rows",
+      "documentSlug": "languages/japanese-romaji-kana-input",
+      "concept": "Hiragana h and m rows",
+      "difficulty": "foundation",
+      "tags": [
+        "japanese",
+        "hiragana",
+        "handwriting"
+      ],
+      "status": "published",
+      "type": "writing",
+      "prompt": "Write the h and m rows in standard gojuon order.",
+      "characterSlugs": [
+        "japanese/hiragana/ha",
+        "japanese/hiragana/hi",
+        "japanese/hiragana/fu",
+        "japanese/hiragana/he",
+        "japanese/hiragana/ho",
+        "japanese/hiragana/ma",
+        "japanese/hiragana/mi",
+        "japanese/hiragana/mu",
+        "japanese/hiragana/me",
+        "japanese/hiragana/mo"
+      ],
+      "modes": [
+        "assisted",
+        "free"
+      ],
+      "explanation": "Practice ha and he as characters before comparing their special particle pronunciations wa and e.",
+      "id": "7bd2b4f08ca2",
+      "route": "/practice/languages/japanese-hiragana-h-m-writing",
+      "sourcePath": "content/exercises/languages/japanese-hiragana-h-m-writing.json",
+      "contentHash": "32b9d8e506412bee0e6a449a092aad4a2da187561456374c47f8ad68d9bf9846"
+    },
+    {
+      "slug": "languages/japanese-hiragana-ime-exceptions-writing",
+      "title": "Hiragana Particle And IME Exceptions",
+      "documentSlug": "languages/japanese-romaji-kana-input",
+      "concept": "Particle spelling and IME exceptions",
+      "difficulty": "foundation",
+      "tags": [
+        "japanese",
+        "hiragana",
+        "handwriting",
+        "ime"
+      ],
+      "status": "published",
+      "type": "writing",
+      "prompt": "Write the characters behind the most important particle and IME exceptions.",
+      "characterSlugs": [
+        "japanese/hiragana/ha",
+        "japanese/hiragana/wa",
+        "japanese/hiragana/he",
+        "japanese/hiragana/wo",
+        "japanese/hiragana/n",
+        "japanese/hiragana/ba",
+        "japanese/hiragana/small-tsu"
+      ],
+      "modes": [
+        "assisted",
+        "free"
+      ],
+      "explanation": "Connect each written kana to its normal sound, particle pronunciation, or special keyboard behavior.",
+      "id": "49453d0c94e3",
+      "route": "/practice/languages/japanese-hiragana-ime-exceptions-writing",
+      "sourcePath": "content/exercises/languages/japanese-hiragana-ime-exceptions-writing.json",
+      "contentHash": "2beb67c66eb863a155325d3bb8d44752c4631634d4017c0c1af187a4a0e077d1"
+    },
+    {
+      "slug": "languages/japanese-hiragana-k-s-writing",
+      "title": "Hiragana K And S Rows",
+      "documentSlug": "languages/japanese-romaji-kana-input",
+      "concept": "Hiragana k and s rows",
+      "difficulty": "foundation",
+      "tags": [
+        "japanese",
+        "hiragana",
+        "handwriting"
+      ],
+      "status": "published",
+      "type": "writing",
+      "prompt": "Write the k and s rows in standard gojuon order.",
+      "characterSlugs": [
+        "japanese/hiragana/ka",
+        "japanese/hiragana/ki",
+        "japanese/hiragana/ku",
+        "japanese/hiragana/ke",
+        "japanese/hiragana/ko",
+        "japanese/hiragana/sa",
+        "japanese/hiragana/shi",
+        "japanese/hiragana/su",
+        "japanese/hiragana/se",
+        "japanese/hiragana/so"
+      ],
+      "modes": [
+        "assisted",
+        "free"
+      ],
+      "explanation": "Trace each guide first, then repeat the row in free mode while keeping the expected stroke order.",
+      "id": "f788899892e9",
+      "route": "/practice/languages/japanese-hiragana-k-s-writing",
+      "sourcePath": "content/exercises/languages/japanese-hiragana-k-s-writing.json",
+      "contentHash": "3055cbc2e5c1f155d3b93a23671eb100361d2380dee698273c594c8dff1128b0"
+    },
+    {
+      "slug": "languages/japanese-hiragana-t-n-writing",
+      "title": "Hiragana T And N Rows",
+      "documentSlug": "languages/japanese-romaji-kana-input",
+      "concept": "Hiragana t and n rows",
+      "difficulty": "foundation",
+      "tags": [
+        "japanese",
+        "hiragana",
+        "handwriting"
+      ],
+      "status": "published",
+      "type": "writing",
+      "prompt": "Write the t and n rows in standard gojuon order.",
+      "characterSlugs": [
+        "japanese/hiragana/ta",
+        "japanese/hiragana/chi",
+        "japanese/hiragana/tsu",
+        "japanese/hiragana/te",
+        "japanese/hiragana/to",
+        "japanese/hiragana/na",
+        "japanese/hiragana/ni",
+        "japanese/hiragana/nu",
+        "japanese/hiragana/ne",
+        "japanese/hiragana/no"
+      ],
+      "modes": [
+        "assisted",
+        "free"
+      ],
+      "explanation": "Notice that chi and tsu use learner romaji that differs from the systematic IME aliases ti and tu.",
+      "id": "c45fd9d082ce",
+      "route": "/practice/languages/japanese-hiragana-t-n-writing",
+      "sourcePath": "content/exercises/languages/japanese-hiragana-t-n-writing.json",
+      "contentHash": "358d7b1b6b501149a7a5fa1850d10cb4f80d543db16c680d4cbbf0bff7326ed0"
+    },
+    {
       "slug": "languages/japanese-hiragana-vowels-writing",
       "title": "Hiragana Vowel Writing",
       "documentSlug": "languages/japanese-writing-systems",
@@ -6158,6 +6401,43 @@
       "contentHash": "d5ee60abb6560971f7ea4b7e25862eacf9b6a310b96becaba5b9d15b647467d2"
     },
     {
+      "slug": "languages/japanese-hiragana-y-r-w-writing",
+      "title": "Hiragana Y, R, W, And N",
+      "documentSlug": "languages/japanese-romaji-kana-input",
+      "concept": "Final basic hiragana rows",
+      "difficulty": "foundation",
+      "tags": [
+        "japanese",
+        "hiragana",
+        "handwriting"
+      ],
+      "status": "published",
+      "type": "writing",
+      "prompt": "Write the y, r, and w rows, then finish with moraic n.",
+      "characterSlugs": [
+        "japanese/hiragana/ya",
+        "japanese/hiragana/yu",
+        "japanese/hiragana/yo",
+        "japanese/hiragana/ra",
+        "japanese/hiragana/ri",
+        "japanese/hiragana/ru",
+        "japanese/hiragana/re",
+        "japanese/hiragana/ro",
+        "japanese/hiragana/wa",
+        "japanese/hiragana/wo",
+        "japanese/hiragana/n"
+      ],
+      "modes": [
+        "assisted",
+        "free"
+      ],
+      "explanation": "This drill completes the 46 basic hiragana and highlights the special object particle を and context-sensitive ん input.",
+      "id": "73c2359242e7",
+      "route": "/practice/languages/japanese-hiragana-y-r-w-writing",
+      "sourcePath": "content/exercises/languages/japanese-hiragana-y-r-w-writing.json",
+      "contentHash": "dae7e6821eece7ba00bdf002cc4a6763642d216c0505550b66fa350f1e755409"
+    },
+    {
       "slug": "languages/japanese-katakana-vowels-writing",
       "title": "Katakana Vowel Writing",
       "documentSlug": "languages/japanese-writing-systems",
@@ -6187,6 +6467,165 @@
       "route": "/practice/languages/japanese-katakana-vowels-writing",
       "sourcePath": "content/exercises/languages/japanese-katakana-vowels-writing.json",
       "contentHash": "2b0cd5242d0bed19403bc2d84e9870daf1f56a60cf6f7a1b82e5fb1449aa7b71"
+    },
+    {
+      "slug": "languages/japanese-romaji-kana-input-questionnaire",
+      "title": "Romaji And Kana Input Check",
+      "documentSlug": "languages/japanese-romaji-kana-input",
+      "concept": "Japanese spelling, pronunciation, and IME input",
+      "difficulty": "foundation",
+      "tags": [
+        "japanese",
+        "romaji",
+        "ime",
+        "particles"
+      ],
+      "status": "published",
+      "type": "questionnaire",
+      "questions": [
+        {
+          "id": "konbanwa-display",
+          "prompt": "Which learner-facing romaji correctly shows how こんばんは is pronounced?",
+          "explanation": "The final は is the topic particle, pronounced and learner-romanized wa. Konbanha is an IME key sequence, not the pronunciation guide.",
+          "kind": "choice",
+          "options": [
+            {
+              "id": "konbanwa",
+              "label": "konbanwa",
+              "isCorrect": true
+            },
+            {
+              "id": "konbanha",
+              "label": "konbanha",
+              "isCorrect": false
+            },
+            {
+              "id": "kombanwo",
+              "label": "kombanwo",
+              "isCorrect": false
+            }
+          ]
+        },
+        {
+          "id": "konbanwa-input",
+          "prompt": "Which common IME key sequence produces the kana spelling こんばんは?",
+          "explanation": "The IME must create the written kana は, so its direct key sequence ends in ha even though the particle is pronounced wa.",
+          "kind": "choice",
+          "options": [
+            {
+              "id": "input-ha",
+              "label": "konbanha",
+              "isCorrect": true
+            },
+            {
+              "id": "input-wa",
+              "label": "konbanwa",
+              "isCorrect": false
+            },
+            {
+              "id": "input-wo",
+              "label": "konbanwo",
+              "isCorrect": false
+            }
+          ]
+        },
+        {
+          "id": "direction-particle",
+          "prompt": "In 日本へいきます, how should the direction particle へ be learner-romanized?",
+          "explanation": "The direction particle is written へ but pronounced and romanized e. Typing he remains the direct way to produce its kana.",
+          "kind": "choice",
+          "options": [
+            {
+              "id": "direction-e",
+              "label": "nihon e ikimasu",
+              "isCorrect": true
+            },
+            {
+              "id": "direction-he",
+              "label": "nihon he ikimasu",
+              "isCorrect": false
+            },
+            {
+              "id": "direction-wo",
+              "label": "nihon wo ikimasu",
+              "isCorrect": false
+            }
+          ]
+        },
+        {
+          "id": "object-particle",
+          "prompt": "Which pair correctly separates the pronunciation and IME input for the object particle を?",
+          "explanation": "Modern beginner pronunciation and romanization use o, while the IME sequence wo creates the distinct kana を.",
+          "kind": "choice",
+          "options": [
+            {
+              "id": "o-wo",
+              "label": "Pronounce o; type wo",
+              "isCorrect": true
+            },
+            {
+              "id": "wo-o",
+              "label": "Pronounce wo; type o",
+              "isCorrect": false
+            },
+            {
+              "id": "o-o",
+              "label": "Pronounce o; type o",
+              "isCorrect": false
+            }
+          ]
+        },
+        {
+          "id": "small-tsu",
+          "prompt": "Why is gakkou typed with two k characters when entering がっこう?",
+          "explanation": "A doubled following consonant is a common IME shortcut for small っ. The final ou separately represents the long o sequence こう.",
+          "kind": "choice",
+          "options": [
+            {
+              "id": "small-tsu-correct",
+              "label": "The doubled consonant creates small っ before こ.",
+              "isCorrect": true
+            },
+            {
+              "id": "long-vowel-wrong",
+              "label": "The doubled consonant creates the long o sound.",
+              "isCorrect": false
+            },
+            {
+              "id": "particle-wrong",
+              "label": "The doubled consonant marks a topic particle.",
+              "isCorrect": false
+            }
+          ]
+        },
+        {
+          "id": "hepburn-alias",
+          "prompt": "Which pair can commonly produce the same hiragana し in an IME?",
+          "explanation": "Shi is the learner-facing Hepburn form, while many IMEs also accept the systematic alias si for し.",
+          "kind": "choice",
+          "options": [
+            {
+              "id": "shi-si",
+              "label": "shi and si",
+              "isCorrect": true
+            },
+            {
+              "id": "chi-ti",
+              "label": "chi and ti",
+              "isCorrect": false
+            },
+            {
+              "id": "fu-hu",
+              "label": "fu and hu",
+              "isCorrect": false
+            }
+          ]
+        }
+      ],
+      "id": "53f4e4065232",
+      "route": "/practice/languages/japanese-romaji-kana-input-questionnaire",
+      "sourcePath": "content/exercises/languages/japanese-romaji-kana-input-questionnaire.json",
+      "contentHash": "770a91b9440c70be3d0f34dca801af000120185284c514e533b5584da70dce87"
     },
     {
       "slug": "languages/japanese-starter-kanji-writing",
@@ -7889,11 +8328,16 @@
         }
       ],
       "romaji": "a",
+      "inputSequences": [
+        "a"
+      ],
       "ipa": "a",
+      "studyOrder": 1,
       "tags": [
         "kana",
         "vowel",
-        "hiragana"
+        "hiragana",
+        "basic-hiragana"
       ],
       "status": "published",
       "strokes": [
@@ -7945,11 +8389,228 @@
           ]
         }
       ],
+      "examples": [],
       "sources": [],
       "id": "415fea39c4c7",
       "route": "/languages/japanese/characters/hiragana/a",
       "sourcePath": "content/languages/japanese/characters.json",
-      "contentHash": "2fc96acbee2ea12d0c40ee6f016040953e6630ba334b089159a8cb001ba32ef9"
+      "contentHash": "4364ea1971f4eda01d76d188c4ec20711fbdd61e9eb8f27b165bc27c336d7f58"
+    },
+    {
+      "slug": "japanese/hiragana/ba",
+      "language": "ja",
+      "writingSystem": "hiragana",
+      "glyph": "ば",
+      "title": "Hiragana Ba",
+      "summary": "The voiced hiragana syllable ba used in こんばんは.",
+      "meanings": [
+        "ba sound"
+      ],
+      "readings": [
+        {
+          "label": "hiragana",
+          "value": "ば",
+          "ipa": "ba"
+        }
+      ],
+      "romaji": "ba",
+      "inputSequences": [
+        "ba"
+      ],
+      "ipa": "ba",
+      "studyOrder": 103,
+      "tags": [
+        "kana",
+        "hiragana",
+        "supplement",
+        "dakuten",
+        "greeting"
+      ],
+      "status": "published",
+      "strokes": [
+        {
+          "id": "s1",
+          "points": [
+            [
+              22,
+              18
+            ],
+            [
+              20,
+              68
+            ],
+            [
+              28,
+              82
+            ]
+          ]
+        },
+        {
+          "id": "s2",
+          "points": [
+            [
+              40,
+              39
+            ],
+            [
+              72,
+              36
+            ]
+          ]
+        },
+        {
+          "id": "s3",
+          "points": [
+            [
+              59,
+              19
+            ],
+            [
+              59,
+              68
+            ],
+            [
+              50,
+              78
+            ],
+            [
+              43,
+              69
+            ],
+            [
+              51,
+              60
+            ],
+            [
+              65,
+              65
+            ],
+            [
+              75,
+              77
+            ]
+          ]
+        },
+        {
+          "id": "s4",
+          "points": [
+            [
+              75,
+              17
+            ],
+            [
+              81,
+              24
+            ]
+          ]
+        },
+        {
+          "id": "s5",
+          "points": [
+            [
+              82,
+              12
+            ],
+            [
+              88,
+              19
+            ]
+          ]
+        }
+      ],
+      "examples": [],
+      "sources": [],
+      "id": "634e546fec44",
+      "route": "/languages/japanese/characters/hiragana/ba",
+      "sourcePath": "content/languages/japanese/hiragana-expanded.json",
+      "contentHash": "2a419a4af4952846a4c4ac4f40f1b1d6cf2e2d7fdbb6ff5ac6aa3ce9b43d4dcd"
+    },
+    {
+      "slug": "japanese/hiragana/chi",
+      "language": "ja",
+      "writingSystem": "hiragana",
+      "glyph": "ち",
+      "title": "Hiragana Chi",
+      "summary": "The basic hiragana syllable chi.",
+      "meanings": [
+        "chi sound"
+      ],
+      "readings": [
+        {
+          "label": "hiragana",
+          "value": "ち",
+          "ipa": "tɕi"
+        }
+      ],
+      "romaji": "chi",
+      "inputSequences": [
+        "chi",
+        "ti"
+      ],
+      "ipa": "tɕi",
+      "studyOrder": 17,
+      "tags": [
+        "kana",
+        "hiragana",
+        "basic-hiragana",
+        "t-row",
+        "ime-alias"
+      ],
+      "status": "published",
+      "strokes": [
+        {
+          "id": "s1",
+          "points": [
+            [
+              22,
+              35
+            ],
+            [
+              72,
+              29
+            ]
+          ]
+        },
+        {
+          "id": "s2",
+          "points": [
+            [
+              48,
+              16
+            ],
+            [
+              39,
+              57
+            ],
+            [
+              52,
+              49
+            ],
+            [
+              70,
+              50
+            ],
+            [
+              78,
+              64
+            ],
+            [
+              66,
+              80
+            ],
+            [
+              40,
+              85
+            ]
+          ]
+        }
+      ],
+      "examples": [],
+      "sources": [],
+      "id": "25457c3b09b4",
+      "route": "/languages/japanese/characters/hiragana/chi",
+      "sourcePath": "content/languages/japanese/hiragana-expanded.json",
+      "contentHash": "2a419a4af4952846a4c4ac4f40f1b1d6cf2e2d7fdbb6ff5ac6aa3ce9b43d4dcd"
     },
     {
       "slug": "japanese/hiragana/e",
@@ -7969,11 +8630,16 @@
         }
       ],
       "romaji": "e",
+      "inputSequences": [
+        "e"
+      ],
       "ipa": "e",
+      "studyOrder": 4,
       "tags": [
         "kana",
         "vowel",
-        "hiragana"
+        "hiragana",
+        "basic-hiragana"
       ],
       "status": "published",
       "strokes": [
@@ -8016,11 +8682,588 @@
           ]
         }
       ],
+      "examples": [],
       "sources": [],
       "id": "79d88a825daa",
       "route": "/languages/japanese/characters/hiragana/e",
       "sourcePath": "content/languages/japanese/characters.json",
-      "contentHash": "2fc96acbee2ea12d0c40ee6f016040953e6630ba334b089159a8cb001ba32ef9"
+      "contentHash": "4364ea1971f4eda01d76d188c4ec20711fbdd61e9eb8f27b165bc27c336d7f58"
+    },
+    {
+      "slug": "japanese/hiragana/fu",
+      "language": "ja",
+      "writingSystem": "hiragana",
+      "glyph": "ふ",
+      "title": "Hiragana Fu",
+      "summary": "The basic hiragana syllable fu.",
+      "meanings": [
+        "fu sound"
+      ],
+      "readings": [
+        {
+          "label": "hiragana",
+          "value": "ふ",
+          "ipa": "ɸɯ"
+        }
+      ],
+      "romaji": "fu",
+      "inputSequences": [
+        "fu",
+        "hu"
+      ],
+      "ipa": "ɸɯ",
+      "studyOrder": 28,
+      "tags": [
+        "kana",
+        "hiragana",
+        "basic-hiragana",
+        "h-row",
+        "ime-alias"
+      ],
+      "status": "published",
+      "strokes": [
+        {
+          "id": "s1",
+          "points": [
+            [
+              45,
+              18
+            ],
+            [
+              58,
+              24
+            ]
+          ]
+        },
+        {
+          "id": "s2",
+          "points": [
+            [
+              49,
+              36
+            ],
+            [
+              58,
+              51
+            ],
+            [
+              50,
+              62
+            ]
+          ]
+        },
+        {
+          "id": "s3",
+          "points": [
+            [
+              29,
+              57
+            ],
+            [
+              20,
+              76
+            ]
+          ]
+        },
+        {
+          "id": "s4",
+          "points": [
+            [
+              69,
+              55
+            ],
+            [
+              82,
+              75
+            ]
+          ]
+        }
+      ],
+      "examples": [],
+      "sources": [],
+      "id": "e799bb35a54b",
+      "route": "/languages/japanese/characters/hiragana/fu",
+      "sourcePath": "content/languages/japanese/hiragana-expanded.json",
+      "contentHash": "2a419a4af4952846a4c4ac4f40f1b1d6cf2e2d7fdbb6ff5ac6aa3ce9b43d4dcd"
+    },
+    {
+      "slug": "japanese/hiragana/ga",
+      "language": "ja",
+      "writingSystem": "hiragana",
+      "glyph": "が",
+      "title": "Hiragana Ga",
+      "summary": "The voiced hiragana syllable ga.",
+      "meanings": [
+        "ga sound"
+      ],
+      "readings": [
+        {
+          "label": "hiragana",
+          "value": "が",
+          "ipa": "ɡa"
+        }
+      ],
+      "romaji": "ga",
+      "inputSequences": [
+        "ga"
+      ],
+      "ipa": "ɡa",
+      "studyOrder": 101,
+      "tags": [
+        "kana",
+        "hiragana",
+        "supplement",
+        "dakuten"
+      ],
+      "status": "published",
+      "strokes": [
+        {
+          "id": "s1",
+          "points": [
+            [
+              20,
+              36
+            ],
+            [
+              63,
+              33
+            ]
+          ]
+        },
+        {
+          "id": "s2",
+          "points": [
+            [
+              43,
+              18
+            ],
+            [
+              37,
+              73
+            ],
+            [
+              25,
+              82
+            ]
+          ]
+        },
+        {
+          "id": "s3",
+          "points": [
+            [
+              64,
+              48
+            ],
+            [
+              75,
+              62
+            ],
+            [
+              69,
+              78
+            ]
+          ]
+        },
+        {
+          "id": "s4",
+          "points": [
+            [
+              70,
+              19
+            ],
+            [
+              77,
+              27
+            ]
+          ]
+        },
+        {
+          "id": "s5",
+          "points": [
+            [
+              78,
+              14
+            ],
+            [
+              85,
+              22
+            ]
+          ]
+        }
+      ],
+      "examples": [],
+      "sources": [],
+      "id": "1e34986e3928",
+      "route": "/languages/japanese/characters/hiragana/ga",
+      "sourcePath": "content/languages/japanese/hiragana-expanded.json",
+      "contentHash": "2a419a4af4952846a4c4ac4f40f1b1d6cf2e2d7fdbb6ff5ac6aa3ce9b43d4dcd"
+    },
+    {
+      "slug": "japanese/hiragana/ha",
+      "language": "ja",
+      "writingSystem": "hiragana",
+      "glyph": "は",
+      "title": "Hiragana Ha",
+      "summary": "The hiragana ha; as a topic particle it is pronounced wa.",
+      "meanings": [
+        "ha sound",
+        "topic particle pronounced wa"
+      ],
+      "readings": [
+        {
+          "label": "hiragana",
+          "value": "は",
+          "ipa": "ha"
+        },
+        {
+          "label": "topic particle",
+          "value": "は",
+          "ipa": "wa"
+        }
+      ],
+      "romaji": "ha",
+      "inputSequences": [
+        "ha"
+      ],
+      "ipa": "ha",
+      "studyOrder": 26,
+      "tags": [
+        "kana",
+        "hiragana",
+        "basic-hiragana",
+        "h-row",
+        "particle-exception"
+      ],
+      "status": "published",
+      "strokes": [
+        {
+          "id": "s1",
+          "points": [
+            [
+              25,
+              18
+            ],
+            [
+              22,
+              67
+            ],
+            [
+              30,
+              82
+            ]
+          ]
+        },
+        {
+          "id": "s2",
+          "points": [
+            [
+              43,
+              38
+            ],
+            [
+              79,
+              35
+            ]
+          ]
+        },
+        {
+          "id": "s3",
+          "points": [
+            [
+              65,
+              18
+            ],
+            [
+              64,
+              68
+            ],
+            [
+              55,
+              78
+            ],
+            [
+              47,
+              70
+            ],
+            [
+              54,
+              60
+            ],
+            [
+              68,
+              65
+            ],
+            [
+              80,
+              78
+            ]
+          ]
+        }
+      ],
+      "examples": [],
+      "sources": [],
+      "id": "baaea450bee1",
+      "route": "/languages/japanese/characters/hiragana/ha",
+      "sourcePath": "content/languages/japanese/hiragana-expanded.json",
+      "contentHash": "2a419a4af4952846a4c4ac4f40f1b1d6cf2e2d7fdbb6ff5ac6aa3ce9b43d4dcd"
+    },
+    {
+      "slug": "japanese/hiragana/he",
+      "language": "ja",
+      "writingSystem": "hiragana",
+      "glyph": "へ",
+      "title": "Hiragana He",
+      "summary": "The hiragana he; as a direction particle it is pronounced e.",
+      "meanings": [
+        "he sound",
+        "direction particle pronounced e"
+      ],
+      "readings": [
+        {
+          "label": "hiragana",
+          "value": "へ",
+          "ipa": "he"
+        },
+        {
+          "label": "direction particle",
+          "value": "へ",
+          "ipa": "e"
+        }
+      ],
+      "romaji": "he",
+      "inputSequences": [
+        "he"
+      ],
+      "ipa": "he",
+      "studyOrder": 29,
+      "tags": [
+        "kana",
+        "hiragana",
+        "basic-hiragana",
+        "h-row",
+        "particle-exception"
+      ],
+      "status": "published",
+      "strokes": [
+        {
+          "id": "s1",
+          "points": [
+            [
+              20,
+              60
+            ],
+            [
+              45,
+              35
+            ],
+            [
+              79,
+              68
+            ]
+          ]
+        }
+      ],
+      "examples": [],
+      "sources": [],
+      "id": "729b7192c1aa",
+      "route": "/languages/japanese/characters/hiragana/he",
+      "sourcePath": "content/languages/japanese/hiragana-expanded.json",
+      "contentHash": "2a419a4af4952846a4c4ac4f40f1b1d6cf2e2d7fdbb6ff5ac6aa3ce9b43d4dcd"
+    },
+    {
+      "slug": "japanese/hiragana/hi",
+      "language": "ja",
+      "writingSystem": "hiragana",
+      "glyph": "ひ",
+      "title": "Hiragana Hi",
+      "summary": "The basic hiragana syllable hi.",
+      "meanings": [
+        "hi sound"
+      ],
+      "readings": [
+        {
+          "label": "hiragana",
+          "value": "ひ",
+          "ipa": "çi"
+        }
+      ],
+      "romaji": "hi",
+      "inputSequences": [
+        "hi"
+      ],
+      "ipa": "çi",
+      "studyOrder": 27,
+      "tags": [
+        "kana",
+        "hiragana",
+        "basic-hiragana",
+        "h-row"
+      ],
+      "status": "published",
+      "strokes": [
+        {
+          "id": "s1",
+          "points": [
+            [
+              25,
+              28
+            ],
+            [
+              21,
+              55
+            ],
+            [
+              29,
+              75
+            ],
+            [
+              44,
+              81
+            ],
+            [
+              58,
+              74
+            ],
+            [
+              62,
+              51
+            ],
+            [
+              57,
+              31
+            ],
+            [
+              68,
+              44
+            ],
+            [
+              80,
+              48
+            ]
+          ]
+        }
+      ],
+      "examples": [],
+      "sources": [],
+      "id": "b73f0f917524",
+      "route": "/languages/japanese/characters/hiragana/hi",
+      "sourcePath": "content/languages/japanese/hiragana-expanded.json",
+      "contentHash": "2a419a4af4952846a4c4ac4f40f1b1d6cf2e2d7fdbb6ff5ac6aa3ce9b43d4dcd"
+    },
+    {
+      "slug": "japanese/hiragana/ho",
+      "language": "ja",
+      "writingSystem": "hiragana",
+      "glyph": "ほ",
+      "title": "Hiragana Ho",
+      "summary": "The basic hiragana syllable ho.",
+      "meanings": [
+        "ho sound"
+      ],
+      "readings": [
+        {
+          "label": "hiragana",
+          "value": "ほ",
+          "ipa": "ho"
+        }
+      ],
+      "romaji": "ho",
+      "inputSequences": [
+        "ho"
+      ],
+      "ipa": "ho",
+      "studyOrder": 30,
+      "tags": [
+        "kana",
+        "hiragana",
+        "basic-hiragana",
+        "h-row"
+      ],
+      "status": "published",
+      "strokes": [
+        {
+          "id": "s1",
+          "points": [
+            [
+              24,
+              18
+            ],
+            [
+              21,
+              68
+            ],
+            [
+              29,
+              82
+            ]
+          ]
+        },
+        {
+          "id": "s2",
+          "points": [
+            [
+              46,
+              29
+            ],
+            [
+              78,
+              26
+            ]
+          ]
+        },
+        {
+          "id": "s3",
+          "points": [
+            [
+              44,
+              44
+            ],
+            [
+              81,
+              41
+            ]
+          ]
+        },
+        {
+          "id": "s4",
+          "points": [
+            [
+              66,
+              17
+            ],
+            [
+              65,
+              67
+            ],
+            [
+              56,
+              78
+            ],
+            [
+              48,
+              70
+            ],
+            [
+              55,
+              60
+            ],
+            [
+              68,
+              65
+            ],
+            [
+              80,
+              77
+            ]
+          ]
+        }
+      ],
+      "examples": [],
+      "sources": [],
+      "id": "338e62988cee",
+      "route": "/languages/japanese/characters/hiragana/ho",
+      "sourcePath": "content/languages/japanese/hiragana-expanded.json",
+      "contentHash": "2a419a4af4952846a4c4ac4f40f1b1d6cf2e2d7fdbb6ff5ac6aa3ce9b43d4dcd"
     },
     {
       "slug": "japanese/hiragana/i",
@@ -8040,11 +9283,16 @@
         }
       ],
       "romaji": "i",
+      "inputSequences": [
+        "i"
+      ],
       "ipa": "i",
+      "studyOrder": 2,
       "tags": [
         "kana",
         "vowel",
-        "hiragana"
+        "hiragana",
+        "basic-hiragana"
       ],
       "status": "published",
       "strokes": [
@@ -8079,11 +9327,1549 @@
           ]
         }
       ],
+      "examples": [],
       "sources": [],
       "id": "00f15de22352",
       "route": "/languages/japanese/characters/hiragana/i",
       "sourcePath": "content/languages/japanese/characters.json",
-      "contentHash": "2fc96acbee2ea12d0c40ee6f016040953e6630ba334b089159a8cb001ba32ef9"
+      "contentHash": "4364ea1971f4eda01d76d188c4ec20711fbdd61e9eb8f27b165bc27c336d7f58"
+    },
+    {
+      "slug": "japanese/hiragana/ji",
+      "language": "ja",
+      "writingSystem": "hiragana",
+      "glyph": "じ",
+      "title": "Hiragana Ji",
+      "summary": "The voiced hiragana syllable ji.",
+      "meanings": [
+        "ji sound"
+      ],
+      "readings": [
+        {
+          "label": "hiragana",
+          "value": "じ",
+          "ipa": "dʑi"
+        }
+      ],
+      "romaji": "ji",
+      "inputSequences": [
+        "ji",
+        "zi"
+      ],
+      "ipa": "dʑi",
+      "studyOrder": 102,
+      "tags": [
+        "kana",
+        "hiragana",
+        "supplement",
+        "dakuten",
+        "ime-alias"
+      ],
+      "status": "published",
+      "strokes": [
+        {
+          "id": "s1",
+          "points": [
+            [
+              34,
+              20
+            ],
+            [
+              31,
+              66
+            ],
+            [
+              41,
+              81
+            ],
+            [
+              60,
+              79
+            ],
+            [
+              75,
+              64
+            ]
+          ]
+        },
+        {
+          "id": "s2",
+          "points": [
+            [
+              66,
+              18
+            ],
+            [
+              72,
+              25
+            ]
+          ]
+        },
+        {
+          "id": "s3",
+          "points": [
+            [
+              75,
+              13
+            ],
+            [
+              81,
+              20
+            ]
+          ]
+        }
+      ],
+      "examples": [],
+      "sources": [],
+      "id": "e6d5a5781536",
+      "route": "/languages/japanese/characters/hiragana/ji",
+      "sourcePath": "content/languages/japanese/hiragana-expanded.json",
+      "contentHash": "2a419a4af4952846a4c4ac4f40f1b1d6cf2e2d7fdbb6ff5ac6aa3ce9b43d4dcd"
+    },
+    {
+      "slug": "japanese/hiragana/ka",
+      "language": "ja",
+      "writingSystem": "hiragana",
+      "glyph": "か",
+      "title": "Hiragana Ka",
+      "summary": "The basic hiragana syllable ka.",
+      "meanings": [
+        "ka sound"
+      ],
+      "readings": [
+        {
+          "label": "hiragana",
+          "value": "か",
+          "ipa": "ka"
+        }
+      ],
+      "romaji": "ka",
+      "inputSequences": [
+        "ka"
+      ],
+      "ipa": "ka",
+      "studyOrder": 6,
+      "tags": [
+        "kana",
+        "hiragana",
+        "basic-hiragana",
+        "k-row"
+      ],
+      "status": "published",
+      "strokes": [
+        {
+          "id": "s1",
+          "points": [
+            [
+              25,
+              34
+            ],
+            [
+              72,
+              34
+            ]
+          ]
+        },
+        {
+          "id": "s2",
+          "points": [
+            [
+              48,
+              18
+            ],
+            [
+              42,
+              72
+            ],
+            [
+              28,
+              82
+            ]
+          ]
+        },
+        {
+          "id": "s3",
+          "points": [
+            [
+              68,
+              48
+            ],
+            [
+              78,
+              62
+            ],
+            [
+              72,
+              78
+            ]
+          ]
+        }
+      ],
+      "examples": [],
+      "sources": [],
+      "id": "fe2e4fb0a42d",
+      "route": "/languages/japanese/characters/hiragana/ka",
+      "sourcePath": "content/languages/japanese/hiragana-expanded.json",
+      "contentHash": "2a419a4af4952846a4c4ac4f40f1b1d6cf2e2d7fdbb6ff5ac6aa3ce9b43d4dcd"
+    },
+    {
+      "slug": "japanese/hiragana/ke",
+      "language": "ja",
+      "writingSystem": "hiragana",
+      "glyph": "け",
+      "title": "Hiragana Ke",
+      "summary": "The basic hiragana syllable ke.",
+      "meanings": [
+        "ke sound"
+      ],
+      "readings": [
+        {
+          "label": "hiragana",
+          "value": "け",
+          "ipa": "ke"
+        }
+      ],
+      "romaji": "ke",
+      "inputSequences": [
+        "ke"
+      ],
+      "ipa": "ke",
+      "studyOrder": 9,
+      "tags": [
+        "kana",
+        "hiragana",
+        "basic-hiragana",
+        "k-row"
+      ],
+      "status": "published",
+      "strokes": [
+        {
+          "id": "s1",
+          "points": [
+            [
+              28,
+              20
+            ],
+            [
+              25,
+              70
+            ],
+            [
+              34,
+              82
+            ]
+          ]
+        },
+        {
+          "id": "s2",
+          "points": [
+            [
+              44,
+              38
+            ],
+            [
+              78,
+              36
+            ]
+          ]
+        },
+        {
+          "id": "s3",
+          "points": [
+            [
+              64,
+              18
+            ],
+            [
+              65,
+              60
+            ],
+            [
+              51,
+              84
+            ]
+          ]
+        }
+      ],
+      "examples": [],
+      "sources": [],
+      "id": "b8549a7635e8",
+      "route": "/languages/japanese/characters/hiragana/ke",
+      "sourcePath": "content/languages/japanese/hiragana-expanded.json",
+      "contentHash": "2a419a4af4952846a4c4ac4f40f1b1d6cf2e2d7fdbb6ff5ac6aa3ce9b43d4dcd"
+    },
+    {
+      "slug": "japanese/hiragana/ki",
+      "language": "ja",
+      "writingSystem": "hiragana",
+      "glyph": "き",
+      "title": "Hiragana Ki",
+      "summary": "The basic hiragana syllable ki.",
+      "meanings": [
+        "ki sound"
+      ],
+      "readings": [
+        {
+          "label": "hiragana",
+          "value": "き",
+          "ipa": "ki"
+        }
+      ],
+      "romaji": "ki",
+      "inputSequences": [
+        "ki"
+      ],
+      "ipa": "ki",
+      "studyOrder": 7,
+      "tags": [
+        "kana",
+        "hiragana",
+        "basic-hiragana",
+        "k-row"
+      ],
+      "status": "published",
+      "strokes": [
+        {
+          "id": "s1",
+          "points": [
+            [
+              28,
+              28
+            ],
+            [
+              68,
+              25
+            ]
+          ]
+        },
+        {
+          "id": "s2",
+          "points": [
+            [
+              24,
+              43
+            ],
+            [
+              74,
+              40
+            ]
+          ]
+        },
+        {
+          "id": "s3",
+          "points": [
+            [
+              48,
+              16
+            ],
+            [
+              55,
+              53
+            ]
+          ]
+        },
+        {
+          "id": "s4",
+          "points": [
+            [
+              64,
+              58
+            ],
+            [
+              37,
+              62
+            ],
+            [
+              32,
+              77
+            ],
+            [
+              56,
+              84
+            ]
+          ]
+        }
+      ],
+      "examples": [],
+      "sources": [],
+      "id": "8258c850d777",
+      "route": "/languages/japanese/characters/hiragana/ki",
+      "sourcePath": "content/languages/japanese/hiragana-expanded.json",
+      "contentHash": "2a419a4af4952846a4c4ac4f40f1b1d6cf2e2d7fdbb6ff5ac6aa3ce9b43d4dcd"
+    },
+    {
+      "slug": "japanese/hiragana/ko",
+      "language": "ja",
+      "writingSystem": "hiragana",
+      "glyph": "こ",
+      "title": "Hiragana Ko",
+      "summary": "The basic hiragana syllable ko.",
+      "meanings": [
+        "ko sound"
+      ],
+      "readings": [
+        {
+          "label": "hiragana",
+          "value": "こ",
+          "ipa": "ko"
+        }
+      ],
+      "romaji": "ko",
+      "inputSequences": [
+        "ko"
+      ],
+      "ipa": "ko",
+      "studyOrder": 10,
+      "tags": [
+        "kana",
+        "hiragana",
+        "basic-hiragana",
+        "k-row"
+      ],
+      "status": "published",
+      "strokes": [
+        {
+          "id": "s1",
+          "points": [
+            [
+              28,
+              34
+            ],
+            [
+              70,
+              32
+            ],
+            [
+              63,
+              42
+            ]
+          ]
+        },
+        {
+          "id": "s2",
+          "points": [
+            [
+              32,
+              60
+            ],
+            [
+              27,
+              70
+            ],
+            [
+              42,
+              79
+            ],
+            [
+              72,
+              76
+            ]
+          ]
+        }
+      ],
+      "examples": [],
+      "sources": [],
+      "id": "b1f4b9eb7dbe",
+      "route": "/languages/japanese/characters/hiragana/ko",
+      "sourcePath": "content/languages/japanese/hiragana-expanded.json",
+      "contentHash": "2a419a4af4952846a4c4ac4f40f1b1d6cf2e2d7fdbb6ff5ac6aa3ce9b43d4dcd"
+    },
+    {
+      "slug": "japanese/hiragana/ku",
+      "language": "ja",
+      "writingSystem": "hiragana",
+      "glyph": "く",
+      "title": "Hiragana Ku",
+      "summary": "The basic hiragana syllable ku.",
+      "meanings": [
+        "ku sound"
+      ],
+      "readings": [
+        {
+          "label": "hiragana",
+          "value": "く",
+          "ipa": "kɯ"
+        }
+      ],
+      "romaji": "ku",
+      "inputSequences": [
+        "ku"
+      ],
+      "ipa": "kɯ",
+      "studyOrder": 8,
+      "tags": [
+        "kana",
+        "hiragana",
+        "basic-hiragana",
+        "k-row"
+      ],
+      "status": "published",
+      "strokes": [
+        {
+          "id": "s1",
+          "points": [
+            [
+              66,
+              18
+            ],
+            [
+              34,
+              49
+            ],
+            [
+              65,
+              82
+            ]
+          ]
+        }
+      ],
+      "examples": [],
+      "sources": [],
+      "id": "9840b52f008e",
+      "route": "/languages/japanese/characters/hiragana/ku",
+      "sourcePath": "content/languages/japanese/hiragana-expanded.json",
+      "contentHash": "2a419a4af4952846a4c4ac4f40f1b1d6cf2e2d7fdbb6ff5ac6aa3ce9b43d4dcd"
+    },
+    {
+      "slug": "japanese/hiragana/ma",
+      "language": "ja",
+      "writingSystem": "hiragana",
+      "glyph": "ま",
+      "title": "Hiragana Ma",
+      "summary": "The basic hiragana syllable ma.",
+      "meanings": [
+        "ma sound"
+      ],
+      "readings": [
+        {
+          "label": "hiragana",
+          "value": "ま",
+          "ipa": "ma"
+        }
+      ],
+      "romaji": "ma",
+      "inputSequences": [
+        "ma"
+      ],
+      "ipa": "ma",
+      "studyOrder": 31,
+      "tags": [
+        "kana",
+        "hiragana",
+        "basic-hiragana",
+        "m-row"
+      ],
+      "status": "published",
+      "strokes": [
+        {
+          "id": "s1",
+          "points": [
+            [
+              25,
+              28
+            ],
+            [
+              75,
+              26
+            ]
+          ]
+        },
+        {
+          "id": "s2",
+          "points": [
+            [
+              22,
+              44
+            ],
+            [
+              78,
+              41
+            ]
+          ]
+        },
+        {
+          "id": "s3",
+          "points": [
+            [
+              59,
+              18
+            ],
+            [
+              58,
+              68
+            ],
+            [
+              49,
+              79
+            ],
+            [
+              38,
+              72
+            ],
+            [
+              45,
+              61
+            ],
+            [
+              62,
+              65
+            ],
+            [
+              78,
+              78
+            ]
+          ]
+        }
+      ],
+      "examples": [],
+      "sources": [],
+      "id": "14297559e423",
+      "route": "/languages/japanese/characters/hiragana/ma",
+      "sourcePath": "content/languages/japanese/hiragana-expanded.json",
+      "contentHash": "2a419a4af4952846a4c4ac4f40f1b1d6cf2e2d7fdbb6ff5ac6aa3ce9b43d4dcd"
+    },
+    {
+      "slug": "japanese/hiragana/me",
+      "language": "ja",
+      "writingSystem": "hiragana",
+      "glyph": "め",
+      "title": "Hiragana Me",
+      "summary": "The basic hiragana syllable me.",
+      "meanings": [
+        "me sound"
+      ],
+      "readings": [
+        {
+          "label": "hiragana",
+          "value": "め",
+          "ipa": "me"
+        }
+      ],
+      "romaji": "me",
+      "inputSequences": [
+        "me"
+      ],
+      "ipa": "me",
+      "studyOrder": 34,
+      "tags": [
+        "kana",
+        "hiragana",
+        "basic-hiragana",
+        "m-row"
+      ],
+      "status": "published",
+      "strokes": [
+        {
+          "id": "s1",
+          "points": [
+            [
+              33,
+              22
+            ],
+            [
+              43,
+              53
+            ],
+            [
+              56,
+              75
+            ]
+          ]
+        },
+        {
+          "id": "s2",
+          "points": [
+            [
+              70,
+              22
+            ],
+            [
+              62,
+              51
+            ],
+            [
+              47,
+              75
+            ],
+            [
+              29,
+              72
+            ],
+            [
+              25,
+              56
+            ],
+            [
+              38,
+              42
+            ],
+            [
+              60,
+              46
+            ],
+            [
+              76,
+              62
+            ],
+            [
+              71,
+              80
+            ]
+          ]
+        }
+      ],
+      "examples": [],
+      "sources": [],
+      "id": "be9bb251547d",
+      "route": "/languages/japanese/characters/hiragana/me",
+      "sourcePath": "content/languages/japanese/hiragana-expanded.json",
+      "contentHash": "2a419a4af4952846a4c4ac4f40f1b1d6cf2e2d7fdbb6ff5ac6aa3ce9b43d4dcd"
+    },
+    {
+      "slug": "japanese/hiragana/mi",
+      "language": "ja",
+      "writingSystem": "hiragana",
+      "glyph": "み",
+      "title": "Hiragana Mi",
+      "summary": "The basic hiragana syllable mi.",
+      "meanings": [
+        "mi sound"
+      ],
+      "readings": [
+        {
+          "label": "hiragana",
+          "value": "み",
+          "ipa": "mi"
+        }
+      ],
+      "romaji": "mi",
+      "inputSequences": [
+        "mi"
+      ],
+      "ipa": "mi",
+      "studyOrder": 32,
+      "tags": [
+        "kana",
+        "hiragana",
+        "basic-hiragana",
+        "m-row"
+      ],
+      "status": "published",
+      "strokes": [
+        {
+          "id": "s1",
+          "points": [
+            [
+              31,
+              25
+            ],
+            [
+              61,
+              22
+            ],
+            [
+              48,
+              52
+            ],
+            [
+              35,
+              69
+            ],
+            [
+              25,
+              64
+            ],
+            [
+              31,
+              52
+            ],
+            [
+              54,
+              53
+            ],
+            [
+              76,
+              65
+            ]
+          ]
+        },
+        {
+          "id": "s2",
+          "points": [
+            [
+              71,
+              32
+            ],
+            [
+              67,
+              62
+            ],
+            [
+              55,
+              82
+            ]
+          ]
+        }
+      ],
+      "examples": [],
+      "sources": [],
+      "id": "8d36338d77a2",
+      "route": "/languages/japanese/characters/hiragana/mi",
+      "sourcePath": "content/languages/japanese/hiragana-expanded.json",
+      "contentHash": "2a419a4af4952846a4c4ac4f40f1b1d6cf2e2d7fdbb6ff5ac6aa3ce9b43d4dcd"
+    },
+    {
+      "slug": "japanese/hiragana/mo",
+      "language": "ja",
+      "writingSystem": "hiragana",
+      "glyph": "も",
+      "title": "Hiragana Mo",
+      "summary": "The basic hiragana syllable mo.",
+      "meanings": [
+        "mo sound"
+      ],
+      "readings": [
+        {
+          "label": "hiragana",
+          "value": "も",
+          "ipa": "mo"
+        }
+      ],
+      "romaji": "mo",
+      "inputSequences": [
+        "mo"
+      ],
+      "ipa": "mo",
+      "studyOrder": 35,
+      "tags": [
+        "kana",
+        "hiragana",
+        "basic-hiragana",
+        "m-row"
+      ],
+      "status": "published",
+      "strokes": [
+        {
+          "id": "s1",
+          "points": [
+            [
+              50,
+              17
+            ],
+            [
+              43,
+              70
+            ],
+            [
+              51,
+              82
+            ],
+            [
+              67,
+              79
+            ],
+            [
+              74,
+              68
+            ]
+          ]
+        },
+        {
+          "id": "s2",
+          "points": [
+            [
+              26,
+              35
+            ],
+            [
+              67,
+              34
+            ]
+          ]
+        },
+        {
+          "id": "s3",
+          "points": [
+            [
+              24,
+              51
+            ],
+            [
+              64,
+              50
+            ]
+          ]
+        }
+      ],
+      "examples": [],
+      "sources": [],
+      "id": "ee751927bc79",
+      "route": "/languages/japanese/characters/hiragana/mo",
+      "sourcePath": "content/languages/japanese/hiragana-expanded.json",
+      "contentHash": "2a419a4af4952846a4c4ac4f40f1b1d6cf2e2d7fdbb6ff5ac6aa3ce9b43d4dcd"
+    },
+    {
+      "slug": "japanese/hiragana/mu",
+      "language": "ja",
+      "writingSystem": "hiragana",
+      "glyph": "む",
+      "title": "Hiragana Mu",
+      "summary": "The basic hiragana syllable mu.",
+      "meanings": [
+        "mu sound"
+      ],
+      "readings": [
+        {
+          "label": "hiragana",
+          "value": "む",
+          "ipa": "mɯ"
+        }
+      ],
+      "romaji": "mu",
+      "inputSequences": [
+        "mu"
+      ],
+      "ipa": "mɯ",
+      "studyOrder": 33,
+      "tags": [
+        "kana",
+        "hiragana",
+        "basic-hiragana",
+        "m-row"
+      ],
+      "status": "published",
+      "strokes": [
+        {
+          "id": "s1",
+          "points": [
+            [
+              20,
+              35
+            ],
+            [
+              52,
+              31
+            ]
+          ]
+        },
+        {
+          "id": "s2",
+          "points": [
+            [
+              39,
+              17
+            ],
+            [
+              38,
+              69
+            ],
+            [
+              29,
+              78
+            ],
+            [
+              24,
+              69
+            ],
+            [
+              31,
+              60
+            ],
+            [
+              43,
+              65
+            ],
+            [
+              50,
+              77
+            ]
+          ]
+        },
+        {
+          "id": "s3",
+          "points": [
+            [
+              65,
+              40
+            ],
+            [
+              79,
+              51
+            ],
+            [
+              80,
+              69
+            ],
+            [
+              68,
+              79
+            ]
+          ]
+        }
+      ],
+      "examples": [],
+      "sources": [],
+      "id": "997132c9c190",
+      "route": "/languages/japanese/characters/hiragana/mu",
+      "sourcePath": "content/languages/japanese/hiragana-expanded.json",
+      "contentHash": "2a419a4af4952846a4c4ac4f40f1b1d6cf2e2d7fdbb6ff5ac6aa3ce9b43d4dcd"
+    },
+    {
+      "slug": "japanese/hiragana/n",
+      "language": "ja",
+      "writingSystem": "hiragana",
+      "glyph": "ん",
+      "title": "Hiragana N",
+      "summary": "The moraic nasal hiragana n, whose IME input depends on context.",
+      "meanings": [
+        "moraic n sound"
+      ],
+      "readings": [
+        {
+          "label": "hiragana",
+          "value": "ん",
+          "ipa": "ɴ"
+        }
+      ],
+      "romaji": "n",
+      "inputSequences": [
+        "nn",
+        "n'"
+      ],
+      "ipa": "ɴ",
+      "studyOrder": 46,
+      "tags": [
+        "kana",
+        "hiragana",
+        "basic-hiragana",
+        "n-mora",
+        "ime-exception"
+      ],
+      "status": "published",
+      "strokes": [
+        {
+          "id": "s1",
+          "points": [
+            [
+              54,
+              18
+            ],
+            [
+              38,
+              52
+            ],
+            [
+              29,
+              77
+            ],
+            [
+              39,
+              65
+            ],
+            [
+              52,
+              66
+            ],
+            [
+              60,
+              79
+            ],
+            [
+              72,
+              78
+            ],
+            [
+              82,
+              63
+            ]
+          ]
+        }
+      ],
+      "examples": [],
+      "sources": [],
+      "id": "4ad48b3caeee",
+      "route": "/languages/japanese/characters/hiragana/n",
+      "sourcePath": "content/languages/japanese/hiragana-expanded.json",
+      "contentHash": "2a419a4af4952846a4c4ac4f40f1b1d6cf2e2d7fdbb6ff5ac6aa3ce9b43d4dcd"
+    },
+    {
+      "slug": "japanese/hiragana/na",
+      "language": "ja",
+      "writingSystem": "hiragana",
+      "glyph": "な",
+      "title": "Hiragana Na",
+      "summary": "The basic hiragana syllable na.",
+      "meanings": [
+        "na sound"
+      ],
+      "readings": [
+        {
+          "label": "hiragana",
+          "value": "な",
+          "ipa": "na"
+        }
+      ],
+      "romaji": "na",
+      "inputSequences": [
+        "na"
+      ],
+      "ipa": "na",
+      "studyOrder": 21,
+      "tags": [
+        "kana",
+        "hiragana",
+        "basic-hiragana",
+        "n-row"
+      ],
+      "status": "published",
+      "strokes": [
+        {
+          "id": "s1",
+          "points": [
+            [
+              21,
+              33
+            ],
+            [
+              58,
+              30
+            ]
+          ]
+        },
+        {
+          "id": "s2",
+          "points": [
+            [
+              42,
+              17
+            ],
+            [
+              32,
+              69
+            ]
+          ]
+        },
+        {
+          "id": "s3",
+          "points": [
+            [
+              62,
+              38
+            ],
+            [
+              78,
+              47
+            ]
+          ]
+        },
+        {
+          "id": "s4",
+          "points": [
+            [
+              66,
+              50
+            ],
+            [
+              62,
+              77
+            ],
+            [
+              48,
+              79
+            ],
+            [
+              52,
+              66
+            ],
+            [
+              72,
+              73
+            ],
+            [
+              82,
+              82
+            ]
+          ]
+        }
+      ],
+      "examples": [],
+      "sources": [],
+      "id": "7f89edf88507",
+      "route": "/languages/japanese/characters/hiragana/na",
+      "sourcePath": "content/languages/japanese/hiragana-expanded.json",
+      "contentHash": "2a419a4af4952846a4c4ac4f40f1b1d6cf2e2d7fdbb6ff5ac6aa3ce9b43d4dcd"
+    },
+    {
+      "slug": "japanese/hiragana/ne",
+      "language": "ja",
+      "writingSystem": "hiragana",
+      "glyph": "ね",
+      "title": "Hiragana Ne",
+      "summary": "The basic hiragana syllable ne.",
+      "meanings": [
+        "ne sound"
+      ],
+      "readings": [
+        {
+          "label": "hiragana",
+          "value": "ね",
+          "ipa": "ne"
+        }
+      ],
+      "romaji": "ne",
+      "inputSequences": [
+        "ne"
+      ],
+      "ipa": "ne",
+      "studyOrder": 24,
+      "tags": [
+        "kana",
+        "hiragana",
+        "basic-hiragana",
+        "n-row"
+      ],
+      "status": "published",
+      "strokes": [
+        {
+          "id": "s1",
+          "points": [
+            [
+              33,
+              18
+            ],
+            [
+              31,
+              82
+            ]
+          ]
+        },
+        {
+          "id": "s2",
+          "points": [
+            [
+              19,
+              42
+            ],
+            [
+              43,
+              35
+            ],
+            [
+              61,
+              26
+            ],
+            [
+              72,
+              38
+            ],
+            [
+              67,
+              67
+            ],
+            [
+              52,
+              78
+            ],
+            [
+              48,
+              66
+            ],
+            [
+              63,
+              61
+            ],
+            [
+              78,
+              78
+            ]
+          ]
+        }
+      ],
+      "examples": [],
+      "sources": [],
+      "id": "f7428f87a66a",
+      "route": "/languages/japanese/characters/hiragana/ne",
+      "sourcePath": "content/languages/japanese/hiragana-expanded.json",
+      "contentHash": "2a419a4af4952846a4c4ac4f40f1b1d6cf2e2d7fdbb6ff5ac6aa3ce9b43d4dcd"
+    },
+    {
+      "slug": "japanese/hiragana/ni",
+      "language": "ja",
+      "writingSystem": "hiragana",
+      "glyph": "に",
+      "title": "Hiragana Ni",
+      "summary": "The basic hiragana syllable ni.",
+      "meanings": [
+        "ni sound"
+      ],
+      "readings": [
+        {
+          "label": "hiragana",
+          "value": "に",
+          "ipa": "ɲi"
+        }
+      ],
+      "romaji": "ni",
+      "inputSequences": [
+        "ni"
+      ],
+      "ipa": "ɲi",
+      "studyOrder": 22,
+      "tags": [
+        "kana",
+        "hiragana",
+        "basic-hiragana",
+        "n-row"
+      ],
+      "status": "published",
+      "strokes": [
+        {
+          "id": "s1",
+          "points": [
+            [
+              28,
+              20
+            ],
+            [
+              24,
+              68
+            ],
+            [
+              32,
+              81
+            ]
+          ]
+        },
+        {
+          "id": "s2",
+          "points": [
+            [
+              48,
+              35
+            ],
+            [
+              77,
+              33
+            ]
+          ]
+        },
+        {
+          "id": "s3",
+          "points": [
+            [
+              49,
+              65
+            ],
+            [
+              57,
+              75
+            ],
+            [
+              80,
+              72
+            ]
+          ]
+        }
+      ],
+      "examples": [],
+      "sources": [],
+      "id": "9cab1424c2d3",
+      "route": "/languages/japanese/characters/hiragana/ni",
+      "sourcePath": "content/languages/japanese/hiragana-expanded.json",
+      "contentHash": "2a419a4af4952846a4c4ac4f40f1b1d6cf2e2d7fdbb6ff5ac6aa3ce9b43d4dcd"
+    },
+    {
+      "slug": "japanese/hiragana/no",
+      "language": "ja",
+      "writingSystem": "hiragana",
+      "glyph": "の",
+      "title": "Hiragana No",
+      "summary": "The basic hiragana syllable no.",
+      "meanings": [
+        "no sound"
+      ],
+      "readings": [
+        {
+          "label": "hiragana",
+          "value": "の",
+          "ipa": "no"
+        }
+      ],
+      "romaji": "no",
+      "inputSequences": [
+        "no"
+      ],
+      "ipa": "no",
+      "studyOrder": 25,
+      "tags": [
+        "kana",
+        "hiragana",
+        "basic-hiragana",
+        "n-row"
+      ],
+      "status": "published",
+      "strokes": [
+        {
+          "id": "s1",
+          "points": [
+            [
+              54,
+              27
+            ],
+            [
+              40,
+              38
+            ],
+            [
+              31,
+              57
+            ],
+            [
+              35,
+              72
+            ],
+            [
+              47,
+              74
+            ],
+            [
+              56,
+              57
+            ],
+            [
+              61,
+              34
+            ],
+            [
+              73,
+              40
+            ],
+            [
+              79,
+              56
+            ],
+            [
+              74,
+              72
+            ],
+            [
+              58,
+              82
+            ]
+          ]
+        }
+      ],
+      "examples": [],
+      "sources": [],
+      "id": "c6e62db010d8",
+      "route": "/languages/japanese/characters/hiragana/no",
+      "sourcePath": "content/languages/japanese/hiragana-expanded.json",
+      "contentHash": "2a419a4af4952846a4c4ac4f40f1b1d6cf2e2d7fdbb6ff5ac6aa3ce9b43d4dcd"
+    },
+    {
+      "slug": "japanese/hiragana/nu",
+      "language": "ja",
+      "writingSystem": "hiragana",
+      "glyph": "ぬ",
+      "title": "Hiragana Nu",
+      "summary": "The basic hiragana syllable nu.",
+      "meanings": [
+        "nu sound"
+      ],
+      "readings": [
+        {
+          "label": "hiragana",
+          "value": "ぬ",
+          "ipa": "nɯ"
+        }
+      ],
+      "romaji": "nu",
+      "inputSequences": [
+        "nu"
+      ],
+      "ipa": "nɯ",
+      "studyOrder": 23,
+      "tags": [
+        "kana",
+        "hiragana",
+        "basic-hiragana",
+        "n-row"
+      ],
+      "status": "published",
+      "strokes": [
+        {
+          "id": "s1",
+          "points": [
+            [
+              34,
+              20
+            ],
+            [
+              42,
+              54
+            ],
+            [
+              57,
+              78
+            ]
+          ]
+        },
+        {
+          "id": "s2",
+          "points": [
+            [
+              69,
+              23
+            ],
+            [
+              61,
+              56
+            ],
+            [
+              45,
+              78
+            ],
+            [
+              28,
+              72
+            ],
+            [
+              27,
+              54
+            ],
+            [
+              42,
+              42
+            ],
+            [
+              64,
+              48
+            ],
+            [
+              76,
+              66
+            ],
+            [
+              68,
+              80
+            ],
+            [
+              58,
+              70
+            ],
+            [
+              70,
+              65
+            ]
+          ]
+        }
+      ],
+      "examples": [],
+      "sources": [],
+      "id": "3c03008d4944",
+      "route": "/languages/japanese/characters/hiragana/nu",
+      "sourcePath": "content/languages/japanese/hiragana-expanded.json",
+      "contentHash": "2a419a4af4952846a4c4ac4f40f1b1d6cf2e2d7fdbb6ff5ac6aa3ce9b43d4dcd"
     },
     {
       "slug": "japanese/hiragana/o",
@@ -8103,11 +10889,16 @@
         }
       ],
       "romaji": "o",
+      "inputSequences": [
+        "o"
+      ],
       "ipa": "o",
+      "studyOrder": 5,
       "tags": [
         "kana",
         "vowel",
-        "hiragana"
+        "hiragana",
+        "basic-hiragana"
       ],
       "status": "published",
       "strokes": [
@@ -8163,11 +10954,1647 @@
           ]
         }
       ],
+      "examples": [],
       "sources": [],
       "id": "8ba84bf5a2b7",
       "route": "/languages/japanese/characters/hiragana/o",
       "sourcePath": "content/languages/japanese/characters.json",
-      "contentHash": "2fc96acbee2ea12d0c40ee6f016040953e6630ba334b089159a8cb001ba32ef9"
+      "contentHash": "4364ea1971f4eda01d76d188c4ec20711fbdd61e9eb8f27b165bc27c336d7f58"
+    },
+    {
+      "slug": "japanese/hiragana/pa",
+      "language": "ja",
+      "writingSystem": "hiragana",
+      "glyph": "ぱ",
+      "title": "Hiragana Pa",
+      "summary": "The semi-voiced hiragana syllable pa.",
+      "meanings": [
+        "pa sound"
+      ],
+      "readings": [
+        {
+          "label": "hiragana",
+          "value": "ぱ",
+          "ipa": "pa"
+        }
+      ],
+      "romaji": "pa",
+      "inputSequences": [
+        "pa"
+      ],
+      "ipa": "pa",
+      "studyOrder": 104,
+      "tags": [
+        "kana",
+        "hiragana",
+        "supplement",
+        "handakuten"
+      ],
+      "status": "published",
+      "strokes": [
+        {
+          "id": "s1",
+          "points": [
+            [
+              22,
+              18
+            ],
+            [
+              20,
+              68
+            ],
+            [
+              28,
+              82
+            ]
+          ]
+        },
+        {
+          "id": "s2",
+          "points": [
+            [
+              40,
+              39
+            ],
+            [
+              72,
+              36
+            ]
+          ]
+        },
+        {
+          "id": "s3",
+          "points": [
+            [
+              59,
+              19
+            ],
+            [
+              59,
+              68
+            ],
+            [
+              50,
+              78
+            ],
+            [
+              43,
+              69
+            ],
+            [
+              51,
+              60
+            ],
+            [
+              65,
+              65
+            ],
+            [
+              75,
+              77
+            ]
+          ]
+        },
+        {
+          "id": "s4",
+          "points": [
+            [
+              78,
+              13
+            ],
+            [
+              86,
+              16
+            ],
+            [
+              88,
+              24
+            ],
+            [
+              82,
+              29
+            ],
+            [
+              75,
+              25
+            ],
+            [
+              74,
+              18
+            ],
+            [
+              78,
+              13
+            ]
+          ]
+        }
+      ],
+      "examples": [],
+      "sources": [],
+      "id": "b5398dc12e3c",
+      "route": "/languages/japanese/characters/hiragana/pa",
+      "sourcePath": "content/languages/japanese/hiragana-expanded.json",
+      "contentHash": "2a419a4af4952846a4c4ac4f40f1b1d6cf2e2d7fdbb6ff5ac6aa3ce9b43d4dcd"
+    },
+    {
+      "slug": "japanese/hiragana/ra",
+      "language": "ja",
+      "writingSystem": "hiragana",
+      "glyph": "ら",
+      "title": "Hiragana Ra",
+      "summary": "The basic hiragana syllable ra.",
+      "meanings": [
+        "ra sound"
+      ],
+      "readings": [
+        {
+          "label": "hiragana",
+          "value": "ら",
+          "ipa": "ɾa"
+        }
+      ],
+      "romaji": "ra",
+      "inputSequences": [
+        "ra"
+      ],
+      "ipa": "ɾa",
+      "studyOrder": 39,
+      "tags": [
+        "kana",
+        "hiragana",
+        "basic-hiragana",
+        "r-row"
+      ],
+      "status": "published",
+      "strokes": [
+        {
+          "id": "s1",
+          "points": [
+            [
+              43,
+              19
+            ],
+            [
+              59,
+              23
+            ]
+          ]
+        },
+        {
+          "id": "s2",
+          "points": [
+            [
+              35,
+              39
+            ],
+            [
+              31,
+              66
+            ],
+            [
+              43,
+              52
+            ],
+            [
+              64,
+              49
+            ],
+            [
+              76,
+              58
+            ],
+            [
+              72,
+              73
+            ],
+            [
+              55,
+              82
+            ],
+            [
+              36,
+              82
+            ]
+          ]
+        }
+      ],
+      "examples": [],
+      "sources": [],
+      "id": "5956b36089c6",
+      "route": "/languages/japanese/characters/hiragana/ra",
+      "sourcePath": "content/languages/japanese/hiragana-expanded.json",
+      "contentHash": "2a419a4af4952846a4c4ac4f40f1b1d6cf2e2d7fdbb6ff5ac6aa3ce9b43d4dcd"
+    },
+    {
+      "slug": "japanese/hiragana/re",
+      "language": "ja",
+      "writingSystem": "hiragana",
+      "glyph": "れ",
+      "title": "Hiragana Re",
+      "summary": "The basic hiragana syllable re.",
+      "meanings": [
+        "re sound"
+      ],
+      "readings": [
+        {
+          "label": "hiragana",
+          "value": "れ",
+          "ipa": "ɾe"
+        }
+      ],
+      "romaji": "re",
+      "inputSequences": [
+        "re"
+      ],
+      "ipa": "ɾe",
+      "studyOrder": 42,
+      "tags": [
+        "kana",
+        "hiragana",
+        "basic-hiragana",
+        "r-row"
+      ],
+      "status": "published",
+      "strokes": [
+        {
+          "id": "s1",
+          "points": [
+            [
+              34,
+              18
+            ],
+            [
+              31,
+              82
+            ]
+          ]
+        },
+        {
+          "id": "s2",
+          "points": [
+            [
+              18,
+              43
+            ],
+            [
+              43,
+              34
+            ],
+            [
+              59,
+              24
+            ],
+            [
+              62,
+              66
+            ],
+            [
+              69,
+              76
+            ],
+            [
+              82,
+              67
+            ]
+          ]
+        }
+      ],
+      "examples": [],
+      "sources": [],
+      "id": "62edf2e52370",
+      "route": "/languages/japanese/characters/hiragana/re",
+      "sourcePath": "content/languages/japanese/hiragana-expanded.json",
+      "contentHash": "2a419a4af4952846a4c4ac4f40f1b1d6cf2e2d7fdbb6ff5ac6aa3ce9b43d4dcd"
+    },
+    {
+      "slug": "japanese/hiragana/ri",
+      "language": "ja",
+      "writingSystem": "hiragana",
+      "glyph": "り",
+      "title": "Hiragana Ri",
+      "summary": "The basic hiragana syllable ri.",
+      "meanings": [
+        "ri sound"
+      ],
+      "readings": [
+        {
+          "label": "hiragana",
+          "value": "り",
+          "ipa": "ɾi"
+        }
+      ],
+      "romaji": "ri",
+      "inputSequences": [
+        "ri"
+      ],
+      "ipa": "ɾi",
+      "studyOrder": 40,
+      "tags": [
+        "kana",
+        "hiragana",
+        "basic-hiragana",
+        "r-row"
+      ],
+      "status": "published",
+      "strokes": [
+        {
+          "id": "s1",
+          "points": [
+            [
+              34,
+              19
+            ],
+            [
+              34,
+              62
+            ],
+            [
+              43,
+              71
+            ]
+          ]
+        },
+        {
+          "id": "s2",
+          "points": [
+            [
+              66,
+              17
+            ],
+            [
+              67,
+              57
+            ],
+            [
+              58,
+              78
+            ],
+            [
+              43,
+              86
+            ]
+          ]
+        }
+      ],
+      "examples": [],
+      "sources": [],
+      "id": "692ed996a10c",
+      "route": "/languages/japanese/characters/hiragana/ri",
+      "sourcePath": "content/languages/japanese/hiragana-expanded.json",
+      "contentHash": "2a419a4af4952846a4c4ac4f40f1b1d6cf2e2d7fdbb6ff5ac6aa3ce9b43d4dcd"
+    },
+    {
+      "slug": "japanese/hiragana/ro",
+      "language": "ja",
+      "writingSystem": "hiragana",
+      "glyph": "ろ",
+      "title": "Hiragana Ro",
+      "summary": "The basic hiragana syllable ro.",
+      "meanings": [
+        "ro sound"
+      ],
+      "readings": [
+        {
+          "label": "hiragana",
+          "value": "ろ",
+          "ipa": "ɾo"
+        }
+      ],
+      "romaji": "ro",
+      "inputSequences": [
+        "ro"
+      ],
+      "ipa": "ɾo",
+      "studyOrder": 43,
+      "tags": [
+        "kana",
+        "hiragana",
+        "basic-hiragana",
+        "r-row"
+      ],
+      "status": "published",
+      "strokes": [
+        {
+          "id": "s1",
+          "points": [
+            [
+              31,
+              27
+            ],
+            [
+              68,
+              23
+            ],
+            [
+              50,
+              43
+            ],
+            [
+              38,
+              57
+            ],
+            [
+              54,
+              50
+            ],
+            [
+              71,
+              53
+            ],
+            [
+              77,
+              66
+            ],
+            [
+              69,
+              79
+            ],
+            [
+              48,
+              84
+            ]
+          ]
+        }
+      ],
+      "examples": [],
+      "sources": [],
+      "id": "00599f85dc5f",
+      "route": "/languages/japanese/characters/hiragana/ro",
+      "sourcePath": "content/languages/japanese/hiragana-expanded.json",
+      "contentHash": "2a419a4af4952846a4c4ac4f40f1b1d6cf2e2d7fdbb6ff5ac6aa3ce9b43d4dcd"
+    },
+    {
+      "slug": "japanese/hiragana/ru",
+      "language": "ja",
+      "writingSystem": "hiragana",
+      "glyph": "る",
+      "title": "Hiragana Ru",
+      "summary": "The basic hiragana syllable ru.",
+      "meanings": [
+        "ru sound"
+      ],
+      "readings": [
+        {
+          "label": "hiragana",
+          "value": "る",
+          "ipa": "ɾɯ"
+        }
+      ],
+      "romaji": "ru",
+      "inputSequences": [
+        "ru"
+      ],
+      "ipa": "ɾɯ",
+      "studyOrder": 41,
+      "tags": [
+        "kana",
+        "hiragana",
+        "basic-hiragana",
+        "r-row"
+      ],
+      "status": "published",
+      "strokes": [
+        {
+          "id": "s1",
+          "points": [
+            [
+              31,
+              25
+            ],
+            [
+              68,
+              22
+            ],
+            [
+              51,
+              42
+            ],
+            [
+              37,
+              58
+            ],
+            [
+              49,
+              52
+            ],
+            [
+              67,
+              54
+            ],
+            [
+              76,
+              66
+            ],
+            [
+              68,
+              80
+            ],
+            [
+              53,
+              82
+            ],
+            [
+              44,
+              73
+            ],
+            [
+              51,
+              65
+            ],
+            [
+              63,
+              70
+            ]
+          ]
+        }
+      ],
+      "examples": [],
+      "sources": [],
+      "id": "c103c828238f",
+      "route": "/languages/japanese/characters/hiragana/ru",
+      "sourcePath": "content/languages/japanese/hiragana-expanded.json",
+      "contentHash": "2a419a4af4952846a4c4ac4f40f1b1d6cf2e2d7fdbb6ff5ac6aa3ce9b43d4dcd"
+    },
+    {
+      "slug": "japanese/hiragana/sa",
+      "language": "ja",
+      "writingSystem": "hiragana",
+      "glyph": "さ",
+      "title": "Hiragana Sa",
+      "summary": "The basic hiragana syllable sa.",
+      "meanings": [
+        "sa sound"
+      ],
+      "readings": [
+        {
+          "label": "hiragana",
+          "value": "さ",
+          "ipa": "sa"
+        }
+      ],
+      "romaji": "sa",
+      "inputSequences": [
+        "sa"
+      ],
+      "ipa": "sa",
+      "studyOrder": 11,
+      "tags": [
+        "kana",
+        "hiragana",
+        "basic-hiragana",
+        "s-row"
+      ],
+      "status": "published",
+      "strokes": [
+        {
+          "id": "s1",
+          "points": [
+            [
+              25,
+              33
+            ],
+            [
+              72,
+              29
+            ]
+          ]
+        },
+        {
+          "id": "s2",
+          "points": [
+            [
+              49,
+              18
+            ],
+            [
+              60,
+              51
+            ]
+          ]
+        },
+        {
+          "id": "s3",
+          "points": [
+            [
+              70,
+              52
+            ],
+            [
+              38,
+              54
+            ],
+            [
+              30,
+              67
+            ],
+            [
+              42,
+              81
+            ],
+            [
+              65,
+              82
+            ]
+          ]
+        }
+      ],
+      "examples": [],
+      "sources": [],
+      "id": "79d7c11bae11",
+      "route": "/languages/japanese/characters/hiragana/sa",
+      "sourcePath": "content/languages/japanese/hiragana-expanded.json",
+      "contentHash": "2a419a4af4952846a4c4ac4f40f1b1d6cf2e2d7fdbb6ff5ac6aa3ce9b43d4dcd"
+    },
+    {
+      "slug": "japanese/hiragana/se",
+      "language": "ja",
+      "writingSystem": "hiragana",
+      "glyph": "せ",
+      "title": "Hiragana Se",
+      "summary": "The basic hiragana syllable se.",
+      "meanings": [
+        "se sound"
+      ],
+      "readings": [
+        {
+          "label": "hiragana",
+          "value": "せ",
+          "ipa": "se"
+        }
+      ],
+      "romaji": "se",
+      "inputSequences": [
+        "se"
+      ],
+      "ipa": "se",
+      "studyOrder": 14,
+      "tags": [
+        "kana",
+        "hiragana",
+        "basic-hiragana",
+        "s-row"
+      ],
+      "status": "published",
+      "strokes": [
+        {
+          "id": "s1",
+          "points": [
+            [
+              17,
+              40
+            ],
+            [
+              82,
+              34
+            ]
+          ]
+        },
+        {
+          "id": "s2",
+          "points": [
+            [
+              65,
+              20
+            ],
+            [
+              62,
+              53
+            ],
+            [
+              51,
+              61
+            ]
+          ]
+        },
+        {
+          "id": "s3",
+          "points": [
+            [
+              35,
+              25
+            ],
+            [
+              34,
+              67
+            ],
+            [
+              43,
+              78
+            ],
+            [
+              70,
+              76
+            ]
+          ]
+        }
+      ],
+      "examples": [],
+      "sources": [],
+      "id": "248ac6d223a4",
+      "route": "/languages/japanese/characters/hiragana/se",
+      "sourcePath": "content/languages/japanese/hiragana-expanded.json",
+      "contentHash": "2a419a4af4952846a4c4ac4f40f1b1d6cf2e2d7fdbb6ff5ac6aa3ce9b43d4dcd"
+    },
+    {
+      "slug": "japanese/hiragana/shi",
+      "language": "ja",
+      "writingSystem": "hiragana",
+      "glyph": "し",
+      "title": "Hiragana Shi",
+      "summary": "The basic hiragana syllable shi.",
+      "meanings": [
+        "shi sound"
+      ],
+      "readings": [
+        {
+          "label": "hiragana",
+          "value": "し",
+          "ipa": "ɕi"
+        }
+      ],
+      "romaji": "shi",
+      "inputSequences": [
+        "shi",
+        "si"
+      ],
+      "ipa": "ɕi",
+      "studyOrder": 12,
+      "tags": [
+        "kana",
+        "hiragana",
+        "basic-hiragana",
+        "s-row",
+        "ime-alias"
+      ],
+      "status": "published",
+      "strokes": [
+        {
+          "id": "s1",
+          "points": [
+            [
+              37,
+              17
+            ],
+            [
+              34,
+              66
+            ],
+            [
+              43,
+              82
+            ],
+            [
+              62,
+              80
+            ],
+            [
+              76,
+              66
+            ]
+          ]
+        }
+      ],
+      "examples": [],
+      "sources": [],
+      "id": "6df3e4f257c2",
+      "route": "/languages/japanese/characters/hiragana/shi",
+      "sourcePath": "content/languages/japanese/hiragana-expanded.json",
+      "contentHash": "2a419a4af4952846a4c4ac4f40f1b1d6cf2e2d7fdbb6ff5ac6aa3ce9b43d4dcd"
+    },
+    {
+      "slug": "japanese/hiragana/small-tsu",
+      "language": "ja",
+      "writingSystem": "hiragana",
+      "glyph": "っ",
+      "title": "Small Hiragana Tsu",
+      "summary": "Small tsu marks a doubled following consonant in Japanese input.",
+      "meanings": [
+        "consonant doubling marker"
+      ],
+      "readings": [
+        {
+          "label": "small kana",
+          "value": "っ",
+          "ipa": "Q"
+        }
+      ],
+      "romaji": "double next consonant",
+      "inputSequences": [
+        "xtsu",
+        "ltsu",
+        "double consonant"
+      ],
+      "ipa": "Q",
+      "studyOrder": 105,
+      "tags": [
+        "kana",
+        "hiragana",
+        "supplement",
+        "small-kana",
+        "ime-exception"
+      ],
+      "status": "published",
+      "strokes": [
+        {
+          "id": "s1",
+          "points": [
+            [
+              29,
+              51
+            ],
+            [
+              43,
+              43
+            ],
+            [
+              61,
+              43
+            ],
+            [
+              72,
+              50
+            ],
+            [
+              73,
+              61
+            ],
+            [
+              63,
+              72
+            ],
+            [
+              47,
+              77
+            ]
+          ]
+        }
+      ],
+      "examples": [],
+      "sources": [],
+      "id": "294172e428c5",
+      "route": "/languages/japanese/characters/hiragana/small-tsu",
+      "sourcePath": "content/languages/japanese/hiragana-expanded.json",
+      "contentHash": "2a419a4af4952846a4c4ac4f40f1b1d6cf2e2d7fdbb6ff5ac6aa3ce9b43d4dcd"
+    },
+    {
+      "slug": "japanese/hiragana/small-ya",
+      "language": "ja",
+      "writingSystem": "hiragana",
+      "glyph": "ゃ",
+      "title": "Small Hiragana Ya",
+      "summary": "Small ya combines with an i-row kana to form sounds such as kya or sha.",
+      "meanings": [
+        "contracted ya sound"
+      ],
+      "readings": [
+        {
+          "label": "small kana",
+          "value": "ゃ",
+          "ipa": "ja"
+        }
+      ],
+      "romaji": "ya",
+      "inputSequences": [
+        "xya",
+        "lya",
+        "combined spelling"
+      ],
+      "ipa": "ja",
+      "studyOrder": 106,
+      "tags": [
+        "kana",
+        "hiragana",
+        "supplement",
+        "small-kana",
+        "yoon"
+      ],
+      "status": "published",
+      "strokes": [
+        {
+          "id": "s1",
+          "points": [
+            [
+              28,
+              55
+            ],
+            [
+              50,
+              45
+            ],
+            [
+              70,
+              47
+            ],
+            [
+              64,
+              59
+            ],
+            [
+              55,
+              62
+            ]
+          ]
+        },
+        {
+          "id": "s2",
+          "points": [
+            [
+              45,
+              36
+            ],
+            [
+              53,
+              76
+            ]
+          ]
+        },
+        {
+          "id": "s3",
+          "points": [
+            [
+              64,
+              35
+            ],
+            [
+              71,
+              41
+            ]
+          ]
+        }
+      ],
+      "examples": [],
+      "sources": [],
+      "id": "04b42ad524ab",
+      "route": "/languages/japanese/characters/hiragana/small-ya",
+      "sourcePath": "content/languages/japanese/hiragana-expanded.json",
+      "contentHash": "2a419a4af4952846a4c4ac4f40f1b1d6cf2e2d7fdbb6ff5ac6aa3ce9b43d4dcd"
+    },
+    {
+      "slug": "japanese/hiragana/small-yo",
+      "language": "ja",
+      "writingSystem": "hiragana",
+      "glyph": "ょ",
+      "title": "Small Hiragana Yo",
+      "summary": "Small yo combines with an i-row kana to form sounds such as kyo or sho.",
+      "meanings": [
+        "contracted yo sound"
+      ],
+      "readings": [
+        {
+          "label": "small kana",
+          "value": "ょ",
+          "ipa": "jo"
+        }
+      ],
+      "romaji": "yo",
+      "inputSequences": [
+        "xyo",
+        "lyo",
+        "combined spelling"
+      ],
+      "ipa": "jo",
+      "studyOrder": 108,
+      "tags": [
+        "kana",
+        "hiragana",
+        "supplement",
+        "small-kana",
+        "yoon"
+      ],
+      "status": "published",
+      "strokes": [
+        {
+          "id": "s1",
+          "points": [
+            [
+              48,
+              49
+            ],
+            [
+              70,
+              47
+            ]
+          ]
+        },
+        {
+          "id": "s2",
+          "points": [
+            [
+              56,
+              35
+            ],
+            [
+              56,
+              65
+            ],
+            [
+              49,
+              73
+            ],
+            [
+              39,
+              68
+            ],
+            [
+              45,
+              61
+            ],
+            [
+              58,
+              64
+            ],
+            [
+              70,
+              73
+            ]
+          ]
+        }
+      ],
+      "examples": [],
+      "sources": [],
+      "id": "5e9d4b155f68",
+      "route": "/languages/japanese/characters/hiragana/small-yo",
+      "sourcePath": "content/languages/japanese/hiragana-expanded.json",
+      "contentHash": "2a419a4af4952846a4c4ac4f40f1b1d6cf2e2d7fdbb6ff5ac6aa3ce9b43d4dcd"
+    },
+    {
+      "slug": "japanese/hiragana/small-yu",
+      "language": "ja",
+      "writingSystem": "hiragana",
+      "glyph": "ゅ",
+      "title": "Small Hiragana Yu",
+      "summary": "Small yu combines with an i-row kana to form sounds such as kyu or shu.",
+      "meanings": [
+        "contracted yu sound"
+      ],
+      "readings": [
+        {
+          "label": "small kana",
+          "value": "ゅ",
+          "ipa": "jɯ"
+        }
+      ],
+      "romaji": "yu",
+      "inputSequences": [
+        "xyu",
+        "lyu",
+        "combined spelling"
+      ],
+      "ipa": "jɯ",
+      "studyOrder": 107,
+      "tags": [
+        "kana",
+        "hiragana",
+        "supplement",
+        "small-kana",
+        "yoon"
+      ],
+      "status": "published",
+      "strokes": [
+        {
+          "id": "s1",
+          "points": [
+            [
+              30,
+              39
+            ],
+            [
+              29,
+              68
+            ],
+            [
+              37,
+              72
+            ],
+            [
+              44,
+              63
+            ],
+            [
+              45,
+              48
+            ],
+            [
+              57,
+              44
+            ],
+            [
+              69,
+              49
+            ],
+            [
+              70,
+              60
+            ],
+            [
+              61,
+              70
+            ],
+            [
+              48,
+              75
+            ]
+          ]
+        },
+        {
+          "id": "s2",
+          "points": [
+            [
+              58,
+              35
+            ],
+            [
+              59,
+              77
+            ]
+          ]
+        }
+      ],
+      "examples": [],
+      "sources": [],
+      "id": "ab55d71bc66d",
+      "route": "/languages/japanese/characters/hiragana/small-yu",
+      "sourcePath": "content/languages/japanese/hiragana-expanded.json",
+      "contentHash": "2a419a4af4952846a4c4ac4f40f1b1d6cf2e2d7fdbb6ff5ac6aa3ce9b43d4dcd"
+    },
+    {
+      "slug": "japanese/hiragana/so",
+      "language": "ja",
+      "writingSystem": "hiragana",
+      "glyph": "そ",
+      "title": "Hiragana So",
+      "summary": "The basic hiragana syllable so.",
+      "meanings": [
+        "so sound"
+      ],
+      "readings": [
+        {
+          "label": "hiragana",
+          "value": "そ",
+          "ipa": "so"
+        }
+      ],
+      "romaji": "so",
+      "inputSequences": [
+        "so"
+      ],
+      "ipa": "so",
+      "studyOrder": 15,
+      "tags": [
+        "kana",
+        "hiragana",
+        "basic-hiragana",
+        "s-row"
+      ],
+      "status": "published",
+      "strokes": [
+        {
+          "id": "s1",
+          "points": [
+            [
+              35,
+              20
+            ],
+            [
+              67,
+              22
+            ],
+            [
+              37,
+              47
+            ],
+            [
+              72,
+              43
+            ],
+            [
+              55,
+              53
+            ],
+            [
+              44,
+              69
+            ],
+            [
+              52,
+              83
+            ],
+            [
+              71,
+              84
+            ]
+          ]
+        }
+      ],
+      "examples": [],
+      "sources": [],
+      "id": "403e72d88508",
+      "route": "/languages/japanese/characters/hiragana/so",
+      "sourcePath": "content/languages/japanese/hiragana-expanded.json",
+      "contentHash": "2a419a4af4952846a4c4ac4f40f1b1d6cf2e2d7fdbb6ff5ac6aa3ce9b43d4dcd"
+    },
+    {
+      "slug": "japanese/hiragana/su",
+      "language": "ja",
+      "writingSystem": "hiragana",
+      "glyph": "す",
+      "title": "Hiragana Su",
+      "summary": "The basic hiragana syllable su.",
+      "meanings": [
+        "su sound"
+      ],
+      "readings": [
+        {
+          "label": "hiragana",
+          "value": "す",
+          "ipa": "sɯ"
+        }
+      ],
+      "romaji": "su",
+      "inputSequences": [
+        "su"
+      ],
+      "ipa": "sɯ",
+      "studyOrder": 13,
+      "tags": [
+        "kana",
+        "hiragana",
+        "basic-hiragana",
+        "s-row"
+      ],
+      "status": "published",
+      "strokes": [
+        {
+          "id": "s1",
+          "points": [
+            [
+              18,
+              34
+            ],
+            [
+              82,
+              31
+            ]
+          ]
+        },
+        {
+          "id": "s2",
+          "points": [
+            [
+              55,
+              17
+            ],
+            [
+              56,
+              64
+            ],
+            [
+              48,
+              73
+            ],
+            [
+              40,
+              65
+            ],
+            [
+              48,
+              53
+            ],
+            [
+              61,
+              58
+            ],
+            [
+              61,
+              76
+            ],
+            [
+              48,
+              87
+            ]
+          ]
+        }
+      ],
+      "examples": [],
+      "sources": [],
+      "id": "569162f492eb",
+      "route": "/languages/japanese/characters/hiragana/su",
+      "sourcePath": "content/languages/japanese/hiragana-expanded.json",
+      "contentHash": "2a419a4af4952846a4c4ac4f40f1b1d6cf2e2d7fdbb6ff5ac6aa3ce9b43d4dcd"
+    },
+    {
+      "slug": "japanese/hiragana/ta",
+      "language": "ja",
+      "writingSystem": "hiragana",
+      "glyph": "た",
+      "title": "Hiragana Ta",
+      "summary": "The basic hiragana syllable ta.",
+      "meanings": [
+        "ta sound"
+      ],
+      "readings": [
+        {
+          "label": "hiragana",
+          "value": "た",
+          "ipa": "ta"
+        }
+      ],
+      "romaji": "ta",
+      "inputSequences": [
+        "ta"
+      ],
+      "ipa": "ta",
+      "studyOrder": 16,
+      "tags": [
+        "kana",
+        "hiragana",
+        "basic-hiragana",
+        "t-row"
+      ],
+      "status": "published",
+      "strokes": [
+        {
+          "id": "s1",
+          "points": [
+            [
+              25,
+              31
+            ],
+            [
+              62,
+              28
+            ]
+          ]
+        },
+        {
+          "id": "s2",
+          "points": [
+            [
+              45,
+              17
+            ],
+            [
+              37,
+              82
+            ]
+          ]
+        },
+        {
+          "id": "s3",
+          "points": [
+            [
+              58,
+              48
+            ],
+            [
+              78,
+              45
+            ]
+          ]
+        },
+        {
+          "id": "s4",
+          "points": [
+            [
+              58,
+              66
+            ],
+            [
+              66,
+              77
+            ],
+            [
+              82,
+              76
+            ]
+          ]
+        }
+      ],
+      "examples": [],
+      "sources": [],
+      "id": "3063bdcf2177",
+      "route": "/languages/japanese/characters/hiragana/ta",
+      "sourcePath": "content/languages/japanese/hiragana-expanded.json",
+      "contentHash": "2a419a4af4952846a4c4ac4f40f1b1d6cf2e2d7fdbb6ff5ac6aa3ce9b43d4dcd"
+    },
+    {
+      "slug": "japanese/hiragana/te",
+      "language": "ja",
+      "writingSystem": "hiragana",
+      "glyph": "て",
+      "title": "Hiragana Te",
+      "summary": "The basic hiragana syllable te.",
+      "meanings": [
+        "te sound"
+      ],
+      "readings": [
+        {
+          "label": "hiragana",
+          "value": "て",
+          "ipa": "te"
+        }
+      ],
+      "romaji": "te",
+      "inputSequences": [
+        "te"
+      ],
+      "ipa": "te",
+      "studyOrder": 19,
+      "tags": [
+        "kana",
+        "hiragana",
+        "basic-hiragana",
+        "t-row"
+      ],
+      "status": "published",
+      "strokes": [
+        {
+          "id": "s1",
+          "points": [
+            [
+              20,
+              33
+            ],
+            [
+              79,
+              27
+            ],
+            [
+              60,
+              39
+            ],
+            [
+              48,
+              55
+            ],
+            [
+              50,
+              71
+            ],
+            [
+              66,
+              82
+            ]
+          ]
+        }
+      ],
+      "examples": [],
+      "sources": [],
+      "id": "9f390a6475b0",
+      "route": "/languages/japanese/characters/hiragana/te",
+      "sourcePath": "content/languages/japanese/hiragana-expanded.json",
+      "contentHash": "2a419a4af4952846a4c4ac4f40f1b1d6cf2e2d7fdbb6ff5ac6aa3ce9b43d4dcd"
+    },
+    {
+      "slug": "japanese/hiragana/to",
+      "language": "ja",
+      "writingSystem": "hiragana",
+      "glyph": "と",
+      "title": "Hiragana To",
+      "summary": "The basic hiragana syllable to.",
+      "meanings": [
+        "to sound"
+      ],
+      "readings": [
+        {
+          "label": "hiragana",
+          "value": "と",
+          "ipa": "to"
+        }
+      ],
+      "romaji": "to",
+      "inputSequences": [
+        "to"
+      ],
+      "ipa": "to",
+      "studyOrder": 20,
+      "tags": [
+        "kana",
+        "hiragana",
+        "basic-hiragana",
+        "t-row"
+      ],
+      "status": "published",
+      "strokes": [
+        {
+          "id": "s1",
+          "points": [
+            [
+              42,
+              18
+            ],
+            [
+              49,
+              53
+            ]
+          ]
+        },
+        {
+          "id": "s2",
+          "points": [
+            [
+              73,
+              35
+            ],
+            [
+              47,
+              52
+            ],
+            [
+              31,
+              67
+            ],
+            [
+              36,
+              80
+            ],
+            [
+              67,
+              83
+            ]
+          ]
+        }
+      ],
+      "examples": [],
+      "sources": [],
+      "id": "c478607bf5cb",
+      "route": "/languages/japanese/characters/hiragana/to",
+      "sourcePath": "content/languages/japanese/hiragana-expanded.json",
+      "contentHash": "2a419a4af4952846a4c4ac4f40f1b1d6cf2e2d7fdbb6ff5ac6aa3ce9b43d4dcd"
+    },
+    {
+      "slug": "japanese/hiragana/tsu",
+      "language": "ja",
+      "writingSystem": "hiragana",
+      "glyph": "つ",
+      "title": "Hiragana Tsu",
+      "summary": "The basic hiragana syllable tsu.",
+      "meanings": [
+        "tsu sound"
+      ],
+      "readings": [
+        {
+          "label": "hiragana",
+          "value": "つ",
+          "ipa": "tsɯ"
+        }
+      ],
+      "romaji": "tsu",
+      "inputSequences": [
+        "tsu",
+        "tu"
+      ],
+      "ipa": "tsɯ",
+      "studyOrder": 18,
+      "tags": [
+        "kana",
+        "hiragana",
+        "basic-hiragana",
+        "t-row",
+        "ime-alias"
+      ],
+      "status": "published",
+      "strokes": [
+        {
+          "id": "s1",
+          "points": [
+            [
+              18,
+              47
+            ],
+            [
+              34,
+              36
+            ],
+            [
+              59,
+              34
+            ],
+            [
+              78,
+              43
+            ],
+            [
+              80,
+              58
+            ],
+            [
+              67,
+              73
+            ],
+            [
+              42,
+              80
+            ]
+          ]
+        }
+      ],
+      "examples": [],
+      "sources": [],
+      "id": "cc3b121f7304",
+      "route": "/languages/japanese/characters/hiragana/tsu",
+      "sourcePath": "content/languages/japanese/hiragana-expanded.json",
+      "contentHash": "2a419a4af4952846a4c4ac4f40f1b1d6cf2e2d7fdbb6ff5ac6aa3ce9b43d4dcd"
     },
     {
       "slug": "japanese/hiragana/u",
@@ -8187,11 +12614,16 @@
         }
       ],
       "romaji": "u",
+      "inputSequences": [
+        "u"
+      ],
       "ipa": "ɯ",
+      "studyOrder": 3,
       "tags": [
         "kana",
         "vowel",
-        "hiragana"
+        "hiragana",
+        "basic-hiragana"
       ],
       "status": "published",
       "strokes": [
@@ -8230,11 +12662,477 @@
           ]
         }
       ],
+      "examples": [],
       "sources": [],
       "id": "d931945db240",
       "route": "/languages/japanese/characters/hiragana/u",
       "sourcePath": "content/languages/japanese/characters.json",
-      "contentHash": "2fc96acbee2ea12d0c40ee6f016040953e6630ba334b089159a8cb001ba32ef9"
+      "contentHash": "4364ea1971f4eda01d76d188c4ec20711fbdd61e9eb8f27b165bc27c336d7f58"
+    },
+    {
+      "slug": "japanese/hiragana/wa",
+      "language": "ja",
+      "writingSystem": "hiragana",
+      "glyph": "わ",
+      "title": "Hiragana Wa",
+      "summary": "The basic hiragana syllable wa.",
+      "meanings": [
+        "wa sound"
+      ],
+      "readings": [
+        {
+          "label": "hiragana",
+          "value": "わ",
+          "ipa": "wa"
+        }
+      ],
+      "romaji": "wa",
+      "inputSequences": [
+        "wa"
+      ],
+      "ipa": "wa",
+      "studyOrder": 44,
+      "tags": [
+        "kana",
+        "hiragana",
+        "basic-hiragana",
+        "w-row",
+        "particle-contrast"
+      ],
+      "status": "published",
+      "strokes": [
+        {
+          "id": "s1",
+          "points": [
+            [
+              33,
+              18
+            ],
+            [
+              31,
+              82
+            ]
+          ]
+        },
+        {
+          "id": "s2",
+          "points": [
+            [
+              18,
+              43
+            ],
+            [
+              43,
+              34
+            ],
+            [
+              60,
+              27
+            ],
+            [
+              74,
+              34
+            ],
+            [
+              80,
+              50
+            ],
+            [
+              75,
+              67
+            ],
+            [
+              61,
+              78
+            ],
+            [
+              45,
+              80
+            ]
+          ]
+        }
+      ],
+      "examples": [],
+      "sources": [],
+      "id": "318ad908b880",
+      "route": "/languages/japanese/characters/hiragana/wa",
+      "sourcePath": "content/languages/japanese/hiragana-expanded.json",
+      "contentHash": "2a419a4af4952846a4c4ac4f40f1b1d6cf2e2d7fdbb6ff5ac6aa3ce9b43d4dcd"
+    },
+    {
+      "slug": "japanese/hiragana/wo",
+      "language": "ja",
+      "writingSystem": "hiragana",
+      "glyph": "を",
+      "title": "Hiragana Wo (Particle O)",
+      "summary": "The hiragana particle written wo in IME input and pronounced o.",
+      "meanings": [
+        "object particle pronounced o"
+      ],
+      "readings": [
+        {
+          "label": "object particle",
+          "value": "を",
+          "ipa": "o"
+        }
+      ],
+      "romaji": "o",
+      "inputSequences": [
+        "wo"
+      ],
+      "ipa": "o",
+      "studyOrder": 45,
+      "tags": [
+        "kana",
+        "hiragana",
+        "basic-hiragana",
+        "w-row",
+        "particle-exception"
+      ],
+      "status": "published",
+      "strokes": [
+        {
+          "id": "s1",
+          "points": [
+            [
+              24,
+              28
+            ],
+            [
+              72,
+              25
+            ]
+          ]
+        },
+        {
+          "id": "s2",
+          "points": [
+            [
+              46,
+              16
+            ],
+            [
+              39,
+              50
+            ],
+            [
+              54,
+              43
+            ],
+            [
+              68,
+              47
+            ],
+            [
+              57,
+              59
+            ]
+          ]
+        },
+        {
+          "id": "s3",
+          "points": [
+            [
+              79,
+              45
+            ],
+            [
+              55,
+              56
+            ],
+            [
+              34,
+              69
+            ],
+            [
+              40,
+              81
+            ],
+            [
+              70,
+              83
+            ]
+          ]
+        }
+      ],
+      "examples": [],
+      "sources": [],
+      "id": "c137eb7d2c44",
+      "route": "/languages/japanese/characters/hiragana/wo",
+      "sourcePath": "content/languages/japanese/hiragana-expanded.json",
+      "contentHash": "2a419a4af4952846a4c4ac4f40f1b1d6cf2e2d7fdbb6ff5ac6aa3ce9b43d4dcd"
+    },
+    {
+      "slug": "japanese/hiragana/ya",
+      "language": "ja",
+      "writingSystem": "hiragana",
+      "glyph": "や",
+      "title": "Hiragana Ya",
+      "summary": "The basic hiragana syllable ya.",
+      "meanings": [
+        "ya sound"
+      ],
+      "readings": [
+        {
+          "label": "hiragana",
+          "value": "や",
+          "ipa": "ja"
+        }
+      ],
+      "romaji": "ya",
+      "inputSequences": [
+        "ya"
+      ],
+      "ipa": "ja",
+      "studyOrder": 36,
+      "tags": [
+        "kana",
+        "hiragana",
+        "basic-hiragana",
+        "y-row"
+      ],
+      "status": "published",
+      "strokes": [
+        {
+          "id": "s1",
+          "points": [
+            [
+              18,
+              49
+            ],
+            [
+              52,
+              37
+            ],
+            [
+              78,
+              40
+            ],
+            [
+              70,
+              57
+            ],
+            [
+              57,
+              62
+            ]
+          ]
+        },
+        {
+          "id": "s2",
+          "points": [
+            [
+              42,
+              24
+            ],
+            [
+              54,
+              84
+            ]
+          ]
+        },
+        {
+          "id": "s3",
+          "points": [
+            [
+              68,
+              21
+            ],
+            [
+              78,
+              29
+            ]
+          ]
+        }
+      ],
+      "examples": [],
+      "sources": [],
+      "id": "3b1779dbef01",
+      "route": "/languages/japanese/characters/hiragana/ya",
+      "sourcePath": "content/languages/japanese/hiragana-expanded.json",
+      "contentHash": "2a419a4af4952846a4c4ac4f40f1b1d6cf2e2d7fdbb6ff5ac6aa3ce9b43d4dcd"
+    },
+    {
+      "slug": "japanese/hiragana/yo",
+      "language": "ja",
+      "writingSystem": "hiragana",
+      "glyph": "よ",
+      "title": "Hiragana Yo",
+      "summary": "The basic hiragana syllable yo.",
+      "meanings": [
+        "yo sound"
+      ],
+      "readings": [
+        {
+          "label": "hiragana",
+          "value": "よ",
+          "ipa": "jo"
+        }
+      ],
+      "romaji": "yo",
+      "inputSequences": [
+        "yo"
+      ],
+      "ipa": "jo",
+      "studyOrder": 38,
+      "tags": [
+        "kana",
+        "hiragana",
+        "basic-hiragana",
+        "y-row"
+      ],
+      "status": "published",
+      "strokes": [
+        {
+          "id": "s1",
+          "points": [
+            [
+              48,
+              35
+            ],
+            [
+              77,
+              32
+            ]
+          ]
+        },
+        {
+          "id": "s2",
+          "points": [
+            [
+              58,
+              18
+            ],
+            [
+              58,
+              66
+            ],
+            [
+              49,
+              78
+            ],
+            [
+              37,
+              72
+            ],
+            [
+              44,
+              61
+            ],
+            [
+              62,
+              65
+            ],
+            [
+              79,
+              78
+            ]
+          ]
+        }
+      ],
+      "examples": [],
+      "sources": [],
+      "id": "111b15448bae",
+      "route": "/languages/japanese/characters/hiragana/yo",
+      "sourcePath": "content/languages/japanese/hiragana-expanded.json",
+      "contentHash": "2a419a4af4952846a4c4ac4f40f1b1d6cf2e2d7fdbb6ff5ac6aa3ce9b43d4dcd"
+    },
+    {
+      "slug": "japanese/hiragana/yu",
+      "language": "ja",
+      "writingSystem": "hiragana",
+      "glyph": "ゆ",
+      "title": "Hiragana Yu",
+      "summary": "The basic hiragana syllable yu.",
+      "meanings": [
+        "yu sound"
+      ],
+      "readings": [
+        {
+          "label": "hiragana",
+          "value": "ゆ",
+          "ipa": "jɯ"
+        }
+      ],
+      "romaji": "yu",
+      "inputSequences": [
+        "yu"
+      ],
+      "ipa": "jɯ",
+      "studyOrder": 37,
+      "tags": [
+        "kana",
+        "hiragana",
+        "basic-hiragana",
+        "y-row"
+      ],
+      "status": "published",
+      "strokes": [
+        {
+          "id": "s1",
+          "points": [
+            [
+              25,
+              25
+            ],
+            [
+              24,
+              68
+            ],
+            [
+              34,
+              76
+            ],
+            [
+              43,
+              62
+            ],
+            [
+              45,
+              39
+            ],
+            [
+              61,
+              33
+            ],
+            [
+              76,
+              40
+            ],
+            [
+              78,
+              57
+            ],
+            [
+              66,
+              72
+            ],
+            [
+              46,
+              78
+            ]
+          ]
+        },
+        {
+          "id": "s2",
+          "points": [
+            [
+              59,
+              20
+            ],
+            [
+              60,
+              82
+            ]
+          ]
+        }
+      ],
+      "examples": [],
+      "sources": [],
+      "id": "c3201cc9cc1e",
+      "route": "/languages/japanese/characters/hiragana/yu",
+      "sourcePath": "content/languages/japanese/hiragana-expanded.json",
+      "contentHash": "2a419a4af4952846a4c4ac4f40f1b1d6cf2e2d7fdbb6ff5ac6aa3ce9b43d4dcd"
     },
     {
       "slug": "japanese/kanji/big",
@@ -8255,7 +13153,9 @@
         }
       ],
       "romaji": "oo",
+      "inputSequences": [],
       "ipa": "oː",
+      "studyOrder": 9999,
       "tags": [
         "kanji",
         "adjective",
@@ -8307,11 +13207,12 @@
           ]
         }
       ],
+      "examples": [],
       "sources": [],
       "id": "b23a42a6a266",
       "route": "/languages/japanese/characters/kanji/big",
       "sourcePath": "content/languages/japanese/characters.json",
-      "contentHash": "2fc96acbee2ea12d0c40ee6f016040953e6630ba334b089159a8cb001ba32ef9"
+      "contentHash": "4364ea1971f4eda01d76d188c4ec20711fbdd61e9eb8f27b165bc27c336d7f58"
     },
     {
       "slug": "japanese/kanji/book",
@@ -8332,7 +13233,9 @@
         }
       ],
       "romaji": "hon",
+      "inputSequences": [],
       "ipa": "hoɴ",
+      "studyOrder": 9999,
       "tags": [
         "kanji",
         "object",
@@ -8406,11 +13309,12 @@
           ]
         }
       ],
+      "examples": [],
       "sources": [],
       "id": "a15ac77efc2c",
       "route": "/languages/japanese/characters/kanji/book",
       "sourcePath": "content/languages/japanese/characters.json",
-      "contentHash": "2fc96acbee2ea12d0c40ee6f016040953e6630ba334b089159a8cb001ba32ef9"
+      "contentHash": "4364ea1971f4eda01d76d188c4ec20711fbdd61e9eb8f27b165bc27c336d7f58"
     },
     {
       "slug": "japanese/kanji/day",
@@ -8431,7 +13335,9 @@
         }
       ],
       "romaji": "hi",
+      "inputSequences": [],
       "ipa": "çi",
+      "studyOrder": 9999,
       "tags": [
         "kanji",
         "time",
@@ -8496,11 +13402,12 @@
           ]
         }
       ],
+      "examples": [],
       "sources": [],
       "id": "c053e1b2ca45",
       "route": "/languages/japanese/characters/kanji/day",
       "sourcePath": "content/languages/japanese/characters.json",
-      "contentHash": "2fc96acbee2ea12d0c40ee6f016040953e6630ba334b089159a8cb001ba32ef9"
+      "contentHash": "4364ea1971f4eda01d76d188c4ec20711fbdd61e9eb8f27b165bc27c336d7f58"
     },
     {
       "slug": "japanese/kanji/earth",
@@ -8521,7 +13428,9 @@
         }
       ],
       "romaji": "tsuchi",
+      "inputSequences": [],
       "ipa": "tsɯtɕi",
+      "studyOrder": 9999,
       "tags": [
         "kanji",
         "nature",
@@ -8569,11 +13478,12 @@
           ]
         }
       ],
+      "examples": [],
       "sources": [],
       "id": "84ff5966f745",
       "route": "/languages/japanese/characters/kanji/earth",
       "sourcePath": "content/languages/japanese/characters.json",
-      "contentHash": "2fc96acbee2ea12d0c40ee6f016040953e6630ba334b089159a8cb001ba32ef9"
+      "contentHash": "4364ea1971f4eda01d76d188c4ec20711fbdd61e9eb8f27b165bc27c336d7f58"
     },
     {
       "slug": "japanese/kanji/eight",
@@ -8593,7 +13503,9 @@
         }
       ],
       "romaji": "hachi",
+      "inputSequences": [],
       "ipa": "hatɕi",
+      "studyOrder": 9999,
       "tags": [
         "kanji",
         "number",
@@ -8628,11 +13540,220 @@
           ]
         }
       ],
+      "examples": [],
       "sources": [],
       "id": "84ae8c7ee5f6",
       "route": "/languages/japanese/characters/kanji/eight",
       "sourcePath": "content/languages/japanese/characters.json",
-      "contentHash": "2fc96acbee2ea12d0c40ee6f016040953e6630ba334b089159a8cb001ba32ef9"
+      "contentHash": "4364ea1971f4eda01d76d188c4ec20711fbdd61e9eb8f27b165bc27c336d7f58"
+    },
+    {
+      "slug": "japanese/kanji/evening",
+      "language": "ja",
+      "writingSystem": "kanji",
+      "glyph": "晩",
+      "title": "Kanji Evening",
+      "summary": "The kanji for evening, used with 今 in 今晩, this evening.",
+      "meanings": [
+        "evening",
+        "nightfall"
+      ],
+      "readings": [
+        {
+          "label": "on",
+          "value": "ばん",
+          "ipa": "baɴ"
+        }
+      ],
+      "romaji": "ban",
+      "inputSequences": [
+        "ban"
+      ],
+      "ipa": "baɴ",
+      "studyOrder": 1002,
+      "tags": [
+        "kanji",
+        "time",
+        "greeting",
+        "n5"
+      ],
+      "status": "published",
+      "strokes": [
+        {
+          "id": "s1",
+          "points": [
+            [
+              18,
+              27
+            ],
+            [
+              18,
+              76
+            ]
+          ]
+        },
+        {
+          "id": "s2",
+          "points": [
+            [
+              18,
+              28
+            ],
+            [
+              39,
+              28
+            ]
+          ]
+        },
+        {
+          "id": "s3",
+          "points": [
+            [
+              19,
+              50
+            ],
+            [
+              38,
+              50
+            ]
+          ]
+        },
+        {
+          "id": "s4",
+          "points": [
+            [
+              18,
+              76
+            ],
+            [
+              39,
+              76
+            ]
+          ]
+        },
+        {
+          "id": "s5",
+          "points": [
+            [
+              56,
+              16
+            ],
+            [
+              48,
+              34
+            ]
+          ]
+        },
+        {
+          "id": "s6",
+          "points": [
+            [
+              51,
+              25
+            ],
+            [
+              77,
+              24
+            ],
+            [
+              67,
+              37
+            ],
+            [
+              49,
+              39
+            ]
+          ]
+        },
+        {
+          "id": "s7",
+          "points": [
+            [
+              60,
+              39
+            ],
+            [
+              48,
+              58
+            ]
+          ]
+        },
+        {
+          "id": "s8",
+          "points": [
+            [
+              60,
+              39
+            ],
+            [
+              79,
+              58
+            ]
+          ]
+        },
+        {
+          "id": "s9",
+          "points": [
+            [
+              47,
+              58
+            ],
+            [
+              80,
+              58
+            ]
+          ]
+        },
+        {
+          "id": "s10",
+          "points": [
+            [
+              62,
+              57
+            ],
+            [
+              62,
+              79
+            ]
+          ]
+        },
+        {
+          "id": "s11",
+          "points": [
+            [
+              46,
+              68
+            ],
+            [
+              76,
+              68
+            ]
+          ]
+        },
+        {
+          "id": "s12",
+          "points": [
+            [
+              75,
+              58
+            ],
+            [
+              75,
+              80
+            ],
+            [
+              83,
+              82
+            ]
+          ]
+        }
+      ],
+      "examples": [],
+      "sources": [],
+      "id": "ebe421804929",
+      "route": "/languages/japanese/characters/kanji/evening",
+      "sourcePath": "content/languages/japanese/greeting-kanji.json",
+      "contentHash": "d4fe4857c120f626899f7d8607910f0075c1d12718df939c9fccdd9610f4ed26"
     },
     {
       "slug": "japanese/kanji/fire",
@@ -8652,7 +13773,9 @@
         }
       ],
       "romaji": "hi",
+      "inputSequences": [],
       "ipa": "çi",
+      "studyOrder": 9999,
       "tags": [
         "kanji",
         "nature",
@@ -8717,11 +13840,12 @@
           ]
         }
       ],
+      "examples": [],
       "sources": [],
       "id": "5535eaac54c2",
       "route": "/languages/japanese/characters/kanji/fire",
       "sourcePath": "content/languages/japanese/characters.json",
-      "contentHash": "2fc96acbee2ea12d0c40ee6f016040953e6630ba334b089159a8cb001ba32ef9"
+      "contentHash": "4364ea1971f4eda01d76d188c4ec20711fbdd61e9eb8f27b165bc27c336d7f58"
     },
     {
       "slug": "japanese/kanji/five",
@@ -8741,7 +13865,9 @@
         }
       ],
       "romaji": "go",
+      "inputSequences": [],
       "ipa": "ɡo",
+      "studyOrder": 9999,
       "tags": [
         "kanji",
         "number",
@@ -8802,11 +13928,12 @@
           ]
         }
       ],
+      "examples": [],
       "sources": [],
       "id": "95f53528b15d",
       "route": "/languages/japanese/characters/kanji/five",
       "sourcePath": "content/languages/japanese/characters.json",
-      "contentHash": "2fc96acbee2ea12d0c40ee6f016040953e6630ba334b089159a8cb001ba32ef9"
+      "contentHash": "4364ea1971f4eda01d76d188c4ec20711fbdd61e9eb8f27b165bc27c336d7f58"
     },
     {
       "slug": "japanese/kanji/four",
@@ -8826,7 +13953,9 @@
         }
       ],
       "romaji": "shi",
+      "inputSequences": [],
       "ipa": "ɕi",
+      "studyOrder": 9999,
       "tags": [
         "kanji",
         "number",
@@ -8904,11 +14033,12 @@
           ]
         }
       ],
+      "examples": [],
       "sources": [],
       "id": "469219848d4d",
       "route": "/languages/japanese/characters/kanji/four",
       "sourcePath": "content/languages/japanese/characters.json",
-      "contentHash": "2fc96acbee2ea12d0c40ee6f016040953e6630ba334b089159a8cb001ba32ef9"
+      "contentHash": "4364ea1971f4eda01d76d188c4ec20711fbdd61e9eb8f27b165bc27c336d7f58"
     },
     {
       "slug": "japanese/kanji/gold",
@@ -8929,7 +14059,9 @@
         }
       ],
       "romaji": "kane",
+      "inputSequences": [],
       "ipa": "kane",
+      "studyOrder": 9999,
       "tags": [
         "kanji",
         "nature",
@@ -9042,11 +14174,12 @@
           ]
         }
       ],
+      "examples": [],
       "sources": [],
       "id": "10273173cefc",
       "route": "/languages/japanese/characters/kanji/gold",
       "sourcePath": "content/languages/japanese/characters.json",
-      "contentHash": "2fc96acbee2ea12d0c40ee6f016040953e6630ba334b089159a8cb001ba32ef9"
+      "contentHash": "4364ea1971f4eda01d76d188c4ec20711fbdd61e9eb8f27b165bc27c336d7f58"
     },
     {
       "slug": "japanese/kanji/middle",
@@ -9067,7 +14200,9 @@
         }
       ],
       "romaji": "chuu",
+      "inputSequences": [],
       "ipa": "tɕɯː",
+      "studyOrder": 9999,
       "tags": [
         "kanji",
         "position",
@@ -9132,11 +14267,12 @@
           ]
         }
       ],
+      "examples": [],
       "sources": [],
       "id": "dd9bbbb14500",
       "route": "/languages/japanese/characters/kanji/middle",
       "sourcePath": "content/languages/japanese/characters.json",
-      "contentHash": "2fc96acbee2ea12d0c40ee6f016040953e6630ba334b089159a8cb001ba32ef9"
+      "contentHash": "4364ea1971f4eda01d76d188c4ec20711fbdd61e9eb8f27b165bc27c336d7f58"
     },
     {
       "slug": "japanese/kanji/month",
@@ -9157,7 +14293,9 @@
         }
       ],
       "romaji": "tsuki",
+      "inputSequences": [],
       "ipa": "tsɯki",
+      "studyOrder": 9999,
       "tags": [
         "kanji",
         "time",
@@ -9222,11 +14360,12 @@
           ]
         }
       ],
+      "examples": [],
       "sources": [],
       "id": "7015769fa019",
       "route": "/languages/japanese/characters/kanji/month",
       "sourcePath": "content/languages/japanese/characters.json",
-      "contentHash": "2fc96acbee2ea12d0c40ee6f016040953e6630ba334b089159a8cb001ba32ef9"
+      "contentHash": "4364ea1971f4eda01d76d188c4ec20711fbdd61e9eb8f27b165bc27c336d7f58"
     },
     {
       "slug": "japanese/kanji/mountain",
@@ -9246,7 +14385,9 @@
         }
       ],
       "romaji": "yama",
+      "inputSequences": [],
       "ipa": "jama",
+      "studyOrder": 9999,
       "tags": [
         "kanji",
         "nature",
@@ -9298,11 +14439,12 @@
           ]
         }
       ],
+      "examples": [],
       "sources": [],
       "id": "8b2f86bb34ab",
       "route": "/languages/japanese/characters/kanji/mountain",
       "sourcePath": "content/languages/japanese/characters.json",
-      "contentHash": "2fc96acbee2ea12d0c40ee6f016040953e6630ba334b089159a8cb001ba32ef9"
+      "contentHash": "4364ea1971f4eda01d76d188c4ec20711fbdd61e9eb8f27b165bc27c336d7f58"
     },
     {
       "slug": "japanese/kanji/nine",
@@ -9322,7 +14464,9 @@
         }
       ],
       "romaji": "kyuu",
+      "inputSequences": [],
       "ipa": "kʲɯː",
+      "studyOrder": 9999,
       "tags": [
         "kanji",
         "number",
@@ -9365,11 +14509,126 @@
           ]
         }
       ],
+      "examples": [],
       "sources": [],
       "id": "fc718d1556cc",
       "route": "/languages/japanese/characters/kanji/nine",
       "sourcePath": "content/languages/japanese/characters.json",
-      "contentHash": "2fc96acbee2ea12d0c40ee6f016040953e6630ba334b089159a8cb001ba32ef9"
+      "contentHash": "4364ea1971f4eda01d76d188c4ec20711fbdd61e9eb8f27b165bc27c336d7f58"
+    },
+    {
+      "slug": "japanese/kanji/now",
+      "language": "ja",
+      "writingSystem": "kanji",
+      "glyph": "今",
+      "title": "Kanji Now",
+      "summary": "The kanji for now or the present, read kon in compounds such as konban.",
+      "meanings": [
+        "now",
+        "present"
+      ],
+      "readings": [
+        {
+          "label": "on",
+          "value": "こん",
+          "ipa": "koɴ"
+        },
+        {
+          "label": "kun",
+          "value": "いま",
+          "ipa": "ima"
+        }
+      ],
+      "romaji": "ima / kon",
+      "inputSequences": [
+        "ima",
+        "kon"
+      ],
+      "ipa": "ima",
+      "studyOrder": 1001,
+      "tags": [
+        "kanji",
+        "time",
+        "greeting",
+        "n5"
+      ],
+      "status": "published",
+      "strokes": [
+        {
+          "id": "s1",
+          "points": [
+            [
+              50,
+              15
+            ],
+            [
+              25,
+              42
+            ]
+          ]
+        },
+        {
+          "id": "s2",
+          "points": [
+            [
+              50,
+              15
+            ],
+            [
+              78,
+              42
+            ]
+          ]
+        },
+        {
+          "id": "s3",
+          "points": [
+            [
+              34,
+              45
+            ],
+            [
+              68,
+              45
+            ],
+            [
+              58,
+              55
+            ],
+            [
+              37,
+              55
+            ]
+          ]
+        },
+        {
+          "id": "s4",
+          "points": [
+            [
+              45,
+              55
+            ],
+            [
+              65,
+              70
+            ],
+            [
+              48,
+              84
+            ],
+            [
+              34,
+              75
+            ]
+          ]
+        }
+      ],
+      "examples": [],
+      "sources": [],
+      "id": "6c4d927c31f4",
+      "route": "/languages/japanese/characters/kanji/now",
+      "sourcePath": "content/languages/japanese/greeting-kanji.json",
+      "contentHash": "d4fe4857c120f626899f7d8607910f0075c1d12718df939c9fccdd9610f4ed26"
     },
     {
       "slug": "japanese/kanji/one",
@@ -9389,7 +14648,9 @@
         }
       ],
       "romaji": "ichi",
+      "inputSequences": [],
       "ipa": "itɕi",
+      "studyOrder": 9999,
       "tags": [
         "kanji",
         "number",
@@ -9411,11 +14672,12 @@
           ]
         }
       ],
+      "examples": [],
       "sources": [],
       "id": "387a17d97031",
       "route": "/languages/japanese/characters/kanji/one",
       "sourcePath": "content/languages/japanese/characters.json",
-      "contentHash": "2fc96acbee2ea12d0c40ee6f016040953e6630ba334b089159a8cb001ba32ef9"
+      "contentHash": "4364ea1971f4eda01d76d188c4ec20711fbdd61e9eb8f27b165bc27c336d7f58"
     },
     {
       "slug": "japanese/kanji/person",
@@ -9436,7 +14698,9 @@
         }
       ],
       "romaji": "hito",
+      "inputSequences": [],
       "ipa": "çito",
+      "studyOrder": 9999,
       "tags": [
         "kanji",
         "people",
@@ -9471,11 +14735,12 @@
           ]
         }
       ],
+      "examples": [],
       "sources": [],
       "id": "17412f947b30",
       "route": "/languages/japanese/characters/kanji/person",
       "sourcePath": "content/languages/japanese/characters.json",
-      "contentHash": "2fc96acbee2ea12d0c40ee6f016040953e6630ba334b089159a8cb001ba32ef9"
+      "contentHash": "4364ea1971f4eda01d76d188c4ec20711fbdd61e9eb8f27b165bc27c336d7f58"
     },
     {
       "slug": "japanese/kanji/river",
@@ -9495,7 +14760,9 @@
         }
       ],
       "romaji": "kawa",
+      "inputSequences": [],
       "ipa": "kawa",
+      "studyOrder": 9999,
       "tags": [
         "kanji",
         "nature",
@@ -9543,11 +14810,12 @@
           ]
         }
       ],
+      "examples": [],
       "sources": [],
       "id": "22539acffef1",
       "route": "/languages/japanese/characters/kanji/river",
       "sourcePath": "content/languages/japanese/characters.json",
-      "contentHash": "2fc96acbee2ea12d0c40ee6f016040953e6630ba334b089159a8cb001ba32ef9"
+      "contentHash": "4364ea1971f4eda01d76d188c4ec20711fbdd61e9eb8f27b165bc27c336d7f58"
     },
     {
       "slug": "japanese/kanji/seven",
@@ -9567,7 +14835,9 @@
         }
       ],
       "romaji": "shichi",
+      "inputSequences": [],
       "ipa": "ɕitɕi",
+      "studyOrder": 9999,
       "tags": [
         "kanji",
         "number",
@@ -9606,11 +14876,12 @@
           ]
         }
       ],
+      "examples": [],
       "sources": [],
       "id": "072c876d939f",
       "route": "/languages/japanese/characters/kanji/seven",
       "sourcePath": "content/languages/japanese/characters.json",
-      "contentHash": "2fc96acbee2ea12d0c40ee6f016040953e6630ba334b089159a8cb001ba32ef9"
+      "contentHash": "4364ea1971f4eda01d76d188c4ec20711fbdd61e9eb8f27b165bc27c336d7f58"
     },
     {
       "slug": "japanese/kanji/six",
@@ -9630,7 +14901,9 @@
         }
       ],
       "romaji": "roku",
+      "inputSequences": [],
       "ipa": "ɾokɯ",
+      "studyOrder": 9999,
       "tags": [
         "kanji",
         "number",
@@ -9691,11 +14964,12 @@
           ]
         }
       ],
+      "examples": [],
       "sources": [],
       "id": "a1b1f55fefa8",
       "route": "/languages/japanese/characters/kanji/six",
       "sourcePath": "content/languages/japanese/characters.json",
-      "contentHash": "2fc96acbee2ea12d0c40ee6f016040953e6630ba334b089159a8cb001ba32ef9"
+      "contentHash": "4364ea1971f4eda01d76d188c4ec20711fbdd61e9eb8f27b165bc27c336d7f58"
     },
     {
       "slug": "japanese/kanji/small",
@@ -9715,7 +14989,9 @@
         }
       ],
       "romaji": "chii",
+      "inputSequences": [],
       "ipa": "tɕiː",
+      "studyOrder": 9999,
       "tags": [
         "kanji",
         "adjective",
@@ -9763,11 +15039,12 @@
           ]
         }
       ],
+      "examples": [],
       "sources": [],
       "id": "c6526c38a3ee",
       "route": "/languages/japanese/characters/kanji/small",
       "sourcePath": "content/languages/japanese/characters.json",
-      "contentHash": "2fc96acbee2ea12d0c40ee6f016040953e6630ba334b089159a8cb001ba32ef9"
+      "contentHash": "4364ea1971f4eda01d76d188c4ec20711fbdd61e9eb8f27b165bc27c336d7f58"
     },
     {
       "slug": "japanese/kanji/ten",
@@ -9787,7 +15064,9 @@
         }
       ],
       "romaji": "juu",
+      "inputSequences": [],
       "ipa": "dʑɯː",
+      "studyOrder": 9999,
       "tags": [
         "kanji",
         "number",
@@ -9822,11 +15101,12 @@
           ]
         }
       ],
+      "examples": [],
       "sources": [],
       "id": "900d813b15fa",
       "route": "/languages/japanese/characters/kanji/ten",
       "sourcePath": "content/languages/japanese/characters.json",
-      "contentHash": "2fc96acbee2ea12d0c40ee6f016040953e6630ba334b089159a8cb001ba32ef9"
+      "contentHash": "4364ea1971f4eda01d76d188c4ec20711fbdd61e9eb8f27b165bc27c336d7f58"
     },
     {
       "slug": "japanese/kanji/three",
@@ -9846,7 +15126,9 @@
         }
       ],
       "romaji": "san",
+      "inputSequences": [],
       "ipa": "saɴ",
+      "studyOrder": 9999,
       "tags": [
         "kanji",
         "number",
@@ -9894,11 +15176,12 @@
           ]
         }
       ],
+      "examples": [],
       "sources": [],
       "id": "e9f0cbba05e1",
       "route": "/languages/japanese/characters/kanji/three",
       "sourcePath": "content/languages/japanese/characters.json",
-      "contentHash": "2fc96acbee2ea12d0c40ee6f016040953e6630ba334b089159a8cb001ba32ef9"
+      "contentHash": "4364ea1971f4eda01d76d188c4ec20711fbdd61e9eb8f27b165bc27c336d7f58"
     },
     {
       "slug": "japanese/kanji/tree",
@@ -9919,7 +15202,9 @@
         }
       ],
       "romaji": "ki",
+      "inputSequences": [],
       "ipa": "ki",
+      "studyOrder": 9999,
       "tags": [
         "kanji",
         "nature",
@@ -9980,11 +15265,12 @@
           ]
         }
       ],
+      "examples": [],
       "sources": [],
       "id": "1a1ddd006144",
       "route": "/languages/japanese/characters/kanji/tree",
       "sourcePath": "content/languages/japanese/characters.json",
-      "contentHash": "2fc96acbee2ea12d0c40ee6f016040953e6630ba334b089159a8cb001ba32ef9"
+      "contentHash": "4364ea1971f4eda01d76d188c4ec20711fbdd61e9eb8f27b165bc27c336d7f58"
     },
     {
       "slug": "japanese/kanji/two",
@@ -10004,7 +15290,9 @@
         }
       ],
       "romaji": "ni",
+      "inputSequences": [],
       "ipa": "ɲi",
+      "studyOrder": 9999,
       "tags": [
         "kanji",
         "number",
@@ -10039,11 +15327,12 @@
           ]
         }
       ],
+      "examples": [],
       "sources": [],
       "id": "1ec13c4ec844",
       "route": "/languages/japanese/characters/kanji/two",
       "sourcePath": "content/languages/japanese/characters.json",
-      "contentHash": "2fc96acbee2ea12d0c40ee6f016040953e6630ba334b089159a8cb001ba32ef9"
+      "contentHash": "4364ea1971f4eda01d76d188c4ec20711fbdd61e9eb8f27b165bc27c336d7f58"
     },
     {
       "slug": "japanese/kanji/water",
@@ -10063,7 +15352,9 @@
         }
       ],
       "romaji": "mizu",
+      "inputSequences": [],
       "ipa": "mizɯ",
+      "studyOrder": 9999,
       "tags": [
         "kanji",
         "nature",
@@ -10137,11 +15428,12 @@
           ]
         }
       ],
+      "examples": [],
       "sources": [],
       "id": "848da958da31",
       "route": "/languages/japanese/characters/kanji/water",
       "sourcePath": "content/languages/japanese/characters.json",
-      "contentHash": "2fc96acbee2ea12d0c40ee6f016040953e6630ba334b089159a8cb001ba32ef9"
+      "contentHash": "4364ea1971f4eda01d76d188c4ec20711fbdd61e9eb8f27b165bc27c336d7f58"
     },
     {
       "slug": "japanese/katakana/a",
@@ -10161,7 +15453,9 @@
         }
       ],
       "romaji": "a",
+      "inputSequences": [],
       "ipa": "a",
+      "studyOrder": 9999,
       "tags": [
         "kana",
         "vowel",
@@ -10200,11 +15494,12 @@
           ]
         }
       ],
+      "examples": [],
       "sources": [],
       "id": "97fb289cd0cd",
       "route": "/languages/japanese/characters/katakana/a",
       "sourcePath": "content/languages/japanese/characters.json",
-      "contentHash": "2fc96acbee2ea12d0c40ee6f016040953e6630ba334b089159a8cb001ba32ef9"
+      "contentHash": "4364ea1971f4eda01d76d188c4ec20711fbdd61e9eb8f27b165bc27c336d7f58"
     },
     {
       "slug": "japanese/katakana/e",
@@ -10224,7 +15519,9 @@
         }
       ],
       "romaji": "e",
+      "inputSequences": [],
       "ipa": "e",
+      "studyOrder": 9999,
       "tags": [
         "kana",
         "vowel",
@@ -10272,11 +15569,12 @@
           ]
         }
       ],
+      "examples": [],
       "sources": [],
       "id": "65295047e3da",
       "route": "/languages/japanese/characters/katakana/e",
       "sourcePath": "content/languages/japanese/characters.json",
-      "contentHash": "2fc96acbee2ea12d0c40ee6f016040953e6630ba334b089159a8cb001ba32ef9"
+      "contentHash": "4364ea1971f4eda01d76d188c4ec20711fbdd61e9eb8f27b165bc27c336d7f58"
     },
     {
       "slug": "japanese/katakana/i",
@@ -10296,7 +15594,9 @@
         }
       ],
       "romaji": "i",
+      "inputSequences": [],
       "ipa": "i",
+      "studyOrder": 9999,
       "tags": [
         "kana",
         "vowel",
@@ -10331,11 +15631,12 @@
           ]
         }
       ],
+      "examples": [],
       "sources": [],
       "id": "64679be90862",
       "route": "/languages/japanese/characters/katakana/i",
       "sourcePath": "content/languages/japanese/characters.json",
-      "contentHash": "2fc96acbee2ea12d0c40ee6f016040953e6630ba334b089159a8cb001ba32ef9"
+      "contentHash": "4364ea1971f4eda01d76d188c4ec20711fbdd61e9eb8f27b165bc27c336d7f58"
     },
     {
       "slug": "japanese/katakana/o",
@@ -10355,7 +15656,9 @@
         }
       ],
       "romaji": "o",
+      "inputSequences": [],
       "ipa": "o",
+      "studyOrder": 9999,
       "tags": [
         "kana",
         "vowel",
@@ -10403,11 +15706,12 @@
           ]
         }
       ],
+      "examples": [],
       "sources": [],
       "id": "b7764e594e17",
       "route": "/languages/japanese/characters/katakana/o",
       "sourcePath": "content/languages/japanese/characters.json",
-      "contentHash": "2fc96acbee2ea12d0c40ee6f016040953e6630ba334b089159a8cb001ba32ef9"
+      "contentHash": "4364ea1971f4eda01d76d188c4ec20711fbdd61e9eb8f27b165bc27c336d7f58"
     },
     {
       "slug": "japanese/katakana/u",
@@ -10427,7 +15731,9 @@
         }
       ],
       "romaji": "u",
+      "inputSequences": [],
       "ipa": "ɯ",
+      "studyOrder": 9999,
       "tags": [
         "kana",
         "vowel",
@@ -10470,11 +15776,12 @@
           ]
         }
       ],
+      "examples": [],
       "sources": [],
       "id": "1b5b47155c52",
       "route": "/languages/japanese/characters/katakana/u",
       "sourcePath": "content/languages/japanese/characters.json",
-      "contentHash": "2fc96acbee2ea12d0c40ee6f016040953e6630ba334b089159a8cb001ba32ef9"
+      "contentHash": "4364ea1971f4eda01d76d188c4ec20711fbdd61e9eb8f27b165bc27c336d7f58"
     }
   ],
   "languageVocabulary": [
@@ -10484,6 +15791,7 @@
       "expression": "大きい",
       "reading": "おおきい",
       "romaji": "ookii",
+      "inputSequences": [],
       "ipa": "oːkiː",
       "meanings": [
         "big",
@@ -10494,6 +15802,8 @@
         "japanese/hiragana/o",
         "japanese/hiragana/i"
       ],
+      "segments": [],
+      "examples": [],
       "tags": [
         "adjective",
         "n5",
@@ -10504,7 +15814,207 @@
       "id": "d80de3cb861e",
       "route": "/languages/japanese/vocabulary/big",
       "sourcePath": "content/languages/japanese/vocabulary.json",
-      "contentHash": "4932303125c3e0fcf2f412a5c53a88a6b04262a180c305cf4883e2131aa31d35"
+      "contentHash": "0a61b7c9962c6ed254fcc5d2ab2832f266f7fdf02893cb03abc4810ef571a249"
+    },
+    {
+      "slug": "japanese/vocabulary/good-evening",
+      "language": "ja",
+      "expression": "こんばんは",
+      "reading": "こんばんは",
+      "romaji": "konbanwa",
+      "inputSequences": [
+        "konbanha"
+      ],
+      "ipa": "kombaɴwa",
+      "meanings": [
+        "good evening"
+      ],
+      "characterSlugs": [
+        "japanese/hiragana/ko",
+        "japanese/hiragana/n",
+        "japanese/hiragana/ba",
+        "japanese/hiragana/ha",
+        "japanese/kanji/now",
+        "japanese/kanji/evening"
+      ],
+      "segments": [
+        {
+          "text": "今",
+          "reading": "こん",
+          "romaji": "kon",
+          "meaning": "now; this",
+          "characterSlugs": [
+            "japanese/kanji/now"
+          ]
+        },
+        {
+          "text": "晩",
+          "reading": "ばん",
+          "romaji": "ban",
+          "meaning": "evening",
+          "characterSlugs": [
+            "japanese/kanji/evening"
+          ]
+        },
+        {
+          "text": "は",
+          "reading": "わ",
+          "romaji": "wa",
+          "meaning": "topic particle, written ha but pronounced wa",
+          "characterSlugs": [
+            "japanese/hiragana/ha"
+          ]
+        }
+      ],
+      "examples": [
+        {
+          "id": "good-evening-greeting",
+          "japanese": "こんばんは。",
+          "reading": "こんばんは。",
+          "romaji": "konbanwa.",
+          "inputSequences": [
+            "konbanha"
+          ],
+          "translation": "Good evening.",
+          "explanation": "The greeting preserves the topic particle は from a longer expression beginning with 今晩は, as for this evening.",
+          "segments": [
+            {
+              "text": "こん",
+              "reading": "こん",
+              "romaji": "kon",
+              "meaning": "this; now",
+              "characterSlugs": [
+                "japanese/hiragana/ko",
+                "japanese/hiragana/n"
+              ]
+            },
+            {
+              "text": "ばん",
+              "reading": "ばん",
+              "romaji": "ban",
+              "meaning": "evening",
+              "characterSlugs": [
+                "japanese/hiragana/ba",
+                "japanese/hiragana/n"
+              ]
+            },
+            {
+              "text": "は",
+              "reading": "わ",
+              "romaji": "wa",
+              "meaning": "topic particle",
+              "characterSlugs": [
+                "japanese/hiragana/ha"
+              ]
+            }
+          ]
+        }
+      ],
+      "tags": [
+        "greeting",
+        "beginner",
+        "hiragana",
+        "ime"
+      ],
+      "status": "published",
+      "sources": [],
+      "id": "ec0db40abf87",
+      "route": "/languages/japanese/vocabulary/good-evening",
+      "sourcePath": "content/languages/japanese/vocabulary.json",
+      "contentHash": "0a61b7c9962c6ed254fcc5d2ab2832f266f7fdf02893cb03abc4810ef571a249"
+    },
+    {
+      "slug": "japanese/vocabulary/hello",
+      "language": "ja",
+      "expression": "こんにちは",
+      "reading": "こんにちは",
+      "romaji": "konnichiwa",
+      "inputSequences": [
+        "konnichiha"
+      ],
+      "ipa": "koɴnitɕiwa",
+      "meanings": [
+        "hello",
+        "good afternoon"
+      ],
+      "characterSlugs": [
+        "japanese/hiragana/ko",
+        "japanese/hiragana/n",
+        "japanese/hiragana/ni",
+        "japanese/hiragana/chi",
+        "japanese/hiragana/ha"
+      ],
+      "segments": [
+        {
+          "text": "こんにち",
+          "reading": "こんにち",
+          "romaji": "konnichi",
+          "meaning": "today; the greeting base",
+          "characterSlugs": [
+            "japanese/hiragana/ko",
+            "japanese/hiragana/n",
+            "japanese/hiragana/ni",
+            "japanese/hiragana/chi"
+          ]
+        },
+        {
+          "text": "は",
+          "reading": "わ",
+          "romaji": "wa",
+          "meaning": "topic particle, written ha but pronounced wa",
+          "characterSlugs": [
+            "japanese/hiragana/ha"
+          ]
+        }
+      ],
+      "examples": [
+        {
+          "id": "hello-greeting",
+          "japanese": "こんにちは。",
+          "reading": "こんにちは。",
+          "romaji": "konnichiwa.",
+          "inputSequences": [
+            "konnichiha"
+          ],
+          "translation": "Hello.",
+          "explanation": "The final は is the topic particle, so it is written with ha but pronounced and romanized wa.",
+          "segments": [
+            {
+              "text": "こんにち",
+              "reading": "こんにち",
+              "romaji": "konnichi",
+              "meaning": "today; greeting base",
+              "characterSlugs": [
+                "japanese/hiragana/ko",
+                "japanese/hiragana/n",
+                "japanese/hiragana/ni",
+                "japanese/hiragana/chi"
+              ]
+            },
+            {
+              "text": "は",
+              "reading": "わ",
+              "romaji": "wa",
+              "meaning": "topic particle",
+              "characterSlugs": [
+                "japanese/hiragana/ha"
+              ]
+            }
+          ]
+        }
+      ],
+      "tags": [
+        "greeting",
+        "beginner",
+        "hiragana",
+        "ime"
+      ],
+      "status": "published",
+      "sources": [],
+      "id": "1f626996f823",
+      "route": "/languages/japanese/vocabulary/hello",
+      "sourcePath": "content/languages/japanese/vocabulary.json",
+      "contentHash": "0a61b7c9962c6ed254fcc5d2ab2832f266f7fdf02893cb03abc4810ef571a249"
     },
     {
       "slug": "japanese/vocabulary/japan",
@@ -10512,6 +16022,7 @@
       "expression": "日本",
       "reading": "にほん",
       "romaji": "nihon",
+      "inputSequences": [],
       "ipa": "ɲihoɴ",
       "meanings": [
         "Japan"
@@ -10520,6 +16031,8 @@
         "japanese/kanji/day",
         "japanese/kanji/book"
       ],
+      "segments": [],
+      "examples": [],
       "tags": [
         "country",
         "n5",
@@ -10530,7 +16043,7 @@
       "id": "8a1d7aa1b725",
       "route": "/languages/japanese/vocabulary/japan",
       "sourcePath": "content/languages/japanese/vocabulary.json",
-      "contentHash": "4932303125c3e0fcf2f412a5c53a88a6b04262a180c305cf4883e2131aa31d35"
+      "contentHash": "0a61b7c9962c6ed254fcc5d2ab2832f266f7fdf02893cb03abc4810ef571a249"
     },
     {
       "slug": "japanese/vocabulary/mountain",
@@ -10538,6 +16051,7 @@
       "expression": "山",
       "reading": "やま",
       "romaji": "yama",
+      "inputSequences": [],
       "ipa": "jama",
       "meanings": [
         "mountain"
@@ -10545,6 +16059,8 @@
       "characterSlugs": [
         "japanese/kanji/mountain"
       ],
+      "segments": [],
+      "examples": [],
       "tags": [
         "nature",
         "n5",
@@ -10555,7 +16071,7 @@
       "id": "babce6ba07ff",
       "route": "/languages/japanese/vocabulary/mountain",
       "sourcePath": "content/languages/japanese/vocabulary.json",
-      "contentHash": "4932303125c3e0fcf2f412a5c53a88a6b04262a180c305cf4883e2131aa31d35"
+      "contentHash": "0a61b7c9962c6ed254fcc5d2ab2832f266f7fdf02893cb03abc4810ef571a249"
     },
     {
       "slug": "japanese/vocabulary/person",
@@ -10563,6 +16079,7 @@
       "expression": "人",
       "reading": "ひと",
       "romaji": "hito",
+      "inputSequences": [],
       "ipa": "çito",
       "meanings": [
         "person"
@@ -10570,6 +16087,8 @@
       "characterSlugs": [
         "japanese/kanji/person"
       ],
+      "segments": [],
+      "examples": [],
       "tags": [
         "people",
         "n5",
@@ -10580,7 +16099,7 @@
       "id": "e9fab249c3a7",
       "route": "/languages/japanese/vocabulary/person",
       "sourcePath": "content/languages/japanese/vocabulary.json",
-      "contentHash": "4932303125c3e0fcf2f412a5c53a88a6b04262a180c305cf4883e2131aa31d35"
+      "contentHash": "0a61b7c9962c6ed254fcc5d2ab2832f266f7fdf02893cb03abc4810ef571a249"
     },
     {
       "slug": "japanese/vocabulary/water",
@@ -10588,6 +16107,7 @@
       "expression": "水",
       "reading": "みず",
       "romaji": "mizu",
+      "inputSequences": [],
       "ipa": "mizɯ",
       "meanings": [
         "water"
@@ -10595,6 +16115,8 @@
       "characterSlugs": [
         "japanese/kanji/water"
       ],
+      "segments": [],
+      "examples": [],
       "tags": [
         "nature",
         "n5",
@@ -10605,7 +16127,7 @@
       "id": "e4d176c06145",
       "route": "/languages/japanese/vocabulary/water",
       "sourcePath": "content/languages/japanese/vocabulary.json",
-      "contentHash": "4932303125c3e0fcf2f412a5c53a88a6b04262a180c305cf4883e2131aa31d35"
+      "contentHash": "0a61b7c9962c6ed254fcc5d2ab2832f266f7fdf02893cb03abc4810ef571a249"
     }
   ],
   "passiveFlashcardFeeds": [
@@ -22418,7 +27940,7 @@
     {
       "name": "Languages",
       "slug": "languages",
-      "documentCount": 2,
+      "documentCount": 3,
       "difficulties": [
         "foundation"
       ],

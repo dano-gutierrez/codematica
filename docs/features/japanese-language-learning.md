@@ -3,9 +3,9 @@
 ## Snapshot
 
 - Status: `shipped`
-- Last updated: `2026-07-22`
+- Last updated: `2026-08-01`
 - Owner thread: `n/a`
-- Current state: Japanese foundations ship as local language data, Markdown lessons, writing exercises, web routes, Expo routes, and shared handwriting scoring.
+- Current state: Japanese foundations ship as local language data, beginner romaji/IME lessons, structured phrase breakdowns, full basic hiragana, dictionary-style detail pages, web routes, Expo routes, and shared handwriting scoring.
 - Target outcome: Users can search beginner Japanese characters/vocabulary and practice assisted or free handwriting on web and native without Supabase credentials.
 - Code touchpoints:
   - `content/languages/japanese/`
@@ -23,7 +23,7 @@
 
 ## One-Minute Brief
 
-The Japanese feature adds the first human-language learning path to Codematica. It is English-first and beginner-oriented: users can search local Japanese character/vocabulary data, see romaji and IPA, open character detail pages, and complete handwriting drills in assisted or free mode.
+The Japanese feature adds the first human-language learning path to Codematica. It is English-first and beginner-oriented: users can search local Japanese character/vocabulary data, distinguish learner romaji from IME keystrokes, inspect structured phrase breakdowns, and complete handwriting drills in assisted or free mode from either the path or a character profile.
 
 The feature reuses the Expo workspace architecture. Shared content contracts, search helpers, IPA data, and handwriting scoring live in `@codematica/core`; Expo consumes shared React Native screens from `@codematica/ui`; web keeps Tailwind-specific route components while calling the same core helpers.
 
@@ -36,6 +36,8 @@ The feature reuses the Expo workspace architecture. Shared content contracts, se
 - `japanese-foundations` appears as a normal learning path and uses ordered document/exercise nodes.
 - `writing` exercises live under `content/exercises/**/*.json` and reference `content/languages/japanese/` character slugs.
 - Writing practice supports `assisted` and `free` modes.
+- Character detail pages embed transient single-character practice and related vocabulary/example phrases.
+- Learner-facing `romaji` and kana-producing `inputSequences` remain separate fields; for example, `こんばんは` is romanized `konbanwa` and found by the IME input `konbanha`.
 - Assisted mode shows reference strokes and snaps/completes a stroke only when the learner follows the expected path closely enough.
 - Free mode hides the target outline while drawing and checks stroke count, order/direction, and shape after submit.
 - Writing progress uses the existing `practice` progress surface and stores only coarse status/position metadata, not raw strokes.
@@ -43,7 +45,7 @@ The feature reuses the Expo workspace architecture. Shared content contracts, se
 
 ## Current State
 
-The shipped v1 seed contains hiragana and katakana vowel rows plus starter kanji:
+The shipped seed contains all 46 basic modern hiragana, focused forms `が・じ・ば・ぱ・っ・ゃ・ゅ・ょ`, katakana vowels, greeting kanji `今・晩`, and starter kanji:
 
 ```text
 一 二 三 四 五 六 七 八 九 十
@@ -51,7 +53,7 @@ The shipped v1 seed contains hiragana and katakana vowel rows plus starter kanji
 人 大 小 中 本 山 川
 ```
 
-Vocabulary seed entries include `日本`, `人`, `山`, `水`, and `大きい`. Audio, OCR, SRS, durable scores, pitch accent, and full dictionary imports are deferred.
+Vocabulary entries include `日本`, `人`, `山`, `水`, `大きい`, `こんにちは`, and `こんばんは`. Audio, OCR, SRS, durable scores, pitch accent, and full dictionary imports are deferred.
 
 ## Scope
 
@@ -59,6 +61,7 @@ Vocabulary seed entries include `日本`, `人`, `山`, `水`, and `大きい`. 
 
 - Local Japanese character and vocabulary catalogs.
 - IPA and romaji display.
+- IME input aliases, structured sentence breakdowns, and internal character links.
 - Japanese Foundations path.
 - Web and Expo routes for hub/detail pages.
 - Assisted/free handwriting practice for seeded characters.
@@ -85,21 +88,21 @@ Vocabulary seed entries include `日本`, `人`, `山`, `水`, and `大きい`. 
 ### UI / UX
 
 - Japanese hub search matches glyphs, readings, romaji, IPA, meanings, tags, and beginner vocabulary.
-- Character detail pages show glyph, writing system, meanings, readings, IPA, and a stroke model preview.
+- Character detail pages show glyph, writing system, meanings, readings, IPA, IME keys, numbered stroke order, related phrases, and embedded assisted/free practice.
+- Assisted mode highlights only the next stroke, rejects a miss without advancing, and labels the expected start point.
 - Writing practice shows one character at a time with undo, clear, check, mode controls, and next-character navigation.
 - Path cards label writing exercises as `Writing`.
 
 ### Data Model And Persistence
 
-- `content/languages/japanese/characters.json` stores character metadata and normalized 0-100 stroke paths.
-- `content/languages/japanese/vocabulary.json` stores beginner vocabulary and references character slugs.
-- `ContentIndex` schema version is `6` and includes `languageCharacters` and `languageVocabulary` alongside the other generated catalogs.
+- `content/languages/japanese/*.json` stores character metadata, original normalized 0-100 stroke paths, vocabulary, IME aliases, and structured examples.
+- `ContentIndex` schema version is `7`; language characters add `studyOrder`, `inputSequences`, and examples, while vocabulary adds structured segments and examples.
 - `writing` exercises add `prompt`, `characterSlugs`, `modes`, and `explanation`.
 - Progress remains compatible with `user_progress_items.surface = 'practice'`.
 
 ### Business Logic
 
-- `packages/core/src/languages/japanese.ts` owns Japanese grouping/search helpers.
+- `packages/core/src/languages/japanese.ts` owns gojūon ordering, related-vocabulary lookup, and Japanese search across glyphs, readings, IME aliases, meanings, segments, and examples.
 - `packages/core/src/language-writing/index.ts` owns stroke normalization, assisted-stroke completion, and correctness checks.
 - Index generation fails when a writing exercise or vocabulary entry references a missing language character.
 
@@ -113,7 +116,7 @@ Vocabulary seed entries include `日本`, `人`, `山`, `水`, and `大きい`. 
 ## Code Touchpoints
 
 - `content/languages/japanese/`: canonical Japanese seed catalogs.
-- `packages/core/src/content/schema.ts`: language schemas, `writing` exercise schema, and schema version `5`.
+- `packages/core/src/content/schema.ts`: language schemas, structured example contracts, `writing` exercise schema, and schema version `7`.
 - `packages/core/src/content/build-index.ts`: language collection and reference validation.
 - `packages/core/src/languages/japanese.ts`: Japanese grouping/search helpers.
 - `packages/core/src/language-writing/index.ts`: shared handwriting scoring.
@@ -124,11 +127,11 @@ Vocabulary seed entries include `日本`, `人`, `山`, `水`, and `大きい`. 
 
 ## Test Plan
 
-- Unit: handwriting scoring, assisted thresholds, missing stroke count, reversed stroke direction.
+- Unit: handwriting scoring, assisted retry thresholds, missing stroke count, reversed stroke direction, gojūon ordering, and IME-alias search.
 - Integration: generated index loads Japanese path, language characters, vocabulary, and writing exercises.
 - Component: web writing practice renders mode controls and writing pad.
 - Native: React Native screen tests cover Japanese hub search and writing practice shell.
-- E2E: Playwright regression covers Japanese hub search, vocabulary detail routing, path entry, and writing-practice mode controls.
+- E2E: Playwright regression covers `konbanha` search, greeting breakdown, character-detail practice, the romaji/IME lesson, path entry, and writing-practice mode controls.
 - Content: `npm run content:check`.
 
 ## Open Questions
@@ -142,6 +145,7 @@ Vocabulary seed entries include `日本`, `人`, `山`, `水`, and `大きい`. 
 - `2026-07-11`: Build Japanese as a core-first, Expo-compatible feature instead of web-only routes.
 - `2026-07-11`: Keep writing progress on the existing `practice` surface and do not persist raw strokes.
 - `2026-07-11`: Ship a manually curated seed dataset before full open-data import.
+- `2026-08-01`: Treat learner romaji and IME input as separate data, expand to all 46 basic hiragana, and embed original-path writing practice in character profiles.
 
 ## Documentation Updates
 

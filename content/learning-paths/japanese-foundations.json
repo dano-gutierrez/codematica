@@ -18,6 +18,20 @@
       ]
     },
     {
+      "slug": "romaji-and-kana-input",
+      "title": "Romaji And Kana Input",
+      "summary": "Separate Japanese spelling, pronunciation, learner romaji, and the keys an IME needs.",
+      "nodes": [
+        { "kind": "document", "slug": "languages/japanese-romaji-kana-input" },
+        { "kind": "exercise", "slug": "languages/japanese-romaji-kana-input-questionnaire" },
+        { "kind": "exercise", "slug": "languages/japanese-hiragana-k-s-writing" },
+        { "kind": "exercise", "slug": "languages/japanese-hiragana-t-n-writing" },
+        { "kind": "exercise", "slug": "languages/japanese-hiragana-h-m-writing" },
+        { "kind": "exercise", "slug": "languages/japanese-hiragana-y-r-w-writing" },
+        { "kind": "exercise", "slug": "languages/japanese-hiragana-ime-exceptions-writing" }
+      ]
+    },
+    {
       "slug": "starter-kanji",
       "title": "Starter Kanji",
       "summary": "Practice beginner kanji for numbers, nature, people, size, position, books, mountains, and rivers.",

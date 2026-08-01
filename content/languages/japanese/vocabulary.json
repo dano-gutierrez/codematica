@@ -56,6 +56,83 @@
       "characterSlugs": ["japanese/kanji/big", "japanese/hiragana/o", "japanese/hiragana/i"],
       "tags": ["adjective", "n5", "kanji"],
       "status": "published"
+    },
+    {
+      "slug": "japanese/vocabulary/hello",
+      "expression": "こんにちは",
+      "reading": "こんにちは",
+      "romaji": "konnichiwa",
+      "inputSequences": ["konnichiha"],
+      "ipa": "koɴnitɕiwa",
+      "meanings": ["hello", "good afternoon"],
+      "characterSlugs": [
+        "japanese/hiragana/ko",
+        "japanese/hiragana/n",
+        "japanese/hiragana/ni",
+        "japanese/hiragana/chi",
+        "japanese/hiragana/ha"
+      ],
+      "segments": [
+        {"text":"こんにち","reading":"こんにち","romaji":"konnichi","meaning":"today; the greeting base","characterSlugs":["japanese/hiragana/ko","japanese/hiragana/n","japanese/hiragana/ni","japanese/hiragana/chi"]},
+        {"text":"は","reading":"わ","romaji":"wa","meaning":"topic particle, written ha but pronounced wa","characterSlugs":["japanese/hiragana/ha"]}
+      ],
+      "examples": [
+        {
+          "id":"hello-greeting",
+          "japanese":"こんにちは。",
+          "reading":"こんにちは。",
+          "romaji":"konnichiwa.",
+          "inputSequences":["konnichiha"],
+          "translation":"Hello.",
+          "explanation":"The final は is the topic particle, so it is written with ha but pronounced and romanized wa.",
+          "segments":[
+            {"text":"こんにち","reading":"こんにち","romaji":"konnichi","meaning":"today; greeting base","characterSlugs":["japanese/hiragana/ko","japanese/hiragana/n","japanese/hiragana/ni","japanese/hiragana/chi"]},
+            {"text":"は","reading":"わ","romaji":"wa","meaning":"topic particle","characterSlugs":["japanese/hiragana/ha"]}
+          ]
+        }
+      ],
+      "tags": ["greeting", "beginner", "hiragana", "ime"],
+      "status": "published"
+    },
+    {
+      "slug": "japanese/vocabulary/good-evening",
+      "expression": "こんばんは",
+      "reading": "こんばんは",
+      "romaji": "konbanwa",
+      "inputSequences": ["konbanha"],
+      "ipa": "kombaɴwa",
+      "meanings": ["good evening"],
+      "characterSlugs": [
+        "japanese/hiragana/ko",
+        "japanese/hiragana/n",
+        "japanese/hiragana/ba",
+        "japanese/hiragana/ha",
+        "japanese/kanji/now",
+        "japanese/kanji/evening"
+      ],
+      "segments": [
+        {"text":"今","reading":"こん","romaji":"kon","meaning":"now; this","characterSlugs":["japanese/kanji/now"]},
+        {"text":"晩","reading":"ばん","romaji":"ban","meaning":"evening","characterSlugs":["japanese/kanji/evening"]},
+        {"text":"は","reading":"わ","romaji":"wa","meaning":"topic particle, written ha but pronounced wa","characterSlugs":["japanese/hiragana/ha"]}
+      ],
+      "examples": [
+        {
+          "id":"good-evening-greeting",
+          "japanese":"こんばんは。",
+          "reading":"こんばんは。",
+          "romaji":"konbanwa.",
+          "inputSequences":["konbanha"],
+          "translation":"Good evening.",
+          "explanation":"The greeting preserves the topic particle は from a longer expression beginning with 今晩は, as for this evening.",
+          "segments":[
+            {"text":"こん","reading":"こん","romaji":"kon","meaning":"this; now","characterSlugs":["japanese/hiragana/ko","japanese/hiragana/n"]},
+            {"text":"ばん","reading":"ばん","romaji":"ban","meaning":"evening","characterSlugs":["japanese/hiragana/ba","japanese/hiragana/n"]},
+            {"text":"は","reading":"わ","romaji":"wa","meaning":"topic particle","characterSlugs":["japanese/hiragana/ha"]}
+          ]
+        }
+      ],
+      "tags": ["greeting", "beginner", "hiragana", "ime"],
+      "status": "published"
     }
   ]
 }

@@ -1,0 +1,18 @@
+{
+  "slug": "languages/japanese-romaji-kana-input-questionnaire",
+  "title": "Romaji And Kana Input Check",
+  "type": "questionnaire",
+  "documentSlug": "languages/japanese-romaji-kana-input",
+  "concept": "Japanese spelling, pronunciation, and IME input",
+  "difficulty": "foundation",
+  "tags": ["japanese", "romaji", "ime", "particles"],
+  "status": "published",
+  "questions": [
+    {"id":"konbanwa-display","kind":"choice","prompt":"Which learner-facing romaji correctly shows how こんばんは is pronounced?","options":[{"id":"konbanwa","label":"konbanwa","isCorrect":true},{"id":"konbanha","label":"konbanha","isCorrect":false},{"id":"kombanwo","label":"kombanwo","isCorrect":false}],"explanation":"The final は is the topic particle, pronounced and learner-romanized wa. Konbanha is an IME key sequence, not the pronunciation guide."},
+    {"id":"konbanwa-input","kind":"choice","prompt":"Which common IME key sequence produces the kana spelling こんばんは?","options":[{"id":"input-ha","label":"konbanha","isCorrect":true},{"id":"input-wa","label":"konbanwa","isCorrect":false},{"id":"input-wo","label":"konbanwo","isCorrect":false}],"explanation":"The IME must create the written kana は, so its direct key sequence ends in ha even though the particle is pronounced wa."},
+    {"id":"direction-particle","kind":"choice","prompt":"In 日本へいきます, how should the direction particle へ be learner-romanized?","options":[{"id":"direction-e","label":"nihon e ikimasu","isCorrect":true},{"id":"direction-he","label":"nihon he ikimasu","isCorrect":false},{"id":"direction-wo","label":"nihon wo ikimasu","isCorrect":false}],"explanation":"The direction particle is written へ but pronounced and romanized e. Typing he remains the direct way to produce its kana."},
+    {"id":"object-particle","kind":"choice","prompt":"Which pair correctly separates the pronunciation and IME input for the object particle を?","options":[{"id":"o-wo","label":"Pronounce o; type wo","isCorrect":true},{"id":"wo-o","label":"Pronounce wo; type o","isCorrect":false},{"id":"o-o","label":"Pronounce o; type o","isCorrect":false}],"explanation":"Modern beginner pronunciation and romanization use o, while the IME sequence wo creates the distinct kana を."},
+    {"id":"small-tsu","kind":"choice","prompt":"Why is gakkou typed with two k characters when entering がっこう?","options":[{"id":"small-tsu-correct","label":"The doubled consonant creates small っ before こ.","isCorrect":true},{"id":"long-vowel-wrong","label":"The doubled consonant creates the long o sound.","isCorrect":false},{"id":"particle-wrong","label":"The doubled consonant marks a topic particle.","isCorrect":false}],"explanation":"A doubled following consonant is a common IME shortcut for small っ. The final ou separately represents the long o sequence こう."},
+    {"id":"hepburn-alias","kind":"choice","prompt":"Which pair can commonly produce the same hiragana し in an IME?","options":[{"id":"shi-si","label":"shi and si","isCorrect":true},{"id":"chi-ti","label":"chi and ti","isCorrect":false},{"id":"fu-hu","label":"fu and hu","isCorrect":false}],"explanation":"Shi is the learner-facing Hepburn form, while many IMEs also accept the systematic alias si for し."}
+  ]
+}
