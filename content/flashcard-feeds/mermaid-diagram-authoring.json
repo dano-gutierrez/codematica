@@ -1,0 +1,194 @@
+{
+  "slug": "mermaid-diagram-authoring",
+  "pathSlug": "mermaid-diagram-authoring",
+  "title": "Mermaid Diagram Authoring Scrolling Review",
+  "summary": "Short Mermaid syntax, selection, debugging, and readability briefs for reviewing diagram authoring one screen at a time.",
+  "audience": "Developers and technical writers learning to read, create, and maintain Mermaid diagrams.",
+  "status": "published",
+  "cards": [
+    {
+      "id": "declaration-comes-first",
+      "type": "concept",
+      "title": "Declaration Comes First",
+      "prompt": "The first meaningful line selects the Mermaid grammar for every statement that follows.",
+      "explanation": "Use declarations such as flowchart, sequenceDiagram, classDiagram, stateDiagram-v2, or erDiagram before writing relationships.",
+      "difficulty": "foundation",
+      "tags": ["mermaid", "syntax", "diagrams"],
+      "sourceDocSlug": "programming/mermaid-syntax-fundamentals"
+    },
+    {
+      "id": "id-versus-label",
+      "type": "concept",
+      "title": "IDs Are Not Labels",
+      "prompt": "Keep source IDs short and stable while visible labels explain the domain idea.",
+      "explanation": "In Gateway[API gateway], edges reuse Gateway. The human-facing API gateway label can evolve without changing every relationship.",
+      "difficulty": "foundation",
+      "tags": ["flowchart", "nodes", "readability"],
+      "sourceDocSlug": "programming/mermaid-syntax-fundamentals"
+    },
+    {
+      "id": "direction-is-layout",
+      "type": "concept",
+      "title": "Direction Guides Layout",
+      "prompt": "LR, TD, TB, RL, and BT request a reading direction rather than fixed coordinates.",
+      "explanation": "Mermaid's layout engine positions nodes. Authors describe relationships and a preferred direction instead of placing pixels manually.",
+      "difficulty": "foundation",
+      "tags": ["flowchart", "layout", "syntax"],
+      "sourceDocSlug": "programming/mermaid-syntax-fundamentals"
+    },
+    {
+      "id": "labeled-decision-snippet",
+      "type": "snippet",
+      "title": "Label Decision Outcomes",
+      "prompt": "A decision reads faster when every outgoing edge names its outcome.",
+      "explanation": "The diamond asks one question while Yes and No live on the relationships that represent the possible answers.",
+      "difficulty": "foundation",
+      "tags": ["flowchart", "decisions", "syntax"],
+      "sourceDocSlug": "programming/mermaid-syntax-fundamentals",
+      "code": "Valid{Input valid?}\nValid -->|Yes| Save\nValid -->|No| Explain"
+    },
+    {
+      "id": "subgraphs-mean-boundaries",
+      "type": "practical",
+      "title": "Group Real Boundaries",
+      "prompt": "Use subgraphs for ownership, trust, deployment, or domain boundaries—not decoration.",
+      "explanation": "A named boundary should help the reader reason about responsibility or communication across it.",
+      "difficulty": "practitioner",
+      "tags": ["flowchart", "subgraph", "architecture"],
+      "sourceDocSlug": "programming/mermaid-syntax-fundamentals"
+    },
+    {
+      "id": "sequence-means-time",
+      "type": "concept",
+      "title": "Sequence Means Time",
+      "prompt": "Read sequence participants across the top and messages from top to bottom.",
+      "explanation": "Sequence diagrams answer who communicates at each point in a scenario; they are not static dependency maps.",
+      "difficulty": "foundation",
+      "tags": ["sequence-diagram", "messages", "runtime"],
+      "sourceDocSlug": "programming/mermaid-software-diagrams"
+    },
+    {
+      "id": "alt-loop-par",
+      "type": "snippet",
+      "title": "Sequence Control Blocks",
+      "prompt": "Choose alt for alternatives, loop for repetition, and par for concurrent work.",
+      "explanation": "Each block communicates a different runtime rule; using the precise block reduces prose and ambiguity.",
+      "difficulty": "practitioner",
+      "tags": ["sequence-diagram", "control-flow", "syntax"],
+      "sourceDocSlug": "programming/mermaid-software-diagrams",
+      "code": "alt Approved\n  API-->>Web: 201\nelse Rejected\n  API-->>Web: 409\nend"
+    },
+    {
+      "id": "class-is-static",
+      "type": "concept",
+      "title": "Class Diagrams Are Static",
+      "prompt": "Class diagrams show types, members, inheritance, composition, and dependencies.",
+      "explanation": "They explain structure independent of one request. Use a sequence diagram when message order is the real question.",
+      "difficulty": "practitioner",
+      "tags": ["class-diagram", "uml", "structure"],
+      "sourceDocSlug": "programming/mermaid-software-diagrams"
+    },
+    {
+      "id": "state-means-legal-next",
+      "type": "concept",
+      "title": "State Means Legal Next",
+      "prompt": "A state diagram makes lifecycle transitions and forbidden paths reviewable.",
+      "explanation": "Durable conditions belong in states; temporary calls and responses belong in actions or sequence messages.",
+      "difficulty": "practitioner",
+      "tags": ["state-diagram", "lifecycle", "transitions"],
+      "sourceDocSlug": "programming/mermaid-software-diagrams"
+    },
+    {
+      "id": "er-cardinality-markers",
+      "type": "snippet",
+      "title": "Read Crow's Foot",
+      "prompt": "Exactly one customer may own zero or more orders in this relationship.",
+      "explanation": "The customer-side double bar means exactly one; the order-side circle and crow's foot mean zero or many.",
+      "difficulty": "practitioner",
+      "tags": ["er-diagram", "cardinality", "data-modeling"],
+      "sourceDocSlug": "programming/mermaid-software-diagrams",
+      "code": "CUSTOMER ||--o{ ORDER : places"
+    },
+    {
+      "id": "gantt-needs-ownership",
+      "type": "practical",
+      "title": "Schedules Become Stale",
+      "prompt": "A Gantt diagram is a maintained documentation snapshot, not a project-management backend.",
+      "explanation": "Assign ownership and review dates, durations, and dependencies whenever the underlying plan changes.",
+      "difficulty": "practitioner",
+      "tags": ["gantt", "planning", "maintenance"],
+      "sourceDocSlug": "programming/mermaid-planning-and-data-diagrams"
+    },
+    {
+      "id": "journey-scores-are-claims",
+      "type": "practical",
+      "title": "Journey Scores Need Context",
+      "prompt": "A journey score is an author judgment unless its measurement source is named.",
+      "explanation": "Use the 1-to-5 scale consistently and avoid presenting illustrative sentiment as product analytics.",
+      "difficulty": "practitioner",
+      "tags": ["journey", "user-experience", "evidence"],
+      "sourceDocSlug": "programming/mermaid-planning-and-data-diagrams"
+    },
+    {
+      "id": "pie-needs-whole",
+      "type": "practical",
+      "title": "Pie Needs A Whole",
+      "prompt": "Use pie charts for a few categories that form one meaningful total.",
+      "explanation": "Time series, negative values, and many similar slices need an axis-based chart or table instead.",
+      "difficulty": "foundation",
+      "tags": ["pie-chart", "data", "readability"],
+      "sourceDocSlug": "programming/mermaid-planning-and-data-diagrams"
+    },
+    {
+      "id": "mindmap-is-indented",
+      "type": "snippet",
+      "title": "Mindmaps Use Indentation",
+      "prompt": "Whitespace defines hierarchy in a Mermaid mindmap.",
+      "explanation": "Consistent indentation is semantic. Use a flowchart instead when branches need explicit arrows or decisions.",
+      "difficulty": "foundation",
+      "tags": ["mindmap", "hierarchy", "syntax"],
+      "sourceDocSlug": "programming/mermaid-planning-and-data-diagrams",
+      "code": "mindmap\n  root((Diagrams))\n    Behavior\n      Sequence\n      State"
+    },
+    {
+      "id": "timeline-versus-gantt",
+      "type": "concept",
+      "title": "Timeline Is Not Gantt",
+      "prompt": "Use timeline for chronology; use Gantt when durations and dependencies matter.",
+      "explanation": "Both involve time, but only the Gantt grammar models scheduled work and dependency-driven starts.",
+      "difficulty": "foundation",
+      "tags": ["timeline", "gantt", "selection"],
+      "sourceDocSlug": "programming/mermaid-planning-and-data-diagrams"
+    },
+    {
+      "id": "debug-by-reduction",
+      "type": "interview",
+      "title": "Reduce Before Repairing",
+      "prompt": "How would you isolate one syntax error inside a large Mermaid block?",
+      "explanation": "Keep the declaration and one valid statement, then restore lines until the first failing addition identifies the parser boundary.",
+      "difficulty": "practitioner",
+      "tags": ["debugging", "mermaid", "interview"],
+      "sourceDocSlug": "programming/mermaid-planning-and-data-diagrams"
+    },
+    {
+      "id": "one-question-per-diagram",
+      "type": "interview",
+      "title": "One Question Per Diagram",
+      "prompt": "What is the fastest way to improve an everything-architecture diagram?",
+      "explanation": "Split it into focused views with explicit questions and consistent abstraction levels instead of adding more color or smaller text.",
+      "difficulty": "practitioner",
+      "tags": ["architecture", "readability", "interview"],
+      "sourceDocSlug": "programming/mermaid-planning-and-data-diagrams"
+    },
+    {
+      "id": "host-version-matters",
+      "type": "practical",
+      "title": "Test The Host Version",
+      "prompt": "A diagram working in a current editor may fail in an application with an older Mermaid dependency.",
+      "explanation": "Version-sensitive and experimental grammars must be tested with the same package version, configuration, and security mode as production.",
+      "difficulty": "practitioner",
+      "tags": ["compatibility", "mermaid", "testing"],
+      "sourceDocSlug": "programming/mermaid-planning-and-data-diagrams"
+    }
+  ]
+}

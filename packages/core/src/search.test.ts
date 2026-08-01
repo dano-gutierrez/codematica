@@ -5,6 +5,7 @@ import { buildSnippet, searchContent } from "./search";
 
 const index: ContentIndex = {
   schemaVersion: 6,
+  homeDiscovery: { sections: { paths: [], lessons: [], interviews: [], practice: [], languages: [] } },
   tracks: [],
   learningPaths: [],
   exercises: [],
@@ -98,6 +99,10 @@ describe("searchContent", () => {
     const results = searchContent(index, "sequenceDiagram");
 
     expect(results.map((result) => result.kind)).toEqual(["diagram"]);
+  });
+
+  it("filters the library by content type", () => {
+    expect(searchContent(index, "", { kind: "diagram" }).map((result) => result.kind)).toEqual(["diagram"]);
   });
 
   it("finds Langfuse and LangChain AI engineering content from the generated index", () => {

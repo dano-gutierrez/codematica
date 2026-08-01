@@ -11,6 +11,7 @@ This folder contains local-first interview coding catalog files.
 - Every web solution includes acceptance rationale, tradeoffs, complexity, and a validated `WebExerciseProject` containing authored React/TS, vanilla TS, or static files.
 - Use `diagrams[]` for optional Mermaid diagrams that clarify a data structure or flow.
 - Prompts and explanations must be Codematica rewrites, not copied from source pages.
+- When two algorithms correctly solve the same prompt, solution tracks should explain asymptotic performance, practical memory shape, readability, and runtime risks rather than presenting code alone.
 - Keep wording clear that this is reported/public prep, not an official company question bank.
 
 Run `npm run content:check` after editing interview files.

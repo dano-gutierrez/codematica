@@ -4,6 +4,7 @@ import type { ContentIndex, Difficulty, KnowledgeDocument, MermaidDiagram } from
 export type SearchFilters = {
   track?: string;
   difficulty?: Difficulty;
+  kind?: SearchResult["kind"];
 };
 
 export type SearchResult = {
@@ -59,6 +60,10 @@ function filterSearchItems(items: SearchableItem[], filters: SearchFilters) {
     }
 
     if (filters.difficulty && item.difficulty !== filters.difficulty) {
+      return false;
+    }
+
+    if (filters.kind && item.kind !== filters.kind) {
       return false;
     }
 

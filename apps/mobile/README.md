@@ -2,7 +2,7 @@
 
 Expo Router Android/iOS app for Codematica.
 
-The app consumes `@codematica/core` for content/search/progress contracts and `@codematica/ui` for React Native screens. Content is bundled from the generated core index so anonymous reading, search, language lookup, and practice work offline.
+The app consumes `@codematica/core` for content/search/progress contracts and `@codematica/ui` for React Native screens. Content is bundled from the generated core index so the discovery home, section catalogs, anonymous reading, cross-section search, language lookup, and practice work offline.
 
 ## Local Web And Native Runs
 

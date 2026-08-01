@@ -13,11 +13,12 @@ This file carries durable repo context across Codex threads.
 - Canonical passive flashcard feeds live in `content/flashcard-feeds/`.
 - Canonical interview coding catalog content lives in `content/interviews/`.
 - Canonical human-language character and vocabulary catalogs live in `content/languages/`.
+- Canonical home discovery curation lives in `content/discovery/home.json`.
 - Generated content search data lives in `packages/core/src/generated/content-index.json` and must be regenerated, not edited by hand.
 
 ## Current Product Shape
 
-Codematica V1 is a mobile-first learning app with a Next.js web app and an Expo Router Android/iOS app. The home route is a path map built from local learning-path JSON with a Keep reading section. It renders plain Markdown articles, embedded and external Mermaid diagrams, flashcard, cloze, questionnaire, writing, passive flashcard, guided interview coding practice, anonymous real-world web interviews, and Japanese language lookup/practice. React/TypeScript web exercises run through Sandpack on web and remain read-only on native.
+Codematica V1 is a mobile-first learning app with a Next.js web app and an Expo Router Android/iOS app. The home route is a cross-section discovery hub with Keep reading, local global search, and curated rows for paths, lessons, interviews, practice, and languages. Complete catalogs live at `/paths`, `/browse`, `/interviews`, `/practice`, and `/languages`. The app renders plain Markdown articles, embedded and external Mermaid diagrams, flashcard, cloze, questionnaire, writing, passive flashcard, guided interview coding practice, anonymous real-world web interviews, and Japanese language lookup/practice. React/TypeScript web exercises run through Sandpack on web and remain read-only on native.
 
 Supabase is used optionally for Auth and saved progress when public runtime env vars are configured. The app still browses and renders local content without Supabase credentials; signed-out progress is buffered locally.
 
@@ -25,7 +26,10 @@ The first hosted web target is Vercel Hobby on the Vercel-provided URL. Vercel r
 
 ## Repo Map
 
-- `apps/web/src/app/page.tsx`: web learning path home route
+- `apps/web/src/app/page.tsx`: web discovery home route
+- `apps/web/src/app/paths/page.tsx`: complete web learning-path catalog
+- `apps/web/src/app/practice/page.tsx`: complete web practice/review catalog
+- `apps/web/src/app/languages/page.tsx`: web language directory
 - `apps/web/src/app/browse/page.tsx`: web content library route
 - `apps/web/src/app/paths/[slug]/page.tsx`: web learning path detail route
 - `apps/web/src/app/paths/[slug]/flashcards/page.tsx`: web passive flashcard feed route
@@ -47,6 +51,7 @@ The first hosted web target is Vercel Hobby on the Vercel-provided URL. Vercel r
 - `apps/mobile/src/__tests__/`: mobile Jest and React Native Testing Library screen tests
 - `packages/core/src/content/`: content schema, parser, index builder, and generated index access
 - `packages/core/src/search.ts`: fuzzy search
+- `packages/core/src/discovery.ts`: cross-section search and curated-home resolution
 - `packages/core/src/practice/`: questionnaire attempt and answer checking helpers
 - `packages/core/src/languages/`: human-language lookup helpers
 - `packages/core/src/language-writing/`: shared handwriting scoring helpers
@@ -65,6 +70,7 @@ The first hosted web target is Vercel Hobby on the Vercel-provided URL. Vercel r
 - Preserve passive flashcard feed JSON as the local source of truth for scroll-only review.
 - Preserve interview catalog JSON as the local source of truth for company preparation and anonymous real-world prompts, rubrics, and runnable project files.
 - Preserve language catalog JSON as the local source of truth for human-language character and vocabulary data.
+- Preserve discovery JSON as the editorial source of truth for curated home rows.
 - Keep questionnaire answers transient; progress may store only current question index and completion.
 - Keep writing strokes transient; progress may store only coarse practice state such as mode, character slug, and completion.
 - Keep passive flashcard answers nonexistent; progress may store only latest feed/card position.
@@ -79,11 +85,14 @@ The first hosted web target is Vercel Hobby on the Vercel-provided URL. Vercel r
 
 ## Feature Index
 
+- `docs/features/home-discovery.md`: cross-section home, global local search, curated rows, stable themes, and full catalog routes.
 - `docs/features/markdown-knowledge-browser.md`: V1 Markdown browser, search, diagrams, content indexing, and Supabase scaffold.
 - `docs/features/learning-paths-and-practice.md`: path-first study map, flashcards, cloze prompts, and local path/exercise content.
 - `docs/features/programming-language-refresh.md`: reusable language refresh paths and the Python-for-TS/JS module.
 - `docs/features/llm-application-engineering.md`: Langfuse and LangChain AI engineering path, including LLM app architecture, tracing, evals, RAG, agents, risk governance, and non-executable coding challenge sections.
 - `docs/features/database-indexes-learning-path.md`: database indexes and PostgreSQL search path, including index fundamentals, full text search, trigram fuzzy matching, hybrid SQL search, quizzes, passive flashcards, and SQL editor roadmap boundaries.
+- `docs/features/bfs-dfs-learning-path.md`: Programming skill path for BFS and DFS fundamentals, side-by-side Python/TypeScript examples, questionnaires, passive review, and graph interview variants.
+- `docs/features/mermaid-diagram-authoring.md`: Mermaid authoring skill path for flowcharts, software diagrams, planning/data diagrams, debugging, choice-only quizzes, and source-first review.
 - `docs/features/advanced-nextjs-16-learning-path.md`: hard Front-End Development skill path for Next.js 16 rendering, caching, `force-dynamic`, invalidation, production pain points, performance, migration, quizzes, and one-minute brief cards.
 - `docs/features/interview-coding-catalog.md`: company and anonymous real-world interview collections, guided algorithm walkthroughs, and frontend solution sessions.
 - `docs/features/react-typescript-playground.md`: reusable WebExerciseProject schema, Sandpack isolation, editing behavior, and native fallback.

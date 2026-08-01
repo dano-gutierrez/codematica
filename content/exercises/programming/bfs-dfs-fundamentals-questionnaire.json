@@ -1,0 +1,76 @@
+{
+  "slug": "programming/bfs-dfs-fundamentals-questionnaire",
+  "title": "BFS And DFS Fundamentals Questionnaire",
+  "type": "questionnaire",
+  "documentSlug": "programming/bfs-dfs-fundamentals",
+  "concept": "Breadth-first and depth-first traversal fundamentals",
+  "difficulty": "foundation",
+  "tags": ["algorithms", "graphs", "bfs", "dfs"],
+  "status": "published",
+  "questions": [
+    {
+      "id": "bfs-structure",
+      "kind": "choice",
+      "prompt": "Which data structure gives breadth-first search its level-by-level exploration order?",
+      "options": [
+        { "id": "queue", "label": "A first-in, first-out queue", "isCorrect": true },
+        { "id": "stack", "label": "A last-in, first-out stack", "isCorrect": false },
+        { "id": "heap", "label": "A max heap ordered by node value", "isCorrect": false }
+      ],
+      "explanation": "A FIFO queue expands nodes in the same order they were discovered, preserving increasing distance layers."
+    },
+    {
+      "id": "dfs-structure",
+      "kind": "cloze",
+      "prompt": "Name the implicit data structure used by a recursive depth-first search.",
+      "template": "Recursive DFS stores its active path in the {{blank}}.",
+      "acceptedAnswers": ["call stack", "runtime call stack", "stack"],
+      "explanation": "Each recursive call waits while a deeper neighbor is explored, so the runtime call stack remembers the path."
+    },
+    {
+      "id": "bfs-visited-timing",
+      "kind": "ordering",
+      "prompt": "Order the safe steps for discovering one previously unseen BFS neighbor.",
+      "items": [
+        { "id": "check", "label": "Check whether the neighbor is unvisited" },
+        { "id": "mark", "label": "Mark the neighbor visited" },
+        { "id": "enqueue", "label": "Enqueue the neighbor" }
+      ],
+      "correctOrder": ["check", "mark", "enqueue"],
+      "explanation": "Marking before enqueueing prevents another parent from adding the same node to the queue."
+    },
+    {
+      "id": "traversal-use",
+      "kind": "matching",
+      "prompt": "Match each traversal to the problem shape it naturally expresses.",
+      "pairs": [
+        { "id": "bfs", "prompt": "BFS", "match": "minimum edges in an unweighted graph" },
+        { "id": "dfs", "prompt": "DFS", "match": "explore one component by backtracking" },
+        { "id": "either", "prompt": "Either traversal", "match": "reachability when no shortest path is requested" }
+      ],
+      "explanation": "Traversal order matters when a prompt needs distance layers; plain reachability can use either traversal."
+    },
+    {
+      "id": "shared-complexity",
+      "kind": "choice",
+      "prompt": "With an adjacency list and correct visited tracking, what is the time complexity of BFS and DFS?",
+      "options": [
+        { "id": "vertices-edges", "label": "O(V + E)", "isCorrect": true },
+        { "id": "vertices-squared", "label": "Always O(V squared)", "isCorrect": false },
+        { "id": "edges-log", "label": "O(E log V)", "isCorrect": false }
+      ],
+      "explanation": "Each reachable vertex is processed once and each outgoing adjacency-list edge is inspected once."
+    },
+    {
+      "id": "recursion-risk",
+      "kind": "choice",
+      "prompt": "A graph may be one extremely deep chain supplied by a user. Which DFS implementation avoids runtime recursion depth limits?",
+      "options": [
+        { "id": "iterative", "label": "Iterative DFS with an explicit stack", "isCorrect": true },
+        { "id": "recursive", "label": "Recursive DFS without a depth bound", "isCorrect": false },
+        { "id": "no-visited", "label": "DFS without a visited set", "isCorrect": false }
+      ],
+      "explanation": "An explicit stack lives in normal program memory and avoids relying on the runtime's limited call stack."
+    }
+  ]
+}

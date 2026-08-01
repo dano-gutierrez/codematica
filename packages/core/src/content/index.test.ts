@@ -84,6 +84,32 @@ describe("generated content index", () => {
     expect(feed?.cards.some((card) => card.code?.includes("def "))).toBe(true);
   });
 
+  it("loads the BFS and DFS learning path, questionnaires, and scrolling review feed", () => {
+    const path = getLearningPathBySlug("breadth-first-and-depth-first-search");
+    const fundamentals = getDocumentBySlug("programming/bfs-dfs-fundamentals");
+    const applications = getDocumentBySlug("programming/bfs-dfs-interview-patterns");
+    const fundamentalsQuiz = getExerciseBySlug("programming/bfs-dfs-fundamentals-questionnaire");
+    const applicationsQuiz = getExerciseBySlug("programming/bfs-dfs-interview-patterns-questionnaire");
+    const feed = getPassiveFlashcardFeedByPathSlug("breadth-first-and-depth-first-search");
+
+    expect(path?.title).toBe("Breadth-First Search And Depth-First Search");
+    expect(path?.units.flatMap((unit) => unit.nodes).map((node) => node.slug)).toEqual([
+      "programming/bfs-dfs-fundamentals",
+      "programming/bfs-dfs-fundamentals-questionnaire",
+      "programming/bfs-dfs-interview-patterns",
+      "programming/bfs-dfs-interview-patterns-questionnaire",
+    ]);
+    expect(fundamentals?.markdown).toContain("from collections import deque");
+    expect(fundamentals?.markdown).toContain("export function bfs");
+    expect(applications?.markdown).toContain("Number Of Islands");
+    expect(applications?.markdown).toContain("BFS Versus DFS");
+    expect(fundamentalsQuiz?.type).toBe("questionnaire");
+    expect(applicationsQuiz?.type).toBe("questionnaire");
+    expect(feed?.route).toBe("/paths/breadth-first-and-depth-first-search/flashcards");
+    expect(feed?.cards.length).toBeGreaterThanOrEqual(12);
+    expect(feed?.cards.map((card) => card.type)).toEqual(expect.arrayContaining(["concept", "practical", "snippet", "interview"]));
+  });
+
   it("loads the Langfuse and LangChain AI engineering path", () => {
     const path = getLearningPathBySlug("ai-engineering-langfuse-langchain");
     const tracingDocument = getDocumentBySlug("ai-engineering/langfuse-tracing-fundamentals");
@@ -286,5 +312,65 @@ describe("generated content index", () => {
       "react-ts",
       "react-ts",
     ]);
+  });
+
+  it("loads graph-search interview questions with BFS and DFS solution tracks", () => {
+    const islands = getInterviewQuestionBySlug("google", "number-of-islands");
+    const shortestPath = getInterviewQuestionBySlug("google", "shortest-path-binary-matrix");
+    const courseSchedule = getInterviewQuestionBySlug("google", "course-schedule");
+
+    expect(islands?.kind).toBe("algorithm");
+    expect(islands?.solutionTracks.map((track) => track.id)).toEqual(["bfs-flood-fill", "dfs-flood-fill"]);
+    expect(islands?.kind === "algorithm" && islands.solutionTracks.every((track) => track.languages.python.code.length > 0)).toBe(true);
+    expect(islands?.kind === "algorithm" && islands.solutionTracks.every((track) => track.languages.typescript.code.length > 0)).toBe(true);
+    expect(shortestPath?.tags).toContain("bfs");
+    expect(courseSchedule?.solutionTracks.map((track) => track.id)).toEqual(["dfs-color-cycle", "bfs-kahn-order"]);
+  });
+
+  it("loads the Mermaid authoring path with progressive examples and choice-only questionnaires", () => {
+    const path = getLearningPathBySlug("mermaid-diagram-authoring");
+    const fundamentals = getDocumentBySlug("programming/mermaid-syntax-fundamentals");
+    const software = getDocumentBySlug("programming/mermaid-software-diagrams");
+    const planning = getDocumentBySlug("programming/mermaid-planning-and-data-diagrams");
+    const questionnaires = [
+      getExerciseBySlug("programming/mermaid-syntax-fundamentals-questionnaire"),
+      getExerciseBySlug("programming/mermaid-software-diagrams-questionnaire"),
+      getExerciseBySlug("programming/mermaid-planning-and-data-diagrams-questionnaire"),
+    ];
+    const feed = getPassiveFlashcardFeedByPathSlug("mermaid-diagram-authoring");
+
+    expect(path?.title).toBe("Reading And Writing Mermaid Diagrams");
+    expect(path?.units.flatMap((unit) => unit.nodes).map((node) => node.slug)).toEqual([
+      "programming/mermaid-syntax-fundamentals",
+      "programming/mermaid-syntax-fundamentals-questionnaire",
+      "programming/mermaid-software-diagrams",
+      "programming/mermaid-software-diagrams-questionnaire",
+      "programming/mermaid-planning-and-data-diagrams",
+      "programming/mermaid-planning-and-data-diagrams-questionnaire",
+    ]);
+    expect(fundamentals?.mermaidBlocks.length).toBeGreaterThanOrEqual(3);
+    expect(software?.mermaidBlocks.length).toBeGreaterThanOrEqual(4);
+    expect(planning?.mermaidBlocks.length).toBeGreaterThanOrEqual(5);
+    expect(fundamentals?.markdown).toContain("flowchart LR");
+    expect(software?.markdown).toContain("sequenceDiagram");
+    expect(software?.markdown).toContain("erDiagram");
+    expect(planning?.markdown).toContain("gantt");
+    expect(planning?.markdown).toContain("mindmap");
+
+    for (const questionnaire of questionnaires) {
+      expect(questionnaire?.type).toBe("questionnaire");
+      const questions = questionnaire?.type === "questionnaire" ? questionnaire.questions : [];
+      expect(questions.length).toBeGreaterThanOrEqual(6);
+      expect(questions.every((question) => question.kind === "choice")).toBe(true);
+      for (const question of questions) {
+        if (question.kind !== "choice") continue;
+        expect(question.options.filter((option) => option.isCorrect)).toHaveLength(1);
+        expect(question.explanation).toContain("Incorrect options:");
+      }
+    }
+
+    expect(feed?.route).toBe("/paths/mermaid-diagram-authoring/flashcards");
+    expect(feed?.cards.length).toBeGreaterThanOrEqual(16);
+    expect(feed?.cards.map((card) => card.type)).toEqual(expect.arrayContaining(["concept", "practical", "snippet", "interview"]));
   });
 });

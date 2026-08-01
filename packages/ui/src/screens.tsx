@@ -5,13 +5,18 @@ import {
   createQuestionnaireAttempt,
   getAssistedStrokeCompletion,
   getJapaneseCharacterGroups,
+  getHomeDiscoverySections,
   getLanguageCharacterBySlug,
   getPathNodeRoute,
   normalizeWritingStroke,
   searchJapanese,
+  searchDiscovery,
+  createDiscoveryItems,
   searchContent,
   type ContentIndex,
   type Difficulty,
+  type DiscoveryResult,
+  type DiscoverySectionId,
   type InterviewAlgorithmSolutionTrack,
   type InterviewCollection,
   type InterviewQuestion,
@@ -139,6 +144,137 @@ export function LearningPathHomeScreen({
   );
 }
 
+export function HomeDiscoveryScreen({
+  index,
+  keepReadingItems = [],
+  isSignedIn = false,
+  adapters,
+}: {
+  index: ContentIndex;
+  keepReadingItems?: ProgressDisplayItem[];
+  isSignedIn?: boolean;
+} & ScreenProps) {
+  const [query, setQuery] = useState("");
+  const sections = useMemo(() => getHomeDiscoverySections(index), [index]);
+  const results = useMemo(() => searchDiscovery(index, query).slice(0, 40), [index, query]);
+  const searching = query.trim().length > 0;
+
+  return (
+    <AppScreen>
+      <Header adapters={adapters} subtitle="Learning home" />
+      <Text style={styles.eyebrow}>Choose your next step</Text>
+      <Text style={styles.heroTitle}>What do you want to learn?</Text>
+      <Text style={styles.heroCopy}>Search everything or jump into a focused learning section.</Text>
+      <TextInput
+        value={query}
+        onChangeText={setQuery}
+        placeholder="Search paths, lessons, interviews, or Japanese"
+        placeholderTextColor={colors.textMuted}
+        style={styles.input}
+        testID="mobile-home-global-search"
+      />
+
+      {searching ? (
+        <View style={styles.stack} testID="mobile-home-search-results">
+          <Text style={styles.cardEyebrow}>{results.length} results</Text>
+          {results.map((result) => <MobileDiscoveryCard key={`${result.kind}-${result.id}`} item={result} adapters={adapters} />)}
+          {results.length === 0 ? <Text style={styles.emptyText}>No content matches that search.</Text> : null}
+        </View>
+      ) : (
+        <>
+          <KeepReadingSection items={keepReadingItems} isSignedIn={isSignedIn} adapters={adapters} />
+          {sections.map((section) => (
+            <View key={section.id} style={styles.discoverySection} testID={`mobile-home-section-${section.id}`}>
+              <View style={styles.discoverySectionHeader}>
+                <View style={styles.fill}>
+                  <Text style={[styles.discoverySectionTitle, { color: discoverySectionColor(section.id) }]}>{section.title}</Text>
+                  <Text style={styles.mutedText}>{section.description}</Text>
+                </View>
+                <Pressable
+                  accessibilityRole="button"
+                  onPress={() => adapters.navigation.navigate(section.route)}
+                  style={[styles.discoveryViewAll, { backgroundColor: discoverySectionColor(section.id) }]}
+                  testID={`mobile-home-view-all-${section.id}`}
+                >
+                  <Text style={styles.discoveryViewAllText}>View all</Text>
+                </Pressable>
+              </View>
+              <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.discoveryRow}>
+                {section.items.map((item) => <MobileDiscoveryCard key={`${item.kind}-${item.id}`} item={item} adapters={adapters} compact />)}
+              </ScrollView>
+            </View>
+          ))}
+        </>
+      )}
+    </AppScreen>
+  );
+}
+
+export function PracticeCatalogScreen({ index, adapters }: { index: ContentIndex } & ScreenProps) {
+  const [query, setQuery] = useState("");
+  const items = useMemo(
+    () => createDiscoveryItems(index).filter((item) => item.section === "practice" && (!query.trim() || `${item.title} ${item.summary} ${item.tags.join(" ")}`.toLocaleLowerCase("en-US").includes(query.trim().toLocaleLowerCase("en-US")))),
+    [index, query],
+  );
+
+  return (
+    <AppScreen>
+      <Header adapters={adapters} subtitle="Practice & review" />
+      <Text style={[styles.eyebrow, { color: colors.sectionPractice }]}>Practice & review</Text>
+      <Text style={styles.heroTitle}>Turn reading into active recall.</Text>
+      <TextInput value={query} onChangeText={setQuery} placeholder="Search practice activities" placeholderTextColor={colors.textMuted} style={styles.input} testID="mobile-practice-catalog-search" />
+      <View style={styles.stack} testID="mobile-practice-catalog">
+        {items.map((item) => <MobileDiscoveryCard key={`${item.kind}-${item.id}`} item={item} adapters={adapters} />)}
+      </View>
+    </AppScreen>
+  );
+}
+
+export function LanguageCatalogScreen({ index, adapters }: { index: ContentIndex } & ScreenProps) {
+  const characterCount = index.languageCharacters.filter((item) => item.language === "ja" && item.status === "published").length;
+  const vocabularyCount = index.languageVocabulary.filter((item) => item.language === "ja" && item.status === "published").length;
+
+  return (
+    <AppScreen>
+      <Header adapters={adapters} subtitle="Languages" />
+      <Text style={[styles.eyebrow, { color: colors.sectionLanguages }]}>Languages</Text>
+      <Text style={styles.heroTitle}>Build language foundations through reading and writing.</Text>
+      <Pressable onPress={() => adapters.navigation.navigate("/languages/japanese")} style={[styles.card, { borderColor: colors.sectionLanguages }]} testID="mobile-language-japanese">
+        <Text style={styles.cardEyebrow}>Available now</Text>
+        <Text style={styles.cardTitle}>Japanese</Text>
+        <Text style={styles.mutedText}>Practice kana, kanji, vocabulary, pronunciation, and handwriting.</Text>
+        <View style={styles.pillRow}>
+          <Pill label={`${characterCount} characters`} tone="amber" />
+          <Pill label={`${vocabularyCount} vocabulary`} tone="amber" />
+        </View>
+      </Pressable>
+    </AppScreen>
+  );
+}
+
+function MobileDiscoveryCard({ item, adapters, compact = false }: { item: DiscoveryResult; compact?: boolean } & ScreenProps) {
+  return (
+    <Pressable
+      onPress={() => adapters.navigation.navigate(item.route)}
+      style={[styles.card, compact && styles.discoveryCardCompact, { borderColor: discoverySectionColor(item.section) }]}
+      testID={`mobile-discovery-${item.kind}-${item.sourceSlug.replaceAll("/", "-")}`}
+    >
+      <Text style={[styles.cardEyebrow, { color: discoverySectionColor(item.section) }]}>{item.eyebrow}</Text>
+      <Text style={styles.cardTitle}>{item.title}</Text>
+      <Text style={styles.mutedText} numberOfLines={compact ? 3 : undefined}>{item.summary}</Text>
+      {item.difficulty ? <DifficultyPill difficulty={item.difficulty} /> : null}
+    </Pressable>
+  );
+}
+
+function discoverySectionColor(section: DiscoverySectionId) {
+  if (section === "paths") return colors.sectionPaths;
+  if (section === "lessons") return colors.sectionLessons;
+  if (section === "interviews") return colors.sectionInterviews;
+  if (section === "practice") return colors.sectionPractice;
+  return colors.sectionLanguages;
+}
+
 export function LearningPathDetailScreen({
   index,
   learningPath,
@@ -152,7 +288,7 @@ export function LearningPathDetailScreen({
   return (
     <AppScreen>
       <Header adapters={adapters} subtitle="Path detail" />
-      <Button label="Paths" variant="ghost" onPress={() => adapters.navigation.navigate("/")} testID="mobile-paths-back" />
+      <Button label="Paths" variant="ghost" onPress={() => adapters.navigation.navigate("/paths")} testID="mobile-paths-back" />
       <Text style={styles.eyebrow}>{learningPath.kind} path</Text>
       <Text style={styles.heroTitle}>{learningPath.title}</Text>
       <Text style={styles.heroCopy}>{learningPath.summary}</Text>
@@ -1736,6 +1872,37 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     flexWrap: "wrap",
     gap: spacing.md,
+  },
+  discoverySection: {
+    gap: spacing.md,
+  },
+  discoverySectionHeader: {
+    alignItems: "flex-end",
+    flexDirection: "row",
+    gap: spacing.md,
+    justifyContent: "space-between",
+  },
+  discoverySectionTitle: {
+    fontSize: 22,
+    fontWeight: "900",
+  },
+  discoveryViewAll: {
+    borderRadius: radii.md,
+    paddingHorizontal: spacing.md,
+    paddingVertical: spacing.md,
+  },
+  discoveryViewAllText: {
+    color: colors.panel,
+    fontSize: 13,
+    fontWeight: "900",
+  },
+  discoveryRow: {
+    gap: spacing.md,
+    paddingRight: spacing.lg,
+  },
+  discoveryCardCompact: {
+    minHeight: 210,
+    width: 280,
   },
   card: {
     backgroundColor: colors.panel,

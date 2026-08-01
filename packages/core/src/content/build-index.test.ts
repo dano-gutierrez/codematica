@@ -458,6 +458,23 @@ function makeSolutionTrack(id: string, title: string) {
   };
 }
 
+async function writeHomeDiscovery(rootDir: string) {
+  const filePath = path.join(rootDir, "content", "discovery", "home.json");
+  await mkdir(path.dirname(filePath), { recursive: true });
+  await writeFile(
+    filePath,
+    JSON.stringify({
+      sections: {
+        paths: [{ kind: "path", slug: "missing-path" }],
+        lessons: [{ kind: "document", slug: "missing/document" }],
+        interviews: [{ kind: "interview-question", slug: "missing/question" }],
+        practice: [{ kind: "exercise", slug: "missing/exercise" }],
+        languages: [{ kind: "language-hub", slug: "japanese" }],
+      },
+    }),
+  );
+}
+
 describe("buildContentIndex", () => {
   it("indexes documents and external Mermaid diagrams", async () => {
     const rootDir = await makeTempRoot();
@@ -502,6 +519,13 @@ describe("buildContentIndex", () => {
         topics: ["Caching"],
       },
     ]);
+  });
+
+  it("fails when home discovery references missing content", async () => {
+    const rootDir = await makeTempRoot();
+    await writeHomeDiscovery(rootDir);
+
+    await expect(buildContentIndex({ rootDir })).rejects.toThrow(/home discovery.*references missing content/i);
   });
 
   it("indexes passive flashcard feeds for learning paths", async () => {

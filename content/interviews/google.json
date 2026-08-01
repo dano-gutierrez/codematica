@@ -328,6 +328,226 @@
           }
         }
       ]
+    },
+    {
+      "slug": "number-of-islands",
+      "title": "Number Of Islands",
+      "summary": "Count connected groups of land in a rectangular grid and compare breadth-first with depth-first flood fill.",
+      "prompt": "Given a rectangular grid containing 1 for land and 0 for water, return the number of orthogonally connected islands. Solve it once with breadth-first search and once with depth-first search, then explain the practical tradeoffs.",
+      "difficulty": "practitioner",
+      "tags": ["graphs", "grids", "bfs", "dfs", "connected-components"],
+      "sourceLinks": [
+        {
+          "label": "InterviewQuery Google guide",
+          "url": "https://www.interviewquery.com/interview-guides/google-software-engineer"
+        }
+      ],
+      "resources": [],
+      "examples": [
+        {
+          "input": "grid = [[1,1,0,0],[1,0,0,1],[0,0,1,1]]",
+          "output": "2",
+          "explanation": "The upper-left land cells form one island and the lower-right land cells form another."
+        }
+      ],
+      "constraints": [
+        "Only horizontal and vertical neighbors are connected.",
+        "The input grid has at least one row and one column."
+      ],
+      "diagrams": [
+        {
+          "title": "Two connected components",
+          "mermaid": "flowchart LR\n  A[Top-left land] --- B[Top-left neighbor]\n  C[Bottom-right land] --- D[Right neighbor]\n  A ~~~ C"
+        }
+      ],
+      "solutionTracks": [
+        {
+          "id": "bfs-flood-fill",
+          "title": "BFS Flood Fill",
+          "summary": "Scan for unvisited land, count a new island, then use a queue to mark that entire connected component.",
+          "steps": [
+            {
+              "title": "Scan every cell",
+              "explanation": "An unvisited land cell begins a connected component that has not been counted yet."
+            },
+            {
+              "title": "Queue the component",
+              "explanation": "Mark the starting cell visited and process orthogonal land neighbors in FIFO order."
+            },
+            {
+              "title": "Count each start once",
+              "explanation": "The outer scan increments only when it finds land that no previous flood fill reached."
+            }
+          ],
+          "explanation": "BFS marks every land cell in one connected component before the scan can count it again. It avoids recursion depth risk, though its queue can grow with a wide island frontier.",
+          "complexity": { "time": "O(rows * cols)", "space": "O(rows * cols) worst case" },
+          "languages": {
+            "python": {
+              "label": "Python",
+              "code": "from collections import deque\n\ndef num_islands_bfs(grid):\n    rows, cols = len(grid), len(grid[0])\n    seen = set()\n    islands = 0\n    for r in range(rows):\n        for c in range(cols):\n            if grid[r][c] != '1' or (r, c) in seen:\n                continue\n            islands += 1\n            seen.add((r, c))\n            queue = deque([(r, c)])\n            while queue:\n                cr, cc = queue.popleft()\n                for dr, dc in ((1, 0), (-1, 0), (0, 1), (0, -1)):\n                    nr, nc = cr + dr, cc + dc\n                    valid = 0 <= nr < rows and 0 <= nc < cols\n                    if valid and grid[nr][nc] == '1' and (nr, nc) not in seen:\n                        seen.add((nr, nc))\n                        queue.append((nr, nc))\n    return islands"
+            },
+            "typescript": {
+              "label": "TypeScript",
+              "code": "export function numIslandsBfs(grid: string[][]): number {\n  const rows = grid.length, cols = grid[0].length;\n  const seen = new Set<string>();\n  const key = (r: number, c: number) => `${r},${c}`;\n  const dirs = [[1, 0], [-1, 0], [0, 1], [0, -1]];\n  let islands = 0;\n  for (let r = 0; r < rows; r += 1) for (let c = 0; c < cols; c += 1) {\n    if (grid[r][c] !== '1' || seen.has(key(r, c))) continue;\n    islands += 1;\n    const queue: Array<[number, number]> = [[r, c]];\n    seen.add(key(r, c));\n    for (let head = 0; head < queue.length; head += 1) {\n      const [cr, cc] = queue[head];\n      for (const [dr, dc] of dirs) {\n        const nr = cr + dr, nc = cc + dc;\n        const valid = nr >= 0 && nr < rows && nc >= 0 && nc < cols;\n        if (valid && grid[nr][nc] === '1' && !seen.has(key(nr, nc))) {\n          seen.add(key(nr, nc));\n          queue.push([nr, nc]);\n        }\n      }\n    }\n  }\n  return islands;\n}"
+            },
+            "java": {
+              "label": "Java",
+              "code": "int numIslandsBfs(char[][] grid) {\n  int rows = grid.length, cols = grid[0].length, islands = 0;\n  boolean[][] seen = new boolean[rows][cols];\n  int[][] dirs = {{1,0},{-1,0},{0,1},{0,-1}};\n  for (int r = 0; r < rows; r++) for (int c = 0; c < cols; c++) {\n    if (grid[r][c] != '1' || seen[r][c]) continue;\n    islands++;\n    Queue<int[]> queue = new ArrayDeque<>();\n    queue.add(new int[]{r, c}); seen[r][c] = true;\n    while (!queue.isEmpty()) {\n      int[] cell = queue.remove();\n      for (int[] d : dirs) {\n        int nr = cell[0] + d[0], nc = cell[1] + d[1];\n        if (nr >= 0 && nr < rows && nc >= 0 && nc < cols && grid[nr][nc] == '1' && !seen[nr][nc]) {\n          seen[nr][nc] = true; queue.add(new int[]{nr, nc});\n        }\n      }\n    }\n  }\n  return islands;\n}"
+            }
+          }
+        },
+        {
+          "id": "dfs-flood-fill",
+          "title": "DFS Flood Fill",
+          "summary": "Scan for unvisited land, count a new island, then recursively consume that entire connected component.",
+          "steps": [
+            {
+              "title": "Define the boundary",
+              "explanation": "Return when a cell is outside the grid, water, or already visited."
+            },
+            {
+              "title": "Explore one branch",
+              "explanation": "Mark land and recursively visit its four orthogonal neighbors before returning."
+            },
+            {
+              "title": "Count component roots",
+              "explanation": "Each outer-scan land cell still unseen is the root of one newly counted island."
+            }
+          ],
+          "explanation": "Recursive DFS closely matches the definition of a connected component and is shorter to read. It has the same asymptotic cost as BFS, but one enormous island can overflow the runtime call stack.",
+          "complexity": { "time": "O(rows * cols)", "space": "O(rows * cols) worst case" },
+          "languages": {
+            "python": {
+              "label": "Python",
+              "code": "def num_islands_dfs(grid):\n    rows, cols = len(grid), len(grid[0])\n    seen = set()\n    def visit(r, c):\n        valid = 0 <= r < rows and 0 <= c < cols\n        if not valid or grid[r][c] != '1' or (r, c) in seen:\n            return\n        seen.add((r, c))\n        visit(r + 1, c)\n        visit(r - 1, c)\n        visit(r, c + 1)\n        visit(r, c - 1)\n    islands = 0\n    for r in range(rows):\n        for c in range(cols):\n            if grid[r][c] == '1' and (r, c) not in seen:\n                islands += 1\n                visit(r, c)\n    return islands"
+            },
+            "typescript": {
+              "label": "TypeScript",
+              "code": "export function numIslandsDfs(grid: string[][]): number {\n  const rows = grid.length, cols = grid[0].length;\n  const seen = new Set<string>();\n  const key = (r: number, c: number) => `${r},${c}`;\n  function visit(r: number, c: number): void {\n    const valid = r >= 0 && r < rows && c >= 0 && c < cols;\n    if (!valid || grid[r][c] !== '1' || seen.has(key(r, c))) return;\n    seen.add(key(r, c));\n    visit(r + 1, c); visit(r - 1, c); visit(r, c + 1); visit(r, c - 1);\n  }\n  let islands = 0;\n  for (let r = 0; r < rows; r += 1) for (let c = 0; c < cols; c += 1) {\n    if (grid[r][c] === '1' && !seen.has(key(r, c))) { islands += 1; visit(r, c); }\n  }\n  return islands;\n}"
+            },
+            "java": {
+              "label": "Java",
+              "code": "int numIslandsDfs(char[][] grid) {\n  boolean[][] seen = new boolean[grid.length][grid[0].length];\n  int islands = 0;\n  for (int r = 0; r < grid.length; r++) for (int c = 0; c < grid[0].length; c++) {\n    if (grid[r][c] == '1' && !seen[r][c]) { islands++; visit(grid, seen, r, c); }\n  }\n  return islands;\n}\nvoid visit(char[][] grid, boolean[][] seen, int r, int c) {\n  if (r < 0 || r == grid.length || c < 0 || c == grid[0].length || grid[r][c] != '1' || seen[r][c]) return;\n  seen[r][c] = true;\n  visit(grid, seen, r + 1, c); visit(grid, seen, r - 1, c);\n  visit(grid, seen, r, c + 1); visit(grid, seen, r, c - 1);\n}"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "slug": "shortest-path-binary-matrix",
+      "title": "Shortest Path In A Binary Matrix",
+      "summary": "Find the minimum number of equal-cost moves through open cells in a square matrix.",
+      "prompt": "Given a square binary grid, return the length of the shortest clear path from the top-left cell to the bottom-right cell using eight-direction movement, or -1 when no path exists.",
+      "difficulty": "practitioner",
+      "tags": ["graphs", "grids", "bfs", "shortest-path"],
+      "sourceLinks": [
+        {
+          "label": "InterviewQuery Google guide",
+          "url": "https://www.interviewquery.com/interview-guides/google-software-engineer"
+        }
+      ],
+      "resources": [],
+      "examples": [
+        {
+          "input": "grid = [[0,1],[1,0]]",
+          "output": "2",
+          "explanation": "A diagonal move reaches the destination in a path containing two cells."
+        }
+      ],
+      "constraints": ["Zero cells are open and one cells are blocked.", "Every legal move has equal cost."],
+      "diagrams": [],
+      "solutionTracks": [
+        {
+          "id": "layered-bfs",
+          "title": "Layered BFS",
+          "summary": "Explore all grid positions at one path length before advancing to the next length.",
+          "steps": [
+            { "title": "Reject blocked endpoints", "explanation": "No route can exist when either the start or destination cell is blocked." },
+            { "title": "Expand one distance layer", "explanation": "Queue each unseen open neighbor with a distance one greater than its parent." },
+            { "title": "Return first destination", "explanation": "BFS guarantees that the first destination removed from the queue has minimum distance." }
+          ],
+          "explanation": "The grid is an unweighted graph because every move costs one. BFS processes paths in nondecreasing length, so it can return as soon as the destination is reached.",
+          "complexity": { "time": "O(n^2)", "space": "O(n^2)" },
+          "languages": {
+            "python": { "label": "Python", "code": "from collections import deque\n\ndef shortest_path(grid):\n    n = len(grid)\n    if grid[0][0] or grid[n - 1][n - 1]:\n        return -1\n    queue = deque([(0, 0, 1)])\n    seen = {(0, 0)}\n    while queue:\n        r, c, distance = queue.popleft()\n        if (r, c) == (n - 1, n - 1):\n            return distance\n        for dr in (-1, 0, 1):\n            for dc in (-1, 0, 1):\n                nr, nc = r + dr, c + dc\n                valid = 0 <= nr < n and 0 <= nc < n\n                if valid and not grid[nr][nc] and (nr, nc) not in seen:\n                    seen.add((nr, nc))\n                    queue.append((nr, nc, distance + 1))\n    return -1" },
+            "typescript": { "label": "TypeScript", "code": "export function shortestPath(grid: number[][]): number {\n  const n = grid.length;\n  if (grid[0][0] || grid[n - 1][n - 1]) return -1;\n  const queue: Array<[number, number, number]> = [[0, 0, 1]];\n  const seen = new Set<string>(['0,0']);\n  for (let head = 0; head < queue.length; head += 1) {\n    const [r, c, distance] = queue[head];\n    if (r === n - 1 && c === n - 1) return distance;\n    for (let dr = -1; dr <= 1; dr += 1) for (let dc = -1; dc <= 1; dc += 1) {\n      const nr = r + dr, nc = c + dc, key = `${nr},${nc}`;\n      if (nr >= 0 && nr < n && nc >= 0 && nc < n && grid[nr][nc] === 0 && !seen.has(key)) {\n        seen.add(key); queue.push([nr, nc, distance + 1]);\n      }\n    }\n  }\n  return -1;\n}" },
+            "java": { "label": "Java", "code": "int shortestPath(int[][] grid) {\n  int n = grid.length;\n  if (grid[0][0] == 1 || grid[n-1][n-1] == 1) return -1;\n  Queue<int[]> queue = new ArrayDeque<>();\n  queue.add(new int[]{0,0,1}); grid[0][0] = 1;\n  while (!queue.isEmpty()) {\n    int[] cur = queue.remove();\n    if (cur[0] == n-1 && cur[1] == n-1) return cur[2];\n    for (int dr=-1; dr<=1; dr++) for (int dc=-1; dc<=1; dc++) {\n      int r=cur[0]+dr, c=cur[1]+dc;\n      if (r>=0 && r<n && c>=0 && c<n && grid[r][c]==0) { grid[r][c]=1; queue.add(new int[]{r,c,cur[2]+1}); }\n    }\n  }\n  return -1;\n}" }
+          }
+        },
+        {
+          "id": "in-place-layer-bfs",
+          "title": "In-Place Layer BFS",
+          "summary": "Reuse the mutable grid as visited state and count one complete queue layer for each path length.",
+          "steps": [
+            { "title": "Mark the start", "explanation": "Change the starting open cell to blocked so it cannot be enqueued again." },
+            { "title": "Process one layer", "explanation": "Every cell currently in the queue has the same shortest path length from the start." },
+            { "title": "Advance the distance", "explanation": "After one queue layer finishes, increment the path length before expanding the next layer." }
+          ],
+          "explanation": "This BFS keeps the same shortest-path invariant but stores visited state in the grid. It uses less auxiliary bookkeeping, though mutating caller-owned input must be allowed and stated clearly.",
+          "complexity": { "time": "O(n^2)", "space": "O(n^2) queue worst case" },
+          "languages": {
+            "python": { "label": "Python", "code": "from collections import deque\n\ndef shortest_path_in_place(grid):\n    n = len(grid)\n    if grid[0][0] or grid[n - 1][n - 1]: return -1\n    queue = deque([(0, 0)])\n    grid[0][0] = 1\n    distance = 1\n    while queue:\n        for _ in range(len(queue)):\n            r, c = queue.popleft()\n            if (r, c) == (n - 1, n - 1): return distance\n            for dr in (-1, 0, 1):\n                for dc in (-1, 0, 1):\n                    nr, nc = r + dr, c + dc\n                    if 0 <= nr < n and 0 <= nc < n and grid[nr][nc] == 0:\n                        grid[nr][nc] = 1\n                        queue.append((nr, nc))\n        distance += 1\n    return -1" },
+            "typescript": { "label": "TypeScript", "code": "export function shortestPathInPlace(grid: number[][]): number {\n  const n = grid.length;\n  if (grid[0][0] || grid[n - 1][n - 1]) return -1;\n  let queue: Array<[number, number]> = [[0, 0]];\n  grid[0][0] = 1;\n  for (let distance = 1; queue.length; distance += 1) {\n    const next: Array<[number, number]> = [];\n    for (const [r, c] of queue) {\n      if (r === n - 1 && c === n - 1) return distance;\n      for (let dr = -1; dr <= 1; dr += 1) for (let dc = -1; dc <= 1; dc += 1) {\n        const nr = r + dr, nc = c + dc;\n        if (nr >= 0 && nr < n && nc >= 0 && nc < n && grid[nr][nc] === 0) {\n          grid[nr][nc] = 1; next.push([nr, nc]);\n        }\n      }\n    }\n    queue = next;\n  }\n  return -1;\n}" },
+            "java": { "label": "Java", "code": "int shortestPathInPlace(int[][] grid) {\n  int n=grid.length; if(grid[0][0]==1||grid[n-1][n-1]==1)return -1;\n  Queue<int[]> queue=new ArrayDeque<>(); queue.add(new int[]{0,0}); grid[0][0]=1;\n  for(int distance=1;!queue.isEmpty();distance++){\n    for(int size=queue.size();size>0;size--){\n      int[] cell=queue.remove(); if(cell[0]==n-1&&cell[1]==n-1)return distance;\n      for(int dr=-1;dr<=1;dr++)for(int dc=-1;dc<=1;dc++){\n        int r=cell[0]+dr,c=cell[1]+dc;\n        if(r>=0&&r<n&&c>=0&&c<n&&grid[r][c]==0){grid[r][c]=1;queue.add(new int[]{r,c});}\n      }\n    }\n  }\n  return -1;\n}" }
+          }
+        }
+      ]
+    },
+    {
+      "slug": "course-schedule",
+      "title": "Course Schedule",
+      "summary": "Decide whether every course can be completed by detecting a cycle in the prerequisite graph.",
+      "prompt": "Given a course count and prerequisite pairs, return whether all courses can be completed. Compare depth-first cycle coloring with breadth-first topological processing.",
+      "difficulty": "practitioner",
+      "tags": ["graphs", "bfs", "dfs", "topological-sort", "cycle-detection"],
+      "sourceLinks": [
+        {
+          "label": "InterviewQuery Google guide",
+          "url": "https://www.interviewquery.com/interview-guides/google-software-engineer"
+        }
+      ],
+      "resources": [],
+      "examples": [
+        { "input": "courses = 2, prerequisites = [[1,0],[0,1]]", "output": "false", "explanation": "Each course requires the other, so neither dependency chain can finish." }
+      ],
+      "constraints": ["Courses are numbered from zero through course count minus one.", "Duplicate prerequisite pairs may be ignored."],
+      "diagrams": [],
+      "solutionTracks": [
+        {
+          "id": "dfs-color-cycle",
+          "title": "DFS Three-Color Cycle Detection",
+          "summary": "Color each course unseen, visiting, or complete and reject any edge back to the active DFS path.",
+          "steps": [
+            { "title": "Enter as visiting", "explanation": "Mark a course as active before recursively checking every dependent course." },
+            { "title": "Detect a back edge", "explanation": "An edge to another visiting course closes a directed cycle on the current path." },
+            { "title": "Finish as complete", "explanation": "After every dependency returns safely, mark the course complete so later searches can reuse the result." }
+          ],
+          "explanation": "A directed cycle exists exactly when DFS reaches a node already on its active path. Complete nodes have already been proven safe and need no repeated exploration.",
+          "complexity": { "time": "O(V + E)", "space": "O(V + E)" },
+          "languages": {
+            "python": { "label": "Python", "code": "def can_finish_dfs(count, prerequisites):\n    graph = [[] for _ in range(count)]\n    for course, need in prerequisites: graph[need].append(course)\n    color = [0] * count\n    def visit(course):\n        if color[course] == 1: return False\n        if color[course] == 2: return True\n        color[course] = 1\n        if any(not visit(next_course) for next_course in graph[course]): return False\n        color[course] = 2\n        return True\n    return all(visit(course) for course in range(count))" },
+            "typescript": { "label": "TypeScript", "code": "export function canFinishDfs(count: number, prerequisites: number[][]): boolean {\n  const graph = Array.from({ length: count }, () => [] as number[]);\n  for (const [course, need] of prerequisites) graph[need].push(course);\n  const color = Array(count).fill(0);\n  function visit(course: number): boolean {\n    if (color[course] === 1) return false;\n    if (color[course] === 2) return true;\n    color[course] = 1;\n    for (const next of graph[course]) if (!visit(next)) return false;\n    color[course] = 2;\n    return true;\n  }\n  return graph.every((_, course) => visit(course));\n}" },
+            "java": { "label": "Java", "code": "boolean canFinishDfs(int count, int[][] prerequisites) {\n  List<Integer>[] graph = new List[count];\n  for(int i=0;i<count;i++) graph[i]=new ArrayList<>();\n  for(int[] edge:prerequisites) graph[edge[1]].add(edge[0]);\n  int[] color=new int[count];\n  for(int course=0;course<count;course++) if(!visit(course,graph,color)) return false;\n  return true;\n}\nboolean visit(int course,List<Integer>[] graph,int[] color){\n  if(color[course]==1)return false; if(color[course]==2)return true; color[course]=1;\n  for(int next:graph[course]) if(!visit(next,graph,color))return false;\n  color[course]=2; return true;\n}" }
+          }
+        },
+        {
+          "id": "bfs-kahn-order",
+          "title": "BFS Kahn Topological Processing",
+          "summary": "Queue every course with zero prerequisites and remove completed prerequisite edges until no ready course remains.",
+          "steps": [
+            { "title": "Count incoming edges", "explanation": "Indegree records how many unmet prerequisites prevent each course from becoming ready." },
+            { "title": "Queue ready courses", "explanation": "Every zero-indegree course can be completed immediately and processed in BFS order." },
+            { "title": "Compare processed total", "explanation": "If all courses are removed, the graph is acyclic; a cycle leaves some indegrees positive." }
+          ],
+          "explanation": "Kahn's algorithm repeatedly removes nodes that have no remaining prerequisites. A directed cycle has no removable starting point inside the cycle, so the final processed count exposes it.",
+          "complexity": { "time": "O(V + E)", "space": "O(V + E)" },
+          "languages": {
+            "python": { "label": "Python", "code": "from collections import deque\n\ndef can_finish_bfs(count, prerequisites):\n    graph = [[] for _ in range(count)]\n    indegree = [0] * count\n    for course, need in prerequisites:\n        graph[need].append(course)\n        indegree[course] += 1\n    queue = deque(course for course in range(count) if indegree[course] == 0)\n    completed = 0\n    while queue:\n        course = queue.popleft()\n        completed += 1\n        for next_course in graph[course]:\n            indegree[next_course] -= 1\n            if indegree[next_course] == 0: queue.append(next_course)\n    return completed == count" },
+            "typescript": { "label": "TypeScript", "code": "export function canFinishBfs(count: number, prerequisites: number[][]): boolean {\n  const graph = Array.from({ length: count }, () => [] as number[]);\n  const indegree = Array(count).fill(0);\n  for (const [course, need] of prerequisites) { graph[need].push(course); indegree[course] += 1; }\n  const queue = indegree.flatMap((degree, course) => degree === 0 ? [course] : []);\n  let completed = 0;\n  for (let head = 0; head < queue.length; head += 1) {\n    const course = queue[head]; completed += 1;\n    for (const next of graph[course]) if (--indegree[next] === 0) queue.push(next);\n  }\n  return completed === count;\n}" },
+            "java": { "label": "Java", "code": "boolean canFinishBfs(int count, int[][] prerequisites) {\n  List<Integer>[] graph=new List[count]; int[] indegree=new int[count];\n  for(int i=0;i<count;i++)graph[i]=new ArrayList<>();\n  for(int[] edge:prerequisites){graph[edge[1]].add(edge[0]);indegree[edge[0]]++;}\n  Queue<Integer> queue=new ArrayDeque<>();\n  for(int i=0;i<count;i++)if(indegree[i]==0)queue.add(i);\n  int completed=0;\n  while(!queue.isEmpty()){int course=queue.remove();completed++;for(int next:graph[course])if(--indegree[next]==0)queue.add(next);}\n  return completed==count;\n}" }
+          }
+        }
+      ]
     }
   ],
   "logo": {

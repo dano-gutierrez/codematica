@@ -409,6 +409,34 @@ const realWorldInterviewFileSchema = interviewCollectionBaseSchema.extend({
 export const interviewCollectionFileSchema = z.union([realWorldInterviewFileSchema, interviewCompanyFileSchema]);
 export { interviewCompanyFileSchema };
 
+export const discoverySectionIdSchema = z.enum(["paths", "lessons", "interviews", "practice", "languages"]);
+
+export const discoveryReferenceKindSchema = z.enum([
+  "path",
+  "document",
+  "diagram",
+  "interview-question",
+  "exercise",
+  "flashcard-feed",
+  "language-character",
+  "language-vocabulary",
+  "language-hub",
+]);
+
+export const discoveryReferenceSchema = z.object({
+  kind: discoveryReferenceKindSchema,
+  slug: z.string().min(2),
+});
+
+export const homeDiscoveryFileSchema = z.object({
+  sections: z.object({
+    paths: z.array(discoveryReferenceSchema).min(1).max(8),
+    lessons: z.array(discoveryReferenceSchema).min(1).max(8),
+    interviews: z.array(discoveryReferenceSchema).min(1).max(8),
+    practice: z.array(discoveryReferenceSchema).min(1).max(8),
+    languages: z.array(discoveryReferenceSchema).min(1).max(8),
+  }),
+});
 export type Difficulty = z.infer<typeof difficultySchema>;
 export type ContentStatus = z.infer<typeof contentStatusSchema>;
 export type KnowledgeFrontmatter = z.infer<typeof knowledgeFrontmatterSchema>;
@@ -438,6 +466,10 @@ export type InterviewAlgorithmQuestionFile = z.infer<typeof interviewAlgorithmQu
 export type InterviewWebQuestionFile = z.infer<typeof interviewWebQuestionFileSchema>;
 export type InterviewCompanyFile = z.infer<typeof interviewCompanyFileSchema>;
 export type InterviewCollectionFile = z.infer<typeof interviewCollectionFileSchema>;
+export type DiscoverySectionId = z.infer<typeof discoverySectionIdSchema>;
+export type DiscoveryReferenceKind = z.infer<typeof discoveryReferenceKindSchema>;
+export type DiscoveryReference = z.infer<typeof discoveryReferenceSchema>;
+export type HomeDiscovery = z.infer<typeof homeDiscoveryFileSchema>;
 
 export type ContentHeading = {
   id: string;
@@ -549,4 +581,5 @@ export type ContentIndex = {
   passiveFlashcardFeeds: PassiveFlashcardFeed[];
   interviewCollections: InterviewCollection[];
   tracks: ContentTrack[];
+  homeDiscovery: HomeDiscovery;
 };

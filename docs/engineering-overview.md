@@ -1,6 +1,6 @@
 # Codematica Engineering Overview
 
-Last updated: 2026-07-11
+Last updated: 2026-07-22
 
 Codematica is a mobile-first learning app for system design, coding, programming, software engineering, and beginner human-language study. V1 keeps the product intentionally local-first: author documents as Markdown, author paths, exercises, flashcard feeds, interview catalogs, and language catalogs as JSON, generate a static study index, and render the app on web with Next.js and on Android/iOS with Expo Router.
 
@@ -40,6 +40,7 @@ flowchart TD
   FEEDS["content/flashcard-feeds/*.json"] --> Parser
   IV["content/interviews/*.json"] --> Parser
   LANG["content/languages/**/*.json"] --> Parser
+  DISC["content/discovery/home.json"] --> Parser
   Parser --> Index["packages/core/src/generated/content-index.json"]
   Index --> Core["@codematica/core"]
   Core --> SharedUI["@codematica/ui"]
@@ -48,7 +49,8 @@ flowchart TD
   Core --> Passive["Passive flashcard feed"]
   Core --> Interviews["Interview coding catalog"]
   Core --> Languages["Japanese language lookup + handwriting"]
-  Core --> Search["Fuzzy search"]
+  Core --> Search["Library fuzzy search"]
+  Core --> Discovery["Cross-section search + curated home"]
   SharedUI --> Native["Expo Router native app"]
   Core --> Web["Next.js web app"]
   Web --> ProgressUI["Progress trackers + Keep reading"]
@@ -65,7 +67,7 @@ flowchart TD
 
 ## Runtime Boundaries
 
-V1 runtime reads `packages/core/src/generated/content-index.json` through `@codematica/core`. It does not require Supabase credentials to browse, search, read, practice, or render diagrams. The generated index is bundled into the Expo app, so native anonymous browsing and practice work offline until the next app or update release.
+V1 runtime reads `packages/core/src/generated/content-index.json` through `@codematica/core`. It does not require Supabase credentials to discover, browse, search, read, practice, or render diagrams. The generated index is bundled into the Expo app, so native discovery, anonymous browsing, and practice work offline until the next app or update release.
 
 The repo is an npm workspace:
 
@@ -102,6 +104,8 @@ Interview collections live in `content/interviews/*.json` and are discriminated 
 
 Human-language catalogs live in `content/languages/**/*.json`. Japanese v1 indexes beginner character and vocabulary data with glyphs, readings, romaji, IPA, meanings, and normalized stroke paths for handwriting practice.
 
+Home discovery curation lives in `content/discovery/home.json`. It references canonical published content by kind and slug; index generation validates every reference and serializes the ordered sections into content index schema version 6. `packages/core/src/discovery.ts` resolves those references and provides cross-section local search to web and native.
+
 The Python language refresh path is the first reusable language-refresh slice. It pairs searchable Markdown docs with senior-level questionnaires and passive flashcards for TypeScript and JavaScript engineers.
 
 The Langfuse and LangChain AI engineering path is the first AI engineering slice. It pairs searchable Markdown lessons, Mermaid diagrams, questionnaires, and passive flashcards for LLM application architecture, LangChain tools/RAG/agents, LangGraph operations, Langfuse tracing/evaluation workflows, and OWASP/NIST-aligned production risk governance. Coding challenge sections in these lessons are non-executable until the future code editor feature adds an executable challenge contract.
@@ -110,17 +114,24 @@ The database indexes and search path teaches production index judgment, PostgreS
 
 The Advanced Next.js 16 path is the first Front-End Development skill slice. It pairs hard-only searchable Markdown lessons, senior/principal questionnaires, and one-minute passive brief cards for App Router rendering, `force-dynamic`, Cache Components, data fetching, invalidation, production failure modes, performance architecture, and migration review. Next.js content must stay anchored to official Next.js documentation, official release notes, and npm registry version metadata.
 
+The Breadth-First Search And Depth-First Search path is the graph-traversal Programming slice. It pairs searchable Markdown lessons and readable Python/TypeScript code with questionnaires, a passive scrolling review feed, and guided Google interview prompts for connected components, unweighted shortest paths, and dependency cycles. Number Of Islands deliberately includes both BFS and DFS tracks so learners can compare equivalent asymptotic performance with different readability and memory risks.
+
+The Reading And Writing Mermaid Diagrams path is the source-first technical documentation slice. It uses the existing embedded Mermaid renderer to pair 13 inspectable source blocks with browser-rendered output across flowchart, sequence, class, state, ER, Gantt, journey, pie, mindmap, timeline, and Git graph families. Three choice-only questionnaires enforce one correct option and explain every distractor; a passive feed reinforces selection, syntax, debugging, and readability.
+
 The Japanese Foundations path is the first human-language slice. It pairs local Japanese language catalogs, Markdown lessons, and writing exercises for hiragana/katakana vowels, starter kanji, IPA display, assisted tracing, and free handwriting checks across web and Expo.
 
 Progress is user state, not authored content. Signed-in progress is stored in Supabase; signed-out progress is buffered in browser local storage on web and native local storage on Expo, then can sync after login. Progress does not store answers, scores, streaks, mastery, or full session history.
 
 ## Route Model
 
-- `/`: path-first home map.
+- `/`: cross-section discovery home with Keep reading, curated rows, and global local search.
+- `/paths`: complete learning-path catalog grouped by category.
 - `/browse`: fuzzy content library.
 - `/paths/[slug]`: one role or skill path.
 - `/paths/[slug]/flashcards`: one passive flashcard feed for a path.
-- `/practice/[...slug]`: one flashcard, cloze prompt, or questionnaire session.
+- `/practice`: complete exercise and passive-review catalog.
+- `/practice/[...slug]`: one flashcard, cloze prompt, questionnaire, or writing session.
+- `/languages`: available language hubs.
 - `/languages/japanese`: Japanese lookup and study hub.
 - `/languages/japanese/characters/[...slug]`: one Japanese character detail route.
 - `/languages/japanese/vocabulary/[...slug]`: one Japanese vocabulary detail route.
@@ -135,7 +146,7 @@ Progress is user state, not authored content. Signed-in progress is stored in Su
 
 ## Testing Model
 
-Unit tests cover schema validation, parser behavior, fuzzy search, snippets, questionnaire shuffling/checking, handwriting scoring, interview solution selection, path/exercise/language/interview validation, progress payload validation, anonymous progress buffering, and diagram indexing. Integration tests cover generated index loading and renderer behavior, including the Python refresh path, Langfuse/LangChain AI engineering path, database indexes path, Advanced Next.js 16 path, and Japanese Foundations path. Playwright smoke and regression tests cover the web mobile path, practice, browser, questionnaire, interview, flashcard, one-minute brief feed, signed-out progress, and diagram journeys. Mobile Jest tests cover shared React Native screens against the bundled generated index, including Japanese lookup and writing practice shell.
+Unit tests cover schema validation, parser behavior, library and cross-section search, discovery curation, snippets, questionnaire shuffling/checking, handwriting scoring, interview solution selection, path/exercise/language/interview validation, progress payload validation, anonymous progress buffering, and diagram indexing. Integration tests cover generated index loading and renderer behavior. Playwright smoke and regression tests cover home discovery, section catalogs, the web mobile path, practice, browser, questionnaire, interview, flashcard, one-minute brief feed, BFS/DFS study, Mermaid authoring, signed-out progress, and diagrams. Mobile Jest tests cover shared React Native screens against the bundled generated index, including discovery search, Japanese lookup, and writing practice.
 
 ## Future Architecture Direction
 

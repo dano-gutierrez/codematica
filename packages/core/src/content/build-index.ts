@@ -4,6 +4,7 @@ import path from "node:path";
 import { parseKnowledgeMarkdown } from "./parse-markdown";
 import {
   interviewCollectionFileSchema,
+  homeDiscoveryFileSchema,
   languageCatalogFileSchema,
   learningExerciseFileSchema,
   learningPathFileSchema,
@@ -12,6 +13,7 @@ import {
   type ContentTrack,
   type Difficulty,
   type InterviewCollection,
+  type HomeDiscovery,
   type KnowledgeDocument,
   type LanguageCharacter,
   type LanguageVocabulary,
@@ -68,6 +70,31 @@ async function readJson(filePath: string) {
     raw,
     value: JSON.parse(raw) as unknown,
   };
+}
+
+const emptyHomeDiscovery: HomeDiscovery = {
+  sections: {
+    paths: [],
+    lessons: [],
+    interviews: [],
+    practice: [],
+    languages: [],
+  },
+};
+
+async function collectHomeDiscovery(rootDir: string): Promise<HomeDiscovery> {
+  const filePath = path.join(rootDir, "content", "discovery", "home.json");
+
+  try {
+    const { value } = await readJson(filePath);
+    return homeDiscoveryFileSchema.parse(value);
+  } catch (error: unknown) {
+    if (error && typeof error === "object" && "code" in error && error.code === "ENOENT") {
+      return emptyHomeDiscovery;
+    }
+
+    throw error;
+  }
 }
 
 export async function collectMermaidDiagrams(rootDir: string): Promise<MermaidDiagram[]> {
@@ -534,8 +561,61 @@ function assertContentReferences(
   }
 }
 
+function assertHomeDiscoveryReferences(
+  homeDiscovery: HomeDiscovery,
+  documents: KnowledgeDocument[],
+  diagrams: MermaidDiagram[],
+  exercises: LearningExercise[],
+  languageCharacters: LanguageCharacter[],
+  languageVocabulary: LanguageVocabulary[],
+  learningPaths: LearningPath[],
+  passiveFlashcardFeeds: PassiveFlashcardFeed[],
+  interviewCollections: InterviewCollection[],
+) {
+  const validKindsBySection = {
+    paths: new Set(["path"]),
+    lessons: new Set(["document", "diagram"]),
+    interviews: new Set(["interview-question"]),
+    practice: new Set(["exercise", "flashcard-feed"]),
+    languages: new Set(["language-hub", "language-character", "language-vocabulary"]),
+  } as const;
+  const available = new Set([
+    ...learningPaths.map((item) => `path:${item.slug}`),
+    ...documents.map((item) => `document:${item.slug}`),
+    ...diagrams.map((item) => `diagram:${item.slug}`),
+    ...exercises.map((item) => `exercise:${item.slug}`),
+    ...passiveFlashcardFeeds.map((item) => `flashcard-feed:${item.slug}`),
+    ...interviewCollections.flatMap((collection) => collection.questions.map((question) => `interview-question:${collection.slug}/${question.slug}`)),
+    ...languageCharacters.map((item) => `language-character:${item.slug}`),
+    ...languageVocabulary.map((item) => `language-vocabulary:${item.slug}`),
+    ...(languageCharacters.some((item) => item.language === "ja") ? ["language-hub:japanese"] : []),
+  ]);
+
+  for (const [sectionId, references] of Object.entries(homeDiscovery.sections) as [keyof HomeDiscovery["sections"], HomeDiscovery["sections"][keyof HomeDiscovery["sections"]]][]) {
+    const seen = new Set<string>();
+
+    for (const reference of references) {
+      const key = `${reference.kind}:${reference.slug}`;
+
+      if (!validKindsBySection[sectionId].has(reference.kind as never)) {
+        throw new Error(`Home discovery section "${sectionId}" cannot contain ${reference.kind} references.`);
+      }
+
+      if (seen.has(key)) {
+        throw new Error(`Home discovery section "${sectionId}" has duplicate reference "${key}".`);
+      }
+
+      if (!available.has(key)) {
+        throw new Error(`Home discovery section "${sectionId}" references missing content "${key}".`);
+      }
+
+      seen.add(key);
+    }
+  }
+}
+
 export async function buildContentIndex({ rootDir }: BuildContentIndexOptions): Promise<ContentIndex> {
-  const [documents, diagrams, exercises, languageContent, learningPaths, passiveFlashcardFeeds, interviewCollections] = await Promise.all([
+  const [documents, diagrams, exercises, languageContent, learningPaths, passiveFlashcardFeeds, interviewCollections, homeDiscovery] = await Promise.all([
     collectKnowledgeDocuments(rootDir),
     collectMermaidDiagrams(rootDir),
     collectLearningExercises(rootDir),
@@ -543,6 +623,7 @@ export async function buildContentIndex({ rootDir }: BuildContentIndexOptions): 
     collectLearningPaths(rootDir),
     collectPassiveFlashcardFeeds(rootDir),
     collectInterviewCollections(rootDir),
+    collectHomeDiscovery(rootDir),
   ]);
 
   const sortedDocuments = documents.sort((left, right) => left.slug.localeCompare(right.slug));
@@ -573,6 +654,17 @@ export async function buildContentIndex({ rootDir }: BuildContentIndexOptions): 
     sortedPassiveFlashcardFeeds,
     sortedInterviewCollections,
   );
+  assertHomeDiscoveryReferences(
+    homeDiscovery,
+    sortedDocuments,
+    sortedDiagrams,
+    sortedExercises,
+    sortedLanguageCharacters,
+    sortedLanguageVocabulary,
+    sortedLearningPaths,
+    sortedPassiveFlashcardFeeds,
+    sortedInterviewCollections,
+  );
 
   return {
     schemaVersion: 6,
@@ -585,6 +677,7 @@ export async function buildContentIndex({ rootDir }: BuildContentIndexOptions): 
     passiveFlashcardFeeds: sortedPassiveFlashcardFeeds,
     interviewCollections: sortedInterviewCollections,
     tracks: buildTracks(sortedDocuments),
+    homeDiscovery,
   };
 }
 

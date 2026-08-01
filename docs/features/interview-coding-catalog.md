@@ -3,7 +3,7 @@
 ## Snapshot
 
 - Status: `shipped`
-- Last updated: `2026-07-31`
+- Last updated: `2026-08-01`
 - Owner thread: `n/a`
 - Current state: The app has company interview preparation plus an anonymous real-world section, guided algorithm walkthroughs, and runnable React/TypeScript web exercises.
 - Target outcome: Users can study public company patterns or authentic anonymous briefs, understand evaluation criteria and red flags, and run accepted frontend solutions without requiring auth or Supabase.
@@ -31,7 +31,7 @@ The catalog stores typed interview collections as local JSON. Company algorithm 
 
 ## Outcome / Contract
 
-- `/interviews` separates anonymous real-world collections from company preparation and lets random navigation choose from either.
+- `/interviews` separates anonymous real-world collections from company preparation, supports question search plus collection/difficulty filters, and lets random navigation choose from either.
 - `/interviews/[collection]` shows questions for a company or real-world collection; existing company URLs are unchanged.
 - `/interviews/[collection]/[question]` dispatches to an algorithm walkthrough or web exercise session.
 - The guided session defaults to Python, lets users switch to TypeScript or Java, reveals one step per `Next`, and renders final code with language-aware highlighting.
@@ -49,7 +49,8 @@ The catalog stores typed interview collections as local JSON. Company algorithm 
 - `logo.src` points to a local SVG under `/company-logos/` so the catalog does not depend on remote image loading.
 - Algorithm questions require two tracks with `languages.python`, `languages.typescript`, and `languages.java`.
 - Web questions require at least three tracks plus structured evaluation guidance. Each track owns a reusable `WebExerciseProject` with runtime, file map, active/visible files, optional entry, and dependencies.
-- Generated index schema version is `6` and includes generic `interviewCollections`.
+- Every question has examples, constraints, optional Mermaid diagrams, and solution tracks appropriate to its discriminated kind.
+- Generated index schema version is `6` and includes generic `interviewCollections` plus validated home discovery curation.
 
 ## Future Versions
 
@@ -65,10 +66,10 @@ Seed content uses public/community-reported prep references such as InterviewQue
 ## Test Plan
 
 - Unit: collection discrimination, conditional provenance, safe project paths, active/visible file references, web track minimums, and algorithm language requirements.
-- Integration: generated index loads eight companies plus the real-world collection and resolves both route forms.
+- Integration: generated index loads company and real-world collections, including graph-search additions, and resolves both route forms.
 - Component: algorithm walkthrough behavior remains stable; web sessions switch all approaches and map files into Run/Reset playground controls.
 - Native: real-world content and every source file remain available without executing the project.
-- E2E: existing Amazon flow remains covered; the Mondrian flow verifies rubric content, three approaches, and live preview output.
+- E2E: catalog search/filter and the existing Amazon flow remain covered; the Mondrian flow verifies rubric content, three approaches, and live preview output.
 
 ## Thread Handoff Prompt
 
