@@ -1,7 +1,7 @@
 {
   "slug": "database-indexes-and-search",
   "title": "Database Indexes And Search",
-  "summary": "Learn how database indexes, PostgreSQL full text search, trigram fuzzy matching, and hybrid search queries behave under production constraints.",
+  "summary": "Learn how database indexes, PostgreSQL HOT update performance, full text search, trigram fuzzy matching, and hybrid search queries behave under production constraints.",
   "kind": "skill",
   "category": "Databases",
   "audience": "Backend, full-stack, and platform engineers who need practical judgment for database indexes and search queries.",
@@ -14,6 +14,15 @@
       "nodes": [
         { "kind": "document", "slug": "databases/index-fundamentals" },
         { "kind": "exercise", "slug": "databases/index-fundamentals-questionnaire" }
+      ]
+    },
+    {
+      "slug": "postgres-hot-updates",
+      "title": "PostgreSQL HOT Updates",
+      "summary": "Understand same-page Heap-Only Tuple chains, index eligibility, fillfactor, pruning, vacuuming, and production monitoring.",
+      "nodes": [
+        { "kind": "document", "slug": "databases/postgres-hot-updates" },
+        { "kind": "exercise", "slug": "databases/postgres-hot-updates-questionnaire" }
       ]
     },
     {

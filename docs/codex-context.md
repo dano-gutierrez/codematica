@@ -90,7 +90,7 @@ The first hosted web target is Vercel Hobby on the Vercel-provided URL. Vercel r
 - `docs/features/learning-paths-and-practice.md`: path-first study map, flashcards, cloze prompts, and local path/exercise content.
 - `docs/features/programming-language-refresh.md`: reusable language refresh paths and the Python-for-TS/JS module.
 - `docs/features/llm-application-engineering.md`: Langfuse and LangChain AI engineering path, including LLM app architecture, tracing, evals, RAG, agents, risk governance, and non-executable coding challenge sections.
-- `docs/features/database-indexes-learning-path.md`: database indexes and PostgreSQL search path, including index fundamentals, full text search, trigram fuzzy matching, hybrid SQL search, quizzes, passive flashcards, and SQL editor roadmap boundaries.
+- `docs/features/database-indexes-learning-path.md`: database indexes, PostgreSQL HOT updates, and PostgreSQL search path, including index fundamentals, MVCC update mechanics, full text search, trigram fuzzy matching, hybrid SQL search, quizzes, passive flashcards, and SQL editor roadmap boundaries.
 - `docs/features/bfs-dfs-learning-path.md`: Programming skill path for BFS and DFS fundamentals, side-by-side Python/TypeScript examples, questionnaires, passive review, and graph interview variants.
 - `docs/features/mermaid-diagram-authoring.md`: Mermaid authoring skill path for flowcharts, software diagrams, planning/data diagrams, debugging, choice-only quizzes, and source-first review.
 - `docs/features/advanced-nextjs-16-learning-path.md`: hard Front-End Development skill path for Next.js 16 rendering, caching, `force-dynamic`, invalidation, production pain points, performance, migration, quizzes, and one-minute brief cards.

@@ -1,0 +1,137 @@
+{
+  "slug": "databases/postgres-hot-updates-questionnaire",
+  "title": "PostgreSQL HOT Updates Questionnaire",
+  "type": "questionnaire",
+  "documentSlug": "databases/postgres-hot-updates",
+  "concept": "PostgreSQL Heap-Only Tuple updates",
+  "difficulty": "senior",
+  "tags": ["postgres", "hot-updates", "mvcc", "database-indexes", "performance"],
+  "status": "published",
+  "questions": [
+    {
+      "id": "hot-eligibility",
+      "kind": "choice",
+      "prompt": "Which update is eligible for PostgreSQL's HOT optimization?",
+      "options": [
+        {
+          "id": "unindexed-same-page",
+          "label": "It changes only columns not referenced by regular indexes, and the new tuple fits on the same heap page.",
+          "isCorrect": true
+        },
+        {
+          "id": "unique-key",
+          "label": "It changes a unique-index key but leaves the primary key unchanged.",
+          "isCorrect": false
+        },
+        {
+          "id": "new-page",
+          "label": "It changes only unindexed columns, but the new tuple must move to another heap page.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "HOT requires both index eligibility and enough space for the successor tuple on the original heap page. It remains an internal per-row decision."
+    },
+    {
+      "id": "same-page-chain",
+      "kind": "cloze",
+      "prompt": "Fill the physical-location requirement for a HOT successor tuple.",
+      "template": "The new row version must fit on the {{blank}} as the old row version.",
+      "acceptedAnswers": ["same heap page", "same page", "original heap page", "original page"],
+      "explanation": "The existing index entry can lead through the HOT chain because every version stays on the original heap page."
+    },
+    {
+      "id": "hot-chain-order",
+      "kind": "ordering",
+      "prompt": "Order the lifecycle of a repeated HOT-updated row.",
+      "items": [
+        {
+          "id": "index-root",
+          "label": "An index entry reaches the root page item"
+        },
+        {
+          "id": "follow-chain",
+          "label": "PostgreSQL follows same-page tuple links for the visible version"
+        },
+        {
+          "id": "prune-versions",
+          "label": "Page pruning removes intermediate versions no snapshot needs"
+        },
+        {
+          "id": "reuse-space",
+          "label": "Freed page items and space become reusable"
+        }
+      ],
+      "correctOrder": ["index-root", "follow-chain", "prune-versions", "reuse-space"],
+      "explanation": "One index entry can continue to reach a same-page version chain while pruning removes versions that have become globally invisible."
+    },
+    {
+      "id": "index-effects",
+      "kind": "matching",
+      "prompt": "Match each index dependency to its HOT consequence.",
+      "pairs": [
+        {
+          "id": "include",
+          "prompt": "INCLUDE payload",
+          "match": "blocks HOT via payload"
+        },
+        {
+          "id": "expression",
+          "prompt": "Expression input",
+          "match": "blocks HOT via expression"
+        },
+        {
+          "id": "brin",
+          "prompt": "BRIN-only column on PostgreSQL 16+",
+          "match": "can remain eligible"
+        }
+      ],
+      "explanation": "INCLUDE, expression, and partial-predicate dependencies block HOT. PostgreSQL 16 added the BRIN summarizing-index exception."
+    },
+    {
+      "id": "fillfactor-tradeoff",
+      "kind": "choice",
+      "prompt": "What is the most accurate review of lowering table fillfactor from 100 to 80?",
+      "options": [
+        {
+          "id": "space-trade",
+          "label": "It reserves future same-page update room but increases the heap footprint and does not immediately repack existing pages.",
+          "isCorrect": true
+        },
+        {
+          "id": "guaranteed-hot",
+          "label": "It guarantees that every update will be HOT, including indexed-column updates.",
+          "isCorrect": false
+        },
+        {
+          "id": "index-setting",
+          "label": "It only changes B-tree page density and has no effect on heap pages.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "Lower table fillfactor can improve same-page capacity, but it costs storage and read density. Existing pages are not reorganized merely by changing the setting."
+    },
+    {
+      "id": "monitoring-judgment",
+      "kind": "choice",
+      "prompt": "Which production conclusion is justified by a high n_tup_hot_upd ratio?",
+      "options": [
+        {
+          "id": "one-signal",
+          "label": "Eligible updates often avoid new regular-index entries, but vacuum health, dead tuples, read indexes, and interval trends still need review.",
+          "isCorrect": true
+        },
+        {
+          "id": "disable-vacuum",
+          "label": "Autovacuum can be disabled because page pruning now handles every cleanup responsibility.",
+          "isCorrect": false
+        },
+        {
+          "id": "remove-indexes",
+          "label": "All indexes on the table should be removed until the HOT ratio reaches 100 percent.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "HOT is one workload signal. It does not replace vacuuming, visibility-map maintenance, transaction-ID freezing, or indexes that justify their read benefit."
+    }
+  ]
+}

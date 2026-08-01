@@ -333,6 +333,88 @@
       "difficulty": "senior",
       "tags": ["interview", "postgres", "migrations"],
       "sourceDocSlug": "databases/postgres-hybrid-search-query"
+    },
+    {
+      "id": "hot-two-rules-concept",
+      "type": "concept",
+      "title": "HOT Needs Two Conditions",
+      "prompt": "A HOT update changes no regular-index dependency and keeps the new tuple on the original heap page.",
+      "explanation": "Both the logical index rule and the physical page-space rule must hold. HOT is decided for each updated row, not enabled once for an entire table.",
+      "difficulty": "senior",
+      "tags": ["hot-updates", "mvcc", "postgres"],
+      "sourceDocSlug": "databases/postgres-hot-updates"
+    },
+    {
+      "id": "hot-chain-concept",
+      "type": "concept",
+      "title": "One Index Entry, Many Versions",
+      "prompt": "A HOT chain lets one index entry reach successive same-page row versions.",
+      "explanation": "The root page item leads through tuple links to the visible version. Page pruning can later remove intermediate versions no snapshot needs.",
+      "difficulty": "senior",
+      "tags": ["hot-chain", "page-pruning", "postgres"],
+      "sourceDocSlug": "databases/postgres-hot-updates"
+    },
+    {
+      "id": "hot-index-audit-practical",
+      "type": "practical",
+      "title": "Audit Hidden Index Dependencies",
+      "prompt": "Check keys, INCLUDE payloads, expressions, and partial predicates before calling a column unindexed.",
+      "explanation": "Updating any of those regular-index dependencies blocks HOT. On PostgreSQL 16+, BRIN is the summarizing-index exception, though its summary may still change.",
+      "difficulty": "senior",
+      "tags": ["hot-updates", "database-indexes", "review"],
+      "sourceDocSlug": "databases/postgres-hot-updates"
+    },
+    {
+      "id": "hot-fillfactor-practical",
+      "type": "practical",
+      "title": "Measure Before Lowering Fillfactor",
+      "prompt": "Reserve page space for proven update pressure, not to maximize a context-free HOT percentage.",
+      "explanation": "Lower fillfactor can improve same-page update capacity, but the larger heap can cost scans, cache density, and storage. Changing it does not repack existing pages.",
+      "difficulty": "senior",
+      "tags": ["fillfactor", "hot-updates", "performance"],
+      "sourceDocSlug": "databases/postgres-hot-updates"
+    },
+    {
+      "id": "hot-eligible-update-snippet",
+      "type": "snippet",
+      "title": "HOT-Eligible Update Snippet",
+      "prompt": "This update can be HOT when last_seen_at is unindexed and the original page has room.",
+      "explanation": "The primary-key index finds the row but is not modified. Eligibility disappears if another regular index references last_seen_at.",
+      "difficulty": "senior",
+      "tags": ["hot-updates", "sql", "postgres"],
+      "sourceDocSlug": "databases/postgres-hot-updates",
+      "code": "update accounts\nset last_seen_at = clock_timestamp()\nwhere id = 42;"
+    },
+    {
+      "id": "hot-stats-snippet",
+      "type": "snippet",
+      "title": "HOT Monitoring Snippet",
+      "prompt": "Compare HOT updates with all updates over a known interval.",
+      "explanation": "The guarded division avoids dividing by zero. Statistics are cumulative and can reset, so an interval trend is more useful than one lifetime ratio.",
+      "difficulty": "senior",
+      "tags": ["hot-updates", "monitoring", "sql"],
+      "sourceDocSlug": "databases/postgres-hot-updates",
+      "code": "select relname, n_tup_upd, n_tup_hot_upd,\n  round(100.0 * n_tup_hot_upd / nullif(n_tup_upd, 0), 2) as hot_pct\nfrom pg_stat_user_tables;"
+    },
+    {
+      "id": "hot-index-tradeoff-interview",
+      "type": "interview",
+      "title": "HOT Versus Read Index Interview",
+      "prompt": "A new index on a frequently updated timestamp drops the HOT ratio. Should you remove it?",
+      "explanation": "Measure the read path the index supports against update amplification, WAL, bloat, and maintenance. Neither a read index nor a HOT ratio wins without workload evidence.",
+      "difficulty": "senior",
+      "tags": ["interview", "hot-updates", "database-indexes"],
+      "sourceDocSlug": "databases/postgres-hot-updates"
+    },
+    {
+      "id": "hot-vacuum-interview",
+      "type": "interview",
+      "title": "HOT Does Not Replace Vacuum",
+      "prompt": "Why does a table with mostly HOT updates still need autovacuum?",
+      "explanation": "Vacuum still reclaims other dead versions and index entries, maintains visibility information, supports planner statistics, and prevents transaction-ID wraparound.",
+      "difficulty": "senior",
+      "tags": ["interview", "hot-updates", "autovacuum"],
+      "sourceDocSlug": "databases/postgres-hot-updates"
     }
   ]
 }
