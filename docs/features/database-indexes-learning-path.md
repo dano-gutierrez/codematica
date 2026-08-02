@@ -3,7 +3,7 @@
 ## Snapshot
 
 - Status: `shipped`
-- Last updated: `2026-08-01`
+- Last updated: `2026-08-02`
 - Owner thread: `n/a`
 - Current state: A published `database-indexes-and-search` skill path ships with five database indexing, update-performance, and search lessons, five questionnaires, and a 40-card passive flashcard feed.
 - Target outcome: Users can study database index fundamentals, PostgreSQL HOT update behavior, full text search, trigram fuzzy matching, and a hybrid search query without Supabase or remote services.
@@ -44,6 +44,7 @@ The shipped path includes:
 - `postgres-full-text-search`: `to_tsvector`, `tsquery`, `websearch_to_tsquery`, `@@`, `setweight`, GIN, `ts_rank`, and `ts_rank_cd`.
 - `trigram-fuzzy-indexes`: `pg_trgm`, `%`, `similarity`, `pg_trgm.similarity_threshold`, `gin_trgm_ops`, expression indexes, and the Drizzle trigram index form.
 - `postgres-hybrid-search-query`: a line-by-line walkthrough of the FTS-plus-trigram CTE query.
+- `postgres-hybrid-search-query` explicitly treats raw FTS rank and trigram similarity as incomparable scales and shows reciprocal rank fusion as a safer production combination.
 
 ## Scope
 
@@ -67,6 +68,7 @@ The shipped path includes:
 - HOT content targets supported PostgreSQL releases, uses PostgreSQL 16-18 behavior as its main contract, and explicitly labels the PostgreSQL 16 BRIN eligibility change.
 - Query examples are educational and should not imply that runtime browsing depends on PostgreSQL.
 - `CREATE EXTENSION` belongs in setup or migrations; per-request trigram threshold tuning should be transaction-local.
+- Search thresholds, candidate limits, RRF constants, and business boosts are illustrative until evaluated against labeled product queries.
 
 ## Detailed Behavior
 
@@ -89,6 +91,7 @@ The shipped path includes:
 - The HOT lesson compares regular index keys, unique indexes, `INCLUDE` payloads, expressions, partial predicates, and the PostgreSQL 16+ BRIN summarizing-index exception.
 - HOT monitoring examples use `n_tup_upd`, `n_tup_hot_upd`, `n_tup_newpage_upd`, guarded percentage division, and interval-based interpretation of cumulative statistics.
 - The passive feed is path-scoped and is not included as an ordered path node.
+- Hybrid ranking combines calibrated signals or branch positions; it must not compare raw `ts_rank_cd` and trigram `similarity` values as if they share a scale.
 - The passive feed contains 40 cards, balanced across `concept`, `practical`, `snippet`, and `interview`; eight cards source the HOT lesson.
 - The future SQL editor is documented only in the roadmap until a dedicated feature contract exists.
 

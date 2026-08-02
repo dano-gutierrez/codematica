@@ -25,9 +25,9 @@ This query combines two search strategies:
 2. Trigram search for typo-tolerant fuzzy matches.
 
 ```sql
-set pg_trgm.similarity_threshold = 0.11;
 create extension if not exists pg_trgm;
 create extension if not exists unaccent;
+set pg_trgm.similarity_threshold = 0.11;
 
 with q as (
   select websearch_to_tsquery('simple', 'prvte') as query,
@@ -65,7 +65,7 @@ order by scored.rank desc nulls last, s.id
 limit 10 offset 0;
 ```
 
-The product idea is reasonable: exact term matches should win when they exist, but misspelled input should still return plausible results.
+The product idea is reasonable: exact term matches should win when they exist, but misspelled input should still return plausible results. The raw scoring formula is only a teaching example. `ts_rank_cd` and trigram `similarity` are different signals with different distributions; multiplying one branch by `0.8` does not calibrate them onto a common relevance scale.
 
 ## Setup Versus Request Work
 
@@ -201,7 +201,7 @@ scored as (
 )
 ```
 
-This collapses duplicate candidates into one result per series. `max(rank)` means the best source wins. If FTS and trigram both match, the final score is whichever rank is higher after weighting.
+This collapses duplicate candidates into one result per series. `max(rank)` means the numerically larger source wins, but that is not necessarily the better match because the branch scores are not calibrated. Keep this form for exploring candidate generation, not for claiming production relevance quality.
 
 Alternative policies are possible:
 
@@ -209,7 +209,7 @@ Alternative policies are possible:
 - `sum(rank)` rewards rows that match multiple signals.
 - `max(rank) + bonus` rewards combined evidence without letting broad fuzzy matches dominate.
 
-For search UX, `max(rank)` is a conservative first version.
+For production, either calibrate both scores against judged query-result pairs or combine branch positions with a scale-independent method such as reciprocal rank fusion. Exact and prefix boosts can then be added as separate, explainable features.
 
 ## Final Join And Sort
 
@@ -229,7 +229,7 @@ The `order by` uses rank first and `s.id` as a deterministic tie-breaker. Stable
 
 ## Better Production Version
 
-A production version should avoid setup statements in the query path and should use stored/indexed normalized fields:
+A production version should avoid setup statements in the query path, use stored/indexed normalized fields, and avoid comparing raw score scales. This example uses reciprocal rank fusion (RRF): each branch ranks its own results, and the final score combines positions rather than raw values. The branch limits are workload controls and must be tuned with representative data.
 
 ```sql
 begin;
@@ -240,23 +240,39 @@ with q as (
     websearch_to_tsquery('simple', $1) as query,
     lower($1) as qraw
 ),
-candidates as (
+fts as (
   select s.id as series_id,
-         ts_rank_cd(s.title_search_document, q.query) as rank
+         row_number() over (
+           order by ts_rank_cd(s.title_search_document, q.query) desc, s.id
+         ) as position
   from galateatv.series s
   cross join q
   where s.title_search_document @@ q.query
-
-  union all
-
+  order by position
+  limit 200
+),
+fuzzy as (
   select s.id as series_id,
-         similarity(s.title_search_text, q.qraw) * 0.8 as rank
+         row_number() over (
+           order by similarity(s.title_search_text, q.qraw) desc, s.id
+         ) as position
   from galateatv.series s
   cross join q
   where s.title_search_text % q.qraw
+  order by position
+  limit 200
+),
+candidates as (
+  select series_id, 1.0 / (60 + position) as rrf_score
+  from fts
+
+  union all
+
+  select series_id, 1.0 / (60 + position) as rrf_score
+  from fuzzy
 ),
 scored as (
-  select series_id, max(rank) as rank
+  select series_id, sum(rrf_score) as rank
   from candidates
   group by series_id
 )
@@ -268,6 +284,8 @@ limit $2;
 
 commit;
 ```
+
+The conventional RRF constant `60` dampens the effect of small position changes; it is not universal product truth. Validate it, candidate limits, threshold, and any business boosts against labeled searches. Empty or stop-word-only input can produce an empty `tsquery`, so reject or route such queries before this SQL.
 
 Example supporting indexes:
 
@@ -291,6 +309,7 @@ When reviewing this query, verify:
 - The selected text search config matches the product domain.
 - Short queries have product guardrails.
 - Ranking weights are tested against representative examples.
+- Raw FTS and trigram scores are calibrated or combined by rank rather than compared as if they share a scale.
 - Pagination has a deterministic tie-break.
 - Unused `src` fields are either used for observability or removed.
 
@@ -301,3 +320,4 @@ When reviewing this query, verify:
 - [PostgreSQL text search functions and operators](https://www.postgresql.org/docs/current/functions-textsearch.html)
 - [PostgreSQL preferred index types for text search](https://www.postgresql.org/docs/current/textsearch-indexes.html)
 - [PostgreSQL expression indexes](https://www.postgresql.org/docs/current/indexes-expressional.html)
+- [Cormack, Clarke, and Buettcher: Reciprocal Rank Fusion](https://doi.org/10.1145/1571941.1572114)

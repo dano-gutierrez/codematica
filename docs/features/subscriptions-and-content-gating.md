@@ -3,7 +3,7 @@
 ## Snapshot
 
 - Status: `proposed`
-- Last updated: `2026-07-17`
+- Last updated: `2026-08-02`
 - Owner thread: `n/a`
 - Current state: Codematica has optional Supabase Auth/progress, native EAS publishing prep, and a local generated content index that currently includes full paid-candidate content in web and native bundles.
 - Target outcome: Codematica sells one all-access subscription on web, iOS, and Android while enforcing paid access server-side so unsubscribed clients cannot inspect private learning payloads from shipped bundles.
@@ -40,7 +40,7 @@ The major implementation constraint is content security. A visual paywall is not
   - Introductory offer: first monthly period for `$0.99`
   - Launch availability: United States only
 - Web checkout uses RevenueCat Web backed by Stripe Billing. Web subscribers can sign into native apps and unlock content.
-- Native paywalls use Apple and Google purchase flows. V1 native apps must not link to web Stripe checkout from in-app paywalls.
+- The proposed v1 native paywall uses Apple and Google purchase flows and intentionally omits external web-checkout links. This is a product-scope choice, not a universal store-policy claim: current U.S. storefront rules permit external purchase communication or links under platform-specific conditions. Re-check the exact Apple storefront rules and Google Play enrollment/API requirements immediately before implementation and submission.
 - Unsubscribed users can view home, browse/search metadata, login, subscribe, account, support, privacy, and locked-content explanations.
 - Unsubscribed users cannot view full documents, standalone diagrams, practice payloads, passive flashcard card bodies, interview solutions, Japanese detail/drill payloads, or full-text search snippets.
 - Local Markdown and JSON remain canonical authoring sources. Supabase/RevenueCat store entitlements and user state, not authored content ownership.
@@ -68,7 +68,7 @@ The major implementation constraint is content security. A visual paywall is not
 
 - Multiple subscription tiers.
 - Family sharing, teams, coupons beyond the first-month intro price, gifted subscriptions, or student discounts.
-- Native external purchase links.
+- Native external purchase links in v1, even where a storefront currently permits them.
 - Offline access to full paid content in v1.
 - Replacing Markdown/JSON as the canonical content source.
 - A custom tax/compliance engine beyond Stripe/store/provider setup guidance.
@@ -79,6 +79,7 @@ The major implementation constraint is content security. A visual paywall is not
 - `EXPO_PUBLIC_WEB_BASE_URL` points native builds at the production web/API origin.
 - RevenueCat webhooks are available for the chosen RevenueCat plan before production launch.
 - Paid production may intentionally change the earlier anonymous-local-browsing product contract; docs must call out the mode switch clearly.
+- Store billing and link-out policies are region- and time-dependent; the implementation must gate behavior by storefront and use the policies in force at release time.
 
 ## Detailed Behavior
 
@@ -217,7 +218,8 @@ The major implementation constraint is content security. A visual paywall is not
 - `2026-07-17`: Use a single account-level `all_access` entitlement across web, iOS, and Android.
 - `2026-07-17`: Require Supabase sign-in before checkout or native purchase.
 - `2026-07-17`: Use one all-access monthly/annual subscription with US-only launch, `$9.99/month`, `$79.99/year`, and first monthly period at `$0.99`.
-- `2026-07-17`: Keep native paywalls on Apple/Google purchase flows and avoid in-app links to web Stripe checkout for v1.
+- `2026-07-17`: Keep native paywalls on Apple/Google purchase flows and avoid in-app links to web Stripe checkout for v1 as a launch-scope decision.
+- `2026-08-02`: Clarify that U.S. Apple and Google storefront rules can permit external purchase links; revalidate platform conditions rather than presenting the v1 omission as a universal prohibition.
 - `2026-07-17`: Treat strict server-gated content as a requirement; UX-only paywalls are not acceptable for paid production.
 
 ## References
@@ -234,6 +236,9 @@ The major implementation constraint is content security. A visual paywall is not
 - App Store Connect subscription setup: https://developer.apple.com/help/app-store-connect/manage-subscriptions/offer-auto-renewable-subscriptions/
 - Google Play Billing subscriptions: https://developer.android.com/google/play/billing/subscriptions
 - Google Play payments policy: https://support.google.com/googleplay/android-developer/answer/10281818
+- Google Play U.S. policy update: https://support.google.com/googleplay/android-developer/answer/15582165
+- Google Play U.S. external-content-links program: https://support.google.com/googleplay/android-developer/answer/16470497
+- Apple App Review Guidelines: https://developer.apple.com/app-store/review/guidelines/
 - Expo in-app purchases guide: https://docs.expo.dev/guides/in-app-purchases/
 
 ## Documentation Updates

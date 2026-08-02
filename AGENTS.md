@@ -41,7 +41,7 @@ Frontend is split across `apps/web` for Next.js App Router and `apps/mobile` for
 
 - Markdown is canonical. The generated index is an artifact, not an authoring surface.
 - The app must remain useful without Supabase for anonymous browsing. Cross-device Auth/progress requires Supabase runtime env vars.
-- Routing is content-oriented: `/` shows the learning path map, `/browse` browses the index, `/docs/[...slug]` renders articles, `/diagrams/[...slug]` renders external Mermaid diagrams, and `/languages/japanese` opens the Japanese language study hub.
+- Routing is content-oriented: `/` is the cross-section discovery home, `/paths` is the learning-path catalog, `/browse` browses the content index, `/docs/[...slug]` renders articles, `/diagrams/[...slug]` renders external Mermaid diagrams, and `/languages/japanese` opens the Japanese language study hub.
 - Content boundaries are schema-validated. Authored Markdown frontmatter is untrusted until it passes `packages/core/src/content/schema.ts`.
 - Search currently runs client-side from `packages/core/src/generated/content-index.json`; future Supabase-backed search should preserve the same user-facing behavior unless a feature doc changes the contract.
 - Gamification is intentionally light in V1: tracks, difficulty, progress-ready metadata, and learning UI are present before durable scoring/auth.

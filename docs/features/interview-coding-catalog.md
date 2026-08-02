@@ -3,7 +3,7 @@
 ## Snapshot
 
 - Status: `shipped`
-- Last updated: `2026-08-01`
+- Last updated: `2026-08-02`
 - Owner thread: `n/a`
 - Current state: The app has company interview preparation plus an anonymous real-world section, guided algorithm walkthroughs, and runnable React/TypeScript web exercises.
 - Target outcome: Users can study public company patterns or authentic anonymous briefs, understand evaluation criteria and red flags, and run accepted frontend solutions without requiring auth or Supabase.
@@ -50,7 +50,7 @@ The catalog stores typed interview collections as local JSON. Company algorithm 
 - Algorithm questions require two tracks with `languages.python`, `languages.typescript`, and `languages.java`.
 - Web questions require at least three tracks plus structured evaluation guidance. Each track owns a reusable `WebExerciseProject` with runtime, file map, active/visible files, optional entry, and dependencies.
 - Every question has examples, constraints, optional Mermaid diagrams, and solution tracks appropriate to its discriminated kind.
-- Generated index schema version is `6` and includes generic `interviewCollections` plus validated home discovery curation.
+- Generated index schema version is `7` and includes generic `interviewCollections` plus validated home discovery curation.
 
 ## Future Versions
 

@@ -47,7 +47,7 @@ When data is stale, do not randomly add `no-store`, `force-dynamic`, or full-pag
 The worst Next.js bugs are not syntax bugs. They are boundary bugs: request data inside cached work, secrets inside client bundles, stale tags after writes, and Suspense boundaries that hide too much of the product.
 
 ## Official Source Anchors
-This lesson is anchored only to official Next.js documentation and release material, plus npm registry metadata for the latest published 16.x package version checked during authoring.
+This lesson is anchored to official Next.js documentation and release material. The repository manifest and lockfile define the version under test.
 - [Next.js 16 release notes](https://nextjs.org/blog/next-16)
 - [Route Segment Config](https://nextjs.org/docs/app/api-reference/file-conventions/route-segment-config)
 - [Caching with Cache Components](https://nextjs.org/docs/app/getting-started/caching)

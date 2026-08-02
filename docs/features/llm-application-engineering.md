@@ -3,7 +3,7 @@
 ## Snapshot
 
 - Status: `shipped`
-- Last updated: `2026-06-18`
+- Last updated: `2026-08-02`
 - Owner thread: `n/a`
 - Current state: Codematica ships a local-first Langfuse and LangChain skill path with Markdown lessons, Mermaid diagrams, questionnaires, and passive flashcards.
 - Target outcome: Users can learn LLM application architecture, LangChain, LangGraph, Langfuse tracing, prompt evaluation, RAG quality, and production risk governance without Supabase or executable code challenges.
@@ -22,7 +22,7 @@
 
 This feature adds a beginner-to-principal AI engineering path centered on production LLM applications. It teaches the practical system around model calls: prompts, retrieval, tools, tracing, prompt versions, datasets, experiments, scores, agents, human approval, and risk governance.
 
-The path is content-only in this milestone. Coding challenges are authored as readable challenge sections and quiz reinforcement, but they are not executable until a future code editor and challenge schema exist.
+The path is content-only in this milestone. Coding challenges are authored as readable challenge sections and quiz reinforcement, but they are not executable until a future code editor and challenge schema exist. Evaluation guidance separates retrieval quality from answer quality, treats citation presence as weaker than claim-level support, and requires judge calibration against human review.
 
 ## Outcome / Contract
 

@@ -148,6 +148,8 @@ Production review should account for:
 
 On large PostgreSQL tables, use `create index concurrently` for many production migrations so writes are not blocked for the whole index build. It has operational restrictions, including that it cannot run inside a normal transaction block.
 
+Concurrent creation still takes locks briefly, performs more work, and can wait on old transactions. If it fails, PostgreSQL can leave an `INVALID` index that consumes write maintenance and must be inspected before retrying or dropping. A concurrent unique-index build can also begin enforcing uniqueness before a later failure is reported. Production runbooks need time, disk, lock, cancellation, and cleanup plans—not only the `CONCURRENTLY` keyword.
+
 ## When An Index Does Not Help
 
 An index can be correct and still unused:

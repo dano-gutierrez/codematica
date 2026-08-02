@@ -18,7 +18,7 @@ status: published
 Nothing in the greeting changed from `wa` to `ha`. You are looking at two different jobs:
 
 - **Japanese spelling:** `こんばんは` tells you what is written.
-- **Pronunciation:** `こんばんわ` approximates what it sounds like.
+- **Phonetic kana rendering:** `こんばんわ` can show the sounds, but it is not the standard spelling of the greeting.
 - **Learner romaji:** `konbanwa` tells you how to read it.
 - **IME keys:** `konbanha` tells the keyboard how to produce the spelling `こんばんは`.
 
@@ -40,7 +40,7 @@ When these kana are ordinary parts of words, use their normal sound. When they a
 
 - [は](/languages/japanese/characters/hiragana/ha) as a particle is pronounced `わ`, romanized `wa`, and typed `ha`. In the ordinary word `はな` (`hana`, flower), it keeps the sound `ha`.
 - [へ](/languages/japanese/characters/hiragana/he) as a particle is pronounced `え`, romanized `e`, and typed `he`. In `へや` (`heya`, room), it keeps the sound `he`.
-- [を](/languages/japanese/characters/hiragana/wo) is pronounced and romanized `o`, but typed `wo`. Beginners will see it almost entirely as a particle.
+- [を](/languages/japanese/characters/hiragana/wo) is usually pronounced and romanized `o` in modern standard Japanese, but typed `wo`. Some speakers preserve a slight `w` distinction. Beginners will see it almost entirely as a particle.
 
 The topic particle `は` marks what the sentence is about. The direction particle `へ` points toward a destination. The object particle `を` marks what an action affects.
 

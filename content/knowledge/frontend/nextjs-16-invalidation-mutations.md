@@ -41,6 +41,8 @@ export async function renameProject(projectId: string, name: string) {
 
 `revalidateTag` can be used from contexts such as Route Handlers and is appropriate for webhooks, CMS publishes, background systems, and stale-while-revalidate behavior. With the `"max"` profile, the next visitor can receive stale content while revalidation happens in the background.
 
+Use the two-argument form, such as `revalidateTag(tag, "max")`, for this behavior. The legacy single-argument immediate-expiration form is deprecated. `revalidatePath` is a separate tool for invalidating data used on a route path; tags are usually the better domain-level contract when the same entity appears on several routes.
+
 That is good for public content and poor for read-your-own-writes. If a user just edited a record, serving the old version and refreshing later feels broken.
 
 ## Tag Design
@@ -51,12 +53,14 @@ Tags are an index into your cache. Design them like production identifiers: stab
 
 The hardest bugs are silent. The database is correct, the mutation returned success, and only one cached route is stale. Build tests or review checklists that trace the write to each affected read. Include webhook retries, idempotency, and what happens when invalidation fails after the write succeeds.
 
+Do not claim atomicity that the framework does not provide. A database commit and a later cache invalidation are two operations. For high-value writes, use an outbox or durable retry record so a crash between them can be repaired; keep expiration as a backstop rather than the primary consistency mechanism.
+
 ## One-Minute Brief
 
 In Next.js 16, mutation design includes cache design. Use `updateTag` in Server Actions for read-your-own-writes. Use `revalidateTag` from non-action contexts or when stale-while-revalidate is the product behavior.
 
 ## Official Source Anchors
-This lesson is anchored only to official Next.js documentation and release material, plus npm registry metadata for the latest published 16.x package version checked during authoring.
+This lesson is anchored to official Next.js documentation and release material. The repository manifest and lockfile define the version under test.
 - [Next.js 16 release notes](https://nextjs.org/blog/next-16)
 - [Route Segment Config](https://nextjs.org/docs/app/api-reference/file-conventions/route-segment-config)
 - [Caching with Cache Components](https://nextjs.org/docs/app/getting-started/caching)

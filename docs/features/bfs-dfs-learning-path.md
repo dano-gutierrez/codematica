@@ -3,7 +3,7 @@
 ## Snapshot
 
 - Status: `shipped`
-- Last updated: `2026-07-21`
+- Last updated: `2026-08-02`
 - Owner thread: `n/a`
 - Current state: A local-first Programming skill path teaches BFS and DFS fundamentals, interview selection, questionnaires, scrolling review, and linked guided Google practice.
 - Target outcome: Learners can implement readable BFS and DFS in Python and TypeScript, explain their invariants and tradeoffs, and select the correct traversal for common interview graph shapes.
@@ -80,7 +80,7 @@ The path, lessons, two six-question questionnaires, sixteen-card passive feed, t
 
 ### Failure And Edge Handling
 
-- Traversal examples guard bounds and repeated discovery before adding neighbors.
+- Grid traversal examples return zero for empty inputs, then guard bounds and repeated discovery before adding neighbors.
 - Recursive DFS explicitly calls out stack overflow on deep or untrusted inputs.
 - Index validation fails when lesson, exercise, feed, path, or interview references become invalid.
 

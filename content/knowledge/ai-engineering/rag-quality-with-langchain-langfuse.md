@@ -82,6 +82,8 @@ Build a RAG dataset with cases that represent real production risk:
 
 Expected output does not always need to be one exact answer. Sometimes the expected behavior is "escalate", "ask a clarifying question", or "refuse because the source is missing."
 
+Measure the stages separately. Retrieval metrics such as recall at `k`, precision at `k`, and mean reciprocal rank diagnose whether the evidence entered the context. Answer metrics should then test claim-level support, completeness, citation correctness, refusal quality, latency, and cost. A good final-answer score cannot tell you whether a weak retriever happened to be rescued by model memory.
+
 ## Real-Life Case: Policy Drift
 
 A company changes its refund window from 30 days to 14 days. The model still answers 30 days because an old help article remains indexed.
@@ -118,8 +120,11 @@ Acceptance checks:
 
 Future editor extension:
 
-- add a test that checks whether the answer text uses at least one word from a cited source
+- split the answer into factual claims and mark each claim as supported, contradicted, or not established by its cited passage
+- fail when a citation exists but does not support the adjacent claim
 - add a test that fails when the answer cites a source that was not retrieved for that request
+
+Checking that an answer shares a word with a source is not a grounding test. Word overlap can pass a contradicted claim and fail a correct paraphrase.
 
 ## Principal Review Bar
 

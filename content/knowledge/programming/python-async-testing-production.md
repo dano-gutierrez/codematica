@@ -63,6 +63,8 @@ Production async code needs explicit timeout and cancellation behavior. A JavaSc
 
 If one child operation fails, should siblings continue? Should results be partial? Should the request be cancelled? Should cleanup run? The code should answer these questions directly instead of relying on accidental defaults.
 
+On Python 3.11+, `asyncio.TaskGroup` is usually the clearest default when child tasks share a lifetime: exiting the context waits for all children, and a non-cancellation failure cancels the remaining tasks before raising an exception group. `asyncio.gather` remains useful when ordered results or deliberately collected exceptions are the contract. Neither primitive removes the need to make timeout, cancellation, and cleanup behavior explicit.
+
 ## Senior Pain Points
 
 - Calling coroutines and assuming they have started.

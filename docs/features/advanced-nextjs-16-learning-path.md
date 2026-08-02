@@ -3,7 +3,7 @@
 ## Snapshot
 
 - Status: `shipped`
-- Last updated: `2026-06-21`
+- Last updated: `2026-08-02`
 - Owner thread: `n/a`
 - Current state: A published `advanced-nextjs-16` skill path ships with eight hard Next.js lessons, eight questionnaires, and a passive one-minute brief feed.
 - Target outcome: Experienced Next.js engineers can study rendering, caching, `force-dynamic`, invalidation, production pain points, performance, and migration behavior for Next.js 16 without Supabase or remote services.
@@ -33,6 +33,7 @@ The feature is content-only and local-first. It does not change the path UI, pra
 - Practice lives under `content/exercises/frontend/` and uses existing questionnaire question kinds.
 - The passive one-minute brief feed lives at `/paths/advanced-nextjs-16/flashcards`.
 - Next.js factual claims must stay anchored to official Next.js docs, official Next.js release notes, or npm registry version metadata.
+- Version-sensitive migration guidance includes Node/TypeScript minimums, async request APIs, Turbopack build behavior, Proxy's Node.js-only runtime, Cache Components' Node.js requirement, parallel-route defaults, and image-default changes.
 - The path explains `export const dynamic = 'force-dynamic';` as previous-model route segment config that forced request-time rendering and segment-wide no-store fetch behavior, while documenting that Cache Components makes it unnecessary for normal Next.js 16 apps.
 
 ## Current State
@@ -71,7 +72,7 @@ The shipped path includes:
 - Users already know Next.js App Router basics.
 - Cache Components is the target Next.js 16 model for new guidance.
 - The passive flashcard feed is the one-minute vertical-scroll brief surface.
-- `npm view next` was used during implementation on `2026-06-18`; it reported `16.2.9` as the latest published package version and `16.3.0-preview.3` / `16.3.0-canary.57` as non-stable preview/canary lines.
+- The repository's lockfile and `package.json` are the authority for the version under test. Do not copy a transient npm `latest` value into learning content; re-check official versioned documentation and release notes when dependencies change.
 
 ## Detailed Behavior
 

@@ -38,6 +38,9 @@ In **Number Of Islands**, each land cell is a node and an edge joins orthogonall
 from collections import deque
 
 def count_islands_bfs(grid: list[list[str]]) -> int:
+    if not grid or not grid[0]:
+        return 0
+
     rows, cols = len(grid), len(grid[0])
     visited: set[tuple[int, int]] = set()
     islands = 0
@@ -70,6 +73,8 @@ def count_islands_bfs(grid: list[list[str]]) -> int:
 
 ```typescript
 export function countIslandsBfs(grid: string[][]): number {
+  if (grid.length === 0 || grid[0].length === 0) return 0;
+
   const rows = grid.length;
   const cols = grid[0].length;
   const visited = new Set<string>();
@@ -106,6 +111,9 @@ export function countIslandsBfs(grid: string[][]): number {
 
 ```python
 def count_islands_dfs(grid: list[list[str]]) -> int:
+    if not grid or not grid[0]:
+        return 0
+
     rows, cols = len(grid), len(grid[0])
     visited = set()
 
@@ -131,6 +139,8 @@ def count_islands_dfs(grid: list[list[str]]) -> int:
 
 ```typescript
 export function countIslandsDfs(grid: string[][]): number {
+  if (grid.length === 0 || grid[0].length === 0) return 0;
+
   const rows = grid.length;
   const cols = grid[0].length;
   const visited = new Set<string>();

@@ -41,11 +41,15 @@ export async function getProductShell(productId: string) {
 
 ## Cache Keys Are Product Boundaries
 
-The cache key encodes which users, tenants, locales, feature flags, AB variants, and permission states are allowed to share output. If a cached function reads tenant-specific data but the key does not include tenant identity, you created a data leak. If it reads a preview flag but the key ignores preview state, editors and users can see the wrong version.
+For `"use cache"`, Next.js derives the key from the build ID, function identity, serializable arguments or component props, and captured closure values. Hot-module refresh adds a development-only key component. This is why user, tenant, locale, feature-flag, experiment, and permission dimensions must arrive as explicit inputs or captured serializable values when they affect reusable output.
+
+Request APIs such as `cookies()` and `headers()` cannot be read inside a normal cached scope. Read them outside and pass only the minimum value needed into the cached function. That makes sharing visible in code, but it does not make sensitive caching automatically safe: authorization still belongs before data access, and cache contents, handlers, logs, and invalidation paths need the same security review as any other data store.
+
+Arguments and return values must satisfy the directive's serialization rules. Passing a database client, mutable request object, or other non-serializable capability is not a valid way to smuggle request state into the key.
 
 ## cacheLife And cacheTag
 
-`cacheLife` is about time. `cacheTag` is about targeted invalidation. A principal-level cache design names the normal freshness budget, the invalidation event, the acceptable user-visible stale state, and the rollback path if invalidation is missed.
+`cacheLife` defines client stale time, server revalidation time, and expiration behavior through a named or custom profile. `cacheTag` adds targeted invalidation handles; it does not define freshness by itself. A principal-level cache design names the normal freshness budget, the invalidation event, the acceptable user-visible stale state, and the rollback path if invalidation is missed.
 
 ## Migration From Implicit Caching
 
@@ -56,7 +60,7 @@ When migrating, do not mechanically wrap large pages in `"use cache"`. Start by 
 Cache Components makes caching a local contract instead of a route-wide mystery. In Next.js 16, cache only the output that can be safely shared, give it a life, tag it for invalidation, and keep request-specific work out of that scope.
 
 ## Official Source Anchors
-This lesson is anchored only to official Next.js documentation and release material, plus npm registry metadata for the latest published 16.x package version checked during authoring.
+This lesson is anchored to official Next.js documentation and release material. The repository manifest and lockfile define the version under test.
 - [Next.js 16 release notes](https://nextjs.org/blog/next-16)
 - [Route Segment Config](https://nextjs.org/docs/app/api-reference/file-conventions/route-segment-config)
 - [Caching with Cache Components](https://nextjs.org/docs/app/getting-started/caching)

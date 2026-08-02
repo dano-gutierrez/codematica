@@ -59,6 +59,15 @@ Database index lesson content under `content/knowledge/databases/` must stay ali
 
 Front-End Development lesson content under `content/knowledge/frontend/` must stay aligned with official framework documentation and release notes. The Advanced Next.js 16 path uses official Next.js docs, official Next.js release posts, and npm registry package metadata as source anchors.
 
+Learner-facing editorial standard:
+
+- Optimize for senior engineers growing into tech-lead ownership: connect implementation mechanics to correctness, security, operations, cost, migration, and team decisions.
+- Lead with a durable mental model, then show the smallest production-relevant example and the conditions under which it stops being correct.
+- Distinguish facts, product policy, heuristics, illustrative thresholds, and version-specific behavior. Date or remove claims that become stale quickly.
+- Prefer primary sources for technical claims. Do not imply that a citation exists, a trace was captured, or a type compiled as proof of semantic correctness.
+- State failure modes, observability, rollback or recovery, and review questions when the topic can affect production.
+- Keep prose compact. Remove repeated framing before removing invariants, boundary conditions, or important counterexamples.
+
 Maintenance rules:
 
 - Update this file when a new docs section, plan convention, feature-doc convention, or recommended reading order is added.

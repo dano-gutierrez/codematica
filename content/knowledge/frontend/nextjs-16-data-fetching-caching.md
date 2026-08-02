@@ -54,7 +54,7 @@ Opting out of cache can be correct. It is not a substitute for architecture. Use
 Data fetching in Next.js 16 is about picking the right reuse layer. Request memoization, persistent cache, CDN cache, and browser cache are different systems. Senior engineers debug the layer, key, stale budget, and invalidation event.
 
 ## Official Source Anchors
-This lesson is anchored only to official Next.js documentation and release material, plus npm registry metadata for the latest published 16.x package version checked during authoring.
+This lesson is anchored to official Next.js documentation and release material. The repository manifest and lockfile define the version under test.
 - [Next.js 16 release notes](https://nextjs.org/blog/next-16)
 - [Route Segment Config](https://nextjs.org/docs/app/api-reference/file-conventions/route-segment-config)
 - [Caching with Cache Components](https://nextjs.org/docs/app/getting-started/caching)

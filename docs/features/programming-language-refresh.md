@@ -3,7 +3,7 @@
 ## Snapshot
 
 - Status: `shipped`
-- Last updated: `2026-06-21`
+- Last updated: `2026-08-02`
 - Owner thread: `n/a`
 - Current state: Python ships as the first senior language-refresh path for TypeScript and JavaScript engineers, with questionnaires and a passive flashcard feed.
 - Target outcome: Users can search Python refresh docs, follow a path, complete transient mobile questionnaires, and review a path-scoped flashcard feed without requiring auth or Supabase.
@@ -36,6 +36,7 @@ Language refresh paths are skill paths that teach one programming language from 
 - Questionnaires are local content, randomized per attempt, one question per screen, and do not store answers, scores, streaks, or mastery.
 - Passive flashcards are local content, use the shared highlighted code theme for snippet cards, and do not store mastery, score, or streaks.
 - Python guidance should stay aligned with official Python and PyPA references when docs are updated.
+- Version-specific syntax must name its minimum Python version; current lessons label Python 3.12 type-parameter syntax and Python 3.11 `TaskGroup` behavior.
 
 ## Python V1 Content
 

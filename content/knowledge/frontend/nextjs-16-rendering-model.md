@@ -43,6 +43,8 @@ The practical review question is whether the fallback preserves layout, intent, 
 
 Partial Prerendering ends the old false choice between fully static and fully dynamic pages. Stable route parts can be included in the static shell, while runtime parts stream through Suspense. Cache Components makes that model explicit: cache what should be reused, leave request-specific work dynamic, and put real boundaries around the dynamic parts.
 
+Enabling `cacheComponents` is what opts a Next.js 16 app into this model; Partial Prerendering is not a separate route-level flag in version 16. Cache Components requires the Node.js runtime.
+
 ## Senior Review Checklist
 
 - Which data is user-specific, tenant-specific, locale-specific, or globally shared?
@@ -56,7 +58,7 @@ Partial Prerendering ends the old false choice between fully static and fully dy
 Next.js 16 rendering is a composition problem. Do not ask whether the page is static or dynamic. Ask which subtrees are cached, which subtrees are request-time, and which boundary makes the waiting state honest.
 
 ## Official Source Anchors
-This lesson is anchored only to official Next.js documentation and release material, plus npm registry metadata for the latest published 16.x package version checked during authoring.
+This lesson is anchored to official Next.js documentation and release material. The repository manifest and lockfile define the version under test.
 - [Next.js 16 release notes](https://nextjs.org/blog/next-16)
 - [Route Segment Config](https://nextjs.org/docs/app/api-reference/file-conventions/route-segment-config)
 - [Caching with Cache Components](https://nextjs.org/docs/app/getting-started/caching)

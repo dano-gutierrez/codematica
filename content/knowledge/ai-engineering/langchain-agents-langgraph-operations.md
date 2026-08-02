@@ -72,6 +72,8 @@ LangGraph is useful when agent execution must survive more than one simple reque
 
 Durability changes the review standard. A workflow that can resume later must define which state is safe to persist, which tool calls are idempotent, and which approvals expire.
 
+Checkpointing does not make side effects exactly-once. A process can perform an external write and crash before recording the successful checkpoint. Use idempotency keys, durable operation records, and reconciliation for money movement, messages, provisioning, and other external commitments. Resume logic must distinguish "not attempted" from "outcome unknown."
+
 ## Human-In-The-Loop
 
 Human approval is not a weakness. It is the right design when a tool can spend money, send messages, change data, access sensitive records, or create external commitments.
