@@ -3,7 +3,7 @@
 ## Snapshot
 
 - Status: `shipped`
-- Last updated: `2026-07-22`
+- Last updated: `2026-08-02`
 - Owner thread: `n/a`
 - Current state: The complete path catalog lives at `/paths`; path detail, exercise, and passive flashcard routes remain backed by local structured content.
 - Target outcome: Users can follow role and skill paths, open documents or diagrams, complete flashcard, cloze, questionnaire, or writing practice, and review passive path-scoped flashcards without requiring auth or Supabase.
@@ -121,7 +121,7 @@ The shipped content includes skill and role paths using Markdown articles, exter
 ## Code Touchpoints
 
 - `packages/core/src/content/schema.ts`: schemas and generated index types.
-- `packages/core/src/content/build-index.ts`: path, exercise, passive flashcard feed, language, and interview collection validation, reference checks, and schema version 6 serialization.
+- `packages/core/src/content/build-index.ts`: path, exercise, passive flashcard feed, language, interview collection, and home-discovery validation, reference checks, and schema version 7 serialization.
 - `packages/core/src/content/index.ts`: lookup helpers and path-node route helpers.
 - `apps/web/src/components/LearningPathMap.tsx`: home and path detail UI.
 - `apps/web/src/components/PracticeCard.tsx`: flashcard, cloze, questionnaire, and writing shell.
@@ -132,7 +132,7 @@ The shipped content includes skill and role paths using Markdown articles, exter
 - `packages/core/src/flashcards/passive.ts`: passive feed shuffling and infinite-window helpers.
 - `packages/core/src/practice/questionnaire.ts`: attempt randomization and answer checking helpers.
 - `packages/core/src/language-writing/index.ts`: handwriting normalization, assisted completion, and correctness checks.
-- `apps/web/src/app/browse/page.tsx`: legacy browser route.
+- `apps/web/src/app/browse/page.tsx`: complete lesson and diagram browser route.
 
 ## Test Plan
 

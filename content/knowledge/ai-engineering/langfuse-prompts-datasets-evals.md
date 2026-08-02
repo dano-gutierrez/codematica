@@ -85,6 +85,12 @@ A healthy experiment has:
 
 Example hypothesis: "Prompt v12 should reduce unsupported refund claims without making correct refund answers less helpful."
 
+## Evaluation Validity
+
+Evaluation code is production code. Keep a held-out set that prompt authors do not tune against, version datasets and rubric changes, and report uncertainty instead of only averages. Slice results by language, request type, risk class, and input length so a large easy segment cannot hide a serious regression.
+
+LLM-as-a-judge is useful for scale, not an unquestionable oracle. Calibrate judges against blinded human review, randomize presentation order when comparing variants, test for verbosity and self-preference bias, and keep deterministic checks for properties such as schema validity, exact citations, latency, and tool permissions. Never let the same untrusted output rewrite the rubric that judges it.
+
 ## Real-Life Case: Prompt Regression
 
 A team changes a prompt to be friendlier. Human review likes the tone, but the experiment shows answers are longer, costlier, and less likely to cite policy sections. The prompt improved one dimension and regressed two others.

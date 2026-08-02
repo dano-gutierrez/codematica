@@ -1,6 +1,6 @@
 # Native Store Publishing Runbook
 
-Last verified: 2026-07-17
+Last verified: 2026-08-02
 
 This runbook covers the account setup and release steps needed to publish Codematica to Google Play and the Apple App Store using Expo EAS.
 
@@ -45,7 +45,7 @@ Prepare these release assets and policies:
 - Public support URL.
 - Public privacy policy URL. This is required for Apple privacy metadata and for Google Play Data safety, even if the app collects little or no user data.
 - App name, subtitle/short description, full description, keywords, category, and age-rating answers.
-- Phone screenshots for both stores. Tablet screenshots can wait unless tablet support becomes a release goal.
+- Phone screenshots for both stores. The current Expo config sets `ios.supportsTablet: true`, so prepare the required iPad screenshots as well; otherwise set tablet support to `false` and test that product decision before creating the store release.
 - Data inventory for Supabase Auth/progress, local progress storage, crash diagnostics, analytics if added later, and third-party SDKs.
 - Reviewer test account if login is required to inspect any app functionality.
 

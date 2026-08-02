@@ -64,7 +64,7 @@ When you see `dynamic = 'force-dynamic'` in a Next.js 16 app, do not delete it b
 `dynamic = 'force-dynamic'` used to mean: render this route on every request and do not persistently cache its server `fetch` calls. In Next.js 16 with Cache Components, request-time work is already the default. The better question is what should be explicitly cached.
 
 ## Official Source Anchors
-This lesson is anchored only to official Next.js documentation and release material, plus npm registry metadata for the latest published 16.x package version checked during authoring.
+This lesson is anchored to official Next.js documentation and release material. The repository manifest and lockfile define the version under test.
 - [Next.js 16 release notes](https://nextjs.org/blog/next-16)
 - [Route Segment Config](https://nextjs.org/docs/app/api-reference/file-conventions/route-segment-config)
 - [Caching with Cache Components](https://nextjs.org/docs/app/getting-started/caching)

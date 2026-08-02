@@ -56,7 +56,7 @@ If a function only needs something iterable, annotate the iterable behavior inst
 
 ## Generics And Modern Syntax
 
-Modern Python supports generic syntax that feels more direct to TypeScript engineers. Use it where it makes a real contract clearer. Do not chase generic abstractions just because they are available. A specific domain name is usually better than a reusable type variable that hides the product concept.
+Python 3.12 introduced type-parameter syntax that feels more direct to TypeScript engineers. Use it only when the project's declared minimum Python version supports it and when it makes a real contract clearer. Do not chase generic abstractions just because they are available. A specific domain name is usually better than a reusable type variable that hides the product concept.
 
 ```python
 def first[T](items: list[T]) -> T:
@@ -64,6 +64,8 @@ def first[T](items: list[T]) -> T:
 ```
 
 That kind of helper is reasonable. A large generic repository abstraction that erases important domain behaviors is usually not.
+
+For projects supporting Python 3.11 or earlier, use `TypeVar`-based syntax instead of copying a Python 3.12 example into production.
 
 ## Senior Pain Points
 

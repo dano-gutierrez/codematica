@@ -87,7 +87,7 @@ The first hosted web target is Vercel Hobby on the Vercel-provided URL. Vercel r
 
 - `docs/features/home-discovery.md`: cross-section home, global local search, curated rows, stable themes, and full catalog routes.
 - `docs/features/markdown-knowledge-browser.md`: V1 Markdown browser, search, diagrams, content indexing, and Supabase scaffold.
-- `docs/features/learning-paths-and-practice.md`: path-first study map, flashcards, cloze prompts, and local path/exercise content.
+- `docs/features/learning-paths-and-practice.md`: path catalog and detail maps, flashcards, cloze prompts, and local path/exercise content.
 - `docs/features/programming-language-refresh.md`: reusable language refresh paths and the Python-for-TS/JS module.
 - `docs/features/llm-application-engineering.md`: Langfuse and LangChain AI engineering path, including LLM app architecture, tracing, evals, RAG, agents, risk governance, and non-executable coding challenge sections.
 - `docs/features/database-indexes-learning-path.md`: database indexes, PostgreSQL HOT updates, and PostgreSQL search path, including index fundamentals, MVCC update mechanics, full text search, trigram fuzzy matching, hybrid SQL search, quizzes, passive flashcards, and SQL editor roadmap boundaries.

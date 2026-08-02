@@ -28,6 +28,12 @@ Measure performance by user job: time to a useful shell, time to personalized co
 
 Turbopack being stable and default in newer projects changes local and build feedback loops. Faster compile and refresh cycles help teams iterate, but production review still needs CI parity and package compatibility checks. If a webpack customization exists, migration must verify equivalent behavior.
 
+Do not treat a successful development server as build parity. Next.js 16 also uses Turbopack for `next build` by default, and the build fails when a custom webpack configuration is detected unless the team migrates it or deliberately opts into `--webpack`.
+
+## React Compiler Is A Measured Opt-In
+
+Next.js 16 supports the React Compiler through `reactCompiler: true`, but enabling it adds Babel work and can increase compile time. Use it to remove proven manual-memoization burden after compatibility and performance tests; do not present it as a substitute for reducing client JavaScript, fixing expensive data access, or choosing sound component boundaries.
+
 ## Routing And Prefetching
 
 Enhanced routing deduplicates shared layout work and fetches less redundant route data during navigation. This is valuable for large apps with many sibling links under a shared layout. You may observe more granular prefetch requests while total transferred data falls.
@@ -47,13 +53,15 @@ Cache Components can cut origin work, but caching is only a performance win when
 Next.js 16 performance is not one feature. Turbopack improves feedback, routing improves navigation payloads, streaming improves perceived speed, and Cache Components reduce repeated work. The senior job is choosing the boundary that preserves correctness.
 
 ## Official Source Anchors
-This lesson is anchored only to official Next.js documentation and release material, plus npm registry metadata for the latest published 16.x package version checked during authoring.
+This lesson is anchored to official Next.js documentation and release material. The repository manifest and lockfile define the version under test.
 - [Next.js 16 release notes](https://nextjs.org/blog/next-16)
 - [Route Segment Config](https://nextjs.org/docs/app/api-reference/file-conventions/route-segment-config)
 - [Caching with Cache Components](https://nextjs.org/docs/app/getting-started/caching)
 - [Migrating to Cache Components](https://nextjs.org/docs/app/guides/migrating-to-cache-components)
 - [Fetching Data](https://nextjs.org/docs/app/getting-started/fetching-data)
 - [fetch API reference](https://nextjs.org/docs/app/api-reference/functions/fetch)
+- [React Compiler configuration](https://nextjs.org/docs/app/api-reference/config/next-config-js/reactCompiler)
+- [Turbopack reference](https://nextjs.org/docs/app/api-reference/turbopack)
 - [updateTag API reference](https://nextjs.org/docs/app/api-reference/functions/updateTag)
 - [revalidateTag API reference](https://nextjs.org/docs/app/api-reference/functions/revalidateTag)
 - [Next.js 16 upgrade guide](https://nextjs.org/docs/app/guides/upgrading/version-16)

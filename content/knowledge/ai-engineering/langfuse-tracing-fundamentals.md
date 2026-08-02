@@ -41,7 +41,7 @@ Capture enough to answer production questions:
 - Did the request succeed, fallback, or error?
 - Was the output later scored or annotated?
 
-Avoid capturing secrets, raw credentials, full private documents, or unnecessary personal data. Useful debugging data should be intentionally shaped.
+Avoid capturing secrets, raw credentials, full private documents, or unnecessary personal data. Hashing a stable user identifier is pseudonymization, not anonymization: it can still enable correlation and may remain personal data. Useful debugging data should be intentionally shaped, access-controlled, and covered by retention and deletion rules.
 
 ## Trace Shape
 

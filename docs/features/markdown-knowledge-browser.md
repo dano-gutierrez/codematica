@@ -3,7 +3,7 @@
 ## Snapshot
 
 - Status: `shipped`
-- Last updated: `2026-07-22`
+- Last updated: `2026-08-02`
 - Owner thread: `n/a`
 - Current state: The content library lives at `/browse` and reads a generated local index from repo-authored Markdown, Mermaid, path, exercise, passive flashcard feed, and interview files.
 - Target outcome: Users can browse, search, read articles, and render diagrams on mobile without Supabase credentials.
@@ -70,7 +70,7 @@ The feature is implemented with a growing local content set. The Mermaid authori
 ### UI / UX
 
 - `/browse` shows the usable content library immediately and links to the discovery home and `/paths` catalog through shared navigation.
-- `/` shows the learning path map.
+- `/` shows the cross-section discovery home; `/paths` shows the complete learning-path catalog.
 - `/docs/[...slug]` renders one article with metadata, outline, Markdown body, and referenced diagrams.
 - `/diagrams/[...slug]` renders one standalone Mermaid diagram.
 - Article and diagram routes remain static-first. When opened from a path, a client wrapper reads `?path=` and shows the precomputed next-node link without making the server page dynamic.
@@ -102,7 +102,7 @@ The feature is implemented with a growing local content set. The Mermaid authori
 - `apps/web/src/components/KnowledgeBrowser.tsx`: mobile-first browser and filter wiring
 - `apps/web/src/components/CodeBlock.tsx`: shared highlighted code block renderer
 - `apps/web/src/components/PathScopedNextLink.tsx`: path query reader for static article and diagram next-node links
-- `apps/web/src/app/browse/page.tsx`: route that hosts the browser now that `/` is path-first
+- `apps/web/src/app/browse/page.tsx`: route that hosts the complete lesson and diagram browser
 - `scripts/content/sync-supabase.ts`: optional Supabase upsert path
 
 ## Test Plan

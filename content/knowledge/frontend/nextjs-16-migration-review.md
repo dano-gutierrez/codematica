@@ -39,9 +39,21 @@ The official codemod can do mechanical work. It cannot decide whether stale data
 
 Next.js 16 replaces the middleware naming direction with `proxy.ts` to make the network boundary clearer. The name matters because teams often put too much application logic into middleware. Proxy code should stay small, predictable, and safe for the runtime it runs in.
 
+The `proxy` convention runs on the Node.js runtime and cannot be configured for Edge. Teams that still require Edge middleware must keep the deprecated `middleware` convention while planning a supported migration. Treat a filename rename as a runtime review, not only a codemod result.
+
 ## Cache Components Adoption
 
 Do not turn on Cache Components and then recreate the previous model with page-wide flags. Remove obsolete `force-dynamic` usage when it only forced request-time behavior. Replace old `revalidate` and `fetchCache` decisions with local cached scopes where the output can be safely reused.
+
+Cache Components requires the Node.js runtime. Validate that constraint before enabling it on routes that previously declared `runtime = "edge"`.
+
+## Breaking-Change Checklist
+
+- Node.js `20.9+` and TypeScript `5.1+` are the minimum supported toolchain versions.
+- Synchronous compatibility for `cookies`, `headers`, `draftMode`, route `params`, and page `searchParams` is removed.
+- Turbopack is the default for both `next dev` and `next build`; a detected custom webpack config fails the default build until it is migrated or the build explicitly uses `--webpack`.
+- Every parallel-route slot needs an explicit `default.js` or `default.tsx` fallback.
+- Review `next/image` changes, especially local query-string allowlists, the four-hour default minimum cache TTL, allowed quality values, local-IP blocking, and redirect limits.
 
 ## Release Criteria
 
@@ -52,7 +64,7 @@ A migration is ready when the team can explain which route configs were removed,
 A Next.js 16 upgrade is a boundary and caching audit. Let codemods handle syntax, but make humans own cache semantics, request-time APIs, proxy behavior, routing changes, and rollout monitoring.
 
 ## Official Source Anchors
-This lesson is anchored only to official Next.js documentation and release material, plus npm registry metadata for the latest published 16.x package version checked during authoring.
+This lesson is anchored to official Next.js documentation and release material. The repository manifest and lockfile define the version under test.
 - [Next.js 16 release notes](https://nextjs.org/blog/next-16)
 - [Route Segment Config](https://nextjs.org/docs/app/api-reference/file-conventions/route-segment-config)
 - [Caching with Cache Components](https://nextjs.org/docs/app/getting-started/caching)

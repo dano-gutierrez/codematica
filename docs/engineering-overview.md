@@ -1,6 +1,6 @@
 # Codematica Engineering Overview
 
-Last updated: 2026-07-22
+Last updated: 2026-08-02
 
 Codematica is a mobile-first learning app for system design, coding, programming, software engineering, and beginner human-language study. V1 keeps the product intentionally local-first: author documents as Markdown, author paths, exercises, flashcard feeds, interview catalogs, and language catalogs as JSON, generate a static study index, and render the app on web with Next.js and on Android/iOS with Expo Router.
 
@@ -104,7 +104,7 @@ Interview collections live in `content/interviews/*.json` and are discriminated 
 
 Human-language catalogs live in `content/languages/**/*.json`. Japanese indexes full basic hiragana plus focused variants and starter kanji/vocabulary with glyphs, readings, learner romaji, distinct IME input sequences, IPA, structured phrase breakdowns, meanings, study order, and normalized stroke paths for handwriting practice.
 
-Home discovery curation lives in `content/discovery/home.json`. It references canonical published content by kind and slug; index generation validates every reference and serializes the ordered sections into content index schema version 6. `packages/core/src/discovery.ts` resolves those references and provides cross-section local search to web and native.
+Home discovery curation lives in `content/discovery/home.json`. It references canonical published content by kind and slug; index generation validates every reference and serializes the ordered sections into content index schema version 7. `packages/core/src/discovery.ts` resolves those references and provides cross-section local search to web and native.
 
 The Python language refresh path is the first reusable language-refresh slice. It pairs searchable Markdown docs with senior-level questionnaires and passive flashcards for TypeScript and JavaScript engineers.
 

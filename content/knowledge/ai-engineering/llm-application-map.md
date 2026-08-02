@@ -60,7 +60,7 @@ Never let model-generated data skip validation just because the model sounded co
 
 ## Why Observability Comes Early
 
-Traditional observability asks "what happened in production?" LLM observability asks that plus "what did the model see, why did it choose that answer, how much did it cost, and would a better prompt have behaved differently?"
+Traditional observability asks "what happened in production?" LLM observability also asks what input and context the model received, which model and prompt version ran, how much the call cost, and whether another tested configuration performs better. A trace can reconstruct inputs and operations; it does not reveal a model's private causal reasoning or prove why one token was chosen.
 
 Record enough information to debug:
 
