@@ -13,7 +13,8 @@ This folder contains path-scoped passive flashcard feeds for short review sessio
 - Advanced Next.js 16 feeds are one-minute vertical briefs and should stay hard-only, concise enough for one mobile viewport, and balanced across concept, practical, snippet, and interview cards.
 - Algorithm feeds should mix core invariants, implementation pitfalls, compact Python/TypeScript snippets, and interview-recognition prompts; the BFS/DFS feed follows this balance.
 - Diagram-authoring feeds should balance grammar recognition, selection rules, compact Mermaid snippets, debugging, compatibility, and readability review.
+- Beginner alphabet feeds should mix row recall, confusing-shape comparisons, sound changes, and real-word decoding; they must stay useful without requiring the learner to finish the ordered path first.
 - New learning paths that intend to replace passive social scrolling with meaningful review should include a path-scoped passive feed unless the owning feature doc explicitly says otherwise.
-- Passive feeds do not store progress, score, read state, mastery, streaks, or completion.
+- Passive feeds emit only a coarse latest-card resume position through the optional progress layer. They do not store answers, score, mastery, streaks, or raw interaction history.
 
 Passive flashcards are separate from interactive `type: "flashcard"` exercises in `content/exercises/`. Run `npm run content:check` before committing feed changes.

@@ -9,7 +9,7 @@ This folder contains manually authored practice prompts for Codematica learning 
 - A cloze `template` must contain exactly one `{{blank}}` token.
 - Questionnaires require `questions[]` with unique question IDs.
 - Questionnaire question `kind` values are `choice`, `cloze`, `ordering`, and `matching`.
-- Choice questions require exactly one correct option, ordering questions require a `correctOrder` containing every item ID exactly once, and matching questions require unique pair IDs.
+- Choice questions require exactly one correct option, ordering questions require a `correctOrder` containing every item ID exactly once, and matching questions require unique pair IDs. Japanese prompts and labels may be a single visible glyph; the schema validates non-empty Unicode text.
 - Writing exercises require `characterSlugs`, `modes`, `prompt`, and `explanation`; referenced character slugs must exist in `content/languages/`.
 - `documentSlug` must reference an existing Markdown document.
 - Non-executable coding challenges currently belong inside Markdown lessons as challenge sections with starter code and acceptance checks. Do not model executable challenges in exercise JSON until a future code editor feature adds that schema.
@@ -18,6 +18,6 @@ This folder contains manually authored practice prompts for Codematica learning 
 - BFS/DFS questionnaires should test traversal invariants, visited timing, complexity, recursion risk, hidden graph modeling, and algorithm selection instead of code punctuation.
 - Mermaid authoring questionnaires are choice-only, require exactly one correct option, and must explain why every distractor is incorrect instead of only restating the right answer.
 
-Exercise generation, executable code validation, executable SQL validation, AI feedback, scoring, persisted progress, and review queues are future work. Run `npm run content:check` before committing exercise changes.
+Exercise generation, executable code validation, executable SQL validation, AI feedback, durable scoring, mastery, and adaptive review queues are future work. Coarse started/completed progress already uses the shared optional progress layer. Run `npm run content:check` before committing exercise changes.
 
 Passive scroll-only flashcards are authored separately in `content/flashcard-feeds/`; do not model them as interactive `type: "flashcard"` exercises.

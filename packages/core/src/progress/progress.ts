@@ -19,10 +19,7 @@ export const progressInputSchema = z.object({
   position: progressPositionSchema,
 });
 
-export const progressInputArraySchema = z.preprocess(
-  (value) => (Array.isArray(value) ? value.slice(0, 20) : value),
-  z.array(progressInputSchema).max(20),
-);
+export const progressInputArraySchema = z.array(progressInputSchema).max(20);
 
 export const progressRowSchema = z.object({
   surface: progressSurfaceSchema,

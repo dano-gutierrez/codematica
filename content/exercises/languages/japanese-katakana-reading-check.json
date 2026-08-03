@@ -1,0 +1,20 @@
+{
+  "slug": "languages/japanese-katakana-reading-check",
+  "title": "Katakana Reading Check",
+  "type": "questionnaire",
+  "documentSlug": "languages/japanese-katakana-foundations",
+  "concept": "Recall basic katakana and read beginner loanwords",
+  "difficulty": "foundation",
+  "tags": ["japanese", "katakana", "reading", "loanwords", "recall"],
+  "status": "published",
+  "questions": [
+    {"id":"katakana-k-s-match","kind":"matching","prompt":"Match each katakana to its learner romaji.","pairs":[{"id":"ka","prompt":"カ","match":"ka"},{"id":"ki","prompt":"キ","match":"ki"},{"id":"shi","prompt":"シ","match":"shi"},{"id":"su","prompt":"ス","match":"su"},{"id":"so","prompt":"ソ","match":"so"}],"explanation":"Katakana uses the same sounds as hiragana, so retrieve the known sound from the new shape."},
+    {"id":"katakana-t-n-match","kind":"matching","prompt":"Match these t-row and n-row katakana to their learner romaji.","pairs":[{"id":"chi","prompt":"チ","match":"chi"},{"id":"tsu","prompt":"ツ","match":"tsu"},{"id":"te","prompt":"テ","match":"te"},{"id":"nu","prompt":"ヌ","match":"nu"},{"id":"no","prompt":"ノ","match":"no"}],"explanation":"Pay special attention to the stroke direction in ツ; it separates tsu from シ shi."},
+    {"id":"katakana-final-match","kind":"matching","prompt":"Match these final-row katakana to their learner romaji.","pairs":[{"id":"ya","prompt":"ヤ","match":"ya"},{"id":"yu","prompt":"ユ","match":"yu"},{"id":"ri","prompt":"リ","match":"ri"},{"id":"ro","prompt":"ロ","match":"ro"},{"id":"nn","prompt":"ン","match":"n"}],"explanation":"Use the full silhouette and stroke direction, especially for ン n and ソ so."},
+    {"id":"katakana-shi-tsu","kind":"choice","prompt":"Which pair is ordered shi, then tsu?","options":[{"id":"shi-tsu","label":"シ・ツ","isCorrect":true},{"id":"tsu-shi","label":"ツ・シ","isCorrect":false},{"id":"so-n","label":"ソ・ン","isCorrect":false}],"explanation":"シ has more horizontal short strokes and a rising long stroke; ツ has more vertical short strokes and a falling long stroke."},
+    {"id":"katakana-so-n","kind":"choice","prompt":"Which character is the moraic n with a long stroke rising from lower left?","options":[{"id":"nn","label":"ン","isCorrect":true},{"id":"so","label":"ソ","isCorrect":false},{"id":"shi","label":"シ","isCorrect":false}],"explanation":"ン rises from lower left; ソ begins higher and falls down toward the left."},
+    {"id":"katakana-coffee","kind":"choice","prompt":"Which reading matches コーヒー?","options":[{"id":"koohii","label":"koohii — coffee","isCorrect":true},{"id":"kohie","label":"kohie — hotel","isCorrect":false},{"id":"kuuhii","label":"kuuhii — taxi","isCorrect":false}],"explanation":"コ is ko, ー extends o, ヒ is hi, and the final ー extends i: ko-o-hi-i."},
+    {"id":"katakana-hotel","kind":"choice","prompt":"Which katakana spelling reads hoteru, hotel?","options":[{"id":"hoteru","label":"ホテル","isCorrect":true},{"id":"terebi","label":"テレビ","isCorrect":false},{"id":"resutoran","label":"レストラン","isCorrect":false}],"explanation":"ホ ho + テ te + ル ru gives ホテル, hoteru."},
+    {"id":"katakana-long-mark","kind":"choice","prompt":"What does ー do in a katakana word?","options":[{"id":"extend","label":"It extends the preceding vowel sound.","isCorrect":true},{"id":"pause","label":"It doubles the next consonant.","isCorrect":false},{"id":"particle","label":"It marks the topic of a sentence.","isCorrect":false}],"explanation":"The chōonpu ー is a long vowel mark; small ッ is the symbol that holds the next consonant."}
+  ]
+}

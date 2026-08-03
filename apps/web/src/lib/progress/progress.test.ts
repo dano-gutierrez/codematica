@@ -95,13 +95,13 @@ describe("progress contract", () => {
     });
   });
 
-  it("caps anonymous sync batches to a bounded payload", () => {
+  it("rejects oversized sync batches instead of silently truncating progress", () => {
     const payload = Array.from({ length: 30 }, () => ({
       surface: "diagram",
       slug: "system-design/cache-aside",
       status: "completed",
     }));
 
-    expect(progressInputArraySchema.parse(payload)).toHaveLength(20);
+    expect(() => progressInputArraySchema.parse(payload)).toThrow();
   });
 });

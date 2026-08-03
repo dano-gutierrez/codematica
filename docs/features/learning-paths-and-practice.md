@@ -3,7 +3,7 @@
 ## Snapshot
 
 - Status: `shipped`
-- Last updated: `2026-08-02`
+- Last updated: `2026-08-03`
 - Owner thread: `n/a`
 - Current state: The complete path catalog lives at `/paths`; path detail, exercise, and passive flashcard routes remain backed by local structured content.
 - Target outcome: Users can follow role and skill paths, open documents or diagrams, complete flashcard, cloze, questionnaire, or writing practice, and review passive path-scoped flashcards without requiring auth or Supabase.
@@ -78,7 +78,7 @@ The shipped content includes skill and role paths using Markdown articles, exter
 - Current tracks remain document-level filters and do not become the only path taxonomy.
 - Role and skill paths use the same schema.
 - Questionnaire state is transient in React component state and is not persisted.
-- Passive flashcard feed state is transient in React component state and is not persisted.
+- Passive flashcard order is transient in React component state; only the coarse latest-card resume position is eligible for the optional progress layer.
 
 ## Detailed Behavior
 
@@ -162,6 +162,7 @@ The shipped content includes skill and role paths using Markdown articles, exter
 - `2026-07-21`: Add the BFS/DFS Programming path with lessons, questionnaires, and a passive scrolling review feed using existing components.
 - `2026-07-21`: Add the Mermaid authoring path with progressive rendered examples, three choice-only questionnaires, and passive review using existing components.
 - `2026-07-22`: Move the complete path catalog from `/` to `/paths`; the root is now the discovery hub owned by `home-discovery.md`.
+- `2026-08-03`: Add the alphabet-first Japanese path sequence and its always-available kana flashcard feed using existing path/practice/feed contracts.
 
 ## Documentation Updates
 

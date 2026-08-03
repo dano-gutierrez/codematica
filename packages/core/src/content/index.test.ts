@@ -41,15 +41,25 @@ describe("generated content index", () => {
     expect(path?.title).toBe("Japanese Foundations");
     expect(path?.units.flatMap((unit) => unit.nodes).map((node) => node.slug)).toEqual([
       "languages/japanese-writing-systems",
+      "languages/japanese-hiragana-foundations",
       "languages/japanese-hiragana-vowels-writing",
-      "languages/japanese-katakana-vowels-writing",
-      "languages/japanese-romaji-kana-input",
-      "languages/japanese-romaji-kana-input-questionnaire",
       "languages/japanese-hiragana-k-s-writing",
       "languages/japanese-hiragana-t-n-writing",
       "languages/japanese-hiragana-h-m-writing",
       "languages/japanese-hiragana-y-r-w-writing",
+      "languages/japanese-hiragana-reading-check",
+      "languages/japanese-hiragana-sound-changes",
+      "languages/japanese-hiragana-sound-changes-questionnaire",
       "languages/japanese-hiragana-ime-exceptions-writing",
+      "languages/japanese-katakana-foundations",
+      "languages/japanese-katakana-vowels-writing",
+      "languages/japanese-katakana-k-s-writing",
+      "languages/japanese-katakana-t-n-writing",
+      "languages/japanese-katakana-h-m-writing",
+      "languages/japanese-katakana-y-r-w-writing",
+      "languages/japanese-katakana-reading-check",
+      "languages/japanese-romaji-kana-input",
+      "languages/japanese-romaji-kana-input-questionnaire",
       "languages/japanese-starter-kanji",
       "languages/japanese-starter-kanji-writing",
     ]);
@@ -58,6 +68,15 @@ describe("generated content index", () => {
     expect(kanji?.strokes).toHaveLength(2);
     expect(vocabulary?.expression).toBe("日本");
     expect(exercise?.type).toBe("writing");
+  });
+
+  it("loads the always-available Japanese alphabet flashcard feed", () => {
+    const feed = getPassiveFlashcardFeedByPathSlug("japanese-foundations");
+
+    expect(feed?.title).toBe("Japanese Alphabet Flashcards");
+    expect(feed?.route).toBe("/paths/japanese-foundations/flashcards");
+    expect(feed?.cards.length).toBeGreaterThanOrEqual(30);
+    expect(feed?.cards.some((card) => card.prompt.includes("シ") && card.prompt.includes("ツ"))).toBe(true);
   });
 
   it("loads the Python refresh path, documents, and questionnaires", () => {

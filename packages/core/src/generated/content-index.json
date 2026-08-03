@@ -1566,6 +1566,210 @@
       "readingMinutes": 3
     },
     {
+      "title": "Read The 46 Basic Hiragana",
+      "slug": "languages/japanese-hiragana-foundations",
+      "summary": "Learn the hiragana sound map in small rows, recall each shape actively, and begin reading useful Japanese words without romaji.",
+      "track": "Languages",
+      "topic": "Japanese",
+      "difficulty": "foundation",
+      "tags": [
+        "japanese",
+        "hiragana",
+        "kana",
+        "alphabet",
+        "reading"
+      ],
+      "prerequisites": [
+        "Japanese Writing Systems For Beginners"
+      ],
+      "diagramRefs": [],
+      "status": "published",
+      "id": "13996f86a216",
+      "route": "/docs/languages/japanese-hiragana-foundations",
+      "sourcePath": "content/knowledge/languages/japanese-hiragana-foundations.md",
+      "bodyPath": "content/knowledge/languages/japanese-hiragana-foundations.md",
+      "markdown": "## Your First Reading System\n\nHiragana is not an alphabet with separate consonant and vowel letters. Most symbols represent one **mora**, a steady timing unit such as `か` (`ka`) or `み` (`mi`). Learn the sound and shape together, then recall it before revealing the answer.\n\nThe Japan Foundation's IRODORI Starter course introduces hiragana before katakana. That is our order too: hiragana appears constantly in grammar, word endings, and beginner vocabulary.\n\n## The Gojūon Map\n\nRead each row from left to right. The five vowel sounds always stay in the order **a, i, u, e, o**.\n\n| Family | a | i | u | e | o |\n| --- | --- | --- | --- | --- | --- |\n| vowels | [あ](/languages/japanese/characters/hiragana/a) a | [い](/languages/japanese/characters/hiragana/i) i | [う](/languages/japanese/characters/hiragana/u) u | [え](/languages/japanese/characters/hiragana/e) e | [お](/languages/japanese/characters/hiragana/o) o |\n| k | [か](/languages/japanese/characters/hiragana/ka) ka | [き](/languages/japanese/characters/hiragana/ki) ki | [く](/languages/japanese/characters/hiragana/ku) ku | [け](/languages/japanese/characters/hiragana/ke) ke | [こ](/languages/japanese/characters/hiragana/ko) ko |\n| s | [さ](/languages/japanese/characters/hiragana/sa) sa | [し](/languages/japanese/characters/hiragana/shi) shi | [す](/languages/japanese/characters/hiragana/su) su | [せ](/languages/japanese/characters/hiragana/se) se | [そ](/languages/japanese/characters/hiragana/so) so |\n| t | [た](/languages/japanese/characters/hiragana/ta) ta | [ち](/languages/japanese/characters/hiragana/chi) chi | [つ](/languages/japanese/characters/hiragana/tsu) tsu | [て](/languages/japanese/characters/hiragana/te) te | [と](/languages/japanese/characters/hiragana/to) to |\n| n | [な](/languages/japanese/characters/hiragana/na) na | [に](/languages/japanese/characters/hiragana/ni) ni | [ぬ](/languages/japanese/characters/hiragana/nu) nu | [ね](/languages/japanese/characters/hiragana/ne) ne | [の](/languages/japanese/characters/hiragana/no) no |\n| h | [は](/languages/japanese/characters/hiragana/ha) ha | [ひ](/languages/japanese/characters/hiragana/hi) hi | [ふ](/languages/japanese/characters/hiragana/fu) fu | [へ](/languages/japanese/characters/hiragana/he) he | [ほ](/languages/japanese/characters/hiragana/ho) ho |\n| m | [ま](/languages/japanese/characters/hiragana/ma) ma | [み](/languages/japanese/characters/hiragana/mi) mi | [む](/languages/japanese/characters/hiragana/mu) mu | [め](/languages/japanese/characters/hiragana/me) me | [も](/languages/japanese/characters/hiragana/mo) mo |\n| y | [や](/languages/japanese/characters/hiragana/ya) ya | — | [ゆ](/languages/japanese/characters/hiragana/yu) yu | — | [よ](/languages/japanese/characters/hiragana/yo) yo |\n| r | [ら](/languages/japanese/characters/hiragana/ra) ra | [り](/languages/japanese/characters/hiragana/ri) ri | [る](/languages/japanese/characters/hiragana/ru) ru | [れ](/languages/japanese/characters/hiragana/re) re | [ろ](/languages/japanese/characters/hiragana/ro) ro |\n| w + n | [わ](/languages/japanese/characters/hiragana/wa) wa | — | — | — | [を](/languages/japanese/characters/hiragana/wo) o / wo |\n| nasal | [ん](/languages/japanese/characters/hiragana/n) n | — | — | — | — |\n\n## Five Sounds That Break The Simple Pattern\n\nThe grid is a memory aid, not a command to pronounce every cell mechanically.\n\n- `し` is **shi**, not “si.”\n- `ち` is **chi**, not “ti.”\n- `つ` is **tsu**, not “tu.”\n- `ふ` is a light **fu** sound, made without strongly biting the lower lip.\n- `を` is normally pronounced **o** when it marks an object.\n\nYour keyboard may accept systematic aliases such as `si`, `ti`, `tu`, and `hu`, but learner romaji shows the usual sound-oriented forms.\n\n## Learn In Small Rows\n\nUse a three-pass loop for each group of five or ten:\n\n1. **Notice:** open each character and compare its printed shape, sound, and stroke start points.\n2. **Recall:** use flashcards and say the sound before reading the explanation.\n3. **Use:** read a short word containing only kana you have learned, then trace or write the characters once.\n\nWriting helps you notice construction, but recognition comes first. Do not wait for perfect handwriting before reading real words.\n\n## Look-Alikes Worth Comparing\n\n- `あ` and `お`: `お` has a small mark at the upper right.\n- `き` and `さ`: `き` has two horizontal crossings; `さ` has one.\n- `ぬ`, `め`, and `ね`: look for the loop and where the final tail ends.\n- `れ`, `わ`, and `ね`: they share a left stem, so inspect the right side.\n- `る` and `ろ`: `る` closes with a small loop; `ろ` stays open.\n\nCompare confusing characters side by side, then mix them into the full deck. That is more useful than copying one symbol many times without recall.\n\n## First Reading Challenge\n\nTry these without romaji first:\n\n- あさ — morning\n- いぬ — dog\n- ねこ — cat\n- すし — sushi\n- はな — flower\n- やま — mountain\n- かわ — river\n- ほん — book\n\nSlow, correct recall is enough. Reading speed grows through repeated use.\n\n## Sources And Method\n\n- [IRODORI Starter: How to Use This Textbook](https://www.irodori.jpf.go.jp/assets/data/starter/pdf/X_howto_en.pdf) places hiragana in Lesson 1 and katakana in Lesson 2.\n- [Japan Foundation Marugoto e-Learning](https://marugoto.jpf.go.jp/en/e-learning/) provides HIRAGANA/KATAKANA Memory Hint resources and game-like review.\n- [Repeated testing and long-term retention](https://pubmed.ncbi.nlm.nih.gov/19930508/) supports retrieval practice instead of passive rereading alone.\n- [Tofugu's kana-learning resource review](https://www.tofugu.com/japanese/best-hiragana-and-katakana-learning-resources/) recommends memory cues, reading priority, and active recall. Codematica uses original text and stroke paths rather than copying its mnemonic artwork.",
+      "plainText": "Your First Reading System Hiragana is not an alphabet with separate consonant and vowel letters. Most symbols represent one mora, a steady timing unit such as か (ka) or み (mi). Learn the sound and shape together, then recall it before revealing the answer. The Japan Foundation's IRODORI Starter course introduces hiragana before katakana. That is our order too: hiragana appears constantly in grammar, word endings, and beginner vocabulary. The Gojūon Map Read each row from left to right. The five vowel sounds always stay in the order a, i, u, e, o. | Family | a | i | u | e | o | | --- | --- | --- | --- | --- | --- | | vowels | あ a | い i | う u | え e | お o | | k | か ka | き ki | く ku | け ke | こ ko | | s | さ sa | し shi | す su | せ se | そ so | | t | た ta | ち chi | つ tsu | て te | と to | | n | な na | に ni | ぬ nu | ね ne | の no | | h | は ha | ひ hi | ふ fu | へ he | ほ ho | | m | ま ma | み mi | む mu | め me | も mo | | y | や ya | — | ゆ yu | — | よ yo | | r | ら ra | り ri | る ru | れ re | ろ ro | | w + n | わ wa | — | — | — | を o / wo | | nasal | ん n | — | — | — | — | Five Sounds That Break The Simple Pattern The grid is a memory aid, not a command to pronounce every cell mechanically. し is shi, not “si.”ち is chi, not “ti.”つ is tsu, not “tu.”ふ is a light fu sound, made without strongly biting the lower lip.を is normally pronounced o when it marks an object. Your keyboard may accept systematic aliases such as si, ti, tu, and hu, but learner romaji shows the usual sound-oriented forms. Learn In Small Rows Use a three-pass loop for each group of five or ten: Notice: open each character and compare its printed shape, sound, and stroke start points.Recall: use flashcards and say the sound before reading the explanation.Use: read a short word containing only kana you have learned, then trace or write the characters once. Writing helps you notice construction, but recognition comes first. Do not wait for perfect handwriting before reading real words. Look-Alikes Worth Comparing あ and お: お has a small mark at the upper right.き and さ: き has two horizontal crossings; さ has one.ぬ, め, and ね: look for the loop and where the final tail ends.れ, わ, and ね: they share a left stem, so inspect the right side.る and ろ: る closes with a small loop; ろ stays open. Compare confusing characters side by side, then mix them into the full deck. That is more useful than copying one symbol many times without recall. First Reading Challenge Try these without romaji first: あさ — morningいぬ — dogねこ — catすし — sushiはな — flowerやま — mountainかわ — riverほん — book Slow, correct recall is enough. Reading speed grows through repeated use. Sources And Method IRODORI Starter: How to Use This Textbook places hiragana in Lesson 1 and katakana in Lesson 2.Japan Foundation Marugoto e-Learning provides HIRAGANA/KATAKANA Memory Hint resources and game-like review.Repeated testing and long-term retention supports retrieval practice instead of passive rereading alone.Tofugu's kana-learning resource review recommends memory cues, reading priority, and active recall. Codematica uses original text and stroke paths rather than copying its mnemonic artwork.",
+      "headings": [
+        {
+          "id": "your-first-reading-system",
+          "depth": 2,
+          "text": "Your First Reading System"
+        },
+        {
+          "id": "the-gojon-map",
+          "depth": 2,
+          "text": "The Gojūon Map"
+        },
+        {
+          "id": "five-sounds-that-break-the-simple-pattern",
+          "depth": 2,
+          "text": "Five Sounds That Break The Simple Pattern"
+        },
+        {
+          "id": "learn-in-small-rows",
+          "depth": 2,
+          "text": "Learn In Small Rows"
+        },
+        {
+          "id": "look-alikes-worth-comparing",
+          "depth": 2,
+          "text": "Look-Alikes Worth Comparing"
+        },
+        {
+          "id": "first-reading-challenge",
+          "depth": 2,
+          "text": "First Reading Challenge"
+        },
+        {
+          "id": "sources-and-method",
+          "depth": 2,
+          "text": "Sources And Method"
+        }
+      ],
+      "mermaidBlocks": [],
+      "contentHash": "2a2c481b6bffe2a66ae64bcec8484e3fc329a72acd13e4908ab23ca6e886d879",
+      "readingMinutes": 3
+    },
+    {
+      "title": "Hiragana Sound Changes And Small Kana",
+      "slug": "languages/japanese-hiragana-sound-changes",
+      "summary": "Turn the 46 basic hiragana into many more sounds with dakuten, handakuten, small tsu, contracted sounds, and long vowels.",
+      "track": "Languages",
+      "topic": "Japanese",
+      "difficulty": "foundation",
+      "tags": [
+        "japanese",
+        "hiragana",
+        "dakuten",
+        "yoon",
+        "small-tsu",
+        "long-vowels"
+      ],
+      "prerequisites": [
+        "Read The 46 Basic Hiragana"
+      ],
+      "diagramRefs": [],
+      "status": "published",
+      "id": "129cbd013da5",
+      "route": "/docs/languages/japanese-hiragana-sound-changes",
+      "sourcePath": "content/knowledge/languages/japanese-hiragana-sound-changes.md",
+      "bodyPath": "content/knowledge/languages/japanese-hiragana-sound-changes.md",
+      "markdown": "## A Few Marks Unlock Many Sounds\n\nYou do not need to memorize a second large chart. Start from kana you already know and notice the small change.\n\n## Dakuten: The Two Little Marks\n\nDakuten `゛` voices a consonant. Feel the difference by touching your throat: `か` is quiet in the throat; `が` vibrates.\n\n| Base | Voiced row | Examples |\n| --- | --- | --- |\n| k → g | が ぎ ぐ げ ご | `か` ka → [が](/languages/japanese/characters/hiragana/ga) ga |\n| s → z / j | ざ じ ず ぜ ぞ | `し` shi → [じ](/languages/japanese/characters/hiragana/ji) ji |\n| t → d / j / z | だ ぢ づ で ど | `た` ta → だ da |\n| h → b | ば び ぶ べ ぼ | `は` ha → [ば](/languages/japanese/characters/hiragana/ba) ba |\n\n## Handakuten: The Small Circle\n\nThe circle `゜` changes the h-row to p: [ぱ](/languages/japanese/characters/hiragana/pa) `pa`, ぴ `pi`, ぷ `pu`, ぺ `pe`, ぽ `po`.\n\n## Small っ: Hold Before The Next Consonant\n\n[っ](/languages/japanese/characters/hiragana/small-tsu) is smaller than `つ`. It creates a brief closure before the following consonant.\n\n- きて `kite` — come\n- きって `kitte` — stamp\n- さか `saka` — slope\n- さっか `sakka` — author\n\nWhen typing, double the next consonant: `kitte`, `sakka`, `gakkou`.\n\n## Small ゃ, ゅ, ょ: One Contracted Beat\n\nPut small [ゃ](/languages/japanese/characters/hiragana/small-ya), [ゅ](/languages/japanese/characters/hiragana/small-yu), or [ょ](/languages/japanese/characters/hiragana/small-yo) after an i-row kana.\n\n- き + ゃ → きゃ `kya`\n- し + ゅ → しゅ `shu`\n- ち + ょ → ちょ `cho`\n- に + ゅ → にゅ `nyu`\n- り + ょ → りょ `ryo`\n\nSize changes the rhythm: `きや` is `ki-ya`, while `きゃ` is the single contracted mora `kya`.\n\n## Long Vowels In Hiragana\n\nHiragana often writes long vowels with another vowel kana.\n\n- おばさん `obasan` — aunt\n- おばあさん `obaasan` — grandmother\n- ここ `koko` — here\n- こうこう `koukou` — high school\n- せんせい `sensei` — teacher; the `ei` often sounds like a long e\n\nDo not erase the written vowel just because a romanization uses a macron such as `ō` or `ē`. The kana spelling is what the IME needs.\n\n## Read The Size And Marks\n\nBefore guessing a word, ask:\n\n1. Is there dakuten or handakuten?\n2. Is the kana full size or small?\n3. Does small っ hold the next consonant?\n4. Does the following vowel extend the sound?\n\nThis visual checklist prevents most early decoding mistakes.\n\n## Sources\n\n- [IRODORI Starter Lesson 1](https://www.irodori.jpf.go.jp/en/starter/pdf.html) presents the hiragana chart with voiced sounds and contracted combinations.\n- [Japan Foundation Roman Alphabet spelling rules](https://marugoto.jpf.go.jp/assets/docs/teacher/resource/starter_a/spelling_rules_of_the_Roman_alphabet.pdf) documents beginner romanization patterns for long vowels, doubled consonants, and contracted sounds.",
+      "plainText": "A Few Marks Unlock Many Sounds You do not need to memorize a second large chart. Start from kana you already know and notice the small change. Dakuten: The Two Little Marks Dakuten ゛ voices a consonant. Feel the difference by touching your throat: か is quiet in the throat; が vibrates. | Base | Voiced row | Examples | | --- | --- | --- | | k → g | が ぎ ぐ げ ご | か ka → が ga | | s → z / j | ざ じ ず ぜ ぞ | し shi → じ ji | | t → d / j / z | だ ぢ づ で ど | た ta → だ da | | h → b | ば び ぶ べ ぼ | は ha → ば ba | Handakuten: The Small Circle The circle ゜ changes the h-row to p: ぱ pa, ぴ pi, ぷ pu, ぺ pe, ぽ po. Small っ: Hold Before The Next Consonant っ is smaller than つ. It creates a brief closure before the following consonant. きて kite — comeきって kitte — stampさか saka — slopeさっか sakka — author When typing, double the next consonant: kitte, sakka, gakkou. Small ゃ, ゅ, ょ: One Contracted Beat Put small ゃ, ゅ, or ょ after an i-row kana. き + ゃ → きゃ kyaし + ゅ → しゅ shuち + ょ → ちょ choに + ゅ → にゅ nyuり + ょ → りょ ryo Size changes the rhythm: きや is ki-ya, while きゃ is the single contracted mora kya. Long Vowels In Hiragana Hiragana often writes long vowels with another vowel kana. おばさん obasan — auntおばあさん obaasan — grandmotherここ koko — hereこうこう koukou — high schoolせんせい sensei — teacher; the ei often sounds like a long e Do not erase the written vowel just because a romanization uses a macron such as ō or ē. The kana spelling is what the IME needs. Read The Size And Marks Before guessing a word, ask: Is there dakuten or handakuten?Is the kana full size or small?Does small っ hold the next consonant?Does the following vowel extend the sound? This visual checklist prevents most early decoding mistakes. Sources IRODORI Starter Lesson 1 presents the hiragana chart with voiced sounds and contracted combinations.Japan Foundation Roman Alphabet spelling rules documents beginner romanization patterns for long vowels, doubled consonants, and contracted sounds.",
+      "headings": [
+        {
+          "id": "a-few-marks-unlock-many-sounds",
+          "depth": 2,
+          "text": "A Few Marks Unlock Many Sounds"
+        },
+        {
+          "id": "dakuten-the-two-little-marks",
+          "depth": 2,
+          "text": "Dakuten: The Two Little Marks"
+        },
+        {
+          "id": "handakuten-the-small-circle",
+          "depth": 2,
+          "text": "Handakuten: The Small Circle"
+        },
+        {
+          "id": "small-hold-before-the-next-consonant",
+          "depth": 2,
+          "text": "Small っ: Hold Before The Next Consonant"
+        },
+        {
+          "id": "small-one-contracted-beat",
+          "depth": 2,
+          "text": "Small ゃ, ゅ, ょ: One Contracted Beat"
+        },
+        {
+          "id": "long-vowels-in-hiragana",
+          "depth": 2,
+          "text": "Long Vowels In Hiragana"
+        },
+        {
+          "id": "read-the-size-and-marks",
+          "depth": 2,
+          "text": "Read The Size And Marks"
+        },
+        {
+          "id": "sources",
+          "depth": 2,
+          "text": "Sources"
+        }
+      ],
+      "mermaidBlocks": [],
+      "contentHash": "154b7710c958292cf409fb4fbe0a99942a6c47cc7463428560dd2a5da5efa13d",
+      "readingMinutes": 2
+    },
+    {
+      "title": "Read The 46 Basic Katakana",
+      "slug": "languages/japanese-katakana-foundations",
+      "summary": "Reuse the sounds you know from hiragana to read all basic katakana, long vowel marks, loanwords, names, and common look-alikes.",
+      "track": "Languages",
+      "topic": "Japanese",
+      "difficulty": "foundation",
+      "tags": [
+        "japanese",
+        "katakana",
+        "kana",
+        "alphabet",
+        "loanwords"
+      ],
+      "prerequisites": [
+        "Read The 46 Basic Hiragana"
+      ],
+      "diagramRefs": [],
+      "status": "published",
+      "id": "0fe3429e3703",
+      "route": "/docs/languages/japanese-katakana-foundations",
+      "sourcePath": "content/knowledge/languages/japanese-katakana-foundations.md",
+      "bodyPath": "content/knowledge/languages/japanese-katakana-foundations.md",
+      "markdown": "## Same Sounds, New Shapes\n\nKatakana represents the same basic morae as hiragana. `カ` and `か` are both `ka`; the script changes, not the sound map.\n\nKatakana is common in loanwords, foreign names, sound effects, scientific names, and emphasis. The Japan Foundation gives examples such as メール (mail), プレゼント (present), and ハンバーガー (hamburger).\n\n## The Basic Katakana Map\n\n| Family | a | i | u | e | o |\n| --- | --- | --- | --- | --- | --- |\n| vowels | [ア](/languages/japanese/characters/katakana/a) a | [イ](/languages/japanese/characters/katakana/i) i | [ウ](/languages/japanese/characters/katakana/u) u | [エ](/languages/japanese/characters/katakana/e) e | [オ](/languages/japanese/characters/katakana/o) o |\n| k | [カ](/languages/japanese/characters/katakana/ka) ka | [キ](/languages/japanese/characters/katakana/ki) ki | [ク](/languages/japanese/characters/katakana/ku) ku | [ケ](/languages/japanese/characters/katakana/ke) ke | [コ](/languages/japanese/characters/katakana/ko) ko |\n| s | [サ](/languages/japanese/characters/katakana/sa) sa | [シ](/languages/japanese/characters/katakana/shi) shi | [ス](/languages/japanese/characters/katakana/su) su | [セ](/languages/japanese/characters/katakana/se) se | [ソ](/languages/japanese/characters/katakana/so) so |\n| t | [タ](/languages/japanese/characters/katakana/ta) ta | [チ](/languages/japanese/characters/katakana/chi) chi | [ツ](/languages/japanese/characters/katakana/tsu) tsu | [テ](/languages/japanese/characters/katakana/te) te | [ト](/languages/japanese/characters/katakana/to) to |\n| n | [ナ](/languages/japanese/characters/katakana/na) na | [ニ](/languages/japanese/characters/katakana/ni) ni | [ヌ](/languages/japanese/characters/katakana/nu) nu | [ネ](/languages/japanese/characters/katakana/ne) ne | [ノ](/languages/japanese/characters/katakana/no) no |\n| h | [ハ](/languages/japanese/characters/katakana/ha) ha | [ヒ](/languages/japanese/characters/katakana/hi) hi | [フ](/languages/japanese/characters/katakana/fu) fu | [ヘ](/languages/japanese/characters/katakana/he) he | [ホ](/languages/japanese/characters/katakana/ho) ho |\n| m | [マ](/languages/japanese/characters/katakana/ma) ma | [ミ](/languages/japanese/characters/katakana/mi) mi | [ム](/languages/japanese/characters/katakana/mu) mu | [メ](/languages/japanese/characters/katakana/me) me | [モ](/languages/japanese/characters/katakana/mo) mo |\n| y | [ヤ](/languages/japanese/characters/katakana/ya) ya | — | [ユ](/languages/japanese/characters/katakana/yu) yu | — | [ヨ](/languages/japanese/characters/katakana/yo) yo |\n| r | [ラ](/languages/japanese/characters/katakana/ra) ra | [リ](/languages/japanese/characters/katakana/ri) ri | [ル](/languages/japanese/characters/katakana/ru) ru | [レ](/languages/japanese/characters/katakana/re) re | [ロ](/languages/japanese/characters/katakana/ro) ro |\n| w + n | [ワ](/languages/japanese/characters/katakana/wa) wa | — | — | — | [ヲ](/languages/japanese/characters/katakana/wo) o / wo |\n| nasal | [ン](/languages/japanese/characters/katakana/n) n | — | — | — | — |\n\n## The Long Vowel Mark ー\n\n[ー](/languages/japanese/characters/katakana/long-vowel-mark) extends the vowel immediately before it.\n\n- [コーヒー](/languages/japanese/vocabulary/coffee) `koohii` — coffee\n- [タクシー](/languages/japanese/vocabulary/taxi) `takushii` — taxi\n- [スーパー](/languages/japanese/vocabulary/supermarket) `suupaa` — supermarket\n\nThe dash is sound, not punctuation. In horizontal writing it is horizontal; in traditional vertical writing it turns vertical.\n\n## The Four Famous Look-Alikes\n\nCompare stroke direction and placement, not only the final silhouette.\n\n- `シ` shi: the short strokes sit more horizontally; the long stroke rises from lower left.\n- `ツ` tsu: the short strokes stand more vertically; the long stroke falls from upper right.\n- `ソ` so: one short stroke, then a falling long stroke.\n- `ン` n: one short stroke, then a long stroke that rises from lower left.\n\nAlso compare `ク` ku / `ケ` ke, `チ` chi / `テ` te, `ワ` wa / `ウ` u, and `ヌ` nu / `ス` su.\n\n## Read Useful Words\n\nLoanwords adapt to Japanese sound patterns, so recognize the kana rather than forcing the original English spelling.\n\n- テレビ `terebi` — television\n- ホテル `hoteru` — hotel\n- レストラン `resutoran` — restaurant\n- アメリカ `amerika` — America / the United States\n- コンピューター `konpyuutaa` — computer\n\n## A Reliable Practice Loop\n\n1. Learn one row while keeping the hiragana sounds nearby.\n2. Recall the sound from the katakana shape.\n3. Write each symbol once with the numbered stroke guide.\n4. Read two real loanwords.\n5. Mix the row into the full flashcard deck on a later session.\n\n## Sources\n\n- [IRODORI Starter Lesson 2](https://www.irodori.jpf.go.jp/en/starter/pdf.html) introduces katakana and beginner words after hiragana.\n- [IRODORI lesson notes on Japanese characters](https://www.irodori.jpf.go.jp/assets/data/starter/pdf/X_L03.pdf) explain common katakana uses for loanwords, foreign names, onomatopoeia, animals, plants, and emphasis.\n- [Marugoto e-Learning](https://marugoto.jpf.go.jp/en/e-learning/) links the Japan Foundation's KATAKANA Memory Hint practice.\n- [Research on mnemonic-based hiragana learning](https://www.atlantis-press.com/proceedings/conaplin-18/125911420) supports pairing unfamiliar script shapes with memorable cues and active review.",
+      "plainText": "Same Sounds, New Shapes Katakana represents the same basic morae as hiragana. カ and か are both ka; the script changes, not the sound map. Katakana is common in loanwords, foreign names, sound effects, scientific names, and emphasis. The Japan Foundation gives examples such as メール (mail), プレゼント (present), and ハンバーガー (hamburger). The Basic Katakana Map | Family | a | i | u | e | o | | --- | --- | --- | --- | --- | --- | | vowels | ア a | イ i | ウ u | エ e | オ o | | k | カ ka | キ ki | ク ku | ケ ke | コ ko | | s | サ sa | シ shi | ス su | セ se | ソ so | | t | タ ta | チ chi | ツ tsu | テ te | ト to | | n | ナ na | ニ ni | ヌ nu | ネ ne | ノ no | | h | ハ ha | ヒ hi | フ fu | ヘ he | ホ ho | | m | マ ma | ミ mi | ム mu | メ me | モ mo | | y | ヤ ya | — | ユ yu | — | ヨ yo | | r | ラ ra | リ ri | ル ru | レ re | ロ ro | | w + n | ワ wa | — | — | — | ヲ o / wo | | nasal | ン n | — | — | — | — | The Long Vowel Mark ー ー extends the vowel immediately before it. コーヒー koohii — coffeeタクシー takushii — taxiスーパー suupaa — supermarket The dash is sound, not punctuation. In horizontal writing it is horizontal; in traditional vertical writing it turns vertical. The Four Famous Look-Alikes Compare stroke direction and placement, not only the final silhouette. シ shi: the short strokes sit more horizontally; the long stroke rises from lower left.ツ tsu: the short strokes stand more vertically; the long stroke falls from upper right.ソ so: one short stroke, then a falling long stroke.ン n: one short stroke, then a long stroke that rises from lower left. Also compare ク ku / ケ ke, チ chi / テ te, ワ wa / ウ u, and ヌ nu / ス su. Read Useful Words Loanwords adapt to Japanese sound patterns, so recognize the kana rather than forcing the original English spelling. テレビ terebi — televisionホテル hoteru — hotelレストラン resutoran — restaurantアメリカ amerika — America / the United Statesコンピューター konpyuutaa — computer A Reliable Practice Loop Learn one row while keeping the hiragana sounds nearby.Recall the sound from the katakana shape.Write each symbol once with the numbered stroke guide.Read two real loanwords.Mix the row into the full flashcard deck on a later session. Sources IRODORI Starter Lesson 2 introduces katakana and beginner words after hiragana.IRODORI lesson notes on Japanese characters explain common katakana uses for loanwords, foreign names, onomatopoeia, animals, plants, and emphasis.Marugoto e-Learning links the Japan Foundation's KATAKANA Memory Hint practice.Research on mnemonic-based hiragana learning supports pairing unfamiliar script shapes with memorable cues and active review.",
+      "headings": [
+        {
+          "id": "same-sounds-new-shapes",
+          "depth": 2,
+          "text": "Same Sounds, New Shapes"
+        },
+        {
+          "id": "the-basic-katakana-map",
+          "depth": 2,
+          "text": "The Basic Katakana Map"
+        },
+        {
+          "id": "the-long-vowel-mark",
+          "depth": 2,
+          "text": "The Long Vowel Mark ー"
+        },
+        {
+          "id": "the-four-famous-look-alikes",
+          "depth": 2,
+          "text": "The Four Famous Look-Alikes"
+        },
+        {
+          "id": "read-useful-words",
+          "depth": 2,
+          "text": "Read Useful Words"
+        },
+        {
+          "id": "a-reliable-practice-loop",
+          "depth": 2,
+          "text": "A Reliable Practice Loop"
+        },
+        {
+          "id": "sources",
+          "depth": 2,
+          "text": "Sources"
+        }
+      ],
+      "mermaidBlocks": [],
+      "contentHash": "54359dddb15fe75e2bc408de49e6efac2e00076e5c157ab2abe71162eeca1534",
+      "readingMinutes": 3
+    },
+    {
       "title": "Romaji Is Not Kana Input",
       "slug": "languages/japanese-romaji-kana-input",
       "summary": "Learn why konbanwa is typed konbanha, how Japanese particles change pronunciation, and how romaji differs from IME keystrokes.",
@@ -3170,7 +3374,7 @@
     {
       "slug": "japanese-foundations",
       "title": "Japanese Foundations",
-      "summary": "A beginner Japanese path for kana, starter kanji, IPA pronunciation support, and handwriting practice.",
+      "summary": "An alphabet-first beginner Japanese path for reading, recalling, typing, and writing hiragana and katakana before starter kanji.",
       "kind": "skill",
       "category": "Languages",
       "audience": "English-speaking beginners learning Japanese on mobile, tablet, and web.",
@@ -3179,34 +3383,26 @@
         {
           "slug": "writing-systems",
           "title": "Writing Systems",
-          "summary": "Learn hiragana, katakana, kanji, IPA aids, and the assisted-to-free handwriting loop.",
+          "summary": "See how hiragana, katakana, and kanji work together, and learn the assisted-to-free handwriting loop.",
           "nodes": [
             {
               "kind": "document",
               "slug": "languages/japanese-writing-systems"
-            },
-            {
-              "kind": "exercise",
-              "slug": "languages/japanese-hiragana-vowels-writing"
-            },
-            {
-              "kind": "exercise",
-              "slug": "languages/japanese-katakana-vowels-writing"
             }
           ]
         },
         {
-          "slug": "romaji-and-kana-input",
-          "title": "Romaji And Kana Input",
-          "summary": "Separate Japanese spelling, pronunciation, learner romaji, and the keys an IME needs.",
+          "slug": "hiragana-foundations",
+          "title": "Read And Write Hiragana",
+          "summary": "Learn the complete 46-character hiragana map in small row groups, then retrieve the sounds from memory.",
           "nodes": [
             {
               "kind": "document",
-              "slug": "languages/japanese-romaji-kana-input"
+              "slug": "languages/japanese-hiragana-foundations"
             },
             {
               "kind": "exercise",
-              "slug": "languages/japanese-romaji-kana-input-questionnaire"
+              "slug": "languages/japanese-hiragana-vowels-writing"
             },
             {
               "kind": "exercise",
@@ -3226,7 +3422,76 @@
             },
             {
               "kind": "exercise",
+              "slug": "languages/japanese-hiragana-reading-check"
+            }
+          ]
+        },
+        {
+          "slug": "hiragana-sound-tools",
+          "title": "Hiragana Sound Tools",
+          "summary": "Decode dakuten, handakuten, small kana, doubled consonants, contracted sounds, and long vowels.",
+          "nodes": [
+            {
+              "kind": "document",
+              "slug": "languages/japanese-hiragana-sound-changes"
+            },
+            {
+              "kind": "exercise",
+              "slug": "languages/japanese-hiragana-sound-changes-questionnaire"
+            },
+            {
+              "kind": "exercise",
               "slug": "languages/japanese-hiragana-ime-exceptions-writing"
+            }
+          ]
+        },
+        {
+          "slug": "katakana-foundations",
+          "title": "Read And Write Katakana",
+          "summary": "Reuse the hiragana sound map to learn all 46 basic katakana, key look-alikes, long vowels, and loanwords.",
+          "nodes": [
+            {
+              "kind": "document",
+              "slug": "languages/japanese-katakana-foundations"
+            },
+            {
+              "kind": "exercise",
+              "slug": "languages/japanese-katakana-vowels-writing"
+            },
+            {
+              "kind": "exercise",
+              "slug": "languages/japanese-katakana-k-s-writing"
+            },
+            {
+              "kind": "exercise",
+              "slug": "languages/japanese-katakana-t-n-writing"
+            },
+            {
+              "kind": "exercise",
+              "slug": "languages/japanese-katakana-h-m-writing"
+            },
+            {
+              "kind": "exercise",
+              "slug": "languages/japanese-katakana-y-r-w-writing"
+            },
+            {
+              "kind": "exercise",
+              "slug": "languages/japanese-katakana-reading-check"
+            }
+          ]
+        },
+        {
+          "slug": "romaji-and-kana-input",
+          "title": "Romaji And Kana Input",
+          "summary": "Separate Japanese spelling, pronunciation, learner romaji, and the keys an IME needs.",
+          "nodes": [
+            {
+              "kind": "document",
+              "slug": "languages/japanese-romaji-kana-input"
+            },
+            {
+              "kind": "exercise",
+              "slug": "languages/japanese-romaji-kana-input-questionnaire"
             }
           ]
         },
@@ -3249,7 +3514,7 @@
       "id": "084cfa357f0b",
       "route": "/paths/japanese-foundations",
       "sourcePath": "content/learning-paths/japanese-foundations.json",
-      "contentHash": "bba264f67aa7efc34deddb9a02d4b15fee48cdf8ad8560803293631c7263c64a"
+      "contentHash": "bfddd646626db5c9be650dcb34c2d238bc70966c4fc58f9da86fb146a620a663"
     },
     {
       "slug": "mermaid-diagram-authoring",
@@ -6374,6 +6639,419 @@
       "contentHash": "3055cbc2e5c1f155d3b93a23671eb100361d2380dee698273c594c8dff1128b0"
     },
     {
+      "slug": "languages/japanese-hiragana-reading-check",
+      "title": "Hiragana Reading Check",
+      "documentSlug": "languages/japanese-hiragana-foundations",
+      "concept": "Recall all basic hiragana by shape and sound",
+      "difficulty": "foundation",
+      "tags": [
+        "japanese",
+        "hiragana",
+        "reading",
+        "alphabet",
+        "recall"
+      ],
+      "status": "published",
+      "type": "questionnaire",
+      "questions": [
+        {
+          "id": "hiragana-k-s-match",
+          "prompt": "Match each hiragana to its learner romaji before checking the answer.",
+          "explanation": "Active matching checks whether the character shape retrieves its sound without relying on chart position.",
+          "kind": "matching",
+          "pairs": [
+            {
+              "id": "ki",
+              "prompt": "き",
+              "match": "ki"
+            },
+            {
+              "id": "shi",
+              "prompt": "し",
+              "match": "shi"
+            },
+            {
+              "id": "su",
+              "prompt": "す",
+              "match": "su"
+            },
+            {
+              "id": "ko",
+              "prompt": "こ",
+              "match": "ko"
+            },
+            {
+              "id": "se",
+              "prompt": "せ",
+              "match": "se"
+            }
+          ]
+        },
+        {
+          "id": "hiragana-t-n-match",
+          "prompt": "Match the t-row and n-row hiragana to their learner romaji.",
+          "explanation": "Remember the irregular sound labels chi and tsu while keeping the other row sounds predictable.",
+          "kind": "matching",
+          "pairs": [
+            {
+              "id": "chi",
+              "prompt": "ち",
+              "match": "chi"
+            },
+            {
+              "id": "tsu",
+              "prompt": "つ",
+              "match": "tsu"
+            },
+            {
+              "id": "te",
+              "prompt": "て",
+              "match": "te"
+            },
+            {
+              "id": "nu",
+              "prompt": "ぬ",
+              "match": "nu"
+            },
+            {
+              "id": "no",
+              "prompt": "の",
+              "match": "no"
+            }
+          ]
+        },
+        {
+          "id": "hiragana-h-m-match",
+          "prompt": "Match each h-row or m-row hiragana to its learner romaji.",
+          "explanation": "Compare the full shapes and crossings; do not identify a character from only one shared stroke.",
+          "kind": "matching",
+          "pairs": [
+            {
+              "id": "fu",
+              "prompt": "ふ",
+              "match": "fu"
+            },
+            {
+              "id": "he",
+              "prompt": "へ",
+              "match": "he"
+            },
+            {
+              "id": "ho",
+              "prompt": "ほ",
+              "match": "ho"
+            },
+            {
+              "id": "me",
+              "prompt": "め",
+              "match": "me"
+            },
+            {
+              "id": "mo",
+              "prompt": "も",
+              "match": "mo"
+            }
+          ]
+        },
+        {
+          "id": "hiragana-final-match",
+          "prompt": "Match the final-row hiragana to their learner romaji.",
+          "explanation": "The y-row has only ya, yu, and yo; ん is the only basic kana that represents a consonant by itself.",
+          "kind": "matching",
+          "pairs": [
+            {
+              "id": "ya",
+              "prompt": "や",
+              "match": "ya"
+            },
+            {
+              "id": "yu",
+              "prompt": "ゆ",
+              "match": "yu"
+            },
+            {
+              "id": "ro",
+              "prompt": "ろ",
+              "match": "ro"
+            },
+            {
+              "id": "wa",
+              "prompt": "わ",
+              "match": "wa"
+            },
+            {
+              "id": "nn",
+              "prompt": "ん",
+              "match": "n"
+            }
+          ]
+        },
+        {
+          "id": "hiragana-word-cat",
+          "prompt": "Which reading matches the hiragana word ねこ?",
+          "explanation": "ね is ne and こ is ko, so the word is neko, cat.",
+          "kind": "choice",
+          "options": [
+            {
+              "id": "neko",
+              "label": "neko — cat",
+              "isCorrect": true
+            },
+            {
+              "id": "nuko",
+              "label": "nuko — dog",
+              "isCorrect": false
+            },
+            {
+              "id": "meko",
+              "label": "meko — book",
+              "isCorrect": false
+            }
+          ]
+        },
+        {
+          "id": "hiragana-word-mountain",
+          "prompt": "Which hiragana spelling reads yama, mountain?",
+          "explanation": "や is ya and ま is ma. Read from left to right: ya-ma.",
+          "kind": "choice",
+          "options": [
+            {
+              "id": "yama",
+              "label": "やま",
+              "isCorrect": true
+            },
+            {
+              "id": "kawa",
+              "label": "かわ",
+              "isCorrect": false
+            },
+            {
+              "id": "hana",
+              "label": "はな",
+              "isCorrect": false
+            }
+          ]
+        },
+        {
+          "id": "hiragana-lookalike-ru",
+          "prompt": "Which character is ru and ends with a small loop?",
+          "explanation": "る closes with a small loop, while ろ keeps the corresponding lower curve open.",
+          "kind": "choice",
+          "options": [
+            {
+              "id": "ru",
+              "label": "る ru",
+              "isCorrect": true
+            },
+            {
+              "id": "ro",
+              "label": "ろ ro",
+              "isCorrect": false
+            },
+            {
+              "id": "re",
+              "label": "れ re",
+              "isCorrect": false
+            }
+          ]
+        },
+        {
+          "id": "hiragana-lookalike-ki",
+          "prompt": "Which character is ki and has two horizontal crossings?",
+          "explanation": "き has two short horizontal strokes; さ has one crossing near the top.",
+          "kind": "choice",
+          "options": [
+            {
+              "id": "ki",
+              "label": "き ki",
+              "isCorrect": true
+            },
+            {
+              "id": "sa",
+              "label": "さ sa",
+              "isCorrect": false
+            },
+            {
+              "id": "chi",
+              "label": "ち chi",
+              "isCorrect": false
+            }
+          ]
+        }
+      ],
+      "id": "717362e0d14c",
+      "route": "/practice/languages/japanese-hiragana-reading-check",
+      "sourcePath": "content/exercises/languages/japanese-hiragana-reading-check.json",
+      "contentHash": "d3405b04b391006a1853bca0e7c1fa0cfda6e63ec0d2715dcac1b0c883600bb4"
+    },
+    {
+      "slug": "languages/japanese-hiragana-sound-changes-questionnaire",
+      "title": "Hiragana Sound Change Check",
+      "documentSlug": "languages/japanese-hiragana-sound-changes",
+      "concept": "Dakuten, handakuten, small kana, and long vowels",
+      "difficulty": "foundation",
+      "tags": [
+        "japanese",
+        "hiragana",
+        "dakuten",
+        "small-kana",
+        "recall"
+      ],
+      "status": "published",
+      "type": "questionnaire",
+      "questions": [
+        {
+          "id": "dakuten-ka",
+          "prompt": "What happens when dakuten is added to か?",
+          "explanation": "Dakuten voices the k-row: k becomes g, so か ka becomes が ga.",
+          "kind": "choice",
+          "options": [
+            {
+              "id": "ga",
+              "label": "か becomes が, ga",
+              "isCorrect": true
+            },
+            {
+              "id": "pa",
+              "label": "か becomes ぱ, pa",
+              "isCorrect": false
+            },
+            {
+              "id": "kya",
+              "label": "か becomes きゃ, kya",
+              "isCorrect": false
+            }
+          ]
+        },
+        {
+          "id": "handakuten-ha",
+          "prompt": "What sound does the small circle add to the h-row?",
+          "explanation": "Handakuten is the small circle that changes h-row kana to p-row sounds.",
+          "kind": "choice",
+          "options": [
+            {
+              "id": "p-sound",
+              "label": "A p sound, as in ぱ pa",
+              "isCorrect": true
+            },
+            {
+              "id": "b-sound",
+              "label": "A b sound, as in ば ba",
+              "isCorrect": false
+            },
+            {
+              "id": "g-sound",
+              "label": "A g sound, as in が ga",
+              "isCorrect": false
+            }
+          ]
+        },
+        {
+          "id": "small-tsu-kitte",
+          "prompt": "Which spelling reads kitte, stamp, with a held consonant?",
+          "explanation": "Small っ holds the following t sound; it is not pronounced as a full tsu.",
+          "kind": "choice",
+          "options": [
+            {
+              "id": "kitte",
+              "label": "きって",
+              "isCorrect": true
+            },
+            {
+              "id": "kite",
+              "label": "きて",
+              "isCorrect": false
+            },
+            {
+              "id": "kitsute",
+              "label": "きつて",
+              "isCorrect": false
+            }
+          ]
+        },
+        {
+          "id": "small-yo-kyou",
+          "prompt": "Why does きょう begin with kyo rather than ki-yo?",
+          "explanation": "Small ょ contracts with the preceding i-row kana, so きょ is one contracted sound kyo.",
+          "kind": "choice",
+          "options": [
+            {
+              "id": "small-yo",
+              "label": "ょ is small and combines with き.",
+              "isCorrect": true
+            },
+            {
+              "id": "dakuten",
+              "label": "き has dakuten.",
+              "isCorrect": false
+            },
+            {
+              "id": "small-tsu",
+              "label": "き is followed by small っ.",
+              "isCorrect": false
+            }
+          ]
+        },
+        {
+          "id": "long-vowel-grandmother",
+          "prompt": "Which word has the long a sound in obaasan, grandmother?",
+          "explanation": "The extra あ extends the a sound. おばさん without it means aunt.",
+          "kind": "choice",
+          "options": [
+            {
+              "id": "obaasan",
+              "label": "おばあさん",
+              "isCorrect": true
+            },
+            {
+              "id": "obasan",
+              "label": "おばさん",
+              "isCorrect": false
+            },
+            {
+              "id": "obassan",
+              "label": "おばっさん",
+              "isCorrect": false
+            }
+          ]
+        },
+        {
+          "id": "read-marks-first",
+          "prompt": "Put the beginner decoding checks in a useful order.",
+          "explanation": "Reading the visible marks and sizes before guessing the whole word prevents common beginner errors.",
+          "kind": "ordering",
+          "items": [
+            {
+              "id": "marks",
+              "label": "Notice dakuten or handakuten"
+            },
+            {
+              "id": "size",
+              "label": "Check whether kana are small"
+            },
+            {
+              "id": "hold",
+              "label": "Apply small っ to the next consonant"
+            },
+            {
+              "id": "extend",
+              "label": "Check for a long vowel"
+            }
+          ],
+          "correctOrder": [
+            "marks",
+            "size",
+            "hold",
+            "extend"
+          ]
+        }
+      ],
+      "id": "8a368e0a1473",
+      "route": "/practice/languages/japanese-hiragana-sound-changes-questionnaire",
+      "sourcePath": "content/exercises/languages/japanese-hiragana-sound-changes-questionnaire.json",
+      "contentHash": "5ec262e916a36d6eaafeed903d203028e0329dcb05ab9fef81b9bf40532187b2"
+    },
+    {
       "slug": "languages/japanese-hiragana-t-n-writing",
       "title": "Hiragana T And N Rows",
       "documentSlug": "languages/japanese-romaji-kana-input",
@@ -6478,6 +7156,353 @@
       "contentHash": "dae7e6821eece7ba00bdf002cc4a6763642d216c0505550b66fa350f1e755409"
     },
     {
+      "slug": "languages/japanese-katakana-h-m-writing",
+      "title": "Write Katakana H And M Rows",
+      "documentSlug": "languages/japanese-katakana-foundations",
+      "concept": "Katakana h-row and m-row handwriting",
+      "difficulty": "foundation",
+      "tags": [
+        "japanese",
+        "katakana",
+        "writing",
+        "alphabet"
+      ],
+      "status": "published",
+      "type": "writing",
+      "prompt": "Trace, then write the katakana h-row and m-row, keeping straight strokes crisp and distinct.",
+      "characterSlugs": [
+        "japanese/katakana/ha",
+        "japanese/katakana/hi",
+        "japanese/katakana/fu",
+        "japanese/katakana/he",
+        "japanese/katakana/ho",
+        "japanese/katakana/ma",
+        "japanese/katakana/mi",
+        "japanese/katakana/mu",
+        "japanese/katakana/me",
+        "japanese/katakana/mo"
+      ],
+      "modes": [
+        "assisted",
+        "free"
+      ],
+      "explanation": "These rows include several compact characters used constantly in beginner loanwords such as ホテル and メモ.",
+      "id": "7b574119e40d",
+      "route": "/practice/languages/japanese-katakana-h-m-writing",
+      "sourcePath": "content/exercises/languages/japanese-katakana-h-m-writing.json",
+      "contentHash": "3bfa33ce276e7393a590aa2401839ba769137e059a217fdae8cad7f483a195de"
+    },
+    {
+      "slug": "languages/japanese-katakana-k-s-writing",
+      "title": "Write Katakana K And S Rows",
+      "documentSlug": "languages/japanese-katakana-foundations",
+      "concept": "Katakana k-row and s-row handwriting",
+      "difficulty": "foundation",
+      "tags": [
+        "japanese",
+        "katakana",
+        "writing",
+        "alphabet"
+      ],
+      "status": "published",
+      "type": "writing",
+      "prompt": "Trace, then write the katakana k-row and s-row with the numbered stroke starts.",
+      "characterSlugs": [
+        "japanese/katakana/ka",
+        "japanese/katakana/ki",
+        "japanese/katakana/ku",
+        "japanese/katakana/ke",
+        "japanese/katakana/ko",
+        "japanese/katakana/sa",
+        "japanese/katakana/shi",
+        "japanese/katakana/su",
+        "japanese/katakana/se",
+        "japanese/katakana/so"
+      ],
+      "modes": [
+        "assisted",
+        "free"
+      ],
+      "explanation": "These rows establish the angular katakana stroke rhythm and introduce シ, one of the important look-alike characters.",
+      "id": "49b3b2d4638b",
+      "route": "/practice/languages/japanese-katakana-k-s-writing",
+      "sourcePath": "content/exercises/languages/japanese-katakana-k-s-writing.json",
+      "contentHash": "de77fc0dc5e1e169afc5d6ad73928155d090376391cd21e16dd11ca427f21fef"
+    },
+    {
+      "slug": "languages/japanese-katakana-reading-check",
+      "title": "Katakana Reading Check",
+      "documentSlug": "languages/japanese-katakana-foundations",
+      "concept": "Recall basic katakana and read beginner loanwords",
+      "difficulty": "foundation",
+      "tags": [
+        "japanese",
+        "katakana",
+        "reading",
+        "loanwords",
+        "recall"
+      ],
+      "status": "published",
+      "type": "questionnaire",
+      "questions": [
+        {
+          "id": "katakana-k-s-match",
+          "prompt": "Match each katakana to its learner romaji.",
+          "explanation": "Katakana uses the same sounds as hiragana, so retrieve the known sound from the new shape.",
+          "kind": "matching",
+          "pairs": [
+            {
+              "id": "ka",
+              "prompt": "カ",
+              "match": "ka"
+            },
+            {
+              "id": "ki",
+              "prompt": "キ",
+              "match": "ki"
+            },
+            {
+              "id": "shi",
+              "prompt": "シ",
+              "match": "shi"
+            },
+            {
+              "id": "su",
+              "prompt": "ス",
+              "match": "su"
+            },
+            {
+              "id": "so",
+              "prompt": "ソ",
+              "match": "so"
+            }
+          ]
+        },
+        {
+          "id": "katakana-t-n-match",
+          "prompt": "Match these t-row and n-row katakana to their learner romaji.",
+          "explanation": "Pay special attention to the stroke direction in ツ; it separates tsu from シ shi.",
+          "kind": "matching",
+          "pairs": [
+            {
+              "id": "chi",
+              "prompt": "チ",
+              "match": "chi"
+            },
+            {
+              "id": "tsu",
+              "prompt": "ツ",
+              "match": "tsu"
+            },
+            {
+              "id": "te",
+              "prompt": "テ",
+              "match": "te"
+            },
+            {
+              "id": "nu",
+              "prompt": "ヌ",
+              "match": "nu"
+            },
+            {
+              "id": "no",
+              "prompt": "ノ",
+              "match": "no"
+            }
+          ]
+        },
+        {
+          "id": "katakana-final-match",
+          "prompt": "Match these final-row katakana to their learner romaji.",
+          "explanation": "Use the full silhouette and stroke direction, especially for ン n and ソ so.",
+          "kind": "matching",
+          "pairs": [
+            {
+              "id": "ya",
+              "prompt": "ヤ",
+              "match": "ya"
+            },
+            {
+              "id": "yu",
+              "prompt": "ユ",
+              "match": "yu"
+            },
+            {
+              "id": "ri",
+              "prompt": "リ",
+              "match": "ri"
+            },
+            {
+              "id": "ro",
+              "prompt": "ロ",
+              "match": "ro"
+            },
+            {
+              "id": "nn",
+              "prompt": "ン",
+              "match": "n"
+            }
+          ]
+        },
+        {
+          "id": "katakana-shi-tsu",
+          "prompt": "Which pair is ordered shi, then tsu?",
+          "explanation": "シ has more horizontal short strokes and a rising long stroke; ツ has more vertical short strokes and a falling long stroke.",
+          "kind": "choice",
+          "options": [
+            {
+              "id": "shi-tsu",
+              "label": "シ・ツ",
+              "isCorrect": true
+            },
+            {
+              "id": "tsu-shi",
+              "label": "ツ・シ",
+              "isCorrect": false
+            },
+            {
+              "id": "so-n",
+              "label": "ソ・ン",
+              "isCorrect": false
+            }
+          ]
+        },
+        {
+          "id": "katakana-so-n",
+          "prompt": "Which character is the moraic n with a long stroke rising from lower left?",
+          "explanation": "ン rises from lower left; ソ begins higher and falls down toward the left.",
+          "kind": "choice",
+          "options": [
+            {
+              "id": "nn",
+              "label": "ン",
+              "isCorrect": true
+            },
+            {
+              "id": "so",
+              "label": "ソ",
+              "isCorrect": false
+            },
+            {
+              "id": "shi",
+              "label": "シ",
+              "isCorrect": false
+            }
+          ]
+        },
+        {
+          "id": "katakana-coffee",
+          "prompt": "Which reading matches コーヒー?",
+          "explanation": "コ is ko, ー extends o, ヒ is hi, and the final ー extends i: ko-o-hi-i.",
+          "kind": "choice",
+          "options": [
+            {
+              "id": "koohii",
+              "label": "koohii — coffee",
+              "isCorrect": true
+            },
+            {
+              "id": "kohie",
+              "label": "kohie — hotel",
+              "isCorrect": false
+            },
+            {
+              "id": "kuuhii",
+              "label": "kuuhii — taxi",
+              "isCorrect": false
+            }
+          ]
+        },
+        {
+          "id": "katakana-hotel",
+          "prompt": "Which katakana spelling reads hoteru, hotel?",
+          "explanation": "ホ ho + テ te + ル ru gives ホテル, hoteru.",
+          "kind": "choice",
+          "options": [
+            {
+              "id": "hoteru",
+              "label": "ホテル",
+              "isCorrect": true
+            },
+            {
+              "id": "terebi",
+              "label": "テレビ",
+              "isCorrect": false
+            },
+            {
+              "id": "resutoran",
+              "label": "レストラン",
+              "isCorrect": false
+            }
+          ]
+        },
+        {
+          "id": "katakana-long-mark",
+          "prompt": "What does ー do in a katakana word?",
+          "explanation": "The chōonpu ー is a long vowel mark; small ッ is the symbol that holds the next consonant.",
+          "kind": "choice",
+          "options": [
+            {
+              "id": "extend",
+              "label": "It extends the preceding vowel sound.",
+              "isCorrect": true
+            },
+            {
+              "id": "pause",
+              "label": "It doubles the next consonant.",
+              "isCorrect": false
+            },
+            {
+              "id": "particle",
+              "label": "It marks the topic of a sentence.",
+              "isCorrect": false
+            }
+          ]
+        }
+      ],
+      "id": "44d4aa99d1ce",
+      "route": "/practice/languages/japanese-katakana-reading-check",
+      "sourcePath": "content/exercises/languages/japanese-katakana-reading-check.json",
+      "contentHash": "ba585e911874678a40f43fe18fc8fd2cdca21c0ad9155e8e9c3820021a0b70ac"
+    },
+    {
+      "slug": "languages/japanese-katakana-t-n-writing",
+      "title": "Write Katakana T And N Rows",
+      "documentSlug": "languages/japanese-katakana-foundations",
+      "concept": "Katakana t-row and n-row handwriting",
+      "difficulty": "foundation",
+      "tags": [
+        "japanese",
+        "katakana",
+        "writing",
+        "alphabet"
+      ],
+      "status": "published",
+      "type": "writing",
+      "prompt": "Trace, then write the katakana t-row and n-row with attention to stroke direction.",
+      "characterSlugs": [
+        "japanese/katakana/ta",
+        "japanese/katakana/chi",
+        "japanese/katakana/tsu",
+        "japanese/katakana/te",
+        "japanese/katakana/to",
+        "japanese/katakana/na",
+        "japanese/katakana/ni",
+        "japanese/katakana/nu",
+        "japanese/katakana/ne",
+        "japanese/katakana/no"
+      ],
+      "modes": [
+        "assisted",
+        "free"
+      ],
+      "explanation": "This drill contrasts ツ with シ and builds recognition of the simple, high-frequency n-row shapes.",
+      "id": "83eee7a7c357",
+      "route": "/practice/languages/japanese-katakana-t-n-writing",
+      "sourcePath": "content/exercises/languages/japanese-katakana-t-n-writing.json",
+      "contentHash": "153eb0a75013ef60b1faddd1e63209534732ebe0bbf24afc727d475590eadbe9"
+    },
+    {
       "slug": "languages/japanese-katakana-vowels-writing",
       "title": "Katakana Vowel Writing",
       "documentSlug": "languages/japanese-writing-systems",
@@ -6507,6 +7532,44 @@
       "route": "/practice/languages/japanese-katakana-vowels-writing",
       "sourcePath": "content/exercises/languages/japanese-katakana-vowels-writing.json",
       "contentHash": "2b0cd5242d0bed19403bc2d84e9870daf1f56a60cf6f7a1b82e5fb1449aa7b71"
+    },
+    {
+      "slug": "languages/japanese-katakana-y-r-w-writing",
+      "title": "Write Final Basic Katakana Rows",
+      "documentSlug": "languages/japanese-katakana-foundations",
+      "concept": "Final basic katakana rows and moraic n",
+      "difficulty": "foundation",
+      "tags": [
+        "japanese",
+        "katakana",
+        "writing",
+        "alphabet"
+      ],
+      "status": "published",
+      "type": "writing",
+      "prompt": "Complete the basic katakana chart with the y-row, r-row, wa, wo, and moraic n.",
+      "characterSlugs": [
+        "japanese/katakana/ya",
+        "japanese/katakana/yu",
+        "japanese/katakana/yo",
+        "japanese/katakana/ra",
+        "japanese/katakana/ri",
+        "japanese/katakana/ru",
+        "japanese/katakana/re",
+        "japanese/katakana/ro",
+        "japanese/katakana/wa",
+        "japanese/katakana/wo",
+        "japanese/katakana/n"
+      ],
+      "modes": [
+        "assisted",
+        "free"
+      ],
+      "explanation": "This drill completes all 46 basic katakana and highlights ン, which beginners should compare directly with ソ, シ, and ツ.",
+      "id": "4a373bae0a84",
+      "route": "/practice/languages/japanese-katakana-y-r-w-writing",
+      "sourcePath": "content/exercises/languages/japanese-katakana-y-r-w-writing.json",
+      "contentHash": "e3dd85155e3d7f9d0f645e46b21ba1bd8f58c1ce985640a15ded9f31790d2584"
     },
     {
       "slug": "languages/japanese-romaji-kana-input-questionnaire",
@@ -8434,7 +9497,7 @@
       "id": "415fea39c4c7",
       "route": "/languages/japanese/characters/hiragana/a",
       "sourcePath": "content/languages/japanese/characters.json",
-      "contentHash": "4364ea1971f4eda01d76d188c4ec20711fbdd61e9eb8f27b165bc27c336d7f58"
+      "contentHash": "2deaf50bd501960d12348e2dfcf9c60eb5f31f16398534ac7522126f34766fbd"
     },
     {
       "slug": "japanese/hiragana/ba",
@@ -8727,7 +9790,7 @@
       "id": "79d88a825daa",
       "route": "/languages/japanese/characters/hiragana/e",
       "sourcePath": "content/languages/japanese/characters.json",
-      "contentHash": "4364ea1971f4eda01d76d188c4ec20711fbdd61e9eb8f27b165bc27c336d7f58"
+      "contentHash": "2deaf50bd501960d12348e2dfcf9c60eb5f31f16398534ac7522126f34766fbd"
     },
     {
       "slug": "japanese/hiragana/fu",
@@ -9372,7 +10435,7 @@
       "id": "00f15de22352",
       "route": "/languages/japanese/characters/hiragana/i",
       "sourcePath": "content/languages/japanese/characters.json",
-      "contentHash": "4364ea1971f4eda01d76d188c4ec20711fbdd61e9eb8f27b165bc27c336d7f58"
+      "contentHash": "2deaf50bd501960d12348e2dfcf9c60eb5f31f16398534ac7522126f34766fbd"
     },
     {
       "slug": "japanese/hiragana/ji",
@@ -10999,7 +12062,7 @@
       "id": "8ba84bf5a2b7",
       "route": "/languages/japanese/characters/hiragana/o",
       "sourcePath": "content/languages/japanese/characters.json",
-      "contentHash": "4364ea1971f4eda01d76d188c4ec20711fbdd61e9eb8f27b165bc27c336d7f58"
+      "contentHash": "2deaf50bd501960d12348e2dfcf9c60eb5f31f16398534ac7522126f34766fbd"
     },
     {
       "slug": "japanese/hiragana/pa",
@@ -12707,7 +13770,7 @@
       "id": "d931945db240",
       "route": "/languages/japanese/characters/hiragana/u",
       "sourcePath": "content/languages/japanese/characters.json",
-      "contentHash": "4364ea1971f4eda01d76d188c4ec20711fbdd61e9eb8f27b165bc27c336d7f58"
+      "contentHash": "2deaf50bd501960d12348e2dfcf9c60eb5f31f16398534ac7522126f34766fbd"
     },
     {
       "slug": "japanese/hiragana/wa",
@@ -13252,7 +14315,7 @@
       "id": "b23a42a6a266",
       "route": "/languages/japanese/characters/kanji/big",
       "sourcePath": "content/languages/japanese/characters.json",
-      "contentHash": "4364ea1971f4eda01d76d188c4ec20711fbdd61e9eb8f27b165bc27c336d7f58"
+      "contentHash": "2deaf50bd501960d12348e2dfcf9c60eb5f31f16398534ac7522126f34766fbd"
     },
     {
       "slug": "japanese/kanji/book",
@@ -13354,7 +14417,7 @@
       "id": "a15ac77efc2c",
       "route": "/languages/japanese/characters/kanji/book",
       "sourcePath": "content/languages/japanese/characters.json",
-      "contentHash": "4364ea1971f4eda01d76d188c4ec20711fbdd61e9eb8f27b165bc27c336d7f58"
+      "contentHash": "2deaf50bd501960d12348e2dfcf9c60eb5f31f16398534ac7522126f34766fbd"
     },
     {
       "slug": "japanese/kanji/day",
@@ -13447,7 +14510,7 @@
       "id": "c053e1b2ca45",
       "route": "/languages/japanese/characters/kanji/day",
       "sourcePath": "content/languages/japanese/characters.json",
-      "contentHash": "4364ea1971f4eda01d76d188c4ec20711fbdd61e9eb8f27b165bc27c336d7f58"
+      "contentHash": "2deaf50bd501960d12348e2dfcf9c60eb5f31f16398534ac7522126f34766fbd"
     },
     {
       "slug": "japanese/kanji/earth",
@@ -13523,7 +14586,7 @@
       "id": "84ff5966f745",
       "route": "/languages/japanese/characters/kanji/earth",
       "sourcePath": "content/languages/japanese/characters.json",
-      "contentHash": "4364ea1971f4eda01d76d188c4ec20711fbdd61e9eb8f27b165bc27c336d7f58"
+      "contentHash": "2deaf50bd501960d12348e2dfcf9c60eb5f31f16398534ac7522126f34766fbd"
     },
     {
       "slug": "japanese/kanji/eight",
@@ -13585,7 +14648,7 @@
       "id": "84ae8c7ee5f6",
       "route": "/languages/japanese/characters/kanji/eight",
       "sourcePath": "content/languages/japanese/characters.json",
-      "contentHash": "4364ea1971f4eda01d76d188c4ec20711fbdd61e9eb8f27b165bc27c336d7f58"
+      "contentHash": "2deaf50bd501960d12348e2dfcf9c60eb5f31f16398534ac7522126f34766fbd"
     },
     {
       "slug": "japanese/kanji/evening",
@@ -13885,7 +14948,7 @@
       "id": "5535eaac54c2",
       "route": "/languages/japanese/characters/kanji/fire",
       "sourcePath": "content/languages/japanese/characters.json",
-      "contentHash": "4364ea1971f4eda01d76d188c4ec20711fbdd61e9eb8f27b165bc27c336d7f58"
+      "contentHash": "2deaf50bd501960d12348e2dfcf9c60eb5f31f16398534ac7522126f34766fbd"
     },
     {
       "slug": "japanese/kanji/five",
@@ -13973,7 +15036,7 @@
       "id": "95f53528b15d",
       "route": "/languages/japanese/characters/kanji/five",
       "sourcePath": "content/languages/japanese/characters.json",
-      "contentHash": "4364ea1971f4eda01d76d188c4ec20711fbdd61e9eb8f27b165bc27c336d7f58"
+      "contentHash": "2deaf50bd501960d12348e2dfcf9c60eb5f31f16398534ac7522126f34766fbd"
     },
     {
       "slug": "japanese/kanji/four",
@@ -14078,7 +15141,7 @@
       "id": "469219848d4d",
       "route": "/languages/japanese/characters/kanji/four",
       "sourcePath": "content/languages/japanese/characters.json",
-      "contentHash": "4364ea1971f4eda01d76d188c4ec20711fbdd61e9eb8f27b165bc27c336d7f58"
+      "contentHash": "2deaf50bd501960d12348e2dfcf9c60eb5f31f16398534ac7522126f34766fbd"
     },
     {
       "slug": "japanese/kanji/gold",
@@ -14219,7 +15282,7 @@
       "id": "10273173cefc",
       "route": "/languages/japanese/characters/kanji/gold",
       "sourcePath": "content/languages/japanese/characters.json",
-      "contentHash": "4364ea1971f4eda01d76d188c4ec20711fbdd61e9eb8f27b165bc27c336d7f58"
+      "contentHash": "2deaf50bd501960d12348e2dfcf9c60eb5f31f16398534ac7522126f34766fbd"
     },
     {
       "slug": "japanese/kanji/middle",
@@ -14312,7 +15375,7 @@
       "id": "dd9bbbb14500",
       "route": "/languages/japanese/characters/kanji/middle",
       "sourcePath": "content/languages/japanese/characters.json",
-      "contentHash": "4364ea1971f4eda01d76d188c4ec20711fbdd61e9eb8f27b165bc27c336d7f58"
+      "contentHash": "2deaf50bd501960d12348e2dfcf9c60eb5f31f16398534ac7522126f34766fbd"
     },
     {
       "slug": "japanese/kanji/month",
@@ -14405,7 +15468,7 @@
       "id": "7015769fa019",
       "route": "/languages/japanese/characters/kanji/month",
       "sourcePath": "content/languages/japanese/characters.json",
-      "contentHash": "4364ea1971f4eda01d76d188c4ec20711fbdd61e9eb8f27b165bc27c336d7f58"
+      "contentHash": "2deaf50bd501960d12348e2dfcf9c60eb5f31f16398534ac7522126f34766fbd"
     },
     {
       "slug": "japanese/kanji/mountain",
@@ -14484,7 +15547,7 @@
       "id": "8b2f86bb34ab",
       "route": "/languages/japanese/characters/kanji/mountain",
       "sourcePath": "content/languages/japanese/characters.json",
-      "contentHash": "4364ea1971f4eda01d76d188c4ec20711fbdd61e9eb8f27b165bc27c336d7f58"
+      "contentHash": "2deaf50bd501960d12348e2dfcf9c60eb5f31f16398534ac7522126f34766fbd"
     },
     {
       "slug": "japanese/kanji/nine",
@@ -14554,7 +15617,7 @@
       "id": "fc718d1556cc",
       "route": "/languages/japanese/characters/kanji/nine",
       "sourcePath": "content/languages/japanese/characters.json",
-      "contentHash": "4364ea1971f4eda01d76d188c4ec20711fbdd61e9eb8f27b165bc27c336d7f58"
+      "contentHash": "2deaf50bd501960d12348e2dfcf9c60eb5f31f16398534ac7522126f34766fbd"
     },
     {
       "slug": "japanese/kanji/now",
@@ -14717,7 +15780,7 @@
       "id": "387a17d97031",
       "route": "/languages/japanese/characters/kanji/one",
       "sourcePath": "content/languages/japanese/characters.json",
-      "contentHash": "4364ea1971f4eda01d76d188c4ec20711fbdd61e9eb8f27b165bc27c336d7f58"
+      "contentHash": "2deaf50bd501960d12348e2dfcf9c60eb5f31f16398534ac7522126f34766fbd"
     },
     {
       "slug": "japanese/kanji/person",
@@ -14780,7 +15843,7 @@
       "id": "17412f947b30",
       "route": "/languages/japanese/characters/kanji/person",
       "sourcePath": "content/languages/japanese/characters.json",
-      "contentHash": "4364ea1971f4eda01d76d188c4ec20711fbdd61e9eb8f27b165bc27c336d7f58"
+      "contentHash": "2deaf50bd501960d12348e2dfcf9c60eb5f31f16398534ac7522126f34766fbd"
     },
     {
       "slug": "japanese/kanji/river",
@@ -14855,7 +15918,7 @@
       "id": "22539acffef1",
       "route": "/languages/japanese/characters/kanji/river",
       "sourcePath": "content/languages/japanese/characters.json",
-      "contentHash": "4364ea1971f4eda01d76d188c4ec20711fbdd61e9eb8f27b165bc27c336d7f58"
+      "contentHash": "2deaf50bd501960d12348e2dfcf9c60eb5f31f16398534ac7522126f34766fbd"
     },
     {
       "slug": "japanese/kanji/seven",
@@ -14921,7 +15984,7 @@
       "id": "072c876d939f",
       "route": "/languages/japanese/characters/kanji/seven",
       "sourcePath": "content/languages/japanese/characters.json",
-      "contentHash": "4364ea1971f4eda01d76d188c4ec20711fbdd61e9eb8f27b165bc27c336d7f58"
+      "contentHash": "2deaf50bd501960d12348e2dfcf9c60eb5f31f16398534ac7522126f34766fbd"
     },
     {
       "slug": "japanese/kanji/six",
@@ -15009,7 +16072,7 @@
       "id": "a1b1f55fefa8",
       "route": "/languages/japanese/characters/kanji/six",
       "sourcePath": "content/languages/japanese/characters.json",
-      "contentHash": "4364ea1971f4eda01d76d188c4ec20711fbdd61e9eb8f27b165bc27c336d7f58"
+      "contentHash": "2deaf50bd501960d12348e2dfcf9c60eb5f31f16398534ac7522126f34766fbd"
     },
     {
       "slug": "japanese/kanji/small",
@@ -15084,7 +16147,7 @@
       "id": "c6526c38a3ee",
       "route": "/languages/japanese/characters/kanji/small",
       "sourcePath": "content/languages/japanese/characters.json",
-      "contentHash": "4364ea1971f4eda01d76d188c4ec20711fbdd61e9eb8f27b165bc27c336d7f58"
+      "contentHash": "2deaf50bd501960d12348e2dfcf9c60eb5f31f16398534ac7522126f34766fbd"
     },
     {
       "slug": "japanese/kanji/ten",
@@ -15146,7 +16209,7 @@
       "id": "900d813b15fa",
       "route": "/languages/japanese/characters/kanji/ten",
       "sourcePath": "content/languages/japanese/characters.json",
-      "contentHash": "4364ea1971f4eda01d76d188c4ec20711fbdd61e9eb8f27b165bc27c336d7f58"
+      "contentHash": "2deaf50bd501960d12348e2dfcf9c60eb5f31f16398534ac7522126f34766fbd"
     },
     {
       "slug": "japanese/kanji/three",
@@ -15221,7 +16284,7 @@
       "id": "e9f0cbba05e1",
       "route": "/languages/japanese/characters/kanji/three",
       "sourcePath": "content/languages/japanese/characters.json",
-      "contentHash": "4364ea1971f4eda01d76d188c4ec20711fbdd61e9eb8f27b165bc27c336d7f58"
+      "contentHash": "2deaf50bd501960d12348e2dfcf9c60eb5f31f16398534ac7522126f34766fbd"
     },
     {
       "slug": "japanese/kanji/tree",
@@ -15310,7 +16373,7 @@
       "id": "1a1ddd006144",
       "route": "/languages/japanese/characters/kanji/tree",
       "sourcePath": "content/languages/japanese/characters.json",
-      "contentHash": "4364ea1971f4eda01d76d188c4ec20711fbdd61e9eb8f27b165bc27c336d7f58"
+      "contentHash": "2deaf50bd501960d12348e2dfcf9c60eb5f31f16398534ac7522126f34766fbd"
     },
     {
       "slug": "japanese/kanji/two",
@@ -15372,7 +16435,7 @@
       "id": "1ec13c4ec844",
       "route": "/languages/japanese/characters/kanji/two",
       "sourcePath": "content/languages/japanese/characters.json",
-      "contentHash": "4364ea1971f4eda01d76d188c4ec20711fbdd61e9eb8f27b165bc27c336d7f58"
+      "contentHash": "2deaf50bd501960d12348e2dfcf9c60eb5f31f16398534ac7522126f34766fbd"
     },
     {
       "slug": "japanese/kanji/water",
@@ -15473,7 +16536,7 @@
       "id": "848da958da31",
       "route": "/languages/japanese/characters/kanji/water",
       "sourcePath": "content/languages/japanese/characters.json",
-      "contentHash": "4364ea1971f4eda01d76d188c4ec20711fbdd61e9eb8f27b165bc27c336d7f58"
+      "contentHash": "2deaf50bd501960d12348e2dfcf9c60eb5f31f16398534ac7522126f34766fbd"
     },
     {
       "slug": "japanese/katakana/a",
@@ -15493,13 +16556,16 @@
         }
       ],
       "romaji": "a",
-      "inputSequences": [],
+      "inputSequences": [
+        "a"
+      ],
       "ipa": "a",
-      "studyOrder": 9999,
+      "studyOrder": 1,
       "tags": [
         "kana",
         "vowel",
-        "katakana"
+        "katakana",
+        "basic-katakana"
       ],
       "status": "published",
       "strokes": [
@@ -15539,7 +16605,194 @@
       "id": "97fb289cd0cd",
       "route": "/languages/japanese/characters/katakana/a",
       "sourcePath": "content/languages/japanese/characters.json",
-      "contentHash": "4364ea1971f4eda01d76d188c4ec20711fbdd61e9eb8f27b165bc27c336d7f58"
+      "contentHash": "2deaf50bd501960d12348e2dfcf9c60eb5f31f16398534ac7522126f34766fbd"
+    },
+    {
+      "slug": "japanese/katakana/bi",
+      "language": "ja",
+      "writingSystem": "katakana",
+      "glyph": "ビ",
+      "title": "Katakana Bi",
+      "summary": "The voiced katakana syllable bi used in beginner loanwords.",
+      "meanings": [
+        "bi sound"
+      ],
+      "readings": [
+        {
+          "label": "katakana",
+          "value": "ビ",
+          "ipa": "bi"
+        }
+      ],
+      "romaji": "bi",
+      "inputSequences": [
+        "bi"
+      ],
+      "ipa": "bi",
+      "studyOrder": 109,
+      "tags": [
+        "kana",
+        "katakana",
+        "supplement",
+        "dakuten"
+      ],
+      "status": "published",
+      "strokes": [
+        {
+          "id": "s1",
+          "points": [
+            [
+              30,
+              25
+            ],
+            [
+              30,
+              72
+            ],
+            [
+              40,
+              80
+            ],
+            [
+              73,
+              78
+            ]
+          ]
+        },
+        {
+          "id": "s2",
+          "points": [
+            [
+              31,
+              48
+            ],
+            [
+              69,
+              38
+            ]
+          ]
+        },
+        {
+          "id": "s3",
+          "points": [
+            [
+              70,
+              16
+            ],
+            [
+              77,
+              22
+            ]
+          ]
+        },
+        {
+          "id": "s4",
+          "points": [
+            [
+              78,
+              12
+            ],
+            [
+              85,
+              18
+            ]
+          ]
+        }
+      ],
+      "examples": [],
+      "sources": [],
+      "id": "503a8a3b5b38",
+      "route": "/languages/japanese/characters/katakana/bi",
+      "sourcePath": "content/languages/japanese/katakana-expanded.json",
+      "contentHash": "95dcf17b24ac2cbbff5eadf5bba3107eb2960fe664dc530fdc91f316fa62bb7a"
+    },
+    {
+      "slug": "japanese/katakana/chi",
+      "language": "ja",
+      "writingSystem": "katakana",
+      "glyph": "チ",
+      "title": "Katakana Chi",
+      "summary": "The basic katakana syllable chi.",
+      "meanings": [
+        "chi sound"
+      ],
+      "readings": [
+        {
+          "label": "katakana",
+          "value": "チ",
+          "ipa": "tɕi"
+        }
+      ],
+      "romaji": "chi",
+      "inputSequences": [
+        "chi",
+        "ti"
+      ],
+      "ipa": "tɕi",
+      "studyOrder": 17,
+      "tags": [
+        "kana",
+        "katakana",
+        "basic-katakana",
+        "t-row",
+        "ime-alias"
+      ],
+      "status": "published",
+      "strokes": [
+        {
+          "id": "s1",
+          "points": [
+            [
+              33,
+              24
+            ],
+            [
+              66,
+              18
+            ]
+          ]
+        },
+        {
+          "id": "s2",
+          "points": [
+            [
+              20,
+              44
+            ],
+            [
+              79,
+              38
+            ]
+          ]
+        },
+        {
+          "id": "s3",
+          "points": [
+            [
+              51,
+              21
+            ],
+            [
+              54,
+              54
+            ],
+            [
+              46,
+              72
+            ],
+            [
+              30,
+              84
+            ]
+          ]
+        }
+      ],
+      "examples": [],
+      "sources": [],
+      "id": "1af466b98411",
+      "route": "/languages/japanese/characters/katakana/chi",
+      "sourcePath": "content/languages/japanese/katakana-expanded.json",
+      "contentHash": "95dcf17b24ac2cbbff5eadf5bba3107eb2960fe664dc530fdc91f316fa62bb7a"
     },
     {
       "slug": "japanese/katakana/e",
@@ -15559,13 +16812,16 @@
         }
       ],
       "romaji": "e",
-      "inputSequences": [],
+      "inputSequences": [
+        "e"
+      ],
       "ipa": "e",
-      "studyOrder": 9999,
+      "studyOrder": 4,
       "tags": [
         "kana",
         "vowel",
-        "katakana"
+        "katakana",
+        "basic-katakana"
       ],
       "status": "published",
       "strokes": [
@@ -15614,7 +16870,457 @@
       "id": "65295047e3da",
       "route": "/languages/japanese/characters/katakana/e",
       "sourcePath": "content/languages/japanese/characters.json",
-      "contentHash": "4364ea1971f4eda01d76d188c4ec20711fbdd61e9eb8f27b165bc27c336d7f58"
+      "contentHash": "2deaf50bd501960d12348e2dfcf9c60eb5f31f16398534ac7522126f34766fbd"
+    },
+    {
+      "slug": "japanese/katakana/fu",
+      "language": "ja",
+      "writingSystem": "katakana",
+      "glyph": "フ",
+      "title": "Katakana Fu",
+      "summary": "The basic katakana syllable fu.",
+      "meanings": [
+        "fu sound"
+      ],
+      "readings": [
+        {
+          "label": "katakana",
+          "value": "フ",
+          "ipa": "ɸɯ"
+        }
+      ],
+      "romaji": "fu",
+      "inputSequences": [
+        "fu",
+        "hu"
+      ],
+      "ipa": "ɸɯ",
+      "studyOrder": 28,
+      "tags": [
+        "kana",
+        "katakana",
+        "basic-katakana",
+        "h-row",
+        "ime-alias"
+      ],
+      "status": "published",
+      "strokes": [
+        {
+          "id": "s1",
+          "points": [
+            [
+              25,
+              28
+            ],
+            [
+              74,
+              26
+            ],
+            [
+              66,
+              56
+            ],
+            [
+              49,
+              74
+            ],
+            [
+              27,
+              84
+            ]
+          ]
+        }
+      ],
+      "examples": [],
+      "sources": [],
+      "id": "3023a089f4e8",
+      "route": "/languages/japanese/characters/katakana/fu",
+      "sourcePath": "content/languages/japanese/katakana-expanded.json",
+      "contentHash": "95dcf17b24ac2cbbff5eadf5bba3107eb2960fe664dc530fdc91f316fa62bb7a"
+    },
+    {
+      "slug": "japanese/katakana/ga",
+      "language": "ja",
+      "writingSystem": "katakana",
+      "glyph": "ガ",
+      "title": "Katakana Ga",
+      "summary": "The voiced katakana syllable ga.",
+      "meanings": [
+        "ga sound"
+      ],
+      "readings": [
+        {
+          "label": "katakana",
+          "value": "ガ",
+          "ipa": "ɡa"
+        }
+      ],
+      "romaji": "ga",
+      "inputSequences": [
+        "ga"
+      ],
+      "ipa": "ɡa",
+      "studyOrder": 101,
+      "tags": [
+        "kana",
+        "katakana",
+        "supplement",
+        "dakuten"
+      ],
+      "status": "published",
+      "strokes": [
+        {
+          "id": "s1",
+          "points": [
+            [
+              20,
+              34
+            ],
+            [
+              70,
+              30
+            ],
+            [
+              59,
+              73
+            ],
+            [
+              44,
+              84
+            ]
+          ]
+        },
+        {
+          "id": "s2",
+          "points": [
+            [
+              50,
+              18
+            ],
+            [
+              45,
+              55
+            ]
+          ]
+        },
+        {
+          "id": "s3",
+          "points": [
+            [
+              70,
+              17
+            ],
+            [
+              77,
+              23
+            ]
+          ]
+        },
+        {
+          "id": "s4",
+          "points": [
+            [
+              77,
+              13
+            ],
+            [
+              84,
+              19
+            ]
+          ]
+        }
+      ],
+      "examples": [],
+      "sources": [],
+      "id": "b11de8329a5c",
+      "route": "/languages/japanese/characters/katakana/ga",
+      "sourcePath": "content/languages/japanese/katakana-expanded.json",
+      "contentHash": "95dcf17b24ac2cbbff5eadf5bba3107eb2960fe664dc530fdc91f316fa62bb7a"
+    },
+    {
+      "slug": "japanese/katakana/ha",
+      "language": "ja",
+      "writingSystem": "katakana",
+      "glyph": "ハ",
+      "title": "Katakana Ha",
+      "summary": "The basic katakana syllable ha.",
+      "meanings": [
+        "ha sound"
+      ],
+      "readings": [
+        {
+          "label": "katakana",
+          "value": "ハ",
+          "ipa": "ha"
+        }
+      ],
+      "romaji": "ha",
+      "inputSequences": [
+        "ha"
+      ],
+      "ipa": "ha",
+      "studyOrder": 26,
+      "tags": [
+        "kana",
+        "katakana",
+        "basic-katakana",
+        "h-row"
+      ],
+      "status": "published",
+      "strokes": [
+        {
+          "id": "s1",
+          "points": [
+            [
+              39,
+              26
+            ],
+            [
+              24,
+              71
+            ]
+          ]
+        },
+        {
+          "id": "s2",
+          "points": [
+            [
+              59,
+              25
+            ],
+            [
+              77,
+              73
+            ]
+          ]
+        }
+      ],
+      "examples": [],
+      "sources": [],
+      "id": "8b3a74f0a67a",
+      "route": "/languages/japanese/characters/katakana/ha",
+      "sourcePath": "content/languages/japanese/katakana-expanded.json",
+      "contentHash": "95dcf17b24ac2cbbff5eadf5bba3107eb2960fe664dc530fdc91f316fa62bb7a"
+    },
+    {
+      "slug": "japanese/katakana/he",
+      "language": "ja",
+      "writingSystem": "katakana",
+      "glyph": "ヘ",
+      "title": "Katakana He",
+      "summary": "The basic katakana syllable he.",
+      "meanings": [
+        "he sound"
+      ],
+      "readings": [
+        {
+          "label": "katakana",
+          "value": "ヘ",
+          "ipa": "he"
+        }
+      ],
+      "romaji": "he",
+      "inputSequences": [
+        "he"
+      ],
+      "ipa": "he",
+      "studyOrder": 29,
+      "tags": [
+        "kana",
+        "katakana",
+        "basic-katakana",
+        "h-row"
+      ],
+      "status": "published",
+      "strokes": [
+        {
+          "id": "s1",
+          "points": [
+            [
+              20,
+              61
+            ],
+            [
+              43,
+              37
+            ],
+            [
+              78,
+              67
+            ]
+          ]
+        }
+      ],
+      "examples": [],
+      "sources": [],
+      "id": "35766fb47add",
+      "route": "/languages/japanese/characters/katakana/he",
+      "sourcePath": "content/languages/japanese/katakana-expanded.json",
+      "contentHash": "95dcf17b24ac2cbbff5eadf5bba3107eb2960fe664dc530fdc91f316fa62bb7a"
+    },
+    {
+      "slug": "japanese/katakana/hi",
+      "language": "ja",
+      "writingSystem": "katakana",
+      "glyph": "ヒ",
+      "title": "Katakana Hi",
+      "summary": "The basic katakana syllable hi.",
+      "meanings": [
+        "hi sound"
+      ],
+      "readings": [
+        {
+          "label": "katakana",
+          "value": "ヒ",
+          "ipa": "çi"
+        }
+      ],
+      "romaji": "hi",
+      "inputSequences": [
+        "hi"
+      ],
+      "ipa": "çi",
+      "studyOrder": 27,
+      "tags": [
+        "kana",
+        "katakana",
+        "basic-katakana",
+        "h-row"
+      ],
+      "status": "published",
+      "strokes": [
+        {
+          "id": "s1",
+          "points": [
+            [
+              30,
+              25
+            ],
+            [
+              30,
+              72
+            ],
+            [
+              40,
+              80
+            ],
+            [
+              73,
+              78
+            ]
+          ]
+        },
+        {
+          "id": "s2",
+          "points": [
+            [
+              31,
+              48
+            ],
+            [
+              69,
+              38
+            ]
+          ]
+        }
+      ],
+      "examples": [],
+      "sources": [],
+      "id": "70295716b9e9",
+      "route": "/languages/japanese/characters/katakana/hi",
+      "sourcePath": "content/languages/japanese/katakana-expanded.json",
+      "contentHash": "95dcf17b24ac2cbbff5eadf5bba3107eb2960fe664dc530fdc91f316fa62bb7a"
+    },
+    {
+      "slug": "japanese/katakana/ho",
+      "language": "ja",
+      "writingSystem": "katakana",
+      "glyph": "ホ",
+      "title": "Katakana Ho",
+      "summary": "The basic katakana syllable ho.",
+      "meanings": [
+        "ho sound"
+      ],
+      "readings": [
+        {
+          "label": "katakana",
+          "value": "ホ",
+          "ipa": "ho"
+        }
+      ],
+      "romaji": "ho",
+      "inputSequences": [
+        "ho"
+      ],
+      "ipa": "ho",
+      "studyOrder": 30,
+      "tags": [
+        "kana",
+        "katakana",
+        "basic-katakana",
+        "h-row"
+      ],
+      "status": "published",
+      "strokes": [
+        {
+          "id": "s1",
+          "points": [
+            [
+              24,
+              36
+            ],
+            [
+              77,
+              33
+            ]
+          ]
+        },
+        {
+          "id": "s2",
+          "points": [
+            [
+              50,
+              17
+            ],
+            [
+              50,
+              84
+            ]
+          ]
+        },
+        {
+          "id": "s3",
+          "points": [
+            [
+              37,
+              48
+            ],
+            [
+              22,
+              71
+            ]
+          ]
+        },
+        {
+          "id": "s4",
+          "points": [
+            [
+              62,
+              47
+            ],
+            [
+              78,
+              69
+            ]
+          ]
+        }
+      ],
+      "examples": [],
+      "sources": [],
+      "id": "df97911746d6",
+      "route": "/languages/japanese/characters/katakana/ho",
+      "sourcePath": "content/languages/japanese/katakana-expanded.json",
+      "contentHash": "95dcf17b24ac2cbbff5eadf5bba3107eb2960fe664dc530fdc91f316fa62bb7a"
     },
     {
       "slug": "japanese/katakana/i",
@@ -15634,13 +17340,16 @@
         }
       ],
       "romaji": "i",
-      "inputSequences": [],
+      "inputSequences": [
+        "i"
+      ],
       "ipa": "i",
-      "studyOrder": 9999,
+      "studyOrder": 2,
       "tags": [
         "kana",
         "vowel",
-        "katakana"
+        "katakana",
+        "basic-katakana"
       ],
       "status": "published",
       "strokes": [
@@ -15676,7 +17385,1383 @@
       "id": "64679be90862",
       "route": "/languages/japanese/characters/katakana/i",
       "sourcePath": "content/languages/japanese/characters.json",
-      "contentHash": "4364ea1971f4eda01d76d188c4ec20711fbdd61e9eb8f27b165bc27c336d7f58"
+      "contentHash": "2deaf50bd501960d12348e2dfcf9c60eb5f31f16398534ac7522126f34766fbd"
+    },
+    {
+      "slug": "japanese/katakana/ji",
+      "language": "ja",
+      "writingSystem": "katakana",
+      "glyph": "ジ",
+      "title": "Katakana Ji",
+      "summary": "The voiced katakana syllable ji.",
+      "meanings": [
+        "ji sound"
+      ],
+      "readings": [
+        {
+          "label": "katakana",
+          "value": "ジ",
+          "ipa": "dʑi"
+        }
+      ],
+      "romaji": "ji",
+      "inputSequences": [
+        "ji",
+        "zi"
+      ],
+      "ipa": "dʑi",
+      "studyOrder": 102,
+      "tags": [
+        "kana",
+        "katakana",
+        "supplement",
+        "dakuten",
+        "ime-alias"
+      ],
+      "status": "published",
+      "strokes": [
+        {
+          "id": "s1",
+          "points": [
+            [
+              25,
+              28
+            ],
+            [
+              39,
+              35
+            ]
+          ]
+        },
+        {
+          "id": "s2",
+          "points": [
+            [
+              22,
+              47
+            ],
+            [
+              39,
+              53
+            ]
+          ]
+        },
+        {
+          "id": "s3",
+          "points": [
+            [
+              73,
+              30
+            ],
+            [
+              63,
+              58
+            ],
+            [
+              46,
+              74
+            ],
+            [
+              24,
+              82
+            ]
+          ]
+        },
+        {
+          "id": "s4",
+          "points": [
+            [
+              70,
+              15
+            ],
+            [
+              77,
+              21
+            ]
+          ]
+        },
+        {
+          "id": "s5",
+          "points": [
+            [
+              78,
+              11
+            ],
+            [
+              85,
+              17
+            ]
+          ]
+        }
+      ],
+      "examples": [],
+      "sources": [],
+      "id": "c7fcd412df91",
+      "route": "/languages/japanese/characters/katakana/ji",
+      "sourcePath": "content/languages/japanese/katakana-expanded.json",
+      "contentHash": "95dcf17b24ac2cbbff5eadf5bba3107eb2960fe664dc530fdc91f316fa62bb7a"
+    },
+    {
+      "slug": "japanese/katakana/ka",
+      "language": "ja",
+      "writingSystem": "katakana",
+      "glyph": "カ",
+      "title": "Katakana Ka",
+      "summary": "The basic katakana syllable ka.",
+      "meanings": [
+        "ka sound"
+      ],
+      "readings": [
+        {
+          "label": "katakana",
+          "value": "カ",
+          "ipa": "ka"
+        }
+      ],
+      "romaji": "ka",
+      "inputSequences": [
+        "ka"
+      ],
+      "ipa": "ka",
+      "studyOrder": 6,
+      "tags": [
+        "kana",
+        "katakana",
+        "basic-katakana",
+        "k-row"
+      ],
+      "status": "published",
+      "strokes": [
+        {
+          "id": "s1",
+          "points": [
+            [
+              20,
+              34
+            ],
+            [
+              76,
+              30
+            ],
+            [
+              63,
+              73
+            ],
+            [
+              47,
+              84
+            ]
+          ]
+        },
+        {
+          "id": "s2",
+          "points": [
+            [
+              53,
+              18
+            ],
+            [
+              48,
+              55
+            ]
+          ]
+        }
+      ],
+      "examples": [],
+      "sources": [],
+      "id": "c5dd0cbe527a",
+      "route": "/languages/japanese/characters/katakana/ka",
+      "sourcePath": "content/languages/japanese/katakana-expanded.json",
+      "contentHash": "95dcf17b24ac2cbbff5eadf5bba3107eb2960fe664dc530fdc91f316fa62bb7a"
+    },
+    {
+      "slug": "japanese/katakana/ke",
+      "language": "ja",
+      "writingSystem": "katakana",
+      "glyph": "ケ",
+      "title": "Katakana Ke",
+      "summary": "The basic katakana syllable ke.",
+      "meanings": [
+        "ke sound"
+      ],
+      "readings": [
+        {
+          "label": "katakana",
+          "value": "ケ",
+          "ipa": "ke"
+        }
+      ],
+      "romaji": "ke",
+      "inputSequences": [
+        "ke"
+      ],
+      "ipa": "ke",
+      "studyOrder": 9,
+      "tags": [
+        "kana",
+        "katakana",
+        "basic-katakana",
+        "k-row"
+      ],
+      "status": "published",
+      "strokes": [
+        {
+          "id": "s1",
+          "points": [
+            [
+              45,
+              16
+            ],
+            [
+              28,
+              49
+            ]
+          ]
+        },
+        {
+          "id": "s2",
+          "points": [
+            [
+              38,
+              35
+            ],
+            [
+              77,
+              32
+            ]
+          ]
+        },
+        {
+          "id": "s3",
+          "points": [
+            [
+              59,
+              33
+            ],
+            [
+              56,
+              63
+            ],
+            [
+              43,
+              84
+            ]
+          ]
+        }
+      ],
+      "examples": [],
+      "sources": [],
+      "id": "b4eaa4e269a7",
+      "route": "/languages/japanese/characters/katakana/ke",
+      "sourcePath": "content/languages/japanese/katakana-expanded.json",
+      "contentHash": "95dcf17b24ac2cbbff5eadf5bba3107eb2960fe664dc530fdc91f316fa62bb7a"
+    },
+    {
+      "slug": "japanese/katakana/ki",
+      "language": "ja",
+      "writingSystem": "katakana",
+      "glyph": "キ",
+      "title": "Katakana Ki",
+      "summary": "The basic katakana syllable ki.",
+      "meanings": [
+        "ki sound"
+      ],
+      "readings": [
+        {
+          "label": "katakana",
+          "value": "キ",
+          "ipa": "ki"
+        }
+      ],
+      "romaji": "ki",
+      "inputSequences": [
+        "ki"
+      ],
+      "ipa": "ki",
+      "studyOrder": 7,
+      "tags": [
+        "kana",
+        "katakana",
+        "basic-katakana",
+        "k-row"
+      ],
+      "status": "published",
+      "strokes": [
+        {
+          "id": "s1",
+          "points": [
+            [
+              29,
+              25
+            ],
+            [
+              68,
+              21
+            ]
+          ]
+        },
+        {
+          "id": "s2",
+          "points": [
+            [
+              22,
+              43
+            ],
+            [
+              76,
+              38
+            ]
+          ]
+        },
+        {
+          "id": "s3",
+          "points": [
+            [
+              46,
+              16
+            ],
+            [
+              55,
+              84
+            ]
+          ]
+        }
+      ],
+      "examples": [],
+      "sources": [],
+      "id": "bbcf3d784d3c",
+      "route": "/languages/japanese/characters/katakana/ki",
+      "sourcePath": "content/languages/japanese/katakana-expanded.json",
+      "contentHash": "95dcf17b24ac2cbbff5eadf5bba3107eb2960fe664dc530fdc91f316fa62bb7a"
+    },
+    {
+      "slug": "japanese/katakana/ko",
+      "language": "ja",
+      "writingSystem": "katakana",
+      "glyph": "コ",
+      "title": "Katakana Ko",
+      "summary": "The basic katakana syllable ko.",
+      "meanings": [
+        "ko sound"
+      ],
+      "readings": [
+        {
+          "label": "katakana",
+          "value": "コ",
+          "ipa": "ko"
+        }
+      ],
+      "romaji": "ko",
+      "inputSequences": [
+        "ko"
+      ],
+      "ipa": "ko",
+      "studyOrder": 10,
+      "tags": [
+        "kana",
+        "katakana",
+        "basic-katakana",
+        "k-row"
+      ],
+      "status": "published",
+      "strokes": [
+        {
+          "id": "s1",
+          "points": [
+            [
+              25,
+              31
+            ],
+            [
+              72,
+              31
+            ],
+            [
+              70,
+              72
+            ]
+          ]
+        },
+        {
+          "id": "s2",
+          "points": [
+            [
+              22,
+              73
+            ],
+            [
+              70,
+              72
+            ]
+          ]
+        }
+      ],
+      "examples": [],
+      "sources": [],
+      "id": "d552bd5b62c0",
+      "route": "/languages/japanese/characters/katakana/ko",
+      "sourcePath": "content/languages/japanese/katakana-expanded.json",
+      "contentHash": "95dcf17b24ac2cbbff5eadf5bba3107eb2960fe664dc530fdc91f316fa62bb7a"
+    },
+    {
+      "slug": "japanese/katakana/ku",
+      "language": "ja",
+      "writingSystem": "katakana",
+      "glyph": "ク",
+      "title": "Katakana Ku",
+      "summary": "The basic katakana syllable ku.",
+      "meanings": [
+        "ku sound"
+      ],
+      "readings": [
+        {
+          "label": "katakana",
+          "value": "ク",
+          "ipa": "kɯ"
+        }
+      ],
+      "romaji": "ku",
+      "inputSequences": [
+        "ku"
+      ],
+      "ipa": "kɯ",
+      "studyOrder": 8,
+      "tags": [
+        "kana",
+        "katakana",
+        "basic-katakana",
+        "k-row"
+      ],
+      "status": "published",
+      "strokes": [
+        {
+          "id": "s1",
+          "points": [
+            [
+              48,
+              18
+            ],
+            [
+              29,
+              45
+            ]
+          ]
+        },
+        {
+          "id": "s2",
+          "points": [
+            [
+              44,
+              32
+            ],
+            [
+              76,
+              28
+            ],
+            [
+              66,
+              62
+            ],
+            [
+              47,
+              82
+            ],
+            [
+              28,
+              88
+            ]
+          ]
+        }
+      ],
+      "examples": [],
+      "sources": [],
+      "id": "4537a53bacba",
+      "route": "/languages/japanese/characters/katakana/ku",
+      "sourcePath": "content/languages/japanese/katakana-expanded.json",
+      "contentHash": "95dcf17b24ac2cbbff5eadf5bba3107eb2960fe664dc530fdc91f316fa62bb7a"
+    },
+    {
+      "slug": "japanese/katakana/long-vowel-mark",
+      "language": "ja",
+      "writingSystem": "katakana",
+      "glyph": "ー",
+      "title": "Katakana Long Vowel Mark",
+      "summary": "The katakana long vowel mark extends the preceding vowel sound.",
+      "meanings": [
+        "long vowel mark",
+        "sound extension"
+      ],
+      "readings": [
+        {
+          "label": "katakana",
+          "value": "ー",
+          "ipa": "ː"
+        }
+      ],
+      "romaji": "long vowel",
+      "inputSequences": [
+        "-"
+      ],
+      "ipa": "ː",
+      "studyOrder": 108,
+      "tags": [
+        "kana",
+        "katakana",
+        "supplement",
+        "long-vowel"
+      ],
+      "status": "published",
+      "strokes": [
+        {
+          "id": "s1",
+          "points": [
+            [
+              18,
+              50
+            ],
+            [
+              82,
+              50
+            ]
+          ]
+        }
+      ],
+      "examples": [],
+      "sources": [],
+      "id": "5cc8b3a6ea67",
+      "route": "/languages/japanese/characters/katakana/long-vowel-mark",
+      "sourcePath": "content/languages/japanese/katakana-expanded.json",
+      "contentHash": "95dcf17b24ac2cbbff5eadf5bba3107eb2960fe664dc530fdc91f316fa62bb7a"
+    },
+    {
+      "slug": "japanese/katakana/ma",
+      "language": "ja",
+      "writingSystem": "katakana",
+      "glyph": "マ",
+      "title": "Katakana Ma",
+      "summary": "The basic katakana syllable ma.",
+      "meanings": [
+        "ma sound"
+      ],
+      "readings": [
+        {
+          "label": "katakana",
+          "value": "マ",
+          "ipa": "ma"
+        }
+      ],
+      "romaji": "ma",
+      "inputSequences": [
+        "ma"
+      ],
+      "ipa": "ma",
+      "studyOrder": 31,
+      "tags": [
+        "kana",
+        "katakana",
+        "basic-katakana",
+        "m-row"
+      ],
+      "status": "published",
+      "strokes": [
+        {
+          "id": "s1",
+          "points": [
+            [
+              18,
+              30
+            ],
+            [
+              80,
+              27
+            ],
+            [
+              63,
+              48
+            ],
+            [
+              48,
+              61
+            ]
+          ]
+        },
+        {
+          "id": "s2",
+          "points": [
+            [
+              36,
+              52
+            ],
+            [
+              58,
+              78
+            ]
+          ]
+        }
+      ],
+      "examples": [],
+      "sources": [],
+      "id": "8add2ef36707",
+      "route": "/languages/japanese/characters/katakana/ma",
+      "sourcePath": "content/languages/japanese/katakana-expanded.json",
+      "contentHash": "95dcf17b24ac2cbbff5eadf5bba3107eb2960fe664dc530fdc91f316fa62bb7a"
+    },
+    {
+      "slug": "japanese/katakana/me",
+      "language": "ja",
+      "writingSystem": "katakana",
+      "glyph": "メ",
+      "title": "Katakana Me",
+      "summary": "The basic katakana syllable me.",
+      "meanings": [
+        "me sound"
+      ],
+      "readings": [
+        {
+          "label": "katakana",
+          "value": "メ",
+          "ipa": "me"
+        }
+      ],
+      "romaji": "me",
+      "inputSequences": [
+        "me"
+      ],
+      "ipa": "me",
+      "studyOrder": 34,
+      "tags": [
+        "kana",
+        "katakana",
+        "basic-katakana",
+        "m-row"
+      ],
+      "status": "published",
+      "strokes": [
+        {
+          "id": "s1",
+          "points": [
+            [
+              70,
+              20
+            ],
+            [
+              58,
+              52
+            ],
+            [
+              41,
+              72
+            ],
+            [
+              22,
+              84
+            ]
+          ]
+        },
+        {
+          "id": "s2",
+          "points": [
+            [
+              29,
+              32
+            ],
+            [
+              74,
+              78
+            ]
+          ]
+        }
+      ],
+      "examples": [],
+      "sources": [],
+      "id": "505134ea948e",
+      "route": "/languages/japanese/characters/katakana/me",
+      "sourcePath": "content/languages/japanese/katakana-expanded.json",
+      "contentHash": "95dcf17b24ac2cbbff5eadf5bba3107eb2960fe664dc530fdc91f316fa62bb7a"
+    },
+    {
+      "slug": "japanese/katakana/mi",
+      "language": "ja",
+      "writingSystem": "katakana",
+      "glyph": "ミ",
+      "title": "Katakana Mi",
+      "summary": "The basic katakana syllable mi.",
+      "meanings": [
+        "mi sound"
+      ],
+      "readings": [
+        {
+          "label": "katakana",
+          "value": "ミ",
+          "ipa": "mi"
+        }
+      ],
+      "romaji": "mi",
+      "inputSequences": [
+        "mi"
+      ],
+      "ipa": "mi",
+      "studyOrder": 32,
+      "tags": [
+        "kana",
+        "katakana",
+        "basic-katakana",
+        "m-row"
+      ],
+      "status": "published",
+      "strokes": [
+        {
+          "id": "s1",
+          "points": [
+            [
+              35,
+              22
+            ],
+            [
+              67,
+              29
+            ]
+          ]
+        },
+        {
+          "id": "s2",
+          "points": [
+            [
+              29,
+              45
+            ],
+            [
+              64,
+              52
+            ]
+          ]
+        },
+        {
+          "id": "s3",
+          "points": [
+            [
+              24,
+              69
+            ],
+            [
+              70,
+              80
+            ]
+          ]
+        }
+      ],
+      "examples": [],
+      "sources": [],
+      "id": "a95632ab29f5",
+      "route": "/languages/japanese/characters/katakana/mi",
+      "sourcePath": "content/languages/japanese/katakana-expanded.json",
+      "contentHash": "95dcf17b24ac2cbbff5eadf5bba3107eb2960fe664dc530fdc91f316fa62bb7a"
+    },
+    {
+      "slug": "japanese/katakana/mo",
+      "language": "ja",
+      "writingSystem": "katakana",
+      "glyph": "モ",
+      "title": "Katakana Mo",
+      "summary": "The basic katakana syllable mo.",
+      "meanings": [
+        "mo sound"
+      ],
+      "readings": [
+        {
+          "label": "katakana",
+          "value": "モ",
+          "ipa": "mo"
+        }
+      ],
+      "romaji": "mo",
+      "inputSequences": [
+        "mo"
+      ],
+      "ipa": "mo",
+      "studyOrder": 35,
+      "tags": [
+        "kana",
+        "katakana",
+        "basic-katakana",
+        "m-row"
+      ],
+      "status": "published",
+      "strokes": [
+        {
+          "id": "s1",
+          "points": [
+            [
+              31,
+              24
+            ],
+            [
+              68,
+              21
+            ]
+          ]
+        },
+        {
+          "id": "s2",
+          "points": [
+            [
+              20,
+              44
+            ],
+            [
+              75,
+              40
+            ]
+          ]
+        },
+        {
+          "id": "s3",
+          "points": [
+            [
+              50,
+              20
+            ],
+            [
+              47,
+              69
+            ],
+            [
+              56,
+              79
+            ],
+            [
+              75,
+              77
+            ]
+          ]
+        }
+      ],
+      "examples": [],
+      "sources": [],
+      "id": "4939638144ff",
+      "route": "/languages/japanese/characters/katakana/mo",
+      "sourcePath": "content/languages/japanese/katakana-expanded.json",
+      "contentHash": "95dcf17b24ac2cbbff5eadf5bba3107eb2960fe664dc530fdc91f316fa62bb7a"
+    },
+    {
+      "slug": "japanese/katakana/mu",
+      "language": "ja",
+      "writingSystem": "katakana",
+      "glyph": "ム",
+      "title": "Katakana Mu",
+      "summary": "The basic katakana syllable mu.",
+      "meanings": [
+        "mu sound"
+      ],
+      "readings": [
+        {
+          "label": "katakana",
+          "value": "ム",
+          "ipa": "mɯ"
+        }
+      ],
+      "romaji": "mu",
+      "inputSequences": [
+        "mu"
+      ],
+      "ipa": "mɯ",
+      "studyOrder": 33,
+      "tags": [
+        "kana",
+        "katakana",
+        "basic-katakana",
+        "m-row"
+      ],
+      "status": "published",
+      "strokes": [
+        {
+          "id": "s1",
+          "points": [
+            [
+              51,
+              20
+            ],
+            [
+              29,
+              69
+            ],
+            [
+              69,
+              65
+            ]
+          ]
+        },
+        {
+          "id": "s2",
+          "points": [
+            [
+              62,
+              52
+            ],
+            [
+              79,
+              79
+            ]
+          ]
+        }
+      ],
+      "examples": [],
+      "sources": [],
+      "id": "6def2ae7a66f",
+      "route": "/languages/japanese/characters/katakana/mu",
+      "sourcePath": "content/languages/japanese/katakana-expanded.json",
+      "contentHash": "95dcf17b24ac2cbbff5eadf5bba3107eb2960fe664dc530fdc91f316fa62bb7a"
+    },
+    {
+      "slug": "japanese/katakana/n",
+      "language": "ja",
+      "writingSystem": "katakana",
+      "glyph": "ン",
+      "title": "Katakana N",
+      "summary": "The katakana moraic nasal n.",
+      "meanings": [
+        "n sound",
+        "moraic nasal"
+      ],
+      "readings": [
+        {
+          "label": "katakana",
+          "value": "ン",
+          "ipa": "ɴ"
+        }
+      ],
+      "romaji": "n",
+      "inputSequences": [
+        "n",
+        "nn",
+        "n'"
+      ],
+      "ipa": "ɴ",
+      "studyOrder": 46,
+      "tags": [
+        "kana",
+        "katakana",
+        "basic-katakana",
+        "w-row",
+        "ime-context"
+      ],
+      "status": "published",
+      "strokes": [
+        {
+          "id": "s1",
+          "points": [
+            [
+              27,
+              28
+            ],
+            [
+              42,
+              43
+            ]
+          ]
+        },
+        {
+          "id": "s2",
+          "points": [
+            [
+              76,
+              27
+            ],
+            [
+              65,
+              55
+            ],
+            [
+              48,
+              72
+            ],
+            [
+              24,
+              81
+            ]
+          ]
+        }
+      ],
+      "examples": [],
+      "sources": [],
+      "id": "520cbb32f51b",
+      "route": "/languages/japanese/characters/katakana/n",
+      "sourcePath": "content/languages/japanese/katakana-expanded.json",
+      "contentHash": "95dcf17b24ac2cbbff5eadf5bba3107eb2960fe664dc530fdc91f316fa62bb7a"
+    },
+    {
+      "slug": "japanese/katakana/na",
+      "language": "ja",
+      "writingSystem": "katakana",
+      "glyph": "ナ",
+      "title": "Katakana Na",
+      "summary": "The basic katakana syllable na.",
+      "meanings": [
+        "na sound"
+      ],
+      "readings": [
+        {
+          "label": "katakana",
+          "value": "ナ",
+          "ipa": "na"
+        }
+      ],
+      "romaji": "na",
+      "inputSequences": [
+        "na"
+      ],
+      "ipa": "na",
+      "studyOrder": 21,
+      "tags": [
+        "kana",
+        "katakana",
+        "basic-katakana",
+        "n-row"
+      ],
+      "status": "published",
+      "strokes": [
+        {
+          "id": "s1",
+          "points": [
+            [
+              21,
+              36
+            ],
+            [
+              77,
+              32
+            ]
+          ]
+        },
+        {
+          "id": "s2",
+          "points": [
+            [
+              53,
+              17
+            ],
+            [
+              51,
+              56
+            ],
+            [
+              40,
+              75
+            ],
+            [
+              25,
+              86
+            ]
+          ]
+        }
+      ],
+      "examples": [],
+      "sources": [],
+      "id": "1dd754a635c3",
+      "route": "/languages/japanese/characters/katakana/na",
+      "sourcePath": "content/languages/japanese/katakana-expanded.json",
+      "contentHash": "95dcf17b24ac2cbbff5eadf5bba3107eb2960fe664dc530fdc91f316fa62bb7a"
+    },
+    {
+      "slug": "japanese/katakana/ne",
+      "language": "ja",
+      "writingSystem": "katakana",
+      "glyph": "ネ",
+      "title": "Katakana Ne",
+      "summary": "The basic katakana syllable ne.",
+      "meanings": [
+        "ne sound"
+      ],
+      "readings": [
+        {
+          "label": "katakana",
+          "value": "ネ",
+          "ipa": "ne"
+        }
+      ],
+      "romaji": "ne",
+      "inputSequences": [
+        "ne"
+      ],
+      "ipa": "ne",
+      "studyOrder": 24,
+      "tags": [
+        "kana",
+        "katakana",
+        "basic-katakana",
+        "n-row"
+      ],
+      "status": "published",
+      "strokes": [
+        {
+          "id": "s1",
+          "points": [
+            [
+              47,
+              15
+            ],
+            [
+              54,
+              25
+            ]
+          ]
+        },
+        {
+          "id": "s2",
+          "points": [
+            [
+              24,
+              34
+            ],
+            [
+              68,
+              31
+            ],
+            [
+              49,
+              51
+            ],
+            [
+              23,
+              65
+            ]
+          ]
+        },
+        {
+          "id": "s3",
+          "points": [
+            [
+              48,
+              51
+            ],
+            [
+              47,
+              86
+            ]
+          ]
+        },
+        {
+          "id": "s4",
+          "points": [
+            [
+              52,
+              58
+            ],
+            [
+              76,
+              74
+            ]
+          ]
+        }
+      ],
+      "examples": [],
+      "sources": [],
+      "id": "1d754293356b",
+      "route": "/languages/japanese/characters/katakana/ne",
+      "sourcePath": "content/languages/japanese/katakana-expanded.json",
+      "contentHash": "95dcf17b24ac2cbbff5eadf5bba3107eb2960fe664dc530fdc91f316fa62bb7a"
+    },
+    {
+      "slug": "japanese/katakana/ni",
+      "language": "ja",
+      "writingSystem": "katakana",
+      "glyph": "ニ",
+      "title": "Katakana Ni",
+      "summary": "The basic katakana syllable ni.",
+      "meanings": [
+        "ni sound"
+      ],
+      "readings": [
+        {
+          "label": "katakana",
+          "value": "ニ",
+          "ipa": "ɲi"
+        }
+      ],
+      "romaji": "ni",
+      "inputSequences": [
+        "ni"
+      ],
+      "ipa": "ɲi",
+      "studyOrder": 22,
+      "tags": [
+        "kana",
+        "katakana",
+        "basic-katakana",
+        "n-row"
+      ],
+      "status": "published",
+      "strokes": [
+        {
+          "id": "s1",
+          "points": [
+            [
+              29,
+              31
+            ],
+            [
+              69,
+              29
+            ]
+          ]
+        },
+        {
+          "id": "s2",
+          "points": [
+            [
+              22,
+              70
+            ],
+            [
+              77,
+              68
+            ]
+          ]
+        }
+      ],
+      "examples": [],
+      "sources": [],
+      "id": "0f1d12030237",
+      "route": "/languages/japanese/characters/katakana/ni",
+      "sourcePath": "content/languages/japanese/katakana-expanded.json",
+      "contentHash": "95dcf17b24ac2cbbff5eadf5bba3107eb2960fe664dc530fdc91f316fa62bb7a"
+    },
+    {
+      "slug": "japanese/katakana/no",
+      "language": "ja",
+      "writingSystem": "katakana",
+      "glyph": "ノ",
+      "title": "Katakana No",
+      "summary": "The basic katakana syllable no.",
+      "meanings": [
+        "no sound"
+      ],
+      "readings": [
+        {
+          "label": "katakana",
+          "value": "ノ",
+          "ipa": "no"
+        }
+      ],
+      "romaji": "no",
+      "inputSequences": [
+        "no"
+      ],
+      "ipa": "no",
+      "studyOrder": 25,
+      "tags": [
+        "kana",
+        "katakana",
+        "basic-katakana",
+        "n-row"
+      ],
+      "status": "published",
+      "strokes": [
+        {
+          "id": "s1",
+          "points": [
+            [
+              71,
+              18
+            ],
+            [
+              58,
+              54
+            ],
+            [
+              40,
+              75
+            ],
+            [
+              23,
+              85
+            ]
+          ]
+        }
+      ],
+      "examples": [],
+      "sources": [],
+      "id": "68993265be49",
+      "route": "/languages/japanese/characters/katakana/no",
+      "sourcePath": "content/languages/japanese/katakana-expanded.json",
+      "contentHash": "95dcf17b24ac2cbbff5eadf5bba3107eb2960fe664dc530fdc91f316fa62bb7a"
+    },
+    {
+      "slug": "japanese/katakana/nu",
+      "language": "ja",
+      "writingSystem": "katakana",
+      "glyph": "ヌ",
+      "title": "Katakana Nu",
+      "summary": "The basic katakana syllable nu.",
+      "meanings": [
+        "nu sound"
+      ],
+      "readings": [
+        {
+          "label": "katakana",
+          "value": "ヌ",
+          "ipa": "nɯ"
+        }
+      ],
+      "romaji": "nu",
+      "inputSequences": [
+        "nu"
+      ],
+      "ipa": "nɯ",
+      "studyOrder": 23,
+      "tags": [
+        "kana",
+        "katakana",
+        "basic-katakana",
+        "n-row"
+      ],
+      "status": "published",
+      "strokes": [
+        {
+          "id": "s1",
+          "points": [
+            [
+              27,
+              24
+            ],
+            [
+              72,
+              23
+            ],
+            [
+              62,
+              49
+            ],
+            [
+              46,
+              69
+            ],
+            [
+              24,
+              82
+            ]
+          ]
+        },
+        {
+          "id": "s2",
+          "points": [
+            [
+              31,
+              43
+            ],
+            [
+              76,
+              80
+            ]
+          ]
+        }
+      ],
+      "examples": [],
+      "sources": [],
+      "id": "b37e693c0b02",
+      "route": "/languages/japanese/characters/katakana/nu",
+      "sourcePath": "content/languages/japanese/katakana-expanded.json",
+      "contentHash": "95dcf17b24ac2cbbff5eadf5bba3107eb2960fe664dc530fdc91f316fa62bb7a"
     },
     {
       "slug": "japanese/katakana/o",
@@ -15696,13 +18781,16 @@
         }
       ],
       "romaji": "o",
-      "inputSequences": [],
+      "inputSequences": [
+        "o"
+      ],
       "ipa": "o",
-      "studyOrder": 9999,
+      "studyOrder": 5,
       "tags": [
         "kana",
         "vowel",
-        "katakana"
+        "katakana",
+        "basic-katakana"
       ],
       "status": "published",
       "strokes": [
@@ -15751,7 +18839,1522 @@
       "id": "b7764e594e17",
       "route": "/languages/japanese/characters/katakana/o",
       "sourcePath": "content/languages/japanese/characters.json",
-      "contentHash": "4364ea1971f4eda01d76d188c4ec20711fbdd61e9eb8f27b165bc27c336d7f58"
+      "contentHash": "2deaf50bd501960d12348e2dfcf9c60eb5f31f16398534ac7522126f34766fbd"
+    },
+    {
+      "slug": "japanese/katakana/pa",
+      "language": "ja",
+      "writingSystem": "katakana",
+      "glyph": "パ",
+      "title": "Katakana Pa",
+      "summary": "The p-sound katakana syllable pa.",
+      "meanings": [
+        "pa sound"
+      ],
+      "readings": [
+        {
+          "label": "katakana",
+          "value": "パ",
+          "ipa": "pa"
+        }
+      ],
+      "romaji": "pa",
+      "inputSequences": [
+        "pa"
+      ],
+      "ipa": "pa",
+      "studyOrder": 103,
+      "tags": [
+        "kana",
+        "katakana",
+        "supplement",
+        "handakuten"
+      ],
+      "status": "published",
+      "strokes": [
+        {
+          "id": "s1",
+          "points": [
+            [
+              38,
+              28
+            ],
+            [
+              23,
+              72
+            ]
+          ]
+        },
+        {
+          "id": "s2",
+          "points": [
+            [
+              58,
+              27
+            ],
+            [
+              77,
+              73
+            ]
+          ]
+        },
+        {
+          "id": "s3",
+          "points": [
+            [
+              76,
+              14
+            ],
+            [
+              85,
+              20
+            ],
+            [
+              80,
+              30
+            ],
+            [
+              70,
+              27
+            ],
+            [
+              68,
+              18
+            ],
+            [
+              76,
+              14
+            ]
+          ]
+        }
+      ],
+      "examples": [],
+      "sources": [],
+      "id": "ca47df07d8c9",
+      "route": "/languages/japanese/characters/katakana/pa",
+      "sourcePath": "content/languages/japanese/katakana-expanded.json",
+      "contentHash": "95dcf17b24ac2cbbff5eadf5bba3107eb2960fe664dc530fdc91f316fa62bb7a"
+    },
+    {
+      "slug": "japanese/katakana/ra",
+      "language": "ja",
+      "writingSystem": "katakana",
+      "glyph": "ラ",
+      "title": "Katakana Ra",
+      "summary": "The basic katakana syllable ra.",
+      "meanings": [
+        "ra sound"
+      ],
+      "readings": [
+        {
+          "label": "katakana",
+          "value": "ラ",
+          "ipa": "ɾa"
+        }
+      ],
+      "romaji": "ra",
+      "inputSequences": [
+        "ra"
+      ],
+      "ipa": "ɾa",
+      "studyOrder": 39,
+      "tags": [
+        "kana",
+        "katakana",
+        "basic-katakana",
+        "r-row"
+      ],
+      "status": "published",
+      "strokes": [
+        {
+          "id": "s1",
+          "points": [
+            [
+              32,
+              24
+            ],
+            [
+              68,
+              21
+            ]
+          ]
+        },
+        {
+          "id": "s2",
+          "points": [
+            [
+              20,
+              43
+            ],
+            [
+              77,
+              39
+            ],
+            [
+              66,
+              63
+            ],
+            [
+              49,
+              78
+            ],
+            [
+              29,
+              86
+            ]
+          ]
+        }
+      ],
+      "examples": [],
+      "sources": [],
+      "id": "b45d98ea1f3c",
+      "route": "/languages/japanese/characters/katakana/ra",
+      "sourcePath": "content/languages/japanese/katakana-expanded.json",
+      "contentHash": "95dcf17b24ac2cbbff5eadf5bba3107eb2960fe664dc530fdc91f316fa62bb7a"
+    },
+    {
+      "slug": "japanese/katakana/re",
+      "language": "ja",
+      "writingSystem": "katakana",
+      "glyph": "レ",
+      "title": "Katakana Re",
+      "summary": "The basic katakana syllable re.",
+      "meanings": [
+        "re sound"
+      ],
+      "readings": [
+        {
+          "label": "katakana",
+          "value": "レ",
+          "ipa": "ɾe"
+        }
+      ],
+      "romaji": "re",
+      "inputSequences": [
+        "re"
+      ],
+      "ipa": "ɾe",
+      "studyOrder": 42,
+      "tags": [
+        "kana",
+        "katakana",
+        "basic-katakana",
+        "r-row"
+      ],
+      "status": "published",
+      "strokes": [
+        {
+          "id": "s1",
+          "points": [
+            [
+              35,
+              18
+            ],
+            [
+              34,
+              76
+            ],
+            [
+              54,
+              69
+            ],
+            [
+              74,
+              51
+            ]
+          ]
+        }
+      ],
+      "examples": [],
+      "sources": [],
+      "id": "d5f5ae741f89",
+      "route": "/languages/japanese/characters/katakana/re",
+      "sourcePath": "content/languages/japanese/katakana-expanded.json",
+      "contentHash": "95dcf17b24ac2cbbff5eadf5bba3107eb2960fe664dc530fdc91f316fa62bb7a"
+    },
+    {
+      "slug": "japanese/katakana/ri",
+      "language": "ja",
+      "writingSystem": "katakana",
+      "glyph": "リ",
+      "title": "Katakana Ri",
+      "summary": "The basic katakana syllable ri.",
+      "meanings": [
+        "ri sound"
+      ],
+      "readings": [
+        {
+          "label": "katakana",
+          "value": "リ",
+          "ipa": "ɾi"
+        }
+      ],
+      "romaji": "ri",
+      "inputSequences": [
+        "ri"
+      ],
+      "ipa": "ɾi",
+      "studyOrder": 40,
+      "tags": [
+        "kana",
+        "katakana",
+        "basic-katakana",
+        "r-row"
+      ],
+      "status": "published",
+      "strokes": [
+        {
+          "id": "s1",
+          "points": [
+            [
+              34,
+              20
+            ],
+            [
+              34,
+              59
+            ]
+          ]
+        },
+        {
+          "id": "s2",
+          "points": [
+            [
+              65,
+              17
+            ],
+            [
+              64,
+              58
+            ],
+            [
+              54,
+              76
+            ],
+            [
+              38,
+              86
+            ]
+          ]
+        }
+      ],
+      "examples": [],
+      "sources": [],
+      "id": "100e7c1418ee",
+      "route": "/languages/japanese/characters/katakana/ri",
+      "sourcePath": "content/languages/japanese/katakana-expanded.json",
+      "contentHash": "95dcf17b24ac2cbbff5eadf5bba3107eb2960fe664dc530fdc91f316fa62bb7a"
+    },
+    {
+      "slug": "japanese/katakana/ro",
+      "language": "ja",
+      "writingSystem": "katakana",
+      "glyph": "ロ",
+      "title": "Katakana Ro",
+      "summary": "The basic katakana syllable ro.",
+      "meanings": [
+        "ro sound"
+      ],
+      "readings": [
+        {
+          "label": "katakana",
+          "value": "ロ",
+          "ipa": "ɾo"
+        }
+      ],
+      "romaji": "ro",
+      "inputSequences": [
+        "ro"
+      ],
+      "ipa": "ɾo",
+      "studyOrder": 43,
+      "tags": [
+        "kana",
+        "katakana",
+        "basic-katakana",
+        "r-row"
+      ],
+      "status": "published",
+      "strokes": [
+        {
+          "id": "s1",
+          "points": [
+            [
+              25,
+              25
+            ],
+            [
+              25,
+              76
+            ]
+          ]
+        },
+        {
+          "id": "s2",
+          "points": [
+            [
+              25,
+              25
+            ],
+            [
+              75,
+              25
+            ],
+            [
+              74,
+              76
+            ]
+          ]
+        },
+        {
+          "id": "s3",
+          "points": [
+            [
+              25,
+              76
+            ],
+            [
+              74,
+              76
+            ]
+          ]
+        }
+      ],
+      "examples": [],
+      "sources": [],
+      "id": "b7fb0283a4ea",
+      "route": "/languages/japanese/characters/katakana/ro",
+      "sourcePath": "content/languages/japanese/katakana-expanded.json",
+      "contentHash": "95dcf17b24ac2cbbff5eadf5bba3107eb2960fe664dc530fdc91f316fa62bb7a"
+    },
+    {
+      "slug": "japanese/katakana/ru",
+      "language": "ja",
+      "writingSystem": "katakana",
+      "glyph": "ル",
+      "title": "Katakana Ru",
+      "summary": "The basic katakana syllable ru.",
+      "meanings": [
+        "ru sound"
+      ],
+      "readings": [
+        {
+          "label": "katakana",
+          "value": "ル",
+          "ipa": "ɾɯ"
+        }
+      ],
+      "romaji": "ru",
+      "inputSequences": [
+        "ru"
+      ],
+      "ipa": "ɾɯ",
+      "studyOrder": 41,
+      "tags": [
+        "kana",
+        "katakana",
+        "basic-katakana",
+        "r-row"
+      ],
+      "status": "published",
+      "strokes": [
+        {
+          "id": "s1",
+          "points": [
+            [
+              37,
+              21
+            ],
+            [
+              36,
+              55
+            ],
+            [
+              28,
+              73
+            ],
+            [
+              20,
+              81
+            ]
+          ]
+        },
+        {
+          "id": "s2",
+          "points": [
+            [
+              58,
+              17
+            ],
+            [
+              57,
+              74
+            ],
+            [
+              76,
+              61
+            ]
+          ]
+        }
+      ],
+      "examples": [],
+      "sources": [],
+      "id": "940fa6808133",
+      "route": "/languages/japanese/characters/katakana/ru",
+      "sourcePath": "content/languages/japanese/katakana-expanded.json",
+      "contentHash": "95dcf17b24ac2cbbff5eadf5bba3107eb2960fe664dc530fdc91f316fa62bb7a"
+    },
+    {
+      "slug": "japanese/katakana/sa",
+      "language": "ja",
+      "writingSystem": "katakana",
+      "glyph": "サ",
+      "title": "Katakana Sa",
+      "summary": "The basic katakana syllable sa.",
+      "meanings": [
+        "sa sound"
+      ],
+      "readings": [
+        {
+          "label": "katakana",
+          "value": "サ",
+          "ipa": "sa"
+        }
+      ],
+      "romaji": "sa",
+      "inputSequences": [
+        "sa"
+      ],
+      "ipa": "sa",
+      "studyOrder": 11,
+      "tags": [
+        "kana",
+        "katakana",
+        "basic-katakana",
+        "s-row"
+      ],
+      "status": "published",
+      "strokes": [
+        {
+          "id": "s1",
+          "points": [
+            [
+              23,
+              39
+            ],
+            [
+              77,
+              35
+            ]
+          ]
+        },
+        {
+          "id": "s2",
+          "points": [
+            [
+              38,
+              20
+            ],
+            [
+              40,
+              58
+            ]
+          ]
+        },
+        {
+          "id": "s3",
+          "points": [
+            [
+              62,
+              17
+            ],
+            [
+              62,
+              55
+            ],
+            [
+              53,
+              74
+            ],
+            [
+              36,
+              86
+            ]
+          ]
+        }
+      ],
+      "examples": [],
+      "sources": [],
+      "id": "d43662eaf1cd",
+      "route": "/languages/japanese/characters/katakana/sa",
+      "sourcePath": "content/languages/japanese/katakana-expanded.json",
+      "contentHash": "95dcf17b24ac2cbbff5eadf5bba3107eb2960fe664dc530fdc91f316fa62bb7a"
+    },
+    {
+      "slug": "japanese/katakana/se",
+      "language": "ja",
+      "writingSystem": "katakana",
+      "glyph": "セ",
+      "title": "Katakana Se",
+      "summary": "The basic katakana syllable se.",
+      "meanings": [
+        "se sound"
+      ],
+      "readings": [
+        {
+          "label": "katakana",
+          "value": "セ",
+          "ipa": "se"
+        }
+      ],
+      "romaji": "se",
+      "inputSequences": [
+        "se"
+      ],
+      "ipa": "se",
+      "studyOrder": 14,
+      "tags": [
+        "kana",
+        "katakana",
+        "basic-katakana",
+        "s-row"
+      ],
+      "status": "published",
+      "strokes": [
+        {
+          "id": "s1",
+          "points": [
+            [
+              18,
+              45
+            ],
+            [
+              78,
+              31
+            ],
+            [
+              66,
+              52
+            ],
+            [
+              55,
+              60
+            ]
+          ]
+        },
+        {
+          "id": "s2",
+          "points": [
+            [
+              37,
+              22
+            ],
+            [
+              38,
+              71
+            ],
+            [
+              48,
+              80
+            ],
+            [
+              72,
+              77
+            ]
+          ]
+        }
+      ],
+      "examples": [],
+      "sources": [],
+      "id": "0818c8a6ebff",
+      "route": "/languages/japanese/characters/katakana/se",
+      "sourcePath": "content/languages/japanese/katakana-expanded.json",
+      "contentHash": "95dcf17b24ac2cbbff5eadf5bba3107eb2960fe664dc530fdc91f316fa62bb7a"
+    },
+    {
+      "slug": "japanese/katakana/shi",
+      "language": "ja",
+      "writingSystem": "katakana",
+      "glyph": "シ",
+      "title": "Katakana Shi",
+      "summary": "The basic katakana syllable shi.",
+      "meanings": [
+        "shi sound"
+      ],
+      "readings": [
+        {
+          "label": "katakana",
+          "value": "シ",
+          "ipa": "ɕi"
+        }
+      ],
+      "romaji": "shi",
+      "inputSequences": [
+        "shi",
+        "si"
+      ],
+      "ipa": "ɕi",
+      "studyOrder": 12,
+      "tags": [
+        "kana",
+        "katakana",
+        "basic-katakana",
+        "s-row",
+        "ime-alias"
+      ],
+      "status": "published",
+      "strokes": [
+        {
+          "id": "s1",
+          "points": [
+            [
+              28,
+              25
+            ],
+            [
+              42,
+              32
+            ]
+          ]
+        },
+        {
+          "id": "s2",
+          "points": [
+            [
+              23,
+              45
+            ],
+            [
+              40,
+              51
+            ]
+          ]
+        },
+        {
+          "id": "s3",
+          "points": [
+            [
+              75,
+              27
+            ],
+            [
+              66,
+              56
+            ],
+            [
+              48,
+              74
+            ],
+            [
+              25,
+              82
+            ]
+          ]
+        }
+      ],
+      "examples": [],
+      "sources": [],
+      "id": "dbabb2c5b642",
+      "route": "/languages/japanese/characters/katakana/shi",
+      "sourcePath": "content/languages/japanese/katakana-expanded.json",
+      "contentHash": "95dcf17b24ac2cbbff5eadf5bba3107eb2960fe664dc530fdc91f316fa62bb7a"
+    },
+    {
+      "slug": "japanese/katakana/small-tsu",
+      "language": "ja",
+      "writingSystem": "katakana",
+      "glyph": "ッ",
+      "title": "Small Katakana Tsu",
+      "summary": "Small katakana tsu marks a doubled following consonant.",
+      "meanings": [
+        "consonant doubling",
+        "brief closure"
+      ],
+      "readings": [
+        {
+          "label": "katakana",
+          "value": "ッ",
+          "ipa": "Q"
+        }
+      ],
+      "romaji": "small tsu",
+      "inputSequences": [
+        "xtsu",
+        "ltsu",
+        "double next consonant"
+      ],
+      "ipa": "Q",
+      "studyOrder": 104,
+      "tags": [
+        "kana",
+        "katakana",
+        "supplement",
+        "small-kana"
+      ],
+      "status": "published",
+      "strokes": [
+        {
+          "id": "s1",
+          "points": [
+            [
+              37,
+              36
+            ],
+            [
+              42,
+              50
+            ]
+          ]
+        },
+        {
+          "id": "s2",
+          "points": [
+            [
+              52,
+              33
+            ],
+            [
+              58,
+              47
+            ]
+          ]
+        },
+        {
+          "id": "s3",
+          "points": [
+            [
+              72,
+              37
+            ],
+            [
+              65,
+              57
+            ],
+            [
+              51,
+              70
+            ],
+            [
+              35,
+              77
+            ]
+          ]
+        }
+      ],
+      "examples": [],
+      "sources": [],
+      "id": "84be308075ae",
+      "route": "/languages/japanese/characters/katakana/small-tsu",
+      "sourcePath": "content/languages/japanese/katakana-expanded.json",
+      "contentHash": "95dcf17b24ac2cbbff5eadf5bba3107eb2960fe664dc530fdc91f316fa62bb7a"
+    },
+    {
+      "slug": "japanese/katakana/small-ya",
+      "language": "ja",
+      "writingSystem": "katakana",
+      "glyph": "ャ",
+      "title": "Small Katakana Ya",
+      "summary": "Small katakana ya combines with an i-row kana.",
+      "meanings": [
+        "small ya",
+        "contracted sound"
+      ],
+      "readings": [
+        {
+          "label": "katakana",
+          "value": "ャ",
+          "ipa": "ja"
+        }
+      ],
+      "romaji": "small ya",
+      "inputSequences": [
+        "xya",
+        "lya"
+      ],
+      "ipa": "ja",
+      "studyOrder": 105,
+      "tags": [
+        "kana",
+        "katakana",
+        "supplement",
+        "small-kana",
+        "yoon"
+      ],
+      "status": "published",
+      "strokes": [
+        {
+          "id": "s1",
+          "points": [
+            [
+              31,
+              48
+            ],
+            [
+              70,
+              38
+            ],
+            [
+              63,
+              54
+            ],
+            [
+              54,
+              60
+            ]
+          ]
+        },
+        {
+          "id": "s2",
+          "points": [
+            [
+              45,
+              34
+            ],
+            [
+              55,
+              78
+            ]
+          ]
+        }
+      ],
+      "examples": [],
+      "sources": [],
+      "id": "7aa24ff90ff0",
+      "route": "/languages/japanese/characters/katakana/small-ya",
+      "sourcePath": "content/languages/japanese/katakana-expanded.json",
+      "contentHash": "95dcf17b24ac2cbbff5eadf5bba3107eb2960fe664dc530fdc91f316fa62bb7a"
+    },
+    {
+      "slug": "japanese/katakana/small-yo",
+      "language": "ja",
+      "writingSystem": "katakana",
+      "glyph": "ョ",
+      "title": "Small Katakana Yo",
+      "summary": "Small katakana yo combines with an i-row kana.",
+      "meanings": [
+        "small yo",
+        "contracted sound"
+      ],
+      "readings": [
+        {
+          "label": "katakana",
+          "value": "ョ",
+          "ipa": "jo"
+        }
+      ],
+      "romaji": "small yo",
+      "inputSequences": [
+        "xyo",
+        "lyo"
+      ],
+      "ipa": "jo",
+      "studyOrder": 107,
+      "tags": [
+        "kana",
+        "katakana",
+        "supplement",
+        "small-kana",
+        "yoon"
+      ],
+      "status": "published",
+      "strokes": [
+        {
+          "id": "s1",
+          "points": [
+            [
+              36,
+              39
+            ],
+            [
+              68,
+              39
+            ],
+            [
+              67,
+              72
+            ]
+          ]
+        },
+        {
+          "id": "s2",
+          "points": [
+            [
+              38,
+              55
+            ],
+            [
+              66,
+              55
+            ]
+          ]
+        },
+        {
+          "id": "s3",
+          "points": [
+            [
+              34,
+              72
+            ],
+            [
+              67,
+              72
+            ]
+          ]
+        }
+      ],
+      "examples": [],
+      "sources": [],
+      "id": "1ce7fe10782b",
+      "route": "/languages/japanese/characters/katakana/small-yo",
+      "sourcePath": "content/languages/japanese/katakana-expanded.json",
+      "contentHash": "95dcf17b24ac2cbbff5eadf5bba3107eb2960fe664dc530fdc91f316fa62bb7a"
+    },
+    {
+      "slug": "japanese/katakana/small-yu",
+      "language": "ja",
+      "writingSystem": "katakana",
+      "glyph": "ュ",
+      "title": "Small Katakana Yu",
+      "summary": "Small katakana yu combines with an i-row kana.",
+      "meanings": [
+        "small yu",
+        "contracted sound"
+      ],
+      "readings": [
+        {
+          "label": "katakana",
+          "value": "ュ",
+          "ipa": "jɯ"
+        }
+      ],
+      "romaji": "small yu",
+      "inputSequences": [
+        "xyu",
+        "lyu"
+      ],
+      "ipa": "jɯ",
+      "studyOrder": 106,
+      "tags": [
+        "kana",
+        "katakana",
+        "supplement",
+        "small-kana",
+        "yoon"
+      ],
+      "status": "published",
+      "strokes": [
+        {
+          "id": "s1",
+          "points": [
+            [
+              39,
+              42
+            ],
+            [
+              65,
+              42
+            ],
+            [
+              63,
+              70
+            ]
+          ]
+        },
+        {
+          "id": "s2",
+          "points": [
+            [
+              33,
+              70
+            ],
+            [
+              71,
+              69
+            ]
+          ]
+        }
+      ],
+      "examples": [],
+      "sources": [],
+      "id": "a7c5699536b1",
+      "route": "/languages/japanese/characters/katakana/small-yu",
+      "sourcePath": "content/languages/japanese/katakana-expanded.json",
+      "contentHash": "95dcf17b24ac2cbbff5eadf5bba3107eb2960fe664dc530fdc91f316fa62bb7a"
+    },
+    {
+      "slug": "japanese/katakana/so",
+      "language": "ja",
+      "writingSystem": "katakana",
+      "glyph": "ソ",
+      "title": "Katakana So",
+      "summary": "The basic katakana syllable so.",
+      "meanings": [
+        "so sound"
+      ],
+      "readings": [
+        {
+          "label": "katakana",
+          "value": "ソ",
+          "ipa": "so"
+        }
+      ],
+      "romaji": "so",
+      "inputSequences": [
+        "so"
+      ],
+      "ipa": "so",
+      "studyOrder": 15,
+      "tags": [
+        "kana",
+        "katakana",
+        "basic-katakana",
+        "s-row"
+      ],
+      "status": "published",
+      "strokes": [
+        {
+          "id": "s1",
+          "points": [
+            [
+              27,
+              25
+            ],
+            [
+              42,
+              43
+            ]
+          ]
+        },
+        {
+          "id": "s2",
+          "points": [
+            [
+              72,
+              22
+            ],
+            [
+              64,
+              52
+            ],
+            [
+              48,
+              72
+            ],
+            [
+              27,
+              85
+            ]
+          ]
+        }
+      ],
+      "examples": [],
+      "sources": [],
+      "id": "3cc32f2155b0",
+      "route": "/languages/japanese/characters/katakana/so",
+      "sourcePath": "content/languages/japanese/katakana-expanded.json",
+      "contentHash": "95dcf17b24ac2cbbff5eadf5bba3107eb2960fe664dc530fdc91f316fa62bb7a"
+    },
+    {
+      "slug": "japanese/katakana/su",
+      "language": "ja",
+      "writingSystem": "katakana",
+      "glyph": "ス",
+      "title": "Katakana Su",
+      "summary": "The basic katakana syllable su.",
+      "meanings": [
+        "su sound"
+      ],
+      "readings": [
+        {
+          "label": "katakana",
+          "value": "ス",
+          "ipa": "sɯ"
+        }
+      ],
+      "romaji": "su",
+      "inputSequences": [
+        "su"
+      ],
+      "ipa": "sɯ",
+      "studyOrder": 13,
+      "tags": [
+        "kana",
+        "katakana",
+        "basic-katakana",
+        "s-row"
+      ],
+      "status": "published",
+      "strokes": [
+        {
+          "id": "s1",
+          "points": [
+            [
+              25,
+              27
+            ],
+            [
+              70,
+              25
+            ],
+            [
+              58,
+              51
+            ],
+            [
+              39,
+              72
+            ],
+            [
+              20,
+              82
+            ]
+          ]
+        },
+        {
+          "id": "s2",
+          "points": [
+            [
+              55,
+              54
+            ],
+            [
+              78,
+              80
+            ]
+          ]
+        }
+      ],
+      "examples": [],
+      "sources": [],
+      "id": "e301b94f5a25",
+      "route": "/languages/japanese/characters/katakana/su",
+      "sourcePath": "content/languages/japanese/katakana-expanded.json",
+      "contentHash": "95dcf17b24ac2cbbff5eadf5bba3107eb2960fe664dc530fdc91f316fa62bb7a"
+    },
+    {
+      "slug": "japanese/katakana/ta",
+      "language": "ja",
+      "writingSystem": "katakana",
+      "glyph": "タ",
+      "title": "Katakana Ta",
+      "summary": "The basic katakana syllable ta.",
+      "meanings": [
+        "ta sound"
+      ],
+      "readings": [
+        {
+          "label": "katakana",
+          "value": "タ",
+          "ipa": "ta"
+        }
+      ],
+      "romaji": "ta",
+      "inputSequences": [
+        "ta"
+      ],
+      "ipa": "ta",
+      "studyOrder": 16,
+      "tags": [
+        "kana",
+        "katakana",
+        "basic-katakana",
+        "t-row"
+      ],
+      "status": "published",
+      "strokes": [
+        {
+          "id": "s1",
+          "points": [
+            [
+              47,
+              17
+            ],
+            [
+              27,
+              48
+            ]
+          ]
+        },
+        {
+          "id": "s2",
+          "points": [
+            [
+              42,
+              31
+            ],
+            [
+              75,
+              29
+            ],
+            [
+              64,
+              61
+            ],
+            [
+              49,
+              78
+            ],
+            [
+              29,
+              88
+            ]
+          ]
+        },
+        {
+          "id": "s3",
+          "points": [
+            [
+              38,
+              51
+            ],
+            [
+              58,
+              63
+            ]
+          ]
+        }
+      ],
+      "examples": [],
+      "sources": [],
+      "id": "3b9515208b62",
+      "route": "/languages/japanese/characters/katakana/ta",
+      "sourcePath": "content/languages/japanese/katakana-expanded.json",
+      "contentHash": "95dcf17b24ac2cbbff5eadf5bba3107eb2960fe664dc530fdc91f316fa62bb7a"
+    },
+    {
+      "slug": "japanese/katakana/te",
+      "language": "ja",
+      "writingSystem": "katakana",
+      "glyph": "テ",
+      "title": "Katakana Te",
+      "summary": "The basic katakana syllable te.",
+      "meanings": [
+        "te sound"
+      ],
+      "readings": [
+        {
+          "label": "katakana",
+          "value": "テ",
+          "ipa": "te"
+        }
+      ],
+      "romaji": "te",
+      "inputSequences": [
+        "te"
+      ],
+      "ipa": "te",
+      "studyOrder": 19,
+      "tags": [
+        "kana",
+        "katakana",
+        "basic-katakana",
+        "t-row"
+      ],
+      "status": "published",
+      "strokes": [
+        {
+          "id": "s1",
+          "points": [
+            [
+              31,
+              24
+            ],
+            [
+              69,
+              21
+            ]
+          ]
+        },
+        {
+          "id": "s2",
+          "points": [
+            [
+              19,
+              43
+            ],
+            [
+              80,
+              38
+            ]
+          ]
+        },
+        {
+          "id": "s3",
+          "points": [
+            [
+              52,
+              41
+            ],
+            [
+              51,
+              64
+            ],
+            [
+              39,
+              82
+            ]
+          ]
+        }
+      ],
+      "examples": [],
+      "sources": [],
+      "id": "ba904ab02b59",
+      "route": "/languages/japanese/characters/katakana/te",
+      "sourcePath": "content/languages/japanese/katakana-expanded.json",
+      "contentHash": "95dcf17b24ac2cbbff5eadf5bba3107eb2960fe664dc530fdc91f316fa62bb7a"
+    },
+    {
+      "slug": "japanese/katakana/to",
+      "language": "ja",
+      "writingSystem": "katakana",
+      "glyph": "ト",
+      "title": "Katakana To",
+      "summary": "The basic katakana syllable to.",
+      "meanings": [
+        "to sound"
+      ],
+      "readings": [
+        {
+          "label": "katakana",
+          "value": "ト",
+          "ipa": "to"
+        }
+      ],
+      "romaji": "to",
+      "inputSequences": [
+        "to"
+      ],
+      "ipa": "to",
+      "studyOrder": 20,
+      "tags": [
+        "kana",
+        "katakana",
+        "basic-katakana",
+        "t-row"
+      ],
+      "status": "published",
+      "strokes": [
+        {
+          "id": "s1",
+          "points": [
+            [
+              40,
+              17
+            ],
+            [
+              40,
+              84
+            ]
+          ]
+        },
+        {
+          "id": "s2",
+          "points": [
+            [
+              42,
+              38
+            ],
+            [
+              71,
+              52
+            ]
+          ]
+        }
+      ],
+      "examples": [],
+      "sources": [],
+      "id": "911a3aa2965b",
+      "route": "/languages/japanese/characters/katakana/to",
+      "sourcePath": "content/languages/japanese/katakana-expanded.json",
+      "contentHash": "95dcf17b24ac2cbbff5eadf5bba3107eb2960fe664dc530fdc91f316fa62bb7a"
+    },
+    {
+      "slug": "japanese/katakana/tsu",
+      "language": "ja",
+      "writingSystem": "katakana",
+      "glyph": "ツ",
+      "title": "Katakana Tsu",
+      "summary": "The basic katakana syllable tsu.",
+      "meanings": [
+        "tsu sound"
+      ],
+      "readings": [
+        {
+          "label": "katakana",
+          "value": "ツ",
+          "ipa": "tsɯ"
+        }
+      ],
+      "romaji": "tsu",
+      "inputSequences": [
+        "tsu",
+        "tu"
+      ],
+      "ipa": "tsɯ",
+      "studyOrder": 18,
+      "tags": [
+        "kana",
+        "katakana",
+        "basic-katakana",
+        "t-row",
+        "ime-alias"
+      ],
+      "status": "published",
+      "strokes": [
+        {
+          "id": "s1",
+          "points": [
+            [
+              28,
+              21
+            ],
+            [
+              38,
+              40
+            ]
+          ]
+        },
+        {
+          "id": "s2",
+          "points": [
+            [
+              48,
+              18
+            ],
+            [
+              55,
+              37
+            ]
+          ]
+        },
+        {
+          "id": "s3",
+          "points": [
+            [
+              76,
+              24
+            ],
+            [
+              69,
+              54
+            ],
+            [
+              51,
+              73
+            ],
+            [
+              27,
+              84
+            ]
+          ]
+        }
+      ],
+      "examples": [],
+      "sources": [],
+      "id": "ca458ce81a35",
+      "route": "/languages/japanese/characters/katakana/tsu",
+      "sourcePath": "content/languages/japanese/katakana-expanded.json",
+      "contentHash": "95dcf17b24ac2cbbff5eadf5bba3107eb2960fe664dc530fdc91f316fa62bb7a"
     },
     {
       "slug": "japanese/katakana/u",
@@ -15771,13 +20374,16 @@
         }
       ],
       "romaji": "u",
-      "inputSequences": [],
+      "inputSequences": [
+        "u"
+      ],
       "ipa": "ɯ",
-      "studyOrder": 9999,
+      "studyOrder": 3,
       "tags": [
         "kana",
         "vowel",
-        "katakana"
+        "katakana",
+        "basic-katakana"
       ],
       "status": "published",
       "strokes": [
@@ -15821,7 +20427,395 @@
       "id": "1b5b47155c52",
       "route": "/languages/japanese/characters/katakana/u",
       "sourcePath": "content/languages/japanese/characters.json",
-      "contentHash": "4364ea1971f4eda01d76d188c4ec20711fbdd61e9eb8f27b165bc27c336d7f58"
+      "contentHash": "2deaf50bd501960d12348e2dfcf9c60eb5f31f16398534ac7522126f34766fbd"
+    },
+    {
+      "slug": "japanese/katakana/wa",
+      "language": "ja",
+      "writingSystem": "katakana",
+      "glyph": "ワ",
+      "title": "Katakana Wa",
+      "summary": "The basic katakana syllable wa.",
+      "meanings": [
+        "wa sound"
+      ],
+      "readings": [
+        {
+          "label": "katakana",
+          "value": "ワ",
+          "ipa": "wa"
+        }
+      ],
+      "romaji": "wa",
+      "inputSequences": [
+        "wa"
+      ],
+      "ipa": "wa",
+      "studyOrder": 44,
+      "tags": [
+        "kana",
+        "katakana",
+        "basic-katakana",
+        "w-row"
+      ],
+      "status": "published",
+      "strokes": [
+        {
+          "id": "s1",
+          "points": [
+            [
+              27,
+              24
+            ],
+            [
+              28,
+              51
+            ]
+          ]
+        },
+        {
+          "id": "s2",
+          "points": [
+            [
+              27,
+              31
+            ],
+            [
+              72,
+              29
+            ],
+            [
+              64,
+              58
+            ],
+            [
+              49,
+              77
+            ],
+            [
+              29,
+              87
+            ]
+          ]
+        }
+      ],
+      "examples": [],
+      "sources": [],
+      "id": "f9be414d9a88",
+      "route": "/languages/japanese/characters/katakana/wa",
+      "sourcePath": "content/languages/japanese/katakana-expanded.json",
+      "contentHash": "95dcf17b24ac2cbbff5eadf5bba3107eb2960fe664dc530fdc91f316fa62bb7a"
+    },
+    {
+      "slug": "japanese/katakana/wo",
+      "language": "ja",
+      "writingSystem": "katakana",
+      "glyph": "ヲ",
+      "title": "Katakana Wo",
+      "summary": "The basic katakana syllable wo, mostly seen in charts and stylized text.",
+      "meanings": [
+        "wo sound",
+        "historical o sound"
+      ],
+      "readings": [
+        {
+          "label": "katakana",
+          "value": "ヲ",
+          "ipa": "o"
+        }
+      ],
+      "romaji": "wo",
+      "inputSequences": [
+        "wo"
+      ],
+      "ipa": "o",
+      "studyOrder": 45,
+      "tags": [
+        "kana",
+        "katakana",
+        "basic-katakana",
+        "w-row"
+      ],
+      "status": "published",
+      "strokes": [
+        {
+          "id": "s1",
+          "points": [
+            [
+              29,
+              23
+            ],
+            [
+              68,
+              21
+            ]
+          ]
+        },
+        {
+          "id": "s2",
+          "points": [
+            [
+              20,
+              42
+            ],
+            [
+              78,
+              37
+            ]
+          ]
+        },
+        {
+          "id": "s3",
+          "points": [
+            [
+              54,
+              21
+            ],
+            [
+              52,
+              56
+            ],
+            [
+              42,
+              73
+            ],
+            [
+              25,
+              84
+            ]
+          ]
+        }
+      ],
+      "examples": [],
+      "sources": [],
+      "id": "cb15f9b73ff2",
+      "route": "/languages/japanese/characters/katakana/wo",
+      "sourcePath": "content/languages/japanese/katakana-expanded.json",
+      "contentHash": "95dcf17b24ac2cbbff5eadf5bba3107eb2960fe664dc530fdc91f316fa62bb7a"
+    },
+    {
+      "slug": "japanese/katakana/ya",
+      "language": "ja",
+      "writingSystem": "katakana",
+      "glyph": "ヤ",
+      "title": "Katakana Ya",
+      "summary": "The basic katakana syllable ya.",
+      "meanings": [
+        "ya sound"
+      ],
+      "readings": [
+        {
+          "label": "katakana",
+          "value": "ヤ",
+          "ipa": "ja"
+        }
+      ],
+      "romaji": "ya",
+      "inputSequences": [
+        "ya"
+      ],
+      "ipa": "ja",
+      "studyOrder": 36,
+      "tags": [
+        "kana",
+        "katakana",
+        "basic-katakana",
+        "y-row"
+      ],
+      "status": "published",
+      "strokes": [
+        {
+          "id": "s1",
+          "points": [
+            [
+              18,
+              42
+            ],
+            [
+              76,
+              27
+            ],
+            [
+              66,
+              50
+            ],
+            [
+              54,
+              58
+            ]
+          ]
+        },
+        {
+          "id": "s2",
+          "points": [
+            [
+              39,
+              18
+            ],
+            [
+              55,
+              84
+            ]
+          ]
+        }
+      ],
+      "examples": [],
+      "sources": [],
+      "id": "6756a1f51ae7",
+      "route": "/languages/japanese/characters/katakana/ya",
+      "sourcePath": "content/languages/japanese/katakana-expanded.json",
+      "contentHash": "95dcf17b24ac2cbbff5eadf5bba3107eb2960fe664dc530fdc91f316fa62bb7a"
+    },
+    {
+      "slug": "japanese/katakana/yo",
+      "language": "ja",
+      "writingSystem": "katakana",
+      "glyph": "ヨ",
+      "title": "Katakana Yo",
+      "summary": "The basic katakana syllable yo.",
+      "meanings": [
+        "yo sound"
+      ],
+      "readings": [
+        {
+          "label": "katakana",
+          "value": "ヨ",
+          "ipa": "jo"
+        }
+      ],
+      "romaji": "yo",
+      "inputSequences": [
+        "yo"
+      ],
+      "ipa": "jo",
+      "studyOrder": 38,
+      "tags": [
+        "kana",
+        "katakana",
+        "basic-katakana",
+        "y-row"
+      ],
+      "status": "published",
+      "strokes": [
+        {
+          "id": "s1",
+          "points": [
+            [
+              26,
+              27
+            ],
+            [
+              72,
+              27
+            ],
+            [
+              70,
+              73
+            ]
+          ]
+        },
+        {
+          "id": "s2",
+          "points": [
+            [
+              29,
+              49
+            ],
+            [
+              69,
+              49
+            ]
+          ]
+        },
+        {
+          "id": "s3",
+          "points": [
+            [
+              23,
+              74
+            ],
+            [
+              70,
+              73
+            ]
+          ]
+        }
+      ],
+      "examples": [],
+      "sources": [],
+      "id": "6662f2bcf515",
+      "route": "/languages/japanese/characters/katakana/yo",
+      "sourcePath": "content/languages/japanese/katakana-expanded.json",
+      "contentHash": "95dcf17b24ac2cbbff5eadf5bba3107eb2960fe664dc530fdc91f316fa62bb7a"
+    },
+    {
+      "slug": "japanese/katakana/yu",
+      "language": "ja",
+      "writingSystem": "katakana",
+      "glyph": "ユ",
+      "title": "Katakana Yu",
+      "summary": "The basic katakana syllable yu.",
+      "meanings": [
+        "yu sound"
+      ],
+      "readings": [
+        {
+          "label": "katakana",
+          "value": "ユ",
+          "ipa": "jɯ"
+        }
+      ],
+      "romaji": "yu",
+      "inputSequences": [
+        "yu"
+      ],
+      "ipa": "jɯ",
+      "studyOrder": 37,
+      "tags": [
+        "kana",
+        "katakana",
+        "basic-katakana",
+        "y-row"
+      ],
+      "status": "published",
+      "strokes": [
+        {
+          "id": "s1",
+          "points": [
+            [
+              31,
+              30
+            ],
+            [
+              69,
+              30
+            ],
+            [
+              66,
+              69
+            ]
+          ]
+        },
+        {
+          "id": "s2",
+          "points": [
+            [
+              22,
+              69
+            ],
+            [
+              76,
+              68
+            ]
+          ]
+        }
+      ],
+      "examples": [],
+      "sources": [],
+      "id": "8d9dbe7d03b3",
+      "route": "/languages/japanese/characters/katakana/yu",
+      "sourcePath": "content/languages/japanese/katakana-expanded.json",
+      "contentHash": "95dcf17b24ac2cbbff5eadf5bba3107eb2960fe664dc530fdc91f316fa62bb7a"
     }
   ],
   "languageVocabulary": [
@@ -15854,7 +20848,62 @@
       "id": "d80de3cb861e",
       "route": "/languages/japanese/vocabulary/big",
       "sourcePath": "content/languages/japanese/vocabulary.json",
-      "contentHash": "0a61b7c9962c6ed254fcc5d2ab2832f266f7fdf02893cb03abc4810ef571a249"
+      "contentHash": "2065db9c3df19f1790ca6fb90300b3b6779ff5e6c87a2697935fae89f6d76a0c"
+    },
+    {
+      "slug": "japanese/vocabulary/coffee",
+      "language": "ja",
+      "expression": "コーヒー",
+      "reading": "コーヒー",
+      "romaji": "koohii",
+      "inputSequences": [
+        "ko-hi-",
+        "koohii"
+      ],
+      "ipa": "koːçiː",
+      "meanings": [
+        "coffee"
+      ],
+      "characterSlugs": [
+        "japanese/katakana/ko",
+        "japanese/katakana/long-vowel-mark",
+        "japanese/katakana/hi"
+      ],
+      "segments": [
+        {
+          "text": "コー",
+          "reading": "コー",
+          "romaji": "koo",
+          "meaning": "coffee sound, first half",
+          "characterSlugs": [
+            "japanese/katakana/ko",
+            "japanese/katakana/long-vowel-mark"
+          ]
+        },
+        {
+          "text": "ヒー",
+          "reading": "ヒー",
+          "romaji": "hii",
+          "meaning": "coffee sound, second half",
+          "characterSlugs": [
+            "japanese/katakana/hi",
+            "japanese/katakana/long-vowel-mark"
+          ]
+        }
+      ],
+      "examples": [],
+      "tags": [
+        "beginner",
+        "katakana",
+        "loanword",
+        "drink"
+      ],
+      "status": "published",
+      "sources": [],
+      "id": "0ca2d4863f55",
+      "route": "/languages/japanese/vocabulary/coffee",
+      "sourcePath": "content/languages/japanese/vocabulary.json",
+      "contentHash": "2065db9c3df19f1790ca6fb90300b3b6779ff5e6c87a2697935fae89f6d76a0c"
     },
     {
       "slug": "japanese/vocabulary/good-evening",
@@ -15961,7 +21010,7 @@
       "id": "ec0db40abf87",
       "route": "/languages/japanese/vocabulary/good-evening",
       "sourcePath": "content/languages/japanese/vocabulary.json",
-      "contentHash": "0a61b7c9962c6ed254fcc5d2ab2832f266f7fdf02893cb03abc4810ef571a249"
+      "contentHash": "2065db9c3df19f1790ca6fb90300b3b6779ff5e6c87a2697935fae89f6d76a0c"
     },
     {
       "slug": "japanese/vocabulary/hello",
@@ -16054,7 +21103,68 @@
       "id": "1f626996f823",
       "route": "/languages/japanese/vocabulary/hello",
       "sourcePath": "content/languages/japanese/vocabulary.json",
-      "contentHash": "0a61b7c9962c6ed254fcc5d2ab2832f266f7fdf02893cb03abc4810ef571a249"
+      "contentHash": "2065db9c3df19f1790ca6fb90300b3b6779ff5e6c87a2697935fae89f6d76a0c"
+    },
+    {
+      "slug": "japanese/vocabulary/hotel",
+      "language": "ja",
+      "expression": "ホテル",
+      "reading": "ホテル",
+      "romaji": "hoteru",
+      "inputSequences": [
+        "hoteru"
+      ],
+      "ipa": "hoteɾɯ",
+      "meanings": [
+        "hotel"
+      ],
+      "characterSlugs": [
+        "japanese/katakana/ho",
+        "japanese/katakana/te",
+        "japanese/katakana/ru"
+      ],
+      "segments": [
+        {
+          "text": "ホ",
+          "reading": "ホ",
+          "romaji": "ho",
+          "meaning": "ho sound",
+          "characterSlugs": [
+            "japanese/katakana/ho"
+          ]
+        },
+        {
+          "text": "テ",
+          "reading": "テ",
+          "romaji": "te",
+          "meaning": "te sound",
+          "characterSlugs": [
+            "japanese/katakana/te"
+          ]
+        },
+        {
+          "text": "ル",
+          "reading": "ル",
+          "romaji": "ru",
+          "meaning": "ru sound",
+          "characterSlugs": [
+            "japanese/katakana/ru"
+          ]
+        }
+      ],
+      "examples": [],
+      "tags": [
+        "beginner",
+        "katakana",
+        "loanword",
+        "travel"
+      ],
+      "status": "published",
+      "sources": [],
+      "id": "6cf7bd9ac7e0",
+      "route": "/languages/japanese/vocabulary/hotel",
+      "sourcePath": "content/languages/japanese/vocabulary.json",
+      "contentHash": "2065db9c3df19f1790ca6fb90300b3b6779ff5e6c87a2697935fae89f6d76a0c"
     },
     {
       "slug": "japanese/vocabulary/japan",
@@ -16083,7 +21193,7 @@
       "id": "8a1d7aa1b725",
       "route": "/languages/japanese/vocabulary/japan",
       "sourcePath": "content/languages/japanese/vocabulary.json",
-      "contentHash": "0a61b7c9962c6ed254fcc5d2ab2832f266f7fdf02893cb03abc4810ef571a249"
+      "contentHash": "2065db9c3df19f1790ca6fb90300b3b6779ff5e6c87a2697935fae89f6d76a0c"
     },
     {
       "slug": "japanese/vocabulary/mountain",
@@ -16111,7 +21221,7 @@
       "id": "babce6ba07ff",
       "route": "/languages/japanese/vocabulary/mountain",
       "sourcePath": "content/languages/japanese/vocabulary.json",
-      "contentHash": "0a61b7c9962c6ed254fcc5d2ab2832f266f7fdf02893cb03abc4810ef571a249"
+      "contentHash": "2065db9c3df19f1790ca6fb90300b3b6779ff5e6c87a2697935fae89f6d76a0c"
     },
     {
       "slug": "japanese/vocabulary/person",
@@ -16139,7 +21249,262 @@
       "id": "e9fab249c3a7",
       "route": "/languages/japanese/vocabulary/person",
       "sourcePath": "content/languages/japanese/vocabulary.json",
-      "contentHash": "0a61b7c9962c6ed254fcc5d2ab2832f266f7fdf02893cb03abc4810ef571a249"
+      "contentHash": "2065db9c3df19f1790ca6fb90300b3b6779ff5e6c87a2697935fae89f6d76a0c"
+    },
+    {
+      "slug": "japanese/vocabulary/restaurant",
+      "language": "ja",
+      "expression": "レストラン",
+      "reading": "レストラン",
+      "romaji": "resutoran",
+      "inputSequences": [
+        "resutoran"
+      ],
+      "ipa": "ɾesɯtoɾaɴ",
+      "meanings": [
+        "restaurant"
+      ],
+      "characterSlugs": [
+        "japanese/katakana/re",
+        "japanese/katakana/su",
+        "japanese/katakana/to",
+        "japanese/katakana/ra",
+        "japanese/katakana/n"
+      ],
+      "segments": [
+        {
+          "text": "レ",
+          "reading": "レ",
+          "romaji": "re",
+          "meaning": "re sound",
+          "characterSlugs": [
+            "japanese/katakana/re"
+          ]
+        },
+        {
+          "text": "ス",
+          "reading": "ス",
+          "romaji": "su",
+          "meaning": "su sound",
+          "characterSlugs": [
+            "japanese/katakana/su"
+          ]
+        },
+        {
+          "text": "ト",
+          "reading": "ト",
+          "romaji": "to",
+          "meaning": "to sound",
+          "characterSlugs": [
+            "japanese/katakana/to"
+          ]
+        },
+        {
+          "text": "ラン",
+          "reading": "ラン",
+          "romaji": "ran",
+          "meaning": "ra plus moraic n",
+          "characterSlugs": [
+            "japanese/katakana/ra",
+            "japanese/katakana/n"
+          ]
+        }
+      ],
+      "examples": [],
+      "tags": [
+        "beginner",
+        "katakana",
+        "loanword",
+        "food"
+      ],
+      "status": "published",
+      "sources": [],
+      "id": "887dff008ac7",
+      "route": "/languages/japanese/vocabulary/restaurant",
+      "sourcePath": "content/languages/japanese/vocabulary.json",
+      "contentHash": "2065db9c3df19f1790ca6fb90300b3b6779ff5e6c87a2697935fae89f6d76a0c"
+    },
+    {
+      "slug": "japanese/vocabulary/supermarket",
+      "language": "ja",
+      "expression": "スーパー",
+      "reading": "スーパー",
+      "romaji": "suupaa",
+      "inputSequences": [
+        "su-pa-",
+        "suupaa"
+      ],
+      "ipa": "sɯːpaː",
+      "meanings": [
+        "supermarket",
+        "grocery store"
+      ],
+      "characterSlugs": [
+        "japanese/katakana/su",
+        "japanese/katakana/long-vowel-mark",
+        "japanese/katakana/pa"
+      ],
+      "segments": [
+        {
+          "text": "スー",
+          "reading": "スー",
+          "romaji": "suu",
+          "meaning": "su with a long u sound",
+          "characterSlugs": [
+            "japanese/katakana/su",
+            "japanese/katakana/long-vowel-mark"
+          ]
+        },
+        {
+          "text": "パー",
+          "reading": "パー",
+          "romaji": "paa",
+          "meaning": "pa with a long a sound",
+          "characterSlugs": [
+            "japanese/katakana/pa",
+            "japanese/katakana/long-vowel-mark"
+          ]
+        }
+      ],
+      "examples": [],
+      "tags": [
+        "beginner",
+        "katakana",
+        "loanword",
+        "shopping"
+      ],
+      "status": "published",
+      "sources": [],
+      "id": "0bd6eb4d042b",
+      "route": "/languages/japanese/vocabulary/supermarket",
+      "sourcePath": "content/languages/japanese/vocabulary.json",
+      "contentHash": "2065db9c3df19f1790ca6fb90300b3b6779ff5e6c87a2697935fae89f6d76a0c"
+    },
+    {
+      "slug": "japanese/vocabulary/taxi",
+      "language": "ja",
+      "expression": "タクシー",
+      "reading": "タクシー",
+      "romaji": "takushii",
+      "inputSequences": [
+        "takushi-",
+        "takushii"
+      ],
+      "ipa": "takɯɕiː",
+      "meanings": [
+        "taxi"
+      ],
+      "characterSlugs": [
+        "japanese/katakana/ta",
+        "japanese/katakana/ku",
+        "japanese/katakana/shi",
+        "japanese/katakana/long-vowel-mark"
+      ],
+      "segments": [
+        {
+          "text": "タ",
+          "reading": "タ",
+          "romaji": "ta",
+          "meaning": "ta sound",
+          "characterSlugs": [
+            "japanese/katakana/ta"
+          ]
+        },
+        {
+          "text": "ク",
+          "reading": "ク",
+          "romaji": "ku",
+          "meaning": "ku sound",
+          "characterSlugs": [
+            "japanese/katakana/ku"
+          ]
+        },
+        {
+          "text": "シー",
+          "reading": "シー",
+          "romaji": "shii",
+          "meaning": "shi with a long i sound",
+          "characterSlugs": [
+            "japanese/katakana/shi",
+            "japanese/katakana/long-vowel-mark"
+          ]
+        }
+      ],
+      "examples": [],
+      "tags": [
+        "beginner",
+        "katakana",
+        "loanword",
+        "travel"
+      ],
+      "status": "published",
+      "sources": [],
+      "id": "a1b35dfafa68",
+      "route": "/languages/japanese/vocabulary/taxi",
+      "sourcePath": "content/languages/japanese/vocabulary.json",
+      "contentHash": "2065db9c3df19f1790ca6fb90300b3b6779ff5e6c87a2697935fae89f6d76a0c"
+    },
+    {
+      "slug": "japanese/vocabulary/television",
+      "language": "ja",
+      "expression": "テレビ",
+      "reading": "テレビ",
+      "romaji": "terebi",
+      "inputSequences": [
+        "terebi"
+      ],
+      "ipa": "teɾebi",
+      "meanings": [
+        "television",
+        "TV"
+      ],
+      "characterSlugs": [
+        "japanese/katakana/te",
+        "japanese/katakana/re",
+        "japanese/katakana/bi"
+      ],
+      "segments": [
+        {
+          "text": "テ",
+          "reading": "テ",
+          "romaji": "te",
+          "meaning": "te sound",
+          "characterSlugs": [
+            "japanese/katakana/te"
+          ]
+        },
+        {
+          "text": "レ",
+          "reading": "レ",
+          "romaji": "re",
+          "meaning": "re sound",
+          "characterSlugs": [
+            "japanese/katakana/re"
+          ]
+        },
+        {
+          "text": "ビ",
+          "reading": "ビ",
+          "romaji": "bi",
+          "meaning": "voiced hi-row sound",
+          "characterSlugs": [
+            "japanese/katakana/bi"
+          ]
+        }
+      ],
+      "examples": [],
+      "tags": [
+        "beginner",
+        "katakana",
+        "loanword",
+        "home"
+      ],
+      "status": "published",
+      "sources": [],
+      "id": "8d22cea23949",
+      "route": "/languages/japanese/vocabulary/television",
+      "sourcePath": "content/languages/japanese/vocabulary.json",
+      "contentHash": "2065db9c3df19f1790ca6fb90300b3b6779ff5e6c87a2697935fae89f6d76a0c"
     },
     {
       "slug": "japanese/vocabulary/water",
@@ -16167,7 +21532,7 @@
       "id": "e4d176c06145",
       "route": "/languages/japanese/vocabulary/water",
       "sourcePath": "content/languages/japanese/vocabulary.json",
-      "contentHash": "0a61b7c9962c6ed254fcc5d2ab2832f266f7fdf02893cb03abc4810ef571a249"
+      "contentHash": "2065db9c3df19f1790ca6fb90300b3b6779ff5e6c87a2697935fae89f6d76a0c"
     }
   ],
   "passiveFlashcardFeeds": [
@@ -19503,6 +24868,496 @@
       "route": "/paths/database-indexes-and-search/flashcards",
       "sourcePath": "content/flashcard-feeds/database-indexes-and-search.json",
       "contentHash": "119d423af238199ce4a508f99a739e9ce6203b7f8238e04b40c5c53b8335ffe8"
+    },
+    {
+      "slug": "japanese-foundations",
+      "pathSlug": "japanese-foundations",
+      "title": "Japanese Alphabet Flashcards",
+      "summary": "Always-available hiragana, katakana, sound-change, and beginner word recall for short review sessions.",
+      "audience": "English-speaking beginners learning to recognize and read Japanese kana.",
+      "status": "published",
+      "cards": [
+        {
+          "id": "hiragana-vowels",
+          "type": "concept",
+          "title": "Hiragana Vowels",
+          "prompt": "Read あ・い・う・え・お before revealing the romaji.",
+          "explanation": "The readings are a, i, u, e, o. This vowel order organizes every kana row in the gojūon chart.",
+          "difficulty": "foundation",
+          "tags": [
+            "japanese",
+            "hiragana",
+            "vowels"
+          ],
+          "sourceDocSlug": "languages/japanese-hiragana-foundations"
+        },
+        {
+          "id": "hiragana-k-row",
+          "type": "concept",
+          "title": "Hiragana K Row",
+          "prompt": "Read か・き・く・け・こ aloud from left to right.",
+          "explanation": "The readings are ka, ki, ku, ke, ko. Keep the fixed vowel order a, i, u, e, o.",
+          "difficulty": "foundation",
+          "tags": [
+            "japanese",
+            "hiragana",
+            "k-row"
+          ],
+          "sourceDocSlug": "languages/japanese-hiragana-foundations"
+        },
+        {
+          "id": "hiragana-s-row",
+          "type": "concept",
+          "title": "Hiragana S Row",
+          "prompt": "Read さ・し・す・せ・そ and notice the irregular label.",
+          "explanation": "The readings are sa, shi, su, se, so. Learner romaji uses shi instead of a mechanical si.",
+          "difficulty": "foundation",
+          "tags": [
+            "japanese",
+            "hiragana",
+            "s-row"
+          ],
+          "sourceDocSlug": "languages/japanese-hiragana-foundations"
+        },
+        {
+          "id": "hiragana-t-row",
+          "type": "concept",
+          "title": "Hiragana T Row",
+          "prompt": "Read た・ち・つ・て・と and find the two irregular labels.",
+          "explanation": "The readings are ta, chi, tsu, te, to. Chi and tsu show the pronunciation more clearly than ti and tu.",
+          "difficulty": "foundation",
+          "tags": [
+            "japanese",
+            "hiragana",
+            "t-row"
+          ],
+          "sourceDocSlug": "languages/japanese-hiragana-foundations"
+        },
+        {
+          "id": "hiragana-n-row",
+          "type": "concept",
+          "title": "Hiragana N Row",
+          "prompt": "Read な・に・ぬ・ね・の without looking at a chart.",
+          "explanation": "The readings are na, ni, nu, ne, no. Compare ぬ and ね by following the loop and final tail.",
+          "difficulty": "foundation",
+          "tags": [
+            "japanese",
+            "hiragana",
+            "n-row"
+          ],
+          "sourceDocSlug": "languages/japanese-hiragana-foundations"
+        },
+        {
+          "id": "hiragana-h-row",
+          "type": "concept",
+          "title": "Hiragana H Row",
+          "prompt": "Read は・ひ・ふ・へ・ほ and recall the special middle sound.",
+          "explanation": "The readings are ha, hi, fu, he, ho. Japanese fu is lighter than a strongly lip-biting English f.",
+          "difficulty": "foundation",
+          "tags": [
+            "japanese",
+            "hiragana",
+            "h-row"
+          ],
+          "sourceDocSlug": "languages/japanese-hiragana-foundations"
+        },
+        {
+          "id": "hiragana-m-row",
+          "type": "concept",
+          "title": "Hiragana M Row",
+          "prompt": "Read ま・み・む・め・も from shape alone.",
+          "explanation": "The readings are ma, mi, mu, me, mo. Compare め with ぬ by tracking where the line exits the loop.",
+          "difficulty": "foundation",
+          "tags": [
+            "japanese",
+            "hiragana",
+            "m-row"
+          ],
+          "sourceDocSlug": "languages/japanese-hiragana-foundations"
+        },
+        {
+          "id": "hiragana-y-row",
+          "type": "concept",
+          "title": "Hiragana Y Row",
+          "prompt": "Which three basic sounds are written や・ゆ・よ?",
+          "explanation": "They are ya, yu, yo. Modern basic Japanese has no separate yi or ye kana in this row.",
+          "difficulty": "foundation",
+          "tags": [
+            "japanese",
+            "hiragana",
+            "y-row"
+          ],
+          "sourceDocSlug": "languages/japanese-hiragana-foundations"
+        },
+        {
+          "id": "hiragana-r-row",
+          "type": "concept",
+          "title": "Hiragana R Row",
+          "prompt": "Read ら・り・る・れ・ろ with one light Japanese r sound.",
+          "explanation": "The readings are ra, ri, ru, re, ro. The consonant is a brief tongue tap rather than a strong English r.",
+          "difficulty": "foundation",
+          "tags": [
+            "japanese",
+            "hiragana",
+            "r-row"
+          ],
+          "sourceDocSlug": "languages/japanese-hiragana-foundations"
+        },
+        {
+          "id": "hiragana-final-row",
+          "type": "concept",
+          "title": "Hiragana Final Row",
+          "prompt": "Read わ・を・ん and recall where each appears.",
+          "explanation": "They are wa, object-particle o, and moraic n. を is typed wo even though beginners normally pronounce it o.",
+          "difficulty": "foundation",
+          "tags": [
+            "japanese",
+            "hiragana",
+            "w-row"
+          ],
+          "sourceDocSlug": "languages/japanese-hiragana-foundations"
+        },
+        {
+          "id": "hiragana-ki-sa",
+          "type": "practical",
+          "title": "Compare Ki And Sa",
+          "prompt": "What visual detail separates き from さ?",
+          "explanation": "き has two horizontal crossings near the top, while さ has one. Compare the complete shapes, not only the curve.",
+          "difficulty": "foundation",
+          "tags": [
+            "japanese",
+            "hiragana",
+            "look-alikes"
+          ],
+          "sourceDocSlug": "languages/japanese-hiragana-foundations"
+        },
+        {
+          "id": "hiragana-ru-ro",
+          "type": "practical",
+          "title": "Compare Ru And Ro",
+          "prompt": "Which one closes with a small loop: る or ろ?",
+          "explanation": "る closes with a small loop at the bottom. ろ keeps the corresponding lower curve open.",
+          "difficulty": "foundation",
+          "tags": [
+            "japanese",
+            "hiragana",
+            "look-alikes"
+          ],
+          "sourceDocSlug": "languages/japanese-hiragana-foundations"
+        },
+        {
+          "id": "dakuten-k-g",
+          "type": "concept",
+          "title": "Dakuten Voices K",
+          "prompt": "Read the change か → が and name both sounds.",
+          "explanation": "か is ka. Adding dakuten voices the consonant, producing が ga and throat vibration.",
+          "difficulty": "foundation",
+          "tags": [
+            "japanese",
+            "hiragana",
+            "dakuten"
+          ],
+          "sourceDocSlug": "languages/japanese-hiragana-sound-changes"
+        },
+        {
+          "id": "handakuten-h-p",
+          "type": "concept",
+          "title": "The Circle Makes P",
+          "prompt": "What does the small circle do in は → ぱ?",
+          "explanation": "Handakuten changes h-row kana to p sounds. は ha becomes ぱ pa; the same rule gives pi, pu, pe, po.",
+          "difficulty": "foundation",
+          "tags": [
+            "japanese",
+            "hiragana",
+            "handakuten"
+          ],
+          "sourceDocSlug": "languages/japanese-hiragana-sound-changes"
+        },
+        {
+          "id": "small-tsu",
+          "type": "concept",
+          "title": "Small Tsu Holds",
+          "prompt": "Contrast きて kite with きって kitte.",
+          "explanation": "Small っ creates a brief closure and doubles the following consonant in romaji and common IME input.",
+          "difficulty": "foundation",
+          "tags": [
+            "japanese",
+            "hiragana",
+            "small-tsu"
+          ],
+          "sourceDocSlug": "languages/japanese-hiragana-sound-changes"
+        },
+        {
+          "id": "small-yo",
+          "type": "concept",
+          "title": "Small Yo Contracts",
+          "prompt": "Contrast きよ ki-yo with きょ kyo.",
+          "explanation": "Full-size よ begins a new mora. Small ょ combines with the preceding i-row kana into one contracted sound.",
+          "difficulty": "foundation",
+          "tags": [
+            "japanese",
+            "hiragana",
+            "yoon"
+          ],
+          "sourceDocSlug": "languages/japanese-hiragana-sound-changes"
+        },
+        {
+          "id": "long-a",
+          "type": "practical",
+          "title": "Long A Changes Meaning",
+          "prompt": "Which is grandmother: おばさん or おばあさん?",
+          "explanation": "おばあさん obaasan is grandmother. The extra あ lengthens the vowel; おばさん obasan means aunt.",
+          "difficulty": "foundation",
+          "tags": [
+            "japanese",
+            "hiragana",
+            "long-vowels"
+          ],
+          "sourceDocSlug": "languages/japanese-hiragana-sound-changes"
+        },
+        {
+          "id": "katakana-vowels",
+          "type": "concept",
+          "title": "Katakana Vowels",
+          "prompt": "Read ア・イ・ウ・エ・オ using the sounds you already know.",
+          "explanation": "They are a, i, u, e, o. Katakana changes the shapes, not the underlying five-vowel system.",
+          "difficulty": "foundation",
+          "tags": [
+            "japanese",
+            "katakana",
+            "vowels"
+          ],
+          "sourceDocSlug": "languages/japanese-katakana-foundations"
+        },
+        {
+          "id": "katakana-k-row",
+          "type": "concept",
+          "title": "Katakana K Row",
+          "prompt": "Read カ・キ・ク・ケ・コ from left to right.",
+          "explanation": "The readings are ka, ki, ku, ke, ko. Connect each sound to its hiragana partner only as a temporary bridge.",
+          "difficulty": "foundation",
+          "tags": [
+            "japanese",
+            "katakana",
+            "k-row"
+          ],
+          "sourceDocSlug": "languages/japanese-katakana-foundations"
+        },
+        {
+          "id": "katakana-s-row",
+          "type": "concept",
+          "title": "Katakana S Row",
+          "prompt": "Read サ・シ・ス・セ・ソ and identify shi.",
+          "explanation": "The readings are sa, shi, su, se, so. シ is shi and belongs in the i position of the row.",
+          "difficulty": "foundation",
+          "tags": [
+            "japanese",
+            "katakana",
+            "s-row"
+          ],
+          "sourceDocSlug": "languages/japanese-katakana-foundations"
+        },
+        {
+          "id": "katakana-t-row",
+          "type": "concept",
+          "title": "Katakana T Row",
+          "prompt": "Read タ・チ・ツ・テ・ト and identify chi and tsu.",
+          "explanation": "The readings are ta, chi, tsu, te, to. The sound pattern exactly matches the hiragana t-row.",
+          "difficulty": "foundation",
+          "tags": [
+            "japanese",
+            "katakana",
+            "t-row"
+          ],
+          "sourceDocSlug": "languages/japanese-katakana-foundations"
+        },
+        {
+          "id": "katakana-n-row",
+          "type": "concept",
+          "title": "Katakana N Row",
+          "prompt": "Read ナ・ニ・ヌ・ネ・ノ without romaji.",
+          "explanation": "The readings are na, ni, nu, ne, no. ノ is a single falling stroke and appears inside many loanwords.",
+          "difficulty": "foundation",
+          "tags": [
+            "japanese",
+            "katakana",
+            "n-row"
+          ],
+          "sourceDocSlug": "languages/japanese-katakana-foundations"
+        },
+        {
+          "id": "katakana-h-row",
+          "type": "concept",
+          "title": "Katakana H Row",
+          "prompt": "Read ハ・ヒ・フ・ヘ・ホ and identify fu.",
+          "explanation": "The readings are ha, hi, fu, he, ho. フ is a one-stroke fu, often confused with ワ or ウ at first.",
+          "difficulty": "foundation",
+          "tags": [
+            "japanese",
+            "katakana",
+            "h-row"
+          ],
+          "sourceDocSlug": "languages/japanese-katakana-foundations"
+        },
+        {
+          "id": "katakana-m-row",
+          "type": "concept",
+          "title": "Katakana M Row",
+          "prompt": "Read マ・ミ・ム・メ・モ from shape alone.",
+          "explanation": "The readings are ma, mi, mu, me, mo. ミ has three descending horizontal strokes; ム begins with a triangle-like form.",
+          "difficulty": "foundation",
+          "tags": [
+            "japanese",
+            "katakana",
+            "m-row"
+          ],
+          "sourceDocSlug": "languages/japanese-katakana-foundations"
+        },
+        {
+          "id": "katakana-y-row",
+          "type": "concept",
+          "title": "Katakana Y Row",
+          "prompt": "Read the three basic y-row symbols ヤ・ユ・ヨ.",
+          "explanation": "They are ya, yu, yo. ユ has two strokes and ヨ has three horizontal levels.",
+          "difficulty": "foundation",
+          "tags": [
+            "japanese",
+            "katakana",
+            "y-row"
+          ],
+          "sourceDocSlug": "languages/japanese-katakana-foundations"
+        },
+        {
+          "id": "katakana-r-row",
+          "type": "concept",
+          "title": "Katakana R Row",
+          "prompt": "Read ラ・リ・ル・レ・ロ with a light tongue tap.",
+          "explanation": "The readings are ra, ri, ru, re, ro. ロ is the box-shaped ro; do not confuse it with the kanji 口 without context.",
+          "difficulty": "foundation",
+          "tags": [
+            "japanese",
+            "katakana",
+            "r-row"
+          ],
+          "sourceDocSlug": "languages/japanese-katakana-foundations"
+        },
+        {
+          "id": "katakana-final-row",
+          "type": "concept",
+          "title": "Katakana Final Row",
+          "prompt": "Read ワ・ヲ・ン and recall the modern sound of ヲ.",
+          "explanation": "They are wa, usually o, and moraic n. Katakana ヲ is uncommon in ordinary beginner loanwords.",
+          "difficulty": "foundation",
+          "tags": [
+            "japanese",
+            "katakana",
+            "w-row"
+          ],
+          "sourceDocSlug": "languages/japanese-katakana-foundations"
+        },
+        {
+          "id": "katakana-shi-tsu",
+          "type": "practical",
+          "title": "Shi Or Tsu",
+          "prompt": "Compare シ and ツ: which one has more horizontal short strokes?",
+          "explanation": "シ shi has short strokes that sit more horizontally. ツ tsu has short strokes that stand more vertically.",
+          "difficulty": "foundation",
+          "tags": [
+            "japanese",
+            "katakana",
+            "look-alikes"
+          ],
+          "sourceDocSlug": "languages/japanese-katakana-foundations"
+        },
+        {
+          "id": "katakana-so-n",
+          "type": "practical",
+          "title": "So Or N",
+          "prompt": "Compare ソ and ン: which long stroke rises from lower left?",
+          "explanation": "ン n rises from lower left. ソ so begins higher and falls down toward the left; stroke direction is the clue.",
+          "difficulty": "foundation",
+          "tags": [
+            "japanese",
+            "katakana",
+            "look-alikes"
+          ],
+          "sourceDocSlug": "languages/japanese-katakana-foundations"
+        },
+        {
+          "id": "katakana-long-mark",
+          "type": "concept",
+          "title": "Long Vowel Mark",
+          "prompt": "What sound job does ー perform in コーヒー?",
+          "explanation": "The mark extends the preceding vowel. コー is koo and ヒー is hii, giving koohii, coffee.",
+          "difficulty": "foundation",
+          "tags": [
+            "japanese",
+            "katakana",
+            "long-vowels"
+          ],
+          "sourceDocSlug": "languages/japanese-katakana-foundations"
+        },
+        {
+          "id": "read-coffee",
+          "type": "practical",
+          "title": "Read A Loanword",
+          "prompt": "Read コーヒー one kana and sound extension at a time.",
+          "explanation": "コ ko + ー long o + ヒ hi + ー long i gives koohii, the Japanese loanword for coffee.",
+          "difficulty": "foundation",
+          "tags": [
+            "japanese",
+            "katakana",
+            "loanwords"
+          ],
+          "sourceDocSlug": "languages/japanese-katakana-foundations"
+        },
+        {
+          "id": "read-hotel",
+          "type": "practical",
+          "title": "Read Hotel",
+          "prompt": "Read ホテル before using the familiar English word as a clue.",
+          "explanation": "ホ ho + テ te + ル ru gives hoteru. Japanese loanwords follow Japanese mora timing rather than English spelling.",
+          "difficulty": "foundation",
+          "tags": [
+            "japanese",
+            "katakana",
+            "loanwords"
+          ],
+          "sourceDocSlug": "languages/japanese-katakana-foundations"
+        },
+        {
+          "id": "read-restaurant",
+          "type": "practical",
+          "title": "Read Restaurant",
+          "prompt": "Break レストラン into kana-sized beats.",
+          "explanation": "レ re + ス su + ト to + ラ ra + ン n gives resutoran, restaurant.",
+          "difficulty": "foundation",
+          "tags": [
+            "japanese",
+            "katakana",
+            "loanwords"
+          ],
+          "sourceDocSlug": "languages/japanese-katakana-foundations"
+        },
+        {
+          "id": "particle-ha",
+          "type": "concept",
+          "title": "Written Ha, Spoken Wa",
+          "prompt": "Why is こんばんは read konbanwa but typed konbanha?",
+          "explanation": "The final は is the topic particle. Learner romaji shows its spoken wa; the IME keys create the written kana ha.",
+          "difficulty": "foundation",
+          "tags": [
+            "japanese",
+            "romaji",
+            "ime"
+          ],
+          "sourceDocSlug": "languages/japanese-romaji-kana-input"
+        }
+      ],
+      "id": "084cfa357f0b",
+      "route": "/paths/japanese-foundations/flashcards",
+      "sourcePath": "content/flashcard-feeds/japanese-foundations.json",
+      "contentHash": "aaf42f1ce97ed092240659ff85319d195904c0fd142b5c6134359efff366b1c4"
     },
     {
       "slug": "mermaid-diagram-authoring",
@@ -27980,7 +33835,7 @@
     {
       "name": "Languages",
       "slug": "languages",
-      "documentCount": 3,
+      "documentCount": 6,
       "difficulties": [
         "foundation"
       ],

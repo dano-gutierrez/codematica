@@ -2,7 +2,7 @@
 
 Expo Router Android/iOS app for Codematica.
 
-The app consumes `@codematica/core` for content/search/progress contracts and `@codematica/ui` for React Native screens. Content is bundled from the generated core index so discovery, anonymous reading, romaji/IME-aware Japanese lookup, internal lesson links, dictionary-style character details, and embedded/path writing practice work offline.
+The app consumes `@codematica/core` for content/search/progress contracts and `@codematica/ui` for React Native screens. Content is bundled from the generated core index so discovery, anonymous reading, complete basic hiragana/katakana lookup, romaji/IME-aware search, always-available Japanese flashcards/guides, internal lesson links, dictionary-style character details, and embedded/path writing practice work offline. Signed-out progress retains every unique item locally and syncs to the optional Supabase account in bounded batches after sign-in.
 
 ## Local Web And Native Runs
 

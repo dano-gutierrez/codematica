@@ -1,0 +1,20 @@
+{
+  "slug": "languages/japanese-hiragana-reading-check",
+  "title": "Hiragana Reading Check",
+  "type": "questionnaire",
+  "documentSlug": "languages/japanese-hiragana-foundations",
+  "concept": "Recall all basic hiragana by shape and sound",
+  "difficulty": "foundation",
+  "tags": ["japanese", "hiragana", "reading", "alphabet", "recall"],
+  "status": "published",
+  "questions": [
+    {"id":"hiragana-k-s-match","kind":"matching","prompt":"Match each hiragana to its learner romaji before checking the answer.","pairs":[{"id":"ki","prompt":"き","match":"ki"},{"id":"shi","prompt":"し","match":"shi"},{"id":"su","prompt":"す","match":"su"},{"id":"ko","prompt":"こ","match":"ko"},{"id":"se","prompt":"せ","match":"se"}],"explanation":"Active matching checks whether the character shape retrieves its sound without relying on chart position."},
+    {"id":"hiragana-t-n-match","kind":"matching","prompt":"Match the t-row and n-row hiragana to their learner romaji.","pairs":[{"id":"chi","prompt":"ち","match":"chi"},{"id":"tsu","prompt":"つ","match":"tsu"},{"id":"te","prompt":"て","match":"te"},{"id":"nu","prompt":"ぬ","match":"nu"},{"id":"no","prompt":"の","match":"no"}],"explanation":"Remember the irregular sound labels chi and tsu while keeping the other row sounds predictable."},
+    {"id":"hiragana-h-m-match","kind":"matching","prompt":"Match each h-row or m-row hiragana to its learner romaji.","pairs":[{"id":"fu","prompt":"ふ","match":"fu"},{"id":"he","prompt":"へ","match":"he"},{"id":"ho","prompt":"ほ","match":"ho"},{"id":"me","prompt":"め","match":"me"},{"id":"mo","prompt":"も","match":"mo"}],"explanation":"Compare the full shapes and crossings; do not identify a character from only one shared stroke."},
+    {"id":"hiragana-final-match","kind":"matching","prompt":"Match the final-row hiragana to their learner romaji.","pairs":[{"id":"ya","prompt":"や","match":"ya"},{"id":"yu","prompt":"ゆ","match":"yu"},{"id":"ro","prompt":"ろ","match":"ro"},{"id":"wa","prompt":"わ","match":"wa"},{"id":"nn","prompt":"ん","match":"n"}],"explanation":"The y-row has only ya, yu, and yo; ん is the only basic kana that represents a consonant by itself."},
+    {"id":"hiragana-word-cat","kind":"choice","prompt":"Which reading matches the hiragana word ねこ?","options":[{"id":"neko","label":"neko — cat","isCorrect":true},{"id":"nuko","label":"nuko — dog","isCorrect":false},{"id":"meko","label":"meko — book","isCorrect":false}],"explanation":"ね is ne and こ is ko, so the word is neko, cat."},
+    {"id":"hiragana-word-mountain","kind":"choice","prompt":"Which hiragana spelling reads yama, mountain?","options":[{"id":"yama","label":"やま","isCorrect":true},{"id":"kawa","label":"かわ","isCorrect":false},{"id":"hana","label":"はな","isCorrect":false}],"explanation":"や is ya and ま is ma. Read from left to right: ya-ma."},
+    {"id":"hiragana-lookalike-ru","kind":"choice","prompt":"Which character is ru and ends with a small loop?","options":[{"id":"ru","label":"る ru","isCorrect":true},{"id":"ro","label":"ろ ro","isCorrect":false},{"id":"re","label":"れ re","isCorrect":false}],"explanation":"る closes with a small loop, while ろ keeps the corresponding lower curve open."},
+    {"id":"hiragana-lookalike-ki","kind":"choice","prompt":"Which character is ki and has two horizontal crossings?","options":[{"id":"ki","label":"き ki","isCorrect":true},{"id":"sa","label":"さ sa","isCorrect":false},{"id":"chi","label":"ち chi","isCorrect":false}],"explanation":"き has two short horizontal strokes; さ has one crossing near the top."}
+  ]
+}

@@ -56,7 +56,7 @@ describe("anonymous progress buffer", () => {
     expect(getAnonymousProgressSummaryItems()[0]?.title).toBe("Cache Invalidation Under Product Pressure");
   });
 
-  it("bounds the anonymous buffer", () => {
+  it("retains every unique local progress item instead of silently evicting older lessons", () => {
     for (let index = 0; index < 30; index += 1) {
       addAnonymousProgressItem({
         input: {
@@ -78,7 +78,7 @@ describe("anonymous progress buffer", () => {
       });
     }
 
-    expect(getAnonymousProgressItems()).toHaveLength(20);
+    expect(getAnonymousProgressItems()).toHaveLength(30);
   });
 
   it("clears buffered items after sync", () => {

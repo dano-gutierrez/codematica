@@ -1,7 +1,7 @@
 {
   "slug": "japanese-foundations",
   "title": "Japanese Foundations",
-  "summary": "A beginner Japanese path for kana, starter kanji, IPA pronunciation support, and handwriting practice.",
+  "summary": "An alphabet-first beginner Japanese path for reading, recalling, typing, and writing hiragana and katakana before starter kanji.",
   "kind": "skill",
   "category": "Languages",
   "audience": "English-speaking beginners learning Japanese on mobile, tablet, and web.",
@@ -10,11 +10,47 @@
     {
       "slug": "writing-systems",
       "title": "Writing Systems",
-      "summary": "Learn hiragana, katakana, kanji, IPA aids, and the assisted-to-free handwriting loop.",
+      "summary": "See how hiragana, katakana, and kanji work together, and learn the assisted-to-free handwriting loop.",
       "nodes": [
-        { "kind": "document", "slug": "languages/japanese-writing-systems" },
+        { "kind": "document", "slug": "languages/japanese-writing-systems" }
+      ]
+    },
+    {
+      "slug": "hiragana-foundations",
+      "title": "Read And Write Hiragana",
+      "summary": "Learn the complete 46-character hiragana map in small row groups, then retrieve the sounds from memory.",
+      "nodes": [
+        { "kind": "document", "slug": "languages/japanese-hiragana-foundations" },
         { "kind": "exercise", "slug": "languages/japanese-hiragana-vowels-writing" },
-        { "kind": "exercise", "slug": "languages/japanese-katakana-vowels-writing" }
+        { "kind": "exercise", "slug": "languages/japanese-hiragana-k-s-writing" },
+        { "kind": "exercise", "slug": "languages/japanese-hiragana-t-n-writing" },
+        { "kind": "exercise", "slug": "languages/japanese-hiragana-h-m-writing" },
+        { "kind": "exercise", "slug": "languages/japanese-hiragana-y-r-w-writing" },
+        { "kind": "exercise", "slug": "languages/japanese-hiragana-reading-check" }
+      ]
+    },
+    {
+      "slug": "hiragana-sound-tools",
+      "title": "Hiragana Sound Tools",
+      "summary": "Decode dakuten, handakuten, small kana, doubled consonants, contracted sounds, and long vowels.",
+      "nodes": [
+        { "kind": "document", "slug": "languages/japanese-hiragana-sound-changes" },
+        { "kind": "exercise", "slug": "languages/japanese-hiragana-sound-changes-questionnaire" },
+        { "kind": "exercise", "slug": "languages/japanese-hiragana-ime-exceptions-writing" }
+      ]
+    },
+    {
+      "slug": "katakana-foundations",
+      "title": "Read And Write Katakana",
+      "summary": "Reuse the hiragana sound map to learn all 46 basic katakana, key look-alikes, long vowels, and loanwords.",
+      "nodes": [
+        { "kind": "document", "slug": "languages/japanese-katakana-foundations" },
+        { "kind": "exercise", "slug": "languages/japanese-katakana-vowels-writing" },
+        { "kind": "exercise", "slug": "languages/japanese-katakana-k-s-writing" },
+        { "kind": "exercise", "slug": "languages/japanese-katakana-t-n-writing" },
+        { "kind": "exercise", "slug": "languages/japanese-katakana-h-m-writing" },
+        { "kind": "exercise", "slug": "languages/japanese-katakana-y-r-w-writing" },
+        { "kind": "exercise", "slug": "languages/japanese-katakana-reading-check" }
       ]
     },
     {
@@ -23,12 +59,7 @@
       "summary": "Separate Japanese spelling, pronunciation, learner romaji, and the keys an IME needs.",
       "nodes": [
         { "kind": "document", "slug": "languages/japanese-romaji-kana-input" },
-        { "kind": "exercise", "slug": "languages/japanese-romaji-kana-input-questionnaire" },
-        { "kind": "exercise", "slug": "languages/japanese-hiragana-k-s-writing" },
-        { "kind": "exercise", "slug": "languages/japanese-hiragana-t-n-writing" },
-        { "kind": "exercise", "slug": "languages/japanese-hiragana-h-m-writing" },
-        { "kind": "exercise", "slug": "languages/japanese-hiragana-y-r-w-writing" },
-        { "kind": "exercise", "slug": "languages/japanese-hiragana-ime-exceptions-writing" }
+        { "kind": "exercise", "slug": "languages/japanese-romaji-kana-input-questionnaire" }
       ]
     },
     {

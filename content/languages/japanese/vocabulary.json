@@ -133,6 +133,42 @@
       ],
       "tags": ["greeting", "beginner", "hiragana", "ime"],
       "status": "published"
+    },
+    {
+      "slug":"japanese/vocabulary/coffee","expression":"コーヒー","reading":"コーヒー","romaji":"koohii","inputSequences":["ko-hi-","koohii"],"ipa":"koːçiː","meanings":["coffee"],
+      "characterSlugs":["japanese/katakana/ko","japanese/katakana/long-vowel-mark","japanese/katakana/hi"],
+      "segments":[{"text":"コー","reading":"コー","romaji":"koo","meaning":"coffee sound, first half","characterSlugs":["japanese/katakana/ko","japanese/katakana/long-vowel-mark"]},{"text":"ヒー","reading":"ヒー","romaji":"hii","meaning":"coffee sound, second half","characterSlugs":["japanese/katakana/hi","japanese/katakana/long-vowel-mark"]}],
+      "tags":["beginner","katakana","loanword","drink"],"status":"published"
+    },
+    {
+      "slug":"japanese/vocabulary/television","expression":"テレビ","reading":"テレビ","romaji":"terebi","inputSequences":["terebi"],"ipa":"teɾebi","meanings":["television","TV"],
+      "characterSlugs":["japanese/katakana/te","japanese/katakana/re","japanese/katakana/bi"],
+      "segments":[{"text":"テ","reading":"テ","romaji":"te","meaning":"te sound","characterSlugs":["japanese/katakana/te"]},{"text":"レ","reading":"レ","romaji":"re","meaning":"re sound","characterSlugs":["japanese/katakana/re"]},{"text":"ビ","reading":"ビ","romaji":"bi","meaning":"voiced hi-row sound","characterSlugs":["japanese/katakana/bi"]}],
+      "tags":["beginner","katakana","loanword","home"],"status":"published"
+    },
+    {
+      "slug":"japanese/vocabulary/hotel","expression":"ホテル","reading":"ホテル","romaji":"hoteru","inputSequences":["hoteru"],"ipa":"hoteɾɯ","meanings":["hotel"],
+      "characterSlugs":["japanese/katakana/ho","japanese/katakana/te","japanese/katakana/ru"],
+      "segments":[{"text":"ホ","reading":"ホ","romaji":"ho","meaning":"ho sound","characterSlugs":["japanese/katakana/ho"]},{"text":"テ","reading":"テ","romaji":"te","meaning":"te sound","characterSlugs":["japanese/katakana/te"]},{"text":"ル","reading":"ル","romaji":"ru","meaning":"ru sound","characterSlugs":["japanese/katakana/ru"]}],
+      "tags":["beginner","katakana","loanword","travel"],"status":"published"
+    },
+    {
+      "slug":"japanese/vocabulary/taxi","expression":"タクシー","reading":"タクシー","romaji":"takushii","inputSequences":["takushi-","takushii"],"ipa":"takɯɕiː","meanings":["taxi"],
+      "characterSlugs":["japanese/katakana/ta","japanese/katakana/ku","japanese/katakana/shi","japanese/katakana/long-vowel-mark"],
+      "segments":[{"text":"タ","reading":"タ","romaji":"ta","meaning":"ta sound","characterSlugs":["japanese/katakana/ta"]},{"text":"ク","reading":"ク","romaji":"ku","meaning":"ku sound","characterSlugs":["japanese/katakana/ku"]},{"text":"シー","reading":"シー","romaji":"shii","meaning":"shi with a long i sound","characterSlugs":["japanese/katakana/shi","japanese/katakana/long-vowel-mark"]}],
+      "tags":["beginner","katakana","loanword","travel"],"status":"published"
+    },
+    {
+      "slug":"japanese/vocabulary/supermarket","expression":"スーパー","reading":"スーパー","romaji":"suupaa","inputSequences":["su-pa-","suupaa"],"ipa":"sɯːpaː","meanings":["supermarket","grocery store"],
+      "characterSlugs":["japanese/katakana/su","japanese/katakana/long-vowel-mark","japanese/katakana/pa"],
+      "segments":[{"text":"スー","reading":"スー","romaji":"suu","meaning":"su with a long u sound","characterSlugs":["japanese/katakana/su","japanese/katakana/long-vowel-mark"]},{"text":"パー","reading":"パー","romaji":"paa","meaning":"pa with a long a sound","characterSlugs":["japanese/katakana/pa","japanese/katakana/long-vowel-mark"]}],
+      "tags":["beginner","katakana","loanword","shopping"],"status":"published"
+    },
+    {
+      "slug":"japanese/vocabulary/restaurant","expression":"レストラン","reading":"レストラン","romaji":"resutoran","inputSequences":["resutoran"],"ipa":"ɾesɯtoɾaɴ","meanings":["restaurant"],
+      "characterSlugs":["japanese/katakana/re","japanese/katakana/su","japanese/katakana/to","japanese/katakana/ra","japanese/katakana/n"],
+      "segments":[{"text":"レ","reading":"レ","romaji":"re","meaning":"re sound","characterSlugs":["japanese/katakana/re"]},{"text":"ス","reading":"ス","romaji":"su","meaning":"su sound","characterSlugs":["japanese/katakana/su"]},{"text":"ト","reading":"ト","romaji":"to","meaning":"to sound","characterSlugs":["japanese/katakana/to"]},{"text":"ラン","reading":"ラン","romaji":"ran","meaning":"ra plus moraic n","characterSlugs":["japanese/katakana/ra","japanese/katakana/n"]}],
+      "tags":["beginner","katakana","loanword","food"],"status":"published"
     }
   ]
 }

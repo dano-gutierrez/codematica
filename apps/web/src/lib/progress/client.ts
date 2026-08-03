@@ -58,17 +58,22 @@ export async function syncBufferedAnonymousProgress() {
     return;
   }
 
-  const response = await fetch("/api/progress/sync-anonymous", {
-    method: "POST",
-    headers: {
-      "content-type": "application/json",
-    },
-    body: JSON.stringify({ items: items.map((item) => item.input) }),
-  });
+  for (let offset = 0; offset < items.length; offset += 20) {
+    const batch = items.slice(offset, offset + 20);
+    const response = await fetch("/api/progress/sync-anonymous", {
+      method: "POST",
+      headers: {
+        "content-type": "application/json",
+      },
+      body: JSON.stringify({ items: batch.map((item) => item.input) }),
+    });
 
-  if (response.ok) {
-    clearAnonymousProgressItems();
+    if (!response.ok) {
+      return;
+    }
   }
+
+  clearAnonymousProgressItems();
 }
 
 export function appendPathToHref(href: string, pathSlug: string) {

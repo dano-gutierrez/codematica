@@ -3,10 +3,10 @@
 ## Snapshot
 
 - Status: `shipped`
-- Last updated: `2026-08-01`
+- Last updated: `2026-08-03`
 - Owner thread: `n/a`
-- Current state: Japanese foundations ship as local language data, beginner romaji/IME lessons, structured phrase breakdowns, full basic hiragana, dictionary-style detail pages, web routes, Expo routes, and shared handwriting scoring.
-- Target outcome: Users can search beginner Japanese characters/vocabulary and practice assisted or free handwriting on web and native without Supabase credentials.
+- Current state: Japanese foundations ship as an alphabet-first path with all 46 basic hiragana and katakana, focused sound variants, active-recall checks, row-grouped handwriting, beginner loanwords, always-available flashcards/resources, dictionary-style details, web routes, Expo routes, and shared handwriting scoring.
+- Target outcome: Beginners can learn both kana systems in a clear sequence, return to flashcards or reference guides at any time, and retain coarse resume/completion progress on web and native without requiring Supabase credentials.
 - Code touchpoints:
   - `content/languages/japanese/`
   - `packages/core/src/content/schema.ts`
@@ -23,7 +23,7 @@
 
 ## One-Minute Brief
 
-The Japanese feature adds the first human-language learning path to Codematica. It is English-first and beginner-oriented: users can search local Japanese character/vocabulary data, distinguish learner romaji from IME keystrokes, inspect structured phrase breakdowns, and complete handwriting drills in assisted or free mode from either the path or a character profile.
+The Japanese feature adds the first human-language learning path to Codematica. It is English-first and beginner-oriented: learners first understand the three scripts, then read and write all basic hiragana, learn sound-changing marks and small kana, transfer the same sound map to all basic katakana, and finally study romaji/IME differences and starter kanji. Users can search local character/vocabulary data, inspect structured phrase breakdowns, open flashcards/reference guides directly from the hub, and complete handwriting drills in assisted or free mode.
 
 The feature reuses the Expo workspace architecture. Shared content contracts, search helpers, IPA data, and handwriting scoring live in `@codematica/core`; Expo consumes shared React Native screens from `@codematica/ui`; web keeps Tailwind-specific route components while calling the same core helpers.
 
@@ -34,6 +34,9 @@ The feature reuses the Expo workspace architecture. Shared content contracts, se
 - Expo route `/languages/japanese` shows the shared native Japanese hub.
 - `/languages/japanese/characters/[...slug]` and `/languages/japanese/vocabulary/[...slug]` render detail pages from the generated index on web and native.
 - `japanese-foundations` appears as a normal learning path and uses ordered document/exercise nodes.
+- The path has dedicated hiragana, hiragana sound-tool, katakana, romaji/IME, and starter-kanji units.
+- `/paths/japanese-foundations/flashcards` is an always-available kana review feed and is linked from both the path and Japanese hub.
+- The Japanese hub keeps the path, flashcards, hiragana guide, and katakana guide visible above search.
 - `writing` exercises live under `content/exercises/**/*.json` and reference `content/languages/japanese/` character slugs.
 - Writing practice supports `assisted` and `free` modes.
 - Character detail pages embed transient single-character practice and related vocabulary/example phrases.
@@ -45,7 +48,7 @@ The feature reuses the Expo workspace architecture. Shared content contracts, se
 
 ## Current State
 
-The shipped seed contains all 46 basic modern hiragana, focused forms `が・じ・ば・ぱ・っ・ゃ・ゅ・ょ`, katakana vowels, greeting kanji `今・晩`, and starter kanji:
+The shipped seed contains all 46 basic modern hiragana, all 46 basic modern katakana, focused hiragana forms `が・じ・ば・ぱ・っ・ゃ・ゅ・ょ`, focused katakana forms `ガ・ジ・ビ・パ・ッ・ャ・ュ・ョ・ー`, greeting kanji `今・晩`, and starter kanji:
 
 ```text
 一 二 三 四 五 六 七 八 九 十
@@ -53,7 +56,7 @@ The shipped seed contains all 46 basic modern hiragana, focused forms `が・じ
 人 大 小 中 本 山 川
 ```
 
-Vocabulary entries include `日本`, `人`, `山`, `水`, `大きい`, `こんにちは`, and `こんばんは`. Audio, OCR, SRS, durable scores, pitch accent, and full dictionary imports are deferred.
+Vocabulary entries include `日本`, `人`, `山`, `水`, `大きい`, `こんにちは`, `こんばんは`, `コーヒー`, `テレビ`, `ホテル`, `タクシー`, `スーパー`, and `レストラン`. Audio, OCR, adaptive SRS scheduling, durable scores, pitch accent, and full dictionary imports are deferred.
 
 ## Scope
 
@@ -63,6 +66,8 @@ Vocabulary entries include `日本`, `人`, `山`, `水`, `大きい`, `こん�
 - IPA and romaji display.
 - IME input aliases, structured sentence breakdowns, and internal character links.
 - Japanese Foundations path.
+- Complete basic hiragana and katakana lesson sequence.
+- Kana sound-change lesson, active-recall questionnaires, and path-scoped alphabet flashcards.
 - Web and Expo routes for hub/detail pages.
 - Assisted/free handwriting practice for seeded characters.
 - Shared core handwriting scoring.
@@ -88,6 +93,7 @@ Vocabulary entries include `日本`, `人`, `山`, `水`, `大きい`, `こん�
 ### UI / UX
 
 - Japanese hub search matches glyphs, readings, romaji, IPA, meanings, tags, and beginner vocabulary.
+- The hub separates each 46-character basic set from focused sound extras and exposes the four primary study resources before the catalog.
 - Character detail pages show glyph, writing system, meanings, readings, IPA, IME keys, numbered stroke order, related phrases, and embedded assisted/free practice.
 - Assisted mode highlights only the next stroke, rejects a miss without advancing, and labels the expected start point.
 - Writing practice shows one character at a time with undo, clear, check, mode controls, and next-character navigation.
@@ -97,6 +103,7 @@ Vocabulary entries include `日本`, `人`, `山`, `水`, `大きい`, `こん�
 
 - `content/languages/japanese/*.json` stores character metadata, original normalized 0-100 stroke paths, vocabulary, IME aliases, and structured examples.
 - `ContentIndex` schema version is `7`; language characters add `studyOrder`, `inputSequences`, and examples, while vocabulary adds structured segments and examples.
+- Single-glyph Japanese prompts and answer labels are valid questionnaire content.
 - `writing` exercises add `prompt`, `characterSlugs`, `modes`, and `explanation`.
 - Progress remains compatible with `user_progress_items.surface = 'practice'`.
 
@@ -129,9 +136,9 @@ Vocabulary entries include `日本`, `人`, `山`, `水`, `大きい`, `こん�
 
 - Unit: handwriting scoring, assisted retry thresholds, missing stroke count, reversed stroke direction, gojūon ordering, and IME-alias search.
 - Integration: generated index loads Japanese path, language characters, vocabulary, and writing exercises.
-- Component: web writing practice renders mode controls and writing pad.
-- Native: React Native screen tests cover Japanese hub search and writing practice shell.
-- E2E: Playwright regression covers `konbanha` search, greeting breakdown, character-detail practice, the romaji/IME lesson, path entry, and writing-practice mode controls.
+- Component: web hub renders resource shortcuts and separated katakana groups; writing practice renders mode controls and writing pad.
+- Native: React Native screen tests cover Japanese hub resources/search, writing practice, and lossless batched progress sync.
+- E2E: Playwright regression covers always-available flashcards, katakana lookup/practice, `konbanha` search, greeting breakdown, alphabet lessons, path entry, and writing-practice mode controls.
 - Content: `npm run content:check`.
 
 ## Open Questions
@@ -146,6 +153,7 @@ Vocabulary entries include `日本`, `人`, `山`, `水`, `大きい`, `こん�
 - `2026-07-11`: Keep writing progress on the existing `practice` surface and do not persist raw strokes.
 - `2026-07-11`: Ship a manually curated seed dataset before full open-data import.
 - `2026-08-01`: Treat learner romaji and IME input as separate data, expand to all 46 basic hiragana, and embed original-path writing practice in character profiles.
+- `2026-08-03`: Make the path alphabet-first, expand to all 46 basic katakana plus focused forms, add retrieval-based kana checks and alphabet flashcards, and expose study resources directly from the hub.
 
 ## Documentation Updates
 

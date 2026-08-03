@@ -1,7 +1,6 @@
 import type { ProgressDisplayItem, ProgressInput } from "./progress";
 
 const storageKey = "codematica:anonymous-progress:v1";
-const maxBufferedItems = 20;
 
 export const anonymousProgressChangedEvent = "codematica:anonymous-progress-changed";
 
@@ -37,7 +36,7 @@ export function addAnonymousProgressItem(item: AnonymousProgressItem) {
   const nextItems = [
     item,
     ...getAnonymousProgressItems().filter((storedItem) => createAnonymousProgressKey(storedItem.input) !== key),
-  ].slice(0, maxBufferedItems);
+  ];
 
   window.localStorage.setItem(storageKey, JSON.stringify(nextItems));
   window.dispatchEvent(new CustomEvent(anonymousProgressChangedEvent));

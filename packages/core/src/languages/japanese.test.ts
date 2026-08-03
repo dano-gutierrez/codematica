@@ -26,6 +26,15 @@ describe("Japanese language helpers", () => {
     expect(glyphs).toBe("あいうえおかきくけこさしすせそたちつてとなにぬねのはひふへほまみむめもやゆよらりるれろわをん");
   });
 
+  it("orders the complete basic katakana set by study order", () => {
+    const glyphs = getJapaneseCharacterGroups(getContentIndex()).katakana
+      .filter((item) => item.tags.includes("basic-katakana"))
+      .map((item) => item.glyph)
+      .join("");
+
+    expect(glyphs).toBe("アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン");
+  });
+
   it("searches by glyph, romaji, IPA, meaning, and vocabulary expression", () => {
     const index = getContentIndex();
 
@@ -35,5 +44,6 @@ describe("Japanese language helpers", () => {
     expect(searchJapanese(index, "nihon")[0]).toMatchObject({ kind: "vocabulary", item: expect.objectContaining({ expression: "日本" }) });
     expect(searchJapanese(index, "konbanha")[0]).toMatchObject({ kind: "vocabulary", item: expect.objectContaining({ expression: "こんばんは" }) });
     expect(searchJapanese(index, "konnichiha")[0]).toMatchObject({ kind: "vocabulary", item: expect.objectContaining({ expression: "こんにちは" }) });
+    expect(searchJapanese(index, "koohii")[0]).toMatchObject({ kind: "vocabulary", item: expect.objectContaining({ expression: "コーヒー" }) });
   });
 });

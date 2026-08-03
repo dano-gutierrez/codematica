@@ -89,7 +89,7 @@ export const choiceQuestionSchema = questionBaseSchema.extend({
     .array(
       z.object({
         id: questionIdSchema,
-        label: z.string().min(2),
+        label: z.string().min(1),
         isCorrect: z.boolean(),
       }),
     )
@@ -121,8 +121,8 @@ export const matchingQuestionSchema = questionBaseSchema.extend({
     .array(
       z.object({
         id: questionIdSchema,
-        prompt: z.string().min(2),
-        match: z.string().min(2),
+        prompt: z.string().min(1),
+        match: z.string().min(1),
       }),
     )
     .min(2),

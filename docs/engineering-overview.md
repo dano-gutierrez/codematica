@@ -1,6 +1,6 @@
 # Codematica Engineering Overview
 
-Last updated: 2026-08-02
+Last updated: 2026-08-03
 
 Codematica is a mobile-first learning app for system design, coding, programming, software engineering, and beginner human-language study. V1 keeps the product intentionally local-first: author documents as Markdown, author paths, exercises, flashcard feeds, interview catalogs, and language catalogs as JSON, generate a static study index, and render the app on web with Next.js and on Android/iOS with Expo Router.
 
@@ -102,7 +102,7 @@ Passive flashcard feeds live in `content/flashcard-feeds/*.json` and attach shor
 
 Interview collections live in `content/interviews/*.json` and are discriminated as `company` or `real-world`. Company algorithm questions retain reported-public links and guided Python, TypeScript, and Java tracks. Anonymous real-world questions require provenance notes and may provide structured evaluation rubrics plus at least three `WebExerciseProject` solutions. Web projects are authored locally, validated into the index, and executed only in Sandpack's cross-origin iframe; Expo shows the same files read-only.
 
-Human-language catalogs live in `content/languages/**/*.json`. Japanese indexes full basic hiragana plus focused variants and starter kanji/vocabulary with glyphs, readings, learner romaji, distinct IME input sequences, IPA, structured phrase breakdowns, meanings, study order, and normalized stroke paths for handwriting practice.
+Human-language catalogs live in `content/languages/**/*.json`. Japanese indexes the complete 46-character basic hiragana and katakana sets, focused sound/small-kana variants, and starter kanji/vocabulary with glyphs, readings, learner romaji, distinct IME input sequences, IPA, structured phrase breakdowns, meanings, study order, and normalized stroke paths for handwriting practice.
 
 Home discovery curation lives in `content/discovery/home.json`. It references canonical published content by kind and slug; index generation validates every reference and serializes the ordered sections into content index schema version 7. `packages/core/src/discovery.ts` resolves those references and provides cross-section local search to web and native.
 
@@ -118,9 +118,9 @@ The Breadth-First Search And Depth-First Search path is the graph-traversal Prog
 
 The Reading And Writing Mermaid Diagrams path is the source-first technical documentation slice. It uses the existing embedded Mermaid renderer to pair 13 inspectable source blocks with browser-rendered output across flowchart, sequence, class, state, ER, Gantt, journey, pie, mindmap, timeline, and Git graph families. Three choice-only questionnaires enforce one correct option and explain every distractor; a passive feed reinforces selection, syntax, debugging, and readability.
 
-The Japanese Foundations path is the first human-language slice. It pairs local catalogs with lessons on writing systems and romaji-versus-IME input, row-grouped handwriting drills, dictionary-style character/vocabulary detail, numbered assisted tracing, and free handwriting checks across web and Expo.
+The Japanese Foundations path is the first human-language slice. Its alphabet-first progression covers writing systems, all basic hiragana, sound-changing marks and small kana, all basic katakana, romaji-versus-IME input, and starter kanji. It pairs retrieval-based questionnaires, row-grouped handwriting, an always-available passive alphabet feed, dictionary-style character/vocabulary detail, numbered assisted tracing, and free handwriting checks across web and Expo.
 
-Progress is user state, not authored content. Signed-in progress is stored in Supabase; signed-out progress is buffered in browser local storage on web and native local storage on Expo, then can sync after login. Progress does not store answers, scores, streaks, mastery, or full session history.
+Progress is user state, not authored content. Signed-in progress is stored in Supabase; signed-out progress is deduplicated and retained in browser local storage on web and native local storage on Expo, then syncs after login in bounded 20-item batches. Clients clear the local copy only after all batches succeed. Progress does not store answers, scores, streaks, mastery, raw handwriting coordinates, or full session history.
 
 ## Route Model
 
@@ -146,7 +146,7 @@ Progress is user state, not authored content. Signed-in progress is stored in Su
 
 ## Testing Model
 
-Unit tests cover schema validation, parser behavior, library and cross-section search, discovery curation, snippets, questionnaire shuffling/checking, handwriting scoring, interview solution selection, path/exercise/language/interview validation, progress payload validation, anonymous progress buffering, and diagram indexing. Integration tests cover generated index loading and renderer behavior. Playwright smoke and regression tests cover home discovery, section catalogs, the web mobile path, practice, browser, questionnaire, interview, flashcard, one-minute brief feed, BFS/DFS study, Mermaid authoring, signed-out progress, and diagrams. Mobile Jest tests cover shared React Native screens against the bundled generated index, including discovery search, Japanese lookup, and writing practice.
+Unit tests cover schema validation, parser behavior, library and cross-section search, discovery curation, snippets, questionnaire shuffling/checking, handwriting scoring, interview solution selection, path/exercise/language/interview validation, progress payload validation, lossless batched anonymous progress, and diagram indexing. Integration tests cover generated index loading and renderer behavior. Playwright smoke and regression tests cover home discovery, section catalogs, the web mobile path, practice, browser, questionnaire, interview, flashcard, one-minute brief feed, Japanese alphabet study, BFS/DFS study, Mermaid authoring, signed-out progress, and diagrams. Mobile Jest tests cover shared React Native screens against the bundled generated index, including discovery search, Japanese resources/lookup/writing practice, and batched progress sync.
 
 ## Future Architecture Direction
 

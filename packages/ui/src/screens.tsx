@@ -447,6 +447,7 @@ export function JapaneseLanguageHubScreen({ index, adapters }: { index: ContentI
   const [query, setQuery] = useState("");
   const groups = useMemo(() => getJapaneseCharacterGroups(index), [index]);
   const results = useMemo(() => searchJapanese(index, query), [index, query]);
+  const flashcards = index.passiveFlashcardFeeds.find((feed) => feed.pathSlug === "japanese-foundations" && feed.status === "published");
 
   return (
     <AppScreen>
@@ -454,11 +455,16 @@ export function JapaneseLanguageHubScreen({ index, adapters }: { index: ContentI
       <Text style={styles.eyebrow}>Japanese</Text>
       <Text style={styles.heroTitle}>Practice kana, kanji, and writing.</Text>
       <Text style={styles.heroCopy}>Search beginner Japanese characters and phrases with romaji and IPA support.</Text>
-      <Button label="Japanese Foundations path" onPress={() => adapters.navigation.navigate("/paths/japanese-foundations")} testID="mobile-japanese-path-link" />
+      <View style={styles.actionRow}>
+        <Button label="Continue path" onPress={() => adapters.navigation.navigate("/paths/japanese-foundations")} testID="mobile-japanese-path-link" />
+        {flashcards ? <Button label="Flashcards" variant="secondary" onPress={() => adapters.navigation.navigate(flashcards.route)} testID="mobile-japanese-flashcards-link" /> : null}
+        <Button label="Hiragana guide" variant="ghost" onPress={() => adapters.navigation.navigate("/docs/languages/japanese-hiragana-foundations?path=japanese-foundations")} testID="mobile-japanese-hiragana-guide-link" />
+        <Button label="Katakana guide" variant="ghost" onPress={() => adapters.navigation.navigate("/docs/languages/japanese-katakana-foundations?path=japanese-foundations")} testID="mobile-japanese-katakana-guide-link" />
+      </View>
       <TextInput
         value={query}
         onChangeText={setQuery}
-        placeholder="Search あ, water, nihon, /ɲihoɴ/"
+        placeholder="Search あ, ア, coffee, nihon, /ɲihoɴ/"
         placeholderTextColor={colors.textMuted}
         style={styles.input}
         testID="mobile-japanese-search-input"
@@ -474,7 +480,8 @@ export function JapaneseLanguageHubScreen({ index, adapters }: { index: ContentI
         <View style={styles.stack}>
           <CharacterStrip title="Basic hiragana" characters={groups.hiragana.filter((character) => character.tags.includes("basic-hiragana"))} adapters={adapters} />
           <CharacterStrip title="Hiragana IME and sound extras" characters={groups.hiragana.filter((character) => character.tags.includes("supplement"))} adapters={adapters} />
-          <CharacterStrip title="Katakana" characters={groups.katakana} adapters={adapters} />
+          <CharacterStrip title="Basic katakana" characters={groups.katakana.filter((character) => character.tags.includes("basic-katakana"))} adapters={adapters} />
+          <CharacterStrip title="Katakana sound extras" characters={groups.katakana.filter((character) => character.tags.includes("supplement"))} adapters={adapters} />
           <CharacterStrip title="Starter kanji" characters={groups.kanji} adapters={adapters} />
           <View style={styles.card}>
             <Text style={styles.cardTitle}>Beginner words and greetings</Text>

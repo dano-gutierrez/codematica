@@ -56,6 +56,9 @@ describe("mobile shared screens", () => {
   it("searches Japanese language data from the bundled index", async () => {
     const view = await render(<JapaneseLanguageHubScreen index={getContentIndex()} adapters={adapters} />);
 
+    expect(view.getByTestId("mobile-japanese-flashcards-link")).toBeOnTheScreen();
+    expect(view.getByTestId("mobile-japanese-path-link")).toBeOnTheScreen();
+
     fireEvent.changeText(view.getByTestId("mobile-japanese-search-input"), "water");
 
     await waitFor(() => expect(view.getByTestId("mobile-japanese-results")).toBeOnTheScreen());

@@ -1,8 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { Search } from "lucide-react";
-import { useMemo, useState } from "react";
+import { BookOpen, Layers, Search } from "lucide-react";
+import { useMemo, useState, type ReactNode } from "react";
 import { getJapaneseCharacterGroups, searchJapanese, type ContentIndex, type JapaneseSearchResult, type LanguageCharacter, type LanguageVocabulary } from "@codematica/core";
 import { AppHeader } from "@/components/AppHeader";
 
@@ -10,6 +10,7 @@ export function JapaneseLanguageBrowser({ index }: { index: ContentIndex }) {
   const [query, setQuery] = useState("");
   const groups = useMemo(() => getJapaneseCharacterGroups(index), [index]);
   const results = useMemo(() => searchJapanese(index, query), [index, query]);
+  const flashcards = index.passiveFlashcardFeeds.find((feed) => feed.pathSlug === "japanese-foundations" && feed.status === "published");
 
   return (
     <main className="min-h-screen pb-12" data-testid="japanese-language-page">
@@ -23,9 +24,12 @@ export function JapaneseLanguageBrowser({ index }: { index: ContentIndex }) {
         <p className="mt-4 max-w-3xl text-base font-semibold leading-7 text-[#68737d]">
           Search beginner Japanese characters and phrases with romaji, meanings, and IPA pronunciation support.
         </p>
-        <Link href="/paths/japanese-foundations" className="mt-5 inline-flex min-h-12 items-center rounded-lg border-2 border-b-4 border-[#5b3d00] bg-[#7a5200] px-4 py-2 text-sm font-extrabold text-white">
-          Open Japanese Foundations path
-        </Link>
+        <nav className="mt-5 grid gap-3 sm:grid-cols-2 lg:grid-cols-4" aria-label="Japanese study tools" data-testid="japanese-study-tools">
+          <StudyToolLink href="/paths/japanese-foundations" label="Continue the path" description="Lessons in beginner order" icon={<BookOpen className="h-5 w-5" aria-hidden="true" />} testId="japanese-path-link" />
+          {flashcards ? <StudyToolLink href={flashcards.route} label="Open flashcards" description="Recall kana at any time" icon={<Layers className="h-5 w-5" aria-hidden="true" />} testId="japanese-flashcards-link" /> : null}
+          <StudyToolLink href="/docs/languages/japanese-hiragana-foundations?path=japanese-foundations" label="Hiragana guide" description="All 46 basic characters" icon={<span className="text-xl" aria-hidden="true">あ</span>} testId="japanese-hiragana-guide-link" />
+          <StudyToolLink href="/docs/languages/japanese-katakana-foundations?path=japanese-foundations" label="Katakana guide" description="All 46 basic characters" icon={<span className="text-xl" aria-hidden="true">ア</span>} testId="japanese-katakana-guide-link" />
+        </nav>
 
         <label className="relative mt-6 block max-w-3xl">
           <span className="sr-only">Search Japanese</span>
@@ -33,7 +37,7 @@ export function JapaneseLanguageBrowser({ index }: { index: ContentIndex }) {
           <input
             value={query}
             onChange={(event) => setQuery(event.target.value)}
-            placeholder="Search あ, water, nihon, /ɲihoɴ/"
+            placeholder="Search あ, ア, coffee, nihon, /ɲihoɴ/"
             className="min-h-14 w-full rounded-lg border-2 border-b-4 border-[#d5e2e8] bg-white py-3 pl-12 pr-4 text-base font-bold text-[#263238] outline-none focus:border-[#7a5200]"
             data-testid="japanese-search-input"
           />
@@ -51,13 +55,26 @@ export function JapaneseLanguageBrowser({ index }: { index: ContentIndex }) {
           <div className="mt-8 grid gap-5">
             <CharacterSection title="Basic hiragana" characters={groups.hiragana.filter((character) => character.tags.includes("basic-hiragana"))} />
             <CharacterSection title="Hiragana IME and sound extras" characters={groups.hiragana.filter((character) => character.tags.includes("supplement"))} />
-            <CharacterSection title="Katakana" characters={groups.katakana} />
+            <CharacterSection title="Basic katakana" characters={groups.katakana.filter((character) => character.tags.includes("basic-katakana"))} />
+            <CharacterSection title="Katakana sound extras" characters={groups.katakana.filter((character) => character.tags.includes("supplement"))} />
             <CharacterSection title="Starter kanji" characters={groups.kanji} />
             <VocabularySection title="Beginner words and greetings" vocabulary={index.languageVocabulary.filter((item) => item.language === "ja" && item.status === "published")} />
           </div>
         ) : null}
       </section>
     </main>
+  );
+}
+
+function StudyToolLink({ href, label, description, icon, testId }: { href: string; label: string; description: string; icon: ReactNode; testId: string }) {
+  return (
+    <Link href={href} className="flex min-h-20 items-center gap-3 rounded-lg border-2 border-b-4 border-[#d5e2e8] bg-white px-4 py-3 transition hover:-translate-y-0.5 hover:border-[#7a5200]" data-testid={testId}>
+      <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-[#fff5d6] font-extrabold text-[#7a5200]">{icon}</span>
+      <span className="min-w-0">
+        <span className="block text-sm font-extrabold text-[#263238]">{label}</span>
+        <span className="mt-0.5 block text-xs font-bold text-[#68737d]">{description}</span>
+      </span>
+    </Link>
   );
 }
 

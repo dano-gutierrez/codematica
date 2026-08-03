@@ -1,0 +1,18 @@
+{
+  "slug": "languages/japanese-hiragana-sound-changes-questionnaire",
+  "title": "Hiragana Sound Change Check",
+  "type": "questionnaire",
+  "documentSlug": "languages/japanese-hiragana-sound-changes",
+  "concept": "Dakuten, handakuten, small kana, and long vowels",
+  "difficulty": "foundation",
+  "tags": ["japanese", "hiragana", "dakuten", "small-kana", "recall"],
+  "status": "published",
+  "questions": [
+    {"id":"dakuten-ka","kind":"choice","prompt":"What happens when dakuten is added to か?","options":[{"id":"ga","label":"か becomes が, ga","isCorrect":true},{"id":"pa","label":"か becomes ぱ, pa","isCorrect":false},{"id":"kya","label":"か becomes きゃ, kya","isCorrect":false}],"explanation":"Dakuten voices the k-row: k becomes g, so か ka becomes が ga."},
+    {"id":"handakuten-ha","kind":"choice","prompt":"What sound does the small circle add to the h-row?","options":[{"id":"p-sound","label":"A p sound, as in ぱ pa","isCorrect":true},{"id":"b-sound","label":"A b sound, as in ば ba","isCorrect":false},{"id":"g-sound","label":"A g sound, as in が ga","isCorrect":false}],"explanation":"Handakuten is the small circle that changes h-row kana to p-row sounds."},
+    {"id":"small-tsu-kitte","kind":"choice","prompt":"Which spelling reads kitte, stamp, with a held consonant?","options":[{"id":"kitte","label":"きって","isCorrect":true},{"id":"kite","label":"きて","isCorrect":false},{"id":"kitsute","label":"きつて","isCorrect":false}],"explanation":"Small っ holds the following t sound; it is not pronounced as a full tsu."},
+    {"id":"small-yo-kyou","kind":"choice","prompt":"Why does きょう begin with kyo rather than ki-yo?","options":[{"id":"small-yo","label":"ょ is small and combines with き.","isCorrect":true},{"id":"dakuten","label":"き has dakuten.","isCorrect":false},{"id":"small-tsu","label":"き is followed by small っ.","isCorrect":false}],"explanation":"Small ょ contracts with the preceding i-row kana, so きょ is one contracted sound kyo."},
+    {"id":"long-vowel-grandmother","kind":"choice","prompt":"Which word has the long a sound in obaasan, grandmother?","options":[{"id":"obaasan","label":"おばあさん","isCorrect":true},{"id":"obasan","label":"おばさん","isCorrect":false},{"id":"obassan","label":"おばっさん","isCorrect":false}],"explanation":"The extra あ extends the a sound. おばさん without it means aunt."},
+    {"id":"read-marks-first","kind":"ordering","prompt":"Put the beginner decoding checks in a useful order.","items":[{"id":"marks","label":"Notice dakuten or handakuten"},{"id":"size","label":"Check whether kana are small"},{"id":"hold","label":"Apply small っ to the next consonant"},{"id":"extend","label":"Check for a long vowel"}],"correctOrder":["marks","size","hold","extend"],"explanation":"Reading the visible marks and sizes before guessing the whole word prevents common beginner errors."}
+  ]
+}
