@@ -1,5 +1,5 @@
 {
-  "schemaVersion": 7,
+  "schemaVersion": 8,
   "documents": [
     {
       "title": "LangChain Agents LangGraph And Operations",
@@ -1563,6 +1563,163 @@
       ],
       "mermaidBlocks": [],
       "contentHash": "d584ddba7cd1168f06a54c503d57f442c8df135ed8af4a0dfc50d01f5aa8230a",
+      "readingMinutes": 3
+    },
+    {
+      "title": "Japanese Everyday Navigator",
+      "slug": "languages/japanese-everyday-navigator",
+      "summary": "Navigate places, routines, transport, invitations, requests, shopping, signs, and short messages with core A1 patterns.",
+      "track": "Languages",
+      "topic": "Japanese",
+      "difficulty": "foundation",
+      "tags": [
+        "japanese",
+        "a1",
+        "daily-life",
+        "particles",
+        "reading"
+      ],
+      "prerequisites": [
+        "Japanese First Connections"
+      ],
+      "diagramRefs": [],
+      "status": "published",
+      "id": "db1013ae2c0d",
+      "route": "/docs/languages/japanese-everyday-navigator",
+      "sourcePath": "content/knowledge/languages/japanese-everyday-navigator.md",
+      "bodyPath": "content/knowledge/languages/japanese-everyday-navigator.md",
+      "markdown": "# Japanese Everyday Navigator\n\nBegin with the situation, then notice the grammar that makes it work. Each section ends with a small task you can perform immediately.\n\n## Finding people and things\n\n> 🗺️ A: えきはどこですか。\n>\n> B: コンビニのとなりです。\n\n> 🏠 つくえのうえにほんがあります。いすのしたにねこがいます。\n\nUse `あります` for things and `います` for people and animals. A location commonly uses `に`.\n\n- うえ — above/on\n- した — below/under\n- まえ — in front\n- うしろ — behind\n- なか — inside\n- となり — next to\n\nTask: describe where one object in your room is.\n\n## Routines and time\n\n> ⏰ まいあさ、しちじにおきます。はちじにあさごはんをたべます。くじにがっこうへいきます。\n\n- `に` marks a specific time or destination.\n- `を` marks what an action affects.\n- `へ` points toward a destination and is pronounced **e** as a particle.\n- `で` marks where an action happens or the means used.\n\nCompare:\n\n- がっこう**に**いきます。 — go to school\n- がっこう**で**べんきょうします。 — study at school\n- バス**で**いきます。 — go by bus\n\n## Polite verb time\n\n| Time/meaning | たべる (eat) | いく (go) |\n|---|---|---|\n| present/future | たべます | いきます |\n| present negative | たべません | いきません |\n| past | たべました | いきました |\n| past negative | たべませんでした | いきませんでした |\n\nJapanese present forms also cover a planned future when context supplies the time: `あした、とうきょうへいきます` means “I will go to Tokyo tomorrow.”\n\nTask: say one thing you did yesterday, do today, and will do tomorrow.\n\n## Invitations and transport\n\n> 🚆 A: どようびに、いっしょにきょうとへいきませんか。\n>\n> B: いいですね。でんしゃでいきましょう。\n\n`〜ませんか` is a considerate invitation. `〜ましょう` proposes doing something together.\n\n- なんじにあいますか。 — What time shall we meet?\n- えきであいましょう。 — Let’s meet at the station.\n- ごごにじはどうですか。 — How about 2 p.m.?\n\n## Requests and permission\n\n> 📷 しゃしんをとってもいいですか。 — May I take a photo?\n\n> 🪟 まどをあけてください。 — Please open the window.\n\n> 🚭 ここでたばこをすってはいけません。 — You must not smoke here.\n\nThe request `〜てください` and permission pattern `〜てもいいですか` are best learned first as complete tools. Later lessons can show how verbs form the `て` form.\n\n## Shopping, signs, and messages\n\n> 🛍️ A: このTシャツはいくらですか。\n>\n> B: さんぜんえんです。\n>\n> A: じゃ、これをください。\n\nUseful sign-reading targets:\n\n- 入口 — いりぐち — entrance\n- 出口 — でぐち — exit\n- 駅 — えき — station\n- 休み — やすみ — closed / holiday\n- 禁止 — きんし — prohibited\n\nShort message:\n\n> 田中さんへ\n>\n> きょうは七時に駅で会いましょう。わたしは青いコートです。\n>\n> アナ\n\nInformation-search task: Who is the message for? When and where will they meet? What will Ana wear?\n\n## Mini-reader: えきまで (Level 0)\n\n> ☔ きょうはあめです。ケンさんはかさをもって、うちをでます。\n>\n> 🚌 バスていにひとがたくさんいます。でも、バスはきません。\n>\n> 🚶 ケンさんはえきまであるきます。えきのまえでアナさんにあいます。\n>\n> 😊 「まにあいました！」ふたりはでんしゃにのります。\n\n**Reading:** Kyō wa ame desu. Ken-san wa kasa o motte, uchi o demasu. Basutei ni hito ga takusan imasu. Demo, basu wa kimasen. Ken-san wa eki made arukimasu. Eki no mae de Ana-san ni aimasu. “Maniaimashita!” Futari wa densha ni norimasu.\n\n**Meaning:** It is raining today. Ken takes an umbrella and leaves home. Many people are at the bus stop, but the bus does not come. Ken walks to the station and meets Ana in front of it. “I made it!” They board the train.\n\nRead once for the story, once to find travel words, and once aloud. Extensive reading should feel manageable; open the dictionary without leaving the course whenever a word blocks the story.\n\n## A1 capstone self-check\n\n- I can ask where a place is and understand a short answer.\n- I can describe a simple routine using time and place particles.\n- I can recognize polite present, negative, and past verb forms.\n- I can invite someone and arrange a time and place.\n- I can make a request, ask permission, and buy a simple item.\n- I can locate concrete details in a short sign or message.\n\nThe readiness checkpoint uses original questions inspired by public exam formats. It is not an official JLPT or JFT-Basic item set and cannot guarantee a result.\n\n## Trusted follow-up\n\n- [Official JLPT sample questions](https://samplequestions.jlpt.jp/e/samples/sampleindex.html)\n- [JFT-Basic](https://www.jpf.go.jp/jft-basic/e/about/index.html)\n- [Tadoku free graded readers](https://tadoku.org/japanese/en/free-books-en/)",
+      "plainText": "Japanese Everyday Navigator Begin with the situation, then notice the grammar that makes it work. Each section ends with a small task you can perform immediately. Finding people and things 🗺️ A: えきはどこですか。B: コンビニのとなりです。 🏠 つくえのうえにほんがあります。いすのしたにねこがいます。 Use あります for things and います for people and animals. A location commonly uses に. うえ — above/onした — below/underまえ — in frontうしろ — behindなか — insideとなり — next to Task: describe where one object in your room is. Routines and time ⏰ まいあさ、しちじにおきます。はちじにあさごはんをたべます。くじにがっこうへいきます。 に marks a specific time or destination.を marks what an action affects.へ points toward a destination and is pronounced e as a particle.で marks where an action happens or the means used. Compare: がっこうにいきます。 — go to schoolがっこうでべんきょうします。 — study at schoolバスでいきます。 — go by bus Polite verb time | Time/meaning | たべる (eat) | いく (go) | |---|---|---| | present/future | たべます | いきます | | present negative | たべません | いきません | | past | たべました | いきました | | past negative | たべませんでした | いきませんでした | Japanese present forms also cover a planned future when context supplies the time: あした、とうきょうへいきます means “I will go to Tokyo tomorrow.” Task: say one thing you did yesterday, do today, and will do tomorrow. Invitations and transport 🚆 A: どようびに、いっしょにきょうとへいきませんか。B: いいですね。でんしゃでいきましょう。 〜ませんか is a considerate invitation. 〜ましょう proposes doing something together. なんじにあいますか。 — What time shall we meet?えきであいましょう。 — Let’s meet at the station.ごごにじはどうですか。 — How about 2 p.m.? Requests and permission 📷 しゃしんをとってもいいですか。 — May I take a photo? 🪟 まどをあけてください。 — Please open the window. 🚭 ここでたばこをすってはいけません。 — You must not smoke here. The request 〜てください and permission pattern 〜てもいいですか are best learned first as complete tools. Later lessons can show how verbs form the て form. Shopping, signs, and messages 🛍️ A: このTシャツはいくらですか。B: さんぜんえんです。A: じゃ、これをください。 Useful sign-reading targets: 入口 — いりぐち — entrance出口 — でぐち — exit駅 — えき — station休み — やすみ — closed / holiday禁止 — きんし — prohibited Short message: 田中さんへきょうは七時に駅で会いましょう。わたしは青いコートです。アナ Information-search task: Who is the message for? When and where will they meet? What will Ana wear? Mini-reader: えきまで (Level 0) ☔ きょうはあめです。ケンさんはかさをもって、うちをでます。🚌 バスていにひとがたくさんいます。でも、バスはきません。🚶 ケンさんはえきまであるきます。えきのまえでアナさんにあいます。😊 「まにあいました！」ふたりはでんしゃにのります。 Reading: Kyō wa ame desu. Ken-san wa kasa o motte, uchi o demasu. Basutei ni hito ga takusan imasu. Demo, basu wa kimasen. Ken-san wa eki made arukimasu. Eki no mae de Ana-san ni aimasu. “Maniaimashita!” Futari wa densha ni norimasu. Meaning: It is raining today. Ken takes an umbrella and leaves home. Many people are at the bus stop, but the bus does not come. Ken walks to the station and meets Ana in front of it. “I made it!” They board the train. Read once for the story, once to find travel words, and once aloud. Extensive reading should feel manageable; open the dictionary without leaving the course whenever a word blocks the story. A1 capstone self-check I can ask where a place is and understand a short answer.I can describe a simple routine using time and place particles.I can recognize polite present, negative, and past verb forms.I can invite someone and arrange a time and place.I can make a request, ask permission, and buy a simple item.I can locate concrete details in a short sign or message. The readiness checkpoint uses original questions inspired by public exam formats. It is not an official JLPT or JFT-Basic item set and cannot guarantee a result. Trusted follow-up Official JLPT sample questionsJFT-BasicTadoku free graded readers",
+      "headings": [
+        {
+          "id": "japanese-everyday-navigator",
+          "depth": 1,
+          "text": "Japanese Everyday Navigator"
+        },
+        {
+          "id": "finding-people-and-things",
+          "depth": 2,
+          "text": "Finding people and things"
+        },
+        {
+          "id": "routines-and-time",
+          "depth": 2,
+          "text": "Routines and time"
+        },
+        {
+          "id": "polite-verb-time",
+          "depth": 2,
+          "text": "Polite verb time"
+        },
+        {
+          "id": "invitations-and-transport",
+          "depth": 2,
+          "text": "Invitations and transport"
+        },
+        {
+          "id": "requests-and-permission",
+          "depth": 2,
+          "text": "Requests and permission"
+        },
+        {
+          "id": "shopping-signs-and-messages",
+          "depth": 2,
+          "text": "Shopping, signs, and messages"
+        },
+        {
+          "id": "mini-reader-level-0",
+          "depth": 2,
+          "text": "Mini-reader: えきまで (Level 0)"
+        },
+        {
+          "id": "a1-capstone-self-check",
+          "depth": 2,
+          "text": "A1 capstone self-check"
+        },
+        {
+          "id": "trusted-follow-up",
+          "depth": 2,
+          "text": "Trusted follow-up"
+        }
+      ],
+      "mermaidBlocks": [],
+      "contentHash": "30592eae4ad9d8bf7c6ec9a4548fa132bc60ea37a1c1c0038d02a1ebace840d7",
+      "readingMinutes": 3
+    },
+    {
+      "title": "Japanese First Connections",
+      "slug": "languages/japanese-first-connections",
+      "summary": "Use greetings, names, identity, numbers, time, family, likes, and simple ordering language in concrete A1 scenes.",
+      "track": "Languages",
+      "topic": "Japanese",
+      "difficulty": "foundation",
+      "tags": [
+        "japanese",
+        "a1",
+        "conversation",
+        "grammar",
+        "reading"
+      ],
+      "prerequisites": [
+        "Japanese kana recognition"
+      ],
+      "diagramRefs": [],
+      "status": "published",
+      "id": "5807c0aff481",
+      "route": "/docs/languages/japanese-first-connections",
+      "sourcePath": "content/knowledge/languages/japanese-first-connections.md",
+      "bodyPath": "content/knowledge/languages/japanese-first-connections.md",
+      "markdown": "# Japanese First Connections\n\nLearn each pattern as something a person is doing. Read the scene aloud, notice the small grammar word, then change one detail to make the sentence yours.\n\n## Scene 1: meeting someone\n\n> 👋 はじめまして。アナです。アメリカじんです。よろしくおねがいします。\n>\n> *Hajimemashite. Ana desu. Amerika-jin desu. Yoroshiku onegai shimasu.*\n>\n> Nice to meet you. I’m Ana. I’m American. It’s a pleasure to meet you.\n\n`です` politely identifies or describes something. Japanese often leaves out “I” when the situation makes it obvious.\n\n- わたしはアナです。 — *Watashi wa Ana desu.* — I am Ana.\n- わたしもがくせいです。 — *Watashi mo gakusei desu.* — I am also a student.\n- マリアさんはせんせいですか。 — *Maria-san wa sensei desu ka?* — Is Maria a teacher?\n\n`は` marks the topic and is pronounced **wa** here. `も` means “also.” Sentence-final `か` makes a polite question.\n\nTry it: say your name, then add one true fact such as your country, language, work, or student status.\n\n## Scene 2: identifying things\n\n> 📚 A: これはなんですか。\n>\n> B: それはにほんごのほんです。\n>\n> A: だれのほんですか。\n>\n> B: わたしのほんです。\n\n- `これ` — this, near the speaker\n- `それ` — that, near the listener\n- `あれ` — that over there, away from both\n- `どれ` — which one\n- `の` — connects nouns; often possession or category\n\n`にほんごのほん` is literally “a Japanese-language book.” Tap the words in the dictionary when you need the reading; do not wait to understand every kanji before reading the scene.\n\n## Numbers, ages, time, and dates\n\nCount with the useful form required by the task.\n\n| Task | Japanese | Reading | Meaning |\n|---|---|---|---|\n| say your age | じゅうろくさいです | jūroku-sai desu | I am 16 years old |\n| ask the time | いま、なんじですか | ima, nan-ji desu ka | What time is it now? |\n| answer the time | くじはんです | ku-ji han desu | It is 9:30 |\n| say a date | はちがつよっかです | hachi-gatsu yokka desu | It is August 4 |\n\nSome counters have special readings. Learn them in useful chunks: `ひとり` one person, `ふたり` two people, `ひとつ` one thing, and `ふたつ` two things.\n\n## Family and friends\n\nUse the plain family word for your own family when speaking to someone outside it.\n\n- ちちはかいしゃいんです。 — My father is a company employee.\n- はははパンがすきです。 — My mother likes bread.\n- ともだちもにほんごをべんきょうします。 — My friend also studies Japanese.\n\nThe repeated `ははは` is not a typo: `はは` means “my mother,” followed by the topic particle `は` pronounced *wa*.\n\n## Likes, food, drinks, and ordering\n\n> ☕ A: なにがすきですか。\n>\n> B: コーヒーがすきです。でも、おちゃもすきです。\n\n> 🍜 A: ラーメンをひとつ、おねがいします。\n>\n> B: はい。おみずもどうぞ。\n\n`がすきです` expresses what someone likes. For a simple order, `[item] + counter + おねがいします` is useful and polite.\n\n## Mini-reader: あさのカフェ (Level Start)\n\n> 🌅 あさです。アナさんはカフェにいます。\n>\n> ☕ 「コーヒーをひとつ、おねがいします。」\n>\n> 🥐 パンもあります。アナさんはパンがすきです。\n>\n> 😊 「おいしいです。」\n\n**Reading:** Asa desu. Ana-san wa kafe ni imasu. “Kōhī o hitotsu, onegai shimasu.” Pan mo arimasu. Ana-san wa pan ga suki desu. “Oishii desu.”\n\n**Meaning:** It is morning. Ana is at a café. “One coffee, please.” There is bread too. Ana likes bread. “It’s delicious.”\n\nAfter reading, cover the English and answer: Where is Ana? What does she order? What does she like?\n\n## Can-do self-check\n\n- I can exchange a greeting and give my name.\n- I can ask and answer a basic identity question.\n- I can identify a nearby object and ask whose it is.\n- I can understand a simple age, time, or date.\n- I can say one family fact and one preference.\n- I can make a simple food or drink order.\n\nThese are practical A1 targets, not a promise of JLPT or JFT-Basic performance. Use the checkpoint to find what to review.\n\n## Trusted follow-up\n\n- [Irodori](https://www.irodori.jpf.go.jp/en/) for practical everyday tasks\n- [Marugoto](https://marugoto.jpf.go.jp/en/) for communication and culture\n- [Erin’s Challenge](https://www.erin.jpf.go.jp/en/) for video-supported scenes",
+      "plainText": "Japanese First Connections Learn each pattern as something a person is doing. Read the scene aloud, notice the small grammar word, then change one detail to make the sentence yours. Scene 1: meeting someone 👋 はじめまして。アナです。アメリカじんです。よろしくおねがいします。Hajimemashite. Ana desu. Amerika-jin desu. Yoroshiku onegai shimasu.Nice to meet you. I’m Ana. I’m American. It’s a pleasure to meet you. です politely identifies or describes something. Japanese often leaves out “I” when the situation makes it obvious. わたしはアナです。 — Watashi wa Ana desu. — I am Ana.わたしもがくせいです。 — Watashi mo gakusei desu. — I am also a student.マリアさんはせんせいですか。 — Maria-san wa sensei desu ka? — Is Maria a teacher? は marks the topic and is pronounced wa here. も means “also.” Sentence-final か makes a polite question. Try it: say your name, then add one true fact such as your country, language, work, or student status. Scene 2: identifying things 📚 A: これはなんですか。B: それはにほんごのほんです。A: だれのほんですか。B: わたしのほんです。 これ — this, near the speakerそれ — that, near the listenerあれ — that over there, away from bothどれ — which oneの — connects nouns; often possession or category にほんごのほん is literally “a Japanese-language book.” Tap the words in the dictionary when you need the reading; do not wait to understand every kanji before reading the scene. Numbers, ages, time, and dates Count with the useful form required by the task. | Task | Japanese | Reading | Meaning | |---|---|---|---| | say your age | じゅうろくさいです | jūroku-sai desu | I am 16 years old | | ask the time | いま、なんじですか | ima, nan-ji desu ka | What time is it now? | | answer the time | くじはんです | ku-ji han desu | It is 9:30 | | say a date | はちがつよっかです | hachi-gatsu yokka desu | It is August 4 | Some counters have special readings. Learn them in useful chunks: ひとり one person, ふたり two people, ひとつ one thing, and ふたつ two things. Family and friends Use the plain family word for your own family when speaking to someone outside it. ちちはかいしゃいんです。 — My father is a company employee.はははパンがすきです。 — My mother likes bread.ともだちもにほんごをべんきょうします。 — My friend also studies Japanese. The repeated ははは is not a typo: はは means “my mother,” followed by the topic particle は pronounced wa. Likes, food, drinks, and ordering ☕ A: なにがすきですか。B: コーヒーがすきです。でも、おちゃもすきです。 🍜 A: ラーメンをひとつ、おねがいします。B: はい。おみずもどうぞ。 がすきです expresses what someone likes. For a simple order, [item] + counter + おねがいします is useful and polite. Mini-reader: あさのカフェ (Level Start) 🌅 あさです。アナさんはカフェにいます。☕ 「コーヒーをひとつ、おねがいします。」🥐 パンもあります。アナさんはパンがすきです。😊 「おいしいです。」 Reading: Asa desu. Ana-san wa kafe ni imasu. “Kōhī o hitotsu, onegai shimasu.” Pan mo arimasu. Ana-san wa pan ga suki desu. “Oishii desu.” Meaning: It is morning. Ana is at a café. “One coffee, please.” There is bread too. Ana likes bread. “It’s delicious.” After reading, cover the English and answer: Where is Ana? What does she order? What does she like? Can-do self-check I can exchange a greeting and give my name.I can ask and answer a basic identity question.I can identify a nearby object and ask whose it is.I can understand a simple age, time, or date.I can say one family fact and one preference.I can make a simple food or drink order. These are practical A1 targets, not a promise of JLPT or JFT-Basic performance. Use the checkpoint to find what to review. Trusted follow-up Irodori for practical everyday tasksMarugoto for communication and cultureErin’s Challenge for video-supported scenes",
+      "headings": [
+        {
+          "id": "japanese-first-connections",
+          "depth": 1,
+          "text": "Japanese First Connections"
+        },
+        {
+          "id": "scene-1-meeting-someone",
+          "depth": 2,
+          "text": "Scene 1: meeting someone"
+        },
+        {
+          "id": "scene-2-identifying-things",
+          "depth": 2,
+          "text": "Scene 2: identifying things"
+        },
+        {
+          "id": "numbers-ages-time-and-dates",
+          "depth": 2,
+          "text": "Numbers, ages, time, and dates"
+        },
+        {
+          "id": "family-and-friends",
+          "depth": 2,
+          "text": "Family and friends"
+        },
+        {
+          "id": "likes-food-drinks-and-ordering",
+          "depth": 2,
+          "text": "Likes, food, drinks, and ordering"
+        },
+        {
+          "id": "mini-reader-level-start",
+          "depth": 2,
+          "text": "Mini-reader: あさのカフェ (Level Start)"
+        },
+        {
+          "id": "can-do-self-check",
+          "depth": 2,
+          "text": "Can-do self-check"
+        },
+        {
+          "id": "trusted-follow-up",
+          "depth": 2,
+          "text": "Trusted follow-up"
+        }
+      ],
+      "mermaidBlocks": [],
+      "contentHash": "5e7e184eb2969bdc5c321713bd7d5754f642d6ff934f70e0500cfcc1d9752b38",
       "readingMinutes": 3
     },
     {
@@ -3373,148 +3530,533 @@
     },
     {
       "slug": "japanese-foundations",
-      "title": "Japanese Foundations",
-      "summary": "An alphabet-first beginner Japanese path for reading, recalling, typing, and writing hiragana and katakana before starter kanji.",
+      "title": "Japanese Foundations: Pre-A1 to A1",
+      "summary": "An open, milestone-based beginner course for reading, listening, interacting, typing, and writing Japanese in concrete daily-life scenes.",
       "kind": "skill",
       "category": "Languages",
-      "audience": "English-speaking beginners learning Japanese on mobile, tablet, and web.",
+      "audience": "English-speaking teens and adults beginning Japanese on phone, tablet, and web.",
       "status": "published",
       "units": [
         {
           "slug": "writing-systems",
           "title": "Writing Systems",
-          "summary": "See how hiragana, katakana, and kanji work together, and learn the assisted-to-free handwriting loop.",
+          "summary": "Hear Japanese rhythm and see how hiragana, katakana, and kanji work together before tracing their shapes.",
           "nodes": [
             {
               "kind": "document",
-              "slug": "languages/japanese-writing-systems"
+              "slug": "languages/japanese-writing-systems",
+              "proficiencyLevel": "pre-a1",
+              "skillIds": [
+                "kana-listening",
+                "kana-reading"
+              ],
+              "required": true
             }
           ]
         },
         {
           "slug": "hiragana-foundations",
           "title": "Read And Write Hiragana",
-          "summary": "Learn the complete 46-character hiragana map in small row groups, then retrieve the sounds from memory.",
+          "summary": "Learn the complete 46-character hiragana map in small sound groups with immediate recall and cumulative review.",
           "nodes": [
             {
               "kind": "document",
-              "slug": "languages/japanese-hiragana-foundations"
+              "slug": "languages/japanese-hiragana-foundations",
+              "proficiencyLevel": "pre-a1",
+              "skillIds": [
+                "kana-reading"
+              ],
+              "required": true
             },
             {
               "kind": "exercise",
-              "slug": "languages/japanese-hiragana-vowels-writing"
+              "slug": "languages/japanese-hiragana-vowels-writing",
+              "proficiencyLevel": "pre-a1",
+              "skillIds": [
+                "kana-writing"
+              ],
+              "required": true
             },
             {
               "kind": "exercise",
-              "slug": "languages/japanese-hiragana-k-s-writing"
+              "slug": "languages/japanese-hiragana-k-s-writing",
+              "proficiencyLevel": "pre-a1",
+              "skillIds": [
+                "kana-writing"
+              ],
+              "required": true
             },
             {
               "kind": "exercise",
-              "slug": "languages/japanese-hiragana-t-n-writing"
+              "slug": "languages/japanese-hiragana-t-n-writing",
+              "proficiencyLevel": "pre-a1",
+              "skillIds": [
+                "kana-writing"
+              ],
+              "required": true
             },
             {
               "kind": "exercise",
-              "slug": "languages/japanese-hiragana-h-m-writing"
+              "slug": "languages/japanese-hiragana-h-m-writing",
+              "proficiencyLevel": "pre-a1",
+              "skillIds": [
+                "kana-writing"
+              ],
+              "required": true
             },
             {
               "kind": "exercise",
-              "slug": "languages/japanese-hiragana-y-r-w-writing"
+              "slug": "languages/japanese-hiragana-y-r-w-writing",
+              "proficiencyLevel": "pre-a1",
+              "skillIds": [
+                "kana-writing"
+              ],
+              "required": true
             },
             {
               "kind": "exercise",
-              "slug": "languages/japanese-hiragana-reading-check"
+              "slug": "languages/japanese-hiragana-reading-check",
+              "proficiencyLevel": "pre-a1",
+              "skillIds": [
+                "kana-reading"
+              ],
+              "required": true
             }
           ]
         },
         {
           "slug": "hiragana-sound-tools",
           "title": "Hiragana Sound Tools",
-          "summary": "Decode dakuten, handakuten, small kana, doubled consonants, contracted sounds, and long vowels.",
+          "summary": "Decode dakuten, handakuten, small kana, doubled consonants, contracted sounds, long vowels, and moraic ん.",
           "nodes": [
             {
               "kind": "document",
-              "slug": "languages/japanese-hiragana-sound-changes"
+              "slug": "languages/japanese-hiragana-sound-changes",
+              "proficiencyLevel": "pre-a1",
+              "skillIds": [
+                "kana-listening",
+                "kana-reading"
+              ],
+              "required": true
             },
             {
               "kind": "exercise",
-              "slug": "languages/japanese-hiragana-sound-changes-questionnaire"
+              "slug": "languages/japanese-hiragana-sound-changes-questionnaire",
+              "proficiencyLevel": "pre-a1",
+              "skillIds": [
+                "kana-listening",
+                "kana-reading"
+              ],
+              "required": true
             },
             {
               "kind": "exercise",
-              "slug": "languages/japanese-hiragana-ime-exceptions-writing"
+              "slug": "languages/japanese-hiragana-ime-exceptions-writing",
+              "proficiencyLevel": "pre-a1",
+              "skillIds": [
+                "kana-writing",
+                "kana-ime"
+              ],
+              "required": true
             }
           ]
         },
         {
           "slug": "katakana-foundations",
           "title": "Read And Write Katakana",
-          "summary": "Reuse the hiragana sound map to learn all 46 basic katakana, key look-alikes, long vowels, and loanwords.",
+          "summary": "Transfer the hiragana sound map to all 46 basic katakana, look-alikes, long vowels, and common loanwords.",
           "nodes": [
             {
               "kind": "document",
-              "slug": "languages/japanese-katakana-foundations"
+              "slug": "languages/japanese-katakana-foundations",
+              "proficiencyLevel": "pre-a1",
+              "skillIds": [
+                "kana-reading"
+              ],
+              "required": true
             },
             {
               "kind": "exercise",
-              "slug": "languages/japanese-katakana-vowels-writing"
+              "slug": "languages/japanese-katakana-vowels-writing",
+              "proficiencyLevel": "pre-a1",
+              "skillIds": [
+                "kana-writing"
+              ],
+              "required": true
             },
             {
               "kind": "exercise",
-              "slug": "languages/japanese-katakana-k-s-writing"
+              "slug": "languages/japanese-katakana-k-s-writing",
+              "proficiencyLevel": "pre-a1",
+              "skillIds": [
+                "kana-writing"
+              ],
+              "required": true
             },
             {
               "kind": "exercise",
-              "slug": "languages/japanese-katakana-t-n-writing"
+              "slug": "languages/japanese-katakana-t-n-writing",
+              "proficiencyLevel": "pre-a1",
+              "skillIds": [
+                "kana-writing"
+              ],
+              "required": true
             },
             {
               "kind": "exercise",
-              "slug": "languages/japanese-katakana-h-m-writing"
+              "slug": "languages/japanese-katakana-h-m-writing",
+              "proficiencyLevel": "pre-a1",
+              "skillIds": [
+                "kana-writing"
+              ],
+              "required": true
             },
             {
               "kind": "exercise",
-              "slug": "languages/japanese-katakana-y-r-w-writing"
+              "slug": "languages/japanese-katakana-y-r-w-writing",
+              "proficiencyLevel": "pre-a1",
+              "skillIds": [
+                "kana-writing"
+              ],
+              "required": true
             },
             {
               "kind": "exercise",
-              "slug": "languages/japanese-katakana-reading-check"
+              "slug": "languages/japanese-katakana-reading-check",
+              "proficiencyLevel": "pre-a1",
+              "skillIds": [
+                "kana-reading"
+              ],
+              "required": true
             }
           ]
         },
         {
           "slug": "romaji-and-kana-input",
           "title": "Romaji And Kana Input",
-          "summary": "Separate Japanese spelling, pronunciation, learner romaji, and the keys an IME needs.",
+          "summary": "Separate Japanese spelling, pronunciation, learner romanization, and the keys an IME needs.",
           "nodes": [
             {
               "kind": "document",
-              "slug": "languages/japanese-romaji-kana-input"
+              "slug": "languages/japanese-romaji-kana-input",
+              "proficiencyLevel": "pre-a1",
+              "skillIds": [
+                "kana-reading",
+                "kana-ime"
+              ],
+              "required": true
             },
             {
               "kind": "exercise",
-              "slug": "languages/japanese-romaji-kana-input-questionnaire"
+              "slug": "languages/japanese-romaji-kana-input-questionnaire",
+              "proficiencyLevel": "pre-a1",
+              "skillIds": [
+                "kana-ime"
+              ],
+              "required": true
+            },
+            {
+              "kind": "exercise",
+              "slug": "languages/japanese-kana-explorer-checkpoint",
+              "proficiencyLevel": "pre-a1",
+              "skillIds": [
+                "kana-listening",
+                "kana-reading",
+                "kana-writing",
+                "kana-interaction",
+                "kana-ime"
+              ],
+              "required": true
+            }
+          ]
+        },
+        {
+          "slug": "first-connections",
+          "title": "First Connections",
+          "summary": "Exchange greetings, identify people and things, understand basic time, talk about family and likes, and order simply.",
+          "nodes": [
+            {
+              "kind": "document",
+              "slug": "languages/japanese-first-connections",
+              "proficiencyLevel": "a1",
+              "skillIds": [
+                "a1-listening",
+                "a1-reading",
+                "a1-interaction",
+                "a1-writing"
+              ],
+              "required": true
+            },
+            {
+              "kind": "exercise",
+              "slug": "languages/japanese-first-connections-checkpoint",
+              "proficiencyLevel": "a1",
+              "skillIds": [
+                "a1-listening",
+                "a1-reading",
+                "a1-interaction",
+                "a1-writing"
+              ],
+              "required": true
+            }
+          ]
+        },
+        {
+          "slug": "everyday-navigator",
+          "title": "Everyday Navigator",
+          "summary": "Navigate places, routines, transport, invitations, requests, shopping, signs, and short messages.",
+          "nodes": [
+            {
+              "kind": "document",
+              "slug": "languages/japanese-everyday-navigator",
+              "proficiencyLevel": "a1",
+              "skillIds": [
+                "a1-listening",
+                "a1-reading",
+                "a1-interaction",
+                "a1-writing"
+              ],
+              "required": true
+            },
+            {
+              "kind": "exercise",
+              "slug": "languages/japanese-everyday-navigator-checkpoint",
+              "proficiencyLevel": "a1",
+              "skillIds": [
+                "a1-listening",
+                "a1-reading",
+                "a1-interaction",
+                "a1-writing"
+              ],
+              "required": true
             }
           ]
         },
         {
           "slug": "starter-kanji",
-          "title": "Starter Kanji",
-          "summary": "Practice beginner kanji for numbers, nature, people, size, position, books, mountains, and rivers.",
+          "title": "Starter Kanji In Context",
+          "summary": "Read, trace, recall, and use beginner kanji through vocabulary, signs, messages, and short sentences.",
           "nodes": [
             {
               "kind": "document",
-              "slug": "languages/japanese-starter-kanji"
+              "slug": "languages/japanese-starter-kanji",
+              "proficiencyLevel": "a1",
+              "skillIds": [
+                "a1-reading",
+                "a1-writing"
+              ],
+              "required": true
             },
             {
               "kind": "exercise",
-              "slug": "languages/japanese-starter-kanji-writing"
+              "slug": "languages/japanese-starter-kanji-writing",
+              "proficiencyLevel": "a1",
+              "skillIds": [
+                "a1-writing"
+              ],
+              "required": true
             }
           ]
         }
       ],
+      "progression": {
+        "framework": "jf-standard",
+        "skills": [
+          {
+            "id": "kana-listening",
+            "label": "Kana sounds and rhythm",
+            "skill": "listening",
+            "description": "Hear mora rhythm and distinguish the core kana sound patterns."
+          },
+          {
+            "id": "kana-reading",
+            "label": "Kana recognition",
+            "skill": "reading",
+            "description": "Recognize hiragana and katakana in words, signs, and tiny texts."
+          },
+          {
+            "id": "kana-writing",
+            "label": "Kana handwriting",
+            "skill": "writing",
+            "description": "Trace and recall textbook-style kana with the intended stroke order."
+          },
+          {
+            "id": "kana-interaction",
+            "label": "Kana learning interaction",
+            "skill": "interaction",
+            "description": "Use kana knowledge to ask, answer, and clarify a simple reading or input question."
+          },
+          {
+            "id": "kana-ime",
+            "label": "Japanese keyboard input",
+            "skill": "ime",
+            "description": "Choose IME keys separately from learner-facing pronunciation and romanization."
+          },
+          {
+            "id": "a1-listening",
+            "label": "A1 listening",
+            "skill": "listening",
+            "description": "Understand familiar words and short, slowly delivered everyday exchanges."
+          },
+          {
+            "id": "a1-reading",
+            "label": "A1 reading",
+            "skill": "reading",
+            "description": "Find concrete information in short sentences, signs, messages, and mini-readers."
+          },
+          {
+            "id": "a1-interaction",
+            "label": "A1 interaction",
+            "skill": "interaction",
+            "description": "Exchange basic personal information and complete predictable everyday tasks."
+          },
+          {
+            "id": "a1-writing",
+            "label": "A1 writing",
+            "skill": "writing",
+            "description": "Write familiar characters and create a very short personal or practical message."
+          }
+        ],
+        "stages": [
+          {
+            "id": "kana-explorer",
+            "label": "Kana Explorer",
+            "proficiencyLevel": "pre-a1",
+            "summary": "Build a reliable sound-to-symbol foundation across recognition, reading, handwriting, and keyboard input.",
+            "unitSlugs": [
+              "writing-systems",
+              "hiragana-foundations",
+              "hiragana-sound-tools",
+              "katakana-foundations",
+              "romaji-and-kana-input"
+            ],
+            "canDos": [
+              {
+                "id": "kana-hear-morae",
+                "statement": "I can hear and tap the mora rhythm of a short familiar kana word.",
+                "skill": "listening"
+              },
+              {
+                "id": "kana-read-basics",
+                "statement": "I can recognize the 46 basic hiragana and katakana in standard order.",
+                "skill": "reading"
+              },
+              {
+                "id": "kana-write-sample",
+                "statement": "I can write a sampled basic kana character from memory using its stroke order.",
+                "skill": "writing"
+              },
+              {
+                "id": "kana-clarify-input",
+                "statement": "I can explain a simple difference between a particle's sound and its IME spelling.",
+                "skill": "interaction"
+              },
+              {
+                "id": "kana-type-exceptions",
+                "statement": "I can type particles, small kana, doubled consonants, and long vowels with an IME.",
+                "skill": "ime"
+              }
+            ],
+            "requiredNodeSlugs": [
+              "languages/japanese-writing-systems",
+              "languages/japanese-hiragana-foundations",
+              "languages/japanese-hiragana-reading-check",
+              "languages/japanese-hiragana-sound-changes",
+              "languages/japanese-katakana-foundations",
+              "languages/japanese-katakana-reading-check",
+              "languages/japanese-romaji-kana-input",
+              "languages/japanese-kana-explorer-checkpoint"
+            ],
+            "checkpointExerciseSlug": "languages/japanese-kana-explorer-checkpoint",
+            "passThreshold": 0.8,
+            "minimumSkillScore": 0.6,
+            "estimatedMinutes": 420
+          },
+          {
+            "id": "first-connections",
+            "label": "First Connections",
+            "proficiencyLevel": "a1",
+            "summary": "Use short rehearsed language to meet someone, exchange concrete information, express preferences, and order.",
+            "unitSlugs": [
+              "first-connections"
+            ],
+            "canDos": [
+              {
+                "id": "connections-hear-details",
+                "statement": "I can understand a slowly spoken name, age, time, or simple preference.",
+                "skill": "listening"
+              },
+              {
+                "id": "connections-read-scene",
+                "statement": "I can understand the main details in a short greeting or café scene.",
+                "skill": "reading"
+              },
+              {
+                "id": "connections-write-intro",
+                "statement": "I can write a two-sentence introduction with my name and one personal fact.",
+                "skill": "writing"
+              },
+              {
+                "id": "connections-exchange",
+                "statement": "I can greet someone, give my name, ask one basic question, and respond politely.",
+                "skill": "interaction"
+              }
+            ],
+            "requiredNodeSlugs": [
+              "languages/japanese-first-connections",
+              "languages/japanese-first-connections-checkpoint"
+            ],
+            "checkpointExerciseSlug": "languages/japanese-first-connections-checkpoint",
+            "passThreshold": 0.8,
+            "estimatedMinutes": 180
+          },
+          {
+            "id": "everyday-navigator",
+            "label": "Everyday Navigator",
+            "proficiencyLevel": "a1",
+            "summary": "Complete predictable daily tasks involving places, routines, transport, requests, purchases, signs, and messages.",
+            "unitSlugs": [
+              "everyday-navigator",
+              "starter-kanji"
+            ],
+            "canDos": [
+              {
+                "id": "navigator-hear-plan",
+                "statement": "I can understand the time, place, and transport in a short familiar plan.",
+                "skill": "listening"
+              },
+              {
+                "id": "navigator-find-detail",
+                "statement": "I can locate a concrete time, place, price, or instruction in a short text.",
+                "skill": "reading"
+              },
+              {
+                "id": "navigator-write-message",
+                "statement": "I can write a short message giving a meeting time and place.",
+                "skill": "writing"
+              },
+              {
+                "id": "navigator-complete-task",
+                "statement": "I can ask directions, make a request, arrange a meeting, or buy a simple item.",
+                "skill": "interaction"
+              }
+            ],
+            "requiredNodeSlugs": [
+              "languages/japanese-everyday-navigator",
+              "languages/japanese-starter-kanji",
+              "languages/japanese-everyday-navigator-checkpoint"
+            ],
+            "checkpointExerciseSlug": "languages/japanese-everyday-navigator-checkpoint",
+            "passThreshold": 0.8,
+            "minimumSkillScore": 0.6,
+            "estimatedMinutes": 300
+          }
+        ]
+      },
       "id": "084cfa357f0b",
       "route": "/paths/japanese-foundations",
       "sourcePath": "content/learning-paths/japanese-foundations.json",
-      "contentHash": "bfddd646626db5c9be650dcb34c2d238bc70966c4fc58f9da86fb146a620a663"
+      "contentHash": "899bf8c4a567de5221651ae03b3f8dc6a1393e0cdf7ccec1d174884113a54b1b"
     },
     {
       "slug": "mermaid-diagram-authoring",
@@ -6533,6 +7075,328 @@
       "contentHash": "23d7cb4056514c56b25ae5b429328526c3841b55850849f28a23f6efc819eae4"
     },
     {
+      "slug": "languages/japanese-everyday-navigator-checkpoint",
+      "title": "Everyday Navigator A1 Capstone",
+      "documentSlug": "languages/japanese-everyday-navigator",
+      "concept": "A1 places, routines, transport, requests, shopping, and information search",
+      "difficulty": "foundation",
+      "tags": [
+        "japanese",
+        "a1",
+        "checkpoint",
+        "jlpt-readiness",
+        "jft-readiness"
+      ],
+      "status": "published",
+      "proficiencyLevel": "a1",
+      "skillIds": [
+        "a1-interaction",
+        "a1-reading",
+        "a1-listening",
+        "a1-writing"
+      ],
+      "required": true,
+      "type": "questionnaire",
+      "questions": [
+        {
+          "id": "place-particle",
+          "prompt": "Complete the sentence: I study at school.",
+          "explanation": "で marks the place where an action happens.",
+          "kind": "cloze",
+          "template": "がっこう{{blank}}べんきょうします。",
+          "acceptedAnswers": [
+            "で"
+          ]
+        },
+        {
+          "id": "destination-particle",
+          "prompt": "Complete the sentence: I go toward the station.",
+          "explanation": "The destination particle へ is written he but pronounced e.",
+          "kind": "cloze",
+          "template": "えき{{blank}}いきます。",
+          "acceptedAnswers": [
+            "へ"
+          ]
+        },
+        {
+          "id": "yesterday-form",
+          "prompt": "Choose the polite sentence meaning I ate ramen yesterday.",
+          "explanation": "たべました is the polite past form of eat.",
+          "kind": "choice",
+          "options": [
+            {
+              "id": "past-ate",
+              "label": "きのう、ラーメンをたべました。",
+              "isCorrect": true
+            },
+            {
+              "id": "not-eat",
+              "label": "きのう、ラーメンをたべません。",
+              "isCorrect": false
+            },
+            {
+              "id": "future-eat",
+              "label": "あした、ラーメンをたべます。",
+              "isCorrect": false
+            }
+          ]
+        },
+        {
+          "id": "invitation",
+          "prompt": "Which sentence politely invites a friend to go to Kyoto?",
+          "explanation": "〜ませんか is a considerate invitation pattern.",
+          "kind": "choice",
+          "options": [
+            {
+              "id": "invite",
+              "label": "いっしょにきょうとへいきませんか。",
+              "isCorrect": true
+            },
+            {
+              "id": "command",
+              "label": "きょうとへいってください。",
+              "isCorrect": false
+            },
+            {
+              "id": "location",
+              "label": "きょうとはどこですか。",
+              "isCorrect": false
+            }
+          ]
+        },
+        {
+          "id": "permission",
+          "prompt": "You want to take a photo. Which question asks permission?",
+          "explanation": "〜てもいいですか asks whether an action is permitted.",
+          "kind": "choice",
+          "options": [
+            {
+              "id": "photo-ok",
+              "label": "しゃしんをとってもいいですか。",
+              "isCorrect": true
+            },
+            {
+              "id": "photo-where",
+              "label": "しゃしんはどこですか。",
+              "isCorrect": false
+            },
+            {
+              "id": "photo-did",
+              "label": "しゃしんをとりました。",
+              "isCorrect": false
+            }
+          ]
+        },
+        {
+          "id": "message-search",
+          "prompt": "Message: きょうは七時に駅で会いましょう。 When and where will they meet?",
+          "explanation": "七時 is 7:00, 駅 is the station, and で marks the meeting place.",
+          "kind": "choice",
+          "options": [
+            {
+              "id": "seven-station",
+              "label": "At 7:00 at the station",
+              "isCorrect": true
+            },
+            {
+              "id": "eight-school",
+              "label": "At 8:00 at school",
+              "isCorrect": false
+            },
+            {
+              "id": "seven-store",
+              "label": "At 7:00 at the store",
+              "isCorrect": false
+            }
+          ]
+        },
+        {
+          "id": "shopping-order",
+          "prompt": "Put the exchange in a useful shopping order.",
+          "explanation": "First ask the price, hear it, then request the item.",
+          "kind": "ordering",
+          "items": [
+            {
+              "id": "ask-price",
+              "label": "これはいくらですか。"
+            },
+            {
+              "id": "give-price",
+              "label": "さんぜんえんです。"
+            },
+            {
+              "id": "buy-item",
+              "label": "じゃ、これをください。"
+            }
+          ],
+          "correctOrder": [
+            "ask-price",
+            "give-price",
+            "buy-item"
+          ]
+        }
+      ],
+      "id": "116cfc1dad48",
+      "route": "/practice/languages/japanese-everyday-navigator-checkpoint",
+      "sourcePath": "content/exercises/languages/japanese-everyday-navigator-checkpoint.json",
+      "contentHash": "cc99f72795cbd2b1975a4586dce018c62a427304c93b79784ffcbfceab68e800"
+    },
+    {
+      "slug": "languages/japanese-first-connections-checkpoint",
+      "title": "First Connections Checkpoint",
+      "documentSlug": "languages/japanese-first-connections",
+      "concept": "A1 greetings, identity, time, family, preferences, and ordering",
+      "difficulty": "foundation",
+      "tags": [
+        "japanese",
+        "a1",
+        "checkpoint"
+      ],
+      "status": "published",
+      "proficiencyLevel": "a1",
+      "skillIds": [
+        "a1-interaction",
+        "a1-reading",
+        "a1-listening",
+        "a1-writing"
+      ],
+      "required": true,
+      "type": "questionnaire",
+      "questions": [
+        {
+          "id": "meet-someone",
+          "prompt": "You meet someone for the first time. Which opening fits the situation?",
+          "explanation": "はじめまして is the conventional opening when meeting someone for the first time.",
+          "kind": "choice",
+          "options": [
+            {
+              "id": "hajimemashite",
+              "label": "はじめまして。アナです。",
+              "isCorrect": true
+            },
+            {
+              "id": "oyasumi",
+              "label": "おやすみなさい。アナです。",
+              "isCorrect": false
+            },
+            {
+              "id": "itadakimasu",
+              "label": "いただきます。アナです。",
+              "isCorrect": false
+            }
+          ]
+        },
+        {
+          "id": "also-student",
+          "prompt": "Complete: I am also a student.",
+          "explanation": "も replaces は when the new topic shares the same description.",
+          "kind": "cloze",
+          "template": "わたし{{blank}}がくせいです。",
+          "acceptedAnswers": [
+            "も"
+          ]
+        },
+        {
+          "id": "whose-book",
+          "prompt": "A book is beside the listener. Ask whose book it is.",
+          "explanation": "それ points to something near the listener, and だれの asks whose.",
+          "kind": "choice",
+          "options": [
+            {
+              "id": "correct-book",
+              "label": "それはだれのほんですか。",
+              "isCorrect": true
+            },
+            {
+              "id": "wrong-place",
+              "label": "そこはいつですか。",
+              "isCorrect": false
+            },
+            {
+              "id": "wrong-person",
+              "label": "あのひとはなんですか。",
+              "isCorrect": false
+            }
+          ]
+        },
+        {
+          "id": "time-reading",
+          "prompt": "Someone says くじはんです. Which time did you hear?",
+          "explanation": "くじ is nine o'clock and はん adds half past.",
+          "kind": "choice",
+          "options": [
+            {
+              "id": "nine-thirty",
+              "label": "9:30",
+              "isCorrect": true
+            },
+            {
+              "id": "half-nine",
+              "label": "8:30",
+              "isCorrect": false
+            },
+            {
+              "id": "nine-fifteen",
+              "label": "9:15",
+              "isCorrect": false
+            }
+          ]
+        },
+        {
+          "id": "cafe-order",
+          "prompt": "Put the words in order to request one coffee politely.",
+          "explanation": "A simple order is item, quantity, then おねがいします.",
+          "kind": "ordering",
+          "items": [
+            {
+              "id": "coffee",
+              "label": "コーヒーを"
+            },
+            {
+              "id": "one",
+              "label": "ひとつ"
+            },
+            {
+              "id": "please",
+              "label": "おねがいします"
+            }
+          ],
+          "correctOrder": [
+            "coffee",
+            "one",
+            "please"
+          ]
+        },
+        {
+          "id": "personal-output",
+          "prompt": "Which is a complete polite self-introduction model you can personalize?",
+          "explanation": "The model gives a name and one identity fact with です.",
+          "kind": "choice",
+          "options": [
+            {
+              "id": "complete-model",
+              "label": "わたしはリーです。がくせいです。",
+              "isCorrect": true
+            },
+            {
+              "id": "question-model",
+              "label": "リーさんですか。",
+              "isCorrect": false
+            },
+            {
+              "id": "fragment-model",
+              "label": "わたしの",
+              "isCorrect": false
+            }
+          ]
+        }
+      ],
+      "id": "19191bcbbe22",
+      "route": "/practice/languages/japanese-first-connections-checkpoint",
+      "sourcePath": "content/exercises/languages/japanese-first-connections-checkpoint.json",
+      "contentHash": "1dfd0d58168be90673ed379f40fe47546a15a4b65c98ab7f8aeca76af8108a8d"
+    },
+    {
       "slug": "languages/japanese-hiragana-h-m-writing",
       "title": "Hiragana H And M Rows",
       "documentSlug": "languages/japanese-romaji-kana-input",
@@ -7154,6 +8018,186 @@
       "route": "/practice/languages/japanese-hiragana-y-r-w-writing",
       "sourcePath": "content/exercises/languages/japanese-hiragana-y-r-w-writing.json",
       "contentHash": "dae7e6821eece7ba00bdf002cc4a6763642d216c0505550b66fa350f1e755409"
+    },
+    {
+      "slug": "languages/japanese-kana-explorer-checkpoint",
+      "title": "Kana Explorer Checkpoint",
+      "documentSlug": "languages/japanese-romaji-kana-input",
+      "concept": "Pre-A1 hiragana, katakana, sound tools, reading, and IME input",
+      "difficulty": "foundation",
+      "tags": [
+        "japanese",
+        "pre-a1",
+        "kana",
+        "checkpoint"
+      ],
+      "status": "published",
+      "proficiencyLevel": "pre-a1",
+      "skillIds": [
+        "kana-listening",
+        "kana-reading",
+        "kana-writing",
+        "kana-interaction",
+        "kana-ime"
+      ],
+      "required": true,
+      "type": "questionnaire",
+      "questions": [
+        {
+          "id": "hiragana-row",
+          "prompt": "Place the five basic vowel hiragana in standard Japanese order.",
+          "explanation": "The vowel order あ・い・う・え・お organizes both kana charts.",
+          "kind": "ordering",
+          "items": [
+            {
+              "id": "a-kana",
+              "label": "あ (a)"
+            },
+            {
+              "id": "i-kana",
+              "label": "い (i)"
+            },
+            {
+              "id": "u-kana",
+              "label": "う (u)"
+            },
+            {
+              "id": "e-kana",
+              "label": "え (e)"
+            },
+            {
+              "id": "o-kana",
+              "label": "お (o)"
+            }
+          ],
+          "correctOrder": [
+            "a-kana",
+            "i-kana",
+            "u-kana",
+            "e-kana",
+            "o-kana"
+          ]
+        },
+        {
+          "id": "katakana-word",
+          "prompt": "Which katakana word represents koohii, coffee?",
+          "explanation": "Katakana commonly writes loanwords, and ー lengthens the preceding vowel.",
+          "kind": "choice",
+          "options": [
+            {
+              "id": "coffee",
+              "label": "コーヒー",
+              "isCorrect": true
+            },
+            {
+              "id": "cat",
+              "label": "ねこ",
+              "isCorrect": false
+            },
+            {
+              "id": "school",
+              "label": "がっこう",
+              "isCorrect": false
+            }
+          ]
+        },
+        {
+          "id": "small-tsu",
+          "prompt": "Which learner romaji matches がっこう?",
+          "explanation": "Small っ doubles the following consonant: がっこう becomes gakkou.",
+          "kind": "choice",
+          "options": [
+            {
+              "id": "gakkou",
+              "label": "gakkou",
+              "isCorrect": true
+            },
+            {
+              "id": "gakou",
+              "label": "gakou",
+              "isCorrect": false
+            },
+            {
+              "id": "gatsukou",
+              "label": "gatsukou",
+              "isCorrect": false
+            }
+          ]
+        },
+        {
+          "id": "particle-input",
+          "prompt": "Which IME keys produce the spelling こんばんは?",
+          "explanation": "The final topic particle is pronounced wa but spelled は, so an IME needs konbanha.",
+          "kind": "choice",
+          "options": [
+            {
+              "id": "konbanha",
+              "label": "konbanha",
+              "isCorrect": true
+            },
+            {
+              "id": "konbanwa",
+              "label": "konbanwa",
+              "isCorrect": false
+            },
+            {
+              "id": "konbanna",
+              "label": "konbanna",
+              "isCorrect": false
+            }
+          ]
+        },
+        {
+          "id": "listening-strategy",
+          "prompt": "When you hear one beat per kana in さかな, which rhythm should you tap?",
+          "explanation": "Japanese rhythm is organized in morae: さ・か・な has three roughly even beats.",
+          "kind": "choice",
+          "options": [
+            {
+              "id": "three-beats",
+              "label": "さ・か・な — three even beats",
+              "isCorrect": true
+            },
+            {
+              "id": "one-beat",
+              "label": "さかな — one long beat",
+              "isCorrect": false
+            },
+            {
+              "id": "two-beats",
+              "label": "さか・な — two stressed beats",
+              "isCorrect": false
+            }
+          ]
+        },
+        {
+          "id": "use-kana",
+          "prompt": "A classmate asks how to type the written kana へ when it is a particle. What is the useful answer?",
+          "explanation": "The particle is pronounced e, but IME spelling follows the visible kana へ, so type he.",
+          "kind": "choice",
+          "options": [
+            {
+              "id": "type-he",
+              "label": "It sounds like e, but type he for へ.",
+              "isCorrect": true
+            },
+            {
+              "id": "type-e",
+              "label": "It is always written え, so type e.",
+              "isCorrect": false
+            },
+            {
+              "id": "type-we",
+              "label": "Type we because it is a direction.",
+              "isCorrect": false
+            }
+          ]
+        }
+      ],
+      "id": "c16c2c14374f",
+      "route": "/practice/languages/japanese-kana-explorer-checkpoint",
+      "sourcePath": "content/exercises/languages/japanese-kana-explorer-checkpoint.json",
+      "contentHash": "105fd960ec3c12234d48476ba5b9afbaf933560d9ee2a0aca2629d6b399a70b0"
     },
     {
       "slug": "languages/japanese-katakana-h-m-writing",
@@ -9497,7 +10541,7 @@
       "id": "415fea39c4c7",
       "route": "/languages/japanese/characters/hiragana/a",
       "sourcePath": "content/languages/japanese/characters.json",
-      "contentHash": "2deaf50bd501960d12348e2dfcf9c60eb5f31f16398534ac7522126f34766fbd"
+      "contentHash": "10a768a52101ea0a81867867489bb0e4051fdf7da58696267169ae74370ff6af"
     },
     {
       "slug": "japanese/hiragana/ba",
@@ -9790,7 +10834,7 @@
       "id": "79d88a825daa",
       "route": "/languages/japanese/characters/hiragana/e",
       "sourcePath": "content/languages/japanese/characters.json",
-      "contentHash": "2deaf50bd501960d12348e2dfcf9c60eb5f31f16398534ac7522126f34766fbd"
+      "contentHash": "10a768a52101ea0a81867867489bb0e4051fdf7da58696267169ae74370ff6af"
     },
     {
       "slug": "japanese/hiragana/fu",
@@ -10435,7 +11479,7 @@
       "id": "00f15de22352",
       "route": "/languages/japanese/characters/hiragana/i",
       "sourcePath": "content/languages/japanese/characters.json",
-      "contentHash": "2deaf50bd501960d12348e2dfcf9c60eb5f31f16398534ac7522126f34766fbd"
+      "contentHash": "10a768a52101ea0a81867867489bb0e4051fdf7da58696267169ae74370ff6af"
     },
     {
       "slug": "japanese/hiragana/ji",
@@ -12062,7 +13106,7 @@
       "id": "8ba84bf5a2b7",
       "route": "/languages/japanese/characters/hiragana/o",
       "sourcePath": "content/languages/japanese/characters.json",
-      "contentHash": "2deaf50bd501960d12348e2dfcf9c60eb5f31f16398534ac7522126f34766fbd"
+      "contentHash": "10a768a52101ea0a81867867489bb0e4051fdf7da58696267169ae74370ff6af"
     },
     {
       "slug": "japanese/hiragana/pa",
@@ -13770,7 +14814,7 @@
       "id": "d931945db240",
       "route": "/languages/japanese/characters/hiragana/u",
       "sourcePath": "content/languages/japanese/characters.json",
-      "contentHash": "2deaf50bd501960d12348e2dfcf9c60eb5f31f16398534ac7522126f34766fbd"
+      "contentHash": "10a768a52101ea0a81867867489bb0e4051fdf7da58696267169ae74370ff6af"
     },
     {
       "slug": "japanese/hiragana/wa",
@@ -14238,6 +15282,149 @@
       "contentHash": "2a419a4af4952846a4c4ac4f40f1b1d6cf2e2d7fdbb6ff5ac6aa3ce9b43d4dcd"
     },
     {
+      "slug": "japanese/kanji/above",
+      "language": "ja",
+      "writingSystem": "kanji",
+      "glyph": "上",
+      "title": "Above",
+      "summary": "Grade 1 kanji for above, up, and upper.",
+      "meanings": [
+        "above",
+        "up"
+      ],
+      "readings": [
+        {
+          "label": "Kun reading",
+          "value": "うえ",
+          "ipa": "ɯe"
+        }
+      ],
+      "romaji": "ue",
+      "inputSequences": [],
+      "ipa": "ɯe",
+      "studyOrder": 2050,
+      "tags": [
+        "kanji",
+        "starter-kanji-100",
+        "grade-1"
+      ],
+      "status": "planned",
+      "strokes": [],
+      "examples": [],
+      "sources": [],
+      "id": "86066b76bda0",
+      "route": "/languages/japanese/characters/kanji/above",
+      "sourcePath": "content/languages/japanese/starter-kanji-a1-planned.json",
+      "contentHash": "5dcf6acf91bf26f72caef5d35d0a8ab3ae0356df3eb1fc6987d79d2bdc2b87c7"
+    },
+    {
+      "slug": "japanese/kanji/ahead",
+      "language": "ja",
+      "writingSystem": "kanji",
+      "glyph": "先",
+      "title": "Ahead And Previous",
+      "summary": "Grade 1 kanji for ahead, previous, or first.",
+      "meanings": [
+        "ahead",
+        "previous"
+      ],
+      "readings": [
+        {
+          "label": "Kun reading",
+          "value": "さき",
+          "ipa": "saki"
+        }
+      ],
+      "romaji": "saki",
+      "inputSequences": [],
+      "ipa": "saki",
+      "studyOrder": 2059,
+      "tags": [
+        "kanji",
+        "starter-kanji-100",
+        "grade-1"
+      ],
+      "status": "planned",
+      "strokes": [],
+      "examples": [],
+      "sources": [],
+      "id": "558d6904afad",
+      "route": "/languages/japanese/characters/kanji/ahead",
+      "sourcePath": "content/languages/japanese/starter-kanji-a1-planned.json",
+      "contentHash": "5dcf6acf91bf26f72caef5d35d0a8ab3ae0356df3eb1fc6987d79d2bdc2b87c7"
+    },
+    {
+      "slug": "japanese/kanji/bamboo",
+      "language": "ja",
+      "writingSystem": "kanji",
+      "glyph": "竹",
+      "title": "Bamboo",
+      "summary": "Grade 1 kanji for bamboo.",
+      "meanings": [
+        "bamboo"
+      ],
+      "readings": [
+        {
+          "label": "Kun reading",
+          "value": "たけ",
+          "ipa": "take"
+        }
+      ],
+      "romaji": "take",
+      "inputSequences": [],
+      "ipa": "take",
+      "studyOrder": 2065,
+      "tags": [
+        "kanji",
+        "starter-kanji-100",
+        "grade-1"
+      ],
+      "status": "planned",
+      "strokes": [],
+      "examples": [],
+      "sources": [],
+      "id": "5f8c91918208",
+      "route": "/languages/japanese/characters/kanji/bamboo",
+      "sourcePath": "content/languages/japanese/starter-kanji-a1-planned.json",
+      "contentHash": "5dcf6acf91bf26f72caef5d35d0a8ab3ae0356df3eb1fc6987d79d2bdc2b87c7"
+    },
+    {
+      "slug": "japanese/kanji/below",
+      "language": "ja",
+      "writingSystem": "kanji",
+      "glyph": "下",
+      "title": "Below",
+      "summary": "Grade 1 kanji for below, down, and lower.",
+      "meanings": [
+        "below",
+        "down"
+      ],
+      "readings": [
+        {
+          "label": "Kun reading",
+          "value": "した",
+          "ipa": "ɕita"
+        }
+      ],
+      "romaji": "shita",
+      "inputSequences": [],
+      "ipa": "ɕita",
+      "studyOrder": 2029,
+      "tags": [
+        "kanji",
+        "starter-kanji-100",
+        "grade-1"
+      ],
+      "status": "planned",
+      "strokes": [],
+      "examples": [],
+      "sources": [],
+      "id": "79014700701a",
+      "route": "/languages/japanese/characters/kanji/below",
+      "sourcePath": "content/languages/japanese/starter-kanji-a1-planned.json",
+      "contentHash": "5dcf6acf91bf26f72caef5d35d0a8ab3ae0356df3eb1fc6987d79d2bdc2b87c7"
+    },
+    {
       "slug": "japanese/kanji/big",
       "language": "ja",
       "writingSystem": "kanji",
@@ -14258,7 +15445,7 @@
       "romaji": "oo",
       "inputSequences": [],
       "ipa": "oː",
-      "studyOrder": 9999,
+      "studyOrder": 1019,
       "tags": [
         "kanji",
         "adjective",
@@ -14315,7 +15502,42 @@
       "id": "b23a42a6a266",
       "route": "/languages/japanese/characters/kanji/big",
       "sourcePath": "content/languages/japanese/characters.json",
-      "contentHash": "2deaf50bd501960d12348e2dfcf9c60eb5f31f16398534ac7522126f34766fbd"
+      "contentHash": "10a768a52101ea0a81867867489bb0e4051fdf7da58696267169ae74370ff6af"
+    },
+    {
+      "slug": "japanese/kanji/blue",
+      "language": "ja",
+      "writingSystem": "kanji",
+      "glyph": "青",
+      "title": "Blue",
+      "summary": "Grade 1 kanji for blue or green-blue color.",
+      "meanings": [
+        "blue"
+      ],
+      "readings": [
+        {
+          "label": "Kun reading",
+          "value": "あお",
+          "ipa": "ao"
+        }
+      ],
+      "romaji": "ao",
+      "inputSequences": [],
+      "ipa": "ao",
+      "studyOrder": 2054,
+      "tags": [
+        "kanji",
+        "starter-kanji-100",
+        "grade-1"
+      ],
+      "status": "planned",
+      "strokes": [],
+      "examples": [],
+      "sources": [],
+      "id": "9406d344ca4f",
+      "route": "/languages/japanese/characters/kanji/blue",
+      "sourcePath": "content/languages/japanese/starter-kanji-a1-planned.json",
+      "contentHash": "5dcf6acf91bf26f72caef5d35d0a8ab3ae0356df3eb1fc6987d79d2bdc2b87c7"
     },
     {
       "slug": "japanese/kanji/book",
@@ -14338,7 +15560,7 @@
       "romaji": "hon",
       "inputSequences": [],
       "ipa": "hoɴ",
-      "studyOrder": 9999,
+      "studyOrder": 1022,
       "tags": [
         "kanji",
         "object",
@@ -14417,7 +15639,222 @@
       "id": "a15ac77efc2c",
       "route": "/languages/japanese/characters/kanji/book",
       "sourcePath": "content/languages/japanese/characters.json",
-      "contentHash": "2deaf50bd501960d12348e2dfcf9c60eb5f31f16398534ac7522126f34766fbd"
+      "contentHash": "10a768a52101ea0a81867867489bb0e4051fdf7da58696267169ae74370ff6af"
+    },
+    {
+      "slug": "japanese/kanji/car",
+      "language": "ja",
+      "writingSystem": "kanji",
+      "glyph": "車",
+      "title": "Vehicle",
+      "summary": "Grade 1 kanji for a car or wheeled vehicle.",
+      "meanings": [
+        "car",
+        "vehicle"
+      ],
+      "readings": [
+        {
+          "label": "Kun reading",
+          "value": "くるま",
+          "ipa": "kɯɾɯma"
+        }
+      ],
+      "romaji": "kuruma",
+      "inputSequences": [],
+      "ipa": "kɯɾɯma",
+      "studyOrder": 2046,
+      "tags": [
+        "kanji",
+        "starter-kanji-100",
+        "grade-1"
+      ],
+      "status": "planned",
+      "strokes": [],
+      "examples": [],
+      "sources": [],
+      "id": "4271137cc592",
+      "route": "/languages/japanese/characters/kanji/car",
+      "sourcePath": "content/languages/japanese/starter-kanji-a1-planned.json",
+      "contentHash": "5dcf6acf91bf26f72caef5d35d0a8ab3ae0356df3eb1fc6987d79d2bdc2b87c7"
+    },
+    {
+      "slug": "japanese/kanji/character",
+      "language": "ja",
+      "writingSystem": "kanji",
+      "glyph": "字",
+      "title": "Written Character",
+      "summary": "Grade 1 kanji for a written character or letter.",
+      "meanings": [
+        "character",
+        "letter"
+      ],
+      "readings": [
+        {
+          "label": "On reading",
+          "value": "じ",
+          "ipa": "dʑi"
+        }
+      ],
+      "romaji": "ji",
+      "inputSequences": [],
+      "ipa": "dʑi",
+      "studyOrder": 2044,
+      "tags": [
+        "kanji",
+        "starter-kanji-100",
+        "grade-1"
+      ],
+      "status": "planned",
+      "strokes": [],
+      "examples": [],
+      "sources": [],
+      "id": "e5340e7b9ffa",
+      "route": "/languages/japanese/characters/kanji/character",
+      "sourcePath": "content/languages/japanese/starter-kanji-a1-planned.json",
+      "contentHash": "5dcf6acf91bf26f72caef5d35d0a8ab3ae0356df3eb1fc6987d79d2bdc2b87c7"
+    },
+    {
+      "slug": "japanese/kanji/child",
+      "language": "ja",
+      "writingSystem": "kanji",
+      "glyph": "子",
+      "title": "Child",
+      "summary": "Grade 1 kanji for a child.",
+      "meanings": [
+        "child"
+      ],
+      "readings": [
+        {
+          "label": "Kun reading",
+          "value": "こ",
+          "ipa": "ko"
+        }
+      ],
+      "romaji": "ko",
+      "inputSequences": [],
+      "ipa": "ko",
+      "studyOrder": 2042,
+      "tags": [
+        "kanji",
+        "starter-kanji-100",
+        "grade-1"
+      ],
+      "status": "planned",
+      "strokes": [],
+      "examples": [],
+      "sources": [],
+      "id": "0b483896c295",
+      "route": "/languages/japanese/characters/kanji/child",
+      "sourcePath": "content/languages/japanese/starter-kanji-a1-planned.json",
+      "contentHash": "5dcf6acf91bf26f72caef5d35d0a8ab3ae0356df3eb1fc6987d79d2bdc2b87c7"
+    },
+    {
+      "slug": "japanese/kanji/come",
+      "language": "ja",
+      "writingSystem": "kanji",
+      "glyph": "来",
+      "title": "Come",
+      "summary": "Starter kanji used for coming and future time.",
+      "meanings": [
+        "come",
+        "next"
+      ],
+      "readings": [
+        {
+          "label": "Kun reading",
+          "value": "くる",
+          "ipa": "kɯɾɯ"
+        }
+      ],
+      "romaji": "kuru",
+      "inputSequences": [],
+      "ipa": "kɯɾɯ",
+      "studyOrder": 2084,
+      "tags": [
+        "kanji",
+        "starter-kanji-100",
+        "a1"
+      ],
+      "status": "planned",
+      "strokes": [],
+      "examples": [],
+      "sources": [],
+      "id": "5b07de58c3b3",
+      "route": "/languages/japanese/characters/kanji/come",
+      "sourcePath": "content/languages/japanese/starter-kanji-a1-planned.json",
+      "contentHash": "5dcf6acf91bf26f72caef5d35d0a8ab3ae0356df3eb1fc6987d79d2bdc2b87c7"
+    },
+    {
+      "slug": "japanese/kanji/company",
+      "language": "ja",
+      "writingSystem": "kanji",
+      "glyph": "社",
+      "title": "Company And Shrine",
+      "summary": "Starter kanji used for a company or Shinto shrine.",
+      "meanings": [
+        "company",
+        "shrine"
+      ],
+      "readings": [
+        {
+          "label": "On reading",
+          "value": "しゃ",
+          "ipa": "ɕa"
+        }
+      ],
+      "romaji": "sha",
+      "inputSequences": [],
+      "ipa": "ɕa",
+      "studyOrder": 2094,
+      "tags": [
+        "kanji",
+        "starter-kanji-100",
+        "a1"
+      ],
+      "status": "planned",
+      "strokes": [],
+      "examples": [],
+      "sources": [],
+      "id": "2919cafb313d",
+      "route": "/languages/japanese/characters/kanji/company",
+      "sourcePath": "content/languages/japanese/starter-kanji-a1-planned.json",
+      "contentHash": "5dcf6acf91bf26f72caef5d35d0a8ab3ae0356df3eb1fc6987d79d2bdc2b87c7"
+    },
+    {
+      "slug": "japanese/kanji/correct",
+      "language": "ja",
+      "writingSystem": "kanji",
+      "glyph": "正",
+      "title": "Correct",
+      "summary": "Grade 1 kanji for correct, proper, or positive.",
+      "meanings": [
+        "correct",
+        "proper"
+      ],
+      "readings": [
+        {
+          "label": "Kun reading",
+          "value": "ただしい",
+          "ipa": "tadaɕiː"
+        }
+      ],
+      "romaji": "tadashii",
+      "inputSequences": [],
+      "ipa": "tadaɕiː",
+      "studyOrder": 2052,
+      "tags": [
+        "kanji",
+        "starter-kanji-100",
+        "grade-1"
+      ],
+      "status": "planned",
+      "strokes": [],
+      "examples": [],
+      "sources": [],
+      "id": "a00ef45cb9a3",
+      "route": "/languages/japanese/characters/kanji/correct",
+      "sourcePath": "content/languages/japanese/starter-kanji-a1-planned.json",
+      "contentHash": "5dcf6acf91bf26f72caef5d35d0a8ab3ae0356df3eb1fc6987d79d2bdc2b87c7"
     },
     {
       "slug": "japanese/kanji/day",
@@ -14440,7 +15877,7 @@
       "romaji": "hi",
       "inputSequences": [],
       "ipa": "çi",
-      "studyOrder": 9999,
+      "studyOrder": 1011,
       "tags": [
         "kanji",
         "time",
@@ -14510,7 +15947,184 @@
       "id": "c053e1b2ca45",
       "route": "/languages/japanese/characters/kanji/day",
       "sourcePath": "content/languages/japanese/characters.json",
-      "contentHash": "2deaf50bd501960d12348e2dfcf9c60eb5f31f16398534ac7522126f34766fbd"
+      "contentHash": "10a768a52101ea0a81867867489bb0e4051fdf7da58696267169ae74370ff6af"
+    },
+    {
+      "slug": "japanese/kanji/dog",
+      "language": "ja",
+      "writingSystem": "kanji",
+      "glyph": "犬",
+      "title": "Dog",
+      "summary": "Grade 1 kanji for a dog.",
+      "meanings": [
+        "dog"
+      ],
+      "readings": [
+        {
+          "label": "Kun reading",
+          "value": "いぬ",
+          "ipa": "inɯ"
+        }
+      ],
+      "romaji": "inu",
+      "inputSequences": [],
+      "ipa": "inɯ",
+      "studyOrder": 2037,
+      "tags": [
+        "kanji",
+        "starter-kanji-100",
+        "grade-1"
+      ],
+      "status": "planned",
+      "strokes": [],
+      "examples": [],
+      "sources": [],
+      "id": "47950bc860a6",
+      "route": "/languages/japanese/characters/kanji/dog",
+      "sourcePath": "content/languages/japanese/starter-kanji-a1-planned.json",
+      "contentHash": "5dcf6acf91bf26f72caef5d35d0a8ab3ae0356df3eb1fc6987d79d2bdc2b87c7"
+    },
+    {
+      "slug": "japanese/kanji/drink",
+      "language": "ja",
+      "writingSystem": "kanji",
+      "glyph": "飲",
+      "title": "Drink",
+      "summary": "Starter kanji used for drinking and beverages.",
+      "meanings": [
+        "drink"
+      ],
+      "readings": [
+        {
+          "label": "Kun reading",
+          "value": "のむ",
+          "ipa": "nomɯ"
+        }
+      ],
+      "romaji": "nomu",
+      "inputSequences": [],
+      "ipa": "nomɯ",
+      "studyOrder": 2082,
+      "tags": [
+        "kanji",
+        "starter-kanji-100",
+        "a1"
+      ],
+      "status": "planned",
+      "strokes": [],
+      "examples": [],
+      "sources": [],
+      "id": "2fb83cee7bff",
+      "route": "/languages/japanese/characters/kanji/drink",
+      "sourcePath": "content/languages/japanese/starter-kanji-a1-planned.json",
+      "contentHash": "5dcf6acf91bf26f72caef5d35d0a8ab3ae0356df3eb1fc6987d79d2bdc2b87c7"
+    },
+    {
+      "slug": "japanese/kanji/dusk",
+      "language": "ja",
+      "writingSystem": "kanji",
+      "glyph": "夕",
+      "title": "Evening",
+      "summary": "Grade 1 kanji for evening or dusk.",
+      "meanings": [
+        "evening",
+        "dusk"
+      ],
+      "readings": [
+        {
+          "label": "Kun reading",
+          "value": "ゆう",
+          "ipa": "jɯː"
+        }
+      ],
+      "romaji": "yuu",
+      "inputSequences": [],
+      "ipa": "jɯː",
+      "studyOrder": 2055,
+      "tags": [
+        "kanji",
+        "starter-kanji-100",
+        "grade-1"
+      ],
+      "status": "planned",
+      "strokes": [],
+      "examples": [],
+      "sources": [],
+      "id": "2bf0f82ca2e1",
+      "route": "/languages/japanese/characters/kanji/dusk",
+      "sourcePath": "content/languages/japanese/starter-kanji-a1-planned.json",
+      "contentHash": "5dcf6acf91bf26f72caef5d35d0a8ab3ae0356df3eb1fc6987d79d2bdc2b87c7"
+    },
+    {
+      "slug": "japanese/kanji/ear",
+      "language": "ja",
+      "writingSystem": "kanji",
+      "glyph": "耳",
+      "title": "Ear",
+      "summary": "Grade 1 kanji for an ear.",
+      "meanings": [
+        "ear"
+      ],
+      "readings": [
+        {
+          "label": "Kun reading",
+          "value": "みみ",
+          "ipa": "mimi"
+        }
+      ],
+      "romaji": "mimi",
+      "inputSequences": [],
+      "ipa": "mimi",
+      "studyOrder": 2045,
+      "tags": [
+        "kanji",
+        "starter-kanji-100",
+        "grade-1"
+      ],
+      "status": "planned",
+      "strokes": [],
+      "examples": [],
+      "sources": [],
+      "id": "6410bb09665a",
+      "route": "/languages/japanese/characters/kanji/ear",
+      "sourcePath": "content/languages/japanese/starter-kanji-a1-planned.json",
+      "contentHash": "5dcf6acf91bf26f72caef5d35d0a8ab3ae0356df3eb1fc6987d79d2bdc2b87c7"
+    },
+    {
+      "slug": "japanese/kanji/early",
+      "language": "ja",
+      "writingSystem": "kanji",
+      "glyph": "早",
+      "title": "Early",
+      "summary": "Grade 1 kanji for early or fast.",
+      "meanings": [
+        "early",
+        "fast"
+      ],
+      "readings": [
+        {
+          "label": "Kun reading",
+          "value": "はやい",
+          "ipa": "hajai"
+        }
+      ],
+      "romaji": "hayai",
+      "inputSequences": [],
+      "ipa": "hajai",
+      "studyOrder": 2060,
+      "tags": [
+        "kanji",
+        "starter-kanji-100",
+        "grade-1"
+      ],
+      "status": "planned",
+      "strokes": [],
+      "examples": [],
+      "sources": [],
+      "id": "ad2571d1618c",
+      "route": "/languages/japanese/characters/kanji/early",
+      "sourcePath": "content/languages/japanese/starter-kanji-a1-planned.json",
+      "contentHash": "5dcf6acf91bf26f72caef5d35d0a8ab3ae0356df3eb1fc6987d79d2bdc2b87c7"
     },
     {
       "slug": "japanese/kanji/earth",
@@ -14533,7 +16147,7 @@
       "romaji": "tsuchi",
       "inputSequences": [],
       "ipa": "tsɯtɕi",
-      "studyOrder": 9999,
+      "studyOrder": 1017,
       "tags": [
         "kanji",
         "nature",
@@ -14586,7 +16200,43 @@
       "id": "84ff5966f745",
       "route": "/languages/japanese/characters/kanji/earth",
       "sourcePath": "content/languages/japanese/characters.json",
-      "contentHash": "2deaf50bd501960d12348e2dfcf9c60eb5f31f16398534ac7522126f34766fbd"
+      "contentHash": "10a768a52101ea0a81867867489bb0e4051fdf7da58696267169ae74370ff6af"
+    },
+    {
+      "slug": "japanese/kanji/eat",
+      "language": "ja",
+      "writingSystem": "kanji",
+      "glyph": "食",
+      "title": "Eat And Food",
+      "summary": "Starter kanji used for eating and food.",
+      "meanings": [
+        "eat",
+        "food"
+      ],
+      "readings": [
+        {
+          "label": "Kun reading",
+          "value": "たべる",
+          "ipa": "tabeɾɯ"
+        }
+      ],
+      "romaji": "taberu",
+      "inputSequences": [],
+      "ipa": "tabeɾɯ",
+      "studyOrder": 2081,
+      "tags": [
+        "kanji",
+        "starter-kanji-100",
+        "a1"
+      ],
+      "status": "planned",
+      "strokes": [],
+      "examples": [],
+      "sources": [],
+      "id": "9a1d0014e4f8",
+      "route": "/languages/japanese/characters/kanji/eat",
+      "sourcePath": "content/languages/japanese/starter-kanji-a1-planned.json",
+      "contentHash": "5dcf6acf91bf26f72caef5d35d0a8ab3ae0356df3eb1fc6987d79d2bdc2b87c7"
     },
     {
       "slug": "japanese/kanji/eight",
@@ -14608,7 +16258,7 @@
       "romaji": "hachi",
       "inputSequences": [],
       "ipa": "hatɕi",
-      "studyOrder": 9999,
+      "studyOrder": 1008,
       "tags": [
         "kanji",
         "number",
@@ -14648,7 +16298,78 @@
       "id": "84ae8c7ee5f6",
       "route": "/languages/japanese/characters/kanji/eight",
       "sourcePath": "content/languages/japanese/characters.json",
-      "contentHash": "2deaf50bd501960d12348e2dfcf9c60eb5f31f16398534ac7522126f34766fbd"
+      "contentHash": "10a768a52101ea0a81867867489bb0e4051fdf7da58696267169ae74370ff6af"
+    },
+    {
+      "slug": "japanese/kanji/electricity",
+      "language": "ja",
+      "writingSystem": "kanji",
+      "glyph": "電",
+      "title": "Electricity",
+      "summary": "Starter kanji used for electricity and electric devices.",
+      "meanings": [
+        "electricity"
+      ],
+      "readings": [
+        {
+          "label": "On reading",
+          "value": "でん",
+          "ipa": "deɴ"
+        }
+      ],
+      "romaji": "den",
+      "inputSequences": [],
+      "ipa": "deɴ",
+      "studyOrder": 2086,
+      "tags": [
+        "kanji",
+        "starter-kanji-100",
+        "a1"
+      ],
+      "status": "planned",
+      "strokes": [],
+      "examples": [],
+      "sources": [],
+      "id": "daeb9b03d978",
+      "route": "/languages/japanese/characters/kanji/electricity",
+      "sourcePath": "content/languages/japanese/starter-kanji-a1-planned.json",
+      "contentHash": "5dcf6acf91bf26f72caef5d35d0a8ab3ae0356df3eb1fc6987d79d2bdc2b87c7"
+    },
+    {
+      "slug": "japanese/kanji/enter",
+      "language": "ja",
+      "writingSystem": "kanji",
+      "glyph": "入",
+      "title": "Enter",
+      "summary": "Grade 1 kanji for entering or putting in.",
+      "meanings": [
+        "enter",
+        "put in"
+      ],
+      "readings": [
+        {
+          "label": "Kun reading",
+          "value": "はいる",
+          "ipa": "haiɾɯ"
+        }
+      ],
+      "romaji": "hairu",
+      "inputSequences": [],
+      "ipa": "haiɾɯ",
+      "studyOrder": 2070,
+      "tags": [
+        "kanji",
+        "starter-kanji-100",
+        "grade-1"
+      ],
+      "status": "planned",
+      "strokes": [],
+      "examples": [],
+      "sources": [],
+      "id": "a3b35baa2bd6",
+      "route": "/languages/japanese/characters/kanji/enter",
+      "sourcePath": "content/languages/japanese/starter-kanji-a1-planned.json",
+      "contentHash": "5dcf6acf91bf26f72caef5d35d0a8ab3ae0356df3eb1fc6987d79d2bdc2b87c7"
     },
     {
       "slug": "japanese/kanji/evening",
@@ -14673,7 +16394,7 @@
         "ban"
       ],
       "ipa": "baɴ",
-      "studyOrder": 1002,
+      "studyOrder": 3000,
       "tags": [
         "kanji",
         "time",
@@ -14856,7 +16577,113 @@
       "id": "ebe421804929",
       "route": "/languages/japanese/characters/kanji/evening",
       "sourcePath": "content/languages/japanese/greeting-kanji.json",
-      "contentHash": "d4fe4857c120f626899f7d8607910f0075c1d12718df939c9fccdd9610f4ed26"
+      "contentHash": "90e77bf059a36974991b125970e8cfb9ce99c840728fd268836e64c410d15a8b"
+    },
+    {
+      "slug": "japanese/kanji/exit",
+      "language": "ja",
+      "writingSystem": "kanji",
+      "glyph": "出",
+      "title": "Exit And Go Out",
+      "summary": "Grade 1 kanji for exiting, leaving, or putting out.",
+      "meanings": [
+        "exit",
+        "go out"
+      ],
+      "readings": [
+        {
+          "label": "Kun reading",
+          "value": "でる",
+          "ipa": "deɾɯ"
+        }
+      ],
+      "romaji": "deru",
+      "inputSequences": [],
+      "ipa": "deɾɯ",
+      "studyOrder": 2048,
+      "tags": [
+        "kanji",
+        "starter-kanji-100",
+        "grade-1"
+      ],
+      "status": "planned",
+      "strokes": [],
+      "examples": [],
+      "sources": [],
+      "id": "3b447e4a5ebc",
+      "route": "/languages/japanese/characters/kanji/exit",
+      "sourcePath": "content/languages/japanese/starter-kanji-a1-planned.json",
+      "contentHash": "5dcf6acf91bf26f72caef5d35d0a8ab3ae0356df3eb1fc6987d79d2bdc2b87c7"
+    },
+    {
+      "slug": "japanese/kanji/eye",
+      "language": "ja",
+      "writingSystem": "kanji",
+      "glyph": "目",
+      "title": "Eye",
+      "summary": "Grade 1 kanji for an eye or numbered item.",
+      "meanings": [
+        "eye"
+      ],
+      "readings": [
+        {
+          "label": "Kun reading",
+          "value": "め",
+          "ipa": "me"
+        }
+      ],
+      "romaji": "me",
+      "inputSequences": [],
+      "ipa": "me",
+      "studyOrder": 2076,
+      "tags": [
+        "kanji",
+        "starter-kanji-100",
+        "grade-1"
+      ],
+      "status": "planned",
+      "strokes": [],
+      "examples": [],
+      "sources": [],
+      "id": "edd7fac7507c",
+      "route": "/languages/japanese/characters/kanji/eye",
+      "sourcePath": "content/languages/japanese/starter-kanji-a1-planned.json",
+      "contentHash": "5dcf6acf91bf26f72caef5d35d0a8ab3ae0356df3eb1fc6987d79d2bdc2b87c7"
+    },
+    {
+      "slug": "japanese/kanji/father",
+      "language": "ja",
+      "writingSystem": "kanji",
+      "glyph": "父",
+      "title": "Father",
+      "summary": "Starter kanji for one's father.",
+      "meanings": [
+        "father"
+      ],
+      "readings": [
+        {
+          "label": "Kun reading",
+          "value": "ちち",
+          "ipa": "tɕitɕi"
+        }
+      ],
+      "romaji": "chichi",
+      "inputSequences": [],
+      "ipa": "tɕitɕi",
+      "studyOrder": 2097,
+      "tags": [
+        "kanji",
+        "starter-kanji-100",
+        "a1"
+      ],
+      "status": "planned",
+      "strokes": [],
+      "examples": [],
+      "sources": [],
+      "id": "a408bf8bca57",
+      "route": "/languages/japanese/characters/kanji/father",
+      "sourcePath": "content/languages/japanese/starter-kanji-a1-planned.json",
+      "contentHash": "5dcf6acf91bf26f72caef5d35d0a8ab3ae0356df3eb1fc6987d79d2bdc2b87c7"
     },
     {
       "slug": "japanese/kanji/fire",
@@ -14878,7 +16705,7 @@
       "romaji": "hi",
       "inputSequences": [],
       "ipa": "çi",
-      "studyOrder": 9999,
+      "studyOrder": 1013,
       "tags": [
         "kanji",
         "nature",
@@ -14948,7 +16775,7 @@
       "id": "5535eaac54c2",
       "route": "/languages/japanese/characters/kanji/fire",
       "sourcePath": "content/languages/japanese/characters.json",
-      "contentHash": "2deaf50bd501960d12348e2dfcf9c60eb5f31f16398534ac7522126f34766fbd"
+      "contentHash": "10a768a52101ea0a81867867489bb0e4051fdf7da58696267169ae74370ff6af"
     },
     {
       "slug": "japanese/kanji/five",
@@ -14970,7 +16797,7 @@
       "romaji": "go",
       "inputSequences": [],
       "ipa": "ɡo",
-      "studyOrder": 9999,
+      "studyOrder": 1005,
       "tags": [
         "kanji",
         "number",
@@ -15036,7 +16863,113 @@
       "id": "95f53528b15d",
       "route": "/languages/japanese/characters/kanji/five",
       "sourcePath": "content/languages/japanese/characters.json",
-      "contentHash": "2deaf50bd501960d12348e2dfcf9c60eb5f31f16398534ac7522126f34766fbd"
+      "contentHash": "10a768a52101ea0a81867867489bb0e4051fdf7da58696267169ae74370ff6af"
+    },
+    {
+      "slug": "japanese/kanji/flower",
+      "language": "ja",
+      "writingSystem": "kanji",
+      "glyph": "花",
+      "title": "Flower",
+      "summary": "Grade 1 kanji for a flower.",
+      "meanings": [
+        "flower"
+      ],
+      "readings": [
+        {
+          "label": "Kun reading",
+          "value": "はな",
+          "ipa": "hana"
+        }
+      ],
+      "romaji": "hana",
+      "inputSequences": [],
+      "ipa": "hana",
+      "studyOrder": 2030,
+      "tags": [
+        "kanji",
+        "starter-kanji-100",
+        "grade-1"
+      ],
+      "status": "planned",
+      "strokes": [],
+      "examples": [],
+      "sources": [],
+      "id": "39b716835da1",
+      "route": "/languages/japanese/characters/kanji/flower",
+      "sourcePath": "content/languages/japanese/starter-kanji-a1-planned.json",
+      "contentHash": "5dcf6acf91bf26f72caef5d35d0a8ab3ae0356df3eb1fc6987d79d2bdc2b87c7"
+    },
+    {
+      "slug": "japanese/kanji/foot",
+      "language": "ja",
+      "writingSystem": "kanji",
+      "glyph": "足",
+      "title": "Foot And Leg",
+      "summary": "Grade 1 kanji for a foot, leg, or enough.",
+      "meanings": [
+        "foot",
+        "leg"
+      ],
+      "readings": [
+        {
+          "label": "Kun reading",
+          "value": "あし",
+          "ipa": "aɕi"
+        }
+      ],
+      "romaji": "ashi",
+      "inputSequences": [],
+      "ipa": "aɕi",
+      "studyOrder": 2062,
+      "tags": [
+        "kanji",
+        "starter-kanji-100",
+        "grade-1"
+      ],
+      "status": "planned",
+      "strokes": [],
+      "examples": [],
+      "sources": [],
+      "id": "dd77a5a73042",
+      "route": "/languages/japanese/characters/kanji/foot",
+      "sourcePath": "content/languages/japanese/starter-kanji-a1-planned.json",
+      "contentHash": "5dcf6acf91bf26f72caef5d35d0a8ab3ae0356df3eb1fc6987d79d2bdc2b87c7"
+    },
+    {
+      "slug": "japanese/kanji/forest",
+      "language": "ja",
+      "writingSystem": "kanji",
+      "glyph": "森",
+      "title": "Forest",
+      "summary": "Grade 1 kanji for a forest.",
+      "meanings": [
+        "forest"
+      ],
+      "readings": [
+        {
+          "label": "Kun reading",
+          "value": "もり",
+          "ipa": "moɾi"
+        }
+      ],
+      "romaji": "mori",
+      "inputSequences": [],
+      "ipa": "moɾi",
+      "studyOrder": 2051,
+      "tags": [
+        "kanji",
+        "starter-kanji-100",
+        "grade-1"
+      ],
+      "status": "planned",
+      "strokes": [],
+      "examples": [],
+      "sources": [],
+      "id": "a0e26657aa86",
+      "route": "/languages/japanese/characters/kanji/forest",
+      "sourcePath": "content/languages/japanese/starter-kanji-a1-planned.json",
+      "contentHash": "5dcf6acf91bf26f72caef5d35d0a8ab3ae0356df3eb1fc6987d79d2bdc2b87c7"
     },
     {
       "slug": "japanese/kanji/four",
@@ -15058,7 +16991,7 @@
       "romaji": "shi",
       "inputSequences": [],
       "ipa": "ɕi",
-      "studyOrder": 9999,
+      "studyOrder": 1004,
       "tags": [
         "kanji",
         "number",
@@ -15141,7 +17074,77 @@
       "id": "469219848d4d",
       "route": "/languages/japanese/characters/kanji/four",
       "sourcePath": "content/languages/japanese/characters.json",
-      "contentHash": "2deaf50bd501960d12348e2dfcf9c60eb5f31f16398534ac7522126f34766fbd"
+      "contentHash": "10a768a52101ea0a81867867489bb0e4051fdf7da58696267169ae74370ff6af"
+    },
+    {
+      "slug": "japanese/kanji/friend",
+      "language": "ja",
+      "writingSystem": "kanji",
+      "glyph": "友",
+      "title": "Friend",
+      "summary": "Starter kanji used for a friend or friendship.",
+      "meanings": [
+        "friend"
+      ],
+      "readings": [
+        {
+          "label": "Kun reading",
+          "value": "とも",
+          "ipa": "tomo"
+        }
+      ],
+      "romaji": "tomo",
+      "inputSequences": [],
+      "ipa": "tomo",
+      "studyOrder": 2098,
+      "tags": [
+        "kanji",
+        "starter-kanji-100",
+        "a1"
+      ],
+      "status": "planned",
+      "strokes": [],
+      "examples": [],
+      "sources": [],
+      "id": "77e1de74193a",
+      "route": "/languages/japanese/characters/kanji/friend",
+      "sourcePath": "content/languages/japanese/starter-kanji-a1-planned.json",
+      "contentHash": "5dcf6acf91bf26f72caef5d35d0a8ab3ae0356df3eb1fc6987d79d2bdc2b87c7"
+    },
+    {
+      "slug": "japanese/kanji/go",
+      "language": "ja",
+      "writingSystem": "kanji",
+      "glyph": "行",
+      "title": "Go",
+      "summary": "Starter kanji used for going and movement.",
+      "meanings": [
+        "go"
+      ],
+      "readings": [
+        {
+          "label": "Kun reading",
+          "value": "いく",
+          "ipa": "ikɯ"
+        }
+      ],
+      "romaji": "iku",
+      "inputSequences": [],
+      "ipa": "ikɯ",
+      "studyOrder": 2083,
+      "tags": [
+        "kanji",
+        "starter-kanji-100",
+        "a1"
+      ],
+      "status": "planned",
+      "strokes": [],
+      "examples": [],
+      "sources": [],
+      "id": "0265ac305be4",
+      "route": "/languages/japanese/characters/kanji/go",
+      "sourcePath": "content/languages/japanese/starter-kanji-a1-planned.json",
+      "contentHash": "5dcf6acf91bf26f72caef5d35d0a8ab3ae0356df3eb1fc6987d79d2bdc2b87c7"
     },
     {
       "slug": "japanese/kanji/gold",
@@ -15164,7 +17167,7 @@
       "romaji": "kane",
       "inputSequences": [],
       "ipa": "kane",
-      "studyOrder": 9999,
+      "studyOrder": 1016,
       "tags": [
         "kanji",
         "nature",
@@ -15282,7 +17285,543 @@
       "id": "10273173cefc",
       "route": "/languages/japanese/characters/kanji/gold",
       "sourcePath": "content/languages/japanese/characters.json",
-      "contentHash": "2deaf50bd501960d12348e2dfcf9c60eb5f31f16398534ac7522126f34766fbd"
+      "contentHash": "10a768a52101ea0a81867867489bb0e4051fdf7da58696267169ae74370ff6af"
+    },
+    {
+      "slug": "japanese/kanji/grass",
+      "language": "ja",
+      "writingSystem": "kanji",
+      "glyph": "草",
+      "title": "Grass",
+      "summary": "Grade 1 kanji for grass or herbs.",
+      "meanings": [
+        "grass"
+      ],
+      "readings": [
+        {
+          "label": "Kun reading",
+          "value": "くさ",
+          "ipa": "kɯsa"
+        }
+      ],
+      "romaji": "kusa",
+      "inputSequences": [],
+      "ipa": "kɯsa",
+      "studyOrder": 2061,
+      "tags": [
+        "kanji",
+        "starter-kanji-100",
+        "grade-1"
+      ],
+      "status": "planned",
+      "strokes": [],
+      "examples": [],
+      "sources": [],
+      "id": "54b0c1afb5bd",
+      "route": "/languages/japanese/characters/kanji/grass",
+      "sourcePath": "content/languages/japanese/starter-kanji-a1-planned.json",
+      "contentHash": "5dcf6acf91bf26f72caef5d35d0a8ab3ae0356df3eb1fc6987d79d2bdc2b87c7"
+    },
+    {
+      "slug": "japanese/kanji/grove",
+      "language": "ja",
+      "writingSystem": "kanji",
+      "glyph": "林",
+      "title": "Grove",
+      "summary": "Grade 1 kanji for a grove or small woods.",
+      "meanings": [
+        "grove",
+        "woods"
+      ],
+      "readings": [
+        {
+          "label": "Kun reading",
+          "value": "はやし",
+          "ipa": "hajaɕi"
+        }
+      ],
+      "romaji": "hayashi",
+      "inputSequences": [],
+      "ipa": "hajaɕi",
+      "studyOrder": 2079,
+      "tags": [
+        "kanji",
+        "starter-kanji-100",
+        "grade-1"
+      ],
+      "status": "planned",
+      "strokes": [],
+      "examples": [],
+      "sources": [],
+      "id": "817ce1ab51df",
+      "route": "/languages/japanese/characters/kanji/grove",
+      "sourcePath": "content/languages/japanese/starter-kanji-a1-planned.json",
+      "contentHash": "5dcf6acf91bf26f72caef5d35d0a8ab3ae0356df3eb1fc6987d79d2bdc2b87c7"
+    },
+    {
+      "slug": "japanese/kanji/half",
+      "language": "ja",
+      "writingSystem": "kanji",
+      "glyph": "半",
+      "title": "Half",
+      "summary": "Starter kanji for one half and half past an hour.",
+      "meanings": [
+        "half"
+      ],
+      "readings": [
+        {
+          "label": "On reading",
+          "value": "はん",
+          "ipa": "haɴ"
+        }
+      ],
+      "romaji": "han",
+      "inputSequences": [],
+      "ipa": "haɴ",
+      "studyOrder": 2090,
+      "tags": [
+        "kanji",
+        "starter-kanji-100",
+        "a1"
+      ],
+      "status": "planned",
+      "strokes": [],
+      "examples": [],
+      "sources": [],
+      "id": "6a29b7c16393",
+      "route": "/languages/japanese/characters/kanji/half",
+      "sourcePath": "content/languages/japanese/starter-kanji-a1-planned.json",
+      "contentHash": "5dcf6acf91bf26f72caef5d35d0a8ab3ae0356df3eb1fc6987d79d2bdc2b87c7"
+    },
+    {
+      "slug": "japanese/kanji/hand",
+      "language": "ja",
+      "writingSystem": "kanji",
+      "glyph": "手",
+      "title": "Hand",
+      "summary": "Grade 1 kanji for a hand.",
+      "meanings": [
+        "hand"
+      ],
+      "readings": [
+        {
+          "label": "Kun reading",
+          "value": "て",
+          "ipa": "te"
+        }
+      ],
+      "romaji": "te",
+      "inputSequences": [],
+      "ipa": "te",
+      "studyOrder": 2047,
+      "tags": [
+        "kanji",
+        "starter-kanji-100",
+        "grade-1"
+      ],
+      "status": "planned",
+      "strokes": [],
+      "examples": [],
+      "sources": [],
+      "id": "bfa161a1b5fb",
+      "route": "/languages/japanese/characters/kanji/hand",
+      "sourcePath": "content/languages/japanese/starter-kanji-a1-planned.json",
+      "contentHash": "5dcf6acf91bf26f72caef5d35d0a8ab3ae0356df3eb1fc6987d79d2bdc2b87c7"
+    },
+    {
+      "slug": "japanese/kanji/heaven",
+      "language": "ja",
+      "writingSystem": "kanji",
+      "glyph": "天",
+      "title": "Heaven And Sky",
+      "summary": "Grade 1 kanji for heaven or the sky.",
+      "meanings": [
+        "heaven",
+        "sky"
+      ],
+      "readings": [
+        {
+          "label": "On reading",
+          "value": "てん",
+          "ipa": "teɴ"
+        }
+      ],
+      "romaji": "ten",
+      "inputSequences": [],
+      "ipa": "teɴ",
+      "studyOrder": 2068,
+      "tags": [
+        "kanji",
+        "starter-kanji-100",
+        "grade-1"
+      ],
+      "status": "planned",
+      "strokes": [],
+      "examples": [],
+      "sources": [],
+      "id": "61ee978f8894",
+      "route": "/languages/japanese/characters/kanji/heaven",
+      "sourcePath": "content/languages/japanese/starter-kanji-a1-planned.json",
+      "contentHash": "5dcf6acf91bf26f72caef5d35d0a8ab3ae0356df3eb1fc6987d79d2bdc2b87c7"
+    },
+    {
+      "slug": "japanese/kanji/home",
+      "language": "ja",
+      "writingSystem": "kanji",
+      "glyph": "家",
+      "title": "Home And Family",
+      "summary": "Starter kanji for a home, house, or family.",
+      "meanings": [
+        "home",
+        "house",
+        "family"
+      ],
+      "readings": [
+        {
+          "label": "Kun reading",
+          "value": "いえ",
+          "ipa": "ie"
+        }
+      ],
+      "romaji": "ie",
+      "inputSequences": [],
+      "ipa": "ie",
+      "studyOrder": 2095,
+      "tags": [
+        "kanji",
+        "starter-kanji-100",
+        "a1"
+      ],
+      "status": "planned",
+      "strokes": [],
+      "examples": [],
+      "sources": [],
+      "id": "e7b27d6933dc",
+      "route": "/languages/japanese/characters/kanji/home",
+      "sourcePath": "content/languages/japanese/starter-kanji-a1-planned.json",
+      "contentHash": "5dcf6acf91bf26f72caef5d35d0a8ab3ae0356df3eb1fc6987d79d2bdc2b87c7"
+    },
+    {
+      "slug": "japanese/kanji/hundred",
+      "language": "ja",
+      "writingSystem": "kanji",
+      "glyph": "百",
+      "title": "Hundred",
+      "summary": "Grade 1 kanji for the number one hundred.",
+      "meanings": [
+        "hundred"
+      ],
+      "readings": [
+        {
+          "label": "On reading",
+          "value": "ひゃく",
+          "ipa": "çakɯ"
+        }
+      ],
+      "romaji": "hyaku",
+      "inputSequences": [],
+      "ipa": "çakɯ",
+      "studyOrder": 2073,
+      "tags": [
+        "kanji",
+        "starter-kanji-100",
+        "grade-1"
+      ],
+      "status": "planned",
+      "strokes": [],
+      "examples": [],
+      "sources": [],
+      "id": "ac68dbadcf30",
+      "route": "/languages/japanese/characters/kanji/hundred",
+      "sourcePath": "content/languages/japanese/starter-kanji-a1-planned.json",
+      "contentHash": "5dcf6acf91bf26f72caef5d35d0a8ab3ae0356df3eb1fc6987d79d2bdc2b87c7"
+    },
+    {
+      "slug": "japanese/kanji/i-me",
+      "language": "ja",
+      "writingSystem": "kanji",
+      "glyph": "私",
+      "title": "I And Private",
+      "summary": "Starter kanji used for I, me, and private matters.",
+      "meanings": [
+        "I",
+        "me",
+        "private"
+      ],
+      "readings": [
+        {
+          "label": "Kun reading",
+          "value": "わたし",
+          "ipa": "wataɕi"
+        }
+      ],
+      "romaji": "watashi",
+      "inputSequences": [],
+      "ipa": "wataɕi",
+      "studyOrder": 2080,
+      "tags": [
+        "kanji",
+        "starter-kanji-100",
+        "a1"
+      ],
+      "status": "planned",
+      "strokes": [],
+      "examples": [],
+      "sources": [],
+      "id": "b0140403822d",
+      "route": "/languages/japanese/characters/kanji/i-me",
+      "sourcePath": "content/languages/japanese/starter-kanji-a1-planned.json",
+      "contentHash": "5dcf6acf91bf26f72caef5d35d0a8ab3ae0356df3eb1fc6987d79d2bdc2b87c7"
+    },
+    {
+      "slug": "japanese/kanji/insect",
+      "language": "ja",
+      "writingSystem": "kanji",
+      "glyph": "虫",
+      "title": "Insect",
+      "summary": "Grade 1 kanji for an insect or bug.",
+      "meanings": [
+        "insect",
+        "bug"
+      ],
+      "readings": [
+        {
+          "label": "Kun reading",
+          "value": "むし",
+          "ipa": "mɯɕi"
+        }
+      ],
+      "romaji": "mushi",
+      "inputSequences": [],
+      "ipa": "mɯɕi",
+      "studyOrder": 2066,
+      "tags": [
+        "kanji",
+        "starter-kanji-100",
+        "grade-1"
+      ],
+      "status": "planned",
+      "strokes": [],
+      "examples": [],
+      "sources": [],
+      "id": "50b5656fbd0f",
+      "route": "/languages/japanese/characters/kanji/insect",
+      "sourcePath": "content/languages/japanese/starter-kanji-a1-planned.json",
+      "contentHash": "5dcf6acf91bf26f72caef5d35d0a8ab3ae0356df3eb1fc6987d79d2bdc2b87c7"
+    },
+    {
+      "slug": "japanese/kanji/jewel",
+      "language": "ja",
+      "writingSystem": "kanji",
+      "glyph": "玉",
+      "title": "Jewel",
+      "summary": "Grade 1 kanji for a jewel, ball, or sphere.",
+      "meanings": [
+        "jewel",
+        "ball"
+      ],
+      "readings": [
+        {
+          "label": "Kun reading",
+          "value": "たま",
+          "ipa": "tama"
+        }
+      ],
+      "romaji": "tama",
+      "inputSequences": [],
+      "ipa": "tama",
+      "studyOrder": 2035,
+      "tags": [
+        "kanji",
+        "starter-kanji-100",
+        "grade-1"
+      ],
+      "status": "planned",
+      "strokes": [],
+      "examples": [],
+      "sources": [],
+      "id": "5a7597f37d23",
+      "route": "/languages/japanese/characters/kanji/jewel",
+      "sourcePath": "content/languages/japanese/starter-kanji-a1-planned.json",
+      "contentHash": "5dcf6acf91bf26f72caef5d35d0a8ab3ae0356df3eb1fc6987d79d2bdc2b87c7"
+    },
+    {
+      "slug": "japanese/kanji/king",
+      "language": "ja",
+      "writingSystem": "kanji",
+      "glyph": "王",
+      "title": "King",
+      "summary": "Grade 1 kanji for a king or ruler.",
+      "meanings": [
+        "king"
+      ],
+      "readings": [
+        {
+          "label": "On reading",
+          "value": "おう",
+          "ipa": "oː"
+        }
+      ],
+      "romaji": "ou",
+      "inputSequences": [],
+      "ipa": "oː",
+      "studyOrder": 2027,
+      "tags": [
+        "kanji",
+        "starter-kanji-100",
+        "grade-1"
+      ],
+      "status": "planned",
+      "strokes": [],
+      "examples": [],
+      "sources": [],
+      "id": "359e043ad0de",
+      "route": "/languages/japanese/characters/kanji/king",
+      "sourcePath": "content/languages/japanese/starter-kanji-a1-planned.json",
+      "contentHash": "5dcf6acf91bf26f72caef5d35d0a8ab3ae0356df3eb1fc6987d79d2bdc2b87c7"
+    },
+    {
+      "slug": "japanese/kanji/left",
+      "language": "ja",
+      "writingSystem": "kanji",
+      "glyph": "左",
+      "title": "Left",
+      "summary": "Grade 1 kanji for the left side.",
+      "meanings": [
+        "left"
+      ],
+      "readings": [
+        {
+          "label": "Kun reading",
+          "value": "ひだり",
+          "ipa": "çidaɾi"
+        }
+      ],
+      "romaji": "hidari",
+      "inputSequences": [],
+      "ipa": "çidaɾi",
+      "studyOrder": 2041,
+      "tags": [
+        "kanji",
+        "starter-kanji-100",
+        "grade-1"
+      ],
+      "status": "planned",
+      "strokes": [],
+      "examples": [],
+      "sources": [],
+      "id": "a27606ece88d",
+      "route": "/languages/japanese/characters/kanji/left",
+      "sourcePath": "content/languages/japanese/starter-kanji-a1-planned.json",
+      "contentHash": "5dcf6acf91bf26f72caef5d35d0a8ab3ae0356df3eb1fc6987d79d2bdc2b87c7"
+    },
+    {
+      "slug": "japanese/kanji/life",
+      "language": "ja",
+      "writingSystem": "kanji",
+      "glyph": "生",
+      "title": "Life And Birth",
+      "summary": "Grade 1 kanji used for life, birth, and living.",
+      "meanings": [
+        "life",
+        "birth"
+      ],
+      "readings": [
+        {
+          "label": "On reading",
+          "value": "せい",
+          "ipa": "seː"
+        }
+      ],
+      "romaji": "sei",
+      "inputSequences": [],
+      "ipa": "seː",
+      "studyOrder": 2053,
+      "tags": [
+        "kanji",
+        "starter-kanji-100",
+        "grade-1"
+      ],
+      "status": "planned",
+      "strokes": [],
+      "examples": [],
+      "sources": [],
+      "id": "5c5b540332ed",
+      "route": "/languages/japanese/characters/kanji/life",
+      "sourcePath": "content/languages/japanese/starter-kanji-a1-planned.json",
+      "contentHash": "5dcf6acf91bf26f72caef5d35d0a8ab3ae0356df3eb1fc6987d79d2bdc2b87c7"
+    },
+    {
+      "slug": "japanese/kanji/man",
+      "language": "ja",
+      "writingSystem": "kanji",
+      "glyph": "男",
+      "title": "Man",
+      "summary": "Grade 1 kanji for a man or male person.",
+      "meanings": [
+        "man",
+        "male"
+      ],
+      "readings": [
+        {
+          "label": "Kun reading",
+          "value": "おとこ",
+          "ipa": "otoko"
+        }
+      ],
+      "romaji": "otoko",
+      "inputSequences": [],
+      "ipa": "otoko",
+      "studyOrder": 2064,
+      "tags": [
+        "kanji",
+        "starter-kanji-100",
+        "grade-1"
+      ],
+      "status": "planned",
+      "strokes": [],
+      "examples": [],
+      "sources": [],
+      "id": "8af61addfcd4",
+      "route": "/languages/japanese/characters/kanji/man",
+      "sourcePath": "content/languages/japanese/starter-kanji-a1-planned.json",
+      "contentHash": "5dcf6acf91bf26f72caef5d35d0a8ab3ae0356df3eb1fc6987d79d2bdc2b87c7"
+    },
+    {
+      "slug": "japanese/kanji/meet",
+      "language": "ja",
+      "writingSystem": "kanji",
+      "glyph": "会",
+      "title": "Meet",
+      "summary": "Starter kanji used for meeting and gatherings.",
+      "meanings": [
+        "meet",
+        "gathering"
+      ],
+      "readings": [
+        {
+          "label": "Kun reading",
+          "value": "あう",
+          "ipa": "aɯ"
+        }
+      ],
+      "romaji": "au",
+      "inputSequences": [],
+      "ipa": "aɯ",
+      "studyOrder": 2093,
+      "tags": [
+        "kanji",
+        "starter-kanji-100",
+        "a1"
+      ],
+      "status": "planned",
+      "strokes": [],
+      "examples": [],
+      "sources": [],
+      "id": "846edff04e96",
+      "route": "/languages/japanese/characters/kanji/meet",
+      "sourcePath": "content/languages/japanese/starter-kanji-a1-planned.json",
+      "contentHash": "5dcf6acf91bf26f72caef5d35d0a8ab3ae0356df3eb1fc6987d79d2bdc2b87c7"
     },
     {
       "slug": "japanese/kanji/middle",
@@ -15305,7 +17844,7 @@
       "romaji": "chuu",
       "inputSequences": [],
       "ipa": "tɕɯː",
-      "studyOrder": 9999,
+      "studyOrder": 1021,
       "tags": [
         "kanji",
         "position",
@@ -15375,7 +17914,43 @@
       "id": "dd9bbbb14500",
       "route": "/languages/japanese/characters/kanji/middle",
       "sourcePath": "content/languages/japanese/characters.json",
-      "contentHash": "2deaf50bd501960d12348e2dfcf9c60eb5f31f16398534ac7522126f34766fbd"
+      "contentHash": "10a768a52101ea0a81867867489bb0e4051fdf7da58696267169ae74370ff6af"
+    },
+    {
+      "slug": "japanese/kanji/minute-part",
+      "language": "ja",
+      "writingSystem": "kanji",
+      "glyph": "分",
+      "title": "Minute And Part",
+      "summary": "Starter kanji used for minutes, parts, and understanding.",
+      "meanings": [
+        "minute",
+        "part"
+      ],
+      "readings": [
+        {
+          "label": "On reading",
+          "value": "ふん",
+          "ipa": "ɸɯɴ"
+        }
+      ],
+      "romaji": "fun",
+      "inputSequences": [],
+      "ipa": "ɸɯɴ",
+      "studyOrder": 2089,
+      "tags": [
+        "kanji",
+        "starter-kanji-100",
+        "a1"
+      ],
+      "status": "planned",
+      "strokes": [],
+      "examples": [],
+      "sources": [],
+      "id": "e48967c7f5ee",
+      "route": "/languages/japanese/characters/kanji/minute-part",
+      "sourcePath": "content/languages/japanese/starter-kanji-a1-planned.json",
+      "contentHash": "5dcf6acf91bf26f72caef5d35d0a8ab3ae0356df3eb1fc6987d79d2bdc2b87c7"
     },
     {
       "slug": "japanese/kanji/month",
@@ -15398,7 +17973,7 @@
       "romaji": "tsuki",
       "inputSequences": [],
       "ipa": "tsɯki",
-      "studyOrder": 9999,
+      "studyOrder": 1012,
       "tags": [
         "kanji",
         "time",
@@ -15468,7 +18043,42 @@
       "id": "7015769fa019",
       "route": "/languages/japanese/characters/kanji/month",
       "sourcePath": "content/languages/japanese/characters.json",
-      "contentHash": "2deaf50bd501960d12348e2dfcf9c60eb5f31f16398534ac7522126f34766fbd"
+      "contentHash": "10a768a52101ea0a81867867489bb0e4051fdf7da58696267169ae74370ff6af"
+    },
+    {
+      "slug": "japanese/kanji/mother",
+      "language": "ja",
+      "writingSystem": "kanji",
+      "glyph": "母",
+      "title": "Mother",
+      "summary": "Starter kanji for one's mother.",
+      "meanings": [
+        "mother"
+      ],
+      "readings": [
+        {
+          "label": "Kun reading",
+          "value": "はは",
+          "ipa": "haha"
+        }
+      ],
+      "romaji": "haha",
+      "inputSequences": [],
+      "ipa": "haha",
+      "studyOrder": 2096,
+      "tags": [
+        "kanji",
+        "starter-kanji-100",
+        "a1"
+      ],
+      "status": "planned",
+      "strokes": [],
+      "examples": [],
+      "sources": [],
+      "id": "778cebe4c67c",
+      "route": "/languages/japanese/characters/kanji/mother",
+      "sourcePath": "content/languages/japanese/starter-kanji-a1-planned.json",
+      "contentHash": "5dcf6acf91bf26f72caef5d35d0a8ab3ae0356df3eb1fc6987d79d2bdc2b87c7"
     },
     {
       "slug": "japanese/kanji/mountain",
@@ -15490,7 +18100,7 @@
       "romaji": "yama",
       "inputSequences": [],
       "ipa": "jama",
-      "studyOrder": 9999,
+      "studyOrder": 1023,
       "tags": [
         "kanji",
         "nature",
@@ -15547,7 +18157,78 @@
       "id": "8b2f86bb34ab",
       "route": "/languages/japanese/characters/kanji/mountain",
       "sourcePath": "content/languages/japanese/characters.json",
-      "contentHash": "2deaf50bd501960d12348e2dfcf9c60eb5f31f16398534ac7522126f34766fbd"
+      "contentHash": "10a768a52101ea0a81867867489bb0e4051fdf7da58696267169ae74370ff6af"
+    },
+    {
+      "slug": "japanese/kanji/mouth",
+      "language": "ja",
+      "writingSystem": "kanji",
+      "glyph": "口",
+      "title": "Mouth",
+      "summary": "Grade 1 kanji for a mouth or opening.",
+      "meanings": [
+        "mouth",
+        "opening"
+      ],
+      "readings": [
+        {
+          "label": "Kun reading",
+          "value": "くち",
+          "ipa": "kɯtɕi"
+        }
+      ],
+      "romaji": "kuchi",
+      "inputSequences": [],
+      "ipa": "kɯtɕi",
+      "studyOrder": 2039,
+      "tags": [
+        "kanji",
+        "starter-kanji-100",
+        "grade-1"
+      ],
+      "status": "planned",
+      "strokes": [],
+      "examples": [],
+      "sources": [],
+      "id": "09fcfad2104a",
+      "route": "/languages/japanese/characters/kanji/mouth",
+      "sourcePath": "content/languages/japanese/starter-kanji-a1-planned.json",
+      "contentHash": "5dcf6acf91bf26f72caef5d35d0a8ab3ae0356df3eb1fc6987d79d2bdc2b87c7"
+    },
+    {
+      "slug": "japanese/kanji/name",
+      "language": "ja",
+      "writingSystem": "kanji",
+      "glyph": "名",
+      "title": "Name",
+      "summary": "Grade 1 kanji for a name or reputation.",
+      "meanings": [
+        "name"
+      ],
+      "readings": [
+        {
+          "label": "Kun reading",
+          "value": "な",
+          "ipa": "na"
+        }
+      ],
+      "romaji": "na",
+      "inputSequences": [],
+      "ipa": "na",
+      "studyOrder": 2075,
+      "tags": [
+        "kanji",
+        "starter-kanji-100",
+        "grade-1"
+      ],
+      "status": "planned",
+      "strokes": [],
+      "examples": [],
+      "sources": [],
+      "id": "210a7d27e692",
+      "route": "/languages/japanese/characters/kanji/name",
+      "sourcePath": "content/languages/japanese/starter-kanji-a1-planned.json",
+      "contentHash": "5dcf6acf91bf26f72caef5d35d0a8ab3ae0356df3eb1fc6987d79d2bdc2b87c7"
     },
     {
       "slug": "japanese/kanji/nine",
@@ -15569,7 +18250,7 @@
       "romaji": "kyuu",
       "inputSequences": [],
       "ipa": "kʲɯː",
-      "studyOrder": 9999,
+      "studyOrder": 1009,
       "tags": [
         "kanji",
         "number",
@@ -15617,7 +18298,7 @@
       "id": "fc718d1556cc",
       "route": "/languages/japanese/characters/kanji/nine",
       "sourcePath": "content/languages/japanese/characters.json",
-      "contentHash": "2deaf50bd501960d12348e2dfcf9c60eb5f31f16398534ac7522126f34766fbd"
+      "contentHash": "10a768a52101ea0a81867867489bb0e4051fdf7da58696267169ae74370ff6af"
     },
     {
       "slug": "japanese/kanji/now",
@@ -15648,7 +18329,7 @@
         "kon"
       ],
       "ipa": "ima",
-      "studyOrder": 1001,
+      "studyOrder": 1025,
       "tags": [
         "kanji",
         "time",
@@ -15731,7 +18412,7 @@
       "id": "6c4d927c31f4",
       "route": "/languages/japanese/characters/kanji/now",
       "sourcePath": "content/languages/japanese/greeting-kanji.json",
-      "contentHash": "d4fe4857c120f626899f7d8607910f0075c1d12718df939c9fccdd9610f4ed26"
+      "contentHash": "90e77bf059a36974991b125970e8cfb9ce99c840728fd268836e64c410d15a8b"
     },
     {
       "slug": "japanese/kanji/one",
@@ -15753,7 +18434,7 @@
       "romaji": "ichi",
       "inputSequences": [],
       "ipa": "itɕi",
-      "studyOrder": 9999,
+      "studyOrder": 1001,
       "tags": [
         "kanji",
         "number",
@@ -15780,7 +18461,7 @@
       "id": "387a17d97031",
       "route": "/languages/japanese/characters/kanji/one",
       "sourcePath": "content/languages/japanese/characters.json",
-      "contentHash": "2deaf50bd501960d12348e2dfcf9c60eb5f31f16398534ac7522126f34766fbd"
+      "contentHash": "10a768a52101ea0a81867867489bb0e4051fdf7da58696267169ae74370ff6af"
     },
     {
       "slug": "japanese/kanji/person",
@@ -15803,7 +18484,7 @@
       "romaji": "hito",
       "inputSequences": [],
       "ipa": "çito",
-      "studyOrder": 9999,
+      "studyOrder": 1018,
       "tags": [
         "kanji",
         "people",
@@ -15843,7 +18524,218 @@
       "id": "17412f947b30",
       "route": "/languages/japanese/characters/kanji/person",
       "sourcePath": "content/languages/japanese/characters.json",
-      "contentHash": "2deaf50bd501960d12348e2dfcf9c60eb5f31f16398534ac7522126f34766fbd"
+      "contentHash": "10a768a52101ea0a81867867489bb0e4051fdf7da58696267169ae74370ff6af"
+    },
+    {
+      "slug": "japanese/kanji/power",
+      "language": "ja",
+      "writingSystem": "kanji",
+      "glyph": "力",
+      "title": "Power",
+      "summary": "Grade 1 kanji for power, strength, or ability.",
+      "meanings": [
+        "power",
+        "strength"
+      ],
+      "readings": [
+        {
+          "label": "Kun reading",
+          "value": "ちから",
+          "ipa": "tɕikaɾa"
+        }
+      ],
+      "romaji": "chikara",
+      "inputSequences": [],
+      "ipa": "tɕikaɾa",
+      "studyOrder": 2078,
+      "tags": [
+        "kanji",
+        "starter-kanji-100",
+        "grade-1"
+      ],
+      "status": "planned",
+      "strokes": [],
+      "examples": [],
+      "sources": [],
+      "id": "6ffd5d9ad09c",
+      "route": "/languages/japanese/characters/kanji/power",
+      "sourcePath": "content/languages/japanese/starter-kanji-a1-planned.json",
+      "contentHash": "5dcf6acf91bf26f72caef5d35d0a8ab3ae0356df3eb1fc6987d79d2bdc2b87c7"
+    },
+    {
+      "slug": "japanese/kanji/rain",
+      "language": "ja",
+      "writingSystem": "kanji",
+      "glyph": "雨",
+      "title": "Rain",
+      "summary": "Grade 1 kanji for rain and rainy weather.",
+      "meanings": [
+        "rain"
+      ],
+      "readings": [
+        {
+          "label": "Kun reading",
+          "value": "あめ",
+          "ipa": "ame"
+        }
+      ],
+      "romaji": "ame",
+      "inputSequences": [],
+      "ipa": "ame",
+      "studyOrder": 2025,
+      "tags": [
+        "kanji",
+        "starter-kanji-100",
+        "grade-1"
+      ],
+      "status": "planned",
+      "strokes": [],
+      "examples": [],
+      "sources": [],
+      "id": "cdbb3412c828",
+      "route": "/languages/japanese/characters/kanji/rain",
+      "sourcePath": "content/languages/japanese/starter-kanji-a1-planned.json",
+      "contentHash": "5dcf6acf91bf26f72caef5d35d0a8ab3ae0356df3eb1fc6987d79d2bdc2b87c7"
+    },
+    {
+      "slug": "japanese/kanji/red",
+      "language": "ja",
+      "writingSystem": "kanji",
+      "glyph": "赤",
+      "title": "Red",
+      "summary": "Grade 1 kanji for the color red.",
+      "meanings": [
+        "red"
+      ],
+      "readings": [
+        {
+          "label": "Kun reading",
+          "value": "あか",
+          "ipa": "aka"
+        }
+      ],
+      "romaji": "aka",
+      "inputSequences": [],
+      "ipa": "aka",
+      "studyOrder": 2057,
+      "tags": [
+        "kanji",
+        "starter-kanji-100",
+        "grade-1"
+      ],
+      "status": "planned",
+      "strokes": [],
+      "examples": [],
+      "sources": [],
+      "id": "f5b235b55f3b",
+      "route": "/languages/japanese/characters/kanji/red",
+      "sourcePath": "content/languages/japanese/starter-kanji-a1-planned.json",
+      "contentHash": "5dcf6acf91bf26f72caef5d35d0a8ab3ae0356df3eb1fc6987d79d2bdc2b87c7"
+    },
+    {
+      "slug": "japanese/kanji/rest",
+      "language": "ja",
+      "writingSystem": "kanji",
+      "glyph": "休",
+      "title": "Rest",
+      "summary": "Grade 1 kanji for resting or taking a break.",
+      "meanings": [
+        "rest"
+      ],
+      "readings": [
+        {
+          "label": "Kun reading",
+          "value": "やすむ",
+          "ipa": "jasɯmɯ"
+        }
+      ],
+      "romaji": "yasumu",
+      "inputSequences": [],
+      "ipa": "jasɯmɯ",
+      "studyOrder": 2034,
+      "tags": [
+        "kanji",
+        "starter-kanji-100",
+        "grade-1"
+      ],
+      "status": "planned",
+      "strokes": [],
+      "examples": [],
+      "sources": [],
+      "id": "353f4eebb6bc",
+      "route": "/languages/japanese/characters/kanji/rest",
+      "sourcePath": "content/languages/japanese/starter-kanji-a1-planned.json",
+      "contentHash": "5dcf6acf91bf26f72caef5d35d0a8ab3ae0356df3eb1fc6987d79d2bdc2b87c7"
+    },
+    {
+      "slug": "japanese/kanji/rice-field",
+      "language": "ja",
+      "writingSystem": "kanji",
+      "glyph": "田",
+      "title": "Rice Field",
+      "summary": "Grade 1 kanji for a rice field.",
+      "meanings": [
+        "rice field"
+      ],
+      "readings": [
+        {
+          "label": "Kun reading",
+          "value": "た",
+          "ipa": "ta"
+        }
+      ],
+      "romaji": "ta",
+      "inputSequences": [],
+      "ipa": "ta",
+      "studyOrder": 2069,
+      "tags": [
+        "kanji",
+        "starter-kanji-100",
+        "grade-1"
+      ],
+      "status": "planned",
+      "strokes": [],
+      "examples": [],
+      "sources": [],
+      "id": "9b2df3de8425",
+      "route": "/languages/japanese/characters/kanji/rice-field",
+      "sourcePath": "content/languages/japanese/starter-kanji-a1-planned.json",
+      "contentHash": "5dcf6acf91bf26f72caef5d35d0a8ab3ae0356df3eb1fc6987d79d2bdc2b87c7"
+    },
+    {
+      "slug": "japanese/kanji/right",
+      "language": "ja",
+      "writingSystem": "kanji",
+      "glyph": "右",
+      "title": "Right",
+      "summary": "Grade 1 kanji for the right side.",
+      "meanings": [
+        "right"
+      ],
+      "readings": [
+        {
+          "label": "Kun reading",
+          "value": "みぎ",
+          "ipa": "migi"
+        }
+      ],
+      "romaji": "migi",
+      "inputSequences": [],
+      "ipa": "migi",
+      "studyOrder": 2024,
+      "tags": [
+        "kanji",
+        "starter-kanji-100",
+        "grade-1"
+      ],
+      "status": "planned",
+      "strokes": [],
+      "examples": [],
+      "sources": [],
+      "id": "1db5d8ccc228",
+      "route": "/languages/japanese/characters/kanji/right",
+      "sourcePath": "content/languages/japanese/starter-kanji-a1-planned.json",
+      "contentHash": "5dcf6acf91bf26f72caef5d35d0a8ab3ae0356df3eb1fc6987d79d2bdc2b87c7"
     },
     {
       "slug": "japanese/kanji/river",
@@ -15865,7 +18757,7 @@
       "romaji": "kawa",
       "inputSequences": [],
       "ipa": "kawa",
-      "studyOrder": 9999,
+      "studyOrder": 1024,
       "tags": [
         "kanji",
         "nature",
@@ -15918,7 +18810,114 @@
       "id": "22539acffef1",
       "route": "/languages/japanese/characters/kanji/river",
       "sourcePath": "content/languages/japanese/characters.json",
-      "contentHash": "2deaf50bd501960d12348e2dfcf9c60eb5f31f16398534ac7522126f34766fbd"
+      "contentHash": "10a768a52101ea0a81867867489bb0e4051fdf7da58696267169ae74370ff6af"
+    },
+    {
+      "slug": "japanese/kanji/school",
+      "language": "ja",
+      "writingSystem": "kanji",
+      "glyph": "校",
+      "title": "School",
+      "summary": "Grade 1 kanji used in words for school.",
+      "meanings": [
+        "school"
+      ],
+      "readings": [
+        {
+          "label": "On reading",
+          "value": "こう",
+          "ipa": "koː"
+        }
+      ],
+      "romaji": "kou",
+      "inputSequences": [],
+      "ipa": "koː",
+      "studyOrder": 2040,
+      "tags": [
+        "kanji",
+        "starter-kanji-100",
+        "grade-1"
+      ],
+      "status": "planned",
+      "strokes": [],
+      "examples": [],
+      "sources": [],
+      "id": "fa0f23b648c0",
+      "route": "/languages/japanese/characters/kanji/school",
+      "sourcePath": "content/languages/japanese/starter-kanji-a1-planned.json",
+      "contentHash": "5dcf6acf91bf26f72caef5d35d0a8ab3ae0356df3eb1fc6987d79d2bdc2b87c7"
+    },
+    {
+      "slug": "japanese/kanji/see",
+      "language": "ja",
+      "writingSystem": "kanji",
+      "glyph": "見",
+      "title": "See",
+      "summary": "Grade 1 kanji for seeing, looking, or watching.",
+      "meanings": [
+        "see",
+        "look"
+      ],
+      "readings": [
+        {
+          "label": "Kun reading",
+          "value": "みる",
+          "ipa": "miɾɯ"
+        }
+      ],
+      "romaji": "miru",
+      "inputSequences": [],
+      "ipa": "miɾɯ",
+      "studyOrder": 2038,
+      "tags": [
+        "kanji",
+        "starter-kanji-100",
+        "grade-1"
+      ],
+      "status": "planned",
+      "strokes": [],
+      "examples": [],
+      "sources": [],
+      "id": "e1dba1a8cf6b",
+      "route": "/languages/japanese/characters/kanji/see",
+      "sourcePath": "content/languages/japanese/starter-kanji-a1-planned.json",
+      "contentHash": "5dcf6acf91bf26f72caef5d35d0a8ab3ae0356df3eb1fc6987d79d2bdc2b87c7"
+    },
+    {
+      "slug": "japanese/kanji/sentence",
+      "language": "ja",
+      "writingSystem": "kanji",
+      "glyph": "文",
+      "title": "Sentence And Writing",
+      "summary": "Grade 1 kanji for a sentence, text, or writing.",
+      "meanings": [
+        "sentence",
+        "writing"
+      ],
+      "readings": [
+        {
+          "label": "On reading",
+          "value": "ぶん",
+          "ipa": "bɯɴ"
+        }
+      ],
+      "romaji": "bun",
+      "inputSequences": [],
+      "ipa": "bɯɴ",
+      "studyOrder": 2074,
+      "tags": [
+        "kanji",
+        "starter-kanji-100",
+        "grade-1"
+      ],
+      "status": "planned",
+      "strokes": [],
+      "examples": [],
+      "sources": [],
+      "id": "1d58f026a057",
+      "route": "/languages/japanese/characters/kanji/sentence",
+      "sourcePath": "content/languages/japanese/starter-kanji-a1-planned.json",
+      "contentHash": "5dcf6acf91bf26f72caef5d35d0a8ab3ae0356df3eb1fc6987d79d2bdc2b87c7"
     },
     {
       "slug": "japanese/kanji/seven",
@@ -15940,7 +18939,7 @@
       "romaji": "shichi",
       "inputSequences": [],
       "ipa": "ɕitɕi",
-      "studyOrder": 9999,
+      "studyOrder": 1007,
       "tags": [
         "kanji",
         "number",
@@ -15984,7 +18983,79 @@
       "id": "072c876d939f",
       "route": "/languages/japanese/characters/kanji/seven",
       "sourcePath": "content/languages/japanese/characters.json",
-      "contentHash": "2deaf50bd501960d12348e2dfcf9c60eb5f31f16398534ac7522126f34766fbd"
+      "contentHash": "10a768a52101ea0a81867867489bb0e4051fdf7da58696267169ae74370ff6af"
+    },
+    {
+      "slug": "japanese/kanji/shellfish",
+      "language": "ja",
+      "writingSystem": "kanji",
+      "glyph": "貝",
+      "title": "Shellfish",
+      "summary": "Grade 1 kanji for a shell or shellfish.",
+      "meanings": [
+        "shell",
+        "shellfish"
+      ],
+      "readings": [
+        {
+          "label": "Kun reading",
+          "value": "かい",
+          "ipa": "kai"
+        }
+      ],
+      "romaji": "kai",
+      "inputSequences": [],
+      "ipa": "kai",
+      "studyOrder": 2031,
+      "tags": [
+        "kanji",
+        "starter-kanji-100",
+        "grade-1"
+      ],
+      "status": "planned",
+      "strokes": [],
+      "examples": [],
+      "sources": [],
+      "id": "aa7f6c4b26fa",
+      "route": "/languages/japanese/characters/kanji/shellfish",
+      "sourcePath": "content/languages/japanese/starter-kanji-a1-planned.json",
+      "contentHash": "5dcf6acf91bf26f72caef5d35d0a8ab3ae0356df3eb1fc6987d79d2bdc2b87c7"
+    },
+    {
+      "slug": "japanese/kanji/shop",
+      "language": "ja",
+      "writingSystem": "kanji",
+      "glyph": "店",
+      "title": "Shop",
+      "summary": "Starter kanji for a shop, store, or restaurant.",
+      "meanings": [
+        "shop",
+        "store"
+      ],
+      "readings": [
+        {
+          "label": "Kun reading",
+          "value": "みせ",
+          "ipa": "mise"
+        }
+      ],
+      "romaji": "mise",
+      "inputSequences": [],
+      "ipa": "mise",
+      "studyOrder": 2092,
+      "tags": [
+        "kanji",
+        "starter-kanji-100",
+        "a1"
+      ],
+      "status": "planned",
+      "strokes": [],
+      "examples": [],
+      "sources": [],
+      "id": "2bdbc793f76a",
+      "route": "/languages/japanese/characters/kanji/shop",
+      "sourcePath": "content/languages/japanese/starter-kanji-a1-planned.json",
+      "contentHash": "5dcf6acf91bf26f72caef5d35d0a8ab3ae0356df3eb1fc6987d79d2bdc2b87c7"
     },
     {
       "slug": "japanese/kanji/six",
@@ -16006,7 +19077,7 @@
       "romaji": "roku",
       "inputSequences": [],
       "ipa": "ɾokɯ",
-      "studyOrder": 9999,
+      "studyOrder": 1006,
       "tags": [
         "kanji",
         "number",
@@ -16072,7 +19143,43 @@
       "id": "a1b1f55fefa8",
       "route": "/languages/japanese/characters/kanji/six",
       "sourcePath": "content/languages/japanese/characters.json",
-      "contentHash": "2deaf50bd501960d12348e2dfcf9c60eb5f31f16398534ac7522126f34766fbd"
+      "contentHash": "10a768a52101ea0a81867867489bb0e4051fdf7da58696267169ae74370ff6af"
+    },
+    {
+      "slug": "japanese/kanji/sky",
+      "language": "ja",
+      "writingSystem": "kanji",
+      "glyph": "空",
+      "title": "Sky",
+      "summary": "Grade 1 kanji for sky, air, and emptiness.",
+      "meanings": [
+        "sky",
+        "empty"
+      ],
+      "readings": [
+        {
+          "label": "Kun reading",
+          "value": "そら",
+          "ipa": "soɾa"
+        }
+      ],
+      "romaji": "sora",
+      "inputSequences": [],
+      "ipa": "soɾa",
+      "studyOrder": 2036,
+      "tags": [
+        "kanji",
+        "starter-kanji-100",
+        "grade-1"
+      ],
+      "status": "planned",
+      "strokes": [],
+      "examples": [],
+      "sources": [],
+      "id": "c489c77262c7",
+      "route": "/languages/japanese/characters/kanji/sky",
+      "sourcePath": "content/languages/japanese/starter-kanji-a1-planned.json",
+      "contentHash": "5dcf6acf91bf26f72caef5d35d0a8ab3ae0356df3eb1fc6987d79d2bdc2b87c7"
     },
     {
       "slug": "japanese/kanji/small",
@@ -16094,7 +19201,7 @@
       "romaji": "chii",
       "inputSequences": [],
       "ipa": "tɕiː",
-      "studyOrder": 9999,
+      "studyOrder": 1020,
       "tags": [
         "kanji",
         "adjective",
@@ -16147,7 +19254,257 @@
       "id": "c6526c38a3ee",
       "route": "/languages/japanese/characters/kanji/small",
       "sourcePath": "content/languages/japanese/characters.json",
-      "contentHash": "2deaf50bd501960d12348e2dfcf9c60eb5f31f16398534ac7522126f34766fbd"
+      "contentHash": "10a768a52101ea0a81867867489bb0e4051fdf7da58696267169ae74370ff6af"
+    },
+    {
+      "slug": "japanese/kanji/sound",
+      "language": "ja",
+      "writingSystem": "kanji",
+      "glyph": "音",
+      "title": "Sound",
+      "summary": "Grade 1 kanji for sound and noise.",
+      "meanings": [
+        "sound"
+      ],
+      "readings": [
+        {
+          "label": "Kun reading",
+          "value": "おと",
+          "ipa": "oto"
+        }
+      ],
+      "romaji": "oto",
+      "inputSequences": [],
+      "ipa": "oto",
+      "studyOrder": 2028,
+      "tags": [
+        "kanji",
+        "starter-kanji-100",
+        "grade-1"
+      ],
+      "status": "planned",
+      "strokes": [],
+      "examples": [],
+      "sources": [],
+      "id": "87834d329148",
+      "route": "/languages/japanese/characters/kanji/sound",
+      "sourcePath": "content/languages/japanese/starter-kanji-a1-planned.json",
+      "contentHash": "5dcf6acf91bf26f72caef5d35d0a8ab3ae0356df3eb1fc6987d79d2bdc2b87c7"
+    },
+    {
+      "slug": "japanese/kanji/spirit",
+      "language": "ja",
+      "writingSystem": "kanji",
+      "glyph": "気",
+      "title": "Spirit And Feeling",
+      "summary": "Grade 1 kanji used for spirit, feeling, and air.",
+      "meanings": [
+        "spirit",
+        "feeling",
+        "air"
+      ],
+      "readings": [
+        {
+          "label": "On reading",
+          "value": "き",
+          "ipa": "ki"
+        }
+      ],
+      "romaji": "ki",
+      "inputSequences": [],
+      "ipa": "ki",
+      "studyOrder": 2033,
+      "tags": [
+        "kanji",
+        "starter-kanji-100",
+        "grade-1"
+      ],
+      "status": "planned",
+      "strokes": [],
+      "examples": [],
+      "sources": [],
+      "id": "209b72c26efd",
+      "route": "/languages/japanese/characters/kanji/spirit",
+      "sourcePath": "content/languages/japanese/starter-kanji-a1-planned.json",
+      "contentHash": "5dcf6acf91bf26f72caef5d35d0a8ab3ae0356df3eb1fc6987d79d2bdc2b87c7"
+    },
+    {
+      "slug": "japanese/kanji/stand",
+      "language": "ja",
+      "writingSystem": "kanji",
+      "glyph": "立",
+      "title": "Stand",
+      "summary": "Grade 1 kanji for standing or rising.",
+      "meanings": [
+        "stand"
+      ],
+      "readings": [
+        {
+          "label": "Kun reading",
+          "value": "たつ",
+          "ipa": "tatsɯ"
+        }
+      ],
+      "romaji": "tatsu",
+      "inputSequences": [],
+      "ipa": "tatsɯ",
+      "studyOrder": 2077,
+      "tags": [
+        "kanji",
+        "starter-kanji-100",
+        "grade-1"
+      ],
+      "status": "planned",
+      "strokes": [],
+      "examples": [],
+      "sources": [],
+      "id": "ddebe2dce6c7",
+      "route": "/languages/japanese/characters/kanji/stand",
+      "sourcePath": "content/languages/japanese/starter-kanji-a1-planned.json",
+      "contentHash": "5dcf6acf91bf26f72caef5d35d0a8ab3ae0356df3eb1fc6987d79d2bdc2b87c7"
+    },
+    {
+      "slug": "japanese/kanji/station",
+      "language": "ja",
+      "writingSystem": "kanji",
+      "glyph": "駅",
+      "title": "Station",
+      "summary": "Starter kanji for a train or transit station.",
+      "meanings": [
+        "station"
+      ],
+      "readings": [
+        {
+          "label": "On reading",
+          "value": "えき",
+          "ipa": "eki"
+        }
+      ],
+      "romaji": "eki",
+      "inputSequences": [],
+      "ipa": "eki",
+      "studyOrder": 2085,
+      "tags": [
+        "kanji",
+        "starter-kanji-100",
+        "a1"
+      ],
+      "status": "planned",
+      "strokes": [],
+      "examples": [],
+      "sources": [],
+      "id": "b69c47edad2f",
+      "route": "/languages/japanese/characters/kanji/station",
+      "sourcePath": "content/languages/japanese/starter-kanji-a1-planned.json",
+      "contentHash": "5dcf6acf91bf26f72caef5d35d0a8ab3ae0356df3eb1fc6987d79d2bdc2b87c7"
+    },
+    {
+      "slug": "japanese/kanji/stone",
+      "language": "ja",
+      "writingSystem": "kanji",
+      "glyph": "石",
+      "title": "Stone",
+      "summary": "Grade 1 kanji for a stone or rock.",
+      "meanings": [
+        "stone",
+        "rock"
+      ],
+      "readings": [
+        {
+          "label": "Kun reading",
+          "value": "いし",
+          "ipa": "iɕi"
+        }
+      ],
+      "romaji": "ishi",
+      "inputSequences": [],
+      "ipa": "iɕi",
+      "studyOrder": 2056,
+      "tags": [
+        "kanji",
+        "starter-kanji-100",
+        "grade-1"
+      ],
+      "status": "planned",
+      "strokes": [],
+      "examples": [],
+      "sources": [],
+      "id": "39b766fc7513",
+      "route": "/languages/japanese/characters/kanji/stone",
+      "sourcePath": "content/languages/japanese/starter-kanji-a1-planned.json",
+      "contentHash": "5dcf6acf91bf26f72caef5d35d0a8ab3ae0356df3eb1fc6987d79d2bdc2b87c7"
+    },
+    {
+      "slug": "japanese/kanji/study",
+      "language": "ja",
+      "writingSystem": "kanji",
+      "glyph": "学",
+      "title": "Study",
+      "summary": "Grade 1 kanji for learning and study.",
+      "meanings": [
+        "study",
+        "learning"
+      ],
+      "readings": [
+        {
+          "label": "On reading",
+          "value": "がく",
+          "ipa": "gakɯ"
+        }
+      ],
+      "romaji": "gaku",
+      "inputSequences": [],
+      "ipa": "gakɯ",
+      "studyOrder": 2032,
+      "tags": [
+        "kanji",
+        "starter-kanji-100",
+        "grade-1"
+      ],
+      "status": "planned",
+      "strokes": [],
+      "examples": [],
+      "sources": [],
+      "id": "856d999db59a",
+      "route": "/languages/japanese/characters/kanji/study",
+      "sourcePath": "content/languages/japanese/starter-kanji-a1-planned.json",
+      "contentHash": "5dcf6acf91bf26f72caef5d35d0a8ab3ae0356df3eb1fc6987d79d2bdc2b87c7"
+    },
+    {
+      "slug": "japanese/kanji/talk",
+      "language": "ja",
+      "writingSystem": "kanji",
+      "glyph": "話",
+      "title": "Talk And Story",
+      "summary": "Starter kanji used for talking, stories, and telephone.",
+      "meanings": [
+        "talk",
+        "story"
+      ],
+      "readings": [
+        {
+          "label": "Kun reading",
+          "value": "はなす",
+          "ipa": "hanasɯ"
+        }
+      ],
+      "romaji": "hanasu",
+      "inputSequences": [],
+      "ipa": "hanasɯ",
+      "studyOrder": 2087,
+      "tags": [
+        "kanji",
+        "starter-kanji-100",
+        "a1"
+      ],
+      "status": "planned",
+      "strokes": [],
+      "examples": [],
+      "sources": [],
+      "id": "d11989c84e44",
+      "route": "/languages/japanese/characters/kanji/talk",
+      "sourcePath": "content/languages/japanese/starter-kanji-a1-planned.json",
+      "contentHash": "5dcf6acf91bf26f72caef5d35d0a8ab3ae0356df3eb1fc6987d79d2bdc2b87c7"
     },
     {
       "slug": "japanese/kanji/ten",
@@ -16169,7 +19526,7 @@
       "romaji": "juu",
       "inputSequences": [],
       "ipa": "dʑɯː",
-      "studyOrder": 9999,
+      "studyOrder": 1010,
       "tags": [
         "kanji",
         "number",
@@ -16209,7 +19566,78 @@
       "id": "900d813b15fa",
       "route": "/languages/japanese/characters/kanji/ten",
       "sourcePath": "content/languages/japanese/characters.json",
-      "contentHash": "2deaf50bd501960d12348e2dfcf9c60eb5f31f16398534ac7522126f34766fbd"
+      "contentHash": "10a768a52101ea0a81867867489bb0e4051fdf7da58696267169ae74370ff6af"
+    },
+    {
+      "slug": "japanese/kanji/thousand",
+      "language": "ja",
+      "writingSystem": "kanji",
+      "glyph": "千",
+      "title": "Thousand",
+      "summary": "Grade 1 kanji for the number one thousand.",
+      "meanings": [
+        "thousand"
+      ],
+      "readings": [
+        {
+          "label": "On reading",
+          "value": "せん",
+          "ipa": "seɴ"
+        }
+      ],
+      "romaji": "sen",
+      "inputSequences": [],
+      "ipa": "seɴ",
+      "studyOrder": 2058,
+      "tags": [
+        "kanji",
+        "starter-kanji-100",
+        "grade-1"
+      ],
+      "status": "planned",
+      "strokes": [],
+      "examples": [],
+      "sources": [],
+      "id": "532f08a58d17",
+      "route": "/languages/japanese/characters/kanji/thousand",
+      "sourcePath": "content/languages/japanese/starter-kanji-a1-planned.json",
+      "contentHash": "5dcf6acf91bf26f72caef5d35d0a8ab3ae0356df3eb1fc6987d79d2bdc2b87c7"
+    },
+    {
+      "slug": "japanese/kanji/thread",
+      "language": "ja",
+      "writingSystem": "kanji",
+      "glyph": "糸",
+      "title": "Thread",
+      "summary": "Grade 1 kanji for thread or string.",
+      "meanings": [
+        "thread",
+        "string"
+      ],
+      "readings": [
+        {
+          "label": "Kun reading",
+          "value": "いと",
+          "ipa": "ito"
+        }
+      ],
+      "romaji": "ito",
+      "inputSequences": [],
+      "ipa": "ito",
+      "studyOrder": 2043,
+      "tags": [
+        "kanji",
+        "starter-kanji-100",
+        "grade-1"
+      ],
+      "status": "planned",
+      "strokes": [],
+      "examples": [],
+      "sources": [],
+      "id": "b543f284679f",
+      "route": "/languages/japanese/characters/kanji/thread",
+      "sourcePath": "content/languages/japanese/starter-kanji-a1-planned.json",
+      "contentHash": "5dcf6acf91bf26f72caef5d35d0a8ab3ae0356df3eb1fc6987d79d2bdc2b87c7"
     },
     {
       "slug": "japanese/kanji/three",
@@ -16231,7 +19659,7 @@
       "romaji": "san",
       "inputSequences": [],
       "ipa": "saɴ",
-      "studyOrder": 9999,
+      "studyOrder": 1003,
       "tags": [
         "kanji",
         "number",
@@ -16284,7 +19712,78 @@
       "id": "e9f0cbba05e1",
       "route": "/languages/japanese/characters/kanji/three",
       "sourcePath": "content/languages/japanese/characters.json",
-      "contentHash": "2deaf50bd501960d12348e2dfcf9c60eb5f31f16398534ac7522126f34766fbd"
+      "contentHash": "10a768a52101ea0a81867867489bb0e4051fdf7da58696267169ae74370ff6af"
+    },
+    {
+      "slug": "japanese/kanji/time",
+      "language": "ja",
+      "writingSystem": "kanji",
+      "glyph": "時",
+      "title": "Time And Hour",
+      "summary": "Starter kanji used for time and clock hours.",
+      "meanings": [
+        "time",
+        "hour"
+      ],
+      "readings": [
+        {
+          "label": "Kun reading",
+          "value": "とき",
+          "ipa": "toki"
+        }
+      ],
+      "romaji": "toki",
+      "inputSequences": [],
+      "ipa": "toki",
+      "studyOrder": 2088,
+      "tags": [
+        "kanji",
+        "starter-kanji-100",
+        "a1"
+      ],
+      "status": "planned",
+      "strokes": [],
+      "examples": [],
+      "sources": [],
+      "id": "acd54c193768",
+      "route": "/languages/japanese/characters/kanji/time",
+      "sourcePath": "content/languages/japanese/starter-kanji-a1-planned.json",
+      "contentHash": "5dcf6acf91bf26f72caef5d35d0a8ab3ae0356df3eb1fc6987d79d2bdc2b87c7"
+    },
+    {
+      "slug": "japanese/kanji/town",
+      "language": "ja",
+      "writingSystem": "kanji",
+      "glyph": "町",
+      "title": "Town",
+      "summary": "Grade 1 kanji for a town or neighborhood.",
+      "meanings": [
+        "town"
+      ],
+      "readings": [
+        {
+          "label": "Kun reading",
+          "value": "まち",
+          "ipa": "matɕi"
+        }
+      ],
+      "romaji": "machi",
+      "inputSequences": [],
+      "ipa": "matɕi",
+      "studyOrder": 2067,
+      "tags": [
+        "kanji",
+        "starter-kanji-100",
+        "grade-1"
+      ],
+      "status": "planned",
+      "strokes": [],
+      "examples": [],
+      "sources": [],
+      "id": "c07ee64f1bf2",
+      "route": "/languages/japanese/characters/kanji/town",
+      "sourcePath": "content/languages/japanese/starter-kanji-a1-planned.json",
+      "contentHash": "5dcf6acf91bf26f72caef5d35d0a8ab3ae0356df3eb1fc6987d79d2bdc2b87c7"
     },
     {
       "slug": "japanese/kanji/tree",
@@ -16307,7 +19806,7 @@
       "romaji": "ki",
       "inputSequences": [],
       "ipa": "ki",
-      "studyOrder": 9999,
+      "studyOrder": 1015,
       "tags": [
         "kanji",
         "nature",
@@ -16373,7 +19872,7 @@
       "id": "1a1ddd006144",
       "route": "/languages/japanese/characters/kanji/tree",
       "sourcePath": "content/languages/japanese/characters.json",
-      "contentHash": "2deaf50bd501960d12348e2dfcf9c60eb5f31f16398534ac7522126f34766fbd"
+      "contentHash": "10a768a52101ea0a81867867489bb0e4051fdf7da58696267169ae74370ff6af"
     },
     {
       "slug": "japanese/kanji/two",
@@ -16395,7 +19894,7 @@
       "romaji": "ni",
       "inputSequences": [],
       "ipa": "ɲi",
-      "studyOrder": 9999,
+      "studyOrder": 1002,
       "tags": [
         "kanji",
         "number",
@@ -16435,7 +19934,42 @@
       "id": "1ec13c4ec844",
       "route": "/languages/japanese/characters/kanji/two",
       "sourcePath": "content/languages/japanese/characters.json",
-      "contentHash": "2deaf50bd501960d12348e2dfcf9c60eb5f31f16398534ac7522126f34766fbd"
+      "contentHash": "10a768a52101ea0a81867867489bb0e4051fdf7da58696267169ae74370ff6af"
+    },
+    {
+      "slug": "japanese/kanji/village",
+      "language": "ja",
+      "writingSystem": "kanji",
+      "glyph": "村",
+      "title": "Village",
+      "summary": "Grade 1 kanji for a village.",
+      "meanings": [
+        "village"
+      ],
+      "readings": [
+        {
+          "label": "Kun reading",
+          "value": "むら",
+          "ipa": "mɯɾa"
+        }
+      ],
+      "romaji": "mura",
+      "inputSequences": [],
+      "ipa": "mɯɾa",
+      "studyOrder": 2063,
+      "tags": [
+        "kanji",
+        "starter-kanji-100",
+        "grade-1"
+      ],
+      "status": "planned",
+      "strokes": [],
+      "examples": [],
+      "sources": [],
+      "id": "1c306f46575b",
+      "route": "/languages/japanese/characters/kanji/village",
+      "sourcePath": "content/languages/japanese/starter-kanji-a1-planned.json",
+      "contentHash": "5dcf6acf91bf26f72caef5d35d0a8ab3ae0356df3eb1fc6987d79d2bdc2b87c7"
     },
     {
       "slug": "japanese/kanji/water",
@@ -16457,7 +19991,7 @@
       "romaji": "mizu",
       "inputSequences": [],
       "ipa": "mizɯ",
-      "studyOrder": 9999,
+      "studyOrder": 1014,
       "tags": [
         "kanji",
         "nature",
@@ -16536,7 +20070,184 @@
       "id": "848da958da31",
       "route": "/languages/japanese/characters/kanji/water",
       "sourcePath": "content/languages/japanese/characters.json",
-      "contentHash": "2deaf50bd501960d12348e2dfcf9c60eb5f31f16398534ac7522126f34766fbd"
+      "contentHash": "10a768a52101ea0a81867867489bb0e4051fdf7da58696267169ae74370ff6af"
+    },
+    {
+      "slug": "japanese/kanji/what",
+      "language": "ja",
+      "writingSystem": "kanji",
+      "glyph": "何",
+      "title": "What",
+      "summary": "Starter kanji used in questions meaning what or how many.",
+      "meanings": [
+        "what"
+      ],
+      "readings": [
+        {
+          "label": "Kun reading",
+          "value": "なに",
+          "ipa": "nani"
+        }
+      ],
+      "romaji": "nani",
+      "inputSequences": [],
+      "ipa": "nani",
+      "studyOrder": 2091,
+      "tags": [
+        "kanji",
+        "starter-kanji-100",
+        "a1"
+      ],
+      "status": "planned",
+      "strokes": [],
+      "examples": [],
+      "sources": [],
+      "id": "5f15587091b5",
+      "route": "/languages/japanese/characters/kanji/what",
+      "sourcePath": "content/languages/japanese/starter-kanji-a1-planned.json",
+      "contentHash": "5dcf6acf91bf26f72caef5d35d0a8ab3ae0356df3eb1fc6987d79d2bdc2b87c7"
+    },
+    {
+      "slug": "japanese/kanji/white",
+      "language": "ja",
+      "writingSystem": "kanji",
+      "glyph": "白",
+      "title": "White",
+      "summary": "Grade 1 kanji for the color white.",
+      "meanings": [
+        "white"
+      ],
+      "readings": [
+        {
+          "label": "Kun reading",
+          "value": "しろ",
+          "ipa": "ɕiɾo"
+        }
+      ],
+      "romaji": "shiro",
+      "inputSequences": [],
+      "ipa": "ɕiɾo",
+      "studyOrder": 2072,
+      "tags": [
+        "kanji",
+        "starter-kanji-100",
+        "grade-1"
+      ],
+      "status": "planned",
+      "strokes": [],
+      "examples": [],
+      "sources": [],
+      "id": "940ed0c7fa2f",
+      "route": "/languages/japanese/characters/kanji/white",
+      "sourcePath": "content/languages/japanese/starter-kanji-a1-planned.json",
+      "contentHash": "5dcf6acf91bf26f72caef5d35d0a8ab3ae0356df3eb1fc6987d79d2bdc2b87c7"
+    },
+    {
+      "slug": "japanese/kanji/woman",
+      "language": "ja",
+      "writingSystem": "kanji",
+      "glyph": "女",
+      "title": "Woman",
+      "summary": "Grade 1 kanji for a woman or female person.",
+      "meanings": [
+        "woman",
+        "female"
+      ],
+      "readings": [
+        {
+          "label": "Kun reading",
+          "value": "おんな",
+          "ipa": "onːa"
+        }
+      ],
+      "romaji": "onna",
+      "inputSequences": [],
+      "ipa": "onːa",
+      "studyOrder": 2049,
+      "tags": [
+        "kanji",
+        "starter-kanji-100",
+        "grade-1"
+      ],
+      "status": "planned",
+      "strokes": [],
+      "examples": [],
+      "sources": [],
+      "id": "0fd6007362a0",
+      "route": "/languages/japanese/characters/kanji/woman",
+      "sourcePath": "content/languages/japanese/starter-kanji-a1-planned.json",
+      "contentHash": "5dcf6acf91bf26f72caef5d35d0a8ab3ae0356df3eb1fc6987d79d2bdc2b87c7"
+    },
+    {
+      "slug": "japanese/kanji/year",
+      "language": "ja",
+      "writingSystem": "kanji",
+      "glyph": "年",
+      "title": "Year",
+      "summary": "Grade 1 kanji for a year or age.",
+      "meanings": [
+        "year"
+      ],
+      "readings": [
+        {
+          "label": "Kun reading",
+          "value": "とし",
+          "ipa": "toɕi"
+        }
+      ],
+      "romaji": "toshi",
+      "inputSequences": [],
+      "ipa": "toɕi",
+      "studyOrder": 2071,
+      "tags": [
+        "kanji",
+        "starter-kanji-100",
+        "grade-1"
+      ],
+      "status": "planned",
+      "strokes": [],
+      "examples": [],
+      "sources": [],
+      "id": "0ddb43ce2025",
+      "route": "/languages/japanese/characters/kanji/year",
+      "sourcePath": "content/languages/japanese/starter-kanji-a1-planned.json",
+      "contentHash": "5dcf6acf91bf26f72caef5d35d0a8ab3ae0356df3eb1fc6987d79d2bdc2b87c7"
+    },
+    {
+      "slug": "japanese/kanji/yen",
+      "language": "ja",
+      "writingSystem": "kanji",
+      "glyph": "円",
+      "title": "Yen And Circle",
+      "summary": "Grade 1 kanji for yen and a circle.",
+      "meanings": [
+        "yen",
+        "circle"
+      ],
+      "readings": [
+        {
+          "label": "On reading",
+          "value": "えん",
+          "ipa": "eɴ"
+        }
+      ],
+      "romaji": "en",
+      "inputSequences": [],
+      "ipa": "eɴ",
+      "studyOrder": 2026,
+      "tags": [
+        "kanji",
+        "starter-kanji-100",
+        "grade-1"
+      ],
+      "status": "planned",
+      "strokes": [],
+      "examples": [],
+      "sources": [],
+      "id": "bdd2e3403835",
+      "route": "/languages/japanese/characters/kanji/yen",
+      "sourcePath": "content/languages/japanese/starter-kanji-a1-planned.json",
+      "contentHash": "5dcf6acf91bf26f72caef5d35d0a8ab3ae0356df3eb1fc6987d79d2bdc2b87c7"
     },
     {
       "slug": "japanese/katakana/a",
@@ -16605,7 +20316,7 @@
       "id": "97fb289cd0cd",
       "route": "/languages/japanese/characters/katakana/a",
       "sourcePath": "content/languages/japanese/characters.json",
-      "contentHash": "2deaf50bd501960d12348e2dfcf9c60eb5f31f16398534ac7522126f34766fbd"
+      "contentHash": "10a768a52101ea0a81867867489bb0e4051fdf7da58696267169ae74370ff6af"
     },
     {
       "slug": "japanese/katakana/bi",
@@ -16870,7 +20581,7 @@
       "id": "65295047e3da",
       "route": "/languages/japanese/characters/katakana/e",
       "sourcePath": "content/languages/japanese/characters.json",
-      "contentHash": "2deaf50bd501960d12348e2dfcf9c60eb5f31f16398534ac7522126f34766fbd"
+      "contentHash": "10a768a52101ea0a81867867489bb0e4051fdf7da58696267169ae74370ff6af"
     },
     {
       "slug": "japanese/katakana/fu",
@@ -17385,7 +21096,7 @@
       "id": "64679be90862",
       "route": "/languages/japanese/characters/katakana/i",
       "sourcePath": "content/languages/japanese/characters.json",
-      "contentHash": "2deaf50bd501960d12348e2dfcf9c60eb5f31f16398534ac7522126f34766fbd"
+      "contentHash": "10a768a52101ea0a81867867489bb0e4051fdf7da58696267169ae74370ff6af"
     },
     {
       "slug": "japanese/katakana/ji",
@@ -18839,7 +22550,7 @@
       "id": "b7764e594e17",
       "route": "/languages/japanese/characters/katakana/o",
       "sourcePath": "content/languages/japanese/characters.json",
-      "contentHash": "2deaf50bd501960d12348e2dfcf9c60eb5f31f16398534ac7522126f34766fbd"
+      "contentHash": "10a768a52101ea0a81867867489bb0e4051fdf7da58696267169ae74370ff6af"
     },
     {
       "slug": "japanese/katakana/pa",
@@ -20427,7 +24138,7 @@
       "id": "1b5b47155c52",
       "route": "/languages/japanese/characters/katakana/u",
       "sourcePath": "content/languages/japanese/characters.json",
-      "contentHash": "2deaf50bd501960d12348e2dfcf9c60eb5f31f16398534ac7522126f34766fbd"
+      "contentHash": "10a768a52101ea0a81867867489bb0e4051fdf7da58696267169ae74370ff6af"
     },
     {
       "slug": "japanese/katakana/wa",
@@ -21533,6 +25244,274 @@
       "route": "/languages/japanese/vocabulary/water",
       "sourcePath": "content/languages/japanese/vocabulary.json",
       "contentHash": "2065db9c3df19f1790ca6fb90300b3b6779ff5e6c87a2697935fae89f6d76a0c"
+    }
+  ],
+  "languageAudio": [],
+  "languageResources": [
+    {
+      "id": "erins-challenge",
+      "title": "Erin's Challenge! I Can Speak Japanese",
+      "description": "Video-supported beginner scenes, expressions, vocabulary, and culture notes for concrete communication.",
+      "publisher": "The Japan Foundation",
+      "url": "https://www.erin.jpf.go.jp/en/",
+      "proficiencyLevels": [
+        "a1",
+        "a2"
+      ],
+      "skills": [
+        "listening",
+        "speaking",
+        "interaction",
+        "vocabulary",
+        "culture"
+      ],
+      "access": "free",
+      "availability": "online",
+      "reusePolicy": "link-only",
+      "attribution": "The Japan Foundation",
+      "sourcePath": "content/languages/japanese/resources.json",
+      "contentHash": "430ffc2fead3cdb5b28dd7d99ffd78faa5a169c1aba8f4c095ab2424ab2e77f8"
+    },
+    {
+      "id": "irodori",
+      "title": "Irodori: Japanese for Life in Japan",
+      "description": "Free task-based coursebooks, audio, and practical activities for everyday life in Japan.",
+      "publisher": "The Japan Foundation",
+      "url": "https://www.irodori.jpf.go.jp/en/",
+      "proficiencyLevels": [
+        "pre-a1",
+        "a1",
+        "a2"
+      ],
+      "skills": [
+        "listening",
+        "interaction",
+        "reading",
+        "writing",
+        "vocabulary",
+        "grammar",
+        "culture"
+      ],
+      "access": "free",
+      "availability": "online",
+      "reusePolicy": "link-only",
+      "attribution": "The Japan Foundation",
+      "sourcePath": "content/languages/japanese/resources.json",
+      "contentHash": "430ffc2fead3cdb5b28dd7d99ffd78faa5a169c1aba8f4c095ab2424ab2e77f8"
+    },
+    {
+      "id": "jf-standard",
+      "title": "JF Standard for Japanese-Language Education",
+      "description": "Official Can-do framework connecting Japanese learning goals to CEFR-style proficiency levels.",
+      "publisher": "The Japan Foundation",
+      "url": "https://www.jfstandard.jpf.go.jp/pdf/jfs2024_pamphlet_en.pdf",
+      "proficiencyLevels": [
+        "pre-a1",
+        "a1",
+        "a2"
+      ],
+      "skills": [
+        "listening",
+        "speaking",
+        "interaction",
+        "reading",
+        "writing"
+      ],
+      "access": "free",
+      "availability": "online",
+      "reusePolicy": "link-only",
+      "attribution": "The Japan Foundation",
+      "sourcePath": "content/languages/japanese/resources.json",
+      "contentHash": "430ffc2fead3cdb5b28dd7d99ffd78faa5a169c1aba8f4c095ab2424ab2e77f8"
+    },
+    {
+      "id": "jft-basic",
+      "title": "JFT-Basic",
+      "description": "Official information and sample materials for practical everyday Japanese communication readiness.",
+      "publisher": "The Japan Foundation",
+      "url": "https://www.jpf.go.jp/jft-basic/e/about/index.html",
+      "proficiencyLevels": [
+        "a1",
+        "a2"
+      ],
+      "skills": [
+        "listening",
+        "reading",
+        "vocabulary",
+        "grammar",
+        "interaction"
+      ],
+      "access": "free",
+      "availability": "online",
+      "reusePolicy": "link-only",
+      "attribution": "The Japan Foundation",
+      "sourcePath": "content/languages/japanese/resources.json",
+      "contentHash": "430ffc2fead3cdb5b28dd7d99ffd78faa5a169c1aba8f4c095ab2424ab2e77f8"
+    },
+    {
+      "id": "jlpt-levels",
+      "title": "Official JLPT Level Summary",
+      "description": "Official descriptions of the language knowledge, reading, and listening measured from N5 through N1.",
+      "publisher": "JLPT",
+      "url": "https://www.jlpt.jp/e/about/levelsummary.html",
+      "proficiencyLevels": [
+        "a1",
+        "a2"
+      ],
+      "skills": [
+        "listening",
+        "reading",
+        "vocabulary",
+        "grammar"
+      ],
+      "access": "free",
+      "availability": "online",
+      "reusePolicy": "link-only",
+      "attribution": "Japan Foundation and Japan Educational Exchanges and Services",
+      "sourcePath": "content/languages/japanese/resources.json",
+      "contentHash": "430ffc2fead3cdb5b28dd7d99ffd78faa5a169c1aba8f4c095ab2424ab2e77f8"
+    },
+    {
+      "id": "jlpt-practice",
+      "title": "Official JLPT Sample Questions",
+      "description": "Official sample item formats for script, vocabulary, grammar, reading, and listening practice.",
+      "publisher": "JLPT",
+      "url": "https://samplequestions.jlpt.jp/e/samples/sampleindex.html",
+      "proficiencyLevels": [
+        "a1",
+        "a2"
+      ],
+      "skills": [
+        "listening",
+        "reading",
+        "vocabulary",
+        "grammar"
+      ],
+      "access": "free",
+      "availability": "online",
+      "reusePolicy": "link-only",
+      "attribution": "Japan Foundation and Japan Educational Exchanges and Services",
+      "sourcePath": "content/languages/japanese/resources.json",
+      "contentHash": "430ffc2fead3cdb5b28dd7d99ffd78faa5a169c1aba8f4c095ab2424ab2e77f8"
+    },
+    {
+      "id": "marugoto",
+      "title": "Marugoto",
+      "description": "Official course resources organized around communication activities and understanding Japanese language and culture.",
+      "publisher": "The Japan Foundation",
+      "url": "https://marugoto.jpf.go.jp/en/",
+      "proficiencyLevels": [
+        "pre-a1",
+        "a1",
+        "a2"
+      ],
+      "skills": [
+        "listening",
+        "speaking",
+        "interaction",
+        "reading",
+        "writing",
+        "grammar",
+        "culture"
+      ],
+      "access": "free",
+      "availability": "online",
+      "reusePolicy": "link-only",
+      "attribution": "The Japan Foundation",
+      "sourcePath": "content/languages/japanese/resources.json",
+      "contentHash": "430ffc2fead3cdb5b28dd7d99ffd78faa5a169c1aba8f4c095ab2424ab2e77f8"
+    },
+    {
+      "id": "mext-elementary-literacy",
+      "title": "MEXT Elementary Japanese Literacy Guidance",
+      "description": "Official curriculum guidance informing the read, write, and use progression for Japanese characters.",
+      "publisher": "MEXT",
+      "url": "https://www.mext.go.jp/content/20220606-mxt_kyoiku02-100002607_002.pdf",
+      "proficiencyLevels": [
+        "pre-a1",
+        "a1",
+        "a2"
+      ],
+      "skills": [
+        "script",
+        "reading",
+        "writing"
+      ],
+      "access": "free",
+      "availability": "online",
+      "reusePolicy": "link-only",
+      "attribution": "Ministry of Education, Culture, Sports, Science and Technology, Japan",
+      "sourcePath": "content/languages/japanese/resources.json",
+      "contentHash": "430ffc2fead3cdb5b28dd7d99ffd78faa5a169c1aba8f4c095ab2424ab2e77f8"
+    },
+    {
+      "id": "mext-jsl",
+      "title": "MEXT Japanese as a Second Language Guidance",
+      "description": "Official guidance for supporting learners who are acquiring Japanese alongside school learning.",
+      "publisher": "MEXT",
+      "url": "https://www.mext.go.jp/a_menu/shotou/clarinet/003/001/008/007.htm",
+      "proficiencyLevels": [
+        "pre-a1",
+        "a1",
+        "a2"
+      ],
+      "skills": [
+        "listening",
+        "interaction",
+        "reading",
+        "writing"
+      ],
+      "access": "free",
+      "availability": "online",
+      "reusePolicy": "link-only",
+      "attribution": "Ministry of Education, Culture, Sports, Science and Technology, Japan",
+      "sourcePath": "content/languages/japanese/resources.json",
+      "contentHash": "430ffc2fead3cdb5b28dd7d99ffd78faa5a169c1aba8f4c095ab2424ab2e77f8"
+    },
+    {
+      "id": "minato-kana",
+      "title": "Minato Hiragana A1 Self-Study Course",
+      "description": "A free registration-based course for recognizing and writing hiragana in beginner words.",
+      "publisher": "The Japan Foundation",
+      "url": "https://minato-jf.jp/CourseDetail/Index/KC25_HRGS_A100_EN01",
+      "proficiencyLevels": [
+        "pre-a1",
+        "a1"
+      ],
+      "skills": [
+        "script",
+        "reading",
+        "writing"
+      ],
+      "access": "registration",
+      "availability": "online",
+      "reusePolicy": "link-only",
+      "attribution": "The Japan Foundation",
+      "sourcePath": "content/languages/japanese/resources.json",
+      "contentHash": "430ffc2fead3cdb5b28dd7d99ffd78faa5a169c1aba8f4c095ab2424ab2e77f8"
+    },
+    {
+      "id": "tadoku-readers",
+      "title": "Tadoku Free Graded Readers",
+      "description": "Free leveled Japanese readers designed for extensive reading with pictures and controlled text.",
+      "publisher": "NPO Tadoku Supporters",
+      "url": "https://tadoku.org/japanese/en/free-books-en/",
+      "proficiencyLevels": [
+        "pre-a1",
+        "a1",
+        "a2"
+      ],
+      "skills": [
+        "reading",
+        "vocabulary",
+        "culture"
+      ],
+      "access": "free",
+      "availability": "online",
+      "reusePolicy": "link-only",
+      "attribution": "NPO Tadoku Supporters",
+      "sourcePath": "content/languages/japanese/resources.json",
+      "contentHash": "430ffc2fead3cdb5b28dd7d99ffd78faa5a169c1aba8f4c095ab2424ab2e77f8"
     }
   ],
   "passiveFlashcardFeeds": [
@@ -33835,7 +37814,7 @@
     {
       "name": "Languages",
       "slug": "languages",
-      "documentCount": 6,
+      "documentCount": 8,
       "difficulties": [
         "foundation"
       ],

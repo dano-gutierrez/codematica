@@ -1,5 +1,6 @@
 import { useRouter } from "expo-router";
 import { useMemo } from "react";
+import * as WebBrowser from "expo-web-browser";
 import type { CodematicaAdapters, ProgressTarget } from "@codematica/ui";
 import { createNativeSupabaseClient, getNativeAuthRedirectUrl, hasSupabasePublicEnv, openAuthUrl } from "./supabase";
 import { recordNativeProgress, syncNativeAnonymousProgress } from "./progress";
@@ -14,6 +15,7 @@ export function useCodematicaAdapters(): CodematicaAdapters {
         navigate: (href: string) => router.push(href as never),
         replace: (href: string) => router.replace(href as never),
         goBack: () => router.back(),
+        openExternalUrl: (href: string) => WebBrowser.openBrowserAsync(href).then(() => undefined),
       },
       progress: {
         record: (target: ProgressTarget, status, position) => recordNativeProgress(supabase, target, status, position),

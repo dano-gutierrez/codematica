@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { BookOpen, Layers, Search } from "lucide-react";
+import { BookOpen, Library, Layers, RotateCcw, Search } from "lucide-react";
 import { useMemo, useState, type ReactNode } from "react";
 import { getJapaneseCharacterGroups, searchJapanese, type ContentIndex, type JapaneseSearchResult, type LanguageCharacter, type LanguageVocabulary } from "@codematica/core";
 import { AppHeader } from "@/components/AppHeader";
@@ -25,13 +25,19 @@ export function JapaneseLanguageBrowser({ index }: { index: ContentIndex }) {
           Search beginner Japanese characters and phrases with romaji, meanings, and IPA pronunciation support.
         </p>
         <nav className="mt-5 grid gap-3 sm:grid-cols-2 lg:grid-cols-4" aria-label="Japanese study tools" data-testid="japanese-study-tools">
-          <StudyToolLink href="/paths/japanese-foundations" label="Continue the path" description="Lessons in beginner order" icon={<BookOpen className="h-5 w-5" aria-hidden="true" />} testId="japanese-path-link" />
+          <StudyToolLink href="/paths/japanese-foundations" label="Learn" description="Open Pre-A1 and A1 roadmap" icon={<BookOpen className="h-5 w-5" aria-hidden="true" />} testId="japanese-path-link" />
+          <StudyToolLink href="/languages/japanese/review" label="Review" description="Due queue and all cards" icon={<RotateCcw className="h-5 w-5" aria-hidden="true" />} testId="japanese-review-link" />
+          <StudyToolLink href="#dictionary" label="Dictionary" description="Characters, words, and writing" icon={<Search className="h-5 w-5" aria-hidden="true" />} testId="japanese-dictionary-link" />
+          <StudyToolLink href="#resources" label="Resources" description="Trusted free learning links" icon={<Library className="h-5 w-5" aria-hidden="true" />} testId="japanese-resources-link" />
+        </nav>
+
+        <div className="mt-4 flex flex-wrap gap-3" aria-label="Always available Japanese resources">
           {flashcards ? <StudyToolLink href={flashcards.route} label="Open flashcards" description="Recall kana at any time" icon={<Layers className="h-5 w-5" aria-hidden="true" />} testId="japanese-flashcards-link" /> : null}
           <StudyToolLink href="/docs/languages/japanese-hiragana-foundations?path=japanese-foundations" label="Hiragana guide" description="All 46 basic characters" icon={<span className="text-xl" aria-hidden="true">あ</span>} testId="japanese-hiragana-guide-link" />
           <StudyToolLink href="/docs/languages/japanese-katakana-foundations?path=japanese-foundations" label="Katakana guide" description="All 46 basic characters" icon={<span className="text-xl" aria-hidden="true">ア</span>} testId="japanese-katakana-guide-link" />
-        </nav>
+        </div>
 
-        <label className="relative mt-6 block max-w-3xl">
+        <label id="dictionary" className="relative mt-8 block max-w-3xl scroll-mt-6">
           <span className="sr-only">Search Japanese</span>
           <Search className="pointer-events-none absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-[#68737d]" aria-hidden="true" />
           <input
@@ -61,6 +67,26 @@ export function JapaneseLanguageBrowser({ index }: { index: ContentIndex }) {
             <VocabularySection title="Beginner words and greetings" vocabulary={index.languageVocabulary.filter((item) => item.language === "ja" && item.status === "published")} />
           </div>
         ) : null}
+
+        <section id="resources" className="mt-8 scroll-mt-6 rounded-lg border-2 border-b-4 border-[#d2bd76] bg-[#fffaf0] p-4 sm:p-6" data-testid="japanese-resource-shelf">
+          <p className="text-sm font-extrabold uppercase text-[#7a5200]">Trusted, always available</p>
+          <h2 className="mt-1 text-3xl font-extrabold text-[#263238]">Resource shelf</h2>
+          <p className="mt-2 max-w-3xl text-base font-semibold leading-7 text-[#53616c]">These materials stay on their publishers’ sites. Access and reuse labels make it clear what Codematica links to and what it may redistribute.</p>
+          <div className="mt-5 grid gap-3 md:grid-cols-2">
+            {index.languageResources.map((resource) => (
+              <a key={resource.id} href={resource.url} target="_blank" rel="noreferrer" className="min-w-0 rounded-lg border-2 border-b-4 border-[#d2bd76] bg-white p-4 [overflow-wrap:anywhere] focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-2 focus-visible:outline-[#007c78]">
+                <span className="block [overflow-wrap:anywhere] text-lg font-extrabold text-[#263238]">{resource.title}</span>
+                <span className="mt-1 block [overflow-wrap:anywhere] text-sm font-semibold leading-6 text-[#53616c]">{resource.description}</span>
+                <span className="mt-3 flex flex-wrap gap-2 text-xs font-extrabold uppercase text-[#654400]">
+                  <span className="rounded-md bg-[#fff0b8] px-2 py-1">{resource.access}</span>
+                  <span className="rounded-md bg-[#edf5ff] px-2 py-1">{resource.proficiencyLevels.join(" · ").toUpperCase()}</span>
+                  <span className="rounded-md bg-[#f0edf9] px-2 py-1">{resource.reusePolicy === "link-only" ? "Link only" : "Licensed embed"}</span>
+                </span>
+                <span className="mt-3 block text-sm font-bold text-[#53616c]">Publisher: {resource.publisher}</span>
+              </a>
+            ))}
+          </div>
+        </section>
       </section>
     </main>
   );
@@ -68,11 +94,11 @@ export function JapaneseLanguageBrowser({ index }: { index: ContentIndex }) {
 
 function StudyToolLink({ href, label, description, icon, testId }: { href: string; label: string; description: string; icon: ReactNode; testId: string }) {
   return (
-    <Link href={href} className="flex min-h-20 items-center gap-3 rounded-lg border-2 border-b-4 border-[#d5e2e8] bg-white px-4 py-3 transition hover:-translate-y-0.5 hover:border-[#7a5200]" data-testid={testId}>
+    <Link href={href} className="flex min-h-20 w-full min-w-0 items-center gap-3 rounded-lg border-2 border-b-4 border-[#d5e2e8] bg-white px-4 py-3 transition hover:-translate-y-0.5 hover:border-[#7a5200] sm:w-auto" data-testid={testId}>
       <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-[#fff5d6] font-extrabold text-[#7a5200]">{icon}</span>
       <span className="min-w-0">
-        <span className="block text-sm font-extrabold text-[#263238]">{label}</span>
-        <span className="mt-0.5 block text-xs font-bold text-[#68737d]">{description}</span>
+        <span className="block [overflow-wrap:anywhere] text-sm font-extrabold text-[#263238]">{label}</span>
+        <span className="mt-0.5 block [overflow-wrap:anywhere] text-xs font-bold text-[#68737d]">{description}</span>
       </span>
     </Link>
   );
@@ -108,7 +134,7 @@ function CharacterSection({ title, characters }: { title: string; characters: La
             href={character.route}
             className="flex aspect-square flex-col items-center justify-center rounded-lg border-2 border-b-4 border-[#d5e2e8] bg-[#f6fbfc] p-2 text-center transition hover:-translate-y-0.5 hover:border-[#7a5200]"
           >
-            <span className="text-3xl font-extrabold leading-none text-[#263238]">{character.glyph}</span>
+            <span lang="ja" className="text-3xl font-extrabold leading-none text-[#263238]">{character.glyph}</span>
             <span className="mt-1 text-xs font-extrabold text-[#68737d]">{character.romaji}</span>
           </Link>
         ))}
@@ -124,7 +150,7 @@ function CharacterCard({ character }: { character: LanguageCharacter }) {
       className="grid gap-3 rounded-lg border-2 border-b-4 border-[#d5e2e8] bg-white p-4 transition hover:-translate-y-0.5 hover:border-[#7a5200] sm:grid-cols-[5rem_minmax(0,1fr)]"
       data-testid={`japanese-character-${character.slug.replaceAll("/", "-")}`}
     >
-      <span className="text-6xl font-extrabold leading-none text-[#263238]">{character.glyph}</span>
+      <span lang="ja" className="text-6xl font-extrabold leading-none text-[#263238]">{character.glyph}</span>
       <span className="min-w-0">
         <span className="flex flex-wrap gap-2">
           <span className="rounded-lg bg-[#fff5d6] px-2.5 py-1 text-xs font-extrabold text-[#7a5200]">{character.writingSystem}</span>
@@ -144,7 +170,7 @@ function VocabularyCard({ vocabulary }: { vocabulary: LanguageVocabulary }) {
       className="grid gap-3 rounded-lg border-2 border-b-4 border-[#d5e2e8] bg-white p-4 transition hover:-translate-y-0.5 hover:border-[#7a5200] sm:grid-cols-[8rem_minmax(0,1fr)]"
       data-testid={`japanese-vocabulary-${vocabulary.slug.replaceAll("/", "-")}`}
     >
-      <span className="text-5xl font-extrabold leading-none text-[#263238]">{vocabulary.expression}</span>
+      <span lang="ja" className="text-5xl font-extrabold leading-none text-[#263238]">{vocabulary.expression}</span>
       <span className="min-w-0">
         <span className="flex flex-wrap gap-2">
           <span className="rounded-lg bg-[#fff5d6] px-2.5 py-1 text-xs font-extrabold text-[#7a5200]">Vocabulary</span>

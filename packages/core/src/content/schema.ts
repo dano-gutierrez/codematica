@@ -24,9 +24,65 @@ export const knowledgeFrontmatterSchema = z.object({
 
 export const learningPathKindSchema = z.enum(["role", "skill"]);
 
+export const proficiencyLevelSchema = z.enum(["pre-a1", "a1", "a2"]);
+
+export const languageSkillSchema = z.enum([
+  "script",
+  "listening",
+  "speaking",
+  "interaction",
+  "reading",
+  "writing",
+  "vocabulary",
+  "grammar",
+  "culture",
+  "ime",
+]);
+
+const curriculumIdSchema = z
+  .string()
+  .min(2)
+  .regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/, "Use lowercase curriculum IDs with - separators.");
+
+export const learningSkillDefinitionSchema = z.object({
+  id: curriculumIdSchema,
+  label: z.string().min(2),
+  skill: languageSkillSchema,
+  description: z.string().min(10),
+});
+
+export const canDoStatementSchema = z.object({
+  id: curriculumIdSchema,
+  statement: z.string().min(15),
+  skill: languageSkillSchema,
+});
+
+export const learningStageSchema = z.object({
+  id: curriculumIdSchema,
+  label: z.string().min(3),
+  proficiencyLevel: proficiencyLevelSchema,
+  summary: z.string().min(20),
+  unitSlugs: z.array(slugSchema).min(1),
+  canDos: z.array(canDoStatementSchema).min(1),
+  requiredNodeSlugs: z.array(slugSchema).min(1),
+  checkpointExerciseSlug: slugSchema,
+  passThreshold: z.number().min(0).max(1),
+  minimumSkillScore: z.number().min(0).max(1).optional(),
+  estimatedMinutes: z.number().int().positive(),
+});
+
+export const learningProgressionSchema = z.object({
+  framework: z.literal("jf-standard"),
+  skills: z.array(learningSkillDefinitionSchema).min(1),
+  stages: z.array(learningStageSchema).min(1),
+});
+
 export const learningPathNodeSchema = z.object({
   kind: z.enum(["document", "diagram", "exercise"]),
   slug: slugSchema,
+  proficiencyLevel: proficiencyLevelSchema.optional(),
+  skillIds: z.array(curriculumIdSchema).optional(),
+  required: z.boolean().optional(),
 });
 
 export const learningPathUnitSchema = z.object({
@@ -45,6 +101,21 @@ export const learningPathFileSchema = z.object({
   audience: z.string().min(10),
   status: contentStatusSchema.default("draft"),
   units: z.array(learningPathUnitSchema).min(1),
+  progression: learningProgressionSchema.optional(),
+}).superRefine((path, context) => {
+  if (!path.progression) return;
+
+  const unique = (values: string[], pathPrefix: (string | number)[], label: string) => {
+    const seen = new Set<string>();
+    values.forEach((value, index) => {
+      if (seen.has(value)) context.addIssue({ code: "custom", path: [...pathPrefix, index], message: `Duplicate ${label} "${value}".` });
+      seen.add(value);
+    });
+  };
+
+  unique(path.progression.skills.map((skill) => skill.id), ["progression", "skills"], "skill id");
+  unique(path.progression.stages.map((stage) => stage.id), ["progression", "stages"], "stage id");
+  unique(path.progression.stages.flatMap((stage) => stage.canDos.map((canDo) => canDo.id)), ["progression", "stages"], "Can-do id");
 });
 
 const exerciseBaseSchema = z.object({
@@ -55,6 +126,9 @@ const exerciseBaseSchema = z.object({
   difficulty: difficultySchema,
   tags: z.array(z.string().min(2)).min(1),
   status: contentStatusSchema.default("draft"),
+  proficiencyLevel: proficiencyLevelSchema.optional(),
+  skillIds: z.array(curriculumIdSchema).optional(),
+  required: z.boolean().optional(),
 });
 
 const questionIdSchema = z
@@ -193,6 +267,7 @@ export const languageExampleSchema = z.object({
   inputSequences: z.array(z.string().min(1)).default([]),
   translation: z.string().min(1),
   explanation: z.string().min(10),
+  audioId: curriculumIdSchema.optional(),
   segments: z.array(languageExampleSegmentSchema).min(1),
 });
 
@@ -211,6 +286,7 @@ export const languageCharacterFileItemSchema = z.object({
   studyOrder: z.number().int().nonnegative().default(9999),
   tags: z.array(z.string().min(2)).min(1),
   status: contentStatusSchema.default("draft"),
+  audioId: curriculumIdSchema.optional(),
   strokes: z.array(languageStrokeSchema).default([]),
   examples: z.array(languageExampleSchema).default([]),
   sources: z.array(languageSourceSchema).default([]),
@@ -230,6 +306,7 @@ export const languageVocabularyFileItemSchema = z.object({
   examples: z.array(languageExampleSchema).default([]),
   tags: z.array(z.string().min(2)).min(1),
   status: contentStatusSchema.default("draft"),
+  audioId: curriculumIdSchema.optional(),
   sources: z.array(languageSourceSchema).default([]),
 });
 
@@ -245,9 +322,51 @@ export const languageVocabularyCatalogFileSchema = z.object({
   items: z.array(languageVocabularyFileItemSchema).min(1),
 });
 
+export const languageAudioAssetSchema = z.object({
+  id: curriculumIdSchema,
+  transcript: z.string().min(1),
+  reading: z.string().min(1),
+  speaker: z.string().min(2),
+  license: z.string().min(3),
+  attribution: z.string().min(3),
+  assetPath: z.string().regex(/^audio\/[a-zA-Z0-9/_-]+\.(?:mp3|m4a|wav|ogg)$/),
+});
+
+export const languageAudioCatalogFileSchema = z.object({
+  kind: z.literal("audio"),
+  language: languageCodeSchema.default("ja"),
+  items: z.array(languageAudioAssetSchema).default([]),
+});
+
+export const externalResourceAccessSchema = z.enum(["free", "registration", "paid"]);
+export const externalResourceAvailabilitySchema = z.enum(["online", "offline"]);
+export const externalResourceReusePolicySchema = z.enum(["link-only", "licensed-embed"]);
+
+export const languageExternalResourceSchema = z.object({
+  id: curriculumIdSchema,
+  title: z.string().min(3),
+  description: z.string().min(15),
+  publisher: z.string().min(2),
+  url: z.string().url(),
+  proficiencyLevels: z.array(proficiencyLevelSchema).min(1),
+  skills: z.array(languageSkillSchema).min(1),
+  access: externalResourceAccessSchema,
+  availability: externalResourceAvailabilitySchema,
+  reusePolicy: externalResourceReusePolicySchema,
+  attribution: z.string().min(3),
+});
+
+export const languageExternalResourceCatalogFileSchema = z.object({
+  kind: z.literal("resources"),
+  language: languageCodeSchema.default("ja"),
+  items: z.array(languageExternalResourceSchema).min(1),
+});
+
 export const languageCatalogFileSchema = z.discriminatedUnion("kind", [
   languageCharacterCatalogFileSchema,
   languageVocabularyCatalogFileSchema,
+  languageAudioCatalogFileSchema,
+  languageExternalResourceCatalogFileSchema,
 ]);
 
 export const passiveFlashcardTypeSchema = z.enum(["concept", "practical", "snippet", "interview"]);
@@ -466,6 +585,11 @@ export type Difficulty = z.infer<typeof difficultySchema>;
 export type ContentStatus = z.infer<typeof contentStatusSchema>;
 export type KnowledgeFrontmatter = z.infer<typeof knowledgeFrontmatterSchema>;
 export type LearningPathKind = z.infer<typeof learningPathKindSchema>;
+export type ProficiencyLevel = z.infer<typeof proficiencyLevelSchema>;
+export type LanguageSkill = z.infer<typeof languageSkillSchema>;
+export type LearningSkillDefinition = z.infer<typeof learningSkillDefinitionSchema>;
+export type CanDoStatement = z.infer<typeof canDoStatementSchema>;
+export type LearningStage = z.infer<typeof learningStageSchema>;
 export type LearningPathNode = z.infer<typeof learningPathNodeSchema>;
 export type LearningPathUnit = z.infer<typeof learningPathUnitSchema>;
 export type LearningPathFile = z.infer<typeof learningPathFileSchema>;
@@ -480,6 +604,8 @@ export type LanguageExampleSegment = z.infer<typeof languageExampleSegmentSchema
 export type LanguageExample = z.infer<typeof languageExampleSchema>;
 export type LanguageCharacterFileItem = z.infer<typeof languageCharacterFileItemSchema>;
 export type LanguageVocabularyFileItem = z.infer<typeof languageVocabularyFileItemSchema>;
+export type LanguageAudioAssetFileItem = z.infer<typeof languageAudioAssetSchema>;
+export type LanguageExternalResourceFileItem = z.infer<typeof languageExternalResourceSchema>;
 export type LanguageCatalogFile = z.infer<typeof languageCatalogFileSchema>;
 export type PassiveFlashcardType = z.infer<typeof passiveFlashcardTypeSchema>;
 export type PassiveFlashcardCard = z.infer<typeof passiveFlashcardCardSchema>;
@@ -550,6 +676,16 @@ export type LanguageVocabulary = LanguageVocabularyFileItem & {
   contentHash: string;
 };
 
+export type LanguageAudioAsset = LanguageAudioAssetFileItem & {
+  sourcePath: string;
+  contentHash: string;
+};
+
+export type LanguageExternalResource = LanguageExternalResourceFileItem & {
+  sourcePath: string;
+  contentHash: string;
+};
+
 export type PassiveFlashcardFeed = PassiveFlashcardFeedFile & {
   id: string;
   route: string;
@@ -598,13 +734,15 @@ export type ContentTrack = {
 };
 
 export type ContentIndex = {
-  schemaVersion: 7;
+  schemaVersion: 8;
   documents: KnowledgeDocument[];
   diagrams: MermaidDiagram[];
   learningPaths: LearningPath[];
   exercises: LearningExercise[];
   languageCharacters: LanguageCharacter[];
   languageVocabulary: LanguageVocabulary[];
+  languageAudio: LanguageAudioAsset[];
+  languageResources: LanguageExternalResource[];
   passiveFlashcardFeeds: PassiveFlashcardFeed[];
   interviewCollections: InterviewCollection[];
   tracks: ContentTrack[];

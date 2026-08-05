@@ -19,6 +19,8 @@
     "./flashcards/passive": "./src/flashcards/passive.ts",
     "./progress": "./src/progress/progress.ts",
     "./progress/server": "./src/progress/server.ts",
+    "./progress/mastery": "./src/progress/mastery.ts",
+    "./progress/progression": "./src/progress/progression.ts",
     "./generated/content-index.json": "./src/generated/content-index.json"
   },
   "scripts": {

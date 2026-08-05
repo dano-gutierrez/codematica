@@ -122,3 +122,7 @@ References:
 - https://docs.expo.dev/submit/introduction/
 - https://docs.expo.dev/submit/android/
 - https://docs.expo.dev/submit/ios/
+
+## Japanese On iPad
+
+Expo orientation is adaptive and `supportsTablet` remains enabled. Japanese handwriting uses window dimensions so compact phone and Split View remain stacked while larger iPad windows receive a wider canvas. Review mastery is stored immediately with AsyncStorage and every lesson, flashcard, dictionary profile, and resource remains directly reachable. Run `npm run content:audio` after adding released Japanese audio so Expo receives a static asset registry.

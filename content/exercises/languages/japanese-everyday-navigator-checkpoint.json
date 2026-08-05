@@ -1,0 +1,87 @@
+{
+  "slug": "languages/japanese-everyday-navigator-checkpoint",
+  "title": "Everyday Navigator A1 Capstone",
+  "documentSlug": "languages/japanese-everyday-navigator",
+  "concept": "A1 places, routines, transport, requests, shopping, and information search",
+  "difficulty": "foundation",
+  "tags": ["japanese", "a1", "checkpoint", "jlpt-readiness", "jft-readiness"],
+  "status": "published",
+  "proficiencyLevel": "a1",
+  "skillIds": ["a1-interaction", "a1-reading", "a1-listening", "a1-writing"],
+  "required": true,
+  "type": "questionnaire",
+  "questions": [
+    {
+      "id": "place-particle",
+      "kind": "cloze",
+      "prompt": "Complete the sentence: I study at school.",
+      "explanation": "で marks the place where an action happens.",
+      "template": "がっこう{{blank}}べんきょうします。",
+      "acceptedAnswers": ["で"]
+    },
+    {
+      "id": "destination-particle",
+      "kind": "cloze",
+      "prompt": "Complete the sentence: I go toward the station.",
+      "explanation": "The destination particle へ is written he but pronounced e.",
+      "template": "えき{{blank}}いきます。",
+      "acceptedAnswers": ["へ"]
+    },
+    {
+      "id": "yesterday-form",
+      "kind": "choice",
+      "prompt": "Choose the polite sentence meaning I ate ramen yesterday.",
+      "explanation": "たべました is the polite past form of eat.",
+      "options": [
+        { "id": "past-ate", "label": "きのう、ラーメンをたべました。", "isCorrect": true },
+        { "id": "not-eat", "label": "きのう、ラーメンをたべません。", "isCorrect": false },
+        { "id": "future-eat", "label": "あした、ラーメンをたべます。", "isCorrect": false }
+      ]
+    },
+    {
+      "id": "invitation",
+      "kind": "choice",
+      "prompt": "Which sentence politely invites a friend to go to Kyoto?",
+      "explanation": "〜ませんか is a considerate invitation pattern.",
+      "options": [
+        { "id": "invite", "label": "いっしょにきょうとへいきませんか。", "isCorrect": true },
+        { "id": "command", "label": "きょうとへいってください。", "isCorrect": false },
+        { "id": "location", "label": "きょうとはどこですか。", "isCorrect": false }
+      ]
+    },
+    {
+      "id": "permission",
+      "kind": "choice",
+      "prompt": "You want to take a photo. Which question asks permission?",
+      "explanation": "〜てもいいですか asks whether an action is permitted.",
+      "options": [
+        { "id": "photo-ok", "label": "しゃしんをとってもいいですか。", "isCorrect": true },
+        { "id": "photo-where", "label": "しゃしんはどこですか。", "isCorrect": false },
+        { "id": "photo-did", "label": "しゃしんをとりました。", "isCorrect": false }
+      ]
+    },
+    {
+      "id": "message-search",
+      "kind": "choice",
+      "prompt": "Message: きょうは七時に駅で会いましょう。 When and where will they meet?",
+      "explanation": "七時 is 7:00, 駅 is the station, and で marks the meeting place.",
+      "options": [
+        { "id": "seven-station", "label": "At 7:00 at the station", "isCorrect": true },
+        { "id": "eight-school", "label": "At 8:00 at school", "isCorrect": false },
+        { "id": "seven-store", "label": "At 7:00 at the store", "isCorrect": false }
+      ]
+    },
+    {
+      "id": "shopping-order",
+      "kind": "ordering",
+      "prompt": "Put the exchange in a useful shopping order.",
+      "explanation": "First ask the price, hear it, then request the item.",
+      "items": [
+        { "id": "ask-price", "label": "これはいくらですか。" },
+        { "id": "give-price", "label": "さんぜんえんです。" },
+        { "id": "buy-item", "label": "じゃ、これをください。" }
+      ],
+      "correctOrder": ["ask-price", "give-price", "buy-item"]
+    }
+  ]
+}

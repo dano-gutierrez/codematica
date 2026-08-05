@@ -41,11 +41,13 @@
     "mobile:submit:all": "cd apps/mobile && eas submit --profile production --platform all --latest",
     "content:index": "tsx scripts/content/build-index.ts",
     "content:check": "tsx scripts/content/build-index.ts --check",
+    "content:audio": "tsx scripts/content/build-japanese-audio.ts",
     "content:sync:supabase": "node --env-file=.env --import tsx scripts/content/sync-supabase.ts",
     "e2e:smoke": "playwright test --config=apps/web/e2e/playwright.config.ts",
     "mobile:doctor": "npm run doctor -w @codematica/mobile"
   },
   "dependencies": {
+    "@fontsource-variable/noto-sans-jp": "^5.3.0",
     "@radix-ui/react-select": "^2.2.6",
     "@supabase/ssr": "^0.12.0",
     "@supabase/supabase-js": "^2.106.1",
@@ -69,6 +71,7 @@
     "zod": "^4.2.1"
   },
   "devDependencies": {
+    "@axe-core/playwright": "^4.12.1",
     "@eslint/js": "^9.39.2",
     "@playwright/test": "^1.60.0",
     "@tailwindcss/postcss": "^4.1.17",
@@ -79,11 +82,14 @@
     "@types/react": "^19.2.7",
     "@types/react-dom": "^19.2.3",
     "eas-cli": "^20.5.1",
+    "expo": "57.0.10",
+    "expo-constants": "57.0.9",
     "eslint": "^9.39.2",
     "eslint-plugin-react-hooks": "^7.0.1",
     "globals": "^16.5.0",
     "jsdom": "^29.1.1",
     "pod-install": "^1.1.0",
+    "react-native": "0.86.2",
     "tailwindcss": "^4.1.17",
     "tsx": "^4.21.0",
     "typescript": "^5.9.3",
@@ -91,8 +97,26 @@
     "vitest": "^4.0.15"
   },
   "overrides": {
+    "@expo/dom-webview": "57.0.1",
+    "@expo/fingerprint": "0.20.6",
+    "@expo/log-box": "57.0.2",
+    "@expo/cli": "57.0.12",
+    "@expo/devtools": "57.0.1",
+    "@expo/metro-config": "57.0.7",
+    "@expo/metro-runtime": "57.0.8",
+    "@expo/router-server": "57.0.5",
+    "babel-preset-expo": "57.0.5",
+    "expo": "57.0.10",
+    "expo-asset": "57.0.8",
+    "expo-constants": "57.0.9",
+    "expo-file-system": "57.0.1",
+    "expo-font": "57.0.1",
+    "expo-keep-awake": "57.0.1",
+    "expo-modules-core": "57.0.9",
+    "expo-modules-jsi": "57.0.4",
     "postcss": "^8.5.15",
     "react": "19.2.3",
-    "react-dom": "19.2.3"
+    "react-dom": "19.2.3",
+    "react-native": "0.86.2"
   }
 }

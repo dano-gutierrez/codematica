@@ -12,6 +12,9 @@ describe("JapaneseLanguageBrowser", () => {
     expect(screen.getByTestId("japanese-flashcards-link")).toHaveAttribute("href", "/paths/japanese-foundations/flashcards");
     expect(screen.getByTestId("japanese-hiragana-guide-link")).toHaveAttribute("href", "/docs/languages/japanese-hiragana-foundations?path=japanese-foundations");
     expect(screen.getByTestId("japanese-katakana-guide-link")).toHaveAttribute("href", "/docs/languages/japanese-katakana-foundations?path=japanese-foundations");
+    expect(screen.getByTestId("japanese-review-link")).toHaveAttribute("href", "/languages/japanese/review");
+    expect(screen.getByTestId("japanese-dictionary-link")).toHaveAttribute("href", "#dictionary");
+    expect(screen.getByTestId("japanese-resources-link")).toHaveAttribute("href", "#resources");
   });
 
   it("separates the complete basic katakana set from sound extras", () => {
@@ -21,5 +24,13 @@ describe("JapaneseLanguageBrowser", () => {
     expect(screen.getByRole("heading", { name: "Katakana sound extras" })).toBeVisible();
     expect(screen.getByRole("link", { name: "ンn" })).toBeVisible();
     expect(screen.getByRole("link", { name: "ーlong vowel" })).toBeVisible();
+  });
+
+  it("shows trusted resources with access and reuse metadata", () => {
+    render(<JapaneseLanguageBrowser index={getContentIndex()} />);
+
+    expect(screen.getByTestId("japanese-resource-shelf")).toBeVisible();
+    expect(screen.getByRole("link", { name: /Irodori/ })).toHaveAttribute("href", "https://www.irodori.jpf.go.jp/en/");
+    expect(screen.getAllByText("Link only").length).toBeGreaterThan(0);
   });
 });

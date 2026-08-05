@@ -1,75 +1,164 @@
 {
   "slug": "japanese-foundations",
-  "title": "Japanese Foundations",
-  "summary": "An alphabet-first beginner Japanese path for reading, recalling, typing, and writing hiragana and katakana before starter kanji.",
+  "title": "Japanese Foundations: Pre-A1 to A1",
+  "summary": "An open, milestone-based beginner course for reading, listening, interacting, typing, and writing Japanese in concrete daily-life scenes.",
   "kind": "skill",
   "category": "Languages",
-  "audience": "English-speaking beginners learning Japanese on mobile, tablet, and web.",
+  "audience": "English-speaking teens and adults beginning Japanese on phone, tablet, and web.",
   "status": "published",
   "units": [
     {
       "slug": "writing-systems",
       "title": "Writing Systems",
-      "summary": "See how hiragana, katakana, and kanji work together, and learn the assisted-to-free handwriting loop.",
+      "summary": "Hear Japanese rhythm and see how hiragana, katakana, and kanji work together before tracing their shapes.",
       "nodes": [
-        { "kind": "document", "slug": "languages/japanese-writing-systems" }
+        { "kind": "document", "slug": "languages/japanese-writing-systems", "proficiencyLevel": "pre-a1", "skillIds": ["kana-listening", "kana-reading"], "required": true }
       ]
     },
     {
       "slug": "hiragana-foundations",
       "title": "Read And Write Hiragana",
-      "summary": "Learn the complete 46-character hiragana map in small row groups, then retrieve the sounds from memory.",
+      "summary": "Learn the complete 46-character hiragana map in small sound groups with immediate recall and cumulative review.",
       "nodes": [
-        { "kind": "document", "slug": "languages/japanese-hiragana-foundations" },
-        { "kind": "exercise", "slug": "languages/japanese-hiragana-vowels-writing" },
-        { "kind": "exercise", "slug": "languages/japanese-hiragana-k-s-writing" },
-        { "kind": "exercise", "slug": "languages/japanese-hiragana-t-n-writing" },
-        { "kind": "exercise", "slug": "languages/japanese-hiragana-h-m-writing" },
-        { "kind": "exercise", "slug": "languages/japanese-hiragana-y-r-w-writing" },
-        { "kind": "exercise", "slug": "languages/japanese-hiragana-reading-check" }
+        { "kind": "document", "slug": "languages/japanese-hiragana-foundations", "proficiencyLevel": "pre-a1", "skillIds": ["kana-reading"], "required": true },
+        { "kind": "exercise", "slug": "languages/japanese-hiragana-vowels-writing", "proficiencyLevel": "pre-a1", "skillIds": ["kana-writing"], "required": true },
+        { "kind": "exercise", "slug": "languages/japanese-hiragana-k-s-writing", "proficiencyLevel": "pre-a1", "skillIds": ["kana-writing"], "required": true },
+        { "kind": "exercise", "slug": "languages/japanese-hiragana-t-n-writing", "proficiencyLevel": "pre-a1", "skillIds": ["kana-writing"], "required": true },
+        { "kind": "exercise", "slug": "languages/japanese-hiragana-h-m-writing", "proficiencyLevel": "pre-a1", "skillIds": ["kana-writing"], "required": true },
+        { "kind": "exercise", "slug": "languages/japanese-hiragana-y-r-w-writing", "proficiencyLevel": "pre-a1", "skillIds": ["kana-writing"], "required": true },
+        { "kind": "exercise", "slug": "languages/japanese-hiragana-reading-check", "proficiencyLevel": "pre-a1", "skillIds": ["kana-reading"], "required": true }
       ]
     },
     {
       "slug": "hiragana-sound-tools",
       "title": "Hiragana Sound Tools",
-      "summary": "Decode dakuten, handakuten, small kana, doubled consonants, contracted sounds, and long vowels.",
+      "summary": "Decode dakuten, handakuten, small kana, doubled consonants, contracted sounds, long vowels, and moraic ん.",
       "nodes": [
-        { "kind": "document", "slug": "languages/japanese-hiragana-sound-changes" },
-        { "kind": "exercise", "slug": "languages/japanese-hiragana-sound-changes-questionnaire" },
-        { "kind": "exercise", "slug": "languages/japanese-hiragana-ime-exceptions-writing" }
+        { "kind": "document", "slug": "languages/japanese-hiragana-sound-changes", "proficiencyLevel": "pre-a1", "skillIds": ["kana-listening", "kana-reading"], "required": true },
+        { "kind": "exercise", "slug": "languages/japanese-hiragana-sound-changes-questionnaire", "proficiencyLevel": "pre-a1", "skillIds": ["kana-listening", "kana-reading"], "required": true },
+        { "kind": "exercise", "slug": "languages/japanese-hiragana-ime-exceptions-writing", "proficiencyLevel": "pre-a1", "skillIds": ["kana-writing", "kana-ime"], "required": true }
       ]
     },
     {
       "slug": "katakana-foundations",
       "title": "Read And Write Katakana",
-      "summary": "Reuse the hiragana sound map to learn all 46 basic katakana, key look-alikes, long vowels, and loanwords.",
+      "summary": "Transfer the hiragana sound map to all 46 basic katakana, look-alikes, long vowels, and common loanwords.",
       "nodes": [
-        { "kind": "document", "slug": "languages/japanese-katakana-foundations" },
-        { "kind": "exercise", "slug": "languages/japanese-katakana-vowels-writing" },
-        { "kind": "exercise", "slug": "languages/japanese-katakana-k-s-writing" },
-        { "kind": "exercise", "slug": "languages/japanese-katakana-t-n-writing" },
-        { "kind": "exercise", "slug": "languages/japanese-katakana-h-m-writing" },
-        { "kind": "exercise", "slug": "languages/japanese-katakana-y-r-w-writing" },
-        { "kind": "exercise", "slug": "languages/japanese-katakana-reading-check" }
+        { "kind": "document", "slug": "languages/japanese-katakana-foundations", "proficiencyLevel": "pre-a1", "skillIds": ["kana-reading"], "required": true },
+        { "kind": "exercise", "slug": "languages/japanese-katakana-vowels-writing", "proficiencyLevel": "pre-a1", "skillIds": ["kana-writing"], "required": true },
+        { "kind": "exercise", "slug": "languages/japanese-katakana-k-s-writing", "proficiencyLevel": "pre-a1", "skillIds": ["kana-writing"], "required": true },
+        { "kind": "exercise", "slug": "languages/japanese-katakana-t-n-writing", "proficiencyLevel": "pre-a1", "skillIds": ["kana-writing"], "required": true },
+        { "kind": "exercise", "slug": "languages/japanese-katakana-h-m-writing", "proficiencyLevel": "pre-a1", "skillIds": ["kana-writing"], "required": true },
+        { "kind": "exercise", "slug": "languages/japanese-katakana-y-r-w-writing", "proficiencyLevel": "pre-a1", "skillIds": ["kana-writing"], "required": true },
+        { "kind": "exercise", "slug": "languages/japanese-katakana-reading-check", "proficiencyLevel": "pre-a1", "skillIds": ["kana-reading"], "required": true }
       ]
     },
     {
       "slug": "romaji-and-kana-input",
       "title": "Romaji And Kana Input",
-      "summary": "Separate Japanese spelling, pronunciation, learner romaji, and the keys an IME needs.",
+      "summary": "Separate Japanese spelling, pronunciation, learner romanization, and the keys an IME needs.",
       "nodes": [
-        { "kind": "document", "slug": "languages/japanese-romaji-kana-input" },
-        { "kind": "exercise", "slug": "languages/japanese-romaji-kana-input-questionnaire" }
+        { "kind": "document", "slug": "languages/japanese-romaji-kana-input", "proficiencyLevel": "pre-a1", "skillIds": ["kana-reading", "kana-ime"], "required": true },
+        { "kind": "exercise", "slug": "languages/japanese-romaji-kana-input-questionnaire", "proficiencyLevel": "pre-a1", "skillIds": ["kana-ime"], "required": true },
+        { "kind": "exercise", "slug": "languages/japanese-kana-explorer-checkpoint", "proficiencyLevel": "pre-a1", "skillIds": ["kana-listening", "kana-reading", "kana-writing", "kana-interaction", "kana-ime"], "required": true }
+      ]
+    },
+    {
+      "slug": "first-connections",
+      "title": "First Connections",
+      "summary": "Exchange greetings, identify people and things, understand basic time, talk about family and likes, and order simply.",
+      "nodes": [
+        { "kind": "document", "slug": "languages/japanese-first-connections", "proficiencyLevel": "a1", "skillIds": ["a1-listening", "a1-reading", "a1-interaction", "a1-writing"], "required": true },
+        { "kind": "exercise", "slug": "languages/japanese-first-connections-checkpoint", "proficiencyLevel": "a1", "skillIds": ["a1-listening", "a1-reading", "a1-interaction", "a1-writing"], "required": true }
+      ]
+    },
+    {
+      "slug": "everyday-navigator",
+      "title": "Everyday Navigator",
+      "summary": "Navigate places, routines, transport, invitations, requests, shopping, signs, and short messages.",
+      "nodes": [
+        { "kind": "document", "slug": "languages/japanese-everyday-navigator", "proficiencyLevel": "a1", "skillIds": ["a1-listening", "a1-reading", "a1-interaction", "a1-writing"], "required": true },
+        { "kind": "exercise", "slug": "languages/japanese-everyday-navigator-checkpoint", "proficiencyLevel": "a1", "skillIds": ["a1-listening", "a1-reading", "a1-interaction", "a1-writing"], "required": true }
       ]
     },
     {
       "slug": "starter-kanji",
-      "title": "Starter Kanji",
-      "summary": "Practice beginner kanji for numbers, nature, people, size, position, books, mountains, and rivers.",
+      "title": "Starter Kanji In Context",
+      "summary": "Read, trace, recall, and use beginner kanji through vocabulary, signs, messages, and short sentences.",
       "nodes": [
-        { "kind": "document", "slug": "languages/japanese-starter-kanji" },
-        { "kind": "exercise", "slug": "languages/japanese-starter-kanji-writing" }
+        { "kind": "document", "slug": "languages/japanese-starter-kanji", "proficiencyLevel": "a1", "skillIds": ["a1-reading", "a1-writing"], "required": true },
+        { "kind": "exercise", "slug": "languages/japanese-starter-kanji-writing", "proficiencyLevel": "a1", "skillIds": ["a1-writing"], "required": true }
       ]
     }
-  ]
+  ],
+  "progression": {
+    "framework": "jf-standard",
+    "skills": [
+      { "id": "kana-listening", "label": "Kana sounds and rhythm", "skill": "listening", "description": "Hear mora rhythm and distinguish the core kana sound patterns." },
+      { "id": "kana-reading", "label": "Kana recognition", "skill": "reading", "description": "Recognize hiragana and katakana in words, signs, and tiny texts." },
+      { "id": "kana-writing", "label": "Kana handwriting", "skill": "writing", "description": "Trace and recall textbook-style kana with the intended stroke order." },
+      { "id": "kana-interaction", "label": "Kana learning interaction", "skill": "interaction", "description": "Use kana knowledge to ask, answer, and clarify a simple reading or input question." },
+      { "id": "kana-ime", "label": "Japanese keyboard input", "skill": "ime", "description": "Choose IME keys separately from learner-facing pronunciation and romanization." },
+      { "id": "a1-listening", "label": "A1 listening", "skill": "listening", "description": "Understand familiar words and short, slowly delivered everyday exchanges." },
+      { "id": "a1-reading", "label": "A1 reading", "skill": "reading", "description": "Find concrete information in short sentences, signs, messages, and mini-readers." },
+      { "id": "a1-interaction", "label": "A1 interaction", "skill": "interaction", "description": "Exchange basic personal information and complete predictable everyday tasks." },
+      { "id": "a1-writing", "label": "A1 writing", "skill": "writing", "description": "Write familiar characters and create a very short personal or practical message." }
+    ],
+    "stages": [
+      {
+        "id": "kana-explorer",
+        "label": "Kana Explorer",
+        "proficiencyLevel": "pre-a1",
+        "summary": "Build a reliable sound-to-symbol foundation across recognition, reading, handwriting, and keyboard input.",
+        "unitSlugs": ["writing-systems", "hiragana-foundations", "hiragana-sound-tools", "katakana-foundations", "romaji-and-kana-input"],
+        "canDos": [
+          { "id": "kana-hear-morae", "statement": "I can hear and tap the mora rhythm of a short familiar kana word.", "skill": "listening" },
+          { "id": "kana-read-basics", "statement": "I can recognize the 46 basic hiragana and katakana in standard order.", "skill": "reading" },
+          { "id": "kana-write-sample", "statement": "I can write a sampled basic kana character from memory using its stroke order.", "skill": "writing" },
+          { "id": "kana-clarify-input", "statement": "I can explain a simple difference between a particle's sound and its IME spelling.", "skill": "interaction" },
+          { "id": "kana-type-exceptions", "statement": "I can type particles, small kana, doubled consonants, and long vowels with an IME.", "skill": "ime" }
+        ],
+        "requiredNodeSlugs": ["languages/japanese-writing-systems", "languages/japanese-hiragana-foundations", "languages/japanese-hiragana-reading-check", "languages/japanese-hiragana-sound-changes", "languages/japanese-katakana-foundations", "languages/japanese-katakana-reading-check", "languages/japanese-romaji-kana-input", "languages/japanese-kana-explorer-checkpoint"],
+        "checkpointExerciseSlug": "languages/japanese-kana-explorer-checkpoint",
+        "passThreshold": 0.8,
+        "minimumSkillScore": 0.6,
+        "estimatedMinutes": 420
+      },
+      {
+        "id": "first-connections",
+        "label": "First Connections",
+        "proficiencyLevel": "a1",
+        "summary": "Use short rehearsed language to meet someone, exchange concrete information, express preferences, and order.",
+        "unitSlugs": ["first-connections"],
+        "canDos": [
+          { "id": "connections-hear-details", "statement": "I can understand a slowly spoken name, age, time, or simple preference.", "skill": "listening" },
+          { "id": "connections-read-scene", "statement": "I can understand the main details in a short greeting or café scene.", "skill": "reading" },
+          { "id": "connections-write-intro", "statement": "I can write a two-sentence introduction with my name and one personal fact.", "skill": "writing" },
+          { "id": "connections-exchange", "statement": "I can greet someone, give my name, ask one basic question, and respond politely.", "skill": "interaction" }
+        ],
+        "requiredNodeSlugs": ["languages/japanese-first-connections", "languages/japanese-first-connections-checkpoint"],
+        "checkpointExerciseSlug": "languages/japanese-first-connections-checkpoint",
+        "passThreshold": 0.8,
+        "estimatedMinutes": 180
+      },
+      {
+        "id": "everyday-navigator",
+        "label": "Everyday Navigator",
+        "proficiencyLevel": "a1",
+        "summary": "Complete predictable daily tasks involving places, routines, transport, requests, purchases, signs, and messages.",
+        "unitSlugs": ["everyday-navigator", "starter-kanji"],
+        "canDos": [
+          { "id": "navigator-hear-plan", "statement": "I can understand the time, place, and transport in a short familiar plan.", "skill": "listening" },
+          { "id": "navigator-find-detail", "statement": "I can locate a concrete time, place, price, or instruction in a short text.", "skill": "reading" },
+          { "id": "navigator-write-message", "statement": "I can write a short message giving a meeting time and place.", "skill": "writing" },
+          { "id": "navigator-complete-task", "statement": "I can ask directions, make a request, arrange a meeting, or buy a simple item.", "skill": "interaction" }
+        ],
+        "requiredNodeSlugs": ["languages/japanese-everyday-navigator", "languages/japanese-starter-kanji", "languages/japanese-everyday-navigator-checkpoint"],
+        "checkpointExerciseSlug": "languages/japanese-everyday-navigator-checkpoint",
+        "passThreshold": 0.8,
+        "minimumSkillScore": 0.6,
+        "estimatedMinutes": 300
+      }
+    ]
+  }
 }

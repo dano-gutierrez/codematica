@@ -125,13 +125,14 @@ Store-side setup still required:
 - `apps/mobile/src/lib/adapters.tsx` adapts Expo Router navigation, native Supabase Auth, and native progress recording to `@codematica/ui`.
 - `apps/mobile/src/lib/progress.ts` writes signed-in progress through the shared Supabase/RLS contract, retains all unique signed-out progress locally, and syncs it in 20-item batches without clearing until every batch succeeds.
 - `apps/mobile/src/lib/supabase.ts` creates the native Supabase anon client with Expo SecureStore-backed session persistence.
-- `apps/mobile/app.config.ts` owns native app identity, bundle/package identifiers, version counters, icon/splash assets, runtime version policy, and EAS project linkage.
+- `apps/mobile/app.config.ts` owns native app identity, adaptive orientation, tablet support, bundle/package identifiers, version counters, icon/splash assets, runtime version policy, and EAS project linkage.
 - `apps/mobile/eas.json` owns development, preview, production, e2e-test, and submit profiles.
 - `apps/mobile/assets/` stores the native icon, adaptive icon, and splash assets used by app store builds.
 - `apps/mobile/app/languages/japanese/**` mirrors the web Japanese lookup/detail routes.
 - `packages/core/src/` exports content schemas, generated index access, library/discovery search, curated-home resolution, questionnaire logic, handwriting scoring, language helpers, passive flashcard helpers, interview helpers, and progress helpers.
 - `packages/ui/src/screens.tsx` exports the shared React Native screen set for current web parity, including Japanese resource shortcuts, complete kana lookup, and writing practice.
 - Native writing practice uses `react-native-svg` for the stroke pad and keeps raw strokes transient.
+- Japanese writing pads use window dimensions to grow from compact phone/Split View layouts to 480–560 pt iPad canvases while retaining font scaling and 44 pt controls.
 
 ## Test Plan
 
@@ -144,6 +145,7 @@ Store-side setup still required:
 
 ## Known Gaps
 
+- The local iPad simulator build reaches native compilation but Xcode 26.3 fails inside ExpoModulesJSI. Expo SDK 57 documents Xcode 26.4+ as its supported baseline; rerun the build after upgrading Xcode rather than patching generated dependency source.
 - Native WebView Mermaid currently falls back to source unless a bundled Mermaid runtime string is supplied to the shared adapter.
 - React/TypeScript web exercise projects are read-only on native; there is no native WebView compiler/runtime.
 - Mobile E2E is documented as the target lane, but Maestro flows have not been added yet.

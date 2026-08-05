@@ -1,7 +1,7 @@
 import { fireEvent, render, waitFor } from "@testing-library/react-native";
 import { getContentIndex, getExerciseBySlug, getInterviewQuestionBySlug, getJapaneseVocabularyForCharacter, getLanguageCharacterBySlug } from "@codematica/core";
 import type { CodematicaAdapters } from "@codematica/ui";
-import { BrowseScreen, HomeDiscoveryScreen, InterviewCatalogScreen, InterviewQuestionScreen, JapaneseCharacterDetailScreen, JapaneseLanguageHubScreen, MarkdownReader, PracticeScreen } from "@codematica/ui";
+import { BrowseScreen, HomeDiscoveryScreen, InterviewCatalogScreen, InterviewQuestionScreen, JapaneseCharacterDetailScreen, JapaneseLanguageHubScreen, JapaneseReviewScreen, MarkdownReader, PracticeScreen } from "@codematica/ui";
 
 const adapters: CodematicaAdapters = {
   navigation: {
@@ -58,11 +58,25 @@ describe("mobile shared screens", () => {
 
     expect(view.getByTestId("mobile-japanese-flashcards-link")).toBeOnTheScreen();
     expect(view.getByTestId("mobile-japanese-path-link")).toBeOnTheScreen();
+    expect(view.getByTestId("mobile-japanese-review-link")).toBeOnTheScreen();
+    expect(view.getByTestId("mobile-japanese-resources")).toBeOnTheScreen();
 
     fireEvent.changeText(view.getByTestId("mobile-japanese-search-input"), "water");
 
     await waitFor(() => expect(view.getByTestId("mobile-japanese-results")).toBeOnTheScreen());
     expect(view.getAllByText("水").length).toBeGreaterThan(0);
+  });
+
+  it("keeps every Japanese review skill and flashcards available", async () => {
+    const index = getContentIndex();
+    const learningPath = index.learningPaths.find((path) => path.slug === "japanese-foundations")!;
+    const onRate = jest.fn();
+    const view = await render(<JapaneseReviewScreen index={index} learningPath={learningPath} progress={[]} onRate={onRate} adapters={adapters} />);
+
+    expect(view.getByTestId("mobile-japanese-review-skills")).toBeOnTheScreen();
+    expect(view.getByTestId("mobile-japanese-review-flashcards")).toBeOnTheScreen();
+    fireEvent.press(view.getByTestId("mobile-japanese-review-good"));
+    expect(onRate).toHaveBeenCalledWith("kana-listening", "good");
   });
 
   it("renders Japanese writing practice from a writing exercise", async () => {

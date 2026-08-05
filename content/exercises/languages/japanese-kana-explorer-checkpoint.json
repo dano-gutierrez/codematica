@@ -1,0 +1,84 @@
+{
+  "slug": "languages/japanese-kana-explorer-checkpoint",
+  "title": "Kana Explorer Checkpoint",
+  "documentSlug": "languages/japanese-romaji-kana-input",
+  "concept": "Pre-A1 hiragana, katakana, sound tools, reading, and IME input",
+  "difficulty": "foundation",
+  "tags": ["japanese", "pre-a1", "kana", "checkpoint"],
+  "status": "published",
+  "proficiencyLevel": "pre-a1",
+  "skillIds": ["kana-listening", "kana-reading", "kana-writing", "kana-interaction", "kana-ime"],
+  "required": true,
+  "type": "questionnaire",
+  "questions": [
+    {
+      "id": "hiragana-row",
+      "kind": "ordering",
+      "prompt": "Place the five basic vowel hiragana in standard Japanese order.",
+      "explanation": "The vowel order あ・い・う・え・お organizes both kana charts.",
+      "items": [
+        { "id": "a-kana", "label": "あ (a)" },
+        { "id": "i-kana", "label": "い (i)" },
+        { "id": "u-kana", "label": "う (u)" },
+        { "id": "e-kana", "label": "え (e)" },
+        { "id": "o-kana", "label": "お (o)" }
+      ],
+      "correctOrder": ["a-kana", "i-kana", "u-kana", "e-kana", "o-kana"]
+    },
+    {
+      "id": "katakana-word",
+      "kind": "choice",
+      "prompt": "Which katakana word represents koohii, coffee?",
+      "explanation": "Katakana commonly writes loanwords, and ー lengthens the preceding vowel.",
+      "options": [
+        { "id": "coffee", "label": "コーヒー", "isCorrect": true },
+        { "id": "cat", "label": "ねこ", "isCorrect": false },
+        { "id": "school", "label": "がっこう", "isCorrect": false }
+      ]
+    },
+    {
+      "id": "small-tsu",
+      "kind": "choice",
+      "prompt": "Which learner romaji matches がっこう?",
+      "explanation": "Small っ doubles the following consonant: がっこう becomes gakkou.",
+      "options": [
+        { "id": "gakkou", "label": "gakkou", "isCorrect": true },
+        { "id": "gakou", "label": "gakou", "isCorrect": false },
+        { "id": "gatsukou", "label": "gatsukou", "isCorrect": false }
+      ]
+    },
+    {
+      "id": "particle-input",
+      "kind": "choice",
+      "prompt": "Which IME keys produce the spelling こんばんは?",
+      "explanation": "The final topic particle is pronounced wa but spelled は, so an IME needs konbanha.",
+      "options": [
+        { "id": "konbanha", "label": "konbanha", "isCorrect": true },
+        { "id": "konbanwa", "label": "konbanwa", "isCorrect": false },
+        { "id": "konbanna", "label": "konbanna", "isCorrect": false }
+      ]
+    },
+    {
+      "id": "listening-strategy",
+      "kind": "choice",
+      "prompt": "When you hear one beat per kana in さかな, which rhythm should you tap?",
+      "explanation": "Japanese rhythm is organized in morae: さ・か・な has three roughly even beats.",
+      "options": [
+        { "id": "three-beats", "label": "さ・か・な — three even beats", "isCorrect": true },
+        { "id": "one-beat", "label": "さかな — one long beat", "isCorrect": false },
+        { "id": "two-beats", "label": "さか・な — two stressed beats", "isCorrect": false }
+      ]
+    },
+    {
+      "id": "use-kana",
+      "kind": "choice",
+      "prompt": "A classmate asks how to type the written kana へ when it is a particle. What is the useful answer?",
+      "explanation": "The particle is pronounced e, but IME spelling follows the visible kana へ, so type he.",
+      "options": [
+        { "id": "type-he", "label": "It sounds like e, but type he for へ.", "isCorrect": true },
+        { "id": "type-e", "label": "It is always written え, so type e.", "isCorrect": false },
+        { "id": "type-we", "label": "Type we because it is a direction.", "isCorrect": false }
+      ]
+    }
+  ]
+}

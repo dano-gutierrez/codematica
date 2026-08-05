@@ -1,0 +1,79 @@
+{
+  "slug": "languages/japanese-first-connections-checkpoint",
+  "title": "First Connections Checkpoint",
+  "documentSlug": "languages/japanese-first-connections",
+  "concept": "A1 greetings, identity, time, family, preferences, and ordering",
+  "difficulty": "foundation",
+  "tags": ["japanese", "a1", "checkpoint"],
+  "status": "published",
+  "proficiencyLevel": "a1",
+  "skillIds": ["a1-interaction", "a1-reading", "a1-listening", "a1-writing"],
+  "required": true,
+  "type": "questionnaire",
+  "questions": [
+    {
+      "id": "meet-someone",
+      "kind": "choice",
+      "prompt": "You meet someone for the first time. Which opening fits the situation?",
+      "explanation": "はじめまして is the conventional opening when meeting someone for the first time.",
+      "options": [
+        { "id": "hajimemashite", "label": "はじめまして。アナです。", "isCorrect": true },
+        { "id": "oyasumi", "label": "おやすみなさい。アナです。", "isCorrect": false },
+        { "id": "itadakimasu", "label": "いただきます。アナです。", "isCorrect": false }
+      ]
+    },
+    {
+      "id": "also-student",
+      "kind": "cloze",
+      "prompt": "Complete: I am also a student.",
+      "explanation": "も replaces は when the new topic shares the same description.",
+      "template": "わたし{{blank}}がくせいです。",
+      "acceptedAnswers": ["も"]
+    },
+    {
+      "id": "whose-book",
+      "kind": "choice",
+      "prompt": "A book is beside the listener. Ask whose book it is.",
+      "explanation": "それ points to something near the listener, and だれの asks whose.",
+      "options": [
+        { "id": "correct-book", "label": "それはだれのほんですか。", "isCorrect": true },
+        { "id": "wrong-place", "label": "そこはいつですか。", "isCorrect": false },
+        { "id": "wrong-person", "label": "あのひとはなんですか。", "isCorrect": false }
+      ]
+    },
+    {
+      "id": "time-reading",
+      "kind": "choice",
+      "prompt": "Someone says くじはんです. Which time did you hear?",
+      "explanation": "くじ is nine o'clock and はん adds half past.",
+      "options": [
+        { "id": "nine-thirty", "label": "9:30", "isCorrect": true },
+        { "id": "half-nine", "label": "8:30", "isCorrect": false },
+        { "id": "nine-fifteen", "label": "9:15", "isCorrect": false }
+      ]
+    },
+    {
+      "id": "cafe-order",
+      "kind": "ordering",
+      "prompt": "Put the words in order to request one coffee politely.",
+      "explanation": "A simple order is item, quantity, then おねがいします.",
+      "items": [
+        { "id": "coffee", "label": "コーヒーを" },
+        { "id": "one", "label": "ひとつ" },
+        { "id": "please", "label": "おねがいします" }
+      ],
+      "correctOrder": ["coffee", "one", "please"]
+    },
+    {
+      "id": "personal-output",
+      "kind": "choice",
+      "prompt": "Which is a complete polite self-introduction model you can personalize?",
+      "explanation": "The model gives a name and one identity fact with です.",
+      "options": [
+        { "id": "complete-model", "label": "わたしはリーです。がくせいです。", "isCorrect": true },
+        { "id": "question-model", "label": "リーさんですか。", "isCorrect": false },
+        { "id": "fragment-model", "label": "わたしの", "isCorrect": false }
+      ]
+    }
+  ]
+}

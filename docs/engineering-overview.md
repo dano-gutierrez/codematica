@@ -102,9 +102,9 @@ Passive flashcard feeds live in `content/flashcard-feeds/*.json` and attach shor
 
 Interview collections live in `content/interviews/*.json` and are discriminated as `company` or `real-world`. Company algorithm questions retain reported-public links and guided Python, TypeScript, and Java tracks. Anonymous real-world questions require provenance notes and may provide structured evaluation rubrics plus at least three `WebExerciseProject` solutions. Web projects are authored locally, validated into the index, and executed only in Sandpack's cross-origin iframe; Expo shows the same files read-only.
 
-Human-language catalogs live in `content/languages/**/*.json`. Japanese indexes the complete 46-character basic hiragana and katakana sets, focused sound/small-kana variants, and starter kanji/vocabulary with glyphs, readings, learner romaji, distinct IME input sequences, IPA, structured phrase breakdowns, meanings, study order, and normalized stroke paths for handwriting practice.
+Human-language catalogs live in `content/languages/**/*.json`. Schema v8 adds JF proficiency stages, skill strands, Can-dos, audio manifests, and external-resource rights metadata. Japanese indexes the complete 46-character basic hiragana and katakana sets, focused sound/small-kana variants, an exact 100-kanji A1 target, vocabulary, learner romaji, distinct IME input sequences, IPA, structured phrase breakdowns, study order, and normalized stroke paths for published handwriting profiles.
 
-Home discovery curation lives in `content/discovery/home.json`. It references canonical published content by kind and slug; index generation validates every reference and serializes the ordered sections into content index schema version 7. `packages/core/src/discovery.ts` resolves those references and provides cross-section local search to web and native.
+Home discovery curation lives in `content/discovery/home.json`. It references canonical published content by kind and slug; index generation validates every reference and serializes the ordered sections into content index schema version 8. `packages/core/src/discovery.ts` resolves those references and provides cross-section local search to web and native.
 
 The Python language refresh path is the first reusable language-refresh slice. It pairs searchable Markdown docs with senior-level questionnaires and passive flashcards for TypeScript and JavaScript engineers.
 
@@ -118,9 +118,9 @@ The Breadth-First Search And Depth-First Search path is the graph-traversal Prog
 
 The Reading And Writing Mermaid Diagrams path is the source-first technical documentation slice. It uses the existing embedded Mermaid renderer to pair 13 inspectable source blocks with browser-rendered output across flowchart, sequence, class, state, ER, Gantt, journey, pie, mindmap, timeline, and Git graph families. Three choice-only questionnaires enforce one correct option and explain every distractor; a passive feed reinforces selection, syntax, debugging, and readability.
 
-The Japanese Foundations path is the first human-language slice. Its alphabet-first progression covers writing systems, all basic hiragana, sound-changing marks and small kana, all basic katakana, romaji-versus-IME input, and starter kanji. It pairs retrieval-based questionnaires, row-grouped handwriting, an always-available passive alphabet feed, dictionary-style character/vocabulary detail, numbered assisted tracing, and free handwriting checks across web and Expo.
+The Japanese Foundations path is the first human-language slice. Its open JF/CEFR progression spans Kana Explorer (Pre-A1), First Connections (A1), and Everyday Navigator (A1), with Can-do milestones, contextual checkpoints, two original mini-readers, an exact 100-kanji target, deterministic review, dictionary profiles, responsive tracing, flashcards, and a rights-aware resource shelf across web and Expo. Audio metadata and platform registry generation are implemented, but the corpus stays unpublished until genuine released recordings exist.
 
-Progress is user state, not authored content. Signed-in progress is stored in Supabase; signed-out progress is deduplicated and retained in browser local storage on web and native local storage on Expo, then syncs after login in bounded 20-item batches. Clients clear the local copy only after all batches succeed. Progress does not store answers, scores, streaks, mastery, raw handwriting coordinates, or full session history.
+Progress is user state, not authored content. Existing completion remains in `user_progress_items`. Japanese mastery is additive: anonymous review state persists locally, while `user_skill_progress` provides an RLS-protected signed-in target for best score, attempt count, review box, mastery state, and review times. Neither path stores answers, raw handwriting, recordings, or full attempt history.
 
 ## Route Model
 
@@ -133,6 +133,7 @@ Progress is user state, not authored content. Signed-in progress is stored in Su
 - `/practice/[...slug]`: one flashcard, cloze prompt, questionnaire, or writing session.
 - `/languages`: available language hubs.
 - `/languages/japanese`: Japanese lookup and study hub.
+- `/languages/japanese/review`: due-skill recommendations and manually browseable skill cards.
 - `/languages/japanese/characters/[...slug]`: one Japanese character detail route.
 - `/languages/japanese/vocabulary/[...slug]`: one Japanese vocabulary detail route.
 - `/interviews`: real-world and company interview collections.

@@ -16,7 +16,7 @@
       "romaji": "ima / kon",
       "inputSequences": ["ima", "kon"],
       "ipa": "ima",
-      "studyOrder": 1001,
+      "studyOrder": 1025,
       "tags": ["kanji", "time", "greeting", "n5"],
       "status": "published",
       "strokes": [
@@ -37,7 +37,7 @@
       "romaji": "ban",
       "inputSequences": ["ban"],
       "ipa": "baɴ",
-      "studyOrder": 1002,
+      "studyOrder": 3000,
       "tags": ["kanji", "time", "greeting", "n5"],
       "status": "published",
       "strokes": [

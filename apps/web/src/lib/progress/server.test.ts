@@ -1,6 +1,6 @@
 import { describe, expect, it, vi } from "vitest";
 import { getContentIndex } from "@/lib/content";
-import { getProgressSummary, syncAnonymousProgress, upsertProgress, type ProgressDataClient } from "./server";
+import { getProgressSummary, getSkillProgress, syncAnonymousProgress, syncSkillProgress, upsertProgress, type ProgressDataClient } from "./server";
 
 function createProgressClient({
   userId = "user-1",
@@ -171,5 +171,36 @@ describe("progress server helpers", () => {
         ],
       }),
     );
+  });
+
+  it("syncs bounded Japanese skill mastery without changing completion rows", async () => {
+    const { client, upserts } = createProgressClient({ userId: "user-123" });
+    await expect(syncSkillProgress(client, [{ pathSlug: "japanese-foundations", skillId: "kana-reading", bestScore: 0.9, attemptCount: 3, reviewBox: 4, masteryState: "mastered", lastPracticedAt: "2026-08-04T12:00:00.000Z", nextReviewAt: "2026-09-03T12:00:00.000Z" }])).resolves.toEqual({ status: 200, body: { synced: 1 } });
+    expect(upserts[0]).toMatchObject({
+      table: "user_skill_progress",
+      options: { onConflict: "user_id,path_slug,skill_id" },
+      payload: [expect.objectContaining({ user_id: "user-123", skill_id: "kana-reading", best_score: 0.9, review_box: 4 })],
+    });
+  });
+
+  it("loads authenticated Japanese mastery rows for lossless device merging", async () => {
+    const { client } = createProgressClient({
+      userId: "user-123",
+      rows: [{
+        path_slug: "japanese-foundations",
+        skill_id: "kana-reading",
+        best_score: 0.9,
+        attempt_count: 3,
+        review_box: 4,
+        mastery_state: "mastered",
+        last_practiced_at: "2026-08-04T12:00:00.000Z",
+        next_review_at: "2026-09-03T12:00:00.000Z",
+      }],
+    });
+
+    await expect(getSkillProgress(client)).resolves.toEqual({
+      isSignedIn: true,
+      items: [expect.objectContaining({ pathSlug: "japanese-foundations", skillId: "kana-reading", reviewBox: 4 })],
+    });
   });
 });

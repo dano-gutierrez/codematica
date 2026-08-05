@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ArrowLeft, ArrowRight, BookOpen, Brain, GitBranch, Layers, Target } from "lucide-react";
+import { ArrowLeft, ArrowRight, BookOpen, Brain, GitBranch, Layers, Stamp, Target } from "lucide-react";
 import { AppHeader } from "@/components/AppHeader";
 import { DifficultyPill } from "@/components/DifficultyPill";
 import { getPathNodeRoute } from "@/lib/content";
@@ -41,6 +41,33 @@ export function LearningPathDetail({ index, learningPath }: { index: ContentInde
             </Link>
           ) : null}
         </div>
+
+        {learningPath.progression ? (
+          <section className="mt-8 rounded-xl border-2 border-b-4 border-[#d2bd76] bg-[#fffaf0] p-4 sm:p-6" data-testid="path-progression-roadmap">
+            <div className="flex flex-wrap items-end justify-between gap-3">
+              <div>
+                <p className="text-sm font-extrabold uppercase text-[#7a5200]">Stamp-rally journal · every lesson is open</p>
+                <h2 className="mt-1 text-3xl font-extrabold text-[#263238]">Pre-A1 to A1 roadmap</h2>
+              </div>
+              <Link href="/languages/japanese/review" className="inline-flex min-h-12 items-center rounded-lg border-2 border-b-4 border-[#00645f] bg-[#007c78] px-4 py-2 text-base font-extrabold text-white">Review skills</Link>
+            </div>
+            <div className="mt-5 grid gap-4 lg:grid-cols-3">
+              {learningPath.progression.stages.map((stage, stageIndex) => (
+                <article key={stage.id} className="relative rounded-lg border-2 border-b-4 border-[#d2bd76] bg-white p-5">
+                  <span className="absolute right-4 top-4 flex h-12 w-12 rotate-[-6deg] items-center justify-center rounded-full border-2 border-dashed border-[#b77b00] bg-[#fff5d6] text-[#7a5200]" aria-hidden="true"><Stamp className="h-6 w-6" /></span>
+                  <p className="text-sm font-extrabold uppercase text-[#7a5200]">Stage {stageIndex + 1} · {stage.proficiencyLevel.toUpperCase()}</p>
+                  <h3 className="mt-2 pr-14 text-2xl font-extrabold text-[#263238]">{stage.label}</h3>
+                  <p className="mt-2 text-base font-semibold leading-7 text-[#53616c]">{stage.summary}</p>
+                  <p className="mt-3 text-sm font-bold text-[#53616c]">About {stage.estimatedMinutes} minutes · checkpoint {Math.round(stage.passThreshold * 100)}%</p>
+                  <ul className="mt-4 grid gap-2">
+                    {stage.canDos.map((canDo) => <li key={canDo.id} className="text-sm font-semibold leading-6 text-[#33434b]"><span className="font-extrabold text-[#007c78]">I can:</span> {canDo.statement.replace(/^I can\s+/i, "")}</li>)}
+                  </ul>
+                  <Link href={`/practice/${stage.checkpointExerciseSlug}?path=${learningPath.slug}`} className="mt-4 inline-flex min-h-11 items-center text-base font-extrabold text-[#1d4e9e] underline decoration-2 underline-offset-4">Open checkpoint</Link>
+                </article>
+              ))}
+            </div>
+          </section>
+        ) : null}
 
         <div className="mt-8 grid gap-5">
           {learningPath.units.map((unit, unitIndex) => (

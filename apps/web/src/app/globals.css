@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@import "@fontsource-variable/noto-sans-jp";
 
 :root {
   color-scheme: light;
@@ -35,8 +36,25 @@ body {
   font-family: var(--font-geist-sans), ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
 }
 
+[lang="ja"] {
+  font-family: "Noto Sans JP Variable", "Noto Sans JP", var(--font-geist-sans), sans-serif;
+}
+
 a {
   text-decoration: none;
+}
+
+main,
+section,
+article {
+  min-width: 0;
+}
+
+h1,
+h2,
+h3,
+p {
+  overflow-wrap: anywhere;
 }
 
 button,
@@ -284,5 +302,16 @@ select {
   .web-playground-layout > :last-child {
     width: 100% !important;
     min-height: 27rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
   }
 }

@@ -3,9 +3,9 @@
 ## Snapshot
 
 - Status: `shipped`
-- Last updated: `2026-08-03`
+- Last updated: `2026-08-04`
 - Owner thread: `n/a`
-- Current state: Supabase Auth is wired for Google, email/password, and Apple-ready login on web, with native Expo Auth/progress adapters using the same Supabase contract. Signed-in users sync resume/completion progress, while signed-out users retain every unique local progress item until a complete batched sync succeeds.
+- Current state: Supabase Auth is wired for Google, email/password, and Apple-ready login on web, with native Expo Auth/progress adapters using the same Supabase contract. Existing resume/completion history remains unchanged; Japanese skill mastery is additive through local review state and the RLS-protected `user_skill_progress` table.
 - Target outcome: Users can keep reading and resume learning across documents, diagrams, practice, passive flashcards, and interview walkthroughs without making anonymous browsing depend on Supabase.
 - Code touchpoints:
   - `apps/web/src/lib/supabase/`
@@ -17,8 +17,10 @@
   - `apps/web/src/app/api/progress/**/route.ts`
   - `apps/mobile/src/lib/supabase.ts`
   - `apps/mobile/src/lib/progress.ts`
+  - `apps/mobile/src/lib/skill-progress.ts`
   - `packages/core/src/progress/`
   - `supabase/migrations/202606210001_create_auth_progress.sql`
+  - `supabase/migrations/202608040001_create_user_skill_progress.sql`
 - Primary tests:
   - `apps/web/src/lib/progress/*.test.ts`
   - `apps/web/src/components/LoginForm.test.tsx`
@@ -40,7 +42,9 @@ Auth and progress are additive. Codematica still renders local content without S
 - `/api/progress/summary` returns signed-in Keep reading items or an empty signed-out summary.
 - `/api/progress` validates and upserts one progress item for the authenticated user.
 - `/api/progress/sync-anonymous` accepts a bounded batch of up to 20 items. Web and native clients send as many sequential batches as needed and clear the local copy only after every batch succeeds.
-- Progress stores resume/completion milestones only. It does not store answers, scores, mastery, streaks, or full session history.
+- `/api/progress/skills` reads the authenticated mastery snapshot and accepts bounded 20-item upsert batches. Web and native merge remote rows with the retained local snapshot before uploading the merged result; anonymous use remains local-first.
+- `user_progress_items` continues to store resume/completion milestones only. `user_skill_progress` separately stores only best score, attempt count, review box, mastery state, last practice time, and next review time.
+- Neither table stores individual answers, raw handwriting, recordings, or full attempt histories.
 - Native uses the same progress validation and upsert helpers from `packages/core/src/progress/`; it writes directly with an anon-safe Supabase client when signed in and falls back to local buffering when signed out or offline.
 
 ## Detailed Behavior
@@ -59,6 +63,7 @@ Auth and progress are additive. Codematica still renders local content without S
 
 - `public.user_profiles` stores only `user_id` and timestamps.
 - `public.user_progress_items` stores `user_id`, `surface`, `slug`, `path_slug`, `status`, `position`, `first_seen_at`, `last_seen_at`, `completed_at`, and timestamps.
+- `public.user_skill_progress` is additive and unique by `(user_id, path_slug, skill_id)`; its trigger never lowers best score or attempt count.
 - `(user_id, surface, slug, path_slug)` is unique.
 - RLS is enabled; authenticated users can only select, insert, update, and delete their own rows.
 - Repo Markdown, path JSON, exercise JSON, flashcard feeds, and interview JSON remain canonical. Supabase does not become the content source of truth.
@@ -74,7 +79,7 @@ Auth and progress are additive. Codematica still renders local content without S
 ## Test Plan
 
 - Unit: progress payload validation, content-index mapping, stale slug filtering, local dedupe/retention, bounded web/native batch sync, and clear-after-complete behavior.
-- Server helper: authenticated upsert, unauthenticated rejection, summary mapping, anonymous sync batching.
+- Server helper: authenticated upsert, unauthenticated rejection, summary mapping, anonymous sync batching, and skill-progress loading/sync.
 - Component: login provider gating, Keep reading rendering, save-progress prompt, progress callbacks from practice/interview/passive-feed components.
 - E2E: signed-out user reads and practices without redirects, sees the save-progress prompt, and sees local Keep reading state.
 
@@ -92,6 +97,7 @@ Auth and progress are additive. Codematica still renders local content without S
 - `2026-06-21`: Preserve local content as canonical and store only user identity/progress in Supabase.
 - `2026-07-11`: Add native Auth/progress adapters that share the same Supabase tables, RLS assumptions, and core progress validation.
 - `2026-08-03`: Remove silent 20-item local eviction and sync retained web/native progress in lossless 20-item batches.
+- `2026-08-04`: Add six-box Japanese skill mastery and lossless local/remote synchronization without altering existing completion rows.
 
 ## Thread Handoff Prompt
 

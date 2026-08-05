@@ -6,6 +6,8 @@ test("@regression mobile user searches Japanese and opens a writing drill", asyn
   await expect(page.getByRole("heading", { name: /Practice kana, kanji, and writing/i })).toBeVisible();
   await expect(page.getByTestId("japanese-study-tools")).toBeVisible();
   await expect(page.getByTestId("japanese-flashcards-link")).toHaveAttribute("href", "/paths/japanese-foundations/flashcards");
+  await expect(page.getByTestId("japanese-review-link")).toHaveAttribute("href", "/languages/japanese/review");
+  await expect(page.getByTestId("japanese-resource-shelf")).toContainText("Irodori");
   await expect(page.getByRole("heading", { name: "Basic katakana" })).toBeVisible();
 
   await page.getByTestId("japanese-flashcards-link").click();
@@ -50,6 +52,8 @@ test("@regression mobile user searches Japanese and opens a writing drill", asyn
   await expect(page.getByTestId("path-card-japanese-foundations")).toContainText("Japanese Foundations");
   await page.getByTestId("path-card-japanese-foundations").getByRole("link", { name: /Open path/i }).click();
   await expect(page.getByTestId("path-detail")).toBeVisible();
+  await expect(page.getByTestId("path-progression-roadmap")).toContainText("Kana Explorer");
+  await expect(page.getByTestId("path-progression-roadmap")).toContainText("Everyday Navigator");
   await expect(page.getByTestId("path-flashcard-feed-link")).toBeVisible();
   await expect(page.getByTestId("path-node-document-languages-japanese-hiragana-foundations")).toContainText("Read The 46 Basic Hiragana");
   await expect(page.getByTestId("path-node-document-languages-japanese-katakana-foundations")).toContainText("Read The 46 Basic Katakana");
@@ -69,4 +73,9 @@ test("@regression mobile user searches Japanese and opens a writing drill", asyn
 
   await page.getByTestId("writing-mode-free").click();
   await expect(page.getByTestId("writing-mode-free")).toHaveCSS("color", "rgb(255, 255, 255)");
+
+  await page.goto("/languages/japanese/review");
+  await expect(page.getByTestId("japanese-review-browser")).toBeVisible();
+  await page.getByRole("button", { name: "Good" }).click();
+  await expect(page.getByText(/Best 85% · box 1/)).toBeVisible();
 });

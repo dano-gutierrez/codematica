@@ -16,6 +16,8 @@ import {
   type HomeDiscovery,
   type KnowledgeDocument,
   type LanguageCharacter,
+  type LanguageAudioAsset,
+  type LanguageExternalResource,
   type LanguageVocabulary,
   type LearningExercise,
   type LearningPath,
@@ -179,6 +181,8 @@ async function collectLearningExercises(rootDir: string): Promise<LearningExerci
 async function collectLanguageContent(rootDir: string): Promise<{
   languageCharacters: LanguageCharacter[];
   languageVocabulary: LanguageVocabulary[];
+  languageAudio: LanguageAudioAsset[];
+  languageResources: LanguageExternalResource[];
 }> {
   const languagesDir = path.join(rootDir, "content", "languages");
   const files = await walkFiles(languagesDir, jsonExtensions).catch((error: unknown) => {
@@ -190,6 +194,8 @@ async function collectLanguageContent(rootDir: string): Promise<{
   });
   const characterGroups: LanguageCharacter[][] = [];
   const vocabularyGroups: LanguageVocabulary[][] = [];
+  const audioGroups: LanguageAudioAsset[][] = [];
+  const resourceGroups: LanguageExternalResource[][] = [];
 
   for (const filePath of files) {
     const { raw, value } = await readJson(filePath);
@@ -207,12 +213,28 @@ async function collectLanguageContent(rootDir: string): Promise<{
           contentHash,
         })),
       );
-    } else {
+    } else if (parsed.kind === "vocabulary") {
       vocabularyGroups.push(
         parsed.items.map((item) => ({
           ...item,
           id: sha256(item.slug).slice(0, 12),
           route: `/languages/japanese/vocabulary/${languageVocabularyRouteSlug(item.slug)}`,
+          sourcePath,
+          contentHash,
+        })),
+      );
+    } else if (parsed.kind === "audio") {
+      audioGroups.push(
+        parsed.items.map((item) => ({
+          ...item,
+          sourcePath,
+          contentHash,
+        })),
+      );
+    } else {
+      resourceGroups.push(
+        parsed.items.map((item) => ({
+          ...item,
           sourcePath,
           contentHash,
         })),
@@ -223,6 +245,8 @@ async function collectLanguageContent(rootDir: string): Promise<{
   return {
     languageCharacters: characterGroups.flat(),
     languageVocabulary: vocabularyGroups.flat(),
+    languageAudio: audioGroups.flat(),
+    languageResources: resourceGroups.flat(),
   };
 }
 
@@ -479,6 +503,29 @@ function assertUniqueSlugs(
   assertUniqueEntitySlugs(interviewCollections, "interview collection");
 }
 
+async function assertLanguageAudio(rootDir: string, audio: LanguageAudioAsset[], characters: LanguageCharacter[], vocabulary: LanguageVocabulary[]) {
+  const ids = new Set(audio.map((item) => item.id));
+  const references = [
+    ...characters.flatMap((item) => [item.audioId, ...item.examples.map((example) => example.audioId)]),
+    ...vocabulary.flatMap((item) => [item.audioId, ...item.examples.map((example) => example.audioId)]),
+  ].filter((value): value is string => Boolean(value));
+
+  for (const reference of references) {
+    if (!ids.has(reference)) throw new Error(`Japanese content references missing audio "${reference}".`);
+  }
+
+  for (const item of audio) {
+    const sourceDirectory = path.dirname(path.join(rootDir, item.sourcePath));
+    const assetFile = path.resolve(sourceDirectory, item.assetPath);
+    if (!assetFile.startsWith(`${sourceDirectory}${path.sep}`)) throw new Error(`${item.sourcePath} audio path escapes its content directory.`);
+    try {
+      await fs.access(assetFile);
+    } catch {
+      throw new Error(`${item.sourcePath} references missing local audio file "${item.assetPath}".`);
+    }
+  }
+}
+
 function assertContentReferences(
   documents: KnowledgeDocument[],
   diagrams: MermaidDiagram[],
@@ -538,6 +585,8 @@ function assertContentReferences(
   }
 
   for (const learningPath of learningPaths) {
+    const pathNodeSlugs = new Set(learningPath.units.flatMap((unit) => unit.nodes.map((node) => node.slug)));
+
     for (const unit of learningPath.units) {
       for (const node of unit.nodes) {
         if (node.kind === "document" && !documentSlugs.has(node.slug)) {
@@ -550,6 +599,50 @@ function assertContentReferences(
 
         if (node.kind === "exercise" && !exerciseSlugs.has(node.slug)) {
           throw new Error(`${learningPath.sourcePath} references missing exercise "${node.slug}"`);
+        }
+      }
+    }
+
+    if (learningPath.progression) {
+      const unitSlugs = new Set(learningPath.units.map((unit) => unit.slug));
+      const skillIds = new Set(learningPath.progression.skills.map((skill) => skill.id));
+
+      for (const unit of learningPath.units) {
+        for (const node of unit.nodes) {
+          for (const skillId of node.skillIds ?? []) {
+            if (!skillIds.has(skillId)) {
+              throw new Error(`${learningPath.sourcePath} node "${node.slug}" references missing skill "${skillId}".`);
+            }
+          }
+        }
+      }
+
+      for (const stage of learningPath.progression.stages) {
+        assertUniqueValues(stage.unitSlugs, `unit slug in stage "${stage.id}"`, learningPath.sourcePath);
+        assertUniqueValues(stage.requiredNodeSlugs, `required node slug in stage "${stage.id}"`, learningPath.sourcePath);
+
+        for (const unitSlug of stage.unitSlugs) {
+          if (!unitSlugs.has(unitSlug)) throw new Error(`${learningPath.sourcePath} stage "${stage.id}" references missing unit "${unitSlug}".`);
+        }
+
+        for (const nodeSlug of stage.requiredNodeSlugs) {
+          if (!pathNodeSlugs.has(nodeSlug)) throw new Error(`${learningPath.sourcePath} stage "${stage.id}" references missing required node "${nodeSlug}".`);
+        }
+
+        const checkpoint = exercises.find((exercise) => exercise.slug === stage.checkpointExerciseSlug);
+        if (!checkpoint || checkpoint.type !== "questionnaire") {
+          throw new Error(`${learningPath.sourcePath} stage "${stage.id}" must reference a questionnaire checkpoint.`);
+        }
+
+        if (!pathNodeSlugs.has(stage.checkpointExerciseSlug)) {
+          throw new Error(`${learningPath.sourcePath} stage "${stage.id}" checkpoint must be included in the path.`);
+        }
+
+        const balancedSkills = new Set(stage.canDos.map((canDo) => canDo.skill));
+        for (const requiredSkill of ["listening", "reading", "writing", "interaction"] as const) {
+          if (!balancedSkills.has(requiredSkill)) {
+            throw new Error(`${learningPath.sourcePath} stage "${stage.id}" needs a ${requiredSkill} Can-do statement.`);
+          }
         }
       }
     }
@@ -644,9 +737,14 @@ export async function buildContentIndex({ rootDir }: BuildContentIndexOptions): 
   const sortedExercises = exercises.sort((left, right) => left.slug.localeCompare(right.slug));
   const sortedLanguageCharacters = languageContent.languageCharacters.sort((left, right) => left.slug.localeCompare(right.slug));
   const sortedLanguageVocabulary = languageContent.languageVocabulary.sort((left, right) => left.slug.localeCompare(right.slug));
+  const sortedLanguageAudio = languageContent.languageAudio.sort((left, right) => left.id.localeCompare(right.id));
+  const sortedLanguageResources = languageContent.languageResources.sort((left, right) => left.id.localeCompare(right.id));
   const sortedLearningPaths = learningPaths.sort((left, right) => left.slug.localeCompare(right.slug));
   const sortedPassiveFlashcardFeeds = passiveFlashcardFeeds.sort((left, right) => left.slug.localeCompare(right.slug));
   const sortedInterviewCollections = interviewCollections.sort((left, right) => left.name.localeCompare(right.name));
+  assertUniqueIds(sortedLanguageAudio, "language audio id", "language audio catalogs");
+  assertUniqueIds(sortedLanguageResources, "language resource id", "language resource catalogs");
+  await assertLanguageAudio(rootDir, sortedLanguageAudio, sortedLanguageCharacters, sortedLanguageVocabulary);
   assertUniqueSlugs(
     sortedDocuments,
     sortedDiagrams,
@@ -680,13 +778,15 @@ export async function buildContentIndex({ rootDir }: BuildContentIndexOptions): 
   );
 
   return {
-    schemaVersion: 7,
+    schemaVersion: 8,
     documents: sortedDocuments,
     diagrams: sortedDiagrams,
     learningPaths: sortedLearningPaths,
     exercises: sortedExercises,
     languageCharacters: sortedLanguageCharacters,
     languageVocabulary: sortedLanguageVocabulary,
+    languageAudio: sortedLanguageAudio,
+    languageResources: sortedLanguageResources,
     passiveFlashcardFeeds: sortedPassiveFlashcardFeeds,
     interviewCollections: sortedInterviewCollections,
     tracks: buildTracks(sortedDocuments),

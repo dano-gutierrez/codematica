@@ -9,3 +9,5 @@ export * from "./languages/japanese";
 export * from "./flashcards/passive";
 export * from "./progress/progress";
 export * from "./progress/server";
+export * from "./progress/mastery";
+export * from "./progress/progression";

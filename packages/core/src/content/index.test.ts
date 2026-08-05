@@ -19,7 +19,7 @@ describe("generated content index", () => {
   it("loads starter documents and diagrams", () => {
     const index = getContentIndex();
 
-    expect(index.schemaVersion).toBe(7);
+    expect(index.schemaVersion).toBe(8);
     expect(index.documents.length).toBeGreaterThanOrEqual(3);
     expect(index.diagrams.length).toBeGreaterThanOrEqual(2);
     expect(index.learningPaths.length).toBeGreaterThanOrEqual(2);
@@ -38,7 +38,7 @@ describe("generated content index", () => {
     const vocabulary = getLanguageVocabularyBySlug("japanese/vocabulary/japan");
     const exercise = getExerciseBySlug("languages/japanese-starter-kanji-writing");
 
-    expect(path?.title).toBe("Japanese Foundations");
+    expect(path?.title).toBe("Japanese Foundations: Pre-A1 to A1");
     expect(path?.units.flatMap((unit) => unit.nodes).map((node) => node.slug)).toEqual([
       "languages/japanese-writing-systems",
       "languages/japanese-hiragana-foundations",
@@ -60,6 +60,11 @@ describe("generated content index", () => {
       "languages/japanese-katakana-reading-check",
       "languages/japanese-romaji-kana-input",
       "languages/japanese-romaji-kana-input-questionnaire",
+      "languages/japanese-kana-explorer-checkpoint",
+      "languages/japanese-first-connections",
+      "languages/japanese-first-connections-checkpoint",
+      "languages/japanese-everyday-navigator",
+      "languages/japanese-everyday-navigator-checkpoint",
       "languages/japanese-starter-kanji",
       "languages/japanese-starter-kanji-writing",
     ]);

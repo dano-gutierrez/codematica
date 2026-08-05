@@ -15,7 +15,7 @@ export function AppHeader({ subtitle = "Learning home" }: { subtitle?: string })
           </span>
         </Link>
 
-        <nav className="flex max-w-full items-center gap-2 overflow-x-auto pb-1 sm:pb-0" aria-label="Primary navigation">
+        <nav className="flex max-w-full flex-wrap items-center gap-2 pb-1 sm:pb-0" aria-label="Primary navigation">
           <NavLink href="/paths" label="Paths" color="text-[#00645f]" icon={<Map className="h-4 w-4" aria-hidden="true" />} />
           <NavLink href="/browse" label="Lessons" color="text-[#1d4e9e]" icon={<BookOpen className="h-4 w-4" aria-hidden="true" />} />
           <NavLink href="/interviews" label="Interviews" color="text-[#4b369e]" icon={<Code2 className="h-4 w-4" aria-hidden="true" />} />

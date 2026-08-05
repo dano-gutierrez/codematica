@@ -23,7 +23,7 @@ const config: ExpoConfig = {
   ...(process.env.EXPO_OWNER ? { owner: process.env.EXPO_OWNER } : {}),
   scheme: appScheme,
   version: appVersion,
-  orientation: "portrait",
+  orientation: "default",
   userInterfaceStyle: "light",
   platforms: ["ios", "android"],
   icon: "./assets/icon.png",
@@ -44,6 +44,7 @@ const config: ExpoConfig = {
   plugins: [
     "expo-router",
     "expo-secure-store",
+    "expo-web-browser",
     [
       "expo-splash-screen",
       {

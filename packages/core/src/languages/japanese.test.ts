@@ -7,7 +7,7 @@ describe("Japanese language helpers", () => {
     const index = getContentIndex();
     const groups = getJapaneseCharacterGroups(index);
 
-    expect(index.schemaVersion).toBe(7);
+    expect(index.schemaVersion).toBe(8);
     expect(groups.hiragana.some((item) => item.glyph === "あ" && item.ipa === "a")).toBe(true);
     expect(groups.katakana.some((item) => item.glyph === "ア" && item.ipa === "a")).toBe(true);
     expect(groups.kanji.some((item) => item.glyph === "人")).toBe(true);
@@ -33,6 +33,15 @@ describe("Japanese language helpers", () => {
       .join("");
 
     expect(glyphs).toBe("アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン");
+  });
+
+  it("contains the exact 80 Grade-1 plus 20 A1 starter kanji set with unique study order", () => {
+    const target = [..."一右雨円王音下火花貝学気九休玉金空月犬見五口校左三山子四糸字耳七車手十出女小上森人水正生青夕石赤千川先早草足村大男竹中虫町天田土二日入年白八百文木本名目立力林六私食飲行来駅電話時分半今何店会社家母父友"];
+    const catalog = getContentIndex().languageCharacters.filter((item) => item.writingSystem === "kanji" && target.includes(item.glyph));
+
+    expect(new Set(catalog.map((item) => item.glyph))).toEqual(new Set(target));
+    expect(catalog).toHaveLength(100);
+    expect(new Set(catalog.map((item) => item.studyOrder))).toHaveLength(100);
   });
 
   it("searches by glyph, romaji, IPA, meaning, and vocabulary expression", () => {

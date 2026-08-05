@@ -34,6 +34,8 @@ import {
   type PassiveFlashcardType,
   type ProgressDisplayItem,
   type ProgressStatus,
+  type ReviewRating,
+  type SkillProgress,
   type QuestionnaireAnswer,
   type QuestionnaireAnswerResult,
   type QuestionnaireAttemptQuestion,
@@ -56,6 +58,7 @@ import {
   StyleSheet,
   Text,
   TextInput,
+  useWindowDimensions,
   View,
 } from "react-native";
 import type { GestureResponderEvent, NativeScrollEvent, NativeSyntheticEvent } from "react-native";
@@ -456,7 +459,8 @@ export function JapaneseLanguageHubScreen({ index, adapters }: { index: ContentI
       <Text style={styles.heroTitle}>Practice kana, kanji, and writing.</Text>
       <Text style={styles.heroCopy}>Search beginner Japanese characters and phrases with romaji and IPA support.</Text>
       <View style={styles.actionRow}>
-        <Button label="Continue path" onPress={() => adapters.navigation.navigate("/paths/japanese-foundations")} testID="mobile-japanese-path-link" />
+        <Button label="Learn" onPress={() => adapters.navigation.navigate("/paths/japanese-foundations")} testID="mobile-japanese-path-link" />
+        <Button label="Review" variant="secondary" onPress={() => adapters.navigation.navigate("/languages/japanese/review")} testID="mobile-japanese-review-link" />
         {flashcards ? <Button label="Flashcards" variant="secondary" onPress={() => adapters.navigation.navigate(flashcards.route)} testID="mobile-japanese-flashcards-link" /> : null}
         <Button label="Hiragana guide" variant="ghost" onPress={() => adapters.navigation.navigate("/docs/languages/japanese-hiragana-foundations?path=japanese-foundations")} testID="mobile-japanese-hiragana-guide-link" />
         <Button label="Katakana guide" variant="ghost" onPress={() => adapters.navigation.navigate("/docs/languages/japanese-katakana-foundations?path=japanese-foundations")} testID="mobile-japanese-katakana-guide-link" />
@@ -487,12 +491,87 @@ export function JapaneseLanguageHubScreen({ index, adapters }: { index: ContentI
             <Text style={styles.cardTitle}>Beginner words and greetings</Text>
             {index.languageVocabulary.filter((item) => item.language === "ja" && item.status === "published").map((vocabulary) => (
               <Pressable key={vocabulary.slug} onPress={() => adapters.navigation.navigate(vocabulary.route)} style={styles.subPanel}>
-                <Text style={styles.japaneseGlyph}>{vocabulary.expression}</Text>
+                <Text style={styles.japaneseGlyph} accessibilityLanguage="ja-JP">{vocabulary.expression}</Text>
                 <Text style={styles.bodyText}>{vocabulary.romaji}</Text>
                 <Text style={styles.mutedText}>{vocabulary.meanings.join(", ")}</Text>
               </Pressable>
             ))}
           </View>
+        </View>
+      ) : null}
+      <View style={styles.card} testID="mobile-japanese-resources">
+        <Text style={styles.cardTitle}>Trusted resource shelf</Text>
+        <Text style={styles.mutedText}>External materials stay with their publishers and are labeled by access and reuse rights.</Text>
+        {index.languageResources.map((resource) => (
+          <Pressable
+            key={resource.id}
+            onPress={() => adapters.navigation.openExternalUrl?.(resource.url)}
+            accessibilityRole="link"
+            accessibilityHint={`Opens ${resource.publisher} in a browser`}
+            style={styles.subPanel}
+          >
+            <Text style={styles.cardTitle}>{resource.title}</Text>
+            <Text style={styles.mutedText}>{resource.description}</Text>
+            <Text style={styles.cardEyebrow}>{resource.access} · {resource.reusePolicy === "link-only" ? "link only" : "licensed embed"} · {resource.publisher}</Text>
+          </Pressable>
+        ))}
+      </View>
+    </AppScreen>
+  );
+}
+
+export function JapaneseReviewScreen({
+  index,
+  learningPath,
+  progress,
+  onRate,
+  adapters,
+}: {
+  index: ContentIndex;
+  learningPath: LearningPath;
+  progress: SkillProgress[];
+  onRate: (skillId: string, rating: ReviewRating) => void;
+} & ScreenProps) {
+  const skills = learningPath.progression?.skills ?? [];
+  const [selectedSkillId, setSelectedSkillId] = useState(skills[0]?.id ?? "");
+  const [renderedAt] = useState(() => Date.now());
+  const selected = skills.find((skill) => skill.id === selectedSkillId) ?? skills[0];
+  const selectedProgress = progress.find((row) => row.pathSlug === learningPath.slug && row.skillId === selected?.id);
+  const dueCount = progress.filter((row) => new Date(row.nextReviewAt).getTime() <= renderedAt).length;
+  const flashcards = index.passiveFlashcardFeeds.find((feed) => feed.pathSlug === learningPath.slug && feed.status === "published");
+
+  return (
+    <AppScreen>
+      <Header adapters={adapters} subtitle="Japanese review" />
+      <Text style={styles.eyebrow}>Always open · {dueCount} due</Text>
+      <Text style={styles.heroTitle}>Review what is ready.</Text>
+      <Text style={styles.heroCopy}>The queue recommends practice. It never locks lessons, flashcards, handwriting, or the dictionary.</Text>
+      <View style={styles.actionRow}>
+        {flashcards ? <Button label="Browse all flashcards" onPress={() => adapters.navigation.navigate(flashcards.route)} testID="mobile-japanese-review-flashcards" /> : null}
+        <Button label="Dictionary" variant="ghost" onPress={() => adapters.navigation.navigate("/languages/japanese")} />
+      </View>
+      <View style={styles.card} testID="mobile-japanese-review-skills">
+        <Text style={styles.cardTitle}>All skill cards</Text>
+        {skills.map((skill) => {
+          const row = progress.find((item) => item.pathSlug === learningPath.slug && item.skillId === skill.id);
+          return (
+            <Pressable key={skill.id} onPress={() => setSelectedSkillId(skill.id)} accessibilityRole="button" accessibilityState={{ selected: selected?.id === skill.id }} style={[styles.subPanel, selected?.id === skill.id ? styles.optionSelected : null]}>
+              <Text style={styles.cardTitle}>{skill.label}</Text>
+              <Text style={styles.mutedText}>{row ? `Box ${row.reviewBox} · ${row.masteryState}` : "New · available now"}</Text>
+            </Pressable>
+          );
+        })}
+      </View>
+      {selected ? (
+        <View style={styles.card} testID="mobile-japanese-review-card">
+          <Text style={styles.cardEyebrow}>{selected.skill} practice</Text>
+          <Text style={styles.cardTitle}>{selected.label}</Text>
+          <Text style={styles.bodyText}>{selected.description}</Text>
+          <Text style={styles.mutedText}>Recall one example before rating how independently you remembered it.</Text>
+          <View style={styles.actionRow}>
+            {(["again", "hard", "good", "easy"] as const).map((rating) => <Button key={rating} label={rating.charAt(0).toUpperCase() + rating.slice(1)} variant="ghost" onPress={() => onRate(selected.id, rating)} testID={`mobile-japanese-review-${rating}`} />)}
+          </View>
+          {selectedProgress ? <Text style={styles.mutedText}>Best {Math.round(selectedProgress.bestScore * 100)}% · box {selectedProgress.reviewBox}</Text> : null}
         </View>
       ) : null}
     </AppScreen>
@@ -514,7 +593,7 @@ function CharacterStrip({ title, characters, adapters }: { title: string; charac
       <View style={styles.characterGrid}>
         {characters.map((character) => (
           <Pressable key={character.slug} onPress={() => adapters.navigation.navigate(character.route)} style={styles.characterTile}>
-            <Text style={styles.characterTileGlyph}>{character.glyph}</Text>
+            <Text style={styles.characterTileGlyph} accessibilityLanguage="ja-JP">{character.glyph}</Text>
             <Text style={styles.characterTileReading}>{character.romaji}</Text>
           </Pressable>
         ))}
@@ -530,7 +609,7 @@ function CharacterCard({ character, adapters }: { character: LanguageCharacter }
         <Pill label={character.writingSystem} tone={character.writingSystem === "kanji" ? "amber" : "green"} />
         <Pill label={`/${character.ipa}/`} tone="blue" />
       </View>
-      <Text style={styles.japaneseGlyph}>{character.glyph}</Text>
+      <Text style={styles.japaneseGlyph} accessibilityLanguage="ja-JP">{character.glyph}</Text>
       <Text style={styles.cardTitle}>{character.title}</Text>
       <Text style={styles.mutedText}>{character.meanings.join(", ")}</Text>
     </Pressable>
@@ -544,7 +623,7 @@ function VocabularyCard({ vocabulary, adapters }: { vocabulary: LanguageVocabula
         <Pill label="Vocabulary" tone="purple" />
         <Pill label={`/${vocabulary.ipa}/`} tone="blue" />
       </View>
-      <Text style={styles.japaneseGlyph}>{vocabulary.expression}</Text>
+      <Text style={styles.japaneseGlyph} accessibilityLanguage="ja-JP">{vocabulary.expression}</Text>
       <Text style={styles.cardTitle}>{vocabulary.romaji}</Text>
       <Text style={styles.mutedText}>{vocabulary.meanings.join(", ")}</Text>
     </Pressable>
@@ -552,6 +631,8 @@ function VocabularyCard({ vocabulary, adapters }: { vocabulary: LanguageVocabula
 }
 
 export function JapaneseCharacterDetailScreen({ character, relatedVocabulary = [], adapters }: { character: LanguageCharacter; relatedVocabulary?: LanguageVocabulary[] } & ScreenProps) {
+  const { width } = useWindowDimensions();
+  const writingPadSize = Math.min(width >= 900 ? 560 : width >= 600 ? 480 : 360, Math.max(260, width - 48));
   const writingExercise: Extract<LearningExercise, { type: "writing" }> = {
     id: `character-${character.id}`,
     slug: `${character.slug}/writing`,
@@ -580,7 +661,7 @@ export function JapaneseCharacterDetailScreen({ character, relatedVocabulary = [
           <Pill label={character.writingSystem} tone={character.writingSystem === "kanji" ? "amber" : "green"} />
           <Pill label={`/${character.ipa}/`} tone="blue" />
         </View>
-        <Text style={styles.japaneseGlyph}>{character.glyph}</Text>
+        <Text style={styles.japaneseGlyph} accessibilityLanguage="ja-JP">{character.glyph}</Text>
         <Text style={styles.heroTitle}>{character.title}</Text>
         <Text style={styles.heroCopy}>{character.summary}</Text>
         <Text style={styles.cardTitle}>{character.meanings.join(", ")}</Text>
@@ -596,7 +677,7 @@ export function JapaneseCharacterDetailScreen({ character, relatedVocabulary = [
       </View>
       <View style={styles.card}>
         <Text style={styles.cardTitle}>Stroke model</Text>
-        <View style={styles.writingPad}>
+        <View style={[styles.writingPad, { height: writingPadSize, width: writingPadSize }]}>
           <Svg width="100%" height="100%" viewBox="0 0 100 100">
             <Path d="M 50 0 L 50 100 M 0 50 L 100 50" stroke={colors.lineSoft} strokeWidth={0.8} fill="none" />
             {character.strokes.map((stroke, index) => (
@@ -618,7 +699,7 @@ export function JapaneseCharacterDetailScreen({ character, relatedVocabulary = [
           <Text style={styles.cardTitle}>Words and examples</Text>
           {relatedVocabulary.map((vocabulary) => (
             <Pressable key={vocabulary.slug} onPress={() => adapters.navigation.navigate(vocabulary.route)} style={styles.subPanel}>
-              <Text style={styles.japaneseGlyph}>{vocabulary.expression}</Text>
+              <Text style={styles.japaneseGlyph} accessibilityLanguage="ja-JP">{vocabulary.expression}</Text>
               <Text style={styles.bodyText}>{vocabulary.reading} · {vocabulary.romaji}</Text>
               {vocabulary.inputSequences.length ? <Text style={styles.mutedText}>IME: {vocabulary.inputSequences.join(" or ")}</Text> : null}
               <Text style={styles.mutedText}>{vocabulary.meanings.join(", ")}</Text>
@@ -647,7 +728,7 @@ export function JapaneseVocabularyDetailScreen({ vocabulary, adapters }: { vocab
           <Pill label="Vocabulary" tone="purple" />
           <Pill label={`/${vocabulary.ipa}/`} tone="blue" />
         </View>
-        <Text style={styles.japaneseGlyph}>{vocabulary.expression}</Text>
+        <Text style={styles.japaneseGlyph} accessibilityLanguage="ja-JP">{vocabulary.expression}</Text>
         <Text style={styles.heroTitle}>{vocabulary.romaji}</Text>
         <Text style={styles.heroCopy}>{vocabulary.reading}</Text>
         <Text style={styles.cardTitle}>{vocabulary.meanings.join(", ")}</Text>
@@ -658,7 +739,7 @@ export function JapaneseVocabularyDetailScreen({ vocabulary, adapters }: { vocab
           <Text style={styles.cardTitle}>Kanji and hiragana breakdown</Text>
           {vocabulary.segments.map((segment, index) => (
             <View key={`${segment.text}-${index}`} style={styles.subPanel}>
-              <Text style={styles.japaneseGlyph}>{segment.text}</Text>
+              <Text style={styles.japaneseGlyph} accessibilityLanguage="ja-JP">{segment.text}</Text>
               <Text style={styles.bodyText}>{segment.reading} · {segment.romaji}</Text>
               <Text style={styles.mutedText}>{segment.meaning}</Text>
               <View style={styles.pillRow}>
@@ -903,6 +984,8 @@ function WritingPractice({
   nextHref?: string;
   onProgress: (status: ProgressStatus, position?: Record<string, unknown>) => void | Promise<void>;
 } & ScreenProps) {
+  const { width } = useWindowDimensions();
+  const writingPadSize = Math.min(width >= 900 ? 560 : width >= 600 ? 480 : 360, Math.max(260, width - 64));
   const characters = exercise.characterSlugs.flatMap((slug) => {
     const character = getLanguageCharacterBySlug(slug);
     return character ? [character] : [];
@@ -1007,7 +1090,7 @@ function WritingPractice({
         <Text style={styles.mutedText}>{character.meanings.join(", ")}</Text>
       </View>
       <View
-        style={styles.writingPad}
+        style={[styles.writingPad, { height: writingPadSize, width: writingPadSize }]}
         testID="mobile-writing-pad"
         onStartShouldSetResponder={() => true}
         onResponderGrant={startStroke}
@@ -1968,7 +2051,7 @@ const styles = StyleSheet.create({
   },
   brandSubtitle: {
     color: colors.textMuted,
-    fontSize: 11,
+    fontSize: 13,
     fontWeight: "900",
     textTransform: "uppercase",
   },
@@ -1981,7 +2064,7 @@ const styles = StyleSheet.create({
   },
   heroCopy: {
     color: colors.textMuted,
-    fontSize: 16,
+    fontSize: 17,
     fontWeight: "700",
     lineHeight: 25,
   },
@@ -2058,9 +2141,7 @@ const styles = StyleSheet.create({
     borderColor: colors.line,
     borderRadius: radii.md,
     borderWidth: 2,
-    height: 280,
     overflow: "hidden",
-    width: 280,
   },
   characterGrid: {
     flexDirection: "row",
@@ -2085,12 +2166,12 @@ const styles = StyleSheet.create({
   },
   characterTileReading: {
     color: colors.textMuted,
-    fontSize: 11,
+    fontSize: 13,
     fontWeight: "900",
   },
   cardEyebrow: {
     color: colors.textMuted,
-    fontSize: 12,
+    fontSize: 13,
     fontWeight: "900",
     textTransform: "uppercase",
   },
@@ -2102,7 +2183,7 @@ const styles = StyleSheet.create({
   },
   bodyText: {
     color: colors.textStrong,
-    fontSize: 16,
+    fontSize: 17,
     fontWeight: "700",
     lineHeight: 26,
   },
@@ -2192,7 +2273,7 @@ const styles = StyleSheet.create({
   },
   nodeSummary: {
     color: colors.textMuted,
-    fontSize: 12,
+    fontSize: 14,
     fontWeight: "700",
     lineHeight: 18,
   },
@@ -2266,12 +2347,12 @@ const styles = StyleSheet.create({
   },
   primaryButtonText: {
     color: colors.panel,
-    fontSize: 14,
+    fontSize: 16,
     fontWeight: "900",
   },
   ghostButtonText: {
     color: colors.text,
-    fontSize: 14,
+    fontSize: 16,
     fontWeight: "900",
   },
   disabled: {
