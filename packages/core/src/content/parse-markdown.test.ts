@@ -52,6 +52,27 @@ Body
 `),
     ).toThrow();
   });
+
+  it("handles empty documents and ignores non-Mermaid code fences", () => {
+    const parsed = parseKnowledgeMarkdown(`---
+title: Empty But Valid Knowledge Document
+slug: system-design/empty-valid
+summary: A valid summary used to exercise the empty Markdown indexing boundary safely.
+track: System Design
+topic: Testing
+difficulty: foundation
+tags: [testing]
+prerequisites: []
+diagramRefs: []
+status: published
+---
+
+\`\`\`typescript
+\`\`\`
+`);
+    expect(parsed.mermaidBlocks).toEqual([]);
+    expect(parsed.readingMinutes).toBe(1);
+  });
 });
 
 describe("slugifyHeading", () => {

@@ -48,11 +48,13 @@ The first hosted web target is Vercel Hobby on the Vercel-provided URL. Vercel r
 - `apps/web/src/app/api/subscription/**/route.ts`: proposed subscription status, protected content, and RevenueCat webhook endpoints
 - `apps/web/src/components/`: legacy web/Tailwind components and client wrappers
 - `apps/web/src/lib/supabase/`: web Supabase SSR/browser/proxy helpers
-- `apps/web/e2e/specs/`: Playwright web mobile workflows
+- `apps/web/e2e/`: Playwright full mobile-Chromium regression plus desktop-Chromium/mobile-WebKit smoke
 - `apps/mobile/app/`: Expo Router routes mirroring the web route contract
 - `apps/mobile/src/lib/`: native navigation, Supabase Auth, secure session storage, and local progress adapters
 - `apps/mobile/src/lib/skill-progress.ts`: native Japanese mastery read, validation, and bounded sync
 - `apps/mobile/src/__tests__/`: mobile Jest and React Native Testing Library screen tests
+- `apps/mobile/.maestro/`: installed-app Android/iOS regression flows
+- `apps/mobile/.eas/workflows/`: native smoke and `v*` release E2E orchestration
 - `packages/core/src/content/`: content schema, parser, index builder, and generated index access
 - `packages/core/src/search.ts`: fuzzy search
 - `packages/core/src/discovery.ts`: cross-section search and curated-home resolution
@@ -67,6 +69,8 @@ The first hosted web target is Vercel Hobby on the Vercel-provided URL. Vercel r
 - `scripts/content/`: index generation and optional Supabase sync
 - `scripts/content/build-japanese-audio.ts`: validated Japanese audio preparation and platform registry generation
 - `supabase/migrations/`: optional Supabase schema
+- `supabase/tests/`: local-only transactional pgTAP schema, search, trigger, and RLS tests
+- `.github/workflows/`: fast PR checks, nightly regression, and `v*` release-candidate gates
 - `vercel.json`: Vercel import/build defaults for the first hosted deployment
 - `.env.example`: web/native Supabase Auth/progress and local sync environment variable template
 
@@ -88,7 +92,7 @@ The first hosted web target is Vercel Hobby on the Vercel-provided URL. Vercel r
 - Keep Expo native builds on EAS internal distribution until store credentials, metadata, screenshots, privacy forms, and review readiness are explicitly prepared.
 - Never expose Supabase service role keys to browser code. Browser-visible Supabase variables are only for anon-safe Auth/progress clients.
 - Update feature docs and architecture docs with behavior changes.
-- Add tests with behavior changes; prefer unit coverage before browser coverage.
+- Add tests with behavior changes; start with the narrowest failing regression, preserve non-decreasing coverage gates, and add browser/device coverage for important journeys.
 - Keep UI mobile-first and dense enough for repeated study workflows.
 - Reuse and extend existing web components in `apps/web/src/components/` and shared native screens in `packages/ui/src/` before creating new UI from scratch. New reusable components should be added to the inventory in `AGENTS.md`.
 
@@ -111,4 +115,5 @@ The first hosted web target is Vercel Hobby on the Vercel-provided URL. Vercel r
 - `docs/features/future-roadmap.md`: planned AI, flashcard, blueprint, code challenge, deeper gamification, and native app directions.
 - `docs/features/hosting-and-deployment.md`: Vercel free-tier deployment, static-first hosting behavior, EAS build/submit posture, and manual Supabase sync boundaries.
 - `docs/features/native-mobile-deployment.md`: Expo Router Android/iOS app, shared workspace packages, native auth/progress, offline index bundling, and EAS build/submit workflows.
+- `docs/features/automated-testing-and-release-regression.md`: coverage policy, Vitest/Jest/pgTAP/Playwright/Maestro lanes, CI artifacts, and release promotion gates.
 - `docs/features/japanese-language-learning.md`: open JF/CEFR Japanese roadmap, complete basic kana, 100-kanji target, romaji/IME input, deterministic review, resource/audio contracts, iPad accessibility, dictionary profiles, and assisted/free handwriting practice.

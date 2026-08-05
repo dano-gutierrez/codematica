@@ -1,0 +1,18 @@
+appId: com.codematica.app
+tags:
+  - regression
+---
+- launchApp:
+    clearState: true
+- tapOn:
+    id: mobile-home-browse
+- assertVisible:
+    id: mobile-knowledge-search-input
+- tapOn:
+    id: mobile-knowledge-search-input
+- inputText: "cache aside"
+- assertVisible:
+    id: mobile-search-results
+- tapOn:
+    id: mobile-result-diagram-system-design-cache-aside
+- assertVisible: "Cache Aside"

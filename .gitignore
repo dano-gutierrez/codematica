@@ -147,6 +147,9 @@ playwright-report/
 test-results/
 e2e/playwright-report/
 
+# Local Supabase CLI branch state
+supabase/.branches/
+
 # Expo native generation and local credentials
 apps/mobile/.expo/
 apps/mobile/android/

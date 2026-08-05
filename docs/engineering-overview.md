@@ -1,6 +1,6 @@
 # Codematica Engineering Overview
 
-Last updated: 2026-08-04
+Last updated: 2026-08-05
 
 Codematica is a mobile-first learning app for system design, coding, programming, software engineering, and beginner human-language study. V1 keeps the product intentionally local-first: author documents as Markdown, author paths, exercises, flashcard feeds, interview catalogs, and language catalogs as JSON, generate a static study index, and render the app on web with Next.js and on Android/iOS with Expo Router.
 
@@ -24,9 +24,11 @@ Codematica is a mobile-first learning app for system design, coding, programming
 - EAS internal preview, production build, and submit config for native delivery
 - optional Supabase Auth and progress persistence with `@supabase/ssr`
 - optional native Supabase Auth and progress persistence with secure Expo session storage
-- Vitest for unit/integration tests
-- Playwright for mobile smoke tests
-- Jest + React Native Testing Library for mobile screen tests
+- Vitest with V8 aggregate and per-file coverage gates for unit/integration tests
+- Playwright for desktop Chromium, mobile Chromium, and mobile WebKit browser regression
+- Jest + React Native Testing Library with coverage gates for mobile adapters and shared screens
+- pgTAP against a disposable local Supabase stack for migrations, RLS, triggers, and search
+- Maestro 2.8.0 through credential-free EAS Android/iOS test builds for installed-app journeys
 - optional Supabase Postgres scaffold for hosted search and saved progress
 
 ## Content Flow
@@ -158,7 +160,30 @@ Progress is user state, not authored content. Existing completion remains in `us
 
 ## Testing Model
 
-Unit tests cover schema validation, parser behavior, library and cross-section search, discovery curation, snippets, questionnaire shuffling/checking, handwriting scoring, interview solution selection, path/exercise/language/interview validation, stage percentage/stamp eligibility, six-box mastery transitions, due ordering, local/remote mastery merge, progress payload validation, lossless batching, and diagram indexing. Integration tests cover generated index loading and renderer behavior. Playwright smoke and regression tests cover home discovery, section catalogs, the web mobile path, practice, browser, questionnaire, interview, flashcard, one-minute brief feed, Japanese alphabet study, IME search, review access, keyboard operation, 200% zoom/320px reflow, reduced motion, BFS/DFS study, Mermaid authoring, signed-out progress, and diagrams. Mobile Jest tests cover shared React Native screens against the bundled generated index, including discovery search, Japanese resources/lookup/review/writing practice, and batched progress sync.
+Unit tests cover schema validation, parser behavior, library and cross-section search, discovery curation, snippets, questionnaire shuffling/checking, handwriting scoring, interview solution selection, path/exercise/language/interview validation, stage percentage/stamp eligibility, six-box mastery transitions, due ordering, local/remote mastery merge, progress payload validation, lossless batching, file walking, route mapping, audio-registry generation, Supabase sync mapping, and diagram indexing. Integration tests cover generated-index relationships, renderers, web/API/Auth boundaries, and native screen/adaptor behavior.
+
+Coverage is enforced by scope and per file. Core requires 90% lines/statements/functions and 85% branches; web services/API/content scripts require 85% and 80% branches; web components require 75% and 70% branches; mobile libraries require 80% and 70% branches; shared native UI requires 70% and 60% branches. Every instrumented file also requires 60% lines/statements/functions and 50% branches. Exclusions are limited to generated output, type-only barrels/tokens, and thin route or CLI composition and are annotated where configured.
+
+Playwright runs the complete suite in mobile Chromium and repeats smoke journeys in desktop Chromium and mobile WebKit. It covers discovery, catalogs, path routing, reading, standalone and embedded Mermaid, every practice renderer, passive feeds, algorithm and runnable web interviews, Japanese lookup/detail/review/writing, local progress, login/Auth-disabled behavior, 404 recovery, responsive layout, and representative accessibility. Mobile Jest covers platform adapters, configured/unconfigured Supabase, offline/partial-failure progress behavior, app configuration, and the complete shared-screen matrix. Maestro covers installed-app offline discovery, path-to-practice, browse-to-diagram, Japanese study/review, interviews, and unconfigured login on Android and iOS release candidates.
+
+Transactional pgTAP tests replay migrations in a disposable local Supabase stack and assert tables, indexes, constraints, RLS, anonymous denial, per-user isolation, completion/mastery preservation, published-only search, ranking, and limits.
+
+```mermaid
+flowchart TD
+  Change["Behavior or regression"] --> Narrow["Lowest-layer failing test"]
+  Narrow --> Unit["Vitest or mobile Jest coverage"]
+  Narrow --> DB["pgTAP when DB contract changes"]
+  Unit --> Browser["Playwright for important web journeys"]
+  Unit --> Native["Maestro for critical installed-app journeys"]
+  DB --> PR["Five parallel PR checks"]
+  Browser --> PR
+  Native --> Release["v* EAS Android + iOS jobs"]
+  PR --> Nightly["03:00 UTC regression"]
+  Nightly --> Release
+  Release --> Promote["Manual promotion only after all gates pass"]
+```
+
+The stable command and workflow contract is documented in `docs/features/automated-testing-and-release-regression.md`.
 
 ## Future Architecture Direction
 

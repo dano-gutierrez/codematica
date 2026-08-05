@@ -99,8 +99,13 @@ Prefer paths that a new thread can open immediately. Avoid naming abstract layer
 - Unit: `<what should be covered>`
 - Integration: `<what should be covered>`
 - E2E: `<what should be covered, if applicable>`
+- Regression classification: `<@smoke critical path, @regression edge case, Maestro flow, or n/a>`
+- Coverage impact: `<instrumented scope and whether a threshold or justified exclusion changes>`
+- Required local commands: `<targeted TDD command plus aggregate gates>`
 
 If there are must-not-regress cases, list them explicitly.
+
+For behavior changes, identify the first failing regression test and the lowest layer that proves the rule. Thresholds may only increase; explain any new coverage exclusion in this document and the changelog.
 
 ## Open Questions
 

@@ -1,0 +1,77 @@
+name: Release Candidate Regression
+
+on:
+  push:
+    tags: ["v*"]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  release-quality:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm run content:check
+      - run: npm run lint
+      - run: npm run typecheck
+      - run: npm run mobile:doctor
+      - run: npm run test:coverage
+        env:
+          CI: true
+      - run: npm run test:mobile:coverage
+        env:
+          CI: true
+      - run: npm run build
+      - if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: release-coverage-${{ github.ref_name }}
+          path: |
+            coverage
+            test-results/vitest
+            test-results/mobile-jest
+          if-no-files-found: error
+          retention-days: 90
+
+  release-database:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: supabase/setup-cli@v1
+        with:
+          version: latest
+      - run: supabase start
+      - run: supabase db reset --local
+      - run: supabase test db
+      - if: always()
+        run: supabase stop --no-backup
+
+  release-web:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npx playwright install --with-deps chromium webkit
+      - run: npm run e2e:web:release
+        env:
+          CI: true
+      - if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: release-playwright-${{ github.ref_name }}
+          path: |
+            apps/web/e2e/playwright-report
+            apps/web/e2e/test-results
+          if-no-files-found: warn
+          retention-days: 90

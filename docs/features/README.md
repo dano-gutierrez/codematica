@@ -29,6 +29,7 @@ Most threads should not need the full document before they start exploring code.
 - It lists concrete file paths instead of generic subsystems.
 - It names edge cases and non-goals explicitly.
 - It links behavior to tests.
+- Its test plan identifies the lowest proving layer, E2E classification, coverage impact, and local release commands.
 - It ends with a copy-pasteable handoff prompt for another thread.
 
 ## What To Update After A Change
@@ -41,6 +42,7 @@ Update the feature doc in the same branch when any of these changed:
 - Test coverage expectations
 - Known gaps, assumptions, or open questions
 - Status such as `proposed`, `in_progress`, or `shipped`
+- Coverage scope or exclusions, smoke/regression classification, database assertions, or native Maestro flows
 
 Also update `docs/README.md` and any nested README that owns the changed area when a feature adds or changes folders, workflows, commands, conventions, integrations, or durable documentation surfaces.
 

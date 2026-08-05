@@ -1,0 +1,49 @@
+name: Native Release Regression
+
+on:
+  push:
+    tags: [v*]
+
+concurrency:
+  cancel_in_progress: true
+  group: ${{ workflow.filename }}-${{ github.ref }}
+
+jobs:
+  build_android:
+    name: Build Android E2E APK
+    type: build
+    params:
+      platform: android
+      profile: e2e-test
+
+  build_ios:
+    name: Build iOS simulator app
+    type: build
+    params:
+      platform: ios
+      profile: e2e-test
+
+  maestro_android:
+    name: Android Maestro release
+    needs: [build_android]
+    type: maestro
+    runs_on: linux-large-nested-virtualization
+    params:
+      build_id: ${{ needs.build_android.outputs.build_id }}
+      flow_path: .maestro
+      maestro_version: 2.8.0
+      output_format: junit
+      record_screen: true
+      retries: 1
+
+  maestro_ios:
+    name: iOS Maestro release
+    needs: [build_ios]
+    type: maestro
+    params:
+      build_id: ${{ needs.build_ios.outputs.build_id }}
+      flow_path: .maestro
+      maestro_version: 2.8.0
+      output_format: junit
+      record_screen: true
+      retries: 1

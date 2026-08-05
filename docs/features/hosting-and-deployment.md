@@ -3,7 +3,7 @@
 ## Snapshot
 
 - Status: `shipped`
-- Last updated: `2026-07-11`
+- Last updated: `2026-08-05`
 - Owner thread: `n/a`
 - Current state: The web app is configured for Vercel Hobby deployment from `main` with static-first content routes, optional Supabase Auth/progress, and manual Supabase content sync. The native app has Expo/EAS internal build, production build, and store submission profiles.
 - Target outcome: Codematica can be hosted on a free Vercel-provided URL without making anonymous browsing depend on Supabase credentials or paid add-ons.
@@ -42,6 +42,7 @@ Detailed Play Console, Apple Developer Program, App Store Connect, EAS credentia
 - Article, diagram, and practice pages stay static/SSG for normal content traffic. Path-scoped `?path=` next-node links are selected by small client wrappers from build-time route maps.
 - EAS internal and production builds use `apps/mobile/eas.json` profiles. Store submission can start through EAS Submit after Play Console/App Store Connect app records, credentials, metadata, screenshots, and review forms are configured outside the repo.
 - Do not add Vercel paid storage, databases, analytics add-ons, custom domains, or automated Supabase branching in this milestone.
+- Pull requests run five parallel GitHub checks. Nightly and `v*` workflows retain coverage, JUnit, Playwright reports, and failure evidence; native EAS workflows build/test but never submit.
 
 ## Current State
 
@@ -128,6 +129,8 @@ The app builds locally with `npm run build`. Content pages have been refactored 
 - `apps/web/src/components/PathScopedNextLink.tsx`: query-param-aware document and diagram next link.
 - `apps/web/src/components/PathScopedPracticeCard.tsx`: query-param-aware practice card adapter.
 - `apps/mobile/eas.json`: native internal, production, e2e, and submit profiles.
+- `.github/workflows/`: pull-request, nightly, and release-candidate quality/regression gates.
+- `apps/mobile/.eas/workflows/`: Android labeled smoke and Android/iOS `v*` native E2E gates.
 - `apps/mobile/app.config.ts`: native store identifiers, version counters, icon/splash assets, and EAS project linkage.
 - `apps/mobile/assets/`: native icon, adaptive icon, and splash assets.
 - `docs/runbooks/native-store-publishing.md`: operational native store account and first-release runbook.
@@ -138,6 +141,7 @@ The app builds locally with `npm run build`. Content pages have been refactored 
 - Build: `npm run build` shows content routes as static/SSG where expected.
 - E2E: mobile user follows a path, opens a document, reveals practice, uses next-node navigation, searches, and opens a diagram.
 - Native: `npm run test -w @codematica/mobile` covers shared React Native search and practice screens; `npm run mobile:doctor` validates Expo project health.
+- Release: `npm run test:release` covers local quality, coverage, web build, and complete browser regression; a promotable `v*` also requires the local pgTAP lane and both EAS native jobs.
 
 ## Open Questions
 
@@ -155,6 +159,7 @@ The app builds locally with `npm run build`. Content pages have been refactored 
 - `2026-07-11`: Add npm workspaces, shared core/UI packages, and Expo/EAS internal native build configuration while preserving Vercel as the web production target.
 - `2026-07-11`: Add native app identity, store assets, production EAS build profiles, submit profiles, and root scripts for Play Console/App Store Connect publishing prep.
 - `2026-07-17`: Set Vercel `outputDirectory` to `apps/web/.next` after the Next app moved into the `apps/web` workspace.
+- `2026-08-05`: Add five fast PR gates, nightly web/database regression, and GitHub/EAS `v*` release-candidate gates without automatic submission or publication.
 
 ## Documentation Updates
 

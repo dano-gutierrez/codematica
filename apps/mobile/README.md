@@ -44,7 +44,28 @@ Generated `apps/mobile/ios/` and `apps/mobile/android/` folders are ignored. Kee
 npm run mobile:doctor
 npm run typecheck -w @codematica/mobile
 npm run test:mobile
+npm run test:mobile:coverage
 ```
+
+Jest covers native adapters, offline and partial-failure progress behavior, Supabase configuration, app/EAS configuration, and the shared React Native screen matrix. Coverage is enforced at 80% lines/statements/functions and 70% branches for mobile libraries, and 70%/60% for shared native UI.
+
+## Native E2E
+
+Credential-free native E2E builds use the `e2e-test` EAS profile: Android produces an APK and iOS produces a simulator app. Checked-in Maestro flows live in `.maestro/`, use stable `testID` selectors, and cover offline discovery, path-to-practice, browse-to-diagram, Japanese study/review, interviews, and unconfigured login.
+
+Run the Android smoke workflow manually or by applying the `mobile-e2e` pull-request label:
+
+```bash
+npm run mobile:e2e:android
+```
+
+Run the Android/iOS release workflow manually; it also triggers on `v*` tag pushes:
+
+```bash
+npm run mobile:e2e:release
+```
+
+Both workflows pin Maestro 2.8.0 and retain JUnit plus screen recordings. EAS currently classifies its built-in Maestro job as alpha. These workflows build and test only; they never submit or publish an app.
 
 ## App Identity
 
@@ -119,6 +140,8 @@ Full Play Console, Apple Developer Program, App Store Connect, EAS credentials, 
 References:
 
 - https://docs.expo.dev/build/eas-json/
+- https://docs.expo.dev/eas/workflows/examples/e2e-tests/
+- https://docs.expo.dev/eas/workflows/syntax/
 - https://docs.expo.dev/submit/introduction/
 - https://docs.expo.dev/submit/android/
 - https://docs.expo.dev/submit/ios/

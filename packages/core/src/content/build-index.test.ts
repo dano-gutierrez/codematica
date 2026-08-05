@@ -2,7 +2,8 @@ import { mkdtemp, mkdir, writeFile } from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
 import { describe, expect, it } from "vitest";
-import { buildContentIndex, collectMermaidDiagrams } from "./build-index";
+import { buildContentIndex, collectMermaidDiagrams, serializeContentIndex } from "./build-index";
+import { getContentIndex } from "./index";
 
 async function makeTempRoot() {
   return mkdtemp(path.join(os.tmpdir(), "codematica-content-"));
@@ -497,6 +498,15 @@ async function writeHomeDiscovery(rootDir: string) {
 }
 
 describe("buildContentIndex", () => {
+  it("rebuilds the committed generated index from canonical repository content", async () => {
+    const rootDir = path.resolve(import.meta.dirname, "../../../..");
+    const rebuilt = await buildContentIndex({ rootDir });
+    expect(serializeContentIndex(rebuilt)).toBe(serializeContentIndex(getContentIndex()));
+    expect(rebuilt.languageAudio).toEqual(getContentIndex().languageAudio);
+    expect(rebuilt.languageResources.length).toBeGreaterThan(0);
+    expect(rebuilt.learningPaths.some((learningPath) => learningPath.progression)).toBe(true);
+  });
+
   it("indexes documents and external Mermaid diagrams", async () => {
     const rootDir = await makeTempRoot();
     await writeDiagram(rootDir, "system-design/cache-aside");

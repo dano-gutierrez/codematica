@@ -1,23 +1,21 @@
+import { pathToFileURL } from "node:url";
 import { createClient } from "@supabase/supabase-js";
 import { buildContentIndex } from "../../packages/core/src/content/build-index";
+import type { ContentIndex } from "../../packages/core/src/content/schema";
 
-const supabaseUrl = process.env.SUPABASE_URL;
-const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+type SyncError = { message?: string } | null;
 
-if (!supabaseUrl || !serviceRoleKey) {
-  throw new Error("Set SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY before syncing content.");
-}
+export type ContentSyncClient = {
+  from: (table: "kb_documents" | "kb_diagrams") => {
+    upsert: (
+      rows: Array<Record<string, unknown>>,
+      options: { onConflict: string },
+    ) => Promise<{ error: SyncError }>;
+  };
+};
 
-const supabase = createClient(supabaseUrl, serviceRoleKey, {
-  auth: {
-    persistSession: false,
-  },
-});
-
-const index = await buildContentIndex({ rootDir: process.cwd() });
-
-const { error: documentError } = await supabase.from("kb_documents").upsert(
-  index.documents.map((document) => ({
+export function createDocumentSyncRows(index: ContentIndex) {
+  return index.documents.map((document) => ({
     slug: document.slug,
     title: document.title,
     summary: document.summary,
@@ -35,27 +33,62 @@ const { error: documentError } = await supabase.from("kb_documents").upsert(
     mermaid_blocks: document.mermaidBlocks,
     content_hash: document.contentHash,
     reading_minutes: document.readingMinutes,
-  })),
-  { onConflict: "slug" },
-);
-
-if (documentError) {
-  throw documentError;
+  }));
 }
 
-const { error: diagramError } = await supabase.from("kb_diagrams").upsert(
-  index.diagrams.map((diagram) => ({
+export function createDiagramSyncRows(index: ContentIndex) {
+  return index.diagrams.map((diagram) => ({
     slug: diagram.slug,
     title: diagram.title,
     source_path: diagram.sourcePath,
     source: diagram.source,
     content_hash: diagram.contentHash,
-  })),
-  { onConflict: "slug" },
-);
-
-if (diagramError) {
-  throw diagramError;
+  }));
 }
 
-console.log(`Synced ${index.documents.length} documents and ${index.diagrams.length} diagrams.`);
+export async function syncContentToSupabase(client: ContentSyncClient, index: ContentIndex) {
+  const { error: documentError } = await client
+    .from("kb_documents")
+    .upsert(createDocumentSyncRows(index), { onConflict: "slug" });
+
+  if (documentError) throw documentError;
+
+  const { error: diagramError } = await client
+    .from("kb_diagrams")
+    .upsert(createDiagramSyncRows(index), { onConflict: "slug" });
+
+  if (diagramError) throw diagramError;
+
+  return { documents: index.documents.length, diagrams: index.diagrams.length };
+}
+
+export async function runContentSync(
+  env: NodeJS.ProcessEnv = process.env,
+  rootDir = process.cwd(),
+  dependencies: {
+    createClient?: typeof createClient;
+    buildIndex?: typeof buildContentIndex;
+    log?: (message: string) => void;
+  } = {},
+) {
+  const supabaseUrl = env.SUPABASE_URL;
+  const serviceRoleKey = env.SUPABASE_SERVICE_ROLE_KEY;
+
+  if (!supabaseUrl || !serviceRoleKey) {
+    throw new Error("Set SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY before syncing content.");
+  }
+
+  const client = (dependencies.createClient ?? createClient)(supabaseUrl, serviceRoleKey, {
+    auth: { persistSession: false },
+  }) as unknown as ContentSyncClient;
+  const index = await (dependencies.buildIndex ?? buildContentIndex)({ rootDir });
+  const result = await syncContentToSupabase(client, index);
+  (dependencies.log ?? console.log)(`Synced ${result.documents} documents and ${result.diagrams} diagrams.`);
+  return result;
+}
+
+/* v8 ignore start -- the CLI entry point delegates to the tested injectable helper. */
+if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {
+  await runContentSync();
+}
+/* v8 ignore stop */

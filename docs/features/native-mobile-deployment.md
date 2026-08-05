@@ -3,9 +3,9 @@
 ## Snapshot
 
 - Status: `in_progress`
-- Last updated: `2026-08-04`
+- Last updated: `2026-08-05`
 - Owner thread: `n/a`
-- Current state: The repo has an Expo Router app in `apps/mobile`, shared runtime logic in `packages/core`, shared React Native screens in `packages/ui`, adaptive phone/iPad Japanese handwriting and review, EAS build/submit profiles, configurable store identifiers, and native icon/splash assets.
+- Current state: The repo has an Expo Router app in `apps/mobile`, shared runtime logic in `packages/core`, shared React Native screens in `packages/ui`, adaptive phone/iPad Japanese handwriting and review, enforced Jest coverage, credential-free EAS Android/iOS E2E profiles, and checked-in Maestro regression workflows.
 - Target outcome: Codematica can run locally on web/Android/iOS, ship Android and iOS internal builds, and prepare Play Console/App Store Connect submissions while preserving the existing Next/Vercel mobile web app and coding shared product behavior once.
 - Code touchpoints:
   - `apps/mobile/`
@@ -16,6 +16,8 @@
   - `packages/core/src/core.test.ts`
   - `apps/mobile/src/__tests__/mobile-screens.test.tsx`
   - `apps/web/e2e/specs/knowledge-browser.smoke.spec.ts`
+  - `apps/mobile/src/__tests__/mobile-screen-matrix.test.tsx`
+  - `apps/mobile/.maestro/`
 
 ## One-Minute Brief
 
@@ -39,6 +41,7 @@ Detailed Play Console, Apple Developer Program, App Store Connect, EAS credentia
 - Native Japanese study keeps Learn, Review, Dictionary, and Resources directly reachable; review state is retained in AsyncStorage and merged with the authenticated RLS snapshot when Supabase is configured.
 - Expo orientation is adaptive with tablet support enabled. Writing canvases size from the active window rather than assuming a fixed phone width, so Split View and portrait/landscape iPad layouts remain usable.
 - First release target is EAS internal distribution. Store submission readiness is configured in the repo, but actual Play Console/App Store Connect release requires account-owned app records, credentials, metadata, screenshots, and review forms outside the repo.
+- Native E2E uses the credential-free `e2e-test` profile: APK for Android and simulator app for iOS. A PR labeled `mobile-e2e` runs Android smoke; a `v*` tag runs every Maestro flow on Android and iOS. These workflows never submit or publish builds.
 
 ## Run And Build Commands
 
@@ -85,6 +88,13 @@ npm run mobile:build:ios
 npm run mobile:build:all
 ```
 
+Native E2E workflows:
+
+```bash
+npm run mobile:e2e:android
+npm run mobile:e2e:release
+```
+
 EAS submissions:
 
 ```bash
@@ -129,6 +139,8 @@ Store-side setup still required:
 - `apps/mobile/src/lib/supabase.ts` creates the native Supabase anon client with Expo SecureStore-backed session persistence.
 - `apps/mobile/app.config.ts` owns native app identity, adaptive orientation, tablet support, bundle/package identifiers, version counters, icon/splash assets, runtime version policy, and EAS project linkage.
 - `apps/mobile/eas.json` owns development, preview, production, e2e-test, and submit profiles.
+- `apps/mobile/.eas/workflows/` owns the labeled Android smoke and Android/iOS `v*` release Maestro jobs.
+- `apps/mobile/.maestro/` owns the installed-app offline, learning-path, diagram, Japanese, interview, and Auth-disabled journeys.
 - `apps/mobile/assets/` stores the native icon, adaptive icon, and splash assets used by app store builds.
 - `apps/mobile/app/languages/japanese/**` mirrors the web Japanese lookup/detail/review routes.
 - `apps/mobile/src/lib/skill-progress.ts` validates, loads, merges, and uploads Japanese mastery through the anon-safe Supabase client without clearing local state.
@@ -140,10 +152,11 @@ Store-side setup still required:
 ## Test Plan
 
 - Core: `npm run typecheck -w @codematica/core` and `npm test` for generated index, route helpers, search, practice, and progress contracts.
-- UI/mobile: `npm run typecheck -w @codematica/ui`, `npm run typecheck -w @codematica/mobile`, and `npm run test -w @codematica/mobile`.
+- UI/mobile: `npm run typecheck -w @codematica/ui`, `npm run typecheck -w @codematica/mobile`, and `npm run test:mobile:coverage` for adapters, failure/retry behavior, configuration, and the complete shared-screen matrix.
 - Web: `npm run typecheck -w @codematica/web`, `npm test`, and `npm run e2e:smoke` for the existing web mobile workflow.
 - Content: `npm run content:check` after content, parser, schema, or generated index changes.
 - Expo: `npm run doctor -w @codematica/mobile` before EAS build work.
+- Native E2E: apply the `mobile-e2e` PR label or run `npm run mobile:e2e:android` for Android smoke. A `v*` tag or `npm run mobile:e2e:release` builds credential-free Android/iOS artifacts and runs all Maestro flows with JUnit and recordings.
 - Build: `npm run build` for the web app; `npm run mobile:build:preview` for internal native testers; `npm run mobile:build:android` and `npm run mobile:build:ios` for store-ready artifacts once EAS credentials are configured.
 
 ## Known Gaps
@@ -151,7 +164,8 @@ Store-side setup still required:
 - The local iPad simulator build reaches native compilation but Xcode 26.3 fails inside ExpoModulesJSI. Expo SDK 57 documents Xcode 26.4+ as its supported baseline; rerun the build after upgrading Xcode rather than patching generated dependency source.
 - Native WebView Mermaid currently falls back to source unless a bundled Mermaid runtime string is supplied to the shared adapter.
 - React/TypeScript web exercise projects are read-only on native; there is no native WebView compiler/runtime.
-- Mobile E2E is documented as the target lane, but Maestro flows have not been added yet.
+- EAS's built-in Maestro workflow job is currently alpha; revalidate its schema when Expo changes that contract.
+- The checked-in EAS workflow definitions require an authenticated, linked Expo project for remote validation/execution; local Jest and Maestro-flow source remain credential-free.
 - Store submission metadata, screenshots, privacy labels, and app review preparation remain account-side work and are not stored in this repo yet.
 - Public production release remains manual after EAS submission: Play internal track promotion happens in Play Console, and iOS App Store release happens in App Store Connect after TestFlight processing and App Review submission.
 
@@ -165,6 +179,7 @@ Store-side setup still required:
 - `2026-07-11`: Target EAS internal builds first; configure store-ready app identity, EAS production build profiles, and EAS submit profiles so Play Console/App Store Connect publishing can start after account setup.
 - `2026-08-03`: Keep Japanese alphabet resources accessible from the native hub and make native anonymous progress retention/sync lossless across bounded batches.
 - `2026-08-04`: Add adaptive orientation, responsive iPad handwriting, Japanese review/resources, language accessibility hints, and authenticated mastery merging; align Expo SDK dependencies and pass Expo Doctor 20/20.
+- `2026-08-05`: Enforce native Jest coverage and add Maestro 2.8.0 Android smoke plus Android/iOS release-candidate workflows using credential-free E2E builds.
 
 ## Thread Handoff Prompt
 

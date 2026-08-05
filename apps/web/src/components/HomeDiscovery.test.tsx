@@ -1,11 +1,12 @@
-import { fireEvent, render, screen } from "@testing-library/react";
+import { act, fireEvent, render, screen } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
 import { getContentIndex } from "@codematica/core";
 import { HomeDiscovery } from "./HomeDiscovery";
 
 describe("HomeDiscovery", () => {
-  it("renders every curated section with its full-catalog destination", () => {
+  it("renders every curated section with its full-catalog destination", async () => {
     render(<HomeDiscovery index={getContentIndex()} />);
+    await act(async () => undefined);
 
     expect(screen.getByTestId("home-section-paths")).toBeVisible();
     expect(screen.getByTestId("home-section-lessons")).toBeVisible();
@@ -17,8 +18,9 @@ describe("HomeDiscovery", () => {
     expect(screen.getByTestId("home-view-all-languages")).toHaveAttribute("href", "/languages");
   });
 
-  it("replaces curated rows with grouped cross-section search results", () => {
+  it("replaces curated rows with grouped cross-section search results", async () => {
     render(<HomeDiscovery index={getContentIndex()} />);
+    await act(async () => undefined);
 
     fireEvent.change(screen.getByTestId("home-global-search"), { target: { value: "Number Of Islands" } });
 

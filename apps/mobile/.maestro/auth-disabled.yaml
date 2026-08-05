@@ -1,0 +1,10 @@
+appId: com.codematica.app
+tags:
+  - regression
+---
+- launchApp:
+    clearState: true
+- openLink: codematica://login
+- assertVisible: "Auth is not configured.*"
+- assertVisible:
+    id: mobile-sign-in

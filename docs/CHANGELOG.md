@@ -2,6 +2,18 @@
 
 This changelog records durable, user-visible and architectural changes. Feature documents remain the authoritative contracts; this file explains when a group of related changes landed and points readers to the owning documentation.
 
+## 2026-08-05 — Automated Testing And Release Regression
+
+- Added scope and per-file V8 coverage gates for core, web services/API/content scripts, web components, mobile libraries, and shared native UI, with HTML, LCOV, JSON, text-summary, and CI JUnit evidence.
+- Expanded unit/integration coverage across content generation/sync, progress/Auth APIs, Supabase clients, catalogs, renderers, practice, interviews, Japanese, mobile adapters, offline failure handling, and shared screens.
+- Added local Supabase configuration and transactional pgTAP coverage for migration replay, schema/index/constraint contracts, RLS isolation, preservation triggers, and published search behavior.
+- Expanded Playwright to a full mobile-Chromium suite plus desktop-Chromium/mobile-WebKit smoke, with catalog/recovery and accessibility regression coverage and failure-only visual evidence.
+- Added credential-free Android APK/iOS simulator E2E profiles, Maestro 2.8.0 flows, a `mobile-e2e` PR-label workflow, and parallel Android/iOS `v*` release jobs.
+- Added five parallel PR gates, a 03:00 UTC nightly web/database workflow, and a `v*` release-candidate workflow. Branch protection remains an account-side follow-up after the check names have completed successfully once.
+- Coverage thresholds are non-decreasing. Future exclusions or reductions require an explicit feature-doc and changelog justification.
+
+Owning contract: `docs/features/automated-testing-and-release-regression.md`.
+
 ## 2026-08-04 — Japanese Foundations Pre-A1 To A1
 
 Commit: `9e7834c` (`Build Japanese Pre-A1 to A1 roadmap`)

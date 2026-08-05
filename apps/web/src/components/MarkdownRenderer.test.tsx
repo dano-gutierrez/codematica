@@ -23,4 +23,26 @@ describe("MarkdownRenderer", () => {
     expect(screen.getByText("Python")).toBeVisible();
     expect(screen.getByText("total").closest("code")).toHaveTextContent("def total(items):");
   });
+
+  it("renders nested headings, Mermaid, plain fences, and safe links", async () => {
+    render(<MarkdownRenderer markdown={[
+      "### Mixed *heading* 2",
+      "",
+      "[Internal](/browse) and [External](https://example.com).",
+      "",
+      "```mermaid",
+      "graph TD; A-->B",
+      "```",
+      "",
+      "```",
+      "plain text",
+      "```",
+    ].join("\n")} />);
+
+    expect(screen.getByRole("heading", { name: "Mixed heading 2" })).toHaveAttribute("id", "mixed-heading-2");
+    expect(screen.getByRole("link", { name: "Internal" })).toHaveAttribute("href", "/browse");
+    expect(screen.getByRole("link", { name: "External" }).querySelector("svg")).not.toBeNull();
+    expect(screen.getByTestId("mermaid-block")).toBeVisible();
+    expect(screen.getByText("plain text").closest("code")).toBeVisible();
+  });
 });

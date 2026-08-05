@@ -1,0 +1,16 @@
+appId: com.codematica.app
+tags:
+  - regression
+---
+- launchApp:
+    clearState: true
+- openLink: codematica://interviews
+- assertVisible:
+    id: mobile-real-world-interview-list
+- tapOn:
+    id: mobile-collection-real-world
+- tapOn:
+    id: mobile-question-mondrian-composition-generator
+- assertVisible:
+    id: mobile-web-interview-evaluation
+- assertVisible: "Interactive runner available on web"

@@ -432,8 +432,9 @@ export function BrowseScreen({ index, adapters }: { index: ContentIndex } & Scre
 }
 
 function SearchResultCard({ result, adapters }: { result: SearchResult } & ScreenProps) {
+  const automationSlug = result.route.replace(/^\/(?:docs|diagrams)\//, "").replaceAll("/", "-");
   return (
-    <Pressable onPress={() => adapters.navigation.navigate(result.route)} style={styles.card} testID={`mobile-result-${result.kind}-${result.id}`}>
+    <Pressable onPress={() => adapters.navigation.navigate(result.route)} style={styles.card} testID={`mobile-result-${result.kind}-${automationSlug}`}>
       <View style={styles.pillRow}>
         <Pill label={result.kind === "document" ? "Doc" : "Diagram"} tone={result.kind === "document" ? "blue" : "green"} />
         {result.difficulty ? <DifficultyPill difficulty={result.difficulty} /> : null}
@@ -1405,6 +1406,7 @@ export function PassiveFlashcardFeedScreen({
         </View>
       </View>
       <FlatList
+        testID="mobile-passive-flashcard-list"
         data={visibleCards}
         keyExtractor={(item) => item.instanceId}
         pagingEnabled

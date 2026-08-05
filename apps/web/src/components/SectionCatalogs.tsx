@@ -229,7 +229,7 @@ function EmptyState({ children }: { children: React.ReactNode }) {
 }
 
 function Stat({ label, value }: { label: string; value: number }) {
-  return <div className="flex items-center justify-between rounded-lg bg-[#fff5d6] px-3 py-2"><dt>{label}</dt><dd className="font-extrabold text-[#7a5200]">{value}</dd></div>;
+  return <div className="flex items-center justify-between rounded-lg bg-[#fff5d6] px-3 py-2 text-[#53616c]"><dt>{label}</dt><dd className="font-extrabold text-[#7a5200]">{value}</dd></div>;
 }
 
 function matchesText(values: string[], query: string) {

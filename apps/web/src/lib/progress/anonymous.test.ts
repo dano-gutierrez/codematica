@@ -105,4 +105,11 @@ describe("anonymous progress buffer", () => {
 
     expect(getAnonymousProgressItems()).toEqual([]);
   });
+
+  it("recovers from malformed and non-array storage values", () => {
+    window.localStorage.setItem("codematica:anonymous-progress:v1", "{");
+    expect(getAnonymousProgressItems()).toEqual([]);
+    window.localStorage.setItem("codematica:anonymous-progress:v1", JSON.stringify({ item: true }));
+    expect(getAnonymousProgressItems()).toEqual([]);
+  });
 });

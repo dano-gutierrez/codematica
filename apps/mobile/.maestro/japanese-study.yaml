@@ -1,0 +1,23 @@
+appId: com.codematica.app
+tags:
+  - regression
+---
+- launchApp:
+    clearState: true
+- openLink: codematica://languages/japanese
+- assertVisible:
+    id: mobile-japanese-search-input
+- tapOn:
+    id: mobile-japanese-search-input
+- inputText: "water"
+- assertVisible:
+    id: mobile-japanese-results
+- tapOn:
+    id: mobile-japanese-character-japanese-kanji-water
+- assertVisible:
+    id: mobile-japanese-character-practice
+- back
+- tapOn:
+    id: mobile-japanese-review-link
+- assertVisible:
+    id: mobile-japanese-review-skills

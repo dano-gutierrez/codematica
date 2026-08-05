@@ -1,0 +1,46 @@
+name: Nightly Regression
+
+on:
+  schedule:
+    - cron: "0 3 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  web-regression:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npx playwright install --with-deps chromium webkit
+      - run: npm run e2e:web:release
+        env:
+          CI: true
+      - if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: nightly-playwright-${{ github.run_id }}
+          path: |
+            apps/web/e2e/playwright-report
+            apps/web/e2e/test-results
+          if-no-files-found: warn
+          retention-days: 30
+
+  database-regression:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: supabase/setup-cli@v1
+        with:
+          version: latest
+      - run: supabase start
+      - run: supabase db reset --local
+      - run: supabase test db
+      - if: always()
+        run: supabase stop --no-backup

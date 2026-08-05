@@ -24,9 +24,14 @@
       }
     },
     "e2e-test": {
-      "developmentClient": true,
-      "distribution": "internal",
-      "channel": "e2e-test"
+      "withoutCredentials": true,
+      "channel": "e2e-test",
+      "android": {
+        "buildType": "apk"
+      },
+      "ios": {
+        "simulator": true
+      }
     }
   },
   "submit": {

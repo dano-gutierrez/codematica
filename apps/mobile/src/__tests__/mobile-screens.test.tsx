@@ -1,7 +1,7 @@
 import { fireEvent, render, waitFor } from "@testing-library/react-native";
 import { getContentIndex, getExerciseBySlug, getInterviewQuestionBySlug, getJapaneseVocabularyForCharacter, getLanguageCharacterBySlug } from "@codematica/core";
-import type { CodematicaAdapters } from "@codematica/ui";
-import { BrowseScreen, HomeDiscoveryScreen, InterviewCatalogScreen, InterviewQuestionScreen, JapaneseCharacterDetailScreen, JapaneseLanguageHubScreen, JapaneseReviewScreen, MarkdownReader, PracticeScreen } from "@codematica/ui";
+import type { CodematicaAdapters } from "../../../../packages/ui/src/adapters";
+import { BrowseScreen, HomeDiscoveryScreen, InterviewCatalogScreen, InterviewQuestionScreen, JapaneseCharacterDetailScreen, JapaneseLanguageHubScreen, JapaneseReviewScreen, MarkdownReader, PracticeScreen } from "../../../../packages/ui/src/screens";
 
 const adapters: CodematicaAdapters = {
   navigation: {
@@ -120,5 +120,7 @@ describe("mobile shared screens", () => {
     expect(detail.getAllByText("Weighted CSS Grid").length).toBeGreaterThan(0);
     expect(detail.getByText("Interactive runner available on web")).toBeOnTheScreen();
     expect(detail.getByText(/createGridComposition/)).toBeOnTheScreen();
+    await fireEvent.press(detail.getByText("Recursive Rectangular Subdivision"));
+    expect(detail.getAllByText("Recursive Rectangular Subdivision").length).toBeGreaterThan(1);
   });
 });

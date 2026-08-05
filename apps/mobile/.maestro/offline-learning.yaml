@@ -1,0 +1,28 @@
+appId: com.codematica.app
+tags:
+  - smoke
+---
+- launchApp:
+    clearState: true
+- assertVisible:
+    id: mobile-home-global-search
+- tapOn:
+    id: mobile-home-view-all-paths
+- assertVisible:
+    id: mobile-path-card-system-design-fundamentals
+- tapOn:
+    id: mobile-open-path-system-design-fundamentals
+- assertVisible:
+    id: mobile-path-units
+- tapOn:
+    id: mobile-path-node-document-system-design-cache-invalidation
+- assertVisible:
+    id: mobile-markdown-renderer
+- back
+- tapOn:
+    id: mobile-path-node-exercise-system-design-cache-product-contract
+- assertVisible:
+    id: mobile-flashcard-reveal
+- tapOn:
+    id: mobile-flashcard-reveal
+- assertVisible: "It defines how stale the user experience may become.*"

@@ -31,4 +31,12 @@ describe("learning stage progress", () => {
     expect(isStageStampEligible(stage, { completedNodeSlugs: completed, checkpointScore: 0.85, skillScores: { listening: 0.7, reading: 0.8, writing: 0.6, interaction: 0.9 } })).toBe(true);
     expect(isStageStampEligible(stage, { completedNodeSlugs: completed, checkpointScore: 0.85, skillScores: { listening: 0.5, reading: 0.8, writing: 0.9, interaction: 0.9 } })).toBe(false);
   });
+
+  it("handles empty stages and every early eligibility boundary", () => {
+    expect(calculateStageProgress({ ...stage, requiredNodeSlugs: [] }, new Set())).toEqual({ completed: 0, total: 0, percentage: 0 });
+    expect(isStageStampEligible(stage, { completedNodeSlugs: new Set(), checkpointScore: 1 })).toBe(false);
+    expect(isStageStampEligible(stage, { completedNodeSlugs: new Set(stage.requiredNodeSlugs), checkpointScore: 0.79 })).toBe(false);
+    expect(isStageStampEligible({ ...stage, minimumSkillScore: undefined }, { completedNodeSlugs: new Set(stage.requiredNodeSlugs), checkpointScore: 0.8 })).toBe(true);
+    expect(isStageStampEligible(stage, { completedNodeSlugs: new Set(stage.requiredNodeSlugs), checkpointScore: 1 })).toBe(false);
+  });
 });

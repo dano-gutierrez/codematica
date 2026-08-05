@@ -29,4 +29,13 @@ describe("selectInterviewSolutionTrack", () => {
   it("avoids immediately repeating the previous track when another track exists", () => {
     expect(selectInterviewSolutionTrack(question, "hash-map", () => 0).id).toBe("sorted-two-pointer");
   });
+
+  it("keeps the only track and clamps out-of-range random values", () => {
+    expect(selectInterviewSolutionTrack({ solutionTracks: [question.solutionTracks[0]] }, "hash-map", () => 5).id).toBe("hash-map");
+    expect(selectInterviewSolutionTrack(question, undefined, () => 5).id).toBe("sorted-two-pointer");
+  });
+
+  it("rejects malformed questions without solution tracks", () => {
+    expect(() => selectInterviewSolutionTrack({ solutionTracks: [] })).toThrow(/no solution tracks/i);
+  });
 });

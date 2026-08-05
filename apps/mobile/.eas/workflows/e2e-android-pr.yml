@@ -1,0 +1,31 @@
+name: Android Maestro E2E
+
+on:
+  pull_request_labeled:
+    labels: [mobile-e2e]
+
+concurrency:
+  cancel_in_progress: true
+  group: ${{ workflow.filename }}-${{ github.ref }}
+
+jobs:
+  build_android:
+    name: Build Android E2E APK
+    type: build
+    params:
+      platform: android
+      profile: e2e-test
+
+  maestro_android:
+    name: Android Maestro smoke
+    needs: [build_android]
+    type: maestro
+    runs_on: linux-large-nested-virtualization
+    params:
+      build_id: ${{ needs.build_android.outputs.build_id }}
+      flow_path: .maestro
+      include_tags: smoke
+      maestro_version: 2.8.0
+      output_format: junit
+      record_screen: true
+      retries: 1

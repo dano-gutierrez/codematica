@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { languageExternalResourceCatalogFileSchema, learningPathFileSchema } from "./schema";
+import { languageExternalResourceCatalogFileSchema, learningPathFileSchema, webExerciseProjectSchema } from "./schema";
 
 const canDos = [
   { id: "hear-detail", statement: "I can hear one familiar detail in a short exchange.", skill: "listening" },
@@ -39,5 +39,18 @@ describe("content schema v8", () => {
 
   it("requires access, publisher, attribution, and reuse policy for resources", () => {
     expect(() => languageExternalResourceCatalogFileSchema.parse({ kind: "resources", language: "ja", items: [{ id: "resource", title: "Resource", description: "A sufficiently detailed resource summary.", publisher: "Publisher", url: "https://example.com", proficiencyLevels: ["a1"], skills: ["reading"], access: "free", availability: "online", attribution: "Publisher" }] })).toThrow();
+  });
+
+  it("rejects active, entry, and visible project files absent from the file map", () => {
+    const result = webExerciseProjectSchema.safeParse({
+      runtime: "react-ts",
+      files: { "/App.tsx": { code: "export default function App() {}" } },
+      activeFile: "/missing.tsx",
+      entry: "/entry.tsx",
+      visibleFiles: ["/visible.tsx"],
+      dependencies: {},
+    });
+    expect(result.success).toBe(false);
+    if (!result.success) expect(result.error.issues.map((issue) => issue.path[0])).toEqual(["activeFile", "entry", "visibleFiles"]);
   });
 });

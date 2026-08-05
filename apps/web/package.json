@@ -5,10 +5,12 @@
   "type": "module",
   "scripts": {
     "dev": "next dev --hostname 127.0.0.1 --port 3100",
+    "serve:e2e": "next build && next start --hostname 127.0.0.1 --port 3100",
     "build": "next build",
     "start": "next start --hostname 127.0.0.1 --port 3100",
     "typecheck": "tsc --noEmit -p tsconfig.json",
-    "e2e:smoke": "playwright test --config=e2e/playwright.config.ts"
+    "e2e:smoke": "playwright test --config=e2e/playwright.config.ts --grep @smoke",
+    "e2e:regression": "playwright test --config=e2e/playwright.config.ts --project=mobile-chromium --grep @regression"
   },
   "dependencies": {
     "@codematica/core": "file:../../packages/core",

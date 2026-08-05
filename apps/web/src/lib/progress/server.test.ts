@@ -203,4 +203,22 @@ describe("progress server helpers", () => {
       items: [expect.objectContaining({ pathSlug: "japanese-foundations", skillId: "kana-reading", reviewBox: 4 })],
     });
   });
+
+  it("returns stable backend errors and handles empty syncs", async () => {
+    const failed = createProgressClient({ userId: "user-123", upsertError: { message: "database unavailable" } });
+    await expect(upsertProgress(failed.client, { surface: "document", slug: "system-design/cache-invalidation", status: "started" }, getContentIndex())).resolves.toEqual({ status: 500, body: { error: "database unavailable" } });
+    await expect(syncAnonymousProgress(failed.client, [], getContentIndex())).resolves.toEqual({ status: 200, body: { synced: 0, rejected: 0 } });
+    await expect(syncSkillProgress(failed.client, [])).resolves.toEqual({ status: 200, body: { synced: 0 } });
+    await expect(syncSkillProgress(failed.client, [{ bad: true }])).resolves.toEqual({ status: 422, body: { error: "Invalid skill progress payload." } });
+  });
+
+  it("rejects signed-out batch sync and filters malformed stored mastery", async () => {
+    const signedOut = createProgressClient({ userId: null });
+    await expect(syncAnonymousProgress(signedOut.client, [], getContentIndex())).resolves.toEqual({ status: 401, body: { error: "Sign in to sync progress." } });
+    await expect(syncSkillProgress(signedOut.client, [])).resolves.toEqual({ status: 401, body: { error: "Sign in to sync skill progress." } });
+    await expect(getSkillProgress(signedOut.client)).resolves.toEqual({ isSignedIn: false, items: [] });
+
+    const malformed = createProgressClient({ rows: [null, { path_slug: "bad" }] });
+    await expect(getSkillProgress(malformed.client)).resolves.toEqual({ isSignedIn: true, items: [] });
+  });
 });

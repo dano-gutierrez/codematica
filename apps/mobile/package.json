@@ -14,7 +14,7 @@
     "pods": "pod-install ios",
     "doctor": "expo-doctor",
     "typecheck": "tsc --noEmit -p tsconfig.json",
-    "test": "jest --config jest.config.cjs"
+    "test": "NODE_OPTIONS=--no-deprecation jest --config jest.config.cjs --no-watchman"
   },
   "dependencies": {
     "@codematica/core": "file:../../packages/core",

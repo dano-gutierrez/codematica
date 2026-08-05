@@ -1,0 +1,118 @@
+name: Pull Request Quality Gates
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  quality:
+    name: quality
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm run content:check
+      - run: npm run lint
+      - run: npm run typecheck
+      - run: npm run mobile:doctor
+      - run: npm run build
+
+  unit-integration-coverage:
+    name: unit-integration-coverage
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm run test:coverage
+        env:
+          CI: true
+      - name: Upload Vitest coverage and JUnit
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: vitest-coverage-${{ github.run_id }}
+          path: |
+            coverage/vitest
+            test-results/vitest
+          if-no-files-found: warn
+          retention-days: 14
+
+  mobile-jest:
+    name: mobile-jest
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm run test:mobile:coverage
+        env:
+          CI: true
+      - name: Upload native unit coverage
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: mobile-jest-coverage-${{ github.run_id }}
+          path: |
+            coverage/mobile
+            test-results/mobile-jest
+          if-no-files-found: warn
+          retention-days: 14
+
+  database:
+    name: database
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: supabase/setup-cli@v1
+        with:
+          version: latest
+      - run: supabase start
+      - run: supabase db reset --local
+      - run: npm run test:db
+      - name: Stop local Supabase
+        if: always()
+        run: supabase stop --no-backup
+
+  web-smoke:
+    name: web-smoke
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npx playwright install --with-deps chromium webkit
+      - run: npm run e2e:web:smoke
+        env:
+          CI: true
+      - name: Upload Playwright smoke report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-smoke-${{ github.run_id }}
+          path: |
+            apps/web/e2e/playwright-report
+            apps/web/e2e/test-results
+          if-no-files-found: warn
+          retention-days: 14

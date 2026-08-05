@@ -96,4 +96,23 @@ describe("questionnaire helpers", () => {
       correctAnswer: "Receive unknown input -> Validate and normalize -> Use typed domain model",
     });
   });
+
+  it("rejects mismatched and incorrect answers with feedback for every kind", () => {
+    const [choice, cloze, ordering, matching] = questionnaire.questions;
+    expect(checkQuestionAnswer(choice, { kind: "cloze", value: "metadata" })).toMatchObject({ isCorrect: false, correctAnswer: expect.stringContaining("metadata") });
+    expect(checkQuestionAnswer(choice, { kind: "choice", selectedOptionId: "missing" }).isCorrect).toBe(false);
+    expect(checkQuestionAnswer(cloze, { kind: "cloze", value: "not validation" })).toEqual({ isCorrect: false, correctAnswer: "runtime validation" });
+    expect(checkQuestionAnswer(ordering, { kind: "ordering", itemIds: ["receive"] }).isCorrect).toBe(false);
+    expect(checkQuestionAnswer(matching, { kind: "matching", selectedMatches: { dict: "none", none: "dict" } })).toEqual({
+      isCorrect: false,
+      correctAnswer: "dict -> plain object or Map depending on key needs; None -> null-like singleton",
+    });
+  });
+
+  it("falls back safely when authored answer labels are missing", () => {
+    const noCorrect = { ...questionnaire.questions[0], options: questionnaire.questions[0].kind === "choice" ? questionnaire.questions[0].options.map((option) => ({ ...option, isCorrect: false })) : [] };
+    expect(checkQuestionAnswer(noCorrect, { kind: "choice", selectedOptionId: "anything" })).toEqual({ isCorrect: false, correctAnswer: "" });
+    const emptyCloze = { ...questionnaire.questions[1], acceptedAnswers: [] };
+    expect(checkQuestionAnswer(emptyCloze, { kind: "cloze", value: "" })).toEqual({ isCorrect: false, correctAnswer: "" });
+  });
 });

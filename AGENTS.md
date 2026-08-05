@@ -285,6 +285,22 @@ Rule of thumb: if you can test it without a browser, do it in Vitest first. Use 
 4. Changes to migrations, generated content contracts, or fixture-sensitive behavior must update relevant tests and docs.
 5. Do not remove or weaken tests just to get green builds unless the product behavior itself is intentionally changing and the test is being rewritten to match the new contract.
 
+## Testing And Release Gates
+
+Testing is a release contract, not a cleanup step.
+
+- Use regression-first TDD for fixes: reproduce the defect with the narrowest reliable failing test before changing production code. Use red-green-refactor for new behavior.
+- Add the lowest practical unit or integration test for the underlying rule. Important user-visible changes also require an E2E journey; browser or device tests do not replace lower-layer coverage.
+- Update the owning feature doc's `Test Plan` in the same branch whenever behavior, fixtures, selectors, migrations, test commands, or release expectations change.
+- Run `npm run test:coverage` for instrumented core, web, and content-script code and `npm run test:mobile:coverage` for mobile libraries and shared native UI. Coverage thresholds may only increase. Lowering a threshold or adding an exclusion requires an explicit justification in the owning feature doc and changelog.
+- Preserve the enforced coverage floors: core 90% lines/statements/functions and 85% branches; web services/API/content scripts 85% and 80% branches; web components 75% and 70% branches; mobile libraries 80% and 70% branches; shared native UI 70% and 60% branches; every instrumented file at least 60% lines/statements/functions and 50% branches.
+- Classify Playwright tests explicitly as `@smoke` or `@regression`, use the matching filename convention, and use role queries or stable `data-testid` values. Never use CSS selectors or fixed waits.
+- Put shared business-logic tests in `packages/core`. Migration, constraint, trigger, search-RPC, or RLS changes require transactional pgTAP coverage and a clean local migration replay.
+- Native changes require Jest coverage. Critical installed-app workflows also require or update a Maestro flow using stable native `testID` selectors. Release-candidate native coverage must pass on Android and iOS.
+- Before completion, run the commands relevant to every layer touched: content check, lint, typecheck, targeted and aggregate coverage, mobile tests/Doctor, database tests, production build, and the appropriate Playwright lane.
+- Before creating or promoting a `v*` release candidate, run `npm run test:release`, confirm the GitHub release-regression workflow is green, and confirm both EAS Maestro release jobs are green. No workflow in this repo submits a build or publishes a release automatically.
+- Preserve failure evidence. CI coverage, JUnit, Playwright reports, traces, screenshots, videos, Maestro JUnit, and device recordings are part of regression triage and must not be discarded from a failing run.
+
 ---
 
 ## Code Conventions

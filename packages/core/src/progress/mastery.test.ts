@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { applyReviewRating, mergeSkillProgress, orderDueReviews } from "./mastery";
+import { applyReviewRating, createSkillProgressUpsertRow, mergeSkillProgress, mergeSkillProgressLists, orderDueReviews } from "./mastery";
 
 const now = new Date("2026-08-04T12:00:00.000Z");
 
@@ -105,5 +105,35 @@ describe("Japanese skill mastery", () => {
     expect(merged.bestScore).toBe(0.95);
     expect(merged.attemptCount).toBe(4);
     expect(merged.lastPracticedAt).toBe("2026-08-04T12:00:00.000Z");
+  });
+
+  it("handles hard ratings, interval caps, and reviewing state", () => {
+    const base = {
+      pathSlug: "japanese-foundations", skillId: "kana", bestScore: 0.8, attemptCount: 2,
+      reviewBox: 4, masteryState: "mastered" as const, lastPracticedAt: now.toISOString(), nextReviewAt: now.toISOString(),
+    };
+    const hard = applyReviewRating(base, { pathSlug: base.pathSlug, skillId: base.skillId, rating: "hard", score: 0.6, now });
+    expect(hard).toMatchObject({ reviewBox: 3, masteryState: "reviewing", bestScore: 0.8 });
+    expect(hard.nextReviewAt).toBe("2026-08-05T12:00:00.000Z");
+
+    const capped = applyReviewRating({ ...base, reviewBox: 5 }, { pathSlug: base.pathSlug, skillId: base.skillId, rating: "easy", score: 1, now });
+    expect(capped.reviewBox).toBe(5);
+    expect(capped.nextReviewAt).toBe("2026-12-02T12:00:00.000Z");
+  });
+
+  it("merges lists deterministically and maps database upsert rows", () => {
+    const older = applyReviewRating(undefined, { pathSlug: "japanese-foundations", skillId: "kana", rating: "good", score: 0.7, now });
+    const newer = { ...older, bestScore: 0.6, attemptCount: 3, lastPracticedAt: "2026-08-05T12:00:00.000Z" };
+    expect(mergeSkillProgress(older, newer)).toMatchObject({ bestScore: 0.7, attemptCount: 3, lastPracticedAt: newer.lastPracticedAt });
+    expect(mergeSkillProgressLists([older], [newer])).toHaveLength(1);
+    expect(createSkillProgressUpsertRow("user-1", newer)).toMatchObject({ user_id: "user-1", path_slug: "japanese-foundations", skill_id: "kana" });
+    expect(() => mergeSkillProgress(older, { ...newer, skillId: "other" })).toThrow(/same path and skill/i);
+  });
+
+  it("orders tied due reviews by skill and omits future work", () => {
+    const first = applyReviewRating(undefined, { pathSlug: "japanese-foundations", skillId: "b-skill", rating: "again", score: 0.2, now });
+    const second = { ...first, skillId: "a-skill" };
+    expect(orderDueReviews([first, second], new Date("2026-08-04T12:11:00.000Z")).map((row) => row.skillId)).toEqual(["a-skill", "b-skill"]);
+    expect(orderDueReviews([first], now)).toEqual([]);
   });
 });

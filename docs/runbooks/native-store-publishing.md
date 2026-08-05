@@ -1,6 +1,6 @@
 # Native Store Publishing Runbook
 
-Last verified: 2026-08-02
+Last verified: 2026-08-05
 
 This runbook covers the account setup and release steps needed to publish Codematica to Google Play and the Apple App Store using Expo EAS.
 
@@ -73,11 +73,23 @@ npm install
 npm run content:check
 npm run typecheck
 npm run lint
-npm test
-npm run test:mobile
+npm run test:coverage
+npm run test:mobile:coverage
 npm run mobile:doctor
 npm run build
+npm run e2e:web:release
 ```
+
+Start the disposable local Supabase stack, replay migrations, and run `npm run test:db` before a release candidate. The database lane must not target a hosted project or use production credentials.
+
+Before pushing a `v*` tag, run `npm run test:release`. After the tag is pushed, wait for both release systems:
+
+- GitHub `Release Candidate Regression`: quality, coverage, clean database replay/pgTAP, and complete Playwright regression.
+- EAS `Native Release Regression`: credential-free Android APK and iOS simulator builds followed by every Maestro flow on both platforms.
+
+A release candidate is promotable only when both systems are green. Their coverage, JUnit, Playwright traces/screenshots/videos, EAS builds, and Maestro recordings are the failure evidence. Neither workflow submits a store build or publishes a release.
+
+For native smoke on a pull request, apply the `mobile-e2e` label. It builds the Android E2E APK and runs the Maestro smoke set; it does not require store signing credentials.
 
 Confirm the public Expo config:
 

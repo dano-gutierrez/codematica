@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { getContentIndex, getLanguageCharacterBySlug, getLanguageVocabularyBySlug } from "../content";
-import { getJapaneseCharacterGroups, searchJapanese } from "./japanese";
+import { describeJapaneseReading, getJapaneseCharacterGroups, getJapaneseVocabularyForCharacter, searchJapanese } from "./japanese";
 
 describe("Japanese language helpers", () => {
   it("loads Japanese characters and vocabulary from the generated index", () => {
@@ -54,5 +54,18 @@ describe("Japanese language helpers", () => {
     expect(searchJapanese(index, "konbanha")[0]).toMatchObject({ kind: "vocabulary", item: expect.objectContaining({ expression: "こんばんは" }) });
     expect(searchJapanese(index, "konnichiha")[0]).toMatchObject({ kind: "vocabulary", item: expect.objectContaining({ expression: "こんにちは" }) });
     expect(searchJapanese(index, "koohii")[0]).toMatchObject({ kind: "vocabulary", item: expect.objectContaining({ expression: "コーヒー" }) });
+  });
+
+  it("supports browse defaults, prefix/substring ranking, related vocabulary, and reading labels", () => {
+    const index = getContentIndex();
+    const defaults = searchJapanese(index, "   ");
+    expect(defaults.filter((result) => result.kind === "character")).toHaveLength(40);
+    expect(defaults.filter((result) => result.kind === "vocabulary").length).toBeLessThanOrEqual(20);
+    expect(searchJapanese(index, "kanji").length).toBeGreaterThan(0);
+    expect(searchJapanese(index, "definitely-not-japanese-content")).toEqual([]);
+
+    const person = getLanguageCharacterBySlug("japanese/kanji/person")!;
+    expect(describeJapaneseReading(person)).toContain("/");
+    expect(getJapaneseVocabularyForCharacter(index, person.slug).every((item) => item.characterSlugs.includes(person.slug))).toBe(true);
   });
 });

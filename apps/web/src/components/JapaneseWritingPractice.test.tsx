@@ -35,4 +35,37 @@ describe("JapaneseWritingPractice", () => {
     expect(screen.getByText("o /o/")).toBeVisible();
     expect(screen.getByText("IME: wo")).toBeVisible();
   });
+
+  it("completes free-mode characters, supports undo, and advances", () => {
+    const character = getLanguageCharacterBySlug("japanese/kanji/one")!;
+    const onProgressEvent = vi.fn();
+    render(<JapaneseWritingPractice characters={[character, character]} prompt="Write one twice." onProgressEvent={onProgressEvent} nextHref="/next" />);
+    fireEvent.click(screen.getByTestId("writing-mode-free"));
+
+    const drawStroke = () => {
+      const pad = screen.getByTestId("writing-pad");
+      fireEvent.pointerDown(pad, { pointerId: 2, clientX: 18, clientY: 50 });
+      fireEvent.pointerMove(pad, { pointerId: 2, clientX: 82, clientY: 50 });
+      fireEvent.pointerUp(pad, { pointerId: 2, clientX: 82, clientY: 50 });
+    };
+
+    drawStroke();
+    fireEvent.click(screen.getByRole("button", { name: "Undo" }));
+    expect(screen.getByTestId("writing-check")).toBeDisabled();
+    drawStroke();
+    fireEvent.click(screen.getByTestId("writing-check"));
+    expect(screen.getByTestId("writing-feedback")).toHaveTextContent("Correct");
+    fireEvent.click(screen.getByTestId("writing-next-character"));
+    expect(onProgressEvent).toHaveBeenCalledWith("started", expect.objectContaining({ characterSlug: character.slug }));
+
+    drawStroke();
+    fireEvent.click(screen.getByTestId("writing-check"));
+    expect(onProgressEvent).toHaveBeenCalledWith("completed", expect.objectContaining({ passed: true }));
+    expect(screen.getByRole("link", { name: /next node/i })).toHaveAttribute("href", "/next");
+  });
+
+  it("renders a stable empty state when a writing exercise has no characters", () => {
+    render(<JapaneseWritingPractice characters={[]} prompt="Nothing to write." />);
+    expect(screen.getByText(/no available characters/i)).toBeVisible();
+  });
 });
