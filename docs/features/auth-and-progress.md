@@ -6,7 +6,7 @@
 - Last updated: `2026-08-04`
 - Owner thread: `n/a`
 - Current state: Supabase Auth is wired for Google, email/password, and Apple-ready login on web, with native Expo Auth/progress adapters using the same Supabase contract. Existing resume/completion history remains unchanged; Japanese skill mastery is additive through local review state and the RLS-protected `user_skill_progress` table.
-- Target outcome: Users can keep reading and resume learning across documents, diagrams, practice, passive flashcards, and interview walkthroughs without making anonymous browsing depend on Supabase.
+- Target outcome: Users can keep reading, resume learning, and retain bounded Japanese mastery across devices without making anonymous browsing or review depend on Supabase.
 - Code touchpoints:
   - `apps/web/src/lib/supabase/`
   - `apps/web/src/lib/progress/`
@@ -58,12 +58,14 @@ Auth and progress are additive. Codematica still renders local content without S
 - Questionnaires: current question index tracked; completed on finish; answers are not stored.
 - Passive feeds: latest card sequence tracked; no completion state.
 - Interviews: step, language, and track position tracked; completed when the final explanation is shown.
+- Japanese review: a rating updates the deterministic review box, best score, attempt count, mastery state, and next-review time; individual prompts or answers are not stored.
 
 ### Data Model
 
 - `public.user_profiles` stores only `user_id` and timestamps.
 - `public.user_progress_items` stores `user_id`, `surface`, `slug`, `path_slug`, `status`, `position`, `first_seen_at`, `last_seen_at`, `completed_at`, and timestamps.
 - `public.user_skill_progress` is additive and unique by `(user_id, path_slug, skill_id)`; its trigger never lowers best score or attempt count.
+- Mastery merge selects the row with the newest `lastPracticedAt` for review box/state/due time, then keeps the maximum `bestScore` and maximum `attemptCount`. This is deterministic and non-destructive for the stored snapshot, but intentionally cannot reconstruct the sum of two independent device histories because no per-attempt event log is stored.
 - `(user_id, surface, slug, path_slug)` is unique.
 - RLS is enabled; authenticated users can only select, insert, update, and delete their own rows.
 - Repo Markdown, path JSON, exercise JSON, flashcard feeds, and interview JSON remain canonical. Supabase does not become the content source of truth.
@@ -97,8 +99,8 @@ Auth and progress are additive. Codematica still renders local content without S
 - `2026-06-21`: Preserve local content as canonical and store only user identity/progress in Supabase.
 - `2026-07-11`: Add native Auth/progress adapters that share the same Supabase tables, RLS assumptions, and core progress validation.
 - `2026-08-03`: Remove silent 20-item local eviction and sync retained web/native progress in lossless 20-item batches.
-- `2026-08-04`: Add six-box Japanese skill mastery and lossless local/remote synchronization without altering existing completion rows.
+- `2026-08-04`: Add six-box Japanese skill mastery and deterministic non-destructive local/remote snapshot merging without altering existing completion rows.
 
 ## Thread Handoff Prompt
 
-`Read docs/codex-context.md and docs/features/auth-and-progress.md first. Compare the documented auth/progress contract against apps/web/src/lib/supabase, apps/web/src/lib/progress, apps/mobile/src/lib/supabase.ts, apps/mobile/src/lib/progress.ts, packages/core/src/progress, apps/web/src/components/LoginForm.tsx, apps/web/src/components/KeepReadingSection.tsx, apps/web/src/components/SaveProgressPrompt.tsx, apps/web/src/components/ProgressTrackers.tsx, apps/web/src/app/api/progress/**/route.ts, and supabase/migrations/202606210001_create_auth_progress.sql, then update tests and docs with any behavior changes.`
+`Read docs/codex-context.md and docs/features/auth-and-progress.md first. Compare the documented auth/progress contract against apps/web/src/lib/supabase, apps/web/src/lib/progress, apps/mobile/src/lib/supabase.ts, apps/mobile/src/lib/progress.ts, apps/mobile/src/lib/skill-progress.ts, packages/core/src/progress, apps/web/src/components/LoginForm.tsx, apps/web/src/components/KeepReadingSection.tsx, apps/web/src/components/SaveProgressPrompt.tsx, apps/web/src/components/ProgressTrackers.tsx, apps/web/src/app/api/progress/**/route.ts, and both progress migrations under supabase/migrations/, then update tests and docs with any behavior changes.`

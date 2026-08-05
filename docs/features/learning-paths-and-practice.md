@@ -3,9 +3,9 @@
 ## Snapshot
 
 - Status: `shipped`
-- Last updated: `2026-08-03`
+- Last updated: `2026-08-04`
 - Owner thread: `n/a`
-- Current state: The complete path catalog lives at `/paths`; path detail, exercise, and passive flashcard routes remain backed by local structured content.
+- Current state: The complete path catalog lives at `/paths`; path detail, exercise, passive flashcard, schema-v8 proficiency roadmap, and Japanese active-review routes remain backed by local structured content.
 - Target outcome: Users can follow role and skill paths, open documents or diagrams, complete flashcard, cloze, questionnaire, or writing practice, and review passive path-scoped flashcards without requiring auth or Supabase.
 - Code touchpoints:
   - `packages/core/src/content/schema.ts`
@@ -18,6 +18,9 @@
   - `apps/web/src/components/PassiveFlashcardFeed.tsx`
   - `packages/core/src/practice/questionnaire.ts`
   - `packages/core/src/language-writing/index.ts`
+  - `packages/core/src/progress/progression.ts`
+  - `packages/core/src/progress/mastery.ts`
+  - `apps/web/src/components/JapaneseReview.tsx`
   - `apps/web/src/app/practice/[...slug]/page.tsx`
   - `apps/web/src/app/paths/[slug]/flashcards/page.tsx`
 - Primary tests:
@@ -27,6 +30,7 @@
   - `apps/web/src/components/PracticeCard.test.tsx`
   - `apps/web/e2e/specs/python-refresh.regression.spec.ts`
   - `apps/web/e2e/specs/knowledge-browser.smoke.spec.ts`
+  - `apps/web/e2e/specs/japanese-language.regression.spec.ts`
 
 ## One-Minute Brief
 
@@ -41,13 +45,14 @@ Codematica uses learning paths as the main study surface. Paths are inspired by 
 - `/paths/[slug]/flashcards` renders one passive flashcard feed when a path has a published feed.
 - `/practice/[...slug]` renders one flashcard, cloze prompt, questionnaire session, or writing exercise.
 - Exercise content is manually authored in `content/exercises/**/*.json`; path content is authored in `content/learning-paths/*.json`; passive flashcard feeds are authored in `content/flashcard-feeds/*.json`.
-- `packages/core/src/generated/content-index.json` has `schemaVersion: 7` and includes learning content, language catalogs, generic interview collections, and validated home discovery curation.
-- Index generation fails on duplicate path, exercise, passive feed, language character, or language vocabulary slugs; missing node references; exercises pointing at missing documents; writing exercises pointing at missing language characters; invalid passive feed path or source document references; cloze templates without exactly one `{{blank}}`; or invalid questionnaire structure.
+- `packages/core/src/generated/content-index.json` has `schemaVersion: 8` and includes learning content, proficiency stages, language catalogs, audio/resource metadata, generic interview collections, and validated home discovery curation.
+- Path nodes and exercises may declare `proficiencyLevel`, `skillIds`, and `required`. A path progression may declare stable skill IDs, JF/CEFR stages, Can-do statements, required nodes, a questionnaire checkpoint, thresholds, and estimated time.
+- Index generation fails on duplicate path, exercise, passive feed, language character, vocabulary, skill, Can-do, audio, or resource IDs; missing node/stage/checkpoint/character/audio references; unbalanced required Japanese Can-do strands; exercises pointing at missing documents; writing exercises pointing at missing language characters; invalid passive feed path or source document references; cloze templates without exactly one `{{blank}}`; or invalid questionnaire structure.
 - No node is locked, disabled, gated, or paywalled in this milestone. Optional saved progress is owned by `docs/features/auth-and-progress.md`.
 
 ## Current State
 
-The shipped content includes skill and role paths using Markdown articles, external and embedded Mermaid diagrams, flashcards, cloze prompts, questionnaires, and passive flashcard feeds. The BFS/DFS Programming path reuses these surfaces for graph traversal, while the Mermaid authoring path uses them for three source-first lessons, choice-only questionnaires, and scrolling review. Supabase remains optional for browsing and does not store authored paths, exercises, or passive feeds. Saved resume/completion state is owned by the auth/progress feature.
+The shipped content includes skill and role paths using Markdown articles, external and embedded Mermaid diagrams, flashcards, cloze prompts, questionnaires, writing exercises, and passive flashcard feeds. Japanese Foundations additionally uses schema-v8 proficiency metadata for its open Pre-A1/A1 stamp-rally roadmap and a deterministic active-review route. Supabase remains optional for browsing and does not store authored paths, exercises, stages, or passive feeds. Saved resume/completion and Japanese mastery state are owned by the auth/progress feature.
 
 ## Scope
 
@@ -63,11 +68,14 @@ The shipped content includes skill and role paths using Markdown articles, exter
 - per-attempt questionnaire randomization for question order and answer banks
 - path-aware next link from practice pages
 - passive path-scoped flashcard feed routes with per-session shuffle and infinite local scroll
+- optional proficiency levels, skill strands, Can-dos, required nodes, checkpoints, and milestone thresholds
+- Japanese active review with deterministic scheduling and additive mastery persistence
 
 ### Out Of Scope
 
-- scoring, mastery, review queues, and answer history
-- locked levels, hearts, streaks, achievements, leaderboards, review queues, and paywalls
+- generic cross-path scoring, streaks, leaderboards, or review scheduling; Japanese skill mastery is the currently shipped bounded exception
+- persisted questionnaire answers, raw scores, or answer history
+- locked levels, hearts, streaks, achievements, leaderboards, generic cross-path adaptive review queues, and paywalls
 - generated exercises or AI feedback
 - Supabase migrations for paths or exercises
 - coding sandboxes or compiled challenges
@@ -98,15 +106,17 @@ The shipped content includes skill and role paths using Markdown articles, exter
 - Passive feeds show one card per mobile viewport, shuffle card order once per page load, append more cards as the user scrolls, and expose no reveal/check/progress controls.
 - Practice and passive feed components emit minimal progress events for the optional auth/progress layer, but they do not store answers or scores.
 - Learning paths intended to replace passive social scrolling with one-minute vertical review should include a path-scoped passive feed unless the owning feature doc explicitly scopes that surface out.
+- Progression-enabled paths show official proficiency labels, friendly stage names, Can-do statements, expected time, and directly accessible checkpoints. Stage metadata never locks a node.
 
 ### Data Model And Persistence
 
 - `content/learning-paths/*.json` stores path metadata and ordered unit nodes.
+- Schema-v8 path nodes may attach proficiency, required, and skill metadata; progression-enabled paths define stable skills and stages separately from node order.
 - `content/exercises/**/*.json` stores `flashcard`, `cloze`, `questionnaire`, and `writing` prompts.
 - `content/flashcard-feeds/*.json` stores path-scoped passive review cards.
 - Generated fields include `id`, `route`, `sourcePath`, and `contentHash`.
 - Writing exercises reference language character slugs from `content/languages/` and do not persist raw learner strokes.
-- Auth/progress may persist resume/completion milestones. It does not persist practice answers, scores, or mastery state.
+- Auth/progress may persist resume/completion milestones. Japanese review may additionally persist its narrow skill-mastery record; it does not persist questionnaire answers, raw handwriting, recordings, or full attempt histories.
 
 ### Failure And Edge Handling
 
@@ -115,13 +125,14 @@ The shipped content includes skill and role paths using Markdown articles, exter
 - Questionnaire validation fails on duplicate question IDs, invalid choice correctness, invalid cloze blanks, duplicate ordering item IDs, invalid ordering `correctOrder`, or duplicate matching pair IDs.
 - Writing exercise validation fails on missing or duplicate language character references.
 - Passive flashcard feed validation fails on duplicate card IDs, missing learning path references, or missing source document references.
+- Progression validation fails on duplicate skills or Can-dos, missing stage units/nodes/checkpoints, non-questionnaire checkpoints, and missing required listening/reading/writing/interaction Can-do coverage.
 - Missing routes use the shared not-found page.
 - A practice page opened without `?path=` still works but does not show a path-scoped next node.
 
 ## Code Touchpoints
 
 - `packages/core/src/content/schema.ts`: schemas and generated index types.
-- `packages/core/src/content/build-index.ts`: path, exercise, passive flashcard feed, language, interview collection, and home-discovery validation, reference checks, and schema version 7 serialization.
+- `packages/core/src/content/build-index.ts`: path, stage, exercise, passive flashcard feed, language, audio/resource, interview collection, and home-discovery validation, reference checks, and schema version 8 serialization.
 - `packages/core/src/content/index.ts`: lookup helpers and path-node route helpers.
 - `apps/web/src/components/LearningPathMap.tsx`: home and path detail UI.
 - `apps/web/src/components/PracticeCard.tsx`: flashcard, cloze, questionnaire, and writing shell.
@@ -132,18 +143,20 @@ The shipped content includes skill and role paths using Markdown articles, exter
 - `packages/core/src/flashcards/passive.ts`: passive feed shuffling and infinite-window helpers.
 - `packages/core/src/practice/questionnaire.ts`: attempt randomization and answer checking helpers.
 - `packages/core/src/language-writing/index.ts`: handwriting normalization, assisted completion, and correctness checks.
+- `packages/core/src/progress/progression.ts`: stage completion percentage and stamp eligibility.
+- `packages/core/src/progress/mastery.ts`: Japanese six-box review transitions, due ordering, and local/remote state merge.
 - `apps/web/src/app/browse/page.tsx`: complete lesson and diagram browser route.
 
 ## Test Plan
 
-- Unit: path, exercise, passive feed, language schema coverage, cloze validation, questionnaire validation, handwriting scoring, passive feed windowing, duplicate slug validation, missing reference validation.
+- Unit: path, progression, exercise, passive feed, language schema coverage, cloze validation, questionnaire validation, handwriting scoring, review scheduling/merge, passive feed windowing, duplicate ID validation, and missing reference validation.
 - Integration: generated index loads starter paths, exercises, passive feeds, and path-scoped next routes.
 - Component: flashcard reveal, cloze answer checking, questionnaire feedback/navigation, and passive feed rendering.
-- E2E: mobile path landing, passive Python feed, document open from a path, practice flow, Python questionnaire flow, `/browse` fuzzy search, and Mermaid diagram rendering.
+- E2E: mobile path landing, passive Python feed, document open from a path, practice flow, Python questionnaire flow, `/browse` fuzzy search, Mermaid diagram rendering, and the Japanese open-roadmap/review/dictionary workflow.
 
 ## Open Questions
 
-- Which scoring, mastery, and review-queue events become durable after basic progress?
+- Which non-Japanese skill domains should adopt the schema-v8 proficiency and deterministic-review contracts?
 - Which path nodes become gated, and what user state unlocks them?
 - Which future quiz types should be introduced before coding challenges beyond choice, cloze, ordering, and matching?
 
@@ -163,6 +176,7 @@ The shipped content includes skill and role paths using Markdown articles, exter
 - `2026-07-21`: Add the Mermaid authoring path with progressive rendered examples, three choice-only questionnaires, and passive review using existing components.
 - `2026-07-22`: Move the complete path catalog from `/` to `/paths`; the root is now the discovery hub owned by `home-discovery.md`.
 - `2026-08-03`: Add the alphabet-first Japanese path sequence and its always-available kana flashcard feed using existing path/practice/feed contracts.
+- `2026-08-04`: Advance to schema version 8 with open proficiency stages, Can-dos, stable skills, required-node/checkpoint metadata, and a Japanese-specific deterministic review queue.
 
 ## Documentation Updates
 

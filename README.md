@@ -1,6 +1,6 @@
 # Codematica
 
-Codematica is a mobile-first, gamified learning app. V1 browses, renders, searches, and practices repo-authored Markdown and structured study content for software engineering and beginner Japanese, including embedded and external Mermaid diagrams.
+Codematica is a mobile-first, gamified learning app. V1 browses, renders, searches, and practices repo-authored Markdown and structured study content for software engineering and beginner Japanese, including an open JF/CEFR Pre-A1/A1 roadmap, embedded and external Mermaid diagrams, handwriting, review, and optional cross-device progress.
 
 ## Stack
 
@@ -11,7 +11,7 @@ Codematica is a mobile-first, gamified learning app. V1 browses, renders, search
 - React Native primitives with shared design tokens
 - plain Markdown content under `content/knowledge/`
 - Mermaid diagram files under `content/diagrams/`
-- local Japanese language catalogs under `content/languages/`
+- schema-v8 Japanese language, stage, audio-manifest, and resource catalogs under `content/languages/`
 - generated local search index at `packages/core/src/generated/content-index.json`
 - optional Supabase Auth and saved progress
 - optional Supabase sync scaffold
@@ -96,6 +96,7 @@ npm run web:dev
 npm run web:build
 npm run content:index
 npm run content:check
+npm run content:audio
 npm run typecheck
 npm run lint
 npm test
@@ -107,7 +108,7 @@ npm run mobile:build:preview
 
 ## Content
 
-Markdown is canonical. Add articles to `content/knowledge/` with the frontmatter contract defined in `packages/core/src/content/schema.ts`. Add external Mermaid diagrams to `content/diagrams/`, then reference them from article frontmatter with `diagramRefs`. Add human-language character and vocabulary data to `content/languages/`; writing exercises reference those character slugs from `content/exercises/`.
+Markdown is canonical. Add articles to `content/knowledge/` with the frontmatter contract defined in `packages/core/src/content/schema.ts`. Add external Mermaid diagrams to `content/diagrams/`, then reference them from article frontmatter with `diagramRefs`. Add human-language character, vocabulary, audio metadata, and rights-aware resources to `content/languages/`; writing exercises reference those character slugs from `content/exercises/`. Run `npm run content:audio` after adding released Japanese audio files and manifest entries.
 
 Supabase is optional for browsing. Apply the migrations in `supabase/migrations/` before enabling Auth/progress. To sync indexed content manually, copy `.env.example` to `.env`, configure `SUPABASE_URL` and `SUPABASE_SERVICE_ROLE_KEY`, and run:
 
@@ -123,3 +124,5 @@ Keep the service role key server-side only. Do not add it to browser code or Ver
 - `apps/mobile`: Expo Router Android/iOS app with EAS internal, production, and submit profiles.
 - `packages/core`: shared content, search, practice, and progress contracts.
 - `packages/ui`: shared React Native-compatible screens and design tokens.
+
+Start documentation work at `docs/README.md`. See `docs/CHANGELOG.md` for dated delivery summaries and the linked feature documents for authoritative behavior.

@@ -3,9 +3,9 @@
 ## Snapshot
 
 - Status: `proposed`
-- Last updated: `2026-06-21`
+- Last updated: `2026-08-04`
 - Owner thread: `n/a`
-- Current state: Learning paths, flashcards, cloze practice, questionnaires, passive flashcard feeds, interview walkthroughs, and an Expo native foundation have a local-first MVP; deeper gamification remains planned.
+- Current state: Learning paths, flashcards, cloze practice, questionnaires, passive flashcard feeds, interview walkthroughs, an Expo native foundation, and a bounded Japanese six-box review system have a local-first MVP; broader cross-domain gamification remains planned.
 - Target outcome: Later versions add AI study assistance, broader quiz loops, visual system design practice, code challenges, deeper gamification, and native-ready APIs.
 - Code touchpoints:
   - `docs/engineering-overview.md`
@@ -21,13 +21,13 @@ Codematica should grow from a path-first engineering study system into a deeper 
 
 - Roadmap work must preserve repo Markdown as the canonical authoring source for documents until a later decision changes it.
 - Learning paths and exercises should remain local structured content until hosted authoring justifies a backend contract.
-- Basic Auth and resume progress exist; scoring, mastery, streaks, and review queues should build on that contract.
+- Basic Auth and resume progress exist. Japanese skill mastery is the first additive review implementation; future scoring, streaks, and cross-domain review queues should reuse its privacy and merge principles without assuming its schedule fits every subject.
 - AI features should read from validated content/index data rather than scraping rendered pages.
 
 ## Planned Feature Areas
 
 - AI summaries, article Q&A, and study prompts.
-- More practice depth beyond the shipped flashcard, cloze, choice, ordering, and matching MVP: scenario drills, adaptive review queues, code challenges, and SQL query practice.
+- More practice depth beyond the shipped flashcard, cloze, choice, ordering, matching, writing, and Japanese deterministic-review MVP: scenario drills, adaptive cross-domain review queues, code challenges, and SQL query practice.
 - System design blueprints with visual structure, likely React Flow for editing and Mermaid import/export.
 - Mermaid authoring and diagram creation mode inside the app.
 - Code snaps for multiple languages.

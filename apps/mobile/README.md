@@ -125,4 +125,4 @@ References:
 
 ## Japanese On iPad
 
-Expo orientation is adaptive and `supportsTablet` remains enabled. Japanese handwriting uses window dimensions so compact phone and Split View remain stacked while larger iPad windows receive a wider canvas. Review mastery is stored immediately with AsyncStorage and every lesson, flashcard, dictionary profile, and resource remains directly reachable. Run `npm run content:audio` after adding released Japanese audio so Expo receives a static asset registry.
+Expo orientation is adaptive and `supportsTablet` remains enabled. Japanese handwriting uses window dimensions so compact phone and Split View remain stacked while larger iPad windows receive a wider canvas. Review mastery is stored immediately with AsyncStorage; signed-in sessions validate and merge the remote RLS snapshot before bounded uploads, without clearing the local copy. Every lesson, flashcard, dictionary profile, and resource remains directly reachable. Run `npm run content:audio` after adding released Japanese audio so Expo receives a static asset registry.

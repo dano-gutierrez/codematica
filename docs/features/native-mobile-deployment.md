@@ -3,9 +3,9 @@
 ## Snapshot
 
 - Status: `in_progress`
-- Last updated: `2026-08-03`
+- Last updated: `2026-08-04`
 - Owner thread: `n/a`
-- Current state: The repo has an Expo Router app in `apps/mobile`, shared runtime logic in `packages/core`, shared React Native screens in `packages/ui`, EAS build profiles, EAS submit profiles, configurable store identifiers, and native icon/splash assets.
+- Current state: The repo has an Expo Router app in `apps/mobile`, shared runtime logic in `packages/core`, shared React Native screens in `packages/ui`, adaptive phone/iPad Japanese handwriting and review, EAS build/submit profiles, configurable store identifiers, and native icon/splash assets.
 - Target outcome: Codematica can run locally on web/Android/iOS, ship Android and iOS internal builds, and prepare Play Console/App Store Connect submissions while preserving the existing Next/Vercel mobile web app and coding shared product behavior once.
 - Code touchpoints:
   - `apps/mobile/`
@@ -36,6 +36,8 @@ Detailed Play Console, Apple Developer Program, App Store Connect, EAS credentia
 - Native Supabase uses anon-safe public env vars and secure Expo session storage. Service role keys remain local/server-only.
 - Native Mermaid rendering uses a WebView when a bundled Mermaid runtime is provided and shows source fallback when unavailable.
 - Native real-world web interviews include complete rubrics, approaches, and selectable source files, but deliberately defer editing/execution to the Next.js Sandpack surface.
+- Native Japanese study keeps Learn, Review, Dictionary, and Resources directly reachable; review state is retained in AsyncStorage and merged with the authenticated RLS snapshot when Supabase is configured.
+- Expo orientation is adaptive with tablet support enabled. Writing canvases size from the active window rather than assuming a fixed phone width, so Split View and portrait/landscape iPad layouts remain usable.
 - First release target is EAS internal distribution. Store submission readiness is configured in the repo, but actual Play Console/App Store Connect release requires account-owned app records, credentials, metadata, screenshots, and review forms outside the repo.
 
 ## Run And Build Commands
@@ -128,9 +130,10 @@ Store-side setup still required:
 - `apps/mobile/app.config.ts` owns native app identity, adaptive orientation, tablet support, bundle/package identifiers, version counters, icon/splash assets, runtime version policy, and EAS project linkage.
 - `apps/mobile/eas.json` owns development, preview, production, e2e-test, and submit profiles.
 - `apps/mobile/assets/` stores the native icon, adaptive icon, and splash assets used by app store builds.
-- `apps/mobile/app/languages/japanese/**` mirrors the web Japanese lookup/detail routes.
+- `apps/mobile/app/languages/japanese/**` mirrors the web Japanese lookup/detail/review routes.
+- `apps/mobile/src/lib/skill-progress.ts` validates, loads, merges, and uploads Japanese mastery through the anon-safe Supabase client without clearing local state.
 - `packages/core/src/` exports content schemas, generated index access, library/discovery search, curated-home resolution, questionnaire logic, handwriting scoring, language helpers, passive flashcard helpers, interview helpers, and progress helpers.
-- `packages/ui/src/screens.tsx` exports the shared React Native screen set for current web parity, including Japanese resource shortcuts, complete kana lookup, and writing practice.
+- `packages/ui/src/screens.tsx` exports the shared React Native screen set for current web parity, including Japanese Learn/Review/Dictionary/Resources destinations, complete kana lookup, and writing practice.
 - Native writing practice uses `react-native-svg` for the stroke pad and keeps raw strokes transient.
 - Japanese writing pads use window dimensions to grow from compact phone/Split View layouts to 480–560 pt iPad canvases while retaining font scaling and 44 pt controls.
 
@@ -161,6 +164,7 @@ Store-side setup still required:
 - `2026-07-11`: Use `react-native-svg` for native handwriting practice while keeping scoring in shared core logic.
 - `2026-07-11`: Target EAS internal builds first; configure store-ready app identity, EAS production build profiles, and EAS submit profiles so Play Console/App Store Connect publishing can start after account setup.
 - `2026-08-03`: Keep Japanese alphabet resources accessible from the native hub and make native anonymous progress retention/sync lossless across bounded batches.
+- `2026-08-04`: Add adaptive orientation, responsive iPad handwriting, Japanese review/resources, language accessibility hints, and authenticated mastery merging; align Expo SDK dependencies and pass Expo Doctor 20/20.
 
 ## Thread Handoff Prompt
 

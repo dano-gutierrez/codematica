@@ -9,12 +9,14 @@ Start here:
 3. Read the relevant file in `docs/features/` for the feature you are touching.
 4. If the feature is `proposed` or `in_progress`, verify the named touchpoints in code before editing.
 5. After changing behavior, adding a workflow, or making a product decision, update the matching feature doc in the same branch.
+6. Read `docs/CHANGELOG.md` when you need a chronological summary of recently shipped product and architecture changes.
 
 Conventions:
 
 - `docs/codex-context.md` is the repo-wide orientation file.
 - `docs/engineering-overview.md` is the repo-level architecture and system-flow document.
 - `docs/features/<feature>.md` is the durable product and implementation contract for one feature.
+- `docs/CHANGELOG.md` records dated, cross-feature delivery summaries and links back to the authoritative feature contracts.
 - `docs/features/_template.md` is the format new feature docs should follow.
 - `docs/features/README.md` explains how threads should consume and maintain feature docs.
 - `docs/features/home-discovery.md` owns the cross-section home, global local search, curated rows, section themes, and full catalog routes.
@@ -74,3 +76,4 @@ Maintenance rules:
 - Update the closest existing README when adding a durable folder, workflow, command, integration, test lane, or content convention.
 - If no README owns a new durable area and the area is not self-explanatory, add one.
 - Do not let README files become historical sketches. If implementation changes the actual contract, update the README in the same branch.
+- Add a dated changelog entry for a release-sized change that spans several feature contracts; do not use the changelog as a replacement for updating those contracts.

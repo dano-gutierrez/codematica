@@ -1,6 +1,6 @@
 # Codematica Engineering Overview
 
-Last updated: 2026-08-03
+Last updated: 2026-08-04
 
 Codematica is a mobile-first learning app for system design, coding, programming, software engineering, and beginner human-language study. V1 keeps the product intentionally local-first: author documents as Markdown, author paths, exercises, flashcard feeds, interview catalogs, and language catalogs as JSON, generate a static study index, and render the app on web with Next.js and on Android/iOS with Expo Router.
 
@@ -40,6 +40,8 @@ flowchart TD
   FEEDS["content/flashcard-feeds/*.json"] --> Parser
   IV["content/interviews/*.json"] --> Parser
   LANG["content/languages/**/*.json"] --> Parser
+  AUDIO["Japanese audio manifest + local files"] --> Parser
+  RES["Japanese external resource catalog"] --> Parser
   DISC["content/discovery/home.json"] --> Parser
   Parser --> Index["packages/core/src/generated/content-index.json"]
   Index --> Core["@codematica/core"]
@@ -49,6 +51,7 @@ flowchart TD
   Core --> Passive["Passive flashcard feed"]
   Core --> Interviews["Interview coding catalog"]
   Core --> Languages["Japanese language lookup + handwriting"]
+  Core --> Review["Stage progress + six-box mastery"]
   Core --> Search["Library fuzzy search"]
   Core --> Discovery["Cross-section search + curated home"]
   SharedUI --> Native["Expo Router native app"]
@@ -57,12 +60,19 @@ flowchart TD
   Web --> Vercel["Vercel build"]
   Vercel --> CDN["Static/SSG web delivery"]
   Native --> EAS["EAS internal + store builds"]
+  AUDIO --> AudioPrep["npm run content:audio"]
+  AudioPrep --> WebAudio["Web asset URL registry"]
+  AudioPrep --> NativeAudio["Expo static require registry"]
+  WebAudio --> Web
+  NativeAudio --> Native
   Core --> Sync["Optional Supabase sync script"]
   Sync --> DB[("Supabase Postgres")]
   ProgressUI --> Auth["Supabase Auth"]
   Native --> NativeAuth["Native Supabase Auth"]
   Auth --> UserDB[("Supabase user progress")]
   NativeAuth --> UserDB
+  Review --> SkillAPI["Authenticated skill-progress API / native adapter"]
+  SkillAPI --> SkillDB[("RLS user_skill_progress")]
 ```
 
 ## Runtime Boundaries
@@ -88,6 +98,7 @@ Supabase is optional at runtime:
 - Supabase Auth supports Google, email/password, and Apple-ready login on web and native when public runtime env vars are configured.
 - `user_profiles` stores only user ids and timestamps.
 - `user_progress_items` stores resume/completion milestones for documents, diagrams, practice, passive feeds, and interviews.
+- `user_skill_progress` stores the additive Japanese review snapshot: best score, attempt count, review box, mastery state, last practice time, and next review time.
 - RLS is enabled from the start.
 
 ## Content Model
@@ -102,7 +113,7 @@ Passive flashcard feeds live in `content/flashcard-feeds/*.json` and attach shor
 
 Interview collections live in `content/interviews/*.json` and are discriminated as `company` or `real-world`. Company algorithm questions retain reported-public links and guided Python, TypeScript, and Java tracks. Anonymous real-world questions require provenance notes and may provide structured evaluation rubrics plus at least three `WebExerciseProject` solutions. Web projects are authored locally, validated into the index, and executed only in Sandpack's cross-origin iframe; Expo shows the same files read-only.
 
-Human-language catalogs live in `content/languages/**/*.json`. Schema v8 adds JF proficiency stages, skill strands, Can-dos, audio manifests, and external-resource rights metadata. Japanese indexes the complete 46-character basic hiragana and katakana sets, focused sound/small-kana variants, an exact 100-kanji A1 target, vocabulary, learner romaji, distinct IME input sequences, IPA, structured phrase breakdowns, study order, and normalized stroke paths for published handwriting profiles.
+Human-language catalogs live in `content/languages/**/*.json`. Schema v8 adds JF proficiency stages, skill strands, Can-dos, audio manifests, and external-resource rights metadata. Japanese indexes the complete 46-character basic hiragana and katakana sets, focused sound/small-kana variants, an exact 100-kanji A1 target, vocabulary, learner romaji, distinct IME input sequences, IPA, structured phrase breakdowns, study order, and normalized stroke paths for published handwriting profiles. Audio files are canonical only when declared in the validated manifest; `npm run content:audio` generates web URLs and static Expo mappings without changing the authoring manifest. External resources default to link-only unless their redistribution rights are explicit.
 
 Home discovery curation lives in `content/discovery/home.json`. It references canonical published content by kind and slug; index generation validates every reference and serializes the ordered sections into content index schema version 8. `packages/core/src/discovery.ts` resolves those references and provides cross-section local search to web and native.
 
@@ -120,7 +131,7 @@ The Reading And Writing Mermaid Diagrams path is the source-first technical docu
 
 The Japanese Foundations path is the first human-language slice. Its open JF/CEFR progression spans Kana Explorer (Pre-A1), First Connections (A1), and Everyday Navigator (A1), with Can-do milestones, contextual checkpoints, two original mini-readers, an exact 100-kanji target, deterministic review, dictionary profiles, responsive tracing, flashcards, and a rights-aware resource shelf across web and Expo. Audio metadata and platform registry generation are implemented, but the corpus stays unpublished until genuine released recordings exist.
 
-Progress is user state, not authored content. Existing completion remains in `user_progress_items`. Japanese mastery is additive: anonymous review state persists locally, while `user_skill_progress` provides an RLS-protected signed-in target for best score, attempt count, review box, mastery state, and review times. Neither path stores answers, raw handwriting, recordings, or full attempt history.
+Progress is user state, not authored content. Existing completion remains in `user_progress_items`. Japanese mastery is additive: anonymous review state persists locally, while `user_skill_progress` provides an RLS-protected signed-in target for best score, attempt count, review box, mastery state, and review times. Web and Expo load the remote snapshot when authenticated, validate it, merge it deterministically with retained local state, save the merged snapshot locally, and upload it in batches of at most 20. Neither path stores answers, raw handwriting, recordings, or full attempt history.
 
 ## Route Model
 
@@ -143,11 +154,11 @@ Progress is user state, not authored content. Existing completion remains in `us
 - `/diagrams/[...slug]`: one standalone Mermaid diagram.
 - `/login`: optional Supabase Auth sign-in and sign-up.
 - `/auth/callback`: OAuth/PKCE callback and local progress sync handoff.
-- `/api/progress/**`: authenticated progress summary, upsert, and anonymous-buffer sync.
+- `/api/progress/**`: authenticated completion summary/upsert, anonymous-buffer sync, and Japanese skill-progress read/batch-sync.
 
 ## Testing Model
 
-Unit tests cover schema validation, parser behavior, library and cross-section search, discovery curation, snippets, questionnaire shuffling/checking, handwriting scoring, interview solution selection, path/exercise/language/interview validation, progress payload validation, lossless batched anonymous progress, and diagram indexing. Integration tests cover generated index loading and renderer behavior. Playwright smoke and regression tests cover home discovery, section catalogs, the web mobile path, practice, browser, questionnaire, interview, flashcard, one-minute brief feed, Japanese alphabet study, BFS/DFS study, Mermaid authoring, signed-out progress, and diagrams. Mobile Jest tests cover shared React Native screens against the bundled generated index, including discovery search, Japanese resources/lookup/writing practice, and batched progress sync.
+Unit tests cover schema validation, parser behavior, library and cross-section search, discovery curation, snippets, questionnaire shuffling/checking, handwriting scoring, interview solution selection, path/exercise/language/interview validation, stage percentage/stamp eligibility, six-box mastery transitions, due ordering, local/remote mastery merge, progress payload validation, lossless batching, and diagram indexing. Integration tests cover generated index loading and renderer behavior. Playwright smoke and regression tests cover home discovery, section catalogs, the web mobile path, practice, browser, questionnaire, interview, flashcard, one-minute brief feed, Japanese alphabet study, IME search, review access, keyboard operation, 200% zoom/320px reflow, reduced motion, BFS/DFS study, Mermaid authoring, signed-out progress, and diagrams. Mobile Jest tests cover shared React Native screens against the bundled generated index, including discovery search, Japanese resources/lookup/review/writing practice, and batched progress sync.
 
 ## Future Architecture Direction
 

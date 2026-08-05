@@ -13,9 +13,10 @@ This folder contains curated role and skill paths for Codematica.
 - Diagram-authoring paths should pair rendered source examples with diagram-selection guidance, choice-only knowledge checks, and passive review; the Mermaid path uses the deployed renderer for browser validation.
 - The Advanced Next.js 16 path is hard-only and targets experienced App Router engineers; keep factual claims aligned with official Next.js docs, official release notes, and npm registry version metadata.
 - Human-language paths should pair Markdown lessons with language catalogs and `writing` exercise nodes so web and Expo routes share the same study sequence.
+- Schema-v8 path nodes may declare `proficiencyLevel`, `skillIds`, and `required`. Progression-enabled language paths may also define stable skill IDs, friendly stages, official proficiency levels, Can-do statements, required nodes, a questionnaire checkpoint, thresholds, and estimated time.
 - Path-scoped passive flashcard feeds live in `content/flashcard-feeds/` and should not be added to ordered `units[].nodes[]`.
 - Beginner language paths should introduce one script at a time, keep recognition checks near each row group, and link their reference guides and passive review feed outside the ordered node sequence so learners can open them at any time.
 - All referenced slugs must exist before running `npm run content:index`.
-- Paths are open in the current milestone. Do not add lock, payment, or completion fields until the feature contract changes.
+- Paths are open in the current milestone. `required` identifies milestone calculations; it never locks a node. Do not add lock or payment fields until the feature contract changes.
 
 Run `npm run content:check` before committing path changes.
