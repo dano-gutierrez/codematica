@@ -23,6 +23,16 @@ export function getLearningPathBySlug(slug: string) {
   return contentIndex.learningPaths.find((learningPath) => learningPath.slug === slug);
 }
 
+export function getSourceById(id: string) {
+  return contentIndex.sources.find((source) => source.id === id);
+}
+
+export function getSourcesByRefs(sourceRefs: readonly string[] | undefined) {
+  if (!sourceRefs?.length) return [];
+  const refs = new Set(sourceRefs);
+  return contentIndex.sources.filter((source) => refs.has(source.id));
+}
+
 export function getExerciseBySlug(slug: string) {
   return contentIndex.exercises.find((exercise) => exercise.slug === slug);
 }
@@ -76,6 +86,15 @@ export function getPathNodeRoute(node: LearningPathNode, pathSlug?: string) {
     return `/diagrams/${node.slug}${pathSearch}`;
   }
 
+  if (node.kind === "source") {
+    const companion =
+      node.companionKind === "document"
+        ? contentIndex.documents.find((document) => document.slug === node.slug && document.status === "published")
+        : contentIndex.exercises.find((exercise) => exercise.slug === node.slug && exercise.status === "published");
+    if (companion) return `${companion.route}${pathSearch}`;
+    return getSourceById(node.sourceRef)?.url ?? `/paths${pathSearch}`;
+  }
+
   return `/practice/${node.slug}${pathSearch}`;
 }
 
@@ -87,7 +106,9 @@ export function getNextPathNodeRoute(pathSlug: string, currentNode: LearningPath
   }
 
   const nodes = learningPath.units.flatMap((unit) => unit.nodes);
-  const currentIndex = nodes.findIndex((node) => node.kind === currentNode.kind && node.slug === currentNode.slug);
+  const currentIndex = nodes.findIndex(
+    (node) => node.slug === currentNode.slug && (node.kind === currentNode.kind || (node.kind === "source" && node.companionKind === currentNode.kind)),
+  );
   const nextNode = currentIndex >= 0 ? nodes[currentIndex + 1] : undefined;
 
   return nextNode ? getPathNodeRoute(nextNode, learningPath.slug) : undefined;

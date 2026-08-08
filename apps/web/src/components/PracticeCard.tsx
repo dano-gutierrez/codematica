@@ -41,6 +41,8 @@ export function PracticeCard({
         <ClozeCard exercise={exercise} nextHref={nextHref} onProgressEvent={onProgressEvent} />
       ) : exercise.type === "writing" ? (
         <WritingCard exercise={exercise} nextHref={nextHref} onProgressEvent={onProgressEvent} />
+      ) : exercise.type === "guided-lab" ? (
+        <GuidedLab exercise={exercise} nextHref={nextHref} onProgressEvent={onProgressEvent} />
       ) : (
         <QuestionnaireSession exercise={exercise} nextHref={nextHref} onProgressEvent={onProgressEvent} />
       )}
@@ -61,7 +63,83 @@ function exerciseKindLabel(exercise: LearningExercise) {
     return "Writing";
   }
 
+  if (exercise.type === "guided-lab") return "Guided lab";
+
   return "Questionnaire";
+}
+
+function GuidedLab({
+  exercise,
+  nextHref,
+  onProgressEvent,
+}: {
+  exercise: Extract<LearningExercise, { type: "guided-lab" }>;
+  nextHref?: string;
+  onProgressEvent?: PracticeProgressHandler;
+}) {
+  const [predictionId, setPredictionId] = useState<string>();
+  const [evidenceIds, setEvidenceIds] = useState<string[]>([]);
+  const complete = Boolean(predictionId) && evidenceIds.length === exercise.evidenceChecklist.length;
+
+  function toggleEvidence(id: string) {
+    setEvidenceIds((current) => current.includes(id) ? current.filter((item) => item !== id) : [...current, id]);
+  }
+
+  return (
+    <div className="mt-6 grid gap-6" data-testid="guided-lab-session">
+      <div className="rounded-lg border-2 border-b-4 border-[#d5e2e8] bg-[#f6fbfc] p-4">
+        <p className="text-sm font-extrabold uppercase text-[#007c78]">Briefing · about {exercise.estimatedMinutes} minutes</p>
+        <p className="mt-2 text-base font-semibold leading-7 text-[#33434b]">{exercise.briefing}</p>
+        <ul className="mt-3 list-disc space-y-1 pl-5 text-sm font-semibold leading-6 text-[#53616c]">{exercise.objectives.map((objective) => <li key={objective}>{objective}</li>)}</ul>
+      </div>
+
+      <fieldset className="rounded-lg border-2 border-b-4 border-[#f7cf5d] bg-[#fffaf0] p-4">
+        <legend className="px-2 text-sm font-extrabold uppercase text-[#7a5200]">Commit your prediction</legend>
+        <p className="text-base font-extrabold leading-7 text-[#263238]">{exercise.prediction.prompt}</p>
+        <div className="mt-3 grid gap-2">
+          {exercise.prediction.options.map((option) => (
+            <label key={option.id} className="flex min-h-12 cursor-pointer items-center gap-3 rounded-lg border-2 border-[#d2bd76] bg-white px-3 py-2 text-sm font-bold text-[#33434b]">
+              <input type="radio" name="prediction" checked={predictionId === option.id} onChange={() => { setPredictionId(option.id); onProgressEvent?.("started", { predictionCommitted: true }); }} />
+              {option.label}
+            </label>
+          ))}
+        </div>
+      </fieldset>
+
+      <ol className="grid gap-3">
+        {exercise.steps.map((step, index) => (
+          <li key={step.id} className="rounded-lg border-2 border-b-4 border-[#d5e2e8] bg-white p-4">
+            <p className="text-xs font-extrabold uppercase text-[#68737d]">Step {index + 1}</p>
+            <h2 className="mt-1 text-xl font-extrabold text-[#263238]">{step.title}</h2>
+            <p className="mt-2 text-sm font-semibold leading-6 text-[#53616c]">{step.instructions}</p>
+          </li>
+        ))}
+      </ol>
+
+      <fieldset className="rounded-lg border-2 border-b-4 border-[#6dd8cf] bg-[#e8f8f6] p-4">
+        <legend className="px-2 text-sm font-extrabold uppercase text-[#00645f]">Evidence checklist</legend>
+        <div className="grid gap-2">
+          {exercise.evidenceChecklist.map((item) => (
+            <label key={item.id} className="flex min-h-11 cursor-pointer items-center gap-3 text-sm font-bold text-[#33434b]">
+              <input type="checkbox" checked={evidenceIds.includes(item.id)} onChange={() => toggleEvidence(item.id)} />
+              {item.label}
+            </label>
+          ))}
+        </div>
+      </fieldset>
+
+      <div className="rounded-lg border-2 border-b-4 border-[#c8b8ff] bg-[#f3efff] p-4">
+        <h2 className="text-sm font-extrabold uppercase text-[#5840b8]">Reflect, then extend</h2>
+        {exercise.reflectionPrompts.map((prompt) => <label key={prompt} className="mt-3 block text-sm font-bold leading-6 text-[#33434b]">{prompt}<textarea className="mt-1 min-h-24 w-full rounded-lg border-2 border-[#c8b8ff] bg-white p-3 font-semibold outline-none focus:border-[#5840b8]" /></label>)}
+        <p className="mt-4 text-sm font-semibold leading-6 text-[#53616c]"><span className="font-extrabold">Extension:</span> {exercise.extensionChallenge}</p>
+      </div>
+
+      <div className="flex flex-wrap gap-3">
+        <button type="button" disabled={!complete} onClick={() => onProgressEvent?.("completed", { predictionCommitted: true, evidenceCount: evidenceIds.length, evidenceTotal: exercise.evidenceChecklist.length })} className="inline-flex min-h-12 items-center gap-2 rounded-lg border-2 border-b-4 border-[#00645f] bg-[#007c78] px-4 py-2 text-sm font-extrabold text-white disabled:opacity-50" data-testid="guided-lab-complete">Complete lab</button>
+        {complete && nextHref ? <NextLink href={nextHref} /> : null}
+      </div>
+    </div>
+  );
 }
 
 function Flashcard({

@@ -9,7 +9,8 @@ import { MarkdownRenderer } from "@/components/MarkdownRenderer";
 import { MermaidBlock } from "@/components/MermaidBlock";
 import { PathScopedNextLink } from "@/components/PathScopedNextLink";
 import { DocumentProgressTracker } from "@/components/ProgressTrackers";
-import { getContentIndex, getDocumentBySlug, getNextPathNodeRoutesByPath, getReferencedDiagrams } from "@/lib/content";
+import { SourceReferences } from "@/components/SourceReferences";
+import { getContentIndex, getDocumentBySlug, getNextPathNodeRoutesByPath, getReferencedDiagrams, getSourcesByRefs } from "@/lib/content";
 
 type DocumentPageProps = {
   params: Promise<{
@@ -49,6 +50,7 @@ export default async function DocumentPage({ params }: DocumentPageProps) {
 
   const nextHrefsByPath = getNextPathNodeRoutesByPath({ kind: "document", slug: document.slug });
   const referencedDiagrams = getReferencedDiagrams(document.diagramRefs);
+  const sources = getSourcesByRefs(document.sourceRefs);
 
   return (
     <main className="min-h-screen px-4 py-5 sm:py-8" data-testid="document-page">
@@ -79,6 +81,7 @@ export default async function DocumentPage({ params }: DocumentPageProps) {
             </div>
             <h1 className="max-w-4xl text-4xl font-extrabold leading-tight tracking-normal text-[#263238] sm:text-6xl">{document.title}</h1>
             <p className="mt-4 max-w-3xl text-lg font-semibold leading-8 text-[#68737d]">{document.summary}</p>
+            <div className="mt-5"><SourceReferences sources={sources} /></div>
             <div className="mt-5 flex flex-wrap gap-2">
               {document.tags.map((tag) => (
                 <span key={tag} className="rounded-lg bg-[#eaf7f4] px-2.5 py-1 text-xs font-extrabold text-[#007c78]">

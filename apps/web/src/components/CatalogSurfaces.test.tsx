@@ -30,6 +30,13 @@ describe("catalog and path surfaces", () => {
     expect(screen.getByTestId("path-flashcard-feed-link")).toBeVisible();
     expect(screen.getAllByTestId(`path-nodes-${japanese.slug}`).length).toBeGreaterThan(0);
 
+    const mlSystems = getLearningPathBySlug("ml-systems-engineer")!;
+    rerender(<LearningPathDetail index={index} learningPath={mlSystems} />);
+    expect(screen.getByTestId("path-progression-roadmap")).toHaveTextContent("Scientific Computing Apprentice");
+    expect(screen.getByTestId("path-progression-roadmap")).toHaveTextContent("Framework Builder");
+    expect(screen.getByTestId("path-node-source-ml-systems-ai-engineering-introduction")).toHaveTextContent("Source + document");
+    expect(screen.getByTestId("path-node-source-ml-systems-neural-computation")).toHaveAttribute("href", "https://mlsysbook.ai/vol1/nn_computation/nn_computation.html");
+
     const systemDesign = getLearningPathBySlug("system-design-fundamentals")!;
     rerender(<LearningPathDetail index={index} learningPath={systemDesign} />);
     expect(screen.getByRole("heading", { name: systemDesign.title })).toBeVisible();

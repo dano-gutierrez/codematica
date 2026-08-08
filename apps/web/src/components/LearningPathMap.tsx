@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ArrowLeft, ArrowRight, BookOpen, Brain, GitBranch, Layers, Stamp, Target } from "lucide-react";
+import { ArrowLeft, ArrowRight, BookOpen, Brain, ExternalLink, GitBranch, Layers, Stamp, Target } from "lucide-react";
 import { AppHeader } from "@/components/AppHeader";
 import { DifficultyPill } from "@/components/DifficultyPill";
 import { getPathNodeRoute } from "@/lib/content";
@@ -46,23 +46,23 @@ export function LearningPathDetail({ index, learningPath }: { index: ContentInde
           <section className="mt-8 rounded-xl border-2 border-b-4 border-[#d2bd76] bg-[#fffaf0] p-4 sm:p-6" data-testid="path-progression-roadmap">
             <div className="flex flex-wrap items-end justify-between gap-3">
               <div>
-                <p className="text-sm font-extrabold uppercase text-[#7a5200]">Stamp-rally journal · every lesson is open</p>
-                <h2 className="mt-1 text-3xl font-extrabold text-[#263238]">Pre-A1 to A1 roadmap</h2>
+                <p className="text-sm font-extrabold uppercase text-[#7a5200]">Career milestones · published stages earn stamps</p>
+                <h2 className="mt-1 text-3xl font-extrabold text-[#263238]">{learningPath.progression.roadmapLabel}</h2>
               </div>
-              <Link href="/languages/japanese/review" className="inline-flex min-h-12 items-center rounded-lg border-2 border-b-4 border-[#00645f] bg-[#007c78] px-4 py-2 text-base font-extrabold text-white">Review skills</Link>
+              {learningPath.progression.reviewRoute ? <Link href={learningPath.progression.reviewRoute} className="inline-flex min-h-12 items-center rounded-lg border-2 border-b-4 border-[#00645f] bg-[#007c78] px-4 py-2 text-base font-extrabold text-white">Review skills</Link> : null}
             </div>
             <div className="mt-5 grid gap-4 lg:grid-cols-3">
               {learningPath.progression.stages.map((stage, stageIndex) => (
                 <article key={stage.id} className="relative rounded-lg border-2 border-b-4 border-[#d2bd76] bg-white p-5">
-                  <span className="absolute right-4 top-4 flex h-12 w-12 rotate-[-6deg] items-center justify-center rounded-full border-2 border-dashed border-[#b77b00] bg-[#fff5d6] text-[#7a5200]" aria-hidden="true"><Stamp className="h-6 w-6" /></span>
-                  <p className="text-sm font-extrabold uppercase text-[#7a5200]">Stage {stageIndex + 1} · {stage.proficiencyLevel.toUpperCase()}</p>
+                  <span className={cn("absolute right-4 top-4 flex h-12 w-12 rotate-[-6deg] items-center justify-center rounded-full border-2 border-dashed", stage.status === "published" ? "border-[#b77b00] bg-[#fff5d6] text-[#7a5200]" : "border-[#9aa8b1] bg-[#eef2f4] text-[#68737d]")} aria-hidden="true"><Stamp className="h-6 w-6" /></span>
+                  <p className="text-sm font-extrabold uppercase text-[#7a5200]">Stage {stageIndex + 1} · {stage.level} · {stage.status}</p>
                   <h3 className="mt-2 pr-14 text-2xl font-extrabold text-[#263238]">{stage.label}</h3>
                   <p className="mt-2 text-base font-semibold leading-7 text-[#53616c]">{stage.summary}</p>
-                  <p className="mt-3 text-sm font-bold text-[#53616c]">About {stage.estimatedMinutes} minutes · checkpoint {Math.round(stage.passThreshold * 100)}%</p>
+                  <p className="mt-3 text-sm font-bold text-[#53616c]">About {stage.estimatedMinutes} minutes{stage.passThreshold === undefined ? " · companion planned" : ` · checkpoint ${Math.round(stage.passThreshold * 100)}%`}</p>
                   <ul className="mt-4 grid gap-2">
-                    {stage.canDos.map((canDo) => <li key={canDo.id} className="text-sm font-semibold leading-6 text-[#33434b]"><span className="font-extrabold text-[#007c78]">I can:</span> {canDo.statement.replace(/^I can\s+/i, "")}</li>)}
+                    {stage.outcomes.map((outcome) => <li key={outcome.id} className="text-sm font-semibold leading-6 text-[#33434b]"><span className="font-extrabold text-[#007c78]">I can:</span> {outcome.statement.replace(/^I can\s+/i, "")}</li>)}
                   </ul>
-                  <Link href={`/practice/${stage.checkpointExerciseSlug}?path=${learningPath.slug}`} className="mt-4 inline-flex min-h-11 items-center text-base font-extrabold text-[#1d4e9e] underline decoration-2 underline-offset-4">Open checkpoint</Link>
+                  {stage.checkpointExerciseSlug ? <Link href={`/practice/${stage.checkpointExerciseSlug}?path=${learningPath.slug}`} className="mt-4 inline-flex min-h-11 items-center text-base font-extrabold text-[#1d4e9e] underline decoration-2 underline-offset-4">Open checkpoint</Link> : <p className="mt-4 text-sm font-extrabold text-[#68737d]">Official sources are open now; the Codematica checkpoint is planned.</p>}
                 </article>
               ))}
             </div>
@@ -138,6 +138,20 @@ function PathNodes({
 }
 
 function getNodeDisplay(index: ContentIndex, node: LearningPathNode) {
+  if (node.kind === "source") {
+    const source = index.sources.find((item) => item.id === node.sourceRef);
+    const document = node.companionKind === "document" ? index.documents.find((item) => item.slug === node.slug) : undefined;
+    const exercise = node.companionKind === "exercise" ? index.exercises.find((item) => item.slug === node.slug) : undefined;
+    return {
+      title: document?.title ?? exercise?.title ?? source?.title ?? node.slug,
+      summary: document?.summary ?? (exercise ? `${exercise.concept} practice. Primary source: ${source?.provider ?? "upstream"}.` : `Open the authoritative ${source?.provider ?? "upstream"} source.`),
+      kindLabel: document || exercise ? `Source + ${node.companionKind}` : `Official source · ${node.activity}`,
+      difficulty: document?.difficulty ?? exercise?.difficulty,
+      icon: <ExternalLink className="h-3.5 w-3.5 text-[#1d4e9e]" aria-hidden="true" />,
+      colorClass: "border-[#9cc7ff] bg-[#edf5ff] text-[#1d4e9e]",
+    };
+  }
+
   if (node.kind === "document") {
     const document = index.documents.find((item) => item.slug === node.slug);
 
@@ -188,6 +202,8 @@ function exerciseKindLabel(type: ContentIndex["exercises"][number]["type"]) {
   if (type === "writing") {
     return "Writing";
   }
+
+  if (type === "guided-lab") return "Guided lab";
 
   return "Questionnaire";
 }

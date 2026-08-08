@@ -44,7 +44,7 @@ describe("QuestionnaireSession question kinds", () => {
     fireEvent.click(screen.getByTestId("questionnaire-finish"));
     expect(screen.getByTestId("questionnaire-complete")).toHaveTextContent("Refresh complete");
     expect(screen.getByRole("link", { name: /next node/i })).toHaveAttribute("href", "/next");
-    expect(onProgressEvent).toHaveBeenCalledWith("completed", { questionIndex: 0, totalQuestions: 1 });
+    expect(onProgressEvent).toHaveBeenCalledWith("completed", { questionIndex: 0, totalQuestions: 1, score: 1, skillScores: {} });
     fireEvent.click(screen.getByRole("button", { name: /restart/i }));
     expect(screen.getByTestId("questionnaire-session")).toBeVisible();
   });

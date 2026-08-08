@@ -4,7 +4,7 @@
 
 - Status: `in_progress`
 - Last updated: `2026-08-04`
-- Current state: schema-v8 Pre-A1/A1 roadmap, complete basic kana catalogs, contextual A1 lessons and mini-readers, original readiness checkpoints, deterministic skill review, resource-rights metadata, dictionary profiles, responsive handwriting, and web/Expo destinations are shipped. The audio contract and build pipeline are ready, but the manifest intentionally remains empty until released native-speaker recordings exist.
+- Current state: schema-v9 generic progression now carries the existing Pre-A1/A1 roadmap, complete basic kana catalogs, contextual A1 lessons and mini-readers, original readiness checkpoints, deterministic skill review, resource-rights metadata, dictionary profiles, responsive handwriting, and web/Expo destinations. The audio manifest remains intentionally empty until released native-speaker recordings exist.
 - Target outcome: English-speaking teens and adults can move from kana discovery to practical JF A1 Can-dos while keeping the entire course, reviews, dictionary, handwriting, flashcards, and resources open.
 
 ## One-Minute Brief
@@ -128,7 +128,7 @@ flowchart LR
 ## Delivery Verification — 2026-08-04
 
 - `npm run content:audio`: passed with zero released assets, matching the intentionally empty manifest.
-- `npm run content:check`: passed after regenerating schema version 8.
+- `npm run content:check`: passes after the schema version 9 progression migration.
 - `npm run typecheck`, `npm run lint`, and `npm run build`: passed.
 - Vitest: 38 files and 190 tests passed.
 - Native Jest: 2 suites and 10 tests passed.

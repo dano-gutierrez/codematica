@@ -125,7 +125,7 @@ export function JapaneseReview({ index, learningPath }: { index: ContentIndex; l
 
           {selectedSkill ? (
             <section className="self-start rounded-xl border-2 border-b-4 border-[#d2bd76] bg-[#fffaf0] p-5 sm:p-7" aria-live="polite">
-              <p className="text-sm font-extrabold uppercase text-[#7a5200]">{selectedSkill.skill} practice</p>
+              <p className="text-sm font-extrabold uppercase text-[#7a5200]">{selectedSkill.category} practice</p>
               <h2 className="mt-2 text-3xl font-extrabold text-[#263238]">{selectedSkill.label}</h2>
               <p className="mt-3 text-base font-semibold leading-7 text-[#53616c]">{selectedSkill.description}</p>
               <div className="mt-6 rounded-lg border-2 border-dashed border-[#d2bd76] bg-white p-5">

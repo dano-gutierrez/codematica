@@ -2,6 +2,15 @@
 
 This changelog records durable, user-visible and architectural changes. Feature documents remain the authoritative contracts; this file explains when a group of related changes landed and points readers to the owning documentation.
 
+## 2026-08-07 — Harvard ML Systems Career Path
+
+- Added a source-linked ML Systems Engineer path covering both Harvard CS249r books, all 34 labs, 20 TinyTorch modules, MLSys·im, optional hardware kits, and StaffML.
+- Published prerequisite and Volume I Foundations companions through Data Engineering, with three guided labs and three scored career checkpoints across web and Expo.
+- Advanced the local content index to schema version 9 with validated primary-source metadata, source nodes, generic career/language progression, planned-stage semantics, and aggregate per-skill questionnaire scores.
+- Kept Harvard material authoritative and external: companions summarize and enrich, planned stages open upstream sources, and source metadata records verification, maturity, version, and a pinned repository audit commit.
+
+Owning contracts: `docs/features/ml-systems-career-path.md` and `docs/features/learning-paths-and-practice.md`.
+
 ## 2026-08-05 — Automated Testing And Release Regression
 
 - Added scope and per-file V8 coverage gates for core, web services/API/content scripts, web components, mobile libraries, and shared native UI, with HTML, LCOV, JSON, text-summary, and CI JUnit evidence.

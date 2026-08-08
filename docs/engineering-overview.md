@@ -1,8 +1,8 @@
 # Codematica Engineering Overview
 
-Last updated: 2026-08-05
+Last updated: 2026-08-07
 
-Codematica is a mobile-first learning app for system design, coding, programming, software engineering, and beginner human-language study. V1 keeps the product intentionally local-first: author documents as Markdown, author paths, exercises, flashcard feeds, interview catalogs, and language catalogs as JSON, generate a static study index, and render the app on web with Next.js and on Android/iOS with Expo Router.
+Codematica is a mobile-first learning app for system design, coding, programming, software engineering, ML systems, and beginner human-language study. V1 stays local-first: Markdown and structured JSON remain canonical, including a validated external-source catalog for source-linked companions.
 
 ## Current Stack
 
@@ -39,6 +39,7 @@ flowchart TD
   MMD["content/diagrams/**/*.{mmd,mermaid}"] --> Parser
   PATHS["content/learning-paths/*.json"] --> Parser
   EX["content/exercises/**/*.json"] --> Parser
+  SRC["content/sources/*.json"] --> Parser
   FEEDS["content/flashcard-feeds/*.json"] --> Parser
   IV["content/interviews/*.json"] --> Parser
   LANG["content/languages/**/*.json"] --> Parser
@@ -49,11 +50,11 @@ flowchart TD
   Index --> Core["@codematica/core"]
   Core --> SharedUI["@codematica/ui"]
   Core --> Paths["Path and next-node helpers"]
-  Core --> Practice["Flashcard, cloze, questionnaire + writing practice"]
+  Core --> Practice["Flashcard, cloze, questionnaire, writing + guided labs"]
   Core --> Passive["Passive flashcard feed"]
   Core --> Interviews["Interview coding catalog"]
   Core --> Languages["Japanese language lookup + handwriting"]
-  Core --> Review["Stage progress + six-box mastery"]
+  Core --> Review["Generic career/language stages + six-box mastery"]
   Core --> Search["Library fuzzy search"]
   Core --> Discovery["Cross-section search + curated home"]
   SharedUI --> Native["Expo Router native app"]
@@ -105,19 +106,21 @@ Supabase is optional at runtime:
 
 ## Content Model
 
-Every article has frontmatter with title, slug, summary, track, topic, difficulty, tags, prerequisites, diagram references, and status. The parser validates this contract before generating the index.
+Every article has frontmatter with title, slug, summary, track, topic, difficulty, tags, prerequisites, diagram references, primary-source references, and status. The parser validates this contract before generating the index. `content/sources/*.json` centralizes authoritative URLs, attribution, license when verified, version/commit, maturity, and verification date.
 
 External diagrams are stored separately and referenced by slug from article frontmatter. Embedded Mermaid blocks inside Markdown are also rendered. Fenced code blocks and app-authored solution snippets use the shared highlighted code block theme with language labels for Python, TypeScript, Java, JSON, shell, Markdown, and related aliases.
 
-Learning paths live in `content/learning-paths/*.json` and contain ordered units of document, diagram, and exercise nodes. Exercises live in `content/exercises/**/*.json` and currently support `flashcard`, `cloze`, `questionnaire`, and `writing` prompts. Questionnaires contain one-screen-at-a-time `choice`, `cloze`, `ordering`, and `matching` questions with per-attempt randomization and no persisted scores. Writing exercises reference language character slugs and use shared stroke-count, order/direction, and shape checks.
+Learning paths live in `content/learning-paths/*.json` and contain ordered units of document, diagram, exercise, and primary-source nodes. A source node resolves to its published local companion or the authoritative external URL. Exercises support `flashcard`, `cloze`, `questionnaire`, `writing`, and `guided-lab`. Questionnaires calculate aggregate overall/per-skill scores while answers stay transient. Guided labs enforce prediction and evidence-checklist completion while reflection text stays transient. Writing exercises reference language character slugs and use shared stroke-count, order/direction, and shape checks.
 
 Passive flashcard feeds live in `content/flashcard-feeds/*.json` and attach short review cards to learning paths.
 
 Interview collections live in `content/interviews/*.json` and are discriminated as `company` or `real-world`. Company algorithm questions retain reported-public links and guided Python, TypeScript, and Java tracks. Anonymous real-world questions require provenance notes and may provide structured evaluation rubrics plus at least three `WebExerciseProject` solutions. Web projects are authored locally, validated into the index, and executed only in Sandpack's cross-origin iframe; Expo shows the same files read-only.
 
-Human-language catalogs live in `content/languages/**/*.json`. Schema v8 adds JF proficiency stages, skill strands, Can-dos, audio manifests, and external-resource rights metadata. Japanese indexes the complete 46-character basic hiragana and katakana sets, focused sound/small-kana variants, an exact 100-kanji A1 target, vocabulary, learner romaji, distinct IME input sequences, IPA, structured phrase breakdowns, study order, and normalized stroke paths for published handwriting profiles. Audio files are canonical only when declared in the validated manifest; `npm run content:audio` generates web URLs and static Expo mappings without changing the authoring manifest. External resources default to link-only unless their redistribution rights are explicit.
+Human-language catalogs live in `content/languages/**/*.json`. Schema v9 generalizes progression into `jf-standard` and `career` frameworks with stable skills, stage status/level, outcomes, published checkpoints, and planned stages while preserving language audio/resource rights metadata. Japanese indexes the complete 46-character basic hiragana and katakana sets, focused sound/small-kana variants, an exact 100-kanji A1 target, vocabulary, learner romaji, distinct IME input sequences, IPA, structured phrase breakdowns, study order, and normalized stroke paths for published handwriting profiles. Audio files are canonical only when declared in the validated manifest; `npm run content:audio` generates web URLs and static Expo mappings without changing the authoring manifest. External resources default to link-only unless their redistribution rights are explicit.
 
-Home discovery curation lives in `content/discovery/home.json`. It references canonical published content by kind and slug; index generation validates every reference and serializes the ordered sections into content index schema version 8. `packages/core/src/discovery.ts` resolves those references and provides cross-section local search to web and native.
+Home discovery curation lives in `content/discovery/home.json`. It references canonical published content by kind and slug; index generation validates every reference and serializes the ordered sections into content index schema version 9. `packages/core/src/discovery.ts` resolves those references and provides cross-section local search to web and native.
+
+The ML Systems Engineer path is the first source-linked career curriculum. It maps the complete Harvard CS249r student surface—both books, labs, TinyTorch, MLSys·im, optional hardware, and StaffML—while locally publishing prerequisites and Volume I companions through Data Engineering. Later stages remain explicitly planned but open their primary sources now.
 
 The Python language refresh path is the first reusable language-refresh slice. It pairs searchable Markdown docs with senior-level questionnaires and passive flashcards for TypeScript and JavaScript engineers.
 

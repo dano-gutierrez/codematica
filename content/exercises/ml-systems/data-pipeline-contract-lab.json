@@ -1,0 +1,26 @@
+{
+  "slug": "ml-systems/data-pipeline-contract-lab",
+  "title": "Data Pipeline Contract Lab",
+  "type": "guided-lab",
+  "documentSlug": "ml-systems/data-engineering",
+  "concept": "data contracts and lineage",
+  "difficulty": "practitioner",
+  "tags": ["data-engineering", "lineage", "leakage"],
+  "status": "published",
+  "sourceRefs": ["harvard-vol1-data-engineering", "harvard-labs"],
+  "skillIds": ["data-engineering", "experimental-practice"],
+  "required": true,
+  "briefing": "Design a versioned training-data contract and try to break it with late data, duplicates, leakage, and a changed production population.",
+  "objectives": ["Define row grain, keys, event time, labels, and validation boundaries.", "Choose a split strategy that represents deployment.", "Preserve lineage from source through training dataset."],
+  "prediction": { "prompt": "Which split is safest when multiple records from one user occur over time and deployment predicts future behavior?", "options": [{ "id": "row", "label": "Random row split" }, { "id": "time-entity", "label": "Time-aware split with entity leakage controls" }, { "id": "duplicate", "label": "Copy records into every split" }] },
+  "steps": [
+    { "id": "contract", "title": "Specify the contract", "instructions": "Define grain, key, event time, label availability, types, missingness rules, and five domain invariants for a concrete dataset." },
+    { "id": "split", "title": "Defend the split", "instructions": "Describe production timing and entity relationships, choose a split, and identify two leakage paths the split must prevent." },
+    { "id": "lineage", "title": "Build lineage", "instructions": "Record source version, extraction window, transformation revision, parameters, output identifier, and downstream model run." },
+    { "id": "failure", "title": "Inject a failure", "instructions": "Simulate late labels, duplicate events, or a category change and decide whether to reject, quarantine, warn, or rebuild." }
+  ],
+  "evidenceChecklist": [{ "id": "grain", "label": "Row grain and keys are unambiguous" }, { "id": "leakage", "label": "Split strategy addresses time and entity leakage" }, { "id": "lineage", "label": "A model run can be traced to a dataset and transformation revision" }],
+  "reflectionPrompts": ["Which validation protects correctness, and which only signals drift?", "How would a corrected historical label propagate to trained artifacts?"],
+  "extensionChallenge": "Add an online feature path and define a measurable offline-online skew check plus an incident response.",
+  "estimatedMinutes": 60
+}

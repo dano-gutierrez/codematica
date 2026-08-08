@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { checkQuestionAnswer, createQuestionnaireAttempt } from "./questionnaire";
+import { calculateQuestionnaireSkillScores, checkQuestionAnswer, createQuestionnaireAttempt } from "./questionnaire";
 import type { LearningExercise } from "../content/schema";
 
 const questionnaire = {
@@ -61,6 +61,13 @@ const questionnaire = {
 } satisfies LearningExercise;
 
 describe("questionnaire helpers", () => {
+  it("calculates per-skill and overall checkpoint scores", () => {
+    expect(calculateQuestionnaireSkillScores([
+      { question: { ...questionnaire.questions[0], skillIds: ["systems-thinking", "quantitative-reasoning"] }, isCorrect: true },
+      { question: { ...questionnaire.questions[1], skillIds: ["quantitative-reasoning"] }, isCorrect: false },
+    ])).toEqual({ overall: 0.5, skills: { "systems-thinking": 1, "quantitative-reasoning": 0.5 } });
+  });
+
   it("creates a shuffled attempt without mutating source questions", () => {
     const randomValues = [0.9, 0.1, 0.8, 0.2, 0.7, 0.3, 0.6, 0.4, 0.5];
     const attempt = createQuestionnaireAttempt(questionnaire, () => randomValues.shift() ?? 0.5);

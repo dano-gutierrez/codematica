@@ -93,30 +93,33 @@
   ],
   "progression": {
     "framework": "jf-standard",
+    "roadmapLabel": "Pre-A1 to A1 roadmap",
+    "reviewRoute": "/languages/japanese/review",
     "skills": [
-      { "id": "kana-listening", "label": "Kana sounds and rhythm", "skill": "listening", "description": "Hear mora rhythm and distinguish the core kana sound patterns." },
-      { "id": "kana-reading", "label": "Kana recognition", "skill": "reading", "description": "Recognize hiragana and katakana in words, signs, and tiny texts." },
-      { "id": "kana-writing", "label": "Kana handwriting", "skill": "writing", "description": "Trace and recall textbook-style kana with the intended stroke order." },
-      { "id": "kana-interaction", "label": "Kana learning interaction", "skill": "interaction", "description": "Use kana knowledge to ask, answer, and clarify a simple reading or input question." },
-      { "id": "kana-ime", "label": "Japanese keyboard input", "skill": "ime", "description": "Choose IME keys separately from learner-facing pronunciation and romanization." },
-      { "id": "a1-listening", "label": "A1 listening", "skill": "listening", "description": "Understand familiar words and short, slowly delivered everyday exchanges." },
-      { "id": "a1-reading", "label": "A1 reading", "skill": "reading", "description": "Find concrete information in short sentences, signs, messages, and mini-readers." },
-      { "id": "a1-interaction", "label": "A1 interaction", "skill": "interaction", "description": "Exchange basic personal information and complete predictable everyday tasks." },
-      { "id": "a1-writing", "label": "A1 writing", "skill": "writing", "description": "Write familiar characters and create a very short personal or practical message." }
+      { "id": "kana-listening", "label": "Kana sounds and rhythm", "category": "listening", "description": "Hear mora rhythm and distinguish the core kana sound patterns." },
+      { "id": "kana-reading", "label": "Kana recognition", "category": "reading", "description": "Recognize hiragana and katakana in words, signs, and tiny texts." },
+      { "id": "kana-writing", "label": "Kana handwriting", "category": "writing", "description": "Trace and recall textbook-style kana with the intended stroke order." },
+      { "id": "kana-interaction", "label": "Kana learning interaction", "category": "interaction", "description": "Use kana knowledge to ask, answer, and clarify a simple reading or input question." },
+      { "id": "kana-ime", "label": "Japanese keyboard input", "category": "ime", "description": "Choose IME keys separately from learner-facing pronunciation and romanization." },
+      { "id": "a1-listening", "label": "A1 listening", "category": "listening", "description": "Understand familiar words and short, slowly delivered everyday exchanges." },
+      { "id": "a1-reading", "label": "A1 reading", "category": "reading", "description": "Find concrete information in short sentences, signs, messages, and mini-readers." },
+      { "id": "a1-interaction", "label": "A1 interaction", "category": "interaction", "description": "Exchange basic personal information and complete predictable everyday tasks." },
+      { "id": "a1-writing", "label": "A1 writing", "category": "writing", "description": "Write familiar characters and create a very short personal or practical message." }
     ],
     "stages": [
       {
         "id": "kana-explorer",
         "label": "Kana Explorer",
-        "proficiencyLevel": "pre-a1",
+        "level": "Pre-A1",
+        "status": "published",
         "summary": "Build a reliable sound-to-symbol foundation across recognition, reading, handwriting, and keyboard input.",
         "unitSlugs": ["writing-systems", "hiragana-foundations", "hiragana-sound-tools", "katakana-foundations", "romaji-and-kana-input"],
-        "canDos": [
-          { "id": "kana-hear-morae", "statement": "I can hear and tap the mora rhythm of a short familiar kana word.", "skill": "listening" },
-          { "id": "kana-read-basics", "statement": "I can recognize the 46 basic hiragana and katakana in standard order.", "skill": "reading" },
-          { "id": "kana-write-sample", "statement": "I can write a sampled basic kana character from memory using its stroke order.", "skill": "writing" },
-          { "id": "kana-clarify-input", "statement": "I can explain a simple difference between a particle's sound and its IME spelling.", "skill": "interaction" },
-          { "id": "kana-type-exceptions", "statement": "I can type particles, small kana, doubled consonants, and long vowels with an IME.", "skill": "ime" }
+        "outcomes": [
+          { "id": "kana-hear-morae", "statement": "I can hear and tap the mora rhythm of a short familiar kana word.", "skillId": "kana-listening" },
+          { "id": "kana-read-basics", "statement": "I can recognize the 46 basic hiragana and katakana in standard order.", "skillId": "kana-reading" },
+          { "id": "kana-write-sample", "statement": "I can write a sampled basic kana character from memory using its stroke order.", "skillId": "kana-writing" },
+          { "id": "kana-clarify-input", "statement": "I can explain a simple difference between a particle's sound and its IME spelling.", "skillId": "kana-interaction" },
+          { "id": "kana-type-exceptions", "statement": "I can type particles, small kana, doubled consonants, and long vowels with an IME.", "skillId": "kana-ime" }
         ],
         "requiredNodeSlugs": ["languages/japanese-writing-systems", "languages/japanese-hiragana-foundations", "languages/japanese-hiragana-reading-check", "languages/japanese-hiragana-sound-changes", "languages/japanese-katakana-foundations", "languages/japanese-katakana-reading-check", "languages/japanese-romaji-kana-input", "languages/japanese-kana-explorer-checkpoint"],
         "checkpointExerciseSlug": "languages/japanese-kana-explorer-checkpoint",
@@ -127,14 +130,15 @@
       {
         "id": "first-connections",
         "label": "First Connections",
-        "proficiencyLevel": "a1",
+        "level": "A1",
+        "status": "published",
         "summary": "Use short rehearsed language to meet someone, exchange concrete information, express preferences, and order.",
         "unitSlugs": ["first-connections"],
-        "canDos": [
-          { "id": "connections-hear-details", "statement": "I can understand a slowly spoken name, age, time, or simple preference.", "skill": "listening" },
-          { "id": "connections-read-scene", "statement": "I can understand the main details in a short greeting or café scene.", "skill": "reading" },
-          { "id": "connections-write-intro", "statement": "I can write a two-sentence introduction with my name and one personal fact.", "skill": "writing" },
-          { "id": "connections-exchange", "statement": "I can greet someone, give my name, ask one basic question, and respond politely.", "skill": "interaction" }
+        "outcomes": [
+          { "id": "connections-hear-details", "statement": "I can understand a slowly spoken name, age, time, or simple preference.", "skillId": "a1-listening" },
+          { "id": "connections-read-scene", "statement": "I can understand the main details in a short greeting or café scene.", "skillId": "a1-reading" },
+          { "id": "connections-write-intro", "statement": "I can write a two-sentence introduction with my name and one personal fact.", "skillId": "a1-writing" },
+          { "id": "connections-exchange", "statement": "I can greet someone, give my name, ask one basic question, and respond politely.", "skillId": "a1-interaction" }
         ],
         "requiredNodeSlugs": ["languages/japanese-first-connections", "languages/japanese-first-connections-checkpoint"],
         "checkpointExerciseSlug": "languages/japanese-first-connections-checkpoint",
@@ -144,14 +148,15 @@
       {
         "id": "everyday-navigator",
         "label": "Everyday Navigator",
-        "proficiencyLevel": "a1",
+        "level": "A1",
+        "status": "published",
         "summary": "Complete predictable daily tasks involving places, routines, transport, requests, purchases, signs, and messages.",
         "unitSlugs": ["everyday-navigator", "starter-kanji"],
-        "canDos": [
-          { "id": "navigator-hear-plan", "statement": "I can understand the time, place, and transport in a short familiar plan.", "skill": "listening" },
-          { "id": "navigator-find-detail", "statement": "I can locate a concrete time, place, price, or instruction in a short text.", "skill": "reading" },
-          { "id": "navigator-write-message", "statement": "I can write a short message giving a meeting time and place.", "skill": "writing" },
-          { "id": "navigator-complete-task", "statement": "I can ask directions, make a request, arrange a meeting, or buy a simple item.", "skill": "interaction" }
+        "outcomes": [
+          { "id": "navigator-hear-plan", "statement": "I can understand the time, place, and transport in a short familiar plan.", "skillId": "a1-listening" },
+          { "id": "navigator-find-detail", "statement": "I can locate a concrete time, place, price, or instruction in a short text.", "skillId": "a1-reading" },
+          { "id": "navigator-write-message", "statement": "I can write a short message giving a meeting time and place.", "skillId": "a1-writing" },
+          { "id": "navigator-complete-task", "statement": "I can ask directions, make a request, arrange a meeting, or buy a simple item.", "skillId": "a1-interaction" }
         ],
         "requiredNodeSlugs": ["languages/japanese-everyday-navigator", "languages/japanese-starter-kanji", "languages/japanese-everyday-navigator-checkpoint"],
         "checkpointExerciseSlug": "languages/japanese-everyday-navigator-checkpoint",

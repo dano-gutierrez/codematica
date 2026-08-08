@@ -9,6 +9,34 @@ const slugSchema = z
   .min(3)
   .regex(/^[a-z0-9]+(?:[/-][a-z0-9]+)*$/, "Use lowercase slugs with / or - separators.");
 
+const curriculumIdSchema = z
+  .string()
+  .min(2)
+  .regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/, "Use lowercase curriculum IDs with - separators.");
+
+export const contentSourceSchema = z.object({
+  id: curriculumIdSchema,
+  title: z.string().min(3),
+  provider: z.string().min(2),
+  url: z.string().url(),
+  attribution: z.string().min(3),
+  license: z.object({ name: z.string().min(2), url: z.string().url() }).optional(),
+  lastVerifiedAt: z.string().regex(/^\d{4}-\d{2}-\d{2}$/, "Use an ISO date (YYYY-MM-DD)."),
+  upstream: z
+    .object({
+      repository: z.string().min(3).optional(),
+      ref: z.string().min(1).optional(),
+      commit: z.string().regex(/^[a-f0-9]{7,40}$/).optional(),
+      version: z.string().min(1).optional(),
+      maturity: z.enum(["published", "preview"]),
+    })
+    .optional(),
+});
+
+export const contentSourceCatalogFileSchema = z.object({
+  sources: z.array(contentSourceSchema).min(1),
+});
+
 export const knowledgeFrontmatterSchema = z.object({
   title: z.string().min(4),
   slug: slugSchema,
@@ -19,6 +47,7 @@ export const knowledgeFrontmatterSchema = z.object({
   tags: z.array(z.string().min(2)).min(1),
   prerequisites: z.array(z.string().min(2)).default([]),
   diagramRefs: z.array(slugSchema).default([]),
+  sourceRefs: z.array(curriculumIdSchema).optional(),
   status: contentStatusSchema.default("draft"),
 });
 
@@ -39,51 +68,70 @@ export const languageSkillSchema = z.enum([
   "ime",
 ]);
 
-const curriculumIdSchema = z
-  .string()
-  .min(2)
-  .regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/, "Use lowercase curriculum IDs with - separators.");
-
 export const learningSkillDefinitionSchema = z.object({
   id: curriculumIdSchema,
   label: z.string().min(2),
-  skill: languageSkillSchema,
+  category: curriculumIdSchema,
   description: z.string().min(10),
 });
 
-export const canDoStatementSchema = z.object({
+export const learningOutcomeSchema = z.object({
   id: curriculumIdSchema,
   statement: z.string().min(15),
-  skill: languageSkillSchema,
+  skillId: curriculumIdSchema,
 });
 
-export const learningStageSchema = z.object({
-  id: curriculumIdSchema,
-  label: z.string().min(3),
-  proficiencyLevel: proficiencyLevelSchema,
-  summary: z.string().min(20),
-  unitSlugs: z.array(slugSchema).min(1),
-  canDos: z.array(canDoStatementSchema).min(1),
-  requiredNodeSlugs: z.array(slugSchema).min(1),
-  checkpointExerciseSlug: slugSchema,
-  passThreshold: z.number().min(0).max(1),
-  minimumSkillScore: z.number().min(0).max(1).optional(),
-  estimatedMinutes: z.number().int().positive(),
-});
+export const learningStageSchema = z
+  .object({
+    id: curriculumIdSchema,
+    label: z.string().min(3),
+    level: z.string().min(2),
+    status: contentStatusSchema.default("published"),
+    summary: z.string().min(20),
+    unitSlugs: z.array(slugSchema).min(1),
+    outcomes: z.array(learningOutcomeSchema).min(1),
+    requiredNodeSlugs: z.array(slugSchema).default([]),
+    checkpointExerciseSlug: slugSchema.optional(),
+    passThreshold: z.number().min(0).max(1).optional(),
+    minimumSkillScore: z.number().min(0).max(1).optional(),
+    estimatedMinutes: z.number().int().positive(),
+  })
+  .superRefine((stage, context) => {
+    if (stage.status !== "published") return;
+    if (stage.requiredNodeSlugs.length === 0) context.addIssue({ code: "custom", path: ["requiredNodeSlugs"], message: "Published stages need required nodes." });
+    if (!stage.checkpointExerciseSlug) context.addIssue({ code: "custom", path: ["checkpointExerciseSlug"], message: "Published stages need a checkpoint exercise." });
+    if (stage.passThreshold === undefined) context.addIssue({ code: "custom", path: ["passThreshold"], message: "Published stages need a pass threshold." });
+  });
 
 export const learningProgressionSchema = z.object({
-  framework: z.literal("jf-standard"),
+  framework: z.enum(["jf-standard", "career"]),
+  roadmapLabel: z.string().min(3),
+  reviewRoute: z.string().regex(/^\/[a-z0-9/-]+$/).optional(),
   skills: z.array(learningSkillDefinitionSchema).min(1),
   stages: z.array(learningStageSchema).min(1),
 });
 
-export const learningPathNodeSchema = z.object({
-  kind: z.enum(["document", "diagram", "exercise"]),
+const learningPathNodeMetadata = {
   slug: slugSchema,
   proficiencyLevel: proficiencyLevelSchema.optional(),
   skillIds: z.array(curriculumIdSchema).optional(),
   required: z.boolean().optional(),
+};
+
+const internalLearningPathNodeSchema = z.object({
+  kind: z.enum(["document", "diagram", "exercise"]),
+  ...learningPathNodeMetadata,
 });
+
+export const sourceLearningPathNodeSchema = z.object({
+  kind: z.literal("source"),
+  ...learningPathNodeMetadata,
+  sourceRef: curriculumIdSchema,
+  activity: z.enum(["read", "build", "explore", "model", "deploy", "practice"]),
+  companionKind: z.enum(["document", "exercise"]),
+});
+
+export const learningPathNodeSchema = z.union([internalLearningPathNodeSchema, sourceLearningPathNodeSchema]);
 
 export const learningPathUnitSchema = z.object({
   slug: slugSchema,
@@ -100,6 +148,8 @@ export const learningPathFileSchema = z.object({
   category: z.string().min(2),
   audience: z.string().min(10),
   status: contentStatusSchema.default("draft"),
+  sourcePolicy: z.enum(["optional", "required"]).optional(),
+  sourceRefs: z.array(curriculumIdSchema).optional(),
   units: z.array(learningPathUnitSchema).min(1),
   progression: learningProgressionSchema.optional(),
 }).superRefine((path, context) => {
@@ -115,7 +165,7 @@ export const learningPathFileSchema = z.object({
 
   unique(path.progression.skills.map((skill) => skill.id), ["progression", "skills"], "skill id");
   unique(path.progression.stages.map((stage) => stage.id), ["progression", "stages"], "stage id");
-  unique(path.progression.stages.flatMap((stage) => stage.canDos.map((canDo) => canDo.id)), ["progression", "stages"], "Can-do id");
+  unique(path.progression.stages.flatMap((stage) => stage.outcomes.map((outcome) => outcome.id)), ["progression", "stages"], "outcome id");
 });
 
 const exerciseBaseSchema = z.object({
@@ -126,6 +176,7 @@ const exerciseBaseSchema = z.object({
   difficulty: difficultySchema,
   tags: z.array(z.string().min(2)).min(1),
   status: contentStatusSchema.default("draft"),
+  sourceRefs: z.array(curriculumIdSchema).optional(),
   proficiencyLevel: proficiencyLevelSchema.optional(),
   skillIds: z.array(curriculumIdSchema).optional(),
   required: z.boolean().optional(),
@@ -155,6 +206,7 @@ const questionBaseSchema = z.object({
   id: questionIdSchema,
   prompt: z.string().min(10),
   explanation: z.string().min(10),
+  skillIds: z.array(curriculumIdSchema).optional(),
 });
 
 export const choiceQuestionSchema = questionBaseSchema.extend({
@@ -222,11 +274,27 @@ export const writingExerciseFileSchema = exerciseBaseSchema.extend({
   explanation: z.string().min(10),
 });
 
+export const guidedLabExerciseFileSchema = exerciseBaseSchema.extend({
+  type: z.literal("guided-lab"),
+  briefing: z.string().min(20),
+  objectives: z.array(z.string().min(10)).min(1),
+  prediction: z.object({
+    prompt: z.string().min(10),
+    options: z.array(z.object({ id: questionIdSchema, label: z.string().min(2) })).min(2),
+  }),
+  steps: z.array(z.object({ id: questionIdSchema, title: z.string().min(3), instructions: z.string().min(20) })).min(1),
+  evidenceChecklist: z.array(z.object({ id: questionIdSchema, label: z.string().min(5) })).min(1),
+  reflectionPrompts: z.array(z.string().min(10)).min(1),
+  extensionChallenge: z.string().min(20),
+  estimatedMinutes: z.number().int().positive(),
+});
+
 export const learningExerciseFileSchema = z.discriminatedUnion("type", [
   flashcardExerciseFileSchema,
   clozeExerciseFileSchema,
   questionnaireExerciseFileSchema,
   writingExerciseFileSchema,
+  guidedLabExerciseFileSchema,
 ]);
 
 export const languageCodeSchema = z.enum(["ja"]);
@@ -583,12 +651,13 @@ export const homeDiscoveryFileSchema = z.object({
 });
 export type Difficulty = z.infer<typeof difficultySchema>;
 export type ContentStatus = z.infer<typeof contentStatusSchema>;
+export type ContentSourceFileItem = z.infer<typeof contentSourceSchema>;
 export type KnowledgeFrontmatter = z.infer<typeof knowledgeFrontmatterSchema>;
 export type LearningPathKind = z.infer<typeof learningPathKindSchema>;
 export type ProficiencyLevel = z.infer<typeof proficiencyLevelSchema>;
 export type LanguageSkill = z.infer<typeof languageSkillSchema>;
 export type LearningSkillDefinition = z.infer<typeof learningSkillDefinitionSchema>;
-export type CanDoStatement = z.infer<typeof canDoStatementSchema>;
+export type LearningOutcome = z.infer<typeof learningOutcomeSchema>;
 export type LearningStage = z.infer<typeof learningStageSchema>;
 export type LearningPathNode = z.infer<typeof learningPathNodeSchema>;
 export type LearningPathUnit = z.infer<typeof learningPathUnitSchema>;
@@ -651,6 +720,11 @@ export type KnowledgeDocument = KnowledgeFrontmatter & {
 export type LearningPath = LearningPathFile & {
   id: string;
   route: string;
+  sourcePath: string;
+  contentHash: string;
+};
+
+export type ContentSource = ContentSourceFileItem & {
   sourcePath: string;
   contentHash: string;
 };
@@ -734,7 +808,8 @@ export type ContentTrack = {
 };
 
 export type ContentIndex = {
-  schemaVersion: 8;
+  schemaVersion: 9;
+  sources: ContentSource[];
   documents: KnowledgeDocument[];
   diagrams: MermaidDiagram[];
   learningPaths: LearningPath[];

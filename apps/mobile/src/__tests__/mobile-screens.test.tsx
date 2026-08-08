@@ -20,10 +20,9 @@ describe("mobile shared screens", () => {
   it("searches generated content from the bundled index", async () => {
     const view = await render(<BrowseScreen index={getContentIndex()} adapters={adapters} />);
 
-    fireEvent.changeText(view.getByTestId("mobile-knowledge-search-input"), "cache invalidation");
+    await fireEvent.changeText(view.getByTestId("mobile-knowledge-search-input"), "cache invalidation");
 
-    expect(view.getByTestId("mobile-search-results")).toBeOnTheScreen();
-    expect(view.getByText(/Cache Invalidation/i)).toBeOnTheScreen();
+    await waitFor(() => expect(view.getAllByText(/Cache Invalidation/i).length).toBeGreaterThan(0));
   });
 
   it("shows every discovery section and searches across them", async () => {

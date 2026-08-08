@@ -4,12 +4,14 @@ import path from "node:path";
 import { parseKnowledgeMarkdown } from "./parse-markdown";
 import {
   interviewCollectionFileSchema,
+  contentSourceCatalogFileSchema,
   homeDiscoveryFileSchema,
   languageCatalogFileSchema,
   learningExerciseFileSchema,
   learningPathFileSchema,
   passiveFlashcardFeedFileSchema,
   type ContentIndex,
+  type ContentSource,
   type ContentTrack,
   type Difficulty,
   type InterviewCollection,
@@ -97,6 +99,25 @@ async function collectHomeDiscovery(rootDir: string): Promise<HomeDiscovery> {
 
     throw error;
   }
+}
+
+async function collectContentSources(rootDir: string): Promise<ContentSource[]> {
+  const sourcesDir = path.join(rootDir, "content", "sources");
+  const files = await walkFiles(sourcesDir, jsonExtensions).catch((error: unknown) => {
+    if (error && typeof error === "object" && "code" in error && error.code === "ENOENT") return [];
+    throw error;
+  });
+  const groups: ContentSource[][] = [];
+
+  for (const filePath of files) {
+    const { raw, value } = await readJson(filePath);
+    const parsed = contentSourceCatalogFileSchema.parse(value);
+    const sourcePath = relativeSourcePath(rootDir, filePath);
+    const contentHash = sha256(raw);
+    groups.push(parsed.sources.map((source) => ({ ...source, sourcePath, contentHash })));
+  }
+
+  return groups.flat();
 }
 
 export async function collectMermaidDiagrams(rootDir: string): Promise<MermaidDiagram[]> {
@@ -527,6 +548,7 @@ async function assertLanguageAudio(rootDir: string, audio: LanguageAudioAsset[],
 }
 
 function assertContentReferences(
+  sources: ContentSource[],
   documents: KnowledgeDocument[],
   diagrams: MermaidDiagram[],
   exercises: LearningExercise[],
@@ -536,6 +558,7 @@ function assertContentReferences(
   passiveFlashcardFeeds: PassiveFlashcardFeed[],
   interviewCollections: InterviewCollection[],
 ) {
+  const sourceIds = new Set(sources.map((source) => source.id));
   const documentSlugs = new Set<string>();
   const diagramSlugs = new Set(diagrams.map((diagram) => diagram.slug));
   const exerciseSlugs = new Set(exercises.map((exercise) => exercise.slug));
@@ -550,6 +573,10 @@ function assertContentReferences(
         throw new Error(`${document.sourcePath} references missing diagram "${diagramRef}"`);
       }
     }
+
+    for (const sourceRef of document.sourceRefs ?? []) {
+      if (!sourceIds.has(sourceRef)) throw new Error(`${document.sourcePath} references missing source "${sourceRef}"`);
+    }
   }
 
   for (const exercise of exercises) {
@@ -558,6 +585,9 @@ function assertContentReferences(
 
     if (!documentSlugs.has(exercise.documentSlug)) {
       throw new Error(`${exercise.sourcePath} references missing document "${exercise.documentSlug}"`);
+    }
+    for (const sourceRef of exercise.sourceRefs ?? []) {
+      if (!sourceIds.has(sourceRef)) throw new Error(`${exercise.sourcePath} references missing source "${sourceRef}"`);
     }
   }
 
@@ -587,8 +617,20 @@ function assertContentReferences(
   for (const learningPath of learningPaths) {
     const pathNodeSlugs = new Set(learningPath.units.flatMap((unit) => unit.nodes.map((node) => node.slug)));
 
+    for (const sourceRef of learningPath.sourceRefs ?? []) {
+      if (!sourceIds.has(sourceRef)) throw new Error(`${learningPath.sourcePath} references missing source "${sourceRef}"`);
+    }
+
+    if (learningPath.sourcePolicy === "required" && !(learningPath.sourceRefs?.length)) {
+      throw new Error(`${learningPath.sourcePath} requires primary source references.`);
+    }
+
     for (const unit of learningPath.units) {
       for (const node of unit.nodes) {
+        if (node.kind === "source" && !sourceIds.has(node.sourceRef)) {
+          throw new Error(`${learningPath.sourcePath} references missing source "${node.sourceRef}"`);
+        }
+
         if (node.kind === "document" && !documentSlugs.has(node.slug)) {
           throw new Error(`${learningPath.sourcePath} references missing document "${node.slug}"`);
         }
@@ -599,6 +641,16 @@ function assertContentReferences(
 
         if (node.kind === "exercise" && !exerciseSlugs.has(node.slug)) {
           throw new Error(`${learningPath.sourcePath} references missing exercise "${node.slug}"`);
+        }
+
+        if (learningPath.sourcePolicy === "required" && node.kind === "document") {
+          const document = documents.find((item) => item.slug === node.slug);
+          if (!document?.sourceRefs?.length) throw new Error(`${learningPath.sourcePath} document node "${node.slug}" needs a primary source reference.`);
+        }
+
+        if (learningPath.sourcePolicy === "required" && node.kind === "exercise") {
+          const exercise = exercises.find((item) => item.slug === node.slug);
+          if (!exercise?.sourceRefs?.length) throw new Error(`${learningPath.sourcePath} exercise node "${node.slug}" needs a primary source reference.`);
         }
       }
     }
@@ -627,21 +679,30 @@ function assertContentReferences(
 
         for (const nodeSlug of stage.requiredNodeSlugs) {
           if (!pathNodeSlugs.has(nodeSlug)) throw new Error(`${learningPath.sourcePath} stage "${stage.id}" references missing required node "${nodeSlug}".`);
+
+          const sourceNode = learningPath.units.flatMap((unit) => unit.nodes).find((node) => node.slug === nodeSlug);
+          if (stage.status === "published" && sourceNode?.kind === "source") {
+            const companion = sourceNode.companionKind === "document" ? documents.find((document) => document.slug === sourceNode.slug) : exercises.find((exercise) => exercise.slug === sourceNode.slug);
+            if (!companion || companion.status !== "published") throw new Error(`${learningPath.sourcePath} published stage "${stage.id}" needs a published companion for source node "${nodeSlug}".`);
+          }
         }
 
-        const checkpoint = exercises.find((exercise) => exercise.slug === stage.checkpointExerciseSlug);
-        if (!checkpoint || checkpoint.type !== "questionnaire") {
-          throw new Error(`${learningPath.sourcePath} stage "${stage.id}" must reference a questionnaire checkpoint.`);
+        for (const outcome of stage.outcomes) {
+          if (!skillIds.has(outcome.skillId)) throw new Error(`${learningPath.sourcePath} stage "${stage.id}" references missing skill "${outcome.skillId}".`);
         }
 
-        if (!pathNodeSlugs.has(stage.checkpointExerciseSlug)) {
-          throw new Error(`${learningPath.sourcePath} stage "${stage.id}" checkpoint must be included in the path.`);
-        }
-
-        const balancedSkills = new Set(stage.canDos.map((canDo) => canDo.skill));
-        for (const requiredSkill of ["listening", "reading", "writing", "interaction"] as const) {
-          if (!balancedSkills.has(requiredSkill)) {
-            throw new Error(`${learningPath.sourcePath} stage "${stage.id}" needs a ${requiredSkill} Can-do statement.`);
+        if (stage.checkpointExerciseSlug) {
+          const checkpoint = exercises.find((exercise) => exercise.slug === stage.checkpointExerciseSlug);
+          if (!checkpoint || checkpoint.type !== "questionnaire") {
+            throw new Error(`${learningPath.sourcePath} stage "${stage.id}" must reference a questionnaire checkpoint.`);
+          }
+          for (const question of checkpoint.questions) {
+            for (const skillId of question.skillIds ?? []) {
+              if (!skillIds.has(skillId)) throw new Error(`${checkpoint.sourcePath} question "${question.id}" references missing path skill "${skillId}".`);
+            }
+          }
+          if (!pathNodeSlugs.has(stage.checkpointExerciseSlug)) {
+            throw new Error(`${learningPath.sourcePath} stage "${stage.id}" checkpoint must be included in the path.`);
           }
         }
       }
@@ -721,7 +782,8 @@ function assertHomeDiscoveryReferences(
 }
 
 export async function buildContentIndex({ rootDir }: BuildContentIndexOptions): Promise<ContentIndex> {
-  const [documents, diagrams, exercises, languageContent, learningPaths, passiveFlashcardFeeds, interviewCollections, homeDiscovery] = await Promise.all([
+  const [sources, documents, diagrams, exercises, languageContent, learningPaths, passiveFlashcardFeeds, interviewCollections, homeDiscovery] = await Promise.all([
+    collectContentSources(rootDir),
     collectKnowledgeDocuments(rootDir),
     collectMermaidDiagrams(rootDir),
     collectLearningExercises(rootDir),
@@ -731,6 +793,8 @@ export async function buildContentIndex({ rootDir }: BuildContentIndexOptions): 
     collectInterviewCollections(rootDir),
     collectHomeDiscovery(rootDir),
   ]);
+
+  const sortedSources = sources.sort((left, right) => left.id.localeCompare(right.id));
 
   const sortedDocuments = documents.sort((left, right) => left.slug.localeCompare(right.slug));
   const sortedDiagrams = diagrams.sort((left, right) => left.slug.localeCompare(right.slug));
@@ -743,6 +807,7 @@ export async function buildContentIndex({ rootDir }: BuildContentIndexOptions): 
   const sortedPassiveFlashcardFeeds = passiveFlashcardFeeds.sort((left, right) => left.slug.localeCompare(right.slug));
   const sortedInterviewCollections = interviewCollections.sort((left, right) => left.name.localeCompare(right.name));
   assertUniqueIds(sortedLanguageAudio, "language audio id", "language audio catalogs");
+  assertUniqueIds(sortedSources, "content source id", "content source catalogs");
   assertUniqueIds(sortedLanguageResources, "language resource id", "language resource catalogs");
   await assertLanguageAudio(rootDir, sortedLanguageAudio, sortedLanguageCharacters, sortedLanguageVocabulary);
   assertUniqueSlugs(
@@ -756,6 +821,7 @@ export async function buildContentIndex({ rootDir }: BuildContentIndexOptions): 
     sortedInterviewCollections,
   );
   assertContentReferences(
+    sortedSources,
     sortedDocuments,
     sortedDiagrams,
     sortedExercises,
@@ -778,7 +844,8 @@ export async function buildContentIndex({ rootDir }: BuildContentIndexOptions): 
   );
 
   return {
-    schemaVersion: 8,
+    schemaVersion: 9,
+    sources: sortedSources,
     documents: sortedDocuments,
     diagrams: sortedDiagrams,
     learningPaths: sortedLearningPaths,

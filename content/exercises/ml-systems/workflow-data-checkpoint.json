@@ -1,0 +1,18 @@
+{
+  "slug": "ml-systems/workflow-data-checkpoint",
+  "title": "ML Systems Explorer Checkpoint",
+  "type": "questionnaire",
+  "documentSlug": "ml-systems/data-engineering",
+  "concept": "workflow and data engineering",
+  "difficulty": "practitioner",
+  "tags": ["workflow", "data-engineering", "monitoring"],
+  "status": "published",
+  "sourceRefs": ["harvard-vol1-ml-workflow", "harvard-vol1-data-engineering"],
+  "skillIds": ["experimental-practice", "data-engineering", "operations"],
+  "required": true,
+  "questions": [
+    { "id": "ledger", "kind": "choice", "skillIds": ["experimental-practice"], "prompt": "Which experiment record supports a valid comparison against a baseline?", "options": [{ "id": "complete", "label": "Prediction, changed variable, controlled factors, versions, metrics, result, and next action", "isCorrect": true }, { "id": "score", "label": "Only the best score copied into a slide", "isCorrect": false }], "explanation": "Comparable evidence preserves what changed and the context required to reproduce both runs." },
+    { "id": "leakage", "kind": "choice", "skillIds": ["data-engineering"], "prompt": "What is the strongest reason to avoid a random row split for repeated user events over time?", "options": [{ "id": "leak", "label": "Related or future information may leak across splits and inflate evaluation.", "isCorrect": true }, { "id": "syntax", "label": "Random splitting is invalid Python syntax.", "isCorrect": false }], "explanation": "The split must represent deployment and prevent entity or temporal leakage." },
+    { "id": "drift", "kind": "choice", "skillIds": ["operations"], "prompt": "A feature distribution changes in production. What does that signal prove by itself?", "options": [{ "id": "investigate", "label": "It proves investigation is needed, not automatically that model or mission quality fell.", "isCorrect": true }, { "id": "retrain", "label": "It proves immediate retraining is always correct.", "isCorrect": false }], "explanation": "Distribution movement needs connection to model and mission outcomes before a response is chosen." }
+  ]
+}

@@ -5,14 +5,15 @@ import type { LearningStage } from "../content/schema";
 const stage: LearningStage = {
   id: "first-connections",
   label: "First Connections",
-  proficiencyLevel: "a1",
+  level: "A1",
+  status: "published",
   summary: "Complete familiar exchanges in short concrete beginner situations.",
   unitSlugs: ["first-connections"],
-  canDos: [
-    { id: "listen", statement: "I can understand a slowly spoken familiar detail.", skill: "listening" },
-    { id: "read", statement: "I can read a short familiar beginner exchange.", skill: "reading" },
-    { id: "write", statement: "I can write a very short familiar personal message.", skill: "writing" },
-    { id: "interact", statement: "I can complete a short rehearsed everyday exchange.", skill: "interaction" },
+  outcomes: [
+    { id: "listen", statement: "I can understand a slowly spoken familiar detail.", skillId: "a1-listening" },
+    { id: "read", statement: "I can read a short familiar beginner exchange.", skillId: "a1-reading" },
+    { id: "write", statement: "I can write a very short familiar personal message.", skillId: "a1-writing" },
+    { id: "interact", statement: "I can complete a short rehearsed everyday exchange.", skillId: "a1-interaction" },
   ],
   requiredNodeSlugs: ["languages/lesson", "languages/checkpoint"],
   checkpointExerciseSlug: "languages/checkpoint",
@@ -28,15 +29,16 @@ describe("learning stage progress", () => {
 
   it("awards a stamp only after requirements, checkpoint, and strand floor", () => {
     const completed = new Set(stage.requiredNodeSlugs);
-    expect(isStageStampEligible(stage, { completedNodeSlugs: completed, checkpointScore: 0.85, skillScores: { listening: 0.7, reading: 0.8, writing: 0.6, interaction: 0.9 } })).toBe(true);
-    expect(isStageStampEligible(stage, { completedNodeSlugs: completed, checkpointScore: 0.85, skillScores: { listening: 0.5, reading: 0.8, writing: 0.9, interaction: 0.9 } })).toBe(false);
+    expect(isStageStampEligible(stage, { completedNodeSlugs: completed, skillScores: { "a1-listening": 0.7, "a1-reading": 0.8, "a1-writing": 0.6, "a1-interaction": 0.9 } })).toBe(true);
+    expect(isStageStampEligible(stage, { completedNodeSlugs: completed, skillScores: { "a1-listening": 0.5, "a1-reading": 0.8, "a1-writing": 0.9, "a1-interaction": 0.9 } })).toBe(false);
   });
 
   it("handles empty stages and every early eligibility boundary", () => {
     expect(calculateStageProgress({ ...stage, requiredNodeSlugs: [] }, new Set())).toEqual({ completed: 0, total: 0, percentage: 0 });
-    expect(isStageStampEligible(stage, { completedNodeSlugs: new Set(), checkpointScore: 1 })).toBe(false);
-    expect(isStageStampEligible(stage, { completedNodeSlugs: new Set(stage.requiredNodeSlugs), checkpointScore: 0.79 })).toBe(false);
-    expect(isStageStampEligible({ ...stage, minimumSkillScore: undefined }, { completedNodeSlugs: new Set(stage.requiredNodeSlugs), checkpointScore: 0.8 })).toBe(true);
-    expect(isStageStampEligible(stage, { completedNodeSlugs: new Set(stage.requiredNodeSlugs), checkpointScore: 1 })).toBe(false);
+    expect(isStageStampEligible(stage, { completedNodeSlugs: new Set(), skillScores: { "a1-listening": 1 } })).toBe(false);
+    expect(isStageStampEligible(stage, { completedNodeSlugs: new Set(stage.requiredNodeSlugs), skillScores: { "a1-listening": 0.59, "a1-reading": 0.79, "a1-writing": 0.79, "a1-interaction": 0.79 } })).toBe(false);
+    expect(isStageStampEligible({ ...stage, minimumSkillScore: undefined }, { completedNodeSlugs: new Set(stage.requiredNodeSlugs), skillScores: { "a1-listening": 0.8, "a1-reading": 0.8, "a1-writing": 0.8, "a1-interaction": 0.8 } })).toBe(true);
+    expect(isStageStampEligible(stage, { completedNodeSlugs: new Set(stage.requiredNodeSlugs), skillScores: { "a1-listening": 1 } })).toBe(false);
+    expect(isStageStampEligible({ ...stage, status: "planned" }, { completedNodeSlugs: new Set(stage.requiredNodeSlugs), skillScores: { "a1-listening": 1, "a1-reading": 1, "a1-writing": 1, "a1-interaction": 1 } })).toBe(false);
   });
 });

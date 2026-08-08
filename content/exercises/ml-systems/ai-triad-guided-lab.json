@@ -1,0 +1,25 @@
+{
+  "slug": "ml-systems/ai-triad-guided-lab",
+  "title": "D–A–M Bottleneck Diagnostic",
+  "type": "guided-lab",
+  "documentSlug": "ml-systems/ai-engineering-introduction",
+  "concept": "data algorithm machine diagnosis",
+  "difficulty": "foundation",
+  "tags": ["dam", "diagnosis", "tradeoffs"],
+  "status": "published",
+  "sourceRefs": ["harvard-vol1-introduction", "harvard-labs"],
+  "skillIds": ["systems-thinking", "quantitative-reasoning"],
+  "required": true,
+  "briefing": "Use the official chapter and Lab 01 collection to diagnose a degraded model before spending on a solution.",
+  "objectives": ["Classify evidence along the data, algorithm, and machine axes.", "Reject a solution that does not target the observed bottleneck.", "Connect a technical metric to the mission outcome."],
+  "prediction": { "prompt": "Accuracy drops while code and serving latency remain stable; training data is eighteen months old. Which first action is best?", "options": [{ "id": "gpu", "label": "Buy more GPUs" }, { "id": "data", "label": "Audit data freshness and population shift" }, { "id": "compress", "label": "Quantize the model" }] },
+  "steps": [
+    { "id": "inventory", "title": "Inventory evidence", "instructions": "List the observed model, data, machine, and mission signals without adding facts that the scenario did not provide." },
+    { "id": "hypotheses", "title": "Rank hypotheses", "instructions": "Propose one hypothesis per D–A–M axis and name the cheapest measurement that could reject each hypothesis." },
+    { "id": "decision", "title": "Make the decision", "instructions": "Choose the first experiment, estimate its cost and information value, and define the result that would change your plan." }
+  ],
+  "evidenceChecklist": [{ "id": "observations", "label": "Observations are separated from hypotheses" }, { "id": "all-axes", "label": "All three D–A–M axes are considered" }, { "id": "decision-rule", "label": "The next action has an explicit decision rule" }],
+  "reflectionPrompts": ["Why is adding compute attractive even when it does not target the bottleneck?", "What production signal would detect this failure sooner?"],
+  "extensionChallenge": "Repeat the diagnosis for a system whose accuracy is stable but p99 latency violates its service objective on a mobile target.",
+  "estimatedMinutes": 50
+}

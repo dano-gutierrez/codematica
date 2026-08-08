@@ -1,5 +1,6 @@
 import {
   buildPassiveFlashcardWindow,
+  calculateQuestionnaireSkillScores,
   checkWritingAttempt,
   checkQuestionAnswer,
   createQuestionnaireAttempt,
@@ -8,12 +9,14 @@ import {
   getHomeDiscoverySections,
   getLanguageCharacterBySlug,
   getPathNodeRoute,
+  getSourcesByRefs,
   normalizeWritingStroke,
   searchJapanese,
   searchDiscovery,
   createDiscoveryItems,
   searchContent,
   type ContentIndex,
+  type ContentSource,
   type Difficulty,
   type DiscoveryResult,
   type DiscoverySectionId,
@@ -299,6 +302,24 @@ export function LearningPathDetailScreen({
         <Button label="Flashcard feed" onPress={() => adapters.navigation.navigate(flashcardFeed.route)} testID="mobile-path-flashcards" />
       ) : null}
 
+      {learningPath.progression ? (
+        <View style={styles.card} testID="mobile-path-progression-roadmap">
+          <Text style={styles.cardEyebrow}>Career milestones · published stages earn stamps</Text>
+          <Text style={styles.cardTitle}>{learningPath.progression.roadmapLabel}</Text>
+          {learningPath.progression.reviewRoute ? <Button label="Review skills" variant="ghost" onPress={() => adapters.navigation.navigate(learningPath.progression!.reviewRoute!)} /> : null}
+          {learningPath.progression.stages.map((stage, stageIndex) => (
+            <View key={stage.id} style={styles.subPanel}>
+              <View style={styles.pillRow}><Pill label={`Stage ${stageIndex + 1}`} tone="amber" /><Pill label={stage.level} tone="blue" /><Pill label={stage.status} tone={stage.status === "published" ? "green" : "amber"} /></View>
+              <Text style={styles.cardTitle}>{stage.label}</Text>
+              <Text style={styles.mutedText}>{stage.summary}</Text>
+              <Text style={styles.mutedText}>About {stage.estimatedMinutes} minutes{stage.passThreshold === undefined ? " · companion planned" : ` · checkpoint ${Math.round(stage.passThreshold * 100)}%`}</Text>
+              {stage.outcomes.map((outcome) => <Text key={outcome.id} style={styles.bodyText}>• {outcome.statement}</Text>)}
+              {stage.checkpointExerciseSlug ? <Button label="Open checkpoint" variant="secondary" onPress={() => adapters.navigation.navigate(`/practice/${stage.checkpointExerciseSlug}?path=${learningPath.slug}`)} /> : null}
+            </View>
+          ))}
+        </View>
+      ) : null}
+
       <View style={styles.stack} testID="mobile-path-units">
         {learningPath.units.map((unit, unitIndex) => (
           <View key={unit.slug} style={styles.card}>
@@ -357,7 +378,7 @@ function PathNodes({
         return (
           <Pressable
             key={`${node.kind}-${node.slug}`}
-            onPress={() => adapters.navigation.navigate(href)}
+            onPress={() => href.startsWith("http") ? adapters.navigation.openExternalUrl?.(href) : adapters.navigation.navigate(href)}
             style={styles.nodeRow}
             testID={`mobile-path-node-${node.kind}-${node.slug.replaceAll("/", "-")}`}
           >
@@ -565,7 +586,7 @@ export function JapaneseReviewScreen({
       </View>
       {selected ? (
         <View style={styles.card} testID="mobile-japanese-review-card">
-          <Text style={styles.cardEyebrow}>{selected.skill} practice</Text>
+          <Text style={styles.cardEyebrow}>{selected.category} practice</Text>
           <Text style={styles.cardTitle}>{selected.label}</Text>
           <Text style={styles.bodyText}>{selected.description}</Text>
           <Text style={styles.mutedText}>Recall one example before rating how independently you remembered it.</Text>
@@ -801,6 +822,7 @@ export function DocumentReaderScreen({
       </View>
       <Text style={styles.heroTitle}>{document.title}</Text>
       <Text style={styles.heroCopy}>{document.summary}</Text>
+      <SourceReferencePanel sources={getSourcesByRefs(document.sourceRefs)} adapters={adapters} />
       <TagRow tags={document.tags} />
       <MarkdownReader markdown={document.markdown} adapters={adapters} />
       {referencedDiagrams.length > 0 ? (
@@ -878,18 +900,79 @@ export function PracticeScreen({
             <Pill label={exercise.concept} tone="green" />
           </View>
           <Text style={styles.heroTitle}>{exercise.title}</Text>
+          <SourceReferencePanel sources={getSourcesByRefs(exercise.sourceRefs)} adapters={adapters} />
           {exercise.type === "flashcard" ? (
             <FlashcardPractice exercise={exercise} nextHref={nextHref} adapters={adapters} onProgress={onProgress} />
           ) : exercise.type === "cloze" ? (
             <ClozePractice exercise={exercise} nextHref={nextHref} adapters={adapters} onProgress={onProgress} />
           ) : exercise.type === "writing" ? (
             <WritingPractice exercise={exercise} nextHref={nextHref} adapters={adapters} onProgress={onProgress} />
+          ) : exercise.type === "guided-lab" ? (
+            <GuidedLabPractice exercise={exercise} nextHref={nextHref} adapters={adapters} onProgress={onProgress} />
           ) : (
             <QuestionnairePractice exercise={exercise} nextHref={nextHref} adapters={adapters} onProgress={onProgress} />
           )}
         </View>
       </AppScreen>
     </KeyboardAvoidingView>
+  );
+}
+
+function SourceReferencePanel({ sources, adapters }: { sources: ContentSource[] } & ScreenProps) {
+  if (sources.length === 0) return null;
+  return (
+    <View style={styles.subPanel} testID="mobile-source-references">
+      <Text style={styles.cardEyebrow}>Primary sources</Text>
+      <Text style={styles.mutedText}>These upstream pages are authoritative. Codematica is the study and progress companion.</Text>
+      {sources.map((source) => <Button key={source.id} label={`${source.title} · ${source.provider}`} variant="ghost" onPress={() => adapters.navigation.openExternalUrl?.(source.url)} />)}
+    </View>
+  );
+}
+
+function GuidedLabPractice({
+  exercise,
+  nextHref,
+  adapters,
+  onProgress,
+}: {
+  exercise: Extract<LearningExercise, { type: "guided-lab" }>;
+  nextHref?: string;
+  onProgress: (status: ProgressStatus, position?: Record<string, unknown>) => void | Promise<void>;
+} & ScreenProps) {
+  const [predictionId, setPredictionId] = useState<string>();
+  const [evidenceIds, setEvidenceIds] = useState<string[]>([]);
+  const complete = Boolean(predictionId) && evidenceIds.length === exercise.evidenceChecklist.length;
+
+  return (
+    <View style={styles.stack} testID="mobile-guided-lab-session">
+      <Text style={styles.cardEyebrow}>Briefing · about {exercise.estimatedMinutes} minutes</Text>
+      <Text style={styles.bodyText}>{exercise.briefing}</Text>
+      {exercise.objectives.map((objective) => <Text key={objective} style={styles.mutedText}>• {objective}</Text>)}
+      <View style={styles.subPanel}>
+        <Text style={styles.cardTitle}>Commit your prediction</Text>
+        <Text style={styles.bodyText}>{exercise.prediction.prompt}</Text>
+        {exercise.prediction.options.map((option) => (
+          <Pressable key={option.id} onPress={() => { setPredictionId(option.id); void onProgress("started", { predictionCommitted: true }); }} style={[styles.choice, predictionId === option.id && styles.choiceSelected]}>
+            <Text style={styles.choiceText}>{option.label}</Text>
+          </Pressable>
+        ))}
+      </View>
+      {exercise.steps.map((step, index) => <View key={step.id} style={styles.subPanel}><Text style={styles.cardEyebrow}>Step {index + 1}</Text><Text style={styles.cardTitle}>{step.title}</Text><Text style={styles.mutedText}>{step.instructions}</Text></View>)}
+      <View style={styles.subPanel}>
+        <Text style={styles.cardTitle}>Evidence checklist</Text>
+        {exercise.evidenceChecklist.map((item) => {
+          const checked = evidenceIds.includes(item.id);
+          return <Pressable key={item.id} onPress={() => setEvidenceIds((current) => checked ? current.filter((id) => id !== item.id) : [...current, item.id])} style={[styles.choice, checked && styles.choiceSelected]}><Text style={styles.choiceText}>{checked ? "✓ " : "○ "}{item.label}</Text></Pressable>;
+        })}
+      </View>
+      <View style={styles.subPanel}>
+        <Text style={styles.cardTitle}>Reflect and extend</Text>
+        {exercise.reflectionPrompts.map((prompt) => <View key={prompt}><Text style={styles.bodyText}>{prompt}</Text><TextInput multiline placeholder="Private working note (not saved)" style={styles.input} /></View>)}
+        <Text style={styles.mutedText}>Extension: {exercise.extensionChallenge}</Text>
+      </View>
+      <Button label="Complete lab" disabled={!complete} onPress={() => void onProgress("completed", { predictionCommitted: true, evidenceCount: evidenceIds.length, evidenceTotal: exercise.evidenceChecklist.length })} testID="mobile-guided-lab-complete" />
+      {complete && nextHref ? <Button label="Next node" variant="secondary" onPress={() => adapters.navigation.navigate(nextHref)} /> : null}
+    </View>
   );
 }
 
@@ -1162,6 +1245,7 @@ function QuestionnairePractice({
   const [answer, setAnswer] = useState<QuestionnaireAnswer | undefined>();
   const [result, setResult] = useState<QuestionnaireAnswerResult | undefined>();
   const [complete, setComplete] = useState(false);
+  const [graded, setGraded] = useState<Record<string, boolean>>({});
   const question = attempt[currentIndex];
 
   function resetAnswer(nextAnswer?: QuestionnaireAnswer) {
@@ -1171,12 +1255,15 @@ function QuestionnairePractice({
 
   function checkAnswer() {
     const effectiveAnswer = getNativeEffectiveAnswer(question, answer);
-    setResult(checkQuestionAnswer(question, effectiveAnswer));
+    const checked = checkQuestionAnswer(question, effectiveAnswer);
+    setResult(checked);
+    setGraded((current) => ({ ...current, [question.id]: checked.isCorrect }));
   }
 
   function advance() {
     if (currentIndex + 1 >= attempt.length) {
-      void onProgress("completed", { questionIndex: currentIndex, totalQuestions: attempt.length });
+      const scores = calculateQuestionnaireSkillScores(attempt.map((attemptQuestion) => ({ question: attemptQuestion, isCorrect: graded[attemptQuestion.id] ?? false })));
+      void onProgress("completed", { questionIndex: currentIndex, totalQuestions: attempt.length, score: scores.overall, skillScores: scores.skills });
       setComplete(true);
       return;
     }
@@ -1194,6 +1281,7 @@ function QuestionnairePractice({
     setAnswer(undefined);
     setResult(undefined);
     setComplete(false);
+    setGraded({});
   }
 
   if (complete) {
@@ -1202,6 +1290,7 @@ function QuestionnairePractice({
         <View style={[styles.feedback, styles.feedbackCorrect]}>
           <Text style={styles.feedbackTitle}>Refresh complete</Text>
           <Text style={styles.mutedText}>You reached the end of this practice session.</Text>
+          <Text style={styles.mutedText}>Score {Math.round(calculateQuestionnaireSkillScores(attempt.map((attemptQuestion) => ({ question: attemptQuestion, isCorrect: graded[attemptQuestion.id] ?? false }))).overall * 100)}%</Text>
         </View>
         <Button label="Restart" variant="ghost" onPress={restart} />
         {nextHref ? <Button label="Next node" variant="secondary" onPress={() => adapters.navigation.navigate(nextHref)} /> : null}
@@ -1884,6 +1973,18 @@ function pointsToPath(points: LanguageStrokePoint[]) {
 }
 
 function getNodeDisplay(index: ContentIndex, node: LearningPathNode) {
+  if (node.kind === "source") {
+    const source = index.sources.find((item) => item.id === node.sourceRef);
+    const document = node.companionKind === "document" ? index.documents.find((item) => item.slug === node.slug) : undefined;
+    const exercise = node.companionKind === "exercise" ? index.exercises.find((item) => item.slug === node.slug) : undefined;
+    return {
+      title: document?.title ?? exercise?.title ?? source?.title ?? node.slug,
+      summary: document?.summary ?? (exercise ? `${exercise.concept} practice` : `Open the authoritative ${source?.provider ?? "upstream"} source.`),
+      kindLabel: document || exercise ? `Source + ${node.companionKind}` : `Official source · ${node.activity}`,
+      difficulty: document?.difficulty ?? exercise?.difficulty,
+    };
+  }
+
   if (node.kind === "document") {
     const document = index.documents.find((item) => item.slug === node.slug);
 
@@ -1928,6 +2029,8 @@ function exerciseKindLabel(exercise: LearningExercise) {
   if (exercise.type === "writing") {
     return "Writing";
   }
+
+  if (exercise.type === "guided-lab") return "Guided lab";
 
   return "Questionnaire";
 }

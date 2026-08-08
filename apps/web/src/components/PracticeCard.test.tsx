@@ -135,4 +135,19 @@ describe("PracticeCard", () => {
     expect(screen.getByRole("button", { name: /free/i })).toBeVisible();
     expect(screen.getByText(/Hiragana Vowel Writing/i)).toBeVisible();
   });
+
+  it("requires a guided-lab prediction and evidence before coarse completion", () => {
+    const exercise = getExerciseBySlug("ml-systems/ai-triad-guided-lab");
+    const onProgressEvent = vi.fn();
+    expect(exercise?.type).toBe("guided-lab");
+    render(<PracticeCard exercise={exercise!} onProgressEvent={onProgressEvent} />);
+
+    const complete = screen.getByTestId("guided-lab-complete");
+    expect(complete).toBeDisabled();
+    fireEvent.click(screen.getByLabelText("Audit data freshness and population shift"));
+    for (const item of exercise?.type === "guided-lab" ? exercise.evidenceChecklist : []) fireEvent.click(screen.getByLabelText(item.label));
+    expect(complete).toBeEnabled();
+    fireEvent.click(complete);
+    expect(onProgressEvent).toHaveBeenCalledWith("completed", { predictionCommitted: true, evidenceCount: 3, evidenceTotal: 3 });
+  });
 });
