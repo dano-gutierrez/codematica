@@ -75,6 +75,18 @@ describe("language writing checks", () => {
     expect(getAssistedStrokeCompletion(ichiStroke, farStroke).shouldComplete).toBe(false);
   });
 
+  it("accepts an imperfect assisted trace that follows the stroke direction", () => {
+    const beginnerTrace: WritingStroke = {
+      points: [
+        [24, 64],
+        [50, 65],
+        [77, 62],
+      ],
+    };
+
+    expect(getAssistedStrokeCompletion(ichiStroke, beginnerTrace).shouldComplete).toBe(true);
+  });
+
   it("identifies the next assisted stroke without advancing after a miss", () => {
     const miss = getAssistedStrokeCompletion(hitoStrokes[0]!, { points: [[10, 10], [90, 10]] });
     const retry = getAssistedStrokeCompletion(hitoStrokes[0]!, { points: [[48, 20], [34, 82]] });

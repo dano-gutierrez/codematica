@@ -28,6 +28,19 @@ describe("JapaneseWritingPractice", () => {
     expect(screen.getByTestId("writing-check")).toBeDisabled();
   });
 
+  it("accepts a rough assisted trace and includes the pointer release position", () => {
+    const character = getLanguageCharacterBySlug("japanese/kanji/one");
+    render(<JapaneseWritingPractice characters={[character!]} prompt="Write one." />);
+
+    const pad = screen.getByTestId("writing-pad");
+    fireEvent.pointerDown(pad, { pointerId: 1, clientX: 24, clientY: 64 });
+    fireEvent.pointerMove(pad, { pointerId: 1, clientX: 50, clientY: 65 });
+    fireEvent.pointerUp(pad, { pointerId: 1, clientX: 77, clientY: 62 });
+
+    expect(screen.queryByTestId("writing-assisted-feedback")).not.toBeInTheDocument();
+    expect(screen.getByTestId("writing-check")).toBeEnabled();
+  });
+
   it("shows learner romaji and distinct IME input", () => {
     const character = getLanguageCharacterBySlug("japanese/hiragana/wo");
     render(<JapaneseWritingPractice characters={[character!]} prompt="Write the particle." />);

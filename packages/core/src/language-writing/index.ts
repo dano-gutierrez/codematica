@@ -20,7 +20,7 @@ export type WritingCheckResult = {
 };
 
 const sampleCount = 16;
-const assistedCompletionThreshold = 0.76;
+const assistedCompletionThreshold = 0.6;
 
 export function normalizeWritingStroke(stroke: WritingStroke): WritingStroke {
   return {

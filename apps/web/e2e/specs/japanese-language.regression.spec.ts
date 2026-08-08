@@ -82,3 +82,33 @@ test("@regression mobile user searches Japanese and opens a writing drill", asyn
   await expect(page.getByRole("status")).toContainText("Good saved");
   await expect(page.getByText(/Best 85% · box 1/)).toBeVisible();
 });
+
+test("@regression assisted writing accepts a rough trace that follows the guide", async ({ page }) => {
+  await page.goto("/languages/japanese/characters/kanji/one");
+
+  const pad = page.getByTestId("writing-pad");
+  await expect(pad).toBeVisible();
+  await pad.scrollIntoViewIfNeeded();
+  const box = await pad.boundingBox();
+  expect(box).not.toBeNull();
+
+  const session = await page.context().newCDPSession(page);
+  await session.send("Input.dispatchTouchEvent", {
+    type: "touchStart",
+    touchPoints: [{ x: box!.x + box!.width * 0.24, y: box!.y + box!.height * 0.64 }],
+  });
+  await session.send("Input.dispatchTouchEvent", {
+    type: "touchMove",
+    touchPoints: [{ x: box!.x + box!.width * 0.5, y: box!.y + box!.height * 0.65 }],
+  });
+  await session.send("Input.dispatchTouchEvent", {
+    type: "touchMove",
+    touchPoints: [{ x: box!.x + box!.width * 0.77, y: box!.y + box!.height * 0.62 }],
+  });
+  await session.send("Input.dispatchTouchEvent", { type: "touchEnd", touchPoints: [] });
+
+  await expect(page.getByTestId("writing-assisted-feedback")).toHaveCount(0);
+  await expect(page.getByTestId("writing-check")).toBeEnabled();
+  await page.getByTestId("writing-check").click();
+  await expect(page.getByTestId("writing-feedback")).toContainText("Correct");
+});

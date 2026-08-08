@@ -66,7 +66,7 @@ export function JapaneseWritingPractice({
       return;
     }
 
-    const normalized = normalizeWritingStroke(currentStroke);
+    const normalized = normalizeWritingStroke({ points: [...currentStroke.points, svgPoint(event)] });
     const expected = character.strokes[strokes.length];
 
     if (mode === "assisted" && expected) {
