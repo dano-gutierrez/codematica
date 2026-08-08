@@ -2,6 +2,13 @@
 
 This changelog records durable, user-visible and architectural changes. Feature documents remain the authoritative contracts; this file explains when a group of related changes landed and points readers to the owning documentation.
 
+## 2026-08-08 — CI Compatibility Maintenance
+
+- Aligned Expo SDK 57, Expo Router, and their pinned Expo patch dependencies with the versions required by Expo Doctor.
+- Made the protected-content pgTAP assertion portable across Supabase images that enforce the same no-read contract through table privileges or default-deny RLS.
+
+Owning contract: `docs/features/automated-testing-and-release-regression.md`.
+
 ## 2026-08-07 — Harvard ML Systems Career Path
 
 - Added a source-linked ML Systems Engineer path covering both Harvard CS249r books, all 34 labs, 20 TinyTorch modules, MLSys·im, optional hardware kits, and StaffML.

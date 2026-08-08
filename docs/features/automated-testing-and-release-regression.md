@@ -140,7 +140,7 @@ flowchart LR
 
 - Unit: pure schemas, parsing/indexing, route mapping, search, practice, progress, interview boundaries, environment detection, adapters, and content-audio/sync helpers.
 - Integration: generated index relationships, renderers/components, API/Auth handlers, native screen matrix, and mocked Supabase boundaries.
-- Database: clean migration replay plus transactional schema, index, constraint, trigger, RLS, isolation, published-search, ranking, and limit assertions.
+- Database: clean migration replay plus transactional schema, index, constraint, trigger, RLS, isolation, published-search, ranking, and limit assertions. Protected content assertions accept either an explicit table-privilege denial or an RLS-filtered empty result, since Supabase database images can enforce the same no-read contract at different layers.
 - E2E: representative documents, diagrams, catalogs, practice types, interviews, Japanese, Auth-disabled behavior, local progress, recovery/404, responsive layout, and accessibility.
 - Regression classification: fast critical paths are `@smoke`; feature and edge coverage is `@regression`; installed-app critical paths are Maestro flows.
 - Coverage impact: all production logic in the listed scopes is instrumented; exclusions are annotated and thresholds are non-decreasing.
@@ -159,6 +159,7 @@ Must not regress: local anonymous operation, Auth-disabled recovery, stale progr
 - `2026-08-05`: Use pgTAP against disposable local Supabase instead of hosted integration tests.
 - `2026-08-05`: Run the complete Playwright suite on mobile Chromium and smoke on desktop Chromium/mobile WebKit.
 - `2026-08-05`: Pin Maestro 2.8.0 and require Android plus iOS for release candidates without automatic submission.
+- `2026-08-08`: Keep Expo SDK 57 patch packages aligned with Expo Doctor and make the protected-content pgTAP assertion portable across Supabase images that deny reads through privileges or default-deny RLS.
 
 ## Documentation Updates
 

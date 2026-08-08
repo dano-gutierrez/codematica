@@ -7,6 +7,21 @@ values
   ('00000000-0000-0000-0000-000000000011', '00000000-0000-0000-0000-000000000000', 'authenticated', 'authenticated', 'one@example.com', '', now(), now()),
   ('00000000-0000-0000-0000-000000000022', '00000000-0000-0000-0000-000000000000', 'authenticated', 'authenticated', 'two@example.com', '', now(), now());
 
+create function pg_temp.authenticated_kb_documents_are_hidden()
+returns boolean
+language plpgsql
+security invoker
+as $$
+declare
+  visible_document_count integer;
+begin
+  select count(*)::integer into visible_document_count from public.kb_documents;
+  return visible_document_count = 0;
+exception
+  when insufficient_privilege then return true;
+end;
+$$;
+
 set local role authenticated;
 select set_config('request.jwt.claims', '{"sub":"00000000-0000-0000-0000-000000000011","role":"authenticated"}', true);
 
@@ -28,7 +43,7 @@ select throws_ok(
   '42501', null, 'a user cannot create another user skill row'
 );
 select is((select count(*)::integer from public.user_skill_progress), 1, 'a user sees only their skill progress');
-select is((select count(*)::integer from public.kb_documents), 0, 'authenticated clients cannot read unsynchronized protected content directly');
+select ok(pg_temp.authenticated_kb_documents_are_hidden(), 'authenticated clients cannot read unsynchronized protected content directly');
 
 set local role anon;
 select throws_ok(
