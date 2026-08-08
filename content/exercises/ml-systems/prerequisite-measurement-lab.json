@@ -1,0 +1,36 @@
+{
+  "slug": "ml-systems/prerequisite-measurement-lab",
+  "title": "Array Memory And Measurement Lab",
+  "type": "guided-lab",
+  "documentSlug": "ml-systems/python-numpy-foundations",
+  "concept": "scientific computing evidence",
+  "difficulty": "foundation",
+  "tags": ["numpy", "memory", "benchmarking"],
+  "status": "published",
+  "sourceRefs": ["harvard-vol1"],
+  "skillIds": ["scientific-computing", "quantitative-reasoning"],
+  "required": true,
+  "briefing": "Predict array memory and runtime before measuring them, then preserve enough evidence for another learner to reproduce the result.",
+  "objectives": ["Calculate tensor payload from shape and dtype before allocation.", "Compare a reference loop with vectorized NumPy while preserving correctness.", "Separate a measured observation from an explanation that still needs evidence."],
+  "prediction": {
+    "prompt": "What happens to the payload size when a fixed-shape array changes from float32 to float64?",
+    "options": [
+      { "id": "same", "label": "It stays the same" },
+      { "id": "double", "label": "It approximately doubles" },
+      { "id": "quadruple", "label": "It approximately quadruples" }
+    ]
+  },
+  "steps": [
+    { "id": "predict", "title": "Write the budget", "instructions": "Choose two shapes and calculate element count and payload bytes for float32 and float64 before running any code." },
+    { "id": "verify", "title": "Verify payload", "instructions": "Create the arrays with NumPy, compare nbytes with each prediction, and explain any mismatch without changing the original prediction." },
+    { "id": "benchmark", "title": "Benchmark correctly", "instructions": "Test a loop and a vectorized equivalent for correctness, warm both paths, run repeated timings, and report the median with environment details." }
+  ],
+  "evidenceChecklist": [
+    { "id": "prediction-recorded", "label": "Original memory prediction is preserved" },
+    { "id": "correctness-tested", "label": "Both implementations produce equivalent results" },
+    { "id": "environment-recorded", "label": "Python, NumPy, input, and machine details are recorded" }
+  ],
+  "reflectionPrompts": ["Which result was observation, and which part of your explanation remains a hypothesis?", "What temporary allocations might the concise NumPy expression hide?"],
+  "extensionChallenge": "Change the input size until memory pressure or cache behavior changes the timing trend, then state the boundary you observed.",
+  "estimatedMinutes": 45
+}

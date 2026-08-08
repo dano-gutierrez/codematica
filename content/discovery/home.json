@@ -1,12 +1,14 @@
 {
   "sections": {
     "paths": [
+      { "kind": "path", "slug": "ml-systems-engineer" },
       { "kind": "path", "slug": "system-design-fundamentals" },
       { "kind": "path", "slug": "ai-engineering-langfuse-langchain" },
       { "kind": "path", "slug": "python-for-ts-js-engineers" },
       { "kind": "path", "slug": "japanese-foundations" }
     ],
     "lessons": [
+      { "kind": "document", "slug": "ml-systems/ai-engineering-introduction" },
       { "kind": "document", "slug": "system-design/cache-invalidation" },
       { "kind": "document", "slug": "programming/bfs-dfs-fundamentals" },
       { "kind": "document", "slug": "ai-engineering/langfuse-tracing-fundamentals" },
@@ -19,6 +21,7 @@
       { "kind": "interview-question", "slug": "uber/meeting-rooms-ii" }
     ],
     "practice": [
+      { "kind": "exercise", "slug": "ml-systems/ai-triad-guided-lab" },
       { "kind": "exercise", "slug": "system-design/cache-product-contract" },
       { "kind": "exercise", "slug": "programming/bfs-dfs-fundamentals-questionnaire" },
       { "kind": "exercise", "slug": "languages/japanese-hiragana-vowels-writing" },

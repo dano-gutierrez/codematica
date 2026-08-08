@@ -1,0 +1,18 @@
+{
+  "slug": "ml-systems/foundations-checkpoint",
+  "title": "ML Foundations Analyst Checkpoint",
+  "type": "questionnaire",
+  "documentSlug": "ml-systems/ml-systems-foundations",
+  "concept": "ML system framing",
+  "difficulty": "foundation",
+  "tags": ["requirements", "dam", "metrics"],
+  "status": "published",
+  "sourceRefs": ["harvard-vol1-introduction", "harvard-vol1-ml-systems"],
+  "skillIds": ["systems-thinking", "requirements-engineering", "quantitative-reasoning"],
+  "required": true,
+  "questions": [
+    { "id": "silent", "kind": "choice", "skillIds": ["systems-thinking"], "prompt": "Why can an ML system degrade while its software still returns successful responses?", "options": [{ "id": "data", "label": "Learned behavior can worsen when the production data distribution changes.", "isCorrect": true }, { "id": "impossible", "label": "Successful responses prove model behavior is unchanged.", "isCorrect": false }], "explanation": "Statistical behavior can degrade silently even when the serving path executes correctly." },
+    { "id": "operational", "kind": "choice", "skillIds": ["requirements-engineering"], "prompt": "Which latency requirement is operationally testable?", "options": [{ "id": "fast", "label": "The model should be fast.", "isCorrect": false }, { "id": "p95", "label": "p95 is under 120 ms at 50 requests per second on the target hardware.", "isCorrect": true }], "explanation": "A testable requirement names the metric, percentile, threshold, load, and environment." },
+    { "id": "first-test", "kind": "choice", "skillIds": ["quantitative-reasoning"], "prompt": "What is usually the best first experiment for a risky system assumption?", "options": [{ "id": "cheap", "label": "The cheapest valid experiment that can change the decision.", "isCorrect": true }, { "id": "largest", "label": "The largest training run available.", "isCorrect": false }], "explanation": "Early experiments should maximize decision-relevant information per unit of time and cost." }
+  ]
+}

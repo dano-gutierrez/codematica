@@ -1,0 +1,18 @@
+{
+  "slug": "ml-systems/prerequisites-checkpoint",
+  "title": "Scientific Computing Apprentice Checkpoint",
+  "type": "questionnaire",
+  "documentSlug": "ml-systems/engineering-measurement-foundations",
+  "concept": "ML systems prerequisites",
+  "difficulty": "foundation",
+  "tags": ["python", "mathematics", "measurement"],
+  "status": "published",
+  "sourceRefs": ["harvard-vol1"],
+  "skillIds": ["scientific-computing", "quantitative-reasoning", "experimental-practice"],
+  "required": true,
+  "questions": [
+    { "id": "payload", "kind": "choice", "skillIds": ["quantitative-reasoning"], "prompt": "A tensor contains one million float32 values. What is the approximate payload before overhead?", "options": [{ "id": "four-kb", "label": "4 KB", "isCorrect": false }, { "id": "four-mb", "label": "4 MB", "isCorrect": true }, { "id": "four-gb", "label": "4 GB", "isCorrect": false }], "explanation": "One million values times four bytes is four million bytes, approximately 4 MB." },
+    { "id": "shape", "kind": "choice", "skillIds": ["scientific-computing"], "prompt": "Why should shape assertions accompany value tests in numerical code?", "options": [{ "id": "broadcast", "label": "Broadcasting can produce valid but unintended outputs.", "isCorrect": true }, { "id": "syntax", "label": "Python requires them for valid syntax.", "isCorrect": false }, { "id": "freeze", "label": "They make arrays immutable.", "isCorrect": false }], "explanation": "Shape assertions expose unintended broadcasting and axis mistakes that may still compute values." },
+    { "id": "evidence", "kind": "choice", "skillIds": ["experimental-practice"], "prompt": "Which benchmark report is the strongest evidence?", "options": [{ "id": "single", "label": "One fast timing with no environment details", "isCorrect": false }, { "id": "repeat", "label": "Repeated trials, representative input, correctness check, statistic, and environment", "isCorrect": true }], "explanation": "Reproducible benchmark evidence includes correctness, inputs, method, repeated trials, and environment." }
+  ]
+}

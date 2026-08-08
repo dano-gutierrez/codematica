@@ -27,6 +27,26 @@ export type QuestionnaireAnswerResult = {
   correctAnswer: string;
 };
 
+export function calculateQuestionnaireSkillScores(results: readonly { question: QuestionnaireQuestion; isCorrect: boolean }[]) {
+  const skillTotals = new Map<string, { correct: number; total: number }>();
+  let correct = 0;
+
+  for (const result of results) {
+    if (result.isCorrect) correct += 1;
+    for (const skillId of result.question.skillIds ?? []) {
+      const current = skillTotals.get(skillId) ?? { correct: 0, total: 0 };
+      current.total += 1;
+      if (result.isCorrect) current.correct += 1;
+      skillTotals.set(skillId, current);
+    }
+  }
+
+  return {
+    overall: results.length ? correct / results.length : 0,
+    skills: Object.fromEntries([...skillTotals].map(([skillId, score]) => [skillId, score.correct / score.total])),
+  };
+}
+
 type RandomFn = () => number;
 
 export function shuffleItems<T>(items: readonly T[], random: RandomFn = Math.random) {

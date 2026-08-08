@@ -4,7 +4,8 @@ import { Suspense } from "react";
 import { BackButton } from "@/components/BackButton";
 import { PathScopedPracticeCard } from "@/components/PathScopedPracticeCard";
 import { PracticeCard } from "@/components/PracticeCard";
-import { getContentIndex, getExerciseBySlug, getNextPathNodeRoutesByPath } from "@/lib/content";
+import { SourceReferences } from "@/components/SourceReferences";
+import { getContentIndex, getExerciseBySlug, getNextPathNodeRoutesByPath, getSourcesByRefs } from "@/lib/content";
 
 type PracticePageProps = {
   params: Promise<{
@@ -24,7 +25,9 @@ export async function generateMetadata({ params }: PracticePageProps): Promise<M
   const description =
     exercise?.type === "questionnaire"
       ? `${exercise.questions.length} ${exercise.difficulty} questions for ${exercise.concept}.`
-      : exercise?.prompt;
+      : exercise?.type === "guided-lab"
+        ? exercise.briefing
+        : exercise?.prompt;
 
   return {
     title: exercise ? `${exercise.title} - Codematica` : "Practice not found - Codematica",
@@ -42,6 +45,7 @@ export default async function PracticePage({ params }: PracticePageProps) {
   }
 
   const nextHrefsByPath = getNextPathNodeRoutesByPath({ kind: "exercise", slug: exercise.slug });
+  const sources = getSourcesByRefs(exercise.sourceRefs);
 
   return (
     <main className="min-h-screen px-4 py-5 sm:py-8" data-testid="practice-page">
@@ -49,6 +53,7 @@ export default async function PracticePage({ params }: PracticePageProps) {
         <BackButton />
 
         <div className="mt-6">
+          <div className="mb-5"><SourceReferences sources={sources} /></div>
           <Suspense fallback={<PracticeCard exercise={exercise} />}>
             <PathScopedPracticeCard exercise={exercise} nextHrefsByPath={nextHrefsByPath} />
           </Suspense>

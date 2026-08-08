@@ -5,6 +5,7 @@ import { ArrowDown, ArrowRight, ArrowUp, CheckCircle2, RotateCcw } from "lucide-
 import { useEffect, useRef, useState } from "react";
 import { Dropdown, type DropdownOption } from "@/components/Dropdown";
 import {
+  calculateQuestionnaireSkillScores,
   checkQuestionAnswer,
   createQuestionnaireAttempt,
   type QuestionnaireAnswer,
@@ -38,6 +39,7 @@ export function QuestionnaireSession({
   const [result, setResult] = useState<QuestionnaireAnswerResult | undefined>();
   const [isComplete, setIsComplete] = useState(false);
   const [isReady, setIsReady] = useState(false);
+  const [graded, setGraded] = useState<Record<string, boolean>>({});
   const question = attempt[currentIndex];
 
   function resetAnswer(nextAnswer?: QuestionnaireAnswer) {
@@ -111,12 +113,15 @@ export function QuestionnaireSession({
       return;
     }
 
-    setResult(checkQuestionAnswer(question, currentAnswer));
+    const checked = checkQuestionAnswer(question, currentAnswer);
+    setResult(checked);
+    setGraded((current) => ({ ...current, [question.id]: checked.isCorrect }));
   }
 
   function advance() {
     if (currentIndex + 1 >= attempt.length) {
-      onProgressEvent?.("completed", { questionIndex: currentIndex, totalQuestions: attempt.length });
+      const scores = calculateQuestionnaireSkillScores(attempt.map((attemptQuestion) => ({ question: attemptQuestion, isCorrect: graded[attemptQuestion.id] ?? false })));
+      onProgressEvent?.("completed", { questionIndex: currentIndex, totalQuestions: attempt.length, score: scores.overall, skillScores: scores.skills });
       setIsComplete(true);
       return;
     }
@@ -132,6 +137,7 @@ export function QuestionnaireSession({
     setAnswer(undefined);
     setResult(undefined);
     setIsComplete(false);
+    setGraded({});
   }
 
   function renderQuestionBody() {
@@ -261,7 +267,8 @@ export function QuestionnaireSession({
       <div className="mt-6 grid gap-5" data-testid="questionnaire-complete">
         <div className="rounded-lg border-2 border-b-4 border-[#6dd8cf] bg-[#e8f8f6] p-4">
           <p className="text-sm font-extrabold uppercase text-[#007c78]">Refresh complete</p>
-          <p className="mt-2 text-base font-semibold leading-7 text-[#33434b]">You reached the end of this Python practice session.</p>
+          <p className="mt-2 text-base font-semibold leading-7 text-[#33434b]">You reached the end of this practice session.</p>
+          <p className="mt-2 text-sm font-extrabold text-[#007c78]">Score {Math.round(calculateQuestionnaireSkillScores(attempt.map((attemptQuestion) => ({ question: attemptQuestion, isCorrect: graded[attemptQuestion.id] ?? false }))).overall * 100)}%</p>
         </div>
         <div className="flex flex-wrap gap-3">
           <button

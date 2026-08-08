@@ -342,6 +342,7 @@ All sessions should reuse and, when necessary, expand these existing components 
 - `apps/web/src/components/PassiveFlashcardFeed.tsx`: path-scoped passive flashcard feed UI for scroll-only review.
 - `apps/web/src/components/ProgressTrackers.tsx`: invisible document and diagram progress trackers for the optional auth/progress layer.
 - `apps/web/src/components/SaveProgressPrompt.tsx`: global signed-out prompt for saving locally buffered progress after use.
+- `apps/web/src/components/SourceReferences.tsx`: shared authoritative-source panel for source-linked documents and exercises.
 - `apps/web/src/components/SectionCatalogs.tsx`: complete path, practice/review, and language catalog surfaces.
 - `apps/web/src/components/PathScopedNextLink.tsx`: client-side path query reader for static document and diagram next-node links.
 - `apps/web/src/components/PathScopedPracticeCard.tsx`: client-side path query adapter that passes next-node links into `PracticeCard` without making practice pages dynamic.

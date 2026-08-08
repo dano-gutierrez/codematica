@@ -283,12 +283,17 @@ function exerciseTypeLabel(exercise: LearningExercise) {
   if (exercise.type === "flashcard") return "Flashcard";
   if (exercise.type === "cloze") return "Fill the gap";
   if (exercise.type === "writing") return "Writing practice";
+  if (exercise.type === "guided-lab") return "Guided lab";
   return "Questionnaire";
 }
 
 function exerciseSearchText(exercise: LearningExercise) {
   if (exercise.type === "questionnaire") {
     return exercise.questions.map((question) => `${question.prompt} ${question.explanation}`).join(" ");
+  }
+
+  if (exercise.type === "guided-lab") {
+    return `${exercise.briefing} ${exercise.objectives.join(" ")} ${exercise.steps.map((step) => `${step.title} ${step.instructions}`).join(" ")}`;
   }
 
   return `${exercise.prompt} ${exercise.explanation}`;

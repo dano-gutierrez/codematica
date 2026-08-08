@@ -9,7 +9,7 @@ async function makeTempRoot() {
   return mkdtemp(path.join(os.tmpdir(), "codematica-content-"));
 }
 
-async function writeKnowledge(rootDir: string, slug: string, diagramRefs: string[] = []) {
+async function writeKnowledge(rootDir: string, slug: string, diagramRefs: string[] = [], sourceRefs: string[] = []) {
   const filePath = path.join(rootDir, "content", "knowledge", `${slug}.md`);
   await mkdir(path.dirname(filePath), { recursive: true });
   await writeFile(
@@ -24,6 +24,7 @@ difficulty: senior
 tags: [caching]
 prerequisites: []
 diagramRefs: ${JSON.stringify(diagramRefs)}
+sourceRefs: ${JSON.stringify(sourceRefs)}
 status: published
 ---
 
@@ -214,7 +215,7 @@ async function writeLanguageVocabulary(rootDir: string, characterSlug = "japanes
   }, null, 2));
 }
 
-async function writeLearningPath(rootDir: string, slug: string, nodeSlug = "system-design/cache-invalidation") {
+async function writeLearningPath(rootDir: string, slug: string, nodeSlug = "system-design/cache-invalidation", overrides: Record<string, unknown> = {}) {
   const filePath = path.join(rootDir, "content", "learning-paths", `${slug}.json`);
   await mkdir(path.dirname(filePath), { recursive: true });
   await writeFile(
@@ -240,11 +241,29 @@ async function writeLearningPath(rootDir: string, slug: string, nodeSlug = "syst
             ],
           },
         ],
+        ...overrides,
       },
       null,
       2,
     ),
   );
+}
+
+async function writeSourceCatalog(rootDir: string) {
+  const filePath = path.join(rootDir, "content", "sources", "test-sources.json");
+  await mkdir(path.dirname(filePath), { recursive: true });
+  await writeFile(filePath, JSON.stringify({
+    sources: [{
+      id: "test-primary-source",
+      title: "Authoritative test source",
+      provider: "Test University",
+      url: "https://example.com/curriculum",
+      attribution: "Test University curriculum authors",
+      license: { name: "CC BY 4.0", url: "https://creativecommons.org/licenses/by/4.0/" },
+      lastVerifiedAt: "2026-08-07",
+      upstream: { maturity: "published" },
+    }],
+  }, null, 2));
 }
 
 async function writeDocumentOnlyLearningPath(rootDir: string, slug: string, nodeSlug: string) {
@@ -516,7 +535,7 @@ describe("buildContentIndex", () => {
 
     const index = await buildContentIndex({ rootDir });
 
-    expect(index.schemaVersion).toBe(8);
+    expect(index.schemaVersion).toBe(9);
     expect(index.documents).toHaveLength(1);
     expect(index.diagrams).toHaveLength(1);
     expect(index.exercises).toEqual([
@@ -550,6 +569,82 @@ describe("buildContentIndex", () => {
         topics: ["Caching"],
       },
     ]);
+  });
+
+  it("rejects incomplete primary-source contracts on source-linked paths", async () => {
+    const missingPathSourceRoot = await makeTempRoot();
+    await writeKnowledge(missingPathSourceRoot, "system-design/cache-invalidation");
+    await writeLearningPath(missingPathSourceRoot, "missing-path-source", undefined, { sourceRefs: ["missing-source"] });
+    await expect(buildContentIndex({ rootDir: missingPathSourceRoot })).rejects.toThrow(/references missing source/i);
+
+    const requiredSourceRoot = await makeTempRoot();
+    await writeKnowledge(requiredSourceRoot, "system-design/cache-invalidation");
+    await writeLearningPath(requiredSourceRoot, "required-source", undefined, { sourcePolicy: "required" });
+    await expect(buildContentIndex({ rootDir: requiredSourceRoot })).rejects.toThrow(/requires primary source references/i);
+
+    const missingNodeSourceRoot = await makeTempRoot();
+    await writeLearningPath(missingNodeSourceRoot, "missing-node-source", undefined, {
+      units: [{
+        slug: "source-unit",
+        title: "Source Unit",
+        summary: "Follow an authoritative source through a local companion.",
+        nodes: [{ kind: "source", slug: "ml-systems/introduction", sourceRef: "missing-source", activity: "read", companionKind: "document" }],
+      }],
+    });
+    await expect(buildContentIndex({ rootDir: missingNodeSourceRoot })).rejects.toThrow(/references missing source/i);
+
+    const documentAttributionRoot = await makeTempRoot();
+    await writeSourceCatalog(documentAttributionRoot);
+    await writeKnowledge(documentAttributionRoot, "system-design/cache-invalidation");
+    await writeLearningPath(documentAttributionRoot, "document-attribution", undefined, { sourcePolicy: "required", sourceRefs: ["test-primary-source"] });
+    await expect(buildContentIndex({ rootDir: documentAttributionRoot })).rejects.toThrow(/document node.*needs a primary source/i);
+
+    const exerciseAttributionRoot = await makeTempRoot();
+    await writeSourceCatalog(exerciseAttributionRoot);
+    await writeKnowledge(exerciseAttributionRoot, "system-design/cache-invalidation", [], ["test-primary-source"]);
+    await writeExercise(exerciseAttributionRoot, "system-design/cache-aside-recall");
+    await writeLearningPath(exerciseAttributionRoot, "exercise-attribution", undefined, {
+      sourcePolicy: "required",
+      sourceRefs: ["test-primary-source"],
+      units: [{
+        slug: "practice-unit",
+        title: "Practice Unit",
+        summary: "Practice against an authoritative source and retain evidence.",
+        nodes: [{ kind: "exercise", slug: "system-design/cache-aside-recall" }],
+      }],
+    });
+    await expect(buildContentIndex({ rootDir: exerciseAttributionRoot })).rejects.toThrow(/exercise node.*needs a primary source/i);
+  });
+
+  it("rejects path nodes that reference skills outside the career taxonomy", async () => {
+    const rootDir = await makeTempRoot();
+    await writeKnowledge(rootDir, "system-design/cache-invalidation");
+    await writeLearningPath(rootDir, "unknown-career-skill", undefined, {
+      units: [{
+        slug: "career-unit",
+        title: "Career Unit",
+        summary: "Build a stable skill through a source-linked career unit.",
+        nodes: [{ kind: "document", slug: "system-design/cache-invalidation", skillIds: ["unknown-skill"] }],
+      }],
+      progression: {
+        framework: "career",
+        roadmapLabel: "Career roadmap",
+        skills: [{ id: "known-skill", label: "Known skill", category: "systems", description: "A valid career skill used by the learning path." }],
+        stages: [{
+          id: "future-stage",
+          label: "Future Stage",
+          level: "Planned",
+          status: "planned",
+          summary: "A future career stage with a stable outcome contract.",
+          unitSlugs: ["career-unit"],
+          outcomes: [{ id: "known-outcome", statement: "Apply the known skill in a bounded systems task.", skillId: "known-skill" }],
+          requiredNodeSlugs: [],
+          estimatedMinutes: 60,
+        }],
+      },
+    });
+
+    await expect(buildContentIndex({ rootDir })).rejects.toThrow(/references missing skill/i);
   });
 
   it("fails when home discovery references missing content", async () => {
@@ -884,7 +979,7 @@ describe("buildContentIndex", () => {
 
     const index = await buildContentIndex({ rootDir });
 
-    expect(index.schemaVersion).toBe(8);
+    expect(index.schemaVersion).toBe(9);
     expect(index.interviewCollections).toEqual([
       expect.objectContaining({
         slug: "amazon",

@@ -21,6 +21,7 @@ Conventions:
 - `docs/features/README.md` explains how threads should consume and maintain feature docs.
 - `docs/features/home-discovery.md` owns the cross-section home, global local search, curated rows, section themes, and full catalog routes.
 - `docs/features/learning-paths-and-practice.md` owns local path JSON, path detail, local exercise JSON, and practice sessions.
+- `docs/features/ml-systems-career-path.md` owns the Harvard CS249r source-linked career roadmap, authored prerequisites/Foundation companions, guided labs, and upstream refresh contract.
 - `docs/features/programming-language-refresh.md` owns reusable programming-language refresh paths, starting with Python for TypeScript and JavaScript engineers.
 - `docs/features/llm-application-engineering.md` owns the Langfuse and LangChain AI engineering path, including local lessons, diagrams, quizzes, passive flashcards, and non-executable coding challenge sections.
 - `docs/features/database-indexes-learning-path.md` owns the database indexes, PostgreSQL HOT updates, and PostgreSQL search path, including local lessons, quizzes, passive flashcards, and future SQL editor roadmap boundaries.
@@ -48,6 +49,7 @@ Content authoring surfaces:
 - `content/interviews/`: company and anonymous real-world interview collection JSON, including validated web-project files.
 - `content/languages/`: human-language character and vocabulary catalogs.
 - `content/discovery/`: validated editorial curation for discovery surfaces.
+- `content/sources/`: validated primary-source URLs, versions, maturity, attribution, and verification dates.
 
 Workspace surfaces:
 

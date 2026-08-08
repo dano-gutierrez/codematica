@@ -91,6 +91,17 @@ describe("complete shared native screen matrix", () => {
     expect(adapters.navigation.navigate).toHaveBeenCalledWith(expect.stringContaining(node.slug));
   });
 
+  it("renders ML career stages and opens planned source nodes externally", async () => {
+    const index = getContentIndex();
+    const path = index.learningPaths.find((item) => item.slug === "ml-systems-engineer")!;
+    const adapters = createAdapters();
+    const view = await render(<LearningPathDetailScreen index={index} learningPath={path} adapters={adapters} />);
+    expect(view.getByText("Scientific Computing Apprentice")).toBeOnTheScreen();
+    const node = path.units.find((unit) => unit.slug === "volume-one-build")!.nodes[0]!;
+    await fireEvent.press(view.getByTestId(`mobile-path-node-${node.kind}-${node.slug.replaceAll("/", "-")}`));
+    expect(adapters.navigation.openExternalUrl).toHaveBeenCalledWith("https://mlsysbook.ai/vol1/nn_computation/nn_computation.html");
+  });
+
   it("reads documents and diagrams, records completion, and renders Mermaid success/fallback states", async () => {
     const index = getContentIndex();
     const document = index.documents.find((item) => item.diagramRefs.length > 0)!;

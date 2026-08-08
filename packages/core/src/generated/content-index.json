@@ -1,5 +1,607 @@
 {
-  "schemaVersion": 8,
+  "schemaVersion": 9,
+  "sources": [
+    {
+      "id": "harvard-cs249r-repository",
+      "title": "CS249r Machine Learning Systems curriculum",
+      "provider": "Harvard University",
+      "url": "https://github.com/harvard-edge/cs249r_book",
+      "attribution": "Vijay Janapa Reddi and contributors, Harvard University",
+      "license": {
+        "name": "CC BY-NC-SA 4.0",
+        "url": "https://creativecommons.org/licenses/by-nc-sa/4.0/"
+      },
+      "lastVerifiedAt": "2026-08-07",
+      "upstream": {
+        "repository": "harvard-edge/cs249r_book",
+        "ref": "dev",
+        "commit": "5964e31a24f5823fdfcce4e60cf896c26a7aca9f",
+        "maturity": "published"
+      },
+      "sourcePath": "content/sources/harvard-ml-systems.json",
+      "contentHash": "fc2cf01a065855078f84b7054ff65ccb301b3e1bf0569a507483a70349ace380"
+    },
+    {
+      "id": "harvard-hardware-kits",
+      "title": "ML Systems Hardware Kits",
+      "provider": "Harvard University",
+      "url": "https://mlsysbook.ai/kits/",
+      "attribution": "Harvard Edge Computing Lab",
+      "lastVerifiedAt": "2026-08-07",
+      "upstream": {
+        "repository": "harvard-edge/cs249r_book",
+        "ref": "dev",
+        "commit": "5964e31a24f5823fdfcce4e60cf896c26a7aca9f",
+        "maturity": "preview"
+      },
+      "sourcePath": "content/sources/harvard-ml-systems.json",
+      "contentHash": "fc2cf01a065855078f84b7054ff65ccb301b3e1bf0569a507483a70349ace380"
+    },
+    {
+      "id": "harvard-labs",
+      "title": "CS249r Interactive Labs — 34-lab collection",
+      "provider": "Harvard University",
+      "url": "https://mlsysbook.ai/labs/",
+      "attribution": "Harvard Edge Computing Lab",
+      "lastVerifiedAt": "2026-08-07",
+      "upstream": {
+        "repository": "harvard-edge/cs249r_book",
+        "ref": "dev",
+        "commit": "5964e31a24f5823fdfcce4e60cf896c26a7aca9f",
+        "maturity": "preview"
+      },
+      "sourcePath": "content/sources/harvard-ml-systems.json",
+      "contentHash": "fc2cf01a065855078f84b7054ff65ccb301b3e1bf0569a507483a70349ace380"
+    },
+    {
+      "id": "harvard-mlsysim",
+      "title": "MLSys·im modeling engine and tutorials",
+      "provider": "Harvard University",
+      "url": "https://mlsysbook.ai/mlsysim/",
+      "attribution": "Harvard Edge Computing Lab",
+      "lastVerifiedAt": "2026-08-07",
+      "upstream": {
+        "repository": "harvard-edge/cs249r_book",
+        "ref": "dev",
+        "commit": "5964e31a24f5823fdfcce4e60cf896c26a7aca9f",
+        "maturity": "preview"
+      },
+      "sourcePath": "content/sources/harvard-ml-systems.json",
+      "contentHash": "fc2cf01a065855078f84b7054ff65ccb301b3e1bf0569a507483a70349ace380"
+    },
+    {
+      "id": "harvard-staffml",
+      "title": "StaffML — ML systems interview practice",
+      "provider": "Harvard University",
+      "url": "https://mlsysbook.ai/staffml/",
+      "attribution": "Harvard Edge Computing Lab",
+      "lastVerifiedAt": "2026-08-07",
+      "upstream": {
+        "repository": "harvard-edge/cs249r_book",
+        "ref": "dev",
+        "commit": "5964e31a24f5823fdfcce4e60cf896c26a7aca9f",
+        "maturity": "preview"
+      },
+      "sourcePath": "content/sources/harvard-ml-systems.json",
+      "contentHash": "fc2cf01a065855078f84b7054ff65ccb301b3e1bf0569a507483a70349ace380"
+    },
+    {
+      "id": "harvard-tinytorch",
+      "title": "TinyTorch — 20 progressive modules",
+      "provider": "Harvard University",
+      "url": "https://mlsysbook.ai/tinytorch/",
+      "attribution": "Harvard Edge Computing Lab",
+      "lastVerifiedAt": "2026-08-07",
+      "upstream": {
+        "repository": "harvard-edge/cs249r_book",
+        "ref": "dev",
+        "commit": "5964e31a24f5823fdfcce4e60cf896c26a7aca9f",
+        "maturity": "preview"
+      },
+      "sourcePath": "content/sources/harvard-ml-systems.json",
+      "contentHash": "fc2cf01a065855078f84b7054ff65ccb301b3e1bf0569a507483a70349ace380"
+    },
+    {
+      "id": "harvard-vol1",
+      "title": "Introduction to Machine Learning Systems — Volume I: Foundations",
+      "provider": "Harvard University",
+      "url": "https://mlsysbook.ai/vol1/",
+      "attribution": "Vijay Janapa Reddi, Harvard University",
+      "license": {
+        "name": "CC BY-NC-SA 4.0",
+        "url": "https://creativecommons.org/licenses/by-nc-sa/4.0/"
+      },
+      "lastVerifiedAt": "2026-08-07",
+      "upstream": {
+        "version": "0.7.1",
+        "maturity": "published"
+      },
+      "sourcePath": "content/sources/harvard-ml-systems.json",
+      "contentHash": "fc2cf01a065855078f84b7054ff65ccb301b3e1bf0569a507483a70349ace380"
+    },
+    {
+      "id": "harvard-vol1-benchmarking",
+      "title": "Volume I — Benchmarking",
+      "provider": "Harvard University",
+      "url": "https://mlsysbook.ai/vol1/benchmarking/benchmarking.html",
+      "attribution": "Vijay Janapa Reddi, Harvard University",
+      "lastVerifiedAt": "2026-08-07",
+      "upstream": {
+        "version": "0.7.1",
+        "maturity": "published"
+      },
+      "sourcePath": "content/sources/harvard-ml-systems.json",
+      "contentHash": "fc2cf01a065855078f84b7054ff65ccb301b3e1bf0569a507483a70349ace380"
+    },
+    {
+      "id": "harvard-vol1-conclusion",
+      "title": "Volume I — Conclusion",
+      "provider": "Harvard University",
+      "url": "https://mlsysbook.ai/vol1/conclusion/conclusion.html",
+      "attribution": "Vijay Janapa Reddi, Harvard University",
+      "lastVerifiedAt": "2026-08-07",
+      "upstream": {
+        "version": "0.7.1",
+        "maturity": "published"
+      },
+      "sourcePath": "content/sources/harvard-ml-systems.json",
+      "contentHash": "fc2cf01a065855078f84b7054ff65ccb301b3e1bf0569a507483a70349ace380"
+    },
+    {
+      "id": "harvard-vol1-data-engineering",
+      "title": "Volume I — Data Engineering",
+      "provider": "Harvard University",
+      "url": "https://mlsysbook.ai/vol1/data_engineering/data_engineering.html",
+      "attribution": "Vijay Janapa Reddi, Harvard University",
+      "lastVerifiedAt": "2026-08-07",
+      "upstream": {
+        "version": "0.7.1",
+        "maturity": "published"
+      },
+      "sourcePath": "content/sources/harvard-ml-systems.json",
+      "contentHash": "fc2cf01a065855078f84b7054ff65ccb301b3e1bf0569a507483a70349ace380"
+    },
+    {
+      "id": "harvard-vol1-data-selection",
+      "title": "Volume I — Data Selection",
+      "provider": "Harvard University",
+      "url": "https://mlsysbook.ai/vol1/data_selection/data_selection.html",
+      "attribution": "Vijay Janapa Reddi, Harvard University",
+      "lastVerifiedAt": "2026-08-07",
+      "upstream": {
+        "version": "0.7.1",
+        "maturity": "published"
+      },
+      "sourcePath": "content/sources/harvard-ml-systems.json",
+      "contentHash": "fc2cf01a065855078f84b7054ff65ccb301b3e1bf0569a507483a70349ace380"
+    },
+    {
+      "id": "harvard-vol1-frameworks",
+      "title": "Volume I — ML Frameworks",
+      "provider": "Harvard University",
+      "url": "https://mlsysbook.ai/vol1/frameworks/frameworks.html",
+      "attribution": "Vijay Janapa Reddi, Harvard University",
+      "lastVerifiedAt": "2026-08-07",
+      "upstream": {
+        "version": "0.7.1",
+        "maturity": "published"
+      },
+      "sourcePath": "content/sources/harvard-ml-systems.json",
+      "contentHash": "fc2cf01a065855078f84b7054ff65ccb301b3e1bf0569a507483a70349ace380"
+    },
+    {
+      "id": "harvard-vol1-hardware-acceleration",
+      "title": "Volume I — Hardware Acceleration",
+      "provider": "Harvard University",
+      "url": "https://mlsysbook.ai/vol1/hw_acceleration/hw_acceleration.html",
+      "attribution": "Vijay Janapa Reddi, Harvard University",
+      "lastVerifiedAt": "2026-08-07",
+      "upstream": {
+        "version": "0.7.1",
+        "maturity": "published"
+      },
+      "sourcePath": "content/sources/harvard-ml-systems.json",
+      "contentHash": "fc2cf01a065855078f84b7054ff65ccb301b3e1bf0569a507483a70349ace380"
+    },
+    {
+      "id": "harvard-vol1-introduction",
+      "title": "Volume I — Introduction",
+      "provider": "Harvard University",
+      "url": "https://mlsysbook.ai/vol1/introduction/introduction.html",
+      "attribution": "Vijay Janapa Reddi, Harvard University",
+      "lastVerifiedAt": "2026-08-07",
+      "upstream": {
+        "repository": "harvard-edge/cs249r_book",
+        "ref": "dev",
+        "commit": "5964e31a24f5823fdfcce4e60cf896c26a7aca9f",
+        "maturity": "published"
+      },
+      "sourcePath": "content/sources/harvard-ml-systems.json",
+      "contentHash": "fc2cf01a065855078f84b7054ff65ccb301b3e1bf0569a507483a70349ace380"
+    },
+    {
+      "id": "harvard-vol1-ml-ops",
+      "title": "Volume I — ML Operations",
+      "provider": "Harvard University",
+      "url": "https://mlsysbook.ai/vol1/ml_ops/ml_ops.html",
+      "attribution": "Vijay Janapa Reddi, Harvard University",
+      "lastVerifiedAt": "2026-08-07",
+      "upstream": {
+        "version": "0.7.1",
+        "maturity": "published"
+      },
+      "sourcePath": "content/sources/harvard-ml-systems.json",
+      "contentHash": "fc2cf01a065855078f84b7054ff65ccb301b3e1bf0569a507483a70349ace380"
+    },
+    {
+      "id": "harvard-vol1-ml-systems",
+      "title": "Volume I — ML Systems",
+      "provider": "Harvard University",
+      "url": "https://mlsysbook.ai/vol1/ml_systems/ml_systems.html",
+      "attribution": "Vijay Janapa Reddi, Harvard University",
+      "lastVerifiedAt": "2026-08-07",
+      "upstream": {
+        "version": "0.7.1",
+        "maturity": "published"
+      },
+      "sourcePath": "content/sources/harvard-ml-systems.json",
+      "contentHash": "fc2cf01a065855078f84b7054ff65ccb301b3e1bf0569a507483a70349ace380"
+    },
+    {
+      "id": "harvard-vol1-ml-workflow",
+      "title": "Volume I — ML Workflow",
+      "provider": "Harvard University",
+      "url": "https://mlsysbook.ai/vol1/ml_workflow/ml_workflow.html",
+      "attribution": "Vijay Janapa Reddi, Harvard University",
+      "lastVerifiedAt": "2026-08-07",
+      "upstream": {
+        "version": "0.7.1",
+        "maturity": "published"
+      },
+      "sourcePath": "content/sources/harvard-ml-systems.json",
+      "contentHash": "fc2cf01a065855078f84b7054ff65ccb301b3e1bf0569a507483a70349ace380"
+    },
+    {
+      "id": "harvard-vol1-model-compression",
+      "title": "Volume I — Model Compression",
+      "provider": "Harvard University",
+      "url": "https://mlsysbook.ai/vol1/model_compression/model_compression.html",
+      "attribution": "Vijay Janapa Reddi, Harvard University",
+      "lastVerifiedAt": "2026-08-07",
+      "upstream": {
+        "version": "0.7.1",
+        "maturity": "published"
+      },
+      "sourcePath": "content/sources/harvard-ml-systems.json",
+      "contentHash": "fc2cf01a065855078f84b7054ff65ccb301b3e1bf0569a507483a70349ace380"
+    },
+    {
+      "id": "harvard-vol1-model-serving",
+      "title": "Volume I — Model Serving",
+      "provider": "Harvard University",
+      "url": "https://mlsysbook.ai/vol1/model_serving/model_serving.html",
+      "attribution": "Vijay Janapa Reddi, Harvard University",
+      "lastVerifiedAt": "2026-08-07",
+      "upstream": {
+        "version": "0.7.1",
+        "maturity": "published"
+      },
+      "sourcePath": "content/sources/harvard-ml-systems.json",
+      "contentHash": "fc2cf01a065855078f84b7054ff65ccb301b3e1bf0569a507483a70349ace380"
+    },
+    {
+      "id": "harvard-vol1-network-architectures",
+      "title": "Volume I — Network Architectures",
+      "provider": "Harvard University",
+      "url": "https://mlsysbook.ai/vol1/nn_architectures/nn_architectures.html",
+      "attribution": "Vijay Janapa Reddi, Harvard University",
+      "lastVerifiedAt": "2026-08-07",
+      "upstream": {
+        "version": "0.7.1",
+        "maturity": "published"
+      },
+      "sourcePath": "content/sources/harvard-ml-systems.json",
+      "contentHash": "fc2cf01a065855078f84b7054ff65ccb301b3e1bf0569a507483a70349ace380"
+    },
+    {
+      "id": "harvard-vol1-neural-computation",
+      "title": "Volume I — Neural Computation",
+      "provider": "Harvard University",
+      "url": "https://mlsysbook.ai/vol1/nn_computation/nn_computation.html",
+      "attribution": "Vijay Janapa Reddi, Harvard University",
+      "lastVerifiedAt": "2026-08-07",
+      "upstream": {
+        "version": "0.7.1",
+        "maturity": "published"
+      },
+      "sourcePath": "content/sources/harvard-ml-systems.json",
+      "contentHash": "fc2cf01a065855078f84b7054ff65ccb301b3e1bf0569a507483a70349ace380"
+    },
+    {
+      "id": "harvard-vol1-responsible-engineering",
+      "title": "Volume I — Responsible Engineering",
+      "provider": "Harvard University",
+      "url": "https://mlsysbook.ai/vol1/responsible_engr/responsible_engr.html",
+      "attribution": "Vijay Janapa Reddi, Harvard University",
+      "lastVerifiedAt": "2026-08-07",
+      "upstream": {
+        "version": "0.7.1",
+        "maturity": "published"
+      },
+      "sourcePath": "content/sources/harvard-ml-systems.json",
+      "contentHash": "fc2cf01a065855078f84b7054ff65ccb301b3e1bf0569a507483a70349ace380"
+    },
+    {
+      "id": "harvard-vol1-training",
+      "title": "Volume I — Model Training",
+      "provider": "Harvard University",
+      "url": "https://mlsysbook.ai/vol1/training/training.html",
+      "attribution": "Vijay Janapa Reddi, Harvard University",
+      "lastVerifiedAt": "2026-08-07",
+      "upstream": {
+        "version": "0.7.1",
+        "maturity": "published"
+      },
+      "sourcePath": "content/sources/harvard-ml-systems.json",
+      "contentHash": "fc2cf01a065855078f84b7054ff65ccb301b3e1bf0569a507483a70349ace380"
+    },
+    {
+      "id": "harvard-vol2",
+      "title": "Machine Learning Systems at Scale — Volume II",
+      "provider": "Harvard University",
+      "url": "https://mlsysbook.ai/vol2/",
+      "attribution": "Vijay Janapa Reddi, Harvard University",
+      "license": {
+        "name": "CC BY-NC-SA 4.0",
+        "url": "https://creativecommons.org/licenses/by-nc-sa/4.0/"
+      },
+      "lastVerifiedAt": "2026-08-07",
+      "upstream": {
+        "version": "0.2.1",
+        "maturity": "preview"
+      },
+      "sourcePath": "content/sources/harvard-ml-systems.json",
+      "contentHash": "fc2cf01a065855078f84b7054ff65ccb301b3e1bf0569a507483a70349ace380"
+    },
+    {
+      "id": "harvard-vol2-collective-communication",
+      "title": "Volume II — Collective Communication",
+      "provider": "Harvard University",
+      "url": "https://mlsysbook.ai/vol2/collective_communication/collective_communication.html",
+      "attribution": "Vijay Janapa Reddi, Harvard University",
+      "lastVerifiedAt": "2026-08-07",
+      "upstream": {
+        "version": "0.2.1",
+        "maturity": "preview"
+      },
+      "sourcePath": "content/sources/harvard-ml-systems.json",
+      "contentHash": "fc2cf01a065855078f84b7054ff65ccb301b3e1bf0569a507483a70349ace380"
+    },
+    {
+      "id": "harvard-vol2-compute-infrastructure",
+      "title": "Volume II — Compute Infrastructure",
+      "provider": "Harvard University",
+      "url": "https://mlsysbook.ai/vol2/compute_infrastructure/compute_infrastructure.html",
+      "attribution": "Vijay Janapa Reddi, Harvard University",
+      "lastVerifiedAt": "2026-08-07",
+      "upstream": {
+        "version": "0.2.1",
+        "maturity": "preview"
+      },
+      "sourcePath": "content/sources/harvard-ml-systems.json",
+      "contentHash": "fc2cf01a065855078f84b7054ff65ccb301b3e1bf0569a507483a70349ace380"
+    },
+    {
+      "id": "harvard-vol2-conclusion",
+      "title": "Volume II — Conclusion",
+      "provider": "Harvard University",
+      "url": "https://mlsysbook.ai/vol2/conclusion/conclusion.html",
+      "attribution": "Vijay Janapa Reddi, Harvard University",
+      "lastVerifiedAt": "2026-08-07",
+      "upstream": {
+        "version": "0.2.1",
+        "maturity": "preview"
+      },
+      "sourcePath": "content/sources/harvard-ml-systems.json",
+      "contentHash": "fc2cf01a065855078f84b7054ff65ccb301b3e1bf0569a507483a70349ace380"
+    },
+    {
+      "id": "harvard-vol2-data-storage",
+      "title": "Volume II — Data Storage",
+      "provider": "Harvard University",
+      "url": "https://mlsysbook.ai/vol2/data_storage/data_storage.html",
+      "attribution": "Vijay Janapa Reddi, Harvard University",
+      "lastVerifiedAt": "2026-08-07",
+      "upstream": {
+        "version": "0.2.1",
+        "maturity": "preview"
+      },
+      "sourcePath": "content/sources/harvard-ml-systems.json",
+      "contentHash": "fc2cf01a065855078f84b7054ff65ccb301b3e1bf0569a507483a70349ace380"
+    },
+    {
+      "id": "harvard-vol2-distributed-training",
+      "title": "Volume II — Distributed Training",
+      "provider": "Harvard University",
+      "url": "https://mlsysbook.ai/vol2/distributed_training/distributed_training.html",
+      "attribution": "Vijay Janapa Reddi, Harvard University",
+      "lastVerifiedAt": "2026-08-07",
+      "upstream": {
+        "version": "0.2.1",
+        "maturity": "preview"
+      },
+      "sourcePath": "content/sources/harvard-ml-systems.json",
+      "contentHash": "fc2cf01a065855078f84b7054ff65ccb301b3e1bf0569a507483a70349ace380"
+    },
+    {
+      "id": "harvard-vol2-edge-intelligence",
+      "title": "Volume II — Edge Intelligence",
+      "provider": "Harvard University",
+      "url": "https://mlsysbook.ai/vol2/edge_intelligence/edge_intelligence.html",
+      "attribution": "Vijay Janapa Reddi, Harvard University",
+      "lastVerifiedAt": "2026-08-07",
+      "upstream": {
+        "version": "0.2.1",
+        "maturity": "preview"
+      },
+      "sourcePath": "content/sources/harvard-ml-systems.json",
+      "contentHash": "fc2cf01a065855078f84b7054ff65ccb301b3e1bf0569a507483a70349ace380"
+    },
+    {
+      "id": "harvard-vol2-fault-tolerance",
+      "title": "Volume II — Fault Tolerance",
+      "provider": "Harvard University",
+      "url": "https://mlsysbook.ai/vol2/fault_tolerance/fault_tolerance.html",
+      "attribution": "Vijay Janapa Reddi, Harvard University",
+      "lastVerifiedAt": "2026-08-07",
+      "upstream": {
+        "version": "0.2.1",
+        "maturity": "preview"
+      },
+      "sourcePath": "content/sources/harvard-ml-systems.json",
+      "contentHash": "fc2cf01a065855078f84b7054ff65ccb301b3e1bf0569a507483a70349ace380"
+    },
+    {
+      "id": "harvard-vol2-fleet-orchestration",
+      "title": "Volume II — Fleet Orchestration",
+      "provider": "Harvard University",
+      "url": "https://mlsysbook.ai/vol2/fleet_orchestration/fleet_orchestration.html",
+      "attribution": "Vijay Janapa Reddi, Harvard University",
+      "lastVerifiedAt": "2026-08-07",
+      "upstream": {
+        "version": "0.2.1",
+        "maturity": "preview"
+      },
+      "sourcePath": "content/sources/harvard-ml-systems.json",
+      "contentHash": "fc2cf01a065855078f84b7054ff65ccb301b3e1bf0569a507483a70349ace380"
+    },
+    {
+      "id": "harvard-vol2-inference",
+      "title": "Volume II — Inference at Scale",
+      "provider": "Harvard University",
+      "url": "https://mlsysbook.ai/vol2/inference/inference.html",
+      "attribution": "Vijay Janapa Reddi, Harvard University",
+      "lastVerifiedAt": "2026-08-07",
+      "upstream": {
+        "version": "0.2.1",
+        "maturity": "preview"
+      },
+      "sourcePath": "content/sources/harvard-ml-systems.json",
+      "contentHash": "fc2cf01a065855078f84b7054ff65ccb301b3e1bf0569a507483a70349ace380"
+    },
+    {
+      "id": "harvard-vol2-introduction",
+      "title": "Volume II — Introduction",
+      "provider": "Harvard University",
+      "url": "https://mlsysbook.ai/vol2/introduction/introduction.html",
+      "attribution": "Vijay Janapa Reddi, Harvard University",
+      "lastVerifiedAt": "2026-08-07",
+      "upstream": {
+        "version": "0.2.1",
+        "maturity": "preview"
+      },
+      "sourcePath": "content/sources/harvard-ml-systems.json",
+      "contentHash": "fc2cf01a065855078f84b7054ff65ccb301b3e1bf0569a507483a70349ace380"
+    },
+    {
+      "id": "harvard-vol2-network-fabrics",
+      "title": "Volume II — Network Fabrics",
+      "provider": "Harvard University",
+      "url": "https://mlsysbook.ai/vol2/network_fabrics/network_fabrics.html",
+      "attribution": "Vijay Janapa Reddi, Harvard University",
+      "lastVerifiedAt": "2026-08-07",
+      "upstream": {
+        "version": "0.2.1",
+        "maturity": "preview"
+      },
+      "sourcePath": "content/sources/harvard-ml-systems.json",
+      "contentHash": "fc2cf01a065855078f84b7054ff65ccb301b3e1bf0569a507483a70349ace380"
+    },
+    {
+      "id": "harvard-vol2-ops-scale",
+      "title": "Volume II — ML Operations at Scale",
+      "provider": "Harvard University",
+      "url": "https://mlsysbook.ai/vol2/ops_scale/ops_scale.html",
+      "attribution": "Vijay Janapa Reddi, Harvard University",
+      "lastVerifiedAt": "2026-08-07",
+      "upstream": {
+        "version": "0.2.1",
+        "maturity": "preview"
+      },
+      "sourcePath": "content/sources/harvard-ml-systems.json",
+      "contentHash": "fc2cf01a065855078f84b7054ff65ccb301b3e1bf0569a507483a70349ace380"
+    },
+    {
+      "id": "harvard-vol2-performance-engineering",
+      "title": "Volume II — Performance Engineering",
+      "provider": "Harvard University",
+      "url": "https://mlsysbook.ai/vol2/performance_engineering/performance_engineering.html",
+      "attribution": "Vijay Janapa Reddi, Harvard University",
+      "lastVerifiedAt": "2026-08-07",
+      "upstream": {
+        "version": "0.2.1",
+        "maturity": "preview"
+      },
+      "sourcePath": "content/sources/harvard-ml-systems.json",
+      "contentHash": "fc2cf01a065855078f84b7054ff65ccb301b3e1bf0569a507483a70349ace380"
+    },
+    {
+      "id": "harvard-vol2-responsible-ai",
+      "title": "Volume II — Responsible AI",
+      "provider": "Harvard University",
+      "url": "https://mlsysbook.ai/vol2/responsible_ai/responsible_ai.html",
+      "attribution": "Vijay Janapa Reddi, Harvard University",
+      "lastVerifiedAt": "2026-08-07",
+      "upstream": {
+        "version": "0.2.1",
+        "maturity": "preview"
+      },
+      "sourcePath": "content/sources/harvard-ml-systems.json",
+      "contentHash": "fc2cf01a065855078f84b7054ff65ccb301b3e1bf0569a507483a70349ace380"
+    },
+    {
+      "id": "harvard-vol2-robust-ai",
+      "title": "Volume II — Robust AI",
+      "provider": "Harvard University",
+      "url": "https://mlsysbook.ai/vol2/robust_ai/robust_ai.html",
+      "attribution": "Vijay Janapa Reddi, Harvard University",
+      "lastVerifiedAt": "2026-08-07",
+      "upstream": {
+        "version": "0.2.1",
+        "maturity": "preview"
+      },
+      "sourcePath": "content/sources/harvard-ml-systems.json",
+      "contentHash": "fc2cf01a065855078f84b7054ff65ccb301b3e1bf0569a507483a70349ace380"
+    },
+    {
+      "id": "harvard-vol2-security-privacy",
+      "title": "Volume II — Security and Privacy",
+      "provider": "Harvard University",
+      "url": "https://mlsysbook.ai/vol2/security_privacy/security_privacy.html",
+      "attribution": "Vijay Janapa Reddi, Harvard University",
+      "lastVerifiedAt": "2026-08-07",
+      "upstream": {
+        "version": "0.2.1",
+        "maturity": "preview"
+      },
+      "sourcePath": "content/sources/harvard-ml-systems.json",
+      "contentHash": "fc2cf01a065855078f84b7054ff65ccb301b3e1bf0569a507483a70349ace380"
+    },
+    {
+      "id": "harvard-vol2-sustainable-ai",
+      "title": "Volume II — Sustainable AI",
+      "provider": "Harvard University",
+      "url": "https://mlsysbook.ai/vol2/sustainable_ai/sustainable_ai.html",
+      "attribution": "Vijay Janapa Reddi, Harvard University",
+      "lastVerifiedAt": "2026-08-07",
+      "upstream": {
+        "version": "0.2.1",
+        "maturity": "preview"
+      },
+      "sourcePath": "content/sources/harvard-ml-systems.json",
+      "contentHash": "fc2cf01a065855078f84b7054ff65ccb301b3e1bf0569a507483a70349ace380"
+    }
+  ],
   "documents": [
     {
       "title": "LangChain Agents LangGraph And Operations",
@@ -2081,6 +2683,439 @@
       "readingMinutes": 1
     },
     {
+      "title": "AI Engineering And The ML Systems Lens",
+      "slug": "ml-systems/ai-engineering-introduction",
+      "summary": "A source-linked companion to the Harvard introduction, emphasizing data-defined behavior, physical constraints, lifecycle costs, and engineering judgment.",
+      "track": "ML Systems",
+      "topic": "Foundations",
+      "difficulty": "foundation",
+      "tags": [
+        "ai-engineering",
+        "lifecycle",
+        "constraints",
+        "dam"
+      ],
+      "prerequisites": [
+        "Quantitative foundations",
+        "Python and NumPy"
+      ],
+      "diagramRefs": [],
+      "sourceRefs": [
+        "harvard-vol1-introduction"
+      ],
+      "status": "published",
+      "id": "ad0d6597e4bb",
+      "route": "/docs/ml-systems/ai-engineering-introduction",
+      "sourcePath": "content/knowledge/ml-systems/ai-engineering-introduction.md",
+      "bodyPath": "content/knowledge/ml-systems/ai-engineering-introduction.md",
+      "markdown": "## Read the primary chapter first\n\nStart with Harvard’s [Volume I Introduction](https://mlsysbook.ai/vol1/introduction/introduction.html). This companion is a study guide: it summarizes the decision-making lens, adds recall prompts, and prepares the guided exercise. When details differ, the upstream chapter is authoritative.\n\n## Two constraints at once\n\nAn ML system manages statistical uncertainty and physical execution constraints together. Its learned behavior can degrade without a code failure, while its computation must still fit memory, bandwidth, latency, energy, and cost budgets.\n\nUse the Data–Algorithm–Machine lens to locate a bottleneck. More compute does not repair stale labels. A smaller model does not repair an invalid evaluation population. Better data does not make an impossible device memory budget disappear.\n\n## From model metric to mission\n\nFollow a proposed change through four layers: machine resources, system behavior, model behavior, and mission outcome. An optimization that improves average latency may still violate a tail-latency objective. An accuracy gain on a benchmark may not improve the production population.\n\n## Lifecycle cost\n\nConstraints discovered late are expensive. Make deployment, monitoring, degradation, responsibility, and rollback part of the design before training. State assumptions early and test the riskiest one with the cheapest useful experiment.\n\n## Retrieval prompts\n\n- Why can an ML system fail while every code path executes correctly?\n- Which D–A–M axis would you inspect for stale data, an oversized model, or memory-bandwidth saturation?\n- Which system metric connects most directly to the user-facing mission?",
+      "plainText": "Read the primary chapter first Start with Harvard’s Volume I Introduction. This companion is a study guide: it summarizes the decision-making lens, adds recall prompts, and prepares the guided exercise. When details differ, the upstream chapter is authoritative. Two constraints at once An ML system manages statistical uncertainty and physical execution constraints together. Its learned behavior can degrade without a code failure, while its computation must still fit memory, bandwidth, latency, energy, and cost budgets. Use the Data–Algorithm–Machine lens to locate a bottleneck. More compute does not repair stale labels. A smaller model does not repair an invalid evaluation population. Better data does not make an impossible device memory budget disappear. From model metric to mission Follow a proposed change through four layers: machine resources, system behavior, model behavior, and mission outcome. An optimization that improves average latency may still violate a tail-latency objective. An accuracy gain on a benchmark may not improve the production population. Lifecycle cost Constraints discovered late are expensive. Make deployment, monitoring, degradation, responsibility, and rollback part of the design before training. State assumptions early and test the riskiest one with the cheapest useful experiment. Retrieval prompts Why can an ML system fail while every code path executes correctly?Which D–A–M axis would you inspect for stale data, an oversized model, or memory-bandwidth saturation?Which system metric connects most directly to the user-facing mission?",
+      "headings": [
+        {
+          "id": "read-the-primary-chapter-first",
+          "depth": 2,
+          "text": "Read the primary chapter first"
+        },
+        {
+          "id": "two-constraints-at-once",
+          "depth": 2,
+          "text": "Two constraints at once"
+        },
+        {
+          "id": "from-model-metric-to-mission",
+          "depth": 2,
+          "text": "From model metric to mission"
+        },
+        {
+          "id": "lifecycle-cost",
+          "depth": 2,
+          "text": "Lifecycle cost"
+        },
+        {
+          "id": "retrieval-prompts",
+          "depth": 2,
+          "text": "Retrieval prompts"
+        }
+      ],
+      "mermaidBlocks": [],
+      "contentHash": "469b7962525c7006051cd2fb1940a3f5df23d014dbb4045d0d3d5270e6cdd937",
+      "readingMinutes": 2
+    },
+    {
+      "title": "Data Engineering For Reliable ML Systems",
+      "slug": "ml-systems/data-engineering",
+      "summary": "Design data contracts, validation, lineage, leakage prevention, dataset versions, and monitoring around learned behavior.",
+      "track": "ML Systems",
+      "topic": "Foundations",
+      "difficulty": "practitioner",
+      "tags": [
+        "data-engineering",
+        "lineage",
+        "validation",
+        "leakage"
+      ],
+      "prerequisites": [
+        "The ML workflow"
+      ],
+      "diagramRefs": [],
+      "sourceRefs": [
+        "harvard-vol1-data-engineering"
+      ],
+      "status": "published",
+      "id": "cd44ee2f3d0e",
+      "route": "/docs/ml-systems/data-engineering",
+      "sourcePath": "content/knowledge/ml-systems/data-engineering.md",
+      "bodyPath": "content/knowledge/ml-systems/data-engineering.md",
+      "markdown": "## Primary reading\n\nRead Harvard’s [Data Engineering chapter](https://mlsysbook.ai/vol1/data_engineering/data_engineering.html). This companion turns the chapter into a concrete pipeline review.\n\n## Data is executable behavior\n\nTraining data shapes the program the model learns. Treat schemas, labels, transformations, sampling rules, and split logic as versioned production assets. A dataset name without provenance is not a reproducible input.\n\n## Contracts and validation\n\nValidate structure, types, ranges, missingness, uniqueness, temporal ordering, category changes, and cross-field invariants. Distinguish a hard contract violation from a distribution warning. Quarantine invalid records rather than silently coercing them when the correction is ambiguous.\n\n## Leakage and split strategy\n\nChoose splits that represent deployment. Random splitting can leak users, time, locations, or near-duplicates across partitions. Write down what information is available at prediction time and reject features that depend on the future.\n\n## Lineage and transformations\n\nTrack source, extraction time, transformation code, parameters, output version, and consumers. Make offline and online feature definitions consistent or measure their skew. Cache expensive transformations only with a clear invalidation key.\n\n## Monitor the pipeline and population\n\nMonitor freshness, volume, schema, label delay, distribution movement, and slice coverage. Drift is a signal to investigate, not automatic proof of harm. Connect changes to model and mission outcomes before retraining blindly.\n\n## Practical output\n\nDesign a pipeline contract for one dataset. Include the grain of a row, keys, event time, labels, five validations, split strategy, lineage fields, and a response to late or corrected data.",
+      "plainText": "Primary reading Read Harvard’s Data Engineering chapter. This companion turns the chapter into a concrete pipeline review. Data is executable behavior Training data shapes the program the model learns. Treat schemas, labels, transformations, sampling rules, and split logic as versioned production assets. A dataset name without provenance is not a reproducible input. Contracts and validation Validate structure, types, ranges, missingness, uniqueness, temporal ordering, category changes, and cross-field invariants. Distinguish a hard contract violation from a distribution warning. Quarantine invalid records rather than silently coercing them when the correction is ambiguous. Leakage and split strategy Choose splits that represent deployment. Random splitting can leak users, time, locations, or near-duplicates across partitions. Write down what information is available at prediction time and reject features that depend on the future. Lineage and transformations Track source, extraction time, transformation code, parameters, output version, and consumers. Make offline and online feature definitions consistent or measure their skew. Cache expensive transformations only with a clear invalidation key. Monitor the pipeline and population Monitor freshness, volume, schema, label delay, distribution movement, and slice coverage. Drift is a signal to investigate, not automatic proof of harm. Connect changes to model and mission outcomes before retraining blindly. Practical output Design a pipeline contract for one dataset. Include the grain of a row, keys, event time, labels, five validations, split strategy, lineage fields, and a response to late or corrected data.",
+      "headings": [
+        {
+          "id": "primary-reading",
+          "depth": 2,
+          "text": "Primary reading"
+        },
+        {
+          "id": "data-is-executable-behavior",
+          "depth": 2,
+          "text": "Data is executable behavior"
+        },
+        {
+          "id": "contracts-and-validation",
+          "depth": 2,
+          "text": "Contracts and validation"
+        },
+        {
+          "id": "leakage-and-split-strategy",
+          "depth": 2,
+          "text": "Leakage and split strategy"
+        },
+        {
+          "id": "lineage-and-transformations",
+          "depth": 2,
+          "text": "Lineage and transformations"
+        },
+        {
+          "id": "monitor-the-pipeline-and-population",
+          "depth": 2,
+          "text": "Monitor the pipeline and population"
+        },
+        {
+          "id": "practical-output",
+          "depth": 2,
+          "text": "Practical output"
+        }
+      ],
+      "mermaidBlocks": [],
+      "contentHash": "89669a925b0a41c263bfa8d2aacd39e9c3cf25f3388cc9131c577f1d34fed9d2",
+      "readingMinutes": 2
+    },
+    {
+      "title": "Engineering And Measurement Foundations",
+      "slug": "ml-systems/engineering-measurement-foundations",
+      "summary": "Practice reproducible environments, version control, experiments, profiling, and evidence capture before entering the ML systems curriculum.",
+      "track": "ML Systems",
+      "topic": "Prerequisites",
+      "difficulty": "foundation",
+      "tags": [
+        "git",
+        "testing",
+        "profiling",
+        "reproducibility"
+      ],
+      "prerequisites": [
+        "Python and NumPy basics"
+      ],
+      "diagramRefs": [],
+      "sourceRefs": [
+        "harvard-cs249r-repository"
+      ],
+      "status": "published",
+      "id": "ad1b36683091",
+      "route": "/docs/ml-systems/engineering-measurement-foundations",
+      "sourcePath": "content/knowledge/ml-systems/engineering-measurement-foundations.md",
+      "bodyPath": "content/knowledge/ml-systems/engineering-measurement-foundations.md",
+      "markdown": "## A result needs provenance\n\nThe CS249r repository is an integrated curriculum: book, labs, TinyTorch, hardware kits, MLSys·im, and StaffML. Its practical work assumes that you can run code, preserve an experiment, and explain what changed. The [upstream repository](https://github.com/harvard-edge/cs249r_book) is the primary source for setup and component status.\n\nFor every experiment, record the question, prediction, code revision, environment, input, metric definition, result, and interpretation. This turns a screenshot into reproducible evidence.\n\n## Environments and version control\n\nUse an isolated Python environment. Pin enough dependencies to reproduce behavior, but do not mistake a lockfile for a complete environment record: operating system, accelerator, drivers, and device settings can matter. Commit small changes with messages that name the learning or behavior change.\n\n## Tests before benchmarks\n\nA fast wrong implementation is still wrong. Establish correctness on small cases, include edge cases, and keep a reference implementation when optimizing. Then benchmark with representative inputs, warmups, repeated trials, and an explicit statistic such as median or p95.\n\n## Evidence discipline\n\nSeparate observation from explanation. “p95 increased from 42 ms to 71 ms” is an observation. “memory pressure caused cache misses” is a hypothesis until another measurement supports it. Good systems work makes that boundary visible.\n\n## Hardware is optional in this path\n\nReal hardware reveals power, thermal, memory, and device-specific limits. If you do not have the kit, use the MLSys·im alternative and document which effects the simulation models or omits. Completing the simulator branch is a valid path outcome; it is not a claim that simulation and physical deployment are identical.",
+      "plainText": "A result needs provenance The CS249r repository is an integrated curriculum: book, labs, TinyTorch, hardware kits, MLSys·im, and StaffML. Its practical work assumes that you can run code, preserve an experiment, and explain what changed. The upstream repository is the primary source for setup and component status. For every experiment, record the question, prediction, code revision, environment, input, metric definition, result, and interpretation. This turns a screenshot into reproducible evidence. Environments and version control Use an isolated Python environment. Pin enough dependencies to reproduce behavior, but do not mistake a lockfile for a complete environment record: operating system, accelerator, drivers, and device settings can matter. Commit small changes with messages that name the learning or behavior change. Tests before benchmarks A fast wrong implementation is still wrong. Establish correctness on small cases, include edge cases, and keep a reference implementation when optimizing. Then benchmark with representative inputs, warmups, repeated trials, and an explicit statistic such as median or p95. Evidence discipline Separate observation from explanation. “p95 increased from 42 ms to 71 ms” is an observation. “memory pressure caused cache misses” is a hypothesis until another measurement supports it. Good systems work makes that boundary visible. Hardware is optional in this path Real hardware reveals power, thermal, memory, and device-specific limits. If you do not have the kit, use the MLSys·im alternative and document which effects the simulation models or omits. Completing the simulator branch is a valid path outcome; it is not a claim that simulation and physical deployment are identical.",
+      "headings": [
+        {
+          "id": "a-result-needs-provenance",
+          "depth": 2,
+          "text": "A result needs provenance"
+        },
+        {
+          "id": "environments-and-version-control",
+          "depth": 2,
+          "text": "Environments and version control"
+        },
+        {
+          "id": "tests-before-benchmarks",
+          "depth": 2,
+          "text": "Tests before benchmarks"
+        },
+        {
+          "id": "evidence-discipline",
+          "depth": 2,
+          "text": "Evidence discipline"
+        },
+        {
+          "id": "hardware-is-optional-in-this-path",
+          "depth": 2,
+          "text": "Hardware is optional in this path"
+        }
+      ],
+      "mermaidBlocks": [],
+      "contentHash": "3bec7184bf9643d014d720d75160ad7eaee84516a332234849640f78de64359c",
+      "readingMinutes": 2
+    },
+    {
+      "title": "Quantitative Foundations For ML Systems",
+      "slug": "ml-systems/math-foundations",
+      "summary": "Refresh linear algebra, calculus, probability, units, logarithms, and estimation through the calculations used in practical ML systems work.",
+      "track": "ML Systems",
+      "topic": "Prerequisites",
+      "difficulty": "foundation",
+      "tags": [
+        "mathematics",
+        "linear-algebra",
+        "probability",
+        "estimation"
+      ],
+      "prerequisites": [],
+      "diagramRefs": [],
+      "sourceRefs": [
+        "harvard-vol1"
+      ],
+      "status": "published",
+      "id": "a4dd8bfb1a16",
+      "route": "/docs/ml-systems/math-foundations",
+      "sourcePath": "content/knowledge/ml-systems/math-foundations.md",
+      "bodyPath": "content/knowledge/ml-systems/math-foundations.md",
+      "markdown": "## The math is a decision tool\n\nVolume I assumes undergraduate foundations in linear algebra, calculus, and probability. In systems work, the goal is rarely a long symbolic proof. The goal is to translate a design into quantities, preserve units, estimate its order of magnitude, and notice when an answer is physically impossible. Use the [official Volume I curriculum](https://mlsysbook.ai/vol1/) as the primary source for scope.\n\n## Linear algebra with shapes\n\nFor `A ∈ R^(m×k)` and `B ∈ R^(k×n)`, `AB` has shape `m×n` and requires approximately `2mkn` floating-point operations when a multiply and add are counted separately. Shape annotations catch invalid compositions; the operation count helps estimate cost.\n\nKnow vectors, matrices, tensors, dot products, matrix multiplication, transposes, norms, and reductions. Focus on what an operation does to dimensions and data movement.\n\n## Calculus for training\n\nA derivative measures local sensitivity. Gradients collect partial derivatives; the chain rule propagates sensitivity through composed operations. For systems reasoning, connect the math to stored activations, backward-pass work, numerical precision, and optimizer state. Backpropagation is both an algorithm and a memory schedule.\n\n## Probability for uncertain behavior\n\nRefresh conditional probability, expectation, variance, sampling, confidence intervals, and distribution shift. Accuracy is an estimate over a sample, not an eternal property. A production population can change while code remains unchanged.\n\n## Units and orders of magnitude\n\nCarry units through every calculation: bytes, seconds, operations, watts, dollars, or requests. Throughput is work per time; latency is time per request. Bandwidth is data per time. These quantities relate but are not interchangeable.\n\nUse powers of ten and bounds before precise arithmetic. If a model has one billion `float16` parameters, weights alone are roughly 2 GB. Training requires more because gradients, optimizer states, activations, and temporary buffers also exist.\n\n## Practical exercise\n\nEstimate the weight memory and matrix-multiply work for a small dense layer. State assumptions, calculate a lower and upper bound, then verify with a short NumPy program. Explain why measured process memory differs from the tensor payload.",
+      "plainText": "The math is a decision tool Volume I assumes undergraduate foundations in linear algebra, calculus, and probability. In systems work, the goal is rarely a long symbolic proof. The goal is to translate a design into quantities, preserve units, estimate its order of magnitude, and notice when an answer is physically impossible. Use the official Volume I curriculum as the primary source for scope. Linear algebra with shapes For A ∈ R^(m×k) and B ∈ R^(k×n), AB has shape m×n and requires approximately 2mkn floating-point operations when a multiply and add are counted separately. Shape annotations catch invalid compositions; the operation count helps estimate cost. Know vectors, matrices, tensors, dot products, matrix multiplication, transposes, norms, and reductions. Focus on what an operation does to dimensions and data movement. Calculus for training A derivative measures local sensitivity. Gradients collect partial derivatives; the chain rule propagates sensitivity through composed operations. For systems reasoning, connect the math to stored activations, backward-pass work, numerical precision, and optimizer state. Backpropagation is both an algorithm and a memory schedule. Probability for uncertain behavior Refresh conditional probability, expectation, variance, sampling, confidence intervals, and distribution shift. Accuracy is an estimate over a sample, not an eternal property. A production population can change while code remains unchanged. Units and orders of magnitude Carry units through every calculation: bytes, seconds, operations, watts, dollars, or requests. Throughput is work per time; latency is time per request. Bandwidth is data per time. These quantities relate but are not interchangeable. Use powers of ten and bounds before precise arithmetic. If a model has one billion float16 parameters, weights alone are roughly 2 GB. Training requires more because gradients, optimizer states, activations, and temporary buffers also exist. Practical exercise Estimate the weight memory and matrix-multiply work for a small dense layer. State assumptions, calculate a lower and upper bound, then verify with a short NumPy program. Explain why measured process memory differs from the tensor payload.",
+      "headings": [
+        {
+          "id": "the-math-is-a-decision-tool",
+          "depth": 2,
+          "text": "The math is a decision tool"
+        },
+        {
+          "id": "linear-algebra-with-shapes",
+          "depth": 2,
+          "text": "Linear algebra with shapes"
+        },
+        {
+          "id": "calculus-for-training",
+          "depth": 2,
+          "text": "Calculus for training"
+        },
+        {
+          "id": "probability-for-uncertain-behavior",
+          "depth": 2,
+          "text": "Probability for uncertain behavior"
+        },
+        {
+          "id": "units-and-orders-of-magnitude",
+          "depth": 2,
+          "text": "Units and orders of magnitude"
+        },
+        {
+          "id": "practical-exercise",
+          "depth": 2,
+          "text": "Practical exercise"
+        }
+      ],
+      "mermaidBlocks": [],
+      "contentHash": "e58fdf33e146710f46393b9f02783807bfedd8fe8612c3659fce0d7ae8090013",
+      "readingMinutes": 2
+    },
+    {
+      "title": "ML Systems Foundations And Requirements",
+      "slug": "ml-systems/ml-systems-foundations",
+      "summary": "Translate an ML product goal into measurable model, data, infrastructure, reliability, and responsible-engineering requirements.",
+      "track": "ML Systems",
+      "topic": "Foundations",
+      "difficulty": "foundation",
+      "tags": [
+        "requirements",
+        "metrics",
+        "tradeoffs",
+        "ml-systems"
+      ],
+      "prerequisites": [
+        "AI engineering and the ML systems lens"
+      ],
+      "diagramRefs": [],
+      "sourceRefs": [
+        "harvard-vol1-ml-systems"
+      ],
+      "status": "published",
+      "id": "e36f13dcaf15",
+      "route": "/docs/ml-systems/ml-systems-foundations",
+      "sourcePath": "content/knowledge/ml-systems/ml-systems-foundations.md",
+      "bodyPath": "content/knowledge/ml-systems/ml-systems-foundations.md",
+      "markdown": "## Primary reading\n\nRead Harvard’s [ML Systems chapter](https://mlsysbook.ai/vol1/ml_systems/ml_systems.html), then use this companion to turn its concepts into a reviewable system brief.\n\n## Define the system boundary\n\nName inputs, outputs, users, upstream dependencies, downstream decisions, feedback, and the deployment environment. A model is one component inside that boundary. Requirements must cover the complete path from data arrival to an action and its monitoring.\n\n## Make metrics operational\n\nModel quality, latency, throughput, availability, memory, energy, cost, privacy, fairness, and robustness can conflict. Define each metric, population, time window, percentile, and threshold. “Fast” is not testable; “p95 under 120 ms at 50 requests per second on the target device” is.\n\n## Baselines before complexity\n\nStart with a simple baseline and a fixed evaluation contract. A complex model earns its cost only if it improves the mission outcome enough to justify development, serving, and operational burden.\n\n## Failure budget\n\nList statistical, software, data, and infrastructure failure modes. For each, name detection, containment, recovery, and the owner who responds. Silent degradation deserves explicit monitoring because success responses can hide worsening predictions.\n\n## Practical output\n\nWrite a one-page system card: mission, stakeholders, system boundary, dataset assumptions, baseline, metric table, constraints, three failure modes, and the next experiment. Mark every unknown as an assumption rather than silently inventing precision.",
+      "plainText": "Primary reading Read Harvard’s ML Systems chapter, then use this companion to turn its concepts into a reviewable system brief. Define the system boundary Name inputs, outputs, users, upstream dependencies, downstream decisions, feedback, and the deployment environment. A model is one component inside that boundary. Requirements must cover the complete path from data arrival to an action and its monitoring. Make metrics operational Model quality, latency, throughput, availability, memory, energy, cost, privacy, fairness, and robustness can conflict. Define each metric, population, time window, percentile, and threshold. “Fast” is not testable; “p95 under 120 ms at 50 requests per second on the target device” is. Baselines before complexity Start with a simple baseline and a fixed evaluation contract. A complex model earns its cost only if it improves the mission outcome enough to justify development, serving, and operational burden. Failure budget List statistical, software, data, and infrastructure failure modes. For each, name detection, containment, recovery, and the owner who responds. Silent degradation deserves explicit monitoring because success responses can hide worsening predictions. Practical output Write a one-page system card: mission, stakeholders, system boundary, dataset assumptions, baseline, metric table, constraints, three failure modes, and the next experiment. Mark every unknown as an assumption rather than silently inventing precision.",
+      "headings": [
+        {
+          "id": "primary-reading",
+          "depth": 2,
+          "text": "Primary reading"
+        },
+        {
+          "id": "define-the-system-boundary",
+          "depth": 2,
+          "text": "Define the system boundary"
+        },
+        {
+          "id": "make-metrics-operational",
+          "depth": 2,
+          "text": "Make metrics operational"
+        },
+        {
+          "id": "baselines-before-complexity",
+          "depth": 2,
+          "text": "Baselines before complexity"
+        },
+        {
+          "id": "failure-budget",
+          "depth": 2,
+          "text": "Failure budget"
+        },
+        {
+          "id": "practical-output",
+          "depth": 2,
+          "text": "Practical output"
+        }
+      ],
+      "mermaidBlocks": [],
+      "contentHash": "f52d9084cd77e4fe04877bd0fb1cf11a64031130c5ac07afdf0394d318ec4dc3",
+      "readingMinutes": 1
+    },
+    {
+      "title": "The ML Workflow As An Evidence Loop",
+      "slug": "ml-systems/ml-workflow",
+      "summary": "Organize problem framing, data, modeling, evaluation, deployment, and monitoring as an iterative evidence-producing workflow.",
+      "track": "ML Systems",
+      "topic": "Foundations",
+      "difficulty": "foundation",
+      "tags": [
+        "workflow",
+        "experiments",
+        "evaluation",
+        "monitoring"
+      ],
+      "prerequisites": [
+        "ML systems requirements"
+      ],
+      "diagramRefs": [],
+      "sourceRefs": [
+        "harvard-vol1-ml-workflow"
+      ],
+      "status": "published",
+      "id": "d34cb34380e3",
+      "route": "/docs/ml-systems/ml-workflow",
+      "sourcePath": "content/knowledge/ml-systems/ml-workflow.md",
+      "bodyPath": "content/knowledge/ml-systems/ml-workflow.md",
+      "markdown": "## Primary reading\n\nRead Harvard’s [ML Workflow chapter](https://mlsysbook.ai/vol1/ml_workflow/ml_workflow.html). This guide emphasizes the artifacts that let another engineer audit the workflow.\n\n## A loop, not a waterfall\n\nProblem framing determines data and metrics. Data exploration exposes feasibility problems. Evaluation reveals error slices that change collection or labeling. Deployment produces real traffic and new failure evidence. Draw the loop and make its feedback paths explicit.\n\n## Preserve comparable experiments\n\nEach experiment should change one named assumption or design choice. Record code, configuration, data version, random seed, environment, metrics, and artifacts. Compare against a baseline with the same evaluation contract.\n\n## Evaluate slices and operations\n\nAggregate quality can hide systematic failures. Define important slices before inspection, and avoid repeatedly tuning against the test set. Add system metrics—latency, memory, throughput, and cost—to model metrics early enough that architecture can still change.\n\n## Deployment and monitoring\n\nPlan validation, shadowing or limited rollout, rollback, and alert ownership. Monitor inputs, outputs, system health, and delayed outcomes when available. A dashboard is useful only when it supports a decision.\n\n## Practical output\n\nCreate an experiment ledger with a prediction, independent variable, controlled factors, success criteria, result, and next action. The ledger should make a failed experiment useful rather than disposable.",
+      "plainText": "Primary reading Read Harvard’s ML Workflow chapter. This guide emphasizes the artifacts that let another engineer audit the workflow. A loop, not a waterfall Problem framing determines data and metrics. Data exploration exposes feasibility problems. Evaluation reveals error slices that change collection or labeling. Deployment produces real traffic and new failure evidence. Draw the loop and make its feedback paths explicit. Preserve comparable experiments Each experiment should change one named assumption or design choice. Record code, configuration, data version, random seed, environment, metrics, and artifacts. Compare against a baseline with the same evaluation contract. Evaluate slices and operations Aggregate quality can hide systematic failures. Define important slices before inspection, and avoid repeatedly tuning against the test set. Add system metrics—latency, memory, throughput, and cost—to model metrics early enough that architecture can still change. Deployment and monitoring Plan validation, shadowing or limited rollout, rollback, and alert ownership. Monitor inputs, outputs, system health, and delayed outcomes when available. A dashboard is useful only when it supports a decision. Practical output Create an experiment ledger with a prediction, independent variable, controlled factors, success criteria, result, and next action. The ledger should make a failed experiment useful rather than disposable.",
+      "headings": [
+        {
+          "id": "primary-reading",
+          "depth": 2,
+          "text": "Primary reading"
+        },
+        {
+          "id": "a-loop-not-a-waterfall",
+          "depth": 2,
+          "text": "A loop, not a waterfall"
+        },
+        {
+          "id": "preserve-comparable-experiments",
+          "depth": 2,
+          "text": "Preserve comparable experiments"
+        },
+        {
+          "id": "evaluate-slices-and-operations",
+          "depth": 2,
+          "text": "Evaluate slices and operations"
+        },
+        {
+          "id": "deployment-and-monitoring",
+          "depth": 2,
+          "text": "Deployment and monitoring"
+        },
+        {
+          "id": "practical-output",
+          "depth": 2,
+          "text": "Practical output"
+        }
+      ],
+      "mermaidBlocks": [],
+      "contentHash": "0ea9e6bd746e2cfb834f085520e2ff289694c9dd5bbcc2467478790ede18c0f2",
+      "readingMinutes": 1
+    },
+    {
+      "title": "Python And NumPy For ML Systems",
+      "slug": "ml-systems/python-numpy-foundations",
+      "summary": "Build the Python, array, shape, dtype, and measurement habits needed to reason about machine learning systems rather than isolated notebooks.",
+      "track": "ML Systems",
+      "topic": "Prerequisites",
+      "difficulty": "foundation",
+      "tags": [
+        "python",
+        "numpy",
+        "arrays",
+        "profiling"
+      ],
+      "prerequisites": [],
+      "diagramRefs": [],
+      "sourceRefs": [
+        "harvard-vol1"
+      ],
+      "status": "published",
+      "id": "d57f02bc5f4e",
+      "route": "/docs/ml-systems/python-numpy-foundations",
+      "sourcePath": "content/knowledge/ml-systems/python-numpy-foundations.md",
+      "bodyPath": "content/knowledge/ml-systems/python-numpy-foundations.md",
+      "markdown": "## Why this prerequisite exists\n\nThe Harvard curriculum assumes Python proficiency and familiarity with NumPy. This companion narrows that large prerequisite to the behaviors you will use throughout the path: reading shapes, predicting memory, vectorizing work, testing numerical code, and measuring before optimizing. The [official Volume I homepage](https://mlsysbook.ai/vol1/) remains the authoritative statement of prerequisites and curriculum scope.\n\n## Arrays are layouts, not just lists\n\nFor an array with shape `(batch, features)`, make every axis nameable. Shape bugs often execute successfully because broadcasting produces a valid but unintended result. Before running an operation, write the expected input and output shapes. Then confirm them with assertions.\n\nMemory is approximately `element_count × bytes_per_element`. A `1000 × 1000` `float32` array holds one million four-byte values, or about 4 MB before temporary arrays and framework overhead. Changing to `float64` doubles that payload. This simple calculation becomes essential when activations, optimizer state, and batches compete for memory.\n\n```python\nimport numpy as np\n\nx = np.zeros((1_000, 1_000), dtype=np.float32)\nassert x.shape == (1_000, 1_000)\nassert x.nbytes == 4_000_000\n```\n\n## Vectorization and hidden work\n\nVectorized NumPy moves loops into optimized native kernels, but concise syntax does not guarantee low cost. An expression can allocate several full-sized temporaries. Inspect `shape`, `dtype`, `nbytes`, and whether an operation returns a view or a copy. Treat each allocation and data movement as part of the algorithm.\n\n## Reproducibility and tests\n\nUse explicit random generators, small deterministic fixtures, tolerance-aware comparisons, and tests for shapes as well as values. A useful numerical test states the invariant: conservation, monotonicity, bounds, or agreement with a tiny reference implementation.\n\n## Measure a baseline\n\nUse `time.perf_counter()` around repeated work, warm up code whose first call initializes caches, and report the environment with the result. One timing is an anecdote; a distribution with inputs and hardware recorded is evidence.\n\n## Practical exercise\n\nCreate arrays with two dtypes, predict their memory before printing `nbytes`, and compare a Python loop with a vectorized operation. Record where your prediction differed from observation and explain whether computation or data movement dominated.",
+      "plainText": "Why this prerequisite exists The Harvard curriculum assumes Python proficiency and familiarity with NumPy. This companion narrows that large prerequisite to the behaviors you will use throughout the path: reading shapes, predicting memory, vectorizing work, testing numerical code, and measuring before optimizing. The official Volume I homepage remains the authoritative statement of prerequisites and curriculum scope. Arrays are layouts, not just lists For an array with shape (batch, features), make every axis nameable. Shape bugs often execute successfully because broadcasting produces a valid but unintended result. Before running an operation, write the expected input and output shapes. Then confirm them with assertions. Memory is approximately element_count × bytes_per_element. A 1000 × 1000 float32 array holds one million four-byte values, or about 4 MB before temporary arrays and framework overhead. Changing to float64 doubles that payload. This simple calculation becomes essential when activations, optimizer state, and batches compete for memory. import numpy as np x = np.zeros((1_000, 1_000), dtype=np.float32) assert x.shape == (1_000, 1_000) assert x.nbytes == 4_000_000 Vectorization and hidden work Vectorized NumPy moves loops into optimized native kernels, but concise syntax does not guarantee low cost. An expression can allocate several full-sized temporaries. Inspect shape, dtype, nbytes, and whether an operation returns a view or a copy. Treat each allocation and data movement as part of the algorithm. Reproducibility and tests Use explicit random generators, small deterministic fixtures, tolerance-aware comparisons, and tests for shapes as well as values. A useful numerical test states the invariant: conservation, monotonicity, bounds, or agreement with a tiny reference implementation. Measure a baseline Use time.perf_counter() around repeated work, warm up code whose first call initializes caches, and report the environment with the result. One timing is an anecdote; a distribution with inputs and hardware recorded is evidence. Practical exercise Create arrays with two dtypes, predict their memory before printing nbytes, and compare a Python loop with a vectorized operation. Record where your prediction differed from observation and explain whether computation or data movement dominated.",
+      "headings": [
+        {
+          "id": "why-this-prerequisite-exists",
+          "depth": 2,
+          "text": "Why this prerequisite exists"
+        },
+        {
+          "id": "arrays-are-layouts-not-just-lists",
+          "depth": 2,
+          "text": "Arrays are layouts, not just lists"
+        },
+        {
+          "id": "vectorization-and-hidden-work",
+          "depth": 2,
+          "text": "Vectorization and hidden work"
+        },
+        {
+          "id": "reproducibility-and-tests",
+          "depth": 2,
+          "text": "Reproducibility and tests"
+        },
+        {
+          "id": "measure-a-baseline",
+          "depth": 2,
+          "text": "Measure a baseline"
+        },
+        {
+          "id": "practical-exercise",
+          "depth": 2,
+          "text": "Practical exercise"
+        }
+      ],
+      "mermaidBlocks": [],
+      "contentHash": "1971f8f53b274e0de0b620a69ac26ef710617887942a4a8dfd1c44d4a7026a34",
+      "readingMinutes": 2
+    },
+    {
       "title": "Breadth-First Search And Depth-First Search Fundamentals",
       "slug": "programming/bfs-dfs-fundamentals",
       "summary": "Learn the shared graph traversal model, queue-based BFS, recursive and iterative DFS, complexity, correctness, and practical selection rules with readable Python and TypeScript.",
@@ -3861,59 +4896,61 @@
       ],
       "progression": {
         "framework": "jf-standard",
+        "roadmapLabel": "Pre-A1 to A1 roadmap",
+        "reviewRoute": "/languages/japanese/review",
         "skills": [
           {
             "id": "kana-listening",
             "label": "Kana sounds and rhythm",
-            "skill": "listening",
+            "category": "listening",
             "description": "Hear mora rhythm and distinguish the core kana sound patterns."
           },
           {
             "id": "kana-reading",
             "label": "Kana recognition",
-            "skill": "reading",
+            "category": "reading",
             "description": "Recognize hiragana and katakana in words, signs, and tiny texts."
           },
           {
             "id": "kana-writing",
             "label": "Kana handwriting",
-            "skill": "writing",
+            "category": "writing",
             "description": "Trace and recall textbook-style kana with the intended stroke order."
           },
           {
             "id": "kana-interaction",
             "label": "Kana learning interaction",
-            "skill": "interaction",
+            "category": "interaction",
             "description": "Use kana knowledge to ask, answer, and clarify a simple reading or input question."
           },
           {
             "id": "kana-ime",
             "label": "Japanese keyboard input",
-            "skill": "ime",
+            "category": "ime",
             "description": "Choose IME keys separately from learner-facing pronunciation and romanization."
           },
           {
             "id": "a1-listening",
             "label": "A1 listening",
-            "skill": "listening",
+            "category": "listening",
             "description": "Understand familiar words and short, slowly delivered everyday exchanges."
           },
           {
             "id": "a1-reading",
             "label": "A1 reading",
-            "skill": "reading",
+            "category": "reading",
             "description": "Find concrete information in short sentences, signs, messages, and mini-readers."
           },
           {
             "id": "a1-interaction",
             "label": "A1 interaction",
-            "skill": "interaction",
+            "category": "interaction",
             "description": "Exchange basic personal information and complete predictable everyday tasks."
           },
           {
             "id": "a1-writing",
             "label": "A1 writing",
-            "skill": "writing",
+            "category": "writing",
             "description": "Write familiar characters and create a very short personal or practical message."
           }
         ],
@@ -3921,7 +4958,8 @@
           {
             "id": "kana-explorer",
             "label": "Kana Explorer",
-            "proficiencyLevel": "pre-a1",
+            "level": "Pre-A1",
+            "status": "published",
             "summary": "Build a reliable sound-to-symbol foundation across recognition, reading, handwriting, and keyboard input.",
             "unitSlugs": [
               "writing-systems",
@@ -3930,31 +4968,31 @@
               "katakana-foundations",
               "romaji-and-kana-input"
             ],
-            "canDos": [
+            "outcomes": [
               {
                 "id": "kana-hear-morae",
                 "statement": "I can hear and tap the mora rhythm of a short familiar kana word.",
-                "skill": "listening"
+                "skillId": "kana-listening"
               },
               {
                 "id": "kana-read-basics",
                 "statement": "I can recognize the 46 basic hiragana and katakana in standard order.",
-                "skill": "reading"
+                "skillId": "kana-reading"
               },
               {
                 "id": "kana-write-sample",
                 "statement": "I can write a sampled basic kana character from memory using its stroke order.",
-                "skill": "writing"
+                "skillId": "kana-writing"
               },
               {
                 "id": "kana-clarify-input",
                 "statement": "I can explain a simple difference between a particle's sound and its IME spelling.",
-                "skill": "interaction"
+                "skillId": "kana-interaction"
               },
               {
                 "id": "kana-type-exceptions",
                 "statement": "I can type particles, small kana, doubled consonants, and long vowels with an IME.",
-                "skill": "ime"
+                "skillId": "kana-ime"
               }
             ],
             "requiredNodeSlugs": [
@@ -3975,31 +5013,32 @@
           {
             "id": "first-connections",
             "label": "First Connections",
-            "proficiencyLevel": "a1",
+            "level": "A1",
+            "status": "published",
             "summary": "Use short rehearsed language to meet someone, exchange concrete information, express preferences, and order.",
             "unitSlugs": [
               "first-connections"
             ],
-            "canDos": [
+            "outcomes": [
               {
                 "id": "connections-hear-details",
                 "statement": "I can understand a slowly spoken name, age, time, or simple preference.",
-                "skill": "listening"
+                "skillId": "a1-listening"
               },
               {
                 "id": "connections-read-scene",
                 "statement": "I can understand the main details in a short greeting or café scene.",
-                "skill": "reading"
+                "skillId": "a1-reading"
               },
               {
                 "id": "connections-write-intro",
                 "statement": "I can write a two-sentence introduction with my name and one personal fact.",
-                "skill": "writing"
+                "skillId": "a1-writing"
               },
               {
                 "id": "connections-exchange",
                 "statement": "I can greet someone, give my name, ask one basic question, and respond politely.",
-                "skill": "interaction"
+                "skillId": "a1-interaction"
               }
             ],
             "requiredNodeSlugs": [
@@ -4013,32 +5052,33 @@
           {
             "id": "everyday-navigator",
             "label": "Everyday Navigator",
-            "proficiencyLevel": "a1",
+            "level": "A1",
+            "status": "published",
             "summary": "Complete predictable daily tasks involving places, routines, transport, requests, purchases, signs, and messages.",
             "unitSlugs": [
               "everyday-navigator",
               "starter-kanji"
             ],
-            "canDos": [
+            "outcomes": [
               {
                 "id": "navigator-hear-plan",
                 "statement": "I can understand the time, place, and transport in a short familiar plan.",
-                "skill": "listening"
+                "skillId": "a1-listening"
               },
               {
                 "id": "navigator-find-detail",
                 "statement": "I can locate a concrete time, place, price, or instruction in a short text.",
-                "skill": "reading"
+                "skillId": "a1-reading"
               },
               {
                 "id": "navigator-write-message",
                 "statement": "I can write a short message giving a meeting time and place.",
-                "skill": "writing"
+                "skillId": "a1-writing"
               },
               {
                 "id": "navigator-complete-task",
                 "statement": "I can ask directions, make a request, arrange a meeting, or buy a simple item.",
-                "skill": "interaction"
+                "skillId": "a1-interaction"
               }
             ],
             "requiredNodeSlugs": [
@@ -4056,7 +5096,7 @@
       "id": "084cfa357f0b",
       "route": "/paths/japanese-foundations",
       "sourcePath": "content/learning-paths/japanese-foundations.json",
-      "contentHash": "899bf8c4a567de5221651ae03b3f8dc6a1393e0cdf7ccec1d174884113a54b1b"
+      "contentHash": "d938bd5969346e0ce2f5325731d5fa0f71ce62d723148bf3953d7586f454d4ba"
     },
     {
       "slug": "mermaid-diagram-authoring",
@@ -4117,6 +5157,951 @@
       "route": "/paths/mermaid-diagram-authoring",
       "sourcePath": "content/learning-paths/mermaid-diagram-authoring.json",
       "contentHash": "f1246ed1346c18a7d8f51050e77e7662318cc55f49e87a68b22560ce668a373e"
+    },
+    {
+      "slug": "ml-systems-engineer",
+      "title": "ML Systems Engineer — Harvard CS249r",
+      "summary": "A source-linked career path through the complete Harvard CS249r student curriculum: prerequisites, both books, labs, TinyTorch, MLSys·im, hardware alternatives, and StaffML practice.",
+      "kind": "role",
+      "category": "Machine Learning",
+      "audience": "Students and software engineers building toward practical machine learning systems and AI engineering roles.",
+      "status": "published",
+      "sourcePolicy": "required",
+      "sourceRefs": [
+        "harvard-cs249r-repository",
+        "harvard-vol1",
+        "harvard-vol2",
+        "harvard-labs",
+        "harvard-tinytorch",
+        "harvard-mlsysim",
+        "harvard-hardware-kits",
+        "harvard-staffml"
+      ],
+      "units": [
+        {
+          "slug": "ml-systems-prerequisites",
+          "title": "Prerequisites — Scientific Computing",
+          "summary": "Learn the Python, NumPy, quantitative, and experimental foundations that the books assume, with a measured lab and checkpoint.",
+          "nodes": [
+            {
+              "kind": "document",
+              "slug": "ml-systems/python-numpy-foundations",
+              "skillIds": [
+                "scientific-computing"
+              ],
+              "required": true
+            },
+            {
+              "kind": "document",
+              "slug": "ml-systems/math-foundations",
+              "skillIds": [
+                "quantitative-reasoning"
+              ],
+              "required": true
+            },
+            {
+              "kind": "document",
+              "slug": "ml-systems/engineering-measurement-foundations",
+              "skillIds": [
+                "experimental-practice"
+              ],
+              "required": true
+            },
+            {
+              "kind": "exercise",
+              "slug": "ml-systems/prerequisite-measurement-lab",
+              "skillIds": [
+                "scientific-computing",
+                "quantitative-reasoning",
+                "experimental-practice"
+              ],
+              "required": true
+            },
+            {
+              "kind": "exercise",
+              "slug": "ml-systems/prerequisites-checkpoint",
+              "skillIds": [
+                "scientific-computing",
+                "quantitative-reasoning",
+                "experimental-practice"
+              ],
+              "required": true
+            }
+          ]
+        },
+        {
+          "slug": "volume-one-foundations",
+          "title": "Volume I — Foundations",
+          "summary": "Study AI engineering, system requirements, iterative workflows, and data engineering through the official chapters and enriched companion labs.",
+          "nodes": [
+            {
+              "kind": "source",
+              "slug": "ml-systems/ai-engineering-introduction",
+              "skillIds": [
+                "systems-thinking"
+              ],
+              "required": true,
+              "sourceRef": "harvard-vol1-introduction",
+              "activity": "read",
+              "companionKind": "document"
+            },
+            {
+              "kind": "exercise",
+              "slug": "ml-systems/ai-triad-guided-lab",
+              "skillIds": [
+                "systems-thinking",
+                "quantitative-reasoning"
+              ],
+              "required": true
+            },
+            {
+              "kind": "source",
+              "slug": "ml-systems/ml-systems-foundations",
+              "skillIds": [
+                "systems-thinking",
+                "requirements-engineering"
+              ],
+              "required": true,
+              "sourceRef": "harvard-vol1-ml-systems",
+              "activity": "read",
+              "companionKind": "document"
+            },
+            {
+              "kind": "exercise",
+              "slug": "ml-systems/foundations-checkpoint",
+              "skillIds": [
+                "systems-thinking",
+                "requirements-engineering",
+                "quantitative-reasoning"
+              ],
+              "required": true
+            },
+            {
+              "kind": "source",
+              "slug": "ml-systems/ml-workflow",
+              "skillIds": [
+                "experimental-practice",
+                "operations"
+              ],
+              "required": true,
+              "sourceRef": "harvard-vol1-ml-workflow",
+              "activity": "read",
+              "companionKind": "document"
+            },
+            {
+              "kind": "source",
+              "slug": "ml-systems/data-engineering",
+              "skillIds": [
+                "data-engineering"
+              ],
+              "required": true,
+              "sourceRef": "harvard-vol1-data-engineering",
+              "activity": "read",
+              "companionKind": "document"
+            },
+            {
+              "kind": "exercise",
+              "slug": "ml-systems/data-pipeline-contract-lab",
+              "skillIds": [
+                "data-engineering",
+                "experimental-practice"
+              ],
+              "required": true
+            },
+            {
+              "kind": "exercise",
+              "slug": "ml-systems/workflow-data-checkpoint",
+              "skillIds": [
+                "experimental-practice",
+                "data-engineering",
+                "operations"
+              ],
+              "required": true
+            }
+          ]
+        },
+        {
+          "slug": "volume-one-build",
+          "title": "Volume I — Build",
+          "summary": "Continue through neural computation, network architectures, framework internals, training, and all 20 TinyTorch modules from tensors to the capstone.",
+          "nodes": [
+            {
+              "kind": "source",
+              "slug": "ml-systems/neural-computation",
+              "skillIds": [
+                "model-development"
+              ],
+              "sourceRef": "harvard-vol1-neural-computation",
+              "activity": "read",
+              "companionKind": "document"
+            },
+            {
+              "kind": "source",
+              "slug": "ml-systems/network-architectures",
+              "skillIds": [
+                "model-development"
+              ],
+              "sourceRef": "harvard-vol1-network-architectures",
+              "activity": "read",
+              "companionKind": "document"
+            },
+            {
+              "kind": "source",
+              "slug": "ml-systems/frameworks",
+              "skillIds": [
+                "model-development",
+                "performance-engineering"
+              ],
+              "sourceRef": "harvard-vol1-frameworks",
+              "activity": "read",
+              "companionKind": "document"
+            },
+            {
+              "kind": "source",
+              "slug": "ml-systems/model-training",
+              "skillIds": [
+                "model-development",
+                "experimental-practice"
+              ],
+              "sourceRef": "harvard-vol1-training",
+              "activity": "read",
+              "companionKind": "document"
+            },
+            {
+              "kind": "source",
+              "slug": "ml-systems/tinytorch-twenty-modules",
+              "skillIds": [
+                "model-development",
+                "performance-engineering"
+              ],
+              "sourceRef": "harvard-tinytorch",
+              "activity": "build",
+              "companionKind": "exercise"
+            }
+          ]
+        },
+        {
+          "slug": "volume-one-optimize",
+          "title": "Volume I — Optimize",
+          "summary": "Study data selection, compression, hardware acceleration, and benchmarking, then use simulation when physical accelerator access is unavailable.",
+          "nodes": [
+            {
+              "kind": "source",
+              "slug": "ml-systems/data-selection",
+              "skillIds": [
+                "data-engineering"
+              ],
+              "sourceRef": "harvard-vol1-data-selection",
+              "activity": "read",
+              "companionKind": "document"
+            },
+            {
+              "kind": "source",
+              "slug": "ml-systems/model-compression",
+              "skillIds": [
+                "performance-engineering"
+              ],
+              "sourceRef": "harvard-vol1-model-compression",
+              "activity": "read",
+              "companionKind": "document"
+            },
+            {
+              "kind": "source",
+              "slug": "ml-systems/hardware-acceleration",
+              "skillIds": [
+                "performance-engineering"
+              ],
+              "sourceRef": "harvard-vol1-hardware-acceleration",
+              "activity": "read",
+              "companionKind": "document"
+            },
+            {
+              "kind": "source",
+              "slug": "ml-systems/benchmarking",
+              "skillIds": [
+                "performance-engineering",
+                "experimental-practice"
+              ],
+              "sourceRef": "harvard-vol1-benchmarking",
+              "activity": "read",
+              "companionKind": "document"
+            },
+            {
+              "kind": "source",
+              "slug": "ml-systems/mlsysim-optimization",
+              "skillIds": [
+                "performance-engineering",
+                "quantitative-reasoning"
+              ],
+              "sourceRef": "harvard-mlsysim",
+              "activity": "model",
+              "companionKind": "exercise"
+            }
+          ]
+        },
+        {
+          "slug": "volume-one-deploy",
+          "title": "Volume I — Deploy",
+          "summary": "Complete single-machine systems with serving, MLOps, responsible engineering, the conclusion, and the matching Volume I labs.",
+          "nodes": [
+            {
+              "kind": "source",
+              "slug": "ml-systems/model-serving",
+              "skillIds": [
+                "operations"
+              ],
+              "sourceRef": "harvard-vol1-model-serving",
+              "activity": "read",
+              "companionKind": "document"
+            },
+            {
+              "kind": "source",
+              "slug": "ml-systems/ml-operations",
+              "skillIds": [
+                "operations"
+              ],
+              "sourceRef": "harvard-vol1-ml-ops",
+              "activity": "read",
+              "companionKind": "document"
+            },
+            {
+              "kind": "source",
+              "slug": "ml-systems/responsible-engineering",
+              "skillIds": [
+                "responsible-engineering"
+              ],
+              "sourceRef": "harvard-vol1-responsible-engineering",
+              "activity": "read",
+              "companionKind": "document"
+            },
+            {
+              "kind": "source",
+              "slug": "ml-systems/volume-one-conclusion",
+              "skillIds": [
+                "systems-thinking"
+              ],
+              "sourceRef": "harvard-vol1-conclusion",
+              "activity": "read",
+              "companionKind": "document"
+            },
+            {
+              "kind": "source",
+              "slug": "ml-systems/volume-one-labs",
+              "skillIds": [
+                "experimental-practice",
+                "performance-engineering"
+              ],
+              "sourceRef": "harvard-labs",
+              "activity": "explore",
+              "companionKind": "exercise"
+            }
+          ]
+        },
+        {
+          "slug": "volume-two-fleet",
+          "title": "Volume II — The Fleet",
+          "summary": "Begin the preview Volume II sequence with its introduction, compute infrastructure, network fabrics, and data storage foundations.",
+          "nodes": [
+            {
+              "kind": "source",
+              "slug": "ml-systems/scale-introduction",
+              "skillIds": [
+                "distributed-systems"
+              ],
+              "sourceRef": "harvard-vol2-introduction",
+              "activity": "read",
+              "companionKind": "document"
+            },
+            {
+              "kind": "source",
+              "slug": "ml-systems/compute-infrastructure",
+              "skillIds": [
+                "distributed-systems",
+                "performance-engineering"
+              ],
+              "sourceRef": "harvard-vol2-compute-infrastructure",
+              "activity": "read",
+              "companionKind": "document"
+            },
+            {
+              "kind": "source",
+              "slug": "ml-systems/network-fabrics",
+              "skillIds": [
+                "distributed-systems"
+              ],
+              "sourceRef": "harvard-vol2-network-fabrics",
+              "activity": "read",
+              "companionKind": "document"
+            },
+            {
+              "kind": "source",
+              "slug": "ml-systems/data-storage",
+              "skillIds": [
+                "distributed-systems",
+                "data-engineering"
+              ],
+              "sourceRef": "harvard-vol2-data-storage",
+              "activity": "read",
+              "companionKind": "document"
+            }
+          ]
+        },
+        {
+          "slug": "volume-two-distributed-ml",
+          "title": "Volume II — Distributed ML",
+          "summary": "Develop distributed training, collective communication, fault tolerance, and fleet orchestration judgment through chapters and simulator scenarios.",
+          "nodes": [
+            {
+              "kind": "source",
+              "slug": "ml-systems/distributed-training",
+              "skillIds": [
+                "distributed-systems"
+              ],
+              "sourceRef": "harvard-vol2-distributed-training",
+              "activity": "read",
+              "companionKind": "document"
+            },
+            {
+              "kind": "source",
+              "slug": "ml-systems/collective-communication",
+              "skillIds": [
+                "distributed-systems"
+              ],
+              "sourceRef": "harvard-vol2-collective-communication",
+              "activity": "read",
+              "companionKind": "document"
+            },
+            {
+              "kind": "source",
+              "slug": "ml-systems/fault-tolerance",
+              "skillIds": [
+                "reliability-engineering"
+              ],
+              "sourceRef": "harvard-vol2-fault-tolerance",
+              "activity": "read",
+              "companionKind": "document"
+            },
+            {
+              "kind": "source",
+              "slug": "ml-systems/fleet-orchestration",
+              "skillIds": [
+                "distributed-systems",
+                "operations"
+              ],
+              "sourceRef": "harvard-vol2-fleet-orchestration",
+              "activity": "read",
+              "companionKind": "document"
+            },
+            {
+              "kind": "source",
+              "slug": "ml-systems/mlsysim-distributed",
+              "skillIds": [
+                "distributed-systems",
+                "quantitative-reasoning"
+              ],
+              "sourceRef": "harvard-mlsysim",
+              "activity": "model",
+              "companionKind": "exercise"
+            }
+          ]
+        },
+        {
+          "slug": "volume-two-deployment-scale",
+          "title": "Volume II — Deployment At Scale",
+          "summary": "Study performance engineering, inference economics, edge intelligence, and fleet-scale operations across global deployment constraints.",
+          "nodes": [
+            {
+              "kind": "source",
+              "slug": "ml-systems/performance-engineering-scale",
+              "skillIds": [
+                "performance-engineering"
+              ],
+              "sourceRef": "harvard-vol2-performance-engineering",
+              "activity": "read",
+              "companionKind": "document"
+            },
+            {
+              "kind": "source",
+              "slug": "ml-systems/inference-at-scale",
+              "skillIds": [
+                "performance-engineering",
+                "operations"
+              ],
+              "sourceRef": "harvard-vol2-inference",
+              "activity": "read",
+              "companionKind": "document"
+            },
+            {
+              "kind": "source",
+              "slug": "ml-systems/edge-intelligence",
+              "skillIds": [
+                "performance-engineering",
+                "responsible-engineering"
+              ],
+              "sourceRef": "harvard-vol2-edge-intelligence",
+              "activity": "read",
+              "companionKind": "document"
+            },
+            {
+              "kind": "source",
+              "slug": "ml-systems/operations-at-scale",
+              "skillIds": [
+                "operations",
+                "reliability-engineering"
+              ],
+              "sourceRef": "harvard-vol2-ops-scale",
+              "activity": "read",
+              "companionKind": "document"
+            },
+            {
+              "kind": "source",
+              "slug": "ml-systems/hardware-or-simulator",
+              "skillIds": [
+                "performance-engineering"
+              ],
+              "sourceRef": "harvard-hardware-kits",
+              "activity": "deploy",
+              "companionKind": "exercise"
+            }
+          ]
+        },
+        {
+          "slug": "volume-two-responsible-fleet",
+          "title": "Volume II — The Responsible Fleet",
+          "summary": "Complete the scale curriculum with security, privacy, robustness, sustainability, responsible AI, and the fleet synthesis conclusion.",
+          "nodes": [
+            {
+              "kind": "source",
+              "slug": "ml-systems/security-privacy",
+              "skillIds": [
+                "responsible-engineering",
+                "reliability-engineering"
+              ],
+              "sourceRef": "harvard-vol2-security-privacy",
+              "activity": "read",
+              "companionKind": "document"
+            },
+            {
+              "kind": "source",
+              "slug": "ml-systems/robust-ai",
+              "skillIds": [
+                "responsible-engineering",
+                "reliability-engineering"
+              ],
+              "sourceRef": "harvard-vol2-robust-ai",
+              "activity": "read",
+              "companionKind": "document"
+            },
+            {
+              "kind": "source",
+              "slug": "ml-systems/sustainable-ai",
+              "skillIds": [
+                "responsible-engineering"
+              ],
+              "sourceRef": "harvard-vol2-sustainable-ai",
+              "activity": "read",
+              "companionKind": "document"
+            },
+            {
+              "kind": "source",
+              "slug": "ml-systems/responsible-ai",
+              "skillIds": [
+                "responsible-engineering"
+              ],
+              "sourceRef": "harvard-vol2-responsible-ai",
+              "activity": "read",
+              "companionKind": "document"
+            },
+            {
+              "kind": "source",
+              "slug": "ml-systems/volume-two-conclusion",
+              "skillIds": [
+                "systems-thinking"
+              ],
+              "sourceRef": "harvard-vol2-conclusion",
+              "activity": "read",
+              "companionKind": "document"
+            },
+            {
+              "kind": "source",
+              "slug": "ml-systems/volume-two-labs",
+              "skillIds": [
+                "distributed-systems",
+                "responsible-engineering"
+              ],
+              "sourceRef": "harvard-labs",
+              "activity": "explore",
+              "companionKind": "exercise"
+            }
+          ]
+        },
+        {
+          "slug": "ml-systems-career-practicum",
+          "title": "Career Practicum And Portfolio",
+          "summary": "Synthesize the curriculum with all 34 labs, MLSys·im tutorials, an optional hardware branch, StaffML practice, and evidence suitable for a portfolio.",
+          "nodes": [
+            {
+              "kind": "source",
+              "slug": "ml-systems/all-interactive-labs",
+              "skillIds": [
+                "experimental-practice"
+              ],
+              "sourceRef": "harvard-labs",
+              "activity": "explore",
+              "companionKind": "exercise"
+            },
+            {
+              "kind": "source",
+              "slug": "ml-systems/all-simulator-tutorials",
+              "skillIds": [
+                "quantitative-reasoning",
+                "distributed-systems"
+              ],
+              "sourceRef": "harvard-mlsysim",
+              "activity": "model",
+              "companionKind": "exercise"
+            },
+            {
+              "kind": "source",
+              "slug": "ml-systems/hardware-deployment",
+              "skillIds": [
+                "performance-engineering"
+              ],
+              "sourceRef": "harvard-hardware-kits",
+              "activity": "deploy",
+              "companionKind": "exercise"
+            },
+            {
+              "kind": "source",
+              "slug": "ml-systems/staffml-practice",
+              "skillIds": [
+                "systems-thinking",
+                "requirements-engineering"
+              ],
+              "sourceRef": "harvard-staffml",
+              "activity": "practice",
+              "companionKind": "exercise"
+            }
+          ]
+        }
+      ],
+      "progression": {
+        "framework": "career",
+        "roadmapLabel": "ML Systems career roadmap",
+        "skills": [
+          {
+            "id": "scientific-computing",
+            "label": "Scientific computing",
+            "category": "foundations",
+            "description": "Use Python and NumPy with explicit shapes, dtypes, tests, and memory reasoning."
+          },
+          {
+            "id": "quantitative-reasoning",
+            "label": "Quantitative reasoning",
+            "category": "foundations",
+            "description": "Estimate operations, memory, latency, throughput, cost, and uncertainty with units."
+          },
+          {
+            "id": "experimental-practice",
+            "label": "Experimental practice",
+            "category": "foundations",
+            "description": "Design reproducible experiments and separate observations from hypotheses."
+          },
+          {
+            "id": "systems-thinking",
+            "label": "ML systems thinking",
+            "category": "architecture",
+            "description": "Reason across data, algorithms, machines, lifecycle, and mission outcomes."
+          },
+          {
+            "id": "requirements-engineering",
+            "label": "Requirements engineering",
+            "category": "architecture",
+            "description": "Turn product goals into measurable system, model, and responsibility constraints."
+          },
+          {
+            "id": "data-engineering",
+            "label": "Data engineering",
+            "category": "build",
+            "description": "Design validated, versioned, lineage-aware data pipelines and evaluation splits."
+          },
+          {
+            "id": "model-development",
+            "label": "Model development",
+            "category": "build",
+            "description": "Understand neural computation, architectures, framework internals, and training."
+          },
+          {
+            "id": "performance-engineering",
+            "label": "Performance engineering",
+            "category": "optimize",
+            "description": "Profile and optimize memory, compute, communication, latency, and throughput."
+          },
+          {
+            "id": "operations",
+            "label": "ML operations",
+            "category": "deploy",
+            "description": "Deploy, observe, update, and recover ML services through their lifecycle."
+          },
+          {
+            "id": "distributed-systems",
+            "label": "Distributed ML systems",
+            "category": "scale",
+            "description": "Reason about fleets, networks, storage, parallel training, and orchestration."
+          },
+          {
+            "id": "reliability-engineering",
+            "label": "Reliability engineering",
+            "category": "scale",
+            "description": "Design for failures, tail behavior, recovery, security, and robustness."
+          },
+          {
+            "id": "responsible-engineering",
+            "label": "Responsible AI engineering",
+            "category": "responsibility",
+            "description": "Make privacy, fairness, safety, sustainability, and governance system properties."
+          }
+        ],
+        "stages": [
+          {
+            "id": "scientific-computing-apprentice",
+            "label": "Scientific Computing Apprentice",
+            "level": "Foundation I",
+            "status": "published",
+            "summary": "Measure numerical programs, estimate resource use, and preserve reproducible evidence.",
+            "unitSlugs": [
+              "ml-systems-prerequisites"
+            ],
+            "outcomes": [
+              {
+                "id": "apprentice-arrays",
+                "statement": "I can predict array shapes and payload memory before running code.",
+                "skillId": "scientific-computing"
+              },
+              {
+                "id": "apprentice-estimate",
+                "statement": "I can calculate a resource estimate with explicit units and assumptions.",
+                "skillId": "quantitative-reasoning"
+              },
+              {
+                "id": "apprentice-evidence",
+                "statement": "I can report a reproducible correctness check and benchmark.",
+                "skillId": "experimental-practice"
+              }
+            ],
+            "requiredNodeSlugs": [
+              "ml-systems/python-numpy-foundations",
+              "ml-systems/math-foundations",
+              "ml-systems/engineering-measurement-foundations",
+              "ml-systems/prerequisite-measurement-lab",
+              "ml-systems/prerequisites-checkpoint"
+            ],
+            "checkpointExerciseSlug": "ml-systems/prerequisites-checkpoint",
+            "passThreshold": 0.8,
+            "minimumSkillScore": 0.6,
+            "estimatedMinutes": 240
+          },
+          {
+            "id": "ml-foundations-analyst",
+            "label": "ML Foundations Analyst",
+            "level": "Foundation II",
+            "status": "published",
+            "summary": "Diagnose ML systems and translate a mission into measurable system requirements.",
+            "unitSlugs": [
+              "volume-one-foundations"
+            ],
+            "outcomes": [
+              {
+                "id": "analyst-dam",
+                "statement": "I can diagnose evidence across data, algorithm, and machine constraints.",
+                "skillId": "systems-thinking"
+              },
+              {
+                "id": "analyst-requirements",
+                "statement": "I can write operational metric thresholds for a complete system boundary.",
+                "skillId": "requirements-engineering"
+              },
+              {
+                "id": "analyst-quantify",
+                "statement": "I can choose a low-cost experiment that can change a system decision.",
+                "skillId": "quantitative-reasoning"
+              }
+            ],
+            "requiredNodeSlugs": [
+              "ml-systems/ai-engineering-introduction",
+              "ml-systems/ai-triad-guided-lab",
+              "ml-systems/ml-systems-foundations",
+              "ml-systems/foundations-checkpoint"
+            ],
+            "checkpointExerciseSlug": "ml-systems/foundations-checkpoint",
+            "passThreshold": 0.8,
+            "minimumSkillScore": 0.6,
+            "estimatedMinutes": 300
+          },
+          {
+            "id": "ml-systems-explorer",
+            "label": "ML Systems Explorer",
+            "level": "Foundation III",
+            "status": "published",
+            "summary": "Run evidence-driven ML workflows and design reliable data contracts with lineage.",
+            "unitSlugs": [
+              "volume-one-foundations"
+            ],
+            "outcomes": [
+              {
+                "id": "explorer-experiment",
+                "statement": "I can preserve a comparable experiment and choose its next action.",
+                "skillId": "experimental-practice"
+              },
+              {
+                "id": "explorer-data",
+                "statement": "I can design a validated dataset contract and leakage-resistant split.",
+                "skillId": "data-engineering"
+              },
+              {
+                "id": "explorer-monitor",
+                "statement": "I can connect data and system monitoring signals to an operational response.",
+                "skillId": "operations"
+              }
+            ],
+            "requiredNodeSlugs": [
+              "ml-systems/ml-workflow",
+              "ml-systems/data-engineering",
+              "ml-systems/data-pipeline-contract-lab",
+              "ml-systems/workflow-data-checkpoint"
+            ],
+            "checkpointExerciseSlug": "ml-systems/workflow-data-checkpoint",
+            "passThreshold": 0.8,
+            "minimumSkillScore": 0.6,
+            "estimatedMinutes": 360
+          },
+          {
+            "id": "framework-builder",
+            "label": "Framework Builder",
+            "level": "Practitioner I",
+            "status": "planned",
+            "summary": "Build neural and framework internals through the complete TinyTorch sequence.",
+            "unitSlugs": [
+              "volume-one-build"
+            ],
+            "outcomes": [
+              {
+                "id": "builder-internals",
+                "statement": "I can implement and explain the core machinery of a small ML framework.",
+                "skillId": "model-development"
+              }
+            ],
+            "requiredNodeSlugs": [],
+            "estimatedMinutes": 1200
+          },
+          {
+            "id": "performance-practitioner",
+            "label": "Performance Practitioner",
+            "level": "Practitioner II",
+            "status": "planned",
+            "summary": "Select data, compress models, analyze hardware limits, and benchmark validly.",
+            "unitSlugs": [
+              "volume-one-optimize"
+            ],
+            "outcomes": [
+              {
+                "id": "practitioner-bottleneck",
+                "statement": "I can identify and measure the limiting resource before optimizing.",
+                "skillId": "performance-engineering"
+              }
+            ],
+            "requiredNodeSlugs": [],
+            "estimatedMinutes": 720
+          },
+          {
+            "id": "production-ml-engineer",
+            "label": "Production ML Engineer",
+            "level": "Professional I",
+            "status": "planned",
+            "summary": "Serve, operate, monitor, and govern a single-machine ML system through change.",
+            "unitSlugs": [
+              "volume-one-deploy"
+            ],
+            "outcomes": [
+              {
+                "id": "production-operate",
+                "statement": "I can define rollout, observability, recovery, and responsibility controls.",
+                "skillId": "operations"
+              }
+            ],
+            "requiredNodeSlugs": [],
+            "estimatedMinutes": 720
+          },
+          {
+            "id": "distributed-ml-engineer",
+            "label": "Distributed ML Engineer",
+            "level": "Professional II",
+            "status": "planned",
+            "summary": "Design fleet infrastructure, distributed training, communication, and failure recovery.",
+            "unitSlugs": [
+              "volume-two-fleet",
+              "volume-two-distributed-ml"
+            ],
+            "outcomes": [
+              {
+                "id": "distributed-design",
+                "statement": "I can reason quantitatively about compute, network, storage, and parallelism tradeoffs.",
+                "skillId": "distributed-systems"
+              },
+              {
+                "id": "distributed-recover",
+                "statement": "I can design failure detection and recovery for fleet-scale training.",
+                "skillId": "reliability-engineering"
+              }
+            ],
+            "requiredNodeSlugs": [],
+            "estimatedMinutes": 1200
+          },
+          {
+            "id": "responsible-systems-architect",
+            "label": "Responsible Systems Architect",
+            "level": "Senior",
+            "status": "planned",
+            "summary": "Balance fleet performance, reliability, security, sustainability, and responsible outcomes.",
+            "unitSlugs": [
+              "volume-two-deployment-scale",
+              "volume-two-responsible-fleet"
+            ],
+            "outcomes": [
+              {
+                "id": "architect-balance",
+                "statement": "I can make explicit tradeoffs across service, reliability, security, and responsibility budgets.",
+                "skillId": "responsible-engineering"
+              }
+            ],
+            "requiredNodeSlugs": [],
+            "estimatedMinutes": 1200
+          },
+          {
+            "id": "ml-systems-portfolio",
+            "label": "ML Systems Portfolio",
+            "level": "Career Ready",
+            "status": "planned",
+            "summary": "Synthesize lab, simulation, optional hardware, and interview evidence into a defensible portfolio.",
+            "unitSlugs": [
+              "ml-systems-career-practicum"
+            ],
+            "outcomes": [
+              {
+                "id": "portfolio-defend",
+                "statement": "I can defend an end-to-end ML system design with quantitative evidence.",
+                "skillId": "systems-thinking"
+              }
+            ],
+            "requiredNodeSlugs": [],
+            "estimatedMinutes": 900
+          }
+        ]
+      },
+      "id": "2785ba9029d6",
+      "route": "/paths/ml-systems-engineer",
+      "sourcePath": "content/learning-paths/ml-systems-engineer.json",
+      "contentHash": "33f976b250420a4030cf39f85383a6360c67d67363216e56f078aa95518e1db5"
     },
     {
       "slug": "python-for-ts-js-engineers",
@@ -8823,6 +10808,559 @@
       "route": "/practice/languages/japanese-starter-kanji-writing",
       "sourcePath": "content/exercises/languages/japanese-starter-kanji-writing.json",
       "contentHash": "718284e8cba3598f303a778cdc223e89fe2f38fd4b29195dc62269ea924f4d63"
+    },
+    {
+      "slug": "ml-systems/ai-triad-guided-lab",
+      "title": "D–A–M Bottleneck Diagnostic",
+      "documentSlug": "ml-systems/ai-engineering-introduction",
+      "concept": "data algorithm machine diagnosis",
+      "difficulty": "foundation",
+      "tags": [
+        "dam",
+        "diagnosis",
+        "tradeoffs"
+      ],
+      "status": "published",
+      "sourceRefs": [
+        "harvard-vol1-introduction",
+        "harvard-labs"
+      ],
+      "skillIds": [
+        "systems-thinking",
+        "quantitative-reasoning"
+      ],
+      "required": true,
+      "type": "guided-lab",
+      "briefing": "Use the official chapter and Lab 01 collection to diagnose a degraded model before spending on a solution.",
+      "objectives": [
+        "Classify evidence along the data, algorithm, and machine axes.",
+        "Reject a solution that does not target the observed bottleneck.",
+        "Connect a technical metric to the mission outcome."
+      ],
+      "prediction": {
+        "prompt": "Accuracy drops while code and serving latency remain stable; training data is eighteen months old. Which first action is best?",
+        "options": [
+          {
+            "id": "gpu",
+            "label": "Buy more GPUs"
+          },
+          {
+            "id": "data",
+            "label": "Audit data freshness and population shift"
+          },
+          {
+            "id": "compress",
+            "label": "Quantize the model"
+          }
+        ]
+      },
+      "steps": [
+        {
+          "id": "inventory",
+          "title": "Inventory evidence",
+          "instructions": "List the observed model, data, machine, and mission signals without adding facts that the scenario did not provide."
+        },
+        {
+          "id": "hypotheses",
+          "title": "Rank hypotheses",
+          "instructions": "Propose one hypothesis per D–A–M axis and name the cheapest measurement that could reject each hypothesis."
+        },
+        {
+          "id": "decision",
+          "title": "Make the decision",
+          "instructions": "Choose the first experiment, estimate its cost and information value, and define the result that would change your plan."
+        }
+      ],
+      "evidenceChecklist": [
+        {
+          "id": "observations",
+          "label": "Observations are separated from hypotheses"
+        },
+        {
+          "id": "all-axes",
+          "label": "All three D–A–M axes are considered"
+        },
+        {
+          "id": "decision-rule",
+          "label": "The next action has an explicit decision rule"
+        }
+      ],
+      "reflectionPrompts": [
+        "Why is adding compute attractive even when it does not target the bottleneck?",
+        "What production signal would detect this failure sooner?"
+      ],
+      "extensionChallenge": "Repeat the diagnosis for a system whose accuracy is stable but p99 latency violates its service objective on a mobile target.",
+      "estimatedMinutes": 50,
+      "id": "6d8b65008cc7",
+      "route": "/practice/ml-systems/ai-triad-guided-lab",
+      "sourcePath": "content/exercises/ml-systems/ai-triad-guided-lab.json",
+      "contentHash": "65c5510db72d6e518a2be1712d2933b3b80184d4ec94592ed61e4de37e4a8cab"
+    },
+    {
+      "slug": "ml-systems/data-pipeline-contract-lab",
+      "title": "Data Pipeline Contract Lab",
+      "documentSlug": "ml-systems/data-engineering",
+      "concept": "data contracts and lineage",
+      "difficulty": "practitioner",
+      "tags": [
+        "data-engineering",
+        "lineage",
+        "leakage"
+      ],
+      "status": "published",
+      "sourceRefs": [
+        "harvard-vol1-data-engineering",
+        "harvard-labs"
+      ],
+      "skillIds": [
+        "data-engineering",
+        "experimental-practice"
+      ],
+      "required": true,
+      "type": "guided-lab",
+      "briefing": "Design a versioned training-data contract and try to break it with late data, duplicates, leakage, and a changed production population.",
+      "objectives": [
+        "Define row grain, keys, event time, labels, and validation boundaries.",
+        "Choose a split strategy that represents deployment.",
+        "Preserve lineage from source through training dataset."
+      ],
+      "prediction": {
+        "prompt": "Which split is safest when multiple records from one user occur over time and deployment predicts future behavior?",
+        "options": [
+          {
+            "id": "row",
+            "label": "Random row split"
+          },
+          {
+            "id": "time-entity",
+            "label": "Time-aware split with entity leakage controls"
+          },
+          {
+            "id": "duplicate",
+            "label": "Copy records into every split"
+          }
+        ]
+      },
+      "steps": [
+        {
+          "id": "contract",
+          "title": "Specify the contract",
+          "instructions": "Define grain, key, event time, label availability, types, missingness rules, and five domain invariants for a concrete dataset."
+        },
+        {
+          "id": "split",
+          "title": "Defend the split",
+          "instructions": "Describe production timing and entity relationships, choose a split, and identify two leakage paths the split must prevent."
+        },
+        {
+          "id": "lineage",
+          "title": "Build lineage",
+          "instructions": "Record source version, extraction window, transformation revision, parameters, output identifier, and downstream model run."
+        },
+        {
+          "id": "failure",
+          "title": "Inject a failure",
+          "instructions": "Simulate late labels, duplicate events, or a category change and decide whether to reject, quarantine, warn, or rebuild."
+        }
+      ],
+      "evidenceChecklist": [
+        {
+          "id": "grain",
+          "label": "Row grain and keys are unambiguous"
+        },
+        {
+          "id": "leakage",
+          "label": "Split strategy addresses time and entity leakage"
+        },
+        {
+          "id": "lineage",
+          "label": "A model run can be traced to a dataset and transformation revision"
+        }
+      ],
+      "reflectionPrompts": [
+        "Which validation protects correctness, and which only signals drift?",
+        "How would a corrected historical label propagate to trained artifacts?"
+      ],
+      "extensionChallenge": "Add an online feature path and define a measurable offline-online skew check plus an incident response.",
+      "estimatedMinutes": 60,
+      "id": "dde5be9ac73e",
+      "route": "/practice/ml-systems/data-pipeline-contract-lab",
+      "sourcePath": "content/exercises/ml-systems/data-pipeline-contract-lab.json",
+      "contentHash": "c3fa86b90faf5e2f9c4c51a2e2afebbfc2b1472690a72cd505953dd43907926c"
+    },
+    {
+      "slug": "ml-systems/foundations-checkpoint",
+      "title": "ML Foundations Analyst Checkpoint",
+      "documentSlug": "ml-systems/ml-systems-foundations",
+      "concept": "ML system framing",
+      "difficulty": "foundation",
+      "tags": [
+        "requirements",
+        "dam",
+        "metrics"
+      ],
+      "status": "published",
+      "sourceRefs": [
+        "harvard-vol1-introduction",
+        "harvard-vol1-ml-systems"
+      ],
+      "skillIds": [
+        "systems-thinking",
+        "requirements-engineering",
+        "quantitative-reasoning"
+      ],
+      "required": true,
+      "type": "questionnaire",
+      "questions": [
+        {
+          "id": "silent",
+          "prompt": "Why can an ML system degrade while its software still returns successful responses?",
+          "explanation": "Statistical behavior can degrade silently even when the serving path executes correctly.",
+          "skillIds": [
+            "systems-thinking"
+          ],
+          "kind": "choice",
+          "options": [
+            {
+              "id": "data",
+              "label": "Learned behavior can worsen when the production data distribution changes.",
+              "isCorrect": true
+            },
+            {
+              "id": "impossible",
+              "label": "Successful responses prove model behavior is unchanged.",
+              "isCorrect": false
+            }
+          ]
+        },
+        {
+          "id": "operational",
+          "prompt": "Which latency requirement is operationally testable?",
+          "explanation": "A testable requirement names the metric, percentile, threshold, load, and environment.",
+          "skillIds": [
+            "requirements-engineering"
+          ],
+          "kind": "choice",
+          "options": [
+            {
+              "id": "fast",
+              "label": "The model should be fast.",
+              "isCorrect": false
+            },
+            {
+              "id": "p95",
+              "label": "p95 is under 120 ms at 50 requests per second on the target hardware.",
+              "isCorrect": true
+            }
+          ]
+        },
+        {
+          "id": "first-test",
+          "prompt": "What is usually the best first experiment for a risky system assumption?",
+          "explanation": "Early experiments should maximize decision-relevant information per unit of time and cost.",
+          "skillIds": [
+            "quantitative-reasoning"
+          ],
+          "kind": "choice",
+          "options": [
+            {
+              "id": "cheap",
+              "label": "The cheapest valid experiment that can change the decision.",
+              "isCorrect": true
+            },
+            {
+              "id": "largest",
+              "label": "The largest training run available.",
+              "isCorrect": false
+            }
+          ]
+        }
+      ],
+      "id": "95e1a3426b87",
+      "route": "/practice/ml-systems/foundations-checkpoint",
+      "sourcePath": "content/exercises/ml-systems/foundations-checkpoint.json",
+      "contentHash": "672fd80c4dad72085636f1f831dc13e63f09a2f573b9b8622b44357644ece4d4"
+    },
+    {
+      "slug": "ml-systems/prerequisite-measurement-lab",
+      "title": "Array Memory And Measurement Lab",
+      "documentSlug": "ml-systems/python-numpy-foundations",
+      "concept": "scientific computing evidence",
+      "difficulty": "foundation",
+      "tags": [
+        "numpy",
+        "memory",
+        "benchmarking"
+      ],
+      "status": "published",
+      "sourceRefs": [
+        "harvard-vol1"
+      ],
+      "skillIds": [
+        "scientific-computing",
+        "quantitative-reasoning"
+      ],
+      "required": true,
+      "type": "guided-lab",
+      "briefing": "Predict array memory and runtime before measuring them, then preserve enough evidence for another learner to reproduce the result.",
+      "objectives": [
+        "Calculate tensor payload from shape and dtype before allocation.",
+        "Compare a reference loop with vectorized NumPy while preserving correctness.",
+        "Separate a measured observation from an explanation that still needs evidence."
+      ],
+      "prediction": {
+        "prompt": "What happens to the payload size when a fixed-shape array changes from float32 to float64?",
+        "options": [
+          {
+            "id": "same",
+            "label": "It stays the same"
+          },
+          {
+            "id": "double",
+            "label": "It approximately doubles"
+          },
+          {
+            "id": "quadruple",
+            "label": "It approximately quadruples"
+          }
+        ]
+      },
+      "steps": [
+        {
+          "id": "predict",
+          "title": "Write the budget",
+          "instructions": "Choose two shapes and calculate element count and payload bytes for float32 and float64 before running any code."
+        },
+        {
+          "id": "verify",
+          "title": "Verify payload",
+          "instructions": "Create the arrays with NumPy, compare nbytes with each prediction, and explain any mismatch without changing the original prediction."
+        },
+        {
+          "id": "benchmark",
+          "title": "Benchmark correctly",
+          "instructions": "Test a loop and a vectorized equivalent for correctness, warm both paths, run repeated timings, and report the median with environment details."
+        }
+      ],
+      "evidenceChecklist": [
+        {
+          "id": "prediction-recorded",
+          "label": "Original memory prediction is preserved"
+        },
+        {
+          "id": "correctness-tested",
+          "label": "Both implementations produce equivalent results"
+        },
+        {
+          "id": "environment-recorded",
+          "label": "Python, NumPy, input, and machine details are recorded"
+        }
+      ],
+      "reflectionPrompts": [
+        "Which result was observation, and which part of your explanation remains a hypothesis?",
+        "What temporary allocations might the concise NumPy expression hide?"
+      ],
+      "extensionChallenge": "Change the input size until memory pressure or cache behavior changes the timing trend, then state the boundary you observed.",
+      "estimatedMinutes": 45,
+      "id": "a2018b8e68d0",
+      "route": "/practice/ml-systems/prerequisite-measurement-lab",
+      "sourcePath": "content/exercises/ml-systems/prerequisite-measurement-lab.json",
+      "contentHash": "6d4c9e4c41a7a942d3568b31c3356fe9a7576c1872fba0f3c34ed0813bf3c2d3"
+    },
+    {
+      "slug": "ml-systems/prerequisites-checkpoint",
+      "title": "Scientific Computing Apprentice Checkpoint",
+      "documentSlug": "ml-systems/engineering-measurement-foundations",
+      "concept": "ML systems prerequisites",
+      "difficulty": "foundation",
+      "tags": [
+        "python",
+        "mathematics",
+        "measurement"
+      ],
+      "status": "published",
+      "sourceRefs": [
+        "harvard-vol1"
+      ],
+      "skillIds": [
+        "scientific-computing",
+        "quantitative-reasoning",
+        "experimental-practice"
+      ],
+      "required": true,
+      "type": "questionnaire",
+      "questions": [
+        {
+          "id": "payload",
+          "prompt": "A tensor contains one million float32 values. What is the approximate payload before overhead?",
+          "explanation": "One million values times four bytes is four million bytes, approximately 4 MB.",
+          "skillIds": [
+            "quantitative-reasoning"
+          ],
+          "kind": "choice",
+          "options": [
+            {
+              "id": "four-kb",
+              "label": "4 KB",
+              "isCorrect": false
+            },
+            {
+              "id": "four-mb",
+              "label": "4 MB",
+              "isCorrect": true
+            },
+            {
+              "id": "four-gb",
+              "label": "4 GB",
+              "isCorrect": false
+            }
+          ]
+        },
+        {
+          "id": "shape",
+          "prompt": "Why should shape assertions accompany value tests in numerical code?",
+          "explanation": "Shape assertions expose unintended broadcasting and axis mistakes that may still compute values.",
+          "skillIds": [
+            "scientific-computing"
+          ],
+          "kind": "choice",
+          "options": [
+            {
+              "id": "broadcast",
+              "label": "Broadcasting can produce valid but unintended outputs.",
+              "isCorrect": true
+            },
+            {
+              "id": "syntax",
+              "label": "Python requires them for valid syntax.",
+              "isCorrect": false
+            },
+            {
+              "id": "freeze",
+              "label": "They make arrays immutable.",
+              "isCorrect": false
+            }
+          ]
+        },
+        {
+          "id": "evidence",
+          "prompt": "Which benchmark report is the strongest evidence?",
+          "explanation": "Reproducible benchmark evidence includes correctness, inputs, method, repeated trials, and environment.",
+          "skillIds": [
+            "experimental-practice"
+          ],
+          "kind": "choice",
+          "options": [
+            {
+              "id": "single",
+              "label": "One fast timing with no environment details",
+              "isCorrect": false
+            },
+            {
+              "id": "repeat",
+              "label": "Repeated trials, representative input, correctness check, statistic, and environment",
+              "isCorrect": true
+            }
+          ]
+        }
+      ],
+      "id": "b47d60a01d6d",
+      "route": "/practice/ml-systems/prerequisites-checkpoint",
+      "sourcePath": "content/exercises/ml-systems/prerequisites-checkpoint.json",
+      "contentHash": "ae2bc3982dc964d3cf012288c0206009a5d19324a99917d0950af514e6ab5795"
+    },
+    {
+      "slug": "ml-systems/workflow-data-checkpoint",
+      "title": "ML Systems Explorer Checkpoint",
+      "documentSlug": "ml-systems/data-engineering",
+      "concept": "workflow and data engineering",
+      "difficulty": "practitioner",
+      "tags": [
+        "workflow",
+        "data-engineering",
+        "monitoring"
+      ],
+      "status": "published",
+      "sourceRefs": [
+        "harvard-vol1-ml-workflow",
+        "harvard-vol1-data-engineering"
+      ],
+      "skillIds": [
+        "experimental-practice",
+        "data-engineering",
+        "operations"
+      ],
+      "required": true,
+      "type": "questionnaire",
+      "questions": [
+        {
+          "id": "ledger",
+          "prompt": "Which experiment record supports a valid comparison against a baseline?",
+          "explanation": "Comparable evidence preserves what changed and the context required to reproduce both runs.",
+          "skillIds": [
+            "experimental-practice"
+          ],
+          "kind": "choice",
+          "options": [
+            {
+              "id": "complete",
+              "label": "Prediction, changed variable, controlled factors, versions, metrics, result, and next action",
+              "isCorrect": true
+            },
+            {
+              "id": "score",
+              "label": "Only the best score copied into a slide",
+              "isCorrect": false
+            }
+          ]
+        },
+        {
+          "id": "leakage",
+          "prompt": "What is the strongest reason to avoid a random row split for repeated user events over time?",
+          "explanation": "The split must represent deployment and prevent entity or temporal leakage.",
+          "skillIds": [
+            "data-engineering"
+          ],
+          "kind": "choice",
+          "options": [
+            {
+              "id": "leak",
+              "label": "Related or future information may leak across splits and inflate evaluation.",
+              "isCorrect": true
+            },
+            {
+              "id": "syntax",
+              "label": "Random splitting is invalid Python syntax.",
+              "isCorrect": false
+            }
+          ]
+        },
+        {
+          "id": "drift",
+          "prompt": "A feature distribution changes in production. What does that signal prove by itself?",
+          "explanation": "Distribution movement needs connection to model and mission outcomes before a response is chosen.",
+          "skillIds": [
+            "operations"
+          ],
+          "kind": "choice",
+          "options": [
+            {
+              "id": "investigate",
+              "label": "It proves investigation is needed, not automatically that model or mission quality fell.",
+              "isCorrect": true
+            },
+            {
+              "id": "retrain",
+              "label": "It proves immediate retraining is always correct.",
+              "isCorrect": false
+            }
+          ]
+        }
+      ],
+      "id": "eac552967ea5",
+      "route": "/practice/ml-systems/workflow-data-checkpoint",
+      "sourcePath": "content/exercises/ml-systems/workflow-data-checkpoint.json",
+      "contentHash": "764a4b38e078d1f4eb8de8dd191fa7f9aa9b800d1faab599cec9732b4e00141a"
     },
     {
       "slug": "programming/bfs-dfs-fundamentals-questionnaire",
@@ -37823,6 +40361,19 @@
       ]
     },
     {
+      "name": "ML Systems",
+      "slug": "ml-systems",
+      "documentCount": 7,
+      "difficulties": [
+        "foundation",
+        "practitioner"
+      ],
+      "topics": [
+        "Foundations",
+        "Prerequisites"
+      ]
+    },
+    {
       "name": "Programming",
       "slug": "programming",
       "documentCount": 10,
@@ -37866,6 +40417,10 @@
       "paths": [
         {
           "kind": "path",
+          "slug": "ml-systems-engineer"
+        },
+        {
+          "kind": "path",
           "slug": "system-design-fundamentals"
         },
         {
@@ -37882,6 +40437,10 @@
         }
       ],
       "lessons": [
+        {
+          "kind": "document",
+          "slug": "ml-systems/ai-engineering-introduction"
+        },
         {
           "kind": "document",
           "slug": "system-design/cache-invalidation"
@@ -37918,6 +40477,10 @@
         }
       ],
       "practice": [
+        {
+          "kind": "exercise",
+          "slug": "ml-systems/ai-triad-guided-lab"
+        },
         {
           "kind": "exercise",
           "slug": "system-design/cache-product-contract"

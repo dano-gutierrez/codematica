@@ -10,6 +10,7 @@ This file carries durable repo context across Codex threads.
 - Canonical Mermaid diagrams live in `content/diagrams/`.
 - Canonical learning paths live in `content/learning-paths/`.
 - Canonical practice prompts and questionnaires live in `content/exercises/`.
+- Canonical external primary-source metadata lives in `content/sources/`.
 - Canonical passive flashcard feeds live in `content/flashcard-feeds/`.
 - Canonical interview coding catalog content lives in `content/interviews/`.
 - Canonical human-language character and vocabulary catalogs live in `content/languages/`.
@@ -19,7 +20,7 @@ This file carries durable repo context across Codex threads.
 
 ## Current Product Shape
 
-Codematica V1 is a mobile-first learning app with a Next.js web app and an Expo Router Android/iOS app. The home route is a cross-section discovery hub with Keep reading, local global search, and curated rows for paths, lessons, interviews, practice, and languages. Complete catalogs live at `/paths`, `/browse`, `/interviews`, `/practice`, and `/languages`. The app renders plain Markdown articles, embedded and external Mermaid diagrams, flashcard, cloze, questionnaire, writing, passive flashcard, guided interview coding practice, anonymous real-world web interviews, and Japanese language lookup/practice. Japanese Foundations now has an open JF/CEFR Pre-A1/A1 roadmap, deterministic review, rights-aware resources, and responsive handwriting across web and Expo. React/TypeScript web exercises run through Sandpack on web and remain read-only on native.
+Codematica V1 is a mobile-first learning app with a Next.js web app and an Expo Router Android/iOS app. The home route is a cross-section discovery hub with Keep reading, local global search, and curated rows for paths, lessons, interviews, practice, and languages. Complete catalogs live at `/paths`, `/browse`, `/interviews`, `/practice`, and `/languages`. The app renders plain Markdown articles, diagrams, flashcard, cloze, questionnaire, writing, guided-lab, passive flashcard, interview, and Japanese study surfaces. Japanese Foundations and ML Systems share the generic stage/progression contract. The ML Systems Engineer path maps Harvard CS249r with primary-source links and published companions through Volume I Data Engineering. React/TypeScript web exercises run through Sandpack on web and remain read-only on native.
 
 Supabase is used optionally for Auth and saved progress when public runtime env vars are configured. The app still browses and renders local content without Supabase credentials; signed-out progress is buffered locally.
 
@@ -78,12 +79,14 @@ The first hosted web target is Vercel Hobby on the Vercel-provided URL. Vercel r
 
 - Preserve Markdown as the authoring source of truth.
 - Preserve learning path and exercise JSON as the local source of truth for study structure.
+- Preserve `content/sources/` as source metadata truth; upstream material remains authoritative for source-linked companions.
 - Preserve passive flashcard feed JSON as the local source of truth for scroll-only review.
 - Preserve interview catalog JSON as the local source of truth for company preparation and anonymous real-world prompts, rubrics, and runnable project files.
 - Preserve language catalog JSON as the local source of truth for human-language character and vocabulary data.
 - Preserve Japanese audio manifests and external-resource catalogs as metadata source-of-truth files. Never present missing/unreleased recordings as published listening coverage or copy public third-party media without redistribution rights.
 - Preserve discovery JSON as the editorial source of truth for curated home rows.
-- Keep questionnaire answers transient; progress may store only current question index and completion.
+- Keep questionnaire answers transient; progress may store current position, completion, and aggregate overall/per-skill scores only.
+- Keep guided-lab predictions, evidence details, and reflections transient; progress may store only coarse prediction/checklist completion.
 - Keep writing strokes transient; progress may store only coarse practice state such as mode, character slug, and completion.
 - Keep Japanese mastery separate from completion history. Local/remote merge may retain only best score, attempt count, review box, mastery state, last practice time, and next review time.
 - Keep passive flashcard answers nonexistent; progress may store only latest feed/card position.
@@ -101,7 +104,8 @@ The first hosted web target is Vercel Hobby on the Vercel-provided URL. Vercel r
 - `docs/CHANGELOG.md`: dated cross-feature delivery summaries; feature documents remain authoritative.
 - `docs/features/home-discovery.md`: cross-section home, global local search, curated rows, stable themes, and full catalog routes.
 - `docs/features/markdown-knowledge-browser.md`: V1 Markdown browser, search, diagrams, content indexing, and Supabase scaffold.
-- `docs/features/learning-paths-and-practice.md`: path catalog and detail maps, schema-v8 proficiency/stage metadata, flashcards, cloze prompts, and local path/exercise content.
+- `docs/features/learning-paths-and-practice.md`: path catalog and detail maps, schema-v9 career/language progression, source nodes, flashcards, cloze prompts, guided labs, and local path/exercise content.
+- `docs/features/ml-systems-career-path.md`: Harvard CS249r source-linked roadmap, published prerequisites/Volume I Foundations companions, guided labs, and planned career stages.
 - `docs/features/programming-language-refresh.md`: reusable language refresh paths and the Python-for-TS/JS module.
 - `docs/features/llm-application-engineering.md`: Langfuse and LangChain AI engineering path, including LLM app architecture, tracing, evals, RAG, agents, risk governance, and non-executable coding challenge sections.
 - `docs/features/database-indexes-learning-path.md`: database indexes, PostgreSQL HOT updates, and PostgreSQL search path, including index fundamentals, MVCC update mechanics, full text search, trigram fuzzy matching, hybrid SQL search, quizzes, passive flashcards, and SQL editor roadmap boundaries.

@@ -79,7 +79,7 @@ The root route is a discovery surface rather than the complete learning-path cat
 ## Test Plan
 
 - Unit: search covers every section, exact-title ranking, published-only results, route de-duplication, and curated section resolution.
-- Integration: index generation serializes schema version 8 and rejects invalid home references.
+- Integration: index generation serializes schema version 9 and rejects invalid home references.
 - Component: web home renders all section destinations and swaps curated rows for grouped search results.
 - Native: shared home renders every section and searches interview questions from the bundled index.
 - E2E: mobile-sized web home exposes Japanese, searches interviews and language content, preserves section CTA colors, and navigates to a full catalog.

@@ -1,0 +1,164 @@
+{
+  "slug": "ml-systems-engineer",
+  "title": "ML Systems Engineer — Harvard CS249r",
+  "summary": "A source-linked career path through the complete Harvard CS249r student curriculum: prerequisites, both books, labs, TinyTorch, MLSys·im, hardware alternatives, and StaffML practice.",
+  "kind": "role",
+  "category": "Machine Learning",
+  "audience": "Students and software engineers building toward practical machine learning systems and AI engineering roles.",
+  "status": "published",
+  "sourcePolicy": "required",
+  "sourceRefs": ["harvard-cs249r-repository", "harvard-vol1", "harvard-vol2", "harvard-labs", "harvard-tinytorch", "harvard-mlsysim", "harvard-hardware-kits", "harvard-staffml"],
+  "units": [
+    {
+      "slug": "ml-systems-prerequisites",
+      "title": "Prerequisites — Scientific Computing",
+      "summary": "Learn the Python, NumPy, quantitative, and experimental foundations that the books assume, with a measured lab and checkpoint.",
+      "nodes": [
+        { "kind": "document", "slug": "ml-systems/python-numpy-foundations", "skillIds": ["scientific-computing"], "required": true },
+        { "kind": "document", "slug": "ml-systems/math-foundations", "skillIds": ["quantitative-reasoning"], "required": true },
+        { "kind": "document", "slug": "ml-systems/engineering-measurement-foundations", "skillIds": ["experimental-practice"], "required": true },
+        { "kind": "exercise", "slug": "ml-systems/prerequisite-measurement-lab", "skillIds": ["scientific-computing", "quantitative-reasoning", "experimental-practice"], "required": true },
+        { "kind": "exercise", "slug": "ml-systems/prerequisites-checkpoint", "skillIds": ["scientific-computing", "quantitative-reasoning", "experimental-practice"], "required": true }
+      ]
+    },
+    {
+      "slug": "volume-one-foundations",
+      "title": "Volume I — Foundations",
+      "summary": "Study AI engineering, system requirements, iterative workflows, and data engineering through the official chapters and enriched companion labs.",
+      "nodes": [
+        { "kind": "source", "slug": "ml-systems/ai-engineering-introduction", "sourceRef": "harvard-vol1-introduction", "activity": "read", "companionKind": "document", "skillIds": ["systems-thinking"], "required": true },
+        { "kind": "exercise", "slug": "ml-systems/ai-triad-guided-lab", "skillIds": ["systems-thinking", "quantitative-reasoning"], "required": true },
+        { "kind": "source", "slug": "ml-systems/ml-systems-foundations", "sourceRef": "harvard-vol1-ml-systems", "activity": "read", "companionKind": "document", "skillIds": ["systems-thinking", "requirements-engineering"], "required": true },
+        { "kind": "exercise", "slug": "ml-systems/foundations-checkpoint", "skillIds": ["systems-thinking", "requirements-engineering", "quantitative-reasoning"], "required": true },
+        { "kind": "source", "slug": "ml-systems/ml-workflow", "sourceRef": "harvard-vol1-ml-workflow", "activity": "read", "companionKind": "document", "skillIds": ["experimental-practice", "operations"], "required": true },
+        { "kind": "source", "slug": "ml-systems/data-engineering", "sourceRef": "harvard-vol1-data-engineering", "activity": "read", "companionKind": "document", "skillIds": ["data-engineering"], "required": true },
+        { "kind": "exercise", "slug": "ml-systems/data-pipeline-contract-lab", "skillIds": ["data-engineering", "experimental-practice"], "required": true },
+        { "kind": "exercise", "slug": "ml-systems/workflow-data-checkpoint", "skillIds": ["experimental-practice", "data-engineering", "operations"], "required": true }
+      ]
+    },
+    {
+      "slug": "volume-one-build",
+      "title": "Volume I — Build",
+      "summary": "Continue through neural computation, network architectures, framework internals, training, and all 20 TinyTorch modules from tensors to the capstone.",
+      "nodes": [
+        { "kind": "source", "slug": "ml-systems/neural-computation", "sourceRef": "harvard-vol1-neural-computation", "activity": "read", "companionKind": "document", "skillIds": ["model-development"] },
+        { "kind": "source", "slug": "ml-systems/network-architectures", "sourceRef": "harvard-vol1-network-architectures", "activity": "read", "companionKind": "document", "skillIds": ["model-development"] },
+        { "kind": "source", "slug": "ml-systems/frameworks", "sourceRef": "harvard-vol1-frameworks", "activity": "read", "companionKind": "document", "skillIds": ["model-development", "performance-engineering"] },
+        { "kind": "source", "slug": "ml-systems/model-training", "sourceRef": "harvard-vol1-training", "activity": "read", "companionKind": "document", "skillIds": ["model-development", "experimental-practice"] },
+        { "kind": "source", "slug": "ml-systems/tinytorch-twenty-modules", "sourceRef": "harvard-tinytorch", "activity": "build", "companionKind": "exercise", "skillIds": ["model-development", "performance-engineering"] }
+      ]
+    },
+    {
+      "slug": "volume-one-optimize",
+      "title": "Volume I — Optimize",
+      "summary": "Study data selection, compression, hardware acceleration, and benchmarking, then use simulation when physical accelerator access is unavailable.",
+      "nodes": [
+        { "kind": "source", "slug": "ml-systems/data-selection", "sourceRef": "harvard-vol1-data-selection", "activity": "read", "companionKind": "document", "skillIds": ["data-engineering"] },
+        { "kind": "source", "slug": "ml-systems/model-compression", "sourceRef": "harvard-vol1-model-compression", "activity": "read", "companionKind": "document", "skillIds": ["performance-engineering"] },
+        { "kind": "source", "slug": "ml-systems/hardware-acceleration", "sourceRef": "harvard-vol1-hardware-acceleration", "activity": "read", "companionKind": "document", "skillIds": ["performance-engineering"] },
+        { "kind": "source", "slug": "ml-systems/benchmarking", "sourceRef": "harvard-vol1-benchmarking", "activity": "read", "companionKind": "document", "skillIds": ["performance-engineering", "experimental-practice"] },
+        { "kind": "source", "slug": "ml-systems/mlsysim-optimization", "sourceRef": "harvard-mlsysim", "activity": "model", "companionKind": "exercise", "skillIds": ["performance-engineering", "quantitative-reasoning"] }
+      ]
+    },
+    {
+      "slug": "volume-one-deploy",
+      "title": "Volume I — Deploy",
+      "summary": "Complete single-machine systems with serving, MLOps, responsible engineering, the conclusion, and the matching Volume I labs.",
+      "nodes": [
+        { "kind": "source", "slug": "ml-systems/model-serving", "sourceRef": "harvard-vol1-model-serving", "activity": "read", "companionKind": "document", "skillIds": ["operations"] },
+        { "kind": "source", "slug": "ml-systems/ml-operations", "sourceRef": "harvard-vol1-ml-ops", "activity": "read", "companionKind": "document", "skillIds": ["operations"] },
+        { "kind": "source", "slug": "ml-systems/responsible-engineering", "sourceRef": "harvard-vol1-responsible-engineering", "activity": "read", "companionKind": "document", "skillIds": ["responsible-engineering"] },
+        { "kind": "source", "slug": "ml-systems/volume-one-conclusion", "sourceRef": "harvard-vol1-conclusion", "activity": "read", "companionKind": "document", "skillIds": ["systems-thinking"] },
+        { "kind": "source", "slug": "ml-systems/volume-one-labs", "sourceRef": "harvard-labs", "activity": "explore", "companionKind": "exercise", "skillIds": ["experimental-practice", "performance-engineering"] }
+      ]
+    },
+    {
+      "slug": "volume-two-fleet",
+      "title": "Volume II — The Fleet",
+      "summary": "Begin the preview Volume II sequence with its introduction, compute infrastructure, network fabrics, and data storage foundations.",
+      "nodes": [
+        { "kind": "source", "slug": "ml-systems/scale-introduction", "sourceRef": "harvard-vol2-introduction", "activity": "read", "companionKind": "document", "skillIds": ["distributed-systems"] },
+        { "kind": "source", "slug": "ml-systems/compute-infrastructure", "sourceRef": "harvard-vol2-compute-infrastructure", "activity": "read", "companionKind": "document", "skillIds": ["distributed-systems", "performance-engineering"] },
+        { "kind": "source", "slug": "ml-systems/network-fabrics", "sourceRef": "harvard-vol2-network-fabrics", "activity": "read", "companionKind": "document", "skillIds": ["distributed-systems"] },
+        { "kind": "source", "slug": "ml-systems/data-storage", "sourceRef": "harvard-vol2-data-storage", "activity": "read", "companionKind": "document", "skillIds": ["distributed-systems", "data-engineering"] }
+      ]
+    },
+    {
+      "slug": "volume-two-distributed-ml",
+      "title": "Volume II — Distributed ML",
+      "summary": "Develop distributed training, collective communication, fault tolerance, and fleet orchestration judgment through chapters and simulator scenarios.",
+      "nodes": [
+        { "kind": "source", "slug": "ml-systems/distributed-training", "sourceRef": "harvard-vol2-distributed-training", "activity": "read", "companionKind": "document", "skillIds": ["distributed-systems"] },
+        { "kind": "source", "slug": "ml-systems/collective-communication", "sourceRef": "harvard-vol2-collective-communication", "activity": "read", "companionKind": "document", "skillIds": ["distributed-systems"] },
+        { "kind": "source", "slug": "ml-systems/fault-tolerance", "sourceRef": "harvard-vol2-fault-tolerance", "activity": "read", "companionKind": "document", "skillIds": ["reliability-engineering"] },
+        { "kind": "source", "slug": "ml-systems/fleet-orchestration", "sourceRef": "harvard-vol2-fleet-orchestration", "activity": "read", "companionKind": "document", "skillIds": ["distributed-systems", "operations"] },
+        { "kind": "source", "slug": "ml-systems/mlsysim-distributed", "sourceRef": "harvard-mlsysim", "activity": "model", "companionKind": "exercise", "skillIds": ["distributed-systems", "quantitative-reasoning"] }
+      ]
+    },
+    {
+      "slug": "volume-two-deployment-scale",
+      "title": "Volume II — Deployment At Scale",
+      "summary": "Study performance engineering, inference economics, edge intelligence, and fleet-scale operations across global deployment constraints.",
+      "nodes": [
+        { "kind": "source", "slug": "ml-systems/performance-engineering-scale", "sourceRef": "harvard-vol2-performance-engineering", "activity": "read", "companionKind": "document", "skillIds": ["performance-engineering"] },
+        { "kind": "source", "slug": "ml-systems/inference-at-scale", "sourceRef": "harvard-vol2-inference", "activity": "read", "companionKind": "document", "skillIds": ["performance-engineering", "operations"] },
+        { "kind": "source", "slug": "ml-systems/edge-intelligence", "sourceRef": "harvard-vol2-edge-intelligence", "activity": "read", "companionKind": "document", "skillIds": ["performance-engineering", "responsible-engineering"] },
+        { "kind": "source", "slug": "ml-systems/operations-at-scale", "sourceRef": "harvard-vol2-ops-scale", "activity": "read", "companionKind": "document", "skillIds": ["operations", "reliability-engineering"] },
+        { "kind": "source", "slug": "ml-systems/hardware-or-simulator", "sourceRef": "harvard-hardware-kits", "activity": "deploy", "companionKind": "exercise", "skillIds": ["performance-engineering"] }
+      ]
+    },
+    {
+      "slug": "volume-two-responsible-fleet",
+      "title": "Volume II — The Responsible Fleet",
+      "summary": "Complete the scale curriculum with security, privacy, robustness, sustainability, responsible AI, and the fleet synthesis conclusion.",
+      "nodes": [
+        { "kind": "source", "slug": "ml-systems/security-privacy", "sourceRef": "harvard-vol2-security-privacy", "activity": "read", "companionKind": "document", "skillIds": ["responsible-engineering", "reliability-engineering"] },
+        { "kind": "source", "slug": "ml-systems/robust-ai", "sourceRef": "harvard-vol2-robust-ai", "activity": "read", "companionKind": "document", "skillIds": ["responsible-engineering", "reliability-engineering"] },
+        { "kind": "source", "slug": "ml-systems/sustainable-ai", "sourceRef": "harvard-vol2-sustainable-ai", "activity": "read", "companionKind": "document", "skillIds": ["responsible-engineering"] },
+        { "kind": "source", "slug": "ml-systems/responsible-ai", "sourceRef": "harvard-vol2-responsible-ai", "activity": "read", "companionKind": "document", "skillIds": ["responsible-engineering"] },
+        { "kind": "source", "slug": "ml-systems/volume-two-conclusion", "sourceRef": "harvard-vol2-conclusion", "activity": "read", "companionKind": "document", "skillIds": ["systems-thinking"] },
+        { "kind": "source", "slug": "ml-systems/volume-two-labs", "sourceRef": "harvard-labs", "activity": "explore", "companionKind": "exercise", "skillIds": ["distributed-systems", "responsible-engineering"] }
+      ]
+    },
+    {
+      "slug": "ml-systems-career-practicum",
+      "title": "Career Practicum And Portfolio",
+      "summary": "Synthesize the curriculum with all 34 labs, MLSys·im tutorials, an optional hardware branch, StaffML practice, and evidence suitable for a portfolio.",
+      "nodes": [
+        { "kind": "source", "slug": "ml-systems/all-interactive-labs", "sourceRef": "harvard-labs", "activity": "explore", "companionKind": "exercise", "skillIds": ["experimental-practice"] },
+        { "kind": "source", "slug": "ml-systems/all-simulator-tutorials", "sourceRef": "harvard-mlsysim", "activity": "model", "companionKind": "exercise", "skillIds": ["quantitative-reasoning", "distributed-systems"] },
+        { "kind": "source", "slug": "ml-systems/hardware-deployment", "sourceRef": "harvard-hardware-kits", "activity": "deploy", "companionKind": "exercise", "skillIds": ["performance-engineering"] },
+        { "kind": "source", "slug": "ml-systems/staffml-practice", "sourceRef": "harvard-staffml", "activity": "practice", "companionKind": "exercise", "skillIds": ["systems-thinking", "requirements-engineering"] }
+      ]
+    }
+  ],
+  "progression": {
+    "framework": "career",
+    "roadmapLabel": "ML Systems career roadmap",
+    "skills": [
+      { "id": "scientific-computing", "label": "Scientific computing", "category": "foundations", "description": "Use Python and NumPy with explicit shapes, dtypes, tests, and memory reasoning." },
+      { "id": "quantitative-reasoning", "label": "Quantitative reasoning", "category": "foundations", "description": "Estimate operations, memory, latency, throughput, cost, and uncertainty with units." },
+      { "id": "experimental-practice", "label": "Experimental practice", "category": "foundations", "description": "Design reproducible experiments and separate observations from hypotheses." },
+      { "id": "systems-thinking", "label": "ML systems thinking", "category": "architecture", "description": "Reason across data, algorithms, machines, lifecycle, and mission outcomes." },
+      { "id": "requirements-engineering", "label": "Requirements engineering", "category": "architecture", "description": "Turn product goals into measurable system, model, and responsibility constraints." },
+      { "id": "data-engineering", "label": "Data engineering", "category": "build", "description": "Design validated, versioned, lineage-aware data pipelines and evaluation splits." },
+      { "id": "model-development", "label": "Model development", "category": "build", "description": "Understand neural computation, architectures, framework internals, and training." },
+      { "id": "performance-engineering", "label": "Performance engineering", "category": "optimize", "description": "Profile and optimize memory, compute, communication, latency, and throughput." },
+      { "id": "operations", "label": "ML operations", "category": "deploy", "description": "Deploy, observe, update, and recover ML services through their lifecycle." },
+      { "id": "distributed-systems", "label": "Distributed ML systems", "category": "scale", "description": "Reason about fleets, networks, storage, parallel training, and orchestration." },
+      { "id": "reliability-engineering", "label": "Reliability engineering", "category": "scale", "description": "Design for failures, tail behavior, recovery, security, and robustness." },
+      { "id": "responsible-engineering", "label": "Responsible AI engineering", "category": "responsibility", "description": "Make privacy, fairness, safety, sustainability, and governance system properties." }
+    ],
+    "stages": [
+      { "id": "scientific-computing-apprentice", "label": "Scientific Computing Apprentice", "level": "Foundation I", "status": "published", "summary": "Measure numerical programs, estimate resource use, and preserve reproducible evidence.", "unitSlugs": ["ml-systems-prerequisites"], "outcomes": [{ "id": "apprentice-arrays", "statement": "I can predict array shapes and payload memory before running code.", "skillId": "scientific-computing" }, { "id": "apprentice-estimate", "statement": "I can calculate a resource estimate with explicit units and assumptions.", "skillId": "quantitative-reasoning" }, { "id": "apprentice-evidence", "statement": "I can report a reproducible correctness check and benchmark.", "skillId": "experimental-practice" }], "requiredNodeSlugs": ["ml-systems/python-numpy-foundations", "ml-systems/math-foundations", "ml-systems/engineering-measurement-foundations", "ml-systems/prerequisite-measurement-lab", "ml-systems/prerequisites-checkpoint"], "checkpointExerciseSlug": "ml-systems/prerequisites-checkpoint", "passThreshold": 0.8, "minimumSkillScore": 0.6, "estimatedMinutes": 240 },
+      { "id": "ml-foundations-analyst", "label": "ML Foundations Analyst", "level": "Foundation II", "status": "published", "summary": "Diagnose ML systems and translate a mission into measurable system requirements.", "unitSlugs": ["volume-one-foundations"], "outcomes": [{ "id": "analyst-dam", "statement": "I can diagnose evidence across data, algorithm, and machine constraints.", "skillId": "systems-thinking" }, { "id": "analyst-requirements", "statement": "I can write operational metric thresholds for a complete system boundary.", "skillId": "requirements-engineering" }, { "id": "analyst-quantify", "statement": "I can choose a low-cost experiment that can change a system decision.", "skillId": "quantitative-reasoning" }], "requiredNodeSlugs": ["ml-systems/ai-engineering-introduction", "ml-systems/ai-triad-guided-lab", "ml-systems/ml-systems-foundations", "ml-systems/foundations-checkpoint"], "checkpointExerciseSlug": "ml-systems/foundations-checkpoint", "passThreshold": 0.8, "minimumSkillScore": 0.6, "estimatedMinutes": 300 },
+      { "id": "ml-systems-explorer", "label": "ML Systems Explorer", "level": "Foundation III", "status": "published", "summary": "Run evidence-driven ML workflows and design reliable data contracts with lineage.", "unitSlugs": ["volume-one-foundations"], "outcomes": [{ "id": "explorer-experiment", "statement": "I can preserve a comparable experiment and choose its next action.", "skillId": "experimental-practice" }, { "id": "explorer-data", "statement": "I can design a validated dataset contract and leakage-resistant split.", "skillId": "data-engineering" }, { "id": "explorer-monitor", "statement": "I can connect data and system monitoring signals to an operational response.", "skillId": "operations" }], "requiredNodeSlugs": ["ml-systems/ml-workflow", "ml-systems/data-engineering", "ml-systems/data-pipeline-contract-lab", "ml-systems/workflow-data-checkpoint"], "checkpointExerciseSlug": "ml-systems/workflow-data-checkpoint", "passThreshold": 0.8, "minimumSkillScore": 0.6, "estimatedMinutes": 360 },
+      { "id": "framework-builder", "label": "Framework Builder", "level": "Practitioner I", "status": "planned", "summary": "Build neural and framework internals through the complete TinyTorch sequence.", "unitSlugs": ["volume-one-build"], "outcomes": [{ "id": "builder-internals", "statement": "I can implement and explain the core machinery of a small ML framework.", "skillId": "model-development" }], "estimatedMinutes": 1200 },
+      { "id": "performance-practitioner", "label": "Performance Practitioner", "level": "Practitioner II", "status": "planned", "summary": "Select data, compress models, analyze hardware limits, and benchmark validly.", "unitSlugs": ["volume-one-optimize"], "outcomes": [{ "id": "practitioner-bottleneck", "statement": "I can identify and measure the limiting resource before optimizing.", "skillId": "performance-engineering" }], "estimatedMinutes": 720 },
+      { "id": "production-ml-engineer", "label": "Production ML Engineer", "level": "Professional I", "status": "planned", "summary": "Serve, operate, monitor, and govern a single-machine ML system through change.", "unitSlugs": ["volume-one-deploy"], "outcomes": [{ "id": "production-operate", "statement": "I can define rollout, observability, recovery, and responsibility controls.", "skillId": "operations" }], "estimatedMinutes": 720 },
+      { "id": "distributed-ml-engineer", "label": "Distributed ML Engineer", "level": "Professional II", "status": "planned", "summary": "Design fleet infrastructure, distributed training, communication, and failure recovery.", "unitSlugs": ["volume-two-fleet", "volume-two-distributed-ml"], "outcomes": [{ "id": "distributed-design", "statement": "I can reason quantitatively about compute, network, storage, and parallelism tradeoffs.", "skillId": "distributed-systems" }, { "id": "distributed-recover", "statement": "I can design failure detection and recovery for fleet-scale training.", "skillId": "reliability-engineering" }], "estimatedMinutes": 1200 },
+      { "id": "responsible-systems-architect", "label": "Responsible Systems Architect", "level": "Senior", "status": "planned", "summary": "Balance fleet performance, reliability, security, sustainability, and responsible outcomes.", "unitSlugs": ["volume-two-deployment-scale", "volume-two-responsible-fleet"], "outcomes": [{ "id": "architect-balance", "statement": "I can make explicit tradeoffs across service, reliability, security, and responsibility budgets.", "skillId": "responsible-engineering" }], "estimatedMinutes": 1200 },
+      { "id": "ml-systems-portfolio", "label": "ML Systems Portfolio", "level": "Career Ready", "status": "planned", "summary": "Synthesize lab, simulation, optional hardware, and interview evidence into a defensible portfolio.", "unitSlugs": ["ml-systems-career-practicum"], "outcomes": [{ "id": "portfolio-defend", "statement": "I can defend an end-to-end ML system design with quantitative evidence.", "skillId": "systems-thinking" }], "estimatedMinutes": 900 }
+    ]
+  }
+}
