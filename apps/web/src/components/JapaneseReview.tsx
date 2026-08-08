@@ -1,12 +1,25 @@
 "use client";
 
 import Link from "next/link";
-import { RotateCcw } from "lucide-react";
-import { useEffect, useMemo, useState } from "react";
+import { Check, RotateCcw } from "lucide-react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { applyReviewRating, mergeSkillProgressLists, orderDueReviews, skillProgressSchema, type ContentIndex, type LearningPath, type ReviewRating, type SkillProgress } from "@codematica/core";
 import { AppHeader } from "@/components/AppHeader";
 
 const storageKey = "codematica:japanese-skill-progress:v1";
+
+const ratingOptions: Array<{
+  rating: ReviewRating;
+  label: string;
+  hint: string;
+  idleClassName: string;
+  selectedClassName: string;
+}> = [
+  { rating: "again", label: "Again", hint: "Reset · 10 min", idleClassName: "border-[#e4a7a7] bg-[#fff8f8]", selectedClassName: "border-[#a62f2f] bg-[#ffe1e1] text-[#702020]" },
+  { rating: "hard", label: "Hard", hint: "Step back · 1 day", idleClassName: "border-[#d2bd76] bg-[#fffaf0]", selectedClassName: "border-[#8a5c00] bg-[#ffedb8] text-[#624100]" },
+  { rating: "good", label: "Good", hint: "Step forward", idleClassName: "border-[#87cfc9] bg-[#f2fffd]", selectedClassName: "border-[#007c78] bg-[#d5f5f1] text-[#005f5c]" },
+  { rating: "easy", label: "Easy", hint: "Jump ahead", idleClassName: "border-[#9cc7ff] bg-[#f5f9ff]", selectedClassName: "border-[#245fba] bg-[#deebff] text-[#1d4e9e]" },
+];
 
 function readStoredProgress(): SkillProgress[] {
   if (typeof window === "undefined") return [];
@@ -41,14 +54,19 @@ export function JapaneseReview({ index, learningPath }: { index: ContentIndex; l
   const skills = learningPath.progression?.skills ?? [];
   const [progress, setProgress] = useState<SkillProgress[]>([]);
   const [selectedSkillId, setSelectedSkillId] = useState(skills[0]?.id ?? "");
+  const [sessionRatings, setSessionRatings] = useState<Partial<Record<string, ReviewRating>>>({});
+  const progressRef = useRef<SkillProgress[]>([]);
+  const ratedSkillsRef = useRef(new Set<string>());
 
   useEffect(() => {
     const stored = readStoredProgress();
+    progressRef.current = stored;
     queueMicrotask(() => setProgress(stored));
     void loadRemoteProgress()
       .then(async (remote) => {
-        const merged = mergeSkillProgressLists(stored, remote);
+        const merged = mergeSkillProgressLists(progressRef.current, remote);
         if (!merged.length) return;
+        progressRef.current = merged;
         setProgress(merged);
         window.localStorage.setItem(storageKey, JSON.stringify(merged));
         await syncStoredProgress(merged);
@@ -59,21 +77,37 @@ export function JapaneseReview({ index, learningPath }: { index: ContentIndex; l
   const due = useMemo(() => orderDueReviews(progress), [progress]);
   const selectedSkill = skills.find((skill) => skill.id === selectedSkillId) ?? skills[0];
   const selectedProgress = progress.find((row) => row.pathSlug === learningPath.slug && row.skillId === selectedSkill?.id);
+  const selectedRating = selectedSkill ? sessionRatings[selectedSkill.id] : undefined;
   const flashcards = index.passiveFlashcardFeeds.find((feed) => feed.pathSlug === learningPath.slug && feed.status === "published");
 
   function rate(rating: ReviewRating) {
     if (!selectedSkill) return;
-    const next = applyReviewRating(selectedProgress, {
+    if (ratedSkillsRef.current.has(selectedSkill.id)) return;
+    ratedSkillsRef.current.add(selectedSkill.id);
+    const current = progressRef.current.find((row) => row.pathSlug === learningPath.slug && row.skillId === selectedSkill.id);
+    const next = applyReviewRating(current, {
       pathSlug: learningPath.slug,
       skillId: selectedSkill.id,
       rating,
       score: rating === "again" ? 0.4 : rating === "hard" ? 0.65 : rating === "good" ? 0.85 : 1,
       now: new Date(),
     });
-    const rows = [...progress.filter((row) => !(row.pathSlug === learningPath.slug && row.skillId === selectedSkill.id)), next];
+    const rows = [...progressRef.current.filter((row) => !(row.pathSlug === learningPath.slug && row.skillId === selectedSkill.id)), next];
+    progressRef.current = rows;
     setProgress(rows);
+    setSessionRatings((currentRatings) => ({ ...currentRatings, [selectedSkill.id]: rating }));
     window.localStorage.setItem(storageKey, JSON.stringify(rows));
     void syncStoredProgress(rows).catch(() => false);
+  }
+
+  function resetRating() {
+    if (!selectedSkill) return;
+    ratedSkillsRef.current.delete(selectedSkill.id);
+    setSessionRatings((currentRatings) => {
+      const nextRatings = { ...currentRatings };
+      delete nextRatings[selectedSkill.id];
+      return nextRatings;
+    });
   }
 
   return (
@@ -133,18 +167,38 @@ export function JapaneseReview({ index, learningPath }: { index: ContentIndex; l
                 <p className="mt-2 text-base font-semibold leading-7 text-[#53616c]">Name one example you can recognize or use for this skill. Then rate how independently you recalled it.</p>
               </div>
               <div className="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-4" aria-label="Review rating">
-                {(["again", "hard", "good", "easy"] as const).map((rating) => (
-                  <button
-                    key={rating}
-                    type="button"
-                    aria-label={rating.charAt(0).toUpperCase() + rating.slice(1)}
-                    onClick={() => rate(rating)}
-                    className="min-h-12 rounded-lg border-2 border-b-4 border-[#b9cbd3] bg-white px-3 py-2 text-base font-extrabold capitalize text-[#263238] focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-2 focus-visible:outline-[#007c78]"
-                  >
-                    {rating}
-                  </button>
-                ))}
+                {ratingOptions.map((option) => {
+                  const isSelected = selectedRating === option.rating;
+                  return (
+                    <button
+                      key={option.rating}
+                      type="button"
+                      aria-label={option.label}
+                      aria-pressed={isSelected}
+                      disabled={Boolean(selectedRating)}
+                      data-testid={`japanese-review-rating-${option.rating}`}
+                      onClick={() => rate(option.rating)}
+                      className={`min-h-16 rounded-lg border-2 border-b-4 px-3 py-2 text-left text-[#263238] transition focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-2 focus-visible:outline-[#007c78] ${isSelected ? `${option.selectedClassName} translate-y-0.5 border-b-2 shadow-inner` : option.idleClassName} ${selectedRating && !isSelected ? "cursor-not-allowed opacity-45" : "hover:-translate-y-0.5 hover:border-b-[5px]"}`}
+                    >
+                      <span className="flex items-center gap-1.5 text-base font-extrabold">
+                        {isSelected ? <Check className="h-4 w-4" strokeWidth={3} aria-hidden="true" /> : null}
+                        {option.label}
+                      </span>
+                      <span className="mt-0.5 block text-xs font-bold opacity-80">{isSelected ? "Selected" : option.hint}</span>
+                    </button>
+                  );
+                })}
               </div>
+              {selectedRating ? (
+                <div className="mt-4 flex flex-wrap items-center justify-between gap-3 rounded-lg border-2 border-[#87cfc9] bg-[#e8f8f6] p-3" role="status">
+                  <p className="text-sm font-extrabold text-[#005f5c]">
+                    {ratingOptions.find((option) => option.rating === selectedRating)?.label} saved. This recall counts as one attempt.
+                  </p>
+                  <button type="button" onClick={resetRating} className="min-h-11 rounded-lg border-2 border-[#007c78] bg-white px-3 py-2 text-sm font-extrabold text-[#005f5c] focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-2 focus-visible:outline-[#007c78]">
+                    Practice again
+                  </button>
+                </div>
+              ) : null}
               {selectedProgress ? <p className="mt-4 text-sm font-bold text-[#53616c]">Best {Math.round(selectedProgress.bestScore * 100)}% · box {selectedProgress.reviewBox} · next {new Date(selectedProgress.nextReviewAt).toLocaleString()}</p> : null}
             </section>
           ) : null}

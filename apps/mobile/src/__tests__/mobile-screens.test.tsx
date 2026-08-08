@@ -76,6 +76,14 @@ describe("mobile shared screens", () => {
     expect(view.getByTestId("mobile-japanese-review-flashcards")).toBeOnTheScreen();
     fireEvent.press(view.getByTestId("mobile-japanese-review-good"));
     expect(onRate).toHaveBeenCalledWith("kana-listening", "good");
+    await waitFor(() => expect(view.getByTestId("mobile-japanese-review-good").props.accessibilityState).toEqual(expect.objectContaining({ selected: true, disabled: true })));
+    expect(view.getByText(/Good saved/i)).toBeOnTheScreen();
+
+    fireEvent.press(view.getByTestId("mobile-japanese-review-good"));
+    expect(onRate).toHaveBeenCalledTimes(1);
+
+    fireEvent.press(view.getByTestId("mobile-japanese-review-reset"));
+    await waitFor(() => expect(view.getByTestId("mobile-japanese-review-good").props.accessibilityState).toEqual(expect.objectContaining({ selected: false, disabled: false })));
   });
 
   it("renders Japanese writing practice from a writing exercise", async () => {

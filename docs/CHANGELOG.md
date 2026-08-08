@@ -2,6 +2,14 @@
 
 This changelog records durable, user-visible and architectural changes. Feature documents remain the authoritative contracts; this file explains when a group of related changes landed and points readers to the owning documentation.
 
+## 2026-08-08 — Japanese Review Rating Feedback
+
+- Made Again, Hard, Good, and Easy visually distinct and kept the chosen rating visibly pressed with matching web/native accessibility state and a saved announcement.
+- Limited each recall to one rating so repeated taps cannot silently advance mastery or attempt counts; `Practice again` explicitly opens a new attempt.
+- Protected in-session ratings from delayed authenticated progress snapshots and added web, native, and browser regression coverage.
+
+Owning contract: `docs/features/japanese-language-learning.md`.
+
 ## 2026-08-08 — CI Compatibility Maintenance
 
 - Aligned Expo SDK 57, Expo Router, and their pinned Expo patch dependencies with the versions required by Expo Doctor.

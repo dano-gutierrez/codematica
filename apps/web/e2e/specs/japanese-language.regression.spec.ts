@@ -77,5 +77,8 @@ test("@regression mobile user searches Japanese and opens a writing drill", asyn
   await page.goto("/languages/japanese/review");
   await expect(page.getByTestId("japanese-review-browser")).toBeVisible();
   await page.getByRole("button", { name: "Good" }).click();
+  await expect(page.getByRole("button", { name: "Good" })).toHaveAttribute("aria-pressed", "true");
+  await expect(page.getByRole("button", { name: "Good" })).toBeDisabled();
+  await expect(page.getByRole("status")).toContainText("Good saved");
   await expect(page.getByText(/Best 85% · box 1/)).toBeVisible();
 });

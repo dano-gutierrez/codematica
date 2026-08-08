@@ -50,7 +50,7 @@ import {
 import Markdown from "react-native-markdown-display";
 import Svg, { Circle, Path, Text as SvgText } from "react-native-svg";
 import { WebView } from "react-native-webview";
-import { Fragment, useMemo, useState } from "react";
+import { Fragment, useMemo, useRef, useState } from "react";
 import type { ReactNode } from "react";
 import {
   FlatList,
@@ -556,9 +556,12 @@ export function JapaneseReviewScreen({
 } & ScreenProps) {
   const skills = learningPath.progression?.skills ?? [];
   const [selectedSkillId, setSelectedSkillId] = useState(skills[0]?.id ?? "");
+  const [sessionRatings, setSessionRatings] = useState<Partial<Record<string, ReviewRating>>>({});
+  const ratedSkillsRef = useRef(new Set<string>());
   const [renderedAt] = useState(() => Date.now());
   const selected = skills.find((skill) => skill.id === selectedSkillId) ?? skills[0];
   const selectedProgress = progress.find((row) => row.pathSlug === learningPath.slug && row.skillId === selected?.id);
+  const selectedRating = selected ? sessionRatings[selected.id] : undefined;
   const dueCount = progress.filter((row) => new Date(row.nextReviewAt).getTime() <= renderedAt).length;
   const flashcards = index.passiveFlashcardFeeds.find((feed) => feed.pathSlug === learningPath.slug && feed.status === "published");
 
@@ -591,8 +594,32 @@ export function JapaneseReviewScreen({
           <Text style={styles.bodyText}>{selected.description}</Text>
           <Text style={styles.mutedText}>Recall one example before rating how independently you remembered it.</Text>
           <View style={styles.actionRow}>
-            {(["again", "hard", "good", "easy"] as const).map((rating) => <Button key={rating} label={rating.charAt(0).toUpperCase() + rating.slice(1)} variant="ghost" onPress={() => onRate(selected.id, rating)} testID={`mobile-japanese-review-${rating}`} />)}
+            {(["again", "hard", "good", "easy"] as const).map((rating) => (
+              <Button
+                key={rating}
+                label={rating.charAt(0).toUpperCase() + rating.slice(1)}
+                variant="ghost"
+                disabled={Boolean(selectedRating)}
+                selected={selectedRating === rating}
+                onPress={() => {
+                  if (ratedSkillsRef.current.has(selected.id)) return;
+                  ratedSkillsRef.current.add(selected.id);
+                  setSessionRatings((current) => ({ ...current, [selected.id]: rating }));
+                  onRate(selected.id, rating);
+                }}
+                testID={`mobile-japanese-review-${rating}`}
+              />
+            ))}
           </View>
+          {selectedRating ? (
+            <View style={styles.reviewSavedPanel}>
+              <Text accessibilityLiveRegion="polite" style={styles.reviewSavedText}>{selectedRating.charAt(0).toUpperCase() + selectedRating.slice(1)} saved. This recall counts as one attempt.</Text>
+              <Button label="Practice again" variant="ghost" onPress={() => {
+                ratedSkillsRef.current.delete(selected.id);
+                setSessionRatings((current) => ({ ...current, [selected.id]: undefined }));
+              }} testID="mobile-japanese-review-reset" />
+            </View>
+          ) : null}
           {selectedProgress ? <Text style={styles.mutedText}>Best {Math.round(selectedProgress.bestScore * 100)}% · box {selectedProgress.reviewBox}</Text> : null}
         </View>
       ) : null}
@@ -1913,20 +1940,22 @@ function Button({
   onPress,
   variant = "primary",
   disabled = false,
+  selected,
   testID,
 }: {
   label: string;
   onPress: () => void;
   variant?: "primary" | "secondary" | "ghost";
   disabled?: boolean;
+  selected?: boolean;
   testID?: string;
 }) {
   const buttonStyle = variant === "secondary" ? styles.secondaryButton : variant === "ghost" ? styles.ghostButton : styles.primaryButton;
   const textStyle = variant === "ghost" ? styles.ghostButtonText : styles.primaryButtonText;
 
   return (
-    <Pressable accessibilityRole="button" disabled={disabled} onPress={onPress} style={[buttonStyle, disabled && styles.disabled]} testID={testID}>
-      <Text style={textStyle}>{label}</Text>
+    <Pressable accessibilityLabel={label} accessibilityRole="button" accessibilityState={{ disabled, ...(selected === undefined ? {} : { selected }) }} disabled={disabled} onPress={onPress} style={[buttonStyle, selected && styles.ratingButtonSelected, disabled && !selected && styles.disabled]} testID={testID}>
+      <Text style={textStyle}>{selected ? `✓ ${label}` : label}</Text>
     </Pressable>
   );
 }
@@ -2411,6 +2440,25 @@ const styles = StyleSheet.create({
   optionSelected: {
     backgroundColor: colors.greenSoft,
     borderColor: colors.accent,
+  },
+  ratingButtonSelected: {
+    backgroundColor: colors.greenSoft,
+    borderColor: colors.accent,
+  },
+  reviewSavedPanel: {
+    alignItems: "flex-start",
+    backgroundColor: colors.greenSoft,
+    borderColor: colors.accent,
+    borderRadius: radii.md,
+    borderWidth: 2,
+    gap: spacing.sm,
+    padding: spacing.md,
+  },
+  reviewSavedText: {
+    color: colors.accentStrong,
+    fontSize: 14,
+    fontWeight: "900",
+    lineHeight: 20,
   },
   optionText: {
     color: colors.text,

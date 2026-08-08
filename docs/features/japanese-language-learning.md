@@ -3,7 +3,7 @@
 ## Snapshot
 
 - Status: `in_progress`
-- Last updated: `2026-08-04`
+- Last updated: `2026-08-08`
 - Current state: schema-v9 generic progression now carries the existing Pre-A1/A1 roadmap, complete basic kana catalogs, contextual A1 lessons and mini-readers, original readiness checkpoints, deterministic skill review, resource-rights metadata, dictionary profiles, responsive handwriting, and web/Expo destinations. The audio manifest remains intentionally empty until released native-speaker recordings exist.
 - Target outcome: English-speaking teens and adults can move from kana discovery to practical JF A1 Can-dos while keeping the entire course, reviews, dictionary, handwriting, flashcards, and resources open.
 
@@ -20,6 +20,8 @@ The learning loop is hear, notice, trace/manipulate, recall, read in context, us
 - `/languages/japanese` and the Expo Japanese hub keep four destinations visible: Learn, Review, Dictionary, and Resources.
 - `/languages/japanese/review` recommends due skills while keeping every skill card and `/paths/japanese-foundations/flashcards` manually available.
 - Review uses six boxes: Again → box 0/10 minutes; Hard → back one/1 day; Good → forward one/1, 3, 7, 14, 30, 60 days; Easy → forward two/3, 7, 14, 30, 60, 120 days. Box 4+ is mastered.
+- Web and Expo review ratings expose a persistent selected/pressed state, announce the saved choice, and lock the four ratings after one choice so an accidental repeated tap cannot create extra attempts. `Practice again` explicitly starts another recall and re-enables rating.
+- A delayed authenticated progress response merges against the newest in-memory review state, so it cannot overwrite a rating made while the review screen is open.
 - Anonymous review state persists locally on web and Expo. When authenticated, both clients load the remote snapshot, validate it, merge it with retained local state, save the merged result locally, and upload bounded 20-row batches. The additive `user_skill_progress` table is RLS-protected and does not change `user_progress_items`.
 - No individual answers, raw handwriting coordinates, microphone recordings, or full attempt histories are stored.
 - Character/vocabulary search remains local-first and includes glyphs, readings, meanings, examples, learner romaji, and IME aliases such as `konbanha`.
@@ -80,7 +82,7 @@ The catalog contains the exact 80 Grade-1 educational kanji plus `私・食・�
 - Web: `JapaneseLanguageBrowser`, `JapaneseReview`, `LearningPathMap`, `JapaneseWritingPractice`
 - Native: `packages/ui/src/screens.tsx`, `apps/mobile/app/languages/japanese/`
 - Persistence: `supabase/migrations/202608040001_create_user_skill_progress.sql`
-- Tests: Japanese content/order/search, stage progression, mastery scheduling, web hub/review, native screens, and Japanese Playwright regression.
+- Tests: Japanese content/order/search, stage progression, mastery scheduling, web hub/review selection and delayed-sync races, native review selection and repeat-tap protection, and Japanese Playwright regression.
 
 ## Implementation Map
 
@@ -137,6 +139,12 @@ flowchart LR
 - Expo Doctor: 20/20 checks passed.
 - iPad native compilation remains blocked by the local Xcode version described below; this is not recorded as a successful simulator build.
 
+## Review Rating Follow-Up — 2026-08-08
+
+- Added non-color selected feedback, `aria-pressed`/native selected semantics, a saved announcement, per-rating scheduling hints, and an explicit `Practice again` action.
+- Added synchronous repeat-tap guards on web and Expo so one recall produces exactly one progress update.
+- Added regression coverage for selection, disabling/resetting, repeat taps, delayed remote snapshot merging, and the browser journey.
+
 ## Known Gaps
 
 - Native-speaker audio and its playback UI cannot ship until genuine released recordings are supplied.
@@ -147,6 +155,7 @@ flowchart LR
 
 ## Decision Log
 
+- `2026-08-08`: Treat one rating as one recall attempt. Keep the selected choice visible and locked until the learner explicitly chooses `Practice again`.
 - `2026-08-04`: Adopt JF/CEFR stages with friendly stamp names and keep all content open.
 - `2026-08-04`: Add mastery additively rather than changing or deleting completion history.
 - `2026-08-04`: Keep public third-party materials link-only unless redistribution rights are explicit.
