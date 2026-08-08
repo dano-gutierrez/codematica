@@ -48,5 +48,5 @@ export default function JapaneseReviewRoute() {
     void syncNativeSkillProgress(supabase, rows);
   }
 
-  return <JapaneseReviewScreen index={index} learningPath={learningPath} progress={progress} onRate={onRate} adapters={adapters} />;
+  return <JapaneseReviewScreen learningPath={learningPath} progress={progress} onRate={onRate} adapters={adapters} />;
 }

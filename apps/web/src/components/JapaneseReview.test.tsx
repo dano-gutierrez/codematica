@@ -1,6 +1,6 @@
 import { act, fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import { getContentIndex, getLearningPathBySlug } from "@codematica/core";
+import { getLearningPathBySlug } from "@codematica/core";
 import { JapaneseReview } from "./JapaneseReview";
 
 describe("JapaneseReview", () => {
@@ -9,13 +9,14 @@ describe("JapaneseReview", () => {
     vi.restoreAllMocks();
   });
 
-  it("keeps every skill card available and persists a review rating", async () => {
+  it("keeps every skill card available without advertising separate practice modes", async () => {
     const path = getLearningPathBySlug("japanese-foundations")!;
-    render(<JapaneseReview index={getContentIndex()} learningPath={path} />);
+    render(<JapaneseReview learningPath={path} />);
     await act(async () => undefined);
 
     expect(screen.getByTestId("japanese-review-browser")).toBeVisible();
-    expect(screen.getByRole("link", { name: /Browse all flashcards/ })).toHaveAttribute("href", "/paths/japanese-foundations/flashcards");
+    expect(screen.queryByRole("link", { name: /flashcards/i })).not.toBeInTheDocument();
+    expect(screen.queryByRole("link", { name: /audio/i })).not.toBeInTheDocument();
     expect(screen.getAllByText("Kana sounds and rhythm").length).toBeGreaterThan(0);
 
     fireEvent.click(screen.getByRole("button", { name: "Good" }));
@@ -30,7 +31,7 @@ describe("JapaneseReview", () => {
 
   it("counts one rating per recall and requires an explicit reset before another attempt", async () => {
     const path = getLearningPathBySlug("japanese-foundations")!;
-    render(<JapaneseReview index={getContentIndex()} learningPath={path} />);
+    render(<JapaneseReview learningPath={path} />);
     await act(async () => undefined);
 
     const good = screen.getByRole("button", { name: "Good" });
@@ -51,7 +52,7 @@ describe("JapaneseReview", () => {
   it("recovers from malformed local review state", async () => {
     window.localStorage.setItem("codematica:japanese-skill-progress:v1", "{");
     const path = getLearningPathBySlug("japanese-foundations")!;
-    render(<JapaneseReview index={getContentIndex()} learningPath={path} />);
+    render(<JapaneseReview learningPath={path} />);
     await act(async () => undefined);
     expect(screen.getByText("0 due now")).toBeVisible();
   });
@@ -66,7 +67,7 @@ describe("JapaneseReview", () => {
       .mockResolvedValueOnce(new Response(JSON.stringify({ isSignedIn: true, items: [remote] }), { status: 200 }))
       .mockResolvedValue(new Response(JSON.stringify({ ok: true }), { status: 200 }));
     const path = getLearningPathBySlug("japanese-foundations")!;
-    render(<JapaneseReview index={getContentIndex()} learningPath={path} />);
+    render(<JapaneseReview learningPath={path} />);
 
     await waitFor(() => expect(screen.getByText(/Box 2 · learning/i)).toBeVisible());
     await waitFor(() => expect(fetchMock).toHaveBeenCalledWith("/api/progress/skills", expect.objectContaining({ method: "POST" })));
@@ -81,7 +82,7 @@ describe("JapaneseReview", () => {
       .mockReturnValueOnce(remoteResponse)
       .mockResolvedValue(new Response(JSON.stringify({ ok: true }), { status: 200 }));
     const path = getLearningPathBySlug("japanese-foundations")!;
-    render(<JapaneseReview index={getContentIndex()} learningPath={path} />);
+    render(<JapaneseReview learningPath={path} />);
     await act(async () => undefined);
 
     fireEvent.click(screen.getByRole("button", { name: "Good" }));

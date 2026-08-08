@@ -66,14 +66,15 @@ describe("mobile shared screens", () => {
     expect(view.getAllByText("水").length).toBeGreaterThan(0);
   });
 
-  it("keeps every Japanese review skill and flashcards available", async () => {
+  it("keeps every Japanese review skill available without separate practice modes", async () => {
     const index = getContentIndex();
     const learningPath = index.learningPaths.find((path) => path.slug === "japanese-foundations")!;
     const onRate = jest.fn();
-    const view = await render(<JapaneseReviewScreen index={index} learningPath={learningPath} progress={[]} onRate={onRate} adapters={adapters} />);
+    const view = await render(<JapaneseReviewScreen learningPath={learningPath} progress={[]} onRate={onRate} adapters={adapters} />);
 
     expect(view.getByTestId("mobile-japanese-review-skills")).toBeOnTheScreen();
-    expect(view.getByTestId("mobile-japanese-review-flashcards")).toBeOnTheScreen();
+    expect(view.queryByText(/flashcards/i)).toBeNull();
+    expect(view.queryByText(/audio/i)).toBeNull();
     fireEvent.press(view.getByTestId("mobile-japanese-review-good"));
     expect(onRate).toHaveBeenCalledWith("kana-listening", "good");
     await waitFor(() => expect(view.getByTestId("mobile-japanese-review-good").props.accessibilityState).toEqual(expect.objectContaining({ selected: true, disabled: true })));

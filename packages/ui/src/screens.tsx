@@ -543,13 +543,11 @@ export function JapaneseLanguageHubScreen({ index, adapters }: { index: ContentI
 }
 
 export function JapaneseReviewScreen({
-  index,
   learningPath,
   progress,
   onRate,
   adapters,
 }: {
-  index: ContentIndex;
   learningPath: LearningPath;
   progress: SkillProgress[];
   onRate: (skillId: string, rating: ReviewRating) => void;
@@ -563,16 +561,14 @@ export function JapaneseReviewScreen({
   const selectedProgress = progress.find((row) => row.pathSlug === learningPath.slug && row.skillId === selected?.id);
   const selectedRating = selected ? sessionRatings[selected.id] : undefined;
   const dueCount = progress.filter((row) => new Date(row.nextReviewAt).getTime() <= renderedAt).length;
-  const flashcards = index.passiveFlashcardFeeds.find((feed) => feed.pathSlug === learningPath.slug && feed.status === "published");
 
   return (
     <AppScreen>
       <Header adapters={adapters} subtitle="Japanese review" />
       <Text style={styles.eyebrow}>Always open · {dueCount} due</Text>
       <Text style={styles.heroTitle}>Review what is ready.</Text>
-      <Text style={styles.heroCopy}>The queue recommends practice. It never locks lessons, flashcards, handwriting, or the dictionary.</Text>
+      <Text style={styles.heroCopy}>The queue is for focused skill recall. Other practice modes stay available from their own study screens.</Text>
       <View style={styles.actionRow}>
-        {flashcards ? <Button label="Browse all flashcards" onPress={() => adapters.navigation.navigate(flashcards.route)} testID="mobile-japanese-review-flashcards" /> : null}
         <Button label="Dictionary" variant="ghost" onPress={() => adapters.navigation.navigate("/languages/japanese")} />
       </View>
       <View style={styles.card} testID="mobile-japanese-review-skills">

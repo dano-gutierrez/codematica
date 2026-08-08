@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { Check, RotateCcw } from "lucide-react";
 import { useEffect, useMemo, useRef, useState } from "react";
-import { applyReviewRating, mergeSkillProgressLists, orderDueReviews, skillProgressSchema, type ContentIndex, type LearningPath, type ReviewRating, type SkillProgress } from "@codematica/core";
+import { applyReviewRating, mergeSkillProgressLists, orderDueReviews, skillProgressSchema, type LearningPath, type ReviewRating, type SkillProgress } from "@codematica/core";
 import { AppHeader } from "@/components/AppHeader";
 
 const storageKey = "codematica:japanese-skill-progress:v1";
@@ -50,7 +50,7 @@ async function loadRemoteProgress() {
   });
 }
 
-export function JapaneseReview({ index, learningPath }: { index: ContentIndex; learningPath: LearningPath }) {
+export function JapaneseReview({ learningPath }: { learningPath: LearningPath }) {
   const skills = learningPath.progression?.skills ?? [];
   const [progress, setProgress] = useState<SkillProgress[]>([]);
   const [selectedSkillId, setSelectedSkillId] = useState(skills[0]?.id ?? "");
@@ -78,7 +78,6 @@ export function JapaneseReview({ index, learningPath }: { index: ContentIndex; l
   const selectedSkill = skills.find((skill) => skill.id === selectedSkillId) ?? skills[0];
   const selectedProgress = progress.find((row) => row.pathSlug === learningPath.slug && row.skillId === selectedSkill?.id);
   const selectedRating = selectedSkill ? sessionRatings[selectedSkill.id] : undefined;
-  const flashcards = index.passiveFlashcardFeeds.find((feed) => feed.pathSlug === learningPath.slug && feed.status === "published");
 
   function rate(rating: ReviewRating) {
     if (!selectedSkill) return;
@@ -117,15 +116,10 @@ export function JapaneseReview({ index, learningPath }: { index: ContentIndex; l
         <p className="text-sm font-extrabold uppercase text-[#7a5200]">Always open</p>
         <h1 className="mt-2 text-4xl font-extrabold leading-tight text-[#263238] sm:text-6xl">Review what is ready.</h1>
         <p className="mt-4 max-w-3xl text-base font-semibold leading-7 text-[#53616c]">
-          The due queue recommends practice; it never hides lessons, handwriting, the dictionary, or flashcards. Ratings are saved on this device immediately.
+          The due queue is for focused skill recall. Lessons, handwriting, the dictionary, and other practice modes stay available from their own study screens. Ratings are saved on this device immediately.
         </p>
 
         <div className="mt-6 flex flex-wrap gap-3">
-          {flashcards ? (
-            <Link href={flashcards.route} className="inline-flex min-h-12 items-center gap-2 rounded-lg border-2 border-b-4 border-[#1d4e9e] bg-[#245fba] px-4 py-2 text-base font-extrabold text-white">
-              Browse all flashcards
-            </Link>
-          ) : null}
           <Link href="/languages/japanese" className="inline-flex min-h-12 items-center rounded-lg border-2 border-b-4 border-[#b9cbd3] bg-white px-4 py-2 text-base font-extrabold text-[#263238]">Open dictionary</Link>
         </div>
 

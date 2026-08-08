@@ -18,7 +18,7 @@ The learning loop is hear, notice, trace/manipulate, recall, read in context, us
 - `ContentIndex.schemaVersion` is `8`.
 - Learning paths may declare proficiency levels, skill strands, required nodes, JF Can-dos, open stages, checkpoint thresholds, and estimated time.
 - `/languages/japanese` and the Expo Japanese hub keep four destinations visible: Learn, Review, Dictionary, and Resources.
-- `/languages/japanese/review` recommends due skills while keeping every skill card and `/paths/japanese-foundations/flashcards` manually available.
+- `/languages/japanese/review` recommends due skills and keeps every skill card available, but review routes do not advertise separate flashcard or audio-practice modes. The published flashcard feed remains available from the Japanese hub and learning path; audio practice remains absent until the recording corpus exists.
 - Review uses six boxes: Again → box 0/10 minutes; Hard → back one/1 day; Good → forward one/1, 3, 7, 14, 30, 60 days; Easy → forward two/3, 7, 14, 30, 60, 120 days. Box 4+ is mastered.
 - Web and Expo review ratings expose a persistent selected/pressed state, announce the saved choice, and lock the four ratings after one choice so an accidental repeated tap cannot create extra attempts. `Practice again` explicitly starts another recall and re-enables rating.
 - A delayed authenticated progress response merges against the newest in-memory review state, so it cannot overwrite a rating made while the review screen is open.
@@ -145,6 +145,7 @@ flowchart LR
 - Added non-color selected feedback, `aria-pressed`/native selected semantics, a saved announcement, per-rating scheduling hints, and an explicit `Practice again` action.
 - Added synchronous repeat-tap guards on web and Expo so one recall produces exactly one progress update.
 - Added regression coverage for selection, disabling/resetting, repeat taps, delayed remote snapshot merging, and the browser journey.
+- Kept `/review` focused on its due-skill queue by removing flashcard launchers from both web and Expo review screens. Review screens must not expose flashcard or audio-practice launchers unless those modes gain substantive, review-specific content under a future documented contract.
 
 ## Known Gaps
 
@@ -157,6 +158,7 @@ flowchart LR
 ## Decision Log
 
 - `2026-08-08`: Lower assisted-stroke similarity gating and include the web pointer-release coordinate so beginner traces can advance without requiring near-pixel-perfect input.
+- `2026-08-08`: Keep review routes scoped to due-skill recall. Standalone flashcards remain discoverable from the Japanese hub and path, while audio practice stays unlisted until real recordings and meaningful exercises ship.
 - `2026-08-08`: Treat one rating as one recall attempt. Keep the selected choice visible and locked until the learner explicitly chooses `Practice again`.
 - `2026-08-04`: Adopt JF/CEFR stages with friendly stamp names and keep all content open.
 - `2026-08-04`: Add mastery additively rather than changing or deleting completion history.
