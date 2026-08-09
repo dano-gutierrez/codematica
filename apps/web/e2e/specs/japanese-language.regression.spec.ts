@@ -1,4 +1,21 @@
-import { expect, test } from "@playwright/test";
+import { expect, test, type CDPSession } from "@playwright/test";
+
+type PadBox = { x: number; y: number; width: number; height: number };
+
+async function drawTouchStroke(session: CDPSession, box: PadBox, points: Array<[number, number]>) {
+  const [start, ...moves] = points;
+  await session.send("Input.dispatchTouchEvent", {
+    type: "touchStart",
+    touchPoints: [{ x: box.x + box.width * start![0], y: box.y + box.height * start![1] }],
+  });
+  for (const [x, y] of moves) {
+    await session.send("Input.dispatchTouchEvent", {
+      type: "touchMove",
+      touchPoints: [{ x: box.x + box.width * x, y: box.y + box.height * y }],
+    });
+  }
+  await session.send("Input.dispatchTouchEvent", { type: "touchEnd", touchPoints: [] });
+}
 
 test("@regression mobile user searches Japanese and opens a writing drill", async ({ page }) => {
   await page.goto("/languages/japanese");
@@ -95,21 +112,28 @@ test("@regression assisted writing accepts a rough trace that follows the guide"
   expect(box).not.toBeNull();
 
   const session = await page.context().newCDPSession(page);
-  await session.send("Input.dispatchTouchEvent", {
-    type: "touchStart",
-    touchPoints: [{ x: box!.x + box!.width * 0.24, y: box!.y + box!.height * 0.64 }],
-  });
-  await session.send("Input.dispatchTouchEvent", {
-    type: "touchMove",
-    touchPoints: [{ x: box!.x + box!.width * 0.5, y: box!.y + box!.height * 0.65 }],
-  });
-  await session.send("Input.dispatchTouchEvent", {
-    type: "touchMove",
-    touchPoints: [{ x: box!.x + box!.width * 0.77, y: box!.y + box!.height * 0.62 }],
-  });
-  await session.send("Input.dispatchTouchEvent", { type: "touchEnd", touchPoints: [] });
+  await drawTouchStroke(session, box!, [[0.24, 0.64], [0.5, 0.65], [0.77, 0.62]]);
 
   await expect(page.getByTestId("writing-assisted-feedback")).toHaveCount(0);
+  await expect(page.getByTestId("writing-check")).toBeEnabled();
+  await page.getByTestId("writing-check").click();
+  await expect(page.getByTestId("writing-feedback")).toContainText("Correct");
+});
+
+test("@regression free writing accepts a recognizable imperfect hiragana character", async ({ page }) => {
+  await page.goto("/languages/japanese/characters/hiragana/a");
+  await page.getByTestId("writing-mode-free").click();
+
+  const pad = page.getByTestId("writing-pad");
+  await pad.scrollIntoViewIfNeeded();
+  const box = await pad.boundingBox();
+  expect(box).not.toBeNull();
+
+  const session = await page.context().newCDPSession(page);
+  await drawTouchStroke(session, box!, [[0.28, 0.44], [0.63, 0.42]]);
+  await drawTouchStroke(session, box!, [[0.6, 0.25], [0.54, 0.74]]);
+  await drawTouchStroke(session, box!, [[0.76, 0.54], [0.6, 0.8], [0.38, 0.75], [0.67, 0.57]]);
+
   await expect(page.getByTestId("writing-check")).toBeEnabled();
   await page.getByTestId("writing-check").click();
   await expect(page.getByTestId("writing-feedback")).toContainText("Correct");

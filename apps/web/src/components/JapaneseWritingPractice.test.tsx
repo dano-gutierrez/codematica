@@ -77,6 +77,27 @@ describe("JapaneseWritingPractice", () => {
     expect(screen.getByRole("link", { name: /next node/i })).toHaveAttribute("href", "/next");
   });
 
+  it("accepts a recognizable imperfect multi-stroke character in free mode", () => {
+    const character = getLanguageCharacterBySlug("japanese/hiragana/a")!;
+    render(<JapaneseWritingPractice characters={[character]} prompt="Write a." />);
+    fireEvent.click(screen.getByTestId("writing-mode-free"));
+
+    const pad = screen.getByTestId("writing-pad");
+    const drawStroke = (points: Array<[number, number]>, pointerId: number) => {
+      fireEvent.pointerDown(pad, { pointerId, clientX: points[0]![0], clientY: points[0]![1] });
+      points.slice(1, -1).forEach(([clientX, clientY]) => fireEvent.pointerMove(pad, { pointerId, clientX, clientY }));
+      const [clientX, clientY] = points.at(-1)!;
+      fireEvent.pointerUp(pad, { pointerId, clientX, clientY });
+    };
+
+    drawStroke([[28, 44], [63, 42]], 1);
+    drawStroke([[60, 25], [54, 74]], 2);
+    drawStroke([[76, 54], [60, 80], [38, 75], [67, 57]], 3);
+    fireEvent.click(screen.getByTestId("writing-check"));
+
+    expect(screen.getByTestId("writing-feedback")).toHaveTextContent("Correct");
+  });
+
   it("renders a stable empty state when a writing exercise has no characters", () => {
     render(<JapaneseWritingPractice characters={[]} prompt="Nothing to write." />);
     expect(screen.getByText(/no available characters/i)).toBeVisible();

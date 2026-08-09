@@ -21,6 +21,9 @@ export type WritingCheckResult = {
 
 const sampleCount = 16;
 const assistedCompletionThreshold = 0.6;
+const minimumOrderedStrokeScore = 0.5;
+const assistedAttemptThreshold = 0.6;
+const freeAttemptThreshold = 0.65;
 
 export function normalizeWritingStroke(stroke: WritingStroke): WritingStroke {
   return {
@@ -34,8 +37,8 @@ export function checkWritingAttempt(input: WritingCheckInput): WritingCheckResul
   const strokeCountCorrect = actual.length === expected.length;
   const strokeScores = expected.map((expectedStroke, index) => compareStroke(expectedStroke, actual[index]));
   const shapeScore = strokeScores.length ? average(strokeScores) : 0;
-  const strokeOrderCorrect = strokeCountCorrect && strokeScores.every((score) => score >= 0.58);
-  const threshold = input.mode === "assisted" ? 0.68 : 0.74;
+  const strokeOrderCorrect = strokeCountCorrect && strokeScores.every((score) => score >= minimumOrderedStrokeScore);
+  const threshold = input.mode === "assisted" ? assistedAttemptThreshold : freeAttemptThreshold;
   const isCorrect = strokeCountCorrect && strokeOrderCorrect && shapeScore >= threshold;
 
   return {

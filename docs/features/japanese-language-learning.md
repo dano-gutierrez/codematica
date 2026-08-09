@@ -24,7 +24,7 @@ The learning loop is hear, notice, trace/manipulate, recall, read in context, us
 - A delayed authenticated progress response merges against the newest in-memory review state, so it cannot overwrite a rating made while the review screen is open.
 - Anonymous review state persists locally on web and Expo. When authenticated, both clients load the remote snapshot, validate it, merge it with retained local state, save the merged result locally, and upload bounded 20-row batches. The additive `user_skill_progress` table is RLS-protected and does not change `user_progress_items`.
 - No individual answers, raw handwriting coordinates, microphone recordings, or full attempt histories are stored.
-- Assisted handwriting is intentionally forgiving: a rough trace that follows the highlighted stroke and direction advances, while a clearly unrelated path still asks the learner to retry. Web scoring includes the pointer-release position so quick drags are not truncated before comparison.
+- Handwriting is intentionally forgiving in both modes: assisted mode advances a rough trace that follows the highlighted stroke and direction, and free mode accepts a recognizable character with the correct stroke count and general order/direction. Clearly unrelated, reversed, or missing strokes still fail. Web scoring includes the pointer-release position so quick drags are not truncated before comparison.
 - Character/vocabulary search remains local-first and includes glyphs, readings, meanings, examples, learner romaji, and IME aliases such as `konbanha`.
 - The trusted resource shelf records publisher, URL, level, skills, access, availability, reuse policy, and attribution. Current JF, MEXT, JLPT/JFT, and Tadoku materials are link-only.
 
@@ -83,7 +83,7 @@ The catalog contains the exact 80 Grade-1 educational kanji plus `私・食・�
 - Web: `JapaneseLanguageBrowser`, `JapaneseReview`, `LearningPathMap`, `JapaneseWritingPractice`
 - Native: `packages/ui/src/screens.tsx`, `apps/mobile/app/languages/japanese/`
 - Persistence: `supabase/migrations/202608040001_create_user_skill_progress.sql`
-- Tests: Japanese content/order/search, assisted handwriting tolerance and pointer-release capture, stage progression, mastery scheduling, web hub/review selection and delayed-sync races, native review selection and repeat-tap protection, and Japanese Playwright regression.
+- Tests: Japanese content/order/search, assisted and free handwriting tolerance, multi-stroke hiragana grading, pointer-release capture, stage progression, mastery scheduling, web hub/review selection and delayed-sync races, native review selection and repeat-tap protection, and Japanese Playwright regression.
 
 ## Implementation Map
 
@@ -157,6 +157,7 @@ flowchart LR
 
 ## Decision Log
 
+- `2026-08-08`: Apply forgiving grading to final free-mode attempts as well as assisted traces; retain stroke-count and broad order/direction checks rather than requiring precise placement.
 - `2026-08-08`: Lower assisted-stroke similarity gating and include the web pointer-release coordinate so beginner traces can advance without requiring near-pixel-perfect input.
 - `2026-08-08`: Keep review routes scoped to due-skill recall. Standalone flashcards remain discoverable from the Japanese hub and path, while audio practice stays unlisted until real recordings and meaningful exercises ship.
 - `2026-08-08`: Treat one rating as one recall attempt. Keep the selected choice visible and locked until the learner explicitly chooses `Practice again`.

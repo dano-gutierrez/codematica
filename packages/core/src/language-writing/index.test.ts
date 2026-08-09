@@ -27,6 +27,12 @@ const hitoStrokes: LanguageStroke[] = [
   },
 ];
 
+const hiraganaAStrokes: LanguageStroke[] = [
+  { id: "top", points: [[32, 28], [68, 28]] },
+  { id: "stem", points: [[48, 18], [42, 70]] },
+  { id: "loop", points: [[72, 40], [52, 86], [25, 66], [60, 46]] },
+];
+
 describe("language writing checks", () => {
   it("accepts matching stroke count, order, direction, and shape", () => {
     const result = checkWritingAttempt({
@@ -65,6 +71,23 @@ describe("language writing checks", () => {
 
     expect(result.isCorrect).toBe(false);
     expect(result.strokeOrderCorrect).toBe(false);
+  });
+
+  it("accepts a recognizable imperfect multi-stroke character in free mode", () => {
+    const result = checkWritingAttempt({
+      expectedStrokes: hiraganaAStrokes,
+      mode: "free",
+      actualStrokes: [
+        { points: [[28, 44], [63, 42]] },
+        { points: [[60, 25], [54, 74]] },
+        { points: [[76, 54], [60, 80], [38, 75], [67, 57]] },
+      ],
+    });
+
+    expect(result.strokeCountCorrect).toBe(true);
+    expect(result.strokeOrderCorrect).toBe(true);
+    expect(result.score).toBeGreaterThanOrEqual(65);
+    expect(result.isCorrect).toBe(true);
   });
 
   it("marks assisted strokes complete only when close enough", () => {
