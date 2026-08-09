@@ -1,0 +1,333 @@
+{
+  "slug": "languages/japanese-n5-family-home-and-location-mixed",
+  "title": "Family, Home, And Location Mixed Practice",
+  "documentSlug": "languages/japanese-n5-family-home-and-location",
+  "concept": "Family, Home, And Location N5 recognition",
+  "difficulty": "foundation",
+  "tags": [
+    "japanese",
+    "n5",
+    "vocabulary"
+  ],
+  "status": "published",
+  "proficiencyLevel": "a1",
+  "skillIds": [
+    "a1-reading"
+  ],
+  "required": true,
+  "type": "questionnaire",
+  "questions": [
+    {
+      "id": "word-1",
+      "kind": "choice",
+      "prompt": "Choose the best English meaning for 男 (おとこ).",
+      "options": [
+        {
+          "id": "correct",
+          "label": "man, male",
+          "isCorrect": true
+        },
+        {
+          "id": "distractor-1",
+          "label": "(someone else's) older brother (formal)",
+          "isCorrect": false
+        },
+        {
+          "id": "distractor-2",
+          "label": "to learn, to commit to memory, to remember, to memorize",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "男 is read おとこ and means man, male.",
+      "skillIds": [
+        "a1-reading"
+      ]
+    },
+    {
+      "id": "word-2",
+      "kind": "choice",
+      "prompt": "Choose the best English meaning for 男の子 (おとこのこ).",
+      "options": [
+        {
+          "id": "correct",
+          "label": "boy",
+          "isCorrect": true
+        },
+        {
+          "id": "distractor-1",
+          "label": "older sister (formal)",
+          "isCorrect": false
+        },
+        {
+          "id": "distractor-2",
+          "label": "policeman (friendly term)",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "男の子 is read おとこのこ and means boy.",
+      "skillIds": [
+        "a1-reading"
+      ]
+    },
+    {
+      "id": "word-3",
+      "kind": "choice",
+      "prompt": "Choose the best English meaning for 一昨日 (おととい).",
+      "options": [
+        {
+          "id": "correct",
+          "label": "the day before yesterday",
+          "isCorrect": true
+        },
+        {
+          "id": "distractor-1",
+          "label": "aunt",
+          "isCorrect": false
+        },
+        {
+          "id": "distractor-2",
+          "label": "heavy; serious",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "一昨日 is read おととい and means the day before yesterday.",
+      "skillIds": [
+        "a1-reading"
+      ]
+    },
+    {
+      "id": "word-4",
+      "kind": "choice",
+      "prompt": "Choose the best English meaning for おととし (おととし).",
+      "options": [
+        {
+          "id": "correct",
+          "label": "year before last",
+          "isCorrect": true
+        },
+        {
+          "id": "distractor-1",
+          "label": "grandmother, female senior-citizen",
+          "isCorrect": false
+        },
+        {
+          "id": "distractor-2",
+          "label": "interesting, amusing",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "おととし is read おととし and means year before last.",
+      "skillIds": [
+        "a1-reading"
+      ]
+    },
+    {
+      "id": "word-5",
+      "kind": "choice",
+      "prompt": "Choose the best English meaning for 大人 (おとな).",
+      "options": [
+        {
+          "id": "correct",
+          "label": "adult",
+          "isCorrect": true
+        },
+        {
+          "id": "distractor-1",
+          "label": "a bath",
+          "isCorrect": false
+        },
+        {
+          "id": "distractor-2",
+          "label": "to swim",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "大人 is read おとな and means adult.",
+      "skillIds": [
+        "a1-reading"
+      ]
+    },
+    {
+      "id": "word-6",
+      "kind": "choice",
+      "prompt": "Choose the best English meaning for お腹 (おなか).",
+      "options": [
+        {
+          "id": "correct",
+          "label": "stomach",
+          "isCorrect": true
+        },
+        {
+          "id": "distractor-1",
+          "label": "a boxed lunch",
+          "isCorrect": false
+        },
+        {
+          "id": "distractor-2",
+          "label": "to get off",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "お腹 is read おなか and means stomach.",
+      "skillIds": [
+        "a1-reading"
+      ]
+    },
+    {
+      "id": "word-7",
+      "kind": "choice",
+      "prompt": "Choose the best English meaning for 同じ (おなじ).",
+      "options": [
+        {
+          "id": "correct",
+          "label": "same, identical",
+          "isCorrect": true
+        },
+        {
+          "id": "distractor-1",
+          "label": "to learn, to commit to memory, to remember, to memorize",
+          "isCorrect": false
+        },
+        {
+          "id": "distractor-2",
+          "label": "to finish, to close",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "同じ is read おなじ and means same, identical.",
+      "skillIds": [
+        "a1-reading"
+      ]
+    },
+    {
+      "id": "word-8",
+      "kind": "choice",
+      "prompt": "Choose the best English meaning for お兄さん (おにいさん).",
+      "options": [
+        {
+          "id": "correct",
+          "label": "(someone else's) older brother (formal)",
+          "isCorrect": true
+        },
+        {
+          "id": "distractor-1",
+          "label": "policeman (friendly term)",
+          "isCorrect": false
+        },
+        {
+          "id": "distractor-2",
+          "label": "Music",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "お兄さん is read おにいさん and means (someone else's) older brother (formal).",
+      "skillIds": [
+        "a1-reading"
+      ]
+    },
+    {
+      "id": "word-9",
+      "kind": "choice",
+      "prompt": "Choose the best English meaning for お姉さん (おねえさん).",
+      "options": [
+        {
+          "id": "correct",
+          "label": "older sister (formal)",
+          "isCorrect": true
+        },
+        {
+          "id": "distractor-1",
+          "label": "heavy; serious",
+          "isCorrect": false
+        },
+        {
+          "id": "distractor-2",
+          "label": "woman, female",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "お姉さん is read おねえさん and means older sister (formal).",
+      "skillIds": [
+        "a1-reading"
+      ]
+    },
+    {
+      "id": "word-10",
+      "kind": "choice",
+      "prompt": "Choose the best English meaning for 伯母さん; 叔母さん (おばさん).",
+      "options": [
+        {
+          "id": "correct",
+          "label": "aunt",
+          "isCorrect": true
+        },
+        {
+          "id": "distractor-1",
+          "label": "interesting, amusing",
+          "isCorrect": false
+        },
+        {
+          "id": "distractor-2",
+          "label": "girl",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "伯母さん; 叔母さん is read おばさん and means aunt.",
+      "skillIds": [
+        "a1-reading"
+      ]
+    },
+    {
+      "id": "word-11",
+      "kind": "choice",
+      "prompt": "Choose the best English meaning for おばあさん (おばあさん).",
+      "options": [
+        {
+          "id": "correct",
+          "label": "grandmother, female senior-citizen",
+          "isCorrect": true
+        },
+        {
+          "id": "distractor-1",
+          "label": "to swim",
+          "isCorrect": false
+        },
+        {
+          "id": "distractor-2",
+          "label": "counter for occurrences (~ times)",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "おばあさん is read おばあさん and means grandmother, female senior-citizen.",
+      "skillIds": [
+        "a1-reading"
+      ]
+    },
+    {
+      "id": "word-12",
+      "kind": "choice",
+      "prompt": "Choose the best English meaning for お風呂 (おふろ).",
+      "options": [
+        {
+          "id": "correct",
+          "label": "a bath",
+          "isCorrect": true
+        },
+        {
+          "id": "distractor-1",
+          "label": "to get off",
+          "isCorrect": false
+        },
+        {
+          "id": "distractor-2",
+          "label": "counter for stories (floors) of a building",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "お風呂 is read おふろ and means a bath.",
+      "skillIds": [
+        "a1-reading"
+      ]
+    }
+  ]
+}

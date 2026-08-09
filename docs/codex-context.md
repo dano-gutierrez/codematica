@@ -104,7 +104,7 @@ The first hosted web target is Vercel Hobby on the Vercel-provided URL. Vercel r
 - `docs/CHANGELOG.md`: dated cross-feature delivery summaries; feature documents remain authoritative.
 - `docs/features/home-discovery.md`: cross-section home, global local search, curated rows, stable themes, and full catalog routes.
 - `docs/features/markdown-knowledge-browser.md`: V1 Markdown browser, search, diagrams, content indexing, and Supabase scaffold.
-- `docs/features/learning-paths-and-practice.md`: path catalog and detail maps, schema-v9 career/language progression, source nodes, flashcards, cloze prompts, guided labs, and local path/exercise content.
+- `docs/features/learning-paths-and-practice.md`: path catalog and detail maps, schema-v10 career/language progression, source nodes, flashcards, open answers, listening choices, guided labs, and local path/exercise content.
 - `docs/features/ml-systems-career-path.md`: Harvard CS249r source-linked roadmap, published prerequisites/Volume I Foundations companions, guided labs, and planned career stages.
 - `docs/features/programming-language-refresh.md`: reusable language refresh paths and the Python-for-TS/JS module.
 - `docs/features/llm-application-engineering.md`: Langfuse and LangChain AI engineering path, including LLM app architecture, tracing, evals, RAG, agents, risk governance, and non-executable coding challenge sections.

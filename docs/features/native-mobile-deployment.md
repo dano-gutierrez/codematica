@@ -5,7 +5,7 @@
 - Status: `in_progress`
 - Last updated: `2026-08-05`
 - Owner thread: `n/a`
-- Current state: The repo has an Expo Router app in `apps/mobile`, shared runtime logic in `packages/core`, shared React Native screens in `packages/ui`, adaptive phone/iPad Japanese handwriting and review, enforced Jest coverage, credential-free EAS Android/iOS E2E profiles, and checked-in Maestro regression workflows.
+- Current state: The repo has an Expo Router app in `apps/mobile`, shared runtime logic in `packages/core`, shared React Native screens in `packages/ui`, adaptive phone/iPad Japanese handwriting and review, Pencil Scribble-compatible open answers, offline Japanese conversion, `expo-audio` playback, enforced Jest coverage, credential-free EAS Android/iOS E2E profiles, and checked-in Maestro regression workflows.
 - Target outcome: Codematica can run locally on web/Android/iOS, ship Android and iOS internal builds, and prepare Play Console/App Store Connect submissions while preserving the existing Next/Vercel mobile web app and coding shared product behavior once.
 - Code touchpoints:
   - `apps/mobile/`
@@ -147,6 +147,8 @@ Store-side setup still required:
 - `packages/core/src/` exports content schemas, generated index access, library/discovery search, curated-home resolution, questionnaire logic, handwriting scoring, language helpers, passive flashcard helpers, interview helpers, and progress helpers.
 - `packages/ui/src/screens.tsx` exports the shared React Native screen set for current web parity, including Japanese Learn/Review/Dictionary/Resources destinations, complete kana lookup, and writing practice.
 - Native writing practice uses `react-native-svg` for the stroke pad and keeps raw strokes transient.
+- Native open answers use a real Japanese-language `TextInput`; iPadOS Scribble can replace Pencil handwriting with text on-device. Candidate conversion and grading remain in shared core logic, and raw ink is never stored.
+- Approved listening assets play through `expo-audio`; draft synthetic audio is absent from generated registries.
 - Japanese writing pads use window dimensions to grow from compact phone/Split View layouts to 480–560 pt iPad canvases while retaining font scaling and 44 pt controls.
 
 ## Test Plan

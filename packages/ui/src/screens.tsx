@@ -4,6 +4,7 @@ import {
   checkWritingAttempt,
   checkQuestionAnswer,
   createQuestionnaireAttempt,
+  convertJapaneseInput,
   getAssistedStrokeCompletion,
   getJapaneseCharacterGroups,
   getHomeDiscoverySections,
@@ -547,10 +548,12 @@ export function JapaneseReviewScreen({
   progress,
   onRate,
   adapters,
+  hasListening = false,
 }: {
   learningPath: LearningPath;
   progress: SkillProgress[];
   onRate: (skillId: string, rating: ReviewRating) => void;
+  hasListening?: boolean;
 } & ScreenProps) {
   const skills = learningPath.progression?.skills ?? [];
   const [selectedSkillId, setSelectedSkillId] = useState(skills[0]?.id ?? "");
@@ -570,6 +573,9 @@ export function JapaneseReviewScreen({
       <Text style={styles.heroCopy}>The queue is for focused skill recall. Other practice modes stay available from their own study screens.</Text>
       <View style={styles.actionRow}>
         <Button label="Dictionary" variant="ghost" onPress={() => adapters.navigation.navigate("/languages/japanese")} />
+        <Button label="N5 flashcards" variant="ghost" onPress={() => adapters.navigation.navigate("/languages/japanese/review/flashcards")} testID="mobile-japanese-review-flashcards" />
+        <Button label="Open-answer writing" variant="ghost" onPress={() => adapters.navigation.navigate("/languages/japanese/review/writing")} testID="mobile-japanese-review-writing" />
+        {hasListening ? <Button label="Listening" variant="ghost" onPress={() => adapters.navigation.navigate("/languages/japanese/review/listening")} testID="mobile-japanese-review-listening" /> : null}
       </View>
       <View style={styles.card} testID="mobile-japanese-review-skills">
         <Text style={styles.cardTitle}>All skill cards</Text>
@@ -621,6 +627,16 @@ export function JapaneseReviewScreen({
       ) : null}
     </AppScreen>
   );
+}
+
+export function JapaneseFlashcardReviewScreen({ vocabulary, adapters }: { vocabulary: LanguageVocabulary[] } & ScreenProps) {
+  const ordered = useMemo(() => [...vocabulary].sort((left, right) => left.studyOrder - right.studyOrder), [vocabulary]);
+  const [index, setIndex] = useState(0); const [revealed, setRevealed] = useState(false); const card = ordered[index];
+  return <AppScreen><Header adapters={adapters} subtitle="Japanese flashcards" /><Text style={styles.eyebrow}>N5 cumulative review</Text><Text style={styles.heroTitle}>Build a 650-word foundation.</Text>{card ? <><Pressable onPress={() => setRevealed((value) => !value)} style={styles.card} testID="mobile-japanese-flashcard"><Text style={styles.positionText}>Card {index + 1} of {ordered.length}</Text><Text accessibilityLanguage="ja-JP" style={styles.japaneseGlyph}>{card.expression}</Text>{revealed ? <><Text accessibilityLanguage="ja-JP" style={styles.cardTitle}>{card.reading}</Text><Text style={styles.bodyText}>{card.meanings.join(", ")}</Text></> : <Text style={styles.mutedText}>Tap to reveal</Text>}</Pressable><View style={styles.actionRow}><Button label="Previous" variant="ghost" disabled={index === 0} onPress={() => { setIndex((value) => value - 1); setRevealed(false); }} /><Button label="Next" disabled={index === ordered.length - 1} onPress={() => { setIndex((value) => value + 1); setRevealed(false); }} /></View></> : <Text style={styles.emptyText}>No vocabulary is available.</Text>}</AppScreen>;
+}
+
+export function JapanesePracticeModeScreen({ title, description, exercises, adapters }: { title: string; description: string; exercises: QuestionnaireExercise[] } & ScreenProps) {
+  return <AppScreen><Header adapters={adapters} subtitle={title} /><Text style={styles.heroTitle}>{title}</Text><Text style={styles.heroCopy}>{description}</Text><View style={styles.stack}>{exercises.map((exercise, index) => <Pressable key={exercise.slug} onPress={() => adapters.navigation.navigate(exercise.route)} style={styles.card} testID={`mobile-japanese-practice-unit-${index + 1}`}><Text style={styles.positionText}>Unit {index + 1}</Text><Text style={styles.cardTitle}>{exercise.title}</Text><Text style={styles.mutedText}>{exercise.questions.length} questions</Text></Pressable>)}</View>{exercises.length === 0 ? <View style={styles.card} testID="mobile-japanese-listening-pending"><Text style={styles.cardTitle}>Audio review is in progress.</Text><Text style={styles.mutedText}>Draft clips stay unavailable until a Japanese speaker approves them.</Text></View> : null}</AppScreen>;
 }
 
 function JapaneseResultCard({ result, adapters }: { result: JapaneseSearchResult } & ScreenProps) {
@@ -1330,7 +1346,7 @@ function QuestionnairePractice({
         <Text style={styles.positionText}>{question.kind}</Text>
       </View>
       <Text style={styles.bodyText}>{question.prompt}</Text>
-      <QuestionBody question={question} answer={answer} disabled={Boolean(result)} onAnswer={resetAnswer} />
+      <QuestionBody question={question} answer={answer} disabled={Boolean(result)} onAnswer={resetAnswer} adapters={adapters} />
       {result ? <QuestionFeedback question={question} result={result} /> : null}
       <Button label="Check answer" disabled={Boolean(result)} onPress={checkAnswer} testID="mobile-questionnaire-check" />
       {result ? (
@@ -1350,28 +1366,73 @@ function QuestionBody({
   answer,
   disabled,
   onAnswer,
+  adapters,
 }: {
   question: QuestionnaireAttemptQuestion;
   answer?: QuestionnaireAnswer;
   disabled: boolean;
   onAnswer: (answer?: QuestionnaireAnswer) => void;
+  adapters: CodematicaAdapters;
 }) {
-  if (question.kind === "choice") {
-    const selected = answer?.kind === "choice" ? answer.selectedOptionId : "";
+  const openAnswerValue = answer?.kind === "open-answer" ? answer.value : "";
+  const conversion = useMemo(() => convertJapaneseInput(openAnswerValue), [openAnswerValue]);
+
+  if (question.kind === "choice" || question.kind === "listening-choice") {
+    const selected = answer?.kind === question.kind ? answer.selectedOptionId : "";
 
     return (
       <View style={styles.stack}>
+        {question.kind === "listening-choice" ? (
+          <View style={styles.subPanel} testID="mobile-japanese-audio-player">
+            <Text style={styles.positionText}>AI-generated voice</Text>
+            {adapters.audio ? (
+              <View style={styles.actionRow}>
+                <Button label="Play / replay" onPress={() => { void adapters.audio?.play(question.audioId, 1); }} testID="mobile-japanese-audio-play" />
+                <Button label="0.75× slow" variant="ghost" onPress={() => { void adapters.audio?.play(question.audioId, 0.75); }} testID="mobile-japanese-audio-slow" />
+              </View>
+            ) : <Text style={styles.mutedText}>Listening audio is awaiting Japanese-language approval.</Text>}
+          </View>
+        ) : null}
         {question.options.map((option) => (
           <Pressable
             key={option.id}
             disabled={disabled}
-            onPress={() => onAnswer({ kind: "choice", selectedOptionId: option.id })}
+            onPress={() => onAnswer(question.kind === "choice" ? { kind: "choice", selectedOptionId: option.id } : { kind: "listening-choice", selectedOptionId: option.id })}
             style={[styles.choice, selected === option.id && styles.choiceSelected]}
             testID={`mobile-questionnaire-choice-${option.id}`}
           >
             <Text style={styles.choiceText}>{option.label}</Text>
           </Pressable>
         ))}
+      </View>
+    );
+  }
+
+  if (question.kind === "open-answer") {
+    const [prefix, suffix] = question.template.split("{{blank}}");
+    return (
+      <View style={styles.stack} testID="mobile-japanese-answer-input">
+        <Text accessibilityLanguage="ja-JP" style={styles.bodyText}>{prefix}{openAnswerValue || " ____ "}{suffix}</Text>
+        <TextInput
+          value={openAnswerValue}
+          editable={!disabled}
+          onChangeText={(value) => onAnswer({ kind: "open-answer", value })}
+          autoCapitalize="none"
+          autoCorrect={false}
+          accessibilityLanguage="ja-JP"
+          accessibilityHint="Type romaji or Japanese. On iPad, write here with Apple Pencil Scribble."
+          placeholder="Romaji or Japanese"
+          style={styles.input}
+          testID="mobile-questionnaire-open-answer-input"
+        />
+        <Text style={styles.mutedText}>Choose a conversion below. On iPad, you can write directly in the blank with Apple Pencil Scribble.</Text>
+        {/[a-z]/i.test(openAnswerValue) ? (
+          <View style={styles.actionRow} testID="mobile-japanese-ime-candidates">
+            {conversion.candidates.map((candidate, index) => (
+              <Button key={candidate} label={candidate} variant="ghost" disabled={disabled} onPress={() => onAnswer({ kind: "open-answer", value: candidate })} testID={`mobile-japanese-ime-candidate-${index}`} />
+            ))}
+          </View>
+        ) : null}
       </View>
     );
   }
@@ -1468,7 +1529,7 @@ function QuestionFeedback({ question, result }: { question: QuestionnaireAttempt
   return (
     <View style={[styles.feedback, result.isCorrect ? styles.feedbackCorrect : styles.feedbackReview]} testID="mobile-questionnaire-feedback">
       <Text style={styles.feedbackTitle}>{result.isCorrect ? "Correct" : "Review this"}</Text>
-      {!result.isCorrect || question.kind !== "choice" ? <Text style={styles.bodyText}>Correct answer: {result.correctAnswer}</Text> : null}
+      {!result.isCorrect || (question.kind !== "choice" && question.kind !== "listening-choice") ? <Text style={styles.bodyText}>Correct answer: {result.correctAnswer}</Text> : null}
       <Text style={styles.mutedText}>{question.explanation}</Text>
     </View>
   );
@@ -2067,6 +2128,14 @@ function getNativeEffectiveAnswer(question: QuestionnaireAttemptQuestion, answer
 
   if (question.kind === "cloze") {
     return answer?.kind === "cloze" ? answer : { kind: "cloze", value: "" };
+  }
+
+  if (question.kind === "open-answer") {
+    return answer?.kind === "open-answer" ? answer : { kind: "open-answer", value: "" };
+  }
+
+  if (question.kind === "listening-choice") {
+    return answer?.kind === "listening-choice" ? answer : { kind: "listening-choice", selectedOptionId: "" };
   }
 
   if (question.kind === "ordering") {

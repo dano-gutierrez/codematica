@@ -1,9 +1,24 @@
 import { useRouter } from "expo-router";
 import { useMemo } from "react";
 import * as WebBrowser from "expo-web-browser";
+import { createAudioPlayer, type AudioPlayer } from "expo-audio";
 import type { CodematicaAdapters, ProgressTarget } from "@codematica/ui";
 import { createNativeSupabaseClient, getNativeAuthRedirectUrl, hasSupabasePublicEnv, openAuthUrl } from "./supabase";
 import { recordNativeProgress, syncNativeAnonymousProgress } from "./progress";
+import { japaneseAudioAssets } from "../generated/japanese-audio";
+
+let activeAudioPlayer: AudioPlayer | undefined;
+
+function playJapaneseAudio(audioId: string, playbackRate = 1) {
+  const source = (japaneseAudioAssets as Record<string, number>)[audioId];
+  if (!source) return false;
+  activeAudioPlayer?.remove();
+  activeAudioPlayer = createAudioPlayer(source);
+  activeAudioPlayer.playbackRate = playbackRate;
+  void activeAudioPlayer.seekTo(0);
+  activeAudioPlayer.play();
+  return true;
+}
 
 export function useCodematicaAdapters(): CodematicaAdapters {
   const router = useRouter();
@@ -20,6 +35,7 @@ export function useCodematicaAdapters(): CodematicaAdapters {
       progress: {
         record: (target: ProgressTarget, status, position) => recordNativeProgress(supabase, target, status, position),
       },
+      audio: { play: playJapaneseAudio },
       auth: {
         isConfigured: hasSupabasePublicEnv(),
         signInWithPassword: async (email: string, password: string) => {

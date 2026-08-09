@@ -1,5 +1,14 @@
 import { describe, expect, it } from "vitest";
-import { contentSourceCatalogFileSchema, languageExternalResourceCatalogFileSchema, learningPathFileSchema, webExerciseProjectSchema } from "./schema";
+import {
+  contentSourceCatalogFileSchema,
+  languageAudioCatalogFileSchema,
+  languageExternalResourceCatalogFileSchema,
+  languageGrammarCatalogFileSchema,
+  languageVocabularyCatalogFileSchema,
+  learningPathFileSchema,
+  questionnaireExerciseFileSchema,
+  webExerciseProjectSchema,
+} from "./schema";
 
 const outcomes = [
   { id: "hear-detail", statement: "I can hear one familiar detail in a short exchange.", skillId: "a1-listening" },
@@ -34,7 +43,7 @@ function pathWithOutcomes(stageOutcomes: unknown[]) {
   };
 }
 
-describe("content schema v9", () => {
+describe("content schema v10", () => {
   it("parses generic progression metadata and node defaults remain optional", () => {
     const parsed = learningPathFileSchema.parse(pathWithOutcomes([...outcomes]));
     expect(parsed.progression?.stages[0]?.level).toBe("A1");
@@ -60,6 +69,86 @@ describe("content schema v9", () => {
 
   it("requires access, publisher, attribution, and reuse policy for resources", () => {
     expect(() => languageExternalResourceCatalogFileSchema.parse({ kind: "resources", language: "ja", items: [{ id: "resource", title: "Resource", description: "A sufficiently detailed resource summary.", publisher: "Publisher", url: "https://example.com", proficiencyLevels: ["a1"], skills: ["reading"], access: "free", availability: "online", attribution: "Publisher" }] })).toThrow();
+  });
+
+  it("parses N5 vocabulary study metadata and structured grammar", () => {
+    const vocabulary = languageVocabularyCatalogFileSchema.parse({
+      kind: "vocabulary",
+      language: "ja",
+      items: [{
+        slug: "japanese/vocabulary/gakusei",
+        expression: "学生",
+        reading: "がくせい",
+        romaji: "gakusei",
+        ipa: "gakɯseː",
+        meanings: ["student"],
+        wordClass: ["noun"],
+        studyOrder: 1,
+        unitSlugs: ["identity-and-demonstratives"],
+        jlptAlignment: "n5",
+        tags: ["people", "school"],
+        status: "published",
+      }],
+    });
+    expect(vocabulary.items[0]).toMatchObject({ studyOrder: 1, jlptAlignment: "n5", wordClass: ["noun"] });
+
+    const grammar = languageGrammarCatalogFileSchema.parse({
+      kind: "grammar",
+      language: "ja",
+      items: [{
+        id: "copula-desu",
+        title: "Polite copula です",
+        pattern: "Noun + です",
+        meaning: "States that something is or identifies as a noun.",
+        formation: ["学生です"],
+        notes: ["Use です for a polite neutral statement."],
+        studyOrder: 1,
+        unitSlug: "identity-and-demonstratives",
+        proficiencyLevel: "a1",
+        jlptAlignment: "n5",
+        examples: [{ japanese: "私は学生です。", reading: "わたしはがくせいです。", romaji: "watashi wa gakusei desu.", translation: "I am a student." }],
+        status: "published",
+      }],
+    });
+    expect(grammar.items[0]?.id).toBe("copula-desu");
+  });
+
+  it("parses Japanese open-answer and approval-gated listening questions", () => {
+    const parsed = questionnaireExerciseFileSchema.parse({
+      slug: "languages/n5-open-answer",
+      title: "N5 Open Answer",
+      documentSlug: "languages/japanese-first-connections",
+      concept: "N5 sentence production",
+      difficulty: "foundation",
+      tags: ["japanese", "n5"],
+      status: "published",
+      type: "questionnaire",
+      questions: [
+        { id: "introduce", kind: "open-answer", prompt: "Write: I am a student.", template: "{{blank}}", acceptedAnswers: ["私は学生です。", "わたしはがくせいです。"], inputMode: "japanese-ime", explanation: "Use は to mark the topic and です for a polite statement." },
+        { id: "hear-student", kind: "listening-choice", prompt: "What did the speaker say?", audioId: "n5-hear-student", options: [{ id: "student", label: "I am a student.", isCorrect: true }, { id: "teacher", label: "I am a teacher.", isCorrect: false }], explanation: "Listen for 学生です." },
+      ],
+    });
+    expect(parsed.questions.map((question) => question.kind)).toEqual(["open-answer", "listening-choice"]);
+  });
+
+  it("keeps generated TTS draft metadata separate from publish approval", () => {
+    const parsed = languageAudioCatalogFileSchema.parse({
+      kind: "audio",
+      language: "ja",
+      items: [{
+        id: "n5-hear-student",
+        transcript: "私は学生です。",
+        reading: "わたしはがくせいです。",
+        speaker: "OpenAI marin",
+        license: "OpenAI generated output",
+        attribution: "Generated for Codematica",
+        assetPath: "audio/n5-hear-student.mp3",
+        qaStatus: "draft",
+        disclosure: "AI-generated voice",
+        provenance: { kind: "openai-tts", model: "gpt-4o-mini-tts", voice: "marin", instructions: "Speak clear standard Tokyo Japanese.", generatedAt: "2026-08-09T00:00:00.000Z", checksum: "a".repeat(64) },
+      }],
+    });
+    expect(parsed.items[0]?.qaStatus).toBe("draft");
   });
 
   it("rejects active, entry, and visible project files absent from the file map", () => {

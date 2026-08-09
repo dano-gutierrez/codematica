@@ -1,0 +1,153 @@
+{
+  "slug": "languages/japanese-n5-past-activities-and-messages-listening",
+  "title": "Past Activities And Messages Listening",
+  "documentSlug": "languages/japanese-n5-past-activities-and-messages",
+  "concept": "Past Activities And Messages listening comprehension",
+  "difficulty": "foundation",
+  "tags": [
+    "japanese",
+    "n5",
+    "listening"
+  ],
+  "status": "draft",
+  "proficiencyLevel": "a1",
+  "skillIds": [
+    "a1-listening"
+  ],
+  "required": false,
+  "type": "questionnaire",
+  "questions": [
+    {
+      "id": "listen-1",
+      "kind": "listening-choice",
+      "prompt": "Choose the English meaning of the sentence you hear.",
+      "audioId": "n5-listen-9-1",
+      "options": [
+        {
+          "id": "correct",
+          "label": "I already ate lunch.",
+          "isCorrect": true
+        },
+        {
+          "id": "distractor",
+          "label": "The homework is not finished yet.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "もう昼ご飯を食べました。 means I already ate lunch.",
+      "skillIds": [
+        "a1-listening"
+      ]
+    },
+    {
+      "id": "listen-2",
+      "kind": "listening-choice",
+      "prompt": "Choose the English meaning of the sentence you hear.",
+      "audioId": "n5-listen-9-2",
+      "options": [
+        {
+          "id": "correct",
+          "label": "The homework is not finished yet.",
+          "isCorrect": true
+        },
+        {
+          "id": "distractor",
+          "label": "I am reading the newspaper now.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "宿題はまだ終わっていません。 means The homework is not finished yet.",
+      "skillIds": [
+        "a1-listening"
+      ]
+    },
+    {
+      "id": "listen-3",
+      "kind": "listening-choice",
+      "prompt": "Choose the English meaning of the sentence you hear.",
+      "audioId": "n5-listen-9-3",
+      "options": [
+        {
+          "id": "correct",
+          "label": "I am reading the newspaper now.",
+          "isCorrect": true
+        },
+        {
+          "id": "distractor",
+          "label": "I eat after washing my hands.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "今、新聞を読んでいます。 means I am reading the newspaper now.",
+      "skillIds": [
+        "a1-listening"
+      ]
+    },
+    {
+      "id": "listen-4",
+      "kind": "listening-choice",
+      "prompt": "Choose the English meaning of the sentence you hear.",
+      "audioId": "n5-listen-9-4",
+      "options": [
+        {
+          "id": "correct",
+          "label": "I eat after washing my hands.",
+          "isCorrect": true
+        },
+        {
+          "id": "distractor",
+          "label": "On Sundays I read and take walks, among other things.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "手を洗ってから食べます。 means I eat after washing my hands.",
+      "skillIds": [
+        "a1-listening"
+      ]
+    },
+    {
+      "id": "listen-5",
+      "kind": "listening-choice",
+      "prompt": "Choose the English meaning of the sentence you hear.",
+      "audioId": "n5-listen-9-5",
+      "options": [
+        {
+          "id": "correct",
+          "label": "On Sundays I read and take walks, among other things.",
+          "isCorrect": true
+        },
+        {
+          "id": "distractor",
+          "label": "I have been to Kyoto.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "日曜日は本を読んだり散歩したりします。 means On Sundays I read and take walks, among other things.",
+      "skillIds": [
+        "a1-listening"
+      ]
+    },
+    {
+      "id": "listen-6",
+      "kind": "listening-choice",
+      "prompt": "Choose the English meaning of the sentence you hear.",
+      "audioId": "n5-listen-9-6",
+      "options": [
+        {
+          "id": "correct",
+          "label": "I have been to Kyoto.",
+          "isCorrect": true
+        },
+        {
+          "id": "distractor",
+          "label": "I already ate lunch.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "京都へ行ったことがあります。 means I have been to Kyoto.",
+      "skillIds": [
+        "a1-listening"
+      ]
+    }
+  ]
+}

@@ -45,6 +45,8 @@
     "content:index": "tsx scripts/content/build-index.ts",
     "content:check": "tsx scripts/content/build-index.ts --check",
     "content:audio": "tsx scripts/content/build-japanese-audio.ts",
+    "content:audio:generate": "tsx scripts/content/generate-japanese-audio.ts",
+    "content:japanese:n5": "tsx scripts/content/build-japanese-n5.ts",
     "content:sync:supabase": "node --env-file=.env --import tsx scripts/content/sync-supabase.ts",
     "e2e:smoke": "npm run e2e:web:smoke",
     "e2e:web:smoke": "playwright test --config=apps/web/e2e/playwright.config.ts --grep @smoke",

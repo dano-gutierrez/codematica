@@ -1,0 +1,1566 @@
+{
+  "kind": "grammar",
+  "language": "ja",
+  "items": [
+    {
+      "id": "polite-copula",
+      "title": "Noun + です",
+      "pattern": "Noun + です",
+      "meaning": "Make a polite statement identifying or describing something.",
+      "formation": [
+        "Noun + です"
+      ],
+      "notes": [
+        "Make a polite statement identifying or describing something."
+      ],
+      "studyOrder": 1,
+      "unitSlug": "identity-and-demonstratives",
+      "proficiencyLevel": "a1",
+      "jlptAlignment": "n5",
+      "examples": [
+        {
+          "japanese": "私は学生です。",
+          "reading": "私は学生です。",
+          "romaji": "See the Japanese reading in the lesson.",
+          "translation": "I am a student."
+        }
+      ],
+      "status": "published",
+      "sourceRefs": []
+    },
+    {
+      "id": "topic-wa",
+      "title": "Noun + は",
+      "pattern": "Noun + は",
+      "meaning": "Mark the topic that the rest of the sentence comments on.",
+      "formation": [
+        "Noun + は"
+      ],
+      "notes": [
+        "Mark the topic that the rest of the sentence comments on."
+      ],
+      "studyOrder": 2,
+      "unitSlug": "identity-and-demonstratives",
+      "proficiencyLevel": "a1",
+      "jlptAlignment": "n5",
+      "examples": [
+        {
+          "japanese": "今日は月曜日です。",
+          "reading": "今日は月曜日です。",
+          "romaji": "See the Japanese reading in the lesson.",
+          "translation": "Today is Monday."
+        }
+      ],
+      "status": "published",
+      "sourceRefs": []
+    },
+    {
+      "id": "also-mo",
+      "title": "Noun + も",
+      "pattern": "Noun + も",
+      "meaning": "Add that the same statement is true of another topic.",
+      "formation": [
+        "Noun + も"
+      ],
+      "notes": [
+        "Add that the same statement is true of another topic."
+      ],
+      "studyOrder": 3,
+      "unitSlug": "identity-and-demonstratives",
+      "proficiencyLevel": "a1",
+      "jlptAlignment": "n5",
+      "examples": [
+        {
+          "japanese": "私も学生です。",
+          "reading": "私も学生です。",
+          "romaji": "See the Japanese reading in the lesson.",
+          "translation": "I am also a student."
+        }
+      ],
+      "status": "published",
+      "sourceRefs": []
+    },
+    {
+      "id": "question-ka",
+      "title": "Sentence + か",
+      "pattern": "Sentence + か",
+      "meaning": "Turn a polite statement into a neutral question.",
+      "formation": [
+        "Sentence + か"
+      ],
+      "notes": [
+        "Turn a polite statement into a neutral question."
+      ],
+      "studyOrder": 4,
+      "unitSlug": "identity-and-demonstratives",
+      "proficiencyLevel": "a1",
+      "jlptAlignment": "n5",
+      "examples": [
+        {
+          "japanese": "学生ですか。",
+          "reading": "学生ですか。",
+          "romaji": "See the Japanese reading in the lesson.",
+          "translation": "Are you a student?"
+        }
+      ],
+      "status": "published",
+      "sourceRefs": []
+    },
+    {
+      "id": "possessive-no",
+      "title": "Noun + の + Noun",
+      "pattern": "Noun + の + Noun",
+      "meaning": "Connect nouns for possession, affiliation, or description.",
+      "formation": [
+        "Noun + の + Noun"
+      ],
+      "notes": [
+        "Connect nouns for possession, affiliation, or description."
+      ],
+      "studyOrder": 5,
+      "unitSlug": "identity-and-demonstratives",
+      "proficiencyLevel": "a1",
+      "jlptAlignment": "n5",
+      "examples": [
+        {
+          "japanese": "これは私の本です。",
+          "reading": "これは私の本です。",
+          "romaji": "See the Japanese reading in the lesson.",
+          "translation": "This is my book."
+        }
+      ],
+      "status": "published",
+      "sourceRefs": []
+    },
+    {
+      "id": "demonstrative-pronouns",
+      "title": "これ・それ・あれ",
+      "pattern": "これ・それ・あれ",
+      "meaning": "Point to a thing near the speaker, listener, or neither person.",
+      "formation": [
+        "これ・それ・あれ"
+      ],
+      "notes": [
+        "Point to a thing near the speaker, listener, or neither person."
+      ],
+      "studyOrder": 6,
+      "unitSlug": "identity-and-demonstratives",
+      "proficiencyLevel": "a1",
+      "jlptAlignment": "n5",
+      "examples": [
+        {
+          "japanese": "それは何ですか。",
+          "reading": "それは何ですか。",
+          "romaji": "See the Japanese reading in the lesson.",
+          "translation": "What is that?"
+        }
+      ],
+      "status": "published",
+      "sourceRefs": []
+    },
+    {
+      "id": "demonstrative-determiners",
+      "title": "この・その・あの + Noun",
+      "pattern": "この・その・あの + Noun",
+      "meaning": "Point to a specific noun by its relative distance.",
+      "formation": [
+        "この・その・あの + Noun"
+      ],
+      "notes": [
+        "Point to a specific noun by its relative distance."
+      ],
+      "studyOrder": 7,
+      "unitSlug": "numbers-time-and-dates",
+      "proficiencyLevel": "a1",
+      "jlptAlignment": "n5",
+      "examples": [
+        {
+          "japanese": "この本は日本語です。",
+          "reading": "この本は日本語です。",
+          "romaji": "See the Japanese reading in the lesson.",
+          "translation": "This book is in Japanese."
+        }
+      ],
+      "status": "published",
+      "sourceRefs": []
+    },
+    {
+      "id": "place-demonstratives",
+      "title": "ここ・そこ・あそこ",
+      "pattern": "ここ・そこ・あそこ",
+      "meaning": "Point to locations near the speaker, listener, or farther away.",
+      "formation": [
+        "ここ・そこ・あそこ"
+      ],
+      "notes": [
+        "Point to locations near the speaker, listener, or farther away."
+      ],
+      "studyOrder": 8,
+      "unitSlug": "numbers-time-and-dates",
+      "proficiencyLevel": "a1",
+      "jlptAlignment": "n5",
+      "examples": [
+        {
+          "japanese": "駅はあそこです。",
+          "reading": "駅はあそこです。",
+          "romaji": "See the Japanese reading in the lesson.",
+          "translation": "The station is over there."
+        }
+      ],
+      "status": "published",
+      "sourceRefs": []
+    },
+    {
+      "id": "interrogatives",
+      "title": "だれ・何・どこ・いつ",
+      "pattern": "だれ・何・どこ・いつ",
+      "meaning": "Ask for a person, thing, place, or time.",
+      "formation": [
+        "だれ・何・どこ・いつ"
+      ],
+      "notes": [
+        "Ask for a person, thing, place, or time."
+      ],
+      "studyOrder": 9,
+      "unitSlug": "numbers-time-and-dates",
+      "proficiencyLevel": "a1",
+      "jlptAlignment": "n5",
+      "examples": [
+        {
+          "japanese": "先生はどこですか。",
+          "reading": "先生はどこですか。",
+          "romaji": "See the Japanese reading in the lesson.",
+          "translation": "Where is the teacher?"
+        }
+      ],
+      "status": "published",
+      "sourceRefs": []
+    },
+    {
+      "id": "existence-aru-iru",
+      "title": "あります・います",
+      "pattern": "あります・います",
+      "meaning": "State that an inanimate thing or animate being exists.",
+      "formation": [
+        "あります・います"
+      ],
+      "notes": [
+        "State that an inanimate thing or animate being exists."
+      ],
+      "studyOrder": 10,
+      "unitSlug": "numbers-time-and-dates",
+      "proficiencyLevel": "a1",
+      "jlptAlignment": "n5",
+      "examples": [
+        {
+          "japanese": "教室に先生がいます。",
+          "reading": "教室に先生がいます。",
+          "romaji": "See the Japanese reading in the lesson.",
+          "translation": "There is a teacher in the classroom."
+        }
+      ],
+      "status": "published",
+      "sourceRefs": []
+    },
+    {
+      "id": "subject-ga",
+      "title": "Noun + が",
+      "pattern": "Noun + が",
+      "meaning": "Mark the grammatical subject, especially with existence and ability.",
+      "formation": [
+        "Noun + が"
+      ],
+      "notes": [
+        "Mark the grammatical subject, especially with existence and ability."
+      ],
+      "studyOrder": 11,
+      "unitSlug": "numbers-time-and-dates",
+      "proficiencyLevel": "a1",
+      "jlptAlignment": "n5",
+      "examples": [
+        {
+          "japanese": "机の上に本があります。",
+          "reading": "机の上に本があります。",
+          "romaji": "See the Japanese reading in the lesson.",
+          "translation": "There is a book on the desk."
+        }
+      ],
+      "status": "published",
+      "sourceRefs": []
+    },
+    {
+      "id": "location-ni",
+      "title": "Place + に",
+      "pattern": "Place + に",
+      "meaning": "Mark where something exists or the destination of movement.",
+      "formation": [
+        "Place + に"
+      ],
+      "notes": [
+        "Mark where something exists or the destination of movement."
+      ],
+      "studyOrder": 12,
+      "unitSlug": "numbers-time-and-dates",
+      "proficiencyLevel": "a1",
+      "jlptAlignment": "n5",
+      "examples": [
+        {
+          "japanese": "家に猫がいます。",
+          "reading": "家に猫がいます。",
+          "romaji": "See the Japanese reading in the lesson.",
+          "translation": "There is a cat at home."
+        }
+      ],
+      "status": "published",
+      "sourceRefs": []
+    },
+    {
+      "id": "time-ni",
+      "title": "Time + に",
+      "pattern": "Time + に",
+      "meaning": "Mark a specific time when an action occurs.",
+      "formation": [
+        "Time + に"
+      ],
+      "notes": [
+        "Mark a specific time when an action occurs."
+      ],
+      "studyOrder": 13,
+      "unitSlug": "family-home-and-location",
+      "proficiencyLevel": "a1",
+      "jlptAlignment": "n5",
+      "examples": [
+        {
+          "japanese": "七時に起きます。",
+          "reading": "七時に起きます。",
+          "romaji": "See the Japanese reading in the lesson.",
+          "translation": "I get up at seven."
+        }
+      ],
+      "status": "published",
+      "sourceRefs": []
+    },
+    {
+      "id": "range-kara-made",
+      "title": "Noun + から・まで",
+      "pattern": "Noun + から・まで",
+      "meaning": "Mark the starting and ending point of time or place.",
+      "formation": [
+        "Noun + から・まで"
+      ],
+      "notes": [
+        "Mark the starting and ending point of time or place."
+      ],
+      "studyOrder": 14,
+      "unitSlug": "family-home-and-location",
+      "proficiencyLevel": "a1",
+      "jlptAlignment": "n5",
+      "examples": [
+        {
+          "japanese": "九時から五時まで働きます。",
+          "reading": "九時から五時まで働きます。",
+          "romaji": "See the Japanese reading in the lesson.",
+          "translation": "I work from nine to five."
+        }
+      ],
+      "status": "published",
+      "sourceRefs": []
+    },
+    {
+      "id": "complete-list-to",
+      "title": "Noun + と + Noun",
+      "pattern": "Noun + と + Noun",
+      "meaning": "Join nouns in a complete list meaning and.",
+      "formation": [
+        "Noun + と + Noun"
+      ],
+      "notes": [
+        "Join nouns in a complete list meaning and."
+      ],
+      "studyOrder": 15,
+      "unitSlug": "family-home-and-location",
+      "proficiencyLevel": "a1",
+      "jlptAlignment": "n5",
+      "examples": [
+        {
+          "japanese": "パンと卵を買います。",
+          "reading": "パンと卵を買います。",
+          "romaji": "See the Japanese reading in the lesson.",
+          "translation": "I buy bread and eggs."
+        }
+      ],
+      "status": "published",
+      "sourceRefs": []
+    },
+    {
+      "id": "partial-list-ya",
+      "title": "Noun + や + Noun",
+      "pattern": "Noun + や + Noun",
+      "meaning": "Give representative examples from a larger list.",
+      "formation": [
+        "Noun + や + Noun"
+      ],
+      "notes": [
+        "Give representative examples from a larger list."
+      ],
+      "studyOrder": 16,
+      "unitSlug": "family-home-and-location",
+      "proficiencyLevel": "a1",
+      "jlptAlignment": "n5",
+      "examples": [
+        {
+          "japanese": "机の上に本やペンがあります。",
+          "reading": "机の上に本やペンがあります。",
+          "romaji": "See the Japanese reading in the lesson.",
+          "translation": "There are books, pens, and such on the desk."
+        }
+      ],
+      "status": "published",
+      "sourceRefs": []
+    },
+    {
+      "id": "polite-present",
+      "title": "Verb stem + ます",
+      "pattern": "Verb stem + ます",
+      "meaning": "Express a habitual or future action politely.",
+      "formation": [
+        "Verb stem + ます"
+      ],
+      "notes": [
+        "Express a habitual or future action politely."
+      ],
+      "studyOrder": 17,
+      "unitSlug": "family-home-and-location",
+      "proficiencyLevel": "a1",
+      "jlptAlignment": "n5",
+      "examples": [
+        {
+          "japanese": "毎日日本語を勉強します。",
+          "reading": "毎日日本語を勉強します。",
+          "romaji": "See the Japanese reading in the lesson.",
+          "translation": "I study Japanese every day."
+        }
+      ],
+      "status": "published",
+      "sourceRefs": []
+    },
+    {
+      "id": "polite-negative",
+      "title": "Verb stem + ません",
+      "pattern": "Verb stem + ません",
+      "meaning": "Express that a present or future action does not happen.",
+      "formation": [
+        "Verb stem + ません"
+      ],
+      "notes": [
+        "Express that a present or future action does not happen."
+      ],
+      "studyOrder": 18,
+      "unitSlug": "family-home-and-location",
+      "proficiencyLevel": "a1",
+      "jlptAlignment": "n5",
+      "examples": [
+        {
+          "japanese": "今日は働きません。",
+          "reading": "今日は働きません。",
+          "romaji": "See the Japanese reading in the lesson.",
+          "translation": "I will not work today."
+        }
+      ],
+      "status": "published",
+      "sourceRefs": []
+    },
+    {
+      "id": "polite-past",
+      "title": "Verb stem + ました",
+      "pattern": "Verb stem + ました",
+      "meaning": "Express a completed past action politely.",
+      "formation": [
+        "Verb stem + ました"
+      ],
+      "notes": [
+        "Express a completed past action politely."
+      ],
+      "studyOrder": 19,
+      "unitSlug": "routines-verbs-and-particles",
+      "proficiencyLevel": "a1",
+      "jlptAlignment": "n5",
+      "examples": [
+        {
+          "japanese": "昨日映画を見ました。",
+          "reading": "昨日映画を見ました。",
+          "romaji": "See the Japanese reading in the lesson.",
+          "translation": "I watched a movie yesterday."
+        }
+      ],
+      "status": "published",
+      "sourceRefs": []
+    },
+    {
+      "id": "polite-past-negative",
+      "title": "Verb stem + ませんでした",
+      "pattern": "Verb stem + ませんでした",
+      "meaning": "Express that an action did not happen in the past.",
+      "formation": [
+        "Verb stem + ませんでした"
+      ],
+      "notes": [
+        "Express that an action did not happen in the past."
+      ],
+      "studyOrder": 20,
+      "unitSlug": "routines-verbs-and-particles",
+      "proficiencyLevel": "a1",
+      "jlptAlignment": "n5",
+      "examples": [
+        {
+          "japanese": "朝ご飯を食べませんでした。",
+          "reading": "朝ご飯を食べませんでした。",
+          "romaji": "See the Japanese reading in the lesson.",
+          "translation": "I did not eat breakfast."
+        }
+      ],
+      "status": "published",
+      "sourceRefs": []
+    },
+    {
+      "id": "object-o",
+      "title": "Noun + を + Verb",
+      "pattern": "Noun + を + Verb",
+      "meaning": "Mark the direct object affected by an action.",
+      "formation": [
+        "Noun + を + Verb"
+      ],
+      "notes": [
+        "Mark the direct object affected by an action."
+      ],
+      "studyOrder": 21,
+      "unitSlug": "routines-verbs-and-particles",
+      "proficiencyLevel": "a1",
+      "jlptAlignment": "n5",
+      "examples": [
+        {
+          "japanese": "水を飲みます。",
+          "reading": "水を飲みます。",
+          "romaji": "See the Japanese reading in the lesson.",
+          "translation": "I drink water."
+        }
+      ],
+      "status": "published",
+      "sourceRefs": []
+    },
+    {
+      "id": "action-place-de",
+      "title": "Place + で + Verb",
+      "pattern": "Place + で + Verb",
+      "meaning": "Mark the place where an action happens.",
+      "formation": [
+        "Place + で + Verb"
+      ],
+      "notes": [
+        "Mark the place where an action happens."
+      ],
+      "studyOrder": 22,
+      "unitSlug": "routines-verbs-and-particles",
+      "proficiencyLevel": "a1",
+      "jlptAlignment": "n5",
+      "examples": [
+        {
+          "japanese": "図書館で勉強します。",
+          "reading": "図書館で勉強します。",
+          "romaji": "See the Japanese reading in the lesson.",
+          "translation": "I study at the library."
+        }
+      ],
+      "status": "published",
+      "sourceRefs": []
+    },
+    {
+      "id": "direction-e",
+      "title": "Place + へ + movement verb",
+      "pattern": "Place + へ + movement verb",
+      "meaning": "Mark the direction toward which someone moves.",
+      "formation": [
+        "Place + へ + movement verb"
+      ],
+      "notes": [
+        "Mark the direction toward which someone moves."
+      ],
+      "studyOrder": 23,
+      "unitSlug": "routines-verbs-and-particles",
+      "proficiencyLevel": "a1",
+      "jlptAlignment": "n5",
+      "examples": [
+        {
+          "japanese": "学校へ行きます。",
+          "reading": "学校へ行きます。",
+          "romaji": "See the Japanese reading in the lesson.",
+          "translation": "I go toward school."
+        }
+      ],
+      "status": "published",
+      "sourceRefs": []
+    },
+    {
+      "id": "destination-ni",
+      "title": "Place + に + movement verb",
+      "pattern": "Place + に + movement verb",
+      "meaning": "Mark a concrete destination or arrival point.",
+      "formation": [
+        "Place + に + movement verb"
+      ],
+      "notes": [
+        "Mark a concrete destination or arrival point."
+      ],
+      "studyOrder": 24,
+      "unitSlug": "routines-verbs-and-particles",
+      "proficiencyLevel": "a1",
+      "jlptAlignment": "n5",
+      "examples": [
+        {
+          "japanese": "東京に来ました。",
+          "reading": "東京に来ました。",
+          "romaji": "See the Japanese reading in the lesson.",
+          "translation": "I came to Tokyo."
+        }
+      ],
+      "status": "published",
+      "sourceRefs": []
+    },
+    {
+      "id": "companion-to",
+      "title": "Person + と",
+      "pattern": "Person + と",
+      "meaning": "Mark the person who participates in an action with someone.",
+      "formation": [
+        "Person + と"
+      ],
+      "notes": [
+        "Mark the person who participates in an action with someone."
+      ],
+      "studyOrder": 25,
+      "unitSlug": "food-shopping-and-counters",
+      "proficiencyLevel": "a1",
+      "jlptAlignment": "n5",
+      "examples": [
+        {
+          "japanese": "友達と話します。",
+          "reading": "友達と話します。",
+          "romaji": "See the Japanese reading in the lesson.",
+          "translation": "I talk with a friend."
+        }
+      ],
+      "status": "published",
+      "sourceRefs": []
+    },
+    {
+      "id": "means-de",
+      "title": "Tool or vehicle + で",
+      "pattern": "Tool or vehicle + で",
+      "meaning": "Mark the means, instrument, language, or transport used.",
+      "formation": [
+        "Tool or vehicle + で"
+      ],
+      "notes": [
+        "Mark the means, instrument, language, or transport used."
+      ],
+      "studyOrder": 26,
+      "unitSlug": "food-shopping-and-counters",
+      "proficiencyLevel": "a1",
+      "jlptAlignment": "n5",
+      "examples": [
+        {
+          "japanese": "電車で行きます。",
+          "reading": "電車で行きます。",
+          "romaji": "See the Japanese reading in the lesson.",
+          "translation": "I go by train."
+        }
+      ],
+      "status": "published",
+      "sourceRefs": []
+    },
+    {
+      "id": "noun-kudasai",
+      "title": "Noun + をください",
+      "pattern": "Noun + をください",
+      "meaning": "Politely ask for an item in a shop or restaurant.",
+      "formation": [
+        "Noun + をください"
+      ],
+      "notes": [
+        "Politely ask for an item in a shop or restaurant."
+      ],
+      "studyOrder": 27,
+      "unitSlug": "food-shopping-and-counters",
+      "proficiencyLevel": "a1",
+      "jlptAlignment": "n5",
+      "examples": [
+        {
+          "japanese": "水をください。",
+          "reading": "水をください。",
+          "romaji": "See the Japanese reading in the lesson.",
+          "translation": "Please give me water."
+        }
+      ],
+      "status": "published",
+      "sourceRefs": []
+    },
+    {
+      "id": "te-kudasai",
+      "title": "て-form + ください",
+      "pattern": "て-form + ください",
+      "meaning": "Politely request that another person perform an action.",
+      "formation": [
+        "て-form + ください"
+      ],
+      "notes": [
+        "Politely request that another person perform an action."
+      ],
+      "studyOrder": 28,
+      "unitSlug": "food-shopping-and-counters",
+      "proficiencyLevel": "a1",
+      "jlptAlignment": "n5",
+      "examples": [
+        {
+          "japanese": "ここに名前を書いてください。",
+          "reading": "ここに名前を書いてください。",
+          "romaji": "See the Japanese reading in the lesson.",
+          "translation": "Please write your name here."
+        }
+      ],
+      "status": "published",
+      "sourceRefs": []
+    },
+    {
+      "id": "permission-temo-ii",
+      "title": "て-form + もいいです",
+      "pattern": "て-form + もいいです",
+      "meaning": "Ask for or grant permission to do something.",
+      "formation": [
+        "て-form + もいいです"
+      ],
+      "notes": [
+        "Ask for or grant permission to do something."
+      ],
+      "studyOrder": 29,
+      "unitSlug": "food-shopping-and-counters",
+      "proficiencyLevel": "a1",
+      "jlptAlignment": "n5",
+      "examples": [
+        {
+          "japanese": "写真を撮ってもいいですか。",
+          "reading": "写真を撮ってもいいですか。",
+          "romaji": "See the Japanese reading in the lesson.",
+          "translation": "May I take a photo?"
+        }
+      ],
+      "status": "published",
+      "sourceRefs": []
+    },
+    {
+      "id": "prohibition-tewa-ikenai",
+      "title": "て-form + はいけません",
+      "pattern": "て-form + はいけません",
+      "meaning": "State that an action is prohibited.",
+      "formation": [
+        "て-form + はいけません"
+      ],
+      "notes": [
+        "State that an action is prohibited."
+      ],
+      "studyOrder": 30,
+      "unitSlug": "food-shopping-and-counters",
+      "proficiencyLevel": "a1",
+      "jlptAlignment": "n5",
+      "examples": [
+        {
+          "japanese": "ここで食べてはいけません。",
+          "reading": "ここで食べてはいけません。",
+          "romaji": "See the Japanese reading in the lesson.",
+          "translation": "You must not eat here."
+        }
+      ],
+      "status": "published",
+      "sourceRefs": []
+    },
+    {
+      "id": "volitional-mashou",
+      "title": "Verb stem + ましょう",
+      "pattern": "Verb stem + ましょう",
+      "meaning": "Invite someone to do an action together.",
+      "formation": [
+        "Verb stem + ましょう"
+      ],
+      "notes": [
+        "Invite someone to do an action together."
+      ],
+      "studyOrder": 31,
+      "unitSlug": "adjectives-weather-and-preferences",
+      "proficiencyLevel": "a1",
+      "jlptAlignment": "n5",
+      "examples": [
+        {
+          "japanese": "一緒に帰りましょう。",
+          "reading": "一緒に帰りましょう。",
+          "romaji": "See the Japanese reading in the lesson.",
+          "translation": "Let us go home together."
+        }
+      ],
+      "status": "published",
+      "sourceRefs": []
+    },
+    {
+      "id": "invitation-masenka",
+      "title": "Verb stem + ませんか",
+      "pattern": "Verb stem + ませんか",
+      "meaning": "Invite someone politely while leaving room to decline.",
+      "formation": [
+        "Verb stem + ませんか"
+      ],
+      "notes": [
+        "Invite someone politely while leaving room to decline."
+      ],
+      "studyOrder": 32,
+      "unitSlug": "adjectives-weather-and-preferences",
+      "proficiencyLevel": "a1",
+      "jlptAlignment": "n5",
+      "examples": [
+        {
+          "japanese": "映画を見ませんか。",
+          "reading": "映画を見ませんか。",
+          "romaji": "See the Japanese reading in the lesson.",
+          "translation": "Would you like to watch a movie?"
+        }
+      ],
+      "status": "published",
+      "sourceRefs": []
+    },
+    {
+      "id": "desire-tai",
+      "title": "Verb stem + たいです",
+      "pattern": "Verb stem + たいです",
+      "meaning": "Express what the speaker wants to do.",
+      "formation": [
+        "Verb stem + たいです"
+      ],
+      "notes": [
+        "Express what the speaker wants to do."
+      ],
+      "studyOrder": 33,
+      "unitSlug": "adjectives-weather-and-preferences",
+      "proficiencyLevel": "a1",
+      "jlptAlignment": "n5",
+      "examples": [
+        {
+          "japanese": "日本へ行きたいです。",
+          "reading": "日本へ行きたいです。",
+          "romaji": "See the Japanese reading in the lesson.",
+          "translation": "I want to go to Japan."
+        }
+      ],
+      "status": "published",
+      "sourceRefs": []
+    },
+    {
+      "id": "desired-object-hoshii",
+      "title": "Noun + がほしいです",
+      "pattern": "Noun + がほしいです",
+      "meaning": "Express that the speaker wants a thing.",
+      "formation": [
+        "Noun + がほしいです"
+      ],
+      "notes": [
+        "Express that the speaker wants a thing."
+      ],
+      "studyOrder": 34,
+      "unitSlug": "adjectives-weather-and-preferences",
+      "proficiencyLevel": "a1",
+      "jlptAlignment": "n5",
+      "examples": [
+        {
+          "japanese": "新しい自転車がほしいです。",
+          "reading": "新しい自転車がほしいです。",
+          "romaji": "See the Japanese reading in the lesson.",
+          "translation": "I want a new bicycle."
+        }
+      ],
+      "status": "published",
+      "sourceRefs": []
+    },
+    {
+      "id": "i-adjective",
+      "title": "い-adjective + Noun/です",
+      "pattern": "い-adjective + Noun/です",
+      "meaning": "Describe a noun or make a polite statement with an i-adjective.",
+      "formation": [
+        "い-adjective + Noun/です"
+      ],
+      "notes": [
+        "Describe a noun or make a polite statement with an i-adjective."
+      ],
+      "studyOrder": 35,
+      "unitSlug": "adjectives-weather-and-preferences",
+      "proficiencyLevel": "a1",
+      "jlptAlignment": "n5",
+      "examples": [
+        {
+          "japanese": "今日は暑いです。",
+          "reading": "今日は暑いです。",
+          "romaji": "See the Japanese reading in the lesson.",
+          "translation": "It is hot today."
+        }
+      ],
+      "status": "published",
+      "sourceRefs": []
+    },
+    {
+      "id": "na-adjective",
+      "title": "な-adjective + な + Noun",
+      "pattern": "な-adjective + な + Noun",
+      "meaning": "Use a na-adjective before a noun or with です as a predicate.",
+      "formation": [
+        "な-adjective + な + Noun"
+      ],
+      "notes": [
+        "Use a na-adjective before a noun or with です as a predicate."
+      ],
+      "studyOrder": 36,
+      "unitSlug": "adjectives-weather-and-preferences",
+      "proficiencyLevel": "a1",
+      "jlptAlignment": "n5",
+      "examples": [
+        {
+          "japanese": "静かな町です。",
+          "reading": "静かな町です。",
+          "romaji": "See the Japanese reading in the lesson.",
+          "translation": "It is a quiet town."
+        }
+      ],
+      "status": "published",
+      "sourceRefs": []
+    },
+    {
+      "id": "adjective-negative",
+      "title": "くないです・ではありません",
+      "pattern": "くないです・ではありません",
+      "meaning": "Make i-adjectives and na-adjectives negative politely.",
+      "formation": [
+        "くないです・ではありません"
+      ],
+      "notes": [
+        "Make i-adjectives and na-adjectives negative politely."
+      ],
+      "studyOrder": 37,
+      "unitSlug": "invitations-requests-and-permission",
+      "proficiencyLevel": "a1",
+      "jlptAlignment": "n5",
+      "examples": [
+        {
+          "japanese": "この本は高くないです。",
+          "reading": "この本は高くないです。",
+          "romaji": "See the Japanese reading in the lesson.",
+          "translation": "This book is not expensive."
+        }
+      ],
+      "status": "published",
+      "sourceRefs": []
+    },
+    {
+      "id": "adjective-past",
+      "title": "かったです・でした",
+      "pattern": "かったです・でした",
+      "meaning": "Describe a past state with an adjective.",
+      "formation": [
+        "かったです・でした"
+      ],
+      "notes": [
+        "Describe a past state with an adjective."
+      ],
+      "studyOrder": 38,
+      "unitSlug": "invitations-requests-and-permission",
+      "proficiencyLevel": "a1",
+      "jlptAlignment": "n5",
+      "examples": [
+        {
+          "japanese": "昨日は寒かったです。",
+          "reading": "昨日は寒かったです。",
+          "romaji": "See the Japanese reading in the lesson.",
+          "translation": "It was cold yesterday."
+        }
+      ],
+      "status": "published",
+      "sourceRefs": []
+    },
+    {
+      "id": "comparison-yori",
+      "title": "A は B より adjective",
+      "pattern": "A は B より adjective",
+      "meaning": "Compare A with B using B as the reference point.",
+      "formation": [
+        "A は B より adjective"
+      ],
+      "notes": [
+        "Compare A with B using B as the reference point."
+      ],
+      "studyOrder": 39,
+      "unitSlug": "invitations-requests-and-permission",
+      "proficiencyLevel": "a1",
+      "jlptAlignment": "n5",
+      "examples": [
+        {
+          "japanese": "電車はバスより速いです。",
+          "reading": "電車はバスより速いです。",
+          "romaji": "See the Japanese reading in the lesson.",
+          "translation": "The train is faster than the bus."
+        }
+      ],
+      "status": "published",
+      "sourceRefs": []
+    },
+    {
+      "id": "preference-hou-ga",
+      "title": "A より B のほうが adjective",
+      "pattern": "A より B のほうが adjective",
+      "meaning": "Say that B has more of a quality than A.",
+      "formation": [
+        "A より B のほうが adjective"
+      ],
+      "notes": [
+        "Say that B has more of a quality than A."
+      ],
+      "studyOrder": 40,
+      "unitSlug": "invitations-requests-and-permission",
+      "proficiencyLevel": "a1",
+      "jlptAlignment": "n5",
+      "examples": [
+        {
+          "japanese": "肉より魚のほうが好きです。",
+          "reading": "肉より魚のほうが好きです。",
+          "romaji": "See the Japanese reading in the lesson.",
+          "translation": "I like fish more than meat."
+        }
+      ],
+      "status": "published",
+      "sourceRefs": []
+    },
+    {
+      "id": "superlative-ichiban",
+      "title": "Group + で + Noun + が一番",
+      "pattern": "Group + で + Noun + が一番",
+      "meaning": "Identify the item with the greatest degree in a group.",
+      "formation": [
+        "Group + で + Noun + が一番"
+      ],
+      "notes": [
+        "Identify the item with the greatest degree in a group."
+      ],
+      "studyOrder": 41,
+      "unitSlug": "invitations-requests-and-permission",
+      "proficiencyLevel": "a1",
+      "jlptAlignment": "n5",
+      "examples": [
+        {
+          "japanese": "果物でりんごが一番好きです。",
+          "reading": "果物でりんごが一番好きです。",
+          "romaji": "See the Japanese reading in the lesson.",
+          "translation": "Among fruits, I like apples best."
+        }
+      ],
+      "status": "published",
+      "sourceRefs": []
+    },
+    {
+      "id": "likes-suki-kirai",
+      "title": "Noun + が好き・嫌いです",
+      "pattern": "Noun + が好き・嫌いです",
+      "meaning": "Express likes and dislikes toward a noun or activity.",
+      "formation": [
+        "Noun + が好き・嫌いです"
+      ],
+      "notes": [
+        "Express likes and dislikes toward a noun or activity."
+      ],
+      "studyOrder": 42,
+      "unitSlug": "invitations-requests-and-permission",
+      "proficiencyLevel": "a1",
+      "jlptAlignment": "n5",
+      "examples": [
+        {
+          "japanese": "音楽が好きです。",
+          "reading": "音楽が好きです。",
+          "romaji": "See the Japanese reading in the lesson.",
+          "translation": "I like music."
+        }
+      ],
+      "status": "published",
+      "sourceRefs": []
+    },
+    {
+      "id": "skill-jouzu-heta",
+      "title": "Noun + が上手・下手です",
+      "pattern": "Noun + が上手・下手です",
+      "meaning": "Describe skill or lack of skill in an activity.",
+      "formation": [
+        "Noun + が上手・下手です"
+      ],
+      "notes": [
+        "Describe skill or lack of skill in an activity."
+      ],
+      "studyOrder": 43,
+      "unitSlug": "transport-directions-and-travel",
+      "proficiencyLevel": "a1",
+      "jlptAlignment": "n5",
+      "examples": [
+        {
+          "japanese": "妹は料理が上手です。",
+          "reading": "妹は料理が上手です。",
+          "romaji": "See the Japanese reading in the lesson.",
+          "translation": "My younger sister is good at cooking."
+        }
+      ],
+      "status": "published",
+      "sourceRefs": []
+    },
+    {
+      "id": "understand-wakaru",
+      "title": "Noun + が分かります",
+      "pattern": "Noun + が分かります",
+      "meaning": "State that someone understands a language or fact.",
+      "formation": [
+        "Noun + が分かります"
+      ],
+      "notes": [
+        "State that someone understands a language or fact."
+      ],
+      "studyOrder": 44,
+      "unitSlug": "transport-directions-and-travel",
+      "proficiencyLevel": "a1",
+      "jlptAlignment": "n5",
+      "examples": [
+        {
+          "japanese": "少し日本語が分かります。",
+          "reading": "少し日本語が分かります。",
+          "romaji": "See the Japanese reading in the lesson.",
+          "translation": "I understand a little Japanese."
+        }
+      ],
+      "status": "published",
+      "sourceRefs": []
+    },
+    {
+      "id": "reason-kara",
+      "title": "Reason + から",
+      "pattern": "Reason + から",
+      "meaning": "Give a simple reason for the following statement or choice.",
+      "formation": [
+        "Reason + から"
+      ],
+      "notes": [
+        "Give a simple reason for the following statement or choice."
+      ],
+      "studyOrder": 45,
+      "unitSlug": "transport-directions-and-travel",
+      "proficiencyLevel": "a1",
+      "jlptAlignment": "n5",
+      "examples": [
+        {
+          "japanese": "雨ですから、家にいます。",
+          "reading": "雨ですから、家にいます。",
+          "romaji": "See the Japanese reading in the lesson.",
+          "translation": "Because it is raining, I will stay home."
+        }
+      ],
+      "status": "published",
+      "sourceRefs": []
+    },
+    {
+      "id": "before-mae-ni",
+      "title": "Noun/Verb dictionary form + 前に",
+      "pattern": "Noun/Verb dictionary form + 前に",
+      "meaning": "Place one action before another action or time.",
+      "formation": [
+        "Noun/Verb dictionary form + 前に"
+      ],
+      "notes": [
+        "Place one action before another action or time."
+      ],
+      "studyOrder": 46,
+      "unitSlug": "transport-directions-and-travel",
+      "proficiencyLevel": "a1",
+      "jlptAlignment": "n5",
+      "examples": [
+        {
+          "japanese": "寝る前に本を読みます。",
+          "reading": "寝る前に本を読みます。",
+          "romaji": "See the Japanese reading in the lesson.",
+          "translation": "I read a book before sleeping."
+        }
+      ],
+      "status": "published",
+      "sourceRefs": []
+    },
+    {
+      "id": "after-ato-de",
+      "title": "Noun/Verb past form + 後で",
+      "pattern": "Noun/Verb past form + 後で",
+      "meaning": "Place an action after another event.",
+      "formation": [
+        "Noun/Verb past form + 後で"
+      ],
+      "notes": [
+        "Place an action after another event."
+      ],
+      "studyOrder": 47,
+      "unitSlug": "transport-directions-and-travel",
+      "proficiencyLevel": "a1",
+      "jlptAlignment": "n5",
+      "examples": [
+        {
+          "japanese": "仕事の後で買い物します。",
+          "reading": "仕事の後で買い物します。",
+          "romaji": "See the Japanese reading in the lesson.",
+          "translation": "I shop after work."
+        }
+      ],
+      "status": "published",
+      "sourceRefs": []
+    },
+    {
+      "id": "time-toki",
+      "title": "Plain form + 時",
+      "pattern": "Plain form + 時",
+      "meaning": "Describe what happens at a particular time or situation.",
+      "formation": [
+        "Plain form + 時"
+      ],
+      "notes": [
+        "Describe what happens at a particular time or situation."
+      ],
+      "studyOrder": 48,
+      "unitSlug": "transport-directions-and-travel",
+      "proficiencyLevel": "a1",
+      "jlptAlignment": "n5",
+      "examples": [
+        {
+          "japanese": "日本へ行く時、カメラを買いました。",
+          "reading": "日本へ行く時、カメラを買いました。",
+          "romaji": "See the Japanese reading in the lesson.",
+          "translation": "When I went to Japan, I bought a camera."
+        }
+      ],
+      "status": "published",
+      "sourceRefs": []
+    },
+    {
+      "id": "already-mou",
+      "title": "もう + past/affirmative",
+      "pattern": "もう + past/affirmative",
+      "meaning": "Say that an expected action has already happened.",
+      "formation": [
+        "もう + past/affirmative"
+      ],
+      "notes": [
+        "Say that an expected action has already happened."
+      ],
+      "studyOrder": 49,
+      "unitSlug": "past-activities-and-messages",
+      "proficiencyLevel": "a1",
+      "jlptAlignment": "n5",
+      "examples": [
+        {
+          "japanese": "もう昼ご飯を食べました。",
+          "reading": "もう昼ご飯を食べました。",
+          "romaji": "See the Japanese reading in the lesson.",
+          "translation": "I already ate lunch."
+        }
+      ],
+      "status": "published",
+      "sourceRefs": []
+    },
+    {
+      "id": "not-yet-mada",
+      "title": "まだ + negative",
+      "pattern": "まだ + negative",
+      "meaning": "Say that an expected action has not happened yet.",
+      "formation": [
+        "まだ + negative"
+      ],
+      "notes": [
+        "Say that an expected action has not happened yet."
+      ],
+      "studyOrder": 50,
+      "unitSlug": "past-activities-and-messages",
+      "proficiencyLevel": "a1",
+      "jlptAlignment": "n5",
+      "examples": [
+        {
+          "japanese": "宿題はまだ終わっていません。",
+          "reading": "宿題はまだ終わっていません。",
+          "romaji": "See the Japanese reading in the lesson.",
+          "translation": "The homework is not finished yet."
+        }
+      ],
+      "status": "published",
+      "sourceRefs": []
+    },
+    {
+      "id": "ongoing-teiru",
+      "title": "て-form + います",
+      "pattern": "て-form + います",
+      "meaning": "Describe an action in progress or a continuing state.",
+      "formation": [
+        "て-form + います"
+      ],
+      "notes": [
+        "Describe an action in progress or a continuing state."
+      ],
+      "studyOrder": 51,
+      "unitSlug": "past-activities-and-messages",
+      "proficiencyLevel": "a1",
+      "jlptAlignment": "n5",
+      "examples": [
+        {
+          "japanese": "今、新聞を読んでいます。",
+          "reading": "今、新聞を読んでいます。",
+          "romaji": "See the Japanese reading in the lesson.",
+          "translation": "I am reading the newspaper now."
+        }
+      ],
+      "status": "published",
+      "sourceRefs": []
+    },
+    {
+      "id": "sequence-te-kara",
+      "title": "て-form + から",
+      "pattern": "て-form + から",
+      "meaning": "State that one action happens after another is completed.",
+      "formation": [
+        "て-form + から"
+      ],
+      "notes": [
+        "State that one action happens after another is completed."
+      ],
+      "studyOrder": 52,
+      "unitSlug": "past-activities-and-messages",
+      "proficiencyLevel": "a1",
+      "jlptAlignment": "n5",
+      "examples": [
+        {
+          "japanese": "手を洗ってから食べます。",
+          "reading": "手を洗ってから食べます。",
+          "romaji": "See the Japanese reading in the lesson.",
+          "translation": "I eat after washing my hands."
+        }
+      ],
+      "status": "published",
+      "sourceRefs": []
+    },
+    {
+      "id": "examples-tari",
+      "title": "past plain + り、past plain + りします",
+      "pattern": "past plain + り、past plain + りします",
+      "meaning": "List representative activities without claiming a complete list.",
+      "formation": [
+        "past plain + り、past plain + りします"
+      ],
+      "notes": [
+        "List representative activities without claiming a complete list."
+      ],
+      "studyOrder": 53,
+      "unitSlug": "past-activities-and-messages",
+      "proficiencyLevel": "a1",
+      "jlptAlignment": "n5",
+      "examples": [
+        {
+          "japanese": "日曜日は本を読んだり散歩したりします。",
+          "reading": "日曜日は本を読んだり散歩したりします。",
+          "romaji": "See the Japanese reading in the lesson.",
+          "translation": "On Sundays I read and take walks, among other things."
+        }
+      ],
+      "status": "published",
+      "sourceRefs": []
+    },
+    {
+      "id": "experience-koto-ga-aru",
+      "title": "past plain + ことがあります",
+      "pattern": "past plain + ことがあります",
+      "meaning": "Say that someone has experienced an action before.",
+      "formation": [
+        "past plain + ことがあります"
+      ],
+      "notes": [
+        "Say that someone has experienced an action before."
+      ],
+      "studyOrder": 54,
+      "unitSlug": "past-activities-and-messages",
+      "proficiencyLevel": "a1",
+      "jlptAlignment": "n5",
+      "examples": [
+        {
+          "japanese": "京都へ行ったことがあります。",
+          "reading": "京都へ行ったことがあります。",
+          "romaji": "See the Japanese reading in the lesson.",
+          "translation": "I have been to Kyoto."
+        }
+      ],
+      "status": "published",
+      "sourceRefs": []
+    },
+    {
+      "id": "not-necessary-nakutemo",
+      "title": "negative stem + なくてもいいです",
+      "pattern": "negative stem + なくてもいいです",
+      "meaning": "Say that an action is not required.",
+      "formation": [
+        "negative stem + なくてもいいです"
+      ],
+      "notes": [
+        "Say that an action is not required."
+      ],
+      "studyOrder": 55,
+      "unitSlug": "n5-integrated-readiness",
+      "proficiencyLevel": "a1",
+      "jlptAlignment": "n5",
+      "examples": [
+        {
+          "japanese": "明日は来なくてもいいです。",
+          "reading": "明日は来なくてもいいです。",
+          "romaji": "See the Japanese reading in the lesson.",
+          "translation": "You do not have to come tomorrow."
+        }
+      ],
+      "status": "published",
+      "sourceRefs": []
+    },
+    {
+      "id": "advice-hou-ga-ii",
+      "title": "plain past/negative + ほうがいいです",
+      "pattern": "plain past/negative + ほうがいいです",
+      "meaning": "Give gentle advice about a preferable action.",
+      "formation": [
+        "plain past/negative + ほうがいいです"
+      ],
+      "notes": [
+        "Give gentle advice about a preferable action."
+      ],
+      "studyOrder": 56,
+      "unitSlug": "n5-integrated-readiness",
+      "proficiencyLevel": "a1",
+      "jlptAlignment": "n5",
+      "examples": [
+        {
+          "japanese": "早く寝たほうがいいです。",
+          "reading": "早く寝たほうがいいです。",
+          "romaji": "See the Japanese reading in the lesson.",
+          "translation": "You should go to bed early."
+        }
+      ],
+      "status": "published",
+      "sourceRefs": []
+    },
+    {
+      "id": "only-dake",
+      "title": "Noun + だけ",
+      "pattern": "Noun + だけ",
+      "meaning": "Limit a statement to only the marked item or amount.",
+      "formation": [
+        "Noun + だけ"
+      ],
+      "notes": [
+        "Limit a statement to only the marked item or amount."
+      ],
+      "studyOrder": 57,
+      "unitSlug": "n5-integrated-readiness",
+      "proficiencyLevel": "a1",
+      "jlptAlignment": "n5",
+      "examples": [
+        {
+          "japanese": "水だけ飲みます。",
+          "reading": "水だけ飲みます。",
+          "romaji": "See the Japanese reading in the lesson.",
+          "translation": "I drink only water."
+        }
+      ],
+      "status": "published",
+      "sourceRefs": []
+    },
+    {
+      "id": "example-demo",
+      "title": "Noun + でも",
+      "pattern": "Noun + でも",
+      "meaning": "Offer one representative option in a casual suggestion.",
+      "formation": [
+        "Noun + でも"
+      ],
+      "notes": [
+        "Offer one representative option in a casual suggestion."
+      ],
+      "studyOrder": 58,
+      "unitSlug": "n5-integrated-readiness",
+      "proficiencyLevel": "a1",
+      "jlptAlignment": "n5",
+      "examples": [
+        {
+          "japanese": "お茶でも飲みませんか。",
+          "reading": "お茶でも飲みませんか。",
+          "romaji": "See the Japanese reading in the lesson.",
+          "translation": "Would you like tea or something?"
+        }
+      ],
+      "status": "published",
+      "sourceRefs": []
+    },
+    {
+      "id": "agreement-ne",
+      "title": "Sentence + ね",
+      "pattern": "Sentence + ね",
+      "meaning": "Invite agreement or acknowledge shared information.",
+      "formation": [
+        "Sentence + ね"
+      ],
+      "notes": [
+        "Invite agreement or acknowledge shared information."
+      ],
+      "studyOrder": 59,
+      "unitSlug": "n5-integrated-readiness",
+      "proficiencyLevel": "a1",
+      "jlptAlignment": "n5",
+      "examples": [
+        {
+          "japanese": "今日はいい天気ですね。",
+          "reading": "今日はいい天気ですね。",
+          "romaji": "See the Japanese reading in the lesson.",
+          "translation": "The weather is nice, isn't it?"
+        }
+      ],
+      "status": "published",
+      "sourceRefs": []
+    },
+    {
+      "id": "new-information-yo",
+      "title": "Sentence + よ",
+      "pattern": "Sentence + よ",
+      "meaning": "Present information the listener may not know.",
+      "formation": [
+        "Sentence + よ"
+      ],
+      "notes": [
+        "Present information the listener may not know."
+      ],
+      "studyOrder": 60,
+      "unitSlug": "n5-integrated-readiness",
+      "proficiencyLevel": "a1",
+      "jlptAlignment": "n5",
+      "examples": [
+        {
+          "japanese": "この電車は東京へ行きますよ。",
+          "reading": "この電車は東京へ行きますよ。",
+          "romaji": "See the Japanese reading in the lesson.",
+          "translation": "This train goes to Tokyo, you know."
+        }
+      ],
+      "status": "published",
+      "sourceRefs": []
+    }
+  ]
+}

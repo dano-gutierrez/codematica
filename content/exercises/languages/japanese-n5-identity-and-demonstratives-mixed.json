@@ -1,0 +1,333 @@
+{
+  "slug": "languages/japanese-n5-identity-and-demonstratives-mixed",
+  "title": "Identity And Demonstratives Mixed Practice",
+  "documentSlug": "languages/japanese-n5-identity-and-demonstratives",
+  "concept": "Identity And Demonstratives N5 recognition",
+  "difficulty": "foundation",
+  "tags": [
+    "japanese",
+    "n5",
+    "vocabulary"
+  ],
+  "status": "published",
+  "proficiencyLevel": "a1",
+  "skillIds": [
+    "a1-reading"
+  ],
+  "required": true,
+  "type": "questionnaire",
+  "questions": [
+    {
+      "id": "word-1",
+      "kind": "choice",
+      "prompt": "Choose the best English meaning for 日本 (にほん).",
+      "options": [
+        {
+          "id": "correct",
+          "label": "Japan",
+          "isCorrect": true
+        },
+        {
+          "id": "distractor-1",
+          "label": "coffee",
+          "isCorrect": false
+        },
+        {
+          "id": "distractor-2",
+          "label": "Ah!, Oh!",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "日本 is read にほん and means Japan.",
+      "skillIds": [
+        "a1-reading"
+      ]
+    },
+    {
+      "id": "word-2",
+      "kind": "choice",
+      "prompt": "Choose the best English meaning for 人 (ひと).",
+      "options": [
+        {
+          "id": "correct",
+          "label": "person",
+          "isCorrect": true
+        },
+        {
+          "id": "distractor-1",
+          "label": "television",
+          "isCorrect": false
+        },
+        {
+          "id": "distractor-2",
+          "label": "to meet, to see",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "人 is read ひと and means person.",
+      "skillIds": [
+        "a1-reading"
+      ]
+    },
+    {
+      "id": "word-3",
+      "kind": "choice",
+      "prompt": "Choose the best English meaning for 山 (やま).",
+      "options": [
+        {
+          "id": "correct",
+          "label": "mountain",
+          "isCorrect": true
+        },
+        {
+          "id": "distractor-1",
+          "label": "hotel",
+          "isCorrect": false
+        },
+        {
+          "id": "distractor-2",
+          "label": "blue",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "山 is read やま and means mountain.",
+      "skillIds": [
+        "a1-reading"
+      ]
+    },
+    {
+      "id": "word-4",
+      "kind": "choice",
+      "prompt": "Choose the best English meaning for 水 (みず).",
+      "options": [
+        {
+          "id": "correct",
+          "label": "water",
+          "isCorrect": true
+        },
+        {
+          "id": "distractor-1",
+          "label": "taxi",
+          "isCorrect": false
+        },
+        {
+          "id": "distractor-2",
+          "label": "blue",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "水 is read みず and means water.",
+      "skillIds": [
+        "a1-reading"
+      ]
+    },
+    {
+      "id": "word-5",
+      "kind": "choice",
+      "prompt": "Choose the best English meaning for 大きい (おおきい).",
+      "options": [
+        {
+          "id": "correct",
+          "label": "big",
+          "isCorrect": true
+        },
+        {
+          "id": "distractor-1",
+          "label": "supermarket",
+          "isCorrect": false
+        },
+        {
+          "id": "distractor-2",
+          "label": "red",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "大きい is read おおきい and means big.",
+      "skillIds": [
+        "a1-reading"
+      ]
+    },
+    {
+      "id": "word-6",
+      "kind": "choice",
+      "prompt": "Choose the best English meaning for こんにちは (こんにちは).",
+      "options": [
+        {
+          "id": "correct",
+          "label": "hello",
+          "isCorrect": true
+        },
+        {
+          "id": "distractor-1",
+          "label": "restaurant",
+          "isCorrect": false
+        },
+        {
+          "id": "distractor-2",
+          "label": "red",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "こんにちは is read こんにちは and means hello.",
+      "skillIds": [
+        "a1-reading"
+      ]
+    },
+    {
+      "id": "word-7",
+      "kind": "choice",
+      "prompt": "Choose the best English meaning for こんばんは (こんばんは).",
+      "options": [
+        {
+          "id": "correct",
+          "label": "good evening",
+          "isCorrect": true
+        },
+        {
+          "id": "distractor-1",
+          "label": "Ah!, Oh!",
+          "isCorrect": false
+        },
+        {
+          "id": "distractor-2",
+          "label": "bright (in reference to personality or weather); cheerful",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "こんばんは is read こんばんは and means good evening.",
+      "skillIds": [
+        "a1-reading"
+      ]
+    },
+    {
+      "id": "word-8",
+      "kind": "choice",
+      "prompt": "Choose the best English meaning for コーヒー (コーヒー).",
+      "options": [
+        {
+          "id": "correct",
+          "label": "coffee",
+          "isCorrect": true
+        },
+        {
+          "id": "distractor-1",
+          "label": "to meet, to see",
+          "isCorrect": false
+        },
+        {
+          "id": "distractor-2",
+          "label": "fall (season)",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "コーヒー is read コーヒー and means coffee.",
+      "skillIds": [
+        "a1-reading"
+      ]
+    },
+    {
+      "id": "word-9",
+      "kind": "choice",
+      "prompt": "Choose the best English meaning for テレビ (テレビ).",
+      "options": [
+        {
+          "id": "correct",
+          "label": "television",
+          "isCorrect": true
+        },
+        {
+          "id": "distractor-1",
+          "label": "blue",
+          "isCorrect": false
+        },
+        {
+          "id": "distractor-2",
+          "label": "to open, to become open",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "テレビ is read テレビ and means television.",
+      "skillIds": [
+        "a1-reading"
+      ]
+    },
+    {
+      "id": "word-10",
+      "kind": "choice",
+      "prompt": "Choose the best English meaning for ホテル (ホテル).",
+      "options": [
+        {
+          "id": "correct",
+          "label": "hotel",
+          "isCorrect": true
+        },
+        {
+          "id": "distractor-1",
+          "label": "blue",
+          "isCorrect": false
+        },
+        {
+          "id": "distractor-2",
+          "label": "to open (v.t.)",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "ホテル is read ホテル and means hotel.",
+      "skillIds": [
+        "a1-reading"
+      ]
+    },
+    {
+      "id": "word-11",
+      "kind": "choice",
+      "prompt": "Choose the best English meaning for タクシー (タクシー).",
+      "options": [
+        {
+          "id": "correct",
+          "label": "taxi",
+          "isCorrect": true
+        },
+        {
+          "id": "distractor-1",
+          "label": "red",
+          "isCorrect": false
+        },
+        {
+          "id": "distractor-2",
+          "label": "to raise, to lift",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "タクシー is read タクシー and means taxi.",
+      "skillIds": [
+        "a1-reading"
+      ]
+    },
+    {
+      "id": "word-12",
+      "kind": "choice",
+      "prompt": "Choose the best English meaning for スーパー (スーパー).",
+      "options": [
+        {
+          "id": "correct",
+          "label": "supermarket",
+          "isCorrect": true
+        },
+        {
+          "id": "distractor-1",
+          "label": "red",
+          "isCorrect": false
+        },
+        {
+          "id": "distractor-2",
+          "label": "morning",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "スーパー is read スーパー and means supermarket.",
+      "skillIds": [
+        "a1-reading"
+      ]
+    }
+  ]
+}

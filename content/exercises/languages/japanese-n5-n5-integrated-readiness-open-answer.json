@@ -1,0 +1,143 @@
+{
+  "slug": "languages/japanese-n5-n5-integrated-readiness-open-answer",
+  "title": "Integrated N5 Readiness Open Answer",
+  "documentSlug": "languages/japanese-n5-n5-integrated-readiness",
+  "concept": "Integrated N5 Readiness Japanese composition",
+  "difficulty": "foundation",
+  "tags": [
+    "japanese",
+    "n5",
+    "writing",
+    "ime"
+  ],
+  "status": "published",
+  "proficiencyLevel": "a1",
+  "skillIds": [
+    "a1-writing",
+    "kana-ime"
+  ],
+  "required": true,
+  "type": "questionnaire",
+  "questions": [
+    {
+      "id": "write-1",
+      "kind": "open-answer",
+      "prompt": "Write the Japanese sentence: You do not have to come tomorrow.",
+      "template": "{{blank}}",
+      "acceptedAnswers": [
+        "明日は来なくてもいいです。"
+      ],
+      "inputMode": "japanese-ime",
+      "explanation": "negative stem + なくてもいいです: Say that an action is not required.",
+      "skillIds": [
+        "a1-writing",
+        "kana-ime"
+      ]
+    },
+    {
+      "id": "write-2",
+      "kind": "open-answer",
+      "prompt": "Write the Japanese sentence: You should go to bed early.",
+      "template": "{{blank}}",
+      "acceptedAnswers": [
+        "早く寝たほうがいいです。"
+      ],
+      "inputMode": "japanese-ime",
+      "explanation": "plain past/negative + ほうがいいです: Give gentle advice about a preferable action.",
+      "skillIds": [
+        "a1-writing",
+        "kana-ime"
+      ]
+    },
+    {
+      "id": "write-3",
+      "kind": "open-answer",
+      "prompt": "Write the Japanese sentence: I drink only water.",
+      "template": "{{blank}}",
+      "acceptedAnswers": [
+        "水だけ飲みます。"
+      ],
+      "inputMode": "japanese-ime",
+      "explanation": "Noun + だけ: Limit a statement to only the marked item or amount.",
+      "skillIds": [
+        "a1-writing",
+        "kana-ime"
+      ]
+    },
+    {
+      "id": "write-4",
+      "kind": "open-answer",
+      "prompt": "Write the Japanese sentence: Would you like tea or something?",
+      "template": "{{blank}}",
+      "acceptedAnswers": [
+        "お茶でも飲みませんか。"
+      ],
+      "inputMode": "japanese-ime",
+      "explanation": "Noun + でも: Offer one representative option in a casual suggestion.",
+      "skillIds": [
+        "a1-writing",
+        "kana-ime"
+      ]
+    },
+    {
+      "id": "write-5",
+      "kind": "open-answer",
+      "prompt": "Write the Japanese sentence: The weather is nice, isn't it?",
+      "template": "{{blank}}",
+      "acceptedAnswers": [
+        "今日はいい天気ですね。"
+      ],
+      "inputMode": "japanese-ime",
+      "explanation": "Sentence + ね: Invite agreement or acknowledge shared information.",
+      "skillIds": [
+        "a1-writing",
+        "kana-ime"
+      ]
+    },
+    {
+      "id": "write-6",
+      "kind": "open-answer",
+      "prompt": "Write the Japanese sentence: This train goes to Tokyo, you know.",
+      "template": "{{blank}}",
+      "acceptedAnswers": [
+        "この電車は東京へ行きますよ。"
+      ],
+      "inputMode": "japanese-ime",
+      "explanation": "Sentence + よ: Present information the listener may not know.",
+      "skillIds": [
+        "a1-writing",
+        "kana-ime"
+      ]
+    },
+    {
+      "id": "write-7",
+      "kind": "open-answer",
+      "prompt": "Write the Japanese sentence: You do not have to come tomorrow.",
+      "template": "{{blank}}",
+      "acceptedAnswers": [
+        "明日は来なくてもいいです。"
+      ],
+      "inputMode": "japanese-ime",
+      "explanation": "negative stem + なくてもいいです: Say that an action is not required.",
+      "skillIds": [
+        "a1-writing",
+        "kana-ime"
+      ]
+    },
+    {
+      "id": "write-8",
+      "kind": "open-answer",
+      "prompt": "Write the Japanese sentence: You should go to bed early.",
+      "template": "{{blank}}",
+      "acceptedAnswers": [
+        "早く寝たほうがいいです。"
+      ],
+      "inputMode": "japanese-ime",
+      "explanation": "plain past/negative + ほうがいいです: Give gentle advice about a preferable action.",
+      "skillIds": [
+        "a1-writing",
+        "kana-ime"
+      ]
+    }
+  ]
+}

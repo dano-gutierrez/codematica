@@ -20,6 +20,7 @@ import {
   type LanguageCharacter,
   type LanguageAudioAsset,
   type LanguageExternalResource,
+  type LanguageGrammar,
   type LanguageVocabulary,
   type LearningExercise,
   type LearningPath,
@@ -202,6 +203,7 @@ async function collectLearningExercises(rootDir: string): Promise<LearningExerci
 async function collectLanguageContent(rootDir: string): Promise<{
   languageCharacters: LanguageCharacter[];
   languageVocabulary: LanguageVocabulary[];
+  languageGrammar: LanguageGrammar[];
   languageAudio: LanguageAudioAsset[];
   languageResources: LanguageExternalResource[];
 }> {
@@ -215,6 +217,7 @@ async function collectLanguageContent(rootDir: string): Promise<{
   });
   const characterGroups: LanguageCharacter[][] = [];
   const vocabularyGroups: LanguageVocabulary[][] = [];
+  const grammarGroups: LanguageGrammar[][] = [];
   const audioGroups: LanguageAudioAsset[][] = [];
   const resourceGroups: LanguageExternalResource[][] = [];
 
@@ -244,6 +247,8 @@ async function collectLanguageContent(rootDir: string): Promise<{
           contentHash,
         })),
       );
+    } else if (parsed.kind === "grammar") {
+      grammarGroups.push(parsed.items.map((item) => ({ ...item, sourcePath, contentHash })));
     } else if (parsed.kind === "audio") {
       audioGroups.push(
         parsed.items.map((item) => ({
@@ -266,6 +271,7 @@ async function collectLanguageContent(rootDir: string): Promise<{
   return {
     languageCharacters: characterGroups.flat(),
     languageVocabulary: vocabularyGroups.flat(),
+    languageGrammar: grammarGroups.flat(),
     languageAudio: audioGroups.flat(),
     languageResources: resourceGroups.flat(),
   };
@@ -412,7 +418,7 @@ function assertQuestionnaireExercise(exercise: LearningExercise, sourcePath: str
   assertUniqueIds(exercise.questions, "questionnaire question id", sourcePath);
 
   for (const question of exercise.questions) {
-    if (question.kind === "choice") {
+    if (question.kind === "choice" || question.kind === "listening-choice") {
       assertUniqueIds(question.options, `choice option id in question "${question.id}"`, sourcePath);
 
       if (question.options.filter((option) => option.isCorrect).length !== 1) {
@@ -420,11 +426,11 @@ function assertQuestionnaireExercise(exercise: LearningExercise, sourcePath: str
       }
     }
 
-    if (question.kind === "cloze") {
+    if (question.kind === "cloze" || question.kind === "open-answer") {
       const blankCount = question.template.match(/\{\{blank\}\}/g)?.length ?? 0;
 
       if (blankCount !== 1) {
-        throw new Error(`${sourcePath} questionnaire cloze question "${question.id}" must contain exactly one {{blank}}.`);
+        throw new Error(`${sourcePath} questionnaire ${question.kind} question "${question.id}" must contain exactly one {{blank}}.`);
       }
     }
 
@@ -524,21 +530,33 @@ function assertUniqueSlugs(
   assertUniqueEntitySlugs(interviewCollections, "interview collection");
 }
 
-async function assertLanguageAudio(rootDir: string, audio: LanguageAudioAsset[], characters: LanguageCharacter[], vocabulary: LanguageVocabulary[]) {
+async function assertLanguageAudio(rootDir: string, audio: LanguageAudioAsset[], characters: LanguageCharacter[], vocabulary: LanguageVocabulary[], exercises: LearningExercise[]) {
   const ids = new Set(audio.map((item) => item.id));
   const references = [
     ...characters.flatMap((item) => [item.audioId, ...item.examples.map((example) => example.audioId)]),
     ...vocabulary.flatMap((item) => [item.audioId, ...item.examples.map((example) => example.audioId)]),
+    ...exercises.flatMap((exercise) => exercise.type === "questionnaire" ? exercise.questions.flatMap((question) => question.kind === "listening-choice" ? [question.audioId] : []) : []),
   ].filter((value): value is string => Boolean(value));
 
   for (const reference of references) {
     if (!ids.has(reference)) throw new Error(`Japanese content references missing audio "${reference}".`);
   }
 
+  const approvedIds = new Set(audio.filter((item) => item.qaStatus === "approved").map((item) => item.id));
+  for (const exercise of exercises) {
+    if (exercise.type !== "questionnaire" || exercise.status !== "published") continue;
+    for (const question of exercise.questions) {
+      if (question.kind === "listening-choice" && !approvedIds.has(question.audioId)) {
+        throw new Error(`${exercise.sourcePath} published listening question references unapproved audio "${question.audioId}".`);
+      }
+    }
+  }
+
   for (const item of audio) {
     const sourceDirectory = path.dirname(path.join(rootDir, item.sourcePath));
     const assetFile = path.resolve(sourceDirectory, item.assetPath);
     if (!assetFile.startsWith(`${sourceDirectory}${path.sep}`)) throw new Error(`${item.sourcePath} audio path escapes its content directory.`);
+    if (item.qaStatus === "draft") continue;
     try {
       await fs.access(assetFile);
     } catch {
@@ -801,6 +819,7 @@ export async function buildContentIndex({ rootDir }: BuildContentIndexOptions): 
   const sortedExercises = exercises.sort((left, right) => left.slug.localeCompare(right.slug));
   const sortedLanguageCharacters = languageContent.languageCharacters.sort((left, right) => left.slug.localeCompare(right.slug));
   const sortedLanguageVocabulary = languageContent.languageVocabulary.sort((left, right) => left.slug.localeCompare(right.slug));
+  const sortedLanguageGrammar = languageContent.languageGrammar.sort((left, right) => left.studyOrder - right.studyOrder || left.id.localeCompare(right.id));
   const sortedLanguageAudio = languageContent.languageAudio.sort((left, right) => left.id.localeCompare(right.id));
   const sortedLanguageResources = languageContent.languageResources.sort((left, right) => left.id.localeCompare(right.id));
   const sortedLearningPaths = learningPaths.sort((left, right) => left.slug.localeCompare(right.slug));
@@ -809,7 +828,8 @@ export async function buildContentIndex({ rootDir }: BuildContentIndexOptions): 
   assertUniqueIds(sortedLanguageAudio, "language audio id", "language audio catalogs");
   assertUniqueIds(sortedSources, "content source id", "content source catalogs");
   assertUniqueIds(sortedLanguageResources, "language resource id", "language resource catalogs");
-  await assertLanguageAudio(rootDir, sortedLanguageAudio, sortedLanguageCharacters, sortedLanguageVocabulary);
+  assertUniqueIds(sortedLanguageGrammar, "language grammar id", "language grammar catalogs");
+  await assertLanguageAudio(rootDir, sortedLanguageAudio, sortedLanguageCharacters, sortedLanguageVocabulary, sortedExercises);
   assertUniqueSlugs(
     sortedDocuments,
     sortedDiagrams,
@@ -844,7 +864,7 @@ export async function buildContentIndex({ rootDir }: BuildContentIndexOptions): 
   );
 
   return {
-    schemaVersion: 9,
+    schemaVersion: 10,
     sources: sortedSources,
     documents: sortedDocuments,
     diagrams: sortedDiagrams,
@@ -852,6 +872,7 @@ export async function buildContentIndex({ rootDir }: BuildContentIndexOptions): 
     exercises: sortedExercises,
     languageCharacters: sortedLanguageCharacters,
     languageVocabulary: sortedLanguageVocabulary,
+    languageGrammar: sortedLanguageGrammar,
     languageAudio: sortedLanguageAudio,
     languageResources: sortedLanguageResources,
     passiveFlashcardFeeds: sortedPassiveFlashcardFeeds,

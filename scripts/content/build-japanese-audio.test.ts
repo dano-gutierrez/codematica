@@ -40,6 +40,8 @@ describe("Japanese audio registry generation", () => {
       license: "Original",
       attribution: "Codematica test fixture",
       assetPath: "audio/kana-a.mp3",
+      qaStatus: "approved",
+      disclosure: "Human-recorded voice",
     };
     const { rootDir, contentDir } = await makeRoot([item]);
     await mkdir(path.join(contentDir, "audio"));
@@ -52,6 +54,27 @@ describe("Japanese audio registry generation", () => {
     await expect(readFile(result.mobileRegistryPath, "utf8")).resolves.toContain('require("../../../../content/languages/japanese/audio/kana-a.mp3")');
   });
 
+  it("excludes draft generated audio from runtime registries", async () => {
+    const item = {
+      id: "draft-audio",
+      transcript: "学生です。",
+      reading: "がくせいです。",
+      speaker: "OpenAI marin",
+      license: "OpenAI generated output",
+      attribution: "Generated for Codematica",
+      assetPath: "audio/draft-audio.mp3",
+      qaStatus: "draft",
+      disclosure: "AI-generated voice",
+      provenance: { kind: "openai-tts", model: "gpt-4o-mini-tts", voice: "marin", instructions: "Speak clear Japanese.", generatedAt: "2026-08-09T00:00:00.000Z", checksum: "b".repeat(64) },
+    };
+    const { rootDir, contentDir } = await makeRoot([item]);
+    await mkdir(path.join(contentDir, "audio"));
+    await writeFile(path.join(contentDir, item.assetPath), "fixture-audio");
+
+    await expect(buildJapaneseAudio({ rootDir })).resolves.toMatchObject({ assets: 0, drafts: 1 });
+    await expect(readFile(path.join(rootDir, "apps/web/src/generated/japanese-audio.ts"), "utf8")).resolves.not.toContain("draft-audio");
+  });
+
   it("rejects missing files and paths outside the audio contract", async () => {
     const validMissing = {
       id: "missing-audio",
@@ -61,6 +84,8 @@ describe("Japanese audio registry generation", () => {
       license: "Original",
       attribution: "Codematica test fixture",
       assetPath: "audio/missing.mp3",
+      qaStatus: "approved",
+      disclosure: "Human-recorded voice",
     };
     const missing = await makeRoot([validMissing]);
     await expect(buildJapaneseAudio({ rootDir: missing.rootDir })).rejects.toThrow();

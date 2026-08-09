@@ -29,9 +29,14 @@ export type AuthAdapter = {
   syncAnonymousProgress?: () => Promise<void>;
 };
 
+export type AudioAdapter = {
+  play: (audioId: string, playbackRate?: number) => Promise<boolean> | boolean;
+};
+
 export type CodematicaAdapters = {
   navigation: NavigationAdapter;
   progress?: ProgressAdapter;
   auth?: AuthAdapter;
+  audio?: AudioAdapter;
   mermaidScript?: string;
 };

@@ -1,0 +1,143 @@
+{
+  "slug": "languages/japanese-n5-family-home-and-location-open-answer",
+  "title": "Family, Home, And Location Open Answer",
+  "documentSlug": "languages/japanese-n5-family-home-and-location",
+  "concept": "Family, Home, And Location Japanese composition",
+  "difficulty": "foundation",
+  "tags": [
+    "japanese",
+    "n5",
+    "writing",
+    "ime"
+  ],
+  "status": "published",
+  "proficiencyLevel": "a1",
+  "skillIds": [
+    "a1-writing",
+    "kana-ime"
+  ],
+  "required": true,
+  "type": "questionnaire",
+  "questions": [
+    {
+      "id": "write-1",
+      "kind": "open-answer",
+      "prompt": "Write the Japanese sentence: I get up at seven.",
+      "template": "{{blank}}",
+      "acceptedAnswers": [
+        "七時に起きます。"
+      ],
+      "inputMode": "japanese-ime",
+      "explanation": "Time + に: Mark a specific time when an action occurs.",
+      "skillIds": [
+        "a1-writing",
+        "kana-ime"
+      ]
+    },
+    {
+      "id": "write-2",
+      "kind": "open-answer",
+      "prompt": "Write the Japanese sentence: I work from nine to five.",
+      "template": "{{blank}}",
+      "acceptedAnswers": [
+        "九時から五時まで働きます。"
+      ],
+      "inputMode": "japanese-ime",
+      "explanation": "Noun + から・まで: Mark the starting and ending point of time or place.",
+      "skillIds": [
+        "a1-writing",
+        "kana-ime"
+      ]
+    },
+    {
+      "id": "write-3",
+      "kind": "open-answer",
+      "prompt": "Write the Japanese sentence: I buy bread and eggs.",
+      "template": "{{blank}}",
+      "acceptedAnswers": [
+        "パンと卵を買います。"
+      ],
+      "inputMode": "japanese-ime",
+      "explanation": "Noun + と + Noun: Join nouns in a complete list meaning and.",
+      "skillIds": [
+        "a1-writing",
+        "kana-ime"
+      ]
+    },
+    {
+      "id": "write-4",
+      "kind": "open-answer",
+      "prompt": "Write the Japanese sentence: There are books, pens, and such on the desk.",
+      "template": "{{blank}}",
+      "acceptedAnswers": [
+        "机の上に本やペンがあります。"
+      ],
+      "inputMode": "japanese-ime",
+      "explanation": "Noun + や + Noun: Give representative examples from a larger list.",
+      "skillIds": [
+        "a1-writing",
+        "kana-ime"
+      ]
+    },
+    {
+      "id": "write-5",
+      "kind": "open-answer",
+      "prompt": "Write the Japanese sentence: I study Japanese every day.",
+      "template": "{{blank}}",
+      "acceptedAnswers": [
+        "毎日日本語を勉強します。"
+      ],
+      "inputMode": "japanese-ime",
+      "explanation": "Verb stem + ます: Express a habitual or future action politely.",
+      "skillIds": [
+        "a1-writing",
+        "kana-ime"
+      ]
+    },
+    {
+      "id": "write-6",
+      "kind": "open-answer",
+      "prompt": "Write the Japanese sentence: I will not work today.",
+      "template": "{{blank}}",
+      "acceptedAnswers": [
+        "今日は働きません。"
+      ],
+      "inputMode": "japanese-ime",
+      "explanation": "Verb stem + ません: Express that a present or future action does not happen.",
+      "skillIds": [
+        "a1-writing",
+        "kana-ime"
+      ]
+    },
+    {
+      "id": "write-7",
+      "kind": "open-answer",
+      "prompt": "Write the Japanese sentence: I get up at seven.",
+      "template": "{{blank}}",
+      "acceptedAnswers": [
+        "七時に起きます。"
+      ],
+      "inputMode": "japanese-ime",
+      "explanation": "Time + に: Mark a specific time when an action occurs.",
+      "skillIds": [
+        "a1-writing",
+        "kana-ime"
+      ]
+    },
+    {
+      "id": "write-8",
+      "kind": "open-answer",
+      "prompt": "Write the Japanese sentence: I work from nine to five.",
+      "template": "{{blank}}",
+      "acceptedAnswers": [
+        "九時から五時まで働きます。"
+      ],
+      "inputMode": "japanese-ime",
+      "explanation": "Noun + から・まで: Mark the starting and ending point of time or place.",
+      "skillIds": [
+        "a1-writing",
+        "kana-ime"
+      ]
+    }
+  ]
+}

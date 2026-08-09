@@ -1,0 +1,143 @@
+{
+  "slug": "languages/japanese-n5-invitations-requests-and-permission-open-answer",
+  "title": "Invitations, Requests, And Permission Open Answer",
+  "documentSlug": "languages/japanese-n5-invitations-requests-and-permission",
+  "concept": "Invitations, Requests, And Permission Japanese composition",
+  "difficulty": "foundation",
+  "tags": [
+    "japanese",
+    "n5",
+    "writing",
+    "ime"
+  ],
+  "status": "published",
+  "proficiencyLevel": "a1",
+  "skillIds": [
+    "a1-writing",
+    "kana-ime"
+  ],
+  "required": true,
+  "type": "questionnaire",
+  "questions": [
+    {
+      "id": "write-1",
+      "kind": "open-answer",
+      "prompt": "Write the Japanese sentence: This book is not expensive.",
+      "template": "{{blank}}",
+      "acceptedAnswers": [
+        "この本は高くないです。"
+      ],
+      "inputMode": "japanese-ime",
+      "explanation": "くないです・ではありません: Make i-adjectives and na-adjectives negative politely.",
+      "skillIds": [
+        "a1-writing",
+        "kana-ime"
+      ]
+    },
+    {
+      "id": "write-2",
+      "kind": "open-answer",
+      "prompt": "Write the Japanese sentence: It was cold yesterday.",
+      "template": "{{blank}}",
+      "acceptedAnswers": [
+        "昨日は寒かったです。"
+      ],
+      "inputMode": "japanese-ime",
+      "explanation": "かったです・でした: Describe a past state with an adjective.",
+      "skillIds": [
+        "a1-writing",
+        "kana-ime"
+      ]
+    },
+    {
+      "id": "write-3",
+      "kind": "open-answer",
+      "prompt": "Write the Japanese sentence: The train is faster than the bus.",
+      "template": "{{blank}}",
+      "acceptedAnswers": [
+        "電車はバスより速いです。"
+      ],
+      "inputMode": "japanese-ime",
+      "explanation": "A は B より adjective: Compare A with B using B as the reference point.",
+      "skillIds": [
+        "a1-writing",
+        "kana-ime"
+      ]
+    },
+    {
+      "id": "write-4",
+      "kind": "open-answer",
+      "prompt": "Write the Japanese sentence: I like fish more than meat.",
+      "template": "{{blank}}",
+      "acceptedAnswers": [
+        "肉より魚のほうが好きです。"
+      ],
+      "inputMode": "japanese-ime",
+      "explanation": "A より B のほうが adjective: Say that B has more of a quality than A.",
+      "skillIds": [
+        "a1-writing",
+        "kana-ime"
+      ]
+    },
+    {
+      "id": "write-5",
+      "kind": "open-answer",
+      "prompt": "Write the Japanese sentence: Among fruits, I like apples best.",
+      "template": "{{blank}}",
+      "acceptedAnswers": [
+        "果物でりんごが一番好きです。"
+      ],
+      "inputMode": "japanese-ime",
+      "explanation": "Group + で + Noun + が一番: Identify the item with the greatest degree in a group.",
+      "skillIds": [
+        "a1-writing",
+        "kana-ime"
+      ]
+    },
+    {
+      "id": "write-6",
+      "kind": "open-answer",
+      "prompt": "Write the Japanese sentence: I like music.",
+      "template": "{{blank}}",
+      "acceptedAnswers": [
+        "音楽が好きです。"
+      ],
+      "inputMode": "japanese-ime",
+      "explanation": "Noun + が好き・嫌いです: Express likes and dislikes toward a noun or activity.",
+      "skillIds": [
+        "a1-writing",
+        "kana-ime"
+      ]
+    },
+    {
+      "id": "write-7",
+      "kind": "open-answer",
+      "prompt": "Write the Japanese sentence: This book is not expensive.",
+      "template": "{{blank}}",
+      "acceptedAnswers": [
+        "この本は高くないです。"
+      ],
+      "inputMode": "japanese-ime",
+      "explanation": "くないです・ではありません: Make i-adjectives and na-adjectives negative politely.",
+      "skillIds": [
+        "a1-writing",
+        "kana-ime"
+      ]
+    },
+    {
+      "id": "write-8",
+      "kind": "open-answer",
+      "prompt": "Write the Japanese sentence: It was cold yesterday.",
+      "template": "{{blank}}",
+      "acceptedAnswers": [
+        "昨日は寒かったです。"
+      ],
+      "inputMode": "japanese-ime",
+      "explanation": "かったです・でした: Describe a past state with an adjective.",
+      "skillIds": [
+        "a1-writing",
+        "kana-ime"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,143 @@
+{
+  "slug": "languages/japanese-n5-past-activities-and-messages-open-answer",
+  "title": "Past Activities And Messages Open Answer",
+  "documentSlug": "languages/japanese-n5-past-activities-and-messages",
+  "concept": "Past Activities And Messages Japanese composition",
+  "difficulty": "foundation",
+  "tags": [
+    "japanese",
+    "n5",
+    "writing",
+    "ime"
+  ],
+  "status": "published",
+  "proficiencyLevel": "a1",
+  "skillIds": [
+    "a1-writing",
+    "kana-ime"
+  ],
+  "required": true,
+  "type": "questionnaire",
+  "questions": [
+    {
+      "id": "write-1",
+      "kind": "open-answer",
+      "prompt": "Write the Japanese sentence: I already ate lunch.",
+      "template": "{{blank}}",
+      "acceptedAnswers": [
+        "もう昼ご飯を食べました。"
+      ],
+      "inputMode": "japanese-ime",
+      "explanation": "もう + past/affirmative: Say that an expected action has already happened.",
+      "skillIds": [
+        "a1-writing",
+        "kana-ime"
+      ]
+    },
+    {
+      "id": "write-2",
+      "kind": "open-answer",
+      "prompt": "Write the Japanese sentence: The homework is not finished yet.",
+      "template": "{{blank}}",
+      "acceptedAnswers": [
+        "宿題はまだ終わっていません。"
+      ],
+      "inputMode": "japanese-ime",
+      "explanation": "まだ + negative: Say that an expected action has not happened yet.",
+      "skillIds": [
+        "a1-writing",
+        "kana-ime"
+      ]
+    },
+    {
+      "id": "write-3",
+      "kind": "open-answer",
+      "prompt": "Write the Japanese sentence: I am reading the newspaper now.",
+      "template": "{{blank}}",
+      "acceptedAnswers": [
+        "今、新聞を読んでいます。"
+      ],
+      "inputMode": "japanese-ime",
+      "explanation": "て-form + います: Describe an action in progress or a continuing state.",
+      "skillIds": [
+        "a1-writing",
+        "kana-ime"
+      ]
+    },
+    {
+      "id": "write-4",
+      "kind": "open-answer",
+      "prompt": "Write the Japanese sentence: I eat after washing my hands.",
+      "template": "{{blank}}",
+      "acceptedAnswers": [
+        "手を洗ってから食べます。"
+      ],
+      "inputMode": "japanese-ime",
+      "explanation": "て-form + から: State that one action happens after another is completed.",
+      "skillIds": [
+        "a1-writing",
+        "kana-ime"
+      ]
+    },
+    {
+      "id": "write-5",
+      "kind": "open-answer",
+      "prompt": "Write the Japanese sentence: On Sundays I read and take walks, among other things.",
+      "template": "{{blank}}",
+      "acceptedAnswers": [
+        "日曜日は本を読んだり散歩したりします。"
+      ],
+      "inputMode": "japanese-ime",
+      "explanation": "past plain + り、past plain + りします: List representative activities without claiming a complete list.",
+      "skillIds": [
+        "a1-writing",
+        "kana-ime"
+      ]
+    },
+    {
+      "id": "write-6",
+      "kind": "open-answer",
+      "prompt": "Write the Japanese sentence: I have been to Kyoto.",
+      "template": "{{blank}}",
+      "acceptedAnswers": [
+        "京都へ行ったことがあります。"
+      ],
+      "inputMode": "japanese-ime",
+      "explanation": "past plain + ことがあります: Say that someone has experienced an action before.",
+      "skillIds": [
+        "a1-writing",
+        "kana-ime"
+      ]
+    },
+    {
+      "id": "write-7",
+      "kind": "open-answer",
+      "prompt": "Write the Japanese sentence: I already ate lunch.",
+      "template": "{{blank}}",
+      "acceptedAnswers": [
+        "もう昼ご飯を食べました。"
+      ],
+      "inputMode": "japanese-ime",
+      "explanation": "もう + past/affirmative: Say that an expected action has already happened.",
+      "skillIds": [
+        "a1-writing",
+        "kana-ime"
+      ]
+    },
+    {
+      "id": "write-8",
+      "kind": "open-answer",
+      "prompt": "Write the Japanese sentence: The homework is not finished yet.",
+      "template": "{{blank}}",
+      "acceptedAnswers": [
+        "宿題はまだ終わっていません。"
+      ],
+      "inputMode": "japanese-ime",
+      "explanation": "まだ + negative: Say that an expected action has not happened yet.",
+      "skillIds": [
+        "a1-writing",
+        "kana-ime"
+      ]
+    }
+  ]
+}

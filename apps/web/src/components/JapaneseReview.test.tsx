@@ -9,13 +9,14 @@ describe("JapaneseReview", () => {
     vi.restoreAllMocks();
   });
 
-  it("keeps every skill card available without advertising separate practice modes", async () => {
+  it("keeps every skill card available and exposes substantive N5 practice modes", async () => {
     const path = getLearningPathBySlug("japanese-foundations")!;
     render(<JapaneseReview learningPath={path} />);
     await act(async () => undefined);
 
     expect(screen.getByTestId("japanese-review-browser")).toBeVisible();
-    expect(screen.queryByRole("link", { name: /flashcards/i })).not.toBeInTheDocument();
+    expect(screen.getByRole("link", { name: /flashcards/i })).toHaveAttribute("href", "/languages/japanese/review/flashcards");
+    expect(screen.getByRole("link", { name: /open-answer writing/i })).toHaveAttribute("href", "/languages/japanese/review/writing");
     expect(screen.queryByRole("link", { name: /audio/i })).not.toBeInTheDocument();
     expect(screen.getAllByText("Kana sounds and rhythm").length).toBeGreaterThan(0);
 

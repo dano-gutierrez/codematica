@@ -1,0 +1,333 @@
+{
+  "slug": "languages/japanese-n5-routines-verbs-and-particles-mixed",
+  "title": "Routines, Verbs, And Particles Mixed Practice",
+  "documentSlug": "languages/japanese-n5-routines-verbs-and-particles",
+  "concept": "Routines, Verbs, And Particles N5 recognition",
+  "difficulty": "foundation",
+  "tags": [
+    "japanese",
+    "n5",
+    "vocabulary"
+  ],
+  "status": "published",
+  "proficiencyLevel": "a1",
+  "skillIds": [
+    "a1-reading"
+  ],
+  "required": true,
+  "type": "questionnaire",
+  "questions": [
+    {
+      "id": "word-1",
+      "kind": "choice",
+      "prompt": "Choose the best English meaning for カレンダー (カレンダー).",
+      "options": [
+        {
+          "id": "correct",
+          "label": "calendar",
+          "isCorrect": true
+        },
+        {
+          "id": "distractor-1",
+          "label": "yellow",
+          "isCorrect": false
+        },
+        {
+          "id": "distractor-2",
+          "label": "café",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "カレンダー is read カレンダー and means calendar.",
+      "skillIds": [
+        "a1-reading"
+      ]
+    },
+    {
+      "id": "word-2",
+      "kind": "choice",
+      "prompt": "Choose the best English meaning for 川; 河 (かわ).",
+      "options": [
+        {
+          "id": "correct",
+          "label": "river",
+          "isCorrect": true
+        },
+        {
+          "id": "distractor-1",
+          "label": "to vanish, to disappear",
+          "isCorrect": false
+        },
+        {
+          "id": "distractor-2",
+          "label": "postal (postage) stamps",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "川; 河 is read かわ and means river.",
+      "skillIds": [
+        "a1-reading"
+      ]
+    },
+    {
+      "id": "word-3",
+      "kind": "choice",
+      "prompt": "Choose the best English meaning for ～側 (～がわ).",
+      "options": [
+        {
+          "id": "correct",
+          "label": "~ side",
+          "isCorrect": true
+        },
+        {
+          "id": "distractor-1",
+          "label": "to hear, to listen, to ask",
+          "isCorrect": false
+        },
+        {
+          "id": "distractor-2",
+          "label": "a ticket",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "～側 is read ～がわ and means ~ side.",
+      "skillIds": [
+        "a1-reading"
+      ]
+    },
+    {
+      "id": "word-4",
+      "kind": "choice",
+      "prompt": "Choose the best English meaning for 可愛い (かわいい).",
+      "options": [
+        {
+          "id": "correct",
+          "label": "cute, adorable",
+          "isCorrect": true
+        },
+        {
+          "id": "distractor-1",
+          "label": "north",
+          "isCorrect": false
+        },
+        {
+          "id": "distractor-2",
+          "label": "yesterday",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "可愛い is read かわいい and means cute, adorable.",
+      "skillIds": [
+        "a1-reading"
+      ]
+    },
+    {
+      "id": "word-5",
+      "kind": "choice",
+      "prompt": "Choose the best English meaning for 漢字 (かんじ).",
+      "options": [
+        {
+          "id": "correct",
+          "label": "kanji; Chinese character",
+          "isCorrect": true
+        },
+        {
+          "id": "distractor-1",
+          "label": "guitar",
+          "isCorrect": false
+        },
+        {
+          "id": "distractor-2",
+          "label": "nine",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "漢字 is read かんじ and means kanji; Chinese character.",
+      "skillIds": [
+        "a1-reading"
+      ]
+    },
+    {
+      "id": "word-6",
+      "kind": "choice",
+      "prompt": "Choose the best English meaning for 木 (き).",
+      "options": [
+        {
+          "id": "correct",
+          "label": "tree, wood, timber",
+          "isCorrect": true
+        },
+        {
+          "id": "distractor-1",
+          "label": "dirty, unclean, filthy",
+          "isCorrect": false
+        },
+        {
+          "id": "distractor-2",
+          "label": "beef",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "木 is read き and means tree, wood, timber.",
+      "skillIds": [
+        "a1-reading"
+      ]
+    },
+    {
+      "id": "word-7",
+      "kind": "choice",
+      "prompt": "Choose the best English meaning for 黄色 (きいろ).",
+      "options": [
+        {
+          "id": "correct",
+          "label": "yellow",
+          "isCorrect": true
+        },
+        {
+          "id": "distractor-1",
+          "label": "café",
+          "isCorrect": false
+        },
+        {
+          "id": "distractor-2",
+          "label": "milk",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "黄色 is read きいろ and means yellow.",
+      "skillIds": [
+        "a1-reading"
+      ]
+    },
+    {
+      "id": "word-8",
+      "kind": "choice",
+      "prompt": "Choose the best English meaning for 黄色い (きいろい).",
+      "options": [
+        {
+          "id": "correct",
+          "label": "yellow",
+          "isCorrect": true
+        },
+        {
+          "id": "distractor-1",
+          "label": "postal (postage) stamps",
+          "isCorrect": false
+        },
+        {
+          "id": "distractor-2",
+          "label": "today, this day",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "黄色い is read きいろい and means yellow.",
+      "skillIds": [
+        "a1-reading"
+      ]
+    },
+    {
+      "id": "word-9",
+      "kind": "choice",
+      "prompt": "Choose the best English meaning for 消える (きえる).",
+      "options": [
+        {
+          "id": "correct",
+          "label": "to vanish, to disappear",
+          "isCorrect": true
+        },
+        {
+          "id": "distractor-1",
+          "label": "a ticket",
+          "isCorrect": false
+        },
+        {
+          "id": "distractor-2",
+          "label": "classroom",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "消える is read きえる and means to vanish, to disappear.",
+      "skillIds": [
+        "a1-reading"
+      ]
+    },
+    {
+      "id": "word-10",
+      "kind": "choice",
+      "prompt": "Choose the best English meaning for 聞く (きく).",
+      "options": [
+        {
+          "id": "correct",
+          "label": "to hear, to listen, to ask",
+          "isCorrect": true
+        },
+        {
+          "id": "distractor-1",
+          "label": "yesterday",
+          "isCorrect": false
+        },
+        {
+          "id": "distractor-2",
+          "label": "siblings (humble), brothers and sisters",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "聞く is read きく and means to hear, to listen, to ask.",
+      "skillIds": [
+        "a1-reading"
+      ]
+    },
+    {
+      "id": "word-11",
+      "kind": "choice",
+      "prompt": "Choose the best English meaning for 北 (きた).",
+      "options": [
+        {
+          "id": "correct",
+          "label": "north",
+          "isCorrect": true
+        },
+        {
+          "id": "distractor-1",
+          "label": "nine",
+          "isCorrect": false
+        },
+        {
+          "id": "distractor-2",
+          "label": "last year",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "北 is read きた and means north.",
+      "skillIds": [
+        "a1-reading"
+      ]
+    },
+    {
+      "id": "word-12",
+      "kind": "choice",
+      "prompt": "Choose the best English meaning for ギター (ギター).",
+      "options": [
+        {
+          "id": "correct",
+          "label": "guitar",
+          "isCorrect": true
+        },
+        {
+          "id": "distractor-1",
+          "label": "beef",
+          "isCorrect": false
+        },
+        {
+          "id": "distractor-2",
+          "label": "dislike",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "ギター is read ギター and means guitar.",
+      "skillIds": [
+        "a1-reading"
+      ]
+    }
+  ]
+}

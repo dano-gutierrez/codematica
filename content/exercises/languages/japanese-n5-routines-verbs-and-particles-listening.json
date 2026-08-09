@@ -1,0 +1,153 @@
+{
+  "slug": "languages/japanese-n5-routines-verbs-and-particles-listening",
+  "title": "Routines, Verbs, And Particles Listening",
+  "documentSlug": "languages/japanese-n5-routines-verbs-and-particles",
+  "concept": "Routines, Verbs, And Particles listening comprehension",
+  "difficulty": "foundation",
+  "tags": [
+    "japanese",
+    "n5",
+    "listening"
+  ],
+  "status": "draft",
+  "proficiencyLevel": "a1",
+  "skillIds": [
+    "a1-listening"
+  ],
+  "required": false,
+  "type": "questionnaire",
+  "questions": [
+    {
+      "id": "listen-1",
+      "kind": "listening-choice",
+      "prompt": "Choose the English meaning of the sentence you hear.",
+      "audioId": "n5-listen-4-1",
+      "options": [
+        {
+          "id": "correct",
+          "label": "I watched a movie yesterday.",
+          "isCorrect": true
+        },
+        {
+          "id": "distractor",
+          "label": "I did not eat breakfast.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "昨日映画を見ました。 means I watched a movie yesterday.",
+      "skillIds": [
+        "a1-listening"
+      ]
+    },
+    {
+      "id": "listen-2",
+      "kind": "listening-choice",
+      "prompt": "Choose the English meaning of the sentence you hear.",
+      "audioId": "n5-listen-4-2",
+      "options": [
+        {
+          "id": "correct",
+          "label": "I did not eat breakfast.",
+          "isCorrect": true
+        },
+        {
+          "id": "distractor",
+          "label": "I drink water.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "朝ご飯を食べませんでした。 means I did not eat breakfast.",
+      "skillIds": [
+        "a1-listening"
+      ]
+    },
+    {
+      "id": "listen-3",
+      "kind": "listening-choice",
+      "prompt": "Choose the English meaning of the sentence you hear.",
+      "audioId": "n5-listen-4-3",
+      "options": [
+        {
+          "id": "correct",
+          "label": "I drink water.",
+          "isCorrect": true
+        },
+        {
+          "id": "distractor",
+          "label": "I study at the library.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "水を飲みます。 means I drink water.",
+      "skillIds": [
+        "a1-listening"
+      ]
+    },
+    {
+      "id": "listen-4",
+      "kind": "listening-choice",
+      "prompt": "Choose the English meaning of the sentence you hear.",
+      "audioId": "n5-listen-4-4",
+      "options": [
+        {
+          "id": "correct",
+          "label": "I study at the library.",
+          "isCorrect": true
+        },
+        {
+          "id": "distractor",
+          "label": "I go toward school.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "図書館で勉強します。 means I study at the library.",
+      "skillIds": [
+        "a1-listening"
+      ]
+    },
+    {
+      "id": "listen-5",
+      "kind": "listening-choice",
+      "prompt": "Choose the English meaning of the sentence you hear.",
+      "audioId": "n5-listen-4-5",
+      "options": [
+        {
+          "id": "correct",
+          "label": "I go toward school.",
+          "isCorrect": true
+        },
+        {
+          "id": "distractor",
+          "label": "I came to Tokyo.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "学校へ行きます。 means I go toward school.",
+      "skillIds": [
+        "a1-listening"
+      ]
+    },
+    {
+      "id": "listen-6",
+      "kind": "listening-choice",
+      "prompt": "Choose the English meaning of the sentence you hear.",
+      "audioId": "n5-listen-4-6",
+      "options": [
+        {
+          "id": "correct",
+          "label": "I came to Tokyo.",
+          "isCorrect": true
+        },
+        {
+          "id": "distractor",
+          "label": "I watched a movie yesterday.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "東京に来ました。 means I came to Tokyo.",
+      "skillIds": [
+        "a1-listening"
+      ]
+    }
+  ]
+}

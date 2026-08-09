@@ -70,7 +70,8 @@ test("@regression mobile user searches Japanese and opens a writing drill", asyn
   await page.getByTestId("path-card-japanese-foundations").getByRole("link", { name: /Open path/i }).click();
   await expect(page.getByTestId("path-detail")).toBeVisible();
   await expect(page.getByTestId("path-progression-roadmap")).toContainText("Kana Explorer");
-  await expect(page.getByTestId("path-progression-roadmap")).toContainText("Everyday Navigator");
+  await expect(page.getByTestId("path-progression-roadmap")).toContainText("Everyday Japanese");
+  await expect(page.getByTestId("path-progression-roadmap")).toContainText("N5 Readiness");
   await expect(page.getByTestId("path-flashcard-feed-link")).toBeVisible();
   await expect(page.getByTestId("path-node-document-languages-japanese-hiragana-foundations")).toContainText("Read The 46 Basic Hiragana");
   await expect(page.getByTestId("path-node-document-languages-japanese-katakana-foundations")).toContainText("Read The 46 Basic Katakana");
@@ -93,13 +94,21 @@ test("@regression mobile user searches Japanese and opens a writing drill", asyn
 
   await page.goto("/languages/japanese/review");
   await expect(page.getByTestId("japanese-review-browser")).toBeVisible();
-  await expect(page.getByRole("link", { name: /flashcards/i })).toHaveCount(0);
+  await expect(page.getByRole("link", { name: /N5 flashcards/i })).toHaveAttribute("href", "/languages/japanese/review/flashcards");
+  await expect(page.getByRole("link", { name: /open-answer writing/i })).toHaveAttribute("href", "/languages/japanese/review/writing");
   await expect(page.getByRole("link", { name: /audio/i })).toHaveCount(0);
   await page.getByRole("button", { name: "Good" }).click();
   await expect(page.getByRole("button", { name: "Good" })).toHaveAttribute("aria-pressed", "true");
   await expect(page.getByRole("button", { name: "Good" })).toBeDisabled();
   await expect(page.getByRole("status")).toContainText("Good saved");
   await expect(page.getByText(/Best 85% · box 1/)).toBeVisible();
+
+  await page.getByRole("link", { name: /open-answer writing/i }).click();
+  await page.getByRole("link").filter({ hasText: "Open Answer" }).first().click();
+  await expect(page.getByTestId("questionnaire-open-answer-input")).toBeVisible();
+  await page.getByTestId("questionnaire-open-answer-input").fill("watashi wa gakusei desu");
+  await page.getByTestId("japanese-ime-candidate-0").click();
+  await expect(page.getByTestId("questionnaire-open-answer-input")).not.toHaveValue("watashi wa gakusei desu");
 });
 
 test("@regression assisted writing accepts a rough trace that follows the guide", async ({ page }) => {

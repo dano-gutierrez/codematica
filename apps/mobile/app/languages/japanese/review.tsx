@@ -48,5 +48,7 @@ export default function JapaneseReviewRoute() {
     void syncNativeSkillProgress(supabase, rows);
   }
 
-  return <JapaneseReviewScreen learningPath={learningPath} progress={progress} onRate={onRate} adapters={adapters} />;
+  const approvedAudio = new Set(index.languageAudio.filter((audio) => audio.qaStatus === "approved").map((audio) => audio.id));
+  const hasListening = index.exercises.some((exercise) => exercise.type === "questionnaire" && exercise.status === "published" && exercise.questions.some((question) => question.kind === "listening-choice" && approvedAudio.has(question.audioId)));
+  return <JapaneseReviewScreen learningPath={learningPath} progress={progress} onRate={onRate} adapters={adapters} hasListening={hasListening} />;
 }

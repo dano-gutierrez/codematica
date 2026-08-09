@@ -21,3 +21,18 @@ tags:
     id: mobile-japanese-review-link
 - assertVisible:
     id: mobile-japanese-review-skills
+- assertVisible:
+    id: mobile-japanese-review-flashcards
+- assertVisible:
+    id: mobile-japanese-review-writing
+- tapOn:
+    id: mobile-japanese-review-flashcards
+- assertVisible:
+    id: mobile-japanese-flashcard
+- openLink: codematica://languages/japanese/review/writing
+- assertVisible:
+    id: mobile-japanese-practice-unit-1
+- tapOn:
+    id: mobile-japanese-practice-unit-1
+- assertVisible:
+    id: mobile-questionnaire-open-answer-input

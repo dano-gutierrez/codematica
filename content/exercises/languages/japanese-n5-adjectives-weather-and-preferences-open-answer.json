@@ -1,0 +1,143 @@
+{
+  "slug": "languages/japanese-n5-adjectives-weather-and-preferences-open-answer",
+  "title": "Adjectives, Weather, And Preferences Open Answer",
+  "documentSlug": "languages/japanese-n5-adjectives-weather-and-preferences",
+  "concept": "Adjectives, Weather, And Preferences Japanese composition",
+  "difficulty": "foundation",
+  "tags": [
+    "japanese",
+    "n5",
+    "writing",
+    "ime"
+  ],
+  "status": "published",
+  "proficiencyLevel": "a1",
+  "skillIds": [
+    "a1-writing",
+    "kana-ime"
+  ],
+  "required": true,
+  "type": "questionnaire",
+  "questions": [
+    {
+      "id": "write-1",
+      "kind": "open-answer",
+      "prompt": "Write the Japanese sentence: Let us go home together.",
+      "template": "{{blank}}",
+      "acceptedAnswers": [
+        "一緒に帰りましょう。"
+      ],
+      "inputMode": "japanese-ime",
+      "explanation": "Verb stem + ましょう: Invite someone to do an action together.",
+      "skillIds": [
+        "a1-writing",
+        "kana-ime"
+      ]
+    },
+    {
+      "id": "write-2",
+      "kind": "open-answer",
+      "prompt": "Write the Japanese sentence: Would you like to watch a movie?",
+      "template": "{{blank}}",
+      "acceptedAnswers": [
+        "映画を見ませんか。"
+      ],
+      "inputMode": "japanese-ime",
+      "explanation": "Verb stem + ませんか: Invite someone politely while leaving room to decline.",
+      "skillIds": [
+        "a1-writing",
+        "kana-ime"
+      ]
+    },
+    {
+      "id": "write-3",
+      "kind": "open-answer",
+      "prompt": "Write the Japanese sentence: I want to go to Japan.",
+      "template": "{{blank}}",
+      "acceptedAnswers": [
+        "日本へ行きたいです。"
+      ],
+      "inputMode": "japanese-ime",
+      "explanation": "Verb stem + たいです: Express what the speaker wants to do.",
+      "skillIds": [
+        "a1-writing",
+        "kana-ime"
+      ]
+    },
+    {
+      "id": "write-4",
+      "kind": "open-answer",
+      "prompt": "Write the Japanese sentence: I want a new bicycle.",
+      "template": "{{blank}}",
+      "acceptedAnswers": [
+        "新しい自転車がほしいです。"
+      ],
+      "inputMode": "japanese-ime",
+      "explanation": "Noun + がほしいです: Express that the speaker wants a thing.",
+      "skillIds": [
+        "a1-writing",
+        "kana-ime"
+      ]
+    },
+    {
+      "id": "write-5",
+      "kind": "open-answer",
+      "prompt": "Write the Japanese sentence: It is hot today.",
+      "template": "{{blank}}",
+      "acceptedAnswers": [
+        "今日は暑いです。"
+      ],
+      "inputMode": "japanese-ime",
+      "explanation": "い-adjective + Noun/です: Describe a noun or make a polite statement with an i-adjective.",
+      "skillIds": [
+        "a1-writing",
+        "kana-ime"
+      ]
+    },
+    {
+      "id": "write-6",
+      "kind": "open-answer",
+      "prompt": "Write the Japanese sentence: It is a quiet town.",
+      "template": "{{blank}}",
+      "acceptedAnswers": [
+        "静かな町です。"
+      ],
+      "inputMode": "japanese-ime",
+      "explanation": "な-adjective + な + Noun: Use a na-adjective before a noun or with です as a predicate.",
+      "skillIds": [
+        "a1-writing",
+        "kana-ime"
+      ]
+    },
+    {
+      "id": "write-7",
+      "kind": "open-answer",
+      "prompt": "Write the Japanese sentence: Let us go home together.",
+      "template": "{{blank}}",
+      "acceptedAnswers": [
+        "一緒に帰りましょう。"
+      ],
+      "inputMode": "japanese-ime",
+      "explanation": "Verb stem + ましょう: Invite someone to do an action together.",
+      "skillIds": [
+        "a1-writing",
+        "kana-ime"
+      ]
+    },
+    {
+      "id": "write-8",
+      "kind": "open-answer",
+      "prompt": "Write the Japanese sentence: Would you like to watch a movie?",
+      "template": "{{blank}}",
+      "acceptedAnswers": [
+        "映画を見ませんか。"
+      ],
+      "inputMode": "japanese-ime",
+      "explanation": "Verb stem + ませんか: Invite someone politely while leaving room to decline.",
+      "skillIds": [
+        "a1-writing",
+        "kana-ime"
+      ]
+    }
+  ]
+}

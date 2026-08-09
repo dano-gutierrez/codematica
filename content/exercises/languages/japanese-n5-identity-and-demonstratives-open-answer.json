@@ -1,0 +1,143 @@
+{
+  "slug": "languages/japanese-n5-identity-and-demonstratives-open-answer",
+  "title": "Identity And Demonstratives Open Answer",
+  "documentSlug": "languages/japanese-n5-identity-and-demonstratives",
+  "concept": "Identity And Demonstratives Japanese composition",
+  "difficulty": "foundation",
+  "tags": [
+    "japanese",
+    "n5",
+    "writing",
+    "ime"
+  ],
+  "status": "published",
+  "proficiencyLevel": "a1",
+  "skillIds": [
+    "a1-writing",
+    "kana-ime"
+  ],
+  "required": true,
+  "type": "questionnaire",
+  "questions": [
+    {
+      "id": "write-1",
+      "kind": "open-answer",
+      "prompt": "Write the Japanese sentence: I am a student.",
+      "template": "{{blank}}",
+      "acceptedAnswers": [
+        "私は学生です。"
+      ],
+      "inputMode": "japanese-ime",
+      "explanation": "Noun + です: Make a polite statement identifying or describing something.",
+      "skillIds": [
+        "a1-writing",
+        "kana-ime"
+      ]
+    },
+    {
+      "id": "write-2",
+      "kind": "open-answer",
+      "prompt": "Write the Japanese sentence: Today is Monday.",
+      "template": "{{blank}}",
+      "acceptedAnswers": [
+        "今日は月曜日です。"
+      ],
+      "inputMode": "japanese-ime",
+      "explanation": "Noun + は: Mark the topic that the rest of the sentence comments on.",
+      "skillIds": [
+        "a1-writing",
+        "kana-ime"
+      ]
+    },
+    {
+      "id": "write-3",
+      "kind": "open-answer",
+      "prompt": "Write the Japanese sentence: I am also a student.",
+      "template": "{{blank}}",
+      "acceptedAnswers": [
+        "私も学生です。"
+      ],
+      "inputMode": "japanese-ime",
+      "explanation": "Noun + も: Add that the same statement is true of another topic.",
+      "skillIds": [
+        "a1-writing",
+        "kana-ime"
+      ]
+    },
+    {
+      "id": "write-4",
+      "kind": "open-answer",
+      "prompt": "Write the Japanese sentence: Are you a student?",
+      "template": "{{blank}}",
+      "acceptedAnswers": [
+        "学生ですか。"
+      ],
+      "inputMode": "japanese-ime",
+      "explanation": "Sentence + か: Turn a polite statement into a neutral question.",
+      "skillIds": [
+        "a1-writing",
+        "kana-ime"
+      ]
+    },
+    {
+      "id": "write-5",
+      "kind": "open-answer",
+      "prompt": "Write the Japanese sentence: This is my book.",
+      "template": "{{blank}}",
+      "acceptedAnswers": [
+        "これは私の本です。"
+      ],
+      "inputMode": "japanese-ime",
+      "explanation": "Noun + の + Noun: Connect nouns for possession, affiliation, or description.",
+      "skillIds": [
+        "a1-writing",
+        "kana-ime"
+      ]
+    },
+    {
+      "id": "write-6",
+      "kind": "open-answer",
+      "prompt": "Write the Japanese sentence: What is that?",
+      "template": "{{blank}}",
+      "acceptedAnswers": [
+        "それは何ですか。"
+      ],
+      "inputMode": "japanese-ime",
+      "explanation": "これ・それ・あれ: Point to a thing near the speaker, listener, or neither person.",
+      "skillIds": [
+        "a1-writing",
+        "kana-ime"
+      ]
+    },
+    {
+      "id": "write-7",
+      "kind": "open-answer",
+      "prompt": "Write the Japanese sentence: I am a student.",
+      "template": "{{blank}}",
+      "acceptedAnswers": [
+        "私は学生です。"
+      ],
+      "inputMode": "japanese-ime",
+      "explanation": "Noun + です: Make a polite statement identifying or describing something.",
+      "skillIds": [
+        "a1-writing",
+        "kana-ime"
+      ]
+    },
+    {
+      "id": "write-8",
+      "kind": "open-answer",
+      "prompt": "Write the Japanese sentence: Today is Monday.",
+      "template": "{{blank}}",
+      "acceptedAnswers": [
+        "今日は月曜日です。"
+      ],
+      "inputMode": "japanese-ime",
+      "explanation": "Noun + は: Mark the topic that the rest of the sentence comments on.",
+      "skillIds": [
+        "a1-writing",
+        "kana-ime"
+      ]
+    }
+  ]
+}

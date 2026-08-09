@@ -1,0 +1,333 @@
+{
+  "slug": "languages/japanese-n5-food-shopping-and-counters-mixed",
+  "title": "Food, Shopping, And Counters Mixed Practice",
+  "documentSlug": "languages/japanese-n5-food-shopping-and-counters",
+  "concept": "Food, Shopping, And Counters N5 recognition",
+  "difficulty": "foundation",
+  "tags": [
+    "japanese",
+    "n5",
+    "vocabulary"
+  ],
+  "status": "published",
+  "proficiencyLevel": "a1",
+  "skillIds": [
+    "a1-reading"
+  ],
+  "required": true,
+  "type": "questionnaire",
+  "questions": [
+    {
+      "id": "word-1",
+      "kind": "choice",
+      "prompt": "Choose the best English meaning for 声 (こえ).",
+      "options": [
+        {
+          "id": "correct",
+          "label": "voice",
+          "isCorrect": true
+        },
+        {
+          "id": "distractor-1",
+          "label": "to answer, to reply",
+          "isCorrect": false
+        },
+        {
+          "id": "distractor-2",
+          "label": "child(ren)",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "声 is read こえ and means voice.",
+      "skillIds": [
+        "a1-reading"
+      ]
+    },
+    {
+      "id": "word-2",
+      "kind": "choice",
+      "prompt": "Choose the best English meaning for コート (コート).",
+      "options": [
+        {
+          "id": "correct",
+          "label": "coat; court (e.g., tennis)",
+          "isCorrect": true
+        },
+        {
+          "id": "distractor-1",
+          "label": "this person (polite); this way (polite)",
+          "isCorrect": false
+        },
+        {
+          "id": "distractor-2",
+          "label": "this",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "コート is read コート and means coat; court (e.g., tennis).",
+      "skillIds": [
+        "a1-reading"
+      ]
+    },
+    {
+      "id": "word-3",
+      "kind": "choice",
+      "prompt": "Choose the best English meaning for ここ (ここ).",
+      "options": [
+        {
+          "id": "correct",
+          "label": "here, this place",
+          "isCorrect": true
+        },
+        {
+          "id": "distractor-1",
+          "label": "this person; this direction; this side",
+          "isCorrect": false
+        },
+        {
+          "id": "distractor-2",
+          "label": "rice (cooked); meal",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "ここ is read ここ and means here, this place.",
+      "skillIds": [
+        "a1-reading"
+      ]
+    },
+    {
+      "id": "word-4",
+      "kind": "choice",
+      "prompt": "Choose the best English meaning for 午後 (ごご).",
+      "options": [
+        {
+          "id": "correct",
+          "label": "afternoon, P.M.",
+          "isCorrect": true
+        },
+        {
+          "id": "distractor-1",
+          "label": "a tumbler; a glass",
+          "isCorrect": false
+        },
+        {
+          "id": "distractor-2",
+          "label": "to copy",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "午後 is read ごご and means afternoon, P.M..",
+      "skillIds": [
+        "a1-reading"
+      ]
+    },
+    {
+      "id": "word-5",
+      "kind": "choice",
+      "prompt": "Choose the best English meaning for 九日 (ここのか).",
+      "options": [
+        {
+          "id": "correct",
+          "label": "nine days; ninth day of the month",
+          "isCorrect": true
+        },
+        {
+          "id": "distractor-1",
+          "label": "this year",
+          "isCorrect": false
+        },
+        {
+          "id": "distractor-2",
+          "label": "to be bothered, to have difficulty",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "九日 is read ここのか and means nine days; ninth day of the month.",
+      "skillIds": [
+        "a1-reading"
+      ]
+    },
+    {
+      "id": "word-6",
+      "kind": "choice",
+      "prompt": "Choose the best English meaning for 九つ (ここのつ).",
+      "options": [
+        {
+          "id": "correct",
+          "label": "nine things",
+          "isCorrect": true
+        },
+        {
+          "id": "distractor-1",
+          "label": "language; word(s); expression(s)",
+          "isCorrect": false
+        },
+        {
+          "id": "distractor-2",
+          "label": "this one",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "九つ is read ここのつ and means nine things.",
+      "skillIds": [
+        "a1-reading"
+      ]
+    },
+    {
+      "id": "word-7",
+      "kind": "choice",
+      "prompt": "Choose the best English meaning for 午前 (ごぜん).",
+      "options": [
+        {
+          "id": "correct",
+          "label": "morning, A.M.",
+          "isCorrect": true
+        },
+        {
+          "id": "distractor-1",
+          "label": "child(ren)",
+          "isCorrect": false
+        },
+        {
+          "id": "distractor-2",
+          "label": "about, toward, approximately (time)",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "午前 is read ごぜん and means morning, A.M..",
+      "skillIds": [
+        "a1-reading"
+      ]
+    },
+    {
+      "id": "word-8",
+      "kind": "choice",
+      "prompt": "Choose the best English meaning for 答える (こたえる).",
+      "options": [
+        {
+          "id": "correct",
+          "label": "to answer, to reply",
+          "isCorrect": true
+        },
+        {
+          "id": "distractor-1",
+          "label": "this",
+          "isCorrect": false
+        },
+        {
+          "id": "distractor-2",
+          "label": "this month",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "答える is read こたえる and means to answer, to reply.",
+      "skillIds": [
+        "a1-reading"
+      ]
+    },
+    {
+      "id": "word-9",
+      "kind": "choice",
+      "prompt": "Choose the best English meaning for こちら (こちら).",
+      "options": [
+        {
+          "id": "correct",
+          "label": "this person (polite); this way (polite)",
+          "isCorrect": true
+        },
+        {
+          "id": "distractor-1",
+          "label": "rice (cooked); meal",
+          "isCorrect": false
+        },
+        {
+          "id": "distractor-2",
+          "label": "this week",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "こちら is read こちら and means this person (polite); this way (polite).",
+      "skillIds": [
+        "a1-reading"
+      ]
+    },
+    {
+      "id": "word-10",
+      "kind": "choice",
+      "prompt": "Choose the best English meaning for こっち (こっち).",
+      "options": [
+        {
+          "id": "correct",
+          "label": "this person; this direction; this side",
+          "isCorrect": true
+        },
+        {
+          "id": "distractor-1",
+          "label": "to copy",
+          "isCorrect": false
+        },
+        {
+          "id": "distractor-2",
+          "label": "such, like this",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "こっち is read こっち and means this person; this direction; this side.",
+      "skillIds": [
+        "a1-reading"
+      ]
+    },
+    {
+      "id": "word-11",
+      "kind": "choice",
+      "prompt": "Choose the best English meaning for コップ (コップ).",
+      "options": [
+        {
+          "id": "correct",
+          "label": "a tumbler; a glass",
+          "isCorrect": true
+        },
+        {
+          "id": "distractor-1",
+          "label": "to be bothered, to have difficulty",
+          "isCorrect": false
+        },
+        {
+          "id": "distractor-2",
+          "label": "tonight, this evening",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "コップ is read コップ and means a tumbler; a glass.",
+      "skillIds": [
+        "a1-reading"
+      ]
+    },
+    {
+      "id": "word-12",
+      "kind": "choice",
+      "prompt": "Choose the best English meaning for 今年 (ことし).",
+      "options": [
+        {
+          "id": "correct",
+          "label": "this year",
+          "isCorrect": true
+        },
+        {
+          "id": "distractor-1",
+          "label": "this one",
+          "isCorrect": false
+        },
+        {
+          "id": "distractor-2",
+          "label": "come now, well",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "今年 is read ことし and means this year.",
+      "skillIds": [
+        "a1-reading"
+      ]
+    }
+  ]
+}

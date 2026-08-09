@@ -19,7 +19,7 @@ describe("generated content index", () => {
   it("loads starter documents and diagrams", () => {
     const index = getContentIndex();
 
-    expect(index.schemaVersion).toBe(9);
+    expect(index.schemaVersion).toBe(10);
     expect(index.documents.length).toBeGreaterThanOrEqual(3);
     expect(index.diagrams.length).toBeGreaterThanOrEqual(2);
     expect(index.learningPaths.length).toBeGreaterThanOrEqual(2);
@@ -38,36 +38,16 @@ describe("generated content index", () => {
     const vocabulary = getLanguageVocabularyBySlug("japanese/vocabulary/japan");
     const exercise = getExerciseBySlug("languages/japanese-starter-kanji-writing");
 
-    expect(path?.title).toBe("Japanese Foundations: Pre-A1 to A1");
-    expect(path?.units.flatMap((unit) => unit.nodes).map((node) => node.slug)).toEqual([
+    expect(path?.title).toBe("Japanese Foundations: Kana to JLPT N5");
+    const nodeSlugs = path?.units.flatMap((unit) => unit.nodes).map((node) => node.slug) ?? [];
+    expect(nodeSlugs).toEqual(expect.arrayContaining([
       "languages/japanese-writing-systems",
-      "languages/japanese-hiragana-foundations",
-      "languages/japanese-hiragana-vowels-writing",
-      "languages/japanese-hiragana-k-s-writing",
-      "languages/japanese-hiragana-t-n-writing",
-      "languages/japanese-hiragana-h-m-writing",
-      "languages/japanese-hiragana-y-r-w-writing",
-      "languages/japanese-hiragana-reading-check",
-      "languages/japanese-hiragana-sound-changes",
-      "languages/japanese-hiragana-sound-changes-questionnaire",
-      "languages/japanese-hiragana-ime-exceptions-writing",
-      "languages/japanese-katakana-foundations",
-      "languages/japanese-katakana-vowels-writing",
-      "languages/japanese-katakana-k-s-writing",
-      "languages/japanese-katakana-t-n-writing",
-      "languages/japanese-katakana-h-m-writing",
-      "languages/japanese-katakana-y-r-w-writing",
-      "languages/japanese-katakana-reading-check",
-      "languages/japanese-romaji-kana-input",
-      "languages/japanese-romaji-kana-input-questionnaire",
       "languages/japanese-kana-explorer-checkpoint",
-      "languages/japanese-first-connections",
-      "languages/japanese-first-connections-checkpoint",
-      "languages/japanese-everyday-navigator",
-      "languages/japanese-everyday-navigator-checkpoint",
-      "languages/japanese-starter-kanji",
-      "languages/japanese-starter-kanji-writing",
-    ]);
+      "languages/japanese-n5-identity-and-demonstratives",
+      "languages/japanese-n5-n5-integrated-readiness-open-answer",
+    ]));
+    expect(path?.units).toHaveLength(15);
+    expect(path?.progression?.stages).toHaveLength(5);
     expect(hiragana?.glyph).toBe("あ");
     expect(hiragana?.ipa).toBe("a");
     expect(kanji?.strokes).toHaveLength(2);

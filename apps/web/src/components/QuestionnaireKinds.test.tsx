@@ -60,6 +60,28 @@ describe("QuestionnaireSession question kinds", () => {
     expect(screen.getByTestId("questionnaire-feedback")).toHaveTextContent("runtime validation");
   });
 
+  it("converts romaji into a committed Japanese open answer", async () => {
+    render(<QuestionnaireSession exercise={exercise({
+      id: "open-answer", kind: "open-answer", prompt: "Write: I am a student.", template: "{{blank}}",
+      acceptedAnswers: ["私は学生です"], inputMode: "japanese-ime", explanation: "Use は and です.",
+    })} />);
+    await ready();
+    fireEvent.change(screen.getByTestId("questionnaire-open-answer-input"), { target: { value: "watashi wa gakusei desu" } });
+    fireEvent.click(screen.getByTestId("japanese-ime-candidate-0"));
+    expect(screen.getByTestId("questionnaire-open-answer-input")).toHaveValue("私は学生です");
+    fireEvent.click(screen.getByTestId("questionnaire-check"));
+    expect(screen.getByTestId("questionnaire-feedback")).toHaveTextContent("Correct");
+  });
+
+  it("keeps listening unavailable until its audio is approved", async () => {
+    render(<QuestionnaireSession exercise={exercise({
+      id: "listening", kind: "listening-choice", prompt: "Choose the meaning.", audioId: "draft-audio",
+      options: [{ id: "student", label: "Student", isCorrect: true }, { id: "teacher", label: "Teacher", isCorrect: false }], explanation: "学生 means student.",
+    })} />);
+    await ready();
+    expect(screen.getByText(/awaiting Japanese-language approval/i)).toBeVisible();
+  });
+
   it("reorders items through delegated accessible controls", async () => {
     render(<QuestionnaireSession exercise={exercise({
       id: "ordering", kind: "ordering", prompt: "Order steps", explanation: "One then two.",

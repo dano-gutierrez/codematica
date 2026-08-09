@@ -25,8 +25,9 @@ export async function buildJapaneseAudio({
 
   const webEntries: string[] = [];
   const mobileEntries: string[] = [];
+  const approved = manifest.items.filter((asset) => asset.qaStatus === "approved");
 
-  for (const asset of manifest.items) {
+  for (const asset of approved) {
     const source = path.resolve(contentDir, asset.assetPath);
     if (!source.startsWith(`${contentDir}${path.sep}`)) {
       throw new Error(`Audio asset ${asset.id} escapes Japanese content.`);
@@ -43,7 +44,7 @@ export async function buildJapaneseAudio({
   await fs.writeFile(webRegistryPath, `${header}export const japaneseAudioUrls = {\n${webEntries.join("\n")}\n} as const;\n`, "utf8");
   await fs.writeFile(mobileRegistryPath, `${header}export const japaneseAudioAssets = {\n${mobileEntries.join("\n")}\n} as const;\n`, "utf8");
 
-  return { assets: manifest.items.length, webRegistryPath, mobileRegistryPath };
+  return { assets: approved.length, drafts: manifest.items.filter((asset) => asset.qaStatus === "draft").length, webRegistryPath, mobileRegistryPath };
 }
 
 /* v8 ignore start -- the CLI entry point delegates to the tested build helper. */

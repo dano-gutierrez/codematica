@@ -10,6 +10,8 @@ export type MatchingAttemptItem = {
 export type QuestionnaireAttemptQuestion =
   | Extract<QuestionnaireQuestion, { kind: "choice" }>
   | Extract<QuestionnaireQuestion, { kind: "cloze" }>
+  | Extract<QuestionnaireQuestion, { kind: "open-answer" }>
+  | Extract<QuestionnaireQuestion, { kind: "listening-choice" }>
   | Extract<QuestionnaireQuestion, { kind: "ordering" }>
   | (Extract<QuestionnaireQuestion, { kind: "matching" }> & {
       leftItems: MatchingAttemptItem[];
@@ -19,6 +21,8 @@ export type QuestionnaireAttemptQuestion =
 export type QuestionnaireAnswer =
   | { kind: "choice"; selectedOptionId: string }
   | { kind: "cloze"; value: string }
+  | { kind: "open-answer"; value: string }
+  | { kind: "listening-choice"; selectedOptionId: string }
   | { kind: "ordering"; itemIds: string[] }
   | { kind: "matching"; selectedMatches: Record<string, string> };
 
@@ -62,7 +66,7 @@ export function shuffleItems<T>(items: readonly T[], random: RandomFn = Math.ran
 
 export function createQuestionnaireAttempt(exercise: QuestionnaireExercise, random: RandomFn = Math.random): QuestionnaireAttemptQuestion[] {
   return shuffleItems(exercise.questions, random).map((question) => {
-    if (question.kind === "choice") {
+    if (question.kind === "choice" || question.kind === "listening-choice") {
       return {
         ...question,
         options: shuffleItems(question.options, random),
@@ -111,12 +115,25 @@ export function checkQuestionAnswer(question: QuestionnaireQuestion, answer: Que
     };
   }
 
+  if (question.kind === "listening-choice" && answer.kind === "listening-choice") {
+    const correctOption = question.options.find((option) => option.isCorrect);
+    return { isCorrect: correctOption?.id === answer.selectedOptionId, correctAnswer: correctOption?.label ?? "" };
+  }
+
   if (question.kind === "cloze" && answer.kind === "cloze") {
     const normalizedAnswer = normalizeText(answer.value);
     const isCorrect = question.acceptedAnswers.some((acceptedAnswer) => normalizeText(acceptedAnswer) === normalizedAnswer);
 
     return {
       isCorrect,
+      correctAnswer: question.acceptedAnswers[0] ?? "",
+    };
+  }
+
+  if (question.kind === "open-answer" && answer.kind === "open-answer") {
+    const normalizedAnswer = normalizeJapaneseText(answer.value);
+    return {
+      isCorrect: question.acceptedAnswers.some((acceptedAnswer) => normalizeJapaneseText(acceptedAnswer) === normalizedAnswer),
       correctAnswer: question.acceptedAnswers[0] ?? "",
     };
   }
@@ -145,12 +162,24 @@ function normalizeText(value: string) {
   return value.trim().toLowerCase().replace(/\s+/g, " ");
 }
 
+export function normalizeJapaneseText(value: string) {
+  return value.normalize("NFKC").trim().replace(/｡/g, "。").replace(/､/g, "、").replace(/\s+/g, "");
+}
+
 function correctAnswerText(question: QuestionnaireQuestion) {
   if (question.kind === "choice") {
     return question.options.find((option) => option.isCorrect)?.label ?? "";
   }
 
+  if (question.kind === "listening-choice") {
+    return question.options.find((option) => option.isCorrect)?.label ?? "";
+  }
+
   if (question.kind === "cloze") {
+    return question.acceptedAnswers[0] ?? "";
+  }
+
+  if (question.kind === "open-answer") {
     return question.acceptedAnswers[0] ?? "";
   }
 

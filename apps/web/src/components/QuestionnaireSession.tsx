@@ -4,6 +4,8 @@ import Link from "next/link";
 import { ArrowDown, ArrowRight, ArrowUp, CheckCircle2, RotateCcw } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { Dropdown, type DropdownOption } from "@/components/Dropdown";
+import { JapaneseAnswerInput } from "@/components/JapaneseAnswerInput";
+import { JapaneseAudioPlayer } from "@/components/JapaneseAudioPlayer";
 import {
   calculateQuestionnaireSkillScores,
   checkQuestionAnswer,
@@ -141,9 +143,10 @@ export function QuestionnaireSession({
   }
 
   function renderQuestionBody() {
-    if (question.kind === "choice") {
+    if (question.kind === "choice" || question.kind === "listening-choice") {
       return (
         <div className="mt-5 grid gap-3">
+          {question.kind === "listening-choice" ? <JapaneseAudioPlayer audioId={question.audioId} revealTranscript={Boolean(result)} /> : null}
           {question.options.map((option) => (
             <label
               key={option.id}
@@ -160,6 +163,17 @@ export function QuestionnaireSession({
               {option.label}
             </label>
           ))}
+        </div>
+      );
+    }
+
+    if (question.kind === "open-answer") {
+      const [prefix, suffix] = question.template.split("{{blank}}");
+      const value = answer?.kind === "open-answer" ? answer.value : "";
+      return (
+        <div className="mt-5 grid gap-4 rounded-xl border-2 border-[#d5e2e8] bg-[#f6fbfc] p-4">
+          <p lang="ja" className="text-lg font-extrabold leading-8 text-[#263238]">{prefix}<span className="mx-1 border-b-2 border-[#53616c] px-8">{value || "　"}</span>{suffix}</p>
+          <JapaneseAnswerInput value={value} disabled={!isReady || Boolean(result)} onChange={(nextValue) => resetAnswer({ kind: "open-answer", value: nextValue })} />
         </div>
       );
     }
@@ -351,7 +365,7 @@ function QuestionFeedback({ question, result }: { question: QuestionnaireAttempt
       <p className={cn("text-sm font-extrabold", result.isCorrect ? "text-[#007c78]" : "text-[#7a5200]")}>
         {result.isCorrect ? "Correct" : "Review this"}
       </p>
-      {!result.isCorrect || question.kind !== "choice" ? (
+      {!result.isCorrect || (question.kind !== "choice" && question.kind !== "listening-choice") ? (
         <p className="mt-2 text-sm font-extrabold leading-6 text-[#263238]">Correct answer: {result.correctAnswer}</p>
       ) : null}
       <p className="mt-2 text-sm font-semibold leading-6 text-[#33434b]">{question.explanation}</p>
@@ -360,12 +374,15 @@ function QuestionFeedback({ question, result }: { question: QuestionnaireAttempt
 }
 
 function getEffectiveAnswer(question: QuestionnaireAttemptQuestion, answer?: QuestionnaireAnswer, sessionNode?: HTMLDivElement | null): QuestionnaireAnswer | undefined {
-  if (question.kind === "choice") {
+  if (question.kind === "choice" || question.kind === "listening-choice") {
     const selectedOption = sessionNode?.querySelector<HTMLInputElement>(`input[name="question-${question.id}"]:checked`);
-    return {
-      kind: "choice",
-      selectedOptionId: selectedOption?.value ?? "",
-    };
+    return question.kind === "choice"
+      ? { kind: "choice", selectedOptionId: selectedOption?.value ?? "" }
+      : { kind: "listening-choice", selectedOptionId: selectedOption?.value ?? "" };
+  }
+
+  if (question.kind === "open-answer") {
+    return answer?.kind === "open-answer" ? answer : { kind: "open-answer", value: "" };
   }
 
   if (question.kind === "cloze") {

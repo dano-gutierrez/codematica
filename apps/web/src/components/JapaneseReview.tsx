@@ -50,7 +50,7 @@ async function loadRemoteProgress() {
   });
 }
 
-export function JapaneseReview({ learningPath }: { learningPath: LearningPath }) {
+export function JapaneseReview({ learningPath, hasListening = false }: { learningPath: LearningPath; hasListening?: boolean }) {
   const skills = learningPath.progression?.skills ?? [];
   const [progress, setProgress] = useState<SkillProgress[]>([]);
   const [selectedSkillId, setSelectedSkillId] = useState(skills[0]?.id ?? "");
@@ -121,6 +121,9 @@ export function JapaneseReview({ learningPath }: { learningPath: LearningPath })
 
         <div className="mt-6 flex flex-wrap gap-3">
           <Link href="/languages/japanese" className="inline-flex min-h-12 items-center rounded-lg border-2 border-b-4 border-[#b9cbd3] bg-white px-4 py-2 text-base font-extrabold text-[#263238]">Open dictionary</Link>
+          <Link href="/languages/japanese/review/flashcards" className="inline-flex min-h-12 items-center rounded-lg border-2 border-b-4 border-[#9cc7ff] bg-[#f5f9ff] px-4 py-2 text-base font-extrabold text-[#1d4e9e]">N5 flashcards</Link>
+          <Link href="/languages/japanese/review/writing" className="inline-flex min-h-12 items-center rounded-lg border-2 border-b-4 border-[#87cfc9] bg-[#e8f8f6] px-4 py-2 text-base font-extrabold text-[#005f5c]">Open-answer writing</Link>
+          {hasListening ? <Link href="/languages/japanese/review/listening" className="inline-flex min-h-12 items-center rounded-lg border-2 border-b-4 border-[#d2bd76] bg-[#fffaf0] px-4 py-2 text-base font-extrabold text-[#7a5200]">Listening practice</Link> : null}
         </div>
 
         <div className="mt-8 grid gap-6 lg:grid-cols-[minmax(0,0.85fr)_minmax(22rem,1.15fr)]">

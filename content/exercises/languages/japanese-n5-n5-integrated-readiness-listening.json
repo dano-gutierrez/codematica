@@ -1,0 +1,153 @@
+{
+  "slug": "languages/japanese-n5-n5-integrated-readiness-listening",
+  "title": "Integrated N5 Readiness Listening",
+  "documentSlug": "languages/japanese-n5-n5-integrated-readiness",
+  "concept": "Integrated N5 Readiness listening comprehension",
+  "difficulty": "foundation",
+  "tags": [
+    "japanese",
+    "n5",
+    "listening"
+  ],
+  "status": "draft",
+  "proficiencyLevel": "a1",
+  "skillIds": [
+    "a1-listening"
+  ],
+  "required": false,
+  "type": "questionnaire",
+  "questions": [
+    {
+      "id": "listen-1",
+      "kind": "listening-choice",
+      "prompt": "Choose the English meaning of the sentence you hear.",
+      "audioId": "n5-listen-10-1",
+      "options": [
+        {
+          "id": "correct",
+          "label": "You do not have to come tomorrow.",
+          "isCorrect": true
+        },
+        {
+          "id": "distractor",
+          "label": "You should go to bed early.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "明日は来なくてもいいです。 means You do not have to come tomorrow.",
+      "skillIds": [
+        "a1-listening"
+      ]
+    },
+    {
+      "id": "listen-2",
+      "kind": "listening-choice",
+      "prompt": "Choose the English meaning of the sentence you hear.",
+      "audioId": "n5-listen-10-2",
+      "options": [
+        {
+          "id": "correct",
+          "label": "You should go to bed early.",
+          "isCorrect": true
+        },
+        {
+          "id": "distractor",
+          "label": "I drink only water.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "早く寝たほうがいいです。 means You should go to bed early.",
+      "skillIds": [
+        "a1-listening"
+      ]
+    },
+    {
+      "id": "listen-3",
+      "kind": "listening-choice",
+      "prompt": "Choose the English meaning of the sentence you hear.",
+      "audioId": "n5-listen-10-3",
+      "options": [
+        {
+          "id": "correct",
+          "label": "I drink only water.",
+          "isCorrect": true
+        },
+        {
+          "id": "distractor",
+          "label": "Would you like tea or something?",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "水だけ飲みます。 means I drink only water.",
+      "skillIds": [
+        "a1-listening"
+      ]
+    },
+    {
+      "id": "listen-4",
+      "kind": "listening-choice",
+      "prompt": "Choose the English meaning of the sentence you hear.",
+      "audioId": "n5-listen-10-4",
+      "options": [
+        {
+          "id": "correct",
+          "label": "Would you like tea or something?",
+          "isCorrect": true
+        },
+        {
+          "id": "distractor",
+          "label": "The weather is nice, isn't it?",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "お茶でも飲みませんか。 means Would you like tea or something?",
+      "skillIds": [
+        "a1-listening"
+      ]
+    },
+    {
+      "id": "listen-5",
+      "kind": "listening-choice",
+      "prompt": "Choose the English meaning of the sentence you hear.",
+      "audioId": "n5-listen-10-5",
+      "options": [
+        {
+          "id": "correct",
+          "label": "The weather is nice, isn't it?",
+          "isCorrect": true
+        },
+        {
+          "id": "distractor",
+          "label": "This train goes to Tokyo, you know.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "今日はいい天気ですね。 means The weather is nice, isn't it?",
+      "skillIds": [
+        "a1-listening"
+      ]
+    },
+    {
+      "id": "listen-6",
+      "kind": "listening-choice",
+      "prompt": "Choose the English meaning of the sentence you hear.",
+      "audioId": "n5-listen-10-6",
+      "options": [
+        {
+          "id": "correct",
+          "label": "This train goes to Tokyo, you know.",
+          "isCorrect": true
+        },
+        {
+          "id": "distractor",
+          "label": "You do not have to come tomorrow.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "この電車は東京へ行きますよ。 means This train goes to Tokyo, you know.",
+      "skillIds": [
+        "a1-listening"
+      ]
+    }
+  ]
+}

@@ -6,6 +6,7 @@ export * from "./interviews";
 export * from "./practice/questionnaire";
 export * from "./language-writing";
 export * from "./languages/japanese";
+export * from "./japanese-ime";
 export * from "./flashcards/passive";
 export * from "./progress/progress";
 export * from "./progress/server";

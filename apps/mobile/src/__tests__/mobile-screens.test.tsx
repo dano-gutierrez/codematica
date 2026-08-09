@@ -1,7 +1,7 @@
 import { fireEvent, render, waitFor } from "@testing-library/react-native";
 import { getContentIndex, getExerciseBySlug, getInterviewQuestionBySlug, getJapaneseVocabularyForCharacter, getLanguageCharacterBySlug } from "@codematica/core";
 import type { CodematicaAdapters } from "../../../../packages/ui/src/adapters";
-import { BrowseScreen, HomeDiscoveryScreen, InterviewCatalogScreen, InterviewQuestionScreen, JapaneseCharacterDetailScreen, JapaneseLanguageHubScreen, JapaneseReviewScreen, MarkdownReader, PracticeScreen } from "../../../../packages/ui/src/screens";
+import { BrowseScreen, HomeDiscoveryScreen, InterviewCatalogScreen, InterviewQuestionScreen, JapaneseCharacterDetailScreen, JapaneseFlashcardReviewScreen, JapaneseLanguageHubScreen, JapanesePracticeModeScreen, JapaneseReviewScreen, MarkdownReader, PracticeScreen } from "../../../../packages/ui/src/screens";
 
 const adapters: CodematicaAdapters = {
   navigation: {
@@ -66,14 +66,15 @@ describe("mobile shared screens", () => {
     expect(view.getAllByText("水").length).toBeGreaterThan(0);
   });
 
-  it("keeps every Japanese review skill available without separate practice modes", async () => {
+  it("keeps every Japanese review skill available with substantive N5 practice modes", async () => {
     const index = getContentIndex();
     const learningPath = index.learningPaths.find((path) => path.slug === "japanese-foundations")!;
     const onRate = jest.fn();
     const view = await render(<JapaneseReviewScreen learningPath={learningPath} progress={[]} onRate={onRate} adapters={adapters} />);
 
     expect(view.getByTestId("mobile-japanese-review-skills")).toBeOnTheScreen();
-    expect(view.queryByText(/flashcards/i)).toBeNull();
+    expect(view.getByTestId("mobile-japanese-review-flashcards")).toBeOnTheScreen();
+    expect(view.getByTestId("mobile-japanese-review-writing")).toBeOnTheScreen();
     expect(view.queryByText(/audio/i)).toBeNull();
     fireEvent.press(view.getByTestId("mobile-japanese-review-good"));
     expect(onRate).toHaveBeenCalledWith("kana-listening", "good");
@@ -95,6 +96,40 @@ describe("mobile shared screens", () => {
 
     expect(view.getByTestId("mobile-writing-practice")).toBeOnTheScreen();
     expect(view.getByTestId("mobile-writing-pad")).toBeOnTheScreen();
+  });
+
+  it("reveals and advances the native N5 flashcard deck", async () => {
+    const vocabulary = getContentIndex().languageVocabulary.slice(0, 2);
+    const view = await render(<JapaneseFlashcardReviewScreen vocabulary={vocabulary} adapters={adapters} />);
+
+    await fireEvent.press(view.getByTestId("mobile-japanese-flashcard"));
+    await waitFor(() => expect(view.getByText(vocabulary[0]!.meanings.join(", "))).toBeOnTheScreen());
+    await fireEvent.press(view.getByText("Next"));
+    await waitFor(() => expect(view.getByText("Card 2 of 2")).toBeOnTheScreen());
+    await fireEvent.press(view.getByText("Previous"));
+    await waitFor(() => expect(view.getByText("Card 1 of 2")).toBeOnTheScreen());
+  });
+
+  it("opens native writing units and explains the human audio gate", async () => {
+    const exercise = getExerciseBySlug("languages/japanese-n5-identity-and-demonstratives-open-answer")!;
+    const writing = await render(<JapanesePracticeModeScreen title="Writing" description="Compose answers." exercises={[exercise as never]} adapters={adapters} />);
+    await fireEvent.press(writing.getByTestId("mobile-japanese-practice-unit-1"));
+    expect(adapters.navigation.navigate).toHaveBeenCalledWith(exercise.route);
+
+    const listening = await render(<JapanesePracticeModeScreen title="Listening" description="Approved audio only." exercises={[]} adapters={adapters} />);
+    expect(listening.getByTestId("mobile-japanese-listening-pending")).toBeOnTheScreen();
+  });
+
+  it("converts romaji and grades a native open answer", async () => {
+    const exercise = getExerciseBySlug("languages/japanese-n5-identity-and-demonstratives-open-answer")!;
+    const view = await render(<PracticeScreen exercise={exercise} adapters={adapters} />);
+
+    const input = await waitFor(() => view.getByTestId("mobile-questionnaire-open-answer-input"));
+    await fireEvent.changeText(input, "watashi wa gakusei desu");
+    await fireEvent.press(view.getByTestId("mobile-japanese-ime-candidate-0"));
+    await fireEvent.press(view.getByTestId("mobile-questionnaire-check"));
+    await waitFor(() => expect(view.getByText(/Correct|Not quite/)).toBeOnTheScreen());
+    await fireEvent.press(view.getByTestId("mobile-questionnaire-next"));
   });
 
   it("embeds transient writing practice and related phrases on character details", async () => {

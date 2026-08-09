@@ -1,0 +1,333 @@
+{
+  "slug": "languages/japanese-n5-numbers-time-and-dates-mixed",
+  "title": "Numbers, Time, And Dates Mixed Practice",
+  "documentSlug": "languages/japanese-n5-numbers-time-and-dates",
+  "concept": "Numbers, Time, And Dates N5 recognition",
+  "difficulty": "foundation",
+  "tags": [
+    "japanese",
+    "n5",
+    "vocabulary"
+  ],
+  "status": "published",
+  "proficiencyLevel": "a1",
+  "skillIds": [
+    "a1-reading"
+  ],
+  "required": true,
+  "type": "questionnaire",
+  "questions": [
+    {
+      "id": "word-1",
+      "kind": "choice",
+      "prompt": "Choose the best English meaning for 医者 (いしゃ).",
+      "options": [
+        {
+          "id": "correct",
+          "label": "doctor; physician",
+          "isCorrect": true
+        },
+        {
+          "id": "distractor-1",
+          "label": "when",
+          "isCorrect": false
+        },
+        {
+          "id": "distractor-2",
+          "label": "now",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "医者 is read いしゃ and means doctor; physician.",
+      "skillIds": [
+        "a1-reading"
+      ]
+    },
+    {
+      "id": "word-2",
+      "kind": "choice",
+      "prompt": "Choose the best English meaning for 椅子 (いす).",
+      "options": [
+        {
+          "id": "correct",
+          "label": "chair",
+          "isCorrect": true
+        },
+        {
+          "id": "distractor-1",
+          "label": "five days; fifth day of the month",
+          "isCorrect": false
+        },
+        {
+          "id": "distractor-2",
+          "label": "meaning, significance",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "椅子 is read いす and means chair.",
+      "skillIds": [
+        "a1-reading"
+      ]
+    },
+    {
+      "id": "word-3",
+      "kind": "choice",
+      "prompt": "Choose the best English meaning for 忙しい (いそがしい).",
+      "options": [
+        {
+          "id": "correct",
+          "label": "busy (people, days)",
+          "isCorrect": true
+        },
+        {
+          "id": "distractor-1",
+          "label": "together",
+          "isCorrect": false
+        },
+        {
+          "id": "distractor-2",
+          "label": "younger sister (humble)",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "忙しい is read いそがしい and means busy (people, days).",
+      "skillIds": [
+        "a1-reading"
+      ]
+    },
+    {
+      "id": "word-4",
+      "kind": "choice",
+      "prompt": "Choose the best English meaning for 痛い (いたい).",
+      "options": [
+        {
+          "id": "correct",
+          "label": "hurt; painful; sore",
+          "isCorrect": true
+        },
+        {
+          "id": "distractor-1",
+          "label": "five things",
+          "isCorrect": false
+        },
+        {
+          "id": "distractor-2",
+          "label": "disagreeable, detestable, unpleasant",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "痛い is read いたい and means hurt; painful; sore.",
+      "skillIds": [
+        "a1-reading"
+      ]
+    },
+    {
+      "id": "word-5",
+      "kind": "choice",
+      "prompt": "Choose the best English meaning for 一 (いち).",
+      "options": [
+        {
+          "id": "correct",
+          "label": "one",
+          "isCorrect": true
+        },
+        {
+          "id": "distractor-1",
+          "label": "always, usually, every time, never (with neg. verb)",
+          "isCorrect": false
+        },
+        {
+          "id": "distractor-2",
+          "label": "entrance",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "一 is read いち and means one.",
+      "skillIds": [
+        "a1-reading"
+      ]
+    },
+    {
+      "id": "word-6",
+      "kind": "choice",
+      "prompt": "Choose the best English meaning for 一日 (いちにち).",
+      "options": [
+        {
+          "id": "correct",
+          "label": "one day (duration)",
+          "isCorrect": true
+        },
+        {
+          "id": "distractor-1",
+          "label": "dog",
+          "isCorrect": false
+        },
+        {
+          "id": "distractor-2",
+          "label": "(humble) to be (animate), to exist",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "一日 is read いちにち and means one day (duration).",
+      "skillIds": [
+        "a1-reading"
+      ]
+    },
+    {
+      "id": "word-7",
+      "kind": "choice",
+      "prompt": "Choose the best English meaning for 一番 (いちばん).",
+      "options": [
+        {
+          "id": "correct",
+          "label": "best (most), first, number one",
+          "isCorrect": true
+        },
+        {
+          "id": "distractor-1",
+          "label": "now",
+          "isCorrect": false
+        },
+        {
+          "id": "distractor-2",
+          "label": "to need",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "一番 is read いちばん and means best (most), first, number one.",
+      "skillIds": [
+        "a1-reading"
+      ]
+    },
+    {
+      "id": "word-8",
+      "kind": "choice",
+      "prompt": "Choose the best English meaning for いつ (いつ).",
+      "options": [
+        {
+          "id": "correct",
+          "label": "when",
+          "isCorrect": true
+        },
+        {
+          "id": "distractor-1",
+          "label": "meaning, significance",
+          "isCorrect": false
+        },
+        {
+          "id": "distractor-2",
+          "label": "to put in",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "いつ is read いつ and means when.",
+      "skillIds": [
+        "a1-reading"
+      ]
+    },
+    {
+      "id": "word-9",
+      "kind": "choice",
+      "prompt": "Choose the best English meaning for 五日 (いつか).",
+      "options": [
+        {
+          "id": "correct",
+          "label": "five days; fifth day of the month",
+          "isCorrect": true
+        },
+        {
+          "id": "distractor-1",
+          "label": "younger sister (humble)",
+          "isCorrect": false
+        },
+        {
+          "id": "distractor-2",
+          "label": "color",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "五日 is read いつか and means five days; fifth day of the month.",
+      "skillIds": [
+        "a1-reading"
+      ]
+    },
+    {
+      "id": "word-10",
+      "kind": "choice",
+      "prompt": "Choose the best English meaning for 一緒 (いっしょ).",
+      "options": [
+        {
+          "id": "correct",
+          "label": "together",
+          "isCorrect": true
+        },
+        {
+          "id": "distractor-1",
+          "label": "disagreeable, detestable, unpleasant",
+          "isCorrect": false
+        },
+        {
+          "id": "distractor-2",
+          "label": "various",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "一緒 is read いっしょ and means together.",
+      "skillIds": [
+        "a1-reading"
+      ]
+    },
+    {
+      "id": "word-11",
+      "kind": "choice",
+      "prompt": "Choose the best English meaning for 五つ (いつつ).",
+      "options": [
+        {
+          "id": "correct",
+          "label": "five things",
+          "isCorrect": true
+        },
+        {
+          "id": "distractor-1",
+          "label": "entrance",
+          "isCorrect": false
+        },
+        {
+          "id": "distractor-2",
+          "label": "above (up, top, etc.), over, on top of",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "五つ is read いつつ and means five things.",
+      "skillIds": [
+        "a1-reading"
+      ]
+    },
+    {
+      "id": "word-12",
+      "kind": "choice",
+      "prompt": "Choose the best English meaning for いつも (いつも).",
+      "options": [
+        {
+          "id": "correct",
+          "label": "always, usually, every time, never (with neg. verb)",
+          "isCorrect": true
+        },
+        {
+          "id": "distractor-1",
+          "label": "(humble) to be (animate), to exist",
+          "isCorrect": false
+        },
+        {
+          "id": "distractor-2",
+          "label": "back, behind, rear",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "いつも is read いつも and means always, usually, every time, never (with neg. verb).",
+      "skillIds": [
+        "a1-reading"
+      ]
+    }
+  ]
+}

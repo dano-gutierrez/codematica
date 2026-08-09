@@ -1,0 +1,143 @@
+{
+  "slug": "languages/japanese-n5-transport-directions-and-travel-open-answer",
+  "title": "Transport, Directions, And Travel Open Answer",
+  "documentSlug": "languages/japanese-n5-transport-directions-and-travel",
+  "concept": "Transport, Directions, And Travel Japanese composition",
+  "difficulty": "foundation",
+  "tags": [
+    "japanese",
+    "n5",
+    "writing",
+    "ime"
+  ],
+  "status": "published",
+  "proficiencyLevel": "a1",
+  "skillIds": [
+    "a1-writing",
+    "kana-ime"
+  ],
+  "required": true,
+  "type": "questionnaire",
+  "questions": [
+    {
+      "id": "write-1",
+      "kind": "open-answer",
+      "prompt": "Write the Japanese sentence: My younger sister is good at cooking.",
+      "template": "{{blank}}",
+      "acceptedAnswers": [
+        "妹は料理が上手です。"
+      ],
+      "inputMode": "japanese-ime",
+      "explanation": "Noun + が上手・下手です: Describe skill or lack of skill in an activity.",
+      "skillIds": [
+        "a1-writing",
+        "kana-ime"
+      ]
+    },
+    {
+      "id": "write-2",
+      "kind": "open-answer",
+      "prompt": "Write the Japanese sentence: I understand a little Japanese.",
+      "template": "{{blank}}",
+      "acceptedAnswers": [
+        "少し日本語が分かります。"
+      ],
+      "inputMode": "japanese-ime",
+      "explanation": "Noun + が分かります: State that someone understands a language or fact.",
+      "skillIds": [
+        "a1-writing",
+        "kana-ime"
+      ]
+    },
+    {
+      "id": "write-3",
+      "kind": "open-answer",
+      "prompt": "Write the Japanese sentence: Because it is raining, I will stay home.",
+      "template": "{{blank}}",
+      "acceptedAnswers": [
+        "雨ですから、家にいます。"
+      ],
+      "inputMode": "japanese-ime",
+      "explanation": "Reason + から: Give a simple reason for the following statement or choice.",
+      "skillIds": [
+        "a1-writing",
+        "kana-ime"
+      ]
+    },
+    {
+      "id": "write-4",
+      "kind": "open-answer",
+      "prompt": "Write the Japanese sentence: I read a book before sleeping.",
+      "template": "{{blank}}",
+      "acceptedAnswers": [
+        "寝る前に本を読みます。"
+      ],
+      "inputMode": "japanese-ime",
+      "explanation": "Noun/Verb dictionary form + 前に: Place one action before another action or time.",
+      "skillIds": [
+        "a1-writing",
+        "kana-ime"
+      ]
+    },
+    {
+      "id": "write-5",
+      "kind": "open-answer",
+      "prompt": "Write the Japanese sentence: I shop after work.",
+      "template": "{{blank}}",
+      "acceptedAnswers": [
+        "仕事の後で買い物します。"
+      ],
+      "inputMode": "japanese-ime",
+      "explanation": "Noun/Verb past form + 後で: Place an action after another event.",
+      "skillIds": [
+        "a1-writing",
+        "kana-ime"
+      ]
+    },
+    {
+      "id": "write-6",
+      "kind": "open-answer",
+      "prompt": "Write the Japanese sentence: When I went to Japan, I bought a camera.",
+      "template": "{{blank}}",
+      "acceptedAnswers": [
+        "日本へ行く時、カメラを買いました。"
+      ],
+      "inputMode": "japanese-ime",
+      "explanation": "Plain form + 時: Describe what happens at a particular time or situation.",
+      "skillIds": [
+        "a1-writing",
+        "kana-ime"
+      ]
+    },
+    {
+      "id": "write-7",
+      "kind": "open-answer",
+      "prompt": "Write the Japanese sentence: My younger sister is good at cooking.",
+      "template": "{{blank}}",
+      "acceptedAnswers": [
+        "妹は料理が上手です。"
+      ],
+      "inputMode": "japanese-ime",
+      "explanation": "Noun + が上手・下手です: Describe skill or lack of skill in an activity.",
+      "skillIds": [
+        "a1-writing",
+        "kana-ime"
+      ]
+    },
+    {
+      "id": "write-8",
+      "kind": "open-answer",
+      "prompt": "Write the Japanese sentence: I understand a little Japanese.",
+      "template": "{{blank}}",
+      "acceptedAnswers": [
+        "少し日本語が分かります。"
+      ],
+      "inputMode": "japanese-ime",
+      "explanation": "Noun + が分かります: State that someone understands a language or fact.",
+      "skillIds": [
+        "a1-writing",
+        "kana-ime"
+      ]
+    }
+  ]
+}

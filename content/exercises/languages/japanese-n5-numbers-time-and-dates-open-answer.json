@@ -1,0 +1,143 @@
+{
+  "slug": "languages/japanese-n5-numbers-time-and-dates-open-answer",
+  "title": "Numbers, Time, And Dates Open Answer",
+  "documentSlug": "languages/japanese-n5-numbers-time-and-dates",
+  "concept": "Numbers, Time, And Dates Japanese composition",
+  "difficulty": "foundation",
+  "tags": [
+    "japanese",
+    "n5",
+    "writing",
+    "ime"
+  ],
+  "status": "published",
+  "proficiencyLevel": "a1",
+  "skillIds": [
+    "a1-writing",
+    "kana-ime"
+  ],
+  "required": true,
+  "type": "questionnaire",
+  "questions": [
+    {
+      "id": "write-1",
+      "kind": "open-answer",
+      "prompt": "Write the Japanese sentence: This book is in Japanese.",
+      "template": "{{blank}}",
+      "acceptedAnswers": [
+        "この本は日本語です。"
+      ],
+      "inputMode": "japanese-ime",
+      "explanation": "この・その・あの + Noun: Point to a specific noun by its relative distance.",
+      "skillIds": [
+        "a1-writing",
+        "kana-ime"
+      ]
+    },
+    {
+      "id": "write-2",
+      "kind": "open-answer",
+      "prompt": "Write the Japanese sentence: The station is over there.",
+      "template": "{{blank}}",
+      "acceptedAnswers": [
+        "駅はあそこです。"
+      ],
+      "inputMode": "japanese-ime",
+      "explanation": "ここ・そこ・あそこ: Point to locations near the speaker, listener, or farther away.",
+      "skillIds": [
+        "a1-writing",
+        "kana-ime"
+      ]
+    },
+    {
+      "id": "write-3",
+      "kind": "open-answer",
+      "prompt": "Write the Japanese sentence: Where is the teacher?",
+      "template": "{{blank}}",
+      "acceptedAnswers": [
+        "先生はどこですか。"
+      ],
+      "inputMode": "japanese-ime",
+      "explanation": "だれ・何・どこ・いつ: Ask for a person, thing, place, or time.",
+      "skillIds": [
+        "a1-writing",
+        "kana-ime"
+      ]
+    },
+    {
+      "id": "write-4",
+      "kind": "open-answer",
+      "prompt": "Write the Japanese sentence: There is a teacher in the classroom.",
+      "template": "{{blank}}",
+      "acceptedAnswers": [
+        "教室に先生がいます。"
+      ],
+      "inputMode": "japanese-ime",
+      "explanation": "あります・います: State that an inanimate thing or animate being exists.",
+      "skillIds": [
+        "a1-writing",
+        "kana-ime"
+      ]
+    },
+    {
+      "id": "write-5",
+      "kind": "open-answer",
+      "prompt": "Write the Japanese sentence: There is a book on the desk.",
+      "template": "{{blank}}",
+      "acceptedAnswers": [
+        "机の上に本があります。"
+      ],
+      "inputMode": "japanese-ime",
+      "explanation": "Noun + が: Mark the grammatical subject, especially with existence and ability.",
+      "skillIds": [
+        "a1-writing",
+        "kana-ime"
+      ]
+    },
+    {
+      "id": "write-6",
+      "kind": "open-answer",
+      "prompt": "Write the Japanese sentence: There is a cat at home.",
+      "template": "{{blank}}",
+      "acceptedAnswers": [
+        "家に猫がいます。"
+      ],
+      "inputMode": "japanese-ime",
+      "explanation": "Place + に: Mark where something exists or the destination of movement.",
+      "skillIds": [
+        "a1-writing",
+        "kana-ime"
+      ]
+    },
+    {
+      "id": "write-7",
+      "kind": "open-answer",
+      "prompt": "Write the Japanese sentence: This book is in Japanese.",
+      "template": "{{blank}}",
+      "acceptedAnswers": [
+        "この本は日本語です。"
+      ],
+      "inputMode": "japanese-ime",
+      "explanation": "この・その・あの + Noun: Point to a specific noun by its relative distance.",
+      "skillIds": [
+        "a1-writing",
+        "kana-ime"
+      ]
+    },
+    {
+      "id": "write-8",
+      "kind": "open-answer",
+      "prompt": "Write the Japanese sentence: The station is over there.",
+      "template": "{{blank}}",
+      "acceptedAnswers": [
+        "駅はあそこです。"
+      ],
+      "inputMode": "japanese-ime",
+      "explanation": "ここ・そこ・あそこ: Point to locations near the speaker, listener, or farther away.",
+      "skillIds": [
+        "a1-writing",
+        "kana-ime"
+      ]
+    }
+  ]
+}

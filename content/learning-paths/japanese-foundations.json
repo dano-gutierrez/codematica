@@ -1,7 +1,7 @@
 {
   "slug": "japanese-foundations",
-  "title": "Japanese Foundations: Pre-A1 to A1",
-  "summary": "An open, milestone-based beginner course for reading, listening, interacting, typing, and writing Japanese in concrete daily-life scenes.",
+  "title": "Japanese Foundations: Kana to JLPT N5",
+  "summary": "An open, milestone-based beginner course progressing from kana through a complete N5-aligned vocabulary, grammar, reading, listening, typing, and writing foundation.",
   "kind": "skill",
   "category": "Languages",
   "audience": "English-speaking teens and adults beginning Japanese on phone, tablet, and web.",
@@ -12,7 +12,16 @@
       "title": "Writing Systems",
       "summary": "Hear Japanese rhythm and see how hiragana, katakana, and kanji work together before tracing their shapes.",
       "nodes": [
-        { "kind": "document", "slug": "languages/japanese-writing-systems", "proficiencyLevel": "pre-a1", "skillIds": ["kana-listening", "kana-reading"], "required": true }
+        {
+          "kind": "document",
+          "slug": "languages/japanese-writing-systems",
+          "proficiencyLevel": "pre-a1",
+          "skillIds": [
+            "kana-listening",
+            "kana-reading"
+          ],
+          "required": true
+        }
       ]
     },
     {
@@ -20,13 +29,69 @@
       "title": "Read And Write Hiragana",
       "summary": "Learn the complete 46-character hiragana map in small sound groups with immediate recall and cumulative review.",
       "nodes": [
-        { "kind": "document", "slug": "languages/japanese-hiragana-foundations", "proficiencyLevel": "pre-a1", "skillIds": ["kana-reading"], "required": true },
-        { "kind": "exercise", "slug": "languages/japanese-hiragana-vowels-writing", "proficiencyLevel": "pre-a1", "skillIds": ["kana-writing"], "required": true },
-        { "kind": "exercise", "slug": "languages/japanese-hiragana-k-s-writing", "proficiencyLevel": "pre-a1", "skillIds": ["kana-writing"], "required": true },
-        { "kind": "exercise", "slug": "languages/japanese-hiragana-t-n-writing", "proficiencyLevel": "pre-a1", "skillIds": ["kana-writing"], "required": true },
-        { "kind": "exercise", "slug": "languages/japanese-hiragana-h-m-writing", "proficiencyLevel": "pre-a1", "skillIds": ["kana-writing"], "required": true },
-        { "kind": "exercise", "slug": "languages/japanese-hiragana-y-r-w-writing", "proficiencyLevel": "pre-a1", "skillIds": ["kana-writing"], "required": true },
-        { "kind": "exercise", "slug": "languages/japanese-hiragana-reading-check", "proficiencyLevel": "pre-a1", "skillIds": ["kana-reading"], "required": true }
+        {
+          "kind": "document",
+          "slug": "languages/japanese-hiragana-foundations",
+          "proficiencyLevel": "pre-a1",
+          "skillIds": [
+            "kana-reading"
+          ],
+          "required": true
+        },
+        {
+          "kind": "exercise",
+          "slug": "languages/japanese-hiragana-vowels-writing",
+          "proficiencyLevel": "pre-a1",
+          "skillIds": [
+            "kana-writing"
+          ],
+          "required": true
+        },
+        {
+          "kind": "exercise",
+          "slug": "languages/japanese-hiragana-k-s-writing",
+          "proficiencyLevel": "pre-a1",
+          "skillIds": [
+            "kana-writing"
+          ],
+          "required": true
+        },
+        {
+          "kind": "exercise",
+          "slug": "languages/japanese-hiragana-t-n-writing",
+          "proficiencyLevel": "pre-a1",
+          "skillIds": [
+            "kana-writing"
+          ],
+          "required": true
+        },
+        {
+          "kind": "exercise",
+          "slug": "languages/japanese-hiragana-h-m-writing",
+          "proficiencyLevel": "pre-a1",
+          "skillIds": [
+            "kana-writing"
+          ],
+          "required": true
+        },
+        {
+          "kind": "exercise",
+          "slug": "languages/japanese-hiragana-y-r-w-writing",
+          "proficiencyLevel": "pre-a1",
+          "skillIds": [
+            "kana-writing"
+          ],
+          "required": true
+        },
+        {
+          "kind": "exercise",
+          "slug": "languages/japanese-hiragana-reading-check",
+          "proficiencyLevel": "pre-a1",
+          "skillIds": [
+            "kana-reading"
+          ],
+          "required": true
+        }
       ]
     },
     {
@@ -34,9 +99,36 @@
       "title": "Hiragana Sound Tools",
       "summary": "Decode dakuten, handakuten, small kana, doubled consonants, contracted sounds, long vowels, and moraic ん.",
       "nodes": [
-        { "kind": "document", "slug": "languages/japanese-hiragana-sound-changes", "proficiencyLevel": "pre-a1", "skillIds": ["kana-listening", "kana-reading"], "required": true },
-        { "kind": "exercise", "slug": "languages/japanese-hiragana-sound-changes-questionnaire", "proficiencyLevel": "pre-a1", "skillIds": ["kana-listening", "kana-reading"], "required": true },
-        { "kind": "exercise", "slug": "languages/japanese-hiragana-ime-exceptions-writing", "proficiencyLevel": "pre-a1", "skillIds": ["kana-writing", "kana-ime"], "required": true }
+        {
+          "kind": "document",
+          "slug": "languages/japanese-hiragana-sound-changes",
+          "proficiencyLevel": "pre-a1",
+          "skillIds": [
+            "kana-listening",
+            "kana-reading"
+          ],
+          "required": true
+        },
+        {
+          "kind": "exercise",
+          "slug": "languages/japanese-hiragana-sound-changes-questionnaire",
+          "proficiencyLevel": "pre-a1",
+          "skillIds": [
+            "kana-listening",
+            "kana-reading"
+          ],
+          "required": true
+        },
+        {
+          "kind": "exercise",
+          "slug": "languages/japanese-hiragana-ime-exceptions-writing",
+          "proficiencyLevel": "pre-a1",
+          "skillIds": [
+            "kana-writing",
+            "kana-ime"
+          ],
+          "required": true
+        }
       ]
     },
     {
@@ -44,13 +136,69 @@
       "title": "Read And Write Katakana",
       "summary": "Transfer the hiragana sound map to all 46 basic katakana, look-alikes, long vowels, and common loanwords.",
       "nodes": [
-        { "kind": "document", "slug": "languages/japanese-katakana-foundations", "proficiencyLevel": "pre-a1", "skillIds": ["kana-reading"], "required": true },
-        { "kind": "exercise", "slug": "languages/japanese-katakana-vowels-writing", "proficiencyLevel": "pre-a1", "skillIds": ["kana-writing"], "required": true },
-        { "kind": "exercise", "slug": "languages/japanese-katakana-k-s-writing", "proficiencyLevel": "pre-a1", "skillIds": ["kana-writing"], "required": true },
-        { "kind": "exercise", "slug": "languages/japanese-katakana-t-n-writing", "proficiencyLevel": "pre-a1", "skillIds": ["kana-writing"], "required": true },
-        { "kind": "exercise", "slug": "languages/japanese-katakana-h-m-writing", "proficiencyLevel": "pre-a1", "skillIds": ["kana-writing"], "required": true },
-        { "kind": "exercise", "slug": "languages/japanese-katakana-y-r-w-writing", "proficiencyLevel": "pre-a1", "skillIds": ["kana-writing"], "required": true },
-        { "kind": "exercise", "slug": "languages/japanese-katakana-reading-check", "proficiencyLevel": "pre-a1", "skillIds": ["kana-reading"], "required": true }
+        {
+          "kind": "document",
+          "slug": "languages/japanese-katakana-foundations",
+          "proficiencyLevel": "pre-a1",
+          "skillIds": [
+            "kana-reading"
+          ],
+          "required": true
+        },
+        {
+          "kind": "exercise",
+          "slug": "languages/japanese-katakana-vowels-writing",
+          "proficiencyLevel": "pre-a1",
+          "skillIds": [
+            "kana-writing"
+          ],
+          "required": true
+        },
+        {
+          "kind": "exercise",
+          "slug": "languages/japanese-katakana-k-s-writing",
+          "proficiencyLevel": "pre-a1",
+          "skillIds": [
+            "kana-writing"
+          ],
+          "required": true
+        },
+        {
+          "kind": "exercise",
+          "slug": "languages/japanese-katakana-t-n-writing",
+          "proficiencyLevel": "pre-a1",
+          "skillIds": [
+            "kana-writing"
+          ],
+          "required": true
+        },
+        {
+          "kind": "exercise",
+          "slug": "languages/japanese-katakana-h-m-writing",
+          "proficiencyLevel": "pre-a1",
+          "skillIds": [
+            "kana-writing"
+          ],
+          "required": true
+        },
+        {
+          "kind": "exercise",
+          "slug": "languages/japanese-katakana-y-r-w-writing",
+          "proficiencyLevel": "pre-a1",
+          "skillIds": [
+            "kana-writing"
+          ],
+          "required": true
+        },
+        {
+          "kind": "exercise",
+          "slug": "languages/japanese-katakana-reading-check",
+          "proficiencyLevel": "pre-a1",
+          "skillIds": [
+            "kana-reading"
+          ],
+          "required": true
+        }
       ]
     },
     {
@@ -58,53 +206,480 @@
       "title": "Romaji And Kana Input",
       "summary": "Separate Japanese spelling, pronunciation, learner romanization, and the keys an IME needs.",
       "nodes": [
-        { "kind": "document", "slug": "languages/japanese-romaji-kana-input", "proficiencyLevel": "pre-a1", "skillIds": ["kana-reading", "kana-ime"], "required": true },
-        { "kind": "exercise", "slug": "languages/japanese-romaji-kana-input-questionnaire", "proficiencyLevel": "pre-a1", "skillIds": ["kana-ime"], "required": true },
-        { "kind": "exercise", "slug": "languages/japanese-kana-explorer-checkpoint", "proficiencyLevel": "pre-a1", "skillIds": ["kana-listening", "kana-reading", "kana-writing", "kana-interaction", "kana-ime"], "required": true }
+        {
+          "kind": "document",
+          "slug": "languages/japanese-romaji-kana-input",
+          "proficiencyLevel": "pre-a1",
+          "skillIds": [
+            "kana-reading",
+            "kana-ime"
+          ],
+          "required": true
+        },
+        {
+          "kind": "exercise",
+          "slug": "languages/japanese-romaji-kana-input-questionnaire",
+          "proficiencyLevel": "pre-a1",
+          "skillIds": [
+            "kana-ime"
+          ],
+          "required": true
+        },
+        {
+          "kind": "exercise",
+          "slug": "languages/japanese-kana-explorer-checkpoint",
+          "proficiencyLevel": "pre-a1",
+          "skillIds": [
+            "kana-listening",
+            "kana-reading",
+            "kana-writing",
+            "kana-interaction",
+            "kana-ime"
+          ],
+          "required": true
+        }
       ]
     },
     {
-      "slug": "first-connections",
-      "title": "First Connections",
-      "summary": "Exchange greetings, identify people and things, understand basic time, talk about family and likes, and order simply.",
+      "slug": "identity-and-demonstratives",
+      "title": "Identity And Demonstratives",
+      "summary": "Progressive N5-aligned lesson and practice for identity and demonstratives.",
       "nodes": [
-        { "kind": "document", "slug": "languages/japanese-first-connections", "proficiencyLevel": "a1", "skillIds": ["a1-listening", "a1-reading", "a1-interaction", "a1-writing"], "required": true },
-        { "kind": "exercise", "slug": "languages/japanese-first-connections-checkpoint", "proficiencyLevel": "a1", "skillIds": ["a1-listening", "a1-reading", "a1-interaction", "a1-writing"], "required": true }
+        {
+          "kind": "document",
+          "slug": "languages/japanese-n5-identity-and-demonstratives",
+          "proficiencyLevel": "a1",
+          "skillIds": [
+            "a1-reading",
+            "a1-listening",
+            "a1-interaction",
+            "a1-writing"
+          ],
+          "required": true
+        },
+        {
+          "kind": "exercise",
+          "slug": "languages/japanese-n5-identity-and-demonstratives-mixed",
+          "proficiencyLevel": "a1",
+          "skillIds": [
+            "a1-reading"
+          ],
+          "required": true
+        },
+        {
+          "kind": "exercise",
+          "slug": "languages/japanese-n5-identity-and-demonstratives-open-answer",
+          "proficiencyLevel": "a1",
+          "skillIds": [
+            "a1-writing",
+            "kana-ime"
+          ],
+          "required": true
+        }
       ]
     },
     {
-      "slug": "everyday-navigator",
-      "title": "Everyday Navigator",
-      "summary": "Navigate places, routines, transport, invitations, requests, shopping, signs, and short messages.",
+      "slug": "numbers-time-and-dates",
+      "title": "Numbers, Time, And Dates",
+      "summary": "Progressive N5-aligned lesson and practice for numbers, time, and dates.",
       "nodes": [
-        { "kind": "document", "slug": "languages/japanese-everyday-navigator", "proficiencyLevel": "a1", "skillIds": ["a1-listening", "a1-reading", "a1-interaction", "a1-writing"], "required": true },
-        { "kind": "exercise", "slug": "languages/japanese-everyday-navigator-checkpoint", "proficiencyLevel": "a1", "skillIds": ["a1-listening", "a1-reading", "a1-interaction", "a1-writing"], "required": true }
+        {
+          "kind": "document",
+          "slug": "languages/japanese-n5-numbers-time-and-dates",
+          "proficiencyLevel": "a1",
+          "skillIds": [
+            "a1-reading",
+            "a1-listening",
+            "a1-interaction",
+            "a1-writing"
+          ],
+          "required": true
+        },
+        {
+          "kind": "exercise",
+          "slug": "languages/japanese-n5-numbers-time-and-dates-mixed",
+          "proficiencyLevel": "a1",
+          "skillIds": [
+            "a1-reading"
+          ],
+          "required": true
+        },
+        {
+          "kind": "exercise",
+          "slug": "languages/japanese-n5-numbers-time-and-dates-open-answer",
+          "proficiencyLevel": "a1",
+          "skillIds": [
+            "a1-writing",
+            "kana-ime"
+          ],
+          "required": true
+        }
       ]
     },
     {
-      "slug": "starter-kanji",
-      "title": "Starter Kanji In Context",
-      "summary": "Read, trace, recall, and use beginner kanji through vocabulary, signs, messages, and short sentences.",
+      "slug": "family-home-and-location",
+      "title": "Family, Home, And Location",
+      "summary": "Progressive N5-aligned lesson and practice for family, home, and location.",
       "nodes": [
-        { "kind": "document", "slug": "languages/japanese-starter-kanji", "proficiencyLevel": "a1", "skillIds": ["a1-reading", "a1-writing"], "required": true },
-        { "kind": "exercise", "slug": "languages/japanese-starter-kanji-writing", "proficiencyLevel": "a1", "skillIds": ["a1-writing"], "required": true }
+        {
+          "kind": "document",
+          "slug": "languages/japanese-n5-family-home-and-location",
+          "proficiencyLevel": "a1",
+          "skillIds": [
+            "a1-reading",
+            "a1-listening",
+            "a1-interaction",
+            "a1-writing"
+          ],
+          "required": true
+        },
+        {
+          "kind": "exercise",
+          "slug": "languages/japanese-n5-family-home-and-location-mixed",
+          "proficiencyLevel": "a1",
+          "skillIds": [
+            "a1-reading"
+          ],
+          "required": true
+        },
+        {
+          "kind": "exercise",
+          "slug": "languages/japanese-n5-family-home-and-location-open-answer",
+          "proficiencyLevel": "a1",
+          "skillIds": [
+            "a1-writing",
+            "kana-ime"
+          ],
+          "required": true
+        }
+      ]
+    },
+    {
+      "slug": "routines-verbs-and-particles",
+      "title": "Routines, Verbs, And Particles",
+      "summary": "Progressive N5-aligned lesson and practice for routines, verbs, and particles.",
+      "nodes": [
+        {
+          "kind": "document",
+          "slug": "languages/japanese-n5-routines-verbs-and-particles",
+          "proficiencyLevel": "a1",
+          "skillIds": [
+            "a1-reading",
+            "a1-listening",
+            "a1-interaction",
+            "a1-writing"
+          ],
+          "required": true
+        },
+        {
+          "kind": "exercise",
+          "slug": "languages/japanese-n5-routines-verbs-and-particles-mixed",
+          "proficiencyLevel": "a1",
+          "skillIds": [
+            "a1-reading"
+          ],
+          "required": true
+        },
+        {
+          "kind": "exercise",
+          "slug": "languages/japanese-n5-routines-verbs-and-particles-open-answer",
+          "proficiencyLevel": "a1",
+          "skillIds": [
+            "a1-writing",
+            "kana-ime"
+          ],
+          "required": true
+        }
+      ]
+    },
+    {
+      "slug": "food-shopping-and-counters",
+      "title": "Food, Shopping, And Counters",
+      "summary": "Progressive N5-aligned lesson and practice for food, shopping, and counters.",
+      "nodes": [
+        {
+          "kind": "document",
+          "slug": "languages/japanese-n5-food-shopping-and-counters",
+          "proficiencyLevel": "a1",
+          "skillIds": [
+            "a1-reading",
+            "a1-listening",
+            "a1-interaction",
+            "a1-writing"
+          ],
+          "required": true
+        },
+        {
+          "kind": "exercise",
+          "slug": "languages/japanese-n5-food-shopping-and-counters-mixed",
+          "proficiencyLevel": "a1",
+          "skillIds": [
+            "a1-reading"
+          ],
+          "required": true
+        },
+        {
+          "kind": "exercise",
+          "slug": "languages/japanese-n5-food-shopping-and-counters-open-answer",
+          "proficiencyLevel": "a1",
+          "skillIds": [
+            "a1-writing",
+            "kana-ime"
+          ],
+          "required": true
+        }
+      ]
+    },
+    {
+      "slug": "adjectives-weather-and-preferences",
+      "title": "Adjectives, Weather, And Preferences",
+      "summary": "Progressive N5-aligned lesson and practice for adjectives, weather, and preferences.",
+      "nodes": [
+        {
+          "kind": "document",
+          "slug": "languages/japanese-n5-adjectives-weather-and-preferences",
+          "proficiencyLevel": "a1",
+          "skillIds": [
+            "a1-reading",
+            "a1-listening",
+            "a1-interaction",
+            "a1-writing"
+          ],
+          "required": true
+        },
+        {
+          "kind": "exercise",
+          "slug": "languages/japanese-n5-adjectives-weather-and-preferences-mixed",
+          "proficiencyLevel": "a1",
+          "skillIds": [
+            "a1-reading"
+          ],
+          "required": true
+        },
+        {
+          "kind": "exercise",
+          "slug": "languages/japanese-n5-adjectives-weather-and-preferences-open-answer",
+          "proficiencyLevel": "a1",
+          "skillIds": [
+            "a1-writing",
+            "kana-ime"
+          ],
+          "required": true
+        }
+      ]
+    },
+    {
+      "slug": "invitations-requests-and-permission",
+      "title": "Invitations, Requests, And Permission",
+      "summary": "Progressive N5-aligned lesson and practice for invitations, requests, and permission.",
+      "nodes": [
+        {
+          "kind": "document",
+          "slug": "languages/japanese-n5-invitations-requests-and-permission",
+          "proficiencyLevel": "a1",
+          "skillIds": [
+            "a1-reading",
+            "a1-listening",
+            "a1-interaction",
+            "a1-writing"
+          ],
+          "required": true
+        },
+        {
+          "kind": "exercise",
+          "slug": "languages/japanese-n5-invitations-requests-and-permission-mixed",
+          "proficiencyLevel": "a1",
+          "skillIds": [
+            "a1-reading"
+          ],
+          "required": true
+        },
+        {
+          "kind": "exercise",
+          "slug": "languages/japanese-n5-invitations-requests-and-permission-open-answer",
+          "proficiencyLevel": "a1",
+          "skillIds": [
+            "a1-writing",
+            "kana-ime"
+          ],
+          "required": true
+        }
+      ]
+    },
+    {
+      "slug": "transport-directions-and-travel",
+      "title": "Transport, Directions, And Travel",
+      "summary": "Progressive N5-aligned lesson and practice for transport, directions, and travel.",
+      "nodes": [
+        {
+          "kind": "document",
+          "slug": "languages/japanese-n5-transport-directions-and-travel",
+          "proficiencyLevel": "a1",
+          "skillIds": [
+            "a1-reading",
+            "a1-listening",
+            "a1-interaction",
+            "a1-writing"
+          ],
+          "required": true
+        },
+        {
+          "kind": "exercise",
+          "slug": "languages/japanese-n5-transport-directions-and-travel-mixed",
+          "proficiencyLevel": "a1",
+          "skillIds": [
+            "a1-reading"
+          ],
+          "required": true
+        },
+        {
+          "kind": "exercise",
+          "slug": "languages/japanese-n5-transport-directions-and-travel-open-answer",
+          "proficiencyLevel": "a1",
+          "skillIds": [
+            "a1-writing",
+            "kana-ime"
+          ],
+          "required": true
+        }
+      ]
+    },
+    {
+      "slug": "past-activities-and-messages",
+      "title": "Past Activities And Messages",
+      "summary": "Progressive N5-aligned lesson and practice for past activities and messages.",
+      "nodes": [
+        {
+          "kind": "document",
+          "slug": "languages/japanese-n5-past-activities-and-messages",
+          "proficiencyLevel": "a1",
+          "skillIds": [
+            "a1-reading",
+            "a1-listening",
+            "a1-interaction",
+            "a1-writing"
+          ],
+          "required": true
+        },
+        {
+          "kind": "exercise",
+          "slug": "languages/japanese-n5-past-activities-and-messages-mixed",
+          "proficiencyLevel": "a1",
+          "skillIds": [
+            "a1-reading"
+          ],
+          "required": true
+        },
+        {
+          "kind": "exercise",
+          "slug": "languages/japanese-n5-past-activities-and-messages-open-answer",
+          "proficiencyLevel": "a1",
+          "skillIds": [
+            "a1-writing",
+            "kana-ime"
+          ],
+          "required": true
+        }
+      ]
+    },
+    {
+      "slug": "n5-integrated-readiness",
+      "title": "Integrated N5 Readiness",
+      "summary": "Progressive N5-aligned lesson and practice for integrated n5 readiness.",
+      "nodes": [
+        {
+          "kind": "document",
+          "slug": "languages/japanese-n5-n5-integrated-readiness",
+          "proficiencyLevel": "a1",
+          "skillIds": [
+            "a1-reading",
+            "a1-listening",
+            "a1-interaction",
+            "a1-writing"
+          ],
+          "required": true
+        },
+        {
+          "kind": "exercise",
+          "slug": "languages/japanese-n5-n5-integrated-readiness-mixed",
+          "proficiencyLevel": "a1",
+          "skillIds": [
+            "a1-reading"
+          ],
+          "required": true
+        },
+        {
+          "kind": "exercise",
+          "slug": "languages/japanese-n5-n5-integrated-readiness-open-answer",
+          "proficiencyLevel": "a1",
+          "skillIds": [
+            "a1-writing",
+            "kana-ime"
+          ],
+          "required": true
+        }
       ]
     }
   ],
   "progression": {
     "framework": "jf-standard",
-    "roadmapLabel": "Pre-A1 to A1 roadmap",
+    "roadmapLabel": "Kana to JLPT N5 roadmap",
     "reviewRoute": "/languages/japanese/review",
     "skills": [
-      { "id": "kana-listening", "label": "Kana sounds and rhythm", "category": "listening", "description": "Hear mora rhythm and distinguish the core kana sound patterns." },
-      { "id": "kana-reading", "label": "Kana recognition", "category": "reading", "description": "Recognize hiragana and katakana in words, signs, and tiny texts." },
-      { "id": "kana-writing", "label": "Kana handwriting", "category": "writing", "description": "Trace and recall textbook-style kana with the intended stroke order." },
-      { "id": "kana-interaction", "label": "Kana learning interaction", "category": "interaction", "description": "Use kana knowledge to ask, answer, and clarify a simple reading or input question." },
-      { "id": "kana-ime", "label": "Japanese keyboard input", "category": "ime", "description": "Choose IME keys separately from learner-facing pronunciation and romanization." },
-      { "id": "a1-listening", "label": "A1 listening", "category": "listening", "description": "Understand familiar words and short, slowly delivered everyday exchanges." },
-      { "id": "a1-reading", "label": "A1 reading", "category": "reading", "description": "Find concrete information in short sentences, signs, messages, and mini-readers." },
-      { "id": "a1-interaction", "label": "A1 interaction", "category": "interaction", "description": "Exchange basic personal information and complete predictable everyday tasks." },
-      { "id": "a1-writing", "label": "A1 writing", "category": "writing", "description": "Write familiar characters and create a very short personal or practical message." }
+      {
+        "id": "kana-listening",
+        "label": "Kana sounds and rhythm",
+        "category": "listening",
+        "description": "Hear mora rhythm and distinguish the core kana sound patterns."
+      },
+      {
+        "id": "kana-reading",
+        "label": "Kana recognition",
+        "category": "reading",
+        "description": "Recognize hiragana and katakana in words, signs, and tiny texts."
+      },
+      {
+        "id": "kana-writing",
+        "label": "Kana handwriting",
+        "category": "writing",
+        "description": "Trace and recall textbook-style kana with the intended stroke order."
+      },
+      {
+        "id": "kana-interaction",
+        "label": "Kana learning interaction",
+        "category": "interaction",
+        "description": "Use kana knowledge to ask, answer, and clarify a simple reading or input question."
+      },
+      {
+        "id": "kana-ime",
+        "label": "Japanese keyboard input",
+        "category": "ime",
+        "description": "Choose IME keys separately from learner-facing pronunciation and romanization."
+      },
+      {
+        "id": "a1-listening",
+        "label": "A1 listening",
+        "category": "listening",
+        "description": "Understand familiar words and short, slowly delivered everyday exchanges."
+      },
+      {
+        "id": "a1-reading",
+        "label": "A1 reading",
+        "category": "reading",
+        "description": "Find concrete information in short sentences, signs, messages, and mini-readers."
+      },
+      {
+        "id": "a1-interaction",
+        "label": "A1 interaction",
+        "category": "interaction",
+        "description": "Exchange basic personal information and complete predictable everyday tasks."
+      },
+      {
+        "id": "a1-writing",
+        "label": "A1 writing",
+        "category": "writing",
+        "description": "Write familiar characters and create a very short personal or practical message."
+      }
     ],
     "stages": [
       {
@@ -113,56 +688,222 @@
         "level": "Pre-A1",
         "status": "published",
         "summary": "Build a reliable sound-to-symbol foundation across recognition, reading, handwriting, and keyboard input.",
-        "unitSlugs": ["writing-systems", "hiragana-foundations", "hiragana-sound-tools", "katakana-foundations", "romaji-and-kana-input"],
-        "outcomes": [
-          { "id": "kana-hear-morae", "statement": "I can hear and tap the mora rhythm of a short familiar kana word.", "skillId": "kana-listening" },
-          { "id": "kana-read-basics", "statement": "I can recognize the 46 basic hiragana and katakana in standard order.", "skillId": "kana-reading" },
-          { "id": "kana-write-sample", "statement": "I can write a sampled basic kana character from memory using its stroke order.", "skillId": "kana-writing" },
-          { "id": "kana-clarify-input", "statement": "I can explain a simple difference between a particle's sound and its IME spelling.", "skillId": "kana-interaction" },
-          { "id": "kana-type-exceptions", "statement": "I can type particles, small kana, doubled consonants, and long vowels with an IME.", "skillId": "kana-ime" }
+        "unitSlugs": [
+          "writing-systems",
+          "hiragana-foundations",
+          "hiragana-sound-tools",
+          "katakana-foundations",
+          "romaji-and-kana-input"
         ],
-        "requiredNodeSlugs": ["languages/japanese-writing-systems", "languages/japanese-hiragana-foundations", "languages/japanese-hiragana-reading-check", "languages/japanese-hiragana-sound-changes", "languages/japanese-katakana-foundations", "languages/japanese-katakana-reading-check", "languages/japanese-romaji-kana-input", "languages/japanese-kana-explorer-checkpoint"],
+        "outcomes": [
+          {
+            "id": "kana-hear-morae",
+            "statement": "I can hear and tap the mora rhythm of a short familiar kana word.",
+            "skillId": "kana-listening"
+          },
+          {
+            "id": "kana-read-basics",
+            "statement": "I can recognize the 46 basic hiragana and katakana in standard order.",
+            "skillId": "kana-reading"
+          },
+          {
+            "id": "kana-write-sample",
+            "statement": "I can write a sampled basic kana character from memory using its stroke order.",
+            "skillId": "kana-writing"
+          },
+          {
+            "id": "kana-clarify-input",
+            "statement": "I can explain a simple difference between a particle's sound and its IME spelling.",
+            "skillId": "kana-interaction"
+          },
+          {
+            "id": "kana-type-exceptions",
+            "statement": "I can type particles, small kana, doubled consonants, and long vowels with an IME.",
+            "skillId": "kana-ime"
+          }
+        ],
+        "requiredNodeSlugs": [
+          "languages/japanese-writing-systems",
+          "languages/japanese-hiragana-foundations",
+          "languages/japanese-hiragana-reading-check",
+          "languages/japanese-hiragana-sound-changes",
+          "languages/japanese-katakana-foundations",
+          "languages/japanese-katakana-reading-check",
+          "languages/japanese-romaji-kana-input",
+          "languages/japanese-kana-explorer-checkpoint"
+        ],
         "checkpointExerciseSlug": "languages/japanese-kana-explorer-checkpoint",
         "passThreshold": 0.8,
         "minimumSkillScore": 0.6,
         "estimatedMinutes": 420
       },
       {
-        "id": "first-connections",
-        "label": "First Connections",
+        "id": "n5-core-connections",
+        "label": "Core Connections",
         "level": "A1",
         "status": "published",
-        "summary": "Use short rehearsed language to meet someone, exchange concrete information, express preferences, and order.",
-        "unitSlugs": ["first-connections"],
-        "outcomes": [
-          { "id": "connections-hear-details", "statement": "I can understand a slowly spoken name, age, time, or simple preference.", "skillId": "a1-listening" },
-          { "id": "connections-read-scene", "statement": "I can understand the main details in a short greeting or café scene.", "skillId": "a1-reading" },
-          { "id": "connections-write-intro", "statement": "I can write a two-sentence introduction with my name and one personal fact.", "skillId": "a1-writing" },
-          { "id": "connections-exchange", "statement": "I can greet someone, give my name, ask one basic question, and respond politely.", "skillId": "a1-interaction" }
+        "summary": "Build measurable N5 readiness across core connections through original lessons and active practice.",
+        "unitSlugs": [
+          "identity-and-demonstratives",
+          "numbers-time-and-dates",
+          "family-home-and-location"
         ],
-        "requiredNodeSlugs": ["languages/japanese-first-connections", "languages/japanese-first-connections-checkpoint"],
-        "checkpointExerciseSlug": "languages/japanese-first-connections-checkpoint",
+        "outcomes": [
+          {
+            "id": "n5-core-connections-read",
+            "statement": "I can read and understand short N5-aligned material for core connections.",
+            "skillId": "a1-reading"
+          },
+          {
+            "id": "n5-core-connections-write",
+            "statement": "I can compose short beginner Japanese answers for core connections.",
+            "skillId": "a1-writing"
+          },
+          {
+            "id": "n5-core-connections-interact",
+            "statement": "I can use familiar expressions for core connections.",
+            "skillId": "a1-interaction"
+          }
+        ],
+        "requiredNodeSlugs": [
+          "languages/japanese-n5-identity-and-demonstratives",
+          "languages/japanese-n5-identity-and-demonstratives-mixed",
+          "languages/japanese-n5-identity-and-demonstratives-open-answer",
+          "languages/japanese-n5-numbers-time-and-dates",
+          "languages/japanese-n5-numbers-time-and-dates-mixed",
+          "languages/japanese-n5-numbers-time-and-dates-open-answer",
+          "languages/japanese-n5-family-home-and-location",
+          "languages/japanese-n5-family-home-and-location-mixed",
+          "languages/japanese-n5-family-home-and-location-open-answer"
+        ],
+        "checkpointExerciseSlug": "languages/japanese-n5-family-home-and-location-mixed",
         "passThreshold": 0.8,
-        "estimatedMinutes": 180
+        "minimumSkillScore": 0.6,
+        "estimatedMinutes": 360
       },
       {
-        "id": "everyday-navigator",
-        "label": "Everyday Navigator",
+        "id": "n5-everyday-japanese",
+        "label": "Everyday Japanese",
         "level": "A1",
         "status": "published",
-        "summary": "Complete predictable daily tasks involving places, routines, transport, requests, purchases, signs, and messages.",
-        "unitSlugs": ["everyday-navigator", "starter-kanji"],
-        "outcomes": [
-          { "id": "navigator-hear-plan", "statement": "I can understand the time, place, and transport in a short familiar plan.", "skillId": "a1-listening" },
-          { "id": "navigator-find-detail", "statement": "I can locate a concrete time, place, price, or instruction in a short text.", "skillId": "a1-reading" },
-          { "id": "navigator-write-message", "statement": "I can write a short message giving a meeting time and place.", "skillId": "a1-writing" },
-          { "id": "navigator-complete-task", "statement": "I can ask directions, make a request, arrange a meeting, or buy a simple item.", "skillId": "a1-interaction" }
+        "summary": "Build measurable N5 readiness across everyday japanese through original lessons and active practice.",
+        "unitSlugs": [
+          "routines-verbs-and-particles",
+          "food-shopping-and-counters",
+          "adjectives-weather-and-preferences",
+          "invitations-requests-and-permission"
         ],
-        "requiredNodeSlugs": ["languages/japanese-everyday-navigator", "languages/japanese-starter-kanji", "languages/japanese-everyday-navigator-checkpoint"],
-        "checkpointExerciseSlug": "languages/japanese-everyday-navigator-checkpoint",
+        "outcomes": [
+          {
+            "id": "n5-everyday-japanese-read",
+            "statement": "I can read and understand short N5-aligned material for everyday japanese.",
+            "skillId": "a1-reading"
+          },
+          {
+            "id": "n5-everyday-japanese-write",
+            "statement": "I can compose short beginner Japanese answers for everyday japanese.",
+            "skillId": "a1-writing"
+          },
+          {
+            "id": "n5-everyday-japanese-interact",
+            "statement": "I can use familiar expressions for everyday japanese.",
+            "skillId": "a1-interaction"
+          }
+        ],
+        "requiredNodeSlugs": [
+          "languages/japanese-n5-routines-verbs-and-particles",
+          "languages/japanese-n5-routines-verbs-and-particles-mixed",
+          "languages/japanese-n5-routines-verbs-and-particles-open-answer",
+          "languages/japanese-n5-food-shopping-and-counters",
+          "languages/japanese-n5-food-shopping-and-counters-mixed",
+          "languages/japanese-n5-food-shopping-and-counters-open-answer",
+          "languages/japanese-n5-adjectives-weather-and-preferences",
+          "languages/japanese-n5-adjectives-weather-and-preferences-mixed",
+          "languages/japanese-n5-adjectives-weather-and-preferences-open-answer",
+          "languages/japanese-n5-invitations-requests-and-permission",
+          "languages/japanese-n5-invitations-requests-and-permission-mixed",
+          "languages/japanese-n5-invitations-requests-and-permission-open-answer"
+        ],
+        "checkpointExerciseSlug": "languages/japanese-n5-invitations-requests-and-permission-mixed",
+        "passThreshold": 0.8,
+        "minimumSkillScore": 0.6,
+        "estimatedMinutes": 480
+      },
+      {
+        "id": "n5-reading-listening",
+        "label": "Reading And Listening",
+        "level": "A1",
+        "status": "published",
+        "summary": "Build measurable N5 readiness across reading and listening through original lessons and active practice.",
+        "unitSlugs": [
+          "transport-directions-and-travel",
+          "past-activities-and-messages"
+        ],
+        "outcomes": [
+          {
+            "id": "n5-reading-listening-read",
+            "statement": "I can read and understand short N5-aligned material for reading and listening.",
+            "skillId": "a1-reading"
+          },
+          {
+            "id": "n5-reading-listening-write",
+            "statement": "I can compose short beginner Japanese answers for reading and listening.",
+            "skillId": "a1-writing"
+          },
+          {
+            "id": "n5-reading-listening-interact",
+            "statement": "I can use familiar expressions for reading and listening.",
+            "skillId": "a1-interaction"
+          }
+        ],
+        "requiredNodeSlugs": [
+          "languages/japanese-n5-transport-directions-and-travel",
+          "languages/japanese-n5-transport-directions-and-travel-mixed",
+          "languages/japanese-n5-transport-directions-and-travel-open-answer",
+          "languages/japanese-n5-past-activities-and-messages",
+          "languages/japanese-n5-past-activities-and-messages-mixed",
+          "languages/japanese-n5-past-activities-and-messages-open-answer"
+        ],
+        "checkpointExerciseSlug": "languages/japanese-n5-past-activities-and-messages-mixed",
         "passThreshold": 0.8,
         "minimumSkillScore": 0.6,
         "estimatedMinutes": 300
+      },
+      {
+        "id": "n5-readiness",
+        "label": "N5 Readiness",
+        "level": "A1",
+        "status": "published",
+        "summary": "Build measurable N5 readiness across n5 readiness through original lessons and active practice.",
+        "unitSlugs": [
+          "n5-integrated-readiness"
+        ],
+        "outcomes": [
+          {
+            "id": "n5-readiness-read",
+            "statement": "I can read and understand short N5-aligned material for n5 readiness.",
+            "skillId": "a1-reading"
+          },
+          {
+            "id": "n5-readiness-write",
+            "statement": "I can compose short beginner Japanese answers for n5 readiness.",
+            "skillId": "a1-writing"
+          },
+          {
+            "id": "n5-readiness-interact",
+            "statement": "I can use familiar expressions for n5 readiness.",
+            "skillId": "a1-interaction"
+          }
+        ],
+        "requiredNodeSlugs": [
+          "languages/japanese-n5-n5-integrated-readiness",
+          "languages/japanese-n5-n5-integrated-readiness-mixed",
+          "languages/japanese-n5-n5-integrated-readiness-open-answer"
+        ],
+        "checkpointExerciseSlug": "languages/japanese-n5-n5-integrated-readiness-mixed",
+        "passThreshold": 0.8,
+        "minimumSkillScore": 0.6,
+        "estimatedMinutes": 180
       }
     ]
   }

@@ -1,0 +1,153 @@
+{
+  "slug": "languages/japanese-n5-identity-and-demonstratives-listening",
+  "title": "Identity And Demonstratives Listening",
+  "documentSlug": "languages/japanese-n5-identity-and-demonstratives",
+  "concept": "Identity And Demonstratives listening comprehension",
+  "difficulty": "foundation",
+  "tags": [
+    "japanese",
+    "n5",
+    "listening"
+  ],
+  "status": "draft",
+  "proficiencyLevel": "a1",
+  "skillIds": [
+    "a1-listening"
+  ],
+  "required": false,
+  "type": "questionnaire",
+  "questions": [
+    {
+      "id": "listen-1",
+      "kind": "listening-choice",
+      "prompt": "Choose the English meaning of the sentence you hear.",
+      "audioId": "n5-listen-1-1",
+      "options": [
+        {
+          "id": "correct",
+          "label": "I am a student.",
+          "isCorrect": true
+        },
+        {
+          "id": "distractor",
+          "label": "Today is Monday.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "私は学生です。 means I am a student.",
+      "skillIds": [
+        "a1-listening"
+      ]
+    },
+    {
+      "id": "listen-2",
+      "kind": "listening-choice",
+      "prompt": "Choose the English meaning of the sentence you hear.",
+      "audioId": "n5-listen-1-2",
+      "options": [
+        {
+          "id": "correct",
+          "label": "Today is Monday.",
+          "isCorrect": true
+        },
+        {
+          "id": "distractor",
+          "label": "I am also a student.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "今日は月曜日です。 means Today is Monday.",
+      "skillIds": [
+        "a1-listening"
+      ]
+    },
+    {
+      "id": "listen-3",
+      "kind": "listening-choice",
+      "prompt": "Choose the English meaning of the sentence you hear.",
+      "audioId": "n5-listen-1-3",
+      "options": [
+        {
+          "id": "correct",
+          "label": "I am also a student.",
+          "isCorrect": true
+        },
+        {
+          "id": "distractor",
+          "label": "Are you a student?",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "私も学生です。 means I am also a student.",
+      "skillIds": [
+        "a1-listening"
+      ]
+    },
+    {
+      "id": "listen-4",
+      "kind": "listening-choice",
+      "prompt": "Choose the English meaning of the sentence you hear.",
+      "audioId": "n5-listen-1-4",
+      "options": [
+        {
+          "id": "correct",
+          "label": "Are you a student?",
+          "isCorrect": true
+        },
+        {
+          "id": "distractor",
+          "label": "This is my book.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "学生ですか。 means Are you a student?",
+      "skillIds": [
+        "a1-listening"
+      ]
+    },
+    {
+      "id": "listen-5",
+      "kind": "listening-choice",
+      "prompt": "Choose the English meaning of the sentence you hear.",
+      "audioId": "n5-listen-1-5",
+      "options": [
+        {
+          "id": "correct",
+          "label": "This is my book.",
+          "isCorrect": true
+        },
+        {
+          "id": "distractor",
+          "label": "What is that?",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "これは私の本です。 means This is my book.",
+      "skillIds": [
+        "a1-listening"
+      ]
+    },
+    {
+      "id": "listen-6",
+      "kind": "listening-choice",
+      "prompt": "Choose the English meaning of the sentence you hear.",
+      "audioId": "n5-listen-1-6",
+      "options": [
+        {
+          "id": "correct",
+          "label": "What is that?",
+          "isCorrect": true
+        },
+        {
+          "id": "distractor",
+          "label": "I am a student.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "それは何ですか。 means What is that?",
+      "skillIds": [
+        "a1-listening"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,333 @@
+{
+  "slug": "languages/japanese-n5-past-activities-and-messages-mixed",
+  "title": "Past Activities And Messages Mixed Practice",
+  "documentSlug": "languages/japanese-n5-past-activities-and-messages",
+  "concept": "Past Activities And Messages N5 recognition",
+  "difficulty": "foundation",
+  "tags": [
+    "japanese",
+    "n5",
+    "vocabulary"
+  ],
+  "status": "published",
+  "proficiencyLevel": "a1",
+  "skillIds": [
+    "a1-reading"
+  ],
+  "required": true,
+  "type": "questionnaire",
+  "questions": [
+    {
+      "id": "word-1",
+      "kind": "choice",
+      "prompt": "Choose the best English meaning for ノート (ノート).",
+      "options": [
+        {
+          "id": "correct",
+          "label": "notebook",
+          "isCorrect": true
+        },
+        {
+          "id": "distractor-1",
+          "label": "yes",
+          "isCorrect": false
+        },
+        {
+          "id": "distractor-2",
+          "label": "box",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "ノート is read ノート and means notebook.",
+      "skillIds": [
+        "a1-reading"
+      ]
+    },
+    {
+      "id": "word-2",
+      "kind": "choice",
+      "prompt": "Choose the best English meaning for 登る (のぼる).",
+      "options": [
+        {
+          "id": "correct",
+          "label": "to climb",
+          "isCorrect": true
+        },
+        {
+          "id": "distractor-1",
+          "label": "counter for cupfuls",
+          "isCorrect": false
+        },
+        {
+          "id": "distractor-2",
+          "label": "bridge",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "登る is read のぼる and means to climb.",
+      "skillIds": [
+        "a1-reading"
+      ]
+    },
+    {
+      "id": "word-3",
+      "kind": "choice",
+      "prompt": "Choose the best English meaning for 飲み物 (のみもの).",
+      "options": [
+        {
+          "id": "correct",
+          "label": "drink, beverage",
+          "isCorrect": true
+        },
+        {
+          "id": "distractor-1",
+          "label": "ashtray",
+          "isCorrect": false
+        },
+        {
+          "id": "distractor-2",
+          "label": "chopsticks",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "飲み物 is read のみもの and means drink, beverage.",
+      "skillIds": [
+        "a1-reading"
+      ]
+    },
+    {
+      "id": "word-4",
+      "kind": "choice",
+      "prompt": "Choose the best English meaning for 飲む (のむ).",
+      "options": [
+        {
+          "id": "correct",
+          "label": "to drink",
+          "isCorrect": true
+        },
+        {
+          "id": "distractor-1",
+          "label": "to enter, to contain, to hold",
+          "isCorrect": false
+        },
+        {
+          "id": "distractor-2",
+          "label": "(something) begins",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "飲む is read のむ and means to drink.",
+      "skillIds": [
+        "a1-reading"
+      ]
+    },
+    {
+      "id": "word-5",
+      "kind": "choice",
+      "prompt": "Choose the best English meaning for 乗る (のる).",
+      "options": [
+        {
+          "id": "correct",
+          "label": "to get on, to ride in, to board",
+          "isCorrect": true
+        },
+        {
+          "id": "distractor-1",
+          "label": "postcard",
+          "isCorrect": false
+        },
+        {
+          "id": "distractor-2",
+          "label": "beginning, start",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "乗る is read のる and means to get on, to ride in, to board.",
+      "skillIds": [
+        "a1-reading"
+      ]
+    },
+    {
+      "id": "word-6",
+      "kind": "choice",
+      "prompt": "Choose the best English meaning for 歯 (は).",
+      "options": [
+        {
+          "id": "correct",
+          "label": "tooth",
+          "isCorrect": true
+        },
+        {
+          "id": "distractor-1",
+          "label": "to put on (items below your waist)",
+          "isCorrect": false
+        },
+        {
+          "id": "distractor-2",
+          "label": "for the first time",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "歯 is read は and means tooth.",
+      "skillIds": [
+        "a1-reading"
+      ]
+    },
+    {
+      "id": "word-7",
+      "kind": "choice",
+      "prompt": "Choose the best English meaning for パーティー (パーティー).",
+      "options": [
+        {
+          "id": "correct",
+          "label": "a party",
+          "isCorrect": true
+        },
+        {
+          "id": "distractor-1",
+          "label": "box",
+          "isCorrect": false
+        },
+        {
+          "id": "distractor-2",
+          "label": "to run",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "パーティー is read パーティー and means a party.",
+      "skillIds": [
+        "a1-reading"
+      ]
+    },
+    {
+      "id": "word-8",
+      "kind": "choice",
+      "prompt": "Choose the best English meaning for はい (はい).",
+      "options": [
+        {
+          "id": "correct",
+          "label": "yes",
+          "isCorrect": true
+        },
+        {
+          "id": "distractor-1",
+          "label": "bridge",
+          "isCorrect": false
+        },
+        {
+          "id": "distractor-2",
+          "label": "bus; bath; bass",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "はい is read はい and means yes.",
+      "skillIds": [
+        "a1-reading"
+      ]
+    },
+    {
+      "id": "word-9",
+      "kind": "choice",
+      "prompt": "Choose the best English meaning for ～杯 (～はい).",
+      "options": [
+        {
+          "id": "correct",
+          "label": "counter for cupfuls",
+          "isCorrect": true
+        },
+        {
+          "id": "distractor-1",
+          "label": "chopsticks",
+          "isCorrect": false
+        },
+        {
+          "id": "distractor-2",
+          "label": "butter",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "～杯 is read ～はい and means counter for cupfuls.",
+      "skillIds": [
+        "a1-reading"
+      ]
+    },
+    {
+      "id": "word-10",
+      "kind": "choice",
+      "prompt": "Choose the best English meaning for 灰皿 (はいざら).",
+      "options": [
+        {
+          "id": "correct",
+          "label": "ashtray",
+          "isCorrect": true
+        },
+        {
+          "id": "distractor-1",
+          "label": "(something) begins",
+          "isCorrect": false
+        },
+        {
+          "id": "distractor-2",
+          "label": "20 years old",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "灰皿 is read はいざら and means ashtray.",
+      "skillIds": [
+        "a1-reading"
+      ]
+    },
+    {
+      "id": "word-11",
+      "kind": "choice",
+      "prompt": "Choose the best English meaning for 入る (はいる).",
+      "options": [
+        {
+          "id": "correct",
+          "label": "to enter, to contain, to hold",
+          "isCorrect": true
+        },
+        {
+          "id": "distractor-1",
+          "label": "beginning, start",
+          "isCorrect": false
+        },
+        {
+          "id": "distractor-2",
+          "label": "to work",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "入る is read はいる and means to enter, to contain, to hold.",
+      "skillIds": [
+        "a1-reading"
+      ]
+    },
+    {
+      "id": "word-12",
+      "kind": "choice",
+      "prompt": "Choose the best English meaning for 葉書 (はがき).",
+      "options": [
+        {
+          "id": "correct",
+          "label": "postcard",
+          "isCorrect": true
+        },
+        {
+          "id": "distractor-1",
+          "label": "for the first time",
+          "isCorrect": false
+        },
+        {
+          "id": "distractor-2",
+          "label": "eight",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "葉書 is read はがき and means postcard.",
+      "skillIds": [
+        "a1-reading"
+      ]
+    }
+  ]
+}

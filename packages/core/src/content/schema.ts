@@ -228,6 +228,19 @@ export const questionnaireClozeQuestionSchema = questionBaseSchema.extend({
   acceptedAnswers: z.array(z.string().min(1)).min(1),
 });
 
+export const openAnswerQuestionSchema = questionBaseSchema.extend({
+  kind: z.literal("open-answer"),
+  template: z.string().min(9),
+  acceptedAnswers: z.array(z.string().min(1)).min(1),
+  inputMode: z.literal("japanese-ime"),
+});
+
+export const listeningChoiceQuestionSchema = questionBaseSchema.extend({
+  kind: z.literal("listening-choice"),
+  audioId: curriculumIdSchema,
+  options: z.array(z.object({ id: questionIdSchema, label: z.string().min(1), isCorrect: z.boolean() })).min(2),
+});
+
 export const orderingQuestionSchema = questionBaseSchema.extend({
   kind: z.literal("ordering"),
   items: z
@@ -259,6 +272,8 @@ export const questionnaireQuestionSchema = z.discriminatedUnion("kind", [
   questionnaireClozeQuestionSchema,
   orderingQuestionSchema,
   matchingQuestionSchema,
+  openAnswerQuestionSchema,
+  listeningChoiceQuestionSchema,
 ]);
 
 export const questionnaireExerciseFileSchema = exerciseBaseSchema.extend({
@@ -369,6 +384,10 @@ export const languageVocabularyFileItemSchema = z.object({
   inputSequences: z.array(z.string().min(1)).default([]),
   ipa: z.string().min(1),
   meanings: z.array(z.string().min(1)).min(1),
+  wordClass: z.array(z.string().min(2)).default([]),
+  studyOrder: z.number().int().positive().default(9999),
+  unitSlugs: z.array(curriculumIdSchema).default([]),
+  jlptAlignment: z.literal("n5").optional(),
   characterSlugs: z.array(slugSchema).default([]),
   segments: z.array(languageExampleSegmentSchema).default([]),
   examples: z.array(languageExampleSchema).default([]),
@@ -376,6 +395,22 @@ export const languageVocabularyFileItemSchema = z.object({
   status: contentStatusSchema.default("draft"),
   audioId: curriculumIdSchema.optional(),
   sources: z.array(languageSourceSchema).default([]),
+});
+
+export const languageGrammarFileItemSchema = z.object({
+  id: curriculumIdSchema,
+  title: z.string().min(3),
+  pattern: z.string().min(2),
+  meaning: z.string().min(10),
+  formation: z.array(z.string().min(1)).min(1),
+  notes: z.array(z.string().min(5)).min(1),
+  studyOrder: z.number().int().positive(),
+  unitSlug: curriculumIdSchema,
+  proficiencyLevel: proficiencyLevelSchema,
+  jlptAlignment: z.literal("n5"),
+  examples: z.array(z.object({ japanese: z.string().min(1), reading: z.string().min(1), romaji: z.string().min(1), translation: z.string().min(1) })).min(1),
+  status: contentStatusSchema.default("draft"),
+  sourceRefs: z.array(curriculumIdSchema).default([]),
 });
 
 export const languageCharacterCatalogFileSchema = z.object({
@@ -390,6 +425,12 @@ export const languageVocabularyCatalogFileSchema = z.object({
   items: z.array(languageVocabularyFileItemSchema).min(1),
 });
 
+export const languageGrammarCatalogFileSchema = z.object({
+  kind: z.literal("grammar"),
+  language: languageCodeSchema.default("ja"),
+  items: z.array(languageGrammarFileItemSchema).min(1),
+});
+
 export const languageAudioAssetSchema = z.object({
   id: curriculumIdSchema,
   transcript: z.string().min(1),
@@ -398,6 +439,35 @@ export const languageAudioAssetSchema = z.object({
   license: z.string().min(3),
   attribution: z.string().min(3),
   assetPath: z.string().regex(/^audio\/[a-zA-Z0-9/_-]+\.(?:mp3|m4a|wav|ogg)$/),
+  qaStatus: z.enum(["draft", "approved", "rejected"]).default("approved"),
+  disclosure: z.string().min(3).default("Human-recorded voice"),
+  qaReviewedAt: z.string().datetime().optional(),
+  qaReviewer: z.string().min(2).optional(),
+  unitSlug: curriculumIdSchema.optional(),
+  generation: z.object({
+    provider: z.literal("openai"),
+    model: z.literal("gpt-4o-mini-tts"),
+    voice: z.enum(["marin", "cedar"]),
+    instructions: z.string().min(10),
+  }).optional(),
+  provenance: z.object({
+    kind: z.literal("openai-tts"),
+    model: z.literal("gpt-4o-mini-tts"),
+    voice: z.enum(["marin", "cedar"]),
+    instructions: z.string().min(10),
+    generatedAt: z.string().datetime(),
+    checksum: z.string().regex(/^[a-f0-9]{64}$/),
+  }).optional(),
+}).superRefine((asset, context) => {
+  if (asset.generation && !asset.disclosure.toLowerCase().includes("ai-generated")) {
+    context.addIssue({ code: "custom", path: ["disclosure"], message: "Generated audio needs an AI-generated voice disclosure." });
+  }
+  if (asset.provenance && !asset.disclosure.toLowerCase().includes("ai-generated")) {
+    context.addIssue({ code: "custom", path: ["disclosure"], message: "Generated audio needs an AI-generated voice disclosure." });
+  }
+  if (asset.qaStatus === "approved" && asset.provenance && (!asset.qaReviewedAt || !asset.qaReviewer)) {
+    context.addIssue({ code: "custom", path: ["qaStatus"], message: "Approved generated audio needs reviewer metadata." });
+  }
 });
 
 export const languageAudioCatalogFileSchema = z.object({
@@ -433,6 +503,7 @@ export const languageExternalResourceCatalogFileSchema = z.object({
 export const languageCatalogFileSchema = z.discriminatedUnion("kind", [
   languageCharacterCatalogFileSchema,
   languageVocabularyCatalogFileSchema,
+  languageGrammarCatalogFileSchema,
   languageAudioCatalogFileSchema,
   languageExternalResourceCatalogFileSchema,
 ]);
@@ -673,6 +744,7 @@ export type LanguageExampleSegment = z.infer<typeof languageExampleSegmentSchema
 export type LanguageExample = z.infer<typeof languageExampleSchema>;
 export type LanguageCharacterFileItem = z.infer<typeof languageCharacterFileItemSchema>;
 export type LanguageVocabularyFileItem = z.infer<typeof languageVocabularyFileItemSchema>;
+export type LanguageGrammarFileItem = z.infer<typeof languageGrammarFileItemSchema>;
 export type LanguageAudioAssetFileItem = z.infer<typeof languageAudioAssetSchema>;
 export type LanguageExternalResourceFileItem = z.infer<typeof languageExternalResourceSchema>;
 export type LanguageCatalogFile = z.infer<typeof languageCatalogFileSchema>;
@@ -750,6 +822,11 @@ export type LanguageVocabulary = LanguageVocabularyFileItem & {
   contentHash: string;
 };
 
+export type LanguageGrammar = LanguageGrammarFileItem & {
+  sourcePath: string;
+  contentHash: string;
+};
+
 export type LanguageAudioAsset = LanguageAudioAssetFileItem & {
   sourcePath: string;
   contentHash: string;
@@ -808,7 +885,7 @@ export type ContentTrack = {
 };
 
 export type ContentIndex = {
-  schemaVersion: 9;
+  schemaVersion: 10;
   sources: ContentSource[];
   documents: KnowledgeDocument[];
   diagrams: MermaidDiagram[];
@@ -816,6 +893,7 @@ export type ContentIndex = {
   exercises: LearningExercise[];
   languageCharacters: LanguageCharacter[];
   languageVocabulary: LanguageVocabulary[];
+  languageGrammar: LanguageGrammar[];
   languageAudio: LanguageAudioAsset[];
   languageResources: LanguageExternalResource[];
   passiveFlashcardFeeds: PassiveFlashcardFeed[];

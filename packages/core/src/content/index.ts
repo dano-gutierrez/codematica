@@ -53,6 +53,10 @@ export function getJapaneseVocabulary() {
   return contentIndex.languageVocabulary.filter((item) => item.language === "ja" && item.status === "published");
 }
 
+export function getJapaneseGrammar() {
+  return contentIndex.languageGrammar.filter((item) => item.status === "published");
+}
+
 export function getPassiveFlashcardFeedByPathSlug(pathSlug: string) {
   return contentIndex.passiveFlashcardFeeds.find((feed) => feed.pathSlug === pathSlug);
 }

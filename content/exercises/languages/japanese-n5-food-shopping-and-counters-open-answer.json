@@ -1,0 +1,143 @@
+{
+  "slug": "languages/japanese-n5-food-shopping-and-counters-open-answer",
+  "title": "Food, Shopping, And Counters Open Answer",
+  "documentSlug": "languages/japanese-n5-food-shopping-and-counters",
+  "concept": "Food, Shopping, And Counters Japanese composition",
+  "difficulty": "foundation",
+  "tags": [
+    "japanese",
+    "n5",
+    "writing",
+    "ime"
+  ],
+  "status": "published",
+  "proficiencyLevel": "a1",
+  "skillIds": [
+    "a1-writing",
+    "kana-ime"
+  ],
+  "required": true,
+  "type": "questionnaire",
+  "questions": [
+    {
+      "id": "write-1",
+      "kind": "open-answer",
+      "prompt": "Write the Japanese sentence: I talk with a friend.",
+      "template": "{{blank}}",
+      "acceptedAnswers": [
+        "友達と話します。"
+      ],
+      "inputMode": "japanese-ime",
+      "explanation": "Person + と: Mark the person who participates in an action with someone.",
+      "skillIds": [
+        "a1-writing",
+        "kana-ime"
+      ]
+    },
+    {
+      "id": "write-2",
+      "kind": "open-answer",
+      "prompt": "Write the Japanese sentence: I go by train.",
+      "template": "{{blank}}",
+      "acceptedAnswers": [
+        "電車で行きます。"
+      ],
+      "inputMode": "japanese-ime",
+      "explanation": "Tool or vehicle + で: Mark the means, instrument, language, or transport used.",
+      "skillIds": [
+        "a1-writing",
+        "kana-ime"
+      ]
+    },
+    {
+      "id": "write-3",
+      "kind": "open-answer",
+      "prompt": "Write the Japanese sentence: Please give me water.",
+      "template": "{{blank}}",
+      "acceptedAnswers": [
+        "水をください。"
+      ],
+      "inputMode": "japanese-ime",
+      "explanation": "Noun + をください: Politely ask for an item in a shop or restaurant.",
+      "skillIds": [
+        "a1-writing",
+        "kana-ime"
+      ]
+    },
+    {
+      "id": "write-4",
+      "kind": "open-answer",
+      "prompt": "Write the Japanese sentence: Please write your name here.",
+      "template": "{{blank}}",
+      "acceptedAnswers": [
+        "ここに名前を書いてください。"
+      ],
+      "inputMode": "japanese-ime",
+      "explanation": "て-form + ください: Politely request that another person perform an action.",
+      "skillIds": [
+        "a1-writing",
+        "kana-ime"
+      ]
+    },
+    {
+      "id": "write-5",
+      "kind": "open-answer",
+      "prompt": "Write the Japanese sentence: May I take a photo?",
+      "template": "{{blank}}",
+      "acceptedAnswers": [
+        "写真を撮ってもいいですか。"
+      ],
+      "inputMode": "japanese-ime",
+      "explanation": "て-form + もいいです: Ask for or grant permission to do something.",
+      "skillIds": [
+        "a1-writing",
+        "kana-ime"
+      ]
+    },
+    {
+      "id": "write-6",
+      "kind": "open-answer",
+      "prompt": "Write the Japanese sentence: You must not eat here.",
+      "template": "{{blank}}",
+      "acceptedAnswers": [
+        "ここで食べてはいけません。"
+      ],
+      "inputMode": "japanese-ime",
+      "explanation": "て-form + はいけません: State that an action is prohibited.",
+      "skillIds": [
+        "a1-writing",
+        "kana-ime"
+      ]
+    },
+    {
+      "id": "write-7",
+      "kind": "open-answer",
+      "prompt": "Write the Japanese sentence: I talk with a friend.",
+      "template": "{{blank}}",
+      "acceptedAnswers": [
+        "友達と話します。"
+      ],
+      "inputMode": "japanese-ime",
+      "explanation": "Person + と: Mark the person who participates in an action with someone.",
+      "skillIds": [
+        "a1-writing",
+        "kana-ime"
+      ]
+    },
+    {
+      "id": "write-8",
+      "kind": "open-answer",
+      "prompt": "Write the Japanese sentence: I go by train.",
+      "template": "{{blank}}",
+      "acceptedAnswers": [
+        "電車で行きます。"
+      ],
+      "inputMode": "japanese-ime",
+      "explanation": "Tool or vehicle + で: Mark the means, instrument, language, or transport used.",
+      "skillIds": [
+        "a1-writing",
+        "kana-ime"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,333 @@
+{
+  "slug": "languages/japanese-n5-transport-directions-and-travel-mixed",
+  "title": "Transport, Directions, And Travel Mixed Practice",
+  "documentSlug": "languages/japanese-n5-transport-directions-and-travel",
+  "concept": "Transport, Directions, And Travel N5 recognition",
+  "difficulty": "foundation",
+  "tags": [
+    "japanese",
+    "n5",
+    "vocabulary"
+  ],
+  "status": "published",
+  "proficiencyLevel": "a1",
+  "skillIds": [
+    "a1-reading"
+  ],
+  "required": true,
+  "type": "questionnaire",
+  "questions": [
+    {
+      "id": "word-1",
+      "kind": "choice",
+      "prompt": "Choose the best English meaning for どうして (どうして).",
+      "options": [
+        {
+          "id": "correct",
+          "label": "why, for what reason",
+          "isCorrect": true
+        },
+        {
+          "id": "distractor-1",
+          "label": "at the time of ~",
+          "isCorrect": false
+        },
+        {
+          "id": "distractor-2",
+          "label": "library",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "どうして is read どうして and means why, for what reason.",
+      "skillIds": [
+        "a1-reading"
+      ]
+    },
+    {
+      "id": "word-2",
+      "kind": "choice",
+      "prompt": "Choose the best English meaning for どうぞ (どうぞ).",
+      "options": [
+        {
+          "id": "correct",
+          "label": "please, kindly, by all means",
+          "isCorrect": true
+        },
+        {
+          "id": "distractor-1",
+          "label": "sometimes",
+          "isCorrect": false
+        },
+        {
+          "id": "distractor-2",
+          "label": "which (one) (way); where (polite)",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "どうぞ is read どうぞ and means please, kindly, by all means.",
+      "skillIds": [
+        "a1-reading"
+      ]
+    },
+    {
+      "id": "word-3",
+      "kind": "choice",
+      "prompt": "Choose the best English meaning for 動物 (どうぶつ).",
+      "options": [
+        {
+          "id": "correct",
+          "label": "animal",
+          "isCorrect": true
+        },
+        {
+          "id": "distractor-1",
+          "label": "a watch; a clock",
+          "isCorrect": false
+        },
+        {
+          "id": "distractor-2",
+          "label": "which one, which way",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "動物 is read どうぶつ and means animal.",
+      "skillIds": [
+        "a1-reading"
+      ]
+    },
+    {
+      "id": "word-4",
+      "kind": "choice",
+      "prompt": "Choose the best English meaning for どうも (どうも).",
+      "options": [
+        {
+          "id": "correct",
+          "label": "Thank you; somehow; no matter how hard one may try",
+          "isCorrect": true
+        },
+        {
+          "id": "distractor-1",
+          "label": "where, what place",
+          "isCorrect": false
+        },
+        {
+          "id": "distractor-2",
+          "label": "very (much), greatly, exceedingly",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "どうも is read どうも and means Thank you; somehow; no matter how hard one may try.",
+      "skillIds": [
+        "a1-reading"
+      ]
+    },
+    {
+      "id": "word-5",
+      "kind": "choice",
+      "prompt": "Choose the best English meaning for 十 ((〜を) とお).",
+      "options": [
+        {
+          "id": "correct",
+          "label": "ten (~)",
+          "isCorrect": true
+        },
+        {
+          "id": "distractor-1",
+          "label": "place",
+          "isCorrect": false
+        },
+        {
+          "id": "distractor-2",
+          "label": "who",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "十 is read (〜を) とお and means ten (~).",
+      "skillIds": [
+        "a1-reading"
+      ]
+    },
+    {
+      "id": "word-6",
+      "kind": "choice",
+      "prompt": "Choose the best English meaning for 遠い (とおい).",
+      "options": [
+        {
+          "id": "correct",
+          "label": "far (away), distant",
+          "isCorrect": true
+        },
+        {
+          "id": "distractor-1",
+          "label": "year, age",
+          "isCorrect": false
+        },
+        {
+          "id": "distractor-2",
+          "label": "next to, next door to",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "遠い is read とおい and means far (away), distant.",
+      "skillIds": [
+        "a1-reading"
+      ]
+    },
+    {
+      "id": "word-7",
+      "kind": "choice",
+      "prompt": "Choose the best English meaning for 十日 (とおか).",
+      "options": [
+        {
+          "id": "correct",
+          "label": "ten days; tenth day of the month",
+          "isCorrect": true
+        },
+        {
+          "id": "distractor-1",
+          "label": "library",
+          "isCorrect": false
+        },
+        {
+          "id": "distractor-2",
+          "label": "which",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "十日 is read とおか and means ten days; tenth day of the month.",
+      "skillIds": [
+        "a1-reading"
+      ]
+    },
+    {
+      "id": "word-8",
+      "kind": "choice",
+      "prompt": "Choose the best English meaning for ～時 (～とき).",
+      "options": [
+        {
+          "id": "correct",
+          "label": "at the time of ~",
+          "isCorrect": true
+        },
+        {
+          "id": "distractor-1",
+          "label": "which (one) (way); where (polite)",
+          "isCorrect": false
+        },
+        {
+          "id": "distractor-2",
+          "label": "to fly, to hop",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "～時 is read ～とき and means at the time of ~.",
+      "skillIds": [
+        "a1-reading"
+      ]
+    },
+    {
+      "id": "word-9",
+      "kind": "choice",
+      "prompt": "Choose the best English meaning for 時々 (ときどき).",
+      "options": [
+        {
+          "id": "correct",
+          "label": "sometimes",
+          "isCorrect": true
+        },
+        {
+          "id": "distractor-1",
+          "label": "which one, which way",
+          "isCorrect": false
+        },
+        {
+          "id": "distractor-2",
+          "label": "to come to a halt",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "時々 is read ときどき and means sometimes.",
+      "skillIds": [
+        "a1-reading"
+      ]
+    },
+    {
+      "id": "word-10",
+      "kind": "choice",
+      "prompt": "Choose the best English meaning for 時計 (とけい).",
+      "options": [
+        {
+          "id": "correct",
+          "label": "a watch; a clock",
+          "isCorrect": true
+        },
+        {
+          "id": "distractor-1",
+          "label": "very (much), greatly, exceedingly",
+          "isCorrect": false
+        },
+        {
+          "id": "distractor-2",
+          "label": "friend",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "時計 is read とけい and means a watch; a clock.",
+      "skillIds": [
+        "a1-reading"
+      ]
+    },
+    {
+      "id": "word-11",
+      "kind": "choice",
+      "prompt": "Choose the best English meaning for どこ (どこ).",
+      "options": [
+        {
+          "id": "correct",
+          "label": "where, what place",
+          "isCorrect": true
+        },
+        {
+          "id": "distractor-1",
+          "label": "who",
+          "isCorrect": false
+        },
+        {
+          "id": "distractor-2",
+          "label": "Saturday",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "どこ is read どこ and means where, what place.",
+      "skillIds": [
+        "a1-reading"
+      ]
+    },
+    {
+      "id": "word-12",
+      "kind": "choice",
+      "prompt": "Choose the best English meaning for 所 (ところ).",
+      "options": [
+        {
+          "id": "correct",
+          "label": "place",
+          "isCorrect": true
+        },
+        {
+          "id": "distractor-1",
+          "label": "next to, next door to",
+          "isCorrect": false
+        },
+        {
+          "id": "distractor-2",
+          "label": "chicken (lit., bird)",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "所 is read ところ and means place.",
+      "skillIds": [
+        "a1-reading"
+      ]
+    }
+  ]
+}

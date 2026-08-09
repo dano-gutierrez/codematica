@@ -16,6 +16,7 @@
     "./practice/questionnaire": "./src/practice/questionnaire.ts",
     "./language-writing": "./src/language-writing/index.ts",
     "./languages/japanese": "./src/languages/japanese.ts",
+    "./japanese-ime": "./src/japanese-ime/index.ts",
     "./flashcards/passive": "./src/flashcards/passive.ts",
     "./progress": "./src/progress/progress.ts",
     "./progress/server": "./src/progress/server.ts",

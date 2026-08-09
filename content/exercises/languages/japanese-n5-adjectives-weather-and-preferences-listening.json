@@ -1,0 +1,153 @@
+{
+  "slug": "languages/japanese-n5-adjectives-weather-and-preferences-listening",
+  "title": "Adjectives, Weather, And Preferences Listening",
+  "documentSlug": "languages/japanese-n5-adjectives-weather-and-preferences",
+  "concept": "Adjectives, Weather, And Preferences listening comprehension",
+  "difficulty": "foundation",
+  "tags": [
+    "japanese",
+    "n5",
+    "listening"
+  ],
+  "status": "draft",
+  "proficiencyLevel": "a1",
+  "skillIds": [
+    "a1-listening"
+  ],
+  "required": false,
+  "type": "questionnaire",
+  "questions": [
+    {
+      "id": "listen-1",
+      "kind": "listening-choice",
+      "prompt": "Choose the English meaning of the sentence you hear.",
+      "audioId": "n5-listen-6-1",
+      "options": [
+        {
+          "id": "correct",
+          "label": "Let us go home together.",
+          "isCorrect": true
+        },
+        {
+          "id": "distractor",
+          "label": "Would you like to watch a movie?",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "一緒に帰りましょう。 means Let us go home together.",
+      "skillIds": [
+        "a1-listening"
+      ]
+    },
+    {
+      "id": "listen-2",
+      "kind": "listening-choice",
+      "prompt": "Choose the English meaning of the sentence you hear.",
+      "audioId": "n5-listen-6-2",
+      "options": [
+        {
+          "id": "correct",
+          "label": "Would you like to watch a movie?",
+          "isCorrect": true
+        },
+        {
+          "id": "distractor",
+          "label": "I want to go to Japan.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "映画を見ませんか。 means Would you like to watch a movie?",
+      "skillIds": [
+        "a1-listening"
+      ]
+    },
+    {
+      "id": "listen-3",
+      "kind": "listening-choice",
+      "prompt": "Choose the English meaning of the sentence you hear.",
+      "audioId": "n5-listen-6-3",
+      "options": [
+        {
+          "id": "correct",
+          "label": "I want to go to Japan.",
+          "isCorrect": true
+        },
+        {
+          "id": "distractor",
+          "label": "I want a new bicycle.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "日本へ行きたいです。 means I want to go to Japan.",
+      "skillIds": [
+        "a1-listening"
+      ]
+    },
+    {
+      "id": "listen-4",
+      "kind": "listening-choice",
+      "prompt": "Choose the English meaning of the sentence you hear.",
+      "audioId": "n5-listen-6-4",
+      "options": [
+        {
+          "id": "correct",
+          "label": "I want a new bicycle.",
+          "isCorrect": true
+        },
+        {
+          "id": "distractor",
+          "label": "It is hot today.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "新しい自転車がほしいです。 means I want a new bicycle.",
+      "skillIds": [
+        "a1-listening"
+      ]
+    },
+    {
+      "id": "listen-5",
+      "kind": "listening-choice",
+      "prompt": "Choose the English meaning of the sentence you hear.",
+      "audioId": "n5-listen-6-5",
+      "options": [
+        {
+          "id": "correct",
+          "label": "It is hot today.",
+          "isCorrect": true
+        },
+        {
+          "id": "distractor",
+          "label": "It is a quiet town.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "今日は暑いです。 means It is hot today.",
+      "skillIds": [
+        "a1-listening"
+      ]
+    },
+    {
+      "id": "listen-6",
+      "kind": "listening-choice",
+      "prompt": "Choose the English meaning of the sentence you hear.",
+      "audioId": "n5-listen-6-6",
+      "options": [
+        {
+          "id": "correct",
+          "label": "It is a quiet town.",
+          "isCorrect": true
+        },
+        {
+          "id": "distractor",
+          "label": "Let us go home together.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "静かな町です。 means It is a quiet town.",
+      "skillIds": [
+        "a1-listening"
+      ]
+    }
+  ]
+}

@@ -7,7 +7,7 @@ describe("Japanese language helpers", () => {
     const index = getContentIndex();
     const groups = getJapaneseCharacterGroups(index);
 
-    expect(index.schemaVersion).toBe(9);
+    expect(index.schemaVersion).toBe(10);
     expect(groups.hiragana.some((item) => item.glyph === "あ" && item.ipa === "a")).toBe(true);
     expect(groups.katakana.some((item) => item.glyph === "ア" && item.ipa === "a")).toBe(true);
     expect(groups.kanji.some((item) => item.glyph === "人")).toBe(true);
@@ -42,6 +42,18 @@ describe("Japanese language helpers", () => {
     expect(new Set(catalog.map((item) => item.glyph))).toEqual(new Set(target));
     expect(catalog).toHaveLength(100);
     expect(new Set(catalog.map((item) => item.studyOrder))).toHaveLength(100);
+  });
+
+  it("ships the complete N5-aligned vocabulary and grammar foundation", () => {
+    const index = getContentIndex();
+    expect(index.languageVocabulary.filter((item) => item.status === "published" && item.jlptAlignment === "n5")).toHaveLength(650);
+    expect(index.languageGrammar.filter((item) => item.status === "published" && item.jlptAlignment === "n5")).toHaveLength(60);
+    expect(index.languageVocabulary.map((item) => item.studyOrder).every((order) => order > 0)).toBe(true);
+  });
+
+  it("does not publish kanji as handwriting-ready without original strokes", () => {
+    const target = getContentIndex().languageCharacters.filter((item) => item.writingSystem === "kanji" && item.glyph !== "晩");
+    expect(target.filter((item) => item.status === "published").every((item) => item.strokes.length > 0)).toBe(true);
   });
 
   it("searches by glyph, romaji, IPA, meaning, and vocabulary expression", () => {

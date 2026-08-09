@@ -43,7 +43,9 @@ flowchart TD
   FEEDS["content/flashcard-feeds/*.json"] --> Parser
   IV["content/interviews/*.json"] --> Parser
   LANG["content/languages/**/*.json"] --> Parser
-  AUDIO["Japanese audio manifest + local files"] --> Parser
+  AUDIO["Japanese TTS draft queue + approved local files"] --> Parser
+  GRAMMAR["Structured Japanese grammar + N5 vocabulary"] --> Parser
+  IME["Pinned compact JMdict candidate asset"] --> Core
   RES["Japanese external resource catalog"] --> Parser
   DISC["content/discovery/home.json"] --> Parser
   Parser --> Index["packages/core/src/generated/content-index.json"]
@@ -63,7 +65,8 @@ flowchart TD
   Web --> Vercel["Vercel build"]
   Vercel --> CDN["Static/SSG web delivery"]
   Native --> EAS["EAS internal + store builds"]
-  AUDIO --> AudioPrep["npm run content:audio"]
+  AUDIO --> HumanQA["Human Japanese approval"]
+  HumanQA --> AudioPrep["npm run content:audio"]
   AudioPrep --> WebAudio["Web asset URL registry"]
   AudioPrep --> NativeAudio["Expo static require registry"]
   WebAudio --> Web
@@ -116,9 +119,9 @@ Passive flashcard feeds live in `content/flashcard-feeds/*.json` and attach shor
 
 Interview collections live in `content/interviews/*.json` and are discriminated as `company` or `real-world`. Company algorithm questions retain reported-public links and guided Python, TypeScript, and Java tracks. Anonymous real-world questions require provenance notes and may provide structured evaluation rubrics plus at least three `WebExerciseProject` solutions. Web projects are authored locally, validated into the index, and executed only in Sandpack's cross-origin iframe; Expo shows the same files read-only.
 
-Human-language catalogs live in `content/languages/**/*.json`. Schema v9 generalizes progression into `jf-standard` and `career` frameworks with stable skills, stage status/level, outcomes, published checkpoints, and planned stages while preserving language audio/resource rights metadata. Japanese indexes the complete 46-character basic hiragana and katakana sets, focused sound/small-kana variants, an exact 100-kanji A1 target, vocabulary, learner romaji, distinct IME input sequences, IPA, structured phrase breakdowns, study order, and normalized stroke paths for published handwriting profiles. Audio files are canonical only when declared in the validated manifest; `npm run content:audio` generates web URLs and static Expo mappings without changing the authoring manifest. External resources default to link-only unless their redistribution rights are explicit.
+Human-language catalogs live in `content/languages/**/*.json`. Schema v10 adds structured grammar, N5 study metadata, Japanese open-answer/listening question kinds, and synthetic-audio provenance while retaining generic progression and resource-rights metadata. Japanese indexes complete kana, an exact 100-kanji target, 650 N5-aligned words, 60 grammar patterns, learner romaji, IPA, study order, and normalized paths for published handwriting profiles. A compact pinned JMdict asset supplies local IME candidates. Only human-approved audio enters generated web/Expo registries; external resources remain link-only unless redistribution rights are explicit.
 
-Home discovery curation lives in `content/discovery/home.json`. It references canonical published content by kind and slug; index generation validates every reference and serializes the ordered sections into content index schema version 9. `packages/core/src/discovery.ts` resolves those references and provides cross-section local search to web and native.
+Home discovery curation lives in `content/discovery/home.json`. It references canonical published content by kind and slug; index generation validates every reference and serializes the ordered sections into content index schema version 10. `packages/core/src/discovery.ts` resolves those references and provides cross-section local search to web and native.
 
 The ML Systems Engineer path is the first source-linked career curriculum. It maps the complete Harvard CS249r student surface—both books, labs, TinyTorch, MLSys·im, optional hardware, and StaffML—while locally publishing prerequisites and Volume I companions through Data Engineering. Later stages remain explicitly planned but open their primary sources now.
 
@@ -134,7 +137,7 @@ The Breadth-First Search And Depth-First Search path is the graph-traversal Prog
 
 The Reading And Writing Mermaid Diagrams path is the source-first technical documentation slice. It uses the existing embedded Mermaid renderer to pair 13 inspectable source blocks with browser-rendered output across flowchart, sequence, class, state, ER, Gantt, journey, pie, mindmap, timeline, and Git graph families. Three choice-only questionnaires enforce one correct option and explain every distractor; a passive feed reinforces selection, syntax, debugging, and readability.
 
-The Japanese Foundations path is the first human-language slice. Its open JF/CEFR progression spans Kana Explorer (Pre-A1), First Connections (A1), and Everyday Navigator (A1), with Can-do milestones, contextual checkpoints, two original mini-readers, an exact 100-kanji target, deterministic review, dictionary profiles, responsive tracing, flashcards, and a rights-aware resource shelf across web and Expo. Audio metadata and platform registry generation are implemented, but the corpus stays unpublished until genuine released recordings exist.
+The Japanese Foundations path is the first human-language slice. Its open progression spans Kana Explorer followed by Core Connections, Everyday Japanese, Reading and Listening, and N5 Readiness. Ten progressive A1 units combine original lessons, mixed quizzes, open-answer IME composition, cumulative flashcards, and approval-gated listening across web and Expo. Pencil Scribble writes into the same transient native text input; no raw ink or answer history is persisted.
 
 Progress is user state, not authored content. Existing completion remains in `user_progress_items`. Japanese mastery is additive: anonymous review state persists locally, while `user_skill_progress` provides an RLS-protected signed-in target for best score, attempt count, review box, mastery state, and review times. Web and Expo load the remote snapshot when authenticated, validate it, merge it deterministically with retained local state, save the merged snapshot locally, and upload it in batches of at most 20. Neither path stores answers, raw handwriting, recordings, or full attempt history.
 

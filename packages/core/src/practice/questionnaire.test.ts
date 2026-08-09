@@ -66,6 +66,8 @@ describe("questionnaire helpers", () => {
       { question: { ...questionnaire.questions[0], skillIds: ["systems-thinking", "quantitative-reasoning"] }, isCorrect: true },
       { question: { ...questionnaire.questions[1], skillIds: ["quantitative-reasoning"] }, isCorrect: false },
     ])).toEqual({ overall: 0.5, skills: { "systems-thinking": 1, "quantitative-reasoning": 0.5 } });
+    expect(calculateQuestionnaireSkillScores([])).toEqual({ overall: 0, skills: {} });
+    expect(calculateQuestionnaireSkillScores([{ question: questionnaire.questions[0], isCorrect: false }])).toEqual({ overall: 0, skills: {} });
   });
 
   it("creates a shuffled attempt without mutating source questions", () => {
@@ -121,5 +123,51 @@ describe("questionnaire helpers", () => {
     expect(checkQuestionAnswer(noCorrect, { kind: "choice", selectedOptionId: "anything" })).toEqual({ isCorrect: false, correctAnswer: "" });
     const emptyCloze = { ...questionnaire.questions[1], acceptedAnswers: [] };
     expect(checkQuestionAnswer(emptyCloze, { kind: "cloze", value: "" })).toEqual({ isCorrect: false, correctAnswer: "" });
+  });
+
+  it("normalizes Japanese open answers without accepting unconverted romaji", () => {
+    const question = {
+      id: "student-answer",
+      kind: "open-answer" as const,
+      prompt: "Write: I am a student.",
+      template: "{{blank}}",
+      acceptedAnswers: ["私は学生です。", "わたしはがくせいです。"],
+      inputMode: "japanese-ime" as const,
+      explanation: "Use the topic particle and polite copula.",
+    };
+
+    expect(checkQuestionAnswer(question, { kind: "open-answer", value: " 私は学生です｡ " }).isCorrect).toBe(true);
+    expect(checkQuestionAnswer(question, { kind: "open-answer", value: "watashi wa gakusei desu" }).isCorrect).toBe(false);
+  });
+
+  it("grades listening choices like choices while keeping the audio question kind", () => {
+    const question = {
+      id: "listen-answer",
+      kind: "listening-choice" as const,
+      prompt: "Choose the meaning.",
+      audioId: "listen-student",
+      options: [{ id: "student", label: "Student", isCorrect: true }, { id: "teacher", label: "Teacher", isCorrect: false }],
+      explanation: "学生 means student.",
+    };
+    expect(checkQuestionAnswer(question, { kind: "listening-choice", selectedOptionId: "student" })).toEqual({ isCorrect: true, correctAnswer: "Student" });
+    expect(checkQuestionAnswer(question, { kind: "cloze", value: "student" })).toEqual({ isCorrect: false, correctAnswer: "Student" });
+    expect(checkQuestionAnswer({ ...question, options: question.options.map((option) => ({ ...option, isCorrect: false })) }, { kind: "listening-choice", selectedOptionId: "student" })).toEqual({ isCorrect: false, correctAnswer: "" });
+  });
+
+  it("provides safe feedback for mismatched open, cloze, and incomplete ordering data", () => {
+    const open = {
+      id: "empty-open",
+      kind: "open-answer" as const,
+      prompt: "Write Japanese.",
+      template: "{{blank}}",
+      acceptedAnswers: [],
+      inputMode: "japanese-ime" as const,
+      explanation: "Compose the sentence.",
+    };
+    expect(checkQuestionAnswer(open, { kind: "choice", selectedOptionId: "none" })).toEqual({ isCorrect: false, correctAnswer: "" });
+    expect(checkQuestionAnswer(questionnaire.questions[1], { kind: "choice", selectedOptionId: "none" })).toEqual({ isCorrect: false, correctAnswer: "runtime validation" });
+    const ordering = questionnaire.questions[2];
+    if (ordering.kind !== "ordering") throw new Error("Expected the ordering fixture.");
+    expect(checkQuestionAnswer({ ...ordering, correctOrder: ["receive", "missing"] }, { kind: "choice", selectedOptionId: "none" })).toEqual({ isCorrect: false, correctAnswer: "Receive unknown input -> missing" });
   });
 });

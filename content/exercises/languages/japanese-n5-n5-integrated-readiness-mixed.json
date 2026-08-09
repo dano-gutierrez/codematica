@@ -1,0 +1,333 @@
+{
+  "slug": "languages/japanese-n5-n5-integrated-readiness-mixed",
+  "title": "Integrated N5 Readiness Mixed Practice",
+  "documentSlug": "languages/japanese-n5-n5-integrated-readiness",
+  "concept": "Integrated N5 Readiness N5 recognition",
+  "difficulty": "foundation",
+  "tags": [
+    "japanese",
+    "n5",
+    "vocabulary"
+  ],
+  "status": "published",
+  "proficiencyLevel": "a1",
+  "skillIds": [
+    "a1-reading"
+  ],
+  "required": true,
+  "type": "questionnaire",
+  "questions": [
+    {
+      "id": "word-1",
+      "kind": "choice",
+      "prompt": "Choose the best English meaning for プール (プール).",
+      "options": [
+        {
+          "id": "correct",
+          "label": "swimming pool",
+          "isCorrect": true
+        },
+        {
+          "id": "distractor-1",
+          "label": "two days; second day of the month",
+          "isCorrect": false
+        },
+        {
+          "id": "distractor-2",
+          "label": "sentence, text",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "プール is read プール and means swimming pool.",
+      "skillIds": [
+        "a1-reading"
+      ]
+    },
+    {
+      "id": "word-2",
+      "kind": "choice",
+      "prompt": "Choose the best English meaning for フォーク (フォーク).",
+      "options": [
+        {
+          "id": "correct",
+          "label": "fork",
+          "isCorrect": true
+        },
+        {
+          "id": "distractor-1",
+          "label": "fat, thick",
+          "isCorrect": false
+        },
+        {
+          "id": "distractor-2",
+          "label": "a page",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "フォーク is read フォーク and means fork.",
+      "skillIds": [
+        "a1-reading"
+      ]
+    },
+    {
+      "id": "word-3",
+      "kind": "choice",
+      "prompt": "Choose the best English meaning for 吹く (ふく).",
+      "options": [
+        {
+          "id": "correct",
+          "label": "to blow (wind, etc.)",
+          "isCorrect": true
+        },
+        {
+          "id": "distractor-1",
+          "label": "winter",
+          "isCorrect": false
+        },
+        {
+          "id": "distractor-2",
+          "label": "unskillful, poor",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "吹く is read ふく and means to blow (wind, etc.).",
+      "skillIds": [
+        "a1-reading"
+      ]
+    },
+    {
+      "id": "word-4",
+      "kind": "choice",
+      "prompt": "Choose the best English meaning for 服 (ふく).",
+      "options": [
+        {
+          "id": "correct",
+          "label": "clothes",
+          "isCorrect": true
+        },
+        {
+          "id": "distractor-1",
+          "label": "to precipitate, to fall (e.g., rain, snow, etc.)",
+          "isCorrect": false
+        },
+        {
+          "id": "distractor-2",
+          "label": "bed",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "服 is read ふく and means clothes.",
+      "skillIds": [
+        "a1-reading"
+      ]
+    },
+    {
+      "id": "word-5",
+      "kind": "choice",
+      "prompt": "Choose the best English meaning for 二つ (ふたつ).",
+      "options": [
+        {
+          "id": "correct",
+          "label": "two things",
+          "isCorrect": true
+        },
+        {
+          "id": "distractor-1",
+          "label": "old (in reference to objects, not people), aged, ancient",
+          "isCorrect": false
+        },
+        {
+          "id": "distractor-2",
+          "label": "pet",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "二つ is read ふたつ and means two things.",
+      "skillIds": [
+        "a1-reading"
+      ]
+    },
+    {
+      "id": "word-6",
+      "kind": "choice",
+      "prompt": "Choose the best English meaning for 豚肉 (ぶたにく).",
+      "options": [
+        {
+          "id": "correct",
+          "label": "pork",
+          "isCorrect": true
+        },
+        {
+          "id": "distractor-1",
+          "label": "~ minutes",
+          "isCorrect": false
+        },
+        {
+          "id": "distractor-2",
+          "label": "a room",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "豚肉 is read ぶたにく and means pork.",
+      "skillIds": [
+        "a1-reading"
+      ]
+    },
+    {
+      "id": "word-7",
+      "kind": "choice",
+      "prompt": "Choose the best English meaning for 二人 (ふたり).",
+      "options": [
+        {
+          "id": "correct",
+          "label": "two people",
+          "isCorrect": true
+        },
+        {
+          "id": "distractor-1",
+          "label": "sentence, text",
+          "isCorrect": false
+        },
+        {
+          "id": "distractor-2",
+          "label": "area, vicinity",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "二人 is read ふたり and means two people.",
+      "skillIds": [
+        "a1-reading"
+      ]
+    },
+    {
+      "id": "word-8",
+      "kind": "choice",
+      "prompt": "Choose the best English meaning for 二日 (ふつか).",
+      "options": [
+        {
+          "id": "correct",
+          "label": "two days; second day of the month",
+          "isCorrect": true
+        },
+        {
+          "id": "distractor-1",
+          "label": "a page",
+          "isCorrect": false
+        },
+        {
+          "id": "distractor-2",
+          "label": "pen",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "二日 is read ふつか and means two days; second day of the month.",
+      "skillIds": [
+        "a1-reading"
+      ]
+    },
+    {
+      "id": "word-9",
+      "kind": "choice",
+      "prompt": "Choose the best English meaning for 太い (ふとい).",
+      "options": [
+        {
+          "id": "correct",
+          "label": "fat, thick",
+          "isCorrect": true
+        },
+        {
+          "id": "distractor-1",
+          "label": "unskillful, poor",
+          "isCorrect": false
+        },
+        {
+          "id": "distractor-2",
+          "label": "study",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "太い is read ふとい and means fat, thick.",
+      "skillIds": [
+        "a1-reading"
+      ]
+    },
+    {
+      "id": "word-10",
+      "kind": "choice",
+      "prompt": "Choose the best English meaning for 冬 (ふゆ).",
+      "options": [
+        {
+          "id": "correct",
+          "label": "winter",
+          "isCorrect": true
+        },
+        {
+          "id": "distractor-1",
+          "label": "bed",
+          "isCorrect": false
+        },
+        {
+          "id": "distractor-2",
+          "label": "convenient, handy",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "冬 is read ふゆ and means winter.",
+      "skillIds": [
+        "a1-reading"
+      ]
+    },
+    {
+      "id": "word-11",
+      "kind": "choice",
+      "prompt": "Choose the best English meaning for 降る (ふる).",
+      "options": [
+        {
+          "id": "correct",
+          "label": "to precipitate, to fall (e.g., rain, snow, etc.)",
+          "isCorrect": true
+        },
+        {
+          "id": "distractor-1",
+          "label": "pet",
+          "isCorrect": false
+        },
+        {
+          "id": "distractor-2",
+          "label": "hat; cap",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "降る is read ふる and means to precipitate, to fall (e.g., rain, snow, etc.).",
+      "skillIds": [
+        "a1-reading"
+      ]
+    },
+    {
+      "id": "word-12",
+      "kind": "choice",
+      "prompt": "Choose the best English meaning for 古い (ふるい).",
+      "options": [
+        {
+          "id": "correct",
+          "label": "old (in reference to objects, not people), aged, ancient",
+          "isCorrect": true
+        },
+        {
+          "id": "distractor-1",
+          "label": "a room",
+          "isCorrect": false
+        },
+        {
+          "id": "distractor-2",
+          "label": "ball-point pen",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "古い is read ふるい and means old (in reference to objects, not people), aged, ancient.",
+      "skillIds": [
+        "a1-reading"
+      ]
+    }
+  ]
+}

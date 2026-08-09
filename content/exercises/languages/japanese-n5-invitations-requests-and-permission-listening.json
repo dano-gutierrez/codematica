@@ -1,0 +1,153 @@
+{
+  "slug": "languages/japanese-n5-invitations-requests-and-permission-listening",
+  "title": "Invitations, Requests, And Permission Listening",
+  "documentSlug": "languages/japanese-n5-invitations-requests-and-permission",
+  "concept": "Invitations, Requests, And Permission listening comprehension",
+  "difficulty": "foundation",
+  "tags": [
+    "japanese",
+    "n5",
+    "listening"
+  ],
+  "status": "draft",
+  "proficiencyLevel": "a1",
+  "skillIds": [
+    "a1-listening"
+  ],
+  "required": false,
+  "type": "questionnaire",
+  "questions": [
+    {
+      "id": "listen-1",
+      "kind": "listening-choice",
+      "prompt": "Choose the English meaning of the sentence you hear.",
+      "audioId": "n5-listen-7-1",
+      "options": [
+        {
+          "id": "correct",
+          "label": "This book is not expensive.",
+          "isCorrect": true
+        },
+        {
+          "id": "distractor",
+          "label": "It was cold yesterday.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "この本は高くないです。 means This book is not expensive.",
+      "skillIds": [
+        "a1-listening"
+      ]
+    },
+    {
+      "id": "listen-2",
+      "kind": "listening-choice",
+      "prompt": "Choose the English meaning of the sentence you hear.",
+      "audioId": "n5-listen-7-2",
+      "options": [
+        {
+          "id": "correct",
+          "label": "It was cold yesterday.",
+          "isCorrect": true
+        },
+        {
+          "id": "distractor",
+          "label": "The train is faster than the bus.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "昨日は寒かったです。 means It was cold yesterday.",
+      "skillIds": [
+        "a1-listening"
+      ]
+    },
+    {
+      "id": "listen-3",
+      "kind": "listening-choice",
+      "prompt": "Choose the English meaning of the sentence you hear.",
+      "audioId": "n5-listen-7-3",
+      "options": [
+        {
+          "id": "correct",
+          "label": "The train is faster than the bus.",
+          "isCorrect": true
+        },
+        {
+          "id": "distractor",
+          "label": "I like fish more than meat.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "電車はバスより速いです。 means The train is faster than the bus.",
+      "skillIds": [
+        "a1-listening"
+      ]
+    },
+    {
+      "id": "listen-4",
+      "kind": "listening-choice",
+      "prompt": "Choose the English meaning of the sentence you hear.",
+      "audioId": "n5-listen-7-4",
+      "options": [
+        {
+          "id": "correct",
+          "label": "I like fish more than meat.",
+          "isCorrect": true
+        },
+        {
+          "id": "distractor",
+          "label": "Among fruits, I like apples best.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "肉より魚のほうが好きです。 means I like fish more than meat.",
+      "skillIds": [
+        "a1-listening"
+      ]
+    },
+    {
+      "id": "listen-5",
+      "kind": "listening-choice",
+      "prompt": "Choose the English meaning of the sentence you hear.",
+      "audioId": "n5-listen-7-5",
+      "options": [
+        {
+          "id": "correct",
+          "label": "Among fruits, I like apples best.",
+          "isCorrect": true
+        },
+        {
+          "id": "distractor",
+          "label": "I like music.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "果物でりんごが一番好きです。 means Among fruits, I like apples best.",
+      "skillIds": [
+        "a1-listening"
+      ]
+    },
+    {
+      "id": "listen-6",
+      "kind": "listening-choice",
+      "prompt": "Choose the English meaning of the sentence you hear.",
+      "audioId": "n5-listen-7-6",
+      "options": [
+        {
+          "id": "correct",
+          "label": "I like music.",
+          "isCorrect": true
+        },
+        {
+          "id": "distractor",
+          "label": "This book is not expensive.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "音楽が好きです。 means I like music.",
+      "skillIds": [
+        "a1-listening"
+      ]
+    }
+  ]
+}

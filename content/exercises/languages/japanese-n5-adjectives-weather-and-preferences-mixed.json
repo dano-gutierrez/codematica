@@ -1,0 +1,333 @@
+{
+  "slug": "languages/japanese-n5-adjectives-weather-and-preferences-mixed",
+  "title": "Adjectives, Weather, And Preferences Mixed Practice",
+  "documentSlug": "languages/japanese-n5-adjectives-weather-and-preferences",
+  "concept": "Adjectives, Weather, And Preferences N5 recognition",
+  "difficulty": "foundation",
+  "tags": [
+    "japanese",
+    "n5",
+    "vocabulary"
+  ],
+  "status": "published",
+  "proficiencyLevel": "a1",
+  "skillIds": [
+    "a1-reading"
+  ],
+  "required": true,
+  "type": "questionnaire",
+  "questions": [
+    {
+      "id": "word-1",
+      "kind": "choice",
+      "prompt": "Choose the best English meaning for ～中 (～じゅう).",
+      "options": [
+        {
+          "id": "correct",
+          "label": "during, while",
+          "isCorrect": true
+        },
+        {
+          "id": "distractor-1",
+          "label": "cafeteria, dining hall",
+          "isCorrect": false
+        },
+        {
+          "id": "distractor-2",
+          "label": "Wednesday",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "～中 is read ～じゅう and means during, while.",
+      "skillIds": [
+        "a1-reading"
+      ]
+    },
+    {
+      "id": "word-2",
+      "kind": "choice",
+      "prompt": "Choose the best English meaning for ～週間 (～しゅうかん).",
+      "options": [
+        {
+          "id": "correct",
+          "label": "~ weeks",
+          "isCorrect": true
+        },
+        {
+          "id": "distractor-1",
+          "label": "to know, to understand",
+          "isCorrect": false
+        },
+        {
+          "id": "distractor-2",
+          "label": "to breathe in, to suck",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "～週間 is read ～しゅうかん and means ~ weeks.",
+      "skillIds": [
+        "a1-reading"
+      ]
+    },
+    {
+      "id": "word-3",
+      "kind": "choice",
+      "prompt": "Choose the best English meaning for 授業 (じゅぎょう).",
+      "options": [
+        {
+          "id": "correct",
+          "label": "a class (of school)",
+          "isCorrect": true
+        },
+        {
+          "id": "distractor-1",
+          "label": "white",
+          "isCorrect": false
+        },
+        {
+          "id": "distractor-2",
+          "label": "skirt",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "授業 is read じゅぎょう and means a class (of school).",
+      "skillIds": [
+        "a1-reading"
+      ]
+    },
+    {
+      "id": "word-4",
+      "kind": "choice",
+      "prompt": "Choose the best English meaning for 宿題 (しゅくだい).",
+      "options": [
+        {
+          "id": "correct",
+          "label": "homework",
+          "isCorrect": true
+        },
+        {
+          "id": "distractor-1",
+          "label": "white",
+          "isCorrect": false
+        },
+        {
+          "id": "distractor-2",
+          "label": "liking, fondness, love",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "宿題 is read しゅくだい and means homework.",
+      "skillIds": [
+        "a1-reading"
+      ]
+    },
+    {
+      "id": "word-5",
+      "kind": "choice",
+      "prompt": "Choose the best English meaning for 上手 (じょうず).",
+      "options": [
+        {
+          "id": "correct",
+          "label": "be good at, skillful",
+          "isCorrect": true
+        },
+        {
+          "id": "distractor-1",
+          "label": "counter for people",
+          "isCorrect": false
+        },
+        {
+          "id": "distractor-2",
+          "label": "past; to exceed, ~ too much",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "上手 is read じょうず and means be good at, skillful.",
+      "skillIds": [
+        "a1-reading"
+      ]
+    },
+    {
+      "id": "word-6",
+      "kind": "choice",
+      "prompt": "Choose the best English meaning for 丈夫 (じょうぶ).",
+      "options": [
+        {
+          "id": "correct",
+          "label": "strong, solid, durable",
+          "isCorrect": true
+        },
+        {
+          "id": "distractor-1",
+          "label": "newspaper",
+          "isCorrect": false
+        },
+        {
+          "id": "distractor-2",
+          "label": "a little; a few",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "丈夫 is read じょうぶ and means strong, solid, durable.",
+      "skillIds": [
+        "a1-reading"
+      ]
+    },
+    {
+      "id": "word-7",
+      "kind": "choice",
+      "prompt": "Choose the best English meaning for 醤油 (しょうゆ).",
+      "options": [
+        {
+          "id": "correct",
+          "label": "soy sauce",
+          "isCorrect": true
+        },
+        {
+          "id": "distractor-1",
+          "label": "Wednesday",
+          "isCorrect": false
+        },
+        {
+          "id": "distractor-2",
+          "label": "immediately, soon",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "醤油 is read しょうゆ and means soy sauce.",
+      "skillIds": [
+        "a1-reading"
+      ]
+    },
+    {
+      "id": "word-8",
+      "kind": "choice",
+      "prompt": "Choose the best English meaning for 食堂 (しょくどう).",
+      "options": [
+        {
+          "id": "correct",
+          "label": "cafeteria, dining hall",
+          "isCorrect": true
+        },
+        {
+          "id": "distractor-1",
+          "label": "to breathe in, to suck",
+          "isCorrect": false
+        },
+        {
+          "id": "distractor-2",
+          "label": "little, few",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "食堂 is read しょくどう and means cafeteria, dining hall.",
+      "skillIds": [
+        "a1-reading"
+      ]
+    },
+    {
+      "id": "word-9",
+      "kind": "choice",
+      "prompt": "Choose the best English meaning for 知る (しる).",
+      "options": [
+        {
+          "id": "correct",
+          "label": "to know, to understand",
+          "isCorrect": true
+        },
+        {
+          "id": "distractor-1",
+          "label": "skirt",
+          "isCorrect": false
+        },
+        {
+          "id": "distractor-2",
+          "label": "cool, refreshing (in reference to weather)",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "知る is read しる and means to know, to understand.",
+      "skillIds": [
+        "a1-reading"
+      ]
+    },
+    {
+      "id": "word-10",
+      "kind": "choice",
+      "prompt": "Choose the best English meaning for 白 (しろ).",
+      "options": [
+        {
+          "id": "correct",
+          "label": "white",
+          "isCorrect": true
+        },
+        {
+          "id": "distractor-1",
+          "label": "liking, fondness, love",
+          "isCorrect": false
+        },
+        {
+          "id": "distractor-2",
+          "label": "at a time",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "白 is read しろ and means white.",
+      "skillIds": [
+        "a1-reading"
+      ]
+    },
+    {
+      "id": "word-11",
+      "kind": "choice",
+      "prompt": "Choose the best English meaning for 白い (しろい).",
+      "options": [
+        {
+          "id": "correct",
+          "label": "white",
+          "isCorrect": true
+        },
+        {
+          "id": "distractor-1",
+          "label": "past; to exceed, ~ too much",
+          "isCorrect": false
+        },
+        {
+          "id": "distractor-2",
+          "label": "heater (lit: stove)",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "白い is read しろい and means white.",
+      "skillIds": [
+        "a1-reading"
+      ]
+    },
+    {
+      "id": "word-12",
+      "kind": "choice",
+      "prompt": "Choose the best English meaning for ～人 (～じん).",
+      "options": [
+        {
+          "id": "correct",
+          "label": "counter for people",
+          "isCorrect": true
+        },
+        {
+          "id": "distractor-1",
+          "label": "a little; a few",
+          "isCorrect": false
+        },
+        {
+          "id": "distractor-2",
+          "label": "spoon",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "～人 is read ～じん and means counter for people.",
+      "skillIds": [
+        "a1-reading"
+      ]
+    }
+  ]
+}

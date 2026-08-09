@@ -1,0 +1,153 @@
+{
+  "slug": "languages/japanese-n5-transport-directions-and-travel-listening",
+  "title": "Transport, Directions, And Travel Listening",
+  "documentSlug": "languages/japanese-n5-transport-directions-and-travel",
+  "concept": "Transport, Directions, And Travel listening comprehension",
+  "difficulty": "foundation",
+  "tags": [
+    "japanese",
+    "n5",
+    "listening"
+  ],
+  "status": "draft",
+  "proficiencyLevel": "a1",
+  "skillIds": [
+    "a1-listening"
+  ],
+  "required": false,
+  "type": "questionnaire",
+  "questions": [
+    {
+      "id": "listen-1",
+      "kind": "listening-choice",
+      "prompt": "Choose the English meaning of the sentence you hear.",
+      "audioId": "n5-listen-8-1",
+      "options": [
+        {
+          "id": "correct",
+          "label": "My younger sister is good at cooking.",
+          "isCorrect": true
+        },
+        {
+          "id": "distractor",
+          "label": "I understand a little Japanese.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "妹は料理が上手です。 means My younger sister is good at cooking.",
+      "skillIds": [
+        "a1-listening"
+      ]
+    },
+    {
+      "id": "listen-2",
+      "kind": "listening-choice",
+      "prompt": "Choose the English meaning of the sentence you hear.",
+      "audioId": "n5-listen-8-2",
+      "options": [
+        {
+          "id": "correct",
+          "label": "I understand a little Japanese.",
+          "isCorrect": true
+        },
+        {
+          "id": "distractor",
+          "label": "Because it is raining, I will stay home.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "少し日本語が分かります。 means I understand a little Japanese.",
+      "skillIds": [
+        "a1-listening"
+      ]
+    },
+    {
+      "id": "listen-3",
+      "kind": "listening-choice",
+      "prompt": "Choose the English meaning of the sentence you hear.",
+      "audioId": "n5-listen-8-3",
+      "options": [
+        {
+          "id": "correct",
+          "label": "Because it is raining, I will stay home.",
+          "isCorrect": true
+        },
+        {
+          "id": "distractor",
+          "label": "I read a book before sleeping.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "雨ですから、家にいます。 means Because it is raining, I will stay home.",
+      "skillIds": [
+        "a1-listening"
+      ]
+    },
+    {
+      "id": "listen-4",
+      "kind": "listening-choice",
+      "prompt": "Choose the English meaning of the sentence you hear.",
+      "audioId": "n5-listen-8-4",
+      "options": [
+        {
+          "id": "correct",
+          "label": "I read a book before sleeping.",
+          "isCorrect": true
+        },
+        {
+          "id": "distractor",
+          "label": "I shop after work.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "寝る前に本を読みます。 means I read a book before sleeping.",
+      "skillIds": [
+        "a1-listening"
+      ]
+    },
+    {
+      "id": "listen-5",
+      "kind": "listening-choice",
+      "prompt": "Choose the English meaning of the sentence you hear.",
+      "audioId": "n5-listen-8-5",
+      "options": [
+        {
+          "id": "correct",
+          "label": "I shop after work.",
+          "isCorrect": true
+        },
+        {
+          "id": "distractor",
+          "label": "When I went to Japan, I bought a camera.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "仕事の後で買い物します。 means I shop after work.",
+      "skillIds": [
+        "a1-listening"
+      ]
+    },
+    {
+      "id": "listen-6",
+      "kind": "listening-choice",
+      "prompt": "Choose the English meaning of the sentence you hear.",
+      "audioId": "n5-listen-8-6",
+      "options": [
+        {
+          "id": "correct",
+          "label": "When I went to Japan, I bought a camera.",
+          "isCorrect": true
+        },
+        {
+          "id": "distractor",
+          "label": "My younger sister is good at cooking.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "日本へ行く時、カメラを買いました。 means When I went to Japan, I bought a camera.",
+      "skillIds": [
+        "a1-listening"
+      ]
+    }
+  ]
+}

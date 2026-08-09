@@ -1,0 +1,333 @@
+{
+  "slug": "languages/japanese-n5-invitations-requests-and-permission-mixed",
+  "title": "Invitations, Requests, And Permission Mixed Practice",
+  "documentSlug": "languages/japanese-n5-invitations-requests-and-permission",
+  "concept": "Invitations, Requests, And Permission N5 recognition",
+  "difficulty": "foundation",
+  "tags": [
+    "japanese",
+    "n5",
+    "vocabulary"
+  ],
+  "status": "published",
+  "proficiencyLevel": "a1",
+  "skillIds": [
+    "a1-reading"
+  ],
+  "required": true,
+  "type": "questionnaire",
+  "questions": [
+    {
+      "id": "word-1",
+      "kind": "choice",
+      "prompt": "Choose the best English meaning for ～だけ (～だけ).",
+      "options": [
+        {
+          "id": "correct",
+          "label": "only ~, just ~, as ~",
+          "isCorrect": true
+        },
+        {
+          "id": "distractor-1",
+          "label": "enjoyable, fun",
+          "isCorrect": false
+        },
+        {
+          "id": "distractor-2",
+          "label": "egg",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "～だけ is read ～だけ and means only ~, just ~, as ~.",
+      "skillIds": [
+        "a1-reading"
+      ]
+    },
+    {
+      "id": "word-2",
+      "kind": "choice",
+      "prompt": "Choose the best English meaning for 沢山 (たくさん).",
+      "options": [
+        {
+          "id": "correct",
+          "label": "many, much",
+          "isCorrect": true
+        },
+        {
+          "id": "distractor-1",
+          "label": "to request, to ask (a favor)",
+          "isCorrect": false
+        },
+        {
+          "id": "distractor-2",
+          "label": "who",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "沢山 is read たくさん and means many, much.",
+      "skillIds": [
+        "a1-reading"
+      ]
+    },
+    {
+      "id": "word-3",
+      "kind": "choice",
+      "prompt": "Choose the best English meaning for 出す (だす).",
+      "options": [
+        {
+          "id": "correct",
+          "label": "to take (something) out; to hand in (something)",
+          "isCorrect": true
+        },
+        {
+          "id": "distractor-1",
+          "label": "tobacco, cigarettes",
+          "isCorrect": false
+        },
+        {
+          "id": "distractor-2",
+          "label": "someone",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "出す is read だす and means to take (something) out; to hand in (something).",
+      "skillIds": [
+        "a1-reading"
+      ]
+    },
+    {
+      "id": "word-4",
+      "kind": "choice",
+      "prompt": "Choose the best English meaning for ～たち (～たち).",
+      "options": [
+        {
+          "id": "correct",
+          "label": "plural suffix",
+          "isCorrect": true
+        },
+        {
+          "id": "distractor-1",
+          "label": "perhaps, probably, maybe",
+          "isCorrect": false
+        },
+        {
+          "id": "distractor-2",
+          "label": "birthday",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "～たち is read ～たち and means plural suffix.",
+      "skillIds": [
+        "a1-reading"
+      ]
+    },
+    {
+      "id": "word-5",
+      "kind": "choice",
+      "prompt": "Choose the best English meaning for 立つ (たつ).",
+      "options": [
+        {
+          "id": "correct",
+          "label": "to stand up",
+          "isCorrect": true
+        },
+        {
+          "id": "distractor-1",
+          "label": "food",
+          "isCorrect": false
+        },
+        {
+          "id": "distractor-2",
+          "label": "gradually, by degrees",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "立つ is read たつ and means to stand up.",
+      "skillIds": [
+        "a1-reading"
+      ]
+    },
+    {
+      "id": "word-6",
+      "kind": "choice",
+      "prompt": "Choose the best English meaning for たて (たて).",
+      "options": [
+        {
+          "id": "correct",
+          "label": "length, height",
+          "isCorrect": true
+        },
+        {
+          "id": "distractor-1",
+          "label": "to eat",
+          "isCorrect": false
+        },
+        {
+          "id": "distractor-2",
+          "label": "small, little",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "たて is read たて and means length, height.",
+      "skillIds": [
+        "a1-reading"
+      ]
+    },
+    {
+      "id": "word-7",
+      "kind": "choice",
+      "prompt": "Choose the best English meaning for 建物 (たてもの).",
+      "options": [
+        {
+          "id": "correct",
+          "label": "building",
+          "isCorrect": true
+        },
+        {
+          "id": "distractor-1",
+          "label": "egg",
+          "isCorrect": false
+        },
+        {
+          "id": "distractor-2",
+          "label": "small, little",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "建物 is read たてもの and means building.",
+      "skillIds": [
+        "a1-reading"
+      ]
+    },
+    {
+      "id": "word-8",
+      "kind": "choice",
+      "prompt": "Choose the best English meaning for 楽しい (たのしい).",
+      "options": [
+        {
+          "id": "correct",
+          "label": "enjoyable, fun",
+          "isCorrect": true
+        },
+        {
+          "id": "distractor-1",
+          "label": "who",
+          "isCorrect": false
+        },
+        {
+          "id": "distractor-2",
+          "label": "near, close by, short",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "楽しい is read たのしい and means enjoyable, fun.",
+      "skillIds": [
+        "a1-reading"
+      ]
+    },
+    {
+      "id": "word-9",
+      "kind": "choice",
+      "prompt": "Choose the best English meaning for 頼む (たのむ).",
+      "options": [
+        {
+          "id": "correct",
+          "label": "to request, to ask (a favor)",
+          "isCorrect": true
+        },
+        {
+          "id": "distractor-1",
+          "label": "someone",
+          "isCorrect": false
+        },
+        {
+          "id": "distractor-2",
+          "label": "to be different; to differ; wrong",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "頼む is read たのむ and means to request, to ask (a favor).",
+      "skillIds": [
+        "a1-reading"
+      ]
+    },
+    {
+      "id": "word-10",
+      "kind": "choice",
+      "prompt": "Choose the best English meaning for たばこ (たばこ).",
+      "options": [
+        {
+          "id": "correct",
+          "label": "tobacco, cigarettes",
+          "isCorrect": true
+        },
+        {
+          "id": "distractor-1",
+          "label": "birthday",
+          "isCorrect": false
+        },
+        {
+          "id": "distractor-2",
+          "label": "nearby; in the neighborhood",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "たばこ is read たばこ and means tobacco, cigarettes.",
+      "skillIds": [
+        "a1-reading"
+      ]
+    },
+    {
+      "id": "word-11",
+      "kind": "choice",
+      "prompt": "Choose the best English meaning for 多分 (たぶん).",
+      "options": [
+        {
+          "id": "correct",
+          "label": "perhaps, probably, maybe",
+          "isCorrect": true
+        },
+        {
+          "id": "distractor-1",
+          "label": "gradually, by degrees",
+          "isCorrect": false
+        },
+        {
+          "id": "distractor-2",
+          "label": "underground train, subway",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "多分 is read たぶん and means perhaps, probably, maybe.",
+      "skillIds": [
+        "a1-reading"
+      ]
+    },
+    {
+      "id": "word-12",
+      "kind": "choice",
+      "prompt": "Choose the best English meaning for 食べ物 (たべもの).",
+      "options": [
+        {
+          "id": "correct",
+          "label": "food",
+          "isCorrect": true
+        },
+        {
+          "id": "distractor-1",
+          "label": "small, little",
+          "isCorrect": false
+        },
+        {
+          "id": "distractor-2",
+          "label": "a map",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "食べ物 is read たべもの and means food.",
+      "skillIds": [
+        "a1-reading"
+      ]
+    }
+  ]
+}

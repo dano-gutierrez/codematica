@@ -3,8 +3,8 @@
 ## Snapshot
 
 - Status: `in_progress`
-- Last updated: `2026-08-08`
-- Current state: schema-v9 generic progression now carries the existing Pre-A1/A1 roadmap, complete basic kana catalogs, contextual A1 lessons and mini-readers, original readiness checkpoints, deterministic skill review, resource-rights metadata, dictionary profiles, responsive handwriting, and web/Expo destinations. The audio manifest remains intentionally empty until released native-speaker recordings exist.
+- Last updated: `2026-08-09`
+- Current state: schema-v10 carries a kana-to-N5 roadmap, 650 N5-aligned vocabulary profiles, 60 structured grammar patterns, ten progressive A1 units, mixed/open-answer/listening questionnaires, a shared offline Japanese IME, Pencil Scribble-compatible text input, substantive flashcard/writing review routes, and approval-gated OpenAI TTS metadata across web and Expo.
 - Target outcome: English-speaking teens and adults can move from kana discovery to practical JF A1 Can-dos while keeping the entire course, reviews, dictionary, handwriting, flashcards, and resources open.
 
 ## One-Minute Brief
@@ -15,10 +15,11 @@ The learning loop is hear, notice, trace/manipulate, recall, read in context, us
 
 ## Shipped Contract
 
-- `ContentIndex.schemaVersion` is `8`.
+- `ContentIndex.schemaVersion` is `10`.
 - Learning paths may declare proficiency levels, skill strands, required nodes, JF Can-dos, open stages, checkpoint thresholds, and estimated time.
 - `/languages/japanese` and the Expo Japanese hub keep four destinations visible: Learn, Review, Dictionary, and Resources.
-- `/languages/japanese/review` recommends due skills and keeps every skill card available, but review routes do not advertise separate flashcard or audio-practice modes. The published flashcard feed remains available from the Japanese hub and learning path; audio practice remains absent until the recording corpus exists.
+- `/languages/japanese/review` keeps the due queue primary and links to substantive 650-card vocabulary and 80-prompt open-answer modes. Listening is linked only when its complete referenced audio is approved.
+- Open answers accept Japanese directly or convert romaji locally into kana/kanji candidates. iPad uses the same native `TextInput`, allowing on-device Apple Pencil Scribble without retaining raw ink.
 - Review uses six boxes: Again → box 0/10 minutes; Hard → back one/1 day; Good → forward one/1, 3, 7, 14, 30, 60 days; Easy → forward two/3, 7, 14, 30, 60, 120 days. Box 4+ is mastered.
 - Web and Expo review ratings expose a persistent selected/pressed state, announce the saved choice, and lock the four ratings after one choice so an accidental repeated tap cannot create extra attempts. `Practice again` explicitly starts another recall and re-enables rating.
 - A delayed authenticated progress response merges against the newest in-memory review state, so it cannot overwrite a rating made while the review screen is open.
@@ -46,14 +47,20 @@ The original lesson covers existence, position words, routines, polite present/n
 
 The catalog contains the exact 80 Grade-1 educational kanji plus `私・食・飲・行・来・駅・電・話・時・分・半・今・何・店・会・社・家・母・父・友`, with unique study order. Existing authored stroke profiles remain published. The remaining profiles are `planned` until original normalized stroke paths, contextual vocabulary, and visual QA exist; `晩` remains a separate greeting profile and is not counted in the 100.
 
+### N5 Foundation
+
+Ten A1 units progress through identity, time, home, routines, shopping, description, requests, travel, past activities, and integrated readiness. The catalog contains exactly 650 independently selected study entries aligned against a pinned open N5 deck and exactly 60 authored grammar patterns. Each unit has a searchable lesson, twelve-item mixed quiz, eight open answers, and six draft listening questions. The word set is explicitly N5-aligned rather than official; JLPT publishes level and item-format guidance, not an official exhaustive vocabulary list.
+
+The offline IME uses deterministic romaji-to-kana rules, curriculum boosts, and a compact 12,000-reading JMdict common-word candidate map. Candidate data is local, carries attribution/share-alike notices, and never sends learner input to a service.
+
 ## Audio And Rights
 
 - Canonical metadata lives in `content/languages/japanese/audio-manifest.json`.
 - Every record requires transcript, reading, speaker, license, attribution, and a local asset path.
-- Index generation rejects duplicate/missing audio IDs and missing local files.
+- Index generation rejects duplicate/missing audio IDs and any approved record whose local file is missing; draft queue records may intentionally have no MP3 yet.
 - `npm run content:audio` copies web assets and creates static web/Expo registries.
-- The current manifest is empty. Do not fabricate speakers, releases, or recordings and do not publish text-only content as though listening coverage exists.
-- Future recordings need standard-Tokyo native speakers, releases, two speakers for dialogue, transcript controls, 0.75× playback, no autoplay, and offline bundling.
+- The manifest queues 710 OpenAI TTS drafts: 650 headwords and 60 original listening sentences. `content:audio:generate` is dry-run-first and resumable; no generation occurs in app runtimes.
+- Generated clips require an `AI-generated voice` disclosure, checksum, standard-Tokyo Japanese review, transcript verification, and named human approval before `content:audio` exports them. Playback provides replay and 0.75× speed and never autoplays.
 
 ## iPad And Accessibility
 
@@ -73,29 +80,35 @@ The catalog contains the exact 80 Grade-1 educational kanji plus `私・食・�
 - [MEXT elementary literacy guidance](https://www.mext.go.jp/content/20220606-mxt_kyoiku02-100002607_002.pdf)
 - [MEXT JSL guidance](https://www.mext.go.jp/a_menu/shotou/clarinet/003/001/008/007.htm)
 - [JLPT levels](https://www.jlpt.jp/e/about/levelsummary.html) and [official samples](https://samplequestions.jlpt.jp/e/samples/sampleindex.html)
+- [JLPT test sections and item composition](https://www.jlpt.jp/e/guideline/testsections.html)
+- [JMdict/EDRDG](https://www.edrdg.org/jmdict/j_jmdict.html)
+- [Apple Pencil Scribble](https://support.apple.com/guide/ipad/enter-text-with-scribble-ipad355ab2a7/ipados)
+- [OpenAI text-to-speech](https://developers.openai.com/api/docs/guides/text-to-speech)
 - [JFT-Basic](https://www.jpf.go.jp/jft-basic/e/about/index.html)
 - [Tadoku free readers](https://tadoku.org/japanese/en/free-books-en/)
 
 ## Primary Touchpoints And Tests
 
 - Content: `content/learning-paths/japanese-foundations.json`, `content/knowledge/languages/`, `content/exercises/languages/`, `content/languages/japanese/`
-- Core: `packages/core/src/content/`, `packages/core/src/progress/mastery.ts`, `packages/core/src/progress/progression.ts`
-- Web: `JapaneseLanguageBrowser`, `JapaneseReview`, `LearningPathMap`, `JapaneseWritingPractice`
+- Core: `packages/core/src/content/`, `packages/core/src/japanese-ime/`, `packages/core/src/practice/questionnaire.ts`, `packages/core/src/progress/mastery.ts`, `packages/core/src/progress/progression.ts`
+- Web: `JapaneseLanguageBrowser`, `JapaneseReview`, `JapaneseAnswerInput`, `JapaneseAudioPlayer`, `JapaneseFlashcardPractice`, `QuestionnaireSession`
 - Native: `packages/ui/src/screens.tsx`, `apps/mobile/app/languages/japanese/`
 - Persistence: `supabase/migrations/202608040001_create_user_skill_progress.sql`
-- Tests: Japanese content/order/search, assisted and free handwriting tolerance, multi-stroke hiragana grading, pointer-release capture, stage progression, mastery scheduling, web hub/review selection and delayed-sync races, native review selection and repeat-tap protection, and Japanese Playwright regression.
+- Tests: exact N5 content counts and references, schema/grading/IME/audio filtering, assisted and free handwriting tolerance, stage progression, mastery scheduling, web/native open-answer and review modes, Japanese Playwright regression, coverage floors, and the Maestro installed-app journey.
 
 ## Implementation Map
 
 | Concern | Canonical or primary implementation |
 |---|---|
 | Course order and stage metadata | `content/learning-paths/japanese-foundations.json` |
-| First Connections / Everyday Navigator | `content/knowledge/languages/japanese-first-connections.md`, `content/knowledge/languages/japanese-everyday-navigator.md` |
-| Stage checkpoints | `content/exercises/languages/japanese-*-checkpoint.json` |
+| Ten progressive N5 units | `content/knowledge/languages/japanese-n5-*.md`, `content/exercises/languages/japanese-n5-*.json` |
+| Grammar and vocabulary catalogs | `content/languages/japanese/grammar-n5.json`, `content/languages/japanese/vocabulary.json` |
 | Characters, vocabulary, 100-kanji target | `content/languages/japanese/*.json` |
 | Trusted resources and rights | `content/languages/japanese/resources.json` |
 | Audio source metadata | `content/languages/japanese/audio-manifest.json` |
 | Audio registry preparation | `scripts/content/build-japanese-audio.ts`, generated registries under each app’s `src/generated/` |
+| TTS draft generation | `scripts/content/generate-japanese-audio.ts` |
+| Offline conversion | `packages/core/src/japanese-ime/index.ts`, `packages/core/src/generated/japanese-ime-dictionary.json` |
 | Schema and reference validation | `packages/core/src/content/schema.ts`, `packages/core/src/content/build-index.ts` |
 | Review schedule and merge | `packages/core/src/progress/mastery.ts` |
 | Stage percentage and stamp eligibility | `packages/core/src/progress/progression.ts` |
@@ -107,7 +120,7 @@ The catalog contains the exact 80 Grade-1 educational kanji plus `私・食・�
 
 ```mermaid
 flowchart LR
-  Catalogs["Japanese catalogs, path, lessons, checkpoints"] --> Validator["Schema-v8 index validation"]
+  Catalogs["Japanese catalogs, path, lessons, checkpoints"] --> Validator["Schema-v10 index validation"]
   Validator --> Index["Generated local content index"]
   Index --> Web["Web Learn / Review / Dictionary / Resources"]
   Index --> Native["Expo Learn / Review / Dictionary / Resources"]
@@ -122,7 +135,10 @@ The merge is snapshot-based: the newest practice timestamp owns box/state/due sc
 
 ```mermaid
 flowchart LR
-  Manifest["Validated audio manifest"] --> Prep["npm run content:audio"]
+  Queue["Draft transcript queue"] --> TTS["Server-only OpenAI TTS generator"]
+  TTS --> Approval["Human Japanese approval"]
+  Approval --> Manifest["Validated approved audio manifest"]
+  Manifest --> Prep["npm run content:audio"]
   Files["Released local audio files"] --> Prep
   Prep --> WebRegistry["Browser URL registry"]
   Prep --> ExpoRegistry["Static Expo require registry"]
@@ -147,15 +163,25 @@ flowchart LR
 - Added regression coverage for selection, disabling/resetting, repeat taps, delayed remote snapshot merging, and the browser journey.
 - Kept `/review` focused on its due-skill queue by removing flashcard launchers from both web and Expo review screens. Review screens must not expose flashcard or audio-practice launchers unless those modes gain substantive, review-specific content under a future documented contract.
 
+## N5 Expansion Verification — 2026-08-09
+
+- Schema v10 content validation passes with exactly 650 published N5-aligned vocabulary entries, 60 published grammar patterns, ten mixed quizzes, ten open-answer drills, and ten draft listening sessions.
+- `content:audio:generate -- --dry-run` reports 710 clips and performs no billable generation; `content:audio` exports zero because no draft has human approval.
+- Full Vitest/per-file coverage and Expo Jest coverage pass. Lint, typecheck, production build, Expo Doctor, the Japanese Playwright regression, and the full smoke lane pass.
+- The database lane was not applicable to this local-first change and could not connect because the optional local Supabase stack was stopped. No schema migration or persisted-user-data behavior changed.
+- The Maestro journey now includes the review flashcard and writing routes. Device execution, Apple Pencil Scribble, VoiceOver/Larger Text, Japanese pronunciation, and the remaining kanji stroke-path review stay manual release checks.
+
 ## Known Gaps
 
-- Native-speaker audio and its playback UI cannot ship until genuine released recordings are supplied.
+- The 710 queued audio records are drafts. Listening routes intentionally remain unlisted until a Japanese speaker approves their generated MP3s.
 - The 75 newly declared kanji profiles need original stroke paths and contextual exercises before publication.
 - Signed-in mastery sync is shipped through the additive skill-progress API, with anonymous mastery retained locally until every bounded sync batch succeeds. Checkpoint-derived automatic stamp rendering is the next persistence/UI slice; existing completion records and local mastery remain preserved.
 - Original illustrated scene assets, animation celebrations, haptics, and animated stroke demonstrations remain v2 work; reduced-motion/static-equivalent requirements already govern that future work.
 - Manual VoiceOver/Larger Text QA remains. The iPad build reached native compilation, but local Xcode 26.3 is below Expo SDK 57's documented Xcode 26.4+ baseline and fails inside ExpoModulesJSI; rerun after the toolchain upgrade.
 
 ## Decision Log
+
+- `2026-08-09`: Add schema-v10 N5 catalogs, original quizzes, local JMdict-backed conversion, open-answer composition, Pencil Scribble input, and approval-gated OpenAI TTS. Treat writing as supplemental because JLPT N5 does not test composition.
 
 - `2026-08-08`: Apply forgiving grading to final free-mode attempts as well as assisted traces; retain stroke-count and broad order/direction checks rather than requiring precise placement.
 - `2026-08-08`: Lower assisted-stroke similarity gating and include the web pointer-release coordinate so beginner traces can advance without requiring near-pixel-perfect input.

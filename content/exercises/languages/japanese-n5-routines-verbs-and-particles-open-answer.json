@@ -1,0 +1,143 @@
+{
+  "slug": "languages/japanese-n5-routines-verbs-and-particles-open-answer",
+  "title": "Routines, Verbs, And Particles Open Answer",
+  "documentSlug": "languages/japanese-n5-routines-verbs-and-particles",
+  "concept": "Routines, Verbs, And Particles Japanese composition",
+  "difficulty": "foundation",
+  "tags": [
+    "japanese",
+    "n5",
+    "writing",
+    "ime"
+  ],
+  "status": "published",
+  "proficiencyLevel": "a1",
+  "skillIds": [
+    "a1-writing",
+    "kana-ime"
+  ],
+  "required": true,
+  "type": "questionnaire",
+  "questions": [
+    {
+      "id": "write-1",
+      "kind": "open-answer",
+      "prompt": "Write the Japanese sentence: I watched a movie yesterday.",
+      "template": "{{blank}}",
+      "acceptedAnswers": [
+        "昨日映画を見ました。"
+      ],
+      "inputMode": "japanese-ime",
+      "explanation": "Verb stem + ました: Express a completed past action politely.",
+      "skillIds": [
+        "a1-writing",
+        "kana-ime"
+      ]
+    },
+    {
+      "id": "write-2",
+      "kind": "open-answer",
+      "prompt": "Write the Japanese sentence: I did not eat breakfast.",
+      "template": "{{blank}}",
+      "acceptedAnswers": [
+        "朝ご飯を食べませんでした。"
+      ],
+      "inputMode": "japanese-ime",
+      "explanation": "Verb stem + ませんでした: Express that an action did not happen in the past.",
+      "skillIds": [
+        "a1-writing",
+        "kana-ime"
+      ]
+    },
+    {
+      "id": "write-3",
+      "kind": "open-answer",
+      "prompt": "Write the Japanese sentence: I drink water.",
+      "template": "{{blank}}",
+      "acceptedAnswers": [
+        "水を飲みます。"
+      ],
+      "inputMode": "japanese-ime",
+      "explanation": "Noun + を + Verb: Mark the direct object affected by an action.",
+      "skillIds": [
+        "a1-writing",
+        "kana-ime"
+      ]
+    },
+    {
+      "id": "write-4",
+      "kind": "open-answer",
+      "prompt": "Write the Japanese sentence: I study at the library.",
+      "template": "{{blank}}",
+      "acceptedAnswers": [
+        "図書館で勉強します。"
+      ],
+      "inputMode": "japanese-ime",
+      "explanation": "Place + で + Verb: Mark the place where an action happens.",
+      "skillIds": [
+        "a1-writing",
+        "kana-ime"
+      ]
+    },
+    {
+      "id": "write-5",
+      "kind": "open-answer",
+      "prompt": "Write the Japanese sentence: I go toward school.",
+      "template": "{{blank}}",
+      "acceptedAnswers": [
+        "学校へ行きます。"
+      ],
+      "inputMode": "japanese-ime",
+      "explanation": "Place + へ + movement verb: Mark the direction toward which someone moves.",
+      "skillIds": [
+        "a1-writing",
+        "kana-ime"
+      ]
+    },
+    {
+      "id": "write-6",
+      "kind": "open-answer",
+      "prompt": "Write the Japanese sentence: I came to Tokyo.",
+      "template": "{{blank}}",
+      "acceptedAnswers": [
+        "東京に来ました。"
+      ],
+      "inputMode": "japanese-ime",
+      "explanation": "Place + に + movement verb: Mark a concrete destination or arrival point.",
+      "skillIds": [
+        "a1-writing",
+        "kana-ime"
+      ]
+    },
+    {
+      "id": "write-7",
+      "kind": "open-answer",
+      "prompt": "Write the Japanese sentence: I watched a movie yesterday.",
+      "template": "{{blank}}",
+      "acceptedAnswers": [
+        "昨日映画を見ました。"
+      ],
+      "inputMode": "japanese-ime",
+      "explanation": "Verb stem + ました: Express a completed past action politely.",
+      "skillIds": [
+        "a1-writing",
+        "kana-ime"
+      ]
+    },
+    {
+      "id": "write-8",
+      "kind": "open-answer",
+      "prompt": "Write the Japanese sentence: I did not eat breakfast.",
+      "template": "{{blank}}",
+      "acceptedAnswers": [
+        "朝ご飯を食べませんでした。"
+      ],
+      "inputMode": "japanese-ime",
+      "explanation": "Verb stem + ませんでした: Express that an action did not happen in the past.",
+      "skillIds": [
+        "a1-writing",
+        "kana-ime"
+      ]
+    }
+  ]
+}
