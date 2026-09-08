@@ -57,12 +57,12 @@ export function SaveProgressPrompt({ isAuthConfigured }: SaveProgressPromptProps
 
   return (
     <aside
-      className="fixed right-3 top-3 z-50 grid w-[min(15rem,calc(100vw-1.5rem))] grid-cols-[minmax(0,1fr)_2.5rem] gap-3 rounded-lg border-2 border-b-4 border-[#00645f] bg-white p-3 shadow-[0_8px_0_rgba(0,100,95,0.18)]"
+      className="fixed right-3 top-3 z-30 grid w-[min(15rem,calc(100vw-1.5rem))] grid-cols-[minmax(0,1fr)_2.5rem] gap-3 rounded-xl border border-[#00645f] bg-white p-3 shadow-lg"
       data-testid="save-progress-prompt"
     >
       <div className="min-w-0">
-        <p className="text-sm font-extrabold text-[#263238]">Save progress across devices</p>
-        <Link href={`/login?next=${encodeURIComponent(nextPath)}`} className="mt-1 inline-flex text-sm font-extrabold text-[#245fba]">
+        <p className="text-sm font-semibold text-[#263238]">Save progress across devices</p>
+        <Link href={`/login?next=${encodeURIComponent(nextPath)}`} className="mt-1 inline-flex text-sm font-semibold text-[#245fba]">
           Save progress
         </Link>
       </div>
@@ -70,7 +70,7 @@ export function SaveProgressPrompt({ isAuthConfigured }: SaveProgressPromptProps
         type="button"
         aria-label="Dismiss save progress prompt"
         onClick={() => setIsDismissed(true)}
-        className="flex h-10 w-10 items-center justify-center rounded-lg border-2 border-b-4 border-[#d5e2e8] bg-[#f6fbfc] text-[#263238]"
+        className="flex h-10 w-10 items-center justify-center rounded-xl border border-[#d5e2e8] bg-[#f6fbfc] text-[#263238]"
       >
         <X className="h-4 w-4" aria-hidden="true" />
       </button>

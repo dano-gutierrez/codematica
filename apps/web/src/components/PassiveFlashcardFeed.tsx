@@ -98,7 +98,7 @@ export function PassiveFlashcardFeed({
 
   return (
     <main
-      className="h-[100svh] overflow-y-auto scroll-smooth bg-[#f6fbfc] snap-y snap-mandatory"
+      className="passive-feed overflow-y-auto scroll-smooth bg-[#f6fbfc] snap-y snap-mandatory"
       data-ready={isReady ? "true" : "false"}
       data-testid="passive-flashcard-feed"
       onScroll={appendWhenNearEnd}
@@ -107,14 +107,14 @@ export function PassiveFlashcardFeed({
         <div className="mx-auto flex w-full max-w-3xl items-center justify-between gap-3">
           <Link
             href={`/paths/${feed.pathSlug}`}
-            className="inline-flex min-h-10 items-center gap-2 rounded-lg border-2 border-b-4 border-[#d5e2e8] bg-white px-3 py-2 text-sm font-extrabold text-[#263238]"
+            className="inline-flex min-h-10 items-center gap-2 rounded-xl border border-[#d5e2e8] bg-white px-3 py-2 text-sm font-semibold text-[#263238]"
           >
             <ArrowLeft className="h-4 w-4" aria-hidden="true" />
             Path
           </Link>
           <div className="min-w-0 text-right">
-            <p className="truncate text-sm font-extrabold text-[#007c78]">{feed.title}</p>
-            <p className="truncate text-xs font-bold text-[#68737d]">Passive refresh</p>
+            <p className="truncate text-sm font-semibold text-[#007c78]">{feed.title}</p>
+            <p className="truncate text-xs font-medium text-[#68737d]">Passive refresh</p>
           </div>
         </div>
       </header>
@@ -132,17 +132,17 @@ function PassiveFlashcard({ card, sequenceIndex }: { card: PassiveFlashcardCard;
   return (
     <article
       className={cn(
-        "flex min-h-[100svh] snap-start flex-col justify-center px-4 pb-8 pt-24",
+        "passive-feed-card flex snap-start flex-col justify-center px-4 pb-8 pt-24",
         typeMeta.backgroundClass,
       )}
       data-testid={`passive-flashcard-card-${sequenceIndex}`}
     >
       <div className="mx-auto flex w-full max-w-3xl flex-1 flex-col justify-center">
-        <div className="rounded-lg border-2 border-b-4 border-[#d5e2e8] bg-white p-5 shadow-[0_8px_0_#e3edf2] sm:p-7">
+        <div className="rounded-xl border border-[#d5e2e8] bg-white p-5 shadow-sm sm:p-7">
           <div className="flex flex-wrap items-center gap-2">
             <span
               className={cn(
-                "inline-flex items-center gap-1 rounded-lg border-2 border-b-4 px-2.5 py-1 text-xs font-extrabold uppercase",
+                "inline-flex items-center gap-1 rounded-xl border px-2.5 py-1 text-xs font-semibold uppercase",
                 typeMeta.pillClass,
               )}
             >
@@ -152,15 +152,15 @@ function PassiveFlashcard({ card, sequenceIndex }: { card: PassiveFlashcardCard;
             <DifficultyPill difficulty={card.difficulty} />
           </div>
 
-          <h1 className="mt-5 text-3xl font-extrabold leading-tight tracking-normal text-[#263238] sm:text-5xl">{card.title}</h1>
-          <p className="mt-5 text-xl font-extrabold leading-8 text-[#33434b] sm:text-2xl sm:leading-9">{card.prompt}</p>
-          <p className="mt-5 text-base font-semibold leading-7 text-[#68737d] sm:text-lg sm:leading-8">{card.explanation}</p>
+          <h1 className="mt-5 text-3xl font-semibold leading-tight tracking-tight text-[#263238] sm:text-4xl">{card.title}</h1>
+          <p className="mt-5 text-xl font-normal leading-8 text-[#33434b] sm:text-2xl sm:leading-9">{card.prompt}</p>
+          <p className="mt-5 text-base font-normal leading-7 text-[#68737d] sm:text-lg sm:leading-8">{card.explanation}</p>
 
           {card.code ? <CodeBlock code={card.code} language="python" className="mt-5" /> : null}
 
           <div className="mt-6 flex flex-wrap gap-2">
             {card.tags.slice(0, 5).map((tag) => (
-              <span key={tag} className="rounded-lg bg-[#eaf7f4] px-2.5 py-1 text-xs font-extrabold text-[#007c78]">
+              <span key={tag} className="rounded-xl bg-[#eaf7f4] px-2.5 py-1 text-xs font-semibold text-[#007c78]">
                 {tag}
               </span>
             ))}

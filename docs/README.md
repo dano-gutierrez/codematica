@@ -19,6 +19,7 @@ Conventions:
 - `docs/CHANGELOG.md` records dated, cross-feature delivery summaries and links back to the authoritative feature contracts.
 - `docs/features/_template.md` is the format new feature docs should follow.
 - `docs/features/README.md` explains how threads should consume and maintain feature docs.
+- `docs/features/adaptive-ui.md` owns the shared visual language, bottom navigation, desktop/tablet sidebars, responsive layout, and redesign validation gaps.
 - `docs/features/home-discovery.md` owns the cross-section home, global local search, curated rows, section themes, and full catalog routes.
 - `docs/features/learning-paths-and-practice.md` owns local path JSON, path detail, local exercise JSON, and practice sessions.
 - `docs/features/ml-systems-career-path.md` owns the Harvard CS249r source-linked career roadmap, authored prerequisites/Foundation companions, guided labs, and upstream refresh contract.

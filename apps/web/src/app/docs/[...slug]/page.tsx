@@ -73,23 +73,23 @@ export default async function DocumentPage({ params }: DocumentPageProps) {
             </Suspense>
             <div className="mb-5 flex flex-wrap items-center gap-2">
               <DifficultyPill difficulty={document.difficulty} />
-              <span className="rounded-lg border-2 border-b-4 border-[#d5e2e8] bg-white px-2.5 py-1 text-xs font-extrabold text-[#245fba]">{document.track}</span>
-              <span className="inline-flex items-center gap-1 rounded-lg border-2 border-b-4 border-[#d5e2e8] bg-white px-2.5 py-1 text-xs font-extrabold text-[#68737d]">
+              <span className="rounded-xl border border-[#d5e2e8] bg-white px-2.5 py-1 text-xs font-semibold text-[#245fba]">{document.track}</span>
+              <span className="inline-flex items-center gap-1 rounded-xl border border-[#d5e2e8] bg-white px-2.5 py-1 text-xs font-semibold text-[#68737d]">
                 <Clock className="h-3.5 w-3.5" aria-hidden="true" />
                 {document.readingMinutes} min
               </span>
             </div>
-            <h1 className="max-w-4xl text-4xl font-extrabold leading-tight tracking-normal text-[#263238] sm:text-6xl">{document.title}</h1>
-            <p className="mt-4 max-w-3xl text-lg font-semibold leading-8 text-[#68737d]">{document.summary}</p>
+            <h1 className="max-w-4xl text-3xl font-semibold leading-tight tracking-tight text-[#263238] sm:text-4xl">{document.title}</h1>
+            <p className="mt-4 max-w-3xl text-lg font-normal leading-8 text-[#68737d]">{document.summary}</p>
             <div className="mt-5"><SourceReferences sources={sources} /></div>
             <div className="mt-5 flex flex-wrap gap-2">
               {document.tags.map((tag) => (
-                <span key={tag} className="rounded-lg bg-[#eaf7f4] px-2.5 py-1 text-xs font-extrabold text-[#007c78]">
+                <span key={tag} className="rounded-xl bg-[#eaf7f4] px-2.5 py-1 text-xs font-semibold text-[#007c78]">
                   {tag}
                 </span>
               ))}
             </div>
-            <div className="mt-8 rounded-lg border-2 border-b-4 border-[#d5e2e8] bg-white p-5 sm:p-7">
+            <div className="mt-8 rounded-xl border border-[#d5e2e8] bg-white p-5 sm:p-7">
               <MarkdownRenderer markdown={document.markdown} />
             </div>
 
@@ -110,14 +110,14 @@ export default async function DocumentPage({ params }: DocumentPageProps) {
 
             {referencedDiagrams.length > 0 ? (
               <section className="mt-10 border-t-2 border-[#d5e2e8] pt-6" data-testid="referenced-diagrams">
-                <h2 className="flex items-center gap-2 text-2xl font-extrabold tracking-normal text-[#263238]">
+                <h2 className="flex items-center gap-2 text-2xl font-semibold tracking-tight text-[#263238]">
                   <GitBranch className="h-5 w-5 text-[#007c78]" aria-hidden="true" />
                   External Diagrams
                 </h2>
                 <div className="mt-4 grid gap-4">
                   {referencedDiagrams.map((diagram) => (
                     <div key={diagram.slug}>
-                      <Link href={diagram.route} className="text-sm font-extrabold text-[#245fba]">
+                      <Link href={diagram.route} className="text-sm font-semibold text-[#245fba]">
                         {diagram.title}
                       </Link>
                       <MermaidBlock source={diagram.source} title={diagram.title} />
@@ -128,14 +128,14 @@ export default async function DocumentPage({ params }: DocumentPageProps) {
             ) : null}
           </div>
 
-          <aside className="h-fit rounded-lg border-2 border-b-4 border-[#d5e2e8] bg-white p-4 lg:sticky lg:top-5">
-            <h2 className="text-sm font-extrabold uppercase text-[#68737d]">Outline</h2>
-            <nav className="mt-3 grid gap-2 text-sm font-bold text-[#68737d]" aria-label="Article outline">
+          <aside className="h-fit rounded-xl border border-[#d5e2e8] bg-white p-4 lg:sticky lg:top-5">
+            <h2 className="text-sm font-semibold uppercase text-[#68737d]">Outline</h2>
+            <nav className="mt-3 grid gap-2 text-sm font-medium text-[#68737d]" aria-label="Article outline">
               {document.headings.map((heading) => (
                 <a
                   key={`${heading.depth}-${heading.id}`}
                   href={`#${heading.id}`}
-                  className={heading.depth > 2 ? "pl-3 text-[#68737d]" : "font-extrabold text-[#263238]"}
+                  className={heading.depth > 2 ? "pl-3 text-[#68737d]" : "font-semibold text-[#263238]"}
                 >
                   {heading.text}
                 </a>

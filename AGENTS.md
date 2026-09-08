@@ -78,7 +78,7 @@ Frontend is split across `apps/web` for Next.js App Router and `apps/mobile` for
 ## Current Realities And Gotchas
 
 - This is a new project, so docs and structure are part of the product foundation, not cleanup work.
-- The UI is mobile-first and currently styled as a bright gamified learning app.
+- The UI is mobile-first with a quiet light theme, restrained section colors, phone bottom navigation, and desktop/iPad sidebars. See `docs/features/adaptive-ui.md`.
 - Search is fuzzy-only in the UI. Do not reintroduce an exact/fuzzy toggle without updating the feature doc and tests.
 - Mermaid exists in two forms: embedded fenced blocks inside Markdown and external `.mmd` / `.mermaid` files referenced by frontmatter.
 - `packages/core/src/generated/content-index.json` may change when parser logic or content changes; regenerate it intentionally with `npm run content:index`.
@@ -322,7 +322,7 @@ Testing is a release contract, not a cleanup step.
 All sessions should reuse and, when necessary, expand these existing components instead of rebuilding equivalent UI from scratch:
 
 - `apps/web/src/components/BackButton.tsx`: shared client-side back navigation button with an optional label.
-- `apps/web/src/components/AppHeader.tsx`: shared responsive web header with stable navigation to discovery and section catalogs.
+- `apps/web/src/components/AppHeader.tsx`: shared context header and root AppNavigation with phone bottom navigation, More dialog, and desktop sidebar.
 - `apps/web/src/components/CodeBlock.tsx`: shared language-aware code block renderer for Markdown, interview solutions, flashcard code, and Mermaid source fallbacks.
 - `apps/web/src/components/DifficultyPill.tsx`: shared difficulty badge for beginner, intermediate, and advanced content.
 - `apps/web/src/components/Dropdown.tsx`: custom Radix-backed dropdown primitive for filters and select-style controls; use this instead of native selects or one-off dropdowns.
@@ -350,6 +350,7 @@ All sessions should reuse and, when necessary, expand these existing components 
 - `apps/web/src/components/QuestionnaireSession.tsx`: interactive questionnaire session UI, transient answer state, grading feedback, and next-node navigation.
 - `apps/web/src/components/RandomInterviewButton.tsx`: randomized interview question CTA for interview practice surfaces.
 - `packages/ui/src/screens.tsx`: shared React Native-compatible screens for Expo path, browse, reader, diagram, practice, passive flashcard, interview, Japanese language lookup/detail, login, Keep reading, and save-progress surfaces.
+- `packages/ui/src/screens.tsx` also exports `NativeNavigation`: shared phone/tab navigation and More modal around the Expo Stack.
 - `packages/ui/src/tokens.ts`: shared native design tokens for React Native screens.
 
 ### Content And Search

@@ -2,6 +2,15 @@
 
 This changelog records durable, user-visible and architectural changes. Feature documents remain the authoritative contracts; this file explains when a group of related changes landed and points readers to the owning documentation.
 
+## 2026-09-05 — Adaptive UI Redesign
+
+- Added persistent phone navigation and desktop/iPad sidebars around existing routes.
+- Simplified catalog headings and home discovery; refreshed existing cards, buttons, inputs, readers, and native tokens.
+- Added component, responsive browser, and native navigation regression coverage without lowering coverage gates.
+- Kept feature logic and authored content unchanged. Installed native verification remains blocked by existing Expo/Xcode environment issues.
+
+Owning contract: `docs/features/adaptive-ui.md`.
+
 ## 2026-08-08 — Japanese Review Rating Feedback
 
 - Made Again, Hard, Good, and Easy visually distinct and kept the chosen rating visibly pressed with matching web/native accessibility state and a saved announcement.

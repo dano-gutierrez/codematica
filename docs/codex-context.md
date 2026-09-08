@@ -20,6 +20,8 @@ This file carries durable repo context across Codex threads.
 
 ## Current Product Shape
 
+The interface uses persistent phone bottom navigation and desktop/iPad sidebars. `AppNavigation` in the web root and `NativeNavigation` around the Expo Stack own the shell; existing screen components retain feature behavior. See `docs/features/adaptive-ui.md` for visual rules and outstanding native verification.
+
 Codematica V1 is a mobile-first learning app with a Next.js web app and an Expo Router Android/iOS app. The home route is a cross-section discovery hub with Keep reading, local global search, and curated rows for paths, lessons, interviews, practice, and languages. Complete catalogs live at `/paths`, `/browse`, `/interviews`, `/practice`, and `/languages`. The app renders plain Markdown articles, diagrams, flashcard, cloze, questionnaire, writing, guided-lab, passive flashcard, interview, and Japanese study surfaces. Japanese Foundations and ML Systems share the generic stage/progression contract. The ML Systems Engineer path maps Harvard CS249r with primary-source links and published companions through Volume I Data Engineering. React/TypeScript web exercises run through Sandpack on web and remain read-only on native.
 
 Supabase is used optionally for Auth and saved progress when public runtime env vars are configured. The app still browses and renders local content without Supabase credentials; signed-out progress is buffered locally.

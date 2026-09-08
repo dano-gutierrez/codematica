@@ -20,7 +20,7 @@ export default async function LoginPage({ searchParams }: LoginPageProps) {
       <div className="mx-auto w-full max-w-5xl">
         <Link
           href="/"
-          className="inline-flex items-center gap-2 rounded-lg border-2 border-b-4 border-[#d5e2e8] bg-white px-3 py-2 text-sm font-extrabold text-[#263238]"
+          className="inline-flex items-center gap-2 rounded-xl border border-[#d5e2e8] bg-white px-3 py-2 text-sm font-semibold text-[#263238]"
         >
           <ArrowLeft className="h-4 w-4" aria-hidden="true" />
           Paths

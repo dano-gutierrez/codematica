@@ -62,9 +62,8 @@ export function KnowledgeBrowser({ index }: { index: ContentIndex }) {
           <div className="min-w-0">
             <div className="flex flex-col gap-4">
               <div>
-                <p className="text-sm font-extrabold uppercase text-[#007c78]">Content library</p>
-                <h1 className="mt-2 max-w-4xl text-4xl font-extrabold leading-tight tracking-normal text-[#263238] sm:text-6xl">
-                  Study architecture, code, and engineering tradeoffs.
+                <h1 className="mt-2 max-w-4xl text-3xl font-semibold leading-tight tracking-tight text-[#263238] sm:text-4xl">
+                  Lessons & diagrams
                 </h1>
               </div>
 
@@ -72,10 +71,11 @@ export function KnowledgeBrowser({ index }: { index: ContentIndex }) {
                 <label className="relative block">
                   <Search className="pointer-events-none absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-[#68737d]" aria-hidden="true" />
                   <input
+                    aria-label="Search lessons and diagrams"
                     value={query}
                     onChange={(event) => setQuery(event.target.value)}
                     placeholder="Search concepts, patterns, failures"
-                    className="h-14 w-full rounded-lg border-2 border-b-4 border-[#d5e2e8] bg-white pl-12 pr-4 text-base font-bold text-[#263238] outline-none transition placeholder:text-[#68737d] focus:border-[#007c78]"
+                    className="h-14 w-full rounded-xl border border-[#d5e2e8] bg-white pl-12 pr-4 text-base font-medium text-[#263238] outline-none transition placeholder:text-[#68737d] focus:border-[#007c78]"
                     data-testid="knowledge-search-input"
                   />
                 </label>
@@ -118,22 +118,22 @@ export function KnowledgeBrowser({ index }: { index: ContentIndex }) {
                 <Link
                   key={`${result.kind}-${result.id}`}
                   href={result.route}
-                  className="rounded-lg border-2 border-b-4 border-[#d5e2e8] bg-white p-4 transition hover:-translate-y-0.5 hover:border-[#007c78] hover:shadow-[0_8px_0_#d5e2e8]"
+                  className="rounded-xl border border-[#d5e2e8] bg-white p-4 transition hover:-translate-y-0.5 hover:border-[#007c78] hover:shadow-md"
                   data-testid={`result-${result.kind}-${result.id}`}
                 >
                   <div className="flex flex-wrap items-center gap-2">
-                    <span className="inline-flex items-center gap-1 rounded-lg border-2 border-b-4 border-[#d5e2e8] bg-[#f6fbfc] px-2 py-1 text-xs font-extrabold text-[#245fba]">
+                    <span className="inline-flex items-center gap-1 rounded-xl border border-[#d5e2e8] bg-[#f6fbfc] px-2 py-1 text-xs font-semibold text-[#245fba]">
                       {result.kind === "document" ? <BookOpen className="h-3.5 w-3.5" aria-hidden="true" /> : <GitBranch className="h-3.5 w-3.5" aria-hidden="true" />}
                       {result.kind === "document" ? "Doc" : "Diagram"}
                     </span>
                     {result.difficulty ? <DifficultyPill difficulty={result.difficulty} /> : null}
-                    <span className="text-xs font-extrabold uppercase text-[#68737d]">{result.track}</span>
+                    <span className="text-xs font-semibold uppercase text-[#68737d]">{result.track}</span>
                   </div>
-                  <h2 className="mt-3 text-xl font-extrabold tracking-normal text-[#263238]">{highlight(result.title, query)}</h2>
-                  <p className="mt-2 text-sm font-semibold leading-6 text-[#68737d]">{highlight(result.snippet || result.summary, query)}</p>
+                  <h2 className="mt-3 text-xl font-semibold tracking-tight text-[#263238]">{highlight(result.title, query)}</h2>
+                  <p className="mt-2 text-sm font-normal leading-6 text-[#68737d]">{highlight(result.snippet || result.summary, query)}</p>
                   <div className="mt-3 flex flex-wrap gap-2">
                     {result.tags.slice(0, 5).map((tag) => (
-                      <span key={tag} className="rounded-lg bg-[#eaf7f4] px-2.5 py-1 text-xs font-extrabold text-[#007c78]">
+                      <span key={tag} className="rounded-xl bg-[#eaf7f4] px-2.5 py-1 text-xs font-semibold text-[#007c78]">
                         {tag}
                       </span>
                     ))}
@@ -141,7 +141,7 @@ export function KnowledgeBrowser({ index }: { index: ContentIndex }) {
                 </Link>
               ))}
               {results.length === 0 ? (
-                <div className="rounded-lg border-2 border-b-4 border-[#d5e2e8] bg-white p-5 text-sm font-bold text-[#68737d]" data-testid="empty-results">
+                <div className="rounded-xl border border-[#d5e2e8] bg-white p-5 text-sm font-medium text-[#68737d]" data-testid="empty-results">
                   No indexed nodes match the current filters.
                 </div>
               ) : null}
@@ -149,8 +149,8 @@ export function KnowledgeBrowser({ index }: { index: ContentIndex }) {
           </div>
 
           <aside className="grid h-fit gap-4 lg:sticky lg:top-5">
-            <section className="rounded-lg border-2 border-b-4 border-[#d5e2e8] bg-white p-4">
-              <h2 className="flex items-center gap-2 text-sm font-extrabold uppercase text-[#68737d]">
+            <section className="rounded-xl border border-[#d5e2e8] bg-white p-4">
+              <h2 className="flex items-center gap-2 text-sm font-semibold uppercase text-[#68737d]">
                 <Sparkles className="h-4 w-4 text-[#8a5c00]" aria-hidden="true" />
                 Tracks
               </h2>
@@ -161,12 +161,12 @@ export function KnowledgeBrowser({ index }: { index: ContentIndex }) {
                     type="button"
                     onClick={() => setTrack(trackOption.name)}
                     className={cn(
-                      "rounded-lg border-2 border-b-4 border-[#d5e2e8] bg-white p-3 text-left transition hover:border-[#007c78]",
+                      "rounded-xl border border-[#d5e2e8] bg-white p-3 text-left transition hover:border-[#007c78]",
                       track === trackOption.name && "border-[#00645f] bg-[#eaf7f4]",
                     )}
                   >
-                    <span className="block text-sm font-extrabold text-[#263238]">{trackOption.name}</span>
-                    <span className="mt-1 block text-xs font-bold text-[#68737d]">
+                    <span className="block text-sm font-semibold text-[#263238]">{trackOption.name}</span>
+                    <span className="mt-1 block text-xs font-medium text-[#68737d]">
                       {trackOption.documentCount} docs - {trackOption.topics.join(", ")}
                     </span>
                   </button>
@@ -174,23 +174,23 @@ export function KnowledgeBrowser({ index }: { index: ContentIndex }) {
               </div>
             </section>
 
-            <section className="rounded-lg border-2 border-b-4 border-[#d5e2e8] bg-white p-4">
-              <h2 className="flex items-center gap-2 text-sm font-extrabold uppercase text-[#68737d]">
+            <section className="rounded-xl border border-[#d5e2e8] bg-white p-4">
+              <h2 className="flex items-center gap-2 text-sm font-semibold uppercase text-[#68737d]">
                 <CheckCircle2 className="h-4 w-4 text-[#007c78]" aria-hidden="true" />
                 Progression
               </h2>
-              <div className="mt-4 grid gap-2 text-sm font-bold text-[#68737d]">
-                <div className="flex items-center justify-between rounded-lg bg-[#f6fbfc] px-3 py-2">
+              <div className="mt-4 grid gap-2 text-sm font-medium text-[#68737d]">
+                <div className="flex items-center justify-between rounded-xl bg-[#f6fbfc] px-3 py-2">
                   <span>Published nodes</span>
-                  <span className="font-extrabold text-[#007c78]">{index.documents.filter((doc) => doc.status === "published").length}</span>
+                  <span className="font-semibold text-[#007c78]">{index.documents.filter((doc) => doc.status === "published").length}</span>
                 </div>
-                <div className="flex items-center justify-between rounded-lg bg-[#f6fbfc] px-3 py-2">
+                <div className="flex items-center justify-between rounded-xl bg-[#f6fbfc] px-3 py-2">
                   <span>Diagram nodes</span>
-                  <span className="font-extrabold text-[#245fba]">{index.diagrams.length}</span>
+                  <span className="font-semibold text-[#245fba]">{index.diagrams.length}</span>
                 </div>
-                <div className="flex items-center justify-between rounded-lg bg-[#f6fbfc] px-3 py-2">
+                <div className="flex items-center justify-between rounded-xl bg-[#f6fbfc] px-3 py-2">
                   <span>Senior+</span>
-                  <span className="font-extrabold text-[#8a5c00]">
+                  <span className="font-semibold text-[#8a5c00]">
                     {index.documents.filter((doc) => doc.difficulty === "senior" || doc.difficulty === "principal").length}
                   </span>
                 </div>

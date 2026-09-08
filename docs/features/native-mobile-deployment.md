@@ -151,7 +151,13 @@ Store-side setup still required:
 - Approved listening assets play through `expo-audio`; draft synthetic audio is absent from generated registries.
 - Japanese writing pads use window dimensions to grow from compact phone/Split View layouts to 480–560 pt iPad canvases while retaining font scaling and 44 pt controls.
 
+## Adaptive Interface
+
+The root layout wraps the existing Stack with safe-area-aware `NativeNavigation`: a phone bottom bar and iPad sidebar, responsive to Split View and font scaling. Existing route adapters, content, and progress behavior are unchanged. See [Adaptive Interface And Navigation](adaptive-ui.md).
+
 ## Test Plan
+
+- Navigation: `adaptive-navigation.test.tsx` proves compact menu and tablet destinations; `.maestro/adaptive-navigation.yaml` must pass on Android and iOS before native release.
 
 - Core: `npm run typecheck -w @codematica/core` and `npm test` for generated index, route helpers, search, practice, and progress contracts.
 - UI/mobile: `npm run typecheck -w @codematica/ui`, `npm run typecheck -w @codematica/mobile`, and `npm run test:mobile:coverage` for adapters, failure/retry behavior, configuration, and the complete shared-screen matrix.
@@ -162,6 +168,8 @@ Store-side setup still required:
 - Build: `npm run build` for the web app; `npm run mobile:build:preview` for internal native testers; `npm run mobile:build:android` and `npm run mobile:build:ios` for store-ready artifacts once EAS credentials are configured.
 
 ## Known Gaps
+
+- On 2026-09-05, the local Expo preview fails on missing `expo-router/_ctx-shared`; Expo Doctor passes 19/20 with nine patch-version mismatches. The UI-only redesign does not upgrade these dependencies. Native Jest success does not prove installed-device visual readiness.
 
 - The local iPad simulator build reaches native compilation but Xcode 26.3 fails inside ExpoModulesJSI. Expo SDK 57 documents Xcode 26.4+ as its supported baseline; rerun the build after upgrading Xcode rather than patching generated dependency source.
 - Native WebView Mermaid currently falls back to source unless a bundled Mermaid runtime string is supplied to the shared adapter.

@@ -1,11 +1,11 @@
 export const colors = {
-  background: "#f5fbff",
+  background: "#f7f8fa",
   panel: "#ffffff",
-  panelMuted: "#f6fbfc",
-  line: "#d5e2e8",
+  panelMuted: "#f3f5f6",
+  line: "#e1e5e9",
   lineSoft: "#e4edf1",
-  text: "#263238",
-  textMuted: "#68737d",
+  text: "#202b33",
+  textMuted: "#616d77",
   textStrong: "#33434b",
   accent: "#007c78",
   accentStrong: "#00645f",
@@ -36,6 +36,6 @@ export const spacing = {
 } as const;
 
 export const radii = {
-  sm: 6,
-  md: 8,
+  sm: 10,
+  md: 14,
 } as const;

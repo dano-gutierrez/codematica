@@ -20,7 +20,7 @@ export function JapaneseAnswerInput({ value, disabled, onChange }: { value: stri
   return (
     <div className="grid gap-3" data-testid="japanese-answer-input">
       <label className="grid gap-2">
-        <span className="text-sm font-extrabold text-[#53616c]">Write in romaji or Japanese</span>
+        <span className="text-sm font-semibold text-[#53616c]">Write in romaji or Japanese</span>
         <input
           lang="ja"
           inputMode="text"
@@ -36,11 +36,11 @@ export function JapaneseAnswerInput({ value, disabled, onChange }: { value: stri
             }
           }}
           aria-describedby="japanese-answer-help"
-          className="min-h-14 rounded-xl border-2 border-b-4 border-[#b9cbd3] bg-white px-4 text-xl font-extrabold text-[#263238] outline-none focus:border-[#007c78] disabled:opacity-70"
+          className="min-h-14 rounded-xl border border-[#b9cbd3] bg-white px-4 text-xl font-semibold text-[#263238] outline-none focus:border-[#007c78] disabled:opacity-70"
           data-testid="questionnaire-open-answer-input"
         />
       </label>
-      <p id="japanese-answer-help" className="text-sm font-semibold leading-6 text-[#53616c]">
+      <p id="japanese-answer-help" className="text-sm font-normal leading-6 text-[#53616c]">
         Choose a conversion below. On iPad, you can write directly in this blank with Apple Pencil Scribble.
       </p>
       {/[a-z]/i.test(draft) && conversion.candidates.length ? (
@@ -51,7 +51,7 @@ export function JapaneseAnswerInput({ value, disabled, onChange }: { value: stri
               type="button"
               disabled={disabled}
               onClick={() => commit(candidate)}
-              className="min-h-11 rounded-lg border-2 border-b-4 border-[#9cc7ff] bg-[#f5f9ff] px-4 text-lg font-extrabold text-[#1d4e9e]"
+              className="min-h-11 rounded-xl border border-[#9cc7ff] bg-[#f5f9ff] px-4 text-lg font-semibold text-[#1d4e9e]"
               data-testid={`japanese-ime-candidate-${index}`}
             >
               {candidate}

@@ -149,3 +149,7 @@ References:
 ## Japanese On iPad
 
 Expo orientation is adaptive and `supportsTablet` remains enabled. Japanese handwriting uses window dimensions so compact phone and Split View remain stacked while larger iPad windows receive a wider canvas. Review mastery is stored immediately with AsyncStorage; signed-in sessions validate and merge the remote RLS snapshot before bounded uploads, without clearing the local copy. Every lesson, flashcard, dictionary profile, and resource remains directly reachable. Run `npm run content:audio` after adding released Japanese audio so Expo receives a static asset registry.
+
+## Adaptive UI
+
+See `docs/features/adaptive-ui.md` for persistent phone navigation, desktop/iPad sidebars, design rules, and validation gaps. Existing screens and feature logic are reused. Navigation coverage lives in `AppHeader.test.tsx`, native `adaptive-navigation.test.tsx`, Playwright `adaptive-navigation.smoke.spec.ts` / `adaptive-layout.regression.spec.ts`, and Maestro `adaptive-navigation.yaml`.

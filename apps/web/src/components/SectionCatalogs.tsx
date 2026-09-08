@@ -38,9 +38,8 @@ export function LearningPathCatalog({ index }: { index: ContentIndex }) {
     <main className="min-h-screen pb-14" data-testid="path-catalog">
       <AppHeader subtitle="Learning paths" />
       <section className="mx-auto w-full max-w-7xl px-4 py-7 sm:py-9">
-        <p className="text-sm font-extrabold uppercase text-[#00645f]">Learning paths</p>
-        <h1 className="mt-2 max-w-4xl text-4xl font-extrabold leading-tight text-[#263238] sm:text-5xl">Follow a clear route from lesson to practice.</h1>
-        <p className="mt-3 max-w-3xl text-base font-semibold leading-7 text-[#68737d]">Browse every role, engineering skill, and language course by category.</p>
+        <h1 className="mt-2 max-w-4xl text-3xl font-semibold leading-tight text-[#263238] sm:text-4xl">Learning paths</h1>
+        <p className="mt-3 max-w-3xl text-base font-normal leading-7 text-[#68737d]">A guided route from curiosity to confidence.</p>
 
         <div className="mt-6 grid gap-3 lg:grid-cols-[minmax(0,1fr)_15rem_16rem]" data-testid="path-catalog-controls">
           <SearchInput value={query} onChange={setQuery} placeholder="Search paths and categories" testId="path-catalog-search" />
@@ -69,12 +68,12 @@ export function LearningPathCatalog({ index }: { index: ContentIndex }) {
           />
         </div>
 
-        <p className="mt-5 text-sm font-bold text-[#68737d]" aria-live="polite">{paths.length} paths</p>
+        <p className="mt-5 text-sm font-medium text-[#68737d]" aria-live="polite">{paths.length} paths</p>
         <div className="mt-6 grid gap-9" data-testid="learning-path-list">
           {[...grouped.entries()].map(([group, groupPaths]) => (
             <section key={group}>
-              <h2 className="text-2xl font-extrabold text-[#00645f]">{group}</h2>
-              <div className="mt-3 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+              <h2 className="text-lg font-semibold text-[#263238]">{group}</h2>
+              <div className="mt-3 grid gap-3">
                 {groupPaths.map((path) => <PathCatalogCard key={path.slug} path={path} />)}
               </div>
             </section>
@@ -95,18 +94,18 @@ function PathCatalogCard({ path }: { path: LearningPath }) {
   };
 
   return (
-    <article className="flex min-h-72 flex-col rounded-lg border-2 border-b-4 border-[#d5e2e8] bg-white p-5 transition hover:-translate-y-0.5 hover:border-[#00645f] hover:shadow-[0_7px_0_#d5e2e8]" data-testid={`path-card-${path.slug}`}>
+    <article className="path-catalog-card" data-testid={`path-card-${path.slug}`}>
       <div className="flex flex-wrap gap-2">
-        <span className="rounded-lg border border-[#7bcac3] bg-[#e8f8f6] px-2.5 py-1 text-xs font-extrabold uppercase text-[#00645f]">{path.kind} path</span>
-        {path.category === "Languages" ? <span className="rounded-lg bg-[#fff5d6] px-2.5 py-1 text-xs font-extrabold text-[#7a5200]">Language path</span> : null}
+        <span className="rounded-xl border border-[#7bcac3] bg-[#e8f8f6] px-2.5 py-1 text-xs font-semibold uppercase text-[#00645f]">{path.kind} path</span>
+        {path.category === "Languages" ? <span className="rounded-xl bg-[#fff5d6] px-2.5 py-1 text-xs font-semibold text-[#7a5200]">Language path</span> : null}
       </div>
-      <h3 className="mt-4 text-2xl font-extrabold text-[#263238]">{path.title}</h3>
-      <p className="mt-2 text-sm font-semibold leading-6 text-[#68737d]">{path.summary}</p>
-      <div className="mt-4 flex flex-wrap gap-2 text-xs font-extrabold text-[#68737d]">
+      <h3 className="mt-4 text-2xl font-semibold text-[#263238]">{path.title}</h3>
+      <p className="mt-2 text-sm font-normal leading-6 text-[#68737d]">{path.summary}</p>
+      <div className="mt-4 flex flex-wrap gap-2 text-xs font-semibold text-[#68737d]">
         <span>{path.units.length} units</span><span aria-hidden="true">·</span><span>{nodeCounts.document} lessons</span><span aria-hidden="true">·</span><span>{nodeCounts.exercise} practice</span>
         {nodeCounts.diagram > 0 ? <><span aria-hidden="true">·</span><span>{nodeCounts.diagram} diagrams</span></> : null}
       </div>
-      <Link href={path.route} className="mt-auto inline-flex min-h-12 items-center justify-center gap-2 rounded-lg border-2 border-b-4 border-[#004d49] bg-[#00645f] px-4 py-2 text-sm font-extrabold text-white transition hover:-translate-y-0.5">
+      <Link href={path.route} className="mt-auto inline-flex min-h-12 items-center justify-center gap-2 rounded-xl border border-[#004d49] bg-[#00645f] px-4 py-2 text-sm font-semibold text-white transition hover:-translate-y-0.5">
         Open path <ArrowRight className="h-4 w-4" aria-hidden="true" />
       </Link>
     </article>
@@ -135,9 +134,8 @@ export function PracticeCatalog({ index }: { index: ContentIndex }) {
     <main className="min-h-screen pb-14" data-testid="practice-catalog">
       <AppHeader subtitle="Practice & review" />
       <section className="mx-auto w-full max-w-7xl px-4 py-7 sm:py-9">
-        <p className="text-sm font-extrabold uppercase text-[#a6263c]">Practice & review</p>
-        <h1 className="mt-2 max-w-4xl text-4xl font-extrabold leading-tight text-[#263238] sm:text-5xl">Turn reading into active recall.</h1>
-        <p className="mt-3 max-w-3xl text-base font-semibold leading-7 text-[#68737d]">Open every questionnaire, flashcard, fill-the-gap prompt, handwriting drill, and scrolling review feed.</p>
+        <h1 className="mt-2 max-w-4xl text-3xl font-semibold leading-tight text-[#263238] sm:text-4xl">Practice & review</h1>
+        <p className="mt-3 max-w-3xl text-base font-normal leading-7 text-[#68737d]">Put what you know to work.</p>
 
         <div className="mt-6 grid gap-3 lg:grid-cols-[minmax(0,1fr)_16rem_16rem]">
           <SearchInput value={query} onChange={setQuery} placeholder="Search practice activities" testId="practice-catalog-search" />
@@ -159,7 +157,7 @@ export function PracticeCatalog({ index }: { index: ContentIndex }) {
           <Dropdown label="Difficulty" value={difficulty} onValueChange={(value) => setDifficulty(value as "all" | Difficulty)} testId="practice-difficulty-filter" options={difficultyOptions} />
         </div>
 
-        <p className="mt-5 text-sm font-bold text-[#68737d]" aria-live="polite">{items.length} activities</p>
+        <p className="mt-5 text-sm font-medium text-[#68737d]" aria-live="polite">{items.length} activities</p>
         <CatalogGroup title="Active practice" items={activeItems} />
         <CatalogGroup title="Quick review feeds" items={reviewItems} />
         {items.length === 0 ? <EmptyState>No practice activities match those filters.</EmptyState> : null}
@@ -172,7 +170,7 @@ function CatalogGroup({ title, items }: { title: string; items: ReturnType<typeo
   if (items.length === 0) return null;
   return (
     <section className="mt-8">
-      <h2 className="text-2xl font-extrabold text-[#a6263c]">{title}</h2>
+      <h2 className="text-2xl font-semibold text-[#a6263c]">{title}</h2>
       <div className="mt-3 grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
         {items.map((item) => <DiscoveryCard key={`${item.kind}-${item.id}`} item={item} />)}
       </div>
@@ -189,21 +187,20 @@ export function LanguageCatalog({ index }: { index: ContentIndex }) {
     <main className="min-h-screen pb-14" data-testid="language-catalog">
       <AppHeader subtitle="Languages" />
       <section className="mx-auto w-full max-w-7xl px-4 py-7 sm:py-9">
-        <p className="text-sm font-extrabold uppercase text-[#7a5200]">Languages</p>
-        <h1 className="mt-2 max-w-4xl text-4xl font-extrabold leading-tight text-[#263238] sm:text-5xl">Build language foundations through reading and writing.</h1>
-        <p className="mt-3 max-w-3xl text-base font-semibold leading-7 text-[#68737d]">Choose a language hub for its course, reference catalog, vocabulary, pronunciation, and writing practice.</p>
+        <h1 className="mt-2 max-w-4xl text-3xl font-semibold leading-tight text-[#263238] sm:text-4xl">Languages</h1>
+        <p className="mt-3 max-w-3xl text-base font-normal leading-7 text-[#68737d]">Choose a language hub for its course, reference catalog, vocabulary, pronunciation, and writing practice.</p>
 
-        <article className="mt-7 grid gap-6 rounded-lg border-2 border-b-4 border-[#e8c45c] bg-white p-5 md:grid-cols-[minmax(0,1fr)_18rem] md:p-7">
+        <article className="mt-7 grid gap-6 rounded-xl border border-[#e8c45c] bg-white p-5 md:grid-cols-[minmax(0,1fr)_18rem] md:p-7">
           <div>
-            <span className="inline-flex rounded-lg border border-[#e8c45c] bg-[#fff5d6] px-2.5 py-1 text-xs font-extrabold uppercase text-[#7a5200]">Available now</span>
-            <h2 className="mt-4 flex items-center gap-3 text-3xl font-extrabold text-[#263238]"><Languages className="h-7 w-7 text-[#7a5200]" aria-hidden="true" />Japanese</h2>
-            <p className="mt-3 max-w-2xl text-base font-semibold leading-7 text-[#68737d]">Study hiragana, katakana, starter kanji, beginner vocabulary, IPA-supported pronunciation, and handwriting.</p>
+            <span className="inline-flex rounded-xl border border-[#e8c45c] bg-[#fff5d6] px-2.5 py-1 text-xs font-semibold uppercase text-[#7a5200]">Available now</span>
+            <h2 className="mt-4 flex items-center gap-3 text-3xl font-semibold text-[#263238]"><Languages className="h-7 w-7 text-[#7a5200]" aria-hidden="true" />Japanese</h2>
+            <p className="mt-3 max-w-2xl text-base font-normal leading-7 text-[#68737d]">Study hiragana, katakana, starter kanji, beginner vocabulary, IPA-supported pronunciation, and handwriting.</p>
             <div className="mt-5 flex flex-wrap gap-3">
-              <Link href="/languages/japanese" className="inline-flex min-h-12 items-center gap-2 rounded-lg border-2 border-b-4 border-[#5b3d00] bg-[#7a5200] px-4 py-2 text-sm font-extrabold text-white">Open Japanese hub <ArrowRight className="h-4 w-4" aria-hidden="true" /></Link>
-              <Link href="/paths/japanese-foundations" className="inline-flex min-h-12 items-center gap-2 rounded-lg border-2 border-b-4 border-[#e8c45c] bg-[#fff5d6] px-4 py-2 text-sm font-extrabold text-[#7a5200]">Japanese path <ArrowRight className="h-4 w-4" aria-hidden="true" /></Link>
+              <Link href="/languages/japanese" className="inline-flex min-h-12 items-center gap-2 rounded-xl border border-[#5b3d00] bg-[#7a5200] px-4 py-2 text-sm font-semibold text-white">Open Japanese hub <ArrowRight className="h-4 w-4" aria-hidden="true" /></Link>
+              <Link href="/paths/japanese-foundations" className="inline-flex min-h-12 items-center gap-2 rounded-xl border border-[#e8c45c] bg-[#fff5d6] px-4 py-2 text-sm font-semibold text-[#7a5200]">Japanese path <ArrowRight className="h-4 w-4" aria-hidden="true" /></Link>
             </div>
           </div>
-          <dl className="grid content-start gap-2 text-sm font-bold text-[#68737d]">
+          <dl className="grid content-start gap-2 text-sm font-medium text-[#68737d]">
             <Stat label="Characters" value={japaneseCharacters.length} />
             <Stat label="Vocabulary" value={japaneseVocabulary.length} />
             <Stat label="Writing drills" value={writingExercises.length} />
@@ -219,17 +216,17 @@ function SearchInput({ value, onChange, placeholder, testId }: { value: string; 
     <label className="relative block">
       <span className="sr-only">{placeholder}</span>
       <Search className="pointer-events-none absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-[#68737d]" aria-hidden="true" />
-      <input value={value} onChange={(event) => onChange(event.target.value)} placeholder={placeholder} className="h-14 w-full rounded-lg border-2 border-b-4 border-[#d5e2e8] bg-white pl-12 pr-4 text-base font-bold text-[#263238] outline-none focus:border-[#007c78]" data-testid={testId} />
+      <input value={value} onChange={(event) => onChange(event.target.value)} placeholder={placeholder} className="h-14 w-full rounded-xl border border-[#d5e2e8] bg-white pl-12 pr-4 text-base font-medium text-[#263238] outline-none focus:border-[#007c78]" data-testid={testId} />
     </label>
   );
 }
 
 function EmptyState({ children }: { children: React.ReactNode }) {
-  return <div className="mt-6 rounded-lg border-2 border-b-4 border-[#d5e2e8] bg-white p-5 text-sm font-bold text-[#68737d]">{children}</div>;
+  return <div className="mt-6 rounded-xl border border-[#d5e2e8] bg-white p-5 text-sm font-medium text-[#68737d]">{children}</div>;
 }
 
 function Stat({ label, value }: { label: string; value: number }) {
-  return <div className="flex items-center justify-between rounded-lg bg-[#fff5d6] px-3 py-2 text-[#53616c]"><dt>{label}</dt><dd className="font-extrabold text-[#7a5200]">{value}</dd></div>;
+  return <div className="flex items-center justify-between rounded-xl bg-[#fff5d6] px-3 py-2 text-[#53616c]"><dt>{label}</dt><dd className="font-semibold text-[#7a5200]">{value}</dd></div>;
 }
 
 function matchesText(values: string[], query: string) {

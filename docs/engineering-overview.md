@@ -1,6 +1,6 @@
 # Codematica Engineering Overview
 
-Last updated: 2026-08-07
+Last updated: 2026-09-05
 
 Codematica is a mobile-first learning app for system design, coding, programming, software engineering, ML systems, and beginner human-language study. V1 stays local-first: Markdown and structured JSON remain canonical, including a validated external-source catalog for source-linked companions.
 
@@ -59,8 +59,8 @@ flowchart TD
   Core --> Review["Generic career/language stages + six-box mastery"]
   Core --> Search["Library fuzzy search"]
   Core --> Discovery["Cross-section search + curated home"]
-  SharedUI --> Native["Expo Router native app"]
-  Core --> Web["Next.js web app"]
+  SharedUI --> Native["Expo Router + adaptive native shell"]
+  Core --> Web["Next.js + adaptive web shell"]
   Web --> ProgressUI["Progress trackers + Keep reading"]
   Web --> Vercel["Vercel build"]
   Vercel --> CDN["Static/SSG web delivery"]
@@ -80,6 +80,10 @@ flowchart TD
   Review --> SkillAPI["Authenticated skill-progress API / native adapter"]
   SkillAPI --> SkillDB[("RLS user_skill_progress")]
 ```
+
+## Interface Shell
+
+Web `AppNavigation` lives in the Next root layout; existing `AppHeader` callers supply only context labels. Native `NativeNavigation` wraps the Expo Stack inside safe-area layout. Phones use a bottom bar and modal More menu, while desktop and iPad use a sidebar. Both call existing routes and leave all content/progress adapters intact. See `docs/features/adaptive-ui.md`.
 
 ## Runtime Boundaries
 

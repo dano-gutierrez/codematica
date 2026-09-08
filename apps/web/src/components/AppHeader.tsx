@@ -1,39 +1,51 @@
+"use client";
+
 import Link from "next/link";
-import { BookOpen, Code2, Languages, Map, Network } from "lucide-react";
+import { usePathname } from "next/navigation";
+import { useRef } from "react";
+import { ArrowUpRight, BookOpen, Brain, Code2, Home, Languages, Map, MoreHorizontal, Network, UserRound, X } from "lucide-react";
 
-export function AppHeader({ subtitle = "Learning home" }: { subtitle?: string }) {
+const destinations = [
+  { href: "/", label: "Home", icon: Home },
+  { href: "/paths", label: "Paths", icon: Map },
+  { href: "/browse", label: "Lessons", icon: BookOpen },
+  { href: "/practice", label: "Practice", icon: Brain },
+  { href: "/interviews", label: "Interviews", icon: Code2 },
+  { href: "/languages", label: "Languages", icon: Languages },
+];
+
+export function AppNavigation() {
+  const pathname = usePathname() ?? "/";
+  const menu = useRef<HTMLDialogElement>(null);
+  const moreButton = useRef<HTMLButtonElement>(null);
+  const active = pathname.startsWith("/docs/") || pathname.startsWith("/diagrams/") ? "/browse" : `/${pathname.split("/")[1]}`;
+  const compactDestinations = destinations.filter(({ href }) => !["/browse", "/languages"].includes(href));
+
   return (
-    <header className="border-b-2 border-[#d5e2e8] bg-white px-4 py-3">
-      <div className="mx-auto flex w-full max-w-7xl flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-        <Link href="/" className="flex min-w-0 items-center gap-3" aria-label="Codematica home">
-          <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg border-2 border-b-4 border-[#00645f] bg-[#007c78]">
-            <Network className="h-5 w-5 text-white" aria-hidden="true" />
-          </span>
-          <span className="min-w-0">
-            <span className="block truncate text-xl font-extrabold text-[#007c78]">Codematica</span>
-            <span className="block truncate text-xs font-extrabold uppercase text-[#68737d]">{subtitle}</span>
-          </span>
-        </Link>
-
-        <nav className="flex max-w-full flex-wrap items-center gap-2 pb-1 sm:pb-0" aria-label="Primary navigation">
-          <NavLink href="/paths" label="Paths" color="text-[#00645f]" icon={<Map className="h-4 w-4" aria-hidden="true" />} />
-          <NavLink href="/browse" label="Lessons" color="text-[#1d4e9e]" icon={<BookOpen className="h-4 w-4" aria-hidden="true" />} />
-          <NavLink href="/interviews" label="Interviews" color="text-[#4b369e]" icon={<Code2 className="h-4 w-4" aria-hidden="true" />} />
-          <NavLink href="/languages" label="Languages" color="text-[#7a5200]" icon={<Languages className="h-4 w-4" aria-hidden="true" />} />
-          <Link href="/login" className="inline-flex min-h-10 shrink-0 items-center rounded-lg border-2 border-b-4 border-[#d5e2e8] bg-white px-3 py-2 text-sm font-extrabold text-[#263238]">
-            Sign in
-          </Link>
+    <>
+      <a href="#app-content" className="skip-link">Skip to content</a>
+      <aside className="app-sidebar">
+        <Link href="/" className="app-brand" aria-label="Codematica home"><span className="app-brand-mark"><Network size={22} aria-hidden="true" /></span>Codematica<span className="brand-dot">.</span></Link>
+        <span className="sidebar-label">YOUR LEARNING SPACE</span>
+        <nav aria-label="Primary navigation" className="sidebar-links">
+          {destinations.map(({ href, label, icon: Icon }) => <Link key={href} href={href} className="app-nav-link" aria-current={active === href ? "page" : undefined} data-testid={`app-nav-${label.toLowerCase()}`}><Icon size={20} aria-hidden="true" />{label}</Link>)}
         </nav>
-      </div>
-    </header>
+        <div className="sidebar-bottom"><Link href="/login" className="app-nav-link"><UserRound size={20} aria-hidden="true" />Sign in<ArrowUpRight size={16} className="ml-auto" aria-hidden="true" /></Link></div>
+      </aside>
+      <header className="app-mobile-header"><Link href="/" className="app-brand" aria-label="Codematica home"><span className="app-brand-mark"><Network size={19} aria-hidden="true" /></span>Codematica<span className="brand-dot">.</span></Link><Link href="/login" className="account-link" aria-label="Sign in"><UserRound size={20} aria-hidden="true" /></Link></header>
+      <nav className="app-bottom-nav" aria-label="Mobile navigation" data-testid="app-bottom-navigation">
+        {compactDestinations.map(({ href, label, icon: Icon }) => <Link key={href} href={href} aria-current={active === href ? "page" : undefined} data-testid={`mobile-nav-${label.toLowerCase()}`}><Icon size={21} aria-hidden="true" /><span>{label}</span></Link>)}
+        <button ref={moreButton} type="button" onClick={() => menu.current?.showModal()} aria-haspopup="dialog" className={["/browse", "/languages", "/login"].includes(active) ? "is-active" : undefined} data-testid="mobile-nav-more"><MoreHorizontal size={22} aria-hidden="true" /><span>More</span></button>
+      </nav>
+      <dialog ref={menu} onClose={() => moreButton.current?.focus({ preventScroll: true })} className="app-more-sheet" aria-labelledby="more-title" onClick={(event) => { if (event.target === event.currentTarget) menu.current?.close(); }}>
+        <div className="sheet-heading"><h2 id="more-title">Explore Codematica</h2><button type="button" onClick={() => menu.current?.close()} aria-label="Close menu"><X size={20} aria-hidden="true" /></button></div>
+        {[destinations[2], destinations[5], { href: "/login", label: "Sign in", icon: UserRound }].map(({ href, label, icon: Icon }) => <Link href={href} key={href} className="sheet-link" onClick={() => menu.current?.close()}><Icon size={22} aria-hidden="true" /><span>{label}</span><ArrowUpRight size={18} aria-hidden="true" /></Link>)}
+      </dialog>
+    </>
   );
 }
 
-function NavLink({ href, label, color, icon }: { href: string; label: string; color: string; icon: React.ReactNode }) {
-  return (
-    <Link href={href} className="inline-flex min-h-10 shrink-0 items-center gap-2 rounded-lg border-2 border-b-4 border-[#d5e2e8] bg-white px-3 py-2 text-sm font-extrabold text-[#263238]">
-      <span className={color}>{icon}</span>
-      {label}
-    </Link>
-  );
+/** Context label reused by existing catalog and study headers. Navigation lives in the root layout. */
+export function AppHeader({ subtitle = "Overview" }: { subtitle?: string }) {
+  return <div className="app-context">{subtitle}</div>;
 }

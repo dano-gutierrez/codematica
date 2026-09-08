@@ -40,36 +40,36 @@ export default async function JapaneseCharacterPage({ params }: CharacterPagePro
   return (
     <main className="min-h-screen px-4 py-5 sm:py-8" data-testid="japanese-character-page">
       <div className="mx-auto w-full max-w-4xl">
-        <Link href="/languages/japanese" className="inline-flex rounded-lg border-2 border-b-4 border-[#d5e2e8] bg-white px-3 py-2 text-sm font-extrabold text-[#263238]">
+        <Link href="/languages/japanese" className="inline-flex rounded-xl border border-[#d5e2e8] bg-white px-3 py-2 text-sm font-semibold text-[#263238]">
           Japanese
         </Link>
 
-        <section className="mt-6 rounded-lg border-2 border-b-4 border-[#d5e2e8] bg-white p-5 sm:p-7">
+        <section className="mt-6 rounded-xl border border-[#d5e2e8] bg-white p-5 sm:p-7">
           <div className="flex flex-wrap gap-2">
-            <span className="rounded-lg bg-[#eaf7f4] px-2.5 py-1 text-xs font-extrabold text-[#007c78]">{character.writingSystem}</span>
-            <span className="rounded-lg bg-[#edf5ff] px-2.5 py-1 text-xs font-extrabold text-[#245fba]">/{character.ipa}/</span>
+            <span className="rounded-xl bg-[#eaf7f4] px-2.5 py-1 text-xs font-semibold text-[#007c78]">{character.writingSystem}</span>
+            <span className="rounded-xl bg-[#edf5ff] px-2.5 py-1 text-xs font-semibold text-[#245fba]">/{character.ipa}/</span>
           </div>
-          <p className="mt-6 text-8xl font-extrabold leading-none text-[#263238]">{character.glyph}</p>
-          <h1 className="mt-4 text-4xl font-extrabold leading-tight tracking-normal text-[#263238] sm:text-6xl">{character.title}</h1>
-          <p className="mt-4 text-lg font-semibold leading-8 text-[#68737d]">{character.summary}</p>
-          <p className="mt-4 text-2xl font-extrabold text-[#263238]">{character.meanings.join(", ")}</p>
-          {character.inputSequences.length ? <p className="mt-4 text-sm font-extrabold text-[#245fba]">IME input: {character.inputSequences.join(" or ")}</p> : null}
+          <p className="mt-6 text-8xl font-normal leading-none text-[#263238]">{character.glyph}</p>
+          <h1 className="mt-4 text-3xl font-semibold leading-tight tracking-tight text-[#263238] sm:text-4xl">{character.title}</h1>
+          <p className="mt-4 text-lg font-normal leading-8 text-[#68737d]">{character.summary}</p>
+          <p className="mt-4 text-2xl font-semibold text-[#263238]">{character.meanings.join(", ")}</p>
+          {character.inputSequences.length ? <p className="mt-4 text-sm font-semibold text-[#245fba]">IME input: {character.inputSequences.join(" or ")}</p> : null}
         </section>
 
-        <section className="mt-5 rounded-lg border-2 border-b-4 border-[#d5e2e8] bg-white p-5">
-          <h2 className="text-2xl font-extrabold tracking-normal text-[#263238]">Readings</h2>
+        <section className="mt-5 rounded-xl border border-[#d5e2e8] bg-white p-5">
+          <h2 className="text-2xl font-semibold tracking-tight text-[#263238]">Readings</h2>
           <div className="mt-4 grid gap-3">
             {character.readings.map((reading) => (
-              <div key={`${reading.label}-${reading.value}`} className="rounded-lg bg-[#f6fbfc] p-3 text-sm font-bold text-[#33434b]">
-                <span className="font-extrabold">{reading.label}</span>: {reading.value} /{reading.ipa}/
+              <div key={`${reading.label}-${reading.value}`} className="rounded-xl bg-[#f6fbfc] p-3 text-sm font-medium text-[#33434b]">
+                <span className="font-semibold">{reading.label}</span>: {reading.value} /{reading.ipa}/
               </div>
             ))}
           </div>
         </section>
 
-        <section className="mt-5 rounded-lg border-2 border-b-4 border-[#d5e2e8] bg-white p-5">
-          <h2 className="text-2xl font-extrabold tracking-normal text-[#263238]">Stroke model</h2>
-          <svg viewBox="0 0 100 100" className="mt-4 aspect-square w-full max-w-sm rounded-lg border-2 border-[#d5e2e8] bg-white">
+        <section className="mt-5 rounded-xl border border-[#d5e2e8] bg-white p-5">
+          <h2 className="text-2xl font-semibold tracking-tight text-[#263238]">Stroke model</h2>
+          <svg viewBox="0 0 100 100" className="mt-4 aspect-square w-full max-w-sm rounded-xl border border-[#d5e2e8] bg-white">
             <path d="M 50 0 L 50 100 M 0 50 L 100 50" stroke="#e4edf1" strokeWidth="0.8" fill="none" />
             {character.strokes.map((stroke, index) => {
               const start = stroke.points[0];
@@ -84,34 +84,34 @@ export default async function JapaneseCharacterPage({ params }: CharacterPagePro
           </svg>
         </section>
 
-        <section className="mt-5 rounded-lg border-2 border-b-4 border-[#d5e2e8] bg-white p-5" data-testid="japanese-character-practice">
-          <h2 className="text-2xl font-extrabold tracking-normal text-[#263238]">Practice writing {character.glyph}</h2>
+        <section className="mt-5 rounded-xl border border-[#d5e2e8] bg-white p-5" data-testid="japanese-character-practice">
+          <h2 className="text-2xl font-semibold tracking-tight text-[#263238]">Practice writing {character.glyph}</h2>
           <JapaneseWritingPractice characters={[character]} prompt="Trace the highlighted strokes in order, then switch to free mode and write from memory." />
         </section>
 
         {relatedVocabulary.length || character.examples.length ? (
-          <section className="mt-5 rounded-lg border-2 border-b-4 border-[#d5e2e8] bg-white p-5" data-testid="japanese-character-examples">
-            <h2 className="text-2xl font-extrabold tracking-normal text-[#263238]">Words and examples</h2>
+          <section className="mt-5 rounded-xl border border-[#d5e2e8] bg-white p-5" data-testid="japanese-character-examples">
+            <h2 className="text-2xl font-semibold tracking-tight text-[#263238]">Words and examples</h2>
             <div className="mt-4 grid gap-4">
               {relatedVocabulary.map((vocabulary) => (
-                <article key={vocabulary.slug} className="rounded-lg bg-[#f6fbfc] p-4">
-                  <Link href={vocabulary.route} className="text-2xl font-extrabold text-[#245fba]">{vocabulary.expression}</Link>
-                  <p className="mt-1 text-sm font-bold text-[#33434b]">{vocabulary.reading} · {vocabulary.romaji}</p>
-                  {vocabulary.inputSequences.length ? <p className="mt-1 text-xs font-extrabold text-[#7a5200]">IME: {vocabulary.inputSequences.join(" or ")}</p> : null}
+                <article key={vocabulary.slug} className="rounded-xl bg-[#f6fbfc] p-4">
+                  <Link href={vocabulary.route} className="text-2xl font-semibold text-[#245fba]">{vocabulary.expression}</Link>
+                  <p className="mt-1 text-sm font-medium text-[#33434b]">{vocabulary.reading} · {vocabulary.romaji}</p>
+                  {vocabulary.inputSequences.length ? <p className="mt-1 text-xs font-semibold text-[#7a5200]">IME: {vocabulary.inputSequences.join(" or ")}</p> : null}
                   <p className="mt-2 text-sm font-semibold text-[#68737d]">{vocabulary.meanings.join(", ")}</p>
                   {vocabulary.examples.map((example) => (
                     <div key={example.id} className="mt-3 border-t border-[#d5e2e8] pt-3">
-                      <p className="font-extrabold text-[#263238]">{example.japanese}</p>
-                      <p className="text-sm font-bold text-[#33434b]">{example.romaji} — {example.translation}</p>
+                      <p className="font-semibold text-[#263238]">{example.japanese}</p>
+                      <p className="text-sm font-medium text-[#33434b]">{example.romaji} — {example.translation}</p>
                       <p className="mt-1 text-sm font-semibold text-[#68737d]">{example.explanation}</p>
                     </div>
                   ))}
                 </article>
               ))}
               {character.examples.map((example) => (
-                <article key={example.id} className="rounded-lg bg-[#f6fbfc] p-4">
-                  <p className="text-xl font-extrabold text-[#263238]">{example.japanese}</p>
-                  <p className="mt-1 text-sm font-bold text-[#33434b]">{example.reading} · {example.romaji} — {example.translation}</p>
+                <article key={example.id} className="rounded-xl bg-[#f6fbfc] p-4">
+                  <p className="text-xl font-semibold text-[#263238]">{example.japanese}</p>
+                  <p className="mt-1 text-sm font-medium text-[#33434b]">{example.reading} · {example.romaji} — {example.translation}</p>
                   <p className="mt-2 text-sm font-semibold text-[#68737d]">{example.explanation}</p>
                 </article>
               ))}

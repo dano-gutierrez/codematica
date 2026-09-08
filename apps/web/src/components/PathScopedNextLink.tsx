@@ -6,7 +6,7 @@ import { ArrowRight } from "lucide-react";
 import { appendPathToHref, recordProgress, type ProgressTarget } from "@/lib/progress/client";
 
 const nextLinkClassName =
-  "inline-flex min-h-12 items-center gap-2 rounded-lg border-2 border-b-4 border-[#1d4e9e] bg-[#245fba] px-4 py-2 text-sm font-extrabold text-white transition hover:-translate-y-0.5";
+  "inline-flex min-h-12 items-center gap-2 rounded-xl border border-[#1d4e9e] bg-[#245fba] px-4 py-2 text-sm font-semibold text-white transition hover:-translate-y-0.5";
 
 type PathScopedNextLinkProps = {
   nextHrefsByPath: Record<string, string>;

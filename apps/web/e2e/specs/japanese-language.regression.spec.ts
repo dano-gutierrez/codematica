@@ -20,7 +20,7 @@ async function drawTouchStroke(session: CDPSession, box: PadBox, points: Array<[
 test("@regression mobile user searches Japanese and opens a writing drill", async ({ page }) => {
   await page.goto("/languages/japanese");
   await expect(page.getByTestId("japanese-language-page")).toBeVisible();
-  await expect(page.getByRole("heading", { name: /Practice kana, kanji, and writing/i })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Japanese", exact: true })).toBeVisible();
   await expect(page.getByTestId("japanese-study-tools")).toBeVisible();
   await expect(page.getByTestId("japanese-flashcards-link")).toHaveAttribute("href", "/paths/japanese-foundations/flashcards");
   await expect(page.getByTestId("japanese-review-link")).toHaveAttribute("href", "/languages/japanese/review");

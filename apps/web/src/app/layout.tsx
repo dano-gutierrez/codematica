@@ -1,3 +1,4 @@
+import { AppNavigation } from "@/components/AppHeader";
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { Suspense } from "react";
@@ -28,7 +29,8 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
-        {children}
+        <AppNavigation />
+        <div id="app-content" className="app-content" tabIndex={-1}>{children}</div>
         <Suspense fallback={null}>
           <SaveProgressPrompt isAuthConfigured={hasSupabasePublicEnv()} />
         </Suspense>

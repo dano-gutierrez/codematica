@@ -3,7 +3,7 @@
 ## Snapshot
 
 - Status: `shipped`
-- Last updated: `2026-08-02`
+- Last updated: `2026-09-05`
 - Owner thread: `n/a`
 - Current state: Web and native home routes are cross-section discovery hubs with curated rows, global local-first search, stable section colors, and full catalog destinations.
 - Target outcome: Users can understand Codematica's major learning surfaces immediately, search across all of them, and reach a complete organized catalog without guessing which route owns the content.
@@ -48,14 +48,14 @@ The root route is a discovery surface rather than the complete learning-path cat
 - Interview prep: purple `#4b369e`.
 - Practice & review: rose `#a6263c`.
 - Languages: ochre `#7a5200`.
-- Section CTA text is white and meets WCAG AA contrast against its accent.
+- Section actions use a consistent teal text link on the neutral canvas. Category accents remain in icons and metadata.
 - Section identity is also expressed through headings, icons, and labels; color is not the only signal.
 - Application controls such as Sign in and Back remain neutral.
 
 ### Curation And Search
 
 - Home curation references canonical content rather than duplicating titles, summaries, or routes.
-- Curated rows are horizontally scrollable on narrow screens and four-column rows on large web layouts.
+- Curated rows scroll horizontally on all screen sizes, retaining every curated item. Compact cards preview the next item on phones.
 - Search uses a normalized `DiscoveryResult` contract and fuzzy ranking weighted toward title, tags, section labels, and summaries.
 - Exact titles receive the highest score. Only published content is searchable.
 - Search de-duplicates canonical routes even when content appears in several learning paths.
@@ -76,13 +76,17 @@ The root route is a discovery surface rather than the complete learning-path cat
 - Empty searches do not generate a large result list; they show curated rows.
 - No-result searches show a local empty state and never require a network fallback.
 
+See [Adaptive Interface And Navigation](adaptive-ui.md) for the persistent phone/tab/sidebar contract and visual rules.
+
 ## Test Plan
+
+- Navigation/layout: `adaptive-navigation.smoke.spec.ts`, `adaptive-layout.regression.spec.ts`, and `AppHeader.test.tsx`; native `adaptive-navigation.test.tsx` and Maestro navigation smoke.
 
 - Unit: search covers every section, exact-title ranking, published-only results, route de-duplication, and curated section resolution.
 - Integration: index generation serializes schema version 9 and rejects invalid home references.
 - Component: web home renders all section destinations and swaps curated rows for grouped search results.
 - Native: shared home renders every section and searches interview questions from the bundled index.
-- E2E: mobile-sized web home exposes Japanese, searches interviews and language content, preserves section CTA colors, and navigates to a full catalog.
+- E2E: mobile-sized web home exposes Japanese, searches interviews and language content, preserves consistent accessible section actions, and navigates to a full catalog.
 
 ## Decision Log
 

@@ -55,6 +55,7 @@ import { Fragment, useMemo, useRef, useState } from "react";
 import type { ReactNode } from "react";
 import {
   FlatList,
+  Modal,
   KeyboardAvoidingView,
   Platform,
   Pressable,
@@ -86,6 +87,42 @@ const cardTypeLabels: Record<PassiveFlashcardType, string> = {
 type ScreenProps = {
   adapters: CodematicaAdapters;
 };
+
+const nativeDestinations = [
+  { href: "/", label: "Home", path: "M3 10 12 3 21 10V21H15V14H9V21H3Z" },
+  { href: "/paths", label: "Paths", path: "m3 5 6-2 6 2 6-2v16l-6 2-6-2-6 2Zm6-2v16m6-14v16" },
+  { href: "/browse", label: "Lessons", path: "M12 5v16M3 3h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5v16h-5a4 4 0 0 0-4 2 4 4 0 0 0-4-2H3Z" },
+  { href: "/practice", label: "Practice", path: "m13 2-9 12h7l-1 8 10-12h-7Z" },
+  { href: "/interviews", label: "Interviews", path: "m8 5-7 7 7 7m8-14 7 7-7 7m-3-17-2 20" },
+  { href: "/languages", label: "Languages", path: "M2 5h12M8 2v3m4 0c-1 7-5 10-10 12m2-9c2 4 5 7 9 9m1 5 5-13 5 13m-8-4h6" },
+];
+
+/** Persistent shell navigation; the Expo adapter owns routing and safe-area insets. */
+export function NativeNavigation({ pathname, navigate, wide }: { pathname: string; navigate: (href: string) => void; wide: boolean }) {
+  const [menuOpen, setMenuOpen] = useState(false);
+  const active = pathname.startsWith("/docs/") || pathname.startsWith("/diagrams/") ? "/browse" : `/${pathname.split("/")[1]}`;
+  const items = wide ? nativeDestinations : nativeDestinations.filter(({ href }) => !["/browse", "/languages"].includes(href));
+  const menuItems = [...nativeDestinations.filter(({ href }) => ["/browse", "/languages"].includes(href)), { href: "/login", label: "Sign in", path: "M4 21v-3a8 8 0 0 1 16 0v3M16 6a4 4 0 1 1-8 0 4 4 0 0 1 8 0" }];
+  return (
+    <View style={wide ? styles.navigationRail : styles.navigationBar} testID={wide ? "mobile-navigation-rail" : "mobile-navigation-bar"}>
+      {wide ? <Text style={styles.navigationBrand}>Codematica.</Text> : null}
+      {items.map(({ href, label, path }) => <Pressable key={href} accessibilityRole="tab" accessibilityLabel={label} accessibilityState={{ selected: active === href }} onPress={() => navigate(href)} style={({ pressed }) => [wide ? styles.navigationRailItem : styles.navigationItem, active === href && styles.navigationSelected, pressed && styles.navigationPressed]} testID={`mobile-nav-${label.toLowerCase()}`}>
+        <Svg width={22} height={22} viewBox="0 0 24 24" accessible={false}><Path d={path} stroke={active === href ? colors.accentStrong : colors.textMuted} strokeWidth={1.7} fill="none" strokeLinecap="round" strokeLinejoin="round" /></Svg>
+        <Text style={[styles.navigationLabel, wide && styles.navigationRailLabel, active === href && styles.navigationSelectedText]}>{label}</Text>
+      </Pressable>)}
+      {wide ? <Button label="Sign in" variant="ghost" onPress={() => navigate("/login")} testID="mobile-nav-sign-in" /> : <Pressable accessibilityRole="button" accessibilityLabel="More" onPress={() => setMenuOpen(true)} style={[styles.navigationItem, ["/browse", "/languages", "/login"].includes(active) && styles.navigationSelected]} testID="mobile-nav-more"><Svg width={22} height={22} viewBox="0 0 24 24" accessible={false}>{[5,12,19].map((cx) => <Circle key={cx} cx={cx} cy={12} r={1.5} fill={colors.textMuted} />)}</Svg><Text style={styles.navigationLabel}>More</Text></Pressable>}
+      <Modal visible={menuOpen} transparent animationType="slide" onRequestClose={() => setMenuOpen(false)}>
+        <View style={styles.navigationBackdrop}>
+          <Pressable style={StyleSheet.absoluteFill} accessibilityLabel="Close menu" onPress={() => setMenuOpen(false)} />
+          <ScrollView style={styles.navigationSheet} contentContainerStyle={styles.navigationSheetContent} accessibilityViewIsModal>
+            <View style={styles.discoverySectionHeader}><Text style={styles.cardTitle}>Explore Codematica</Text><Button label="Close" variant="ghost" onPress={() => setMenuOpen(false)} testID="mobile-menu-close" /></View>
+            {menuItems.map(({ href, label, path }) => <Pressable key={href} accessibilityRole="button" accessibilityLabel={label} onPress={() => { setMenuOpen(false); navigate(href); }} style={styles.navigationRailItem} testID={`mobile-menu-${label.toLowerCase().replaceAll(" ", "-")}`}><Svg width={22} height={22} viewBox="0 0 24 24" accessible={false}><Path d={path} fill="none" stroke={colors.accentStrong} strokeWidth={1.7} strokeLinecap="round" strokeLinejoin="round" /></Svg><Text style={styles.bodyText}>{label}</Text></Pressable>)}
+          </ScrollView>
+        </View>
+      </Modal>
+    </View>
+  );
+}
 
 export function AppScreen({ title, children, footer }: { title?: string; children: ReactNode; footer?: ReactNode }) {
   return (
@@ -131,9 +168,8 @@ export function LearningPathHomeScreen({
   return (
     <AppScreen>
       <Header adapters={adapters} />
-      <Text style={styles.eyebrow}>Learning paths</Text>
-      <Text style={styles.heroTitle}>Build engineering judgment one node at a time.</Text>
-      <Text style={styles.heroCopy}>Follow role and skill paths made from documents, diagrams, flashcards, and practice.</Text>
+      <Text style={styles.heroTitle}>Learning paths</Text>
+      <Text style={styles.heroCopy}>A guided route from curiosity to confidence.</Text>
 
       <KeepReadingSection items={keepReadingItems} isSignedIn={isSignedIn} adapters={adapters} />
 
@@ -169,13 +205,11 @@ export function HomeDiscoveryScreen({
   return (
     <AppScreen>
       <Header adapters={adapters} subtitle="Learning home" />
-      <Text style={styles.eyebrow}>Choose your next step</Text>
-      <Text style={styles.heroTitle}>What do you want to learn?</Text>
-      <Text style={styles.heroCopy}>Search everything or jump into a focused learning section.</Text>
+      <Text style={styles.heroTitle}>What will you learn today?</Text>
       <TextInput
         value={query}
         onChangeText={setQuery}
-        placeholder="Search paths, lessons, interviews, or Japanese"
+        placeholder="What do you want to learn?"
         placeholderTextColor={colors.textMuted}
         style={styles.input}
         testID="mobile-home-global-search"
@@ -189,18 +223,21 @@ export function HomeDiscoveryScreen({
         </View>
       ) : (
         <>
+          <View style={styles.homeShortcuts}>
+            {nativeDestinations.filter(({ href }) => href !== "/").map(({ href, label, path }) => <Pressable key={href} accessibilityRole="button" accessibilityLabel={label} style={styles.homeShortcut} onPress={() => adapters.navigation.navigate(href)} testID={`mobile-home-explore-${label.toLowerCase()}`}><View style={styles.homeShortcutIcon}><Svg width={22} height={22} viewBox="0 0 24 24" accessible={false}><Path d={path} stroke={colors.accentStrong} strokeWidth={1.7} fill="none" strokeLinecap="round" strokeLinejoin="round" /></Svg></View><Text style={styles.navigationLabel}>{label}</Text></Pressable>)}
+          </View>
           <KeepReadingSection items={keepReadingItems} isSignedIn={isSignedIn} adapters={adapters} />
           {sections.map((section) => (
             <View key={section.id} style={styles.discoverySection} testID={`mobile-home-section-${section.id}`}>
               <View style={styles.discoverySectionHeader}>
                 <View style={styles.fill}>
-                  <Text style={[styles.discoverySectionTitle, { color: discoverySectionColor(section.id) }]}>{section.title}</Text>
-                  <Text style={styles.mutedText}>{section.description}</Text>
+                  <Text style={styles.discoverySectionTitle}>{section.title}</Text>
+
                 </View>
                 <Pressable
                   accessibilityRole="button"
                   onPress={() => adapters.navigation.navigate(section.route)}
-                  style={[styles.discoveryViewAll, { backgroundColor: discoverySectionColor(section.id) }]}
+                  style={styles.discoveryViewAll}
                   testID={`mobile-home-view-all-${section.id}`}
                 >
                   <Text style={styles.discoveryViewAllText}>View all</Text>
@@ -227,8 +264,7 @@ export function PracticeCatalogScreen({ index, adapters }: { index: ContentIndex
   return (
     <AppScreen>
       <Header adapters={adapters} subtitle="Practice & review" />
-      <Text style={[styles.eyebrow, { color: colors.sectionPractice }]}>Practice & review</Text>
-      <Text style={styles.heroTitle}>Turn reading into active recall.</Text>
+      <Text style={styles.heroTitle}>Practice & review</Text>
       <TextInput value={query} onChangeText={setQuery} placeholder="Search practice activities" placeholderTextColor={colors.textMuted} style={styles.input} testID="mobile-practice-catalog-search" />
       <View style={styles.stack} testID="mobile-practice-catalog">
         {items.map((item) => <MobileDiscoveryCard key={`${item.kind}-${item.id}`} item={item} adapters={adapters} />)}
@@ -244,8 +280,7 @@ export function LanguageCatalogScreen({ index, adapters }: { index: ContentIndex
   return (
     <AppScreen>
       <Header adapters={adapters} subtitle="Languages" />
-      <Text style={[styles.eyebrow, { color: colors.sectionLanguages }]}>Languages</Text>
-      <Text style={styles.heroTitle}>Build language foundations through reading and writing.</Text>
+      <Text style={styles.heroTitle}>Languages</Text>
       <Pressable onPress={() => adapters.navigation.navigate("/languages/japanese")} style={[styles.card, { borderColor: colors.sectionLanguages }]} testID="mobile-language-japanese">
         <Text style={styles.cardEyebrow}>Available now</Text>
         <Text style={styles.cardTitle}>Japanese</Text>
@@ -263,12 +298,12 @@ function MobileDiscoveryCard({ item, adapters, compact = false }: { item: Discov
   return (
     <Pressable
       onPress={() => adapters.navigation.navigate(item.route)}
-      style={[styles.card, compact && styles.discoveryCardCompact, { borderColor: discoverySectionColor(item.section) }]}
+      style={[styles.card, compact && styles.discoveryCardCompact]}
       testID={`mobile-discovery-${item.kind}-${item.sourceSlug.replaceAll("/", "-")}`}
     >
       <Text style={[styles.cardEyebrow, { color: discoverySectionColor(item.section) }]}>{item.eyebrow}</Text>
       <Text style={styles.cardTitle}>{item.title}</Text>
-      <Text style={styles.mutedText} numberOfLines={compact ? 3 : undefined}>{item.summary}</Text>
+      <Text style={styles.mutedText} numberOfLines={compact ? 2 : undefined}>{item.summary}</Text>
       {item.difficulty ? <DifficultyPill difficulty={item.difficulty} /> : null}
     </Pressable>
   );
@@ -417,7 +452,7 @@ export function BrowseScreen({ index, adapters }: { index: ContentIndex } & Scre
     <AppScreen>
       <Header adapters={adapters} subtitle="Content library" />
       <Text style={styles.eyebrow}>Content library</Text>
-      <Text style={styles.heroTitle}>Study architecture, code, and tradeoffs.</Text>
+      <Text style={styles.heroTitle}>Lessons & diagrams</Text>
       <TextInput
         value={query}
         onChangeText={setQuery}
@@ -479,7 +514,7 @@ export function JapaneseLanguageHubScreen({ index, adapters }: { index: ContentI
     <AppScreen>
       <Header adapters={adapters} subtitle="Japanese" />
       <Text style={styles.eyebrow}>Japanese</Text>
-      <Text style={styles.heroTitle}>Practice kana, kanji, and writing.</Text>
+      <Text style={styles.heroTitle}>Japanese</Text>
       <Text style={styles.heroCopy}>Search beginner Japanese characters and phrases with romaji and IPA support.</Text>
       <View style={styles.actionRow}>
         <Button label="Learn" onPress={() => adapters.navigation.navigate("/paths/japanese-foundations")} testID="mobile-japanese-path-link" />
@@ -569,7 +604,7 @@ export function JapaneseReviewScreen({
     <AppScreen>
       <Header adapters={adapters} subtitle="Japanese review" />
       <Text style={styles.eyebrow}>Always open · {dueCount} due</Text>
-      <Text style={styles.heroTitle}>Review what is ready.</Text>
+      <Text style={styles.heroTitle}>Ready to review</Text>
       <Text style={styles.heroCopy}>The queue is for focused skill recall. Other practice modes stay available from their own study screens.</Text>
       <View style={styles.actionRow}>
         <Button label="Dictionary" variant="ghost" onPress={() => adapters.navigation.navigate("/languages/japanese")} />
@@ -1616,8 +1651,7 @@ export function InterviewCatalogScreen({ index, adapters }: { index: ContentInde
   return (
     <AppScreen>
       <Header adapters={adapters} subtitle="Interview prep" />
-      <Text style={styles.eyebrow}>Interview prep</Text>
-      <Text style={styles.heroTitle}>Practice real interview judgment and coding patterns.</Text>
+      <Text style={styles.heroTitle}>Interview prep</Text>
       <Text style={styles.cardTitle}>Real-world interviews</Text>
       <View style={styles.stack} testID="mobile-real-world-interview-list">
         {realWorld.map((collection) => (
@@ -1865,12 +1899,12 @@ export function KeepReadingSection({
 } & ScreenProps) {
   return (
     <View style={styles.card} testID="mobile-keep-reading">
-      <View style={styles.pillRow}>
-        <Pill label={isSignedIn ? "Signed in" : "On this device"} tone={isSignedIn ? "green" : "amber"} />
+      <View style={styles.discoverySectionHeader}>
+        <Text style={styles.cardTitle}>Keep reading</Text>
+        <Text style={styles.mutedText}>{isSignedIn ? "Signed in" : "On this device"}</Text>
       </View>
-      <Text style={styles.cardTitle}>Keep reading</Text>
       {items.length === 0 ? (
-        <Text style={styles.mutedText}>Open a path, article, or practice session to start a local resume list.</Text>
+        <Text style={styles.mutedText}>Your recent learning will appear here.</Text>
       ) : (
         items.map((item) => (
           <Pressable key={item.id} onPress={() => adapters.navigation.navigate(item.href)} style={styles.subPanel}>
@@ -2011,7 +2045,7 @@ function Button({
   const textStyle = variant === "ghost" ? styles.ghostButtonText : styles.primaryButtonText;
 
   return (
-    <Pressable accessibilityLabel={label} accessibilityRole="button" accessibilityState={{ disabled, ...(selected === undefined ? {} : { selected }) }} disabled={disabled} onPress={onPress} style={[buttonStyle, selected && styles.ratingButtonSelected, disabled && !selected && styles.disabled]} testID={testID}>
+    <Pressable accessibilityLabel={label} accessibilityRole="button" accessibilityState={{ disabled, ...(selected === undefined ? {} : { selected }) }} disabled={disabled} onPress={onPress} style={({ pressed }) => [buttonStyle, selected && styles.ratingButtonSelected, disabled && !selected && styles.disabled, pressed && styles.navigationPressed]} testID={testID}>
       <Text style={textStyle}>{selected ? `✓ ${label}` : label}</Text>
     </Pressable>
   );
@@ -2186,6 +2220,22 @@ function escapeHtml(value: string) {
 }
 
 const styles = StyleSheet.create({
+  homeShortcuts: { flexDirection: "row", gap: 4, paddingVertical: 8 },
+  homeShortcut: { flex: 1, alignItems: "center", gap: 8, minHeight: 64 },
+  homeShortcutIcon: { width: 42, height: 42, borderRadius: 12, backgroundColor: colors.greenSoft, alignItems: "center", justifyContent: "center" },
+  navigationBar: { flexDirection: "row", gap: 4, padding: 8, borderTopWidth: 1, borderColor: colors.line, backgroundColor: colors.panel },
+  navigationRail: { width: 208, backgroundColor: colors.panel, borderRightWidth: 1, borderColor: colors.line, padding: 16, gap: 8 },
+  navigationBrand: { fontSize: 22, fontWeight: "600", color: colors.accentStrong, marginVertical: 24 },
+  navigationItem: { flex: 1, alignItems: "center", justifyContent: "center", gap: 5, minHeight: 54, paddingVertical: 6, borderRadius: 12 },
+  navigationRailItem: { flexDirection: "row", alignItems: "center", gap: 14, minHeight: 52, padding: 14, borderRadius: 12 },
+  navigationLabel: { fontSize: 10, fontWeight: "500", color: colors.textMuted },
+  navigationRailLabel: { fontSize: 15 },
+  navigationSelected: { backgroundColor: colors.greenSoft },
+  navigationSelectedText: { color: colors.accentStrong, fontWeight: "600" },
+  navigationPressed: { opacity: 0.65 },
+  navigationBackdrop: { flex: 1, justifyContent: "flex-end", backgroundColor: "#18262f66" },
+  navigationSheet: { maxHeight: "85%", flexGrow: 0, backgroundColor: colors.panel, borderTopLeftRadius: 24, borderTopRightRadius: 24 },
+  navigationSheetContent: { padding: 24, paddingBottom: 48, gap: 12 },
   screen: {
     flex: 1,
     backgroundColor: colors.background,
@@ -2193,30 +2243,30 @@ const styles = StyleSheet.create({
   screenContent: {
     gap: spacing.lg,
     padding: spacing.lg,
-    paddingBottom: 96,
+    paddingBottom: 32,
+    width: "100%",
+    maxWidth: 1120,
+    alignSelf: "center",
   },
   screenEyebrow: {
     color: colors.accent,
     fontSize: 12,
-    fontWeight: "900",
+    fontWeight: "600",
     textTransform: "uppercase",
   },
   header: {
     alignItems: "center",
-    backgroundColor: colors.panel,
-    borderColor: colors.line,
-    borderRadius: radii.md,
-    borderWidth: 2,
+    backgroundColor: colors.background,
     flexDirection: "row",
     gap: spacing.md,
     justifyContent: "space-between",
-    padding: spacing.md,
+    paddingVertical: spacing.sm,
   },
   fixedHeader: {
     alignItems: "center",
     backgroundColor: colors.panel,
     borderBottomColor: colors.line,
-    borderBottomWidth: 2,
+    borderBottomWidth: 1,
     flexDirection: "row",
     gap: spacing.md,
     padding: spacing.md,
@@ -2233,7 +2283,7 @@ const styles = StyleSheet.create({
     backgroundColor: colors.accent,
     borderColor: colors.accentStrong,
     borderRadius: radii.md,
-    borderWidth: 2,
+    borderWidth: 1,
     height: 44,
     justifyContent: "center",
     width: 44,
@@ -2241,36 +2291,36 @@ const styles = StyleSheet.create({
   brandMarkText: {
     color: colors.panel,
     fontSize: 18,
-    fontWeight: "900",
+    fontWeight: "600",
   },
   brandTitle: {
     color: colors.accent,
     fontSize: 18,
-    fontWeight: "900",
+    fontWeight: "600",
   },
   brandSubtitle: {
     color: colors.textMuted,
     fontSize: 13,
-    fontWeight: "900",
+    fontWeight: "600",
     textTransform: "uppercase",
   },
   heroTitle: {
     color: colors.text,
-    fontSize: 34,
-    fontWeight: "900",
-    letterSpacing: 0,
-    lineHeight: 39,
+    fontSize: 30,
+    fontWeight: "600",
+    letterSpacing: -0.8,
+    lineHeight: 36,
   },
   heroCopy: {
     color: colors.textMuted,
-    fontSize: 17,
-    fontWeight: "700",
-    lineHeight: 25,
+    fontSize: 15,
+    fontWeight: "400",
+    lineHeight: 23,
   },
   eyebrow: {
     color: colors.accent,
     fontSize: 13,
-    fontWeight: "900",
+    fontWeight: "600",
     textTransform: "uppercase",
   },
   stack: {
@@ -2292,7 +2342,7 @@ const styles = StyleSheet.create({
   },
   discoverySectionTitle: {
     fontSize: 22,
-    fontWeight: "900",
+    fontWeight: "600",
   },
   discoveryViewAll: {
     borderRadius: radii.md,
@@ -2300,23 +2350,23 @@ const styles = StyleSheet.create({
     paddingVertical: spacing.md,
   },
   discoveryViewAllText: {
-    color: colors.panel,
+    color: colors.accentStrong,
     fontSize: 13,
-    fontWeight: "900",
+    fontWeight: "600",
   },
   discoveryRow: {
     gap: spacing.md,
     paddingRight: spacing.lg,
   },
   discoveryCardCompact: {
-    minHeight: 210,
-    width: 280,
+    minHeight: 196,
+    width: 272,
   },
   card: {
     backgroundColor: colors.panel,
     borderColor: colors.line,
     borderRadius: radii.md,
-    borderWidth: 2,
+    borderWidth: 1,
     gap: spacing.md,
     padding: spacing.lg,
   },
@@ -2324,14 +2374,14 @@ const styles = StyleSheet.create({
     backgroundColor: colors.panelMuted,
     borderColor: colors.line,
     borderRadius: radii.md,
-    borderWidth: 2,
+    borderWidth: 1,
     gap: spacing.sm,
     padding: spacing.md,
   },
   japaneseGlyph: {
     color: colors.text,
     fontSize: 64,
-    fontWeight: "900",
+    fontWeight: "600",
     lineHeight: 72,
   },
   writingPad: {
@@ -2339,7 +2389,7 @@ const styles = StyleSheet.create({
     backgroundColor: colors.panel,
     borderColor: colors.line,
     borderRadius: radii.md,
-    borderWidth: 2,
+    borderWidth: 1,
     overflow: "hidden",
   },
   characterGrid: {
@@ -2352,7 +2402,7 @@ const styles = StyleSheet.create({
     backgroundColor: colors.panelMuted,
     borderColor: colors.line,
     borderRadius: radii.md,
-    borderWidth: 2,
+    borderWidth: 1,
     height: 74,
     justifyContent: "center",
     width: 64,
@@ -2360,46 +2410,46 @@ const styles = StyleSheet.create({
   characterTileGlyph: {
     color: colors.text,
     fontSize: 28,
-    fontWeight: "900",
+    fontWeight: "600",
     lineHeight: 34,
   },
   characterTileReading: {
     color: colors.textMuted,
     fontSize: 13,
-    fontWeight: "900",
+    fontWeight: "600",
   },
   cardEyebrow: {
     color: colors.textMuted,
     fontSize: 13,
-    fontWeight: "900",
+    fontWeight: "600",
     textTransform: "uppercase",
   },
   cardTitle: {
     color: colors.text,
     fontSize: 20,
-    fontWeight: "900",
+    fontWeight: "600",
     lineHeight: 25,
   },
   bodyText: {
     color: colors.textStrong,
     fontSize: 17,
-    fontWeight: "700",
+    fontWeight: "400",
     lineHeight: 26,
   },
   mutedText: {
     color: colors.textMuted,
     fontSize: 14,
-    fontWeight: "700",
+    fontWeight: "400",
     lineHeight: 22,
   },
   emptyText: {
     backgroundColor: colors.panel,
     borderColor: colors.line,
     borderRadius: radii.md,
-    borderWidth: 2,
+    borderWidth: 1,
     color: colors.textMuted,
     fontSize: 14,
-    fontWeight: "800",
+    fontWeight: "600",
     padding: spacing.lg,
   },
   fill: {
@@ -2413,14 +2463,14 @@ const styles = StyleSheet.create({
   },
   pill: {
     borderRadius: radii.md,
-    borderWidth: 2,
+    borderWidth: 1,
     paddingHorizontal: 10,
     paddingVertical: 5,
   },
   pillText: {
     color: colors.text,
     fontSize: 12,
-    fontWeight: "900",
+    fontWeight: "600",
   },
   pillNeutral: {
     backgroundColor: colors.panelMuted,
@@ -2446,7 +2496,7 @@ const styles = StyleSheet.create({
     backgroundColor: colors.panelMuted,
     borderColor: colors.line,
     borderRadius: radii.md,
-    borderWidth: 2,
+    borderWidth: 1,
     flexDirection: "row",
     gap: spacing.md,
     padding: spacing.md,
@@ -2455,10 +2505,10 @@ const styles = StyleSheet.create({
     backgroundColor: colors.blueSoft,
     borderColor: "#9cc7ff",
     borderRadius: radii.md,
-    borderWidth: 2,
+    borderWidth: 1,
     color: colors.blue,
     fontSize: 14,
-    fontWeight: "900",
+    fontWeight: "600",
     height: 40,
     overflow: "hidden",
     paddingTop: 9,
@@ -2468,22 +2518,22 @@ const styles = StyleSheet.create({
   nodeTitle: {
     color: colors.text,
     fontSize: 16,
-    fontWeight: "900",
+    fontWeight: "600",
   },
   nodeSummary: {
     color: colors.textMuted,
     fontSize: 14,
-    fontWeight: "700",
+    fontWeight: "400",
     lineHeight: 18,
   },
   input: {
     backgroundColor: colors.panel,
     borderColor: colors.line,
     borderRadius: radii.md,
-    borderWidth: 2,
+    borderWidth: 1,
     color: colors.text,
     fontSize: 16,
-    fontWeight: "800",
+    fontWeight: "600",
     minHeight: 52,
     paddingHorizontal: spacing.lg,
   },
@@ -2498,7 +2548,7 @@ const styles = StyleSheet.create({
     backgroundColor: colors.panel,
     borderColor: colors.line,
     borderRadius: radii.md,
-    borderWidth: 2,
+    borderWidth: 1,
     paddingHorizontal: spacing.md,
     paddingVertical: spacing.sm,
   },
@@ -2515,27 +2565,27 @@ const styles = StyleSheet.create({
     backgroundColor: colors.greenSoft,
     borderColor: colors.accent,
     borderRadius: radii.md,
-    borderWidth: 2,
+    borderWidth: 1,
     gap: spacing.sm,
     padding: spacing.md,
   },
   reviewSavedText: {
     color: colors.accentStrong,
     fontSize: 14,
-    fontWeight: "900",
+    fontWeight: "600",
     lineHeight: 20,
   },
   optionText: {
     color: colors.text,
     fontSize: 13,
-    fontWeight: "900",
+    fontWeight: "600",
   },
   primaryButton: {
     alignItems: "center",
     backgroundColor: colors.accent,
     borderColor: colors.accentStrong,
     borderRadius: radii.md,
-    borderWidth: 2,
+    borderWidth: 1,
     minHeight: 48,
     justifyContent: "center",
     paddingHorizontal: spacing.lg,
@@ -2546,7 +2596,7 @@ const styles = StyleSheet.create({
     backgroundColor: colors.blue,
     borderColor: colors.blueStrong,
     borderRadius: radii.md,
-    borderWidth: 2,
+    borderWidth: 1,
     minHeight: 48,
     justifyContent: "center",
     paddingHorizontal: spacing.lg,
@@ -2557,7 +2607,7 @@ const styles = StyleSheet.create({
     backgroundColor: colors.panel,
     borderColor: colors.line,
     borderRadius: radii.md,
-    borderWidth: 2,
+    borderWidth: 1,
     minHeight: 44,
     justifyContent: "center",
     paddingHorizontal: spacing.md,
@@ -2566,12 +2616,12 @@ const styles = StyleSheet.create({
   primaryButtonText: {
     color: colors.panel,
     fontSize: 16,
-    fontWeight: "900",
+    fontWeight: "600",
   },
   ghostButtonText: {
     color: colors.text,
     fontSize: 16,
-    fontWeight: "900",
+    fontWeight: "600",
   },
   disabled: {
     opacity: 0.55,
@@ -2579,7 +2629,7 @@ const styles = StyleSheet.create({
   feedback: {
     borderColor: colors.line,
     borderRadius: radii.md,
-    borderWidth: 2,
+    borderWidth: 1,
     gap: spacing.sm,
     padding: spacing.md,
   },
@@ -2594,7 +2644,7 @@ const styles = StyleSheet.create({
   feedbackTitle: {
     color: colors.text,
     fontSize: 14,
-    fontWeight: "900",
+    fontWeight: "600",
     textTransform: "uppercase",
   },
   positionRow: {
@@ -2602,7 +2652,7 @@ const styles = StyleSheet.create({
     backgroundColor: colors.panelMuted,
     borderColor: colors.line,
     borderRadius: radii.md,
-    borderWidth: 2,
+    borderWidth: 1,
     flexDirection: "row",
     justifyContent: "space-between",
     padding: spacing.md,
@@ -2610,14 +2660,14 @@ const styles = StyleSheet.create({
   positionText: {
     color: colors.textMuted,
     fontSize: 12,
-    fontWeight: "900",
+    fontWeight: "600",
     textTransform: "uppercase",
   },
   choice: {
     backgroundColor: colors.panel,
     borderColor: colors.line,
     borderRadius: radii.md,
-    borderWidth: 2,
+    borderWidth: 1,
     padding: spacing.md,
   },
   choiceSelected: {
@@ -2627,7 +2677,7 @@ const styles = StyleSheet.create({
   choiceText: {
     color: colors.text,
     fontSize: 15,
-    fontWeight: "800",
+    fontWeight: "600",
     lineHeight: 22,
   },
   orderRow: {
@@ -2635,7 +2685,7 @@ const styles = StyleSheet.create({
     backgroundColor: colors.panel,
     borderColor: colors.line,
     borderRadius: radii.md,
-    borderWidth: 2,
+    borderWidth: 1,
     flexDirection: "row",
     gap: spacing.md,
     padding: spacing.md,
@@ -2660,7 +2710,7 @@ const styles = StyleSheet.create({
     backgroundColor: colors.panel,
     borderColor: colors.line,
     borderRadius: radii.md,
-    borderWidth: 2,
+    borderWidth: 1,
     gap: spacing.md,
     padding: spacing.md,
   },
@@ -2671,7 +2721,7 @@ const styles = StyleSheet.create({
     backgroundColor: colors.panel,
     borderColor: colors.line,
     borderRadius: radii.md,
-    borderWidth: 2,
+    borderWidth: 1,
     gap: spacing.md,
     overflow: "hidden",
     padding: spacing.md,
@@ -2684,7 +2734,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#101820",
     borderColor: "#14212b",
     borderRadius: radii.md,
-    borderWidth: 2,
+    borderWidth: 1,
     maxHeight: 340,
   },
   codeContent: {
@@ -2693,7 +2743,7 @@ const styles = StyleSheet.create({
   codeLanguage: {
     color: "#7dd3fc",
     fontSize: 12,
-    fontWeight: "900",
+    fontWeight: "600",
     marginBottom: spacing.sm,
     textTransform: "uppercase",
   },
@@ -2709,26 +2759,26 @@ const markdownStyles = StyleSheet.create({
   body: {
     color: colors.textStrong,
     fontSize: 16,
-    fontWeight: "700",
+    fontWeight: "400",
     lineHeight: 26,
   },
   heading1: {
     color: colors.text,
     fontSize: 30,
-    fontWeight: "900",
+    fontWeight: "600",
     lineHeight: 36,
   },
   heading2: {
     color: colors.text,
     fontSize: 24,
-    fontWeight: "900",
+    fontWeight: "600",
     lineHeight: 31,
     marginTop: spacing.xl,
   },
   heading3: {
     color: colors.text,
     fontSize: 20,
-    fontWeight: "900",
+    fontWeight: "600",
     lineHeight: 26,
     marginTop: spacing.lg,
   },
@@ -2747,7 +2797,7 @@ const markdownStyles = StyleSheet.create({
     borderColor: colors.line,
     borderRadius: radii.sm,
     color: colors.blue,
-    fontWeight: "800",
+    fontWeight: "600",
     paddingHorizontal: 4,
   },
   blockquote: {
@@ -2758,6 +2808,6 @@ const markdownStyles = StyleSheet.create({
   },
   link: {
     color: colors.blue,
-    fontWeight: "900",
+    fontWeight: "600",
   },
 });

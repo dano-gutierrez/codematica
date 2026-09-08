@@ -1,0 +1,38 @@
+appId: com.codematica.app
+tags:
+  - smoke
+---
+- launchApp:
+    clearState: true
+- assertVisible:
+    id: mobile-home-global-search
+- tapOn:
+    id: mobile-nav-practice
+- assertVisible:
+    id: mobile-practice-catalog-search
+- tapOn:
+    id: mobile-nav-interviews
+- assertVisible: Interview prep
+- runFlow:
+    when:
+      visible:
+        id: mobile-nav-more
+    commands:
+      - tapOn:
+          id: mobile-nav-more
+      - assertVisible: Explore Codematica
+      - tapOn:
+          id: mobile-menu-languages
+- runFlow:
+    when:
+      visible:
+        id: mobile-nav-languages
+    commands:
+      - tapOn:
+          id: mobile-nav-languages
+- assertVisible:
+    id: mobile-language-japanese
+- tapOn:
+    id: mobile-nav-home
+- assertVisible:
+    id: mobile-home-global-search

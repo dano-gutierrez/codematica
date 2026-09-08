@@ -55,9 +55,9 @@ export default async function DiagramPage({ params }: DiagramPageProps) {
         </Suspense>
         <BackButton />
         <div className="mt-6">
-          <p className="text-sm font-extrabold uppercase text-[#007c78]">Mermaid Diagram</p>
-          <h1 className="mt-2 text-4xl font-extrabold leading-tight tracking-normal text-[#263238] sm:text-6xl">{diagram.title}</h1>
-          <p className="mt-4 text-sm font-bold text-[#68737d]">{diagram.sourcePath}</p>
+          <p className="text-sm font-semibold uppercase text-[#007c78]">Mermaid Diagram</p>
+          <h1 className="mt-2 text-3xl font-semibold leading-tight tracking-tight text-[#263238] sm:text-4xl">{diagram.title}</h1>
+          <p className="mt-4 text-sm font-medium text-[#68737d]">{diagram.sourcePath}</p>
         </div>
         <div className="mt-8">
           <MermaidBlock source={diagram.source} title={diagram.title} />

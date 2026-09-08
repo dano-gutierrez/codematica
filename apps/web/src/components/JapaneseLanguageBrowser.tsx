@@ -17,11 +17,10 @@ export function JapaneseLanguageBrowser({ index }: { index: ContentIndex }) {
       <AppHeader subtitle="Japanese" />
 
       <section className="mx-auto w-full max-w-7xl px-4 py-6 sm:py-8">
-        <p className="text-sm font-extrabold uppercase text-[#7a5200]">Japanese</p>
-        <h1 className="mt-2 max-w-4xl text-4xl font-extrabold leading-tight tracking-normal text-[#263238] sm:text-6xl">
-          Practice kana, kanji, and writing.
+        <h1 className="mt-2 max-w-4xl text-3xl font-semibold leading-tight tracking-tight text-[#263238] sm:text-4xl">
+          Japanese
         </h1>
-        <p className="mt-4 max-w-3xl text-base font-semibold leading-7 text-[#68737d]">
+        <p className="mt-4 max-w-3xl text-base font-normal leading-7 text-[#68737d]">
           Search beginner Japanese characters and phrases with romaji, meanings, and IPA pronunciation support.
         </p>
         <nav className="mt-5 grid gap-3 sm:grid-cols-2 lg:grid-cols-4" aria-label="Japanese study tools" data-testid="japanese-study-tools">
@@ -44,7 +43,7 @@ export function JapaneseLanguageBrowser({ index }: { index: ContentIndex }) {
             value={query}
             onChange={(event) => setQuery(event.target.value)}
             placeholder="Search あ, ア, coffee, nihon, /ɲihoɴ/"
-            className="min-h-14 w-full rounded-lg border-2 border-b-4 border-[#d5e2e8] bg-white py-3 pl-12 pr-4 text-base font-bold text-[#263238] outline-none focus:border-[#7a5200]"
+            className="min-h-14 w-full rounded-xl border border-[#d5e2e8] bg-white py-3 pl-12 pr-4 text-base font-medium text-[#263238] outline-none focus:border-[#7a5200]"
             data-testid="japanese-search-input"
           />
         </label>
@@ -68,21 +67,21 @@ export function JapaneseLanguageBrowser({ index }: { index: ContentIndex }) {
           </div>
         ) : null}
 
-        <section id="resources" className="mt-8 scroll-mt-6 rounded-lg border-2 border-b-4 border-[#d2bd76] bg-[#fffaf0] p-4 sm:p-6" data-testid="japanese-resource-shelf">
-          <p className="text-sm font-extrabold uppercase text-[#7a5200]">Trusted, always available</p>
-          <h2 className="mt-1 text-3xl font-extrabold text-[#263238]">Resource shelf</h2>
-          <p className="mt-2 max-w-3xl text-base font-semibold leading-7 text-[#53616c]">These materials stay on their publishers’ sites. Access and reuse labels make it clear what Codematica links to and what it may redistribute.</p>
+        <section id="resources" className="mt-8 scroll-mt-6 rounded-xl border border-[#d2bd76] bg-[#fffaf0] p-4 sm:p-6" data-testid="japanese-resource-shelf">
+          <p className="text-sm font-semibold uppercase text-[#7a5200]">Trusted, always available</p>
+          <h2 className="mt-1 text-3xl font-semibold text-[#263238]">Resource shelf</h2>
+          <p className="mt-2 max-w-3xl text-base font-normal leading-7 text-[#53616c]">These materials stay on their publishers’ sites. Access and reuse labels make it clear what Codematica links to and what it may redistribute.</p>
           <div className="mt-5 grid gap-3 md:grid-cols-2">
             {index.languageResources.map((resource) => (
-              <a key={resource.id} href={resource.url} target="_blank" rel="noreferrer" className="min-w-0 rounded-lg border-2 border-b-4 border-[#d2bd76] bg-white p-4 [overflow-wrap:anywhere] focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-2 focus-visible:outline-[#007c78]">
-                <span className="block [overflow-wrap:anywhere] text-lg font-extrabold text-[#263238]">{resource.title}</span>
-                <span className="mt-1 block [overflow-wrap:anywhere] text-sm font-semibold leading-6 text-[#53616c]">{resource.description}</span>
-                <span className="mt-3 flex flex-wrap gap-2 text-xs font-extrabold uppercase text-[#654400]">
+              <a key={resource.id} href={resource.url} target="_blank" rel="noreferrer" className="min-w-0 rounded-xl border border-[#d2bd76] bg-white p-4 [overflow-wrap:anywhere] focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-2 focus-visible:outline-[#007c78]">
+                <span className="block [overflow-wrap:anywhere] text-lg font-semibold text-[#263238]">{resource.title}</span>
+                <span className="mt-1 block [overflow-wrap:anywhere] text-sm font-normal leading-6 text-[#53616c]">{resource.description}</span>
+                <span className="mt-3 flex flex-wrap gap-2 text-xs font-semibold uppercase text-[#654400]">
                   <span className="rounded-md bg-[#fff0b8] px-2 py-1">{resource.access}</span>
                   <span className="rounded-md bg-[#edf5ff] px-2 py-1">{resource.proficiencyLevels.join(" · ").toUpperCase()}</span>
                   <span className="rounded-md bg-[#f0edf9] px-2 py-1">{resource.reusePolicy === "link-only" ? "Link only" : "Licensed embed"}</span>
                 </span>
-                <span className="mt-3 block text-sm font-bold text-[#53616c]">Publisher: {resource.publisher}</span>
+                <span className="mt-3 block text-sm font-medium text-[#53616c]">Publisher: {resource.publisher}</span>
               </a>
             ))}
           </div>
@@ -94,11 +93,11 @@ export function JapaneseLanguageBrowser({ index }: { index: ContentIndex }) {
 
 function StudyToolLink({ href, label, description, icon, testId }: { href: string; label: string; description: string; icon: ReactNode; testId: string }) {
   return (
-    <Link href={href} className="flex min-h-20 w-full min-w-0 items-center gap-3 rounded-lg border-2 border-b-4 border-[#d5e2e8] bg-white px-4 py-3 transition hover:-translate-y-0.5 hover:border-[#7a5200] sm:w-auto" data-testid={testId}>
-      <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-[#fff5d6] font-extrabold text-[#7a5200]">{icon}</span>
+    <Link href={href} className="flex min-h-20 w-full min-w-0 items-center gap-3 rounded-xl border border-[#d5e2e8] bg-white px-4 py-3 transition hover:-translate-y-0.5 hover:border-[#7a5200] sm:w-auto" data-testid={testId}>
+      <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[#fff5d6] font-semibold text-[#7a5200]">{icon}</span>
       <span className="min-w-0">
-        <span className="block [overflow-wrap:anywhere] text-sm font-extrabold text-[#263238]">{label}</span>
-        <span className="mt-0.5 block [overflow-wrap:anywhere] text-xs font-bold text-[#68737d]">{description}</span>
+        <span className="block [overflow-wrap:anywhere] text-sm font-semibold text-[#263238]">{label}</span>
+        <span className="mt-0.5 block [overflow-wrap:anywhere] text-xs font-medium text-[#68737d]">{description}</span>
       </span>
     </Link>
   );
@@ -106,8 +105,8 @@ function StudyToolLink({ href, label, description, icon, testId }: { href: strin
 
 function VocabularySection({ title, vocabulary }: { title: string; vocabulary: LanguageVocabulary[] }) {
   return (
-    <section className="rounded-lg border-2 border-b-4 border-[#d5e2e8] bg-white p-4 sm:p-5">
-      <h2 className="text-2xl font-extrabold tracking-normal text-[#263238]">{title}</h2>
+    <section className="rounded-xl border border-[#d5e2e8] bg-white p-4 sm:p-5">
+      <h2 className="text-2xl font-semibold tracking-tight text-[#263238]">{title}</h2>
       <div className="mt-4 grid gap-3 sm:grid-cols-2">
         {vocabulary.map((item) => <VocabularyCard key={item.slug} vocabulary={item} />)}
       </div>
@@ -125,17 +124,17 @@ function JapaneseResult({ result }: { result: JapaneseSearchResult }) {
 
 function CharacterSection({ title, characters }: { title: string; characters: LanguageCharacter[] }) {
   return (
-    <section className="rounded-lg border-2 border-b-4 border-[#d5e2e8] bg-white p-4 sm:p-5">
-      <h2 className="text-2xl font-extrabold tracking-normal text-[#263238]">{title}</h2>
+    <section className="rounded-xl border border-[#d5e2e8] bg-white p-4 sm:p-5">
+      <h2 className="text-2xl font-semibold tracking-tight text-[#263238]">{title}</h2>
       <div className="mt-4 grid grid-cols-[repeat(auto-fill,minmax(4.25rem,1fr))] gap-3">
         {characters.map((character) => (
           <Link
             key={character.slug}
             href={character.route}
-            className="flex aspect-square flex-col items-center justify-center rounded-lg border-2 border-b-4 border-[#d5e2e8] bg-[#f6fbfc] p-2 text-center transition hover:-translate-y-0.5 hover:border-[#7a5200]"
+            className="flex aspect-square flex-col items-center justify-center rounded-xl border border-[#d5e2e8] bg-[#f6fbfc] p-2 text-center transition hover:-translate-y-0.5 hover:border-[#7a5200]"
           >
-            <span lang="ja" className="text-3xl font-extrabold leading-none text-[#263238]">{character.glyph}</span>
-            <span className="mt-1 text-xs font-extrabold text-[#68737d]">{character.romaji}</span>
+            <span lang="ja" className="text-3xl font-normal leading-none text-[#263238]">{character.glyph}</span>
+            <span className="mt-1 text-xs font-semibold text-[#68737d]">{character.romaji}</span>
           </Link>
         ))}
       </div>
@@ -147,17 +146,17 @@ function CharacterCard({ character }: { character: LanguageCharacter }) {
   return (
     <Link
       href={character.route}
-      className="grid gap-3 rounded-lg border-2 border-b-4 border-[#d5e2e8] bg-white p-4 transition hover:-translate-y-0.5 hover:border-[#7a5200] sm:grid-cols-[5rem_minmax(0,1fr)]"
+      className="grid gap-3 rounded-xl border border-[#d5e2e8] bg-white p-4 transition hover:-translate-y-0.5 hover:border-[#7a5200] sm:grid-cols-[5rem_minmax(0,1fr)]"
       data-testid={`japanese-character-${character.slug.replaceAll("/", "-")}`}
     >
-      <span lang="ja" className="text-6xl font-extrabold leading-none text-[#263238]">{character.glyph}</span>
+      <span lang="ja" className="text-6xl font-normal leading-none text-[#263238]">{character.glyph}</span>
       <span className="min-w-0">
         <span className="flex flex-wrap gap-2">
-          <span className="rounded-lg bg-[#fff5d6] px-2.5 py-1 text-xs font-extrabold text-[#7a5200]">{character.writingSystem}</span>
-          <span className="rounded-lg bg-[#edf5ff] px-2.5 py-1 text-xs font-extrabold text-[#245fba]">/{character.ipa}/</span>
+          <span className="rounded-xl bg-[#fff5d6] px-2.5 py-1 text-xs font-semibold text-[#7a5200]">{character.writingSystem}</span>
+          <span className="rounded-xl bg-[#edf5ff] px-2.5 py-1 text-xs font-semibold text-[#245fba]">/{character.ipa}/</span>
         </span>
-        <span className="mt-2 block text-xl font-extrabold text-[#263238]">{character.title}</span>
-        <span className="mt-1 block text-sm font-semibold leading-6 text-[#68737d]">{character.meanings.join(", ")}</span>
+        <span className="mt-2 block text-xl font-semibold text-[#263238]">{character.title}</span>
+        <span className="mt-1 block text-sm font-normal leading-6 text-[#68737d]">{character.meanings.join(", ")}</span>
       </span>
     </Link>
   );
@@ -167,17 +166,17 @@ function VocabularyCard({ vocabulary }: { vocabulary: LanguageVocabulary }) {
   return (
     <Link
       href={vocabulary.route}
-      className="grid gap-3 rounded-lg border-2 border-b-4 border-[#d5e2e8] bg-white p-4 transition hover:-translate-y-0.5 hover:border-[#7a5200] sm:grid-cols-[8rem_minmax(0,1fr)]"
+      className="grid min-w-0 grid-cols-[minmax(0,1fr)] gap-3 rounded-xl border border-[#d5e2e8] bg-white p-4 [overflow-wrap:anywhere] transition hover:-translate-y-0.5 hover:border-[#7a5200] sm:grid-cols-[8rem_minmax(0,1fr)]"
       data-testid={`japanese-vocabulary-${vocabulary.slug.replaceAll("/", "-")}`}
     >
-      <span lang="ja" className="text-5xl font-extrabold leading-none text-[#263238]">{vocabulary.expression}</span>
+      <span lang="ja" className="text-5xl font-normal leading-none text-[#263238]">{vocabulary.expression}</span>
       <span className="min-w-0">
         <span className="flex flex-wrap gap-2">
-          <span className="rounded-lg bg-[#fff5d6] px-2.5 py-1 text-xs font-extrabold text-[#7a5200]">Vocabulary</span>
-          <span className="rounded-lg bg-[#edf5ff] px-2.5 py-1 text-xs font-extrabold text-[#245fba]">/{vocabulary.ipa}/</span>
+          <span className="rounded-xl bg-[#fff5d6] px-2.5 py-1 text-xs font-semibold text-[#7a5200]">Vocabulary</span>
+          <span className="rounded-xl bg-[#edf5ff] px-2.5 py-1 text-xs font-semibold text-[#245fba]">/{vocabulary.ipa}/</span>
         </span>
-        <span className="mt-2 block text-xl font-extrabold text-[#263238]">{vocabulary.romaji}</span>
-        <span className="mt-1 block text-sm font-semibold leading-6 text-[#68737d]">{vocabulary.meanings.join(", ")}</span>
+        <span className="mt-2 block text-xl font-semibold text-[#263238]">{vocabulary.romaji}</span>
+        <span className="mt-1 block text-sm font-normal leading-6 text-[#68737d]">{vocabulary.meanings.join(", ")}</span>
       </span>
     </Link>
   );

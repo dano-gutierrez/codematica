@@ -94,13 +94,13 @@ export function JapaneseWritingPractice({
     }
   }
 
-  if (!character) return <p className="mt-6 text-sm font-bold text-[#68737d]">This writing exercise has no available characters.</p>;
+  if (!character) return <p className="mt-6 text-sm font-medium text-[#68737d]">This writing exercise has no available characters.</p>;
 
   const expectedStroke = character.strokes[strokes.length];
 
   return (
     <div className="mt-6" data-testid="writing-practice">
-      <p className="text-lg font-bold leading-8 text-[#33434b]">{prompt}</p>
+      <p className="text-lg font-medium leading-8 text-[#33434b]">{prompt}</p>
       <div className="mt-5 flex flex-wrap gap-2">
         {modes.includes("assisted") ? (
           <ModeButton active={mode === "assisted"} tone="green" testId="writing-mode-assisted" onClick={() => resetForCharacter(characterIndex, "assisted")}>Assisted</ModeButton>
@@ -111,16 +111,16 @@ export function JapaneseWritingPractice({
       </div>
 
       <div className="mt-5 grid gap-5 lg:grid-cols-[18rem_minmax(0,1fr)]">
-        <div className="rounded-lg border-2 border-[#d5e2e8] bg-[#f6fbfc] p-4">
-          <p className="text-xs font-extrabold uppercase text-[#68737d]">Character {characterIndex + 1} of {characters.length}</p>
-          <p className="mt-2 text-7xl font-extrabold leading-none text-[#263238]">{character.glyph}</p>
-          <p className="mt-3 text-xl font-extrabold text-[#263238]">{character.romaji} /{character.ipa}/</p>
-          {character.inputSequences.length ? <p className="mt-2 text-sm font-bold text-[#245fba]">IME: {character.inputSequences.join(" or ")}</p> : null}
-          <p className="mt-2 text-sm font-semibold leading-6 text-[#68737d]">{character.meanings.join(", ")}</p>
+        <div className="rounded-xl border border-[#d5e2e8] bg-[#f6fbfc] p-4">
+          <p className="text-xs font-semibold uppercase text-[#68737d]">Character {characterIndex + 1} of {characters.length}</p>
+          <p className="mt-2 text-7xl font-normal leading-none text-[#263238]">{character.glyph}</p>
+          <p className="mt-3 text-xl font-semibold text-[#263238]">{character.romaji} /{character.ipa}/</p>
+          {character.inputSequences.length ? <p className="mt-2 text-sm font-medium text-[#245fba]">IME: {character.inputSequences.join(" or ")}</p> : null}
+          <p className="mt-2 text-sm font-normal leading-6 text-[#68737d]">{character.meanings.join(", ")}</p>
         </div>
 
         <div className="grid gap-3">
-          <svg viewBox="0 0 100 100" role="img" aria-label={`Writing pad for ${character.title}`} onPointerDown={startStroke} onPointerMove={moveStroke} onPointerUp={endStroke} onPointerCancel={endStroke} className="aspect-square w-full max-w-[22rem] touch-none rounded-lg border-2 border-b-4 border-[#d5e2e8] bg-white" data-testid="writing-pad">
+          <svg viewBox="0 0 100 100" role="img" aria-label={`Writing pad for ${character.title}`} onPointerDown={startStroke} onPointerMove={moveStroke} onPointerUp={endStroke} onPointerCancel={endStroke} className="aspect-square w-full max-w-[22rem] touch-none rounded-xl border border-[#d5e2e8] bg-white" data-testid="writing-pad">
             <path d="M 50 0 L 50 100 M 0 50 L 100 50" stroke="#e4edf1" strokeWidth="0.8" fill="none" />
             {mode === "assisted" ? character.strokes.slice(strokes.length).map((stroke, index) => (
               <path key={stroke.id} d={pointsToPath(stroke.points)} stroke={index === 0 ? "#6dd8cf" : "#d5e2e8"} strokeWidth={index === 0 ? 5 : 3} strokeLinecap="round" strokeLinejoin="round" fill="none" />
@@ -136,25 +136,25 @@ export function JapaneseWritingPractice({
             ))}
           </svg>
 
-          {assistedFeedback ? <p className="rounded-lg border-2 border-[#f7cf5d] bg-[#fff5d6] p-3 text-sm font-bold text-[#7a5200]" data-testid="writing-assisted-feedback">{assistedFeedback}</p> : null}
+          {assistedFeedback ? <p className="rounded-xl border border-[#f7cf5d] bg-[#fff5d6] p-3 text-sm font-medium text-[#7a5200]" data-testid="writing-assisted-feedback">{assistedFeedback}</p> : null}
           {result ? (
-            <div className={cn("rounded-lg border-2 border-b-4 p-4", result.isCorrect ? "border-[#6dd8cf] bg-[#e8f8f6]" : "border-[#f7cf5d] bg-[#fff5d6]")} data-testid="writing-feedback">
-              <p className={cn("text-sm font-extrabold", result.isCorrect ? "text-[#007c78]" : "text-[#7a5200]")}>{result.isCorrect ? "Correct" : "Review this"}</p>
-              <p className="mt-2 text-sm font-semibold leading-6 text-[#33434b]">{result.feedback}</p>
-              <p className="mt-1 text-xs font-extrabold uppercase text-[#68737d]">Score {result.score}</p>
+            <div className={cn("rounded-xl border p-4", result.isCorrect ? "border-[#6dd8cf] bg-[#e8f8f6]" : "border-[#f7cf5d] bg-[#fff5d6]")} data-testid="writing-feedback">
+              <p className={cn("text-sm font-semibold", result.isCorrect ? "text-[#007c78]" : "text-[#7a5200]")}>{result.isCorrect ? "Correct" : "Review this"}</p>
+              <p className="mt-2 text-sm font-normal leading-6 text-[#33434b]">{result.feedback}</p>
+              <p className="mt-1 text-xs font-semibold uppercase text-[#68737d]">Score {result.score}</p>
             </div>
           ) : null}
         </div>
       </div>
 
       <div className="mt-6 flex flex-wrap gap-3">
-        <button type="button" onClick={() => setStrokes((value) => value.slice(0, -1))} disabled={strokes.length === 0 || Boolean(result)} className="inline-flex min-h-12 items-center rounded-lg border-2 border-b-4 border-[#d5e2e8] bg-white px-4 py-2 text-sm font-extrabold text-[#263238] disabled:opacity-45">Undo</button>
-        <button type="button" onClick={() => resetForCharacter()} className="inline-flex min-h-12 items-center rounded-lg border-2 border-b-4 border-[#d5e2e8] bg-white px-4 py-2 text-sm font-extrabold text-[#263238]">Clear</button>
-        <button type="button" onClick={checkCurrentCharacter} disabled={strokes.length === 0 || Boolean(result) || strokes.length !== character.strokes.length} className="inline-flex min-h-12 items-center gap-2 rounded-lg border-2 border-b-4 border-[#00645f] bg-[#007c78] px-4 py-2 text-sm font-extrabold text-white disabled:opacity-45" data-testid="writing-check"><CheckCircle2 className="h-4 w-4" aria-hidden="true" />Check</button>
+        <button type="button" onClick={() => setStrokes((value) => value.slice(0, -1))} disabled={strokes.length === 0 || Boolean(result)} className="inline-flex min-h-12 items-center rounded-xl border border-[#d5e2e8] bg-white px-4 py-2 text-sm font-semibold text-[#263238] disabled:opacity-45">Undo</button>
+        <button type="button" onClick={() => resetForCharacter()} className="inline-flex min-h-12 items-center rounded-xl border border-[#d5e2e8] bg-white px-4 py-2 text-sm font-semibold text-[#263238]">Clear</button>
+        <button type="button" onClick={checkCurrentCharacter} disabled={strokes.length === 0 || Boolean(result) || strokes.length !== character.strokes.length} className="inline-flex min-h-12 items-center gap-2 rounded-xl border border-[#00645f] bg-[#007c78] px-4 py-2 text-sm font-semibold text-white disabled:opacity-45" data-testid="writing-check"><CheckCircle2 className="h-4 w-4" aria-hidden="true" />Check</button>
         {result?.isCorrect && characterIndex + 1 < characters.length ? (
-          <button type="button" onClick={() => { const nextIndex = characterIndex + 1; onProgressEvent?.("started", { mode, characterSlug: characters[nextIndex]?.slug }); resetForCharacter(nextIndex); }} className="inline-flex min-h-12 items-center rounded-lg border-2 border-b-4 border-[#1d4e9e] bg-[#245fba] px-4 py-2 text-sm font-extrabold text-white" data-testid="writing-next-character">Next character</button>
+          <button type="button" onClick={() => { const nextIndex = characterIndex + 1; onProgressEvent?.("started", { mode, characterSlug: characters[nextIndex]?.slug }); resetForCharacter(nextIndex); }} className="inline-flex min-h-12 items-center rounded-xl border border-[#1d4e9e] bg-[#245fba] px-4 py-2 text-sm font-semibold text-white" data-testid="writing-next-character">Next character</button>
         ) : null}
-        {result?.isCorrect && characterIndex + 1 >= characters.length && nextHref ? <Link href={nextHref} className="inline-flex min-h-12 items-center gap-2 rounded-lg border-2 border-b-4 border-[#1d4e9e] bg-[#245fba] px-4 py-2 text-sm font-extrabold text-white">Next node <ArrowRight className="h-4 w-4" aria-hidden="true" /></Link> : null}
+        {result?.isCorrect && characterIndex + 1 >= characters.length && nextHref ? <Link href={nextHref} className="inline-flex min-h-12 items-center gap-2 rounded-xl border border-[#1d4e9e] bg-[#245fba] px-4 py-2 text-sm font-semibold text-white">Next node <ArrowRight className="h-4 w-4" aria-hidden="true" /></Link> : null}
       </div>
     </div>
   );
@@ -162,7 +162,7 @@ export function JapaneseWritingPractice({
 
 function ModeButton({ active, tone, testId, onClick, children }: { active: boolean; tone: "green" | "blue"; testId: string; onClick: () => void; children: string }) {
   const activeClass = tone === "green" ? "border-[#00645f] bg-[#007c78] text-white" : "border-[#1d4e9e] bg-[#245fba] text-white";
-  return <button type="button" onClick={onClick} className={cn("min-h-11 rounded-lg border-2 border-b-4 px-3 py-2 text-sm font-extrabold", active ? activeClass : "border-[#d5e2e8] bg-white text-[#263238]")} data-testid={testId}>{children}</button>;
+  return <button type="button" onClick={onClick} className={cn("min-h-11 rounded-xl border px-3 py-2 text-sm font-semibold", active ? activeClass : "border-[#d5e2e8] bg-white text-[#263238]")} data-testid={testId}>{children}</button>;
 }
 
 function svgPoint(event: PointerEvent<SVGSVGElement>): LanguageStrokePoint {

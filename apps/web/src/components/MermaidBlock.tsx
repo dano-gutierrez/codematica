@@ -61,13 +61,13 @@ export function MermaidBlock({ source, title }: { source: string; title?: string
   }, [diagramId, source]);
 
   return (
-    <figure className="my-6 overflow-hidden rounded-lg border-2 border-b-4 border-[#d5e2e8] bg-white" data-testid="mermaid-block">
+    <figure className="my-6 overflow-hidden rounded-xl border border-[#d5e2e8] bg-white" data-testid="mermaid-block">
       {title ? (
-        <figcaption className="border-b-2 border-[#e4edf1] bg-[#f6fbfc] px-4 py-3 text-sm font-extrabold text-[#263238]">{title}</figcaption>
+        <figcaption className="border-b-2 border-[#e4edf1] bg-[#f6fbfc] px-4 py-3 text-sm font-semibold text-[#263238]">{title}</figcaption>
       ) : null}
       <div className="min-h-44 overflow-x-auto p-4">
         {state.status === "loading" ? (
-          <div className="flex min-h-36 items-center justify-center text-sm font-bold text-[#68737d]">Rendering diagram</div>
+          <div className="flex min-h-36 items-center justify-center text-sm font-medium text-[#68737d]">Rendering diagram</div>
         ) : null}
         {state.status === "ready" ? (
           <div
@@ -87,7 +87,7 @@ export function MermaidBlock({ source, title }: { source: string; title?: string
         ) : null}
       </div>
       <details className="border-t-2 border-[#e4edf1] px-4 py-3 text-sm text-[#68737d]">
-        <summary className="inline-flex cursor-pointer items-center gap-2 font-extrabold text-[#263238]">
+        <summary className="inline-flex cursor-pointer items-center gap-2 font-semibold text-[#263238]">
           <Code2 className="h-4 w-4" aria-hidden="true" />
           Source
         </summary>

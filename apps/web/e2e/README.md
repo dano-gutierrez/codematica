@@ -13,3 +13,7 @@ npm run e2e:web:release
 Specs live in `specs/` and use `*.smoke.spec.ts` or `*.regression.spec.ts`. Use role queries or stable `data-testid` values; do not use CSS selectors or fixed waits. Trace, screenshot, and video are retained on failure in `test-results/artifacts/`; JUnit is written to `test-results/junit.xml`, and the HTML report is written to `playwright-report/`.
 
 The durable matrix, CI schedules, and release contract live in `docs/features/automated-testing-and-release-regression.md`.
+
+## Adaptive UI
+
+See `docs/features/adaptive-ui.md` for persistent phone navigation, desktop/iPad sidebars, design rules, and validation gaps. Existing screens and feature logic are reused. Navigation coverage lives in `AppHeader.test.tsx`, native `adaptive-navigation.test.tsx`, Playwright `adaptive-navigation.smoke.spec.ts` / `adaptive-layout.regression.spec.ts`, and Maestro `adaptive-navigation.yaml`.

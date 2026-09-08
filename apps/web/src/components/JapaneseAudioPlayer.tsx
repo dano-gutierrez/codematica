@@ -8,7 +8,7 @@ export function JapaneseAudioPlayer({ audioId, revealTranscript, transcript }: {
   const [speed, setSpeed] = useState(1);
   const source = (japaneseAudioUrls as Record<string, string>)[audioId];
 
-  if (!source) return <p className="rounded-lg border-2 border-[#d5e2e8] bg-[#f6fbfc] p-3 text-sm font-semibold text-[#53616c]">Listening audio is awaiting Japanese-language approval.</p>;
+  if (!source) return <p className="rounded-xl border border-[#d5e2e8] bg-[#f6fbfc] p-3 text-sm font-semibold text-[#53616c]">Listening audio is awaiting Japanese-language approval.</p>;
 
   function play(nextSpeed = speed) {
     if (!audioRef.current) return;
@@ -18,14 +18,14 @@ export function JapaneseAudioPlayer({ audioId, revealTranscript, transcript }: {
   }
 
   return (
-    <div className="grid gap-3 rounded-xl border-2 border-b-4 border-[#9cc7ff] bg-[#f5f9ff] p-4" data-testid="japanese-audio-player">
+    <div className="grid gap-3 rounded-xl border border-[#9cc7ff] bg-[#f5f9ff] p-4" data-testid="japanese-audio-player">
       <audio ref={audioRef} src={source} preload="metadata" />
-      <p className="text-xs font-extrabold uppercase text-[#1d4e9e]">AI-generated voice</p>
+      <p className="text-xs font-semibold uppercase text-[#1d4e9e]">AI-generated voice</p>
       <div className="flex flex-wrap gap-2">
-        <button type="button" onClick={() => play()} className="min-h-11 rounded-lg bg-[#245fba] px-4 font-extrabold text-white">Play / replay</button>
-        <button type="button" aria-pressed={speed === 0.75} onClick={() => { setSpeed(0.75); play(0.75); }} className="min-h-11 rounded-lg border-2 border-[#245fba] px-4 font-extrabold text-[#1d4e9e]">0.75× slow</button>
+        <button type="button" onClick={() => play()} className="min-h-11 rounded-xl bg-[#245fba] px-4 font-semibold text-white">Play / replay</button>
+        <button type="button" aria-pressed={speed === 0.75} onClick={() => { setSpeed(0.75); play(0.75); }} className="min-h-11 rounded-xl border border-[#245fba] px-4 font-semibold text-[#1d4e9e]">0.75× slow</button>
       </div>
-      {revealTranscript && transcript ? <p lang="ja" className="text-lg font-bold text-[#263238]">{transcript}</p> : null}
+      {revealTranscript && transcript ? <p lang="ja" className="text-lg font-medium text-[#263238]">{transcript}</p> : null}
     </div>
   );
 }

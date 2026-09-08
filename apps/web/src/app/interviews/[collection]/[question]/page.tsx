@@ -49,33 +49,33 @@ export default async function InterviewQuestionPage({ params }: InterviewQuestio
       <section className="mx-auto w-full max-w-5xl px-4 py-6 sm:py-8">
         <Link
           href={collection.route}
-          className="inline-flex items-center gap-2 rounded-lg border-2 border-b-4 border-[#d5e2e8] bg-white px-3 py-2 text-sm font-extrabold text-[#263238]"
+          className="inline-flex items-center gap-2 rounded-xl border border-[#d5e2e8] bg-white px-3 py-2 text-sm font-semibold text-[#263238]"
         >
           <ArrowLeft className="h-4 w-4" aria-hidden="true" />
           {collection.name}
         </Link>
 
-        <div className="mt-6 rounded-lg border-2 border-b-4 border-[#d5e2e8] bg-white p-5 sm:p-7">
+        <div className="mt-6 rounded-xl border border-[#d5e2e8] bg-white p-5 sm:p-7">
           <div className="flex flex-wrap items-center gap-2">
-            <span className="rounded-lg border-2 border-b-4 border-[#d5e2e8] bg-[#f6fbfc] px-2.5 py-1 text-xs font-extrabold uppercase text-[#007c78]">
+            <span className="rounded-xl border border-[#d5e2e8] bg-[#f6fbfc] px-2.5 py-1 text-xs font-semibold uppercase text-[#007c78]">
               {collection.name}
             </span>
             <DifficultyPill difficulty={question.difficulty} />
             {question.tags.slice(0, 4).map((tag) => (
-              <span key={tag} className="rounded-lg bg-[#edf5ff] px-2.5 py-1 text-xs font-extrabold text-[#245fba]">
+              <span key={tag} className="rounded-xl bg-[#edf5ff] px-2.5 py-1 text-xs font-semibold text-[#245fba]">
                 {tag}
               </span>
             ))}
           </div>
 
-          <h1 className="mt-5 text-4xl font-extrabold leading-tight tracking-normal text-[#263238] sm:text-6xl">{question.title}</h1>
-          <p className="mt-4 text-base font-semibold leading-7 text-[#68737d]">{question.summary}</p>
+          <h1 className="mt-5 text-3xl font-semibold leading-tight tracking-tight text-[#263238] sm:text-4xl">{question.title}</h1>
+          <p className="mt-4 text-base font-normal leading-7 text-[#68737d]">{question.summary}</p>
 
-          <section className="mt-6 rounded-lg border-2 border-[#d5e2e8] bg-[#f6fbfc] p-4">
-            <p className="text-xs font-extrabold uppercase text-[#68737d]">Prompt</p>
-            <p className="mt-2 text-base font-bold leading-7 text-[#33434b]">{question.prompt}</p>
+          <section className="mt-6 rounded-xl border border-[#d5e2e8] bg-[#f6fbfc] p-4">
+            <p className="text-xs font-semibold uppercase text-[#68737d]">Prompt</p>
+            <p className="mt-2 text-base font-medium leading-7 text-[#33434b]">{question.prompt}</p>
             {question.constraints.length > 0 ? (
-              <ul className="mt-4 grid gap-2 text-sm font-semibold leading-6 text-[#68737d]">
+              <ul className="mt-4 grid gap-2 text-sm font-normal leading-6 text-[#68737d]">
                 {question.constraints.map((constraint) => (
                   <li key={constraint}>- {constraint}</li>
                 ))}
@@ -86,11 +86,11 @@ export default async function InterviewQuestionPage({ params }: InterviewQuestio
           {question.examples.length > 0 ? (
             <section className="mt-5 grid gap-3">
               {question.examples.map((example) => (
-                <div key={`${example.input}-${example.output}`} className="rounded-lg border-2 border-[#d5e2e8] bg-white p-4">
-                  <p className="text-xs font-extrabold uppercase text-[#68737d]">Example</p>
-                  <p className="mt-2 text-sm font-bold leading-6 text-[#263238]">Input: {example.input}</p>
-                  <p className="mt-1 text-sm font-bold leading-6 text-[#263238]">Output: {example.output}</p>
-                  {example.explanation ? <p className="mt-2 text-sm font-semibold leading-6 text-[#68737d]">{example.explanation}</p> : null}
+                <div key={`${example.input}-${example.output}`} className="rounded-xl border border-[#d5e2e8] bg-white p-4">
+                  <p className="text-xs font-semibold uppercase text-[#68737d]">Example</p>
+                  <p className="mt-2 text-sm font-medium leading-6 text-[#263238]">Input: {example.input}</p>
+                  <p className="mt-1 text-sm font-medium leading-6 text-[#263238]">Output: {example.output}</p>
+                  {example.explanation ? <p className="mt-2 text-sm font-normal leading-6 text-[#68737d]">{example.explanation}</p> : null}
                 </div>
               ))}
             </section>

@@ -17,7 +17,7 @@ const styles: Record<Difficulty, string> = {
 
 export function DifficultyPill({ difficulty, className }: { difficulty: Difficulty; className?: string }) {
   return (
-    <span className={cn("inline-flex items-center rounded-lg border-2 border-b-4 px-2.5 py-1 text-xs font-extrabold", styles[difficulty], className)}>
+    <span className={cn("inline-flex items-center rounded-xl border px-2.5 py-1 text-xs font-semibold", styles[difficulty], className)}>
       {labels[difficulty]}
     </span>
   );

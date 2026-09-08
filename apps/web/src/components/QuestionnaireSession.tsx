@@ -145,12 +145,12 @@ export function QuestionnaireSession({
   function renderQuestionBody() {
     if (question.kind === "choice" || question.kind === "listening-choice") {
       return (
-        <div className="mt-5 grid gap-3">
+        <div className="mt-5 grid min-w-0 grid-cols-[minmax(0,1fr)] gap-3">
           {question.kind === "listening-choice" ? <JapaneseAudioPlayer audioId={question.audioId} revealTranscript={Boolean(result)} /> : null}
           {question.options.map((option) => (
             <label
               key={option.id}
-              className="grid min-h-14 cursor-pointer grid-cols-[1.25rem_minmax(0,1fr)] items-center gap-3 rounded-lg border-2 border-b-4 border-[#d5e2e8] bg-white px-4 py-3 text-left text-base font-extrabold leading-6 text-[#263238]"
+              className="grid min-h-14 cursor-pointer grid-cols-[1.25rem_minmax(0,1fr)] items-center gap-3 rounded-xl border border-[#d5e2e8] bg-white px-4 py-3 text-left text-base font-normal leading-6 text-[#263238]"
               data-testid={`questionnaire-choice-${option.id}`}
             >
               <input
@@ -171,8 +171,8 @@ export function QuestionnaireSession({
       const [prefix, suffix] = question.template.split("{{blank}}");
       const value = answer?.kind === "open-answer" ? answer.value : "";
       return (
-        <div className="mt-5 grid gap-4 rounded-xl border-2 border-[#d5e2e8] bg-[#f6fbfc] p-4">
-          <p lang="ja" className="text-lg font-extrabold leading-8 text-[#263238]">{prefix}<span className="mx-1 border-b-2 border-[#53616c] px-8">{value || "　"}</span>{suffix}</p>
+        <div className="mt-5 grid gap-4 rounded-xl border border-[#d5e2e8] bg-[#f6fbfc] p-4">
+          <p lang="ja" className="text-lg font-normal leading-8 text-[#263238]">{prefix}<span className="mx-1 border-b-2 border-[#53616c] px-8">{value || "　"}</span>{suffix}</p>
           <JapaneseAnswerInput value={value} disabled={!isReady || Boolean(result)} onChange={(nextValue) => resetAnswer({ kind: "open-answer", value: nextValue })} />
         </div>
       );
@@ -182,14 +182,14 @@ export function QuestionnaireSession({
       const [prefix, suffix] = question.template.split("{{blank}}");
 
       return (
-        <div className="mt-5 rounded-lg border-2 border-[#d5e2e8] bg-[#f6fbfc] p-4 text-lg font-extrabold leading-9 text-[#263238]">
+        <div className="mt-5 rounded-xl border border-[#d5e2e8] bg-[#f6fbfc] p-4 text-lg font-normal leading-9 text-[#263238]">
           <span>{prefix}</span>
           <label className="mx-1 inline-grid min-w-[12rem] align-middle">
             <span className="sr-only">Answer</span>
             <input
               disabled={!isReady || Boolean(result)}
               aria-label="Answer"
-              className="h-11 rounded-lg border-2 border-b-4 border-[#d5e2e8] bg-white px-3 text-base font-extrabold text-[#263238] outline-none focus:border-[#007c78] disabled:opacity-70"
+              className="h-11 rounded-xl border border-[#d5e2e8] bg-white px-3 text-base font-semibold text-[#263238] outline-none focus:border-[#007c78] disabled:opacity-70"
               data-testid="questionnaire-cloze-answer-input"
             />
           </label>
@@ -203,14 +203,14 @@ export function QuestionnaireSession({
       const itemsById = new Map(question.items.map((item) => [item.id, item]));
 
       return (
-        <div className="mt-5 grid gap-3">
+        <div className="mt-5 grid min-w-0 grid-cols-[minmax(0,1fr)] gap-3">
           {itemIds.map((itemId, itemIndex) => {
             const item = itemsById.get(itemId);
             const label = item?.label ?? itemId;
 
             return (
-              <div key={itemId} className="grid grid-cols-[minmax(0,1fr)_6rem] gap-3 rounded-lg border-2 border-b-4 border-[#d5e2e8] bg-white p-3">
-                <span className="self-center text-base font-extrabold leading-6 text-[#263238]">{label}</span>
+              <div key={itemId} className="grid grid-cols-[minmax(0,1fr)_6rem] gap-3 rounded-xl border border-[#d5e2e8] bg-white p-3">
+                <span className="self-center text-base font-normal leading-6 text-[#263238]">{label}</span>
                 <span className="grid grid-cols-2 gap-2">
                   <button
                     type="button"
@@ -218,7 +218,7 @@ export function QuestionnaireSession({
                     aria-label={`Move ${label} up`}
                     data-order-direction="up"
                     data-order-index={itemIndex}
-                    className="flex h-11 items-center justify-center rounded-lg border-2 border-b-4 border-[#d5e2e8] bg-[#f6fbfc] text-[#263238] disabled:opacity-45"
+                    className="flex h-11 items-center justify-center rounded-xl border border-[#d5e2e8] bg-[#f6fbfc] text-[#263238] disabled:opacity-45"
                   >
                     <ArrowUp className="h-4 w-4" aria-hidden="true" />
                   </button>
@@ -228,7 +228,7 @@ export function QuestionnaireSession({
                     aria-label={`Move ${label} down`}
                     data-order-direction="down"
                     data-order-index={itemIndex}
-                    className="flex h-11 items-center justify-center rounded-lg border-2 border-b-4 border-[#d5e2e8] bg-[#f6fbfc] text-[#263238] disabled:opacity-45"
+                    className="flex h-11 items-center justify-center rounded-xl border border-[#d5e2e8] bg-[#f6fbfc] text-[#263238] disabled:opacity-45"
                   >
                     <ArrowDown className="h-4 w-4" aria-hidden="true" />
                   </button>
@@ -243,9 +243,9 @@ export function QuestionnaireSession({
     const selectedMatches = answer?.kind === "matching" ? answer.selectedMatches : {};
 
     return (
-      <div className="mt-5 grid gap-3">
+      <div className="mt-5 grid min-w-0 grid-cols-[minmax(0,1fr)] gap-3">
         {question.leftItems.map((leftItem) => (
-          <div key={leftItem.id} className="rounded-lg border-2 border-b-4 border-[#d5e2e8] bg-white p-3">
+          <div key={leftItem.id} className="min-w-0 rounded-xl border border-[#d5e2e8] bg-white p-3">
             <Dropdown
               label={`Match for ${leftItem.label}`}
               value={selectedMatches[leftItem.id] ?? ""}
@@ -279,16 +279,16 @@ export function QuestionnaireSession({
   if (isComplete) {
     return (
       <div className="mt-6 grid gap-5" data-testid="questionnaire-complete">
-        <div className="rounded-lg border-2 border-b-4 border-[#6dd8cf] bg-[#e8f8f6] p-4">
-          <p className="text-sm font-extrabold uppercase text-[#007c78]">Refresh complete</p>
-          <p className="mt-2 text-base font-semibold leading-7 text-[#33434b]">You reached the end of this practice session.</p>
-          <p className="mt-2 text-sm font-extrabold text-[#007c78]">Score {Math.round(calculateQuestionnaireSkillScores(attempt.map((attemptQuestion) => ({ question: attemptQuestion, isCorrect: graded[attemptQuestion.id] ?? false }))).overall * 100)}%</p>
+        <div className="rounded-xl border border-[#6dd8cf] bg-[#e8f8f6] p-4">
+          <p className="text-sm font-semibold uppercase text-[#007c78]">Refresh complete</p>
+          <p className="mt-2 text-base font-normal leading-7 text-[#33434b]">You reached the end of this practice session.</p>
+          <p className="mt-2 text-sm font-semibold text-[#007c78]">Score {Math.round(calculateQuestionnaireSkillScores(attempt.map((attemptQuestion) => ({ question: attemptQuestion, isCorrect: graded[attemptQuestion.id] ?? false }))).overall * 100)}%</p>
         </div>
         <div className="flex flex-wrap gap-3">
           <button
             type="button"
             onClick={restart}
-            className="inline-flex min-h-12 items-center gap-2 rounded-lg border-2 border-b-4 border-[#d5e2e8] bg-white px-4 py-2 text-sm font-extrabold text-[#263238]"
+            className="inline-flex min-h-12 items-center gap-2 rounded-xl border border-[#d5e2e8] bg-white px-4 py-2 text-sm font-semibold text-[#263238]"
           >
             <RotateCcw className="h-4 w-4" aria-hidden="true" />
             Restart
@@ -303,15 +303,15 @@ export function QuestionnaireSession({
 
   return (
     <div className="mt-6" data-testid="questionnaire-session" data-ready={isReady ? "true" : "false"} ref={sessionRef}>
-      <div className="flex items-center justify-between gap-3 rounded-lg border-2 border-[#d5e2e8] bg-[#f6fbfc] px-3 py-2">
-        <p className="text-xs font-extrabold uppercase text-[#68737d]" data-testid="questionnaire-position">
+      <div className="flex items-center justify-between gap-3 rounded-xl border border-[#d5e2e8] bg-[#f6fbfc] px-3 py-2">
+        <p className="text-xs font-semibold uppercase text-[#68737d]" data-testid="questionnaire-position">
           Question {currentIndex + 1} of {attempt.length}
         </p>
-        <p className="text-xs font-extrabold uppercase text-[#007c78]">{question.kind}</p>
+        <p className="text-xs font-semibold uppercase text-[#007c78]">{question.kind}</p>
       </div>
 
       <div className="mt-5" data-testid="questionnaire-question">
-        <p className="text-lg font-bold leading-8 text-[#33434b]">{question.prompt}</p>
+        <p className="text-lg font-medium leading-8 text-[#33434b]">{question.prompt}</p>
         {renderQuestionBody()}
       </div>
 
@@ -322,7 +322,7 @@ export function QuestionnaireSession({
           type="button"
           onClick={checkAnswer}
           disabled={!canCheck}
-          className="inline-flex min-h-12 items-center gap-2 rounded-lg border-2 border-b-4 border-[#00645f] bg-[#007c78] px-4 py-2 text-sm font-extrabold text-white transition hover:-translate-y-0.5 disabled:cursor-default disabled:opacity-65 disabled:hover:translate-y-0"
+          className="inline-flex min-h-12 items-center gap-2 rounded-xl border border-[#00645f] bg-[#007c78] px-4 py-2 text-sm font-semibold text-white transition hover:-translate-y-0.5 disabled:cursor-default disabled:opacity-65 disabled:hover:translate-y-0"
           data-testid="questionnaire-check"
         >
           <CheckCircle2 className="h-4 w-4" aria-hidden="true" />
@@ -333,7 +333,7 @@ export function QuestionnaireSession({
           <button
             type="button"
             onClick={advance}
-            className="inline-flex min-h-12 items-center gap-2 rounded-lg border-2 border-b-4 border-[#1d4e9e] bg-[#245fba] px-4 py-2 text-sm font-extrabold text-white transition hover:-translate-y-0.5"
+            className="inline-flex min-h-12 items-center gap-2 rounded-xl border border-[#1d4e9e] bg-[#245fba] px-4 py-2 text-sm font-semibold text-white transition hover:-translate-y-0.5"
             data-testid={currentIndex + 1 >= attempt.length ? "questionnaire-finish" : "questionnaire-next"}
           >
             {currentIndex + 1 >= attempt.length ? "Finish" : "Next"}
@@ -357,18 +357,18 @@ function QuestionFeedback({ question, result }: { question: QuestionnaireAttempt
   return (
     <div
       className={cn(
-        "mt-5 rounded-lg border-2 border-b-4 p-4",
+        "mt-5 rounded-xl border p-4",
         result.isCorrect ? "border-[#6dd8cf] bg-[#e8f8f6]" : "border-[#f7cf5d] bg-[#fff5d6]",
       )}
       data-testid="questionnaire-feedback"
     >
-      <p className={cn("text-sm font-extrabold", result.isCorrect ? "text-[#007c78]" : "text-[#7a5200]")}>
+      <p className={cn("text-sm font-semibold", result.isCorrect ? "text-[#007c78]" : "text-[#7a5200]")}>
         {result.isCorrect ? "Correct" : "Review this"}
       </p>
       {!result.isCorrect || (question.kind !== "choice" && question.kind !== "listening-choice") ? (
-        <p className="mt-2 text-sm font-extrabold leading-6 text-[#263238]">Correct answer: {result.correctAnswer}</p>
+        <p className="mt-2 text-sm font-normal leading-6 text-[#263238]">Correct answer: {result.correctAnswer}</p>
       ) : null}
-      <p className="mt-2 text-sm font-semibold leading-6 text-[#33434b]">{question.explanation}</p>
+      <p className="mt-2 text-sm font-normal leading-6 text-[#33434b]">{question.explanation}</p>
     </div>
   );
 }
@@ -418,7 +418,7 @@ function NextNodeLink({ href }: { href: string }) {
   return (
     <Link
       href={href}
-      className="inline-flex min-h-12 items-center gap-2 rounded-lg border-2 border-b-4 border-[#1d4e9e] bg-[#245fba] px-4 py-2 text-sm font-extrabold text-white transition hover:-translate-y-0.5"
+      className="inline-flex min-h-12 items-center gap-2 rounded-xl border border-[#1d4e9e] bg-[#245fba] px-4 py-2 text-sm font-semibold text-white transition hover:-translate-y-0.5"
     >
       Next node
       <ArrowRight className="h-4 w-4" aria-hidden="true" />
