@@ -1,0 +1,165 @@
+{
+  "slug": "frontend/rtk-query-modern-apis-questionnaire",
+  "title": "RTK Query Modern APIs and Version Traps Checkpoint",
+  "type": "questionnaire",
+  "documentSlug": "frontend/rtk-query-modern-apis",
+  "concept": "Modern APIs and Version Traps",
+  "difficulty": "senior",
+  "tags": [
+    "rtk-query",
+    "redux",
+    "interview"
+  ],
+  "status": "published",
+  "sourceRefs": [
+    "rtk-release-26",
+    "rtk-release-27",
+    "rtk-release-29",
+    "rtk-release-211",
+    "rtk-release-2112",
+    "rtk-release-212",
+    "rtk-infinite",
+    "rtk-create-api",
+    "rtk-migration"
+  ],
+  "questions": [
+    {
+      "id": "page-identity",
+      "kind": "choice",
+      "prompt": "An infinite feed varies by tenant and topic and navigates using a cursor. How should it be modeled?",
+      "options": [
+        {
+          "id": "answer",
+          "label": "Tenant/topic in queryArg; cursor in pageParam.",
+          "isCorrect": true
+        },
+        {
+          "id": "distractor-one",
+          "label": "Only the cursor in queryArg; tenant/topic are never cache dimensions.",
+          "isCorrect": false
+        },
+        {
+          "id": "distractor-two",
+          "label": "A new API slice for every fetched page.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "The collection identity stays stable across pages while the page parameter advances. Dropping tenant/topic creates collisions, and per-page API slices fragment subscriptions and invalidation."
+    },
+    {
+      "id": "schema-version",
+      "kind": "choice",
+      "prompt": "Which version first added Standard Schema validation to RTK Query?",
+      "options": [
+        {
+          "id": "distractor-one",
+          "label": "RTK 2.2.8 already had responseSchema.",
+          "isCorrect": false
+        },
+        {
+          "id": "distractor-two",
+          "label": "RTK 2.12.0 was the first version with any endpoint schemas.",
+          "isCorrect": false
+        },
+        {
+          "id": "answer",
+          "label": "RTK 2.7.0.",
+          "isCorrect": true
+        }
+      ],
+      "explanation": "Standard Schema support arrived in 2.7.0. The case-study 2.2.8 baseline predates it; 2.12.0 includes later fixes and improvements rather than introducing the original schema API."
+    },
+    {
+      "id": "refetch-pages",
+      "kind": "choice",
+      "prompt": "In RTK 2.11+, what does refetchCachedPages: false do on an infinite-query refetch?",
+      "options": [
+        {
+          "id": "distractor-two",
+          "label": "Disables every future request for this endpoint.",
+          "isCorrect": false
+        },
+        {
+          "id": "answer",
+          "label": "Refetches the first cached page and shrinks the retained cache to one page.",
+          "isCorrect": true
+        },
+        {
+          "id": "distractor-one",
+          "label": "Refreshes the first page and keeps all remaining cached pages unchanged.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "The option collapses the retained window to one refreshed page. It does not preserve all later pages and does not disable the endpoint; scroll behavior needs an explicit product policy."
+    },
+    {
+      "id": "schema-failure",
+      "kind": "choice",
+      "prompt": "Schema validation fails and normal endpoint error behavior is desired. What converts the failure?",
+      "options": [
+        {
+          "id": "answer",
+          "label": "catchSchemaFailure returning the base query error shape.",
+          "isCorrect": true
+        },
+        {
+          "id": "distractor-one",
+          "label": "onSchemaFailure alone always converts it into a handled error.",
+          "isCorrect": false
+        },
+        {
+          "id": "distractor-two",
+          "label": "A TypeScript assertion on the response payload.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "catchSchemaFailure performs conversion. onSchemaFailure is a notification hook; casting a payload neither validates it nor changes the runtime error path."
+    },
+    {
+      "id": "removal-abort",
+      "kind": "choice",
+      "prompt": "How should the modern cancellation behavior be described?",
+      "options": [
+        {
+          "id": "distractor-one",
+          "label": "Every component unmount immediately cancels every shared request.",
+          "isCorrect": false
+        },
+        {
+          "id": "distractor-two",
+          "label": "Aborting a request guarantees the server transaction was rolled back.",
+          "isCorrect": false
+        },
+        {
+          "id": "answer",
+          "label": "Cache-entry removal can abort pending work; one subscriber unmount is not always removal.",
+          "isCorrect": true
+        }
+      ],
+      "explanation": "Modern RTK ties automatic abort to entry removal. Shared subscriptions and retention can keep work alive; even a transport abort cannot prove rollback of a remote write."
+    },
+    {
+      "id": "raw-schema",
+      "kind": "choice",
+      "prompt": "A response is transformed before caching. Which schema validates the wire shape first?",
+      "options": [
+        {
+          "id": "distractor-two",
+          "label": "skipSchemaValidation validates the raw shape more strictly.",
+          "isCorrect": false
+        },
+        {
+          "id": "answer",
+          "label": "rawResponseSchema.",
+          "isCorrect": true
+        },
+        {
+          "id": "distractor-one",
+          "label": "responseSchema always validates only the original wire shape.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "rawResponseSchema validates before transformResponse; responseSchema validates the final result. skipSchemaValidation disables checks and is not a stricter validation mode."
+    }
+  ]
+}

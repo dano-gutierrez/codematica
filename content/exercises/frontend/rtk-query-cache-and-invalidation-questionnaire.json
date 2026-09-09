@@ -1,0 +1,160 @@
+{
+  "slug": "frontend/rtk-query-cache-and-invalidation-questionnaire",
+  "title": "RTK Query Cache Identity and Invalidation Checkpoint",
+  "type": "questionnaire",
+  "documentSlug": "frontend/rtk-query-cache-and-invalidation",
+  "concept": "Cache Identity and Invalidation",
+  "difficulty": "senior",
+  "tags": [
+    "rtk-query",
+    "redux",
+    "interview"
+  ],
+  "status": "published",
+  "sourceRefs": [
+    "rtk-cache",
+    "rtk-invalidation",
+    "rtk-create-api",
+    "rtk-pagination"
+  ],
+  "questions": [
+    {
+      "id": "retention",
+      "kind": "choice",
+      "prompt": "The final subscriber leaves at t=40s with keepUnusedDataFor: 60. No one returns. When is eviction expected?",
+      "options": [
+        {
+          "id": "answer",
+          "label": "Around t=100s, because retention starts after the final unsubscribe.",
+          "isCorrect": true
+        },
+        {
+          "id": "distractor-one",
+          "label": "At t=60s measured from the original request.",
+          "isCorrect": false
+        },
+        {
+          "id": "distractor-two",
+          "label": "Never, because only mutations remove query entries.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "Unused retention starts when the subscription count reaches zero. It is not measured from fetch time, and cache eviction does not require a mutation."
+    },
+    {
+      "id": "hidden-page",
+      "kind": "choice",
+      "prompt": "Deleting a record on page one shifts page three, which never provided that record tag. What helps?",
+      "options": [
+        {
+          "id": "distractor-one",
+          "label": "Invalidate only the deleted record ID, which always matches all pages.",
+          "isCorrect": false
+        },
+        {
+          "id": "distractor-two",
+          "label": "Increase keepUnusedDataFor so the stale page lives longer.",
+          "isCorrect": false
+        },
+        {
+          "id": "answer",
+          "label": "Invalidate a scoped collection or PARTIAL-LIST tag as well as relevant entity tags.",
+          "isCorrect": true
+        }
+      ],
+      "explanation": "A collection dependency covers membership/count changes outside a visible page. An unprovided entity tag will not match that page, and longer retention cannot correct stale membership."
+    },
+    {
+      "id": "headers",
+      "kind": "choice",
+      "prompt": "Tenant changes affect only prepareHeaders; the endpoint arguments stay equal. What is missing?",
+      "options": [
+        {
+          "id": "distractor-two",
+          "label": "A random number in every argument to disable all reuse.",
+          "isCorrect": false
+        },
+        {
+          "id": "answer",
+          "label": "Explicit cache scope and account-transition cleanup for identity-dependent data.",
+          "isCorrect": true
+        },
+        {
+          "id": "distractor-one",
+          "label": "Nothing: all request headers automatically enter the default key.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "Headers are not automatically default key dimensions. Model non-secret identity scope and clear protected state on transition; random keys waste reuse and fail to express the actual data contract."
+    },
+    {
+      "id": "inactive-tag",
+      "kind": "choice",
+      "prompt": "A matching tag is invalidated for an entry with no active subscribers. What normally happens?",
+      "options": [
+        {
+          "id": "answer",
+          "label": "The unused matching entry is removed.",
+          "isCorrect": true
+        },
+        {
+          "id": "distractor-one",
+          "label": "It must immediately refetch despite having no subscribers.",
+          "isCorrect": false
+        },
+        {
+          "id": "distractor-two",
+          "label": "Its JSON data is automatically patched from the mutation result.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "Invalidation removes unused matches and refetches subscribed matches. Tags neither force background fetches for every unused entry nor automatically merge mutation data into query responses."
+    },
+    {
+      "id": "delayed",
+      "kind": "choice",
+      "prompt": "A mutation succeeds but delayed invalidation never runs while a queryFn stays pending. What should you inspect?",
+      "options": [
+        {
+          "id": "distractor-one",
+          "label": "Only CSS, because a successful mutation guarantees immediate refresh.",
+          "isCorrect": false
+        },
+        {
+          "id": "distractor-two",
+          "label": "Whether the same string tag exists in a different API slice.",
+          "isCorrect": false
+        },
+        {
+          "id": "answer",
+          "label": "Pending work and the API invalidation policy; make the query lifecycle settle appropriately.",
+          "isCorrect": true
+        }
+      ],
+      "explanation": "RTK 2.x delayed invalidation waits for pending work to settle. Styling cannot unblock the lifecycle, and matching tag names in separate API slices do not share invalidation."
+    },
+    {
+      "id": "empty-list",
+      "kind": "choice",
+      "prompt": "Why should an empty author list still provide a collection tag?",
+      "options": [
+        {
+          "id": "distractor-two",
+          "label": "Because collection tags globally normalize all author objects.",
+          "isCorrect": false
+        },
+        {
+          "id": "answer",
+          "label": "A later create can invalidate the cached empty collection.",
+          "isCorrect": true
+        },
+        {
+          "id": "distractor-one",
+          "label": "Because an empty list otherwise becomes a mutation.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "An empty result is still a cached server projection that can become stale after creation. Tags do not change endpoint type and do not provide global entity normalization."
+    }
+  ]
+}

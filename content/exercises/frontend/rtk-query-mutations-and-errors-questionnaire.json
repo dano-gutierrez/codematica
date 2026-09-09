@@ -1,0 +1,160 @@
+{
+  "slug": "frontend/rtk-query-mutations-and-errors-questionnaire",
+  "title": "RTK Query Mutations and Error Recovery Checkpoint",
+  "type": "questionnaire",
+  "documentSlug": "frontend/rtk-query-mutations-and-errors",
+  "concept": "Mutations and Error Recovery",
+  "difficulty": "senior",
+  "tags": [
+    "rtk-query",
+    "redux",
+    "interview"
+  ],
+  "status": "published",
+  "sourceRefs": [
+    "rtk-mutations",
+    "rtk-manual-updates",
+    "rtk-custom-queries",
+    "rtk-fetch-base-query"
+  ],
+  "questions": [
+    {
+      "id": "unwrap",
+      "kind": "choice",
+      "prompt": "A save handler uses await trigger(args) then always shows Saved. A handled 400 still shows success. What fixes the flow?",
+      "options": [
+        {
+          "id": "answer",
+          "label": "Use unwrap with try/catch, or inspect the returned error result explicitly.",
+          "isCorrect": true
+        },
+        {
+          "id": "distractor-one",
+          "label": "Assume every handled RTK error already rejects the ordinary trigger promise.",
+          "isCorrect": false
+        },
+        {
+          "id": "distractor-two",
+          "label": "Set fixedCacheKey so HTTP errors become thrown exceptions.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "Handled errors can be returned in the trigger result; unwrap exposes promise-style rejection. fixedCacheKey shares mutation state and does not alter HTTP error semantics."
+    },
+    {
+      "id": "patch-race",
+      "kind": "choice",
+      "prompt": "Edit one patches A to B, edit two patches C, then edit one fails. Why is naive undo risky?",
+      "options": [
+        {
+          "id": "distractor-one",
+          "label": "Immer automatically orders all server writes by user intent.",
+          "isCorrect": false
+        },
+        {
+          "id": "distractor-two",
+          "label": "An inverse patch always knows which later request succeeded.",
+          "isCorrect": false
+        },
+        {
+          "id": "answer",
+          "label": "The earlier inverse patch can overwrite newer intent; serialize or reconcile with server state.",
+          "isCorrect": true
+        }
+      ],
+      "explanation": "Inverse patches describe local changes, not distributed write ordering. Immer cannot order server operations, and an older patch does not automatically account for later success."
+    },
+    {
+      "id": "missing-entry",
+      "kind": "choice",
+      "prompt": "updateQueryData targets an endpoint/argument with no cached entry. What happens?",
+      "options": [
+        {
+          "id": "distractor-two",
+          "label": "It patches every entry with a matching tag.",
+          "isCorrect": false
+        },
+        {
+          "id": "answer",
+          "label": "It does not create the missing entry; deliberate upsert may be needed.",
+          "isCorrect": true
+        },
+        {
+          "id": "distractor-one",
+          "label": "It automatically starts a GET and creates the result.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "updateQueryData targets an existing exact entry and does not initiate a fetch or patch by tags. upsertQueryData is the explicit creation/replacement mechanism."
+    },
+    {
+      "id": "refresh-stampede",
+      "kind": "choice",
+      "prompt": "Five requests return 401 together. What is a sensible reauthentication design?",
+      "options": [
+        {
+          "id": "answer",
+          "label": "Coordinate one refresh, retry within a bound, and prevent stale-session credentials from being applied.",
+          "isCorrect": true
+        },
+        {
+          "id": "distractor-one",
+          "label": "Recursively call the refresh wrapper on every 401 without a limit.",
+          "isCorrect": false
+        },
+        {
+          "id": "distractor-two",
+          "label": "Retry every 403 as a token expiry indefinitely.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "Single-flight refresh prevents a stampede and needs session/race cleanup. Recursive unbounded refresh can loop; a 403 usually requires permission handling rather than repeated token refresh."
+    },
+    {
+      "id": "timeout-write",
+      "kind": "choice",
+      "prompt": "A purchase times out after the server may have committed. What is safe?",
+      "options": [
+        {
+          "id": "distractor-one",
+          "label": "Assume timeout guarantees rollback and retry with a new operation ID.",
+          "isCorrect": false
+        },
+        {
+          "id": "distractor-two",
+          "label": "Use fixedCacheKey as the server idempotency token automatically.",
+          "isCorrect": false
+        },
+        {
+          "id": "answer",
+          "label": "Use server idempotency and a reconciliation/status contract before retrying ambiguously.",
+          "isCorrect": true
+        }
+      ],
+      "explanation": "A client timeout cannot prove server rollback. Idempotency and reconciliation must be server contracts; fixedCacheKey only controls shared local mutation result state."
+    },
+    {
+      "id": "error-shape",
+      "kind": "choice",
+      "prompt": "A custom baseQuery catches a network exception. Which result preserves failure semantics?",
+      "options": [
+        {
+          "id": "distractor-two",
+          "label": "Throw every expected transport error without a declared error contract.",
+          "isCorrect": false
+        },
+        {
+          "id": "answer",
+          "label": "Return a typed error result for the UI and lifecycle to handle.",
+          "isCorrect": true
+        },
+        {
+          "id": "distractor-one",
+          "label": "Return an empty data array so callers see success.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "A handled error keeps failure visible and supports predictable endpoint lifecycles. Empty data hides outages as valid results, while uncaught expected exceptions bypass the intended base query contract."
+    }
+  ]
+}

@@ -18,3 +18,5 @@ This folder contains path-scoped passive flashcard feeds for short review sessio
 - Passive feeds emit only a coarse latest-card resume position through the optional progress layer. They do not store answers, score, mastery, streaks, or raw interaction history.
 
 Passive flashcards are separate from interactive `type: "flashcard"` exercises in `content/exercises/`. Run `npm run content:check` before committing feed changes.
+
+- RTK Query interview briefs provide three concise concept/practical/interview cards per lesson, each linked to its source document; keep version claims aligned with that lesson.

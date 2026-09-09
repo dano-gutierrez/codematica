@@ -12,3 +12,4 @@ This folder stores canonical metadata for external primary sources referenced by
 
 Run `npm run content:check` after any source change. Never hand-edit the generated content index.
 
+- `rtk-query.json` anchors the RTK curriculum to official docs and pinned releases/source files. Reverify the npm version, release notes, and both case-study/current source paths when refreshing the dated baseline.

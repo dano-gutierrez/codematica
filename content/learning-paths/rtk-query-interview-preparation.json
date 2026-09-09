@@ -1,0 +1,122 @@
+{
+  "slug": "rtk-query-interview-preparation",
+  "title": "RTK Query Interview Preparation",
+  "summary": "Prepare for specific RTK Query interview questions with typed examples, production incidents, modern 2.12 APIs, 42 scenario questions, and a mock interview.",
+  "kind": "skill",
+  "category": "Front-End Development",
+  "audience": "React and TypeScript engineers preparing for mid-level and senior interviews about RTK Query and production server-state correctness.",
+  "status": "published",
+  "sourcePolicy": "required",
+  "sourceRefs": [
+    "rtk-overview",
+    "rtk-release-212",
+    "rtk-persistence"
+  ],
+  "units": [
+    {
+      "slug": "rtk-query-foundations",
+      "title": "Foundations and Request Ownership",
+      "summary": "Explain the typed API, server-state ownership, hook flags, and cache identity.",
+      "nodes": [
+        {
+          "kind": "document",
+          "slug": "frontend/rtk-query-foundations"
+        },
+        {
+          "kind": "exercise",
+          "slug": "frontend/rtk-query-foundations-questionnaire"
+        }
+      ]
+    },
+    {
+      "slug": "rtk-query-cache-and-invalidation",
+      "title": "Cache Identity and Invalidation",
+      "summary": "Design scoped tags and distinguish retention, freshness, and list membership.",
+      "nodes": [
+        {
+          "kind": "document",
+          "slug": "frontend/rtk-query-cache-and-invalidation"
+        },
+        {
+          "kind": "exercise",
+          "slug": "frontend/rtk-query-cache-and-invalidation-questionnaire"
+        }
+      ]
+    },
+    {
+      "slug": "rtk-query-mutations-and-errors",
+      "title": "Mutations and Error Recovery",
+      "summary": "Reason about optimistic races, handled errors, reauthorization, and retries.",
+      "nodes": [
+        {
+          "kind": "document",
+          "slug": "frontend/rtk-query-mutations-and-errors"
+        },
+        {
+          "kind": "exercise",
+          "slug": "frontend/rtk-query-mutations-and-errors-questionnaire"
+        }
+      ]
+    },
+    {
+      "slug": "rtk-query-persistence-and-recovery",
+      "title": "Persistence and the Loading Incident",
+      "summary": "Investigate orphaned pending state and design a safe tested restart policy.",
+      "nodes": [
+        {
+          "kind": "document",
+          "slug": "frontend/rtk-query-persistence-and-recovery"
+        },
+        {
+          "kind": "exercise",
+          "slug": "frontend/rtk-query-persistence-and-recovery-questionnaire"
+        }
+      ]
+    },
+    {
+      "slug": "rtk-query-modern-apis",
+      "title": "Modern APIs and Version Traps",
+      "summary": "Use infinite queries and runtime schemas with precise RTK version boundaries.",
+      "nodes": [
+        {
+          "kind": "document",
+          "slug": "frontend/rtk-query-modern-apis"
+        },
+        {
+          "kind": "exercise",
+          "slug": "frontend/rtk-query-modern-apis-questionnaire"
+        }
+      ]
+    },
+    {
+      "slug": "rtk-query-production-architecture",
+      "title": "Production Architecture and Testing",
+      "summary": "Plan API boundaries, streaming, native listeners, server ownership, and tests.",
+      "nodes": [
+        {
+          "kind": "document",
+          "slug": "frontend/rtk-query-production-architecture"
+        },
+        {
+          "kind": "exercise",
+          "slug": "frontend/rtk-query-production-architecture-questionnaire"
+        }
+      ]
+    },
+    {
+      "slug": "rtk-query-interview-workshop",
+      "title": "Mock Interview and Code Review",
+      "summary": "Practice specific questions, flawed-code review, production scenarios, and a rubric.",
+      "nodes": [
+        {
+          "kind": "document",
+          "slug": "frontend/rtk-query-interview-workshop"
+        },
+        {
+          "kind": "exercise",
+          "slug": "frontend/rtk-query-interview-workshop-questionnaire"
+        }
+      ]
+    }
+  ]
+}

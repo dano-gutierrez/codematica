@@ -1,0 +1,162 @@
+{
+  "slug": "frontend/rtk-query-interview-workshop-questionnaire",
+  "title": "RTK Query Mock Interview and Code Review Checkpoint",
+  "type": "questionnaire",
+  "documentSlug": "frontend/rtk-query-interview-workshop",
+  "concept": "Mock Interview and Code Review",
+  "difficulty": "senior",
+  "tags": [
+    "rtk-query",
+    "redux",
+    "interview"
+  ],
+  "status": "published",
+  "sourceRefs": [
+    "rtk-cache",
+    "rtk-invalidation",
+    "rtk-manual-updates",
+    "rtk-persistence",
+    "rtk-infinite",
+    "rtk-create-api"
+  ],
+  "questions": [
+    {
+      "id": "priority",
+      "kind": "choice",
+      "prompt": "A review finds stale spinners and cross-account cached data. What is the strongest first priority?",
+      "options": [
+        {
+          "id": "answer",
+          "label": "Fix and test identity boundaries while preserving server authorization.",
+          "isCorrect": true
+        },
+        {
+          "id": "distractor-one",
+          "label": "Only reduce spinner animation duration.",
+          "isCorrect": false
+        },
+        {
+          "id": "distractor-two",
+          "label": "Treat cache keys as a complete replacement for authorization.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "Cross-account display requires urgent scope correction and regression coverage. Animation changes cannot fix data isolation, and server authorization remains mandatory regardless of cache keys."
+    },
+    {
+      "id": "stale-layer",
+      "kind": "choice",
+      "prompt": "Invalidation triggers an HTTP request, but its response contains old data. What next?",
+      "options": [
+        {
+          "id": "distractor-one",
+          "label": "Assume no request occurred because the UI is stale.",
+          "isCorrect": false
+        },
+        {
+          "id": "distractor-two",
+          "label": "Invalidate every API forever without inspecting the response.",
+          "isCorrect": false
+        },
+        {
+          "id": "answer",
+          "label": "Inspect server consistency and HTTP/cache layers, then selectors if the response is correct.",
+          "isCorrect": true
+        }
+      ],
+      "explanation": "An observed request narrows the problem. Old response data points upstream; if response data is correct, inspect client selection. Broad repeated invalidation is not a diagnosis."
+    },
+    {
+      "id": "modern-tradeoff",
+      "kind": "choice",
+      "prompt": "An interviewer asks about a newer RTK API. Which answer shows useful judgment?",
+      "options": [
+        {
+          "id": "distractor-two",
+          "label": "Claim every modern API automatically repairs legacy persisted state.",
+          "isCorrect": false
+        },
+        {
+          "id": "answer",
+          "label": "Explain infinite query page identity and the scroll consequences of collapsing a refetch to one page.",
+          "isCorrect": true
+        },
+        {
+          "id": "distractor-one",
+          "label": "State the version number without describing any behavior.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "A concrete mechanism and product tradeoff demonstrate understanding. Version recitation alone is weak, and modern API support does not validate an application’s custom persistence path."
+    },
+    {
+      "id": "evidence",
+      "kind": "choice",
+      "prompt": "A patch passes tests but deployment has not been observed. What can you report?",
+      "options": [
+        {
+          "id": "answer",
+          "label": "Code and test validation passed; deployment and customer recovery remain unverified.",
+          "isCorrect": true
+        },
+        {
+          "id": "distractor-one",
+          "label": "All affected customers have recovered.",
+          "isCorrect": false
+        },
+        {
+          "id": "distractor-two",
+          "label": "No data loss occurred because the tests are green.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "Tests support code behavior in the tested environment, not deployment or impact conclusions. Customer recovery and absence of data loss require separate evidence."
+    },
+    {
+      "id": "offline-boundary",
+      "kind": "choice",
+      "prompt": "Which design best separates offline data from execution state?",
+      "options": [
+        {
+          "id": "distractor-one",
+          "label": "Persist all internal query/mutation fields forever as the only offline database.",
+          "isCorrect": false
+        },
+        {
+          "id": "distractor-two",
+          "label": "Replay every pending mutation whenever the app launches.",
+          "isCorrect": false
+        },
+        {
+          "id": "answer",
+          "label": "Versioned account-scoped snapshots plus explicit refresh and a separate durable command policy if needed.",
+          "isCorrect": true
+        }
+      ],
+      "explanation": "Durable snapshots need identity and schema policy; commands need idempotency/reconciliation. Internal cache state is not a stable domain database, and automatic replay can duplicate writes."
+    },
+    {
+      "id": "rubric",
+      "kind": "choice",
+      "prompt": "What distinguishes a strong senior answer from naming API methods?",
+      "options": [
+        {
+          "id": "distractor-two",
+          "label": "Recommend the newest version as the answer to every incident.",
+          "isCorrect": false
+        },
+        {
+          "id": "answer",
+          "label": "State the invariant, failure case, tradeoff, test, and remaining uncertainty.",
+          "isCorrect": true
+        },
+        {
+          "id": "distractor-one",
+          "label": "Guarantee correctness whenever the code compiles.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "Senior judgment connects mechanisms to evidence and boundaries. Compilation cannot prove lifecycle correctness, and a version bump cannot substitute for an incident-specific reproduction and recovery policy."
+    }
+  ]
+}

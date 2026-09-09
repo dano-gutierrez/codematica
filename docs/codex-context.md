@@ -123,3 +123,5 @@ The first hosted web target is Vercel Hobby on the Vercel-provided URL. Vercel r
 - `docs/features/native-mobile-deployment.md`: Expo Router Android/iOS app, shared workspace packages, native auth/progress, offline index bundling, and EAS build/submit workflows.
 - `docs/features/automated-testing-and-release-regression.md`: coverage policy, Vitest/Jest/pgTAP/Playwright/Maestro lanes, CI artifacts, and release promotion gates.
 - `docs/features/japanese-language-learning.md`: open JF/CEFR Japanese roadmap, complete basic kana, 100-kanji target, romaji/IME input, deterministic review, resource/audio contracts, iPad accessibility, dictionary profiles, and assisted/free handwriting practice.
+
+- `docs/features/rtk-query-interview-preparation.md`: Front-End Development RTK Query mechanics, incident recovery, modern APIs, production architecture, and interview practice.

@@ -64,3 +64,5 @@ The most important sections are:
 - `Code Touchpoints`
 - `Test Plan`
 - `Thread Handoff Prompt`
+
+- `rtk-query-interview-preparation.md` owns the RTK Query interview curriculum and its source/version refresh and validation contract.

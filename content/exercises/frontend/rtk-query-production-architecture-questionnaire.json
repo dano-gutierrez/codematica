@@ -1,0 +1,163 @@
+{
+  "slug": "frontend/rtk-query-production-architecture-questionnaire",
+  "title": "RTK Query Production Architecture and Testing Checkpoint",
+  "type": "questionnaire",
+  "documentSlug": "frontend/rtk-query-production-architecture",
+  "concept": "Production Architecture and Testing",
+  "difficulty": "senior",
+  "tags": [
+    "rtk-query",
+    "redux",
+    "interview"
+  ],
+  "status": "published",
+  "sourceRefs": [
+    "rtk-code-splitting",
+    "rtk-streaming",
+    "rtk-hooks",
+    "rtk-nextjs",
+    "rtk-listeners",
+    "redux-testing",
+    "rtk-prefetch"
+  ],
+  "questions": [
+    {
+      "id": "inject",
+      "kind": "choice",
+      "prompt": "Two feature files need coordinated Author invalidation. What is the usual starting point?",
+      "options": [
+        {
+          "id": "answer",
+          "label": "Inject endpoints into a shared base API and register its middleware once.",
+          "isCorrect": true
+        },
+        {
+          "id": "distractor-one",
+          "label": "Create unrelated API slices with equal tag names and assume cross-slice invalidation.",
+          "isCorrect": false
+        },
+        {
+          "id": "distractor-two",
+          "label": "Register the same API middleware once per screen.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "Endpoint injection preserves the shared cache/tag namespace. Equal tag names across separate APIs do not coordinate them, and duplicate middleware registration is not required."
+    },
+    {
+      "id": "selector",
+      "kind": "choice",
+      "prompt": "selectFromResult returns a newly filtered array each time. Why can rerenders persist?",
+      "options": [
+        {
+          "id": "distractor-one",
+          "label": "The outer result object is forbidden from being newly allocated.",
+          "isCorrect": false
+        },
+        {
+          "id": "distractor-two",
+          "label": "selectFromResult guarantees no component ever rerenders.",
+          "isCorrect": false
+        },
+        {
+          "id": "answer",
+          "label": "The selected array reference changes; memoize derived collections or select stable values.",
+          "isCorrect": true
+        }
+      ],
+      "explanation": "The returned fields are compared shallowly. A fresh nested array changes a field reference; a new outer object with stable fields is expected, and real selected changes must still rerender."
+    },
+    {
+      "id": "stream-lifetime",
+      "kind": "choice",
+      "prompt": "Which lifecycle is suitable for a stream tied to cached data?",
+      "options": [
+        {
+          "id": "distractor-two",
+          "label": "Keep the HTTP queryFn unresolved forever to represent socket lifetime.",
+          "isCorrect": false
+        },
+        {
+          "id": "answer",
+          "label": "onCacheEntryAdded with validated events and cleanup after cacheEntryRemoved.",
+          "isCorrect": true
+        },
+        {
+          "id": "distractor-one",
+          "label": "Open a new socket in every render and never close it.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "Cache-entry lifecycle work can own a stream and clean it up. Render-driven sockets leak/duplicate work; a permanently pending HTTP query confuses query completion and can delay invalidation."
+    },
+    {
+      "id": "nextjs-store",
+      "kind": "choice",
+      "prompt": "What avoids sharing one visitor’s Redux state with another in Next.js?",
+      "options": [
+        {
+          "id": "answer",
+          "label": "Request-safe store/provider boundaries and client-owned RTK Query usage.",
+          "isCorrect": true
+        },
+        {
+          "id": "distractor-one",
+          "label": "A server-global mutable Redux store reused for all requests.",
+          "isCorrect": false
+        },
+        {
+          "id": "distractor-two",
+          "label": "Move access tokens into serializable query keys to authorize server rendering.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "A server-global store can leak request state. Follow request-safe boundaries and server/client ownership; cache keys are not authorization and must not contain tokens."
+    },
+    {
+      "id": "native-focus",
+      "kind": "choice",
+      "prompt": "Why might refetchOnFocus work on web but not on React Native?",
+      "options": [
+        {
+          "id": "distractor-one",
+          "label": "RTK Query supports only desktop web.",
+          "isCorrect": false
+        },
+        {
+          "id": "distractor-two",
+          "label": "Increasing keepUnusedDataFor emits native focus events.",
+          "isCorrect": false
+        },
+        {
+          "id": "answer",
+          "label": "Native lifecycle/connectivity signals need appropriate custom listener integration.",
+          "isCorrect": true
+        }
+      ],
+      "explanation": "Browser listener defaults do not supply native AppState/connectivity integration. RTK can run in native apps, and cache retention settings do not create lifecycle events."
+    },
+    {
+      "id": "real-tests",
+      "kind": "choice",
+      "prompt": "Which setup can prove tag invalidation actually refetches?",
+      "options": [
+        {
+          "id": "distractor-two",
+          "label": "Assert the component imported a hook with the right name.",
+          "isCorrect": false
+        },
+        {
+          "id": "answer",
+          "label": "A real configured store with controlled transport and assertions on requests and final data.",
+          "isCorrect": true
+        },
+        {
+          "id": "distractor-one",
+          "label": "Mock every query hook to return the expected post-mutation response.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "A real store exercises endpoint arguments, middleware, subscriptions, and tags. Mocked hook data or import assertions bypass the mechanism and cannot prove refetch behavior."
+    }
+  ]
+}

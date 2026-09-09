@@ -24,3 +24,5 @@ This folder contains manually authored practice prompts for Codematica learning 
 Exercise generation, executable code validation, executable SQL validation, AI feedback, persisted questionnaire answers/scores, and generic adaptive review queues are future work. Coarse started/completed progress already uses the shared optional progress layer. Japanese has a separate deterministic skill-review contract that stores only its narrow mastery snapshot, never individual exercise answers. Run `npm run content:check` before committing exercise changes.
 
 Passive scroll-only flashcards are authored separately in `content/flashcard-feeds/`; do not model them as interactive `type: "flashcard"` exercises.
+
+- RTK Query checkpoints use six single-answer scenario choices per lesson. Explanations must address the correct rule and both distractors; retain the distinction between client observation and server mutation outcome.

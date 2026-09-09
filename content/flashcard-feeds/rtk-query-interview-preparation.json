@@ -1,0 +1,283 @@
+{
+  "slug": "rtk-query-interview-preparation",
+  "pathSlug": "rtk-query-interview-preparation",
+  "title": "RTK Query Interview Briefs",
+  "summary": "Twenty-one concise review cards covering query mechanics, cache scope, errors, persistence, modern APIs, and production judgment.",
+  "audience": "React and TypeScript engineers rehearsing concise RTK Query interview answers.",
+  "status": "published",
+  "cards": [
+    {
+      "id": "rtk-same-key",
+      "type": "concept",
+      "title": "Foundations and Request Ownership: Same Key",
+      "prompt": "Two panels call getAuthor with the same ID in the same API/store. What should happen?",
+      "explanation": "They share the cache entry and an in-flight request. The endpoint and serialized argument identify the entry, so concurrent subscribers share it. Hook count does not require duplicate HTTP calls, and React element keys do not define RTK cache identity.",
+      "difficulty": "senior",
+      "tags": [
+        "rtk-query",
+        "interview"
+      ],
+      "sourceDocSlug": "frontend/rtk-query-foundations"
+    },
+    {
+      "id": "rtk-current-data",
+      "type": "practical",
+      "title": "Foundations and Request Ownership: Current Data",
+      "prompt": "Switching author A to B must not show A while B loads. Which hook field fits?",
+      "explanation": "currentData, with explicit loading and error handling for B. currentData belongs to the current argument. data may retain a previous argument result; copying it once creates a stale second owner and does not protect identity changes.",
+      "difficulty": "senior",
+      "tags": [
+        "rtk-query",
+        "interview"
+      ],
+      "sourceDocSlug": "frontend/rtk-query-foundations"
+    },
+    {
+      "id": "rtk-state-owner",
+      "type": "interview",
+      "title": "Foundations and Request Ownership: State Owner",
+      "prompt": "Where should an unsaved multi-step editing draft live?",
+      "explanation": "In intentional client state with its own save/reset and persistence policy. Drafts have a different owner and lifetime from server snapshots. Directly mutating cached results breaks the state contract; Redux Toolkit can model client workflows with ordinary slices.",
+      "difficulty": "senior",
+      "tags": [
+        "rtk-query",
+        "interview"
+      ],
+      "sourceDocSlug": "frontend/rtk-query-foundations"
+    },
+    {
+      "id": "rtk-retention",
+      "type": "concept",
+      "title": "Cache Identity and Invalidation: Retention",
+      "prompt": "The final subscriber leaves at t=40s with keepUnusedDataFor: 60. No one returns. When is eviction expected?",
+      "explanation": "Around t=100s, because retention starts after the final unsubscribe. Unused retention starts when the subscription count reaches zero. It is not measured from fetch time, and cache eviction does not require a mutation.",
+      "difficulty": "senior",
+      "tags": [
+        "rtk-query",
+        "interview"
+      ],
+      "sourceDocSlug": "frontend/rtk-query-cache-and-invalidation"
+    },
+    {
+      "id": "rtk-hidden-page",
+      "type": "practical",
+      "title": "Cache Identity and Invalidation: Hidden Page",
+      "prompt": "Deleting a record on page one shifts page three, which never provided that record tag. What helps?",
+      "explanation": "Invalidate a scoped collection or PARTIAL-LIST tag as well as relevant entity tags. A collection dependency covers membership/count changes outside a visible page. An unprovided entity tag will not match that page, and longer retention cannot correct stale membership.",
+      "difficulty": "senior",
+      "tags": [
+        "rtk-query",
+        "interview"
+      ],
+      "sourceDocSlug": "frontend/rtk-query-cache-and-invalidation"
+    },
+    {
+      "id": "rtk-headers",
+      "type": "interview",
+      "title": "Cache Identity and Invalidation: Headers",
+      "prompt": "Tenant changes affect only prepareHeaders; the endpoint arguments stay equal. What is missing?",
+      "explanation": "Explicit cache scope and account-transition cleanup for identity-dependent data. Headers are not automatically default key dimensions. Model non-secret identity scope and clear protected state on transition; random keys waste reuse and fail to express the actual data contract.",
+      "difficulty": "senior",
+      "tags": [
+        "rtk-query",
+        "interview"
+      ],
+      "sourceDocSlug": "frontend/rtk-query-cache-and-invalidation"
+    },
+    {
+      "id": "rtk-unwrap",
+      "type": "concept",
+      "title": "Mutations and Error Recovery: Unwrap",
+      "prompt": "A save handler uses await trigger(args) then always shows Saved. A handled 400 still shows success. What fixes the flow?",
+      "explanation": "Use unwrap with try/catch, or inspect the returned error result explicitly. Handled errors can be returned in the trigger result; unwrap exposes promise-style rejection. fixedCacheKey shares mutation state and does not alter HTTP error semantics.",
+      "difficulty": "senior",
+      "tags": [
+        "rtk-query",
+        "interview"
+      ],
+      "sourceDocSlug": "frontend/rtk-query-mutations-and-errors"
+    },
+    {
+      "id": "rtk-patch-race",
+      "type": "practical",
+      "title": "Mutations and Error Recovery: Patch Race",
+      "prompt": "Edit one patches A to B, edit two patches C, then edit one fails. Why is naive undo risky?",
+      "explanation": "The earlier inverse patch can overwrite newer intent; serialize or reconcile with server state. Inverse patches describe local changes, not distributed write ordering. Immer cannot order server operations, and an older patch does not automatically account for later success.",
+      "difficulty": "senior",
+      "tags": [
+        "rtk-query",
+        "interview"
+      ],
+      "sourceDocSlug": "frontend/rtk-query-mutations-and-errors"
+    },
+    {
+      "id": "rtk-missing-entry",
+      "type": "interview",
+      "title": "Mutations and Error Recovery: Missing Entry",
+      "prompt": "updateQueryData targets an endpoint/argument with no cached entry. What happens?",
+      "explanation": "It does not create the missing entry; deliberate upsert may be needed. updateQueryData targets an existing exact entry and does not initiate a fetch or patch by tags. upsertQueryData is the explicit creation/replacement mechanism.",
+      "difficulty": "senior",
+      "tags": [
+        "rtk-query",
+        "interview"
+      ],
+      "sourceDocSlug": "frontend/rtk-query-mutations-and-errors"
+    },
+    {
+      "id": "rtk-orphaned-pending",
+      "type": "concept",
+      "title": "Persistence and the Loading Incident: Orphaned Pending",
+      "prompt": "After process death, a raw persisted pending entry returns but no request exists. What explains the loader?",
+      "explanation": "Restored execution metadata can block initiation without restoring the actual request. Serialized pending state does not recreate a promise or prove server activity. The thunk can reject a duplicate initiation for that key even when the original client request no longer exists.",
+      "difficulty": "senior",
+      "tags": [
+        "rtk-query",
+        "interview"
+      ],
+      "sourceDocSlug": "frontend/rtk-query-persistence-and-recovery"
+    },
+    {
+      "id": "rtk-two-paths",
+      "type": "practical",
+      "title": "Persistence and the Loading Incident: Two Paths",
+      "prompt": "Which statement about RTK 2.2.8 and 2.12.0 rehydration is accurate?",
+      "explanation": "Their dedicated extractRehydrationInfo reducer path filters pending entries; raw state restoration can bypass it. The inspected dedicated reducers skip pending entries in both versions. Generic state restoration is a separate path, and upgrading alone cannot guarantee the correctness of custom persistence wiring.",
+      "difficulty": "senior",
+      "tags": [
+        "rtk-query",
+        "interview"
+      ],
+      "sourceDocSlug": "frontend/rtk-query-persistence-and-recovery"
+    },
+    {
+      "id": "rtk-both-directions",
+      "type": "interview",
+      "title": "Persistence and the Loading Incident: Both Directions",
+      "prompt": "Why filter pending records both before writing and after reading old storage?",
+      "explanation": "Writes prevent recurrence; reads repair already persisted bad entries. Both directions cover distinct populations: future snapshots and existing installations. A write filter does not itself migrate old data; a read repair does not prevent malformed snapshots from being written.",
+      "difficulty": "senior",
+      "tags": [
+        "rtk-query",
+        "interview"
+      ],
+      "sourceDocSlug": "frontend/rtk-query-persistence-and-recovery"
+    },
+    {
+      "id": "rtk-page-identity",
+      "type": "concept",
+      "title": "Modern APIs and Version Traps: Page Identity",
+      "prompt": "An infinite feed varies by tenant and topic and navigates using a cursor. How should it be modeled?",
+      "explanation": "Tenant/topic in queryArg; cursor in pageParam. The collection identity stays stable across pages while the page parameter advances. Dropping tenant/topic creates collisions, and per-page API slices fragment subscriptions and invalidation.",
+      "difficulty": "senior",
+      "tags": [
+        "rtk-query",
+        "interview"
+      ],
+      "sourceDocSlug": "frontend/rtk-query-modern-apis"
+    },
+    {
+      "id": "rtk-schema-version",
+      "type": "practical",
+      "title": "Modern APIs and Version Traps: Schema Version",
+      "prompt": "Which version first added Standard Schema validation to RTK Query?",
+      "explanation": "RTK 2.7.0. Standard Schema support arrived in 2.7.0. The case-study 2.2.8 baseline predates it; 2.12.0 includes later fixes and improvements rather than introducing the original schema API.",
+      "difficulty": "senior",
+      "tags": [
+        "rtk-query",
+        "interview"
+      ],
+      "sourceDocSlug": "frontend/rtk-query-modern-apis"
+    },
+    {
+      "id": "rtk-refetch-pages",
+      "type": "interview",
+      "title": "Modern APIs and Version Traps: Refetch Pages",
+      "prompt": "In RTK 2.11+, what does refetchCachedPages: false do on an infinite-query refetch?",
+      "explanation": "Refetches the first cached page and shrinks the retained cache to one page. The option collapses the retained window to one refreshed page. It does not preserve all later pages and does not disable the endpoint; scroll behavior needs an explicit product policy.",
+      "difficulty": "senior",
+      "tags": [
+        "rtk-query",
+        "interview"
+      ],
+      "sourceDocSlug": "frontend/rtk-query-modern-apis"
+    },
+    {
+      "id": "rtk-inject",
+      "type": "concept",
+      "title": "Production Architecture and Testing: Inject",
+      "prompt": "Two feature files need coordinated Author invalidation. What is the usual starting point?",
+      "explanation": "Inject endpoints into a shared base API and register its middleware once. Endpoint injection preserves the shared cache/tag namespace. Equal tag names across separate APIs do not coordinate them, and duplicate middleware registration is not required.",
+      "difficulty": "senior",
+      "tags": [
+        "rtk-query",
+        "interview"
+      ],
+      "sourceDocSlug": "frontend/rtk-query-production-architecture"
+    },
+    {
+      "id": "rtk-selector",
+      "type": "practical",
+      "title": "Production Architecture and Testing: Selector",
+      "prompt": "selectFromResult returns a newly filtered array each time. Why can rerenders persist?",
+      "explanation": "The selected array reference changes; memoize derived collections or select stable values. The returned fields are compared shallowly. A fresh nested array changes a field reference; a new outer object with stable fields is expected, and real selected changes must still rerender.",
+      "difficulty": "senior",
+      "tags": [
+        "rtk-query",
+        "interview"
+      ],
+      "sourceDocSlug": "frontend/rtk-query-production-architecture"
+    },
+    {
+      "id": "rtk-stream-lifetime",
+      "type": "interview",
+      "title": "Production Architecture and Testing: Stream Lifetime",
+      "prompt": "Which lifecycle is suitable for a stream tied to cached data?",
+      "explanation": "onCacheEntryAdded with validated events and cleanup after cacheEntryRemoved. Cache-entry lifecycle work can own a stream and clean it up. Render-driven sockets leak/duplicate work; a permanently pending HTTP query confuses query completion and can delay invalidation.",
+      "difficulty": "senior",
+      "tags": [
+        "rtk-query",
+        "interview"
+      ],
+      "sourceDocSlug": "frontend/rtk-query-production-architecture"
+    },
+    {
+      "id": "rtk-priority",
+      "type": "concept",
+      "title": "Mock Interview and Code Review: Priority",
+      "prompt": "A review finds stale spinners and cross-account cached data. What is the strongest first priority?",
+      "explanation": "Fix and test identity boundaries while preserving server authorization. Cross-account display requires urgent scope correction and regression coverage. Animation changes cannot fix data isolation, and server authorization remains mandatory regardless of cache keys.",
+      "difficulty": "senior",
+      "tags": [
+        "rtk-query",
+        "interview"
+      ],
+      "sourceDocSlug": "frontend/rtk-query-interview-workshop"
+    },
+    {
+      "id": "rtk-stale-layer",
+      "type": "practical",
+      "title": "Mock Interview and Code Review: Stale Layer",
+      "prompt": "Invalidation triggers an HTTP request, but its response contains old data. What next?",
+      "explanation": "Inspect server consistency and HTTP/cache layers, then selectors if the response is correct. An observed request narrows the problem. Old response data points upstream; if response data is correct, inspect client selection. Broad repeated invalidation is not a diagnosis.",
+      "difficulty": "senior",
+      "tags": [
+        "rtk-query",
+        "interview"
+      ],
+      "sourceDocSlug": "frontend/rtk-query-interview-workshop"
+    },
+    {
+      "id": "rtk-modern-tradeoff",
+      "type": "interview",
+      "title": "Mock Interview and Code Review: Modern Tradeoff",
+      "prompt": "An interviewer asks about a newer RTK API. Which answer shows useful judgment?",
+      "explanation": "Explain infinite query page identity and the scroll consequences of collapsing a refetch to one page. A concrete mechanism and product tradeoff demonstrate understanding. Version recitation alone is weak, and modern API support does not validate an application’s custom persistence path.",
+      "difficulty": "senior",
+      "tags": [
+        "rtk-query",
+        "interview"
+      ],
+      "sourceDocSlug": "frontend/rtk-query-interview-workshop"
+    }
+  ]
+}

@@ -1,0 +1,312 @@
+{
+  "sources": [
+    {
+      "id": "rtk-overview",
+      "title": "RTK Query Overview",
+      "provider": "Redux",
+      "url": "https://redux-toolkit.js.org/rtk-query/overview",
+      "attribution": "Original lesson commentary; upstream documentation and code remain authoritative.",
+      "lastVerifiedAt": "2026-09-09"
+    },
+    {
+      "id": "rtk-queries",
+      "title": "RTK Query Queries",
+      "provider": "Redux",
+      "url": "https://redux-toolkit.js.org/rtk-query/usage/queries",
+      "attribution": "Original lesson commentary; upstream documentation and code remain authoritative.",
+      "lastVerifiedAt": "2026-09-09"
+    },
+    {
+      "id": "rtk-hooks",
+      "title": "Generated React Hooks",
+      "provider": "Redux",
+      "url": "https://redux-toolkit.js.org/rtk-query/api/created-api/hooks",
+      "attribution": "Original lesson commentary; upstream documentation and code remain authoritative.",
+      "lastVerifiedAt": "2026-09-09"
+    },
+    {
+      "id": "rtk-cache",
+      "title": "Cache Behavior",
+      "provider": "Redux",
+      "url": "https://redux-toolkit.js.org/rtk-query/usage/cache-behavior",
+      "attribution": "Original lesson commentary; upstream documentation and code remain authoritative.",
+      "lastVerifiedAt": "2026-09-09"
+    },
+    {
+      "id": "rtk-invalidation",
+      "title": "Automated Refetching",
+      "provider": "Redux",
+      "url": "https://redux-toolkit.js.org/rtk-query/usage/automated-refetching",
+      "attribution": "Original lesson commentary; upstream documentation and code remain authoritative.",
+      "lastVerifiedAt": "2026-09-09"
+    },
+    {
+      "id": "rtk-create-api",
+      "title": "createApi Reference and Schema Validation",
+      "provider": "Redux",
+      "url": "https://redux-toolkit.js.org/rtk-query/api/createApi",
+      "attribution": "Original lesson commentary; upstream documentation and code remain authoritative.",
+      "lastVerifiedAt": "2026-09-09"
+    },
+    {
+      "id": "rtk-pagination",
+      "title": "Pagination and Partial Lists",
+      "provider": "Redux",
+      "url": "https://redux-toolkit.js.org/rtk-query/usage/pagination",
+      "attribution": "Original lesson commentary; upstream documentation and code remain authoritative.",
+      "lastVerifiedAt": "2026-09-09"
+    },
+    {
+      "id": "rtk-mutations",
+      "title": "Mutation Lifecycles",
+      "provider": "Redux",
+      "url": "https://redux-toolkit.js.org/rtk-query/usage/mutations",
+      "attribution": "Original lesson commentary; upstream documentation and code remain authoritative.",
+      "lastVerifiedAt": "2026-09-09"
+    },
+    {
+      "id": "rtk-manual-updates",
+      "title": "Manual Cache Updates",
+      "provider": "Redux",
+      "url": "https://redux-toolkit.js.org/rtk-query/usage/manual-cache-updates",
+      "attribution": "Original lesson commentary; upstream documentation and code remain authoritative.",
+      "lastVerifiedAt": "2026-09-09"
+    },
+    {
+      "id": "rtk-custom-queries",
+      "title": "Custom Base Queries and Reauthorization",
+      "provider": "Redux",
+      "url": "https://redux-toolkit.js.org/rtk-query/usage/customizing-queries",
+      "attribution": "Original lesson commentary; upstream documentation and code remain authoritative.",
+      "lastVerifiedAt": "2026-09-09"
+    },
+    {
+      "id": "rtk-fetch-base-query",
+      "title": "fetchBaseQuery Reference",
+      "provider": "Redux",
+      "url": "https://redux-toolkit.js.org/rtk-query/api/fetchBaseQuery",
+      "attribution": "Original lesson commentary; upstream documentation and code remain authoritative.",
+      "lastVerifiedAt": "2026-09-09"
+    },
+    {
+      "id": "rtk-persistence",
+      "title": "Persistence and Rehydration",
+      "provider": "Redux",
+      "url": "https://redux-toolkit.js.org/rtk-query/usage/persistence-and-rehydration",
+      "attribution": "Original lesson commentary; upstream documentation and code remain authoritative.",
+      "lastVerifiedAt": "2026-09-09"
+    },
+    {
+      "id": "rtk-infinite",
+      "title": "Infinite Queries",
+      "provider": "Redux",
+      "url": "https://redux-toolkit.js.org/rtk-query/usage/infinite-queries",
+      "attribution": "Original lesson commentary; upstream documentation and code remain authoritative.",
+      "lastVerifiedAt": "2026-09-09"
+    },
+    {
+      "id": "rtk-migration",
+      "title": "Migrating to RTK 2.0",
+      "provider": "Redux",
+      "url": "https://redux-toolkit.js.org/usage/migrating-rtk-2",
+      "attribution": "Original lesson commentary; upstream documentation and code remain authoritative.",
+      "lastVerifiedAt": "2026-09-09"
+    },
+    {
+      "id": "rtk-code-splitting",
+      "title": "Endpoint Injection and Code Splitting",
+      "provider": "Redux",
+      "url": "https://redux-toolkit.js.org/rtk-query/usage/code-splitting",
+      "attribution": "Original lesson commentary; upstream documentation and code remain authoritative.",
+      "lastVerifiedAt": "2026-09-09"
+    },
+    {
+      "id": "rtk-streaming",
+      "title": "Streaming Updates",
+      "provider": "Redux",
+      "url": "https://redux-toolkit.js.org/rtk-query/usage/streaming-updates",
+      "attribution": "Original lesson commentary; upstream documentation and code remain authoritative.",
+      "lastVerifiedAt": "2026-09-09"
+    },
+    {
+      "id": "rtk-nextjs",
+      "title": "Redux Toolkit with Next.js",
+      "provider": "Redux",
+      "url": "https://redux-toolkit.js.org/usage/nextjs",
+      "attribution": "Original lesson commentary; upstream documentation and code remain authoritative.",
+      "lastVerifiedAt": "2026-09-09"
+    },
+    {
+      "id": "rtk-listeners",
+      "title": "setupListeners Reference",
+      "provider": "Redux",
+      "url": "https://redux-toolkit.js.org/rtk-query/api/setupListeners",
+      "attribution": "Original lesson commentary; upstream documentation and code remain authoritative.",
+      "lastVerifiedAt": "2026-09-09"
+    },
+    {
+      "id": "rtk-prefetch",
+      "title": "Prefetching",
+      "provider": "Redux",
+      "url": "https://redux-toolkit.js.org/rtk-query/usage/prefetching",
+      "attribution": "Original lesson commentary; upstream documentation and code remain authoritative.",
+      "lastVerifiedAt": "2026-09-09"
+    },
+    {
+      "id": "redux-testing",
+      "title": "Writing Redux Tests",
+      "provider": "Redux",
+      "url": "https://redux.js.org/usage/writing-tests",
+      "attribution": "Original lesson commentary; upstream documentation and code remain authoritative.",
+      "lastVerifiedAt": "2026-09-09"
+    },
+    {
+      "id": "redux-persist",
+      "title": "Redux Persist Transforms and Migrations",
+      "provider": "Redux Persist",
+      "url": "https://github.com/rt2zz/redux-persist",
+      "attribution": "Original lesson commentary; upstream documentation and code remain authoritative.",
+      "lastVerifiedAt": "2026-09-09"
+    },
+    {
+      "id": "rtk-release-26",
+      "title": "Redux Toolkit 2.6.0 Release",
+      "provider": "Redux",
+      "url": "https://github.com/reduxjs/redux-toolkit/releases/tag/v2.6.0",
+      "attribution": "Original lesson commentary; upstream documentation and code remain authoritative.",
+      "lastVerifiedAt": "2026-09-09",
+      "upstream": {
+        "repository": "reduxjs/redux-toolkit",
+        "ref": "v2.6.0",
+        "version": "2.6.0",
+        "maturity": "published"
+      }
+    },
+    {
+      "id": "rtk-release-27",
+      "title": "Redux Toolkit 2.7.0 Release",
+      "provider": "Redux",
+      "url": "https://github.com/reduxjs/redux-toolkit/releases/tag/v2.7.0",
+      "attribution": "Original lesson commentary; upstream documentation and code remain authoritative.",
+      "lastVerifiedAt": "2026-09-09",
+      "upstream": {
+        "repository": "reduxjs/redux-toolkit",
+        "ref": "v2.7.0",
+        "version": "2.7.0",
+        "maturity": "published"
+      }
+    },
+    {
+      "id": "rtk-release-29",
+      "title": "Redux Toolkit 2.9.0 Release",
+      "provider": "Redux",
+      "url": "https://github.com/reduxjs/redux-toolkit/releases/tag/v2.9.0",
+      "attribution": "Original lesson commentary; upstream documentation and code remain authoritative.",
+      "lastVerifiedAt": "2026-09-09",
+      "upstream": {
+        "repository": "reduxjs/redux-toolkit",
+        "ref": "v2.9.0",
+        "version": "2.9.0",
+        "maturity": "published"
+      }
+    },
+    {
+      "id": "rtk-release-211",
+      "title": "Redux Toolkit 2.11.0 Release",
+      "provider": "Redux",
+      "url": "https://github.com/reduxjs/redux-toolkit/releases/tag/v2.11.0",
+      "attribution": "Original lesson commentary; upstream documentation and code remain authoritative.",
+      "lastVerifiedAt": "2026-09-09",
+      "upstream": {
+        "repository": "reduxjs/redux-toolkit",
+        "ref": "v2.11.0",
+        "version": "2.11.0",
+        "maturity": "published"
+      }
+    },
+    {
+      "id": "rtk-release-2112",
+      "title": "Redux Toolkit 2.11.2 Release",
+      "provider": "Redux",
+      "url": "https://github.com/reduxjs/redux-toolkit/releases/tag/v2.11.2",
+      "attribution": "Original lesson commentary; upstream documentation and code remain authoritative.",
+      "lastVerifiedAt": "2026-09-09",
+      "upstream": {
+        "repository": "reduxjs/redux-toolkit",
+        "ref": "v2.11.2",
+        "version": "2.11.2",
+        "maturity": "published"
+      }
+    },
+    {
+      "id": "rtk-release-212",
+      "title": "Redux Toolkit 2.12.0 Release",
+      "provider": "Redux",
+      "url": "https://github.com/reduxjs/redux-toolkit/releases/tag/v2.12.0",
+      "attribution": "Original lesson commentary; upstream documentation and code remain authoritative.",
+      "lastVerifiedAt": "2026-09-09",
+      "upstream": {
+        "repository": "reduxjs/redux-toolkit",
+        "ref": "v2.12.0",
+        "version": "2.12.0",
+        "maturity": "published"
+      }
+    },
+    {
+      "id": "rtk-thunks-228",
+      "title": "RTK 2.2.8 buildThunks.ts",
+      "provider": "Redux",
+      "url": "https://github.com/reduxjs/redux-toolkit/blob/v2.2.8/packages/toolkit/src/query/core/buildThunks.ts",
+      "attribution": "Original lesson commentary; upstream documentation and code remain authoritative.",
+      "lastVerifiedAt": "2026-09-09",
+      "upstream": {
+        "repository": "reduxjs/redux-toolkit",
+        "ref": "v2.2.8",
+        "version": "2.2.8",
+        "maturity": "published"
+      }
+    },
+    {
+      "id": "rtk-slice-228",
+      "title": "RTK 2.2.8 buildSlice.ts",
+      "provider": "Redux",
+      "url": "https://github.com/reduxjs/redux-toolkit/blob/v2.2.8/packages/toolkit/src/query/core/buildSlice.ts",
+      "attribution": "Original lesson commentary; upstream documentation and code remain authoritative.",
+      "lastVerifiedAt": "2026-09-09",
+      "upstream": {
+        "repository": "reduxjs/redux-toolkit",
+        "ref": "v2.2.8",
+        "version": "2.2.8",
+        "maturity": "published"
+      }
+    },
+    {
+      "id": "rtk-thunks-212",
+      "title": "RTK 2.12.0 buildThunks.ts",
+      "provider": "Redux",
+      "url": "https://github.com/reduxjs/redux-toolkit/blob/v2.12.0/packages/toolkit/src/query/core/buildThunks.ts",
+      "attribution": "Original lesson commentary; upstream documentation and code remain authoritative.",
+      "lastVerifiedAt": "2026-09-09",
+      "upstream": {
+        "repository": "reduxjs/redux-toolkit",
+        "ref": "v2.12.0",
+        "version": "2.12.0",
+        "maturity": "published"
+      }
+    },
+    {
+      "id": "rtk-slice-212",
+      "title": "RTK 2.12.0 buildSlice.ts",
+      "provider": "Redux",
+      "url": "https://github.com/reduxjs/redux-toolkit/blob/v2.12.0/packages/toolkit/src/query/core/buildSlice.ts",
+      "attribution": "Original lesson commentary; upstream documentation and code remain authoritative.",
+      "lastVerifiedAt": "2026-09-09",
+      "upstream": {
+        "repository": "reduxjs/redux-toolkit",
+        "ref": "v2.12.0",
+        "version": "2.12.0",
+        "maturity": "published"
+      }
+    }
+  ]
+}

@@ -22,3 +22,5 @@ This folder contains curated role and skill paths for Codematica.
 - Paths are open in the current milestone. `required` identifies milestone calculations; it never locks a node. Do not add lock or payment fields until the feature contract changes.
 
 Run `npm run content:check` before committing path changes.
+
+- The RTK Query Interview Preparation path pairs seven sourced lessons with scenario checkpoints and passive briefs. Keep modern 2.12.0 behavior separate from the PR-inspired 2.2.8 persistence case.

@@ -1,0 +1,160 @@
+{
+  "slug": "frontend/rtk-query-foundations-questionnaire",
+  "title": "RTK Query Foundations and Request Ownership Checkpoint",
+  "type": "questionnaire",
+  "documentSlug": "frontend/rtk-query-foundations",
+  "concept": "Foundations and Request Ownership",
+  "difficulty": "senior",
+  "tags": [
+    "rtk-query",
+    "redux",
+    "interview"
+  ],
+  "status": "published",
+  "sourceRefs": [
+    "rtk-overview",
+    "rtk-queries",
+    "rtk-hooks",
+    "rtk-cache"
+  ],
+  "questions": [
+    {
+      "id": "same-key",
+      "kind": "choice",
+      "prompt": "Two panels call getAuthor with the same ID in the same API/store. What should happen?",
+      "options": [
+        {
+          "id": "answer",
+          "label": "They share the cache entry and an in-flight request.",
+          "isCorrect": true
+        },
+        {
+          "id": "distractor-one",
+          "label": "Each hook must always make a separate request.",
+          "isCorrect": false
+        },
+        {
+          "id": "distractor-two",
+          "label": "They share data only if both panels have the same React key.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "The endpoint and serialized argument identify the entry, so concurrent subscribers share it. Hook count does not require duplicate HTTP calls, and React element keys do not define RTK cache identity."
+    },
+    {
+      "id": "current-data",
+      "kind": "choice",
+      "prompt": "Switching author A to B must not show A while B loads. Which hook field fits?",
+      "options": [
+        {
+          "id": "distractor-one",
+          "label": "data always contains only the current argument result.",
+          "isCorrect": false
+        },
+        {
+          "id": "distractor-two",
+          "label": "Copy data into local state once and ignore later updates.",
+          "isCorrect": false
+        },
+        {
+          "id": "answer",
+          "label": "currentData, with explicit loading and error handling for B.",
+          "isCorrect": true
+        }
+      ],
+      "explanation": "currentData belongs to the current argument. data may retain a previous argument result; copying it once creates a stale second owner and does not protect identity changes."
+    },
+    {
+      "id": "state-owner",
+      "kind": "choice",
+      "prompt": "Where should an unsaved multi-step editing draft live?",
+      "options": [
+        {
+          "id": "distractor-two",
+          "label": "Only on the server, because Redux Toolkit cannot hold client state.",
+          "isCorrect": false
+        },
+        {
+          "id": "answer",
+          "label": "In intentional client state with its own save/reset and persistence policy.",
+          "isCorrect": true
+        },
+        {
+          "id": "distractor-one",
+          "label": "Always inside the RTK query response object by direct mutation.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "Drafts have a different owner and lifetime from server snapshots. Directly mutating cached results breaks the state contract; Redux Toolkit can model client workflows with ordinary slices."
+    },
+    {
+      "id": "skip",
+      "kind": "choice",
+      "prompt": "An author ID is optional until selection. What avoids an invalid query without conditional hooks?",
+      "options": [
+        {
+          "id": "answer",
+          "label": "Pass id ?? skipToken to the query hook.",
+          "isCorrect": true
+        },
+        {
+          "id": "distractor-one",
+          "label": "Call the query hook only inside an if block.",
+          "isCorrect": false
+        },
+        {
+          "id": "distractor-two",
+          "label": "Pass an empty ID and rely on the server to reject it.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "skipToken expresses a skipped typed argument while preserving hook order. Conditional hooks violate React rules, and fake IDs create avoidable errors and misleading cache entries."
+    },
+    {
+      "id": "background",
+      "kind": "choice",
+      "prompt": "A background refresh starts while valid current data is visible. What UI is usually suitable?",
+      "options": [
+        {
+          "id": "distractor-one",
+          "label": "Always replace all content with a full-screen spinner.",
+          "isCorrect": false
+        },
+        {
+          "id": "distractor-two",
+          "label": "Hide every error because cached data exists.",
+          "isCorrect": false
+        },
+        {
+          "id": "answer",
+          "label": "Keep the data, show updating state, and expose refresh errors.",
+          "isCorrect": true
+        }
+      ],
+      "explanation": "isFetching includes background work; preserving useful current data avoids disruptive flicker. Hiding all failures conceals staleness, while unconditional spinners discard a useful result."
+    },
+    {
+      "id": "post-query",
+      "kind": "choice",
+      "prompt": "A POST endpoint performs an idempotent search without changing server state. Which endpoint type can fit?",
+      "options": [
+        {
+          "id": "distractor-two",
+          "label": "Neither: RTK Query supports GET requests only.",
+          "isCorrect": false
+        },
+        {
+          "id": "answer",
+          "label": "A query, because operation semantics matter more than the HTTP verb.",
+          "isCorrect": true
+        },
+        {
+          "id": "distractor-one",
+          "label": "A mutation is mandatory for every POST.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "A query can use POST for read semantics and cache by its argument. HTTP method alone does not mandate mutation, and fetchBaseQuery supports methods beyond GET."
+    }
+  ]
+}

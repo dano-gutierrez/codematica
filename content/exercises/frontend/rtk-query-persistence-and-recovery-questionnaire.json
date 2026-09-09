@@ -1,0 +1,162 @@
+{
+  "slug": "frontend/rtk-query-persistence-and-recovery-questionnaire",
+  "title": "RTK Query Persistence and the Loading Incident Checkpoint",
+  "type": "questionnaire",
+  "documentSlug": "frontend/rtk-query-persistence-and-recovery",
+  "concept": "Persistence and the Loading Incident",
+  "difficulty": "principal",
+  "tags": [
+    "rtk-query",
+    "redux",
+    "interview"
+  ],
+  "status": "published",
+  "sourceRefs": [
+    "rtk-persistence",
+    "rtk-thunks-228",
+    "rtk-slice-228",
+    "rtk-thunks-212",
+    "rtk-slice-212",
+    "redux-persist"
+  ],
+  "questions": [
+    {
+      "id": "orphaned-pending",
+      "kind": "choice",
+      "prompt": "After process death, a raw persisted pending entry returns but no request exists. What explains the loader?",
+      "options": [
+        {
+          "id": "answer",
+          "label": "Restored execution metadata can block initiation without restoring the actual request.",
+          "isCorrect": true
+        },
+        {
+          "id": "distractor-one",
+          "label": "Every restart automatically recreates the original fetch promise.",
+          "isCorrect": false
+        },
+        {
+          "id": "distractor-two",
+          "label": "A pending entry proves that the server is still computing the request.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "Serialized pending state does not recreate a promise or prove server activity. The thunk can reject a duplicate initiation for that key even when the original client request no longer exists."
+    },
+    {
+      "id": "two-paths",
+      "kind": "choice",
+      "prompt": "Which statement about RTK 2.2.8 and 2.12.0 rehydration is accurate?",
+      "options": [
+        {
+          "id": "distractor-one",
+          "label": "Every RTK rehydration path always restores pending entries.",
+          "isCorrect": false
+        },
+        {
+          "id": "distractor-two",
+          "label": "Installing 2.12.0 repairs every custom persistence reconciler automatically.",
+          "isCorrect": false
+        },
+        {
+          "id": "answer",
+          "label": "Their dedicated extractRehydrationInfo reducer path filters pending entries; raw state restoration can bypass it.",
+          "isCorrect": true
+        }
+      ],
+      "explanation": "The inspected dedicated reducers skip pending entries in both versions. Generic state restoration is a separate path, and upgrading alone cannot guarantee the correctness of custom persistence wiring."
+    },
+    {
+      "id": "both-directions",
+      "kind": "choice",
+      "prompt": "Why filter pending records both before writing and after reading old storage?",
+      "options": [
+        {
+          "id": "distractor-two",
+          "label": "Reading alone proves future versions never persist pending records.",
+          "isCorrect": false
+        },
+        {
+          "id": "answer",
+          "label": "Writes prevent recurrence; reads repair already persisted bad entries.",
+          "isCorrect": true
+        },
+        {
+          "id": "distractor-one",
+          "label": "Writing alone guarantees existing disk data is immediately migrated.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "Both directions cover distinct populations: future snapshots and existing installations. A write filter does not itself migrate old data; a read repair does not prevent malformed snapshots from being written."
+    },
+    {
+      "id": "preserve-drafts",
+      "kind": "choice",
+      "prompt": "The app has unsynced drafts alongside a broken API cache. What repair is preferable?",
+      "options": [
+        {
+          "id": "answer",
+          "label": "A targeted versioned cache repair that preserves unrelated durable data.",
+          "isCorrect": true
+        },
+        {
+          "id": "distractor-one",
+          "label": "A blanket storage purge because all Redux state is disposable.",
+          "isCorrect": false
+        },
+        {
+          "id": "distractor-two",
+          "label": "Delete the draft slice to reduce the number of cached queries.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "Drafts may be irreplaceable. A scoped migration can repair regenerable cache without erasing them; deleting unrelated data neither explains nor fixes the pending lifecycle defect."
+    },
+    {
+      "id": "request-proof",
+      "kind": "choice",
+      "prompt": "Which regression best proves the forever-loading repair?",
+      "options": [
+        {
+          "id": "distractor-one",
+          "label": "Assert only that refetch was called.",
+          "isCorrect": false
+        },
+        {
+          "id": "distractor-two",
+          "label": "Mock the query hook to return successful data.",
+          "isCorrect": false
+        },
+        {
+          "id": "answer",
+          "label": "Restore through the real config, subscribe, observe a new fake request, and reach data or error UI.",
+          "isCorrect": true
+        }
+      ],
+      "explanation": "The real restore and request path must progress. A refetch invocation may be blocked by the thunk, and a mocked successful hook bypasses the defect entirely."
+    },
+    {
+      "id": "pending-mutation",
+      "kind": "choice",
+      "prompt": "A restored pending purchase marker is removed. What follows?",
+      "options": [
+        {
+          "id": "distractor-two",
+          "label": "Mark the purchase successful because pending implies eventual success.",
+          "isCorrect": false
+        },
+        {
+          "id": "answer",
+          "label": "Reconcile the server operation; removing local state does not justify replay.",
+          "isCorrect": true
+        },
+        {
+          "id": "distractor-one",
+          "label": "Automatically resubmit the purchase because removal proves it never committed.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "The local marker cannot establish the remote outcome. Both automatic replay and assumed success can be wrong; durable command IDs and server status/idempotency are needed."
+    }
+  ]
+}

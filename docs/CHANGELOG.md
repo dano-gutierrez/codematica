@@ -2,6 +2,14 @@
 
 This changelog records durable, user-visible and architectural changes. Feature documents remain the authoritative contracts; this file explains when a group of related changes landed and points readers to the owning documentation.
 
+## 2026-09-09 — RTK Query Interview Preparation
+
+- Added seven source-linked RTK Query lessons, 42 scenario questions, and 21 passive briefs using existing study components.
+- Added good/bad TypeScript examples, a generalized PR #12666 persistence case, versioned 2.6–2.12 APIs, and a timed mock interview.
+- Added curriculum integration and mobile browser regression coverage; no runtime dependencies, schema changes, or coverage threshold changes.
+
+Owning contract: `docs/features/rtk-query-interview-preparation.md`.
+
 ## 2026-09-05 — Adaptive UI Redesign
 
 - Added persistent phone navigation and desktop/iPad sidebars around existing routes.
