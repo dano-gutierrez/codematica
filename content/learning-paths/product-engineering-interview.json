@@ -1,0 +1,76 @@
+{
+  "slug": "product-engineering-interview",
+  "title": "Product Engineering Interview",
+  "summary": "Prepare for a product engineering coding and architecture deep dive with an evidence-aware research brief, a plain JavaScript drill, durable AI workflow design, 18 checkpoint questions, and a 75-minute mock interview.",
+  "kind": "skill",
+  "category": "Software Engineering",
+  "audience": "Experienced product and backend engineers preparing for interviews covering coding, design, and production ownership.",
+  "status": "published",
+  "sourcePolicy": "required",
+  "sourceRefs": [
+    "product-interview-sre-monitoring",
+    "product-interview-websocket"
+  ],
+  "units": [
+    {
+      "slug": "product-interview-research-brief",
+      "title": "Research and Role Fit",
+      "summary": "Evaluate interview evidence, clarify role expectations, and prepare useful questions without relying on company-specific assumptions.",
+      "nodes": [
+        {
+          "kind": "document",
+          "slug": "software-engineering/product-interview-research-brief"
+        }
+      ]
+    },
+    {
+      "slug": "product-interview-javascript-preview-coordinator",
+      "title": "Plain JavaScript Under Pressure",
+      "summary": "Bound preview work, suppress obsolete outcomes, and test lifecycle failures without a framework.",
+      "nodes": [
+        {
+          "kind": "document",
+          "slug": "software-engineering/product-interview-javascript-preview-coordinator"
+        },
+        {
+          "kind": "exercise",
+          "slug": "software-engineering/product-interview-javascript-preview-coordinator-questionnaire"
+        }
+      ]
+    },
+    {
+      "slug": "product-interview-durable-generation-architecture",
+      "title": "Durable Jobs and Revenue Safety",
+      "summary": "Trace accepted jobs, charges, collaboration, and recovery through concrete failure boundaries.",
+      "nodes": [
+        {
+          "kind": "document",
+          "slug": "software-engineering/product-interview-durable-generation-architecture"
+        },
+        {
+          "kind": "exercise",
+          "slug": "software-engineering/product-interview-durable-generation-architecture-questionnaire"
+        }
+      ]
+    },
+    {
+      "slug": "product-interview-mock-interview",
+      "title": "The 75-Minute Mock Interview",
+      "summary": "Rehearse coding, architecture, and ownership with evidence checks and an anchored self-assessment.",
+      "nodes": [
+        {
+          "kind": "document",
+          "slug": "software-engineering/product-interview-mock-interview"
+        },
+        {
+          "kind": "exercise",
+          "slug": "software-engineering/product-interview-mock-interview-lab"
+        },
+        {
+          "kind": "exercise",
+          "slug": "software-engineering/product-interview-mock-interview-questionnaire"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,166 @@
+{
+  "slug": "product-engineering-interview",
+  "pathSlug": "product-engineering-interview",
+  "title": "Product Engineering Interview Briefs",
+  "summary": "Twelve quick reviews for preview races, durable job correctness, role fit, and credible ownership stories.",
+  "audience": "Engineers reviewing before a product engineering interview.",
+  "status": "published",
+  "cards": [
+    {
+      "id": "product-interview-supersede",
+      "type": "interview",
+      "title": "Interview: Supersede",
+      "prompt": "A is active; B then C are submitted before A settles. What should run next?",
+      "explanation": "Run C after A settles, and suppress A’s obsolete result. The bounded pending slot retains only C. Starting both increases concurrency beyond the contract; keeping A as the visible answer ignores current intent. Completion order cannot determine which input the artist now wants.",
+      "difficulty": "senior",
+      "tags": [
+        "product-engineering",
+        "interview"
+      ],
+      "sourceDocSlug": "software-engineering/product-interview-javascript-preview-coordinator"
+    },
+    {
+      "id": "product-interview-abort",
+      "type": "interview",
+      "title": "Interview: Abort",
+      "prompt": "The provider ignores AbortSignal and resolves after dispose. What prevents a stale render?",
+      "explanation": "A disposed/revision guard before every UI callback. Cancellation is a request to cooperating operations. A guard still prevents late local callbacks when cancellation is ignored; changing loading state cannot cancel an operation or prove remote work stopped.",
+      "difficulty": "senior",
+      "tags": [
+        "product-engineering",
+        "interview"
+      ],
+      "sourceDocSlug": "software-engineering/product-interview-javascript-preview-coordinator"
+    },
+    {
+      "id": "product-interview-error",
+      "type": "interview",
+      "title": "Interview: Error",
+      "prompt": "A fails after B was submitted. What should the coordinator do?",
+      "explanation": "Suppress A’s obsolete error and continue with B. Errors need the same revision guard as results: A no longer describes current intent. The slot must be released in finally so B can run; otherwise one old failure blocks all future work.",
+      "difficulty": "senior",
+      "tags": [
+        "product-engineering",
+        "interview"
+      ],
+      "sourceDocSlug": "software-engineering/product-interview-javascript-preview-coordinator"
+    },
+    {
+      "id": "product-interview-deadline",
+      "type": "interview",
+      "title": "Interview: Deadline",
+      "prompt": "The active adapter never settles. Which statement is accurate?",
+      "explanation": "The baseline blocks; a timeout alone does not prove remote work stopped. Finally runs when control leaves the awaited operation, not after an implicit timeout. Promise.race changes which promise you await; it does not stop the remote operation. Define deadline, cancellation, and capacity policy explicitly.",
+      "difficulty": "senior",
+      "tags": [
+        "product-engineering",
+        "interview"
+      ],
+      "sourceDocSlug": "software-engineering/product-interview-javascript-preview-coordinator"
+    },
+    {
+      "id": "product-interview-uncertain",
+      "type": "interview",
+      "title": "Interview: Uncertain",
+      "prompt": "A provider finished an export; the worker crashed before recording success. What is the safest retry plan?",
+      "explanation": "Reconcile via a stable provider key or operation ID before repeating the effect. Redelivery proves the message needs handling, not that the external effect failed. Reconcile a stable operation identity where supported. Otherwise keep the uncertainty explicit; neither blind retries nor invented success preserve correctness.",
+      "difficulty": "senior",
+      "tags": [
+        "product-engineering",
+        "interview"
+      ],
+      "sourceDocSlug": "software-engineering/product-interview-durable-generation-architecture"
+    },
+    {
+      "id": "product-interview-outbox",
+      "type": "interview",
+      "title": "Interview: Outbox",
+      "prompt": "The API writes a job, then crashes before publishing its queue message. Which design closes this gap?",
+      "explanation": "Commit the job, credit reservation, and outbox record atomically. An atomic job/reservation/outbox transaction leaves durable dispatch intent after a crash. Publishing first can create work without an accepted job or reservation. A tab cannot preserve the backend acceptance contract.",
+      "difficulty": "senior",
+      "tags": [
+        "product-engineering",
+        "interview"
+      ],
+      "sourceDocSlug": "software-engineering/product-interview-durable-generation-architecture"
+    },
+    {
+      "id": "product-interview-idempotency",
+      "type": "interview",
+      "title": "Interview: Idempotency",
+      "prompt": "Two workspaces reuse the same idempotency key. What is the correct boundary?",
+      "explanation": "Scope the key to the workspace and compare the request fingerprint. Tenant scope prevents unrelated requests colliding or leaking results. A body fingerprint detects changed requests under the same key. Prompt text omits workspace, input revision, model, and configuration identity.",
+      "difficulty": "senior",
+      "tags": [
+        "product-engineering",
+        "interview"
+      ],
+      "sourceDocSlug": "software-engineering/product-interview-durable-generation-architecture"
+    },
+    {
+      "id": "product-interview-fencing",
+      "type": "interview",
+      "title": "Interview: Fencing",
+      "prompt": "Worker A pauses, its lease expires, and worker B commits success. A resumes. What protects the result?",
+      "explanation": "A guarded state transition with the current attempt/fencing token. A lease can expire while its previous holder is still running. The commit must validate attempt ownership and state/version, so stale workers cannot overwrite B. Last-write-wins is unsafe for results and ledger transitions.",
+      "difficulty": "senior",
+      "tags": [
+        "product-engineering",
+        "interview"
+      ],
+      "sourceDocSlug": "software-engineering/product-interview-durable-generation-architecture"
+    },
+    {
+      "id": "product-interview-evidence",
+      "type": "interview",
+      "title": "Interview: Evidence",
+      "prompt": "A generic interview site lists likely company questions without candidate provenance. How should you use it?",
+      "explanation": "As optional speculation, not proof of the company’s actual questions. Likely questions are inferred practice material, not candidate evidence. Neither the exact loop nor a contradiction with a specific briefing follows. Confirm logistics directly and prioritize primary role and product material.",
+      "difficulty": "senior",
+      "tags": [
+        "product-engineering",
+        "interview"
+      ],
+      "sourceDocSlug": "software-engineering/product-interview-mock-interview"
+    },
+    {
+      "id": "product-interview-role",
+      "type": "interview",
+      "title": "Interview: Role",
+      "prompt": "A product engineering role combines frontend and collaboration work with durable jobs. How should preparation change?",
+      "explanation": "Include frontend state, rendering, product judgment, and collaboration boundaries. The role spans product surfaces and reliability, so the interview preparation should connect them. Backend-only study misses explicit qualifications; syntax memorization alone cannot explain state ownership or user-visible correctness.",
+      "difficulty": "senior",
+      "tags": [
+        "product-engineering",
+        "interview"
+      ],
+      "sourceDocSlug": "software-engineering/product-interview-mock-interview"
+    },
+    {
+      "id": "product-interview-rate",
+      "type": "interview",
+      "title": "Interview: Rate",
+      "prompt": "Your story says traffic grew from 500 to 50,000 RPM. Which statement is accurate?",
+      "explanation": "That is 100×, about 8.3 to 833 requests/second; define what was measured. Divide requests per minute by 60 and calculate the ratio as 50,000/500. Explain peak versus sustained, ingress versus processed events, and success rate so a capacity claim remains meaningful and defensible.",
+      "difficulty": "senior",
+      "tags": [
+        "product-engineering",
+        "interview"
+      ],
+      "sourceDocSlug": "software-engineering/product-interview-mock-interview"
+    },
+    {
+      "id": "product-interview-recovery",
+      "type": "interview",
+      "title": "Interview: Recovery",
+      "prompt": "Tests and a build pass after an incident fix. What can you honestly claim?",
+      "explanation": "Code validation passed; artifact startup, deployment, and recovery need their own evidence. Source validation does not establish the final pruned runtime, deployment state, or customer recovery. Separate each evidence layer and name unknown impact. Local dependencies can hide packaging failures.",
+      "difficulty": "senior",
+      "tags": [
+        "product-engineering",
+        "interview"
+      ],
+      "sourceDocSlug": "software-engineering/product-interview-mock-interview"
+    }
+  ]
+}

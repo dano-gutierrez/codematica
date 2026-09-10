@@ -1,0 +1,156 @@
+{
+  "slug": "software-engineering/product-interview-durable-generation-architecture-questionnaire",
+  "title": "Product Engineering Durable Jobs and Revenue Safety Checkpoint",
+  "type": "questionnaire",
+  "documentSlug": "software-engineering/product-interview-durable-generation-architecture",
+  "concept": "Durable Jobs and Revenue Safety",
+  "difficulty": "senior",
+  "tags": [
+    "product-engineering",
+    "interview"
+  ],
+  "status": "published",
+  "sourceRefs": [
+    "product-interview-sre-monitoring"
+  ],
+  "questions": [
+    {
+      "id": "uncertain",
+      "kind": "choice",
+      "prompt": "A provider finished an export; the worker crashed before recording success. What is the safest retry plan?",
+      "options": [
+        {
+          "id": "answer",
+          "label": "Reconcile via a stable provider key or operation ID before repeating the effect.",
+          "isCorrect": true
+        },
+        {
+          "id": "alternative-one",
+          "label": "Always generate again because the queue redelivered.",
+          "isCorrect": false
+        },
+        {
+          "id": "alternative-two",
+          "label": "Mark success without checking whether an output exists.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "Redelivery proves the message needs handling, not that the external effect failed. Reconcile a stable operation identity where supported. Otherwise keep the uncertainty explicit; neither blind retries nor invented success preserve correctness."
+    },
+    {
+      "id": "outbox",
+      "kind": "choice",
+      "prompt": "The API writes a job, then crashes before publishing its queue message. Which design closes this gap?",
+      "options": [
+        {
+          "id": "alternative-one",
+          "label": "Publish first and assume the database write will succeed.",
+          "isCorrect": false
+        },
+        {
+          "id": "alternative-two",
+          "label": "Keep the queue message only in the browser tab.",
+          "isCorrect": false
+        },
+        {
+          "id": "answer",
+          "label": "Commit the job, credit reservation, and outbox record atomically.",
+          "isCorrect": true
+        }
+      ],
+      "explanation": "An atomic job/reservation/outbox transaction leaves durable dispatch intent after a crash. Publishing first can create work without an accepted job or reservation. A tab cannot preserve the backend acceptance contract."
+    },
+    {
+      "id": "idempotency",
+      "kind": "choice",
+      "prompt": "Two workspaces reuse the same idempotency key. What is the correct boundary?",
+      "options": [
+        {
+          "id": "alternative-two",
+          "label": "Deduplicate only by prompt text.",
+          "isCorrect": false
+        },
+        {
+          "id": "answer",
+          "label": "Scope the key to the workspace and compare the request fingerprint.",
+          "isCorrect": true
+        },
+        {
+          "id": "alternative-one",
+          "label": "Use one global key namespace and return the first workspace’s result.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "Tenant scope prevents unrelated requests colliding or leaking results. A body fingerprint detects changed requests under the same key. Prompt text omits workspace, input revision, model, and configuration identity."
+    },
+    {
+      "id": "fencing",
+      "kind": "choice",
+      "prompt": "Worker A pauses, its lease expires, and worker B commits success. A resumes. What protects the result?",
+      "options": [
+        {
+          "id": "answer",
+          "label": "A guarded state transition with the current attempt/fencing token.",
+          "isCorrect": true
+        },
+        {
+          "id": "alternative-one",
+          "label": "A lease timestamp alone, with no check at commit.",
+          "isCorrect": false
+        },
+        {
+          "id": "alternative-two",
+          "label": "Whichever worker writes last should win.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "A lease can expire while its previous holder is still running. The commit must validate attempt ownership and state/version, so stale workers cannot overwrite B. Last-write-wins is unsafe for results and ledger transitions."
+    },
+    {
+      "id": "webhook",
+      "kind": "choice",
+      "prompt": "A webhook names a real job but its authenticity is unverified. What should happen before charging?",
+      "options": [
+        {
+          "id": "alternative-one",
+          "label": "Trust the job ID as a secret signature.",
+          "isCorrect": false
+        },
+        {
+          "id": "alternative-two",
+          "label": "Charge immediately, then log the sender address.",
+          "isCorrect": false
+        },
+        {
+          "id": "answer",
+          "label": "Verify supported authentication or reconcile through an authenticated status read.",
+          "isCorrect": true
+        }
+      ],
+      "explanation": "A job ID identifies a resource; it does not authenticate the sender or prove completion. Verify the documented delivery authentication or fetch authoritative status. Logging after charging cannot prevent a forged side effect."
+    },
+    {
+      "id": "latency",
+      "kind": "choice",
+      "prompt": "After a deploy, p95 preview latency rises while inference duration is flat. What should you inspect first?",
+      "options": [
+        {
+          "id": "alternative-two",
+          "label": "Ignore the problem because every HTTP request returns 200.",
+          "isCorrect": false
+        },
+        {
+          "id": "answer",
+          "label": "Per-stage traces and cohort changes across queueing, transfer, decode, and render.",
+          "isCorrect": true
+        },
+        {
+          "id": "alternative-one",
+          "label": "Buy GPUs before measuring any other stage.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "End-to-end latency includes stages outside inference. Compare deployment cohorts and traces to locate the increase. More GPU capacity may not help, and successful HTTP delivery does not prove a timely usable preview."
+    }
+  ]
+}

@@ -1,5 +1,7 @@
 # Passive Flashcard Feeds
 
+The Product Engineering Interview feed contains twelve review briefs linked to its JavaScript, durable generation, and mock interview lessons. These are original preparation cards, not reported company questions.
+
 This folder contains path-scoped passive flashcard feeds for short review sessions.
 
 - Author one feed per `.json` file.

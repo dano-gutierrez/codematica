@@ -1,0 +1,118 @@
+---
+title: Product Engineering Architecture Drill — Durable Generation and Revenue Safety
+slug: software-engineering/product-interview-durable-generation-architecture
+summary: Design an AI editing service with bounded previews, durable exports, idempotent billing, recovery, collaboration boundaries, and measurable reliability.
+track: Software Engineering
+topic: Interview Preparation
+difficulty: senior
+tags: [product-engineering, system-design, idempotency, observability, interview]
+sourceRefs: [product-interview-pubsub, product-interview-sre-monitoring, product-interview-otel]
+status: published
+---
+
+## The 30-minute design prompt
+
+Design a collaborative AI image editor with interactive previews and durable paid exports. Users refresh tabs, switch workspaces, lose connections, and retry requests. GPU workers can crash after finishing the expensive operation. Prevent stale images, lost accepted jobs, cross-tenant access, and duplicate customer charges.
+
+This is an original mock scenario. All scale numbers, SLOs, APIs, and architecture below are **exercise assumptions**, not any company's measured traffic, internal implementation, or promised service levels. Durable execution and enterprise correctness are the focus of this exercise.
+
+## Clarify before drawing
+
+Ask what is ephemeral, what must survive disconnect, how charging works, whether concurrent edits need offline merge, and which part of latency users notice. Agree to one region for durable metadata, regional workers, private workspace assets, and a success-only export charge with a temporary credit reservation. A preview is replaceable; an accepted export is not.
+
+Use 2,000 active editors averaging two preview intents/second. That is **4,000 incoming intents/second**, before coalescing and admission control. If all were admitted and mean service time were 0.5 seconds, Little's Law suggests roughly **2,000 concurrent requests** in a stable system. That is not 2,000 GPUs: batching, model size, device utilization, and per-device concurrency require measurement. With capacity for 400 requests/second, choose a freshness/admission policy; an ever-growing FIFO cannot preserve interactive latency. Keep exports in a separate capacity budget so previews cannot starve them.
+
+## A defensible starting design
+
+```mermaid
+flowchart TD
+  UI[Editor and local draft] --> Preview[Bounded preview coordinator]
+  Preview --> Gateway[Authenticated preview gateway]
+  Gateway --> PreviewPool[Preview inference capacity]
+  PreviewPool --> Guard[Revision check and render]
+  UI --> API[Export API and authorization]
+  API --> DB[(Postgres jobs, ledger, outbox)]
+  DB --> Dispatch[Outbox dispatcher]
+  Dispatch --> Queue[Durable export queue]
+  Queue --> Worker[Leased workflow worker]
+  Worker --> Provider[Inference provider]
+  Provider --> Storage[Private object storage]
+  Worker --> DB
+  DB --> Events[Versioned status events]
+  Events --> UI
+  UI --> Status[Authorized status snapshot]
+  Status --> DB
+```
+
+Postgres owns durable job state and charging decisions. Redis can help with admission, short-lived coordination, and caches. ClickHouse can serve analytics; it should not be the transactional entitlement authority in this design. Queue notifications and WebSocket messages are delivery mechanisms, not the sole record of accepted work.
+
+Define pending, intermediate, and terminal states explicitly in the API contract. An intermediate preview is progress, not a completed paid export. Specify which transitions generate notifications and how duplicate deliveries are handled. The proposed database/outbox design is an illustrative architecture.
+
+## The transaction boundary that matters
+
+Propose these illustrative records:
+
+| Record | Key and invariant |
+| --- | --- |
+| Job | `job_id`, `workspace_id`, immutable input revision, model/version/parameters, state, version, attempt token, provider operation ID |
+| Submission | Unique `(workspace_id, idempotency_key)` plus request fingerprint; same key/same body returns the same job, changed body conflicts |
+| Reservation/ledger | Unique `(job_id, entry_type)`; balance check and reservation are atomic; capture/release transitions cannot both win |
+| Outbox | Stable event ID, job ID, payload/version, delivery state; inserted with accepted job and reservation |
+| Asset | Workspace ownership, source job/revision, immutable object key, retention/access policy |
+
+`POST /exports` authenticates the actor, authorizes the workspace, validates the immutable input, and checks entitlement. Atomically reserve credits and create the job/outbox entry, then return an accepted job ID. Scope idempotency to the tenant and define retention beyond the permitted retry window. Rate limiting is not idempotency. Two simultaneous requests that both read an available balance cannot both spend it without transactional concurrency control.
+
+The dispatcher publishes pending outbox records and marks delivery afterward. A crash between publish and mark causes a duplicate, so workers deduplicate by durable job state. Claim work using a lease and monotonically increasing attempt/fencing token; accept a result only for the current attempt and legal state transition. A lease without a fence still lets a paused old worker overwrite a newer result.
+
+## The hard failure: provider succeeded, worker disappeared
+
+Suppose the provider rendered the image but the worker died before saving success. Redelivery alone cannot tell you whether generating again duplicates cost. Persist a stable provider request key before submission and use provider-supported idempotency or queryable operation IDs. Reconcile the outcome on retry. If the provider cannot deduplicate or reveal the result, describe the uncertainty and choose an explicit policy: pause for reconciliation or accept a bounded duplicate compute cost. Do not promise end-to-end exactly-once effects from a queue guarantee.
+
+Once a result is verified, commit the winning asset pointer, terminal state, one ledger capture, and status outbox event in one database transaction. Store blobs before that transaction at immutable attempt-specific keys; a stale worker cannot replace the canonical pointer. Orphan cleanup is a separate retention-reviewed operation, not part of a retry shortcut. Failed/cancelled transitions release the reservation once. Cancellation racing success uses the same guarded state machine and an explicit product policy.
+
+```mermaid
+stateDiagram-v2
+  [*] --> Accepted
+  Accepted --> Running: worker claims lease
+  Running --> Reconciling: outcome unknown
+  Reconciling --> Running: safe retry approved
+  Reconciling --> Completed: existing result recovered
+  Running --> Completed: result and charge committed
+  Running --> Failed: terminal failure
+  Accepted --> Cancelled: cancellation wins
+  Running --> CancelRequested: cancellation requested
+  CancelRequested --> Cancelled: provider cancellation confirmed
+  CancelRequested --> Completed: success won the race
+```
+
+This is the exercise's simplified state machine, not a provider's API enum. Decide refund policy separately from whether bytes were computed. Browser abort/disconnect is not confirmed server cancellation.
+
+## Reconnect, collaboration, and authorization
+
+Persist each export's immutable input revision. Stream `{jobId, version, state}` updates; ignore stale/duplicate versions and fetch an authorized snapshot when a gap appears. On reconnect, obtain a snapshot plus a replay cursor, or subscribe-and-buffer before fetching, so no update is lost between the two. A dropped socket must not create a new export. Cursor expiry should trigger snapshot recovery.
+
+For shared canvas state, explain a CRDT or server-ordered operation log, stable node IDs, offline edits, undo, and conflict semantics. CRDT convergence does not authorize a job, enforce balances, or guarantee the latest inference result matches the canvas. Validate graph operations and generated-result attachments separately. For a node workflow, topologically schedule ready nodes, reject cycles, deduplicate each node's execution, and invalidate descendants when an upstream input changes.
+
+Authorize every status read, event subscription, retry, cancellation, and asset download. Cache keys include workspace, model revision, input fingerprint, parameters, and relevant policy version. Keep generated outputs private by default with short-lived authorized URLs. Client caches cannot serve as the source of truth for entitlements. Explain how revocation interrupts future actions and how already accepted work is handled.
+
+## Pub/Sub versus webhooks is not a binary choice
+
+[Pub/Sub supports pull and push subscriptions](https://docs.cloud.google.com/pubsub/docs/subscriber). A push subscriber receives HTTP requests; a durable bus can sit behind a webhook receiver. Compare producer/consumer coupling, fan-out, retention, replay, retry ownership, and operational control. Acknowledge only after durable acceptance or the effect your contract requires, and budget lease extensions for variable work. Keep retry delay bounded with jitter, retryable error classification, an attempt/deadline budget, and a dead-letter/reconciliation path.
+
+When reviewing a provider integration, confirm exactly which transitions produce notifications: admission, start, intermediate progress, or terminal outcome. Document signature verification, delivery retry windows, and ordering guarantees before relying on them. Missing documentation should prompt clarification, not an assumption that a capability is absent. Never treat possession of a job ID as proof a webhook is authentic—verify a supported signature or reconcile with an authenticated status read before trusted side effects.
+
+## Define reliability from the user's view
+
+Proposed targets to negotiate: 99% of admitted preview requests reach a current, usable preview within 1 second; 99.9% of accepted exports reach a truthful terminal outcome within the agreed model-specific deadline over 30 days. These are distinct quality and liveness signals: a fast terminal failure meets truthful-outcome liveness but fails the usable-result metric. Track success rate separately, include backend failures, and report intentional cancellations separately under a documented denominator. Missing terminal outcomes remain failures after the deadline.
+
+Instrument the [four golden signals](https://sre.google/sre-book/monitoring-distributed-systems/) at the API and workers, plus queue age, active leases, coalesced intents, stale-result suppression, retries, timeouts, cancellation outcomes, reconciliation backlog, and ledger mismatches. Split end-to-end latency into client handling, queueing, inference, storage transfer, decoding, and rendering. Use model/version/region/outcome as bounded metric dimensions. Keep job/request IDs in restricted traces/logs; avoid prompts, images, tokens, or user IDs as metric labels.
+
+Carry trace context from request to outbox/queue to worker/provider adapter, and link retries to the same job. [OpenTelemetry traces](https://opentelemetry.io/docs/concepts/signals/traces/) connect operations across service boundaries. Page for sustained user-facing failure or error-budget burn; use dashboards for diagnosis. A green HTTP status does not prove an export is usable.
+
+## Incident injection and first refactor
+
+At minute 20, introduce: **p95 preview latency jumps from 0.8 to 3 seconds after a deploy; inference duration is flat; duplicate charge reports appear after worker restarts.** These are fictional symptoms.
+
+First contain the charge risk using the narrowest safe admission/reconciliation control, retain evidence, and inspect ledger transitions. For latency, compare cohorts and per-stage spans; flat inference points toward queueing, request volume, network/decoding, or rendering, not automatically a GPU shortage. Roll back/canary the implicated change based on evidence. Do not claim recovery until user-facing SLIs and affected job/ledger reconciliation confirm it.
+
+Prioritize correctness at the payment/job boundary, then queue/admission observability, then expensive architectural rewrites. Require concurrency tests, duplicate/redelivery tests, crash-point injection, reconnect tests, tenant-isolation tests, and safe startup of the actual pruned artifact when packaging or entrypoints change. Never test these scenarios against live paid generations.

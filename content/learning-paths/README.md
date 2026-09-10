@@ -24,3 +24,4 @@ This folder contains curated role and skill paths for Codematica.
 Run `npm run content:check` before committing path changes.
 
 - The RTK Query Interview Preparation path pairs seven sourced lessons with scenario checkpoints and passive briefs. Keep modern 2.12.0 behavior separate from the PR-inspired 2.2.8 persistence case.
+- `product-engineering-interview.json` pairs a company-neutral research guide with original JavaScript/architecture lessons, eighteen checkpoint questions, and a 75-minute guided mock. Use neutral slugs and general technical references; distinguish rehearsal assumptions from real interview evidence.

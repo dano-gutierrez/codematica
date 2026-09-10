@@ -1,0 +1,121 @@
+{
+  "slug": "software-engineering/product-interview-mock-interview-lab",
+  "title": "Product Engineering 75-Minute Product Engineering Mock",
+  "type": "guided-lab",
+  "documentSlug": "software-engineering/product-interview-mock-interview",
+  "concept": "Coding, architecture, and production ownership",
+  "difficulty": "senior",
+  "tags": [
+    "product-engineering",
+    "interview",
+    "javascript",
+    "system-design"
+  ],
+  "status": "published",
+  "sourceRefs": [
+    "product-interview-sre-monitoring",
+    "product-interview-websocket"
+  ],
+  "estimatedMinutes": 75,
+  "briefing": "Original, company-neutral product engineering rehearsal, not a reported interview question. Build a plain JavaScript preview coordinator, design durable paid exports, and defend two ownership stories. Use a local scratch file, blank diagram, and your own 75-minute timer. Code/design are self-assessed; the final checkpoint is scored. Reference lessons are linked from the mock interview article. Do the first attempt without AI tools or solutions.",
+  "objectives": [
+    "Prove one active generation and one newest pending input with controlled promises.",
+    "Separate ephemeral previews from durable jobs, authorization, and charging.",
+    "Trace a provider-success/worker-crash scenario and a reconnect gap.",
+    "Explain an actual ownership decision with measurements and honest limits."
+  ],
+  "prediction": {
+    "prompt": "Before drawing the system, where do you expect the hardest correctness failure?",
+    "options": [
+      {
+        "id": "preview-race",
+        "label": "Stale previews overwrite the current intent."
+      },
+      {
+        "id": "external-effect",
+        "label": "A retry repeats an uncertain provider or billing effect."
+      },
+      {
+        "id": "reconnect",
+        "label": "Reconnect loses the authoritative job state."
+      }
+    ]
+  },
+  "steps": [
+    {
+      "id": "scope",
+      "title": "0–5 minutes: clarify the contract",
+      "instructions": "An artist drags a slider faster than generation completes. Ask what may be coalesced, what must survive disconnect, what spends credits, and what current means. State that input is an immutable string snapshot and observers are synchronous/non-throwing. Separate observations from assumptions."
+    },
+    {
+      "id": "code",
+      "title": "5–25 minutes: implement in plain JavaScript",
+      "instructions": "Write createPreviewCoordinator({generate, render, onError}) exposing submit(input) and dispose(). Keep at most one unsettled generation and one newest pending input. Suppress obsolete success/errors. generate(input, {signal}) may throw, reject, or ignore cancellation. dispose drops pending work and prevents later callbacks; submit after disposal throws. No frameworks or automatic retries."
+    },
+    {
+      "id": "test",
+      "title": "25–30 minutes: prove the races",
+      "instructions": "Manually resolve A after B and C are submitted; only A then C may start and only C may render. Repeat with a stale rejection, a current rejection followed by recovery, a synchronous adapter throw, and disposal while A ignores abort. Explain O(1) bookkeeping/slots and why an adapter that never settles blocks the baseline."
+    },
+    {
+      "id": "design",
+      "title": "30–45 minutes: make exports durable",
+      "instructions": "Assume 2,000 editors and two preview intents per second, private workspace assets, and success-only export charging with reservation. Draw acceptance, job state, atomic outbox, queue/worker, provider, asset, ledger, and status paths. Define tenant-scoped idempotency, immutable inputs, per-tenant admission, authorization, and reconnect snapshot/replay. Numbers and policies are exercise assumptions."
+    },
+    {
+      "id": "failures",
+      "title": "45–60 minutes: inject production failures",
+      "instructions": "The provider succeeds but the worker crashes before saving its result. Trace reconciliation and redelivery without duplicate capture; explain what happens if the provider lacks idempotency. Then drop a socket update, revoke access, and add 10× load. Finally p95 latency rises while inference stays flat: name the traces, containment, rollback evidence, and recovery checks you need."
+    },
+    {
+      "id": "stories",
+      "title": "60–70 minutes: defend two ownership stories",
+      "instructions": "Use the CRM migration and entitlement repair, or other real examples. Give each a 90-second version, then defend one rejected alternative and one failure mode. Verify the units and measurement window for any throughput claim. Separate your work, team contributions, source tests, artifact startup, deployment, and confirmed recovery."
+    },
+    {
+      "id": "debrief",
+      "title": "70–75 minutes: score and ask",
+      "instructions": "Use the mock article’s six dimensions, each scored 0–4. Aim for 18/24 with none below 2 as a practice heuristic, not a hiring prediction. Pick one frontend/product question and one reliability/ownership question. Identify the weakest invariant and the next test that would improve it."
+    }
+  ],
+  "evidenceChecklist": [
+    {
+      "id": "contract",
+      "label": "I separated replaceable preview intents from durable accepted exports."
+    },
+    {
+      "id": "race-tests",
+      "label": "I demonstrated stale success, stale error, and disposal with controlled promises."
+    },
+    {
+      "id": "failure-slot",
+      "label": "I proved a failed generation releases its slot and stated the never-settles limit."
+    },
+    {
+      "id": "transaction",
+      "label": "I drew atomic job, reservation, and outbox acceptance."
+    },
+    {
+      "id": "reconcile",
+      "label": "I traced an unknown provider outcome without claiming exactly-once effects."
+    },
+    {
+      "id": "reconnect",
+      "label": "I explained versioned reconnect recovery and workspace authorization."
+    },
+    {
+      "id": "telemetry",
+      "label": "I defined user-facing signals and evidence needed to confirm recovery."
+    },
+    {
+      "id": "stories",
+      "label": "I rehearsed two factual ownership stories and scored all six rubric dimensions."
+    }
+  ],
+  "reflectionPrompts": [
+    "Which invariant did your first implementation violate, and which test exposed it?",
+    "Where would your design still have an uncertain outcome or an unbounded resource?",
+    "What did you personally own in your story, and which measurement supports the result?"
+  ],
+  "extensionChallenge": "Repeat with two collaborators editing a five-node workflow while one is offline. Explain cycle detection, shared-document merge/undo, node-level durable attempts, downstream invalidation, and the boundary between CRDT convergence and authorized paid execution."
+}

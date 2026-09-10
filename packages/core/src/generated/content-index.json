@@ -602,6 +602,56 @@
       "contentHash": "fc2cf01a065855078f84b7054ff65ccb301b3e1bf0569a507483a70349ace380"
     },
     {
+      "id": "product-interview-abort-controller",
+      "title": "AbortController",
+      "provider": "MDN Web Docs",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/API/AbortController",
+      "attribution": "MDN contributors. Cancellation interface used by the original JavaScript exercise.",
+      "lastVerifiedAt": "2026-09-09",
+      "sourcePath": "content/sources/product-engineering-interview.json",
+      "contentHash": "41ff7839b4a2dd591e5121f21120b757fb6e470ec4ce9125082a961f720b72cf"
+    },
+    {
+      "id": "product-interview-otel",
+      "title": "OpenTelemetry Traces",
+      "provider": "OpenTelemetry",
+      "url": "https://opentelemetry.io/docs/concepts/signals/traces/",
+      "attribution": "OpenTelemetry contributors. Traces and causal operations across services.",
+      "lastVerifiedAt": "2026-09-09",
+      "sourcePath": "content/sources/product-engineering-interview.json",
+      "contentHash": "41ff7839b4a2dd591e5121f21120b757fb6e470ec4ce9125082a961f720b72cf"
+    },
+    {
+      "id": "product-interview-pubsub",
+      "title": "Choose a Pub/Sub subscription type",
+      "provider": "Google Cloud",
+      "url": "https://docs.cloud.google.com/pubsub/docs/subscriber",
+      "attribution": "Google Cloud documentation. Push and pull subscriber delivery models.",
+      "lastVerifiedAt": "2026-09-09",
+      "sourcePath": "content/sources/product-engineering-interview.json",
+      "contentHash": "41ff7839b4a2dd591e5121f21120b757fb6e470ec4ce9125082a961f720b72cf"
+    },
+    {
+      "id": "product-interview-sre-monitoring",
+      "title": "Monitoring Distributed Systems",
+      "provider": "Google SRE",
+      "url": "https://sre.google/sre-book/monitoring-distributed-systems/",
+      "attribution": "Google SRE book. Monitoring and the four golden signals; exercise thresholds are authored assumptions.",
+      "lastVerifiedAt": "2026-09-09",
+      "sourcePath": "content/sources/product-engineering-interview.json",
+      "contentHash": "41ff7839b4a2dd591e5121f21120b757fb6e470ec4ce9125082a961f720b72cf"
+    },
+    {
+      "id": "product-interview-websocket",
+      "title": "WebSocket API and backpressure",
+      "provider": "MDN Web Docs",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/API/WebSockets_API",
+      "attribution": "MDN contributors. Classic WebSocket buffering/backpressure limitations.",
+      "lastVerifiedAt": "2026-09-09",
+      "sourcePath": "content/sources/product-engineering-interview.json",
+      "contentHash": "41ff7839b4a2dd591e5121f21120b757fb6e470ec4ce9125082a961f720b72cf"
+    },
+    {
       "id": "redux-persist",
       "title": "Redux Persist Transforms and Migrations",
       "provider": "Redux Persist",
@@ -5724,6 +5774,270 @@
       "readingMinutes": 3
     },
     {
+      "title": "Product Engineering Architecture Drill — Durable Generation and Revenue Safety",
+      "slug": "software-engineering/product-interview-durable-generation-architecture",
+      "summary": "Design an AI editing service with bounded previews, durable exports, idempotent billing, recovery, collaboration boundaries, and measurable reliability.",
+      "track": "Software Engineering",
+      "topic": "Interview Preparation",
+      "difficulty": "senior",
+      "tags": [
+        "product-engineering",
+        "system-design",
+        "idempotency",
+        "observability",
+        "interview"
+      ],
+      "prerequisites": [],
+      "diagramRefs": [],
+      "sourceRefs": [
+        "product-interview-pubsub",
+        "product-interview-sre-monitoring",
+        "product-interview-otel"
+      ],
+      "status": "published",
+      "id": "6430fc007ce2",
+      "route": "/docs/software-engineering/product-interview-durable-generation-architecture",
+      "sourcePath": "content/knowledge/software-engineering/product-interview-durable-generation-architecture.md",
+      "bodyPath": "content/knowledge/software-engineering/product-interview-durable-generation-architecture.md",
+      "markdown": "## The 30-minute design prompt\n\nDesign a collaborative AI image editor with interactive previews and durable paid exports. Users refresh tabs, switch workspaces, lose connections, and retry requests. GPU workers can crash after finishing the expensive operation. Prevent stale images, lost accepted jobs, cross-tenant access, and duplicate customer charges.\n\nThis is an original mock scenario. All scale numbers, SLOs, APIs, and architecture below are **exercise assumptions**, not any company's measured traffic, internal implementation, or promised service levels. Durable execution and enterprise correctness are the focus of this exercise.\n\n## Clarify before drawing\n\nAsk what is ephemeral, what must survive disconnect, how charging works, whether concurrent edits need offline merge, and which part of latency users notice. Agree to one region for durable metadata, regional workers, private workspace assets, and a success-only export charge with a temporary credit reservation. A preview is replaceable; an accepted export is not.\n\nUse 2,000 active editors averaging two preview intents/second. That is **4,000 incoming intents/second**, before coalescing and admission control. If all were admitted and mean service time were 0.5 seconds, Little's Law suggests roughly **2,000 concurrent requests** in a stable system. That is not 2,000 GPUs: batching, model size, device utilization, and per-device concurrency require measurement. With capacity for 400 requests/second, choose a freshness/admission policy; an ever-growing FIFO cannot preserve interactive latency. Keep exports in a separate capacity budget so previews cannot starve them.\n\n## A defensible starting design\n\n```mermaid\nflowchart TD\n  UI[Editor and local draft] --> Preview[Bounded preview coordinator]\n  Preview --> Gateway[Authenticated preview gateway]\n  Gateway --> PreviewPool[Preview inference capacity]\n  PreviewPool --> Guard[Revision check and render]\n  UI --> API[Export API and authorization]\n  API --> DB[(Postgres jobs, ledger, outbox)]\n  DB --> Dispatch[Outbox dispatcher]\n  Dispatch --> Queue[Durable export queue]\n  Queue --> Worker[Leased workflow worker]\n  Worker --> Provider[Inference provider]\n  Provider --> Storage[Private object storage]\n  Worker --> DB\n  DB --> Events[Versioned status events]\n  Events --> UI\n  UI --> Status[Authorized status snapshot]\n  Status --> DB\n```\n\nPostgres owns durable job state and charging decisions. Redis can help with admission, short-lived coordination, and caches. ClickHouse can serve analytics; it should not be the transactional entitlement authority in this design. Queue notifications and WebSocket messages are delivery mechanisms, not the sole record of accepted work.\n\nDefine pending, intermediate, and terminal states explicitly in the API contract. An intermediate preview is progress, not a completed paid export. Specify which transitions generate notifications and how duplicate deliveries are handled. The proposed database/outbox design is an illustrative architecture.\n\n## The transaction boundary that matters\n\nPropose these illustrative records:\n\n| Record | Key and invariant |\n| --- | --- |\n| Job | `job_id`, `workspace_id`, immutable input revision, model/version/parameters, state, version, attempt token, provider operation ID |\n| Submission | Unique `(workspace_id, idempotency_key)` plus request fingerprint; same key/same body returns the same job, changed body conflicts |\n| Reservation/ledger | Unique `(job_id, entry_type)`; balance check and reservation are atomic; capture/release transitions cannot both win |\n| Outbox | Stable event ID, job ID, payload/version, delivery state; inserted with accepted job and reservation |\n| Asset | Workspace ownership, source job/revision, immutable object key, retention/access policy |\n\n`POST /exports` authenticates the actor, authorizes the workspace, validates the immutable input, and checks entitlement. Atomically reserve credits and create the job/outbox entry, then return an accepted job ID. Scope idempotency to the tenant and define retention beyond the permitted retry window. Rate limiting is not idempotency. Two simultaneous requests that both read an available balance cannot both spend it without transactional concurrency control.\n\nThe dispatcher publishes pending outbox records and marks delivery afterward. A crash between publish and mark causes a duplicate, so workers deduplicate by durable job state. Claim work using a lease and monotonically increasing attempt/fencing token; accept a result only for the current attempt and legal state transition. A lease without a fence still lets a paused old worker overwrite a newer result.\n\n## The hard failure: provider succeeded, worker disappeared\n\nSuppose the provider rendered the image but the worker died before saving success. Redelivery alone cannot tell you whether generating again duplicates cost. Persist a stable provider request key before submission and use provider-supported idempotency or queryable operation IDs. Reconcile the outcome on retry. If the provider cannot deduplicate or reveal the result, describe the uncertainty and choose an explicit policy: pause for reconciliation or accept a bounded duplicate compute cost. Do not promise end-to-end exactly-once effects from a queue guarantee.\n\nOnce a result is verified, commit the winning asset pointer, terminal state, one ledger capture, and status outbox event in one database transaction. Store blobs before that transaction at immutable attempt-specific keys; a stale worker cannot replace the canonical pointer. Orphan cleanup is a separate retention-reviewed operation, not part of a retry shortcut. Failed/cancelled transitions release the reservation once. Cancellation racing success uses the same guarded state machine and an explicit product policy.\n\n```mermaid\nstateDiagram-v2\n  [*] --> Accepted\n  Accepted --> Running: worker claims lease\n  Running --> Reconciling: outcome unknown\n  Reconciling --> Running: safe retry approved\n  Reconciling --> Completed: existing result recovered\n  Running --> Completed: result and charge committed\n  Running --> Failed: terminal failure\n  Accepted --> Cancelled: cancellation wins\n  Running --> CancelRequested: cancellation requested\n  CancelRequested --> Cancelled: provider cancellation confirmed\n  CancelRequested --> Completed: success won the race\n```\n\nThis is the exercise's simplified state machine, not a provider's API enum. Decide refund policy separately from whether bytes were computed. Browser abort/disconnect is not confirmed server cancellation.\n\n## Reconnect, collaboration, and authorization\n\nPersist each export's immutable input revision. Stream `{jobId, version, state}` updates; ignore stale/duplicate versions and fetch an authorized snapshot when a gap appears. On reconnect, obtain a snapshot plus a replay cursor, or subscribe-and-buffer before fetching, so no update is lost between the two. A dropped socket must not create a new export. Cursor expiry should trigger snapshot recovery.\n\nFor shared canvas state, explain a CRDT or server-ordered operation log, stable node IDs, offline edits, undo, and conflict semantics. CRDT convergence does not authorize a job, enforce balances, or guarantee the latest inference result matches the canvas. Validate graph operations and generated-result attachments separately. For a node workflow, topologically schedule ready nodes, reject cycles, deduplicate each node's execution, and invalidate descendants when an upstream input changes.\n\nAuthorize every status read, event subscription, retry, cancellation, and asset download. Cache keys include workspace, model revision, input fingerprint, parameters, and relevant policy version. Keep generated outputs private by default with short-lived authorized URLs. Client caches cannot serve as the source of truth for entitlements. Explain how revocation interrupts future actions and how already accepted work is handled.\n\n## Pub/Sub versus webhooks is not a binary choice\n\n[Pub/Sub supports pull and push subscriptions](https://docs.cloud.google.com/pubsub/docs/subscriber). A push subscriber receives HTTP requests; a durable bus can sit behind a webhook receiver. Compare producer/consumer coupling, fan-out, retention, replay, retry ownership, and operational control. Acknowledge only after durable acceptance or the effect your contract requires, and budget lease extensions for variable work. Keep retry delay bounded with jitter, retryable error classification, an attempt/deadline budget, and a dead-letter/reconciliation path.\n\nWhen reviewing a provider integration, confirm exactly which transitions produce notifications: admission, start, intermediate progress, or terminal outcome. Document signature verification, delivery retry windows, and ordering guarantees before relying on them. Missing documentation should prompt clarification, not an assumption that a capability is absent. Never treat possession of a job ID as proof a webhook is authentic—verify a supported signature or reconcile with an authenticated status read before trusted side effects.\n\n## Define reliability from the user's view\n\nProposed targets to negotiate: 99% of admitted preview requests reach a current, usable preview within 1 second; 99.9% of accepted exports reach a truthful terminal outcome within the agreed model-specific deadline over 30 days. These are distinct quality and liveness signals: a fast terminal failure meets truthful-outcome liveness but fails the usable-result metric. Track success rate separately, include backend failures, and report intentional cancellations separately under a documented denominator. Missing terminal outcomes remain failures after the deadline.\n\nInstrument the [four golden signals](https://sre.google/sre-book/monitoring-distributed-systems/) at the API and workers, plus queue age, active leases, coalesced intents, stale-result suppression, retries, timeouts, cancellation outcomes, reconciliation backlog, and ledger mismatches. Split end-to-end latency into client handling, queueing, inference, storage transfer, decoding, and rendering. Use model/version/region/outcome as bounded metric dimensions. Keep job/request IDs in restricted traces/logs; avoid prompts, images, tokens, or user IDs as metric labels.\n\nCarry trace context from request to outbox/queue to worker/provider adapter, and link retries to the same job. [OpenTelemetry traces](https://opentelemetry.io/docs/concepts/signals/traces/) connect operations across service boundaries. Page for sustained user-facing failure or error-budget burn; use dashboards for diagnosis. A green HTTP status does not prove an export is usable.\n\n## Incident injection and first refactor\n\nAt minute 20, introduce: **p95 preview latency jumps from 0.8 to 3 seconds after a deploy; inference duration is flat; duplicate charge reports appear after worker restarts.** These are fictional symptoms.\n\nFirst contain the charge risk using the narrowest safe admission/reconciliation control, retain evidence, and inspect ledger transitions. For latency, compare cohorts and per-stage spans; flat inference points toward queueing, request volume, network/decoding, or rendering, not automatically a GPU shortage. Roll back/canary the implicated change based on evidence. Do not claim recovery until user-facing SLIs and affected job/ledger reconciliation confirm it.\n\nPrioritize correctness at the payment/job boundary, then queue/admission observability, then expensive architectural rewrites. Require concurrency tests, duplicate/redelivery tests, crash-point injection, reconnect tests, tenant-isolation tests, and safe startup of the actual pruned artifact when packaging or entrypoints change. Never test these scenarios against live paid generations.",
+      "plainText": "The 30-minute design prompt Design a collaborative AI image editor with interactive previews and durable paid exports. Users refresh tabs, switch workspaces, lose connections, and retry requests. GPU workers can crash after finishing the expensive operation. Prevent stale images, lost accepted jobs, cross-tenant access, and duplicate customer charges. This is an original mock scenario. All scale numbers, SLOs, APIs, and architecture below are exercise assumptions, not any company's measured traffic, internal implementation, or promised service levels. Durable execution and enterprise correctness are the focus of this exercise. Clarify before drawing Ask what is ephemeral, what must survive disconnect, how charging works, whether concurrent edits need offline merge, and which part of latency users notice. Agree to one region for durable metadata, regional workers, private workspace assets, and a success-only export charge with a temporary credit reservation. A preview is replaceable; an accepted export is not. Use 2,000 active editors averaging two preview intents/second. That is 4,000 incoming intents/second, before coalescing and admission control. If all were admitted and mean service time were 0.5 seconds, Little's Law suggests roughly 2,000 concurrent requests in a stable system. That is not 2,000 GPUs: batching, model size, device utilization, and per-device concurrency require measurement. With capacity for 400 requests/second, choose a freshness/admission policy; an ever-growing FIFO cannot preserve interactive latency. Keep exports in a separate capacity budget so previews cannot starve them. A defensible starting design flowchart TD UI[Editor and local draft] --> Preview[Bounded preview coordinator] Preview --> Gateway[Authenticated preview gateway] Gateway --> PreviewPool[Preview inference capacity] PreviewPool --> Guard[Revision check and render] UI --> API[Export API and authorization] API --> DB[(Postgres jobs, ledger, outbox)] DB --> Dispatch[Outbox dispatcher] Dispatch --> Queue[Durable export queue] Queue --> Worker[Leased workflow worker] Worker --> Provider[Inference provider] Provider --> Storage[Private object storage] Worker --> DB DB --> Events[Versioned status events] Events --> UI UI --> Status[Authorized status snapshot] Status --> DB Postgres owns durable job state and charging decisions. Redis can help with admission, short-lived coordination, and caches. ClickHouse can serve analytics; it should not be the transactional entitlement authority in this design. Queue notifications and WebSocket messages are delivery mechanisms, not the sole record of accepted work. Define pending, intermediate, and terminal states explicitly in the API contract. An intermediate preview is progress, not a completed paid export. Specify which transitions generate notifications and how duplicate deliveries are handled. The proposed database/outbox design is an illustrative architecture. The transaction boundary that matters Propose these illustrative records: | Record | Key and invariant | | --- | --- | | Job | job_id, workspace_id, immutable input revision, model/version/parameters, state, version, attempt token, provider operation ID | | Submission | Unique (workspace_id, idempotency_key) plus request fingerprint; same key/same body returns the same job, changed body conflicts | | Reservation/ledger | Unique (job_id, entry_type); balance check and reservation are atomic; capture/release transitions cannot both win | | Outbox | Stable event ID, job ID, payload/version, delivery state; inserted with accepted job and reservation | | Asset | Workspace ownership, source job/revision, immutable object key, retention/access policy | POST /exports authenticates the actor, authorizes the workspace, validates the immutable input, and checks entitlement. Atomically reserve credits and create the job/outbox entry, then return an accepted job ID. Scope idempotency to the tenant and define retention beyond the permitted retry window. Rate limiting is not idempotency. Two simultaneous requests that both read an available balance cannot both spend it without transactional concurrency control. The dispatcher publishes pending outbox records and marks delivery afterward. A crash between publish and mark causes a duplicate, so workers deduplicate by durable job state. Claim work using a lease and monotonically increasing attempt/fencing token; accept a result only for the current attempt and legal state transition. A lease without a fence still lets a paused old worker overwrite a newer result. The hard failure: provider succeeded, worker disappeared Suppose the provider rendered the image but the worker died before saving success. Redelivery alone cannot tell you whether generating again duplicates cost. Persist a stable provider request key before submission and use provider-supported idempotency or queryable operation IDs. Reconcile the outcome on retry. If the provider cannot deduplicate or reveal the result, describe the uncertainty and choose an explicit policy: pause for reconciliation or accept a bounded duplicate compute cost. Do not promise end-to-end exactly-once effects from a queue guarantee. Once a result is verified, commit the winning asset pointer, terminal state, one ledger capture, and status outbox event in one database transaction. Store blobs before that transaction at immutable attempt-specific keys; a stale worker cannot replace the canonical pointer. Orphan cleanup is a separate retention-reviewed operation, not part of a retry shortcut. Failed/cancelled transitions release the reservation once. Cancellation racing success uses the same guarded state machine and an explicit product policy. stateDiagram-v2 [*] --> Accepted Accepted --> Running: worker claims lease Running --> Reconciling: outcome unknown Reconciling --> Running: safe retry approved Reconciling --> Completed: existing result recovered Running --> Completed: result and charge committed Running --> Failed: terminal failure Accepted --> Cancelled: cancellation wins Running --> CancelRequested: cancellation requested CancelRequested --> Cancelled: provider cancellation confirmed CancelRequested --> Completed: success won the race This is the exercise's simplified state machine, not a provider's API enum. Decide refund policy separately from whether bytes were computed. Browser abort/disconnect is not confirmed server cancellation. Reconnect, collaboration, and authorization Persist each export's immutable input revision. Stream {jobId, version, state} updates; ignore stale/duplicate versions and fetch an authorized snapshot when a gap appears. On reconnect, obtain a snapshot plus a replay cursor, or subscribe-and-buffer before fetching, so no update is lost between the two. A dropped socket must not create a new export. Cursor expiry should trigger snapshot recovery. For shared canvas state, explain a CRDT or server-ordered operation log, stable node IDs, offline edits, undo, and conflict semantics. CRDT convergence does not authorize a job, enforce balances, or guarantee the latest inference result matches the canvas. Validate graph operations and generated-result attachments separately. For a node workflow, topologically schedule ready nodes, reject cycles, deduplicate each node's execution, and invalidate descendants when an upstream input changes. Authorize every status read, event subscription, retry, cancellation, and asset download. Cache keys include workspace, model revision, input fingerprint, parameters, and relevant policy version. Keep generated outputs private by default with short-lived authorized URLs. Client caches cannot serve as the source of truth for entitlements. Explain how revocation interrupts future actions and how already accepted work is handled. Pub/Sub versus webhooks is not a binary choice Pub/Sub supports pull and push subscriptions. A push subscriber receives HTTP requests; a durable bus can sit behind a webhook receiver. Compare producer/consumer coupling, fan-out, retention, replay, retry ownership, and operational control. Acknowledge only after durable acceptance or the effect your contract requires, and budget lease extensions for variable work. Keep retry delay bounded with jitter, retryable error classification, an attempt/deadline budget, and a dead-letter/reconciliation path. When reviewing a provider integration, confirm exactly which transitions produce notifications: admission, start, intermediate progress, or terminal outcome. Document signature verification, delivery retry windows, and ordering guarantees before relying on them. Missing documentation should prompt clarification, not an assumption that a capability is absent. Never treat possession of a job ID as proof a webhook is authentic—verify a supported signature or reconcile with an authenticated status read before trusted side effects. Define reliability from the user's view Proposed targets to negotiate: 99% of admitted preview requests reach a current, usable preview within 1 second; 99.9% of accepted exports reach a truthful terminal outcome within the agreed model-specific deadline over 30 days. These are distinct quality and liveness signals: a fast terminal failure meets truthful-outcome liveness but fails the usable-result metric. Track success rate separately, include backend failures, and report intentional cancellations separately under a documented denominator. Missing terminal outcomes remain failures after the deadline. Instrument the four golden signals at the API and workers, plus queue age, active leases, coalesced intents, stale-result suppression, retries, timeouts, cancellation outcomes, reconciliation backlog, and ledger mismatches. Split end-to-end latency into client handling, queueing, inference, storage transfer, decoding, and rendering. Use model/version/region/outcome as bounded metric dimensions. Keep job/request IDs in restricted traces/logs; avoid prompts, images, tokens, or user IDs as metric labels. Carry trace context from request to outbox/queue to worker/provider adapter, and link retries to the same job. OpenTelemetry traces connect operations across service boundaries. Page for sustained user-facing failure or error-budget burn; use dashboards for diagnosis. A green HTTP status does not prove an export is usable. Incident injection and first refactor At minute 20, introduce: p95 preview latency jumps from 0.8 to 3 seconds after a deploy; inference duration is flat; duplicate charge reports appear after worker restarts. These are fictional symptoms. First contain the charge risk using the narrowest safe admission/reconciliation control, retain evidence, and inspect ledger transitions. For latency, compare cohorts and per-stage spans; flat inference points toward queueing, request volume, network/decoding, or rendering, not automatically a GPU shortage. Roll back/canary the implicated change based on evidence. Do not claim recovery until user-facing SLIs and affected job/ledger reconciliation confirm it. Prioritize correctness at the payment/job boundary, then queue/admission observability, then expensive architectural rewrites. Require concurrency tests, duplicate/redelivery tests, crash-point injection, reconnect tests, tenant-isolation tests, and safe startup of the actual pruned artifact when packaging or entrypoints change. Never test these scenarios against live paid generations.",
+      "headings": [
+        {
+          "id": "the-30-minute-design-prompt",
+          "depth": 2,
+          "text": "The 30-minute design prompt"
+        },
+        {
+          "id": "clarify-before-drawing",
+          "depth": 2,
+          "text": "Clarify before drawing"
+        },
+        {
+          "id": "a-defensible-starting-design",
+          "depth": 2,
+          "text": "A defensible starting design"
+        },
+        {
+          "id": "the-transaction-boundary-that-matters",
+          "depth": 2,
+          "text": "The transaction boundary that matters"
+        },
+        {
+          "id": "the-hard-failure-provider-succeeded-worker-disappeared",
+          "depth": 2,
+          "text": "The hard failure: provider succeeded, worker disappeared"
+        },
+        {
+          "id": "reconnect-collaboration-and-authorization",
+          "depth": 2,
+          "text": "Reconnect, collaboration, and authorization"
+        },
+        {
+          "id": "pubsub-versus-webhooks-is-not-a-binary-choice",
+          "depth": 2,
+          "text": "Pub/Sub versus webhooks is not a binary choice"
+        },
+        {
+          "id": "define-reliability-from-the-users-view",
+          "depth": 2,
+          "text": "Define reliability from the user's view"
+        },
+        {
+          "id": "incident-injection-and-first-refactor",
+          "depth": 2,
+          "text": "Incident injection and first refactor"
+        }
+      ],
+      "mermaidBlocks": [
+        {
+          "id": "embedded-1",
+          "source": "flowchart TD\n  UI[Editor and local draft] --> Preview[Bounded preview coordinator]\n  Preview --> Gateway[Authenticated preview gateway]\n  Gateway --> PreviewPool[Preview inference capacity]\n  PreviewPool --> Guard[Revision check and render]\n  UI --> API[Export API and authorization]\n  API --> DB[(Postgres jobs, ledger, outbox)]\n  DB --> Dispatch[Outbox dispatcher]\n  Dispatch --> Queue[Durable export queue]\n  Queue --> Worker[Leased workflow worker]\n  Worker --> Provider[Inference provider]\n  Provider --> Storage[Private object storage]\n  Worker --> DB\n  DB --> Events[Versioned status events]\n  Events --> UI\n  UI --> Status[Authorized status snapshot]\n  Status --> DB"
+        },
+        {
+          "id": "embedded-2",
+          "source": "stateDiagram-v2\n  [*] --> Accepted\n  Accepted --> Running: worker claims lease\n  Running --> Reconciling: outcome unknown\n  Reconciling --> Running: safe retry approved\n  Reconciling --> Completed: existing result recovered\n  Running --> Completed: result and charge committed\n  Running --> Failed: terminal failure\n  Accepted --> Cancelled: cancellation wins\n  Running --> CancelRequested: cancellation requested\n  CancelRequested --> Cancelled: provider cancellation confirmed\n  CancelRequested --> Completed: success won the race"
+        }
+      ],
+      "contentHash": "8df99fdfc96fbb1df89487e1d4e00e981ab72b6e47d59b64d1d8e7a8102d0ed6",
+      "readingMinutes": 8
+    },
+    {
+      "title": "Product Engineering Coding Drill — A Latest-Intent Preview Coordinator",
+      "slug": "software-engineering/product-interview-javascript-preview-coordinator",
+      "summary": "Implement a bounded plain JavaScript preview scheduler, test stale responses and failures, and explain cancellation without relying on a framework.",
+      "track": "Software Engineering",
+      "topic": "Interview Preparation",
+      "difficulty": "senior",
+      "tags": [
+        "product-engineering",
+        "javascript",
+        "concurrency",
+        "interview",
+        "backpressure"
+      ],
+      "prerequisites": [],
+      "diagramRefs": [],
+      "sourceRefs": [
+        "product-interview-abort-controller",
+        "product-interview-websocket"
+      ],
+      "status": "published",
+      "id": "382b5263427d",
+      "route": "/docs/software-engineering/product-interview-javascript-preview-coordinator",
+      "sourcePath": "content/knowledge/software-engineering/product-interview-javascript-preview-coordinator.md",
+      "bodyPath": "content/knowledge/software-engineering/product-interview-javascript-preview-coordinator.md",
+      "markdown": "## The 25-minute prompt\n\nAn artist drags a slider faster than an image generator responds. Implement `createPreviewCoordinator({ generate, render, onError })` in **plain JavaScript**. It exposes `submit(input)` and `dispose()`. This is an original Codematica drill for real-time creative applications, not a reported interview question.\n\nSpend 3 minutes clarifying the contract, 12 coding, 7 testing, and 3 explaining tradeoffs. Use an empty local JavaScript scratch file. The app displays reference code and grades the separate checkpoint; it does not execute your scratch solution. Attempt the prompt before scrolling to the answer.\n\n## Contract to clarify aloud\n\n- `input` is an immutable string snapshot in this exercise. A real canvas needs an immutable revision/reference, not a mutable object captured by closure.\n- `generate(input, { signal })` returns a promise; it may reject or throw synchronously. The adapter may ignore abort. It must eventually settle for liveness in this baseline.\n- At most **one unsettled generation** runs and **one newest pending input** is retained. Pending work is replaced, not accumulated.\n- Only the result or error for the most recently submitted revision may reach the UI. Once a newer input arrives, suppress the older outcome even if the new request later fails. Keep a previously displayed image labeled as stale while showing the current error.\n- `submit` returns an increasing revision number. It does not promise an output for an input that may be superseded.\n- `dispose` is idempotent, drops pending work, requests cancellation, and prevents later UI callbacks. Submitting afterward throws.\n- `render` and `onError` are synchronous, non-throwing observers. Render scheduling and decoding are adapter responsibilities. Do not add automatic retries to this baseline.\n\nStart by stating: “The UI's current intent and the provider's completion order are different clocks. I need a revision guard plus a bounded backlog.”\n\n## Trace before coding\n\n| Event | Active | Pending | Visible callback |\n| --- | --- | --- | --- |\n| submit A | A | none | none |\n| submit B, then C before A settles | A | C | none |\n| A resolves | C | none | A suppressed |\n| C resolves | none | none | render C |\n| submit D, then dispose | abort requested for D | none | no later callbacks |\n\nA common failed attempt is `generate(input).then(render)`: it starts unlimited work and paints obsolete results. Debouncing reduces starts during a burst but does not order in-flight results. Aborting alone is also insufficient: the operation can finish before cancellation or ignore the signal. [AbortController](https://developer.mozilla.org/en-US/docs/Web/API/AbortController) communicates cancellation; it does not prove remote computation stopped.\n\n## Reference implementation — reveal after your attempt\n\n```javascript\nfunction createPreviewCoordinator({ generate, render, onError }) {\n  let revision = 0;\n  let pending = null;\n  let active = null;\n  let disposed = false;\n\n  async function pump() {\n    if (disposed || active || pending === null) return;\n    const job = pending;\n    pending = null;\n    const controller = new AbortController();\n    active = controller;\n\n    try {\n      const output = await generate(job.input, {\n        signal: controller.signal,\n      });\n      if (!disposed && job.revision === revision) render(output);\n    } catch (error) {\n      if (!disposed && job.revision === revision) onError(error);\n    } finally {\n      active = null;\n      void pump();\n    }\n  }\n\n  return {\n    submit(input) {\n      if (disposed) throw new Error(\"Coordinator is disposed\");\n      const nextRevision = ++revision;\n      pending = { input, revision: nextRevision };\n      void pump();\n      return nextRevision;\n    },\n    dispose() {\n      if (disposed) return;\n      disposed = true;\n      pending = null;\n      active?.abort();\n    },\n  };\n}\n```\n\nThe active slot is claimed before the first `await`. Synchronous adapter exceptions enter `catch`, and `finally` releases the slot after success or failure. A newer input invalidates old outcomes immediately. Normal supersession waits for the active request; only disposal asks it to abort. This is a deliberate simple policy that avoids pretending an abort frees remote capacity.\n\nCoordinator bookkeeping takes O(1) work per submission and O(1) slots, excluding the size of the two retained input snapshots, output data, observer work, and provider execution. Continuous input can suppress every intermediate result until the user pauses; that is the specified policy, not universally good UX.\n\n## Deterministic scratch test\n\nCopy the function above and this harness into a local `preview-drill.cjs`, then run `node preview-drill.cjs`. No packages, credentials, network, or GPU calls are needed. Resolve promises manually instead of racing wall-clock delays.\n\n```javascript\nconst assert = require(\"node:assert/strict\");\n\nasync function verify() {\n  const calls = [];\n  const shown = [];\n  const errors = [];\n  const coordinator = createPreviewCoordinator({\n    generate(input, { signal }) {\n      return new Promise((resolve, reject) => {\n        calls.push({ input, signal, resolve, reject });\n      });\n    },\n    render: (value) => shown.push(value),\n    onError: (error) => errors.push(error),\n  });\n  coordinator.submit(\"A\");\n  coordinator.submit(\"B\");\n  coordinator.submit(\"C\");\n  assert.equal(calls.length, 1);\n  calls[0].resolve(\"obsolete A\");\n  await Promise.resolve();\n  assert.deepEqual(calls.map((call) => call.input), [\"A\", \"C\"]);\n  assert.deepEqual(shown, []);\n  calls[1].resolve(\"current C\");\n  await Promise.resolve();\n  assert.deepEqual(shown, [\"current C\"]);\n  coordinator.submit(\"D\");\n  coordinator.dispose();\n  assert.equal(calls[2].signal.aborted, true);\n  calls[2].resolve(\"late D\");\n  await Promise.resolve();\n  assert.deepEqual(shown, [\"current C\"]);\n  assert.deepEqual(errors, []);\n  console.log(\"Preview invariants passed\");\n}\nverify().catch((error) => {\n  console.error(error);\n  process.exitCode = 1;\n});\n```\n\nAdd cases for stale rejection followed by current success, current rejection then recovery, a synchronous adapter throw, repeated disposal, and submission after disposal. Codematica's content tests execute the authored reference against these failure scenarios; that does not grade your implementation.\n\n## Follow-ups that expose deeper reasoning\n\n1. **The adapter never settles.** The baseline blocks forever. Add a bounded operation deadline in the adapter and show an explicit unavailable state. A `Promise.race` timeout releases only local waiting; overlapping a replacement may violate a remote concurrency budget. Discuss provider cancellation acknowledgement, leases, or rejecting new work until reconciliation.\n2. **Continuous drawing never pauses.** Offer a documented alternative: display monotonically newer completed previews labeled with their revision, or sample intent at a controlled cadence. Change the stale-result contract and its tests deliberately.\n3. **Ten thousand canvas events per second.** Coalesce at the input boundary; put heavy serialization/decoding off the input path. A bounded JavaScript queue does not bound a WebSocket's browser or server buffers. MDN notes that the classic [WebSocket API lacks automatic backpressure](https://developer.mozilla.org/en-US/docs/Web/API/WebSockets_API).\n4. **Two editors.** A local counter does not order collaborators' edits. Keep server document revision, client session epoch, and local preview request identity distinct. Attach generated output to the immutable input revision and model configuration.\n5. **An export button.** Accepted exports need durable identity and completion tracking. Never discard them using the preview coalescing rule. Continue to the architecture lesson.\n\nSelf-assess on correctness before fluency: bound work, guard both results and errors, release the slot, explain disposal, and prove the races with controlled promises.",
+      "plainText": "The 25-minute prompt An artist drags a slider faster than an image generator responds. Implement createPreviewCoordinator({ generate, render, onError }) in plain JavaScript. It exposes submit(input) and dispose(). This is an original Codematica drill for real-time creative applications, not a reported interview question. Spend 3 minutes clarifying the contract, 12 coding, 7 testing, and 3 explaining tradeoffs. Use an empty local JavaScript scratch file. The app displays reference code and grades the separate checkpoint; it does not execute your scratch solution. Attempt the prompt before scrolling to the answer. Contract to clarify aloud input is an immutable string snapshot in this exercise. A real canvas needs an immutable revision/reference, not a mutable object captured by closure.generate(input, { signal }) returns a promise; it may reject or throw synchronously. The adapter may ignore abort. It must eventually settle for liveness in this baseline.At most one unsettled generation runs and one newest pending input is retained. Pending work is replaced, not accumulated.Only the result or error for the most recently submitted revision may reach the UI. Once a newer input arrives, suppress the older outcome even if the new request later fails. Keep a previously displayed image labeled as stale while showing the current error.submit returns an increasing revision number. It does not promise an output for an input that may be superseded.dispose is idempotent, drops pending work, requests cancellation, and prevents later UI callbacks. Submitting afterward throws.render and onError are synchronous, non-throwing observers. Render scheduling and decoding are adapter responsibilities. Do not add automatic retries to this baseline. Start by stating: “The UI's current intent and the provider's completion order are different clocks. I need a revision guard plus a bounded backlog.” Trace before coding | Event | Active | Pending | Visible callback | | --- | --- | --- | --- | | submit A | A | none | none | | submit B, then C before A settles | A | C | none | | A resolves | C | none | A suppressed | | C resolves | none | none | render C | | submit D, then dispose | abort requested for D | none | no later callbacks | A common failed attempt is generate(input).then(render): it starts unlimited work and paints obsolete results. Debouncing reduces starts during a burst but does not order in-flight results. Aborting alone is also insufficient: the operation can finish before cancellation or ignore the signal. AbortController communicates cancellation; it does not prove remote computation stopped. Reference implementation — reveal after your attempt function createPreviewCoordinator({ generate, render, onError }) { let revision = 0; let pending = null; let active = null; let disposed = false; async function pump() { if (disposed || active || pending === null) return; const job = pending; pending = null; const controller = new AbortController(); active = controller; try { const output = await generate(job.input, { signal: controller.signal, }); if (!disposed && job.revision === revision) render(output); } catch (error) { if (!disposed && job.revision === revision) onError(error); } finally { active = null; void pump(); } } return { submit(input) { if (disposed) throw new Error(\"Coordinator is disposed\"); const nextRevision = ++revision; pending = { input, revision: nextRevision }; void pump(); return nextRevision; }, dispose() { if (disposed) return; disposed = true; pending = null; active?.abort(); }, }; } The active slot is claimed before the first await. Synchronous adapter exceptions enter catch, and finally releases the slot after success or failure. A newer input invalidates old outcomes immediately. Normal supersession waits for the active request; only disposal asks it to abort. This is a deliberate simple policy that avoids pretending an abort frees remote capacity. Coordinator bookkeeping takes O(1) work per submission and O(1) slots, excluding the size of the two retained input snapshots, output data, observer work, and provider execution. Continuous input can suppress every intermediate result until the user pauses; that is the specified policy, not universally good UX. Deterministic scratch test Copy the function above and this harness into a local preview-drill.cjs, then run node preview-drill.cjs. No packages, credentials, network, or GPU calls are needed. Resolve promises manually instead of racing wall-clock delays. const assert = require(\"node:assert/strict\"); async function verify() { const calls = []; const shown = []; const errors = []; const coordinator = createPreviewCoordinator({ generate(input, { signal }) { return new Promise((resolve, reject) => { calls.push({ input, signal, resolve, reject }); }); }, render: (value) => shown.push(value), onError: (error) => errors.push(error), }); coordinator.submit(\"A\"); coordinator.submit(\"B\"); coordinator.submit(\"C\"); assert.equal(calls.length, 1); calls[0].resolve(\"obsolete A\"); await Promise.resolve(); assert.deepEqual(calls.map((call) => call.input), [\"A\", \"C\"]); assert.deepEqual(shown, []); calls[1].resolve(\"current C\"); await Promise.resolve(); assert.deepEqual(shown, [\"current C\"]); coordinator.submit(\"D\"); coordinator.dispose(); assert.equal(calls[2].signal.aborted, true); calls[2].resolve(\"late D\"); await Promise.resolve(); assert.deepEqual(shown, [\"current C\"]); assert.deepEqual(errors, []); console.log(\"Preview invariants passed\"); } verify().catch((error) => { console.error(error); process.exitCode = 1; }); Add cases for stale rejection followed by current success, current rejection then recovery, a synchronous adapter throw, repeated disposal, and submission after disposal. Codematica's content tests execute the authored reference against these failure scenarios; that does not grade your implementation. Follow-ups that expose deeper reasoning The adapter never settles. The baseline blocks forever. Add a bounded operation deadline in the adapter and show an explicit unavailable state. A Promise.race timeout releases only local waiting; overlapping a replacement may violate a remote concurrency budget. Discuss provider cancellation acknowledgement, leases, or rejecting new work until reconciliation.Continuous drawing never pauses. Offer a documented alternative: display monotonically newer completed previews labeled with their revision, or sample intent at a controlled cadence. Change the stale-result contract and its tests deliberately.Ten thousand canvas events per second. Coalesce at the input boundary; put heavy serialization/decoding off the input path. A bounded JavaScript queue does not bound a WebSocket's browser or server buffers. MDN notes that the classic WebSocket API lacks automatic backpressure.Two editors. A local counter does not order collaborators' edits. Keep server document revision, client session epoch, and local preview request identity distinct. Attach generated output to the immutable input revision and model configuration.An export button. Accepted exports need durable identity and completion tracking. Never discard them using the preview coalescing rule. Continue to the architecture lesson. Self-assess on correctness before fluency: bound work, guard both results and errors, release the slot, explain disposal, and prove the races with controlled promises.",
+      "headings": [
+        {
+          "id": "the-25-minute-prompt",
+          "depth": 2,
+          "text": "The 25-minute prompt"
+        },
+        {
+          "id": "contract-to-clarify-aloud",
+          "depth": 2,
+          "text": "Contract to clarify aloud"
+        },
+        {
+          "id": "trace-before-coding",
+          "depth": 2,
+          "text": "Trace before coding"
+        },
+        {
+          "id": "reference-implementation-reveal-after-your-attempt",
+          "depth": 2,
+          "text": "Reference implementation — reveal after your attempt"
+        },
+        {
+          "id": "deterministic-scratch-test",
+          "depth": 2,
+          "text": "Deterministic scratch test"
+        },
+        {
+          "id": "follow-ups-that-expose-deeper-reasoning",
+          "depth": 2,
+          "text": "Follow-ups that expose deeper reasoning"
+        }
+      ],
+      "mermaidBlocks": [],
+      "contentHash": "2a834a877bc8b4d526254b74d37435f974a17016c27b05c414b6bb80f8dfdd63",
+      "readingMinutes": 5
+    },
+    {
+      "title": "Product Engineering Mock Interview — Build, Harden, and Explain",
+      "slug": "software-engineering/product-interview-mock-interview",
+      "summary": "A 75-minute rehearsal with a concrete coding brief, architecture failure injections, an anchored rubric, and prompts for translating past ownership into credible answers.",
+      "track": "Software Engineering",
+      "topic": "Interview Preparation",
+      "difficulty": "senior",
+      "tags": [
+        "product-engineering",
+        "interview",
+        "ownership",
+        "system-design",
+        "javascript"
+      ],
+      "prerequisites": [],
+      "diagramRefs": [],
+      "sourceRefs": [
+        "product-interview-sre-monitoring"
+      ],
+      "status": "published",
+      "id": "d296558972a2",
+      "route": "/docs/software-engineering/product-interview-mock-interview",
+      "sourcePath": "content/knowledge/software-engineering/product-interview-mock-interview.md",
+      "bodyPath": "content/knowledge/software-engineering/product-interview-mock-interview.md",
+      "markdown": "Use the [guided mock lab](/practice/software-engineering/product-interview-mock-interview-lab?path=product-engineering-interview) to record a prediction, check your evidence, and reflect. Set your own 75-minute timer and use a plain JavaScript scratch file and a blank drawing surface. This is an original rehearsal, not a leaked question or a prediction of your exact interview. The lab records coarse completion; it does not automatically grade your code or architecture.\n\n## Interviewer script\n\n| Time | Prompt | Follow-up to introduce only after the baseline |\n| --- | --- | --- |\n| 0–5 min | An artist drags a control while previews take variable time. What contract do we need? | Must every preview run? Which actions spend credits? What happens after disconnect? |\n| 5–25 min | Implement `createPreviewCoordinator({generate, render, onError})` with `submit(input)` and `dispose()`. Allow one active request and one newest pending input. | A ignores abort and resolves after C was submitted. Then the current request rejects. Prove the outcome with manually settled promises. |\n| 25–30 min | Test and explain complexity. | The adapter throws synchronously; then never settles. Where do your guarantees end? |\n| 30–45 min | Turn this into a durable paid export service for a collaborative editor. | You must keep accepted work across refresh, retries, and worker crashes. Draw state and transaction boundaries before naming services. |\n| 45–60 min | The provider succeeded, the worker died, and the message was redelivered. | Then lose a socket update; revoke workspace access; finally increase load 10×. What is safe to retry? What is rejected, queued, or coalesced? |\n| 60–70 min | Tell me about a production system you owned and a difficult failure. | What did you personally decide? What alternative did you reject? How did you validate and observe recovery? |\n| 70–75 min | What would you ask us? | Tie two questions to the actual product/role and name one assumption you would revisit. |\n\nRead the [coding contract](/docs/software-engineering/product-interview-javascript-preview-coordinator) before a solo attempt, but stop before its reference answer. For a partner mock, the partner reads the reference and holds the follow-ups until the stated time. If your actual session is 45–60 minutes, compress story time and choose one architectural failure. If two sessions are scheduled, repeat with a fresh variant rather than assuming identical prompts.\n\n## Score evidence, not confidence\n\nScore each row 0–4. **0:** missing/incorrect. **1:** named a mechanism but cannot trace it. **2:** explains the happy path with a concrete example. **3:** handles a relevant failure and states a tradeoff. **4:** proves the invariant with a test/trace or transaction boundary and explains its limits.\n\n| Dimension | Evidence required for 3 or 4 |\n| --- | --- |\n| Requirements and product judgment | Separates replaceable previews from accepted exports; asks about current intent, billing, and user-visible failure. |\n| JavaScript correctness | One active/one pending; stale success and error suppression; cleanup; controlled-promise tests; honest liveness limit. |\n| Distributed correctness | Tenant-scoped idempotency, atomic acceptance/outbox, guarded state transitions, and reconciliation of uncertain provider outcomes. |\n| Frontend and collaboration | Revision identity, reconnect recovery, rendering latency, shared-document ownership, and authorization independent of CRDT convergence. |\n| Operations and ownership | User-facing SLIs, actionable telemetry, safe containment, migration/rollback, and evidence of actual recovery. |\n| Communication | States assumptions, narrates decisions, compares alternatives, incorporates new evidence, and gives credit accurately. |\n\n**Practice target: 18/24 with no score below 2.** This is a Codematica self-assessment heuristic, not an employer hiring bar. Duplicate charging, tenant leakage, unlimited work, or claiming exactly-once from a queue alone requires another attempt even if the sum is high. The scored checkpoint checks concepts; it cannot certify interview readiness.\n\n## Translate your experience into answers\n\nUse the following story patterns to select examples from your own experience. These are personal rehearsal prompts, not independently verified employment claims. Use only facts and metrics you can defend. Keep confidential implementation/customer details out of public answers.\n\n| Story from the briefing | Rehearsal question | Evidence to prepare |\n| --- | --- | --- |\n| CRM polling-to-event-stream migration | Why a durable bus, and which subscriptions handled fan-out? Was push delivery also an option? | Sketch producer/consumer ownership, replay, deduplication, acknowledgement/lease policy, rollout, and one failure. If using 500→50,000 RPM, define whether it measured ingress, processed events, peak/sustained load, and successful throughput. It is 100×, approximately 8.3→833 requests/second, not 50,000/second. |\n| Subscription entitlements and concurrent experiments | What invariant was corrupted, and how could you repair it without a full backfill? | Show stable keys, experiment/version scope, concurrent update behavior, targeted repair/read compatibility, audit evidence, and what remained unknown. Do not infer zero data loss from green tests. |\n| Deep-link debugging at the OS handoff | How did you isolate the boundary where the expected behavior stopped? | Reproduction matrix, competing hypotheses, instrumentation across OS/app/router, minimal fix, and device validation. Connect this to cross-boundary debugging, without claiming mobile handoff and WebSockets are identical. |\n| Async AI media processing on Cloud Run | Why did asynchronous execution fit variable latency? | Request acceptance versus completion, retries, idempotency, deadlines, capacity, and unknown provider outcomes. |\n| React components/design tokens and Datadog/PagerDuty for a product team | How did a product-quality improvement become measurable? | A real component/state tradeoff, what you instrumented, alert thresholds, an actionable runbook, and observed effect. Bridge React experience to unfamiliar Svelte code using state ownership and browser fundamentals. |\n| AI PR review side project | What did it catch, what did it miss, and how did you measure usefulness? | A concise demo narrative, evaluation examples, false-positive cost, human override, data boundaries, and one failed assumption. |\n\nFor each story, rehearse **90 seconds**: problem and constraint (15s), your decision and alternative (25s), hardest failure and response (30s), measured outcome and lesson (20s). Then rehearse the five-minute deep dive with a diagram. Favor two well-defended stories over six shallow summaries.\n\nAn honest opening scaffold: “I moved a CRM integration from polling toward a durable event-driven flow because [measured constraint]. I owned [specific boundary]; the team owned [other work]. We chose [design] over [alternative] because [tradeoff]. The hardest failure was [real example]. We validated [tests/artifact] and observed [actual production signal]. I would revisit [decision] if [changed condition].” Fill the brackets with your history; do not memorize invented details.\n\n## Product exploration: 15 minutes before the interview\n\nOpen the product you are interviewing for and compare a continuous real-time edit with an explicit generation/export. Observe rapid input changes, loading/progress language, history/undo, image comparison, navigation away/back, and model/quality selection. Record **observed behavior**, **hypothesis about implementation**, and **question for the team** in separate columns. Treat this as your own observation exercise; the pack does not claim a hands-on benchmark or an internal trace.\n\nChoose one concrete improvement, such as making the current input revision and last completed preview easier to distinguish. Explain the user benefit, a minimal implementation, and a measurement. Avoid declaring the product broken from a single slow request. Connect product taste to engineering judgment by explaining the user benefit and how you would measure it.\n\n## Second-session variants\n\n- **Frontend emphasis:** two editors change the same node while one is offline. Define local selection versus shared document state, merge semantics, undo, cycle validation, and result attachments. Add a render/interaction performance budget.\n- **Backend emphasis:** the entitlement cache is stale, Redis is unavailable, and a job is redelivered. Explain authoritative authorization, admission policy, balance concurrency, and reconciliation.\n- **Agent workflow emphasis:** a generated five-node graph partially completes. Validate node schemas/permissions, persist node attempts, retry only safe failed work, and invalidate descendants when an input changes. Treat this as a hypothetical workflow, not a claim about any company’s implementation.\n\nEnd each attempt by naming the weakest invariant and writing the next test or diagram that would improve it. Re-read the [research brief](/docs/software-engineering/product-interview-research-brief) before treating any interview anecdote as fact.",
+      "plainText": "Use the guided mock lab to record a prediction, check your evidence, and reflect. Set your own 75-minute timer and use a plain JavaScript scratch file and a blank drawing surface. This is an original rehearsal, not a leaked question or a prediction of your exact interview. The lab records coarse completion; it does not automatically grade your code or architecture. Interviewer script | Time | Prompt | Follow-up to introduce only after the baseline | | --- | --- | --- | | 0–5 min | An artist drags a control while previews take variable time. What contract do we need? | Must every preview run? Which actions spend credits? What happens after disconnect? | | 5–25 min | Implement createPreviewCoordinator({generate, render, onError}) with submit(input) and dispose(). Allow one active request and one newest pending input. | A ignores abort and resolves after C was submitted. Then the current request rejects. Prove the outcome with manually settled promises. | | 25–30 min | Test and explain complexity. | The adapter throws synchronously; then never settles. Where do your guarantees end? | | 30–45 min | Turn this into a durable paid export service for a collaborative editor. | You must keep accepted work across refresh, retries, and worker crashes. Draw state and transaction boundaries before naming services. | | 45–60 min | The provider succeeded, the worker died, and the message was redelivered. | Then lose a socket update; revoke workspace access; finally increase load 10×. What is safe to retry? What is rejected, queued, or coalesced? | | 60–70 min | Tell me about a production system you owned and a difficult failure. | What did you personally decide? What alternative did you reject? How did you validate and observe recovery? | | 70–75 min | What would you ask us? | Tie two questions to the actual product/role and name one assumption you would revisit. | Read the coding contract before a solo attempt, but stop before its reference answer. For a partner mock, the partner reads the reference and holds the follow-ups until the stated time. If your actual session is 45–60 minutes, compress story time and choose one architectural failure. If two sessions are scheduled, repeat with a fresh variant rather than assuming identical prompts. Score evidence, not confidence Score each row 0–4. 0: missing/incorrect. 1: named a mechanism but cannot trace it. 2: explains the happy path with a concrete example. 3: handles a relevant failure and states a tradeoff. 4: proves the invariant with a test/trace or transaction boundary and explains its limits. | Dimension | Evidence required for 3 or 4 | | --- | --- | | Requirements and product judgment | Separates replaceable previews from accepted exports; asks about current intent, billing, and user-visible failure. | | JavaScript correctness | One active/one pending; stale success and error suppression; cleanup; controlled-promise tests; honest liveness limit. | | Distributed correctness | Tenant-scoped idempotency, atomic acceptance/outbox, guarded state transitions, and reconciliation of uncertain provider outcomes. | | Frontend and collaboration | Revision identity, reconnect recovery, rendering latency, shared-document ownership, and authorization independent of CRDT convergence. | | Operations and ownership | User-facing SLIs, actionable telemetry, safe containment, migration/rollback, and evidence of actual recovery. | | Communication | States assumptions, narrates decisions, compares alternatives, incorporates new evidence, and gives credit accurately. | Practice target: 18/24 with no score below 2. This is a Codematica self-assessment heuristic, not an employer hiring bar. Duplicate charging, tenant leakage, unlimited work, or claiming exactly-once from a queue alone requires another attempt even if the sum is high. The scored checkpoint checks concepts; it cannot certify interview readiness. Translate your experience into answers Use the following story patterns to select examples from your own experience. These are personal rehearsal prompts, not independently verified employment claims. Use only facts and metrics you can defend. Keep confidential implementation/customer details out of public answers. | Story from the briefing | Rehearsal question | Evidence to prepare | | --- | --- | --- | | CRM polling-to-event-stream migration | Why a durable bus, and which subscriptions handled fan-out? Was push delivery also an option? | Sketch producer/consumer ownership, replay, deduplication, acknowledgement/lease policy, rollout, and one failure. If using 500→50,000 RPM, define whether it measured ingress, processed events, peak/sustained load, and successful throughput. It is 100×, approximately 8.3→833 requests/second, not 50,000/second. | | Subscription entitlements and concurrent experiments | What invariant was corrupted, and how could you repair it without a full backfill? | Show stable keys, experiment/version scope, concurrent update behavior, targeted repair/read compatibility, audit evidence, and what remained unknown. Do not infer zero data loss from green tests. | | Deep-link debugging at the OS handoff | How did you isolate the boundary where the expected behavior stopped? | Reproduction matrix, competing hypotheses, instrumentation across OS/app/router, minimal fix, and device validation. Connect this to cross-boundary debugging, without claiming mobile handoff and WebSockets are identical. | | Async AI media processing on Cloud Run | Why did asynchronous execution fit variable latency? | Request acceptance versus completion, retries, idempotency, deadlines, capacity, and unknown provider outcomes. | | React components/design tokens and Datadog/PagerDuty for a product team | How did a product-quality improvement become measurable? | A real component/state tradeoff, what you instrumented, alert thresholds, an actionable runbook, and observed effect. Bridge React experience to unfamiliar Svelte code using state ownership and browser fundamentals. | | AI PR review side project | What did it catch, what did it miss, and how did you measure usefulness? | A concise demo narrative, evaluation examples, false-positive cost, human override, data boundaries, and one failed assumption. | For each story, rehearse 90 seconds: problem and constraint (15s), your decision and alternative (25s), hardest failure and response (30s), measured outcome and lesson (20s). Then rehearse the five-minute deep dive with a diagram. Favor two well-defended stories over six shallow summaries. An honest opening scaffold: “I moved a CRM integration from polling toward a durable event-driven flow because [measured constraint]. I owned [specific boundary]; the team owned [other work]. We chose [design] over [alternative] because [tradeoff]. The hardest failure was [real example]. We validated [tests/artifact] and observed [actual production signal]. I would revisit [decision] if [changed condition].” Fill the brackets with your history; do not memorize invented details. Product exploration: 15 minutes before the interview Open the product you are interviewing for and compare a continuous real-time edit with an explicit generation/export. Observe rapid input changes, loading/progress language, history/undo, image comparison, navigation away/back, and model/quality selection. Record observed behavior, hypothesis about implementation, and question for the team in separate columns. Treat this as your own observation exercise; the pack does not claim a hands-on benchmark or an internal trace. Choose one concrete improvement, such as making the current input revision and last completed preview easier to distinguish. Explain the user benefit, a minimal implementation, and a measurement. Avoid declaring the product broken from a single slow request. Connect product taste to engineering judgment by explaining the user benefit and how you would measure it. Second-session variants Frontend emphasis: two editors change the same node while one is offline. Define local selection versus shared document state, merge semantics, undo, cycle validation, and result attachments. Add a render/interaction performance budget.Backend emphasis: the entitlement cache is stale, Redis is unavailable, and a job is redelivered. Explain authoritative authorization, admission policy, balance concurrency, and reconciliation.Agent workflow emphasis: a generated five-node graph partially completes. Validate node schemas/permissions, persist node attempts, retry only safe failed work, and invalidate descendants when an input changes. Treat this as a hypothetical workflow, not a claim about any company’s implementation. End each attempt by naming the weakest invariant and writing the next test or diagram that would improve it. Re-read the research brief before treating any interview anecdote as fact.",
+      "headings": [
+        {
+          "id": "interviewer-script",
+          "depth": 2,
+          "text": "Interviewer script"
+        },
+        {
+          "id": "score-evidence-not-confidence",
+          "depth": 2,
+          "text": "Score evidence, not confidence"
+        },
+        {
+          "id": "translate-your-experience-into-answers",
+          "depth": 2,
+          "text": "Translate your experience into answers"
+        },
+        {
+          "id": "product-exploration-15-minutes-before-the-interview",
+          "depth": 2,
+          "text": "Product exploration: 15 minutes before the interview"
+        },
+        {
+          "id": "second-session-variants",
+          "depth": 2,
+          "text": "Second-session variants"
+        }
+      ],
+      "mermaidBlocks": [],
+      "contentHash": "da398e58bc63cbcf83a5efb41c45b3e6e35cee55aa4261f987863fa913b2781c",
+      "readingMinutes": 6
+    },
+    {
+      "title": "Product Engineering Interview Research and Preparation Brief",
+      "slug": "software-engineering/product-interview-research-brief",
+      "summary": "Evaluate interview evidence, clarify role expectations, and prepare a focused coding and architecture rehearsal for a product engineering conversation.",
+      "track": "Software Engineering",
+      "topic": "Interview Preparation",
+      "difficulty": "senior",
+      "tags": [
+        "product-engineering",
+        "interview",
+        "research"
+      ],
+      "prerequisites": [],
+      "diagramRefs": [],
+      "sourceRefs": [
+        "product-interview-sre-monitoring",
+        "product-interview-websocket"
+      ],
+      "status": "published",
+      "id": "5b15df2d1562",
+      "route": "/docs/software-engineering/product-interview-research-brief",
+      "sourcePath": "content/knowledge/software-engineering/product-interview-research-brief.md",
+      "bodyPath": "content/knowledge/software-engineering/product-interview-research-brief.md",
+      "markdown": "This is an original, company-neutral preparation pack, not a reported company question bank. The target is a product engineering deep dive combining plain JavaScript, frontend state, architecture, and production ownership. Your actual invitation controls the format.\n\n## Start here\n\nIf the interview is tomorrow, spend 15 minutes on this brief, 25 minutes writing the [preview coordinator](/docs/software-engineering/product-interview-javascript-preview-coordinator), 25 minutes drawing the [durable generation design](/docs/software-engineering/product-interview-durable-generation-architecture), and 10 minutes rehearsing two ownership stories. Then use the [75-minute mock lab](/practice/software-engineering/product-interview-mock-interview-lab?path=product-engineering-interview) without solutions or AI assistance. With two days, do the lessons/checkpoints first and repeat the mock with a different failure scenario the next day.\n\n## Build a preparation plan from the role\n\nTreat the following as examples of how to interpret a job description, not facts about any particular employer.\n\n| Role signal | Preparation consequence | Evidence to rehearse |\n| --- | --- | --- |\n| Hardening products that customers pay for | Prioritize correctness, observability, and safe rollout alongside new features. | A real failure, the invariant you restored, and the signal that demonstrated recovery. |\n| Frontend and collaborative canvas work | Practice UI state, rendering latency, shared-document revisions, and product judgment. | Separate local selection, shared edits, preview requests, and accepted exports. |\n| Long-running inference workflows | Study state machines, retries, idempotency, cancellation, and unknown outcomes. | Trace a crash after a provider succeeds but before the worker records completion. |\n| Cross-service ownership | Explain how you follow a request across boundaries and choose an actionable alert. | A latency breakdown, a failure trace, and a defensible user-facing reliability target. |\n| First-principles coding | Rehearse a small JavaScript implementation without framework helpers. | Controlled-promise tests proving concurrency, stale-result handling, and cleanup. |\n\nThe [WebSocket reference](https://developer.mozilla.org/en-US/docs/Web/API/WebSockets_API) is useful for separating transport from application flow control. The [Google SRE monitoring chapter](https://sre.google/sre-book/monitoring-distributed-systems/) provides a foundation for choosing meaningful signals. These are technical references, not evidence about an employer's interview process.\n\n## Evaluate interview reports carefully\n\nBefore relying on an online account, check the employer identity, role, date, location, and whether the writer personally interviewed. A matching company name alone is insufficient. A report about admissions or another industry should not shape a software engineering rehearsal.\n\n| Evidence type | How to use it |\n| --- | --- |\n| Your current invitation or recruiter clarification | Establish duration, participants, editor, allowed languages/libraries, and tool policy. |\n| Current official role description | Identify likely responsibilities and preparation priorities; it does not promise a round sequence. |\n| Attributable firsthand candidate account | Treat it as one person's experience at a particular time, not a guaranteed future prompt. |\n| Generic guide listing likely questions | Use as optional practice material, not a verified question bank. |\n| Search snippet covering an entire discussion | Read the individual post before attributing a process or complaint to an employer. |\n| Product showcase or preview | Learn the direction; verify availability and API guarantees separately. |\n\nMissing reports do not prove that a process is easy, uniform, or free of problems. Keep notes in three columns: **verified evidence**, **working assumption**, and **question to clarify**. This pack makes no claim about a specific interviewer's identity or a mandatory loop.\n\n## Confirm the practical constraints\n\nClarify the number and duration of sessions, whether coding and architecture share a time slot, the editor, permitted languages/libraries, and whether AI tools or documentation are allowed. For practice, this pack deliberately uses plain JavaScript and an unaided first attempt. That is a rehearsal constraint, not a claim about an employer's policy.\n\nPrepare both a 90-second and a five-minute version of two ownership stories. State what you personally decided, what the team contributed, what alternative you rejected, and what evidence supports the outcome. Be precise about throughput units, peak versus sustained load, and successful versus attempted work.\n\n## Questions worth taking to the interview\n\n1. **Ownership and on-call:** Which product boundary would I own first? What breaks most often, who responds, and how much time is protected for reliability work?\n2. **Product success:** What defines a successful creative session: first useful preview, edit fidelity, completion rate, collaboration, or cost per usable result?\n3. **Execution semantics:** What is the hardest retry or cancellation edge case across providers? How are unknown outcomes reconciled?\n4. **Collaboration:** Which state needs merging, and which operations require authoritative server validation? How are model outputs attached to document revisions?\n5. **API contracts:** Which job transitions generate notifications? What are the authentication, retry-window, ordering, and reconciliation guarantees?\n6. **Product direction:** How do recent demonstrations affect the role, and which capabilities are available to customers today?\n\nAsk these as concrete engineering questions. A topic being worth discussing does not establish that a production defect exists.",
+      "plainText": "This is an original, company-neutral preparation pack, not a reported company question bank. The target is a product engineering deep dive combining plain JavaScript, frontend state, architecture, and production ownership. Your actual invitation controls the format. Start here If the interview is tomorrow, spend 15 minutes on this brief, 25 minutes writing the preview coordinator, 25 minutes drawing the durable generation design, and 10 minutes rehearsing two ownership stories. Then use the 75-minute mock lab without solutions or AI assistance. With two days, do the lessons/checkpoints first and repeat the mock with a different failure scenario the next day. Build a preparation plan from the role Treat the following as examples of how to interpret a job description, not facts about any particular employer. | Role signal | Preparation consequence | Evidence to rehearse | | --- | --- | --- | | Hardening products that customers pay for | Prioritize correctness, observability, and safe rollout alongside new features. | A real failure, the invariant you restored, and the signal that demonstrated recovery. | | Frontend and collaborative canvas work | Practice UI state, rendering latency, shared-document revisions, and product judgment. | Separate local selection, shared edits, preview requests, and accepted exports. | | Long-running inference workflows | Study state machines, retries, idempotency, cancellation, and unknown outcomes. | Trace a crash after a provider succeeds but before the worker records completion. | | Cross-service ownership | Explain how you follow a request across boundaries and choose an actionable alert. | A latency breakdown, a failure trace, and a defensible user-facing reliability target. | | First-principles coding | Rehearse a small JavaScript implementation without framework helpers. | Controlled-promise tests proving concurrency, stale-result handling, and cleanup. | The WebSocket reference is useful for separating transport from application flow control. The Google SRE monitoring chapter provides a foundation for choosing meaningful signals. These are technical references, not evidence about an employer's interview process. Evaluate interview reports carefully Before relying on an online account, check the employer identity, role, date, location, and whether the writer personally interviewed. A matching company name alone is insufficient. A report about admissions or another industry should not shape a software engineering rehearsal. | Evidence type | How to use it | | --- | --- | | Your current invitation or recruiter clarification | Establish duration, participants, editor, allowed languages/libraries, and tool policy. | | Current official role description | Identify likely responsibilities and preparation priorities; it does not promise a round sequence. | | Attributable firsthand candidate account | Treat it as one person's experience at a particular time, not a guaranteed future prompt. | | Generic guide listing likely questions | Use as optional practice material, not a verified question bank. | | Search snippet covering an entire discussion | Read the individual post before attributing a process or complaint to an employer. | | Product showcase or preview | Learn the direction; verify availability and API guarantees separately. | Missing reports do not prove that a process is easy, uniform, or free of problems. Keep notes in three columns: verified evidence, working assumption, and question to clarify. This pack makes no claim about a specific interviewer's identity or a mandatory loop. Confirm the practical constraints Clarify the number and duration of sessions, whether coding and architecture share a time slot, the editor, permitted languages/libraries, and whether AI tools or documentation are allowed. For practice, this pack deliberately uses plain JavaScript and an unaided first attempt. That is a rehearsal constraint, not a claim about an employer's policy. Prepare both a 90-second and a five-minute version of two ownership stories. State what you personally decided, what the team contributed, what alternative you rejected, and what evidence supports the outcome. Be precise about throughput units, peak versus sustained load, and successful versus attempted work. Questions worth taking to the interview Ownership and on-call: Which product boundary would I own first? What breaks most often, who responds, and how much time is protected for reliability work?Product success: What defines a successful creative session: first useful preview, edit fidelity, completion rate, collaboration, or cost per usable result?Execution semantics: What is the hardest retry or cancellation edge case across providers? How are unknown outcomes reconciled?Collaboration: Which state needs merging, and which operations require authoritative server validation? How are model outputs attached to document revisions?API contracts: Which job transitions generate notifications? What are the authentication, retry-window, ordering, and reconciliation guarantees?Product direction: How do recent demonstrations affect the role, and which capabilities are available to customers today? Ask these as concrete engineering questions. A topic being worth discussing does not establish that a production defect exists.",
+      "headings": [
+        {
+          "id": "start-here",
+          "depth": 2,
+          "text": "Start here"
+        },
+        {
+          "id": "build-a-preparation-plan-from-the-role",
+          "depth": 2,
+          "text": "Build a preparation plan from the role"
+        },
+        {
+          "id": "evaluate-interview-reports-carefully",
+          "depth": 2,
+          "text": "Evaluate interview reports carefully"
+        },
+        {
+          "id": "confirm-the-practical-constraints",
+          "depth": 2,
+          "text": "Confirm the practical constraints"
+        },
+        {
+          "id": "questions-worth-taking-to-the-interview",
+          "depth": 2,
+          "text": "Questions worth taking to the interview"
+        }
+      ],
+      "mermaidBlocks": [],
+      "contentHash": "482dcb8dd4f5b04bae6f7253e7ea29f935324579b1551659ff92dacf5a890607",
+      "readingMinutes": 4
+    },
+    {
       "title": "Cache Invalidation Under Product Pressure",
       "slug": "system-design/cache-invalidation",
       "summary": "A senior-level guide to choosing invalidation strategies when latency, freshness, and operational safety all matter.",
@@ -8211,6 +8525,86 @@
       "route": "/paths/ml-systems-engineer",
       "sourcePath": "content/learning-paths/ml-systems-engineer.json",
       "contentHash": "33f976b250420a4030cf39f85383a6360c67d67363216e56f078aa95518e1db5"
+    },
+    {
+      "slug": "product-engineering-interview",
+      "title": "Product Engineering Interview",
+      "summary": "Prepare for a product engineering coding and architecture deep dive with an evidence-aware research brief, a plain JavaScript drill, durable AI workflow design, 18 checkpoint questions, and a 75-minute mock interview.",
+      "kind": "skill",
+      "category": "Software Engineering",
+      "audience": "Experienced product and backend engineers preparing for interviews covering coding, design, and production ownership.",
+      "status": "published",
+      "sourcePolicy": "required",
+      "sourceRefs": [
+        "product-interview-sre-monitoring",
+        "product-interview-websocket"
+      ],
+      "units": [
+        {
+          "slug": "product-interview-research-brief",
+          "title": "Research and Role Fit",
+          "summary": "Evaluate interview evidence, clarify role expectations, and prepare useful questions without relying on company-specific assumptions.",
+          "nodes": [
+            {
+              "kind": "document",
+              "slug": "software-engineering/product-interview-research-brief"
+            }
+          ]
+        },
+        {
+          "slug": "product-interview-javascript-preview-coordinator",
+          "title": "Plain JavaScript Under Pressure",
+          "summary": "Bound preview work, suppress obsolete outcomes, and test lifecycle failures without a framework.",
+          "nodes": [
+            {
+              "kind": "document",
+              "slug": "software-engineering/product-interview-javascript-preview-coordinator"
+            },
+            {
+              "kind": "exercise",
+              "slug": "software-engineering/product-interview-javascript-preview-coordinator-questionnaire"
+            }
+          ]
+        },
+        {
+          "slug": "product-interview-durable-generation-architecture",
+          "title": "Durable Jobs and Revenue Safety",
+          "summary": "Trace accepted jobs, charges, collaboration, and recovery through concrete failure boundaries.",
+          "nodes": [
+            {
+              "kind": "document",
+              "slug": "software-engineering/product-interview-durable-generation-architecture"
+            },
+            {
+              "kind": "exercise",
+              "slug": "software-engineering/product-interview-durable-generation-architecture-questionnaire"
+            }
+          ]
+        },
+        {
+          "slug": "product-interview-mock-interview",
+          "title": "The 75-Minute Mock Interview",
+          "summary": "Rehearse coding, architecture, and ownership with evidence checks and an anchored self-assessment.",
+          "nodes": [
+            {
+              "kind": "document",
+              "slug": "software-engineering/product-interview-mock-interview"
+            },
+            {
+              "kind": "exercise",
+              "slug": "software-engineering/product-interview-mock-interview-lab"
+            },
+            {
+              "kind": "exercise",
+              "slug": "software-engineering/product-interview-mock-interview-questionnaire"
+            }
+          ]
+        }
+      ],
+      "id": "9215b599370e",
+      "route": "/paths/product-engineering-interview",
+      "sourcePath": "content/learning-paths/product-engineering-interview.json",
+      "contentHash": "f1d3ce1680b25bfe6c01596d28827540402d886920170fcc1b68ee6e0b53437e"
     },
     {
       "slug": "python-for-ts-js-engineers",
@@ -22753,6 +23147,612 @@
       "route": "/practice/software-engineering/observability-signal-roles",
       "sourcePath": "content/exercises/software-engineering/observability-signal-roles.json",
       "contentHash": "8580a63ea88b9a410cec6332d98168831da72cdda171d2dbcc321efebe241af0"
+    },
+    {
+      "slug": "software-engineering/product-interview-durable-generation-architecture-questionnaire",
+      "title": "Product Engineering Durable Jobs and Revenue Safety Checkpoint",
+      "documentSlug": "software-engineering/product-interview-durable-generation-architecture",
+      "concept": "Durable Jobs and Revenue Safety",
+      "difficulty": "senior",
+      "tags": [
+        "product-engineering",
+        "interview"
+      ],
+      "status": "published",
+      "sourceRefs": [
+        "product-interview-sre-monitoring"
+      ],
+      "type": "questionnaire",
+      "questions": [
+        {
+          "id": "uncertain",
+          "prompt": "A provider finished an export; the worker crashed before recording success. What is the safest retry plan?",
+          "explanation": "Redelivery proves the message needs handling, not that the external effect failed. Reconcile a stable operation identity where supported. Otherwise keep the uncertainty explicit; neither blind retries nor invented success preserve correctness.",
+          "kind": "choice",
+          "options": [
+            {
+              "id": "answer",
+              "label": "Reconcile via a stable provider key or operation ID before repeating the effect.",
+              "isCorrect": true
+            },
+            {
+              "id": "alternative-one",
+              "label": "Always generate again because the queue redelivered.",
+              "isCorrect": false
+            },
+            {
+              "id": "alternative-two",
+              "label": "Mark success without checking whether an output exists.",
+              "isCorrect": false
+            }
+          ]
+        },
+        {
+          "id": "outbox",
+          "prompt": "The API writes a job, then crashes before publishing its queue message. Which design closes this gap?",
+          "explanation": "An atomic job/reservation/outbox transaction leaves durable dispatch intent after a crash. Publishing first can create work without an accepted job or reservation. A tab cannot preserve the backend acceptance contract.",
+          "kind": "choice",
+          "options": [
+            {
+              "id": "alternative-one",
+              "label": "Publish first and assume the database write will succeed.",
+              "isCorrect": false
+            },
+            {
+              "id": "alternative-two",
+              "label": "Keep the queue message only in the browser tab.",
+              "isCorrect": false
+            },
+            {
+              "id": "answer",
+              "label": "Commit the job, credit reservation, and outbox record atomically.",
+              "isCorrect": true
+            }
+          ]
+        },
+        {
+          "id": "idempotency",
+          "prompt": "Two workspaces reuse the same idempotency key. What is the correct boundary?",
+          "explanation": "Tenant scope prevents unrelated requests colliding or leaking results. A body fingerprint detects changed requests under the same key. Prompt text omits workspace, input revision, model, and configuration identity.",
+          "kind": "choice",
+          "options": [
+            {
+              "id": "alternative-two",
+              "label": "Deduplicate only by prompt text.",
+              "isCorrect": false
+            },
+            {
+              "id": "answer",
+              "label": "Scope the key to the workspace and compare the request fingerprint.",
+              "isCorrect": true
+            },
+            {
+              "id": "alternative-one",
+              "label": "Use one global key namespace and return the first workspace’s result.",
+              "isCorrect": false
+            }
+          ]
+        },
+        {
+          "id": "fencing",
+          "prompt": "Worker A pauses, its lease expires, and worker B commits success. A resumes. What protects the result?",
+          "explanation": "A lease can expire while its previous holder is still running. The commit must validate attempt ownership and state/version, so stale workers cannot overwrite B. Last-write-wins is unsafe for results and ledger transitions.",
+          "kind": "choice",
+          "options": [
+            {
+              "id": "answer",
+              "label": "A guarded state transition with the current attempt/fencing token.",
+              "isCorrect": true
+            },
+            {
+              "id": "alternative-one",
+              "label": "A lease timestamp alone, with no check at commit.",
+              "isCorrect": false
+            },
+            {
+              "id": "alternative-two",
+              "label": "Whichever worker writes last should win.",
+              "isCorrect": false
+            }
+          ]
+        },
+        {
+          "id": "webhook",
+          "prompt": "A webhook names a real job but its authenticity is unverified. What should happen before charging?",
+          "explanation": "A job ID identifies a resource; it does not authenticate the sender or prove completion. Verify the documented delivery authentication or fetch authoritative status. Logging after charging cannot prevent a forged side effect.",
+          "kind": "choice",
+          "options": [
+            {
+              "id": "alternative-one",
+              "label": "Trust the job ID as a secret signature.",
+              "isCorrect": false
+            },
+            {
+              "id": "alternative-two",
+              "label": "Charge immediately, then log the sender address.",
+              "isCorrect": false
+            },
+            {
+              "id": "answer",
+              "label": "Verify supported authentication or reconcile through an authenticated status read.",
+              "isCorrect": true
+            }
+          ]
+        },
+        {
+          "id": "latency",
+          "prompt": "After a deploy, p95 preview latency rises while inference duration is flat. What should you inspect first?",
+          "explanation": "End-to-end latency includes stages outside inference. Compare deployment cohorts and traces to locate the increase. More GPU capacity may not help, and successful HTTP delivery does not prove a timely usable preview.",
+          "kind": "choice",
+          "options": [
+            {
+              "id": "alternative-two",
+              "label": "Ignore the problem because every HTTP request returns 200.",
+              "isCorrect": false
+            },
+            {
+              "id": "answer",
+              "label": "Per-stage traces and cohort changes across queueing, transfer, decode, and render.",
+              "isCorrect": true
+            },
+            {
+              "id": "alternative-one",
+              "label": "Buy GPUs before measuring any other stage.",
+              "isCorrect": false
+            }
+          ]
+        }
+      ],
+      "id": "d4923aeaf334",
+      "route": "/practice/software-engineering/product-interview-durable-generation-architecture-questionnaire",
+      "sourcePath": "content/exercises/software-engineering/product-interview-durable-generation-architecture-questionnaire.json",
+      "contentHash": "68a7b5434f795c243c37a73df49eaa00c449ca98fce4758f5a031920d985a485"
+    },
+    {
+      "slug": "software-engineering/product-interview-javascript-preview-coordinator-questionnaire",
+      "title": "Product Engineering Plain JavaScript Under Pressure Checkpoint",
+      "documentSlug": "software-engineering/product-interview-javascript-preview-coordinator",
+      "concept": "Plain JavaScript Under Pressure",
+      "difficulty": "senior",
+      "tags": [
+        "product-engineering",
+        "interview"
+      ],
+      "status": "published",
+      "sourceRefs": [
+        "product-interview-abort-controller",
+        "product-interview-websocket"
+      ],
+      "type": "questionnaire",
+      "questions": [
+        {
+          "id": "supersede",
+          "prompt": "A is active; B then C are submitted before A settles. What should run next?",
+          "explanation": "The bounded pending slot retains only C. Starting both increases concurrency beyond the contract; keeping A as the visible answer ignores current intent. Completion order cannot determine which input the artist now wants.",
+          "kind": "choice",
+          "options": [
+            {
+              "id": "answer",
+              "label": "Run C after A settles, and suppress A’s obsolete result.",
+              "isCorrect": true
+            },
+            {
+              "id": "alternative-one",
+              "label": "Run B and C immediately in parallel.",
+              "isCorrect": false
+            },
+            {
+              "id": "alternative-two",
+              "label": "Render A and discard C because A started first.",
+              "isCorrect": false
+            }
+          ]
+        },
+        {
+          "id": "abort",
+          "prompt": "The provider ignores AbortSignal and resolves after dispose. What prevents a stale render?",
+          "explanation": "Cancellation is a request to cooperating operations. A guard still prevents late local callbacks when cancellation is ignored; changing loading state cannot cancel an operation or prove remote work stopped.",
+          "kind": "choice",
+          "options": [
+            {
+              "id": "alternative-one",
+              "label": "AbortController guarantees the provider cannot return.",
+              "isCorrect": false
+            },
+            {
+              "id": "alternative-two",
+              "label": "Removing the spinner cancels remote computation.",
+              "isCorrect": false
+            },
+            {
+              "id": "answer",
+              "label": "A disposed/revision guard before every UI callback.",
+              "isCorrect": true
+            }
+          ]
+        },
+        {
+          "id": "error",
+          "prompt": "A fails after B was submitted. What should the coordinator do?",
+          "explanation": "Errors need the same revision guard as results: A no longer describes current intent. The slot must be released in finally so B can run; otherwise one old failure blocks all future work.",
+          "kind": "choice",
+          "options": [
+            {
+              "id": "alternative-two",
+              "label": "Keep the active slot occupied permanently.",
+              "isCorrect": false
+            },
+            {
+              "id": "answer",
+              "label": "Suppress A’s obsolete error and continue with B.",
+              "isCorrect": true
+            },
+            {
+              "id": "alternative-one",
+              "label": "Show A’s error as if B failed.",
+              "isCorrect": false
+            }
+          ]
+        },
+        {
+          "id": "deadline",
+          "prompt": "The active adapter never settles. Which statement is accurate?",
+          "explanation": "Finally runs when control leaves the awaited operation, not after an implicit timeout. Promise.race changes which promise you await; it does not stop the remote operation. Define deadline, cancellation, and capacity policy explicitly.",
+          "kind": "choice",
+          "options": [
+            {
+              "id": "answer",
+              "label": "The baseline blocks; a timeout alone does not prove remote work stopped.",
+              "isCorrect": true
+            },
+            {
+              "id": "alternative-one",
+              "label": "The finally block runs after a fixed JavaScript timeout automatically.",
+              "isCorrect": false
+            },
+            {
+              "id": "alternative-two",
+              "label": "Promise.race always cancels the losing operation.",
+              "isCorrect": false
+            }
+          ]
+        },
+        {
+          "id": "snapshot",
+          "prompt": "generate receives a mutable canvas object that is edited again before it reads the data. What is missing?",
+          "explanation": "A revision guard labels an operation but does not freeze its inputs. Snapshot the relevant state or use immutable revision references. A prompt-only cache omits identity, and component keys do not prevent object mutation.",
+          "kind": "choice",
+          "options": [
+            {
+              "id": "alternative-one",
+              "label": "A larger result cache keyed only by prompt.",
+              "isCorrect": false
+            },
+            {
+              "id": "alternative-two",
+              "label": "A React component key to freeze the object.",
+              "isCorrect": false
+            },
+            {
+              "id": "answer",
+              "label": "An immutable input snapshot or stable revision reference.",
+              "isCorrect": true
+            }
+          ]
+        },
+        {
+          "id": "export",
+          "prompt": "Can the same replace-newest-pending policy be used for accepted paid exports?",
+          "explanation": "Preview intents are replaceable by the agreed product contract. An accepted export is a durable commitment, so silently coalescing it loses work. A socket is a transport and does not survive failure as a job record.",
+          "kind": "choice",
+          "options": [
+            {
+              "id": "alternative-two",
+              "label": "Yes; a WebSocket connection is a durable queue.",
+              "isCorrect": false
+            },
+            {
+              "id": "answer",
+              "label": "No; accepted exports need durable identity and completion tracking.",
+              "isCorrect": true
+            },
+            {
+              "id": "alternative-one",
+              "label": "Yes; older accepted exports can always be discarded.",
+              "isCorrect": false
+            }
+          ]
+        }
+      ],
+      "id": "38a6ae825393",
+      "route": "/practice/software-engineering/product-interview-javascript-preview-coordinator-questionnaire",
+      "sourcePath": "content/exercises/software-engineering/product-interview-javascript-preview-coordinator-questionnaire.json",
+      "contentHash": "ae74e565a7ceebc2a063a56be7da441656a99ad73c403377a03219cd60be32be"
+    },
+    {
+      "slug": "software-engineering/product-interview-mock-interview-lab",
+      "title": "Product Engineering 75-Minute Product Engineering Mock",
+      "documentSlug": "software-engineering/product-interview-mock-interview",
+      "concept": "Coding, architecture, and production ownership",
+      "difficulty": "senior",
+      "tags": [
+        "product-engineering",
+        "interview",
+        "javascript",
+        "system-design"
+      ],
+      "status": "published",
+      "sourceRefs": [
+        "product-interview-sre-monitoring",
+        "product-interview-websocket"
+      ],
+      "type": "guided-lab",
+      "briefing": "Original, company-neutral product engineering rehearsal, not a reported interview question. Build a plain JavaScript preview coordinator, design durable paid exports, and defend two ownership stories. Use a local scratch file, blank diagram, and your own 75-minute timer. Code/design are self-assessed; the final checkpoint is scored. Reference lessons are linked from the mock interview article. Do the first attempt without AI tools or solutions.",
+      "objectives": [
+        "Prove one active generation and one newest pending input with controlled promises.",
+        "Separate ephemeral previews from durable jobs, authorization, and charging.",
+        "Trace a provider-success/worker-crash scenario and a reconnect gap.",
+        "Explain an actual ownership decision with measurements and honest limits."
+      ],
+      "prediction": {
+        "prompt": "Before drawing the system, where do you expect the hardest correctness failure?",
+        "options": [
+          {
+            "id": "preview-race",
+            "label": "Stale previews overwrite the current intent."
+          },
+          {
+            "id": "external-effect",
+            "label": "A retry repeats an uncertain provider or billing effect."
+          },
+          {
+            "id": "reconnect",
+            "label": "Reconnect loses the authoritative job state."
+          }
+        ]
+      },
+      "steps": [
+        {
+          "id": "scope",
+          "title": "0–5 minutes: clarify the contract",
+          "instructions": "An artist drags a slider faster than generation completes. Ask what may be coalesced, what must survive disconnect, what spends credits, and what current means. State that input is an immutable string snapshot and observers are synchronous/non-throwing. Separate observations from assumptions."
+        },
+        {
+          "id": "code",
+          "title": "5–25 minutes: implement in plain JavaScript",
+          "instructions": "Write createPreviewCoordinator({generate, render, onError}) exposing submit(input) and dispose(). Keep at most one unsettled generation and one newest pending input. Suppress obsolete success/errors. generate(input, {signal}) may throw, reject, or ignore cancellation. dispose drops pending work and prevents later callbacks; submit after disposal throws. No frameworks or automatic retries."
+        },
+        {
+          "id": "test",
+          "title": "25–30 minutes: prove the races",
+          "instructions": "Manually resolve A after B and C are submitted; only A then C may start and only C may render. Repeat with a stale rejection, a current rejection followed by recovery, a synchronous adapter throw, and disposal while A ignores abort. Explain O(1) bookkeeping/slots and why an adapter that never settles blocks the baseline."
+        },
+        {
+          "id": "design",
+          "title": "30–45 minutes: make exports durable",
+          "instructions": "Assume 2,000 editors and two preview intents per second, private workspace assets, and success-only export charging with reservation. Draw acceptance, job state, atomic outbox, queue/worker, provider, asset, ledger, and status paths. Define tenant-scoped idempotency, immutable inputs, per-tenant admission, authorization, and reconnect snapshot/replay. Numbers and policies are exercise assumptions."
+        },
+        {
+          "id": "failures",
+          "title": "45–60 minutes: inject production failures",
+          "instructions": "The provider succeeds but the worker crashes before saving its result. Trace reconciliation and redelivery without duplicate capture; explain what happens if the provider lacks idempotency. Then drop a socket update, revoke access, and add 10× load. Finally p95 latency rises while inference stays flat: name the traces, containment, rollback evidence, and recovery checks you need."
+        },
+        {
+          "id": "stories",
+          "title": "60–70 minutes: defend two ownership stories",
+          "instructions": "Use the CRM migration and entitlement repair, or other real examples. Give each a 90-second version, then defend one rejected alternative and one failure mode. Verify the units and measurement window for any throughput claim. Separate your work, team contributions, source tests, artifact startup, deployment, and confirmed recovery."
+        },
+        {
+          "id": "debrief",
+          "title": "70–75 minutes: score and ask",
+          "instructions": "Use the mock article’s six dimensions, each scored 0–4. Aim for 18/24 with none below 2 as a practice heuristic, not a hiring prediction. Pick one frontend/product question and one reliability/ownership question. Identify the weakest invariant and the next test that would improve it."
+        }
+      ],
+      "evidenceChecklist": [
+        {
+          "id": "contract",
+          "label": "I separated replaceable preview intents from durable accepted exports."
+        },
+        {
+          "id": "race-tests",
+          "label": "I demonstrated stale success, stale error, and disposal with controlled promises."
+        },
+        {
+          "id": "failure-slot",
+          "label": "I proved a failed generation releases its slot and stated the never-settles limit."
+        },
+        {
+          "id": "transaction",
+          "label": "I drew atomic job, reservation, and outbox acceptance."
+        },
+        {
+          "id": "reconcile",
+          "label": "I traced an unknown provider outcome without claiming exactly-once effects."
+        },
+        {
+          "id": "reconnect",
+          "label": "I explained versioned reconnect recovery and workspace authorization."
+        },
+        {
+          "id": "telemetry",
+          "label": "I defined user-facing signals and evidence needed to confirm recovery."
+        },
+        {
+          "id": "stories",
+          "label": "I rehearsed two factual ownership stories and scored all six rubric dimensions."
+        }
+      ],
+      "reflectionPrompts": [
+        "Which invariant did your first implementation violate, and which test exposed it?",
+        "Where would your design still have an uncertain outcome or an unbounded resource?",
+        "What did you personally own in your story, and which measurement supports the result?"
+      ],
+      "extensionChallenge": "Repeat with two collaborators editing a five-node workflow while one is offline. Explain cycle detection, shared-document merge/undo, node-level durable attempts, downstream invalidation, and the boundary between CRDT convergence and authorized paid execution.",
+      "estimatedMinutes": 75,
+      "id": "659cd366e0f2",
+      "route": "/practice/software-engineering/product-interview-mock-interview-lab",
+      "sourcePath": "content/exercises/software-engineering/product-interview-mock-interview-lab.json",
+      "contentHash": "6cfb751bd81cad5e0746526c3826ded94005994b538012034e006fe25428b325"
+    },
+    {
+      "slug": "software-engineering/product-interview-mock-interview-questionnaire",
+      "title": "Product Engineering 75-Minute Mock Interview Checkpoint",
+      "documentSlug": "software-engineering/product-interview-mock-interview",
+      "concept": "The 75-Minute Mock Interview",
+      "difficulty": "senior",
+      "tags": [
+        "product-engineering",
+        "interview"
+      ],
+      "status": "published",
+      "sourceRefs": [
+        "product-interview-pubsub"
+      ],
+      "type": "questionnaire",
+      "questions": [
+        {
+          "id": "evidence",
+          "prompt": "A generic interview site lists likely company questions without candidate provenance. How should you use it?",
+          "explanation": "Likely questions are inferred practice material, not candidate evidence. Neither the exact loop nor a contradiction with a specific briefing follows. Confirm logistics directly and prioritize primary role and product material.",
+          "kind": "choice",
+          "options": [
+            {
+              "id": "answer",
+              "label": "As optional speculation, not proof of the company’s actual questions.",
+              "isCorrect": true
+            },
+            {
+              "id": "alternative-one",
+              "label": "As a verified question bank for the next interview.",
+              "isCorrect": false
+            },
+            {
+              "id": "alternative-two",
+              "label": "As proof the supplied recruiter briefing is false.",
+              "isCorrect": false
+            }
+          ]
+        },
+        {
+          "id": "role",
+          "prompt": "A product engineering role combines frontend and collaboration work with durable jobs. How should preparation change?",
+          "explanation": "The role spans product surfaces and reliability, so the interview preparation should connect them. Backend-only study misses explicit qualifications; syntax memorization alone cannot explain state ownership or user-visible correctness.",
+          "kind": "choice",
+          "options": [
+            {
+              "id": "alternative-one",
+              "label": "Prepare only backend queue internals.",
+              "isCorrect": false
+            },
+            {
+              "id": "alternative-two",
+              "label": "Memorize Svelte syntax instead of practicing invariants.",
+              "isCorrect": false
+            },
+            {
+              "id": "answer",
+              "label": "Include frontend state, rendering, product judgment, and collaboration boundaries.",
+              "isCorrect": true
+            }
+          ]
+        },
+        {
+          "id": "rate",
+          "prompt": "Your story says traffic grew from 500 to 50,000 RPM. Which statement is accurate?",
+          "explanation": "Divide requests per minute by 60 and calculate the ratio as 50,000/500. Explain peak versus sustained, ingress versus processed events, and success rate so a capacity claim remains meaningful and defensible.",
+          "kind": "choice",
+          "options": [
+            {
+              "id": "alternative-two",
+              "label": "RPM is irrelevant if the architecture sounds scalable.",
+              "isCorrect": false
+            },
+            {
+              "id": "answer",
+              "label": "That is 100×, about 8.3 to 833 requests/second; define what was measured.",
+              "isCorrect": true
+            },
+            {
+              "id": "alternative-one",
+              "label": "That is 10× and 50,000 requests/second.",
+              "isCorrect": false
+            }
+          ]
+        },
+        {
+          "id": "recovery",
+          "prompt": "Tests and a build pass after an incident fix. What can you honestly claim?",
+          "explanation": "Source validation does not establish the final pruned runtime, deployment state, or customer recovery. Separate each evidence layer and name unknown impact. Local dependencies can hide packaging failures.",
+          "kind": "choice",
+          "options": [
+            {
+              "id": "answer",
+              "label": "Code validation passed; artifact startup, deployment, and recovery need their own evidence.",
+              "isCorrect": true
+            },
+            {
+              "id": "alternative-one",
+              "label": "Customers are fully recovered with no data loss.",
+              "isCorrect": false
+            },
+            {
+              "id": "alternative-two",
+              "label": "The production dependency graph must be correct because local tests passed.",
+              "isCorrect": false
+            }
+          ]
+        },
+        {
+          "id": "showcase",
+          "prompt": "A founder says a new model and agent platform were showcased. What does that establish?",
+          "explanation": "A showcase supports knowledge of product direction. It does not establish availability, API guarantees, or the interview question. Ask how the announced work affects the role rather than converting a preview into a shipped contract.",
+          "kind": "choice",
+          "options": [
+            {
+              "id": "alternative-one",
+              "label": "Every customer can use a stable API for the new model now.",
+              "isCorrect": false
+            },
+            {
+              "id": "alternative-two",
+              "label": "Your interview will definitely require agent framework coding.",
+              "isCorrect": false
+            },
+            {
+              "id": "answer",
+              "label": "A public showcase, not general availability or your interview format.",
+              "isCorrect": true
+            }
+          ]
+        },
+        {
+          "id": "pubsub",
+          "prompt": "An interviewer asks why Pub/Sub instead of webhooks. What is the strongest response?",
+          "explanation": "A durable message system and HTTP push delivery address different layers and can be combined. Explain the actual requirements and failure ownership. Transport delivery guarantees do not automatically make arbitrary external side effects exactly once.",
+          "kind": "choice",
+          "options": [
+            {
+              "id": "alternative-two",
+              "label": "Pub/Sub guarantees all downstream effects happen exactly once.",
+              "isCorrect": false
+            },
+            {
+              "id": "answer",
+              "label": "Compare durability, replay, fan-out, and delivery ownership; Pub/Sub can also push over HTTP.",
+              "isCorrect": true
+            },
+            {
+              "id": "alternative-one",
+              "label": "Webhooks cannot be used with any durable queue.",
+              "isCorrect": false
+            }
+          ]
+        }
+      ],
+      "id": "34994d2e2dc3",
+      "route": "/practice/software-engineering/product-interview-mock-interview-questionnaire",
+      "sourcePath": "content/exercises/software-engineering/product-interview-mock-interview-questionnaire.json",
+      "contentHash": "5c2b4a808f35e6acdc8a76cbd40fd56acee962755d22d53c0522126b1301e509"
     },
     {
       "slug": "system-design/cache-product-contract",
@@ -83369,6 +84369,176 @@
       "contentHash": "a82f67bfdd9e899a57d5298f4931036f1522a70bc299ce745b59c687658de80f"
     },
     {
+      "slug": "product-engineering-interview",
+      "pathSlug": "product-engineering-interview",
+      "title": "Product Engineering Interview Briefs",
+      "summary": "Twelve quick reviews for preview races, durable job correctness, role fit, and credible ownership stories.",
+      "audience": "Engineers reviewing before a product engineering interview.",
+      "status": "published",
+      "cards": [
+        {
+          "id": "product-interview-supersede",
+          "type": "interview",
+          "title": "Interview: Supersede",
+          "prompt": "A is active; B then C are submitted before A settles. What should run next?",
+          "explanation": "Run C after A settles, and suppress A’s obsolete result. The bounded pending slot retains only C. Starting both increases concurrency beyond the contract; keeping A as the visible answer ignores current intent. Completion order cannot determine which input the artist now wants.",
+          "difficulty": "senior",
+          "tags": [
+            "product-engineering",
+            "interview"
+          ],
+          "sourceDocSlug": "software-engineering/product-interview-javascript-preview-coordinator"
+        },
+        {
+          "id": "product-interview-abort",
+          "type": "interview",
+          "title": "Interview: Abort",
+          "prompt": "The provider ignores AbortSignal and resolves after dispose. What prevents a stale render?",
+          "explanation": "A disposed/revision guard before every UI callback. Cancellation is a request to cooperating operations. A guard still prevents late local callbacks when cancellation is ignored; changing loading state cannot cancel an operation or prove remote work stopped.",
+          "difficulty": "senior",
+          "tags": [
+            "product-engineering",
+            "interview"
+          ],
+          "sourceDocSlug": "software-engineering/product-interview-javascript-preview-coordinator"
+        },
+        {
+          "id": "product-interview-error",
+          "type": "interview",
+          "title": "Interview: Error",
+          "prompt": "A fails after B was submitted. What should the coordinator do?",
+          "explanation": "Suppress A’s obsolete error and continue with B. Errors need the same revision guard as results: A no longer describes current intent. The slot must be released in finally so B can run; otherwise one old failure blocks all future work.",
+          "difficulty": "senior",
+          "tags": [
+            "product-engineering",
+            "interview"
+          ],
+          "sourceDocSlug": "software-engineering/product-interview-javascript-preview-coordinator"
+        },
+        {
+          "id": "product-interview-deadline",
+          "type": "interview",
+          "title": "Interview: Deadline",
+          "prompt": "The active adapter never settles. Which statement is accurate?",
+          "explanation": "The baseline blocks; a timeout alone does not prove remote work stopped. Finally runs when control leaves the awaited operation, not after an implicit timeout. Promise.race changes which promise you await; it does not stop the remote operation. Define deadline, cancellation, and capacity policy explicitly.",
+          "difficulty": "senior",
+          "tags": [
+            "product-engineering",
+            "interview"
+          ],
+          "sourceDocSlug": "software-engineering/product-interview-javascript-preview-coordinator"
+        },
+        {
+          "id": "product-interview-uncertain",
+          "type": "interview",
+          "title": "Interview: Uncertain",
+          "prompt": "A provider finished an export; the worker crashed before recording success. What is the safest retry plan?",
+          "explanation": "Reconcile via a stable provider key or operation ID before repeating the effect. Redelivery proves the message needs handling, not that the external effect failed. Reconcile a stable operation identity where supported. Otherwise keep the uncertainty explicit; neither blind retries nor invented success preserve correctness.",
+          "difficulty": "senior",
+          "tags": [
+            "product-engineering",
+            "interview"
+          ],
+          "sourceDocSlug": "software-engineering/product-interview-durable-generation-architecture"
+        },
+        {
+          "id": "product-interview-outbox",
+          "type": "interview",
+          "title": "Interview: Outbox",
+          "prompt": "The API writes a job, then crashes before publishing its queue message. Which design closes this gap?",
+          "explanation": "Commit the job, credit reservation, and outbox record atomically. An atomic job/reservation/outbox transaction leaves durable dispatch intent after a crash. Publishing first can create work without an accepted job or reservation. A tab cannot preserve the backend acceptance contract.",
+          "difficulty": "senior",
+          "tags": [
+            "product-engineering",
+            "interview"
+          ],
+          "sourceDocSlug": "software-engineering/product-interview-durable-generation-architecture"
+        },
+        {
+          "id": "product-interview-idempotency",
+          "type": "interview",
+          "title": "Interview: Idempotency",
+          "prompt": "Two workspaces reuse the same idempotency key. What is the correct boundary?",
+          "explanation": "Scope the key to the workspace and compare the request fingerprint. Tenant scope prevents unrelated requests colliding or leaking results. A body fingerprint detects changed requests under the same key. Prompt text omits workspace, input revision, model, and configuration identity.",
+          "difficulty": "senior",
+          "tags": [
+            "product-engineering",
+            "interview"
+          ],
+          "sourceDocSlug": "software-engineering/product-interview-durable-generation-architecture"
+        },
+        {
+          "id": "product-interview-fencing",
+          "type": "interview",
+          "title": "Interview: Fencing",
+          "prompt": "Worker A pauses, its lease expires, and worker B commits success. A resumes. What protects the result?",
+          "explanation": "A guarded state transition with the current attempt/fencing token. A lease can expire while its previous holder is still running. The commit must validate attempt ownership and state/version, so stale workers cannot overwrite B. Last-write-wins is unsafe for results and ledger transitions.",
+          "difficulty": "senior",
+          "tags": [
+            "product-engineering",
+            "interview"
+          ],
+          "sourceDocSlug": "software-engineering/product-interview-durable-generation-architecture"
+        },
+        {
+          "id": "product-interview-evidence",
+          "type": "interview",
+          "title": "Interview: Evidence",
+          "prompt": "A generic interview site lists likely company questions without candidate provenance. How should you use it?",
+          "explanation": "As optional speculation, not proof of the company’s actual questions. Likely questions are inferred practice material, not candidate evidence. Neither the exact loop nor a contradiction with a specific briefing follows. Confirm logistics directly and prioritize primary role and product material.",
+          "difficulty": "senior",
+          "tags": [
+            "product-engineering",
+            "interview"
+          ],
+          "sourceDocSlug": "software-engineering/product-interview-mock-interview"
+        },
+        {
+          "id": "product-interview-role",
+          "type": "interview",
+          "title": "Interview: Role",
+          "prompt": "A product engineering role combines frontend and collaboration work with durable jobs. How should preparation change?",
+          "explanation": "Include frontend state, rendering, product judgment, and collaboration boundaries. The role spans product surfaces and reliability, so the interview preparation should connect them. Backend-only study misses explicit qualifications; syntax memorization alone cannot explain state ownership or user-visible correctness.",
+          "difficulty": "senior",
+          "tags": [
+            "product-engineering",
+            "interview"
+          ],
+          "sourceDocSlug": "software-engineering/product-interview-mock-interview"
+        },
+        {
+          "id": "product-interview-rate",
+          "type": "interview",
+          "title": "Interview: Rate",
+          "prompt": "Your story says traffic grew from 500 to 50,000 RPM. Which statement is accurate?",
+          "explanation": "That is 100×, about 8.3 to 833 requests/second; define what was measured. Divide requests per minute by 60 and calculate the ratio as 50,000/500. Explain peak versus sustained, ingress versus processed events, and success rate so a capacity claim remains meaningful and defensible.",
+          "difficulty": "senior",
+          "tags": [
+            "product-engineering",
+            "interview"
+          ],
+          "sourceDocSlug": "software-engineering/product-interview-mock-interview"
+        },
+        {
+          "id": "product-interview-recovery",
+          "type": "interview",
+          "title": "Interview: Recovery",
+          "prompt": "Tests and a build pass after an incident fix. What can you honestly claim?",
+          "explanation": "Code validation passed; artifact startup, deployment, and recovery need their own evidence. Source validation does not establish the final pruned runtime, deployment state, or customer recovery. Separate each evidence layer and name unknown impact. Local dependencies can hide packaging failures.",
+          "difficulty": "senior",
+          "tags": [
+            "product-engineering",
+            "interview"
+          ],
+          "sourceDocSlug": "software-engineering/product-interview-mock-interview"
+        }
+      ],
+      "id": "9215b599370e",
+      "route": "/paths/product-engineering-interview/flashcards",
+      "sourcePath": "content/flashcard-feeds/product-engineering-interview.json",
+      "contentHash": "a29c57814a1e870aa80f2aa56d95bd5f7518457d52a0543b7cbdf930514aab55"
+    },
+    {
       "slug": "python-for-ts-js-engineers",
       "pathSlug": "python-for-ts-js-engineers",
       "title": "Python Flashcard Feed",
@@ -91903,11 +93073,12 @@
     {
       "name": "Software Engineering",
       "slug": "software-engineering",
-      "documentCount": 1,
+      "documentCount": 5,
       "difficulties": [
         "senior"
       ],
       "topics": [
+        "Interview Preparation",
         "Observability"
       ]
     },

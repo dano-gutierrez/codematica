@@ -13,3 +13,4 @@ This folder stores canonical metadata for external primary sources referenced by
 Run `npm run content:check` after any source change. Never hand-edit the generated content index.
 
 - `rtk-query.json` anchors the RTK curriculum to official docs and pinned releases/source files. Reverify the npm version, release notes, and both case-study/current source paths when refreshing the dated baseline.
+- `product-engineering-interview.json` contains only general MDN, Google Cloud, Google SRE, and OpenTelemetry references for the company-neutral interview pack. Keep employer identities and identifying URLs out of source metadata. Change verification dates only after checking the actual technical sources.

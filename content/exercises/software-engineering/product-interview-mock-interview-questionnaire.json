@@ -1,0 +1,156 @@
+{
+  "slug": "software-engineering/product-interview-mock-interview-questionnaire",
+  "title": "Product Engineering 75-Minute Mock Interview Checkpoint",
+  "type": "questionnaire",
+  "documentSlug": "software-engineering/product-interview-mock-interview",
+  "concept": "The 75-Minute Mock Interview",
+  "difficulty": "senior",
+  "tags": [
+    "product-engineering",
+    "interview"
+  ],
+  "status": "published",
+  "sourceRefs": [
+    "product-interview-pubsub"
+  ],
+  "questions": [
+    {
+      "id": "evidence",
+      "kind": "choice",
+      "prompt": "A generic interview site lists likely company questions without candidate provenance. How should you use it?",
+      "options": [
+        {
+          "id": "answer",
+          "label": "As optional speculation, not proof of the company’s actual questions.",
+          "isCorrect": true
+        },
+        {
+          "id": "alternative-one",
+          "label": "As a verified question bank for the next interview.",
+          "isCorrect": false
+        },
+        {
+          "id": "alternative-two",
+          "label": "As proof the supplied recruiter briefing is false.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "Likely questions are inferred practice material, not candidate evidence. Neither the exact loop nor a contradiction with a specific briefing follows. Confirm logistics directly and prioritize primary role and product material."
+    },
+    {
+      "id": "role",
+      "kind": "choice",
+      "prompt": "A product engineering role combines frontend and collaboration work with durable jobs. How should preparation change?",
+      "options": [
+        {
+          "id": "alternative-one",
+          "label": "Prepare only backend queue internals.",
+          "isCorrect": false
+        },
+        {
+          "id": "alternative-two",
+          "label": "Memorize Svelte syntax instead of practicing invariants.",
+          "isCorrect": false
+        },
+        {
+          "id": "answer",
+          "label": "Include frontend state, rendering, product judgment, and collaboration boundaries.",
+          "isCorrect": true
+        }
+      ],
+      "explanation": "The role spans product surfaces and reliability, so the interview preparation should connect them. Backend-only study misses explicit qualifications; syntax memorization alone cannot explain state ownership or user-visible correctness."
+    },
+    {
+      "id": "rate",
+      "kind": "choice",
+      "prompt": "Your story says traffic grew from 500 to 50,000 RPM. Which statement is accurate?",
+      "options": [
+        {
+          "id": "alternative-two",
+          "label": "RPM is irrelevant if the architecture sounds scalable.",
+          "isCorrect": false
+        },
+        {
+          "id": "answer",
+          "label": "That is 100×, about 8.3 to 833 requests/second; define what was measured.",
+          "isCorrect": true
+        },
+        {
+          "id": "alternative-one",
+          "label": "That is 10× and 50,000 requests/second.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "Divide requests per minute by 60 and calculate the ratio as 50,000/500. Explain peak versus sustained, ingress versus processed events, and success rate so a capacity claim remains meaningful and defensible."
+    },
+    {
+      "id": "recovery",
+      "kind": "choice",
+      "prompt": "Tests and a build pass after an incident fix. What can you honestly claim?",
+      "options": [
+        {
+          "id": "answer",
+          "label": "Code validation passed; artifact startup, deployment, and recovery need their own evidence.",
+          "isCorrect": true
+        },
+        {
+          "id": "alternative-one",
+          "label": "Customers are fully recovered with no data loss.",
+          "isCorrect": false
+        },
+        {
+          "id": "alternative-two",
+          "label": "The production dependency graph must be correct because local tests passed.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "Source validation does not establish the final pruned runtime, deployment state, or customer recovery. Separate each evidence layer and name unknown impact. Local dependencies can hide packaging failures."
+    },
+    {
+      "id": "showcase",
+      "kind": "choice",
+      "prompt": "A founder says a new model and agent platform were showcased. What does that establish?",
+      "options": [
+        {
+          "id": "alternative-one",
+          "label": "Every customer can use a stable API for the new model now.",
+          "isCorrect": false
+        },
+        {
+          "id": "alternative-two",
+          "label": "Your interview will definitely require agent framework coding.",
+          "isCorrect": false
+        },
+        {
+          "id": "answer",
+          "label": "A public showcase, not general availability or your interview format.",
+          "isCorrect": true
+        }
+      ],
+      "explanation": "A showcase supports knowledge of product direction. It does not establish availability, API guarantees, or the interview question. Ask how the announced work affects the role rather than converting a preview into a shipped contract."
+    },
+    {
+      "id": "pubsub",
+      "kind": "choice",
+      "prompt": "An interviewer asks why Pub/Sub instead of webhooks. What is the strongest response?",
+      "options": [
+        {
+          "id": "alternative-two",
+          "label": "Pub/Sub guarantees all downstream effects happen exactly once.",
+          "isCorrect": false
+        },
+        {
+          "id": "answer",
+          "label": "Compare durability, replay, fan-out, and delivery ownership; Pub/Sub can also push over HTTP.",
+          "isCorrect": true
+        },
+        {
+          "id": "alternative-one",
+          "label": "Webhooks cannot be used with any durable queue.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "A durable message system and HTTP push delivery address different layers and can be combined. Explain the actual requirements and failure ownership. Transport delivery guarantees do not automatically make arbitrary external side effects exactly once."
+    }
+  ]
+}

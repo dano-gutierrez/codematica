@@ -103,6 +103,7 @@ The first hosted web target is Vercel Hobby on the Vercel-provided URL. Vercel r
 
 ## Feature Index
 
+- `docs/features/product-engineering-interview-preparation.md`: company-neutral interview research, original JavaScript/architecture exercises, and a guided mock using existing study components.
 - `docs/CHANGELOG.md`: dated cross-feature delivery summaries; feature documents remain authoritative.
 - `docs/features/home-discovery.md`: cross-section home, global local search, curated rows, stable themes, and full catalog routes.
 - `docs/features/markdown-knowledge-browser.md`: V1 Markdown browser, search, diagrams, content indexing, and Supabase scaffold.

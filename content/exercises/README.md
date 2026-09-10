@@ -2,6 +2,8 @@
 
 This folder contains manually authored practice prompts for Codematica learning paths.
 
+The Product Engineering preparation pack under `software-engineering/product-interview-*.json` uses three six-question checkpoints and one 75-minute guided lab. The lab is an original rehearsal with evidence checks; only questionnaire answers receive automatic grading. Scratch code and architectural reasoning remain self-assessed.
+
 - Author exercises as `.json` files under concept folders.
 - Supported `type` values are `flashcard`, `cloze`, `questionnaire`, `writing`, and `guided-lab`.
 - Flashcards require `prompt`, `answer`, and `explanation`.

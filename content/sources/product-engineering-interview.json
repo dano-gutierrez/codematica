@@ -1,0 +1,44 @@
+{
+  "sources": [
+    {
+      "id": "product-interview-abort-controller",
+      "title": "AbortController",
+      "provider": "MDN Web Docs",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/API/AbortController",
+      "attribution": "MDN contributors. Cancellation interface used by the original JavaScript exercise.",
+      "lastVerifiedAt": "2026-09-09"
+    },
+    {
+      "id": "product-interview-websocket",
+      "title": "WebSocket API and backpressure",
+      "provider": "MDN Web Docs",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/API/WebSockets_API",
+      "attribution": "MDN contributors. Classic WebSocket buffering/backpressure limitations.",
+      "lastVerifiedAt": "2026-09-09"
+    },
+    {
+      "id": "product-interview-pubsub",
+      "title": "Choose a Pub/Sub subscription type",
+      "provider": "Google Cloud",
+      "url": "https://docs.cloud.google.com/pubsub/docs/subscriber",
+      "attribution": "Google Cloud documentation. Push and pull subscriber delivery models.",
+      "lastVerifiedAt": "2026-09-09"
+    },
+    {
+      "id": "product-interview-sre-monitoring",
+      "title": "Monitoring Distributed Systems",
+      "provider": "Google SRE",
+      "url": "https://sre.google/sre-book/monitoring-distributed-systems/",
+      "attribution": "Google SRE book. Monitoring and the four golden signals; exercise thresholds are authored assumptions.",
+      "lastVerifiedAt": "2026-09-09"
+    },
+    {
+      "id": "product-interview-otel",
+      "title": "OpenTelemetry Traces",
+      "provider": "OpenTelemetry",
+      "url": "https://opentelemetry.io/docs/concepts/signals/traces/",
+      "attribution": "OpenTelemetry contributors. Traces and causal operations across services.",
+      "lastVerifiedAt": "2026-09-09"
+    }
+  ]
+}

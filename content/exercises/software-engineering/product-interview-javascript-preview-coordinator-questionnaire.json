@@ -1,0 +1,157 @@
+{
+  "slug": "software-engineering/product-interview-javascript-preview-coordinator-questionnaire",
+  "title": "Product Engineering Plain JavaScript Under Pressure Checkpoint",
+  "type": "questionnaire",
+  "documentSlug": "software-engineering/product-interview-javascript-preview-coordinator",
+  "concept": "Plain JavaScript Under Pressure",
+  "difficulty": "senior",
+  "tags": [
+    "product-engineering",
+    "interview"
+  ],
+  "status": "published",
+  "sourceRefs": [
+    "product-interview-abort-controller",
+    "product-interview-websocket"
+  ],
+  "questions": [
+    {
+      "id": "supersede",
+      "kind": "choice",
+      "prompt": "A is active; B then C are submitted before A settles. What should run next?",
+      "options": [
+        {
+          "id": "answer",
+          "label": "Run C after A settles, and suppress A’s obsolete result.",
+          "isCorrect": true
+        },
+        {
+          "id": "alternative-one",
+          "label": "Run B and C immediately in parallel.",
+          "isCorrect": false
+        },
+        {
+          "id": "alternative-two",
+          "label": "Render A and discard C because A started first.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "The bounded pending slot retains only C. Starting both increases concurrency beyond the contract; keeping A as the visible answer ignores current intent. Completion order cannot determine which input the artist now wants."
+    },
+    {
+      "id": "abort",
+      "kind": "choice",
+      "prompt": "The provider ignores AbortSignal and resolves after dispose. What prevents a stale render?",
+      "options": [
+        {
+          "id": "alternative-one",
+          "label": "AbortController guarantees the provider cannot return.",
+          "isCorrect": false
+        },
+        {
+          "id": "alternative-two",
+          "label": "Removing the spinner cancels remote computation.",
+          "isCorrect": false
+        },
+        {
+          "id": "answer",
+          "label": "A disposed/revision guard before every UI callback.",
+          "isCorrect": true
+        }
+      ],
+      "explanation": "Cancellation is a request to cooperating operations. A guard still prevents late local callbacks when cancellation is ignored; changing loading state cannot cancel an operation or prove remote work stopped."
+    },
+    {
+      "id": "error",
+      "kind": "choice",
+      "prompt": "A fails after B was submitted. What should the coordinator do?",
+      "options": [
+        {
+          "id": "alternative-two",
+          "label": "Keep the active slot occupied permanently.",
+          "isCorrect": false
+        },
+        {
+          "id": "answer",
+          "label": "Suppress A’s obsolete error and continue with B.",
+          "isCorrect": true
+        },
+        {
+          "id": "alternative-one",
+          "label": "Show A’s error as if B failed.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "Errors need the same revision guard as results: A no longer describes current intent. The slot must be released in finally so B can run; otherwise one old failure blocks all future work."
+    },
+    {
+      "id": "deadline",
+      "kind": "choice",
+      "prompt": "The active adapter never settles. Which statement is accurate?",
+      "options": [
+        {
+          "id": "answer",
+          "label": "The baseline blocks; a timeout alone does not prove remote work stopped.",
+          "isCorrect": true
+        },
+        {
+          "id": "alternative-one",
+          "label": "The finally block runs after a fixed JavaScript timeout automatically.",
+          "isCorrect": false
+        },
+        {
+          "id": "alternative-two",
+          "label": "Promise.race always cancels the losing operation.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "Finally runs when control leaves the awaited operation, not after an implicit timeout. Promise.race changes which promise you await; it does not stop the remote operation. Define deadline, cancellation, and capacity policy explicitly."
+    },
+    {
+      "id": "snapshot",
+      "kind": "choice",
+      "prompt": "generate receives a mutable canvas object that is edited again before it reads the data. What is missing?",
+      "options": [
+        {
+          "id": "alternative-one",
+          "label": "A larger result cache keyed only by prompt.",
+          "isCorrect": false
+        },
+        {
+          "id": "alternative-two",
+          "label": "A React component key to freeze the object.",
+          "isCorrect": false
+        },
+        {
+          "id": "answer",
+          "label": "An immutable input snapshot or stable revision reference.",
+          "isCorrect": true
+        }
+      ],
+      "explanation": "A revision guard labels an operation but does not freeze its inputs. Snapshot the relevant state or use immutable revision references. A prompt-only cache omits identity, and component keys do not prevent object mutation."
+    },
+    {
+      "id": "export",
+      "kind": "choice",
+      "prompt": "Can the same replace-newest-pending policy be used for accepted paid exports?",
+      "options": [
+        {
+          "id": "alternative-two",
+          "label": "Yes; a WebSocket connection is a durable queue.",
+          "isCorrect": false
+        },
+        {
+          "id": "answer",
+          "label": "No; accepted exports need durable identity and completion tracking.",
+          "isCorrect": true
+        },
+        {
+          "id": "alternative-one",
+          "label": "Yes; older accepted exports can always be discarded.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "Preview intents are replaceable by the agreed product contract. An accepted export is a durable commitment, so silently coalescing it loses work. A socket is a transport and does not survive failure as a job record."
+    }
+  ]
+}

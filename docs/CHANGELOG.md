@@ -2,6 +2,14 @@
 
 This changelog records durable, user-visible and architectural changes. Feature documents remain the authoritative contracts; this file explains when a group of related changes landed and points readers to the owning documentation.
 
+## 2026-09-10 — Product Engineering Interview Preparation
+
+- Added a company-neutral interview research guide, role-fit questions, and general technical references. Names, recruiting links, routes, tags, and metadata reveal no target employer.
+- Added four lessons, a tested plain JavaScript preview drill, durable export architecture diagrams, eighteen scenario questions, a 75-minute guided mock, and twelve passive briefs.
+- Reused existing local-first web/native study surfaces; no runtime dependencies, schema changes, or coverage threshold changes.
+
+Owning contract: `docs/features/product-engineering-interview-preparation.md`.
+
 ## 2026-09-09 — RTK Query Interview Preparation
 
 - Added seven source-linked RTK Query lessons, 42 scenario questions, and 21 passive briefs using existing study components.
