@@ -1,10 +1,10 @@
 {
   "slug": "database-indexes-and-search",
   "title": "Database Indexes And Search",
-  "summary": "Learn how database indexes, PostgreSQL HOT update performance, full text search, trigram fuzzy matching, and hybrid search queries behave under production constraints.",
+  "summary": "Learn database indexes, PostgreSQL HOT updates, full text and fuzzy search, connection pooling, capacity budgets, and resilient database access.",
   "kind": "skill",
   "category": "Databases",
-  "audience": "Backend, full-stack, and platform engineers who need practical judgment for database indexes and search queries.",
+  "audience": "Backend, full-stack, and platform engineers who need practical judgment for database performance, search, and connection management.",
   "status": "published",
   "units": [
     {
@@ -50,6 +50,15 @@
       "nodes": [
         { "kind": "document", "slug": "databases/postgres-hybrid-search-query" },
         { "kind": "exercise", "slug": "databases/postgres-hybrid-search-query-questionnaire" }
+      ]
+    },
+    {
+      "slug": "postgres-connection-pooling",
+      "title": "Connection Pooling And Resilience",
+      "summary": "Budget application and pooler connections, compare pooling modes, and practice shutdown, spot, and overload decisions.",
+      "nodes": [
+        { "kind": "document", "slug": "databases/postgres-connection-pooling" },
+        { "kind": "exercise", "slug": "databases/postgres-connection-pooling-questionnaire" }
       ]
     }
   ]

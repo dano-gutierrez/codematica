@@ -32,3 +32,5 @@ Passive scroll-only flashcards are authored separately in `content/flashcard-fee
 Frontend interview checkpoints contain eight questions each: seven requirement/trace/bug/tradeoff choices and one ordered implementation recipe. Explain why distractors fail; quiz completion remains transient and supports continuing to the next lesson or an opt-in final review feed.
 
 The supplementary `frontend/react-state-async-questionnaire.json` has six scenario choices about snapshots, functional updates, updater purity, same-item races, and cleanup. It links to its standalone Markdown lesson and does not extend the seven-unit interview path.
+
+The database connection-pooling checkpoint uses six scenario choices, four numerical cloze calculations, one shutdown ordering task, and one pooling-mode matching task. Keep the numerical answers aligned with the lesson assumptions; explain why unsafe shortcuts fail. It uses the existing questionnaire and executes no database operations.

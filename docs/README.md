@@ -26,7 +26,7 @@ Conventions:
 - `docs/features/ml-systems-career-path.md` owns the Harvard CS249r source-linked career roadmap, authored prerequisites/Foundation companions, guided labs, and upstream refresh contract.
 - `docs/features/programming-language-refresh.md` owns reusable programming-language refresh paths, starting with Python for TypeScript and JavaScript engineers.
 - `docs/features/llm-application-engineering.md` owns the Langfuse and LangChain AI engineering path, including local lessons, diagrams, quizzes, passive flashcards, and non-executable coding challenge sections.
-- `docs/features/database-indexes-learning-path.md` owns the database indexes, PostgreSQL HOT updates, and PostgreSQL search path, including local lessons, quizzes, passive flashcards, and future SQL editor roadmap boundaries.
+- `docs/features/database-indexes-learning-path.md` owns the database indexes, PostgreSQL HOT updates, PostgreSQL search, and connection-pooling path, including local lessons, quizzes, passive flashcards, and future SQL editor roadmap boundaries.
 - `docs/features/advanced-nextjs-16-learning-path.md` owns the advanced Front-End Development skill path for Next.js 16 rendering, caching, `force-dynamic`, invalidation, performance, migration, quizzes, and one-minute brief cards.
 - `docs/features/rtk-query-interview-preparation.md` owns the RTK Query interview path, seven sourced lessons, 42 scenario questions, 21 briefs, and versioned persistence case study.
 - `docs/features/product-engineering-interview-preparation.md` owns the Product Engineering research brief, plain JavaScript/durable workflow drills, 75-minute guided mock, 18 checkpoint questions, and twelve review cards.

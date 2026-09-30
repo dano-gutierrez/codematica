@@ -1804,6 +1804,143 @@
       "readingMinutes": 6
     },
     {
+      "title": "PostgreSQL Connection Pools And Production Resilience",
+      "slug": "databases/postgres-connection-pooling",
+      "summary": "Understand application pools, PgDog and PgBouncer transaction pooling, fleet connection budgets, queueing, graceful shutdown, spot interruptions, and safe rollout evidence.",
+      "track": "Databases",
+      "topic": "Connection Management",
+      "difficulty": "senior",
+      "tags": [
+        "postgres",
+        "connection-pooling",
+        "pgdog",
+        "pgbouncer",
+        "database-optimization",
+        "graceful-shutdown",
+        "kubernetes"
+      ],
+      "prerequisites": [
+        "SQL transactions and connection lifetimes",
+        "Basic application replicas and Kubernetes pods"
+      ],
+      "diagramRefs": [],
+      "status": "published",
+      "id": "3a6c0b28ed3f",
+      "route": "/docs/databases/postgres-connection-pooling",
+      "sourcePath": "content/knowledge/databases/postgres-connection-pooling.md",
+      "bodyPath": "content/knowledge/databases/postgres-connection-pooling.md",
+      "markdown": "## What This Optimization Changes\n\nA connection pool reuses database connections. A shared pooler lets many application clients take turns using fewer PostgreSQL connections, reducing connection overhead and controlling concurrent database work. It cannot make an expensive query cheap or add database CPU capacity.\n\nLearn to budget fleet connections, explain transaction pooling, choose a compatible mode, and design shutdown and failure tests. Use the [interactive checkpoint](/practice/databases/postgres-connection-pooling-questionnaire?path=database-indexes-and-search) to calculate limits, order shutdown steps, and diagnose failures. The [review feed](/paths/database-indexes-and-search/flashcards) reinforces the key decisions.\n\n### The Reported Titan Scenario\n\nThe motivating report described connection pressure around Titan, Saturn pods exposed to spot interruptions, a connection ceiling of **1,187**, a **30-second warning**, and PgDog available in staging but not production. These reported inputs are unverified and do not establish an incident diagnosis. Verify the cloud provider, actual limits, pool count, interruption sequence, and deployed PgDog version. The worked examples use invented workloads, timings, and configurations.\n\nThe four suggested actions address separate problems:\n\n| Action | Intended effect | What still needs work |\n| --- | --- | --- |\n| Set an explicit application pool `max` | Bounds connections from each pool | Count every process, pool, replica, and deployment overlap |\n| Close pools during `SIGTERM` handling | Releases resources during an orderly exit | Drain work first; crashes and partitions can bypass cleanup |\n| Limit and spread spot workloads | Reduces correlated application loss and replacement bursts | Maintain enough stable capacity and test its recovery behavior |\n| Introduce a production pooler | Reuses database backends across application clients | Budget all pooler replicas, validate compatibility, and operate it reliably |\n\n## Separate Requests, Clients, And Backends\n\nAn HTTP request is work arriving at your application. An application pool client is a database-protocol connection held by one application process. A PostgreSQL backend connection is a session at the database server. With direct connections, the last two usually correspond one-to-one. A transaction pooler separates their lifetimes.\n\n```mermaid\nflowchart TD\n  A[\"Application pods: bounded local pools\"] --> B[\"Client connections to shared pooler\"]\n  B --> C[\"Wait for an available backend\"]\n  C --> D[\"Bounded PostgreSQL backend pool\"]\n  D --> E[\"PostgreSQL executes transactions\"]\n  F[\"Budgeted direct tools and migrations\"] --> E\n```\n\nThink of backends as checkout counters: an application pool reserves them for one process; a shared pooler lets several processes use them at different times. A longer queue creates neither more counters nor faster cashiers.\n\nApplication pools remain useful behind a pooler: they reuse sockets to the proxy and limit local concurrency. Creating a new pool per request defeats reuse. Conversely, one singleton in each process is still many pools across a deployment. Count HTTP processes, queue workers, scheduled jobs, ORM clients, tenant-specific pools, and read/write pools by their actual destination. The [node-postgres sizing guide](https://node-postgres.com/guides/pool-sizing) explicitly treats pool size as a fleet-wide decision.\n\nPostgreSQL dedicates resources to connections, and raising `max_connections` increases some resource allocations. A high connection ceiling is therefore a limit to respect, not a throughput target. Reserve emergency access according to the deployed version and managed-service rules; do not grant application roles emergency privileges to evade admission limits. See [PostgreSQL connection settings](https://www.postgresql.org/docs/18/runtime-config-connection.html).\n\n## How Transaction Pooling Works\n\nIn transaction mode, the pooler assigns a backend for a transaction and makes it available again after the transaction finishes and required cleanup completes. The next transaction from the same client may use a different backend. Autocommit statements are transactions too. See [PgDog transaction mode](https://docs.pgdog.dev/features/connection-pooler/transaction-mode/).\n\n```mermaid\nsequenceDiagram\n  participant A as Client A\n  participant P as Pooler\n  participant D as Backend 1\n  participant B as Client B\n  A->>P: BEGIN and query\n  P->>D: Assign backend to A\n  B->>P: Another transaction arrives\n  Note over P,B: B waits if every backend is occupied\n  A->>P: COMMIT\n  P->>D: Finish A transaction\n  D-->>P: Transaction finished\n  P-->>A: Result\n  P->>D: Reuse backend for B transaction\n  D-->>P: Result\n  P-->>B: Result\n  Note over A,P: A may stay connected without owning Backend 1\n```\n\nImagine 1,000 connected clients whose requests rarely overlap sharing 80 backends. If all 1,000 need a backend simultaneously, up to 80 can hold one; the others wait or fail admission. This illustrates reuse, not a benchmark or promised ratio.\n\nReturning a client to an application pool and committing a database transaction are different events. A leaked application checkout can block that process even while the shared pooler has capacity. An open transaction can pin a backend even while no SQL is executing. Measure both lifetimes.\n\n### Choose The Pooling Mode\n\n| Mode | Backend assignment lasts until | Useful when | Main constraint |\n| --- | --- | --- | --- |\n| Session | Client disconnects | The client needs a persistent server session | Idle connected clients retain assignments, limiting sharing |\n| Transaction | Transaction ends | Short, independent request transactions | Session state must be compatible with the exact pooler |\n| Statement | Individual statement finishes | Work is strictly autocommit | Explicit multi-statement transactions are disallowed |\n\nThese modes are documented in [PgBouncer's feature map](https://www.pgbouncer.org/features.html). Adding session pooling in front of long-lived application sockets does not automatically reduce database connections. Transaction mode usually provides the desired sharing among many idle application connections.\n\n## Calculate A Direct-Connection Budget\n\nFirst decide what the quoted ceiling means. Is **1,187** the server's `max_connections`, an application allowance after reserved slots, or an observed count? Check the server and provider configuration before calculating. Avoid subtracting reserved slots twice.\n\nFor one database server, define:\n\n```text\nC = verified connection ceiling before the reserve defined below\nR = reserved slots and operational headroom not already deducted from C\nO = connections allowed to other services, tools, and jobs\nP = peak simultaneous pods, including rollout and replacement overlap\nW = database-using processes per pod\nK = independent pools per process targeting this same server\nM = max connections per pool\n\nPlanned total = P × W × K × M + O\nConstraint: Planned total <= C - R\nPer-pool cap: M <= floor((C - R - O) / (P × W × K))\n```\n\nFor heterogeneous services, sum each service's product instead of assuming all pods have the same shape. Repeat the budget for each primary or replica endpoint. A pool targeting a separate read replica does not consume the primary's slots unless routing or failover moves it there.\n\n### Worked Example: Leave Headroom Below 1,187\n\nAssume, only for this exercise, that **1,187** is the total ceiling and the **187** reserved/headroom slots have not already been deducted. Other consumers get **200** connections. The application may have **25** simultaneous pods, **2** processes per pod, and **2** pools per process targeting the same server.\n\n```text\nApplication allowance = 1,187 - 187 - 200 = 800\nNumber of pools = 25 × 2 × 2 = 100\nMaximum per pool = floor(800 / 100) = 8\nPlanned total = 25 × 2 × 2 × 8 + 200 = 1,000\n```\n\nHere, `max: 10` would permit **1,200** connections including other consumers: **13** over the reported ceiling and **200** over the planned operating budget. `max: 8` fits this model, but still needs load testing; it is not a Titan recommendation.\n\n| Scenario | Pods × processes × pools × max | Other connections | Total | Result against the 1,000 operating budget |\n| --- | --- | --- | --- | --- |\n| Normal peak | 25 × 2 × 2 × 8 | 200 | 1,000 | Fits |\n| Five extra overlapping pods | 30 × 2 × 2 × 8 | 200 | 1,160 | Consumes 160 of the intended headroom |\n| Budget for 30 pods using max 6 | 30 × 2 × 2 × 6 | 200 | 920 | Fits with 80 spare within the operating budget |\n| Two pools overlooked, max 10 retained | 25 × 2 × 2 × 10 | 200 | 1,200 | Exceeds even the total ceiling |\n\nA maximum describes potential allocation, not immediate connections. Budget for many pools filling together, including old backend sessions that linger after replacement pods start.\n\n**Try it:** before opening the [checkpoint](/practice/databases/postgres-connection-pooling-questionnaire?path=database-indexes-and-search), calculate the cap if peak simultaneous pods rises to 40. With the other inputs unchanged, `floor(800 / 160)` gives **5**. State your assumptions along with the answer.\n\n## A Shared Pooler Needs Its Own Budget\n\nBudget application-to-pooler clients separately from pooler-to-database backends. A client admission limit does not necessarily cap backends across the pooler fleet. PgBouncer distinguishes `max_client_conn`, pool sizes, and per-database/user limits; see its [configuration reference](https://www.pgbouncer.org/config.html).\n\nFor a simple, single-destination teaching model:\n\n```text\nBackend ceiling = peak pooler replicas × pools per replica × backend cap per pool\nTotal database connections = Backend ceiling + direct bypass connections\n```\n\nPgDog creates independent pools for configured user entries, with `pool_size` overriding `default_pool_size`. Audit the actual user/database/server layout; the precise grouping depends on configuration. See [PgDog pool configuration](https://docs.pgdog.dev/user_guides/connection_pool/).\n\nSuppose there are **3** pooler replicas, **2** pools per replica aimed at the same database, and a backend cap of **80** for each pool. Add **120** direct connections:\n\n```text\n3 × 2 × 80 + 120 = 600 database connections\n4 × 2 × 80 + 120 = 760 during one-replica rollout overlap\n```\n\nMore application clients may connect, subject to the pooler's client limits, memory, file descriptors, and queue capacity. Autoscaling poolers raises the potential backend count unless another enforced limit prevents it. Sidecar poolers multiply with application pods; they do not inherently impose a fleet-wide cap.\n\nThis is an illustrative PgDog sizing fragment, **not a complete deployment configuration**:\n\n```toml\n[general]\npooler_mode = \"transaction\"\ndefault_pool_size = 80\ncheckout_timeout = 1000\n```\n\nThe timeout here is in milliseconds. Complete the database/user configuration, credentials, verified TLS on both network legs, client admission policy, and monitoring for the pinned release. Audit overrides and all destinations. The [general settings reference](https://docs.pgdog.dev/configuration/pgdog.toml/general/) defines the knobs; their example values are not universal production defaults.\n\nA surviving pooler can reuse its backend connections when application pods reconnect. It cannot preserve an in-flight transaction through arbitrary failures, guarantee no errors, or replace database failover. Keep a budgeted administrative route, but avoid an automatic bypass that sends the whole fleet directly to PostgreSQL when the pooler fails. That removes the very admission boundary protecting the database.\n\n## Size For Useful Concurrency, Then Measure Waiting\n\nThe connection ceiling limits sessions. Useful concurrency measures simultaneous work completed within the latency target. More active queries can increase CPU contention, memory pressure, I/O, and lock waits.\n\nApply Little's Law to backend occupancy in a stable workload: average occupied backends are approximately transaction throughput multiplied by average backend hold time. Use seconds, and exclude time waiting to acquire a backend from the hold time. This is a mean relationship, not a tail-latency sizing rule. See [MIT's queueing notes](https://web.mit.edu/1.041/www/lectures/L8-queuing-models-2026sp.pdf).\n\nThe following numbers are calculated examples, not measurements:\n\n| Throughput | Mean backend hold time | Mean occupied backends | Interpretation |\n| --- | --- | --- | --- |\n| 600 transactions/s | 0.04 s | 24 | A modest backend pool may be enough, subject to bursts |\n| 600 transactions/s | 0.20 s | 120 | Slower transactions require five times the occupancy |\n| 600 transactions/s | 2 s | 1,200 | This load cannot fit the example ceiling without waiting or rejection |\n\nWith 80 backends and a constant 0.04 s hold time, `80 / 0.04 = 2,000` transactions/s is an idealized service bound. Real service time changes with concurrency, and queueing near full utilization hurts latency. Do not advertise this arithmetic as achieved throughput.\n\nHolding a transaction open during a 2-second external API call consumes a backend for that interval even if its SQL took only milliseconds. Move unrelated remote work outside the transaction when consistency permits. If the workflow requires durable coordination, redesign it explicitly rather than dropping atomicity to improve a pool metric.\n\nCompare several caps under the same representative workload. Choose based on throughput, p95/p99 end-to-end latency, errors, database CPU/I/O, lock waits, and both application and pooler acquisition delays. A smaller pool that lowers contention can outperform a larger pool; a pool that is too small merely moves the bottleneck into a queue.\n\n## Use Application Pools Correctly\n\nReuse pool instances in a long-lived Node.js process. This example uses the earlier **8**-connection allowance; calculate your own service budget. `DATABASE_URL` identifies either the approved direct endpoint or the pooler endpoint and must come from secure runtime configuration. Do not disable certificate verification to make a connection succeed.\n\n```typescript\nimport { Pool } from \"pg\";\n\nexport const pool = new Pool({\n  connectionString: process.env.DATABASE_URL,\n  application_name: \"example-api\",\n  max: 8,\n  connectionTimeoutMillis: 1000,\n  idleTimeoutMillis: 30000,\n});\n\npool.on(\"error\", () => {\n  console.error(\"An idle database client failed\");\n});\n```\n\n`max` bounds this pool only. Acquisition can wait when all clients are checked out. `idleTimeoutMillis` removes idle pool clients; it does not cancel running queries or rescue leaked checkouts. Monitor `totalCount`, `idleCount`, and `waitingCount`. Close the pool with `pool.end()` during orderly shutdown, after callers finish. See the [node-postgres Pool API](https://node-postgres.com/apis/pool).\n\n### Keep A Transaction On One Checked-Out Client\n\nThis function assumes `pool` is the shared instance above. Its read-only transaction illustrates transaction-local settings and guaranteed client release; it is not an application query benchmark.\n\n```typescript\nexport async function readDatabaseClock() {\n  const client = await pool.connect();\n  let discard = false;\n  try {\n    await client.query(\"BEGIN READ ONLY\");\n    await client.query(\"SET LOCAL statement_timeout = '2s'\");\n    const result = await client.query(\"SELECT current_timestamp AS observed_at\");\n    await client.query(\"COMMIT\");\n    return result.rows[0];\n  } catch (error) {\n    try {\n      await client.query(\"ROLLBACK\");\n    } catch {\n      discard = true;\n    }\n    throw error;\n  } finally {\n    client.release(discard);\n  }\n}\n```\n\nSeparate `pool.query()` calls can select different clients. Use one checked-out client for `BEGIN`, every statement, and `COMMIT` or `ROLLBACK`, as required by the [node-postgres transaction guide](https://node-postgres.com/features/transactions). Release it on every path; discard it when rollback cannot restore a usable connection.\n\nFor a Node/NestJS rollout, verify every runtime import is a direct production dependency under the repository's conventions. Test the final pruned artifact and every supported entrypoint with inert I/O; source tests and a successful bundle do not establish startup readiness. These teaching snippets do not add `pg` to Codematica or connect it to Titan.\n\n## Test Session Features Before Changing Endpoints\n\nTransaction pooling removes permanent backend ownership. Compatibility depends on the pooler, version, configuration, driver, and ORM.\n\n| Application behavior | What to verify |\n| --- | --- |\n| Session `SET`, role changes, tenant context | State is restored correctly for this client and cannot leak to another |\n| Temporary tables used across transactions | Required lifetime survives, or the workload uses a dedicated session route |\n| Session advisory locks | Ownership and release remain correct; consider transaction-scoped locks where suitable |\n| `LISTEN` listeners | Notifications survive reconnects with the intended delivery semantics |\n| Cursors retained after commit | Required server state survives the selected mode |\n| Migrations and administrative tools | Locking, DDL, and connection assumptions work on their designated route |\n| Prepared statements | Test the exact protocol and reconnect/cache behavior |\n\nPgBouncer's transaction-mode feature map marks several persistent session features unsupported, but supports protocol-level prepared statements when `max_prepared_statements` is nonzero. SQL `PREPARE` is a separate case. Parameterized queries and SQL `PREPARE` are not synonymous; do not remove parameterization to work around pooling. See [PgBouncer compatibility](https://www.pgbouncer.org/features.html).\n\nPgDog documents session-setting tracking and advisory-lock handling in [transaction mode](https://docs.pgdog.dev/features/connection-pooler/transaction-mode/), and separate behavior for prepared-statement protocols in its [prepared statement documentation](https://docs.pgdog.dev/features/connection-pooler/prepared-statements/). Those capabilities must be checked against the deployed release. Neither “all transaction poolers break session state” nor “a staging smoke test proves full compatibility” is a safe rule.\n\nTest alternating clients with distinct tenant settings, errors followed by reuse, rollback, cancellation, prepared statement cache churn, and reconnects. Use synthetic identities and fixtures. Successful query execution is insufficient if it returns another tenant's data.\n\n## Bound Queues, Timeouts, And Retries\n\nRequests can wait in the application pool, the shared pooler, and on database locks. Set an overall deadline and budget each stage within it.\n\nFor an illustrative **3,000 ms** request deadline, you might allocate at most **500 ms** to local acquisition, **500 ms** to proxy acquisition, **1,500 ms** to database work, and **500 ms** to networking, response handling, and cleanup. Several statements and retries must share the remaining time; restarting every timer for each attempt defeats the deadline. A client-side timeout alone does not prove the server stopped executing.\n\n| Control | What it bounds |\n| --- | --- |\n| Local acquisition timeout | Waiting to obtain an application client |\n| Pooler checkout timeout | Waiting for a database backend |\n| `statement_timeout` | Execution time of each statement at PostgreSQL, including its waits |\n| `lock_timeout` | Time waiting for each lock acquisition |\n| `idle_in_transaction_session_timeout` | Sessions idle inside an open transaction |\n\nUse workload-appropriate, version-supported database settings and test their effects on clients. A per-statement timeout does not cap a whole multi-statement transaction. Transaction-local settings stay within that transaction; avoid changing global defaults indiscriminately. See [PostgreSQL client connection defaults](https://www.postgresql.org/docs/18/runtime-config-client.html).\n\nBound admission and queue size where supported, cap background-job concurrency, and shed excess work instead of accumulating unlimited waiting requests. Retry only eligible failures with bounded exponential backoff and jitter, at a deliberate layer. A dropped response to `COMMIT` leaves the outcome uncertain: the write may have committed. Reconcile using durable operation identity or an idempotent design before repeating it. See the [AWS guidance on timeouts, retries, and jitter](https://aws.amazon.com/builders-library/timeouts-retries-and-backoff-with-jitter/).\n\n## Graceful Shutdown Is A Sequence\n\nCalling `pool.end()` first can break work that still needs a database client. It cannot run after process exit. Give each process one coordinated, idempotent shutdown path covering all pools and workers.\n\n```mermaid\nflowchart TD\n  A[\"SIGTERM received\"] --> B[\"Enter draining state; reject new work\"]\n  B --> C[\"Stop HTTP admission and job intake\"]\n  C --> D[\"Drain bounded in-flight work\"]\n  D --> E[\"Release clients and await all pool closures\"]\n  E --> F[\"Exit before the actual termination deadline\"]\n  D -. \"deadline expires\" .-> G[\"Cancel or fail remaining work; record outcome\"]\n  G --> F\n```\n\nReadiness changes and load-balancer propagation can overlap with termination; also gate admission inside the process. Stop timers and queue consumers that could open new work. Drain or cancel existing work within the remaining budget, release clients in cleanup paths, await every pool's close operation, and then exit. In NestJS, connect this sequence to the actual application lifecycle and enable the appropriate signal hooks; verify hook ordering with the HTTP adapter and workers in use. See the [NestJS lifecycle documentation](https://docs.nestjs.com/fundamentals/lifecycle-events).\n\nKubernetes normally sends `SIGTERM`, then forces termination when the grace period expires. A `preStop` hook consumes that same grace period. The common default is **30 seconds**, but that is not evidence that an interrupted VM will provide 30 usable seconds to your application. See [Pod termination](https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle/#pod-termination).\n\nGoogle Compute Engine Spot VMs document a best-effort shutdown period of up to **30 seconds**. Other providers have different semantics; verify the actual platform and signal delivery path. See [Google Cloud Spot shutdown behavior](https://docs.cloud.google.com/compute/docs/instances/create-use-spot).\n\nA controlled 30-second test could allocate 2 seconds to stopping admission, 20 seconds to draining, 3 seconds to closing resources, and 5 seconds of margin. This is a test target, not a preemption guarantee. A hung checkout can prevent closure; test both normal shutdown and deadline expiry. Do not run asynchronous database cleanup from a synchronous process exit callback.\n\nAfter abrupt process death, the operating system can often close sockets; after node loss or a network partition, the server may detect the loss later. Neither persistent connections after every killed pod nor reliable cleanup through SIGTERM is guaranteed. Observe backend disappearance and validate TCP/driver/server timeouts in disposable failure tests.\n\n## Reduce Correlated Spot Loss\n\nSpot placement is an availability decision with a database consequence: many replacements starting together can create simultaneous connections and retries. A shared pooler may absorb some connection churn while the application still loses serving capacity.\n\nAn illustrative design keeps a minimum serving tier on ordinary capacity and caps a separate spot tier. If 12 stable pods meet the degraded-service target, six spot pods could add throughput. Validate these counts under load; they are not Saturn recommendations. Separate deployments and autoscaler bounds can make a spot cap explicit. A soft scheduling preference alone is not a numerical cap.\n\nSpread replicas across relevant nodes and zones, then verify how node affinity, taints, available capacity, and topology constraints interact. Spreading among spot nodes cannot guarantee their survival. [Kubernetes topology spread constraints](https://kubernetes.io/docs/concepts/scheduling-eviction/topology-spread-constraints/) describe the placement controls. A PodDisruptionBudget limits supported voluntary disruptions; it cannot prevent provider preemption or node failure. See [Kubernetes disruptions](https://kubernetes.io/docs/concepts/workloads/pods/disruptions/).\n\nKeep the pooler itself sufficiently available and spread across failure domains. Budget its rollout overlap and test loss of one replica. A deployment that concentrates every pooler on the same interrupted node recreates a shared point of failure. The [PgDog production guide](https://docs.pgdog.dev/user_guides/deploying-to-production/) is a starting point for version-specific deployment planning.\n\n## Diagnose The Bottleneck Before Choosing The Fix\n\nCollect application acquisition latency and pool counts alongside pooler client/backend occupancy, queue time, errors, reconnect rates, transaction duration, database utilization, and pod lifecycle events. Inspect peaks and intervals; averages can hide replacement waves.\n\nThis read-only query groups client backends without SQL text:\n\n```sql\nSELECT datname, usename, application_name, state,\n       count(*) AS connections,\n       max(clock_timestamp() - xact_start)\n         FILTER (WHERE xact_start IS NOT NULL) AS oldest_transaction_age\nFROM pg_stat_activity\nWHERE backend_type = 'client backend'\nGROUP BY datname, usename, application_name, state\nORDER BY connections DESC;\n```\n\nPermissions can restrict visibility. Behind a pooler, PostgreSQL sees backend connections, not every connected application client; use pooler metrics too. `idle` and `idle in transaction` mean different things, and `active` does not prove CPU saturation. The filter excludes other backend types, so this is not a complete accounting of every server resource or reserved slot. See [PostgreSQL activity statistics](https://www.postgresql.org/docs/18/monitoring-stats.html).\n\n| Observation | Investigate first | Likely direction after confirming evidence |\n| --- | --- | --- |\n| Many idle backends, low execution load, connection failures during scale-out | Pool multiplication and old/new overlap | Lower explicit caps; evaluate transaction pooling |\n| Rising queue time, busy CPU/I/O, or long lock waits | Slow queries, contention, and excessive job concurrency | Reduce work, shorten transactions, tune queries/indexes, or add appropriate capacity |\n| Old idle-in-transaction sessions | Missing commit/rollback and remote work inside transactions | Fix lifecycle; apply tested timeouts |\n| Exhausted local pool while pooler has spare backends | Leaked checkouts, per-process imbalance, or undersized local cap | Fix release paths; tune the local cap within its budget |\n| Errors align with mass pod replacement | Placement, admission, connection creation, and retry timing | Stable capacity, bounded startup, jitter, and tested shutdown |\n| Failures appear only after switching to transaction mode | Session state and driver/proxy compatibility | Correct the incompatibility or isolate a budgeted session route |\n\nPooling is most useful when client count and backend occupancy differ substantially: autoscaling APIs, short transactions, bursty workers, and many mostly idle processes. It provides less sharing for long transactions, continuously busy clients, or sessions that require persistent backend ownership. For a small fixed deployment already within its budget, a well-sized application pool may be sufficient; the proxy adds another service and network hop to operate.\n\n## Prove The Change Before A Production Rollout\n\nUse staging or disposable infrastructure, synthetic data, and inert external I/O. Failure exercises must not run campaigns, change entitlements, or replay real writes. Staging PgDog experience does not establish production sizing, TLS, permissions, routing, or compatibility.\n\n1. **Inventory.** Record actual versions, connection limits and reserves, every pool constructor, ORM/driver defaults, process count, peak pods, pooler replicas, bypass routes, and failover destinations.\n2. **Baseline.** Capture representative request mix, throughput, tail latency, errors, backend occupancy, queue time, and transaction duration. Separate normal load, scale-out, and rollout overlap.\n3. **Validate behavior.** Exercise transaction/session features, authentication, TLS verification on both legs, cancellation, tenant isolation, and ambiguous write outcomes using fixtures.\n4. **Validate failure handling.** Test an orderly pod exit, abrupt loss, network interruption, pooler restart, and loss of one pooler replica. Record whether work drained, failed, or requires reconciliation.\n5. **Compare evidence.** Require the calculated backend budget to hold at peak replica count; queues must remain bounded and recover. Compare tail latency and error rate to agreed targets, not just connection count. Record the tested final application artifact and pooler image/configuration.\n6. **Prepare a canary and rollback.** Decide traffic fraction, abort thresholds, and owners before an authorized rollout. Existing pooled connections may retain the old endpoint until drained. Budget direct and proxied traffic together during migration and rollback.\n\nRecord code/test success, final artifact startup, deployment, and confirmed service recovery separately. A lower connection graph with rising request failures is not success. Unknown incident impact, duration, and transaction outcomes remain unknown until evidence resolves them.\n\n## Practice And Further Study\n\nOpen the [12-question connection pooling checkpoint](/practice/databases/postgres-connection-pooling-questionnaire?path=database-indexes-and-search). It includes numerical inputs, mode matching, shutdown ordering, and incident decisions with explanations. It uses this lesson's assumptions and has no database connection.\n\nDraw your request-to-database path and annotate every pool, queue, timeout, and retry boundary. Recalculate after doubling application replicas, adding a database user, losing one pooler replica, and increasing transaction hold time fivefold. Identify which changes increase the connection ceiling and which increase waiting instead.\n\nReturn to [index fundamentals](/docs/databases/index-fundamentals?path=database-indexes-and-search) when expensive queries dominate hold time, or [HOT updates](/docs/databases/postgres-hot-updates?path=database-indexes-and-search) when update and index-maintenance costs dominate. Connection management complements those optimizations.\n\nPrimary documentation was consulted on **2026-09-30**. The linked PostgreSQL references target version 18; confirm differences for your server. PgDog, PgBouncer, node-postgres, Kubernetes, and cloud behavior must be checked against the versions and platform you actually deploy.",
+      "plainText": "What This Optimization Changes A connection pool reuses database connections. A shared pooler lets many application clients take turns using fewer PostgreSQL connections, reducing connection overhead and controlling concurrent database work. It cannot make an expensive query cheap or add database CPU capacity. Learn to budget fleet connections, explain transaction pooling, choose a compatible mode, and design shutdown and failure tests. Use the interactive checkpoint to calculate limits, order shutdown steps, and diagnose failures. The review feed reinforces the key decisions. The Reported Titan Scenario The motivating report described connection pressure around Titan, Saturn pods exposed to spot interruptions, a connection ceiling of 1,187, a 30-second warning, and PgDog available in staging but not production. These reported inputs are unverified and do not establish an incident diagnosis. Verify the cloud provider, actual limits, pool count, interruption sequence, and deployed PgDog version. The worked examples use invented workloads, timings, and configurations. The four suggested actions address separate problems: | Action | Intended effect | What still needs work | | --- | --- | --- | | Set an explicit application pool max | Bounds connections from each pool | Count every process, pool, replica, and deployment overlap | | Close pools during SIGTERM handling | Releases resources during an orderly exit | Drain work first; crashes and partitions can bypass cleanup | | Limit and spread spot workloads | Reduces correlated application loss and replacement bursts | Maintain enough stable capacity and test its recovery behavior | | Introduce a production pooler | Reuses database backends across application clients | Budget all pooler replicas, validate compatibility, and operate it reliably | Separate Requests, Clients, And Backends An HTTP request is work arriving at your application. An application pool client is a database-protocol connection held by one application process. A PostgreSQL backend connection is a session at the database server. With direct connections, the last two usually correspond one-to-one. A transaction pooler separates their lifetimes. flowchart TD A[\"Application pods: bounded local pools\"] --> B[\"Client connections to shared pooler\"] B --> C[\"Wait for an available backend\"] C --> D[\"Bounded PostgreSQL backend pool\"] D --> E[\"PostgreSQL executes transactions\"] F[\"Budgeted direct tools and migrations\"] --> E Think of backends as checkout counters: an application pool reserves them for one process; a shared pooler lets several processes use them at different times. A longer queue creates neither more counters nor faster cashiers. Application pools remain useful behind a pooler: they reuse sockets to the proxy and limit local concurrency. Creating a new pool per request defeats reuse. Conversely, one singleton in each process is still many pools across a deployment. Count HTTP processes, queue workers, scheduled jobs, ORM clients, tenant-specific pools, and read/write pools by their actual destination. The node-postgres sizing guide explicitly treats pool size as a fleet-wide decision. PostgreSQL dedicates resources to connections, and raising max_connections increases some resource allocations. A high connection ceiling is therefore a limit to respect, not a throughput target. Reserve emergency access according to the deployed version and managed-service rules; do not grant application roles emergency privileges to evade admission limits. See PostgreSQL connection settings. How Transaction Pooling Works In transaction mode, the pooler assigns a backend for a transaction and makes it available again after the transaction finishes and required cleanup completes. The next transaction from the same client may use a different backend. Autocommit statements are transactions too. See PgDog transaction mode. sequenceDiagram participant A as Client A participant P as Pooler participant D as Backend 1 participant B as Client B A->>P: BEGIN and query P->>D: Assign backend to A B->>P: Another transaction arrives Note over P,B: B waits if every backend is occupied A->>P: COMMIT P->>D: Finish A transaction D-->>P: Transaction finished P-->>A: Result P->>D: Reuse backend for B transaction D-->>P: Result P-->>B: Result Note over A,P: A may stay connected without owning Backend 1 Imagine 1,000 connected clients whose requests rarely overlap sharing 80 backends. If all 1,000 need a backend simultaneously, up to 80 can hold one; the others wait or fail admission. This illustrates reuse, not a benchmark or promised ratio. Returning a client to an application pool and committing a database transaction are different events. A leaked application checkout can block that process even while the shared pooler has capacity. An open transaction can pin a backend even while no SQL is executing. Measure both lifetimes. Choose The Pooling Mode | Mode | Backend assignment lasts until | Useful when | Main constraint | | --- | --- | --- | --- | | Session | Client disconnects | The client needs a persistent server session | Idle connected clients retain assignments, limiting sharing | | Transaction | Transaction ends | Short, independent request transactions | Session state must be compatible with the exact pooler | | Statement | Individual statement finishes | Work is strictly autocommit | Explicit multi-statement transactions are disallowed | These modes are documented in PgBouncer's feature map. Adding session pooling in front of long-lived application sockets does not automatically reduce database connections. Transaction mode usually provides the desired sharing among many idle application connections. Calculate A Direct-Connection Budget First decide what the quoted ceiling means. Is 1,187 the server's max_connections, an application allowance after reserved slots, or an observed count? Check the server and provider configuration before calculating. Avoid subtracting reserved slots twice. For one database server, define: C = verified connection ceiling before the reserve defined below R = reserved slots and operational headroom not already deducted from C O = connections allowed to other services, tools, and jobs P = peak simultaneous pods, including rollout and replacement overlap W = database-using processes per pod K = independent pools per process targeting this same server M = max connections per pool Planned total = P × W × K × M + O Constraint: Planned total <= C - R Per-pool cap: M <= floor((C - R - O) / (P × W × K)) For heterogeneous services, sum each service's product instead of assuming all pods have the same shape. Repeat the budget for each primary or replica endpoint. A pool targeting a separate read replica does not consume the primary's slots unless routing or failover moves it there. Worked Example: Leave Headroom Below 1,187 Assume, only for this exercise, that 1,187 is the total ceiling and the 187 reserved/headroom slots have not already been deducted. Other consumers get 200 connections. The application may have 25 simultaneous pods, 2 processes per pod, and 2 pools per process targeting the same server. Application allowance = 1,187 - 187 - 200 = 800 Number of pools = 25 × 2 × 2 = 100 Maximum per pool = floor(800 / 100) = 8 Planned total = 25 × 2 × 2 × 8 + 200 = 1,000 Here, max: 10 would permit 1,200 connections including other consumers: 13 over the reported ceiling and 200 over the planned operating budget. max: 8 fits this model, but still needs load testing; it is not a Titan recommendation. | Scenario | Pods × processes × pools × max | Other connections | Total | Result against the 1,000 operating budget | | --- | --- | --- | --- | --- | | Normal peak | 25 × 2 × 2 × 8 | 200 | 1,000 | Fits | | Five extra overlapping pods | 30 × 2 × 2 × 8 | 200 | 1,160 | Consumes 160 of the intended headroom | | Budget for 30 pods using max 6 | 30 × 2 × 2 × 6 | 200 | 920 | Fits with 80 spare within the operating budget | | Two pools overlooked, max 10 retained | 25 × 2 × 2 × 10 | 200 | 1,200 | Exceeds even the total ceiling | A maximum describes potential allocation, not immediate connections. Budget for many pools filling together, including old backend sessions that linger after replacement pods start. Try it: before opening the checkpoint, calculate the cap if peak simultaneous pods rises to 40. With the other inputs unchanged, floor(800 / 160) gives 5. State your assumptions along with the answer. A Shared Pooler Needs Its Own Budget Budget application-to-pooler clients separately from pooler-to-database backends. A client admission limit does not necessarily cap backends across the pooler fleet. PgBouncer distinguishes max_client_conn, pool sizes, and per-database/user limits; see its configuration reference. For a simple, single-destination teaching model: Backend ceiling = peak pooler replicas × pools per replica × backend cap per pool Total database connections = Backend ceiling + direct bypass connections PgDog creates independent pools for configured user entries, with pool_size overriding default_pool_size. Audit the actual user/database/server layout; the precise grouping depends on configuration. See PgDog pool configuration. Suppose there are 3 pooler replicas, 2 pools per replica aimed at the same database, and a backend cap of 80 for each pool. Add 120 direct connections: 3 × 2 × 80 + 120 = 600 database connections 4 × 2 × 80 + 120 = 760 during one-replica rollout overlap More application clients may connect, subject to the pooler's client limits, memory, file descriptors, and queue capacity. Autoscaling poolers raises the potential backend count unless another enforced limit prevents it. Sidecar poolers multiply with application pods; they do not inherently impose a fleet-wide cap. This is an illustrative PgDog sizing fragment, not a complete deployment configuration: [general] pooler_mode = \"transaction\" default_pool_size = 80 checkout_timeout = 1000 The timeout here is in milliseconds. Complete the database/user configuration, credentials, verified TLS on both network legs, client admission policy, and monitoring for the pinned release. Audit overrides and all destinations. The general settings reference defines the knobs; their example values are not universal production defaults. A surviving pooler can reuse its backend connections when application pods reconnect. It cannot preserve an in-flight transaction through arbitrary failures, guarantee no errors, or replace database failover. Keep a budgeted administrative route, but avoid an automatic bypass that sends the whole fleet directly to PostgreSQL when the pooler fails. That removes the very admission boundary protecting the database. Size For Useful Concurrency, Then Measure Waiting The connection ceiling limits sessions. Useful concurrency measures simultaneous work completed within the latency target. More active queries can increase CPU contention, memory pressure, I/O, and lock waits. Apply Little's Law to backend occupancy in a stable workload: average occupied backends are approximately transaction throughput multiplied by average backend hold time. Use seconds, and exclude time waiting to acquire a backend from the hold time. This is a mean relationship, not a tail-latency sizing rule. See MIT's queueing notes. The following numbers are calculated examples, not measurements: | Throughput | Mean backend hold time | Mean occupied backends | Interpretation | | --- | --- | --- | --- | | 600 transactions/s | 0.04 s | 24 | A modest backend pool may be enough, subject to bursts | | 600 transactions/s | 0.20 s | 120 | Slower transactions require five times the occupancy | | 600 transactions/s | 2 s | 1,200 | This load cannot fit the example ceiling without waiting or rejection | With 80 backends and a constant 0.04 s hold time, 80 / 0.04 = 2,000 transactions/s is an idealized service bound. Real service time changes with concurrency, and queueing near full utilization hurts latency. Do not advertise this arithmetic as achieved throughput. Holding a transaction open during a 2-second external API call consumes a backend for that interval even if its SQL took only milliseconds. Move unrelated remote work outside the transaction when consistency permits. If the workflow requires durable coordination, redesign it explicitly rather than dropping atomicity to improve a pool metric. Compare several caps under the same representative workload. Choose based on throughput, p95/p99 end-to-end latency, errors, database CPU/I/O, lock waits, and both application and pooler acquisition delays. A smaller pool that lowers contention can outperform a larger pool; a pool that is too small merely moves the bottleneck into a queue. Use Application Pools Correctly Reuse pool instances in a long-lived Node.js process. This example uses the earlier 8-connection allowance; calculate your own service budget. DATABASE_URL identifies either the approved direct endpoint or the pooler endpoint and must come from secure runtime configuration. Do not disable certificate verification to make a connection succeed. import { Pool } from \"pg\"; export const pool = new Pool({ connectionString: process.env.DATABASE_URL, application_name: \"example-api\", max: 8, connectionTimeoutMillis: 1000, idleTimeoutMillis: 30000, }); pool.on(\"error\", () => { console.error(\"An idle database client failed\"); }); max bounds this pool only. Acquisition can wait when all clients are checked out. idleTimeoutMillis removes idle pool clients; it does not cancel running queries or rescue leaked checkouts. Monitor totalCount, idleCount, and waitingCount. Close the pool with pool.end() during orderly shutdown, after callers finish. See the node-postgres Pool API. Keep A Transaction On One Checked-Out Client This function assumes pool is the shared instance above. Its read-only transaction illustrates transaction-local settings and guaranteed client release; it is not an application query benchmark. export async function readDatabaseClock() { const client = await pool.connect(); let discard = false; try { await client.query(\"BEGIN READ ONLY\"); await client.query(\"SET LOCAL statement_timeout = '2s'\"); const result = await client.query(\"SELECT current_timestamp AS observed_at\"); await client.query(\"COMMIT\"); return result.rows[0]; } catch (error) { try { await client.query(\"ROLLBACK\"); } catch { discard = true; } throw error; } finally { client.release(discard); } } Separate pool.query() calls can select different clients. Use one checked-out client for BEGIN, every statement, and COMMIT or ROLLBACK, as required by the node-postgres transaction guide. Release it on every path; discard it when rollback cannot restore a usable connection. For a Node/NestJS rollout, verify every runtime import is a direct production dependency under the repository's conventions. Test the final pruned artifact and every supported entrypoint with inert I/O; source tests and a successful bundle do not establish startup readiness. These teaching snippets do not add pg to Codematica or connect it to Titan. Test Session Features Before Changing Endpoints Transaction pooling removes permanent backend ownership. Compatibility depends on the pooler, version, configuration, driver, and ORM. | Application behavior | What to verify | | --- | --- | | Session SET, role changes, tenant context | State is restored correctly for this client and cannot leak to another | | Temporary tables used across transactions | Required lifetime survives, or the workload uses a dedicated session route | | Session advisory locks | Ownership and release remain correct; consider transaction-scoped locks where suitable | | LISTEN listeners | Notifications survive reconnects with the intended delivery semantics | | Cursors retained after commit | Required server state survives the selected mode | | Migrations and administrative tools | Locking, DDL, and connection assumptions work on their designated route | | Prepared statements | Test the exact protocol and reconnect/cache behavior | PgBouncer's transaction-mode feature map marks several persistent session features unsupported, but supports protocol-level prepared statements when max_prepared_statements is nonzero. SQL PREPARE is a separate case. Parameterized queries and SQL PREPARE are not synonymous; do not remove parameterization to work around pooling. See PgBouncer compatibility. PgDog documents session-setting tracking and advisory-lock handling in transaction mode, and separate behavior for prepared-statement protocols in its prepared statement documentation. Those capabilities must be checked against the deployed release. Neither “all transaction poolers break session state” nor “a staging smoke test proves full compatibility” is a safe rule. Test alternating clients with distinct tenant settings, errors followed by reuse, rollback, cancellation, prepared statement cache churn, and reconnects. Use synthetic identities and fixtures. Successful query execution is insufficient if it returns another tenant's data. Bound Queues, Timeouts, And Retries Requests can wait in the application pool, the shared pooler, and on database locks. Set an overall deadline and budget each stage within it. For an illustrative 3,000 ms request deadline, you might allocate at most 500 ms to local acquisition, 500 ms to proxy acquisition, 1,500 ms to database work, and 500 ms to networking, response handling, and cleanup. Several statements and retries must share the remaining time; restarting every timer for each attempt defeats the deadline. A client-side timeout alone does not prove the server stopped executing. | Control | What it bounds | | --- | --- | | Local acquisition timeout | Waiting to obtain an application client | | Pooler checkout timeout | Waiting for a database backend | | statement_timeout | Execution time of each statement at PostgreSQL, including its waits | | lock_timeout | Time waiting for each lock acquisition | | idle_in_transaction_session_timeout | Sessions idle inside an open transaction | Use workload-appropriate, version-supported database settings and test their effects on clients. A per-statement timeout does not cap a whole multi-statement transaction. Transaction-local settings stay within that transaction; avoid changing global defaults indiscriminately. See PostgreSQL client connection defaults. Bound admission and queue size where supported, cap background-job concurrency, and shed excess work instead of accumulating unlimited waiting requests. Retry only eligible failures with bounded exponential backoff and jitter, at a deliberate layer. A dropped response to COMMIT leaves the outcome uncertain: the write may have committed. Reconcile using durable operation identity or an idempotent design before repeating it. See the AWS guidance on timeouts, retries, and jitter. Graceful Shutdown Is A Sequence Calling pool.end() first can break work that still needs a database client. It cannot run after process exit. Give each process one coordinated, idempotent shutdown path covering all pools and workers. flowchart TD A[\"SIGTERM received\"] --> B[\"Enter draining state; reject new work\"] B --> C[\"Stop HTTP admission and job intake\"] C --> D[\"Drain bounded in-flight work\"] D --> E[\"Release clients and await all pool closures\"] E --> F[\"Exit before the actual termination deadline\"] D -. \"deadline expires\" .-> G[\"Cancel or fail remaining work; record outcome\"] G --> F Readiness changes and load-balancer propagation can overlap with termination; also gate admission inside the process. Stop timers and queue consumers that could open new work. Drain or cancel existing work within the remaining budget, release clients in cleanup paths, await every pool's close operation, and then exit. In NestJS, connect this sequence to the actual application lifecycle and enable the appropriate signal hooks; verify hook ordering with the HTTP adapter and workers in use. See the NestJS lifecycle documentation. Kubernetes normally sends SIGTERM, then forces termination when the grace period expires. A preStop hook consumes that same grace period. The common default is 30 seconds, but that is not evidence that an interrupted VM will provide 30 usable seconds to your application. See Pod termination. Google Compute Engine Spot VMs document a best-effort shutdown period of up to 30 seconds. Other providers have different semantics; verify the actual platform and signal delivery path. See Google Cloud Spot shutdown behavior. A controlled 30-second test could allocate 2 seconds to stopping admission, 20 seconds to draining, 3 seconds to closing resources, and 5 seconds of margin. This is a test target, not a preemption guarantee. A hung checkout can prevent closure; test both normal shutdown and deadline expiry. Do not run asynchronous database cleanup from a synchronous process exit callback. After abrupt process death, the operating system can often close sockets; after node loss or a network partition, the server may detect the loss later. Neither persistent connections after every killed pod nor reliable cleanup through SIGTERM is guaranteed. Observe backend disappearance and validate TCP/driver/server timeouts in disposable failure tests. Reduce Correlated Spot Loss Spot placement is an availability decision with a database consequence: many replacements starting together can create simultaneous connections and retries. A shared pooler may absorb some connection churn while the application still loses serving capacity. An illustrative design keeps a minimum serving tier on ordinary capacity and caps a separate spot tier. If 12 stable pods meet the degraded-service target, six spot pods could add throughput. Validate these counts under load; they are not Saturn recommendations. Separate deployments and autoscaler bounds can make a spot cap explicit. A soft scheduling preference alone is not a numerical cap. Spread replicas across relevant nodes and zones, then verify how node affinity, taints, available capacity, and topology constraints interact. Spreading among spot nodes cannot guarantee their survival. Kubernetes topology spread constraints describe the placement controls. A PodDisruptionBudget limits supported voluntary disruptions; it cannot prevent provider preemption or node failure. See Kubernetes disruptions. Keep the pooler itself sufficiently available and spread across failure domains. Budget its rollout overlap and test loss of one replica. A deployment that concentrates every pooler on the same interrupted node recreates a shared point of failure. The PgDog production guide is a starting point for version-specific deployment planning. Diagnose The Bottleneck Before Choosing The Fix Collect application acquisition latency and pool counts alongside pooler client/backend occupancy, queue time, errors, reconnect rates, transaction duration, database utilization, and pod lifecycle events. Inspect peaks and intervals; averages can hide replacement waves. This read-only query groups client backends without SQL text: SELECT datname, usename, application_name, state, count(*) AS connections, max(clock_timestamp() - xact_start) FILTER (WHERE xact_start IS NOT NULL) AS oldest_transaction_age FROM pg_stat_activity WHERE backend_type = 'client backend' GROUP BY datname, usename, application_name, state ORDER BY connections DESC; Permissions can restrict visibility. Behind a pooler, PostgreSQL sees backend connections, not every connected application client; use pooler metrics too. idle and idle in transaction mean different things, and active does not prove CPU saturation. The filter excludes other backend types, so this is not a complete accounting of every server resource or reserved slot. See PostgreSQL activity statistics. | Observation | Investigate first | Likely direction after confirming evidence | | --- | --- | --- | | Many idle backends, low execution load, connection failures during scale-out | Pool multiplication and old/new overlap | Lower explicit caps; evaluate transaction pooling | | Rising queue time, busy CPU/I/O, or long lock waits | Slow queries, contention, and excessive job concurrency | Reduce work, shorten transactions, tune queries/indexes, or add appropriate capacity | | Old idle-in-transaction sessions | Missing commit/rollback and remote work inside transactions | Fix lifecycle; apply tested timeouts | | Exhausted local pool while pooler has spare backends | Leaked checkouts, per-process imbalance, or undersized local cap | Fix release paths; tune the local cap within its budget | | Errors align with mass pod replacement | Placement, admission, connection creation, and retry timing | Stable capacity, bounded startup, jitter, and tested shutdown | | Failures appear only after switching to transaction mode | Session state and driver/proxy compatibility | Correct the incompatibility or isolate a budgeted session route | Pooling is most useful when client count and backend occupancy differ substantially: autoscaling APIs, short transactions, bursty workers, and many mostly idle processes. It provides less sharing for long transactions, continuously busy clients, or sessions that require persistent backend ownership. For a small fixed deployment already within its budget, a well-sized application pool may be sufficient; the proxy adds another service and network hop to operate. Prove The Change Before A Production Rollout Use staging or disposable infrastructure, synthetic data, and inert external I/O. Failure exercises must not run campaigns, change entitlements, or replay real writes. Staging PgDog experience does not establish production sizing, TLS, permissions, routing, or compatibility. Inventory. Record actual versions, connection limits and reserves, every pool constructor, ORM/driver defaults, process count, peak pods, pooler replicas, bypass routes, and failover destinations.Baseline. Capture representative request mix, throughput, tail latency, errors, backend occupancy, queue time, and transaction duration. Separate normal load, scale-out, and rollout overlap.Validate behavior. Exercise transaction/session features, authentication, TLS verification on both legs, cancellation, tenant isolation, and ambiguous write outcomes using fixtures.Validate failure handling. Test an orderly pod exit, abrupt loss, network interruption, pooler restart, and loss of one pooler replica. Record whether work drained, failed, or requires reconciliation.Compare evidence. Require the calculated backend budget to hold at peak replica count; queues must remain bounded and recover. Compare tail latency and error rate to agreed targets, not just connection count. Record the tested final application artifact and pooler image/configuration.Prepare a canary and rollback. Decide traffic fraction, abort thresholds, and owners before an authorized rollout. Existing pooled connections may retain the old endpoint until drained. Budget direct and proxied traffic together during migration and rollback. Record code/test success, final artifact startup, deployment, and confirmed service recovery separately. A lower connection graph with rising request failures is not success. Unknown incident impact, duration, and transaction outcomes remain unknown until evidence resolves them. Practice And Further Study Open the 12-question connection pooling checkpoint. It includes numerical inputs, mode matching, shutdown ordering, and incident decisions with explanations. It uses this lesson's assumptions and has no database connection. Draw your request-to-database path and annotate every pool, queue, timeout, and retry boundary. Recalculate after doubling application replicas, adding a database user, losing one pooler replica, and increasing transaction hold time fivefold. Identify which changes increase the connection ceiling and which increase waiting instead. Return to index fundamentals when expensive queries dominate hold time, or HOT updates when update and index-maintenance costs dominate. Connection management complements those optimizations. Primary documentation was consulted on 2026-09-30. The linked PostgreSQL references target version 18; confirm differences for your server. PgDog, PgBouncer, node-postgres, Kubernetes, and cloud behavior must be checked against the versions and platform you actually deploy.",
+      "headings": [
+        {
+          "id": "what-this-optimization-changes",
+          "depth": 2,
+          "text": "What This Optimization Changes"
+        },
+        {
+          "id": "the-reported-titan-scenario",
+          "depth": 3,
+          "text": "The Reported Titan Scenario"
+        },
+        {
+          "id": "separate-requests-clients-and-backends",
+          "depth": 2,
+          "text": "Separate Requests, Clients, And Backends"
+        },
+        {
+          "id": "how-transaction-pooling-works",
+          "depth": 2,
+          "text": "How Transaction Pooling Works"
+        },
+        {
+          "id": "choose-the-pooling-mode",
+          "depth": 3,
+          "text": "Choose The Pooling Mode"
+        },
+        {
+          "id": "calculate-a-direct-connection-budget",
+          "depth": 2,
+          "text": "Calculate A Direct-Connection Budget"
+        },
+        {
+          "id": "worked-example-leave-headroom-below-1187",
+          "depth": 3,
+          "text": "Worked Example: Leave Headroom Below 1,187"
+        },
+        {
+          "id": "a-shared-pooler-needs-its-own-budget",
+          "depth": 2,
+          "text": "A Shared Pooler Needs Its Own Budget"
+        },
+        {
+          "id": "size-for-useful-concurrency-then-measure-waiting",
+          "depth": 2,
+          "text": "Size For Useful Concurrency, Then Measure Waiting"
+        },
+        {
+          "id": "use-application-pools-correctly",
+          "depth": 2,
+          "text": "Use Application Pools Correctly"
+        },
+        {
+          "id": "keep-a-transaction-on-one-checked-out-client",
+          "depth": 3,
+          "text": "Keep A Transaction On One Checked-Out Client"
+        },
+        {
+          "id": "test-session-features-before-changing-endpoints",
+          "depth": 2,
+          "text": "Test Session Features Before Changing Endpoints"
+        },
+        {
+          "id": "bound-queues-timeouts-and-retries",
+          "depth": 2,
+          "text": "Bound Queues, Timeouts, And Retries"
+        },
+        {
+          "id": "graceful-shutdown-is-a-sequence",
+          "depth": 2,
+          "text": "Graceful Shutdown Is A Sequence"
+        },
+        {
+          "id": "reduce-correlated-spot-loss",
+          "depth": 2,
+          "text": "Reduce Correlated Spot Loss"
+        },
+        {
+          "id": "diagnose-the-bottleneck-before-choosing-the-fix",
+          "depth": 2,
+          "text": "Diagnose The Bottleneck Before Choosing The Fix"
+        },
+        {
+          "id": "prove-the-change-before-a-production-rollout",
+          "depth": 2,
+          "text": "Prove The Change Before A Production Rollout"
+        },
+        {
+          "id": "practice-and-further-study",
+          "depth": 2,
+          "text": "Practice And Further Study"
+        }
+      ],
+      "mermaidBlocks": [
+        {
+          "id": "embedded-1",
+          "source": "flowchart TD\n  A[\"Application pods: bounded local pools\"] --> B[\"Client connections to shared pooler\"]\n  B --> C[\"Wait for an available backend\"]\n  C --> D[\"Bounded PostgreSQL backend pool\"]\n  D --> E[\"PostgreSQL executes transactions\"]\n  F[\"Budgeted direct tools and migrations\"] --> E"
+        },
+        {
+          "id": "embedded-2",
+          "source": "sequenceDiagram\n  participant A as Client A\n  participant P as Pooler\n  participant D as Backend 1\n  participant B as Client B\n  A->>P: BEGIN and query\n  P->>D: Assign backend to A\n  B->>P: Another transaction arrives\n  Note over P,B: B waits if every backend is occupied\n  A->>P: COMMIT\n  P->>D: Finish A transaction\n  D-->>P: Transaction finished\n  P-->>A: Result\n  P->>D: Reuse backend for B transaction\n  D-->>P: Result\n  P-->>B: Result\n  Note over A,P: A may stay connected without owning Backend 1"
+        },
+        {
+          "id": "embedded-3",
+          "source": "flowchart TD\n  A[\"SIGTERM received\"] --> B[\"Enter draining state; reject new work\"]\n  B --> C[\"Stop HTTP admission and job intake\"]\n  C --> D[\"Drain bounded in-flight work\"]\n  D --> E[\"Release clients and await all pool closures\"]\n  E --> F[\"Exit before the actual termination deadline\"]\n  D -. \"deadline expires\" .-> G[\"Cancel or fail remaining work; record outcome\"]\n  G --> F"
+        }
+      ],
+      "contentHash": "ba71eb4fdf395a787341f2c3e62071bc290a55d6f6d79fa7cdc7e657336282d8",
+      "readingMinutes": 20
+    },
+    {
       "title": "PostgreSQL Full Text Search And Ranking",
       "slug": "databases/postgres-full-text-search",
       "summary": "How PostgreSQL full text search turns documents into lexemes, parses user queries, ranks results, and uses GIN indexes for scalable matching.",
@@ -7301,10 +7438,10 @@
     {
       "slug": "database-indexes-and-search",
       "title": "Database Indexes And Search",
-      "summary": "Learn how database indexes, PostgreSQL HOT update performance, full text search, trigram fuzzy matching, and hybrid search queries behave under production constraints.",
+      "summary": "Learn database indexes, PostgreSQL HOT updates, full text and fuzzy search, connection pooling, capacity budgets, and resilient database access.",
       "kind": "skill",
       "category": "Databases",
-      "audience": "Backend, full-stack, and platform engineers who need practical judgment for database indexes and search queries.",
+      "audience": "Backend, full-stack, and platform engineers who need practical judgment for database performance, search, and connection management.",
       "status": "published",
       "units": [
         {
@@ -7381,12 +7518,27 @@
               "slug": "databases/postgres-hybrid-search-query-questionnaire"
             }
           ]
+        },
+        {
+          "slug": "postgres-connection-pooling",
+          "title": "Connection Pooling And Resilience",
+          "summary": "Budget application and pooler connections, compare pooling modes, and practice shutdown, spot, and overload decisions.",
+          "nodes": [
+            {
+              "kind": "document",
+              "slug": "databases/postgres-connection-pooling"
+            },
+            {
+              "kind": "exercise",
+              "slug": "databases/postgres-connection-pooling-questionnaire"
+            }
+          ]
         }
       ],
       "id": "082fe87b8d6c",
       "route": "/paths/database-indexes-and-search",
       "sourcePath": "content/learning-paths/database-indexes-and-search.json",
-      "contentHash": "2801bee5c96ae00ce7f32f44c198711b3e1cfacc645b7f46748b243604d139ab"
+      "contentHash": "b883f5d6a5ffffb9ee75d601ea8ac840531bce0167ac892ae3be6275e72930ab"
     },
     {
       "slug": "frontend-interview-practice",
@@ -10701,6 +10853,260 @@
       "route": "/practice/databases/index-fundamentals-questionnaire",
       "sourcePath": "content/exercises/databases/index-fundamentals-questionnaire.json",
       "contentHash": "ce8e8968b07aba44fcdd7f2fa9c7aa98128efdc033a638422276162ca2579dd6"
+    },
+    {
+      "slug": "databases/postgres-connection-pooling-questionnaire",
+      "title": "Connection Pooling Production Checkpoint",
+      "documentSlug": "databases/postgres-connection-pooling",
+      "concept": "PostgreSQL connection budgets and resilient pooling",
+      "difficulty": "senior",
+      "tags": [
+        "postgres",
+        "connection-pooling",
+        "pgdog",
+        "database-optimization",
+        "graceful-shutdown"
+      ],
+      "status": "published",
+      "type": "questionnaire",
+      "questions": [
+        {
+          "id": "multiplexing",
+          "prompt": "A pooler has 80 backends and 1,000 connected clients. What allows it to serve them without 1,000 PostgreSQL sessions?",
+          "explanation": "Transaction pooling shares backends over time. It does not execute independent transactions simultaneously on one backend or automatically cache all query results. Long transactions reduce opportunities for reuse.",
+          "kind": "choice",
+          "options": [
+            {
+              "id": "reuse-after-transaction",
+              "label": "Reuse a backend after each completed transaction; excess simultaneous work waits or fails admission.",
+              "isCorrect": true
+            },
+            {
+              "id": "parallel-on-one",
+              "label": "Run all 1,000 transactions simultaneously on one backend.",
+              "isCorrect": false
+            },
+            {
+              "id": "cache-everything",
+              "label": "Cache every query result so transactions never reach PostgreSQL.",
+              "isCorrect": false
+            }
+          ]
+        },
+        {
+          "id": "direct-budget",
+          "prompt": "Use the lesson assumptions: total ceiling 1,187; reserve/headroom 187 not already deducted; other consumers 200; 25 pods; 2 processes per pod; 2 pools per process targeting the same server.",
+          "explanation": "The application allowance is 1,187 - 187 - 200 = 800. There are 25 × 2 × 2 = 100 pools, so the cap is 8. A cap of 10 allows 1,200 connections including other consumers and exceeds the ceiling. This arithmetic is illustrative, not a verified Titan setting.",
+          "kind": "cloze",
+          "template": "The largest whole-number max per pool that preserves this budget is {{blank}}.",
+          "acceptedAnswers": [
+            "8"
+          ]
+        },
+        {
+          "id": "surge-budget",
+          "prompt": "Five extra pods overlap during replacement: 30 pods, 2 processes per pod, 2 pools per process, max 8, and 200 other connections.",
+          "explanation": "30 × 2 × 2 × 8 + 200 = 1,160. This is below 1,187 but exceeds the 1,000 operating budget by 160. Omitting overlap incorrectly gives 1,000. A ceiling check alone does not preserve headroom.",
+          "kind": "cloze",
+          "template": "The potential total is {{blank}} connections.",
+          "acceptedAnswers": [
+            "1160",
+            "1,160"
+          ]
+        },
+        {
+          "id": "proxy-budget",
+          "prompt": "Three pooler replicas each have two independent pools aimed at one database. Each pool permits 80 backends, and 120 direct connections bypass the pooler.",
+          "explanation": "3 × 2 × 80 + 120 = 600. Counting one pool gives 200 and misses both replicas and user/database pool groups. Application client connections are a separate budget; a fourth overlapping pooler replica raises this total to 760.",
+          "kind": "cloze",
+          "template": "The potential database total is {{blank}} connections.",
+          "acceptedAnswers": [
+            "600"
+          ]
+        },
+        {
+          "id": "hold-time",
+          "prompt": "A stable workload completes 600 transactions/s. Mean backend hold time is 0.04 s, excluding acquisition wait.",
+          "explanation": "600 × 0.04 = 24 occupied backends on average. This does not establish a pool size for bursts or p99 latency. Throughput is not a connection count; at 0.20 s, the same throughput would require 120 occupied backends on average.",
+          "kind": "cloze",
+          "template": "The mean occupied backend count is {{blank}}.",
+          "acceptedAnswers": [
+            "24"
+          ]
+        },
+        {
+          "id": "session-state",
+          "prompt": "An application uses named prepared statements, tenant settings, and LISTEN. What evidence is needed before moving it to transaction pooling?",
+          "explanation": "Compatibility depends on the implementation and configuration. PgBouncer can support protocol-level prepared statements with max_prepared_statements enabled, but SQL PREPARE is different. PgDog documents additional session support. A basic SELECT does not prove listener, tenant isolation, or reconnect correctness.",
+          "kind": "choice",
+          "options": [
+            {
+              "id": "test-exact-features",
+              "label": "Test the exact pooler release, driver protocols, session features, isolation, and reconnect behavior.",
+              "isCorrect": true
+            },
+            {
+              "id": "all-unsupported",
+              "label": "Reject every transaction pooler because all prepared statements are unsupported.",
+              "isCorrect": false
+            },
+            {
+              "id": "smoke-enough",
+              "label": "Accept one successful SELECT in staging as proof that all session behavior is compatible.",
+              "isCorrect": false
+            }
+          ]
+        },
+        {
+          "id": "shutdown-order",
+          "prompt": "Order the normal successful shutdown path; an independent deadline still bounds the entire sequence.",
+          "explanation": "Stop producers before draining consumers, then close their pools. Closing pools first can break accepted work; immediate exit skips asynchronous cleanup. Hung work needs a tested deadline and cancellation path.",
+          "kind": "ordering",
+          "items": [
+            {
+              "id": "stop",
+              "label": "Stop admitting HTTP work and new jobs"
+            },
+            {
+              "id": "drain",
+              "label": "Drain in-flight work and release checked-out clients"
+            },
+            {
+              "id": "close",
+              "label": "Await closure of every application pool"
+            },
+            {
+              "id": "exit",
+              "label": "Exit before the actual termination deadline"
+            }
+          ],
+          "correctOrder": [
+            "stop",
+            "drain",
+            "close",
+            "exit"
+          ]
+        },
+        {
+          "id": "termination-window",
+          "prompt": "A deployment mentions a 30-second shutdown warning. Which statement is justified?",
+          "explanation": "Kubernetes termination grace and a provider warning are distinct. Google Compute Engine Spot shutdown is best effort and up to 30 seconds; other platforms differ. Pool closure is not a universal cancellation mechanism, and stuck checkouts can delay it.",
+          "kind": "choice",
+          "options": [
+            {
+              "id": "best-effort",
+              "label": "Verify provider and Kubernetes timing; preStop consumes grace time and an interruption may allow less usable time.",
+              "isCorrect": true
+            },
+            {
+              "id": "guaranteed",
+              "label": "Every spot interruption guarantees the application a full 30 seconds after SIGTERM.",
+              "isCorrect": false
+            },
+            {
+              "id": "end-cancels",
+              "label": "pool.end() immediately cancels all running transactions, so drain timing is irrelevant.",
+              "isCorrect": false
+            }
+          ]
+        },
+        {
+          "id": "spot-placement",
+          "prompt": "Several spot nodes disappear together, and replacement pods reconnect at once. Which plan addresses the availability and connection risks?",
+          "explanation": "A stable baseline and explicit tier bounds can limit exposure; topology spread reduces some correlated loss. A PDB cannot prevent involuntary node loss. A soft scheduling preference is not a numerical spot cap, and all-spot spreading is not a survival guarantee.",
+          "kind": "choice",
+          "options": [
+            {
+              "id": "stable-baseline",
+              "label": "Keep a tested stable-capacity baseline, cap the spot tier, spread replicas, and bound reconnection and retries.",
+              "isCorrect": true
+            },
+            {
+              "id": "pdb-protects",
+              "label": "Use only a PodDisruptionBudget; it prevents the provider from preempting nodes.",
+              "isCorrect": false
+            },
+            {
+              "id": "soft-cap",
+              "label": "Use a soft preference for ordinary nodes; that guarantees a fixed maximum number of spot pods.",
+              "isCorrect": false
+            }
+          ]
+        },
+        {
+          "id": "saturated-database",
+          "prompt": "Pooler wait time rises while database CPU and lock waits are high. What should you investigate first?",
+          "explanation": "A queue can reflect saturated execution capacity. More active work may amplify CPU or lock contention; accepting more clients does not add database CPU. Use query plans, transaction timing, and load tests to distinguish the bottleneck before changing caps.",
+          "kind": "choice",
+          "options": [
+            {
+              "id": "reduce-work",
+              "label": "Reduce expensive or blocked work and transaction duration; evaluate concurrency limits against measured latency.",
+              "isCorrect": true
+            },
+            {
+              "id": "raise-cap",
+              "label": "Raise every application and pooler cap until waiting disappears.",
+              "isCorrect": false
+            },
+            {
+              "id": "raise-clients",
+              "label": "Raise only the pooler client-connection limit; that increases database execution capacity.",
+              "isCorrect": false
+            }
+          ]
+        },
+        {
+          "id": "ambiguous-commit",
+          "prompt": "The client loses its connection after sending COMMIT for a write, before receiving the response. What should happen next?",
+          "explanation": "The transaction may have committed even though its response was lost. Neither success nor rollback follows from the missing response alone. Reconcile the outcome and retry only through a safe bounded policy; a pooler cannot make arbitrary retries exactly once.",
+          "kind": "choice",
+          "options": [
+            {
+              "id": "reconcile",
+              "label": "Treat the outcome as uncertain and reconcile using durable operation identity or a proven idempotent retry design.",
+              "isCorrect": true
+            },
+            {
+              "id": "retry-blindly",
+              "label": "Repeat the write immediately because a missing response proves rollback.",
+              "isCorrect": false
+            },
+            {
+              "id": "assume-success",
+              "label": "Report success because sending COMMIT proves the database committed.",
+              "isCorrect": false
+            }
+          ]
+        },
+        {
+          "id": "pooling-modes",
+          "prompt": "Match each pooling mode to the end of its backend assignment.",
+          "explanation": "Session mode preserves a client/server session but shares less. Transaction mode releases the assignment between transactions. Statement mode requires autocommit work and cannot support an explicit multi-statement transaction.",
+          "kind": "matching",
+          "pairs": [
+            {
+              "id": "session",
+              "prompt": "Session mode",
+              "match": "Client disconnects"
+            },
+            {
+              "id": "transaction",
+              "prompt": "Transaction mode",
+              "match": "Transaction finishes"
+            },
+            {
+              "id": "statement",
+              "prompt": "Statement mode",
+              "match": "Statement finishes; explicit multi-statement transactions disallowed"
+            }
+          ]
+        }
+      ],
+      "id": "72bfe51ae69c",
+      "route": "/practice/databases/postgres-connection-pooling-questionnaire",
+      "sourcePath": "content/exercises/databases/postgres-connection-pooling-questionnaire.json",
+      "contentHash": "bfff6c659c4e8844217663eeec3858d2e86dc4f315002ce41dd1726f42a83471"
     },
     {
       "slug": "databases/postgres-full-text-search-questionnaire",
@@ -85711,8 +86117,8 @@
       "slug": "database-indexes-and-search",
       "pathSlug": "database-indexes-and-search",
       "title": "Database Indexes And Search Flashcard Feed",
-      "summary": "Passive database index and PostgreSQL search cards for short mobile review sessions.",
-      "audience": "Backend, full-stack, and platform engineers reviewing database indexing and search behavior.",
+      "summary": "Passive database index, PostgreSQL search, and connection pooling cards for short mobile review sessions.",
+      "audience": "Backend, full-stack, and platform engineers reviewing database indexing, search, and connection management.",
       "status": "published",
       "cards": [
         {
@@ -86294,12 +86700,128 @@
             "autovacuum"
           ],
           "sourceDocSlug": "databases/postgres-hot-updates"
+        },
+        {
+          "id": "pool-reuse-concept",
+          "type": "concept",
+          "title": "Clients Are Not Backends",
+          "prompt": "A transaction pooler separates client socket lifetime from backend transaction lifetime.",
+          "explanation": "After a transaction finishes and cleanup completes, another client can use that backend. Simultaneous demand beyond backend capacity must wait or fail admission.",
+          "difficulty": "senior",
+          "tags": [
+            "postgres",
+            "connection-pooling",
+            "production"
+          ],
+          "sourceDocSlug": "databases/postgres-connection-pooling"
+        },
+        {
+          "id": "pool-hold-time-concept",
+          "type": "concept",
+          "title": "Hold Time Sets Occupancy",
+          "prompt": "At 600 transactions/s and 0.04 s mean backend hold time, average occupancy is 24.",
+          "explanation": "This mean relationship is not a p99 sizing rule. Holding transactions open during remote calls consumes backends even without active SQL.",
+          "difficulty": "senior",
+          "tags": [
+            "postgres",
+            "connection-pooling",
+            "production"
+          ],
+          "sourceDocSlug": "databases/postgres-connection-pooling"
+        },
+        {
+          "id": "pool-budget-practical",
+          "type": "practical",
+          "title": "Count Every Pool",
+          "prompt": "Budget peak pods × processes × pools × per-pool max, then add other consumers.",
+          "explanation": "Include old/new overlap, jobs, and direct tools. A singleton per process still multiplies across the fleet. A pool aimed at a different server belongs in that server budget.",
+          "difficulty": "senior",
+          "tags": [
+            "postgres",
+            "connection-pooling",
+            "production"
+          ],
+          "sourceDocSlug": "databases/postgres-connection-pooling"
+        },
+        {
+          "id": "pool-drain-practical",
+          "type": "practical",
+          "title": "Drain Before Closing Pools",
+          "prompt": "Stop admission and job intake, drain bounded work, then await pool closure before exiting.",
+          "explanation": "A preStop hook consumes Kubernetes grace time. Provider interruption warnings may be best effort. Cleanup cannot guarantee immediate backend release after node loss.",
+          "difficulty": "senior",
+          "tags": [
+            "postgres",
+            "connection-pooling",
+            "production"
+          ],
+          "sourceDocSlug": "databases/postgres-connection-pooling"
+        },
+        {
+          "id": "pool-budget-snippet",
+          "type": "snippet",
+          "title": "Headroom Is Part Of The Limit",
+          "prompt": "Calculate the per-pool ceiling using the same-server budget.",
+          "explanation": "The example leaves 187 slots for reserves/headroom and 200 for other consumers. It assumes those reserves were not already deducted from 1,187. The result is illustrative, not a Titan setting.",
+          "difficulty": "senior",
+          "tags": [
+            "postgres",
+            "connection-pooling",
+            "production"
+          ],
+          "sourceDocSlug": "databases/postgres-connection-pooling",
+          "code": "floor((1187 - 187 - 200) / (25 * 2 * 2)) = 8",
+          "codeLanguage": "text"
+        },
+        {
+          "id": "pool-proxy-snippet",
+          "type": "snippet",
+          "title": "Pooler Replicas Multiply Too",
+          "prompt": "Three replicas with two 80-backend pools each, plus 120 direct connections, permit 600.",
+          "explanation": "A fourth overlapping replica raises the ceiling to 760. Client admission limits are separate from database backend limits.",
+          "difficulty": "senior",
+          "tags": [
+            "postgres",
+            "connection-pooling",
+            "production"
+          ],
+          "sourceDocSlug": "databases/postgres-connection-pooling",
+          "code": "3 * 2 * 80 + 120 = 600\n4 * 2 * 80 + 120 = 760",
+          "codeLanguage": "text"
+        },
+        {
+          "id": "pool-compatibility-interview",
+          "type": "interview",
+          "title": "Would You Change Only The URL?",
+          "prompt": "A staging SELECT passes through a pooler. Is the application ready for transaction mode?",
+          "explanation": "No. Validate the pinned pooler and driver, tenant/session state, prepared statement protocols, listeners, rollback, cancellation, and reconnect behavior using fixtures.",
+          "difficulty": "senior",
+          "tags": [
+            "postgres",
+            "connection-pooling",
+            "production"
+          ],
+          "sourceDocSlug": "databases/postgres-connection-pooling"
+        },
+        {
+          "id": "pool-outcome-interview",
+          "type": "interview",
+          "title": "A Lost COMMIT Response",
+          "prompt": "A connection drops after a write sends COMMIT. Should the application retry immediately?",
+          "explanation": "The result is uncertain. Reconcile through durable operation identity or a proven idempotent design; use bounded retries. Neither success nor rollback is established by a missing response.",
+          "difficulty": "senior",
+          "tags": [
+            "postgres",
+            "connection-pooling",
+            "production"
+          ],
+          "sourceDocSlug": "databases/postgres-connection-pooling"
         }
       ],
       "id": "082fe87b8d6c",
       "route": "/paths/database-indexes-and-search/flashcards",
       "sourcePath": "content/flashcard-feeds/database-indexes-and-search.json",
-      "contentHash": "87bad1098ab8984992b83b153785e1d0d3976cbfdef2d1db4a6b31d0e573c405"
+      "contentHash": "646448c91d498deb1ab6afc6d43c8c2f6d2c33e7f72dfc4def266e44f0779eea"
     },
     {
       "slug": "frontend-interview-practice",
@@ -98475,11 +98997,12 @@
     {
       "name": "Databases",
       "slug": "databases",
-      "documentCount": 5,
+      "documentCount": 6,
       "difficulties": [
         "senior"
       ],
       "topics": [
+        "Connection Management",
         "Full Text Search",
         "Fuzzy Search",
         "Indexes",

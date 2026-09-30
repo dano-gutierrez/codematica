@@ -27,3 +27,5 @@ Run `npm run content:check` before committing path changes.
 - `product-engineering-interview.json` pairs a company-neutral research guide with original JavaScript/architecture lessons, eighteen checkpoint questions, and a 75-minute guided mock. Use neutral slugs and general technical references; distinguish rehearsal assumptions from real interview evidence.
 
 Interview nodes use `{ "kind": "interview", "slug": "collection/question" }` and require a published target. Source-required paths also require primary references on that question. Opt into `{ "completionDestination": "flashcard-feed" }` to send the final node to the path’s published feed. Other path endings are unchanged.
+
+The `database-indexes-and-search` skill path ends with Connection Pooling And Resilience: a sourced Markdown lesson, three Mermaid diagrams, a 12-question checkpoint, and eight appended review cards. Keep the existing path slug and earlier node order stable; label reported incident context and illustrative capacity assumptions explicitly.

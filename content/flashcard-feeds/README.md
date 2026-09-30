@@ -24,3 +24,5 @@ Passive flashcards are separate from interactive `type: "flashcard"` exercises i
 - RTK Query interview briefs provide three concise concept/practical/interview cards per lesson, each linked to its source document; keep version claims aligned with that lesson.
 
 Set `codeLanguage` for every authored snippet (for example `typescript`, `python`, or `sql`). `sourceDocSlug` links back to the canonical lesson and preserves the feed’s path context. Frontend Interview Practice supplies 42 cards covering seven briefs and their implementation recipes.
+
+The database feed contains 48 cards, including eight connection-pooling cards (two of each type). Preserve the earlier 40 cards and source new pooling cards to `databases/postgres-connection-pooling`; numerical capacities remain illustrative.
