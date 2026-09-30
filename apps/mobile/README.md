@@ -51,7 +51,9 @@ Jest covers native adapters, offline and partial-failure progress behavior, Supa
 
 ## Native E2E
 
-Credential-free native E2E builds use the `e2e-test` EAS profile: Android produces an APK and iOS produces a simulator app. Checked-in Maestro flows live in `.maestro/`, use stable `testID` selectors, and cover offline discovery, path-to-practice, browse-to-diagram, Japanese study/review, interviews, and unconfigured login. The frontend interview journey also captures Python code for dark-surface visual review; local `code-styles.test.tsx` verifies fenced/indented Markdown and standalone code styles separately.
+Credential-free native E2E builds use the `e2e-test` EAS profile: Android produces an APK and iOS produces a simulator app. Checked-in Maestro flows live in `.maestro/`, use stable `testID` selectors, and cover offline discovery, path-to-practice, browse-to-diagram, Japanese study/review, interviews, and unconfigured login. The frontend interview journey also captures Python code for dark-surface visual review. `code-layout.yaml` exercises the lesson code viewport and captures both swipe directions and surrounding prose. Local `code-styles.test.tsx` verifies fenced/indented/nested Markdown, whitespace, language labels, full-height code, and horizontal-scroll containment separately.
+
+Run `npm run mobile:e2e:code-layout -- --session <agent-device-session>` on each Android/iOS phone simulator to assert actual source movement, fixed prose/navigation bounds, reverse scrolling, and vertical page scrolling. See `e2e/README.md` for setup, Expo Go options, and retained screenshot/snapshot artifacts. This local geometry check complements the EAS Maestro screenshots.
 
 Run the Android smoke workflow manually or by applying the `mobile-e2e` pull-request label:
 

@@ -112,3 +112,7 @@ Updated home discovery, native deployment, the docs hub, package/mobile/E2E READ
 ## Thread Handoff Prompt
 
 `Read docs/features/adaptive-ui.md and docs/codex-context.md. Preserve all feature behavior while checking responsive presentation. Run the navigation and layout regressions, and distinguish browser/Jest success from installed native device verification.`
+
+### Native tab text at accessibility sizes — 2026-09-29
+
+Phone tab labels fit on a single line, scaling down only when needed to fit the available tab width. System font scaling stays enabled; the full destination label remains the tab accessibility label. This prevents the long Interviews label from breaking mid-word at larger iOS text sizes. The iPad rail keeps natural text wrapping. `adaptive-navigation.test.tsx` guards these text props, and simulator visual QA covers enlarged system text.

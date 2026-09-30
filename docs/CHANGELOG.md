@@ -2,6 +2,14 @@
 
 This changelog records durable, user-visible and architectural changes. Feature documents remain the authoritative contracts; this file explains when a group of related changes landed and points readers to the owning documentation.
 
+## 2026-09-29 — Native Code Scrolling
+
+- Reuse the native code renderer for fenced and indented Markdown, preserving indentation and blank lines while scrolling long lines horizontally inside the code surface.
+- Keep language labels and surrounding prose/navigation fixed; remove the height cap that could hide the end of long code. System font scaling remains enabled. Phone tab labels fit on one line to avoid mid-word wrapping at larger text sizes.
+- Add regression-first Jest coverage, a Maestro lesson journey, and an agent-device runner that asserts real source movement and unchanged surrounding bounds on Android/iOS, with retained screenshots and native trees.
+
+Owning contract: `docs/features/markdown-knowledge-browser.md`. Device setup and regression command: `apps/mobile/e2e/README.md`.
+
 ## 2026-09-28 — Readable Lesson Code Blocks
 
 - Fixed a prose CSS rule that replaced highlighted blocks' dark background with a pale surface while retaining light syntax colors.

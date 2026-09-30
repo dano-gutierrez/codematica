@@ -36,6 +36,7 @@ Detailed Play Console, Apple Developer Program, App Store Connect, EAS credentia
 - Keep shared business logic in `@codematica/core`; platform code should call adapters instead of duplicating route, search, practice, or progress rules.
 - Keep reusable native screens in `@codematica/ui` using React Native primitives, design tokens, and `StyleSheet`.
 - Native Supabase uses anon-safe public env vars and secure Expo session storage. Service role keys remain local/server-only.
+- Native block code uses one width-bounded horizontal viewport across Markdown, interviews, reviews, and diagram source. Long source keeps its full height within the vertical page; language labels, prose, and navigation stay fixed during horizontal scrolling. See `markdown-knowledge-browser.md` for the rendering contract.
 - Native Mermaid rendering uses a WebView when a bundled Mermaid runtime is provided and shows source fallback when unavailable.
 - Native real-world web interviews include complete rubrics, approaches, and selectable source files, but deliberately defer editing/execution to the Next.js Sandpack surface.
 - Native Japanese study keeps Learn, Review, Dictionary, and Resources directly reachable; review state is retained in AsyncStorage and merged with the authenticated RLS snapshot when Supabase is configured.
@@ -156,6 +157,8 @@ Store-side setup still required:
 The root layout wraps the existing Stack with safe-area-aware `NativeNavigation`: a phone bottom bar and iPad sidebar, responsive to Split View and font scaling. Existing route adapters, content, and progress behavior are unchanged. See [Adaptive Interface And Navigation](adaptive-ui.md).
 
 ## Test Plan
+
+- Native code: `code-styles.test.tsx` covers source preservation, nested Markdown, readable code/inline styles, and scroll containment. Run `npm run mobile:e2e:code-layout -- --session <agent-device-session>` on both platforms for geometry and real gesture assertions; `apps/mobile/e2e/README.md` documents setup and evidence. `.maestro/code-layout.yaml` runs in the existing EAS release lane and captures source/prose screenshots. Expo Go validation does not replace the final EAS build checks.
 
 - `code-styles.test.tsx` verifies dark fenced and indented Markdown, unknown languages, standalone code, and separate inline styling. The frontend Maestro journey captures Python source for installed-device visual review; Jest success alone does not establish native visual contrast on a device.
 

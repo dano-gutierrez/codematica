@@ -101,10 +101,13 @@ npm run typecheck
 npm run lint
 npm test
 npm run test:mobile
+npm run mobile:e2e:code-layout -- --session snippets-ios
 npm run e2e:smoke
 npm run mobile:doctor
 npm run mobile:build:preview
 ```
+
+For native code scrolling checks, open a simulator session first; see [the native layout regression guide](apps/mobile/e2e/README.md).
 
 ## Content
 

@@ -29,6 +29,7 @@ Codematica is a mobile-first learning app for system design, coding, programming
 - Jest + React Native Testing Library with coverage gates for mobile adapters and shared screens
 - pgTAP against a disposable local Supabase stack for migrations, RLS, triggers, and search
 - Maestro 2.8.0 through credential-free EAS Android/iOS test builds for installed-app journeys
+- local agent-device geometry/gesture checks for native code scrolling, with screenshot and accessibility-tree evidence (`apps/mobile/e2e/`)
 - optional Supabase Postgres scaffold for hosted search and saved progress
 
 ## Content Flow

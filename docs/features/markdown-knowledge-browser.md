@@ -3,7 +3,7 @@
 ## Snapshot
 
 - Status: `shipped`
-- Last updated: `2026-09-28`
+- Last updated: `2026-09-29`
 - Owner thread: `n/a`
 - Current state: The content library lives at `/browse` and reads a generated local index from repo-authored Markdown, Mermaid, path, exercise, passive flashcard feed, and interview files.
 - Target outcome: Users can browse, search, read articles, and render diagrams on mobile without Supabase credentials.
@@ -37,7 +37,7 @@ The V1 app is a searchable study browser. Content authors create plain Markdown 
 - Embedded Mermaid blocks and external diagram files must render with source/error states.
 - Fenced code blocks render with the shared language-aware code theme instead of unstyled browser defaults.
 - Highlighted blocks retain their dark background inside Markdown. General prose `pre` styling excludes `.code-block-pre`; inline code keeps its separate light style. Syntax tokens, comments, and unhighlighted text must meet 4.5:1 contrast against the rendered code surface.
-- All block code uses the dark `#101820` surface: Markdown (fenced, indented, and unknown languages), interview solutions, Python companions, passive-review snippets, diagram source, playground editors, and authored source after an editor failure. Web prose fallbacks use the same background/foreground variables. Native fenced and indented Markdown share one style.
+- All block code uses the dark `#101820` surface: Markdown (fenced, indented, and unknown languages), interview solutions, Python companions, passive-review snippets, diagram source, playground editors, and authored source after an editor failure. Web prose fallbacks use the same background/foreground variables. Native fenced and indented Markdown reuse the same `CodeBlock`, including blocks nested in lists/quotes. Native code scrolls horizontally inside the available content width; language labels, prose, and page navigation stay fixed. Source height is uncapped so vertical page scrolling reaches every line. Indentation, blank lines, and system font scaling are preserved.
 - Theme selection is deferred. This change adds no preference UI or persistence; rendered diagrams and runnable preview output retain their own presentation.
 - `packages/core/src/generated/content-index.json` must not be edited manually.
 
@@ -58,7 +58,7 @@ The feature is implemented with a growing local content set. The Mermaid authori
 | Quiz questions and feedback | Plain text, with no separate code-block renderer to theme. |
 | Inline code | Keeps its contrasting prose chip on web and native. |
 
-The Web playground regression reproduced 3.88:1 comments and 3.71:1 numeric/boolean literals before the explicit syntax palette. These text categories now meet the same 4.5:1 target as lesson code. Local native style tests verify rendered props; installed-device visual verification remains a separate release check.
+The Web playground regression reproduced 3.88:1 comments and 3.71:1 numeric/boolean literals before the explicit syntax palette. These text categories now meet the same 4.5:1 target as lesson code. Native Jest tests verify rendered props; the 2026-09-29 follow-up adds real simulator gesture and layout verification below.
 
 ## Scope
 
@@ -127,7 +127,7 @@ The Web playground regression reproduced 3.88:1 comments and 3.71:1 numeric/bool
 
 - `WebPlayground.test.tsx` reproduces initialization failure and verifies shared source rendering and recovery. `code-styles.test.tsx` renders native fenced/indented/unknown-language Markdown plus standalone and inline code; the indented case failed before the fix.
 - `code-contrast.regression.spec.ts` checks actual backgrounds and every rendered code text node in lessons, three algorithm languages, Python companions, passive review, SQL without highlighting, Mermaid source, and an edited playground containing comments, numbers, and booleans. Editor contrast is checked with the remote bundler blocked. Theme selection is intentionally absent.
-- Run web/core and native coverage, lint, typecheck, production build, the contrast regression and smoke lane. Native installed-device visual checks remain separate from local Jest style assertions.
+- Run web/core and native coverage, lint, typecheck, production build, the contrast regression and smoke lane. Native installed-device checks complement local Jest assertions: `npm run mobile:e2e:code-layout -- --session <session>` measures real native rectangles before/after horizontal swipes and checks reverse and vertical scrolling. Run it on both Android and iOS; see `apps/mobile/e2e/README.md`. The EAS release lane also runs `.maestro/code-layout.yaml` and retains screenshots.
 
 - Unit: frontmatter validation, parsing, headings, Mermaid block extraction, code block rendering, fuzzy ranking, snippets.
 - Integration: generated index loads starter content and validates external diagrams.
@@ -140,11 +140,22 @@ The Web playground regression reproduced 3.88:1 comments and 3.71:1 numeric/bool
 - Browser validation: 19 contrast, playground, and smoke cases pass across the configured Chromium/WebKit projects; lesson contrast is measured at 390px and 1280px.
 - Mobile Doctor passes 19/20 checks and reports ten existing Expo patch-version mismatches. Maestro is not installed locally; the updated screenshot step has not been run on Android/iOS. No dependency upgrade or native release readiness is claimed.
 
+### Native scrolling follow-up — 2026-09-29
+
+- Reproduced wrapped signatures/indentation in native Markdown. Fenced, indented, unlabeled, and unknown-language blocks now use the existing native `CodeBlock` instead of plain `Text` rules. The language label stays outside the horizontal viewport.
+- Removed the shared 340px height cap, which could hide long interview/review/diagram source. The outer container remains bounded by its parent width; only source content can move horizontally. System text scaling remains enabled, and inline code retains its separate prose style.
+- Jest checks nested list/quote code, whitespace and blank-line preservation, language metadata, long examples, and independent horizontal scroll props. `e2e/code-layout.mjs` checks actual source motion, unchanged prose/navigation/container bounds, reversal, and vertical scrolling from inside code. It saves screenshots and raw native trees on success and failure.
+- The checked-in Maestro journey covers the real BFS lesson, swipes in both directions, and verifies following prose/navigation. Geometry assertions run in the local agent-device lane; Maestro screenshots require visual review. Simulator verification uses Expo Go and is not a signed release-artifact check.
+- Mutation check: temporarily disabling horizontal scrolling makes the device runner fail at “A horizontal swipe must move the code source”; restoring it passes. Failure screenshots and native trees are retained.
+- Validation: agent-device geometry checks pass on iPhone 17 (iOS 26.3) and the S24 Android emulator. Maestro 2.8.0 passes the same flow on both, using temporary Expo Go app/deep-link substitutions. Manual visual checks also cover iOS diagram source, the full Android Number Of Islands solution, enlarged iOS accessibility text, and Android 1.5× text; system settings were restored. Mobile coverage passes 59 tests; web/core coverage passes 358 tests; lint, workspace typecheck, content check, production build, and all nine browser smoke tests pass (smoke used port 3102 because another server owns 3100). Expo Doctor still reports the existing ten patch-version mismatches (19/20 checks); no dependency upgrade or EAS release-artifact validation is claimed.
+
 ## Open Questions
 
 - Which hosted Supabase policies should public read use if browser search moves from local fuzzy search to hosted search?
 
 ## Decision Log
+
+- `2026-09-29`: Reuse native `CodeBlock` for Markdown, constrain horizontal scrolling to code, remove vertical clipping, and add Jest plus native gesture/layout regressions.
 
 - `2026-09-28`: Extend the audit to every code surface. Reuse the shared renderer for playground fallback source, align native indented Markdown and plain web fallbacks, and explicitly set readable playground syntax. User-selectable themes remain future work.
 - `2026-09-28`: Scope prose fallback styling away from shared highlighted blocks so Markdown cannot override the dark syntax background. Add a browser contrast regression; no theme palette, content, native UI, or coverage gate changes.
