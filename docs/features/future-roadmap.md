@@ -15,7 +15,7 @@
 
 ## One-Minute Brief
 
-Codematica should grow from a path-first engineering study system into a deeper gamified learning product. The current MVP adds local learning paths, interactive practice, passive review feeds, and interview walkthroughs. Later features should build on that base without breaking Markdown authoring.
+Build future study and gamification features on the MVP's local learning paths, interactive practice, passive review feeds, and interview walkthroughs. Preserve Markdown authoring.
 
 ## Outcome / Contract
 
@@ -33,7 +33,7 @@ Codematica should grow from a path-first engineering study system into a deeper 
 - Code snaps for multiple languages.
 - Deterministic grading, authored tests, saved drafts, and broader challenge types on top of the shipped editable React/TypeScript Sandpack runtime.
 - SQL query practice with an in-app editor backed by deterministic demo data, read-only validation, expected result checks, and a dedicated feature contract before any executable SQL schema or UI is added.
-- Real-time score feedback in a gaming style.
+- Game-style score feedback in real time.
 - Gated levels, streaks, achievements, leaderboards, richer profiles, durable scoring, and optional paywall boundaries.
 - Native feature hardening on top of the Expo foundation: offline updates, mobile E2E, app-store packaging, and native-first study ergonomics.
 

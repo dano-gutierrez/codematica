@@ -19,13 +19,13 @@ status: published
 
 ## Why Diagrams As Text
 
-Mermaid turns a text definition into a diagram. That matters because text can live beside Markdown and code, participate in normal review, show meaningful diffs, and change without dragging shapes around a canvas. The source remains the durable explanation; the rendered SVG is a view of that source.
+Mermaid renders diagrams from text stored beside Markdown and code. You can review, diff, and edit that text without moving shapes on a canvas. The text is the durable source; the SVG is its rendered view.
 
 A diagram is useful only when it answers a question. Before writing syntax, finish this sentence:
 
 > This diagram helps the reader understand **_____**.
 
-If the answer is “the order of a request,” choose a flowchart or sequence diagram. If it is “which states are legal,” choose a state diagram. If it is “how records relate,” choose an entity-relationship diagram. Choosing the diagram family is part of writing clearly.
+If the answer is “the order of a request,” choose a flowchart or sequence diagram. If it is “which states are legal,” choose a state diagram. If it is “how records relate,” choose an entity-relationship diagram. Match the diagram family to the question.
 
 ## Read A Mermaid Block In Three Layers
 
@@ -86,7 +86,7 @@ This example introduces semantic shapes and edge labels:
 - `([Text])` creates a rounded terminal.
 - `-->|Yes|` labels the decision branch.
 
-Shapes are visual vocabulary, not decoration. A diamond should mean a branch. A database cylinder should mean stored data. If every node uses a different shape, readers spend effort decoding style instead of understanding the system.
+Use shapes consistently: diamonds for branches and database cylinders for stored data. Too many different shapes make readers decode style before they can understand the system.
 
 Useful edge forms include `-->` for a directed relationship, `---` for an undirected connection, `-.->` for a dotted directed relationship, and `==>` for a stronger rendered edge. Prefer one dominant edge meaning and label exceptions.
 
@@ -122,14 +122,14 @@ flowchart LR
   class Rejected,Retry failure
 ```
 
-The diagram is more advanced, but its source stays readable because it has boundaries and a main story:
+This diagram remains readable because it has clear boundaries and a main flow:
 
 - `subgraph ... end` groups nodes into a named boundary.
 - One edge enters each boundary before the flow fans out.
 - The dotted asynchronous edge communicates a different relationship.
 - The failure class is reused instead of repeating styles.
 
-The best way to create this diagram is incrementally. First render `User --> Web --> Gateway --> Orders`. Add the decision. Then add storage and asynchronous work. Finally add the failure loop. Rendering after each small change makes syntax errors easy to locate.
+Build this diagram incrementally. First render `User --> Web --> Gateway --> Orders`. Add the decision. Then add storage and asynchronous work. Finally add the failure loop. Rendering after each small change makes syntax errors easy to locate.
 
 ## Comments, Quoting, And Parser Safety
 
@@ -170,7 +170,7 @@ Ask these questions before merging a diagram:
 - Can the source be changed without deciphering generated IDs?
 - Would deleting one-third of the nodes make the explanation clearer?
 
-Complexity is not the number of nodes. Complexity is the amount of context a reader must hold at once. Several focused diagrams are usually better than one “everything architecture” diagram.
+Complexity depends on how much context readers must hold at once, not just the node count. Several focused diagrams are usually clearer than one diagram of everything.
 
 ## Reference Anchors
 

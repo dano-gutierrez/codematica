@@ -19,11 +19,11 @@ status: published
 
 ## Index Mental Model
 
-A database index is a maintained read structure. It stores enough derived information to help the planner find candidate rows without scanning every row in the table. That is the useful mental model: every index is a trade. Reads that match the index shape can become cheaper, while writes, storage, vacuuming, and planning complexity become more expensive.
+A database index stores derived information that helps the planner find candidate rows without scanning the whole table. Matching reads can become cheaper, at the cost of writes, storage, vacuuming, and planning complexity.
 
-An index is not a magic cache of complete query results. In PostgreSQL, normal indexes are stored separately from the table heap. A typical index scan first finds matching row references in the index, then visits the heap to read the row version visible to the current transaction. This means an index can reduce search work and still leave heap reads, row visibility checks, and sorting work behind.
+An index does not cache complete query results. In PostgreSQL, normal indexes are stored separately from the table heap. A typical index scan first finds matching row references in the index, then visits the heap to read the row version visible to the current transaction. This means an index can reduce search work and still leave heap reads, row visibility checks, and sorting work behind.
 
-The senior question is not "should this column be indexed?" It is "which workload is paying for this index, and does the query shape actually let the planner use it?"
+Ask which workload pays for the index and whether its queries let the planner use it.
 
 ## B-Tree First
 
@@ -47,7 +47,7 @@ The leftmost-prefix rule matters for composite B-tree indexes. An index on `(acc
 
 ## Inverted Indexes
 
-Some values are not single scalar keys. A document contains many words. An array contains many elements. JSON may contain many keys and values. For those shapes, an inverted index is often a better match.
+Documents contain words, arrays contain elements, and JSON contains keys and values. An inverted index often fits these composite values better than a single scalar key.
 
 GIN stands for Generalized Inverted Index. It stores entries for component keys extracted from a composite value, then maps each key to rows that contain it. For text search, the keys are lexemes in a `tsvector`. For trigram search, the keys are trigrams. For arrays, the keys are array elements.
 
@@ -61,7 +61,7 @@ create index users_tags_idx
   using gin (tags);
 ```
 
-The upside is fast candidate filtering for containment-like queries. The tradeoff is write overhead and row recheck. A GIN index often answers "which rows might contain these components?" The database may still need to visit the table row to confirm visibility, weights, or exact predicate semantics.
+Containment-like queries gain fast candidate filtering at the cost of write overhead and row rechecks. A GIN index often answers "which rows might contain these components?" The database may still need to visit the table row to confirm visibility, weights, or exact predicate semantics.
 
 ## GiST, BRIN, And Specialized Shapes
 
@@ -69,7 +69,7 @@ GiST is a generalized search tree. It can support similarity, geometric, range, 
 
 BRIN stands for Block Range Index. It stores summaries over physical block ranges. It shines when table order correlates with the queried value, such as append-heavy event tables filtered by time. A BRIN index can be tiny compared with a B-tree, but it returns coarse block ranges and relies on table correlation.
 
-The pattern is consistent: choose the index access method that matches the data shape and predicate shape.
+Choose an access method that matches the data and predicates.
 
 ## Selectivity And Cardinality
 
@@ -163,7 +163,7 @@ An index can be correct and still unused:
 - The planner estimates random heap visits as more expensive than scanning.
 - The index is partial and the query does not imply the predicate.
 
-This is why an index change should be validated against the query and data distribution that motivated it, not just against the schema.
+Validate index changes against the motivating query and data distribution, as well as the schema.
 
 ## Review Standard
 
@@ -175,7 +175,7 @@ For every proposed index, write down:
 4. The write path that now pays maintenance cost.
 5. The operational plan for creating, monitoring, and dropping it.
 
-If the index cannot be tied to a real query and a real bottleneck, it is probably schema clutter.
+An index without a real query bottleneck is probably unnecessary.
 
 ## Reference Anchors
 

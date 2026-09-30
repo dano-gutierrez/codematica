@@ -13,7 +13,7 @@ status: "published"
 
 # Japanese First Connections
 
-Learn each pattern as something a person is doing. Read the scene aloud, notice the small grammar word, then change one detail to make the sentence yours.
+Learn each pattern through an everyday action. Read the scene aloud, identify the grammar word, then change one detail to make the sentence yours.
 
 ## Scene 1: meeting someone
 
@@ -53,7 +53,7 @@ Try it: say your name, then add one true fact such as your country, language, wo
 
 ## Numbers, ages, time, and dates
 
-Count with the useful form required by the task.
+Use the counting form that fits the task.
 
 | Task | Japanese | Reading | Meaning |
 |---|---|---|---|

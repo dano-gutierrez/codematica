@@ -87,7 +87,7 @@ The Web playground regression reproduced 3.88:1 comments and 3.71:1 numeric/bool
 
 ### UI / UX
 
-- `/browse` shows the usable content library immediately and links to the discovery home and `/paths` catalog through shared navigation.
+- `/browse` immediately shows the content library and links to the discovery home and `/paths` catalog through shared navigation.
 - `/` shows the cross-section discovery home; `/paths` shows the complete learning-path catalog.
 - `/docs/[...slug]` renders one article with metadata, outline, Markdown body, and referenced diagrams.
 - `/diagrams/[...slug]` renders one standalone Mermaid diagram.
@@ -101,7 +101,7 @@ The Web playground regression reproduced 3.88:1 comments and 3.71:1 numeric/bool
 - The generated index stores metadata, Markdown, extracted plain text, headings, Mermaid blocks, learning paths, exercises, passive flashcard feeds, interview catalogs, source paths, and hashes.
 - Native bundles the generated index for offline anonymous browsing, search, reading, and practice.
 - Optional Supabase tables mirror the generated index for future hosted search.
-- Article and diagram progress events are emitted for the optional auth/progress layer, but Markdown and Mermaid content remain local-index sourced.
+- Articles and diagrams emit progress events for optional auth/progress. Their Markdown and Mermaid content still comes from the local index.
 
 ### Failure And Edge Handling
 
@@ -131,7 +131,7 @@ The Web playground regression reproduced 3.88:1 comments and 3.71:1 numeric/bool
 
 - Unit: frontmatter validation, parsing, headings, Mermaid block extraction, code block rendering, fuzzy ranking, snippets.
 - Integration: generated index loads starter content and validates external diagrams.
-- E2E: mobile user uses dropdown filters, searches, opens a document, and opens a diagram.
+- E2E: a mobile user filters, searches, opens a document, and opens a diagram. Empty results explain that no lessons or diagrams match the filters; unavailable routes provide a link back to home.
 - CSS regression: `code-contrast.regression.spec.ts` reads computed styles in the actual lesson at 390px and 1280px. It checks every rendered code text node against the surface (including the faint grid), preserves inline styling, and rejects page overflow. This test first reproduced 1.21:1 body-text contrast caused by the prose background override. A browser is the lowest reliable layer for this cascade defect; JSX-only tests cannot prove computed contrast.
 
 ### Local code-style verification — 2026-09-28

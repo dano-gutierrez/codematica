@@ -1,6 +1,6 @@
 # Codex Context
 
-This file carries durable repo context across Codex threads.
+This file preserves repo context across Codex tasks.
 
 ## Source Of Truth
 
@@ -24,12 +24,13 @@ The interface uses persistent phone bottom navigation and desktop/iPad sidebars.
 
 Codematica V1 is a mobile-first learning app with a Next.js web app and an Expo Router Android/iOS app. The home route is a cross-section discovery hub with Keep reading, local global search, and curated rows for paths, lessons, interviews, practice, and languages. Complete catalogs live at `/paths`, `/browse`, `/interviews`, `/practice`, and `/languages`. The app renders plain Markdown articles, diagrams, flashcard, cloze, questionnaire, writing, guided-lab, passive flashcard, interview, and Japanese study surfaces. Japanese Foundations and ML Systems share the generic stage/progression contract. The ML Systems Engineer path maps Harvard CS249r with primary-source links and published companions through Volume I Data Engineering. React/TypeScript web exercises run through Sandpack on web and remain read-only on native.
 
-Supabase is used optionally for Auth and saved progress when public runtime env vars are configured. The app still browses and renders local content without Supabase credentials; signed-out progress is buffered locally.
+Supabase provides optional Auth and saved progress when public runtime env vars are configured. The app still browses and renders local content without Supabase credentials; signed-out progress is buffered locally.
 
 The first hosted web target is Vercel Hobby on the Vercel-provided URL. Vercel runs `npm ci` and `npm run build`; Supabase sync remains manual and server-side only until a feature explicitly adds runtime Supabase reads. Native targets are Expo/EAS internal builds first, with production build and EAS Submit profiles ready for Play Console and App Store Connect once account-side setup is complete.
 
 ## Repo Map
 
+- `.agents/skills/technical-edit/`: reusable technical editing instructions and Codex UI metadata; usage and validation live in `docs/README.md#technical-editing-skill`
 - `apps/web/src/app/page.tsx`: web discovery home route
 - `apps/web/src/app/paths/page.tsx`: complete web learning-path catalog
 - `apps/web/src/app/practice/page.tsx`: complete web practice/review catalog
@@ -92,7 +93,7 @@ The first hosted web target is Vercel Hobby on the Vercel-provided URL. Vercel r
 - Keep guided-lab predictions, evidence details, and reflections transient; progress may store only coarse prediction/checklist completion.
 - Keep writing strokes transient; progress may store only coarse practice state such as mode, character slug, and completion.
 - Keep Japanese mastery separate from completion history. Local/remote merge may retain only best score, attempt count, review box, mastery state, last practice time, and next review time.
-- Keep passive flashcard answers nonexistent; progress may store only latest feed/card position.
+- Passive flashcards must not collect answers; progress may store only the latest feed/card position.
 - Keep Supabase optional for local browsing. Auth/progress sync may require public Supabase runtime env vars, but content rendering must keep working without them.
 - Keep Vercel hosting static-first and free-tier oriented until traffic, commercial use, or runtime backend requirements justify paid services.
 - Keep Expo native builds on EAS internal distribution until store credentials, metadata, screenshots, privacy forms, and review readiness are explicitly prepared.
@@ -115,18 +116,22 @@ The first hosted web target is Vercel Hobby on the Vercel-provided URL. Vercel r
 - `docs/features/database-indexes-learning-path.md`: database indexes, PostgreSQL HOT updates, and PostgreSQL search path, including index fundamentals, MVCC update mechanics, full text search, trigram fuzzy matching, hybrid SQL search, quizzes, passive flashcards, and SQL editor roadmap boundaries.
 - `docs/features/bfs-dfs-learning-path.md`: Programming skill path for BFS and DFS fundamentals, side-by-side Python/TypeScript examples, questionnaires, passive review, and graph interview variants.
 - `docs/features/mermaid-diagram-authoring.md`: Mermaid authoring skill path for flowcharts, software diagrams, planning/data diagrams, debugging, choice-only quizzes, and source-first review.
-- `docs/features/advanced-nextjs-16-learning-path.md`: hard Front-End Development skill path for Next.js 16 rendering, caching, `force-dynamic`, invalidation, production pain points, performance, migration, quizzes, and one-minute brief cards.
+- `docs/features/advanced-nextjs-16-learning-path.md`: advanced Front-End Development skill path for Next.js 16 rendering, caching, `force-dynamic`, invalidation, production pitfalls, performance, migration, quizzes, and one-minute brief cards.
 - `docs/features/interview-coding-catalog.md`: company and anonymous real-world interview collections, guided algorithm walkthroughs, and frontend solution sessions.
 - `docs/features/react-typescript-playground.md`: reusable WebExerciseProject schema, Sandpack isolation, editing behavior, and native fallback.
 - `docs/features/auth-and-progress.md`: Supabase Auth, minimal profiles, saved progress, local progress buffering, and Keep reading UI.
 - `docs/features/subscriptions-and-content-gating.md`: proposed RevenueCat/Stripe/Apple/Google subscription model, strict paid content gating, entitlement cache, and paywall implementation plan.
 - `docs/features/future-roadmap.md`: planned AI, flashcard, blueprint, code challenge, deeper gamification, and native app directions.
-- `docs/features/hosting-and-deployment.md`: Vercel free-tier deployment, static-first hosting behavior, EAS build/submit posture, and manual Supabase sync boundaries.
+- `docs/features/hosting-and-deployment.md`: Vercel free-tier deployment, static-first hosting behavior, EAS build/submission workflows, and manual Supabase sync boundaries.
 - `docs/features/native-mobile-deployment.md`: Expo Router Android/iOS app, shared workspace packages, native auth/progress, offline index bundling, and EAS build/submit workflows.
 - `docs/features/automated-testing-and-release-regression.md`: coverage policy, Vitest/Jest/pgTAP/Playwright/Maestro lanes, CI artifacts, and release promotion gates.
 - `docs/features/japanese-language-learning.md`: open JF/CEFR Japanese roadmap, complete basic kana, 100-kanji target, romaji/IME input, deterministic review, resource/audio contracts, iPad accessibility, dictionary profiles, and assisted/free handwriting practice.
 
 - `docs/features/rtk-query-interview-preparation.md`: Front-End Development RTK Query mechanics, incident recovery, modern APIs, production architecture, and interview practice.
+
+## Private editorial domain
+
+LinkedIn posts are a separate optional Supabase-backed admin feature, documented in `docs/features/linkedin-editorial.md`. Learning Markdown remains canonical; private posts/revisions/jobs/publications never enter the generated content index. `prompts/linkedin/` contains the fixed analysis and manual operating prompts; `scripts/linkedin/` is the local-only privileged CLI. The web/native clients share `packages/core/src/linkedin.ts` and `linkedin-store.ts`. Local `.local/linkedin/` files are ignored private artifacts. Read `docs/runbooks/linkedin-editorial.md` before privileged operations. Human approval alone authorizes each exact post revision for Buffer.
 
 ## Frontend interview curriculum
 

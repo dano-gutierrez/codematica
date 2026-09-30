@@ -24,9 +24,9 @@
 
 ## One-Minute Brief
 
-Subscriptions turn Codematica from anonymous local browsing into a paid learning product. Users can preview the catalog, create or sign into a Supabase account, subscribe on web with Stripe-backed RevenueCat Web, subscribe on native with Apple/Google in-app purchases through RevenueCat, and unlock the same `all_access` entitlement everywhere.
+The proposed paid model lets users preview the catalog, sign up or sign in with Supabase, and subscribe through RevenueCat. Web purchases use Stripe-backed RevenueCat Web; native purchases use Apple/Google in-app purchases. Both unlock the same `all_access` entitlement.
 
-The major implementation constraint is content security. A visual paywall is not enough because the current generated index includes full Markdown, diagram source, exercise answers, interview solutions, and language drill data. Paid production clients must receive only public metadata until an authenticated, entitled request fetches a private content payload from server code.
+The current generated index contains full Markdown, diagram source, exercise answers, interview solutions, and language drill data, so a visual paywall alone cannot protect content. Paid production clients must receive only public metadata until an authenticated, entitled request fetches a private content payload from server code.
 
 ## Outcome / Contract
 
@@ -40,7 +40,7 @@ The major implementation constraint is content security. A visual paywall is not
   - Introductory offer: first monthly period for `$0.99`
   - Launch availability: United States only
 - Web checkout uses RevenueCat Web backed by Stripe Billing. Web subscribers can sign into native apps and unlock content.
-- The proposed v1 native paywall uses Apple and Google purchase flows and intentionally omits external web-checkout links. This is a product-scope choice, not a universal store-policy claim: current U.S. storefront rules permit external purchase communication or links under platform-specific conditions. Re-check the exact Apple storefront rules and Google Play enrollment/API requirements immediately before implementation and submission.
+- The proposed v1 native paywall uses Apple and Google purchase flows and intentionally omits external web-checkout links. This is a product-scope choice; current U.S. storefront rules permit external purchase communication or links under platform-specific conditions. Re-check the exact Apple storefront rules and Google Play enrollment/API requirements immediately before implementation and submission.
 - Unsubscribed users can view home, browse/search metadata, login, subscribe, account, support, privacy, and locked-content explanations.
 - Unsubscribed users cannot view full documents, standalone diagrams, practice payloads, passive flashcard card bodies, interview solutions, Japanese detail/drill payloads, or full-text search snippets.
 - Local Markdown and JSON remain canonical authoring sources. Supabase/RevenueCat store entitlements and user state, not authored content ownership.
@@ -49,7 +49,7 @@ The major implementation constraint is content security. A visual paywall is not
 
 - Supabase Auth exists for web and native, but it is optional and tied only to progress.
 - `packages/core/src/generated/content-index.json` is bundled into current web/native runtime code and includes private payloads.
-- Store publishing docs in `docs/runbooks/native-store-publishing.md` now include RevenueCat product ids, provider setup, webhook checks, and Apple/Google/Stripe subscription setup notes.
+- Store publishing docs in `docs/runbooks/native-store-publishing.md` include RevenueCat product ids, provider setup, webhook checks, and Apple/Google/Stripe subscription setup notes.
 - No subscription schema, webhook handler, paywall, checkout, RevenueCat SDK, Stripe setup, entitlement cache, protected content API, or bundle-sanitization test exists yet.
 
 ## Scope
@@ -123,7 +123,7 @@ The major implementation constraint is content security. A visual paywall is not
 
 ### Data Model And Persistence
 
-- Add additive Supabase migrations for:
+- Add Supabase migrations that preserve existing data for:
   - `user_entitlements`: `user_id`, `entitlement`, `status`, `expires_at`, `source`, `revenuecat_app_user_id`, `updated_at`, and raw event metadata needed for audit/debugging.
   - `subscription_events`: idempotent event log keyed by provider event id with payload, received timestamp, processed timestamp, and processing result.
 - RLS lets authenticated users read only their own entitlement rows.
@@ -224,22 +224,22 @@ The major implementation constraint is content security. A visual paywall is not
 
 ## References
 
-- RevenueCat Expo SDK: https://www.revenuecat.com/docs/getting-started/installation/expo
-- RevenueCat Stripe Billing: https://www.revenuecat.com/docs/web/integrations/stripe
-- RevenueCat Web SDK: https://www.revenuecat.com/docs/web/web-billing/web-sdk
-- RevenueCat webhooks: https://www.revenuecat.com/docs/integrations/webhooks
-- RevenueCat store connections: https://www.revenuecat.com/docs/projects/connect-a-store
-- Stripe Billing quickstart: https://docs.stripe.com/billing/quickstart
-- Stripe Customer Portal: https://docs.stripe.com/customer-management
-- Stripe Tax digital products: https://docs.stripe.com/tax/digital-products
-- Apple auto-renewable subscriptions: https://developer.apple.com/app-store/subscriptions/
-- App Store Connect subscription setup: https://developer.apple.com/help/app-store-connect/manage-subscriptions/offer-auto-renewable-subscriptions/
-- Google Play Billing subscriptions: https://developer.android.com/google/play/billing/subscriptions
-- Google Play payments policy: https://support.google.com/googleplay/android-developer/answer/10281818
-- Google Play U.S. policy update: https://support.google.com/googleplay/android-developer/answer/15582165
-- Google Play U.S. external-content-links program: https://support.google.com/googleplay/android-developer/answer/16470497
-- Apple App Review Guidelines: https://developer.apple.com/app-store/review/guidelines/
-- Expo in-app purchases guide: https://docs.expo.dev/guides/in-app-purchases/
+- [RevenueCat Expo SDK](https://www.revenuecat.com/docs/getting-started/installation/expo)
+- [RevenueCat Stripe Billing](https://www.revenuecat.com/docs/web/integrations/stripe)
+- [RevenueCat Web SDK](https://www.revenuecat.com/docs/web/web-billing/web-sdk)
+- [RevenueCat webhooks](https://www.revenuecat.com/docs/integrations/webhooks)
+- [RevenueCat store connections](https://www.revenuecat.com/docs/projects/connect-a-store)
+- [Stripe Billing quickstart](https://docs.stripe.com/billing/quickstart)
+- [Stripe Customer Portal](https://docs.stripe.com/customer-management)
+- [Stripe Tax digital products](https://docs.stripe.com/tax/digital-products)
+- [Apple auto-renewable subscriptions](https://developer.apple.com/app-store/subscriptions/)
+- [App Store Connect subscription setup](https://developer.apple.com/help/app-store-connect/manage-subscriptions/offer-auto-renewable-subscriptions/)
+- [Google Play Billing subscriptions](https://developer.android.com/google/play/billing/subscriptions)
+- [Google Play payments policy](https://support.google.com/googleplay/android-developer/answer/10281818)
+- [Google Play U.S. policy update](https://support.google.com/googleplay/android-developer/answer/15582165)
+- [Google Play U.S. external-content-links program](https://support.google.com/googleplay/android-developer/answer/16470497)
+- [Apple App Review Guidelines](https://developer.apple.com/app-store/review/guidelines/)
+- [Expo in-app purchases guide](https://docs.expo.dev/guides/in-app-purchases/)
 
 ## Documentation Updates
 

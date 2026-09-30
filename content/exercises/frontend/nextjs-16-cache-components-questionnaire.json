@@ -34,7 +34,7 @@
           "isCorrect": false
         }
       ],
-      "explanation": "The smallest honest cached scope avoids leaking request-specific behavior into shared output."
+      "explanation": "Cache the smallest reusable scope to keep request-specific behavior out of shared output."
     },
     {
       "id": "directive",
@@ -51,7 +51,7 @@
     {
       "id": "cache-design-order",
       "kind": "ordering",
-      "prompt": "Order a serious cache design review.",
+      "prompt": "Order a cache design review.",
       "items": [
         {
           "id": "share",

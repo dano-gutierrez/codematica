@@ -99,11 +99,12 @@ const nativeDestinations = [
 ];
 
 /** Persistent shell navigation; the Expo adapter owns routing and safe-area insets. */
-export function NativeNavigation({ pathname, navigate, wide }: { pathname: string; navigate: (href: string) => void; wide: boolean }) {
+export function NativeNavigation({ pathname, navigate, wide, isAdmin = false }: { pathname: string; navigate: (href: string) => void; wide: boolean; isAdmin?: boolean }) {
   const [menuOpen, setMenuOpen] = useState(false);
   const active = pathname.startsWith("/docs/") || pathname.startsWith("/diagrams/") ? "/browse" : `/${pathname.split("/")[1]}`;
-  const items = wide ? nativeDestinations : nativeDestinations.filter(({ href }) => !["/browse", "/languages"].includes(href));
-  const menuItems = [...nativeDestinations.filter(({ href }) => ["/browse", "/languages"].includes(href)), { href: "/login", label: "Sign in", path: "M4 21v-3a8 8 0 0 1 16 0v3M16 6a4 4 0 1 1-8 0 4 4 0 0 1 8 0" }];
+  const adminDestination = { href: "/admin/linkedin", label: "LinkedIn", path: "M4 4h16v16H4ZM8 10v7m4-7v7m0-4a3 3 0 0 1 6 0v4" };
+  const items = wide ? [...nativeDestinations, ...(isAdmin ? [adminDestination] : [])] : nativeDestinations.filter(({ href }) => !["/browse", "/languages"].includes(href));
+  const menuItems = [...(isAdmin ? [adminDestination] : []), ...nativeDestinations.filter(({ href }) => ["/browse", "/languages"].includes(href)), { href: "/login", label: "Sign in", path: "M4 21v-3a8 8 0 0 1 16 0v3M16 6a4 4 0 1 1-8 0 4 4 0 0 1 8 0" }];
   return (
     <View style={wide ? styles.navigationRail : styles.navigationBar} testID={wide ? "mobile-navigation-rail" : "mobile-navigation-bar"}>
       {wide ? <Text style={styles.navigationBrand}>Codematica.</Text> : null}
@@ -170,7 +171,7 @@ export function LearningPathHomeScreen({
     <AppScreen>
       <Header adapters={adapters} />
       <Text style={styles.heroTitle}>Learning paths</Text>
-      <Text style={styles.heroCopy}>A guided route from curiosity to confidence.</Text>
+      <Text style={styles.heroCopy}>Follow guided learning paths.</Text>
 
       <KeepReadingSection items={keepReadingItems} isSignedIn={isSignedIn} adapters={adapters} />
 
@@ -483,7 +484,7 @@ export function BrowseScreen({ index, adapters }: { index: ContentIndex } & Scre
         {results.map((result) => (
           <SearchResultCard key={`${result.kind}-${result.id}`} result={result} adapters={adapters} />
         ))}
-        {results.length === 0 ? <Text style={styles.emptyText}>No indexed nodes match the current filters.</Text> : null}
+        {results.length === 0 ? <Text style={styles.emptyText}>No lessons or diagrams match these filters.</Text> : null}
       </View>
     </AppScreen>
   );
@@ -516,7 +517,7 @@ export function JapaneseLanguageHubScreen({ index, adapters }: { index: ContentI
       <Header adapters={adapters} subtitle="Japanese" />
       <Text style={styles.eyebrow}>Japanese</Text>
       <Text style={styles.heroTitle}>Japanese</Text>
-      <Text style={styles.heroCopy}>Search beginner Japanese characters and phrases with romaji and IPA support.</Text>
+      <Text style={styles.heroCopy}>Find beginner Japanese characters and phrases with romaji and IPA.</Text>
       <View style={styles.actionRow}>
         <Button label="Learn" onPress={() => adapters.navigation.navigate("/paths/japanese-foundations")} testID="mobile-japanese-path-link" />
         <Button label="Review" variant="secondary" onPress={() => adapters.navigation.navigate("/languages/japanese/review")} testID="mobile-japanese-review-link" />
@@ -559,8 +560,8 @@ export function JapaneseLanguageHubScreen({ index, adapters }: { index: ContentI
         </View>
       ) : null}
       <View style={styles.card} testID="mobile-japanese-resources">
-        <Text style={styles.cardTitle}>Trusted resource shelf</Text>
-        <Text style={styles.mutedText}>External materials stay with their publishers and are labeled by access and reuse rights.</Text>
+        <Text style={styles.cardTitle}>Trusted resources</Text>
+        <Text style={styles.mutedText}>External materials link to their publishers and list access and reuse rights.</Text>
         {index.languageResources.map((resource) => (
           <Pressable
             key={resource.id}
@@ -606,7 +607,7 @@ export function JapaneseReviewScreen({
       <Header adapters={adapters} subtitle="Japanese review" />
       <Text style={styles.eyebrow}>Always open · {dueCount} due</Text>
       <Text style={styles.heroTitle}>Ready to review</Text>
-      <Text style={styles.heroCopy}>The queue is for focused skill recall. Other practice modes stay available from their own study screens.</Text>
+      <Text style={styles.heroCopy}>Use this queue to practice skill recall. Other practice modes remain available on their study screens.</Text>
       <View style={styles.actionRow}>
         <Button label="Dictionary" variant="ghost" onPress={() => adapters.navigation.navigate("/languages/japanese")} />
         <Button label="N5 flashcards" variant="ghost" onPress={() => adapters.navigation.navigate("/languages/japanese/review/flashcards")} testID="mobile-japanese-review-flashcards" />
@@ -630,7 +631,7 @@ export function JapaneseReviewScreen({
           <Text style={styles.cardEyebrow}>{selected.category} practice</Text>
           <Text style={styles.cardTitle}>{selected.label}</Text>
           <Text style={styles.bodyText}>{selected.description}</Text>
-          <Text style={styles.mutedText}>Recall one example before rating how independently you remembered it.</Text>
+          <Text style={styles.mutedText}>Recall an example, then rate how much help you needed.</Text>
           <View style={styles.actionRow}>
             {(["again", "hard", "good", "easy"] as const).map((rating) => (
               <Button
@@ -746,7 +747,7 @@ export function JapaneseCharacterDetailScreen({ character, relatedVocabulary = [
     prompt: "Trace the highlighted strokes in order, then switch to free mode and write from memory.",
     characterSlugs: [character.slug],
     modes: ["assisted", "free"],
-    explanation: "This practice is transient and does not store raw stroke coordinates.",
+    explanation: "This practice does not save raw stroke coordinates.",
   };
 
   return (
@@ -910,7 +911,7 @@ export function DocumentReaderScreen({
       ) : null}
       {nextHref ? (
         <Button
-          label="Next node"
+          label="Next activity"
           onPress={() => {
             void adapters.progress?.record(target, "completed", { nextHref });
             adapters.navigation.navigate(nextHref);
@@ -936,7 +937,7 @@ export function DiagramReaderScreen({
       <Text style={styles.heroTitle}>{diagram.title}</Text>
       <Text style={styles.heroCopy}>Mermaid diagram stored in {diagram.sourcePath}.</Text>
       <MermaidBlock source={diagram.source} adapters={adapters} />
-      {nextHref ? <Button label="Next node" onPress={() => adapters.navigation.navigate(nextHref)} testID="mobile-diagram-next-node" /> : null}
+      {nextHref ? <Button label="Next activity" onPress={() => adapters.navigation.navigate(nextHref)} testID="mobile-diagram-next-node" /> : null}
     </AppScreen>
   );
 }
@@ -998,7 +999,7 @@ function SourceReferencePanel({ sources, adapters }: { sources: ContentSource[] 
   return (
     <View style={styles.subPanel} testID="mobile-source-references">
       <Text style={styles.cardEyebrow}>Primary sources</Text>
-      <Text style={styles.mutedText}>These upstream pages are authoritative. Codematica is the study and progress companion.</Text>
+      <Text style={styles.mutedText}>These are the authoritative sources. Use Codematica to study and track progress.</Text>
       {sources.map((source) => <Button key={source.id} label={`${source.title} · ${source.provider}`} variant="ghost" onPress={() => adapters.navigation.openExternalUrl?.(source.url)} />)}
     </View>
   );
@@ -1024,7 +1025,7 @@ function GuidedLabPractice({
       <Text style={styles.bodyText}>{exercise.briefing}</Text>
       {exercise.objectives.map((objective) => <Text key={objective} style={styles.mutedText}>• {objective}</Text>)}
       <View style={styles.subPanel}>
-        <Text style={styles.cardTitle}>Commit your prediction</Text>
+        <Text style={styles.cardTitle}>Choose your prediction</Text>
         <Text style={styles.bodyText}>{exercise.prediction.prompt}</Text>
         {exercise.prediction.options.map((option) => (
           <Pressable key={option.id} onPress={() => { setPredictionId(option.id); void onProgress("started", { predictionCommitted: true }); }} style={[styles.choice, predictionId === option.id && styles.choiceSelected]}>
@@ -1046,7 +1047,7 @@ function GuidedLabPractice({
         <Text style={styles.mutedText}>Extension: {exercise.extensionChallenge}</Text>
       </View>
       <Button label="Complete lab" disabled={!complete} onPress={() => void onProgress("completed", { predictionCommitted: true, evidenceCount: evidenceIds.length, evidenceTotal: exercise.evidenceChecklist.length })} testID="mobile-guided-lab-complete" />
-      {complete && nextHref ? <Button label={nextHref.endsWith("/flashcards") ? "Start review feed" : "Next node"} variant="secondary" onPress={() => adapters.navigation.navigate(nextHref)} /> : null}
+      {complete && nextHref ? <Button label={nextHref.endsWith("/flashcards") ? "Start review feed" : "Next activity"} variant="secondary" onPress={() => adapters.navigation.navigate(nextHref)} /> : null}
     </View>
   );
 }
@@ -1083,7 +1084,7 @@ function FlashcardPractice({
         testID="mobile-flashcard-reveal"
       />
       {revealed ? <Button label="Reset" variant="ghost" onPress={() => setRevealed(false)} /> : null}
-      {revealed && nextHref ? <Button label={nextHref.endsWith("/flashcards") ? "Start review feed" : "Next node"} variant="secondary" onPress={() => adapters.navigation.navigate(nextHref)} /> : null}
+      {revealed && nextHref ? <Button label={nextHref.endsWith("/flashcards") ? "Start review feed" : "Next activity"} variant="secondary" onPress={() => adapters.navigation.navigate(nextHref)} /> : null}
     </View>
   );
 }
@@ -1128,7 +1129,7 @@ function ClozePractice({
           <Text style={styles.mutedText}>{exercise.explanation}</Text>
         </View>
       ) : null}
-      {result && nextHref ? <Button label={nextHref.endsWith("/flashcards") ? "Start review feed" : "Next node"} variant="secondary" onPress={() => adapters.navigation.navigate(nextHref)} /> : null}
+      {result && nextHref ? <Button label={nextHref.endsWith("/flashcards") ? "Start review feed" : "Next activity"} variant="secondary" onPress={() => adapters.navigation.navigate(nextHref)} /> : null}
     </View>
   );
 }
@@ -1223,7 +1224,7 @@ function WritingPractice({
   }
 
   if (!character) {
-    return <Text style={styles.emptyText}>This writing exercise has no available characters.</Text>;
+    return <Text style={styles.emptyText}>No characters are available for this exercise.</Text>;
   }
 
   return (
@@ -1299,7 +1300,7 @@ function WritingPractice({
         />
       ) : null}
       {result?.isCorrect && characterIndex + 1 >= characters.length && nextHref ? (
-        <Button label={nextHref.endsWith("/flashcards") ? "Start review feed" : "Next node"} variant="secondary" onPress={() => adapters.navigation.navigate(nextHref)} />
+        <Button label={nextHref.endsWith("/flashcards") ? "Start review feed" : "Next activity"} variant="secondary" onPress={() => adapters.navigation.navigate(nextHref)} />
       ) : null}
     </View>
   );
@@ -1363,12 +1364,12 @@ function QuestionnairePractice({
     return (
       <View style={styles.stack} testID="mobile-questionnaire-complete">
         <View style={[styles.feedback, styles.feedbackCorrect]}>
-          <Text style={styles.feedbackTitle}>Refresh complete</Text>
-          <Text style={styles.mutedText}>You reached the end of this practice session.</Text>
+          <Text style={styles.feedbackTitle}>Practice complete</Text>
+          <Text style={styles.mutedText}>You finished this practice session.</Text>
           <Text style={styles.mutedText}>Score {Math.round(calculateQuestionnaireSkillScores(attempt.map((attemptQuestion) => ({ question: attemptQuestion, isCorrect: graded[attemptQuestion.id] ?? false }))).overall * 100)}%</Text>
         </View>
         <Button label="Restart" variant="ghost" onPress={restart} />
-        {nextHref ? <Button label={nextHref.endsWith("/flashcards") ? "Start review feed" : "Next node"} variant="secondary" onPress={() => adapters.navigation.navigate(nextHref)} /> : null}
+        {nextHref ? <Button label={nextHref.endsWith("/flashcards") ? "Start review feed" : "Next activity"} variant="secondary" onPress={() => adapters.navigation.navigate(nextHref)} /> : null}
       </View>
     );
   }
@@ -1461,7 +1462,7 @@ function QuestionBody({
           style={styles.input}
           testID="mobile-questionnaire-open-answer-input"
         />
-        <Text style={styles.mutedText}>Choose a conversion below. On iPad, you can write directly in the blank with Apple Pencil Scribble.</Text>
+        <Text style={styles.mutedText}>Choose a conversion below. On iPad, write in the blank with Apple Pencil Scribble.</Text>
         {/[a-z]/i.test(openAnswerValue) ? (
           <View style={styles.actionRow} testID="mobile-japanese-ime-candidates">
             {conversion.candidates.map((candidate, index) => (
@@ -1611,7 +1612,7 @@ export function PassiveFlashcardFeedScreen({
         <Button label="Path" variant="ghost" onPress={() => adapters.navigation.navigate(`/paths/${feed.pathSlug}`)} />
         <View style={styles.fill}>
           <Text style={styles.brandTitle}>{feed.title}</Text>
-          <Text style={styles.brandSubtitle}>Passive refresh</Text>
+          <Text style={styles.brandSubtitle}>Quick review</Text>
         </View>
       </View>
       <FlatList
@@ -1844,7 +1845,7 @@ function WebInterviewQuestionScreen({ question, adapters, nextHref }: { question
         </View> : <Button label="Restart recipe" variant="ghost" onPress={() => { setStepIndex(0); setRevealed(false); }} />}
         {revealed ? <>
         <Text style={styles.bodyText}>{selectedTrack.explanation}</Text>
-        <Text style={styles.cardTitle}>How it meets the practice contract</Text>
+        <Text style={styles.cardTitle}>How it meets the requirements</Text>
         <Text style={styles.mutedText}>{selectedTrack.acceptanceRationale}</Text>
         {selectedTrack.tradeoffs.map((tradeoff) => <Text key={tradeoff} style={styles.mutedText}>• {tradeoff}</Text>)}
         <Text style={styles.bodyText}>Time: {language === "python" && selectedTrack.python ? selectedTrack.python.complexity.time : selectedTrack.complexity.time}</Text>
@@ -1868,7 +1869,7 @@ function WebInterviewQuestionScreen({ question, adapters, nextHref }: { question
       <CodeBlock code={selectedTrack.project.files[activeFile].code} language={activeFile.split(".").pop()} />
       <View style={styles.feedback} testID="mobile-web-playground-note">
         <Text style={styles.feedbackTitle}>Interactive runner available on web</Text>
-        <Text style={styles.mutedText}>Native keeps every explanation and source file offline; editing and execution use the web playground.</Text>
+        <Text style={styles.mutedText}>All explanations and source files are available offline. Use the web playground to edit and run code.</Text>
       </View>
       </>}
       {nextHref ? <Button label="Continue to checkpoint" testID="mobile-interview-next-node" onPress={() => {
@@ -1890,7 +1891,7 @@ export function LoginScreen({ adapters }: ScreenProps) {
 
   async function run(action?: () => Promise<void>, success = "Done") {
     if (!action) {
-      setMessage("Auth is not configured.");
+      setMessage("Sign-in is not set up here.");
       return;
     }
 
@@ -1898,7 +1899,7 @@ export function LoginScreen({ adapters }: ScreenProps) {
       await action();
       setMessage(success);
     } catch (error) {
-      setMessage(error instanceof Error ? error.message : "Unable to complete auth request.");
+      setMessage(error instanceof Error ? error.message : "Could not complete the account request.");
     }
   }
 
@@ -1908,7 +1909,7 @@ export function LoginScreen({ adapters }: ScreenProps) {
         <Header adapters={adapters} subtitle="Sign in" />
         <Text style={styles.heroTitle}>Save your progress.</Text>
         <Text style={styles.heroCopy}>Sign in to sync reading and practice progress across devices.</Text>
-        {!auth?.isConfigured ? <Text style={styles.emptyText}>Supabase public environment variables are not configured.</Text> : null}
+        {!auth?.isConfigured ? <Text style={styles.emptyText}>Sign-in is not set up: Supabase public environment variables are missing.</Text> : null}
         <TextInput value={email} onChangeText={setEmail} placeholder="Email" autoCapitalize="none" keyboardType="email-address" style={styles.input} />
         <TextInput value={password} onChangeText={setPassword} placeholder="Password" secureTextEntry style={styles.input} />
         <Button label="Sign in" onPress={() => run(() => auth?.signInWithPassword?.(email, password) ?? Promise.resolve(), "Signed in")} testID="mobile-sign-in" />
@@ -2006,7 +2007,7 @@ export function MermaidBlock({ source, title, adapters }: { source: string; titl
       ) : (
         <View style={styles.feedback}>
           <Text style={styles.feedbackTitle}>Diagram source</Text>
-          <Text style={styles.mutedText}>Bundled Mermaid runtime is unavailable, so the source is shown instead.</Text>
+          <Text style={styles.mutedText}>The bundled Mermaid renderer is unavailable. Showing diagram source.</Text>
         </View>
       )}
       <CodeBlock code={source} language="mermaid" />

@@ -10,7 +10,7 @@ sourceRefs: ["frontend-github-repos", "frontend-react-effects", "frontend-python
 status: "published"
 ---
 
-## What you are being asked to build
+## Build requirements
 
 Fetch up to three users from /userList, retrieve each user’s public owned repository count, and display the users in distinct random positions of a 3×3 grid. Keep positions stable while results arrive and report errors per user.
 
@@ -44,7 +44,7 @@ The playground never calls a live API. Ada has 103 repositories across two pages
 | Parallel independent outcomes | Load all users concurrently and keep failure attached to the corresponding user. |
 | Bounded progressive requests | Use two worker slots and publish each completed user while keeping cell assignments stable. |
 
-Start with the first approach. Learn the other two as tradeoff discussions; do not try to build all three in one interview. Each walkthrough includes a numbered recipe, correctness argument, pain points, full React/TypeScript project, and a Python logic companion.
+Build the first approach and discuss the other two as alternatives; do not build all three in one interview. Each walkthrough includes numbered steps, a correctness argument, pitfalls, a full React/TypeScript project, and a Python logic companion.
 
 ## Senior-engineer rehearsal
 
@@ -54,7 +54,7 @@ Start with the first approach. Learn the other two as tradeoff discussions; do n
 4. Check correctness before discussing optimization. Include copying, output, and I/O costs.
 5. Summarize what works, what you tested, and which extension you would build next.
 
-Spend roughly 20–30 minutes on the baseline as a practice budget, then explain an alternative without coding it. This is an authored rehearsal schedule, not a claim about an actual interview duration.
+Practice the baseline for roughly 20–30 minutes, then explain an alternative without coding it. This suggested rehearsal schedule does not describe an actual interview duration.
 
 ## Worked example
 
@@ -68,4 +68,4 @@ Failures and completion order do not change identity or placement.
 
 [Open the three guided solutions](/interviews/frontend-practice/user-matrix?path=frontend-interview-practice), then [take the checkpoint](/practice/frontend/interview-user-matrix-questionnaire?path=frontend-interview-practice). The final checkpoint leads into the combined vertical review feed.
 
-The prompts are original adaptations of privately supplied preparation material. The sources below support technical claims; they do not establish employer endorsement or interview outcomes.
+These original prompts adapt privately supplied preparation material. The sources support technical claims, not employer endorsement or interview outcomes.

@@ -25,6 +25,7 @@ export default defineConfig({
         "apps/web/src/app/api/**/route.ts",
         "apps/web/src/app/auth/**/route.ts",
         "scripts/content/**/*.ts",
+        "scripts/linkedin/worker.ts",
       ],
       // Generated assets, type/barrel files, and thin route composition are
       // validated by content checks, typecheck, and E2E rather than line coverage.
@@ -48,6 +49,7 @@ export default defineConfig({
         "packages/core/src/**": { lines: 90, statements: 90, functions: 90, branches: 85 },
         "apps/web/src/lib/**": { lines: 85, statements: 85, functions: 85, branches: 80 },
         "apps/web/src/app/**/route.ts": { lines: 85, statements: 85, functions: 85, branches: 80 },
+        "scripts/linkedin/**": { lines: 85, statements: 85, functions: 85, branches: 80 },
         "scripts/content/**": { lines: 85, statements: 85, functions: 85, branches: 80 },
         "apps/web/src/components/**": { lines: 75, statements: 75, functions: 75, branches: 70 },
       },

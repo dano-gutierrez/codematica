@@ -1,6 +1,28 @@
 # Product And Engineering Changelog
 
-This changelog records durable, user-visible and architectural changes. Feature documents remain the authoritative contracts; this file explains when a group of related changes landed and points readers to the owning documentation.
+This changelog dates durable product and architecture changes and links to their authoritative feature contracts.
+
+## 2026-09-29 — PR Check Reliability
+
+- Aligned Expo SDK 57 dependencies and root overrides with Expo 57.0.26 and React Native 0.86.3. Added the required `expo-asset` native peer, pinned compatible animation packages, and regenerated stale nested workspace resolutions in the lockfile.
+- Scoped Japanese hub test queries to their sections while strengthening character-group and reuse-label assertions. Complete authored TypeScript compiler tests now have a 30-second timeout; other timeouts, coverage floors, and exclusions are unchanged.
+- A clean install, full dependency-tree check, Expo Doctor (20/20), content freshness, lint, typechecking, 358 Vitest tests with both coverage gates, 50 native tests with coverage, 13 Python tests, Android/iOS bundle exports, production web build, and nine browser smoke journeys passed locally.
+- The copied production web build also reached readiness and returned HTTP 200 for home, browse, login, and a lesson after `npm ci --omit=dev` in a disposable directory.
+- Installed-device startup, native binary compatibility, and store readiness remain unverified by these checks.
+
+Owning contracts: `docs/features/automated-testing-and-release-regression.md` and `docs/features/native-mobile-deployment.md`.
+
+## 2026-09-29 — Technical Editing Skill And Clearer Copy
+
+- Added the repo-local technical editing skill to shorten prose while preserving technical details, code, conditions, warnings, and uncertainty.
+- Reviewed all 123 Markdown files, 142 app source files, and 160 authored content files. Simplified documentation, lessons, exercises, flashcards, interview explanations, and web/native UI copy where needed. Practice labels now include Next activity, Practice complete, Quick review, and Choose your prediction.
+- Kept commands, code examples, technical values, Japanese examples, translations, and source metadata intact. Flagged conflicting schema/stage descriptions instead of silently changing them.
+- Fixed a literal pipe splitting a Japanese vocabulary definition across table columns. Generator and mobile browser regressions verify the full definition remains in one cell.
+- Coverage thresholds and exclusions are unchanged.
+- Validation passed: content freshness, lint, typechecking, production build, 358 Vitest tests with aggregate and per-file coverage, 50 native tests with coverage, 13 Python tests, and all 49 browser journeys across the full run and targeted rerun. The first browser run exposed two outdated text assertions; both were updated and their four related journeys passed. Failure evidence was retained.
+- Expo Doctor passed 19/20 checks and reported 10 existing package-version mismatches. Installed-device validation remains open: no Android device or booted iOS simulator was available, and Maestro was not installed. No deployment was performed.
+
+Owning contracts: `docs/README.md#technical-editing-skill`, `docs/features/learning-paths-and-practice.md`, and `docs/features/japanese-language-learning.md`.
 
 ## 2026-09-29 — Native Code Scrolling
 
@@ -43,6 +65,15 @@ Owning contract: `docs/features/react-typescript-playground.md`. A hosted-runtim
 - Native release validation remains open: local Mobile Doctor flags existing Expo patch mismatches; the new installed-device flow has not been run locally.
 
 Owning contract: `docs/features/frontend-interview-practice.md`.
+
+## 2026-09-30 — Manual LinkedIn Drafts
+
+- Added admin Create flows on web/native that save manual drafts and queue analysis together.
+- Added selection-based Unicode bold/italic, bullets and plain text to creation and review editors.
+- Enforced analysis/adoption before manual-post approval, safe request retries and UTF-16 limits on new revisions; text edits require reanalysis.
+- Added database, shared, web/native and browser regressions without new runtime dependencies or coverage exclusions.
+
+Owning contract: `docs/features/linkedin-editorial.md`.
 
 ## 2026-09-10 — Product Engineering Interview Preparation
 
@@ -157,3 +188,11 @@ Owning contracts: `docs/features/japanese-language-learning.md`, `docs/features/
 - Added the beginner distinction between learner-facing romanization and Japanese IME keystrokes, including particle spellings such as `こんばんは`: learner romaji `konbanwa`, IME input `konbanha`.
 - Added structured examples, vocabulary breakdowns, IME-aware Japanese search, character detail profiles, and reusable assisted/free handwriting practice.
 - Preserved transient raw strokes while allowing coarse practice completion to use the existing progress system.
+
+## 2026-09-29 — Private LinkedIn editorial workflow
+
+Added admin web/native review, immutable Supabase revisions, approval-bound Buffer jobs, fixed refinement prompt and manual local worker contract. Seeded 100 unapproved private drafts; no drafts entered the public content index. Added pgTAP, shared/web/native tests, isolated editorial E2E and production artifact smoke. Existing coverage floors are preserved; CLI orchestration uses local subprocess integration coverage instead of unit instrumentation. See `features/linkedin-editorial.md` for onboarding and device-release gaps.
+
+### LinkedIn worker switched to manual execution
+
+Removed the recurring Codex automation at the user’s request. Web/native copy and operating instructions now explain that requests wait for an explicit manual run. Queue, approval, and publication behavior is unchanged.

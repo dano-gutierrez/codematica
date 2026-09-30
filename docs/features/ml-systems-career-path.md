@@ -23,7 +23,7 @@
 
 ## One-Minute Brief
 
-This is a source-linked companion to Harvard's CS249r repository, [Volume I](https://mlsysbook.ai/vol1/), and [Volume II](https://mlsysbook.ai/vol2/). Harvard remains authoritative. Codematica supplies prerequisites, concise study guides, guided evidence capture, checkpoints, progress metadata, and a career-stage map. The roadmap covers the books, 34 interactive labs, 20 TinyTorch modules, MLSys·im, optional hardware kits, and StaffML. The first locally enriched slice ends after Volume I Data Engineering; later stages open the exact upstream collections while their Codematica companions remain explicitly planned.
+This is a source-linked companion to Harvard's CS249r repository, [Volume I](https://mlsysbook.ai/vol1/), and [Volume II](https://mlsysbook.ai/vol2/). Harvard remains authoritative. Codematica supplies prerequisites, concise study guides, guided evidence recording, checkpoints, progress metadata, and a career-stage map. The roadmap covers the books, 34 interactive labs, 20 TinyTorch modules, MLSys·im, optional hardware kits, and StaffML. The first locally enriched slice ends after Volume I Data Engineering; later stages link to the exact upstream collections while their Codematica companions remain planned.
 
 ## Outcome / Contract
 
@@ -71,7 +71,7 @@ The full roadmap includes every Volume I and Volume II chapter. Student ecosyste
 ### UI / UX
 
 - Career stages show level, publication status, outcomes, estimated time, and a checkpoint only when authored.
-- Planned nodes remain useful because their card opens the primary source.
+- Planned-node cards open the primary source.
 - Source-backed companion nodes are labeled `Source + document` or `Source + exercise`.
 - Guided labs follow briefing → prediction → steps → evidence → reflection → extension.
 - Web and Expo render the same roadmap, source references, guided-lab state, and checkpoint scores.
@@ -101,7 +101,7 @@ The full roadmap includes every Volume I and Volume II chapter. Student ecosyste
 
 ## Open Questions
 
-- Which planned stage should receive the next local companion tranche: TinyTorch Build or Volume I Optimize?
+- Which planned stage should receive local companions next: TinyTorch Build or Volume I Optimize?
 - Should future hardware evidence distinguish simulated, emulated, and measured-on-device badges?
 
 ## Decision Log

@@ -6,7 +6,7 @@
 - Last updated: `2026-08-05`
 - Owner thread: `n/a`
 - Current state: The repo has an Expo Router app in `apps/mobile`, shared runtime logic in `packages/core`, shared React Native screens in `packages/ui`, adaptive phone/iPad Japanese handwriting and review, Pencil Scribble-compatible open answers, offline Japanese conversion, `expo-audio` playback, enforced Jest coverage, credential-free EAS Android/iOS E2E profiles, and checked-in Maestro regression workflows.
-- Target outcome: Codematica can run locally on web/Android/iOS, ship Android and iOS internal builds, and prepare Play Console/App Store Connect submissions while preserving the existing Next/Vercel mobile web app and coding shared product behavior once.
+- Target outcome: Codematica can run locally on web/Android/iOS, ship Android and iOS internal builds, and prepare Play Console/App Store Connect submissions while preserving the Next/Vercel mobile web app and sharing product logic.
 - Code touchpoints:
   - `apps/mobile/`
   - `packages/core/`
@@ -21,7 +21,7 @@
 
 ## One-Minute Brief
 
-Codematica now uses an npm workspace model. The existing Next app lives in `apps/web`. The native Android/iOS app lives in `apps/mobile` and uses Expo Router. Shared content, search, practice, interview, and progress contracts live in `packages/core`; shared React Native-compatible screens and design tokens live in `packages/ui`.
+Codematica uses npm workspaces. The Next app lives in `apps/web`. The native Android/iOS app lives in `apps/mobile` and uses Expo Router. Shared content, search, practice, interview, and progress contracts live in `packages/core`; shared React Native-compatible screens and design tokens live in `packages/ui`.
 
 The native app bundles `packages/core/src/generated/content-index.json`, so home discovery, cross-section search, browsing, reading, language lookup, and practice work offline until the next app or update release. Supabase remains optional for anonymous use and is used only for native Auth/progress sync when anon-safe `EXPO_PUBLIC_*` env vars are configured.
 
@@ -122,7 +122,7 @@ EXPO_OWNER=
 EAS_PROJECT_ID=
 ```
 
-Use the final reverse-DNS identifier before creating store records. Changing `ios.bundleIdentifier` or `android.package` after the first App Store Connect or Play Console app record creates release-management friction and may require new records.
+Use the final reverse-DNS identifier before creating store records. Changing `ios.bundleIdentifier` or `android.package` after the first App Store Connect or Play Console app record complicates releases and may require new records.
 
 Store-side setup still required:
 
@@ -154,7 +154,7 @@ Store-side setup still required:
 
 ## Adaptive Interface
 
-The root layout wraps the existing Stack with safe-area-aware `NativeNavigation`: a phone bottom bar and iPad sidebar, responsive to Split View and font scaling. Existing route adapters, content, and progress behavior are unchanged. See [Adaptive Interface And Navigation](adaptive-ui.md).
+The root layout wraps the existing Stack with safe-area-aware `NativeNavigation`: a phone bottom bar and iPad sidebar, responsive to Split View and font scaling. It preserves route adapters, content, and progress behavior. See [Adaptive Interface And Navigation](adaptive-ui.md).
 
 ## Test Plan
 
@@ -165,16 +165,17 @@ The root layout wraps the existing Stack with safe-area-aware `NativeNavigation`
 - Navigation: `adaptive-navigation.test.tsx` proves compact menu and tablet destinations; `.maestro/adaptive-navigation.yaml` must pass on Android and iOS before native release.
 
 - Core: `npm run typecheck -w @codematica/core` and `npm test` for generated index, route helpers, search, practice, and progress contracts.
-- UI/mobile: `npm run typecheck -w @codematica/ui`, `npm run typecheck -w @codematica/mobile`, and `npm run test:mobile:coverage` for adapters, failure/retry behavior, configuration, and the complete shared-screen matrix.
+- UI/mobile: `npm run typecheck -w @codematica/ui`, `npm run typecheck -w @codematica/mobile`, and `npm run test:mobile:coverage` for adapters, failure/retry behavior, configuration, and the complete shared-screen matrix. Preserve learner-facing practice labels and the missing-Supabase explanation in disabled sign-in states.
 - Web: `npm run typecheck -w @codematica/web`, `npm test`, and `npm run e2e:smoke` for the existing web mobile workflow.
 - Content: `npm run content:check` after content, parser, schema, or generated index changes.
 - Expo: `npm run doctor -w @codematica/mobile` before EAS build work.
+- Dependency updates: align SDK 57 versions across mobile dependencies, root development dependencies/overrides, and the lockfile. Declare native peers directly, including `expo-asset` for `expo-audio`. Verify `npm ci`, Doctor, typechecking, Jest coverage, and `npx expo export --platform all` from `apps/mobile`; bundle export does not prove installed-app startup or native binary compatibility.
 - Native E2E: apply the `mobile-e2e` PR label or run `npm run mobile:e2e:android` for Android smoke. A `v*` tag or `npm run mobile:e2e:release` builds credential-free Android/iOS artifacts and runs all Maestro flows with JUnit and recordings.
 - Build: `npm run build` for the web app; `npm run mobile:build:preview` for internal native testers; `npm run mobile:build:android` and `npm run mobile:build:ios` for store-ready artifacts once EAS credentials are configured.
 
 ## Known Gaps
 
-- On 2026-09-05, the local Expo preview fails on missing `expo-router/_ctx-shared`; Expo Doctor passes 19/20 with nine patch-version mismatches. The UI-only redesign does not upgrade these dependencies. Native Jest success does not prove installed-device visual readiness.
+- The 2026-09-05 Expo preview failed on missing `expo-router/_ctx-shared` and SDK patch mismatches. After dependency alignment on 2026-09-29, Expo Doctor passes 20/20 and Android/iOS bundle exports pass. Installed-device startup and visual readiness still require verification.
 
 - The local iPad simulator build reaches native compilation but Xcode 26.3 fails inside ExpoModulesJSI. Expo SDK 57 documents Xcode 26.4+ as its supported baseline; rerun the build after upgrading Xcode rather than patching generated dependency source.
 - Native WebView Mermaid currently falls back to source unless a bundled Mermaid runtime string is supplied to the shared adapter.

@@ -14,7 +14,7 @@ status: published
 
 ## The math is a decision tool
 
-Volume I assumes undergraduate foundations in linear algebra, calculus, and probability. In systems work, the goal is rarely a long symbolic proof. The goal is to translate a design into quantities, preserve units, estimate its order of magnitude, and notice when an answer is physically impossible. Use the [official Volume I curriculum](https://mlsysbook.ai/vol1/) as the primary source for scope.
+Volume I assumes undergraduate foundations in linear algebra, calculus, and probability. Systems work rarely needs a long symbolic proof. Use math to quantify a design, preserve units, estimate its order of magnitude, and detect physically impossible results. Use the [official Volume I curriculum](https://mlsysbook.ai/vol1/) as the primary source for scope.
 
 ## Linear algebra with shapes
 
@@ -34,7 +34,7 @@ Refresh conditional probability, expectation, variance, sampling, confidence int
 
 Carry units through every calculation: bytes, seconds, operations, watts, dollars, or requests. Throughput is work per time; latency is time per request. Bandwidth is data per time. These quantities relate but are not interchangeable.
 
-Use powers of ten and bounds before precise arithmetic. If a model has one billion `float16` parameters, weights alone are roughly 2 GB. Training requires more because gradients, optimizer states, activations, and temporary buffers also exist.
+Use powers of ten and bounds before precise arithmetic. If a model has one billion `float16` parameters, weights alone are roughly 2 GB. Training also needs memory for gradients, optimizer states, activations, and temporary buffers.
 
 ## Practical exercise
 

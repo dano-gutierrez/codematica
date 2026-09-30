@@ -280,8 +280,8 @@ export function QuestionnaireSession({
     return (
       <div className="mt-6 grid gap-5" data-testid="questionnaire-complete">
         <div className="rounded-xl border border-[#6dd8cf] bg-[#e8f8f6] p-4">
-          <p className="text-sm font-semibold uppercase text-[#007c78]">Refresh complete</p>
-          <p className="mt-2 text-base font-normal leading-7 text-[#33434b]">You reached the end of this practice session.</p>
+          <p className="text-sm font-semibold uppercase text-[#007c78]">Practice complete</p>
+          <p className="mt-2 text-base font-normal leading-7 text-[#33434b]">You finished this practice session.</p>
           <p className="mt-2 text-sm font-semibold text-[#007c78]">Score {Math.round(calculateQuestionnaireSkillScores(attempt.map((attemptQuestion) => ({ question: attemptQuestion, isCorrect: graded[attemptQuestion.id] ?? false }))).overall * 100)}%</p>
         </div>
         <div className="flex flex-wrap gap-3">
@@ -420,7 +420,7 @@ function NextNodeLink({ href }: { href: string }) {
       href={href}
       className="inline-flex min-h-12 items-center gap-2 rounded-xl border border-[#1d4e9e] bg-[#245fba] px-4 py-2 text-sm font-semibold text-white transition hover:-translate-y-0.5"
     >
-      {href.endsWith("/flashcards") ? "Start review feed" : "Next node"}
+      {href.endsWith("/flashcards") ? "Start review feed" : "Next activity"}
       <ArrowRight className="h-4 w-4" aria-hidden="true" />
     </Link>
   );

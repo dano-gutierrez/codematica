@@ -20,9 +20,9 @@
 
 ## One-Minute Brief
 
-This feature adds a beginner-to-principal AI engineering path centered on production LLM applications. It teaches the practical system around model calls: prompts, retrieval, tools, tracing, prompt versions, datasets, experiments, scores, agents, human approval, and risk governance.
+This feature adds a beginner-to-principal AI engineering path centered on production LLM applications. It covers the system around model calls: prompts, retrieval, tools, tracing, prompt versions, datasets, experiments, scores, agents, human approval, and risk governance.
 
-The path is content-only in this milestone. Coding challenges are authored as readable challenge sections and quiz reinforcement, but they are not executable until a future code editor and challenge schema exist. Evaluation guidance separates retrieval quality from answer quality, treats citation presence as weaker than claim-level support, and requires judge calibration against human review.
+This milestone provides content only. Coding challenges appear as readable sections with quizzes; execution requires a future code editor and challenge schema. Evaluation guidance separates retrieval quality from answer quality, treats citation presence as weaker than claim-level support, and requires judge calibration against human review.
 
 ## Outcome / Contract
 
@@ -37,7 +37,7 @@ The path is content-only in this milestone. Coding challenges are authored as re
 
 ## Current State
 
-The feature is shipped as local content and generated-index data. The app reuses existing path, document, diagram, questionnaire, and passive flashcard routes; no new UI component, schema, migration, or backend dependency was added.
+The feature is shipped as local content and generated-index data. The app reuses existing path, document, diagram, questionnaire, and passive flashcard routes, with no new UI component, schema, migration, or backend dependency.
 
 ## Content Contract
 
@@ -77,7 +77,7 @@ The feature is shipped as local content and generated-index data. The app reuses
 
 ## Assumptions
 
-- The first release is content-heavy, not platform-heavy.
+- The first release focuses on content within the existing platform.
 - Future executable challenges will add or update schema and routes instead of overloading current questionnaire JSON.
 - LangSmith may be mentioned only as LangChain's native platform when explaining ecosystem tradeoffs; this path teaches Langfuse as the primary observability and evaluation platform.
 

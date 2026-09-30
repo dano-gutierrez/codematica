@@ -19,9 +19,9 @@ status: published
 
 ## Runtime Lens
 
-Python feels familiar to a TypeScript or JavaScript engineer because it is dynamic, garbage-collected, and object-oriented at runtime. The main trap is assuming that the similarities line up at the same boundaries. TypeScript disappears after compilation. Python annotations remain inspectable metadata, but they do not stop bad values unless code or tooling checks them.
+Python is dynamic, garbage-collected, and object-oriented at runtime, which can feel familiar to TypeScript and JavaScript engineers. Their boundaries differ: TypeScript disappears after compilation, while Python annotations remain inspectable metadata. Annotations do not prevent bad values unless code or tooling checks them.
 
-The senior move is to reason about Python as a runtime-first language with optional static help. When a service receives JSON, reads environment config, imports plugin modules, or crosses package boundaries, Python will execute what the code says now, not what a type comment suggested earlier.
+Treat Python as a runtime-first language with optional static help. JSON input, environment config, plugin imports, and package boundaries follow executable code, regardless of type comments.
 
 ## Names, Bindings, And Objects
 
@@ -33,9 +33,9 @@ alias = settings
 alias["retries"].append(3)
 ```
 
-Both names still point at the same dictionary. The problem is not that dictionaries are surprising; the problem is reviewing Python code as if assignment cloned data. Copying is explicit, and deep copying should be a deliberate design choice because it can hide ownership problems.
+Both names point at the same dictionary; assignment did not clone it. Copying is explicit. Choose deep copying deliberately because it can hide ownership problems.
 
-Mutable default arguments are the classic senior interview trap because function defaults are evaluated once at definition time. A default list used as an accumulator becomes shared state. Use `None` as the sentinel and allocate inside the function.
+Function defaults are evaluated once at definition time, so mutable defaults can create shared state. A default list used as an accumulator is one example. Use `None` as the sentinel and allocate inside the function.
 
 ## Truthiness And Missing Values
 
@@ -51,7 +51,7 @@ if not inbox.messages:
     show_empty_state()
 ```
 
-Senior review should push this distinction because subtle bugs often come from collapsing empty, missing, and disabled into the same branch.
+Keep empty, missing, and disabled states distinct to avoid branching bugs.
 
 ## Exceptions And Control Flow
 
@@ -64,19 +64,19 @@ with open("report.txt", encoding="utf-8") as file:
     payload = file.read()
 ```
 
-The production review question is whether ownership and cleanup are visible. If the code opens sockets, files, locks, transactions, or spans, the lifetime should be obvious.
+Make ownership, lifetime, and cleanup explicit for sockets, files, locks, transactions, and spans.
 
 ## Data Model Hooks
 
 Python objects participate in the language by implementing special methods such as `__iter__`, `__len__`, `__enter__`, `__exit__`, `__eq__`, and `__hash__`. This is similar to JavaScript protocols like iterables, but Python leans heavily on named data model hooks.
 
-Do not add these methods just to be clever. Add them when the object really should behave like that language concept. A domain object with `__iter__` may become convenient, but it can also blur whether the object is an entity, a collection, or a transport record.
+Add these methods only when the object should behave like the corresponding language concept. A domain object with `__iter__` may become convenient, but it can also blur whether the object is an entity, a collection, or a transport record.
 
 ## Imports Execute Code
 
 Python imports execute module top-level code once per interpreter process and cache the module. This is a common difference from bundler-shaped JavaScript mental models. Import-time side effects can create database connections, read environment variables, register plugins, mutate global registries, or slow startup.
 
-Keep import-time work boring. Define constants, classes, and functions. Move runtime wiring into explicit functions. This makes tests easier, service startup more predictable, and dependency cycles easier to diagnose.
+At import time, define constants, classes, and functions. Put runtime wiring in explicit functions. This makes tests easier, service startup more predictable, and dependency cycles easier to diagnose.
 
 ## Senior Pain Points
 
@@ -88,7 +88,7 @@ Keep import-time work boring. Define constants, classes, and functions. Move run
 
 ## Review Standard
 
-Ask whether every boundary has clear ownership. Who owns mutation? Who narrows unknown values? Which code runs at import time? Which missing state is genuinely missing instead of merely empty? Python rewards concise code, but senior Python code is concise after the runtime contract is clear.
+Ask whether every boundary has clear ownership. Who owns mutation? Who narrows unknown values? Which code runs at import time? Which missing state is genuinely missing instead of merely empty? Clarify the runtime contract before shortening the code.
 
 ## Reference Anchors
 

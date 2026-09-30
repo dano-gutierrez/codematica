@@ -11,6 +11,7 @@ module.exports = {
   collectCoverageFrom: [
     "apps/mobile/src/lib/**/*.{ts,tsx}",
     "packages/ui/src/screens.tsx",
+    "packages/ui/src/LinkedInAdminScreen.tsx",
     "!apps/mobile/src/generated/**",
   ],
   forceCoverageMatch: ["<rootDir>/packages/ui/src/screens.tsx"],

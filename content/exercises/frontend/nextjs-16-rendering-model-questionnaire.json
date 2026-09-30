@@ -80,7 +80,7 @@
     {
       "id": "rendering-match",
       "kind": "matching",
-      "prompt": "Match each rendering concern to the right review lens.",
+      "prompt": "Match each rendering concern to its review focus.",
       "pairs": [
         {
           "id": "server-component",
@@ -121,7 +121,7 @@
           "isCorrect": false
         }
       ],
-      "explanation": "Partial prerendering shines when stable shell content can be shown while a smaller request-time section resolves."
+      "explanation": "Partial prerendering works well when stable shell content can appear while a smaller request-time section resolves."
     },
     {
       "id": "boundary-debug-order",

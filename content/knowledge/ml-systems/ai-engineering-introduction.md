@@ -14,13 +14,13 @@ status: published
 
 ## Read the primary chapter first
 
-Start with Harvard’s [Volume I Introduction](https://mlsysbook.ai/vol1/introduction/introduction.html). This companion is a study guide: it summarizes the decision-making lens, adds recall prompts, and prepares the guided exercise. When details differ, the upstream chapter is authoritative.
+Start with Harvard’s [Volume I Introduction](https://mlsysbook.ai/vol1/introduction/introduction.html). This guide summarizes the decision-making framework, adds recall prompts, and prepares you for the guided exercise. When details differ, the upstream chapter is authoritative.
 
 ## Two constraints at once
 
 An ML system manages statistical uncertainty and physical execution constraints together. Its learned behavior can degrade without a code failure, while its computation must still fit memory, bandwidth, latency, energy, and cost budgets.
 
-Use the Data–Algorithm–Machine lens to locate a bottleneck. More compute does not repair stale labels. A smaller model does not repair an invalid evaluation population. Better data does not make an impossible device memory budget disappear.
+Use the Data–Algorithm–Machine lens to locate a bottleneck. More compute does not repair stale labels. A smaller model does not repair an invalid evaluation population. Better data cannot overcome an impossible device memory budget.
 
 ## From model metric to mission
 
@@ -28,7 +28,7 @@ Follow a proposed change through four layers: machine resources, system behavior
 
 ## Lifecycle cost
 
-Constraints discovered late are expensive. Make deployment, monitoring, degradation, responsibility, and rollback part of the design before training. State assumptions early and test the riskiest one with the cheapest useful experiment.
+Late constraints are costly. Design deployment, monitoring, degradation handling, responsibilities, and rollback before training. State assumptions early and test the riskiest one with the cheapest useful experiment.
 
 ## Retrieval prompts
 

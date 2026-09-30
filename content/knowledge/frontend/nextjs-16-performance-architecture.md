@@ -20,13 +20,13 @@ status: published
 ---
 ## Performance Is A System Property
 
-Next.js 16 ships important performance improvements, including stable Turbopack, enhanced routing and prefetch behavior, Cache Components, and React 19.2 support. None of that removes architecture work. A fast framework can still serve slow pages if teams cache the wrong data, stream the wrong boundary, ship too much client JavaScript, or refetch data after hydration.
+Next.js 16 ships important performance improvements, including stable Turbopack, enhanced routing and prefetch behavior, Cache Components, and React 19.2 support. Pages can still be slow if they cache the wrong data, stream at the wrong boundary, ship too much client JavaScript, or refetch data after hydration.
 
-Measure performance by user job: time to a useful shell, time to personalized content, navigation responsiveness, origin pressure, and error recovery.
+Measure performance for each user task: time to a useful shell, time to personalized content, navigation responsiveness, origin pressure, and error recovery.
 
 ## Turbopack And Build Feedback
 
-Turbopack being stable and default in newer projects changes local and build feedback loops. Faster compile and refresh cycles help teams iterate, but production review still needs CI parity and package compatibility checks. If a webpack customization exists, migration must verify equivalent behavior.
+Stable Turbopack is the default in newer projects. Faster compile and refresh cycles help iteration, but still require CI parity and package compatibility checks. If a webpack customization exists, migration must verify equivalent behavior.
 
 Do not treat a successful development server as build parity. Next.js 16 also uses Turbopack for `next build` by default, and the build fails when a custom webpack configuration is detected unless the team migrates it or deliberately opts into `--webpack`.
 
@@ -42,15 +42,15 @@ Do not disable prefetching because a network panel looks unfamiliar. First check
 
 ## Streaming And Useful Shells
 
-Streaming is most powerful when the first shell is useful. If the route streams a header, navigation, filters, and stable layout while a personalized panel resolves, users feel progress. If the route streams a blank page with a spinner, users feel delay.
+Stream a useful shell: a header, navigation, filters, and stable layout while personalized panels load. A blank page with a spinner gives users less sense of progress.
 
 ## Cache For Latency And Load
 
-Cache Components can cut origin work, but caching is only a performance win when correctness survives. The highest-value caches are shared, expensive, stable, and easy to invalidate. The riskiest caches are permissioned, personalized, or tied to writes without clear tags.
+Cache Components can reduce origin work, but must preserve correctness. The highest-value caches are shared, expensive, stable, and easy to invalidate. The riskiest caches are permissioned, personalized, or tied to writes without clear tags.
 
 ## One-Minute Brief
 
-Next.js 16 performance is not one feature. Turbopack improves feedback, routing improves navigation payloads, streaming improves perceived speed, and Cache Components reduce repeated work. The senior job is choosing the boundary that preserves correctness.
+In Next.js 16, Turbopack speeds development feedback, routing reduces navigation payloads, streaming improves perceived speed, and Cache Components reduce repeated work. Choose boundaries that preserve correctness.
 
 ## Official Source Anchors
 This lesson is anchored to official Next.js documentation and release material. The repository manifest and lockfile define the version under test.

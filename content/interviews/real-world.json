@@ -10,7 +10,7 @@
       "slug": "mondrian-composition-generator",
       "title": "Generate a Mondrian-style Composition",
       "summary": "Scope and build a browser-only React application that creates a fresh, bounded composition from constrained randomness.",
-      "prompt": "Build a browser-only application that generates a new composition on initial page load in the visual language associated with Piet Mondrian. Begin by collaborating on the characteristics worth imitating, choose an MVP that can be completed during the interview, and preserve clear extension seams for rules you defer. The result should be a static frontend application—no backend or saved data—but the generated composition itself must vary between page loads.",
+      "prompt": "Build a static, browser-only frontend that generates a new Mondrian-style composition on initial page load. Do not add a backend or save data. First agree on the characteristics to imitate, choose an MVP achievable during the interview, and leave extension points for deferred rules. The composition must vary between page loads.",
       "difficulty": "senior",
       "tags": [
         "react",
@@ -34,7 +34,7 @@
       ],
       "diagrams": [],
       "evaluation": {
-        "intent": "The central challenge is not perfect art reproduction. It is turning an ambiguous visual request into a small deliverable contract, collaborating visibly on priorities, implementing stable geometry, and leaving a credible route toward more sophisticated composition rules without overbuilding the interview MVP.",
+        "intent": "Agree on priorities, turn the ambiguous visual request into a small set of deliverable requirements, and implement stable geometry. Leave room for richer composition rules without overbuilding the interview MVP. Perfect art reproduction is secondary.",
         "expectedSignals": [
           "Names the visual grammar before coding: orthogonal black lines, unequal rectangles, asymmetric balance, a warm light ground, and sparse primary-color accents.",
           "Negotiates a concrete MVP and explicitly defers secondary traits such as merged regions, line hierarchy, texture, historical-period fidelity, and export.",
@@ -153,8 +153,8 @@
               "explanation": "Map the generated cells to stable grid children and change the seed only on initial load or when the labeled regenerate button is pressed."
             }
           ],
-          "explanation": "CSS Grid is a strong interview MVP because its constraints solve the hardest geometry risks automatically: positive tracks cover the available surface, grid gaps become consistent lines, and cells cannot overlap. The TypeScript generator produces only track weights and color assignments, so visual policy stays testable and the React component remains a small projection of that model. A future pass can extend the model with row or column spans, palette periods, line weights, or composition scoring without replacing the basic boundary between generation and rendering.",
-          "acceptanceRationale": "This meets the stated practice criteria because it delivers a recognizable, randomized, responsive result quickly; it demonstrates explicit visual scoping; and it uses browser-native layout constraints to prevent invalid geometry. The code is readable under interview pressure, randomness is stable, the palette is intentionally sparse, and the generator can evolve without direct DOM manipulation. Hiring decisions depend on the interviewer and agreed requirements.",
+          "explanation": "CSS Grid handles the MVP’s geometry: positive tracks cover the surface, gaps form consistent lines, and cells cannot overlap. The TypeScript generator produces only track weights and color assignments, keeping visual policy testable and React rendering small. Later additions can include row or column spans, palette periods, line weights, or composition scoring while preserving the boundary between generation and rendering.",
+          "acceptanceRationale": "This meets the practice criteria with a recognizable, randomized, responsive result, explicit visual scope, and browser-native constraints that prevent invalid geometry. It is quick to build and readable under interview pressure, with stable randomness, a sparse palette, and a generator that can evolve without direct DOM manipulation. Hiring decisions depend on the interviewer and agreed requirements.",
           "tradeoffs": [
             "Independent grid cells make the first version read more like a structured mosaic than paintings with selectively merged regions.",
             "One grid-wide gap produces a single line weight; historically inspired variation would require extra metadata or layered lines.",
@@ -217,8 +217,8 @@
               "explanation": "Render leaf rectangles with percentage positioning and consistent outlines while keeping the recursive algorithm entirely outside JSX."
             }
           ],
-          "explanation": "Binary space partitioning expresses the composition as a tree of intentional decisions instead of a flat uniform grid. Every split preserves the parent boundary, so the generated leaves cover the original rectangle without gaps or overlap. Aspect-ratio-aware orientation and bounded cut positions prevent most awkward slivers, while a depth and probability budget guarantees finite work. This design is especially extensible: internal nodes can later carry line weights, locked axes, merge decisions, or composition scores without changing the React renderer.",
-          "acceptanceRationale": "This meets the stated practice criteria because it demonstrates stronger modeling while remaining interview-sized. The recursive invariant is easy to state—children exactly partition their parent—so correctness can be reasoned about locally. It yields more varied large and small regions than a uniform grid, keeps randomness constrained and repeatable, and makes deferred composition heuristics explicit rather than burying them in CSS. Hiring decisions depend on the interviewer and agreed requirements.",
+          "explanation": "Binary space partitioning models the composition as a tree of split decisions. Each split preserves its parent boundary, so leaves cover the original rectangle without gaps or overlap. Orientation based on aspect ratio and bounded cuts prevent most slivers; depth and probability limits guarantee finite work. Internal nodes can later carry line weights, locked axes, merge decisions, or composition scores without changing the React renderer.",
+          "acceptanceRationale": "This meets the practice criteria with a richer model that remains manageable during an interview. Children exactly partition their parent, so each split’s correctness can be checked locally. It produces more varied region sizes than a uniform grid, constrains randomness, preserves repeatability, and makes deferred composition rules explicit outside CSS. Hiring decisions depend on the interviewer and agreed requirements.",
           "tradeoffs": [
             "Absolute-positioned leaves need careful outline treatment because adjacent borders can visually double or reveal subpixel seams.",
             "A binary split tree cannot directly create every possible grid topology without later merging or cross-branch alignment rules.",
@@ -281,8 +281,8 @@
               "explanation": "Render colored rectangles before the horizontal and vertical line elements so joins remain crisp and line thickness stays visually consistent."
             }
           ],
-          "explanation": "SVG makes the model-to-pixels relationship explicit. Weighted segment normalization guarantees that cut coordinates are sorted, cover the viewBox, and produce valid rectangles. Rendering fills and structural lines as separate layers avoids doubled cell borders and makes line hierarchy easy to extend. The same geometry can be unit tested, serialized, downloaded, animated, or scored without consulting layout measurements, while the viewBox gives responsive scaling for free.",
-          "acceptanceRationale": "This meets the stated practice criteria because it combines precise invariants with a concise browser-native renderer. It clearly separates geometry, palette, and drawing order; produces stable random output from a seed; scales cleanly across devices; and creates the most direct path to export or advanced line rules. The candidate can explain the additional SVG concepts without losing sight of the scoped MVP. Hiring decisions depend on the interviewer and agreed requirements.",
+          "explanation": "SVG maps the geometry directly to pixels. Normalizing weighted segments produces sorted cuts that cover the viewBox and form valid rectangles. Separate fill and line layers avoid doubled borders and support additional line rules. The geometry can be unit tested, serialized, downloaded, animated, or scored without layout measurements. The viewBox handles responsive scaling.",
+          "acceptanceRationale": "This meets the practice criteria with precise invariants and a concise browser-native renderer. It separates geometry, palette, and drawing order, produces stable seeded output, scales across devices, and offers the most direct path to export or advanced line rules. Explain the additional SVG concepts within the agreed MVP scope. Hiring decisions depend on the interviewer and agreed requirements.",
           "tradeoffs": [
             "SVG introduces coordinate and drawing-order concepts that may be more machinery than a CSS-only MVP needs.",
             "A full row-by-column cut model remains grid-like until later logic merges cells or terminates selected lines early.",

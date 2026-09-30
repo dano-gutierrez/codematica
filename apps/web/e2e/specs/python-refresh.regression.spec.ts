@@ -69,8 +69,8 @@ test("@regression mobile user searches Python docs and completes a deterministic
   await expect(page.getByTestId("questionnaire-feedback")).toContainText("Correct");
   await page.getByTestId("questionnaire-finish").click();
 
-  await expect(page.getByTestId("questionnaire-complete")).toContainText("Refresh complete");
-  await page.getByRole("link", { name: /Next node/i }).click();
+  await expect(page.getByTestId("questionnaire-complete")).toContainText("Practice complete");
+  await page.getByRole("link", { name: /Next activity/i }).click();
   await expect(page.getByTestId("document-page")).toBeVisible();
   await expect(page.getByRole("heading", { name: "Python Types And Contracts For TypeScript Engineers" })).toBeVisible();
 });

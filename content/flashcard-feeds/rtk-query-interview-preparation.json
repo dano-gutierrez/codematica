@@ -11,7 +11,7 @@
       "type": "concept",
       "title": "Foundations and Request Ownership: Same Key",
       "prompt": "Two panels call getAuthor with the same ID in the same API/store. What should happen?",
-      "explanation": "They share the cache entry and an in-flight request. The endpoint and serialized argument identify the entry, so concurrent subscribers share it. Hook count does not require duplicate HTTP calls, and React element keys do not define RTK cache identity.",
+      "explanation": "They share the cache entry and an in-flight request because the endpoint and serialized argument identify the entry. Hook count does not require duplicate HTTP calls, and React element keys do not define RTK cache identity.",
       "difficulty": "senior",
       "tags": [
         "rtk-query",
@@ -50,7 +50,7 @@
       "type": "concept",
       "title": "Cache Identity and Invalidation: Retention",
       "prompt": "The final subscriber leaves at t=40s with keepUnusedDataFor: 60. No one returns. When is eviction expected?",
-      "explanation": "Around t=100s, because retention starts after the final unsubscribe. Unused retention starts when the subscription count reaches zero. It is not measured from fetch time, and cache eviction does not require a mutation.",
+      "explanation": "Around t=100s. Unused retention starts after the final unsubscribe, when the subscription count reaches zero. It is not measured from fetch time, and cache eviction does not require a mutation.",
       "difficulty": "senior",
       "tags": [
         "rtk-query",
@@ -141,7 +141,7 @@
       "type": "practical",
       "title": "Persistence and the Loading Incident: Two Paths",
       "prompt": "Which statement about RTK 2.2.8 and 2.12.0 rehydration is accurate?",
-      "explanation": "Their dedicated extractRehydrationInfo reducer path filters pending entries; raw state restoration can bypass it. The inspected dedicated reducers skip pending entries in both versions. Generic state restoration is a separate path, and upgrading alone cannot guarantee the correctness of custom persistence wiring.",
+      "explanation": "The inspected extractRehydrationInfo reducer path filters pending entries in both versions. Raw state restoration can bypass it, so upgrading alone cannot guarantee correct custom persistence wiring.",
       "difficulty": "senior",
       "tags": [
         "rtk-query",
@@ -180,7 +180,7 @@
       "type": "practical",
       "title": "Modern APIs and Version Traps: Schema Version",
       "prompt": "Which version first added Standard Schema validation to RTK Query?",
-      "explanation": "RTK 2.7.0. Standard Schema support arrived in 2.7.0. The case-study 2.2.8 baseline predates it; 2.12.0 includes later fixes and improvements rather than introducing the original schema API.",
+      "explanation": "Standard Schema support arrived in RTK 2.7.0. The case-study 2.2.8 baseline predates it; 2.12.0 includes later fixes and improvements rather than introducing the original schema API.",
       "difficulty": "senior",
       "tags": [
         "rtk-query",
@@ -193,7 +193,7 @@
       "type": "interview",
       "title": "Modern APIs and Version Traps: Refetch Pages",
       "prompt": "In RTK 2.11+, what does refetchCachedPages: false do on an infinite-query refetch?",
-      "explanation": "Refetches the first cached page and shrinks the retained cache to one page. The option collapses the retained window to one refreshed page. It does not preserve all later pages and does not disable the endpoint; scroll behavior needs an explicit product policy.",
+      "explanation": "It refetches the first cached page and shrinks the retained cache to one page. It does not preserve all later pages and does not disable the endpoint; scroll behavior needs an explicit product policy.",
       "difficulty": "senior",
       "tags": [
         "rtk-query",
@@ -258,7 +258,7 @@
       "type": "practical",
       "title": "Mock Interview and Code Review: Stale Layer",
       "prompt": "Invalidation triggers an HTTP request, but its response contains old data. What next?",
-      "explanation": "Inspect server consistency and HTTP/cache layers, then selectors if the response is correct. An observed request narrows the problem. Old response data points upstream; if response data is correct, inspect client selection. Broad repeated invalidation is not a diagnosis.",
+      "explanation": "The observed request narrows the problem. Old response data points upstream: inspect server consistency and HTTP/cache layers. If the response is correct, inspect client selectors. Broad repeated invalidation is not a diagnosis.",
       "difficulty": "senior",
       "tags": [
         "rtk-query",

@@ -44,7 +44,7 @@
         {
           "id": "one-pass-map",
           "title": "One Pass Complement Map",
-          "summary": "Scan once while remembering earlier values by value so each new item can close a pair immediately.",
+          "summary": "Scan once, mapping earlier values to their indexes so each new item can complete a pair immediately.",
           "steps": [
             {
               "title": "Store earlier values",

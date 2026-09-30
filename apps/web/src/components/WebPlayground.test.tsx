@@ -147,7 +147,7 @@ describe("WebPlayground", () => {
     sandpackMocks.status = "timeout";
     sandpackMocks.files = { "/App.tsx": { code: "// my unfinished work" } };
     rerender(<WebPlayground project={project} projectId="test-project" />);
-    expect(screen.getByRole("alert")).toHaveTextContent("Your edits are still here");
+    expect(screen.getByRole("alert")).toHaveTextContent("Your edits are preserved");
     expect(screen.getByTestId("mock-sandpack-editor")).toBeVisible();
     expect(screen.getByTestId("mock-sandpack-preview")).not.toBeVisible();
     sandpackMocks.status = "running";

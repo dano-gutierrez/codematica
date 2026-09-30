@@ -12,7 +12,7 @@
 
 ## One-Minute Brief
 
-The Front-End Development path teaches RTK Query through request ownership, caching, mutations, a persisted-pending production case, newer APIs, architecture, and a mock interview. Readers get good/bad examples and scenario feedback without a new UI or runtime dependency. Source-linked lessons remain locally available for anonymous web/native browsing.
+The Front-End Development path teaches RTK Query through request ownership, caching, mutations, a persisted-pending production case, newer APIs, architecture, and a mock interview. Examples compare correct and flawed approaches, with scenario feedback using existing UI and runtime dependencies. Source-linked lessons remain locally available for anonymous web/native browsing.
 
 ## Outcome / Contract
 
@@ -26,7 +26,7 @@ The Front-End Development path teaches RTK Query through request ownership, cach
 
 ## Current State
 
-Content is authored in canonical Markdown/JSON and bundled through the generated index. Shared renderer, code blocks, embedded Mermaid, source panels, path next-node links, quizzes, and passive feed supply the presentation. Code blocks are reference examples; scratch exercises and the mock interview are not executed or automatically scored by Codematica. Only checkpoint answers receive existing deterministic grading.
+Content is authored in canonical Markdown/JSON and bundled through the generated index. Shared renderers, code blocks, embedded Mermaid, source panels, path navigation, quizzes, and passive feeds present the content. Code blocks are reference examples; scratch exercises and the mock interview are not executed or automatically scored by Codematica. Only checkpoint answers receive existing deterministic grading.
 
 ## Scope
 
@@ -61,7 +61,7 @@ Seven units pair one document with its checkpoint. Next-node routes preserve the
 
 ### Failure And Edge Handling
 
-The private inspiration URL may require authentication, but the full generalized case is local. Official links may evolve; update verification dates only after an actual audit. Source tests guard references, grading, searchability, and traversal, not RTK's internal implementation. Preserve the distinction between sample adapter validation and end-to-end persistence recovery.
+The private source URL may require authentication; the full generalized case is available locally. Official links may evolve; update verification dates only after an actual audit. Source tests guard references, grading, searchability, and traversal, not RTK's internal implementation. Preserve the distinction between sample adapter validation and end-to-end persistence recovery.
 
 ## Code Touchpoints
 
@@ -79,6 +79,7 @@ The private inspiration URL may require authentication, but the full generalized
 - First failing regression: the four new curriculum integration tests failed against the prior generated index because the path, checkpoints, searchable case, and feed were absent; they passed after authored content and index generation.
 - Unit/integration: source resolution, complete ordered pairs, traversal including final-node behavior, scenario answer/distractor grading via shared logic, searchability, version/source anchors, and review links.
 - E2E: discover the path, open the case and source panel, render Mermaid, follow the path-scoped checkpoint, submit an incorrect answer and read feedback, complete the checkpoint, continue into modern examples, verify contained mobile width, search, and open review.
+- Copy regression: the first review card explains shared cache/request identity through the endpoint and serialized argument. Preserve that explanation when updating text assertions.
 - Regression classification: `@regression` in `rtk-query.regression.spec.ts`, mobile Chromium. Existing critical smoke suite covers shared surfaces across configured browsers.
 - Coverage impact: no production logic or thresholds/exclusions changed. Run existing aggregate coverage against the expanded content index.
 - Required local commands: `npx vitest run packages/core/src/content/rtk-query.test.ts`, `npm run content:check`, `npm run lint`, `npm run typecheck`, `npm run test:coverage`, `npm run build`, `npx playwright test --config=apps/web/e2e/playwright.config.ts --project=mobile-chromium apps/web/e2e/specs/rtk-query.regression.spec.ts`, and `npm run e2e:smoke`.

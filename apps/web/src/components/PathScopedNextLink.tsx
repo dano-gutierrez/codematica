@@ -46,7 +46,7 @@ export function PathScopedNextLink({ nextHrefsByPath, testId, wrapperClassName =
           );
         }}
       >
-        Next node
+        Next activity
         <ArrowRight className="h-4 w-4" aria-hidden="true" />
       </Link>
     </div>

@@ -114,7 +114,7 @@ export function PassiveFlashcardFeed({
           </Link>
           <div className="min-w-0 text-right">
             <p className="truncate text-sm font-semibold text-[#007c78]">{feed.title}</p>
-            <p className="truncate text-xs font-medium text-[#68737d]">Passive refresh</p>
+            <p className="truncate text-xs font-medium text-[#68737d]">Quick review</p>
           </div>
         </div>
       </header>

@@ -2,7 +2,7 @@
   "slug": "python-for-ts-js-engineers",
   "pathSlug": "python-for-ts-js-engineers",
   "title": "Python Flashcard Feed",
-  "summary": "Passive Python flashcards for short mobile refresh sessions, balanced across theory, practical review, code snippets, and interview prompts.",
+  "summary": "Review Python theory, practical checks, code snippets, and interview questions in short mobile sessions. Compare the concepts with TypeScript and JavaScript.",
   "audience": "TypeScript and JavaScript engineers refreshing senior Python concepts in short sessions.",
   "status": "published",
   "cards": [
@@ -11,7 +11,7 @@
       "type": "concept",
       "title": "Names Bind Objects",
       "prompt": "Python variables are names bound to objects, not typed storage boxes.",
-      "explanation": "Rebinding a name does not copy the previous object; mutating a shared object remains visible through other names. This is the baseline concept to remember before comparing Python with TypeScript or JavaScript.",
+      "explanation": "Rebinding a name does not copy the previous object; mutating a shared object remains visible through other names.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -25,7 +25,7 @@
       "type": "practical",
       "title": "Names Bind Objects Review",
       "prompt": "Rebinding a name does not copy the previous object; mutating a shared object remains visible through other names.",
-      "explanation": "Senior review standard: make the intended runtime behavior explicit, add a narrow test around the edge case, and avoid hiding the rule in clever syntax.",
+      "explanation": "Make runtime behavior explicit, test the edge case, and keep the rule visible in clear syntax.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -38,8 +38,8 @@
       "id": "runtime-names-bind-objects-snippet",
       "type": "snippet",
       "title": "Names Bind Objects Snippet",
-      "prompt": "Read the snippet as a compact reminder for names bind objects.",
-      "explanation": "The code highlights the production shape of the concept. In interviews, narrate the invariant before discussing syntax.",
+      "prompt": "Review this example: Names Bind Objects.",
+      "explanation": "Review the production behavior shown here. In interviews, state the invariant before discussing syntax.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -54,7 +54,7 @@
       "type": "interview",
       "title": "Names Bind Objects Interview",
       "prompt": "Explain why a = b = [] behaves differently from a = []; b = [] in a code review.",
-      "explanation": "Python variables are names bound to objects, not typed storage boxes. A strong answer states the rule, names the common trap, and explains the production consequence.",
+      "explanation": "Python variables are names bound to objects, not typed storage boxes. State the rule, common trap, and production consequence.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -68,7 +68,7 @@
       "type": "concept",
       "title": "Identity Versus Equality",
       "prompt": "Use is for object identity and == for value equality.",
-      "explanation": "Senior Python reviews reject is checks for strings, numbers, and containers unless singleton identity is truly intended. This is the baseline concept to remember before comparing Python with TypeScript or JavaScript.",
+      "explanation": "Senior Python reviews reject is checks for strings, numbers, and containers unless singleton identity is truly intended.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -82,7 +82,7 @@
       "type": "practical",
       "title": "Identity Versus Equality Review",
       "prompt": "Senior Python reviews reject is checks for strings, numbers, and containers unless singleton identity is truly intended.",
-      "explanation": "Senior review standard: make the intended runtime behavior explicit, add a narrow test around the edge case, and avoid hiding the rule in clever syntax.",
+      "explanation": "Make runtime behavior explicit, test the edge case, and keep the rule visible in clear syntax.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -95,8 +95,8 @@
       "id": "runtime-identity-vs-equality-snippet",
       "type": "snippet",
       "title": "Identity Versus Equality Snippet",
-      "prompt": "Read the snippet as a compact reminder for identity versus equality.",
-      "explanation": "The code highlights the production shape of the concept. In interviews, narrate the invariant before discussing syntax.",
+      "prompt": "Review this example: Identity Versus Equality.",
+      "explanation": "Review the production behavior shown here. In interviews, state the invariant before discussing syntax.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -111,7 +111,7 @@
       "type": "interview",
       "title": "Identity Versus Equality Interview",
       "prompt": "When should Python code use is instead of ==, and why is None the common answer?",
-      "explanation": "Use is for object identity and == for value equality. A strong answer states the rule, names the common trap, and explains the production consequence.",
+      "explanation": "Use is for object identity and == for value equality. State the rule, common trap, and production consequence.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -125,7 +125,7 @@
       "type": "concept",
       "title": "Mutable Defaults Persist",
       "prompt": "Default argument objects are created when the function is defined, not on every call.",
-      "explanation": "A list or dict default can leak state across calls, which surprises developers used to fresh literals inside function bodies. This is the baseline concept to remember before comparing Python with TypeScript or JavaScript.",
+      "explanation": "A list or dict default can leak state across calls, which surprises developers used to fresh literals inside function bodies.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -139,7 +139,7 @@
       "type": "practical",
       "title": "Mutable Defaults Persist Review",
       "prompt": "A list or dict default can leak state across calls, which surprises developers used to fresh literals inside function bodies.",
-      "explanation": "Senior review standard: make the intended runtime behavior explicit, add a narrow test around the edge case, and avoid hiding the rule in clever syntax.",
+      "explanation": "Make runtime behavior explicit, test the edge case, and keep the rule visible in clear syntax.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -152,8 +152,8 @@
       "id": "runtime-mutable-defaults-snippet",
       "type": "snippet",
       "title": "Mutable Defaults Persist Snippet",
-      "prompt": "Read the snippet as a compact reminder for mutable defaults persist.",
-      "explanation": "The code highlights the production shape of the concept. In interviews, narrate the invariant before discussing syntax.",
+      "prompt": "Review this example: Mutable Defaults Persist.",
+      "explanation": "Review the production behavior shown here. In interviews, state the invariant before discussing syntax.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -168,7 +168,7 @@
       "type": "interview",
       "title": "Mutable Defaults Persist Interview",
       "prompt": "What bug can appear when a Python function uses items=[] as a default argument?",
-      "explanation": "Default argument objects are created when the function is defined, not on every call. A strong answer states the rule, names the common trap, and explains the production consequence.",
+      "explanation": "Default argument objects are created when the function is defined, not on every call. State the rule, common trap, and production consequence.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -182,7 +182,7 @@
       "type": "concept",
       "title": "Truthiness Is A Protocol",
       "prompt": "Python truthiness uses __bool__ first, then __len__ when __bool__ is absent.",
-      "explanation": "Do not treat every falsy value as missing; empty strings, zero, empty containers, and None often mean different things. This is the baseline concept to remember before comparing Python with TypeScript or JavaScript.",
+      "explanation": "Do not treat every falsy value as missing; empty strings, zero, empty containers, and None often mean different things.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -196,7 +196,7 @@
       "type": "practical",
       "title": "Truthiness Is A Protocol Review",
       "prompt": "Do not treat every falsy value as missing; empty strings, zero, empty containers, and None often mean different things.",
-      "explanation": "Senior review standard: make the intended runtime behavior explicit, add a narrow test around the edge case, and avoid hiding the rule in clever syntax.",
+      "explanation": "Make runtime behavior explicit, test the edge case, and keep the rule visible in clear syntax.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -209,8 +209,8 @@
       "id": "runtime-truthiness-contract-snippet",
       "type": "snippet",
       "title": "Truthiness Is A Protocol Snippet",
-      "prompt": "Read the snippet as a compact reminder for truthiness is a protocol.",
-      "explanation": "The code highlights the production shape of the concept. In interviews, narrate the invariant before discussing syntax.",
+      "prompt": "Review this example: Truthiness Is A Protocol.",
+      "explanation": "Review the production behavior shown here. In interviews, state the invariant before discussing syntax.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -225,7 +225,7 @@
       "type": "interview",
       "title": "Truthiness Is A Protocol Interview",
       "prompt": "Why can if value accidentally collapse several distinct states in Python?",
-      "explanation": "Python truthiness uses __bool__ first, then __len__ when __bool__ is absent. A strong answer states the rule, names the common trap, and explains the production consequence.",
+      "explanation": "Python truthiness uses __bool__ first, then __len__ when __bool__ is absent. State the rule, common trap, and production consequence.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -239,7 +239,7 @@
       "type": "concept",
       "title": "Exceptions Mark Boundaries",
       "prompt": "Python uses exceptions heavily for failure paths and some protocol boundaries.",
-      "explanation": "Catching Exception too broadly can hide programmer errors, cancellation, and operational signals that should fail loudly. This is the baseline concept to remember before comparing Python with TypeScript or JavaScript.",
+      "explanation": "Catching Exception too broadly can hide programmer errors, cancellation, and operational signals that should fail loudly.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -253,7 +253,7 @@
       "type": "practical",
       "title": "Exceptions Mark Boundaries Review",
       "prompt": "Catching Exception too broadly can hide programmer errors, cancellation, and operational signals that should fail loudly.",
-      "explanation": "Senior review standard: make the intended runtime behavior explicit, add a narrow test around the edge case, and avoid hiding the rule in clever syntax.",
+      "explanation": "Make runtime behavior explicit, test the edge case, and keep the rule visible in clear syntax.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -266,8 +266,8 @@
       "id": "runtime-exceptions-are-boundaries-snippet",
       "type": "snippet",
       "title": "Exceptions Mark Boundaries Snippet",
-      "prompt": "Read the snippet as a compact reminder for exceptions mark boundaries.",
-      "explanation": "The code highlights the production shape of the concept. In interviews, narrate the invariant before discussing syntax.",
+      "prompt": "Review this example: Exceptions Mark Boundaries.",
+      "explanation": "Review the production behavior shown here. In interviews, state the invariant before discussing syntax.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -282,7 +282,7 @@
       "type": "interview",
       "title": "Exceptions Mark Boundaries Interview",
       "prompt": "How would you scope exception handling around parsing, network calls, and domain logic?",
-      "explanation": "Python uses exceptions heavily for failure paths and some protocol boundaries. A strong answer states the rule, names the common trap, and explains the production consequence.",
+      "explanation": "Python uses exceptions heavily for failure paths and some protocol boundaries. State the rule, common trap, and production consequence.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -296,7 +296,7 @@
       "type": "concept",
       "title": "Imports Execute Modules",
       "prompt": "Importing a module executes its top-level code once per interpreter process.",
-      "explanation": "Keep top-level work cheap and deterministic; network calls or heavy setup at import time make tests and services brittle. This is the baseline concept to remember before comparing Python with TypeScript or JavaScript.",
+      "explanation": "Keep top-level work cheap and deterministic; network calls or heavy setup at import time make tests and services brittle.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -310,7 +310,7 @@
       "type": "practical",
       "title": "Imports Execute Modules Review",
       "prompt": "Keep top-level work cheap and deterministic; network calls or heavy setup at import time make tests and services brittle.",
-      "explanation": "Senior review standard: make the intended runtime behavior explicit, add a narrow test around the edge case, and avoid hiding the rule in clever syntax.",
+      "explanation": "Make runtime behavior explicit, test the edge case, and keep the rule visible in clear syntax.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -323,8 +323,8 @@
       "id": "runtime-imports-execute-modules-snippet",
       "type": "snippet",
       "title": "Imports Execute Modules Snippet",
-      "prompt": "Read the snippet as a compact reminder for imports execute modules.",
-      "explanation": "The code highlights the production shape of the concept. In interviews, narrate the invariant before discussing syntax.",
+      "prompt": "Review this example: Imports Execute Modules.",
+      "explanation": "Review the production behavior shown here. In interviews, state the invariant before discussing syntax.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -339,7 +339,7 @@
       "type": "interview",
       "title": "Imports Execute Modules Interview",
       "prompt": "Why can top-level side effects in Python modules cause production startup problems?",
-      "explanation": "Importing a module executes its top-level code once per interpreter process. A strong answer states the rule, names the common trap, and explains the production consequence.",
+      "explanation": "Importing a module executes its top-level code once per interpreter process. State the rule, common trap, and production consequence.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -353,7 +353,7 @@
       "type": "concept",
       "title": "Scope Uses LEGB",
       "prompt": "Python resolves names through local, enclosing, global, and builtins scopes.",
-      "explanation": "Assignment inside a function creates a local name unless global or nonlocal changes the binding rule. This is the baseline concept to remember before comparing Python with TypeScript or JavaScript.",
+      "explanation": "Assignment inside a function creates a local name unless global or nonlocal changes the binding rule.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -367,7 +367,7 @@
       "type": "practical",
       "title": "Scope Uses LEGB Review",
       "prompt": "Assignment inside a function creates a local name unless global or nonlocal changes the binding rule.",
-      "explanation": "Senior review standard: make the intended runtime behavior explicit, add a narrow test around the edge case, and avoid hiding the rule in clever syntax.",
+      "explanation": "Make runtime behavior explicit, test the edge case, and keep the rule visible in clear syntax.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -380,8 +380,8 @@
       "id": "runtime-scope-resolution-legb-snippet",
       "type": "snippet",
       "title": "Scope Uses LEGB Snippet",
-      "prompt": "Read the snippet as a compact reminder for scope uses legb.",
-      "explanation": "The code highlights the production shape of the concept. In interviews, narrate the invariant before discussing syntax.",
+      "prompt": "Review this example: Scope Uses LEGB.",
+      "explanation": "Review the production behavior shown here. In interviews, state the invariant before discussing syntax.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -396,7 +396,7 @@
       "type": "interview",
       "title": "Scope Uses LEGB Interview",
       "prompt": "What does UnboundLocalError often reveal about assignment and scope?",
-      "explanation": "Python resolves names through local, enclosing, global, and builtins scopes. A strong answer states the rule, names the common trap, and explains the production consequence.",
+      "explanation": "Python resolves names through local, enclosing, global, and builtins scopes. State the rule, common trap, and production consequence.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -410,7 +410,7 @@
       "type": "concept",
       "title": "Functions Are Objects",
       "prompt": "Functions, classes, modules, exceptions, and types are objects with attributes.",
-      "explanation": "This enables decorators and dynamic composition, but runtime mutation should be deliberate and easy to review. This is the baseline concept to remember before comparing Python with TypeScript or JavaScript.",
+      "explanation": "This enables decorators and dynamic composition, but runtime mutation should be deliberate and easy to review.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -424,7 +424,7 @@
       "type": "practical",
       "title": "Functions Are Objects Review",
       "prompt": "This enables decorators and dynamic composition, but runtime mutation should be deliberate and easy to review.",
-      "explanation": "Senior review standard: make the intended runtime behavior explicit, add a narrow test around the edge case, and avoid hiding the rule in clever syntax.",
+      "explanation": "Make runtime behavior explicit, test the edge case, and keep the rule visible in clear syntax.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -437,8 +437,8 @@
       "id": "runtime-functions-are-objects-snippet",
       "type": "snippet",
       "title": "Functions Are Objects Snippet",
-      "prompt": "Read the snippet as a compact reminder for functions are objects.",
-      "explanation": "The code highlights the production shape of the concept. In interviews, narrate the invariant before discussing syntax.",
+      "prompt": "Review this example: Functions Are Objects.",
+      "explanation": "Review the production behavior shown here. In interviews, state the invariant before discussing syntax.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -453,7 +453,7 @@
       "type": "interview",
       "title": "Functions Are Objects Interview",
       "prompt": "How does treating functions as objects enable decorators in Python?",
-      "explanation": "Functions, classes, modules, exceptions, and types are objects with attributes. A strong answer states the rule, names the common trap, and explains the production consequence.",
+      "explanation": "Functions, classes, modules, exceptions, and types are objects with attributes. State the rule, common trap, and production consequence.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -467,7 +467,7 @@
       "type": "concept",
       "title": "GC Is Not A Cleanup Contract",
       "prompt": "Reachability drives garbage collection, but cleanup timing is implementation-dependent.",
-      "explanation": "Close files, sockets, and locks explicitly with context managers instead of relying on object finalization. This is the baseline concept to remember before comparing Python with TypeScript or JavaScript.",
+      "explanation": "Close files, sockets, and locks explicitly with context managers instead of relying on object finalization.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -481,7 +481,7 @@
       "type": "practical",
       "title": "GC Is Not A Cleanup Contract Review",
       "prompt": "Close files, sockets, and locks explicitly with context managers instead of relying on object finalization.",
-      "explanation": "Senior review standard: make the intended runtime behavior explicit, add a narrow test around the edge case, and avoid hiding the rule in clever syntax.",
+      "explanation": "Make runtime behavior explicit, test the edge case, and keep the rule visible in clear syntax.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -494,8 +494,8 @@
       "id": "runtime-gc-not-cleanup-contract-snippet",
       "type": "snippet",
       "title": "GC Is Not A Cleanup Contract Snippet",
-      "prompt": "Read the snippet as a compact reminder for gc is not a cleanup contract.",
-      "explanation": "The code highlights the production shape of the concept. In interviews, narrate the invariant before discussing syntax.",
+      "prompt": "Review this example: GC Is Not A Cleanup Contract.",
+      "explanation": "Review the production behavior shown here. In interviews, state the invariant before discussing syntax.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -510,7 +510,7 @@
       "type": "interview",
       "title": "GC Is Not A Cleanup Contract Interview",
       "prompt": "Why is with open(...) preferred over depending on file object destruction?",
-      "explanation": "Reachability drives garbage collection, but cleanup timing is implementation-dependent. A strong answer states the rule, names the common trap, and explains the production consequence.",
+      "explanation": "Reachability drives garbage collection, but cleanup timing is implementation-dependent. State the rule, common trap, and production consequence.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -524,7 +524,7 @@
       "type": "concept",
       "title": "None Is A Singleton",
       "prompt": "None represents absence and should be compared by identity with is or is not.",
-      "explanation": "Using == None can call custom equality behavior and obscures the absence contract. This is the baseline concept to remember before comparing Python with TypeScript or JavaScript.",
+      "explanation": "Using == None can call custom equality behavior and obscures the absence contract.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -538,7 +538,7 @@
       "type": "practical",
       "title": "None Is A Singleton Review",
       "prompt": "Using == None can call custom equality behavior and obscures the absence contract.",
-      "explanation": "Senior review standard: make the intended runtime behavior explicit, add a narrow test around the edge case, and avoid hiding the rule in clever syntax.",
+      "explanation": "Make runtime behavior explicit, test the edge case, and keep the rule visible in clear syntax.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -551,8 +551,8 @@
       "id": "runtime-none-singleton-snippet",
       "type": "snippet",
       "title": "None Is A Singleton Snippet",
-      "prompt": "Read the snippet as a compact reminder for none is a singleton.",
-      "explanation": "The code highlights the production shape of the concept. In interviews, narrate the invariant before discussing syntax.",
+      "prompt": "Review this example: None Is A Singleton.",
+      "explanation": "Review the production behavior shown here. In interviews, state the invariant before discussing syntax.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -567,7 +567,7 @@
       "type": "interview",
       "title": "None Is A Singleton Interview",
       "prompt": "Why do senior Python reviewers ask for value is None instead of value == None?",
-      "explanation": "None represents absence and should be compared by identity with is or is not. A strong answer states the rule, names the common trap, and explains the production consequence.",
+      "explanation": "None represents absence and should be compared by identity with is or is not. State the rule, common trap, and production consequence.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -581,7 +581,7 @@
       "type": "concept",
       "title": "Dunder Methods Define Protocols",
       "prompt": "Special methods such as __iter__, __len__, and __enter__ let objects participate in Python protocols.",
-      "explanation": "Implement the smallest protocol your object really supports; pretending to be a full collection creates confusing edge cases. This is the baseline concept to remember before comparing Python with TypeScript or JavaScript.",
+      "explanation": "Implement the smallest protocol your object really supports; pretending to be a full collection creates confusing edge cases.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -595,7 +595,7 @@
       "type": "practical",
       "title": "Dunder Methods Define Protocols Review",
       "prompt": "Implement the smallest protocol your object really supports; pretending to be a full collection creates confusing edge cases.",
-      "explanation": "Senior review standard: make the intended runtime behavior explicit, add a narrow test around the edge case, and avoid hiding the rule in clever syntax.",
+      "explanation": "Make runtime behavior explicit, test the edge case, and keep the rule visible in clear syntax.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -608,8 +608,8 @@
       "id": "data-model-dunder-protocols-snippet",
       "type": "snippet",
       "title": "Dunder Methods Define Protocols Snippet",
-      "prompt": "Read the snippet as a compact reminder for dunder methods define protocols.",
-      "explanation": "The code highlights the production shape of the concept. In interviews, narrate the invariant before discussing syntax.",
+      "prompt": "Review this example: Dunder Methods Define Protocols.",
+      "explanation": "Review the production behavior shown here. In interviews, state the invariant before discussing syntax.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -624,7 +624,7 @@
       "type": "interview",
       "title": "Dunder Methods Define Protocols Interview",
       "prompt": "How do Python protocols differ from inheriting a formal interface?",
-      "explanation": "Special methods such as __iter__, __len__, and __enter__ let objects participate in Python protocols. A strong answer states the rule, names the common trap, and explains the production consequence.",
+      "explanation": "Special methods such as __iter__, __len__, and __enter__ let objects participate in Python protocols. State the rule, common trap, and production consequence.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -638,7 +638,7 @@
       "type": "concept",
       "title": "Descriptors Power Attributes",
       "prompt": "Descriptors customize attribute access and underpin methods, properties, and many ORMs.",
-      "explanation": "A descriptor can make attribute access run code, so senior reviews look for hidden I/O or validation side effects. This is the baseline concept to remember before comparing Python with TypeScript or JavaScript.",
+      "explanation": "A descriptor can make attribute access run code, so senior reviews look for hidden I/O or validation side effects.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -652,7 +652,7 @@
       "type": "practical",
       "title": "Descriptors Power Attributes Review",
       "prompt": "A descriptor can make attribute access run code, so senior reviews look for hidden I/O or validation side effects.",
-      "explanation": "Senior review standard: make the intended runtime behavior explicit, add a narrow test around the edge case, and avoid hiding the rule in clever syntax.",
+      "explanation": "Make runtime behavior explicit, test the edge case, and keep the rule visible in clear syntax.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -665,8 +665,8 @@
       "id": "data-model-descriptors-snippet",
       "type": "snippet",
       "title": "Descriptors Power Attributes Snippet",
-      "prompt": "Read the snippet as a compact reminder for descriptors power attributes.",
-      "explanation": "The code highlights the production shape of the concept. In interviews, narrate the invariant before discussing syntax.",
+      "prompt": "Review this example: Descriptors Power Attributes.",
+      "explanation": "Review the production behavior shown here. In interviews, state the invariant before discussing syntax.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -681,7 +681,7 @@
       "type": "interview",
       "title": "Descriptors Power Attributes Interview",
       "prompt": "What makes @property different from a plain public attribute?",
-      "explanation": "Descriptors customize attribute access and underpin methods, properties, and many ORMs. A strong answer states the rule, names the common trap, and explains the production consequence.",
+      "explanation": "Descriptors customize attribute access and underpin methods, properties, and many ORMs. State the rule, common trap, and production consequence.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -695,7 +695,7 @@
       "type": "concept",
       "title": "Methods Bind self",
       "prompt": "Accessing a function on an instance creates a bound method that supplies self.",
-      "explanation": "Forgetting self in an instance method is a class design mistake, not a TypeScript this-binding problem. This is the baseline concept to remember before comparing Python with TypeScript or JavaScript.",
+      "explanation": "Forgetting self in an instance method is a class design mistake, not a TypeScript this-binding problem.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -709,7 +709,7 @@
       "type": "practical",
       "title": "Methods Bind self Review",
       "prompt": "Forgetting self in an instance method is a class design mistake, not a TypeScript this-binding problem.",
-      "explanation": "Senior review standard: make the intended runtime behavior explicit, add a narrow test around the edge case, and avoid hiding the rule in clever syntax.",
+      "explanation": "Make runtime behavior explicit, test the edge case, and keep the rule visible in clear syntax.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -722,8 +722,8 @@
       "id": "data-model-bound-methods-snippet",
       "type": "snippet",
       "title": "Methods Bind self Snippet",
-      "prompt": "Read the snippet as a compact reminder for methods bind self.",
-      "explanation": "The code highlights the production shape of the concept. In interviews, narrate the invariant before discussing syntax.",
+      "prompt": "Review this example: Methods Bind self.",
+      "explanation": "Review the production behavior shown here. In interviews, state the invariant before discussing syntax.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -738,7 +738,7 @@
       "type": "interview",
       "title": "Methods Bind self Interview",
       "prompt": "What is a bound method, and where does self come from?",
-      "explanation": "Accessing a function on an instance creates a bound method that supplies self. A strong answer states the rule, names the common trap, and explains the production consequence.",
+      "explanation": "Accessing a function on an instance creates a bound method that supplies self. State the rule, common trap, and production consequence.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -752,7 +752,7 @@
       "type": "concept",
       "title": "Class Bodies Execute",
       "prompt": "A Python class body is executable code that builds a namespace before the class object exists.",
-      "explanation": "Complex class-body logic can hide import-time work and make declarations harder to reason about. This is the baseline concept to remember before comparing Python with TypeScript or JavaScript.",
+      "explanation": "Complex class-body logic can hide import-time work and make declarations harder to reason about.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -766,7 +766,7 @@
       "type": "practical",
       "title": "Class Bodies Execute Review",
       "prompt": "Complex class-body logic can hide import-time work and make declarations harder to reason about.",
-      "explanation": "Senior review standard: make the intended runtime behavior explicit, add a narrow test around the edge case, and avoid hiding the rule in clever syntax.",
+      "explanation": "Make runtime behavior explicit, test the edge case, and keep the rule visible in clear syntax.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -779,8 +779,8 @@
       "id": "data-model-class-body-executes-snippet",
       "type": "snippet",
       "title": "Class Bodies Execute Snippet",
-      "prompt": "Read the snippet as a compact reminder for class bodies execute.",
-      "explanation": "The code highlights the production shape of the concept. In interviews, narrate the invariant before discussing syntax.",
+      "prompt": "Review this example: Class Bodies Execute.",
+      "explanation": "Review the production behavior shown here. In interviews, state the invariant before discussing syntax.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -795,7 +795,7 @@
       "type": "interview",
       "title": "Class Bodies Execute Interview",
       "prompt": "Why can decorators and class attributes run during import?",
-      "explanation": "A Python class body is executable code that builds a namespace before the class object exists. A strong answer states the rule, names the common trap, and explains the production consequence.",
+      "explanation": "A Python class body is executable code that builds a namespace before the class object exists. State the rule, common trap, and production consequence.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -809,7 +809,7 @@
       "type": "concept",
       "title": "MRO Controls Lookup",
       "prompt": "Python resolves inherited attributes through the method resolution order.",
-      "explanation": "Multiple inheritance is reviewable only when the MRO and cooperative super calls are obvious. This is the baseline concept to remember before comparing Python with TypeScript or JavaScript.",
+      "explanation": "Multiple inheritance is reviewable only when the MRO and cooperative super calls are obvious.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -823,7 +823,7 @@
       "type": "practical",
       "title": "MRO Controls Lookup Review",
       "prompt": "Multiple inheritance is reviewable only when the MRO and cooperative super calls are obvious.",
-      "explanation": "Senior review standard: make the intended runtime behavior explicit, add a narrow test around the edge case, and avoid hiding the rule in clever syntax.",
+      "explanation": "Make runtime behavior explicit, test the edge case, and keep the rule visible in clear syntax.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -836,8 +836,8 @@
       "id": "data-model-mro-snippet",
       "type": "snippet",
       "title": "MRO Controls Lookup Snippet",
-      "prompt": "Read the snippet as a compact reminder for mro controls lookup.",
-      "explanation": "The code highlights the production shape of the concept. In interviews, narrate the invariant before discussing syntax.",
+      "prompt": "Review this example: MRO Controls Lookup.",
+      "explanation": "Review the production behavior shown here. In interviews, state the invariant before discussing syntax.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -852,7 +852,7 @@
       "type": "interview",
       "title": "MRO Controls Lookup Interview",
       "prompt": "What does Python use to decide which parent method runs first?",
-      "explanation": "Python resolves inherited attributes through the method resolution order. A strong answer states the rule, names the common trap, and explains the production consequence.",
+      "explanation": "Python resolves inherited attributes through the method resolution order. State the rule, common trap, and production consequence.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -866,7 +866,7 @@
       "type": "concept",
       "title": "Context Managers Scope Cleanup",
       "prompt": "The with statement delegates setup and cleanup to __enter__ and __exit__.",
-      "explanation": "Use context managers for locks, transactions, files, and spans so failure paths clean up predictably. This is the baseline concept to remember before comparing Python with TypeScript or JavaScript.",
+      "explanation": "Use context managers for locks, transactions, files, and spans so failure paths clean up predictably.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -880,7 +880,7 @@
       "type": "practical",
       "title": "Context Managers Scope Cleanup Review",
       "prompt": "Use context managers for locks, transactions, files, and spans so failure paths clean up predictably.",
-      "explanation": "Senior review standard: make the intended runtime behavior explicit, add a narrow test around the edge case, and avoid hiding the rule in clever syntax.",
+      "explanation": "Make runtime behavior explicit, test the edge case, and keep the rule visible in clear syntax.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -893,8 +893,8 @@
       "id": "data-model-context-managers-snippet",
       "type": "snippet",
       "title": "Context Managers Scope Cleanup Snippet",
-      "prompt": "Read the snippet as a compact reminder for context managers scope cleanup.",
-      "explanation": "The code highlights the production shape of the concept. In interviews, narrate the invariant before discussing syntax.",
+      "prompt": "Review this example: Context Managers Scope Cleanup.",
+      "explanation": "Review the production behavior shown here. In interviews, state the invariant before discussing syntax.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -909,7 +909,7 @@
       "type": "interview",
       "title": "Context Managers Scope Cleanup Interview",
       "prompt": "How does a context manager compare to try/finally?",
-      "explanation": "The with statement delegates setup and cleanup to __enter__ and __exit__. A strong answer states the rule, names the common trap, and explains the production consequence.",
+      "explanation": "The with statement delegates setup and cleanup to __enter__ and __exit__. State the rule, common trap, and production consequence.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -923,7 +923,7 @@
       "type": "concept",
       "title": "Iterators Are Stateful",
       "prompt": "An iterator returns itself from __iter__ and advances through __next__.",
-      "explanation": "A consumed iterator may be empty on the second pass; materialize data when multiple passes are required. This is the baseline concept to remember before comparing Python with TypeScript or JavaScript.",
+      "explanation": "A consumed iterator may be empty on the second pass; materialize data when multiple passes are required.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -937,7 +937,7 @@
       "type": "practical",
       "title": "Iterators Are Stateful Review",
       "prompt": "A consumed iterator may be empty on the second pass; materialize data when multiple passes are required.",
-      "explanation": "Senior review standard: make the intended runtime behavior explicit, add a narrow test around the edge case, and avoid hiding the rule in clever syntax.",
+      "explanation": "Make runtime behavior explicit, test the edge case, and keep the rule visible in clear syntax.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -950,8 +950,8 @@
       "id": "data-model-stateful-iterators-snippet",
       "type": "snippet",
       "title": "Iterators Are Stateful Snippet",
-      "prompt": "Read the snippet as a compact reminder for iterators are stateful.",
-      "explanation": "The code highlights the production shape of the concept. In interviews, narrate the invariant before discussing syntax.",
+      "prompt": "Review this example: Iterators Are Stateful.",
+      "explanation": "Review the production behavior shown here. In interviews, state the invariant before discussing syntax.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -966,7 +966,7 @@
       "type": "interview",
       "title": "Iterators Are Stateful Interview",
       "prompt": "Why can iterating over the same generator twice produce no values the second time?",
-      "explanation": "An iterator returns itself from __iter__ and advances through __next__. A strong answer states the rule, names the common trap, and explains the production consequence.",
+      "explanation": "An iterator returns itself from __iter__ and advances through __next__. State the rule, common trap, and production consequence.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -980,7 +980,7 @@
       "type": "concept",
       "title": "Generators Defer Work",
       "prompt": "Generator functions return lazy iterators that run only as values are requested.",
-      "explanation": "Lazy work changes error timing, resource lifetime, and observability compared with building a list immediately. This is the baseline concept to remember before comparing Python with TypeScript or JavaScript.",
+      "explanation": "Lazy work changes error timing, resource lifetime, and observability compared with building a list immediately.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -994,7 +994,7 @@
       "type": "practical",
       "title": "Generators Defer Work Review",
       "prompt": "Lazy work changes error timing, resource lifetime, and observability compared with building a list immediately.",
-      "explanation": "Senior review standard: make the intended runtime behavior explicit, add a narrow test around the edge case, and avoid hiding the rule in clever syntax.",
+      "explanation": "Make runtime behavior explicit, test the edge case, and keep the rule visible in clear syntax.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -1007,8 +1007,8 @@
       "id": "data-model-generators-snippet",
       "type": "snippet",
       "title": "Generators Defer Work Snippet",
-      "prompt": "Read the snippet as a compact reminder for generators defer work.",
-      "explanation": "The code highlights the production shape of the concept. In interviews, narrate the invariant before discussing syntax.",
+      "prompt": "Review this example: Generators Defer Work.",
+      "explanation": "Review the production behavior shown here. In interviews, state the invariant before discussing syntax.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -1023,7 +1023,7 @@
       "type": "interview",
       "title": "Generators Defer Work Interview",
       "prompt": "When would you choose a generator over a list comprehension?",
-      "explanation": "Generator functions return lazy iterators that run only as values are requested. A strong answer states the rule, names the common trap, and explains the production consequence.",
+      "explanation": "Generator functions return lazy iterators that run only as values are requested. State the rule, common trap, and production consequence.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -1037,7 +1037,7 @@
       "type": "concept",
       "title": "Dataclasses Generate Boilerplate",
       "prompt": "Dataclasses generate init, repr, comparison, and field handling for simple data carriers.",
-      "explanation": "A dataclass is not runtime validation by itself; validate untrusted input before constructing trusted objects. This is the baseline concept to remember before comparing Python with TypeScript or JavaScript.",
+      "explanation": "A dataclass is not runtime validation by itself; validate untrusted input before constructing trusted objects.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -1051,7 +1051,7 @@
       "type": "practical",
       "title": "Dataclasses Generate Boilerplate Review",
       "prompt": "A dataclass is not runtime validation by itself; validate untrusted input before constructing trusted objects.",
-      "explanation": "Senior review standard: make the intended runtime behavior explicit, add a narrow test around the edge case, and avoid hiding the rule in clever syntax.",
+      "explanation": "Make runtime behavior explicit, test the edge case, and keep the rule visible in clear syntax.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -1064,8 +1064,8 @@
       "id": "data-model-dataclasses-snippet",
       "type": "snippet",
       "title": "Dataclasses Generate Boilerplate Snippet",
-      "prompt": "Read the snippet as a compact reminder for dataclasses generate boilerplate.",
-      "explanation": "The code highlights the production shape of the concept. In interviews, narrate the invariant before discussing syntax.",
+      "prompt": "Review this example: Dataclasses Generate Boilerplate.",
+      "explanation": "Review the production behavior shown here. In interviews, state the invariant before discussing syntax.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -1080,7 +1080,7 @@
       "type": "interview",
       "title": "Dataclasses Generate Boilerplate Interview",
       "prompt": "What problem does dataclass solve, and what problem does it not solve?",
-      "explanation": "Dataclasses generate init, repr, comparison, and field handling for simple data carriers. A strong answer states the rule, names the common trap, and explains the production consequence.",
+      "explanation": "Dataclasses generate init, repr, comparison, and field handling for simple data carriers. State the rule, common trap, and production consequence.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -1094,7 +1094,7 @@
       "type": "concept",
       "title": "slots Limit Instance Dicts",
       "prompt": "__slots__ can remove per-instance __dict__ storage and restrict dynamic attributes.",
-      "explanation": "Use slots for measured memory pressure or stable data models, not as a default style preference. This is the baseline concept to remember before comparing Python with TypeScript or JavaScript.",
+      "explanation": "Use slots for measured memory pressure or stable data models, not as a default style preference.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -1108,7 +1108,7 @@
       "type": "practical",
       "title": "slots Limit Instance Dicts Review",
       "prompt": "Use slots for measured memory pressure or stable data models, not as a default style preference.",
-      "explanation": "Senior review standard: make the intended runtime behavior explicit, add a narrow test around the edge case, and avoid hiding the rule in clever syntax.",
+      "explanation": "Make runtime behavior explicit, test the edge case, and keep the rule visible in clear syntax.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -1121,8 +1121,8 @@
       "id": "data-model-slots-snippet",
       "type": "snippet",
       "title": "slots Limit Instance Dicts Snippet",
-      "prompt": "Read the snippet as a compact reminder for slots limit instance dicts.",
-      "explanation": "The code highlights the production shape of the concept. In interviews, narrate the invariant before discussing syntax.",
+      "prompt": "Review this example: slots Limit Instance Dicts.",
+      "explanation": "Review the production behavior shown here. In interviews, state the invariant before discussing syntax.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -1137,7 +1137,7 @@
       "type": "interview",
       "title": "slots Limit Instance Dicts Interview",
       "prompt": "What tradeoff does __slots__ introduce for Python objects?",
-      "explanation": "__slots__ can remove per-instance __dict__ storage and restrict dynamic attributes. A strong answer states the rule, names the common trap, and explains the production consequence.",
+      "explanation": "__slots__ can remove per-instance __dict__ storage and restrict dynamic attributes. State the rule, common trap, and production consequence.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -1151,7 +1151,7 @@
       "type": "concept",
       "title": "list Is A Dynamic Array",
       "prompt": "Python list is closest to a dynamic array, not a linked list.",
-      "explanation": "Appending is usually cheap, but inserting near the front shifts elements and can dominate runtime. This is the baseline concept to remember before comparing Python with TypeScript or JavaScript.",
+      "explanation": "Appending is usually cheap, but inserting near the front shifts elements and can dominate runtime.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -1165,7 +1165,7 @@
       "type": "practical",
       "title": "list Is A Dynamic Array Review",
       "prompt": "Appending is usually cheap, but inserting near the front shifts elements and can dominate runtime.",
-      "explanation": "Senior review standard: make the intended runtime behavior explicit, add a narrow test around the edge case, and avoid hiding the rule in clever syntax.",
+      "explanation": "Make runtime behavior explicit, test the edge case, and keep the rule visible in clear syntax.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -1178,8 +1178,8 @@
       "id": "collections-list-dynamic-array-snippet",
       "type": "snippet",
       "title": "list Is A Dynamic Array Snippet",
-      "prompt": "Read the snippet as a compact reminder for list is a dynamic array.",
-      "explanation": "The code highlights the production shape of the concept. In interviews, narrate the invariant before discussing syntax.",
+      "prompt": "Review this example: list Is A Dynamic Array.",
+      "explanation": "Review the production behavior shown here. In interviews, state the invariant before discussing syntax.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -1194,7 +1194,7 @@
       "type": "interview",
       "title": "list Is A Dynamic Array Interview",
       "prompt": "What operations are cheap or expensive on Python lists?",
-      "explanation": "Python list is closest to a dynamic array, not a linked list. A strong answer states the rule, names the common trap, and explains the production consequence.",
+      "explanation": "Python list is closest to a dynamic array, not a linked list. State the rule, common trap, and production consequence.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -1208,7 +1208,7 @@
       "type": "concept",
       "title": "dict Preserves Insertion Order",
       "prompt": "Modern Python dictionaries preserve insertion order as language behavior.",
-      "explanation": "Rely on order only when it expresses the domain; otherwise sort explicitly for deterministic output. This is the baseline concept to remember before comparing Python with TypeScript or JavaScript.",
+      "explanation": "Rely on order only when it expresses the domain; otherwise sort explicitly for deterministic output.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -1222,7 +1222,7 @@
       "type": "practical",
       "title": "dict Preserves Insertion Order Review",
       "prompt": "Rely on order only when it expresses the domain; otherwise sort explicitly for deterministic output.",
-      "explanation": "Senior review standard: make the intended runtime behavior explicit, add a narrow test around the edge case, and avoid hiding the rule in clever syntax.",
+      "explanation": "Make runtime behavior explicit, test the edge case, and keep the rule visible in clear syntax.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -1235,8 +1235,8 @@
       "id": "collections-dict-order-snippet",
       "type": "snippet",
       "title": "dict Preserves Insertion Order Snippet",
-      "prompt": "Read the snippet as a compact reminder for dict preserves insertion order.",
-      "explanation": "The code highlights the production shape of the concept. In interviews, narrate the invariant before discussing syntax.",
+      "prompt": "Review this example: dict Preserves Insertion Order.",
+      "explanation": "Review the production behavior shown here. In interviews, state the invariant before discussing syntax.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -1251,7 +1251,7 @@
       "type": "interview",
       "title": "dict Preserves Insertion Order Interview",
       "prompt": "When should a Python dict be sorted even though it preserves insertion order?",
-      "explanation": "Modern Python dictionaries preserve insertion order as language behavior. A strong answer states the rule, names the common trap, and explains the production consequence.",
+      "explanation": "Modern Python dictionaries preserve insertion order as language behavior. State the rule, common trap, and production consequence.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -1265,7 +1265,7 @@
       "type": "concept",
       "title": "set Optimizes Membership",
       "prompt": "A set models uniqueness and fast membership checks.",
-      "explanation": "Use a list when order and duplicates matter; use a set when membership and uniqueness are the contract. This is the baseline concept to remember before comparing Python with TypeScript or JavaScript.",
+      "explanation": "Use a list when order and duplicates matter; use a set when membership and uniqueness are the contract.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -1279,7 +1279,7 @@
       "type": "practical",
       "title": "set Optimizes Membership Review",
       "prompt": "Use a list when order and duplicates matter; use a set when membership and uniqueness are the contract.",
-      "explanation": "Senior review standard: make the intended runtime behavior explicit, add a narrow test around the edge case, and avoid hiding the rule in clever syntax.",
+      "explanation": "Make runtime behavior explicit, test the edge case, and keep the rule visible in clear syntax.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -1292,8 +1292,8 @@
       "id": "collections-set-membership-snippet",
       "type": "snippet",
       "title": "set Optimizes Membership Snippet",
-      "prompt": "Read the snippet as a compact reminder for set optimizes membership.",
-      "explanation": "The code highlights the production shape of the concept. In interviews, narrate the invariant before discussing syntax.",
+      "prompt": "Review this example: set Optimizes Membership.",
+      "explanation": "Review the production behavior shown here. In interviews, state the invariant before discussing syntax.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -1308,7 +1308,7 @@
       "type": "interview",
       "title": "set Optimizes Membership Interview",
       "prompt": "Why is value in seen usually better than scanning a list repeatedly?",
-      "explanation": "A set models uniqueness and fast membership checks. A strong answer states the rule, names the common trap, and explains the production consequence.",
+      "explanation": "A set models uniqueness and fast membership checks. State the rule, common trap, and production consequence.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -1322,7 +1322,7 @@
       "type": "concept",
       "title": "tuple Signals Fixed Shape",
       "prompt": "Tuples are immutable containers often used for fixed-shape records or multiple return values.",
-      "explanation": "A tuple containing a mutable object can still observe that object changing. This is the baseline concept to remember before comparing Python with TypeScript or JavaScript.",
+      "explanation": "A tuple containing a mutable object can still observe that object changing.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -1336,7 +1336,7 @@
       "type": "practical",
       "title": "tuple Signals Fixed Shape Review",
       "prompt": "A tuple containing a mutable object can still observe that object changing.",
-      "explanation": "Senior review standard: make the intended runtime behavior explicit, add a narrow test around the edge case, and avoid hiding the rule in clever syntax.",
+      "explanation": "Make runtime behavior explicit, test the edge case, and keep the rule visible in clear syntax.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -1349,8 +1349,8 @@
       "id": "collections-tuple-fixed-shape-snippet",
       "type": "snippet",
       "title": "tuple Signals Fixed Shape Snippet",
-      "prompt": "Read the snippet as a compact reminder for tuple signals fixed shape.",
-      "explanation": "The code highlights the production shape of the concept. In interviews, narrate the invariant before discussing syntax.",
+      "prompt": "Review this example: tuple Signals Fixed Shape.",
+      "explanation": "Review the production behavior shown here. In interviews, state the invariant before discussing syntax.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -1365,7 +1365,7 @@
       "type": "interview",
       "title": "tuple Signals Fixed Shape Interview",
       "prompt": "Why is tuple immutability subtler than freezing all nested values?",
-      "explanation": "Tuples are immutable containers often used for fixed-shape records or multiple return values. A strong answer states the rule, names the common trap, and explains the production consequence.",
+      "explanation": "Tuples are immutable containers often used for fixed-shape records or multiple return values. State the rule, common trap, and production consequence.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -1379,7 +1379,7 @@
       "type": "concept",
       "title": "Comprehensions Are Expressions",
       "prompt": "List, dict, and set comprehensions express mapping and filtering compactly.",
-      "explanation": "A comprehension that hides branching, mutation, or I/O is harder to review than a clear loop. This is the baseline concept to remember before comparing Python with TypeScript or JavaScript.",
+      "explanation": "A comprehension that hides branching, mutation, or I/O is harder to review than a clear loop.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -1393,7 +1393,7 @@
       "type": "practical",
       "title": "Comprehensions Are Expressions Review",
       "prompt": "A comprehension that hides branching, mutation, or I/O is harder to review than a clear loop.",
-      "explanation": "Senior review standard: make the intended runtime behavior explicit, add a narrow test around the edge case, and avoid hiding the rule in clever syntax.",
+      "explanation": "Make runtime behavior explicit, test the edge case, and keep the rule visible in clear syntax.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -1406,8 +1406,8 @@
       "id": "collections-comprehensions-snippet",
       "type": "snippet",
       "title": "Comprehensions Are Expressions Snippet",
-      "prompt": "Read the snippet as a compact reminder for comprehensions are expressions.",
-      "explanation": "The code highlights the production shape of the concept. In interviews, narrate the invariant before discussing syntax.",
+      "prompt": "Review this example: Comprehensions Are Expressions.",
+      "explanation": "Review the production behavior shown here. In interviews, state the invariant before discussing syntax.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -1422,7 +1422,7 @@
       "type": "interview",
       "title": "Comprehensions Are Expressions Interview",
       "prompt": "When should a Python comprehension be expanded into a loop?",
-      "explanation": "List, dict, and set comprehensions express mapping and filtering compactly. A strong answer states the rule, names the common trap, and explains the production consequence.",
+      "explanation": "List, dict, and set comprehensions express mapping and filtering compactly. State the rule, common trap, and production consequence.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -1436,7 +1436,7 @@
       "type": "concept",
       "title": "Slicing Copies Sequences",
       "prompt": "Slicing a list creates a new list containing references to selected elements.",
-      "explanation": "A slice copy is shallow; nested mutable objects remain shared. This is the baseline concept to remember before comparing Python with TypeScript or JavaScript.",
+      "explanation": "A slice copy is shallow; nested mutable objects remain shared.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -1450,7 +1450,7 @@
       "type": "practical",
       "title": "Slicing Copies Sequences Review",
       "prompt": "A slice copy is shallow; nested mutable objects remain shared.",
-      "explanation": "Senior review standard: make the intended runtime behavior explicit, add a narrow test around the edge case, and avoid hiding the rule in clever syntax.",
+      "explanation": "Make runtime behavior explicit, test the edge case, and keep the rule visible in clear syntax.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -1463,8 +1463,8 @@
       "id": "collections-slicing-snippet",
       "type": "snippet",
       "title": "Slicing Copies Sequences Snippet",
-      "prompt": "Read the snippet as a compact reminder for slicing copies sequences.",
-      "explanation": "The code highlights the production shape of the concept. In interviews, narrate the invariant before discussing syntax.",
+      "prompt": "Review this example: Slicing Copies Sequences.",
+      "explanation": "Review the production behavior shown here. In interviews, state the invariant before discussing syntax.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -1479,7 +1479,7 @@
       "type": "interview",
       "title": "Slicing Copies Sequences Interview",
       "prompt": "What does shallow copy mean for a sliced list of dictionaries?",
-      "explanation": "Slicing a list creates a new list containing references to selected elements. A strong answer states the rule, names the common trap, and explains the production consequence.",
+      "explanation": "Slicing a list creates a new list containing references to selected elements. State the rule, common trap, and production consequence.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -1493,7 +1493,7 @@
       "type": "concept",
       "title": "enumerate Avoids Index Boilerplate",
       "prompt": "enumerate yields index and value pairs without manual counter mutation.",
-      "explanation": "Use enumerate when the index is part of the logic; otherwise iterate values directly. This is the baseline concept to remember before comparing Python with TypeScript or JavaScript.",
+      "explanation": "Use enumerate when the index is part of the logic; otherwise iterate values directly.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -1507,7 +1507,7 @@
       "type": "practical",
       "title": "enumerate Avoids Index Boilerplate Review",
       "prompt": "Use enumerate when the index is part of the logic; otherwise iterate values directly.",
-      "explanation": "Senior review standard: make the intended runtime behavior explicit, add a narrow test around the edge case, and avoid hiding the rule in clever syntax.",
+      "explanation": "Make runtime behavior explicit, test the edge case, and keep the rule visible in clear syntax.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -1520,8 +1520,8 @@
       "id": "collections-enumerate-snippet",
       "type": "snippet",
       "title": "enumerate Avoids Index Boilerplate Snippet",
-      "prompt": "Read the snippet as a compact reminder for enumerate avoids index boilerplate.",
-      "explanation": "The code highlights the production shape of the concept. In interviews, narrate the invariant before discussing syntax.",
+      "prompt": "Review this example: enumerate Avoids Index Boilerplate.",
+      "explanation": "Review the production behavior shown here. In interviews, state the invariant before discussing syntax.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -1536,7 +1536,7 @@
       "type": "interview",
       "title": "enumerate Avoids Index Boilerplate Interview",
       "prompt": "Why is enumerate preferred over range(len(items)) in most Python loops?",
-      "explanation": "enumerate yields index and value pairs without manual counter mutation. A strong answer states the rule, names the common trap, and explains the production consequence.",
+      "explanation": "enumerate yields index and value pairs without manual counter mutation. State the rule, common trap, and production consequence.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -1550,7 +1550,7 @@
       "type": "concept",
       "title": "zip Pairs Iterables",
       "prompt": "zip walks iterables together and stops when the shortest input is exhausted.",
-      "explanation": "Use strict=True when mismatched lengths are a data bug rather than acceptable truncation. This is the baseline concept to remember before comparing Python with TypeScript or JavaScript.",
+      "explanation": "Use strict=True when mismatched lengths are a data bug rather than acceptable truncation.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -1564,7 +1564,7 @@
       "type": "practical",
       "title": "zip Pairs Iterables Review",
       "prompt": "Use strict=True when mismatched lengths are a data bug rather than acceptable truncation.",
-      "explanation": "Senior review standard: make the intended runtime behavior explicit, add a narrow test around the edge case, and avoid hiding the rule in clever syntax.",
+      "explanation": "Make runtime behavior explicit, test the edge case, and keep the rule visible in clear syntax.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -1577,8 +1577,8 @@
       "id": "collections-zip-strict-snippet",
       "type": "snippet",
       "title": "zip Pairs Iterables Snippet",
-      "prompt": "Read the snippet as a compact reminder for zip pairs iterables.",
-      "explanation": "The code highlights the production shape of the concept. In interviews, narrate the invariant before discussing syntax.",
+      "prompt": "Review this example: zip Pairs Iterables.",
+      "explanation": "Review the production behavior shown here. In interviews, state the invariant before discussing syntax.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -1593,7 +1593,7 @@
       "type": "interview",
       "title": "zip Pairs Iterables Interview",
       "prompt": "What production bug can plain zip hide?",
-      "explanation": "zip walks iterables together and stops when the shortest input is exhausted. A strong answer states the rule, names the common trap, and explains the production consequence.",
+      "explanation": "zip walks iterables together and stops when the shortest input is exhausted. State the rule, common trap, and production consequence.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -1607,7 +1607,7 @@
       "type": "concept",
       "title": "Copy Depth Matters",
       "prompt": "Assignment binds another name; copy.copy is shallow; copy.deepcopy recursively copies objects.",
-      "explanation": "Deep copies can be expensive and still wrong for resources, caches, and identity-sensitive objects. This is the baseline concept to remember before comparing Python with TypeScript or JavaScript.",
+      "explanation": "Deep copies can be expensive and still wrong for resources, caches, and identity-sensitive objects.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -1621,7 +1621,7 @@
       "type": "practical",
       "title": "Copy Depth Matters Review",
       "prompt": "Deep copies can be expensive and still wrong for resources, caches, and identity-sensitive objects.",
-      "explanation": "Senior review standard: make the intended runtime behavior explicit, add a narrow test around the edge case, and avoid hiding the rule in clever syntax.",
+      "explanation": "Make runtime behavior explicit, test the edge case, and keep the rule visible in clear syntax.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -1634,8 +1634,8 @@
       "id": "collections-copy-depth-snippet",
       "type": "snippet",
       "title": "Copy Depth Matters Snippet",
-      "prompt": "Read the snippet as a compact reminder for copy depth matters.",
-      "explanation": "The code highlights the production shape of the concept. In interviews, narrate the invariant before discussing syntax.",
+      "prompt": "Review this example: Copy Depth Matters.",
+      "explanation": "Review the production behavior shown here. In interviews, state the invariant before discussing syntax.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -1650,7 +1650,7 @@
       "type": "interview",
       "title": "Copy Depth Matters Interview",
       "prompt": "How do assignment, shallow copy, and deep copy differ?",
-      "explanation": "Assignment binds another name; copy.copy is shallow; copy.deepcopy recursively copies objects. A strong answer states the rule, names the common trap, and explains the production consequence.",
+      "explanation": "Assignment binds another name; copy.copy is shallow; copy.deepcopy recursively copies objects. State the rule, common trap, and production consequence.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -1664,7 +1664,7 @@
       "type": "concept",
       "title": "deque For Queues",
       "prompt": "collections.deque supports efficient appends and pops from both ends.",
-      "explanation": "Using list.pop(0) for a queue creates avoidable shifting costs under load. This is the baseline concept to remember before comparing Python with TypeScript or JavaScript.",
+      "explanation": "Using list.pop(0) for a queue creates avoidable shifting costs under load.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -1678,7 +1678,7 @@
       "type": "practical",
       "title": "deque For Queues Review",
       "prompt": "Using list.pop(0) for a queue creates avoidable shifting costs under load.",
-      "explanation": "Senior review standard: make the intended runtime behavior explicit, add a narrow test around the edge case, and avoid hiding the rule in clever syntax.",
+      "explanation": "Make runtime behavior explicit, test the edge case, and keep the rule visible in clear syntax.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -1691,8 +1691,8 @@
       "id": "collections-deque-snippet",
       "type": "snippet",
       "title": "deque For Queues Snippet",
-      "prompt": "Read the snippet as a compact reminder for deque for queues.",
-      "explanation": "The code highlights the production shape of the concept. In interviews, narrate the invariant before discussing syntax.",
+      "prompt": "Review this example: deque For Queues.",
+      "explanation": "Review the production behavior shown here. In interviews, state the invariant before discussing syntax.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -1707,7 +1707,7 @@
       "type": "interview",
       "title": "deque For Queues Interview",
       "prompt": "Why is deque usually the right queue primitive in standard Python?",
-      "explanation": "collections.deque supports efficient appends and pops from both ends. A strong answer states the rule, names the common trap, and explains the production consequence.",
+      "explanation": "collections.deque supports efficient appends and pops from both ends. State the rule, common trap, and production consequence.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -1721,7 +1721,7 @@
       "type": "concept",
       "title": "Annotations Do Not Enforce",
       "prompt": "Python annotations describe intent for tools unless application code inspects or validates them.",
-      "explanation": "Treat annotations like TypeScript types at runtime and you will miss bad input at service boundaries. This is the baseline concept to remember before comparing Python with TypeScript or JavaScript.",
+      "explanation": "Treat annotations like TypeScript types at runtime and you will miss bad input at service boundaries.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -1735,7 +1735,7 @@
       "type": "practical",
       "title": "Annotations Do Not Enforce Review",
       "prompt": "Treat annotations like TypeScript types at runtime and you will miss bad input at service boundaries.",
-      "explanation": "Senior review standard: make the intended runtime behavior explicit, add a narrow test around the edge case, and avoid hiding the rule in clever syntax.",
+      "explanation": "Make runtime behavior explicit, test the edge case, and keep the rule visible in clear syntax.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -1748,8 +1748,8 @@
       "id": "typing-annotations-no-enforce-snippet",
       "type": "snippet",
       "title": "Annotations Do Not Enforce Snippet",
-      "prompt": "Read the snippet as a compact reminder for annotations do not enforce.",
-      "explanation": "The code highlights the production shape of the concept. In interviews, narrate the invariant before discussing syntax.",
+      "prompt": "Review this example: Annotations Do Not Enforce.",
+      "explanation": "Review the production behavior shown here. In interviews, state the invariant before discussing syntax.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -1764,7 +1764,7 @@
       "type": "interview",
       "title": "Annotations Do Not Enforce Interview",
       "prompt": "Do Python type hints prevent wrong values from entering a function?",
-      "explanation": "Python annotations describe intent for tools unless application code inspects or validates them. A strong answer states the rule, names the common trap, and explains the production consequence.",
+      "explanation": "Python annotations describe intent for tools unless application code inspects or validates them. State the rule, common trap, and production consequence.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -1778,7 +1778,7 @@
       "type": "concept",
       "title": "Any Is An Escape Hatch",
       "prompt": "Any disables useful static checking as values flow through typed code.",
-      "explanation": "An Any at a boundary should be narrowed quickly, not passed through the domain model. This is the baseline concept to remember before comparing Python with TypeScript or JavaScript.",
+      "explanation": "An Any at a boundary should be narrowed quickly, not passed through the domain model.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -1792,7 +1792,7 @@
       "type": "practical",
       "title": "Any Is An Escape Hatch Review",
       "prompt": "An Any at a boundary should be narrowed quickly, not passed through the domain model.",
-      "explanation": "Senior review standard: make the intended runtime behavior explicit, add a narrow test around the edge case, and avoid hiding the rule in clever syntax.",
+      "explanation": "Make runtime behavior explicit, test the edge case, and keep the rule visible in clear syntax.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -1805,8 +1805,8 @@
       "id": "typing-any-escape-hatch-snippet",
       "type": "snippet",
       "title": "Any Is An Escape Hatch Snippet",
-      "prompt": "Read the snippet as a compact reminder for any is an escape hatch.",
-      "explanation": "The code highlights the production shape of the concept. In interviews, narrate the invariant before discussing syntax.",
+      "prompt": "Review this example: Any Is An Escape Hatch.",
+      "explanation": "Review the production behavior shown here. In interviews, state the invariant before discussing syntax.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -1821,7 +1821,7 @@
       "type": "interview",
       "title": "Any Is An Escape Hatch Interview",
       "prompt": "Why can one Any erase confidence across a typed Python module?",
-      "explanation": "Any disables useful static checking as values flow through typed code. A strong answer states the rule, names the common trap, and explains the production consequence.",
+      "explanation": "Any disables useful static checking as values flow through typed code. State the rule, common trap, and production consequence.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -1835,7 +1835,7 @@
       "type": "concept",
       "title": "Unknown Input Needs Validation",
       "prompt": "Runtime validation belongs at trust boundaries such as HTTP, queues, files, and environment variables.",
-      "explanation": "A typed function signature is not a parser for JSON or environment strings. This is the baseline concept to remember before comparing Python with TypeScript or JavaScript.",
+      "explanation": "A typed function signature is not a parser for JSON or environment strings.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -1849,7 +1849,7 @@
       "type": "practical",
       "title": "Unknown Input Needs Validation Review",
       "prompt": "A typed function signature is not a parser for JSON or environment strings.",
-      "explanation": "Senior review standard: make the intended runtime behavior explicit, add a narrow test around the edge case, and avoid hiding the rule in clever syntax.",
+      "explanation": "Make runtime behavior explicit, test the edge case, and keep the rule visible in clear syntax.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -1862,8 +1862,8 @@
       "id": "typing-runtime-validation-snippet",
       "type": "snippet",
       "title": "Unknown Input Needs Validation Snippet",
-      "prompt": "Read the snippet as a compact reminder for unknown input needs validation.",
-      "explanation": "The code highlights the production shape of the concept. In interviews, narrate the invariant before discussing syntax.",
+      "prompt": "Review this example: Unknown Input Needs Validation.",
+      "explanation": "Review the production behavior shown here. In interviews, state the invariant before discussing syntax.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -1878,7 +1878,7 @@
       "type": "interview",
       "title": "Unknown Input Needs Validation Interview",
       "prompt": "Where should Python services validate data from an API request?",
-      "explanation": "Runtime validation belongs at trust boundaries such as HTTP, queues, files, and environment variables. A strong answer states the rule, names the common trap, and explains the production consequence.",
+      "explanation": "Runtime validation belongs at trust boundaries such as HTTP, queues, files, and environment variables. State the rule, common trap, and production consequence.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -1892,7 +1892,7 @@
       "type": "concept",
       "title": "Protocols Model Structure",
       "prompt": "Protocols let static tools check structural compatibility without requiring inheritance.",
-      "explanation": "Use Protocol for capability contracts such as close, send, or read, not for every concrete class. This is the baseline concept to remember before comparing Python with TypeScript or JavaScript.",
+      "explanation": "Use Protocol for capability contracts such as close, send, or read, not for every concrete class.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -1906,7 +1906,7 @@
       "type": "practical",
       "title": "Protocols Model Structure Review",
       "prompt": "Use Protocol for capability contracts such as close, send, or read, not for every concrete class.",
-      "explanation": "Senior review standard: make the intended runtime behavior explicit, add a narrow test around the edge case, and avoid hiding the rule in clever syntax.",
+      "explanation": "Make runtime behavior explicit, test the edge case, and keep the rule visible in clear syntax.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -1919,8 +1919,8 @@
       "id": "typing-protocols-snippet",
       "type": "snippet",
       "title": "Protocols Model Structure Snippet",
-      "prompt": "Read the snippet as a compact reminder for protocols model structure.",
-      "explanation": "The code highlights the production shape of the concept. In interviews, narrate the invariant before discussing syntax.",
+      "prompt": "Review this example: Protocols Model Structure.",
+      "explanation": "Review the production behavior shown here. In interviews, state the invariant before discussing syntax.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -1935,7 +1935,7 @@
       "type": "interview",
       "title": "Protocols Model Structure Interview",
       "prompt": "How are Python Protocols similar to TypeScript interfaces?",
-      "explanation": "Protocols let static tools check structural compatibility without requiring inheritance. A strong answer states the rule, names the common trap, and explains the production consequence.",
+      "explanation": "Protocols let static tools check structural compatibility without requiring inheritance. State the rule, common trap, and production consequence.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -1949,7 +1949,7 @@
       "type": "concept",
       "title": "Literal For Closed Values",
       "prompt": "Literal types document a small closed set of accepted values.",
-      "explanation": "Literal helps static checking, but untrusted strings still need runtime rejection or normalization. This is the baseline concept to remember before comparing Python with TypeScript or JavaScript.",
+      "explanation": "Literal helps static checking, but untrusted strings still need runtime rejection or normalization.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -1963,7 +1963,7 @@
       "type": "practical",
       "title": "Literal For Closed Values Review",
       "prompt": "Literal helps static checking, but untrusted strings still need runtime rejection or normalization.",
-      "explanation": "Senior review standard: make the intended runtime behavior explicit, add a narrow test around the edge case, and avoid hiding the rule in clever syntax.",
+      "explanation": "Make runtime behavior explicit, test the edge case, and keep the rule visible in clear syntax.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -1976,8 +1976,8 @@
       "id": "typing-literal-snippet",
       "type": "snippet",
       "title": "Literal For Closed Values Snippet",
-      "prompt": "Read the snippet as a compact reminder for literal for closed values.",
-      "explanation": "The code highlights the production shape of the concept. In interviews, narrate the invariant before discussing syntax.",
+      "prompt": "Review this example: Literal For Closed Values.",
+      "explanation": "Review the production behavior shown here. In interviews, state the invariant before discussing syntax.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -1992,7 +1992,7 @@
       "type": "interview",
       "title": "Literal For Closed Values Interview",
       "prompt": "When would Literal be clearer than a plain str annotation?",
-      "explanation": "Literal types document a small closed set of accepted values. A strong answer states the rule, names the common trap, and explains the production consequence.",
+      "explanation": "Literal types document a small closed set of accepted values. State the rule, common trap, and production consequence.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -2006,7 +2006,7 @@
       "type": "concept",
       "title": "Type Narrowing Follows Branches",
       "prompt": "Type checkers narrow Optional and unions when control flow proves a more specific type.",
-      "explanation": "Keep narrowing obvious; clever truthiness checks can hide the difference between None and empty values. This is the baseline concept to remember before comparing Python with TypeScript or JavaScript.",
+      "explanation": "Keep narrowing obvious; clever truthiness checks can hide the difference between None and empty values.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -2020,7 +2020,7 @@
       "type": "practical",
       "title": "Type Narrowing Follows Branches Review",
       "prompt": "Keep narrowing obvious; clever truthiness checks can hide the difference between None and empty values.",
-      "explanation": "Senior review standard: make the intended runtime behavior explicit, add a narrow test around the edge case, and avoid hiding the rule in clever syntax.",
+      "explanation": "Make runtime behavior explicit, test the edge case, and keep the rule visible in clear syntax.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -2033,8 +2033,8 @@
       "id": "typing-narrowing-snippet",
       "type": "snippet",
       "title": "Type Narrowing Follows Branches Snippet",
-      "prompt": "Read the snippet as a compact reminder for type narrowing follows branches.",
-      "explanation": "The code highlights the production shape of the concept. In interviews, narrate the invariant before discussing syntax.",
+      "prompt": "Review this example: Type Narrowing Follows Branches.",
+      "explanation": "Review the production behavior shown here. In interviews, state the invariant before discussing syntax.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -2049,7 +2049,7 @@
       "type": "interview",
       "title": "Type Narrowing Follows Branches Interview",
       "prompt": "Why is if value is None clearer than if not value for Optional[str]?",
-      "explanation": "Type checkers narrow Optional and unions when control flow proves a more specific type. A strong answer states the rule, names the common trap, and explains the production consequence.",
+      "explanation": "Type checkers narrow Optional and unions when control flow proves a more specific type. State the rule, common trap, and production consequence.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -2063,7 +2063,7 @@
       "type": "concept",
       "title": "NewType Documents Domain IDs",
       "prompt": "NewType creates distinct static identities for values that share a runtime representation.",
-      "explanation": "NewType has near-zero runtime behavior, so it is documentation and static checking, not validation. This is the baseline concept to remember before comparing Python with TypeScript or JavaScript.",
+      "explanation": "NewType has near-zero runtime behavior, so it is documentation and static checking, not validation.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -2077,7 +2077,7 @@
       "type": "practical",
       "title": "NewType Documents Domain IDs Review",
       "prompt": "NewType has near-zero runtime behavior, so it is documentation and static checking, not validation.",
-      "explanation": "Senior review standard: make the intended runtime behavior explicit, add a narrow test around the edge case, and avoid hiding the rule in clever syntax.",
+      "explanation": "Make runtime behavior explicit, test the edge case, and keep the rule visible in clear syntax.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -2090,8 +2090,8 @@
       "id": "typing-newtype-snippet",
       "type": "snippet",
       "title": "NewType Documents Domain IDs Snippet",
-      "prompt": "Read the snippet as a compact reminder for newtype documents domain ids.",
-      "explanation": "The code highlights the production shape of the concept. In interviews, narrate the invariant before discussing syntax.",
+      "prompt": "Review this example: NewType Documents Domain IDs.",
+      "explanation": "Review the production behavior shown here. In interviews, state the invariant before discussing syntax.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -2106,7 +2106,7 @@
       "type": "interview",
       "title": "NewType Documents Domain IDs Interview",
       "prompt": "How can Python prevent mixing UserId and OrgId in reviewed code?",
-      "explanation": "NewType creates distinct static identities for values that share a runtime representation. A strong answer states the rule, names the common trap, and explains the production consequence.",
+      "explanation": "NewType creates distinct static identities for values that share a runtime representation. State the rule, common trap, and production consequence.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -2120,7 +2120,7 @@
       "type": "concept",
       "title": "Frozen Dataclass Is Shallow",
       "prompt": "A frozen dataclass blocks attribute assignment but does not freeze nested mutable objects.",
-      "explanation": "Choose immutable field types when you need an actually immutable value object. This is the baseline concept to remember before comparing Python with TypeScript or JavaScript.",
+      "explanation": "Choose immutable field types when you need an actually immutable value object.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -2134,7 +2134,7 @@
       "type": "practical",
       "title": "Frozen Dataclass Is Shallow Review",
       "prompt": "Choose immutable field types when you need an actually immutable value object.",
-      "explanation": "Senior review standard: make the intended runtime behavior explicit, add a narrow test around the edge case, and avoid hiding the rule in clever syntax.",
+      "explanation": "Make runtime behavior explicit, test the edge case, and keep the rule visible in clear syntax.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -2147,8 +2147,8 @@
       "id": "typing-frozen-dataclass-snippet",
       "type": "snippet",
       "title": "Frozen Dataclass Is Shallow Snippet",
-      "prompt": "Read the snippet as a compact reminder for frozen dataclass is shallow.",
-      "explanation": "The code highlights the production shape of the concept. In interviews, narrate the invariant before discussing syntax.",
+      "prompt": "Review this example: Frozen Dataclass Is Shallow.",
+      "explanation": "Review the production behavior shown here. In interviews, state the invariant before discussing syntax.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -2163,7 +2163,7 @@
       "type": "interview",
       "title": "Frozen Dataclass Is Shallow Interview",
       "prompt": "What can still mutate inside a frozen dataclass?",
-      "explanation": "A frozen dataclass blocks attribute assignment but does not freeze nested mutable objects. A strong answer states the rule, names the common trap, and explains the production consequence.",
+      "explanation": "A frozen dataclass blocks attribute assignment but does not freeze nested mutable objects. State the rule, common trap, and production consequence.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -2177,7 +2177,7 @@
       "type": "concept",
       "title": "Generics Carry Relationships",
       "prompt": "Generics preserve relationships between inputs and outputs that a plain object annotation would lose.",
-      "explanation": "Use a TypeVar when the same concrete type must flow through an API. This is the baseline concept to remember before comparing Python with TypeScript or JavaScript.",
+      "explanation": "Use a TypeVar when the same concrete type must flow through an API.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -2191,7 +2191,7 @@
       "type": "practical",
       "title": "Generics Carry Relationships Review",
       "prompt": "Use a TypeVar when the same concrete type must flow through an API.",
-      "explanation": "Senior review standard: make the intended runtime behavior explicit, add a narrow test around the edge case, and avoid hiding the rule in clever syntax.",
+      "explanation": "Make runtime behavior explicit, test the edge case, and keep the rule visible in clear syntax.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -2204,8 +2204,8 @@
       "id": "typing-generics-snippet",
       "type": "snippet",
       "title": "Generics Carry Relationships Snippet",
-      "prompt": "Read the snippet as a compact reminder for generics carry relationships.",
-      "explanation": "The code highlights the production shape of the concept. In interviews, narrate the invariant before discussing syntax.",
+      "prompt": "Review this example: Generics Carry Relationships.",
+      "explanation": "Review the production behavior shown here. In interviews, state the invariant before discussing syntax.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -2220,7 +2220,7 @@
       "type": "interview",
       "title": "Generics Carry Relationships Interview",
       "prompt": "When is TypeVar better than annotating everything as object?",
-      "explanation": "Generics preserve relationships between inputs and outputs that a plain object annotation would lose. A strong answer states the rule, names the common trap, and explains the production consequence.",
+      "explanation": "Generics preserve relationships between inputs and outputs that a plain object annotation would lose. State the rule, common trap, and production consequence.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -2234,7 +2234,7 @@
       "type": "concept",
       "title": "Casts Are Promises",
       "prompt": "typing.cast tells the checker to trust you and does not change the runtime value.",
-      "explanation": "A cast should sit next to evidence; unexplained casts are weak links in Python type contracts. This is the baseline concept to remember before comparing Python with TypeScript or JavaScript.",
+      "explanation": "A cast should sit next to evidence; unexplained casts are weak links in Python type contracts.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -2248,7 +2248,7 @@
       "type": "practical",
       "title": "Casts Are Promises Review",
       "prompt": "A cast should sit next to evidence; unexplained casts are weak links in Python type contracts.",
-      "explanation": "Senior review standard: make the intended runtime behavior explicit, add a narrow test around the edge case, and avoid hiding the rule in clever syntax.",
+      "explanation": "Make runtime behavior explicit, test the edge case, and keep the rule visible in clear syntax.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -2261,8 +2261,8 @@
       "id": "typing-casts-snippet",
       "type": "snippet",
       "title": "Casts Are Promises Snippet",
-      "prompt": "Read the snippet as a compact reminder for casts are promises.",
-      "explanation": "The code highlights the production shape of the concept. In interviews, narrate the invariant before discussing syntax.",
+      "prompt": "Review this example: Casts Are Promises.",
+      "explanation": "Review the production behavior shown here. In interviews, state the invariant before discussing syntax.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -2277,7 +2277,7 @@
       "type": "interview",
       "title": "Casts Are Promises Interview",
       "prompt": "Why should casts be rare and locally justified?",
-      "explanation": "typing.cast tells the checker to trust you and does not change the runtime value. A strong answer states the rule, names the common trap, and explains the production consequence.",
+      "explanation": "typing.cast tells the checker to trust you and does not change the runtime value. State the rule, common trap, and production consequence.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -2291,7 +2291,7 @@
       "type": "concept",
       "title": "pyproject.toml Is Metadata",
       "prompt": "pyproject.toml centralizes build system requirements, project metadata, and tool configuration.",
-      "explanation": "It is closer to package.json than requirements.txt, but it is not automatically a complete lockfile strategy. This is the baseline concept to remember before comparing Python with TypeScript or JavaScript.",
+      "explanation": "It is closer to package.json than requirements.txt, but it is not automatically a complete lockfile strategy.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -2305,7 +2305,7 @@
       "type": "practical",
       "title": "pyproject.toml Is Metadata Review",
       "prompt": "It is closer to package.json than requirements.txt, but it is not automatically a complete lockfile strategy.",
-      "explanation": "Senior review standard: make the intended runtime behavior explicit, add a narrow test around the edge case, and avoid hiding the rule in clever syntax.",
+      "explanation": "Make runtime behavior explicit, test the edge case, and keep the rule visible in clear syntax.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -2318,8 +2318,8 @@
       "id": "packaging-pyproject-snippet",
       "type": "snippet",
       "title": "pyproject.toml Is Metadata Snippet",
-      "prompt": "Read the snippet as a compact reminder for pyproject.toml is metadata.",
-      "explanation": "The code highlights the production shape of the concept. In interviews, narrate the invariant before discussing syntax.",
+      "prompt": "Review this example: pyproject.toml Is Metadata.",
+      "explanation": "Review the production behavior shown here. In interviews, state the invariant before discussing syntax.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -2334,7 +2334,7 @@
       "type": "interview",
       "title": "pyproject.toml Is Metadata Interview",
       "prompt": "What belongs in pyproject.toml for a modern Python project?",
-      "explanation": "pyproject.toml centralizes build system requirements, project metadata, and tool configuration. A strong answer states the rule, names the common trap, and explains the production consequence.",
+      "explanation": "pyproject.toml centralizes build system requirements, project metadata, and tool configuration. State the rule, common trap, and production consequence.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -2348,7 +2348,7 @@
       "type": "concept",
       "title": "venv Is Environment Isolation",
       "prompt": "Virtual environments isolate installed packages from global Python installations.",
-      "explanation": "A service that only works because of globally installed packages has an undocumented setup contract. This is the baseline concept to remember before comparing Python with TypeScript or JavaScript.",
+      "explanation": "A service that only works because of globally installed packages has an undocumented setup contract.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -2362,7 +2362,7 @@
       "type": "practical",
       "title": "venv Is Environment Isolation Review",
       "prompt": "A service that only works because of globally installed packages has an undocumented setup contract.",
-      "explanation": "Senior review standard: make the intended runtime behavior explicit, add a narrow test around the edge case, and avoid hiding the rule in clever syntax.",
+      "explanation": "Make runtime behavior explicit, test the edge case, and keep the rule visible in clear syntax.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -2375,8 +2375,8 @@
       "id": "packaging-venv-snippet",
       "type": "snippet",
       "title": "venv Is Environment Isolation Snippet",
-      "prompt": "Read the snippet as a compact reminder for venv is environment isolation.",
-      "explanation": "The code highlights the production shape of the concept. In interviews, narrate the invariant before discussing syntax.",
+      "prompt": "Review this example: venv Is Environment Isolation.",
+      "explanation": "Review the production behavior shown here. In interviews, state the invariant before discussing syntax.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -2391,7 +2391,7 @@
       "type": "interview",
       "title": "venv Is Environment Isolation Interview",
       "prompt": "How is a Python virtual environment similar to and different from node_modules?",
-      "explanation": "Virtual environments isolate installed packages from global Python installations. A strong answer states the rule, names the common trap, and explains the production consequence.",
+      "explanation": "Virtual environments isolate installed packages from global Python installations. State the rule, common trap, and production consequence.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -2405,7 +2405,7 @@
       "type": "concept",
       "title": "Distribution Name Can Differ",
       "prompt": "The name you install and the module name you import can be different.",
-      "explanation": "Do not create local files that shadow dependencies or standard library modules while debugging name mismatches. This is the baseline concept to remember before comparing Python with TypeScript or JavaScript.",
+      "explanation": "Do not create local files that shadow dependencies or standard library modules while debugging name mismatches.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -2419,7 +2419,7 @@
       "type": "practical",
       "title": "Distribution Name Can Differ Review",
       "prompt": "Do not create local files that shadow dependencies or standard library modules while debugging name mismatches.",
-      "explanation": "Senior review standard: make the intended runtime behavior explicit, add a narrow test around the edge case, and avoid hiding the rule in clever syntax.",
+      "explanation": "Make runtime behavior explicit, test the edge case, and keep the rule visible in clear syntax.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -2432,8 +2432,8 @@
       "id": "packaging-distribution-import-name-snippet",
       "type": "snippet",
       "title": "Distribution Name Can Differ Snippet",
-      "prompt": "Read the snippet as a compact reminder for distribution name can differ.",
-      "explanation": "The code highlights the production shape of the concept. In interviews, narrate the invariant before discussing syntax.",
+      "prompt": "Review this example: Distribution Name Can Differ.",
+      "explanation": "Review the production behavior shown here. In interviews, state the invariant before discussing syntax.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -2448,7 +2448,7 @@
       "type": "interview",
       "title": "Distribution Name Can Differ Interview",
       "prompt": "Why might pip install a package whose import name is different?",
-      "explanation": "The name you install and the module name you import can be different. A strong answer states the rule, names the common trap, and explains the production consequence.",
+      "explanation": "The name you install and the module name you import can be different. State the rule, common trap, and production consequence.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -2462,7 +2462,7 @@
       "type": "concept",
       "title": "src Layout Protects Imports",
       "prompt": "A src layout helps tests import the installed package rather than accidentally importing the repository root.",
-      "explanation": "Import behavior in tests should match production packaging as closely as practical. This is the baseline concept to remember before comparing Python with TypeScript or JavaScript.",
+      "explanation": "Import behavior in tests should match production packaging as closely as practical.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -2476,7 +2476,7 @@
       "type": "practical",
       "title": "src Layout Protects Imports Review",
       "prompt": "Import behavior in tests should match production packaging as closely as practical.",
-      "explanation": "Senior review standard: make the intended runtime behavior explicit, add a narrow test around the edge case, and avoid hiding the rule in clever syntax.",
+      "explanation": "Make runtime behavior explicit, test the edge case, and keep the rule visible in clear syntax.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -2489,8 +2489,8 @@
       "id": "packaging-src-layout-snippet",
       "type": "snippet",
       "title": "src Layout Protects Imports Snippet",
-      "prompt": "Read the snippet as a compact reminder for src layout protects imports.",
-      "explanation": "The code highlights the production shape of the concept. In interviews, narrate the invariant before discussing syntax.",
+      "prompt": "Review this example: src Layout Protects Imports.",
+      "explanation": "Review the production behavior shown here. In interviews, state the invariant before discussing syntax.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -2505,7 +2505,7 @@
       "type": "interview",
       "title": "src Layout Protects Imports Interview",
       "prompt": "Why do many Python libraries use a src directory layout?",
-      "explanation": "A src layout helps tests import the installed package rather than accidentally importing the repository root. A strong answer states the rule, names the common trap, and explains the production consequence.",
+      "explanation": "A src layout helps tests import the installed package rather than accidentally importing the repository root. State the rule, common trap, and production consequence.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -2519,7 +2519,7 @@
       "type": "concept",
       "title": "Lockfiles Are Contracts",
       "prompt": "A lockfile captures a resolved dependency graph for reproducible installs.",
-      "explanation": "Without a lock or equivalent deployment artifact, local, CI, and production can silently run different dependency versions. This is the baseline concept to remember before comparing Python with TypeScript or JavaScript.",
+      "explanation": "Without a lock or equivalent deployment artifact, local, CI, and production can silently run different dependency versions.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -2533,7 +2533,7 @@
       "type": "practical",
       "title": "Lockfiles Are Contracts Review",
       "prompt": "Without a lock or equivalent deployment artifact, local, CI, and production can silently run different dependency versions.",
-      "explanation": "Senior review standard: make the intended runtime behavior explicit, add a narrow test around the edge case, and avoid hiding the rule in clever syntax.",
+      "explanation": "Make runtime behavior explicit, test the edge case, and keep the rule visible in clear syntax.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -2546,8 +2546,8 @@
       "id": "packaging-lockfiles-snippet",
       "type": "snippet",
       "title": "Lockfiles Are Contracts Snippet",
-      "prompt": "Read the snippet as a compact reminder for lockfiles are contracts.",
-      "explanation": "The code highlights the production shape of the concept. In interviews, narrate the invariant before discussing syntax.",
+      "prompt": "Review this example: Lockfiles Are Contracts.",
+      "explanation": "Review the production behavior shown here. In interviews, state the invariant before discussing syntax.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -2562,7 +2562,7 @@
       "type": "interview",
       "title": "Lockfiles Are Contracts Interview",
       "prompt": "What question should a senior reviewer ask about Python dependency reproducibility?",
-      "explanation": "A lockfile captures a resolved dependency graph for reproducible installs. A strong answer states the rule, names the common trap, and explains the production consequence.",
+      "explanation": "A lockfile captures a resolved dependency graph for reproducible installs. State the rule, common trap, and production consequence.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -2576,7 +2576,7 @@
       "type": "concept",
       "title": "Runtime Versus Dev Dependencies",
       "prompt": "Runtime dependencies ship with the app; test, lint, and type tools should be grouped separately.",
-      "explanation": "Accidentally deploying dev tools increases artifact size, attack surface, and upgrade noise. This is the baseline concept to remember before comparing Python with TypeScript or JavaScript.",
+      "explanation": "Accidentally deploying dev tools increases artifact size, attack surface, and upgrade noise.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -2590,7 +2590,7 @@
       "type": "practical",
       "title": "Runtime Versus Dev Dependencies Review",
       "prompt": "Accidentally deploying dev tools increases artifact size, attack surface, and upgrade noise.",
-      "explanation": "Senior review standard: make the intended runtime behavior explicit, add a narrow test around the edge case, and avoid hiding the rule in clever syntax.",
+      "explanation": "Make runtime behavior explicit, test the edge case, and keep the rule visible in clear syntax.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -2603,8 +2603,8 @@
       "id": "packaging-dependency-groups-snippet",
       "type": "snippet",
       "title": "Runtime Versus Dev Dependencies Snippet",
-      "prompt": "Read the snippet as a compact reminder for runtime versus dev dependencies.",
-      "explanation": "The code highlights the production shape of the concept. In interviews, narrate the invariant before discussing syntax.",
+      "prompt": "Review this example: Runtime Versus Dev Dependencies.",
+      "explanation": "Review the production behavior shown here. In interviews, state the invariant before discussing syntax.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -2619,7 +2619,7 @@
       "type": "interview",
       "title": "Runtime Versus Dev Dependencies Interview",
       "prompt": "How would you separate pytest and mypy from production dependencies?",
-      "explanation": "Runtime dependencies ship with the app; test, lint, and type tools should be grouped separately. A strong answer states the rule, names the common trap, and explains the production consequence.",
+      "explanation": "Runtime dependencies ship with the app; test, lint, and type tools should be grouped separately. State the rule, common trap, and production consequence.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -2633,7 +2633,7 @@
       "type": "concept",
       "title": "Python Version Is A Contract",
       "prompt": "The supported Python version should be declared and tested.",
-      "explanation": "Syntax, stdlib behavior, and dependency wheels can differ across versions even when code looks portable. This is the baseline concept to remember before comparing Python with TypeScript or JavaScript.",
+      "explanation": "Syntax, stdlib behavior, and dependency wheels can differ across versions even when code looks portable.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -2647,7 +2647,7 @@
       "type": "practical",
       "title": "Python Version Is A Contract Review",
       "prompt": "Syntax, stdlib behavior, and dependency wheels can differ across versions even when code looks portable.",
-      "explanation": "Senior review standard: make the intended runtime behavior explicit, add a narrow test around the edge case, and avoid hiding the rule in clever syntax.",
+      "explanation": "Make runtime behavior explicit, test the edge case, and keep the rule visible in clear syntax.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -2660,8 +2660,8 @@
       "id": "packaging-python-version-snippet",
       "type": "snippet",
       "title": "Python Version Is A Contract Snippet",
-      "prompt": "Read the snippet as a compact reminder for python version is a contract.",
-      "explanation": "The code highlights the production shape of the concept. In interviews, narrate the invariant before discussing syntax.",
+      "prompt": "Review this example: Python Version Is A Contract.",
+      "explanation": "Review the production behavior shown here. In interviews, state the invariant before discussing syntax.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -2676,7 +2676,7 @@
       "type": "interview",
       "title": "Python Version Is A Contract Interview",
       "prompt": "Why should CI pin or matrix the Python versions a project claims to support?",
-      "explanation": "The supported Python version should be declared and tested. A strong answer states the rule, names the common trap, and explains the production consequence.",
+      "explanation": "The supported Python version should be declared and tested. State the rule, common trap, and production consequence.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -2690,7 +2690,7 @@
       "type": "concept",
       "title": "Editable Install For Development",
       "prompt": "Editable installs make local package changes visible without reinstalling the project each time.",
-      "explanation": "They are development conveniences; production should install a built artifact or reproducible environment. This is the baseline concept to remember before comparing Python with TypeScript or JavaScript.",
+      "explanation": "They are development conveniences; production should install a built artifact or reproducible environment.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -2704,7 +2704,7 @@
       "type": "practical",
       "title": "Editable Install For Development Review",
       "prompt": "They are development conveniences; production should install a built artifact or reproducible environment.",
-      "explanation": "Senior review standard: make the intended runtime behavior explicit, add a narrow test around the edge case, and avoid hiding the rule in clever syntax.",
+      "explanation": "Make runtime behavior explicit, test the edge case, and keep the rule visible in clear syntax.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -2717,8 +2717,8 @@
       "id": "packaging-editable-install-snippet",
       "type": "snippet",
       "title": "Editable Install For Development Snippet",
-      "prompt": "Read the snippet as a compact reminder for editable install for development.",
-      "explanation": "The code highlights the production shape of the concept. In interviews, narrate the invariant before discussing syntax.",
+      "prompt": "Review this example: Editable Install For Development.",
+      "explanation": "Review the production behavior shown here. In interviews, state the invariant before discussing syntax.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -2733,7 +2733,7 @@
       "type": "interview",
       "title": "Editable Install For Development Interview",
       "prompt": "When is pip install -e useful, and when should it not be the deployment model?",
-      "explanation": "Editable installs make local package changes visible without reinstalling the project each time. A strong answer states the rule, names the common trap, and explains the production consequence.",
+      "explanation": "Editable installs make local package changes visible without reinstalling the project each time. State the rule, common trap, and production consequence.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -2747,7 +2747,7 @@
       "type": "concept",
       "title": "Entry Points Expose Commands",
       "prompt": "Project metadata can expose console scripts that call Python functions.",
-      "explanation": "A checked-in command is easier to document and test than tribal shell snippets in onboarding notes. This is the baseline concept to remember before comparing Python with TypeScript or JavaScript.",
+      "explanation": "A checked-in command is easier to document and test than tribal shell snippets in onboarding notes.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -2761,7 +2761,7 @@
       "type": "practical",
       "title": "Entry Points Expose Commands Review",
       "prompt": "A checked-in command is easier to document and test than tribal shell snippets in onboarding notes.",
-      "explanation": "Senior review standard: make the intended runtime behavior explicit, add a narrow test around the edge case, and avoid hiding the rule in clever syntax.",
+      "explanation": "Make runtime behavior explicit, test the edge case, and keep the rule visible in clear syntax.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -2774,8 +2774,8 @@
       "id": "packaging-entry-points-snippet",
       "type": "snippet",
       "title": "Entry Points Expose Commands Snippet",
-      "prompt": "Read the snippet as a compact reminder for entry points expose commands.",
-      "explanation": "The code highlights the production shape of the concept. In interviews, narrate the invariant before discussing syntax.",
+      "prompt": "Review this example: Entry Points Expose Commands.",
+      "explanation": "Review the production behavior shown here. In interviews, state the invariant before discussing syntax.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -2790,7 +2790,7 @@
       "type": "interview",
       "title": "Entry Points Expose Commands Interview",
       "prompt": "How can a Python package publish a command-line tool?",
-      "explanation": "Project metadata can expose console scripts that call Python functions. A strong answer states the rule, names the common trap, and explains the production consequence.",
+      "explanation": "Project metadata can expose console scripts that call Python functions. State the rule, common trap, and production consequence.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -2804,7 +2804,7 @@
       "type": "concept",
       "title": "Avoid Shadowing Standard Library",
       "prompt": "Local files named like standard library modules can shadow the real modules.",
-      "explanation": "A file named typing.py, asyncio.py, or json.py can create confusing import failures. This is the baseline concept to remember before comparing Python with TypeScript or JavaScript.",
+      "explanation": "A file named typing.py, asyncio.py, or json.py can create confusing import failures.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -2818,7 +2818,7 @@
       "type": "practical",
       "title": "Avoid Shadowing Standard Library Review",
       "prompt": "A file named typing.py, asyncio.py, or json.py can create confusing import failures.",
-      "explanation": "Senior review standard: make the intended runtime behavior explicit, add a narrow test around the edge case, and avoid hiding the rule in clever syntax.",
+      "explanation": "Make runtime behavior explicit, test the edge case, and keep the rule visible in clear syntax.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -2831,8 +2831,8 @@
       "id": "packaging-shadowing-stdlib-snippet",
       "type": "snippet",
       "title": "Avoid Shadowing Standard Library Snippet",
-      "prompt": "Read the snippet as a compact reminder for avoid shadowing standard library.",
-      "explanation": "The code highlights the production shape of the concept. In interviews, narrate the invariant before discussing syntax.",
+      "prompt": "Review this example: Avoid Shadowing Standard Library.",
+      "explanation": "Review the production behavior shown here. In interviews, state the invariant before discussing syntax.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -2847,7 +2847,7 @@
       "type": "interview",
       "title": "Avoid Shadowing Standard Library Interview",
       "prompt": "What is the first thing to inspect when import json behaves strangely in a project?",
-      "explanation": "Local files named like standard library modules can shadow the real modules. A strong answer states the rule, names the common trap, and explains the production consequence.",
+      "explanation": "Local files named like standard library modules can shadow the real modules. State the rule, common trap, and production consequence.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -2861,7 +2861,7 @@
       "type": "concept",
       "title": "Coroutines Must Be Awaited",
       "prompt": "Calling an async function returns a coroutine object; it does not run to completion until awaited or scheduled.",
-      "explanation": "A missing await can turn real work into a warning and a silently skipped side effect. This is the baseline concept to remember before comparing Python with TypeScript or JavaScript.",
+      "explanation": "A missing await can turn real work into a warning and a silently skipped side effect.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -2875,7 +2875,7 @@
       "type": "practical",
       "title": "Coroutines Must Be Awaited Review",
       "prompt": "A missing await can turn real work into a warning and a silently skipped side effect.",
-      "explanation": "Senior review standard: make the intended runtime behavior explicit, add a narrow test around the edge case, and avoid hiding the rule in clever syntax.",
+      "explanation": "Make runtime behavior explicit, test the edge case, and keep the rule visible in clear syntax.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -2888,8 +2888,8 @@
       "id": "asyncio-await-coroutines-snippet",
       "type": "snippet",
       "title": "Coroutines Must Be Awaited Snippet",
-      "prompt": "Read the snippet as a compact reminder for coroutines must be awaited.",
-      "explanation": "The code highlights the production shape of the concept. In interviews, narrate the invariant before discussing syntax.",
+      "prompt": "Review this example: Coroutines Must Be Awaited.",
+      "explanation": "Review the production behavior shown here. In interviews, state the invariant before discussing syntax.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -2904,7 +2904,7 @@
       "type": "interview",
       "title": "Coroutines Must Be Awaited Interview",
       "prompt": "What happens when Python code calls an async function without await?",
-      "explanation": "Calling an async function returns a coroutine object; it does not run to completion until awaited or scheduled. A strong answer states the rule, names the common trap, and explains the production consequence.",
+      "explanation": "Calling an async function returns a coroutine object; it does not run to completion until awaited or scheduled. State the rule, common trap, and production consequence.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -2918,7 +2918,7 @@
       "type": "concept",
       "title": "Event Loop Needs Nonblocking Work",
       "prompt": "asyncio concurrency depends on tasks yielding control at await points.",
-      "explanation": "Blocking file, CPU, or network work inside async code can stall unrelated tasks. This is the baseline concept to remember before comparing Python with TypeScript or JavaScript.",
+      "explanation": "Blocking file, CPU, or network work inside async code can stall unrelated tasks.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -2932,7 +2932,7 @@
       "type": "practical",
       "title": "Event Loop Needs Nonblocking Work Review",
       "prompt": "Blocking file, CPU, or network work inside async code can stall unrelated tasks.",
-      "explanation": "Senior review standard: make the intended runtime behavior explicit, add a narrow test around the edge case, and avoid hiding the rule in clever syntax.",
+      "explanation": "Make runtime behavior explicit, test the edge case, and keep the rule visible in clear syntax.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -2945,8 +2945,8 @@
       "id": "asyncio-nonblocking-event-loop-snippet",
       "type": "snippet",
       "title": "Event Loop Needs Nonblocking Work Snippet",
-      "prompt": "Read the snippet as a compact reminder for event loop needs nonblocking work.",
-      "explanation": "The code highlights the production shape of the concept. In interviews, narrate the invariant before discussing syntax.",
+      "prompt": "Review this example: Event Loop Needs Nonblocking Work.",
+      "explanation": "Review the production behavior shown here. In interviews, state the invariant before discussing syntax.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -2961,7 +2961,7 @@
       "type": "interview",
       "title": "Event Loop Needs Nonblocking Work Interview",
       "prompt": "Why can one blocking call hurt all requests handled by an asyncio service?",
-      "explanation": "asyncio concurrency depends on tasks yielding control at await points. A strong answer states the rule, names the common trap, and explains the production consequence.",
+      "explanation": "asyncio concurrency depends on tasks yielding control at await points. State the rule, common trap, and production consequence.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -2975,7 +2975,7 @@
       "type": "concept",
       "title": "Tasks Need Ownership",
       "prompt": "Created tasks should have an owner that awaits, cancels, or observes failures.",
-      "explanation": "Fire-and-forget tasks can lose exceptions and outlive the request or service lifecycle that created them. This is the baseline concept to remember before comparing Python with TypeScript or JavaScript.",
+      "explanation": "Fire-and-forget tasks can lose exceptions and outlive the request or service lifecycle that created them.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -2989,7 +2989,7 @@
       "type": "practical",
       "title": "Tasks Need Ownership Review",
       "prompt": "Fire-and-forget tasks can lose exceptions and outlive the request or service lifecycle that created them.",
-      "explanation": "Senior review standard: make the intended runtime behavior explicit, add a narrow test around the edge case, and avoid hiding the rule in clever syntax.",
+      "explanation": "Make runtime behavior explicit, test the edge case, and keep the rule visible in clear syntax.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -3002,8 +3002,8 @@
       "id": "asyncio-task-ownership-snippet",
       "type": "snippet",
       "title": "Tasks Need Ownership Snippet",
-      "prompt": "Read the snippet as a compact reminder for tasks need ownership.",
-      "explanation": "The code highlights the production shape of the concept. In interviews, narrate the invariant before discussing syntax.",
+      "prompt": "Review this example: Tasks Need Ownership.",
+      "explanation": "Review the production behavior shown here. In interviews, state the invariant before discussing syntax.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -3018,7 +3018,7 @@
       "type": "interview",
       "title": "Tasks Need Ownership Interview",
       "prompt": "What review questions do you ask when you see asyncio.create_task?",
-      "explanation": "Created tasks should have an owner that awaits, cancels, or observes failures. A strong answer states the rule, names the common trap, and explains the production consequence.",
+      "explanation": "Created tasks should have an owner that awaits, cancels, or observes failures. State the rule, common trap, and production consequence.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -3032,7 +3032,7 @@
       "type": "concept",
       "title": "gather Has Failure Semantics",
       "prompt": "asyncio.gather coordinates awaitables but error handling depends on return_exceptions and cancellation behavior.",
-      "explanation": "Pick failure semantics intentionally when concurrent calls have partial success behavior. This is the baseline concept to remember before comparing Python with TypeScript or JavaScript.",
+      "explanation": "Pick failure semantics intentionally when concurrent calls have partial success behavior.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -3046,7 +3046,7 @@
       "type": "practical",
       "title": "gather Has Failure Semantics Review",
       "prompt": "Pick failure semantics intentionally when concurrent calls have partial success behavior.",
-      "explanation": "Senior review standard: make the intended runtime behavior explicit, add a narrow test around the edge case, and avoid hiding the rule in clever syntax.",
+      "explanation": "Make runtime behavior explicit, test the edge case, and keep the rule visible in clear syntax.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -3059,8 +3059,8 @@
       "id": "asyncio-gather-semantics-snippet",
       "type": "snippet",
       "title": "gather Has Failure Semantics Snippet",
-      "prompt": "Read the snippet as a compact reminder for gather has failure semantics.",
-      "explanation": "The code highlights the production shape of the concept. In interviews, narrate the invariant before discussing syntax.",
+      "prompt": "Review this example: gather Has Failure Semantics.",
+      "explanation": "Review the production behavior shown here. In interviews, state the invariant before discussing syntax.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -3075,7 +3075,7 @@
       "type": "interview",
       "title": "gather Has Failure Semantics Interview",
       "prompt": "How should a Python service handle one failed task among several concurrent calls?",
-      "explanation": "asyncio.gather coordinates awaitables but error handling depends on return_exceptions and cancellation behavior. A strong answer states the rule, names the common trap, and explains the production consequence.",
+      "explanation": "asyncio.gather coordinates awaitables but error handling depends on return_exceptions and cancellation behavior. State the rule, common trap, and production consequence.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -3089,7 +3089,7 @@
       "type": "concept",
       "title": "Timeouts Are Contracts",
       "prompt": "Async calls need explicit timeout budgets that match product and upstream expectations.",
-      "explanation": "No timeout is an unbounded resource promise; too many mismatched timeouts create retry storms. This is the baseline concept to remember before comparing Python with TypeScript or JavaScript.",
+      "explanation": "No timeout is an unbounded resource promise; too many mismatched timeouts create retry storms.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -3103,7 +3103,7 @@
       "type": "practical",
       "title": "Timeouts Are Contracts Review",
       "prompt": "No timeout is an unbounded resource promise; too many mismatched timeouts create retry storms.",
-      "explanation": "Senior review standard: make the intended runtime behavior explicit, add a narrow test around the edge case, and avoid hiding the rule in clever syntax.",
+      "explanation": "Make runtime behavior explicit, test the edge case, and keep the rule visible in clear syntax.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -3116,8 +3116,8 @@
       "id": "asyncio-timeouts-snippet",
       "type": "snippet",
       "title": "Timeouts Are Contracts Snippet",
-      "prompt": "Read the snippet as a compact reminder for timeouts are contracts.",
-      "explanation": "The code highlights the production shape of the concept. In interviews, narrate the invariant before discussing syntax.",
+      "prompt": "Review this example: Timeouts Are Contracts.",
+      "explanation": "Review the production behavior shown here. In interviews, state the invariant before discussing syntax.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -3132,7 +3132,7 @@
       "type": "interview",
       "title": "Timeouts Are Contracts Interview",
       "prompt": "Where should timeouts be defined in a production Python service?",
-      "explanation": "Async calls need explicit timeout budgets that match product and upstream expectations. A strong answer states the rule, names the common trap, and explains the production consequence.",
+      "explanation": "Async calls need explicit timeout budgets that match product and upstream expectations. State the rule, common trap, and production consequence.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -3146,7 +3146,7 @@
       "type": "concept",
       "title": "Cancellation Is Control Flow",
       "prompt": "Cancellation is a normal async control path and should not be swallowed accidentally.",
-      "explanation": "Broad exception handling around async code can prevent cancellation from stopping work cleanly. This is the baseline concept to remember before comparing Python with TypeScript or JavaScript.",
+      "explanation": "Broad exception handling around async code can prevent cancellation from stopping work cleanly.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -3160,7 +3160,7 @@
       "type": "practical",
       "title": "Cancellation Is Control Flow Review",
       "prompt": "Broad exception handling around async code can prevent cancellation from stopping work cleanly.",
-      "explanation": "Senior review standard: make the intended runtime behavior explicit, add a narrow test around the edge case, and avoid hiding the rule in clever syntax.",
+      "explanation": "Make runtime behavior explicit, test the edge case, and keep the rule visible in clear syntax.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -3173,8 +3173,8 @@
       "id": "asyncio-cancellation-snippet",
       "type": "snippet",
       "title": "Cancellation Is Control Flow Snippet",
-      "prompt": "Read the snippet as a compact reminder for cancellation is control flow.",
-      "explanation": "The code highlights the production shape of the concept. In interviews, narrate the invariant before discussing syntax.",
+      "prompt": "Review this example: Cancellation Is Control Flow.",
+      "explanation": "Review the production behavior shown here. In interviews, state the invariant before discussing syntax.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -3189,7 +3189,7 @@
       "type": "interview",
       "title": "Cancellation Is Control Flow Interview",
       "prompt": "Why should cancellation be tested in async Python code?",
-      "explanation": "Cancellation is a normal async control path and should not be swallowed accidentally. A strong answer states the rule, names the common trap, and explains the production consequence.",
+      "explanation": "Cancellation is a normal async control path and should not be swallowed accidentally. State the rule, common trap, and production consequence.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -3203,7 +3203,7 @@
       "type": "concept",
       "title": "Async Context Managers Cleanup",
       "prompt": "async with scopes async setup and cleanup for connections, transactions, and lifespan resources.",
-      "explanation": "Manual cleanup paths are easy to miss when awaits can fail between setup and teardown. This is the baseline concept to remember before comparing Python with TypeScript or JavaScript.",
+      "explanation": "Manual cleanup paths are easy to miss when awaits can fail between setup and teardown.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -3217,7 +3217,7 @@
       "type": "practical",
       "title": "Async Context Managers Cleanup Review",
       "prompt": "Manual cleanup paths are easy to miss when awaits can fail between setup and teardown.",
-      "explanation": "Senior review standard: make the intended runtime behavior explicit, add a narrow test around the edge case, and avoid hiding the rule in clever syntax.",
+      "explanation": "Make runtime behavior explicit, test the edge case, and keep the rule visible in clear syntax.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -3230,8 +3230,8 @@
       "id": "asyncio-async-context-managers-snippet",
       "type": "snippet",
       "title": "Async Context Managers Cleanup Snippet",
-      "prompt": "Read the snippet as a compact reminder for async context managers cleanup.",
-      "explanation": "The code highlights the production shape of the concept. In interviews, narrate the invariant before discussing syntax.",
+      "prompt": "Review this example: Async Context Managers Cleanup.",
+      "explanation": "Review the production behavior shown here. In interviews, state the invariant before discussing syntax.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -3246,7 +3246,7 @@
       "type": "interview",
       "title": "Async Context Managers Cleanup Interview",
       "prompt": "When would you use async with instead of with?",
-      "explanation": "async with scopes async setup and cleanup for connections, transactions, and lifespan resources. A strong answer states the rule, names the common trap, and explains the production consequence.",
+      "explanation": "async with scopes async setup and cleanup for connections, transactions, and lifespan resources. State the rule, common trap, and production consequence.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -3260,7 +3260,7 @@
       "type": "concept",
       "title": "Queues Shape Backpressure",
       "prompt": "asyncio.Queue coordinates producers and consumers and can bound work in memory.",
-      "explanation": "An unbounded queue turns slow consumers into memory pressure instead of visible backpressure. This is the baseline concept to remember before comparing Python with TypeScript or JavaScript.",
+      "explanation": "An unbounded queue turns slow consumers into memory pressure instead of visible backpressure.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -3274,7 +3274,7 @@
       "type": "practical",
       "title": "Queues Shape Backpressure Review",
       "prompt": "An unbounded queue turns slow consumers into memory pressure instead of visible backpressure.",
-      "explanation": "Senior review standard: make the intended runtime behavior explicit, add a narrow test around the edge case, and avoid hiding the rule in clever syntax.",
+      "explanation": "Make runtime behavior explicit, test the edge case, and keep the rule visible in clear syntax.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -3287,8 +3287,8 @@
       "id": "asyncio-queues-snippet",
       "type": "snippet",
       "title": "Queues Shape Backpressure Snippet",
-      "prompt": "Read the snippet as a compact reminder for queues shape backpressure.",
-      "explanation": "The code highlights the production shape of the concept. In interviews, narrate the invariant before discussing syntax.",
+      "prompt": "Review this example: Queues Shape Backpressure.",
+      "explanation": "Review the production behavior shown here. In interviews, state the invariant before discussing syntax.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -3303,7 +3303,7 @@
       "type": "interview",
       "title": "Queues Shape Backpressure Interview",
       "prompt": "How does a bounded queue help an async worker system?",
-      "explanation": "asyncio.Queue coordinates producers and consumers and can bound work in memory. A strong answer states the rule, names the common trap, and explains the production consequence.",
+      "explanation": "asyncio.Queue coordinates producers and consumers and can bound work in memory. State the rule, common trap, and production consequence.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -3317,7 +3317,7 @@
       "type": "concept",
       "title": "Async Iterators Stream Values",
       "prompt": "Async iterators let code consume values that arrive over time with async for.",
-      "explanation": "Streaming changes timeout, cancellation, and cleanup requirements compared with a complete list response. This is the baseline concept to remember before comparing Python with TypeScript or JavaScript.",
+      "explanation": "Streaming changes timeout, cancellation, and cleanup requirements compared with a complete list response.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -3331,7 +3331,7 @@
       "type": "practical",
       "title": "Async Iterators Stream Values Review",
       "prompt": "Streaming changes timeout, cancellation, and cleanup requirements compared with a complete list response.",
-      "explanation": "Senior review standard: make the intended runtime behavior explicit, add a narrow test around the edge case, and avoid hiding the rule in clever syntax.",
+      "explanation": "Make runtime behavior explicit, test the edge case, and keep the rule visible in clear syntax.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -3344,8 +3344,8 @@
       "id": "asyncio-async-iterators-snippet",
       "type": "snippet",
       "title": "Async Iterators Stream Values Snippet",
-      "prompt": "Read the snippet as a compact reminder for async iterators stream values.",
-      "explanation": "The code highlights the production shape of the concept. In interviews, narrate the invariant before discussing syntax.",
+      "prompt": "Review this example: Async Iterators Stream Values.",
+      "explanation": "Review the production behavior shown here. In interviews, state the invariant before discussing syntax.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -3360,7 +3360,7 @@
       "type": "interview",
       "title": "Async Iterators Stream Values Interview",
       "prompt": "How is async for different from a normal for loop?",
-      "explanation": "Async iterators let code consume values that arrive over time with async for. A strong answer states the rule, names the common trap, and explains the production consequence.",
+      "explanation": "Async iterators let code consume values that arrive over time with async for. State the rule, common trap, and production consequence.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -3374,7 +3374,7 @@
       "type": "concept",
       "title": "Sync Libraries Block Async",
       "prompt": "A synchronous library inside async code still blocks unless moved to a thread or replaced.",
-      "explanation": "Adding async def around blocking work does not make the work nonblocking. This is the baseline concept to remember before comparing Python with TypeScript or JavaScript.",
+      "explanation": "Adding async def around blocking work does not make the work nonblocking.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -3388,7 +3388,7 @@
       "type": "practical",
       "title": "Sync Libraries Block Async Review",
       "prompt": "Adding async def around blocking work does not make the work nonblocking.",
-      "explanation": "Senior review standard: make the intended runtime behavior explicit, add a narrow test around the edge case, and avoid hiding the rule in clever syntax.",
+      "explanation": "Make runtime behavior explicit, test the edge case, and keep the rule visible in clear syntax.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -3401,8 +3401,8 @@
       "id": "asyncio-sync-libraries-block-snippet",
       "type": "snippet",
       "title": "Sync Libraries Block Async Snippet",
-      "prompt": "Read the snippet as a compact reminder for sync libraries block async.",
-      "explanation": "The code highlights the production shape of the concept. In interviews, narrate the invariant before discussing syntax.",
+      "prompt": "Review this example: Sync Libraries Block Async.",
+      "explanation": "Review the production behavior shown here. In interviews, state the invariant before discussing syntax.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -3417,7 +3417,7 @@
       "type": "interview",
       "title": "Sync Libraries Block Async Interview",
       "prompt": "How do you review a Python async handler that calls a synchronous database client?",
-      "explanation": "A synchronous library inside async code still blocks unless moved to a thread or replaced. A strong answer states the rule, names the common trap, and explains the production consequence.",
+      "explanation": "A synchronous library inside async code still blocks unless moved to a thread or replaced. State the rule, common trap, and production consequence.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -3431,7 +3431,7 @@
       "type": "concept",
       "title": "pytest Fixtures Are Dependencies",
       "prompt": "Pytest fixtures declare reusable setup and teardown dependencies for tests.",
-      "explanation": "Overly magical fixtures hide test inputs; senior tests make important dependencies visible. This is the baseline concept to remember before comparing Python with TypeScript or JavaScript.",
+      "explanation": "Overly magical fixtures hide test inputs; senior tests make important dependencies visible.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -3445,7 +3445,7 @@
       "type": "practical",
       "title": "pytest Fixtures Are Dependencies Review",
       "prompt": "Overly magical fixtures hide test inputs; senior tests make important dependencies visible.",
-      "explanation": "Senior review standard: make the intended runtime behavior explicit, add a narrow test around the edge case, and avoid hiding the rule in clever syntax.",
+      "explanation": "Make runtime behavior explicit, test the edge case, and keep the rule visible in clear syntax.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -3458,8 +3458,8 @@
       "id": "testing-production-pytest-fixtures-snippet",
       "type": "snippet",
       "title": "pytest Fixtures Are Dependencies Snippet",
-      "prompt": "Read the snippet as a compact reminder for pytest fixtures are dependencies.",
-      "explanation": "The code highlights the production shape of the concept. In interviews, narrate the invariant before discussing syntax.",
+      "prompt": "Review this example: pytest Fixtures Are Dependencies.",
+      "explanation": "Review the production behavior shown here. In interviews, state the invariant before discussing syntax.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -3474,7 +3474,7 @@
       "type": "interview",
       "title": "pytest Fixtures Are Dependencies Interview",
       "prompt": "When does a pytest fixture improve clarity, and when does it hide too much?",
-      "explanation": "Pytest fixtures declare reusable setup and teardown dependencies for tests. A strong answer states the rule, names the common trap, and explains the production consequence.",
+      "explanation": "Pytest fixtures declare reusable setup and teardown dependencies for tests. State the rule, common trap, and production consequence.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -3488,7 +3488,7 @@
       "type": "concept",
       "title": "Test Behavior Not Implementation",
       "prompt": "Python tests should pin observable behavior and contracts, not incidental private structure.",
-      "explanation": "Mocking every internal call makes refactors expensive and can miss real integration failures. This is the baseline concept to remember before comparing Python with TypeScript or JavaScript.",
+      "explanation": "Mocking every internal call makes refactors expensive and can miss real integration failures.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -3502,7 +3502,7 @@
       "type": "practical",
       "title": "Test Behavior Not Implementation Review",
       "prompt": "Mocking every internal call makes refactors expensive and can miss real integration failures.",
-      "explanation": "Senior review standard: make the intended runtime behavior explicit, add a narrow test around the edge case, and avoid hiding the rule in clever syntax.",
+      "explanation": "Make runtime behavior explicit, test the edge case, and keep the rule visible in clear syntax.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -3515,8 +3515,8 @@
       "id": "testing-production-behavior-tests-snippet",
       "type": "snippet",
       "title": "Test Behavior Not Implementation Snippet",
-      "prompt": "Read the snippet as a compact reminder for test behavior not implementation.",
-      "explanation": "The code highlights the production shape of the concept. In interviews, narrate the invariant before discussing syntax.",
+      "prompt": "Review this example: Test Behavior Not Implementation.",
+      "explanation": "Review the production behavior shown here. In interviews, state the invariant before discussing syntax.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -3531,7 +3531,7 @@
       "type": "interview",
       "title": "Test Behavior Not Implementation Interview",
       "prompt": "How do you decide what to mock in a Python unit test?",
-      "explanation": "Python tests should pin observable behavior and contracts, not incidental private structure. A strong answer states the rule, names the common trap, and explains the production consequence.",
+      "explanation": "Python tests should pin observable behavior and contracts, not incidental private structure. State the rule, common trap, and production consequence.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -3545,7 +3545,7 @@
       "type": "concept",
       "title": "Monkeypatch Global State Carefully",
       "prompt": "Monkeypatching helps isolate environment, time, or dependencies during tests.",
-      "explanation": "Patch the narrowest boundary and let the test framework restore state so tests remain order-independent. This is the baseline concept to remember before comparing Python with TypeScript or JavaScript.",
+      "explanation": "Patch the narrowest boundary and let the test framework restore state so tests remain order-independent.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -3559,7 +3559,7 @@
       "type": "practical",
       "title": "Monkeypatch Global State Carefully Review",
       "prompt": "Patch the narrowest boundary and let the test framework restore state so tests remain order-independent.",
-      "explanation": "Senior review standard: make the intended runtime behavior explicit, add a narrow test around the edge case, and avoid hiding the rule in clever syntax.",
+      "explanation": "Make runtime behavior explicit, test the edge case, and keep the rule visible in clear syntax.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -3572,8 +3572,8 @@
       "id": "testing-production-monkeypatch-snippet",
       "type": "snippet",
       "title": "Monkeypatch Global State Carefully Snippet",
-      "prompt": "Read the snippet as a compact reminder for monkeypatch global state carefully.",
-      "explanation": "The code highlights the production shape of the concept. In interviews, narrate the invariant before discussing syntax.",
+      "prompt": "Review this example: Monkeypatch Global State Carefully.",
+      "explanation": "Review the production behavior shown here. In interviews, state the invariant before discussing syntax.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -3588,7 +3588,7 @@
       "type": "interview",
       "title": "Monkeypatch Global State Carefully Interview",
       "prompt": "Why is global state especially risky in a Python test suite?",
-      "explanation": "Monkeypatching helps isolate environment, time, or dependencies during tests. A strong answer states the rule, names the common trap, and explains the production consequence.",
+      "explanation": "Monkeypatching helps isolate environment, time, or dependencies during tests. State the rule, common trap, and production consequence.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -3602,7 +3602,7 @@
       "type": "concept",
       "title": "Logging Is Observability Input",
       "prompt": "Python logging should describe decisions and context, not just stack traces.",
-      "explanation": "Logs with no request IDs, tenant IDs, or domain facts force production debugging back into guesswork. This is the baseline concept to remember before comparing Python with TypeScript or JavaScript.",
+      "explanation": "Logs with no request IDs, tenant IDs, or domain facts force production debugging back into guesswork.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -3616,7 +3616,7 @@
       "type": "practical",
       "title": "Logging Is Observability Input Review",
       "prompt": "Logs with no request IDs, tenant IDs, or domain facts force production debugging back into guesswork.",
-      "explanation": "Senior review standard: make the intended runtime behavior explicit, add a narrow test around the edge case, and avoid hiding the rule in clever syntax.",
+      "explanation": "Make runtime behavior explicit, test the edge case, and keep the rule visible in clear syntax.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -3629,8 +3629,8 @@
       "id": "testing-production-logging-snippet",
       "type": "snippet",
       "title": "Logging Is Observability Input Snippet",
-      "prompt": "Read the snippet as a compact reminder for logging is observability input.",
-      "explanation": "The code highlights the production shape of the concept. In interviews, narrate the invariant before discussing syntax.",
+      "prompt": "Review this example: Logging Is Observability Input.",
+      "explanation": "Review the production behavior shown here. In interviews, state the invariant before discussing syntax.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -3645,7 +3645,7 @@
       "type": "interview",
       "title": "Logging Is Observability Input Interview",
       "prompt": "What makes a Python service log useful during an incident?",
-      "explanation": "Python logging should describe decisions and context, not just stack traces. A strong answer states the rule, names the common trap, and explains the production consequence.",
+      "explanation": "Python logging should describe decisions and context, not just stack traces. State the rule, common trap, and production consequence.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -3659,7 +3659,7 @@
       "type": "concept",
       "title": "Style Is Maintenance Tool",
       "prompt": "PEP 8 and local style rules reduce review noise and make intent easier to scan.",
-      "explanation": "Formatting debates should be automated; review attention belongs on behavior and contracts. This is the baseline concept to remember before comparing Python with TypeScript or JavaScript.",
+      "explanation": "Formatting debates should be automated; review attention belongs on behavior and contracts.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -3673,7 +3673,7 @@
       "type": "practical",
       "title": "Style Is Maintenance Tool Review",
       "prompt": "Formatting debates should be automated; review attention belongs on behavior and contracts.",
-      "explanation": "Senior review standard: make the intended runtime behavior explicit, add a narrow test around the edge case, and avoid hiding the rule in clever syntax.",
+      "explanation": "Make runtime behavior explicit, test the edge case, and keep the rule visible in clear syntax.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -3686,8 +3686,8 @@
       "id": "testing-production-style-snippet",
       "type": "snippet",
       "title": "Style Is Maintenance Tool Snippet",
-      "prompt": "Read the snippet as a compact reminder for style is maintenance tool.",
-      "explanation": "The code highlights the production shape of the concept. In interviews, narrate the invariant before discussing syntax.",
+      "prompt": "Review this example: Style Is Maintenance Tool.",
+      "explanation": "Review the production behavior shown here. In interviews, state the invariant before discussing syntax.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -3702,7 +3702,7 @@
       "type": "interview",
       "title": "Style Is Maintenance Tool Interview",
       "prompt": "Why do senior teams automate Python formatting and linting?",
-      "explanation": "PEP 8 and local style rules reduce review noise and make intent easier to scan. A strong answer states the rule, names the common trap, and explains the production consequence.",
+      "explanation": "PEP 8 and local style rules reduce review noise and make intent easier to scan. State the rule, common trap, and production consequence.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -3716,7 +3716,7 @@
       "type": "concept",
       "title": "Explicit Boundaries Age Better",
       "prompt": "Parsing, validation, persistence, and domain decisions should be separated enough to test independently.",
-      "explanation": "A single function that reads HTTP, validates, mutates state, and formats output becomes hard to reason about. This is the baseline concept to remember before comparing Python with TypeScript or JavaScript.",
+      "explanation": "A single function that reads HTTP, validates, mutates state, and formats output becomes hard to reason about.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -3730,7 +3730,7 @@
       "type": "practical",
       "title": "Explicit Boundaries Age Better Review",
       "prompt": "A single function that reads HTTP, validates, mutates state, and formats output becomes hard to reason about.",
-      "explanation": "Senior review standard: make the intended runtime behavior explicit, add a narrow test around the edge case, and avoid hiding the rule in clever syntax.",
+      "explanation": "Make runtime behavior explicit, test the edge case, and keep the rule visible in clear syntax.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -3743,8 +3743,8 @@
       "id": "testing-production-boundaries-snippet",
       "type": "snippet",
       "title": "Explicit Boundaries Age Better Snippet",
-      "prompt": "Read the snippet as a compact reminder for explicit boundaries age better.",
-      "explanation": "The code highlights the production shape of the concept. In interviews, narrate the invariant before discussing syntax.",
+      "prompt": "Review this example: Explicit Boundaries Age Better.",
+      "explanation": "Review the production behavior shown here. In interviews, state the invariant before discussing syntax.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -3759,7 +3759,7 @@
       "type": "interview",
       "title": "Explicit Boundaries Age Better Interview",
       "prompt": "How would you refactor a Python endpoint that does everything inline?",
-      "explanation": "Parsing, validation, persistence, and domain decisions should be separated enough to test independently. A strong answer states the rule, names the common trap, and explains the production consequence.",
+      "explanation": "Parsing, validation, persistence, and domain decisions should be separated enough to test independently. State the rule, common trap, and production consequence.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -3773,7 +3773,7 @@
       "type": "concept",
       "title": "Resource Lifetime Is Designed",
       "prompt": "Clients, pools, files, and spans need clear construction and cleanup lifetimes.",
-      "explanation": "Creating expensive clients per request hurts latency; keeping them forever without cleanup hurts deploys and tests. This is the baseline concept to remember before comparing Python with TypeScript or JavaScript.",
+      "explanation": "Creating expensive clients per request hurts latency; keeping them forever without cleanup hurts deploys and tests.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -3787,7 +3787,7 @@
       "type": "practical",
       "title": "Resource Lifetime Is Designed Review",
       "prompt": "Creating expensive clients per request hurts latency; keeping them forever without cleanup hurts deploys and tests.",
-      "explanation": "Senior review standard: make the intended runtime behavior explicit, add a narrow test around the edge case, and avoid hiding the rule in clever syntax.",
+      "explanation": "Make runtime behavior explicit, test the edge case, and keep the rule visible in clear syntax.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -3800,8 +3800,8 @@
       "id": "testing-production-resource-lifetime-snippet",
       "type": "snippet",
       "title": "Resource Lifetime Is Designed Snippet",
-      "prompt": "Read the snippet as a compact reminder for resource lifetime is designed.",
-      "explanation": "The code highlights the production shape of the concept. In interviews, narrate the invariant before discussing syntax.",
+      "prompt": "Review this example: Resource Lifetime Is Designed.",
+      "explanation": "Review the production behavior shown here. In interviews, state the invariant before discussing syntax.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -3816,7 +3816,7 @@
       "type": "interview",
       "title": "Resource Lifetime Is Designed Interview",
       "prompt": "Where should database clients be created in a Python web service?",
-      "explanation": "Clients, pools, files, and spans need clear construction and cleanup lifetimes. A strong answer states the rule, names the common trap, and explains the production consequence.",
+      "explanation": "Clients, pools, files, and spans need clear construction and cleanup lifetimes. State the rule, common trap, and production consequence.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -3830,7 +3830,7 @@
       "type": "concept",
       "title": "Configuration Is Parsed Once",
       "prompt": "Environment strings should be parsed into typed configuration near process startup.",
-      "explanation": "Reading and converting environment values throughout the codebase spreads failure modes everywhere. This is the baseline concept to remember before comparing Python with TypeScript or JavaScript.",
+      "explanation": "Reading and converting environment values throughout the codebase spreads failure modes everywhere.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -3844,7 +3844,7 @@
       "type": "practical",
       "title": "Configuration Is Parsed Once Review",
       "prompt": "Reading and converting environment values throughout the codebase spreads failure modes everywhere.",
-      "explanation": "Senior review standard: make the intended runtime behavior explicit, add a narrow test around the edge case, and avoid hiding the rule in clever syntax.",
+      "explanation": "Make runtime behavior explicit, test the edge case, and keep the rule visible in clear syntax.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -3857,8 +3857,8 @@
       "id": "testing-production-configuration-snippet",
       "type": "snippet",
       "title": "Configuration Is Parsed Once Snippet",
-      "prompt": "Read the snippet as a compact reminder for configuration is parsed once.",
-      "explanation": "The code highlights the production shape of the concept. In interviews, narrate the invariant before discussing syntax.",
+      "prompt": "Review this example: Configuration Is Parsed Once.",
+      "explanation": "Review the production behavior shown here. In interviews, state the invariant before discussing syntax.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -3873,7 +3873,7 @@
       "type": "interview",
       "title": "Configuration Is Parsed Once Interview",
       "prompt": "Why is a Settings object cleaner than repeated os.getenv calls?",
-      "explanation": "Environment strings should be parsed into typed configuration near process startup. A strong answer states the rule, names the common trap, and explains the production consequence.",
+      "explanation": "Environment strings should be parsed into typed configuration near process startup. State the rule, common trap, and production consequence.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -3887,7 +3887,7 @@
       "type": "concept",
       "title": "Error Taxonomy Matters",
       "prompt": "Separate user errors, dependency failures, invariant violations, and programmer bugs.",
-      "explanation": "One generic exception type makes retries, alerts, and API responses harder to design. This is the baseline concept to remember before comparing Python with TypeScript or JavaScript.",
+      "explanation": "One generic exception type makes retries, alerts, and API responses harder to design.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -3901,7 +3901,7 @@
       "type": "practical",
       "title": "Error Taxonomy Matters Review",
       "prompt": "One generic exception type makes retries, alerts, and API responses harder to design.",
-      "explanation": "Senior review standard: make the intended runtime behavior explicit, add a narrow test around the edge case, and avoid hiding the rule in clever syntax.",
+      "explanation": "Make runtime behavior explicit, test the edge case, and keep the rule visible in clear syntax.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -3914,8 +3914,8 @@
       "id": "testing-production-error-taxonomy-snippet",
       "type": "snippet",
       "title": "Error Taxonomy Matters Snippet",
-      "prompt": "Read the snippet as a compact reminder for error taxonomy matters.",
-      "explanation": "The code highlights the production shape of the concept. In interviews, narrate the invariant before discussing syntax.",
+      "prompt": "Review this example: Error Taxonomy Matters.",
+      "explanation": "Review the production behavior shown here. In interviews, state the invariant before discussing syntax.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -3930,7 +3930,7 @@
       "type": "interview",
       "title": "Error Taxonomy Matters Interview",
       "prompt": "How should Python services classify errors for callers and operators?",
-      "explanation": "Separate user errors, dependency failures, invariant violations, and programmer bugs. A strong answer states the rule, names the common trap, and explains the production consequence.",
+      "explanation": "Separate user errors, dependency failures, invariant violations, and programmer bugs. State the rule, common trap, and production consequence.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -3944,7 +3944,7 @@
       "type": "concept",
       "title": "Metrics Need Cardinality Discipline",
       "prompt": "Metric labels should explain aggregate behavior without exploding cardinality.",
-      "explanation": "Putting raw user IDs or request IDs in metric labels can damage observability cost and performance. This is the baseline concept to remember before comparing Python with TypeScript or JavaScript.",
+      "explanation": "Putting raw user IDs or request IDs in metric labels can damage observability cost and performance.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -3958,7 +3958,7 @@
       "type": "practical",
       "title": "Metrics Need Cardinality Discipline Review",
       "prompt": "Putting raw user IDs or request IDs in metric labels can damage observability cost and performance.",
-      "explanation": "Senior review standard: make the intended runtime behavior explicit, add a narrow test around the edge case, and avoid hiding the rule in clever syntax.",
+      "explanation": "Make runtime behavior explicit, test the edge case, and keep the rule visible in clear syntax.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -3971,8 +3971,8 @@
       "id": "testing-production-metric-cardinality-snippet",
       "type": "snippet",
       "title": "Metrics Need Cardinality Discipline Snippet",
-      "prompt": "Read the snippet as a compact reminder for metrics need cardinality discipline.",
-      "explanation": "The code highlights the production shape of the concept. In interviews, narrate the invariant before discussing syntax.",
+      "prompt": "Review this example: Metrics Need Cardinality Discipline.",
+      "explanation": "Review the production behavior shown here. In interviews, state the invariant before discussing syntax.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -3987,7 +3987,7 @@
       "type": "interview",
       "title": "Metrics Need Cardinality Discipline Interview",
       "prompt": "What labels are safe for Python service metrics?",
-      "explanation": "Metric labels should explain aggregate behavior without exploding cardinality. A strong answer states the rule, names the common trap, and explains the production consequence.",
+      "explanation": "Metric labels should explain aggregate behavior without exploding cardinality. State the rule, common trap, and production consequence.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -4001,7 +4001,7 @@
       "type": "concept",
       "title": "GIL Scope",
       "prompt": "The Global Interpreter Lock affects CPU-bound Python threads in CPython.",
-      "explanation": "Threads can still help I/O-bound work, but CPU-bound parallelism usually needs processes, native code, or another execution model. This is the baseline concept to remember before comparing Python with TypeScript or JavaScript.",
+      "explanation": "Threads can still help I/O-bound work, but CPU-bound parallelism usually needs processes, native code, or another execution model.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -4015,7 +4015,7 @@
       "type": "practical",
       "title": "GIL Scope Review",
       "prompt": "Threads can still help I/O-bound work, but CPU-bound parallelism usually needs processes, native code, or another execution model.",
-      "explanation": "Senior review standard: make the intended runtime behavior explicit, add a narrow test around the edge case, and avoid hiding the rule in clever syntax.",
+      "explanation": "Make runtime behavior explicit, test the edge case, and keep the rule visible in clear syntax.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -4028,8 +4028,8 @@
       "id": "interview-theory-gil-snippet",
       "type": "snippet",
       "title": "GIL Scope Snippet",
-      "prompt": "Read the snippet as a compact reminder for gil scope.",
-      "explanation": "The code highlights the production shape of the concept. In interviews, narrate the invariant before discussing syntax.",
+      "prompt": "Review this example: GIL Scope.",
+      "explanation": "Review the production behavior shown here. In interviews, state the invariant before discussing syntax.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -4044,7 +4044,7 @@
       "type": "interview",
       "title": "GIL Scope Interview",
       "prompt": "What is the GIL, and why does it not make all threading useless?",
-      "explanation": "The Global Interpreter Lock affects CPU-bound Python threads in CPython. A strong answer states the rule, names the common trap, and explains the production consequence.",
+      "explanation": "The Global Interpreter Lock affects CPU-bound Python threads in CPython. State the rule, common trap, and production consequence.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -4057,7 +4057,7 @@
       "type": "concept",
       "title": "Decorators Wrap Callables",
       "prompt": "A decorator is a callable that receives an object and returns a replacement object.",
-      "explanation": "Use functools.wraps so debugging, docs, and framework introspection preserve original function metadata. This is the baseline concept to remember before comparing Python with TypeScript or JavaScript.",
+      "explanation": "Use functools.wraps so debugging, docs, and framework introspection preserve original function metadata.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -4071,7 +4071,7 @@
       "type": "practical",
       "title": "Decorators Wrap Callables Review",
       "prompt": "Use functools.wraps so debugging, docs, and framework introspection preserve original function metadata.",
-      "explanation": "Senior review standard: make the intended runtime behavior explicit, add a narrow test around the edge case, and avoid hiding the rule in clever syntax.",
+      "explanation": "Make runtime behavior explicit, test the edge case, and keep the rule visible in clear syntax.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -4084,8 +4084,8 @@
       "id": "interview-theory-decorators-snippet",
       "type": "snippet",
       "title": "Decorators Wrap Callables Snippet",
-      "prompt": "Read the snippet as a compact reminder for decorators wrap callables.",
-      "explanation": "The code highlights the production shape of the concept. In interviews, narrate the invariant before discussing syntax.",
+      "prompt": "Review this example: Decorators Wrap Callables.",
+      "explanation": "Review the production behavior shown here. In interviews, state the invariant before discussing syntax.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -4100,7 +4100,7 @@
       "type": "interview",
       "title": "Decorators Wrap Callables Interview",
       "prompt": "How would you implement a timing decorator in Python?",
-      "explanation": "A decorator is a callable that receives an object and returns a replacement object. A strong answer states the rule, names the common trap, and explains the production consequence.",
+      "explanation": "A decorator is a callable that receives an object and returns a replacement object. State the rule, common trap, and production consequence.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -4113,7 +4113,7 @@
       "type": "concept",
       "title": "Property Versus Method",
       "prompt": "A property exposes computed attribute access, while a method signals an action or parameterized operation.",
-      "explanation": "Avoid expensive or surprising I/O behind property access; callers expect attributes to be cheap. This is the baseline concept to remember before comparing Python with TypeScript or JavaScript.",
+      "explanation": "Avoid expensive or surprising I/O behind property access; callers expect attributes to be cheap.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -4127,7 +4127,7 @@
       "type": "practical",
       "title": "Property Versus Method Review",
       "prompt": "Avoid expensive or surprising I/O behind property access; callers expect attributes to be cheap.",
-      "explanation": "Senior review standard: make the intended runtime behavior explicit, add a narrow test around the edge case, and avoid hiding the rule in clever syntax.",
+      "explanation": "Make runtime behavior explicit, test the edge case, and keep the rule visible in clear syntax.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -4140,8 +4140,8 @@
       "id": "interview-theory-property-vs-method-snippet",
       "type": "snippet",
       "title": "Property Versus Method Snippet",
-      "prompt": "Read the snippet as a compact reminder for property versus method.",
-      "explanation": "The code highlights the production shape of the concept. In interviews, narrate the invariant before discussing syntax.",
+      "prompt": "Review this example: Property Versus Method.",
+      "explanation": "Review the production behavior shown here. In interviews, state the invariant before discussing syntax.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -4156,7 +4156,7 @@
       "type": "interview",
       "title": "Property Versus Method Interview",
       "prompt": "When should a computed value be a method instead of @property?",
-      "explanation": "A property exposes computed attribute access, while a method signals an action or parameterized operation. A strong answer states the rule, names the common trap, and explains the production consequence.",
+      "explanation": "A property exposes computed attribute access, while a method signals an action or parameterized operation. State the rule, common trap, and production consequence.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -4169,7 +4169,7 @@
       "type": "concept",
       "title": "Hashability Contract",
       "prompt": "Hashable objects need stable equality and hash behavior while they are keys in dicts or members of sets.",
-      "explanation": "Mutable objects that change equality-relevant fields can corrupt lookup expectations. This is the baseline concept to remember before comparing Python with TypeScript or JavaScript.",
+      "explanation": "Mutable objects that change equality-relevant fields can corrupt lookup expectations.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -4183,7 +4183,7 @@
       "type": "practical",
       "title": "Hashability Contract Review",
       "prompt": "Mutable objects that change equality-relevant fields can corrupt lookup expectations.",
-      "explanation": "Senior review standard: make the intended runtime behavior explicit, add a narrow test around the edge case, and avoid hiding the rule in clever syntax.",
+      "explanation": "Make runtime behavior explicit, test the edge case, and keep the rule visible in clear syntax.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -4196,8 +4196,8 @@
       "id": "interview-theory-hashability-snippet",
       "type": "snippet",
       "title": "Hashability Contract Snippet",
-      "prompt": "Read the snippet as a compact reminder for hashability contract.",
-      "explanation": "The code highlights the production shape of the concept. In interviews, narrate the invariant before discussing syntax.",
+      "prompt": "Review this example: Hashability Contract.",
+      "explanation": "Review the production behavior shown here. In interviews, state the invariant before discussing syntax.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -4212,7 +4212,7 @@
       "type": "interview",
       "title": "Hashability Contract Interview",
       "prompt": "Why are lists unhashable but tuples can be hashable?",
-      "explanation": "Hashable objects need stable equality and hash behavior while they are keys in dicts or members of sets. A strong answer states the rule, names the common trap, and explains the production consequence.",
+      "explanation": "Hashable objects need stable equality and hash behavior while they are keys in dicts or members of sets. State the rule, common trap, and production consequence.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -4225,7 +4225,7 @@
       "type": "concept",
       "title": "isinstance Versus Duck Typing",
       "prompt": "Python often prefers capability checks and protocols over rigid concrete type checks.",
-      "explanation": "Overusing isinstance makes extension harder and can reject valid objects that satisfy the needed behavior. This is the baseline concept to remember before comparing Python with TypeScript or JavaScript.",
+      "explanation": "Overusing isinstance makes extension harder and can reject valid objects that satisfy the needed behavior.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -4239,7 +4239,7 @@
       "type": "practical",
       "title": "isinstance Versus Duck Typing Review",
       "prompt": "Overusing isinstance makes extension harder and can reject valid objects that satisfy the needed behavior.",
-      "explanation": "Senior review standard: make the intended runtime behavior explicit, add a narrow test around the edge case, and avoid hiding the rule in clever syntax.",
+      "explanation": "Make runtime behavior explicit, test the edge case, and keep the rule visible in clear syntax.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -4252,8 +4252,8 @@
       "id": "interview-theory-duck-typing-snippet",
       "type": "snippet",
       "title": "isinstance Versus Duck Typing Snippet",
-      "prompt": "Read the snippet as a compact reminder for isinstance versus duck typing.",
-      "explanation": "The code highlights the production shape of the concept. In interviews, narrate the invariant before discussing syntax.",
+      "prompt": "Review this example: isinstance Versus Duck Typing.",
+      "explanation": "Review the production behavior shown here. In interviews, state the invariant before discussing syntax.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -4268,7 +4268,7 @@
       "type": "interview",
       "title": "isinstance Versus Duck Typing Interview",
       "prompt": "When is isinstance appropriate in Python code?",
-      "explanation": "Python often prefers capability checks and protocols over rigid concrete type checks. A strong answer states the rule, names the common trap, and explains the production consequence.",
+      "explanation": "Python often prefers capability checks and protocols over rigid concrete type checks. State the rule, common trap, and production consequence.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -4281,7 +4281,7 @@
       "type": "concept",
       "title": "Metaclasses Are Rare",
       "prompt": "Metaclasses customize class creation and are usually framework-level tools.",
-      "explanation": "Most application problems need decorators, descriptors, or simpler composition instead of metaclasses. This is the baseline concept to remember before comparing Python with TypeScript or JavaScript.",
+      "explanation": "Most application problems need decorators, descriptors, or simpler composition instead of metaclasses.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -4295,7 +4295,7 @@
       "type": "practical",
       "title": "Metaclasses Are Rare Review",
       "prompt": "Most application problems need decorators, descriptors, or simpler composition instead of metaclasses.",
-      "explanation": "Senior review standard: make the intended runtime behavior explicit, add a narrow test around the edge case, and avoid hiding the rule in clever syntax.",
+      "explanation": "Make runtime behavior explicit, test the edge case, and keep the rule visible in clear syntax.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -4308,8 +4308,8 @@
       "id": "interview-theory-metaclasses-snippet",
       "type": "snippet",
       "title": "Metaclasses Are Rare Snippet",
-      "prompt": "Read the snippet as a compact reminder for metaclasses are rare.",
-      "explanation": "The code highlights the production shape of the concept. In interviews, narrate the invariant before discussing syntax.",
+      "prompt": "Review this example: Metaclasses Are Rare.",
+      "explanation": "Review the production behavior shown here. In interviews, state the invariant before discussing syntax.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -4324,7 +4324,7 @@
       "type": "interview",
       "title": "Metaclasses Are Rare Interview",
       "prompt": "What is a metaclass, and why should application code rarely need one?",
-      "explanation": "Metaclasses customize class creation and are usually framework-level tools. A strong answer states the rule, names the common trap, and explains the production consequence.",
+      "explanation": "Metaclasses customize class creation and are usually framework-level tools. State the rule, common trap, and production consequence.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -4337,7 +4337,7 @@
       "type": "concept",
       "title": "Import Cycles Signal Design Pressure",
       "prompt": "Circular imports often reveal modules that know too much about each other.",
-      "explanation": "Local imports can break a cycle tactically, but the design may need clearer boundaries. This is the baseline concept to remember before comparing Python with TypeScript or JavaScript.",
+      "explanation": "Local imports can break a cycle tactically, but the design may need clearer boundaries.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -4351,7 +4351,7 @@
       "type": "practical",
       "title": "Import Cycles Signal Design Pressure Review",
       "prompt": "Local imports can break a cycle tactically, but the design may need clearer boundaries.",
-      "explanation": "Senior review standard: make the intended runtime behavior explicit, add a narrow test around the edge case, and avoid hiding the rule in clever syntax.",
+      "explanation": "Make runtime behavior explicit, test the edge case, and keep the rule visible in clear syntax.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -4364,8 +4364,8 @@
       "id": "interview-theory-import-cycles-snippet",
       "type": "snippet",
       "title": "Import Cycles Signal Design Pressure Snippet",
-      "prompt": "Read the snippet as a compact reminder for import cycles signal design pressure.",
-      "explanation": "The code highlights the production shape of the concept. In interviews, narrate the invariant before discussing syntax.",
+      "prompt": "Review this example: Import Cycles Signal Design Pressure.",
+      "explanation": "Review the production behavior shown here. In interviews, state the invariant before discussing syntax.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -4380,7 +4380,7 @@
       "type": "interview",
       "title": "Import Cycles Signal Design Pressure Interview",
       "prompt": "How do you debug and fix a circular import in Python?",
-      "explanation": "Circular imports often reveal modules that know too much about each other. A strong answer states the rule, names the common trap, and explains the production consequence.",
+      "explanation": "Circular imports often reveal modules that know too much about each other. State the rule, common trap, and production consequence.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -4393,7 +4393,7 @@
       "type": "concept",
       "title": "deepcopy Is Not Domain Modeling",
       "prompt": "copy.deepcopy recursively duplicates object graphs, but it is not a substitute for clear ownership.",
-      "explanation": "Deepcopy can copy too much, fail on resources, or preserve semantics nobody intended. This is the baseline concept to remember before comparing Python with TypeScript or JavaScript.",
+      "explanation": "Deepcopy can copy too much, fail on resources, or preserve semantics nobody intended.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -4407,7 +4407,7 @@
       "type": "practical",
       "title": "deepcopy Is Not Domain Modeling Review",
       "prompt": "Deepcopy can copy too much, fail on resources, or preserve semantics nobody intended.",
-      "explanation": "Senior review standard: make the intended runtime behavior explicit, add a narrow test around the edge case, and avoid hiding the rule in clever syntax.",
+      "explanation": "Make runtime behavior explicit, test the edge case, and keep the rule visible in clear syntax.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -4420,8 +4420,8 @@
       "id": "interview-theory-deepcopy-snippet",
       "type": "snippet",
       "title": "deepcopy Is Not Domain Modeling Snippet",
-      "prompt": "Read the snippet as a compact reminder for deepcopy is not domain modeling.",
-      "explanation": "The code highlights the production shape of the concept. In interviews, narrate the invariant before discussing syntax.",
+      "prompt": "Review this example: deepcopy Is Not Domain Modeling.",
+      "explanation": "Review the production behavior shown here. In interviews, state the invariant before discussing syntax.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -4436,7 +4436,7 @@
       "type": "interview",
       "title": "deepcopy Is Not Domain Modeling Interview",
       "prompt": "Why might deepcopy be a smell in production Python code?",
-      "explanation": "copy.deepcopy recursively duplicates object graphs, but it is not a substitute for clear ownership. A strong answer states the rule, names the common trap, and explains the production consequence.",
+      "explanation": "copy.deepcopy recursively duplicates object graphs, but it is not a substitute for clear ownership. State the rule, common trap, and production consequence.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -4449,7 +4449,7 @@
       "type": "concept",
       "title": "Exception Chaining Preserves Cause",
       "prompt": "raise ... from exc records the underlying cause while presenting a domain-specific error.",
-      "explanation": "Dropping the original exception loses debugging context; leaking raw dependency errors leaks implementation details. This is the baseline concept to remember before comparing Python with TypeScript or JavaScript.",
+      "explanation": "Dropping the original exception loses debugging context; leaking raw dependency errors leaks implementation details.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -4463,7 +4463,7 @@
       "type": "practical",
       "title": "Exception Chaining Preserves Cause Review",
       "prompt": "Dropping the original exception loses debugging context; leaking raw dependency errors leaks implementation details.",
-      "explanation": "Senior review standard: make the intended runtime behavior explicit, add a narrow test around the edge case, and avoid hiding the rule in clever syntax.",
+      "explanation": "Make runtime behavior explicit, test the edge case, and keep the rule visible in clear syntax.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -4476,8 +4476,8 @@
       "id": "interview-theory-exception-chaining-snippet",
       "type": "snippet",
       "title": "Exception Chaining Preserves Cause Snippet",
-      "prompt": "Read the snippet as a compact reminder for exception chaining preserves cause.",
-      "explanation": "The code highlights the production shape of the concept. In interviews, narrate the invariant before discussing syntax.",
+      "prompt": "Review this example: Exception Chaining Preserves Cause.",
+      "explanation": "Review the production behavior shown here. In interviews, state the invariant before discussing syntax.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -4492,7 +4492,7 @@
       "type": "interview",
       "title": "Exception Chaining Preserves Cause Interview",
       "prompt": "Why use raise DomainError(...) from exc in Python?",
-      "explanation": "raise ... from exc records the underlying cause while presenting a domain-specific error. A strong answer states the rule, names the common trap, and explains the production consequence.",
+      "explanation": "raise ... from exc records the underlying cause while presenting a domain-specific error. State the rule, common trap, and production consequence.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -4505,7 +4505,7 @@
       "type": "concept",
       "title": "Small Functions Carry Intent",
       "prompt": "Python favors readable, intention-revealing functions over clever dense expressions.",
-      "explanation": "Senior code is not shorter at all costs; it makes behavior, failure, and data shape easy to inspect. This is the baseline concept to remember before comparing Python with TypeScript or JavaScript.",
+      "explanation": "Senior code is not shorter at all costs; it makes behavior, failure, and data shape easy to inspect.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -4519,7 +4519,7 @@
       "type": "practical",
       "title": "Small Functions Carry Intent Review",
       "prompt": "Senior code is not shorter at all costs; it makes behavior, failure, and data shape easy to inspect.",
-      "explanation": "Senior review standard: make the intended runtime behavior explicit, add a narrow test around the edge case, and avoid hiding the rule in clever syntax.",
+      "explanation": "Make runtime behavior explicit, test the edge case, and keep the rule visible in clear syntax.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -4532,8 +4532,8 @@
       "id": "interview-theory-small-functions-snippet",
       "type": "snippet",
       "title": "Small Functions Carry Intent Snippet",
-      "prompt": "Read the snippet as a compact reminder for small functions carry intent.",
-      "explanation": "The code highlights the production shape of the concept. In interviews, narrate the invariant before discussing syntax.",
+      "prompt": "Review this example: Small Functions Carry Intent.",
+      "explanation": "Review the production behavior shown here. In interviews, state the invariant before discussing syntax.",
       "difficulty": "senior",
       "tags": [
         "python",
@@ -4548,7 +4548,7 @@
       "type": "interview",
       "title": "Small Functions Carry Intent Interview",
       "prompt": "What Python code quality signals do you look for in a senior interview review?",
-      "explanation": "Python favors readable, intention-revealing functions over clever dense expressions. A strong answer states the rule, names the common trap, and explains the production consequence.",
+      "explanation": "Python favors readable, intention-revealing functions over clever dense expressions. State the rule, common trap, and production consequence.",
       "difficulty": "senior",
       "tags": [
         "python",

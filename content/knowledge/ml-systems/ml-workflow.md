@@ -14,7 +14,7 @@ status: published
 
 ## Primary reading
 
-Read Harvard’s [ML Workflow chapter](https://mlsysbook.ai/vol1/ml_workflow/ml_workflow.html). This guide emphasizes the artifacts that let another engineer audit the workflow.
+Read Harvard’s [ML Workflow chapter](https://mlsysbook.ai/vol1/ml_workflow/ml_workflow.html). Use this guide to produce artifacts another engineer can audit.
 
 ## A loop, not a waterfall
 
@@ -34,5 +34,5 @@ Plan validation, shadowing or limited rollout, rollback, and alert ownership. Mo
 
 ## Practical output
 
-Create an experiment ledger with a prediction, independent variable, controlled factors, success criteria, result, and next action. The ledger should make a failed experiment useful rather than disposable.
+Create an experiment ledger with a prediction, independent variable, controlled factors, success criteria, result, and next action. Keep failed experiments in the ledger so their results remain useful.
 

@@ -41,7 +41,7 @@ export function InterviewCatalog({ index }: { index: ContentIndex }) {
               Interview prep
             </h1>
             <p className="mt-4 max-w-3xl text-base font-normal leading-7 text-[#68737d]">
-              Study anonymous real-world exercises alongside community-reported company preparation. Company prompts are not official question banks.
+              Practice anonymous real-world exercises and community-reported company questions. Company prompts are not official question banks.
             </p>
 
             <section className="mt-9" data-testid="real-world-interviews-section">
@@ -89,10 +89,10 @@ export function InterviewCatalog({ index }: { index: ContentIndex }) {
                   onValueChange={setDifficulty}
                   testId="interview-difficulty-filter"
                   options={[
-                    { value: "all", label: "All levels", description: "Every question difficulty" },
+                    { value: "all", label: "All levels", description: "All difficulty levels" },
                     { value: "foundation", label: "Foundation", description: "Core interview patterns" },
                     { value: "practitioner", label: "Practitioner", description: "Applied problem solving" },
-                    { value: "senior", label: "Senior", description: "Tradeoff-heavy problems" },
+                    { value: "senior", label: "Senior", description: "Problems involving tradeoffs" },
                     { value: "principal", label: "Principal", description: "Advanced problems" },
                   ]}
                 />

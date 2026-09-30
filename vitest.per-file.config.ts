@@ -26,6 +26,7 @@ export default defineConfig({
         "apps/web/src/app/api/**/route.ts",
         "apps/web/src/app/auth/**/route.ts",
         "scripts/content/**/*.ts",
+        "scripts/linkedin/worker.ts",
       ],
       exclude: [
         "**/*.{test,spec}.{ts,tsx}",

@@ -21,9 +21,9 @@ status: published
 
 ## Quality Lens
 
-RAG quality is not only answer quality. It is retrieval quality plus prompt quality plus output policy plus evaluation. A model cannot reliably answer from trusted sources if the retriever returns the wrong sources, too many sources, stale sources, or no sources.
+RAG quality depends on retrieval, prompts, output policy, and evaluation. A model cannot reliably answer from trusted sources when retrieval returns wrong, excessive, stale, or missing sources.
 
-The production question is not "does RAG work?" The question is "for which user jobs, source types, and failure modes is this RAG flow reliable enough?"
+Before production, ask which user jobs, source types, and failure modes the RAG flow handles reliably enough.
 
 ## Retrieval Failure Modes
 
@@ -40,7 +40,7 @@ Each failure should have a traceable signal.
 
 ## LangChain Flow
 
-A simple RAG flow can be a chain or an agent. Use the simpler shape first:
+RAG can use a chain or an agent. Start with the simpler flow:
 
 1. Convert the question into a retrieval query.
 2. Retrieve candidate chunks.
@@ -80,7 +80,7 @@ Build a RAG dataset with cases that represent real production risk:
 - user asks for content they cannot access
 - adversarial instruction inside retrieved text
 
-Expected output does not always need to be one exact answer. Sometimes the expected behavior is "escalate", "ask a clarifying question", or "refuse because the source is missing."
+Expected behavior may be "escalate", "ask a clarifying question", or "refuse because the source is missing" rather than one exact answer.
 
 Measure the stages separately. Retrieval metrics such as recall at `k`, precision at `k`, and mean reciprocal rank diagnose whether the evidence entered the context. Answer metrics should then test claim-level support, completeness, citation correctness, refusal quality, latency, and cost. A good final-answer score cannot tell you whether a weak retriever happened to be rescued by model memory.
 
@@ -124,11 +124,11 @@ Future editor extension:
 - fail when a citation exists but does not support the adjacent claim
 - add a test that fails when the answer cites a source that was not retrieved for that request
 
-Checking that an answer shares a word with a source is not a grounding test. Word overlap can pass a contradicted claim and fail a correct paraphrase.
+Word overlap does not prove grounding: it can pass a contradicted claim and fail a correct paraphrase.
 
 ## Principal Review Bar
 
-Principal-level RAG design treats retrieval as an owned subsystem. It has source freshness rules, permissions, evaluation datasets, observability, fallback behavior, and incident review. The model is only one part of the system.
+Treat retrieval as a subsystem with an owner, source freshness rules, permissions, evaluation datasets, observability, fallback behavior, and incident review. Review it alongside the model.
 
 ## Reference Anchors
 

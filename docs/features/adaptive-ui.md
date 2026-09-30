@@ -5,14 +5,14 @@
 - Status: `in_progress`
 - Last updated: `2026-09-05`
 - Owner thread: `n/a`
-- Current state: Implemented a shared visual refresh and persistent web/native navigation; installed native verification remains pending local toolchain repair.
+- Current state: Shared visual styles and persistent web/native navigation are implemented. Installed native verification awaits local toolchain repair.
 - Target outcome: A quieter, consistent interface with clearly named destinations and comfortable phone, tablet, and desktop layouts.
 - Code touchpoints: `apps/web/src/components/AppHeader.tsx`, `apps/web/src/app/layout.tsx`, `apps/web/src/app/globals.css`, `packages/ui/src/screens.tsx`, `packages/ui/src/tokens.ts`, `apps/mobile/app/_layout.tsx`.
 - Primary tests: `AppHeader.test.tsx`, `adaptive-navigation.test.tsx`, `adaptive-navigation.smoke.spec.ts`, `adaptive-layout.regression.spec.ts`, `.maestro/adaptive-navigation.yaml`.
 
 ## One-Minute Brief
 
-The redesign addresses competing heavy borders, repeated explanatory headings, and hard-to-find sections. It reuses existing catalog, card, dropdown, practice, reader, and native screen components. Content, search, grading, progress, authentication, external links, and route contracts stay unchanged.
+The redesign reduces heavy borders and repeated headings and makes sections easier to find. It reuses catalog, card, dropdown, practice, reader, and native screen components. Content, search, grading, progress, authentication, external links, and routes keep their existing behavior.
 
 ## Outcome / Contract
 
@@ -27,7 +27,7 @@ The redesign addresses competing heavy borders, repeated explanatory headings, a
 
 ## Current State
 
-Shared navigation, concise catalog headings, lighter typography and borders, consistent corners, focus states, and compact discovery cards are implemented. Native source coverage passes. Native execution is not yet verified: the installed Expo toolchain fails startup while requiring `expo-router/_ctx-shared`; Expo Doctor reports nine patch-version mismatches. Xcode remains 26.3, matching the previously documented native compilation blocker. Dependency upgrades are outside this presentation-only change.
+Shared navigation, concise catalog headings, lighter typography and borders, consistent corners, focus states, and compact discovery cards are implemented. Native source coverage passes. Native execution remains unverified: Expo fails startup while requiring `expo-router/_ctx-shared`, and Expo Doctor reports nine patch-version mismatches. Xcode is still 26.3, the documented native compilation blocker. This presentation change excludes dependency upgrades.
 
 ## Scope
 
@@ -48,6 +48,7 @@ Shared navigation, concise catalog headings, lighter typography and borders, con
 
 ### UI / UX
 
+- Use concrete copy that names the item or action. Shared study controls say “Next activity,” “Practice complete,” and “Quick review.” Preserve instructions, prerequisites, error meaning, and technical values when shortening text.
 - Neutral canvas, white surfaces, teal primary navigation, and restrained category colors.
 - Semibold titles, regular body copy, thin borders, and consistent 12–16 px corners replace raised heavy controls.
 - Home section actions use the same teal text treatment. Category colors remain in icons and metadata.
@@ -58,7 +59,7 @@ Shared navigation, concise catalog headings, lighter typography and borders, con
 
 ### Data Model And Persistence
 
-No changes to content schemas, generated data, persisted progress, or API contracts.
+Adaptive layout preserves content schemas, generated data, persisted progress, and API contracts.
 
 ### Business Logic
 
@@ -80,6 +81,7 @@ Keep no-result, optional-auth, renderer fallback, and recovery UI. Small screens
 
 ## Test Plan
 
+- Copy edits update text-based assertions in web component, native screen, and Playwright tests. Keep route, action, disabled-state, progress, and recovery assertions intact; run the affected suites and responsive browser checks.
 - Regression-first component tests fail before navigation implementation, then prove destination preservation, nested active states, menu links, and close behavior.
 - Vitest: `npx vitest run apps/web/src/components/AppHeader.test.tsx apps/web/src/components/HomeDiscovery.test.tsx`.
 - Jest: `npm run test:mobile -- adaptive-navigation.test.tsx`; phone menu destinations and tablet sidebar state.

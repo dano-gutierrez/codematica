@@ -72,7 +72,7 @@ test("@regression mobile user studies trigram indexes and opens the database fla
   await page.getByTestId("questionnaire-check").click();
   await expect(page.getByTestId("questionnaire-feedback")).toContainText("Correct");
   await page.getByTestId("questionnaire-finish").click();
-  await expect(page.getByTestId("questionnaire-complete")).toContainText("Refresh complete");
+  await expect(page.getByTestId("questionnaire-complete")).toContainText("Practice complete");
 
   await page.goto("/paths/database-indexes-and-search");
   await page.getByTestId("path-flashcard-feed-link").click();
@@ -150,7 +150,7 @@ test("@regression mobile user studies PostgreSQL HOT updates and completes the q
   await page.getByTestId("questionnaire-check").click();
   await expect(page.getByTestId("questionnaire-feedback")).toContainText("Correct");
   await page.getByTestId("questionnaire-finish").click();
-  await expect(page.getByTestId("questionnaire-complete")).toContainText("Refresh complete");
+  await expect(page.getByTestId("questionnaire-complete")).toContainText("Practice complete");
 
   await page.goto("/paths/database-indexes-and-search/flashcards");
   await expect(page.getByTestId("passive-flashcard-feed")).toHaveAttribute("data-ready", "true");

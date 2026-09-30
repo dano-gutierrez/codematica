@@ -15,14 +15,14 @@ status: published
 
 `こんばんは` is pronounced and learner-romanized **konbanwa**, but a Japanese input method needs **konbanha** to produce the written [は](/languages/japanese/characters/hiragana/ha).
 
-Nothing in the greeting changed from `wa` to `ha`. You are looking at two different jobs:
+The greeting did not change from `wa` to `ha`; pronunciation and spelling serve different purposes:
 
 - **Japanese spelling:** `こんばんは` tells you what is written.
 - **Phonetic kana rendering:** `こんばんわ` can show the sounds, but it is not the standard spelling of the greeting.
 - **Learner romaji:** `konbanwa` tells you how to read it.
 - **IME keys:** `konbanha` tells the keyboard how to produce the spelling `こんばんは`.
 
-An IME converts key sequences into kana. It is not judging the best way to romanize a Japanese sentence for a reader.
+An IME converts keystrokes into kana; learner romanization explains pronunciation.
 
 ## Why The Greeting Ends In は
 

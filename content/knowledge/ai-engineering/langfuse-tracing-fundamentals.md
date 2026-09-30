@@ -21,9 +21,9 @@ status: published
 
 ## Trace Design Lens
 
-A trace is the story of one request, task, or workflow. In an LLM application, that story often includes prompt assembly, retrieval, tool calls, model generations, output checks, and fallbacks.
+A trace records one request, task, or workflow. In an LLM application, it often covers prompt assembly, retrieval, tool calls, model generations, output checks, and fallbacks.
 
-Langfuse traces are built from observations. Some observations represent normal spans, such as retrieval or tool execution. Some represent model generations, where model name, prompt, response, usage, latency, and errors matter.
+Langfuse traces contain observations: ordinary spans for retrieval or tool execution, and model generations that record model name, prompt, response, usage, latency, and errors.
 
 OpenTelemetry gives the general vocabulary: tracers create spans, and exporters send traces to a backend. Langfuse applies that idea to LLM applications and adds AI-specific views for prompts, generations, scores, and datasets.
 
@@ -41,7 +41,7 @@ Capture enough to answer production questions:
 - Did the request succeed, fallback, or error?
 - Was the output later scored or annotated?
 
-Avoid capturing secrets, raw credentials, full private documents, or unnecessary personal data. Hashing a stable user identifier is pseudonymization, not anonymization: it can still enable correlation and may remain personal data. Useful debugging data should be intentionally shaped, access-controlled, and covered by retention and deletion rules.
+Avoid capturing secrets, raw credentials, full private documents, or unnecessary personal data. Hashing a stable user identifier is pseudonymization, not anonymization: it can still enable correlation and may remain personal data. Choose debugging data deliberately, control access, and define retention and deletion rules.
 
 ## Trace Shape
 
@@ -55,11 +55,11 @@ support-answer trace
   output-policy-check span
 ```
 
-If every request has a different trace shape, debugging gets harder. If every step is collapsed into one giant model call, debugging also gets harder.
+Debugging is harder when every request has a different trace shape or all steps collapse into one model call.
 
 ## Sessions
 
-A session groups multiple traces across a user journey. A chat conversation may have one trace per message, while the session shows the whole conversation. Use sessions when one user outcome spans multiple requests.
+Use a session to group traces when one user outcome spans multiple requests. A chat session, for example, may contain one trace per message.
 
 Keep the difference clear:
 
@@ -127,7 +127,7 @@ Acceptance checks:
 
 ## Principal Review Bar
 
-At principal level, tracing is a governance asset. It supports debugging, cost control, model migration, incident review, prompt experiments, and quality measurement. The trace schema should be reviewed like an API contract.
+Tracing supports governance through debugging, cost control, model migration, incident review, prompt experiments, and quality measurement. Principal engineers should review its schema like an API contract.
 
 ## Reference Anchors
 

@@ -2,7 +2,7 @@
   "slug": "frontend-interview-practice",
   "pathSlug": "frontend-interview-practice",
   "title": "Frontend Interview Review",
-  "summary": "Forty-two concise cards reinforce the contracts, recipes, pitfalls, and language-specific details of the seven frontend interview challenges.",
+  "summary": "Forty-two cards review the requirements, approaches, pitfalls, and language-specific details of the seven frontend interview challenges.",
   "audience": "Engineers reinforcing interview reasoning after guided practice.",
   "status": "published",
   "cards": [
@@ -134,7 +134,7 @@
       "type": "practical",
       "title": "Randomized Zero Matrix: Reasoning",
       "prompt": "Why is sort(() => Math.random() - 0.5) unsuitable for a uniform shuffle?",
-      "explanation": "Its inconsistent comparator does not establish uniform permutation probabilities. A random comparator violates the ordering assumptions of sorting and yields implementation-dependent bias. Fisher–Yates has a direct uniformity argument under uniform independent draws.",
+      "explanation": "A random comparator violates sorting’s ordering assumptions, so it cannot establish uniform permutation probabilities and yields implementation-dependent bias. Fisher–Yates has a direct uniformity argument under uniform independent draws.",
       "difficulty": "practitioner",
       "tags": [
         "frontend",
@@ -257,7 +257,7 @@
       "type": "interview",
       "title": "Click-to-place 5×5 Game: Pitfall",
       "prompt": "Do four matching diagonal tokens win under the stated contract?",
-      "explanation": "No; only horizontal and vertical runs count. The source names horizontal and vertical runs. Diagonal detection is a useful extension only after agreement; board fullness does not change the allowed directions.",
+      "explanation": "No; the source specifies only horizontal and vertical runs. Diagonal detection is a useful extension only after agreement; board fullness does not change the allowed directions.",
       "difficulty": "practitioner",
       "tags": [
         "frontend",

@@ -21,9 +21,9 @@ status: published
 
 ## Beginner Lens
 
-An LLM application is still an application. It receives input, decides what work to do, calls dependencies, handles errors, and returns a result. The new part is that one dependency is probabilistic: a model can produce useful language, but it can also be incomplete, overconfident, expensive, slow, or unsafe.
+An LLM application receives input, chooses work, calls dependencies, handles errors, and returns a result. One dependency is probabilistic: the model can produce useful language, but it can also be incomplete, overconfident, expensive, slow, or unsafe.
 
-The core engineering move is to stop treating the model as magic. Build a product loop around it:
+Build an engineering process around the model:
 
 1. Define the user job.
 2. Prepare the prompt and trusted context.
@@ -38,7 +38,7 @@ LangChain helps you build model, retrieval, tool, and agent flows. Langfuse help
 
 Models turn messages into completions. Prompts shape the task. Retrieval adds outside knowledge. Tools let the system take deterministic actions. Traces explain what happened. Evaluations decide whether the output was good enough.
 
-The pieces are easy to name and hard to operate. A support chatbot that answers one question might use:
+To answer one question, a support chatbot might use:
 
 - a system prompt that defines tone and policy
 - a user message from the customer
@@ -50,13 +50,13 @@ The pieces are easy to name and hard to operate. A support chatbot that answers 
 
 ## Trust Boundaries
 
-Treat every input as belonging to one of three buckets:
+Classify inputs by who controls them:
 
 - **User-controlled:** user messages, uploaded files, browser-visible content, and external websites.
 - **System-controlled:** system prompts, tool schemas, allowlists, and policy configuration.
 - **Model-generated:** draft answers, tool arguments proposed by the model, summaries, classifications, and plans.
 
-Never let model-generated data skip validation just because the model sounded confident. If the model proposes a tool call, the application still owns permission checks, schema validation, rate limits, and audit logs.
+Validate model-generated data regardless of confidence. For proposed tool calls, the application owns permission checks, schema validation, rate limits, and audit logs.
 
 ## Why Observability Comes Early
 
@@ -72,7 +72,7 @@ Record enough information to debug:
 - final output and status
 - evaluation scores or human annotations
 
-Do not record secrets or unrestricted personal data by default. A useful trace is not an excuse to build a data leak.
+Do not record secrets or unrestricted personal data by default.
 
 ## Engineering Levels
 
@@ -86,9 +86,7 @@ At the principal level, connect the AI feature to risk management: privacy, misu
 
 ## Real-Life Case: Support Answer Assistant
 
-A support team wants an assistant that answers refund questions. A weak implementation sends the user message directly to the model and hopes for the best.
-
-A production implementation does more:
+A support team needs answers to refund questions. Sending each message directly to the model provides no checks on its answer. A production implementation should:
 
 1. Classify the request as a refund-policy question.
 2. Retrieve the current refund policy and regional exceptions.
@@ -97,8 +95,6 @@ A production implementation does more:
 5. Trace the prompt, source ids, model, token usage, latency, and final status.
 6. Add failed or uncertain traces to a dataset.
 7. Run prompt experiments before changing production behavior.
-
-The difference is not the model call. The difference is the engineering loop around the model call.
 
 ## Coding Challenge: Map An LLM Request
 

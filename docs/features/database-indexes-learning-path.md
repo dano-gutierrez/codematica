@@ -19,9 +19,9 @@
 
 ## One-Minute Brief
 
-The database indexes path teaches production index judgment, PostgreSQL update mechanics, and PostgreSQL search behavior. It starts with general index tradeoffs, explains Heap-Only Tuple (HOT) updates and their relationship to MVCC, page space, indexes, pruning, and vacuuming, then covers full text search, `pg_trgm` fuzzy matching, and a hybrid query that combines exact lexeme search with typo-tolerant trigram candidates.
+This path teaches index selection, PostgreSQL update mechanics, and search behavior. It starts with general index tradeoffs, explains Heap-Only Tuple (HOT) updates and their relationship to MVCC, page space, indexes, pruning, and vacuuming, then covers full text search, `pg_trgm` fuzzy matching, and a hybrid query that combines exact lexeme search with typo-tolerant trigram candidates.
 
-The feature is content-only and local-first. It does not change runtime search, Supabase requirements, exercise schemas, or the path UI.
+This local-first content addition preserves runtime search, Supabase requirements, exercise schemas, and the path UI.
 
 ## Outcome / Contract
 
@@ -99,7 +99,7 @@ The shipped path includes:
 
 - Missing document, exercise, path, or source document references fail content indexing.
 - Invalid questionnaire structure fails content indexing through existing validation.
-- A user can open practice without `?path=`, but next-node navigation only appears for path-scoped sessions.
+- Practice works without `?path=`; navigation to the next activity appears only in path-scoped sessions.
 
 ## Code Touchpoints
 

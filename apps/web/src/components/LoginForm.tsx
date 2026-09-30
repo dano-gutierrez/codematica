@@ -53,14 +53,14 @@ export function LoginForm({ nextPath, isAuthConfigured, isAppleEnabled, shouldSy
 
   async function signInWithProvider(provider: "google" | "apple") {
     if (!isAuthConfigured) {
-      setError("Auth is not configured for this environment.");
+      setError("Sign-in is not set up here.");
       return;
     }
 
     const supabase = createBrowserSupabaseClient();
 
     if (!supabase) {
-      setError("Auth is not configured for this environment.");
+      setError("Sign-in is not set up here.");
       return;
     }
 
@@ -85,14 +85,14 @@ export function LoginForm({ nextPath, isAuthConfigured, isAppleEnabled, shouldSy
     event.preventDefault();
 
     if (!isAuthConfigured) {
-      setError("Auth is not configured for this environment.");
+      setError("Sign-in is not set up here.");
       return;
     }
 
     const supabase = createBrowserSupabaseClient();
 
     if (!supabase) {
-      setError("Auth is not configured for this environment.");
+      setError("Sign-in is not set up here.");
       return;
     }
 
@@ -135,7 +135,7 @@ export function LoginForm({ nextPath, isAuthConfigured, isAppleEnabled, shouldSy
       <div>
         <p className="text-sm font-semibold uppercase text-[#007c78]">Save your path</p>
         <h1 className="mt-2 text-3xl font-semibold tracking-tight text-[#263238]">Welcome back</h1>
-        <p className="mt-3 text-sm font-normal leading-6 text-[#68737d]">Sync your latest documents, practice, and interview progress across devices.</p>
+        <p className="mt-3 text-sm font-normal leading-6 text-[#68737d]">Sync your latest reading, practice, and interview progress across devices.</p>
       </div>
 
       <div className="mt-6 grid gap-3">
@@ -213,7 +213,7 @@ export function LoginForm({ nextPath, isAuthConfigured, isAppleEnabled, shouldSy
         {mode === "sign-in" ? "Create an account" : "Use an existing account"}
       </button>
 
-      {!isAuthConfigured ? <p className="mt-4 rounded-xl bg-[#fff5d6] p-3 text-sm font-medium text-[#7a5200]">Auth is not configured for this environment.</p> : null}
+      {!isAuthConfigured ? <p className="mt-4 rounded-xl bg-[#fff5d6] p-3 text-sm font-medium text-[#7a5200]">Sign-in is not set up here.</p> : null}
       {status ? <p className="mt-4 rounded-xl bg-[#e8f8f6] p-3 text-sm font-medium text-[#007c78]">{status}</p> : null}
       {error ? <p className="mt-4 rounded-xl bg-[#ffe8ed] p-3 text-sm font-medium text-[#a01632]">{error}</p> : null}
     </section>

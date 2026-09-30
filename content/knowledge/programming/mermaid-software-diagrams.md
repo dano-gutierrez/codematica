@@ -19,7 +19,7 @@ status: published
 
 ## Choose The Question, Then The Grammar
 
-Four software diagram families are often confused because all of them contain boxes and lines. Their questions are different:
+These four diagram families all use boxes and lines, but answer different questions:
 
 | Diagram | Best question | Main visual meaning |
 | --- | --- | --- |
@@ -28,7 +28,7 @@ Four software diagram families are often confused because all of them contain bo
 | State | Which states and transitions are legal? | Behavior over one lifecycle |
 | Entity relationship | How can data records relate? | Entities, attributes, and cardinality |
 
-Do not use a class diagram to explain runtime request order. Do not use a sequence diagram as a database schema. A precise grammar makes a diagram shorter because the reader already understands what each line means.
+Do not use a class diagram to explain runtime request order. Do not use a sequence diagram as a database schema. The right grammar makes each line's meaning clear.
 
 ## Sequence Diagram: Runtime Collaboration
 
@@ -64,7 +64,7 @@ Read a sequence diagram from top to bottom. Participants form vertical lifelines
 - `loop`, `opt`, `par`, and `critical` can express repetition, optional work, parallel work, and critical regions.
 - `Note over API,DB: ...` can explain a subtle boundary without inventing another message.
 
-Sequence diagrams become unreadable when they narrate every function call. Keep participants at the abstraction level needed by the question. A system overview might show browser, API, database, and provider. A detailed service diagram might show controller, use case, repository, and event publisher. Mixing both levels creates noise.
+Show the participants needed to answer the question, without tracing every function call. A system overview might show browser, API, database, and provider. A detailed service diagram might show controller, use case, repository, and event publisher. Mixing both levels creates noise.
 
 ## Class Diagram: Static Design
 
@@ -108,7 +108,7 @@ A class diagram explains structure that exists independently of one request:
 - `..>` means dependency.
 - Quoted values near an association express multiplicity, such as one order containing one or more lines.
 
-Do not copy every field and method from production code. A useful class diagram selects the types and relationships needed for one design discussion. Generated “all classes” diagrams usually reproduce complexity without explaining it.
+Do not copy every field and method from production code. Select the types and relationships needed for one design discussion. Generated “all classes” diagrams usually add complexity without explaining it.
 
 ## State Diagram: One Lifecycle
 
@@ -141,7 +141,7 @@ State diagrams answer “what may happen next?” rather than “what happened i
 
 A state is a durable condition, not a temporary method call. “Pending payment” is a state if the order can remain there and behavior depends on it. “Call payment API” is an action and belongs on a transition or in a sequence diagram.
 
-Review every state diagram for impossible or missing transitions. Can a confirmed order return to draft? Can a cancelled payment later become authorized through a delayed callback? The diagram should expose those product decisions.
+Review every state diagram for impossible or missing transitions. Can a confirmed order return to draft? Can a cancelled payment later become authorized through a delayed callback? Make these product decisions visible in the diagram.
 
 ## Entity-Relationship Diagram: Data Cardinality
 
@@ -198,12 +198,12 @@ For example, “Order calls PaymentGateway” is a class dependency. “Orders A
 
 ## Authoring From Easy To Hard
 
-For each family, begin with the smallest useful truth:
+Start each family with a minimal example:
 
-1. Sequence: two participants and one message.
-2. Class: two classes and one relationship.
-3. State: start, one state, and end.
-4. ER: two entities and one cardinality relationship.
+- Sequence: two participants and one message.
+- Class: two classes and one relationship.
+- State: start, one state, and end.
+- ER: two entities and one cardinality relationship.
 
 Render, check the meaning, and only then add alternatives, composite states, attributes, or multiplicities. When a complex diagram fails, temporarily remove the latest block instead of rewriting everything.
 
