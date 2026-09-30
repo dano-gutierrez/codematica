@@ -170,3 +170,7 @@ Must not regress: local anonymous operation, Auth-disabled recovery, stale progr
 ## Thread Handoff Prompt
 
 `Read docs/codex-context.md and docs/features/automated-testing-and-release-regression.md first. Preserve the coverage floors and stable check names, start behavior changes with the narrowest failing test, update the owning feature-doc test plan, run every affected local lane, and report any CI/EAS validation that still requires account-side execution.`
+
+## LinkedIn editorial validation
+
+The optional editorial workflow adds an isolated `npm run e2e:linkedin` lane (fake public Supabase configuration plus intercepted RPCs), transactional `linkedin*.test.sql`, and `npm run test:linkedin:local` against disposable local Auth/REST. Run the CLI smoke after a clean reset; it refuses remote APIs and never contacts Buffer. `npm run test:production:smoke` validates the built Next artifact with a fresh production-only dependency install. CI retains its logs alongside separate public/editorial Playwright reports. Existing coverage floors stay unchanged. See `linkedin-editorial.md` for the local worker's subprocess integration boundary and native installed-device gap.

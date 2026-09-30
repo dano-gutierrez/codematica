@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { useAdminAccess } from "@/lib/supabase/use-admin-access";
 import { usePathname } from "next/navigation";
 import { useRef } from "react";
 import { ArrowUpRight, BookOpen, Brain, Code2, Home, Languages, Map, MoreHorizontal, Network, UserRound, X } from "lucide-react";
@@ -15,6 +16,8 @@ const destinations = [
 ];
 
 export function AppNavigation() {
+  const admin = useAdminAccess();
+  const adminLink = { href: "/admin/linkedin", label: "LinkedIn", icon: Code2 };
   const pathname = usePathname() ?? "/";
   const menu = useRef<HTMLDialogElement>(null);
   const moreButton = useRef<HTMLButtonElement>(null);
@@ -28,7 +31,7 @@ export function AppNavigation() {
         <Link href="/" className="app-brand" aria-label="Codematica home"><span className="app-brand-mark"><Network size={22} aria-hidden="true" /></span>Codematica<span className="brand-dot">.</span></Link>
         <span className="sidebar-label">YOUR LEARNING SPACE</span>
         <nav aria-label="Primary navigation" className="sidebar-links">
-          {destinations.map(({ href, label, icon: Icon }) => <Link key={href} href={href} className="app-nav-link" aria-current={active === href ? "page" : undefined} data-testid={`app-nav-${label.toLowerCase()}`}><Icon size={20} aria-hidden="true" />{label}</Link>)}
+          {[...destinations, ...(admin ? [adminLink] : [])].map(({ href, label, icon: Icon }) => <Link key={href} href={href} className="app-nav-link" aria-current={active === href ? "page" : undefined} data-testid={`app-nav-${label.toLowerCase()}`}><Icon size={20} aria-hidden="true" />{label}</Link>)}
         </nav>
         <div className="sidebar-bottom"><Link href="/login" className="app-nav-link"><UserRound size={20} aria-hidden="true" />Sign in<ArrowUpRight size={16} className="ml-auto" aria-hidden="true" /></Link></div>
       </aside>
@@ -39,7 +42,7 @@ export function AppNavigation() {
       </nav>
       <dialog ref={menu} onClose={() => moreButton.current?.focus({ preventScroll: true })} className="app-more-sheet" aria-labelledby="more-title" onClick={(event) => { if (event.target === event.currentTarget) menu.current?.close(); }}>
         <div className="sheet-heading"><h2 id="more-title">Explore Codematica</h2><button type="button" onClick={() => menu.current?.close()} aria-label="Close menu"><X size={20} aria-hidden="true" /></button></div>
-        {[destinations[2], destinations[5], { href: "/login", label: "Sign in", icon: UserRound }].map(({ href, label, icon: Icon }) => <Link href={href} key={href} className="sheet-link" onClick={() => menu.current?.close()}><Icon size={22} aria-hidden="true" /><span>{label}</span><ArrowUpRight size={18} aria-hidden="true" /></Link>)}
+        {[destinations[2], destinations[5], ...(admin ? [adminLink] : []), { href: "/login", label: "Sign in", icon: UserRound }].map(({ href, label, icon: Icon }) => <Link href={href} key={href} className="sheet-link" onClick={() => menu.current?.close()}><Icon size={22} aria-hidden="true" /><span>{label}</span><ArrowUpRight size={18} aria-hidden="true" /></Link>)}
       </dialog>
     </>
   );

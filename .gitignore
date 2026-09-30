@@ -155,3 +155,6 @@ apps/mobile/.expo/
 apps/mobile/android/
 apps/mobile/ios/
 apps/mobile/credentials/
+
+# Private editorial drafts, job inputs, and backups
+.local/

@@ -98,11 +98,12 @@ const nativeDestinations = [
 ];
 
 /** Persistent shell navigation; the Expo adapter owns routing and safe-area insets. */
-export function NativeNavigation({ pathname, navigate, wide }: { pathname: string; navigate: (href: string) => void; wide: boolean }) {
+export function NativeNavigation({ pathname, navigate, wide, isAdmin = false }: { pathname: string; navigate: (href: string) => void; wide: boolean; isAdmin?: boolean }) {
   const [menuOpen, setMenuOpen] = useState(false);
   const active = pathname.startsWith("/docs/") || pathname.startsWith("/diagrams/") ? "/browse" : `/${pathname.split("/")[1]}`;
-  const items = wide ? nativeDestinations : nativeDestinations.filter(({ href }) => !["/browse", "/languages"].includes(href));
-  const menuItems = [...nativeDestinations.filter(({ href }) => ["/browse", "/languages"].includes(href)), { href: "/login", label: "Sign in", path: "M4 21v-3a8 8 0 0 1 16 0v3M16 6a4 4 0 1 1-8 0 4 4 0 0 1 8 0" }];
+  const adminDestination = { href: "/admin/linkedin", label: "LinkedIn", path: "M4 4h16v16H4ZM8 10v7m4-7v7m0-4a3 3 0 0 1 6 0v4" };
+  const items = wide ? [...nativeDestinations, ...(isAdmin ? [adminDestination] : [])] : nativeDestinations.filter(({ href }) => !["/browse", "/languages"].includes(href));
+  const menuItems = [...(isAdmin ? [adminDestination] : []), ...nativeDestinations.filter(({ href }) => ["/browse", "/languages"].includes(href)), { href: "/login", label: "Sign in", path: "M4 21v-3a8 8 0 0 1 16 0v3M16 6a4 4 0 1 1-8 0 4 4 0 0 1 8 0" }];
   return (
     <View style={wide ? styles.navigationRail : styles.navigationBar} testID={wide ? "mobile-navigation-rail" : "mobile-navigation-bar"}>
       {wide ? <Text style={styles.navigationBrand}>Codematica.</Text> : null}

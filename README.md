@@ -126,3 +126,7 @@ Keep the service role key server-side only. Do not add it to browser code or Ver
 - `packages/ui`: shared React Native-compatible screens and design tokens.
 
 Start documentation work at `docs/README.md`. See `docs/CHANGELOG.md` for dated delivery summaries and the linked feature documents for authoritative behavior.
+
+## Private LinkedIn editorial workflow
+
+Admin web/native review at `/admin/linkedin` uses optional Supabase persistence and a manually invoked local Codex worker. Drafts are private; a human must approve the exact revision before Buffer scheduling. See [feature contract](docs/features/linkedin-editorial.md) and [operations runbook](docs/runbooks/linkedin-editorial.md). Commands: `npm run linkedin -- status`, `npm run e2e:linkedin`, `npm run test:linkedin:local`, and `npm run test:production:smoke` (after build).

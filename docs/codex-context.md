@@ -126,3 +126,7 @@ The first hosted web target is Vercel Hobby on the Vercel-provided URL. Vercel r
 - `docs/features/japanese-language-learning.md`: open JF/CEFR Japanese roadmap, complete basic kana, 100-kanji target, romaji/IME input, deterministic review, resource/audio contracts, iPad accessibility, dictionary profiles, and assisted/free handwriting practice.
 
 - `docs/features/rtk-query-interview-preparation.md`: Front-End Development RTK Query mechanics, incident recovery, modern APIs, production architecture, and interview practice.
+
+## Private editorial domain
+
+LinkedIn posts are a separate optional Supabase-backed admin feature, documented in `docs/features/linkedin-editorial.md`. Learning Markdown remains canonical; private posts/revisions/jobs/publications never enter the generated content index. `prompts/linkedin/` contains the fixed analysis and manual operating prompts; `scripts/linkedin/` is the local-only privileged CLI. The web/native clients share `packages/core/src/linkedin.ts` and `linkedin-store.ts`. Local `.local/linkedin/` files are ignored private artifacts. Read `docs/runbooks/linkedin-editorial.md` before privileged operations. Human approval alone authorizes each exact post revision for Buffer.

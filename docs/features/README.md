@@ -66,3 +66,5 @@ The most important sections are:
 - `Thread Handoff Prompt`
 
 - `rtk-query-interview-preparation.md` owns the RTK Query interview curriculum and its source/version refresh and validation contract.
+
+- `linkedin-editorial.md`: private admin web/native post review, durable refinement/scheduling queue and exact-revision human approvals.

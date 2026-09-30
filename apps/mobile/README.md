@@ -153,3 +153,7 @@ Expo orientation is adaptive and `supportsTablet` remains enabled. Japanese hand
 ## Adaptive UI
 
 See `docs/features/adaptive-ui.md` for persistent phone navigation, desktop/iPad sidebars, design rules, and validation gaps. Existing screens and feature logic are reused. Navigation coverage lives in `AppHeader.test.tsx`, native `adaptive-navigation.test.tsx`, Playwright `adaptive-navigation.smoke.spec.ts` / `adaptive-layout.regression.spec.ts`, and Maestro `adaptive-navigation.yaml`.
+
+## LinkedIn admin review
+
+Verified allowlisted accounts can open More → LinkedIn posts (`/admin/linkedin`). The app uses public Supabase credentials and shared editorial schemas/state; only the local worker has service credentials. `src/__tests__/linkedin-admin.test.tsx` and `admin-access.test.tsx` cover review/auth behavior. `.maestro/linkedin-admin.yaml` requires an installed app already signed into an allowlisted disposable account with publishing disabled. See `docs/runbooks/linkedin-editorial.md`.

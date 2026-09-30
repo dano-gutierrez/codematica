@@ -115,3 +115,11 @@ Owning contracts: `docs/features/japanese-language-learning.md`, `docs/features/
 - Added the beginner distinction between learner-facing romanization and Japanese IME keystrokes, including particle spellings such as `こんばんは`: learner romaji `konbanwa`, IME input `konbanha`.
 - Added structured examples, vocabulary breakdowns, IME-aware Japanese search, character detail profiles, and reusable assisted/free handwriting practice.
 - Preserved transient raw strokes while allowing coarse practice completion to use the existing progress system.
+
+## 2026-09-29 — Private LinkedIn editorial workflow
+
+Added admin web/native review, immutable Supabase revisions, approval-bound Buffer jobs, fixed refinement prompt and manual local worker contract. Seeded 100 unapproved private drafts; no drafts entered the public content index. Added pgTAP, shared/web/native tests, isolated editorial E2E and production artifact smoke. Existing coverage floors are preserved; CLI orchestration uses local subprocess integration coverage instead of unit instrumentation. See `features/linkedin-editorial.md` for onboarding and device-release gaps.
+
+### LinkedIn worker switched to manual execution
+
+Removed the recurring Codex automation at the user’s request. Web/native copy and operating instructions now explain that requests wait for an explicit manual run. Queue, approval, and publication behavior is unchanged.

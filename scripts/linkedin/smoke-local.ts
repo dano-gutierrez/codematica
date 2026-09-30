@@ -1,0 +1,47 @@
+// Integration smoke against the disposable local Supabase stack. Never uses .env.
+import assert from "node:assert/strict";
+import { execFileSync } from "node:child_process";
+import { randomUUID } from "node:crypto";
+import { mkdtemp, readFile, writeFile } from "node:fs/promises";
+import { tmpdir } from "node:os";
+import { join } from "node:path";
+import { createClient } from "@supabase/supabase-js";
+import { analysisFixture, editorialFixture } from "../../packages/core/src/test/linkedin-fixture";
+
+const local = JSON.parse(execFileSync("supabase", ["status", "--output", "json"], { encoding: "utf8", stdio: ["ignore", "pipe", "pipe"] }));
+assert.equal(new URL(local.API_URL).hostname, "127.0.0.1", "Only disposable local Supabase is allowed");
+const env = { ...process.env, SUPABASE_URL: local.API_URL, SUPABASE_SERVICE_ROLE_KEY: local.SERVICE_ROLE_KEY };
+const cli = (...args: string[]) => execFileSync(process.execPath, ["--import", "tsx", "scripts/linkedin/cli.ts", ...args], { env, encoding: "utf8", stdio: ["ignore", "pipe", "pipe"] }).trim();
+const db = createClient(local.API_URL, local.SERVICE_ROLE_KEY, { auth: { persistSession: false } });
+const id = randomUUID(); const email = `editor-${id}@example.test`; const password = randomUUID();
+const { data: created, error: createError } = await db.auth.admin.createUser({ email, password, email_confirm: true });
+if (createError) throw createError;
+assert.ok(created.user); cli("bootstrap", created.user.id);
+const client = createClient(local.API_URL, local.ANON_KEY, { auth: { persistSession: false } });
+const { error: signInError } = await client.auth.signInWithPassword({ email, password }); if (signInError) throw signInError;
+const dir = await mkdtemp(join(tmpdir(), "codematica-editorial-"));
+const seed = [{ seed_key: id, title: "CLI lifecycle", topic: "Reliability", body: "Bound retries and verify the outcome.", first_comment: "References", sources: editorialFixture.revisions[0].sources }];
+const seedFile = join(dir,"seed.json"); await writeFile(seedFile,JSON.stringify(seed),{mode:0o600});
+assert.equal(JSON.parse(cli("import",seedFile)).inserted,1); assert.equal(JSON.parse(cli("import",seedFile)).inserted,0);
+const { data: posts, error: postError } = await db.from("linkedin_posts").select("*").eq("seed_key",id).single(); if(postError) throw postError;
+async function review(action:string, revision:string, fields:Record<string,unknown>={}) { const {error}=await client.rpc("linkedin_review",{p_post_id:posts.id,p_expected_revision:revision,p_action:action,...fields}); if(error)throw error; }
+await review("refine",posts.current_revision_id);
+const job=JSON.parse(cli("claim","refine")); assert.ok(job.file); cli("renew",job.file);
+const result=join(dir,"analysis.json"); await writeFile(result,JSON.stringify(analysisFixture),{mode:0o600});
+const refined=JSON.parse(cli("complete",job.file,result)).revisionId;
+await review("use",posts.current_revision_id,{p_proposal_id:refined}); await review("approve",refined);
+cli("configure","000000000000000000000001","000000000000000000000002","enabled");
+const schedule=JSON.parse(cli("claim","schedule")); const begin=JSON.parse(cli("begin",schedule.file));
+assert.equal(begin.bufferArguments.text,analysisFixture.rewrittenPost); assert.equal(begin.bufferArguments.mode,"addToQueue");
+assert.throws(()=>cli("begin",schedule.file));
+const publication=join(dir,"publication.json");
+await writeFile(publication,JSON.stringify({status:"scheduled",buffer_id:`test-${id}`}),{mode:0o600}); cli("reconcile",posts.id,refined,publication);
+await review("withdraw",refined); const cancellation=JSON.parse(cli("claim","cancel")); assert.ok(cancellation.file);
+await writeFile(publication,JSON.stringify({status:"cancelled",buffer_id:`test-${id}`}),{mode:0o600}); cli("reconcile",posts.id,refined,publication);
+const {data: final,error:finalError}=await client.rpc("linkedin_snapshot"); if(finalError)throw finalError;
+assert.equal(final.posts.find((p:{id:string})=>p.id===posts.id).status,"review");
+cli("configure","000000000000000000000001","000000000000000000000002","paused"); cli("heartbeat","Local smoke passed");
+assert.equal(JSON.parse(cli("status")).settings.publishing_enabled,false);
+const backup=join(dir,"backup.json"); cli("export",backup); const exported=JSON.parse(await readFile(backup,"utf8")); assert.ok(exported.posts.some((p:{id:string})=>p.id===posts.id));
+assert.throws(()=>cli("restore",backup));
+console.log("Local CLI lifecycle passed: import, admin RLS, refine, exact approval, publication reconciliation, cancellation and export. No Buffer request was made.");

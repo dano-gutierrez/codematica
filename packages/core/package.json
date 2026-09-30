@@ -6,6 +6,8 @@
   "main": "./src/index.ts",
   "types": "./src/index.ts",
   "exports": {
+    "./linkedin": "./src/linkedin.ts",
+    "./linkedin-store": "./src/linkedin-store.ts",
     ".": "./src/index.ts",
     "./content": "./src/content/index.ts",
     "./content/schema": "./src/content/schema.ts",

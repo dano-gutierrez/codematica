@@ -9,3 +9,7 @@ The shared screen set includes discovery, catalogs, Japanese Learn/Review/Dictio
 ## Adaptive UI
 
 See `docs/features/adaptive-ui.md` for persistent phone navigation, desktop/iPad sidebars, design rules, and validation gaps. Existing screens and feature logic are reused. Navigation coverage lives in `AppHeader.test.tsx`, native `adaptive-navigation.test.tsx`, Playwright `adaptive-navigation.smoke.spec.ts` / `adaptive-layout.regression.spec.ts`, and Maestro `adaptive-navigation.yaml`.
+
+## Private editorial screen
+
+`LinkedInAdminScreen` composes `AppScreen` and existing design tokens with the shared editorial store. NativeNavigation accepts an admin-membership flag for its private destination. Database RLS and RPC guards enforce authorization. Native review supports edits, proposals, approval, rejection, withdrawal, sources and history. See `docs/features/linkedin-editorial.md`.

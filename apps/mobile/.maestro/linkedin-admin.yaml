@@ -1,0 +1,19 @@
+# Use a disposable test project and an already signed-in allowlisted test account.
+# Never approve a hosted production draft in a test. Publishing must remain disabled.
+appId: com.codematica.app
+---
+- launchApp
+- tapOn:
+    id: mobile-nav-more
+- tapOn:
+    id: mobile-menu-linkedin
+- assertVisible: LinkedIn learning posts
+- tapOn: Retries need a budget
+- assertVisible:
+    id: linkedin-body
+- scrollUntilVisible:
+    element:
+      id: linkedin-refine
+- tapOn:
+    id: linkedin-refine
+- assertVisible: Refinement queued
