@@ -100,6 +100,8 @@ The offline IME uses deterministic romaji-to-kana rules, curriculum boosts, and 
 
 Preserve Japanese expressions, readings, translations, answer keys, and study counts during copy edits. Keep generator templates and authored lessons consistent. The N5 builder regression parses generated vocabulary tables as GFM and verifies that a literal pipe stays within its definition cell. The Japanese browser regression checks that the full definition is visible in exactly three table columns.
 
+Hub component tests scope link queries to the character section or resource shelf to avoid scanning the full vocabulary catalog repeatedly. They verify all 46 basic katakana links, separation from sound extras, and Irodori's destination and link-only reuse label.
+
 ## Implementation Map
 
 | Concern | Canonical or primary implementation |

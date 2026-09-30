@@ -117,6 +117,8 @@ flowchart LR
 
 ### Failure And Edge Handling
 
+- Scope component role queries to the section being tested when a page renders a large catalog. Keep visibility, destination, and grouping assertions; do not remove assertions to reduce runtime.
+- Tests that compile complete authored TypeScript projects have a 30-second timeout to accommodate instrumented CI runs. Other tests retain Vitest's default timeout; coverage thresholds and exclusions are unchanged.
 - A failed database run must leave production untouched; CI stops and discards the local stack.
 - Playwright and Maestro failures retain reports and visual evidence rather than relying on a rerun to diagnose the regression.
 - If EAS validation cannot authenticate, validate YAML locally, keep the workflow unexecuted, and report the missing account-side verification explicitly.

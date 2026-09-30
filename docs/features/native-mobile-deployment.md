@@ -166,12 +166,13 @@ The root layout wraps the existing Stack with safe-area-aware `NativeNavigation`
 - Web: `npm run typecheck -w @codematica/web`, `npm test`, and `npm run e2e:smoke` for the existing web mobile workflow.
 - Content: `npm run content:check` after content, parser, schema, or generated index changes.
 - Expo: `npm run doctor -w @codematica/mobile` before EAS build work.
+- Dependency updates: align SDK 57 versions across mobile dependencies, root development dependencies/overrides, and the lockfile. Declare native peers directly, including `expo-asset` for `expo-audio`. Verify `npm ci`, Doctor, typechecking, Jest coverage, and `npx expo export --platform all` from `apps/mobile`; bundle export does not prove installed-app startup or native binary compatibility.
 - Native E2E: apply the `mobile-e2e` PR label or run `npm run mobile:e2e:android` for Android smoke. A `v*` tag or `npm run mobile:e2e:release` builds credential-free Android/iOS artifacts and runs all Maestro flows with JUnit and recordings.
 - Build: `npm run build` for the web app; `npm run mobile:build:preview` for internal native testers; `npm run mobile:build:android` and `npm run mobile:build:ios` for store-ready artifacts once EAS credentials are configured.
 
 ## Known Gaps
 
-- On 2026-09-05, the local Expo preview fails on missing `expo-router/_ctx-shared`; Expo Doctor passes 19/20 with nine patch-version mismatches. The UI-only redesign does not upgrade these dependencies. Native Jest success does not prove installed-device visual readiness.
+- The 2026-09-05 Expo preview failed on missing `expo-router/_ctx-shared` and SDK patch mismatches. After dependency alignment on 2026-09-29, Expo Doctor passes 20/20 and Android/iOS bundle exports pass. Installed-device startup and visual readiness still require verification.
 
 - The local iPad simulator build reaches native compilation but Xcode 26.3 fails inside ExpoModulesJSI. Expo SDK 57 documents Xcode 26.4+ as its supported baseline; rerun the build after upgrading Xcode rather than patching generated dependency source.
 - Native WebView Mermaid currently falls back to source unless a bundled Mermaid runtime string is supplied to the shared adapter.

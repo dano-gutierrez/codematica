@@ -90,6 +90,7 @@ Tests cover rectangular/independent rows, exact zero counts, game boundaries/dra
 
 ## Test Plan
 
+- Exact-source compiler tests use a 30-second timeout because compiling full TypeScript programs can exceed the default five seconds under CI coverage. All compiler diagnostics and behavioral assertions remain enforced.
 - The state lesson starts with failing content/example tests. `ReactAsyncStateLesson.test.tsx` strictly typechecks and executes the exact fenced components: stale-timer reproduction, same-render additions in Strict Mode, failure-before-success ordering, ignored late success/failure after Clear, and cancelled timers before Clear/unmount. A Profiler asserts ignored responses do not commit another render. All six quiz answer sets are checked. The frontend browser regression searches for the lesson, reloads it, reads its sources/code, and completes its quiz with wrong-answer feedback.
 - Regression-first core tests initially rejected interview nodes and missing curriculum. `frontend-interview.test.ts` verifies every path transition, each quiz option, ordering answers, all references, and anonymity. Build-index tests reject missing/draft interview targets, missing attribution, and absent completion feeds.
 - `FrontendInterviewExamples.test.tsx` strictly typechecks and executes all 21 exact authored TS projects, mounts each React example, and compares model output to 21 Python snapshots. Optimized games use an independent full-window oracle; mocks control failures and stale completions.
