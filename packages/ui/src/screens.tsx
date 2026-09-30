@@ -49,6 +49,7 @@ import {
   type WritingStroke,
 } from "@codematica/core";
 import Markdown from "react-native-markdown-display";
+import type { ASTNode, RenderRules } from "react-native-markdown-display";
 import Svg, { Circle, Path, Text as SvgText } from "react-native-svg";
 import { WebView } from "react-native-webview";
 import { Fragment, useMemo, useRef, useState } from "react";
@@ -109,9 +110,9 @@ export function NativeNavigation({ pathname, navigate, wide, isAdmin = false }: 
       {wide ? <Text style={styles.navigationBrand}>Codematica.</Text> : null}
       {items.map(({ href, label, path }) => <Pressable key={href} accessibilityRole="tab" accessibilityLabel={label} accessibilityState={{ selected: active === href }} onPress={() => navigate(href)} style={({ pressed }) => [wide ? styles.navigationRailItem : styles.navigationItem, active === href && styles.navigationSelected, pressed && styles.navigationPressed]} testID={`mobile-nav-${label.toLowerCase()}`}>
         <Svg width={22} height={22} viewBox="0 0 24 24" accessible={false}><Path d={path} stroke={active === href ? colors.accentStrong : colors.textMuted} strokeWidth={1.7} fill="none" strokeLinecap="round" strokeLinejoin="round" /></Svg>
-        <Text style={[styles.navigationLabel, wide && styles.navigationRailLabel, active === href && styles.navigationSelectedText]}>{label}</Text>
+        <Text numberOfLines={wide ? undefined : 1} adjustsFontSizeToFit={!wide} style={[styles.navigationLabel, wide && styles.navigationRailLabel, active === href && styles.navigationSelectedText]}>{label}</Text>
       </Pressable>)}
-      {wide ? <Button label="Sign in" variant="ghost" onPress={() => navigate("/login")} testID="mobile-nav-sign-in" /> : <Pressable accessibilityRole="button" accessibilityLabel="More" onPress={() => setMenuOpen(true)} style={[styles.navigationItem, ["/browse", "/languages", "/login"].includes(active) && styles.navigationSelected]} testID="mobile-nav-more"><Svg width={22} height={22} viewBox="0 0 24 24" accessible={false}>{[5,12,19].map((cx) => <Circle key={cx} cx={cx} cy={12} r={1.5} fill={colors.textMuted} />)}</Svg><Text style={styles.navigationLabel}>More</Text></Pressable>}
+      {wide ? <Button label="Sign in" variant="ghost" onPress={() => navigate("/login")} testID="mobile-nav-sign-in" /> : <Pressable accessibilityRole="button" accessibilityLabel="More" onPress={() => setMenuOpen(true)} style={[styles.navigationItem, ["/browse", "/languages", "/login"].includes(active) && styles.navigationSelected]} testID="mobile-nav-more"><Svg width={22} height={22} viewBox="0 0 24 24" accessible={false}>{[5,12,19].map((cx) => <Circle key={cx} cx={cx} cy={12} r={1.5} fill={colors.textMuted} />)}</Svg><Text numberOfLines={1} adjustsFontSizeToFit style={styles.navigationLabel}>More</Text></Pressable>}
       <Modal visible={menuOpen} transparent animationType="slide" onRequestClose={() => setMenuOpen(false)}>
         <View style={styles.navigationBackdrop}>
           <Pressable style={StyleSheet.absoluteFill} accessibilityLabel="Close menu" onPress={() => setMenuOpen(false)} />
@@ -1975,6 +1976,7 @@ export function MarkdownReader({ markdown, adapters }: { markdown: string } & Sc
           <Markdown
             key={`markdown-${index}`}
             style={markdownStyles}
+            rules={markdownRules}
             onLinkPress={(href) => {
               if (href.startsWith("/")) {
                 adapters.navigation.navigate(href);
@@ -2015,14 +2017,34 @@ export function MermaidBlock({ source, title, adapters }: { source: string; titl
 
 export function CodeBlock({ code, language }: { code: string; language?: string }) {
   return (
-    <ScrollView horizontal style={styles.codeBlock} contentContainerStyle={styles.codeContent} testID="mobile-code-block">
-      <View>
-        {language ? <Text style={styles.codeLanguage}>{language}</Text> : null}
-        <Text style={styles.codeText}>{code}</Text>
-      </View>
-    </ScrollView>
+    <View style={styles.codeBlock} testID="mobile-code-block">
+      {language ? <Text style={styles.codeLanguage}>{language}</Text> : null}
+      <ScrollView
+        horizontal
+        directionalLockEnabled
+        nestedScrollEnabled
+        showsHorizontalScrollIndicator
+        indicatorStyle="white"
+        style={styles.codeScroll}
+        contentContainerStyle={styles.codeContent}
+        testID="mobile-code-scroll"
+      >
+        <Text style={styles.codeText} testID="mobile-code-source">{code}</Text>
+      </ScrollView>
+    </View>
   );
 }
+
+// The parser exposes sourceInfo at runtime but omits it from its AST type.
+// Remove only its final newline; indentation and authored blank lines are source.
+function renderMarkdownCode(node: ASTNode & { sourceInfo?: string }) {
+  return <CodeBlock key={node.key} code={node.content.replace(/\n$/, "")} language={node.sourceInfo?.trim().split(/\s+/)[0]} />;
+}
+
+const markdownRules: RenderRules = {
+  fence: renderMarkdownCode,
+  code_block: renderMarkdownCode,
+};
 
 export function DifficultyPill({ difficulty }: { difficulty: Difficulty }) {
   const tone = difficulty === "foundation" ? "green" : difficulty === "practitioner" ? "blue" : difficulty === "senior" ? "amber" : "purple";
@@ -2768,11 +2790,21 @@ const styles = StyleSheet.create({
     height: 320,
   },
   codeBlock: {
+    alignSelf: "stretch",
     backgroundColor: "#101820",
     borderColor: "#14212b",
     borderRadius: radii.md,
     borderWidth: 1,
-    maxHeight: 340,
+    flexGrow: 0,
+    flexShrink: 0,
+    maxWidth: "100%",
+    minWidth: 0,
+    overflow: "hidden",
+    marginVertical: spacing.sm,
+  },
+  codeScroll: {
+    flexGrow: 0,
+    flexShrink: 0,
   },
   codeContent: {
     padding: spacing.md,
@@ -2781,26 +2813,18 @@ const styles = StyleSheet.create({
     color: "#7dd3fc",
     fontSize: 12,
     fontWeight: "600",
-    marginBottom: spacing.sm,
+    marginHorizontal: spacing.md,
+    marginTop: spacing.md,
     textTransform: "uppercase",
   },
   codeText: {
+    flexShrink: 0,
     color: "#d9e7ef",
     fontFamily: Platform.select({ ios: "Menlo", android: "monospace", default: "monospace" }),
     fontSize: 13,
     lineHeight: 20,
   },
 });
-
-// Markdown distinguishes fenced and four-space-indented blocks. Keep both on
-// the same surface as standalone interview, review, and diagram source code.
-const markdownBlockCodeStyle = {
-  ...styles.codeText,
-  backgroundColor: "#101820",
-  borderColor: "#263544",
-  borderRadius: radii.md,
-  padding: spacing.md,
-};
 
 const markdownStyles = StyleSheet.create({
   body: {
@@ -2832,8 +2856,6 @@ const markdownStyles = StyleSheet.create({
   paragraph: {
     marginBottom: spacing.md,
   },
-  fence: markdownBlockCodeStyle,
-  code_block: markdownBlockCodeStyle,
   code_inline: {
     backgroundColor: colors.panelMuted,
     borderColor: colors.line,

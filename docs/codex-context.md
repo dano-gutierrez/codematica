@@ -57,6 +57,7 @@ The first hosted web target is Vercel Hobby on the Vercel-provided URL. Vercel r
 - `apps/mobile/src/lib/`: native navigation, Supabase Auth, secure session storage, and local progress adapters
 - `apps/mobile/src/lib/skill-progress.ts`: native Japanese mastery read, validation, and bounded sync
 - `apps/mobile/src/__tests__/`: mobile Jest and React Native Testing Library screen tests
+- `apps/mobile/e2e/`: agent-device phone simulator regression scripts for code scrolling and page layout, with retained screenshot/tree evidence
 - `apps/mobile/.maestro/`: installed-app Android/iOS regression flows
 - `apps/mobile/.eas/workflows/`: native smoke and `v*` release E2E orchestration
 - `packages/core/src/content/`: content schema, parser, index builder, and generated index access

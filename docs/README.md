@@ -20,7 +20,7 @@ Conventions:
 - `docs/features/_template.md` is the format new feature docs should follow.
 - `docs/features/README.md` explains how threads should consume and maintain feature docs.
 - `docs/features/adaptive-ui.md` owns the shared visual language, bottom navigation, desktop/tablet sidebars, responsive layout, and redesign validation gaps.
-- `docs/features/markdown-knowledge-browser.md` owns article rendering, the web/native code-surface audit, the fixed dark code theme, and rendered contrast regressions. Theme selection is deferred.
+- `docs/features/markdown-knowledge-browser.md` owns article rendering, the web/native code-surface audit, the fixed dark code theme, native horizontal scroll containment, and rendered contrast/layout regressions. Theme selection is deferred.
 - `docs/features/home-discovery.md` owns the cross-section home, global local search, curated rows, section themes, and full catalog routes.
 - `docs/features/learning-paths-and-practice.md` owns local path JSON, path detail, local exercise JSON, and practice sessions.
 - `docs/features/ml-systems-career-path.md` owns the Harvard CS249r source-linked career roadmap, authored prerequisites/Foundation companions, guided labs, and upstream refresh contract.

@@ -138,6 +138,7 @@ flowchart LR
 - `.github/workflows/release-regression.yml`: GitHub `v*` release-candidate gate.
 - `apps/mobile/.eas/workflows/`: EAS Android PR and Android/iOS release regression.
 - `apps/mobile/.maestro/`: installed-app regression flows.
+- `apps/mobile/e2e/code-layout.mjs`: local agent-device regression for actual code scrolling, page containment, and fixed prose/navigation geometry on Android/iOS. See its README for retained evidence.
 
 ## Test Plan
 

@@ -55,6 +55,7 @@
     "test:release": "npm run content:check && npm run lint && npm run typecheck && npm run mobile:doctor && npm run test:interview:python && npm run test:coverage && npm run test:mobile:coverage && npm run test:db && npm run build && npm run e2e:web:release",
     "mobile:e2e:android": "cd apps/mobile && NODE_OPTIONS=--no-deprecation eas workflow:run .eas/workflows/e2e-android-pr.yml",
     "mobile:e2e:release": "cd apps/mobile && NODE_OPTIONS=--no-deprecation eas workflow:run .eas/workflows/e2e-release.yml",
+    "mobile:e2e:code-layout": "node apps/mobile/e2e/code-layout.mjs",
     "mobile:doctor": "npm run doctor -w @codematica/mobile",
     "linkedin": "node --env-file=.env --import tsx scripts/linkedin/cli.ts",
     "test:linkedin:local": "node --import tsx scripts/linkedin/smoke-local.ts",
