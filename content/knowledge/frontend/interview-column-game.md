@@ -10,7 +10,7 @@ sourceRefs: ["frontend-react-arrays", "frontend-react-state"]
 status: "published"
 ---
 
-## What you are being asked to build
+## Build requirements
 
 Build a 6×7 board where clicking any cell drops a token into the lowest empty cell in its column. Alternate R and Y after valid nonterminal moves. Four contiguous horizontal or vertical tokens wins; stop the game and display the result.
 
@@ -32,13 +32,15 @@ Say: “I will make the board interactive first, then prove the horizontal and v
 
 ## Choose a solution
 
-| Approach | When to choose it |
-| --- | --- |
-| Full-board scan | Keep each move atomic: validate, place, detect terminal state, and change turns only after a valid nonterminal move. |
-| Last-move directional scan | Keep each move atomic: validate, place, detect terminal state, and change turns only after a valid nonterminal move. |
-| Column stacks and winning windows | Keep each move atomic: validate, place, detect terminal state, and change turns only after a valid nonterminal move. |
+Keep each move atomic: validate, place, detect terminal state, and change turns only after a valid nonterminal move.
 
-Start with the first approach. Learn the other two as tradeoff discussions; do not try to build all three in one interview. Each walkthrough includes a numbered recipe, correctness argument, pain points, full React/TypeScript project, and a Python logic companion.
+The three approaches are:
+
+- Full-board scan.
+- Last-move directional scan.
+- Column stacks and winning windows.
+
+Build the first approach and discuss the other two as alternatives; do not build all three in one interview. Each walkthrough includes numbered steps, a correctness argument, pitfalls, a full React/TypeScript project, and a Python logic companion.
 
 ## Senior-engineer rehearsal
 
@@ -48,7 +50,7 @@ Start with the first approach. Learn the other two as tradeoff discussions; do n
 4. Check correctness before discussing optimization. Include copying, output, and I/O costs.
 5. Summarize what works, what you tested, and which extension you would build next.
 
-Spend roughly 20–30 minutes on the baseline as a practice budget, then explain an alternative without coding it. This is an authored rehearsal schedule, not a claim about an actual interview duration.
+Practice the baseline for roughly 20–30 minutes, then explain an alternative without coding it. This suggested rehearsal schedule does not describe an actual interview duration.
 
 ## Worked example
 
@@ -62,4 +64,4 @@ The new token completes four adjacent tokens on the allowed horizontal axis.
 
 [Open the three guided solutions](/interviews/frontend-practice/column-game?path=frontend-interview-practice), then [take the checkpoint](/practice/frontend/interview-column-game-questionnaire?path=frontend-interview-practice). The final checkpoint leads into the combined vertical review feed.
 
-The prompts are original adaptations of privately supplied preparation material. The sources below support technical claims; they do not establish employer endorsement or interview outcomes.
+These original prompts adapt privately supplied preparation material. The sources support technical claims, not employer endorsement or interview outcomes.

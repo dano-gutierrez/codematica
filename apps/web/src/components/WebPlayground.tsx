@@ -151,7 +151,7 @@ function PlaygroundWorkspace({ onRun, onReset }: { onRun: (draft: PlaygroundDraf
         {timedOut && (
           <div className="flex flex-1 flex-col items-start justify-center gap-4 bg-[#101820] p-6 text-[#edf5ff]" role="alert" data-testid="web-playground-connection-error">
             <h3 className="text-lg font-semibold">The preview couldn’t connect.</h3>
-            <p className="text-sm leading-6">Your edits are still here. The preview needs an internet connection to its hosted runtime. Retry to reconnect without losing your work.</p>
+            <p className="text-sm leading-6">Your edits are preserved. The preview needs internet access to its hosted runtime. Retry to reconnect.</p>
             <button type="button" onClick={runProject} className="inline-flex min-h-10 items-center gap-2 rounded-xl border border-[#526474] bg-[#18232d] px-3 py-2 text-sm font-semibold text-white">
               <RotateCcw className="h-4 w-4" aria-hidden="true" />
               Retry preview
@@ -193,7 +193,7 @@ class PlaygroundErrorBoundary extends Component<
     return (
       <section className="rounded-xl border border-[#d5e2e8] bg-white p-5" data-testid="web-playground-fallback">
         <h3 className="text-xl font-semibold text-[#263238]">The interactive runtime did not load.</h3>
-        <p className="mt-2 text-sm font-normal leading-6 text-[#68737d]">The explanations and source remain available. Check the network connection and retry the hosted sandbox.</p>
+        <p className="mt-2 text-sm font-normal leading-6 text-[#68737d]">The explanations and source are still available. Check your connection and retry the hosted sandbox.</p>
         <button type="button" onClick={this.props.onRetry} className="mt-4 rounded-xl border border-[#1d4e9e] bg-[#245fba] px-4 py-2 text-sm font-semibold text-white">
           Retry playground
         </button>

@@ -24,7 +24,7 @@
     {
       "slug": "volume-one-foundations",
       "title": "Volume I — Foundations",
-      "summary": "Study AI engineering, system requirements, iterative workflows, and data engineering through the official chapters and enriched companion labs.",
+      "summary": "Study AI engineering, system requirements, iterative workflows, and data engineering through the official chapters and expanded companion labs.",
       "nodes": [
         { "kind": "source", "slug": "ml-systems/ai-engineering-introduction", "sourceRef": "harvard-vol1-introduction", "activity": "read", "companionKind": "document", "skillIds": ["systems-thinking"], "required": true },
         { "kind": "exercise", "slug": "ml-systems/ai-triad-guided-lab", "skillIds": ["systems-thinking", "quantitative-reasoning"], "required": true },

@@ -22,7 +22,7 @@
 
 ## One-Minute Brief
 
-The test system is deliberately layered. Vitest pins shared rules, server helpers, content tooling, API handlers, and web components. Jest exercises mobile adapters and shared React Native screens. pgTAP replays and checks the disposable local Supabase database. Playwright verifies browser journeys and responsive accessibility. Maestro runs the built Android and iOS applications.
+Vitest tests shared rules, server helpers, content tooling, API handlers, and web components. Jest exercises mobile adapters and shared React Native screens. pgTAP replays and checks the disposable local Supabase database. Playwright verifies browser journeys and responsive accessibility. Maestro runs the built Android and iOS applications.
 
 Pull requests get five parallel, fast checks. Nightly runs expand browser and database regression coverage. A `v*` tag triggers complete GitHub release regression plus parallel EAS Android/iOS builds and Maestro runs. These workflows create evidence but never submit builds or publish a release.
 
@@ -44,11 +44,11 @@ Pull requests get five parallel, fast checks. Nightly runs expand browser and da
 
 The repository instruments production core logic, content scripts, web services/API/Auth helpers, web components, mobile libraries, and shared native screens. Generated artifacts, type-only barrels/design tokens, and thin route or CLI composition are excluded with comments in the owning configuration or source.
 
-Coverage output includes terminal summaries, HTML, LCOV, JSON, and CI JUnit where the runner supports it. A second Vitest pass enforces per-file floors because the aggregate scope thresholds and per-file policy are distinct gates.
+Coverage output includes terminal summaries, HTML, LCOV, JSON, and CI JUnit where the runner supports it. A second Vitest pass enforces per-file floors separately from aggregate thresholds.
 
 The EAS workflow definitions match the current Expo Maestro job schema, including `build_id`, `flow_path`, `include_tags`, `maestro_version`, JUnit output, retries, and screen recording. EAS currently labels built-in Maestro jobs alpha, so the workflow definitions must be revalidated when Expo changes that contract.
 
-Branch protection is an account-side follow-up: after the five PR jobs have completed successfully at least once on GitHub, require those exact checks on `main` without changing review or administrator policies.
+Configure branch protection in the account: after the five PR jobs have completed successfully at least once on GitHub, require those exact checks on `main` without changing review or administrator policies.
 
 ## Scope
 
@@ -117,6 +117,8 @@ flowchart LR
 
 ### Failure And Edge Handling
 
+- Scope component role queries to the section being tested when a page renders a large catalog. Keep visibility, destination, and grouping assertions; do not remove assertions to reduce runtime.
+- Tests that compile complete authored TypeScript projects have a 30-second timeout to accommodate instrumented CI runs. Other tests retain Vitest's default timeout; coverage thresholds and exclusions are unchanged.
 - A failed database run must leave production untouched; CI stops and discards the local stack.
 - Playwright and Maestro failures retain reports and visual evidence rather than relying on a rerun to diagnose the regression.
 - If EAS validation cannot authenticate, validate YAML locally, keep the workflow unexecuted, and report the missing account-side verification explicitly.
@@ -128,7 +130,7 @@ flowchart LR
 - `vitest.config.ts`: aggregate instrumentation, reporters, exclusions, and scope thresholds.
 - `vitest.per-file.config.ts`: file-level minimum coverage gate.
 - `apps/mobile/jest.config.cjs`: mobile/shared-native instrumentation and thresholds.
-- `apps/web/e2e/playwright.config.ts`: projects, reports, dev server, and failure evidence.
+- `apps/web/e2e/playwright.config.ts`: projects, reports, test server, and failure evidence.
 - `supabase/config.toml`: disposable local project configuration.
 - `supabase/tests/`: schema, RLS, trigger, isolation, and search pgTAP assertions.
 - `.github/workflows/ci.yml`: five fast PR gates.
@@ -152,7 +154,7 @@ Must not regress: local anonymous operation, Auth-disabled recovery, stale progr
 ## Open Questions
 
 - When should native Maestro graduate from EAS's alpha job type to a stable provider contract?
-- What artifact retention should be used once the repository has enough history to estimate triage needs and storage cost?
+- How long should artifacts be retained once repository history shows triage needs and storage costs?
 
 ## Decision Log
 

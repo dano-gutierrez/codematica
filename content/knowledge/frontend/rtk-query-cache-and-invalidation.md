@@ -83,16 +83,16 @@ The list tag exists even for an empty result. A successful rename invalidates th
 
 ## The Page You Cannot See Can Still Matter
 
-A paginated table shows page three. Deleting a record on page one changes total count and which rows belong on page three. Page three never provided the deleted record's entity tag. Use a scoped collection/`PARTIAL-LIST` tag for changes affecting list membership, counts, or ordering, in addition to detail tags. Give independent filtered collections distinct scope when useful. [Pagination invalidation](https://redux-toolkit.js.org/rtk-query/usage/pagination).
+A paginated table shows page three. Deleting a record on page one changes total count and which rows belong on page three. Page three never provided the deleted record's entity tag. Use a scoped collection/`PARTIAL-LIST` tag for changes affecting list membership, counts, or ordering, in addition to detail tags. Use distinct scopes for independent filtered collections when useful. [Pagination invalidation](https://redux-toolkit.js.org/rtk-query/usage/pagination).
 
-**Bad:** invalidate every API tag after every keystroke. It hides dependency mistakes under network traffic. **Better:** identify exactly which server projections may change, start with correct collection invalidation, and narrow it only after measuring behavior.
+**Bad:** invalidate every API tag after every keystroke. This adds traffic while hiding incorrect dependencies. **Better:** identify exactly which server projections may change, start with correct collection invalidation, and narrow it only after measuring behavior.
 
 ## Delayed Invalidation in RTK 2.x
 
-The default `invalidationBehavior: 'delayed'` waits for pending queries and mutations in that API to settle, then processes invalidations together. This avoids some races but can delay refresh indefinitely if requests remain continuously pending. A completed HTTP query plus a socket opened in `onCacheEntryAdded` is different from a `queryFn` that never resolves. Switching to `'immediately'` has its own race tradeoffs and should follow a reproduction. [API invalidation policy](https://redux-toolkit.js.org/rtk-query/api/createApi#invalidationbehavior).
+The default `invalidationBehavior: 'delayed'` waits for pending queries and mutations in that API to settle, then processes invalidations together. This avoids some races but can delay refresh indefinitely if requests remain continuously pending. A completed HTTP query plus a socket opened in `onCacheEntryAdded` is different from a `queryFn` that never resolves. Reproduce the issue before switching to `'immediately'`, which has different race risks. [API invalidation policy](https://redux-toolkit.js.org/rtk-query/api/createApi#invalidationbehavior).
 
 ## Interview Drill: “My Mutation Worked, but the List Is Stale”
 
-Say the diagnosis out loud: “I will inspect the endpoint and arguments, the tags the list actually provided, whether the mutation returned a handled error, whether these endpoints share an API, and whether delayed invalidation is waiting. Then I will check whether the new HTTP response is itself stale from another cache.”
+Explain your diagnosis: “I will inspect the endpoint and arguments, the tags the list actually provided, whether the mutation returned a handled error, whether these endpoints share an API, and whether delayed invalidation is waiting. Then I will check whether the new HTTP response is itself stale from another cache.”
 
-Follow-up: if invalidation causes a request but the view stays stale, inspect selectors and copied state. If there is no request, inspect subscription state and tag matching. If the request returns old data, inspect server consistency, HTTP caching, and replica lag. A frontend flag cannot fix every layer.
+Follow-up: if invalidation causes a request but the view stays stale, inspect selectors and copied state. If there is no request, inspect subscription state and tag matching. If the request returns old data, inspect server consistency, HTTP caching, and replica lag. Fix the layer responsible for the stale data.

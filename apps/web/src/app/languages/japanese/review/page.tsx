@@ -5,7 +5,7 @@ import { getContentIndex } from "@/lib/content";
 
 export const metadata: Metadata = {
   title: "Japanese Review - Codematica",
-  description: "Review due Japanese skills and open substantive N5 flashcard, writing, and approved listening modes.",
+  description: "Review due Japanese skills with N5 flashcards, writing, and approved listening practice.",
 };
 
 export default function JapaneseReviewPage() {

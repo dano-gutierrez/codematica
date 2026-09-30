@@ -65,7 +65,7 @@ order by scored.rank desc nulls last, s.id
 limit 10 offset 0;
 ```
 
-The product idea is reasonable: exact term matches should win when they exist, but misspelled input should still return plausible results. The raw scoring formula is only a teaching example. `ts_rank_cd` and trigram `similarity` are different signals with different distributions; multiplying one branch by `0.8` does not calibrate them onto a common relevance scale.
+Exact term matches should rank first when available; misspelled input should still return plausible results. The raw scoring formula is a teaching example. `ts_rank_cd` and trigram `similarity` are different signals with different distributions; multiplying one branch by `0.8` does not calibrate them onto a common relevance scale.
 
 ## Setup Versus Request Work
 
@@ -127,7 +127,7 @@ The `where` clause asks whether the title vector matches the parsed query. The r
 
 `setweight(..., 'A')` labels title lexemes as high-value. In this exact query, the vector only contains title text, so the weight does not distinguish title from body. The pattern becomes more useful when title is concatenated with summary, tags, or body.
 
-The important performance issue: the query builds `to_tsvector('simple', s.title)` inline. For PostgreSQL to use an expression index, the index must match that expression:
+The query builds `to_tsvector('simple', s.title)` inline. An expression index must match it for PostgreSQL to use the index:
 
 ```sql
 create index series_title_fts_idx
@@ -161,7 +161,7 @@ where lower(s.title) % q.qraw
 
 This pass handles typos. The `%` operator uses the current `pg_trgm.similarity_threshold`; `similarity` computes the score used for ranking.
 
-The `* 0.8` is a business weight. It says a fuzzy trigram match should usually rank below an FTS match with the same raw score. The exact value is product tuning. It should be tested with representative search logs.
+The business weight `* 0.8` usually ranks a fuzzy match below an FTS match with the same raw score. Tune it against representative search logs.
 
 `greatest(..., 0)` is defensive but usually redundant because `similarity` returns values from 0 to 1.
 
@@ -187,7 +187,7 @@ union all
 ...
 ```
 
-That is usually right here. A row can be a candidate from both sources. Keeping both rows lets the next CTE choose the best rank. Plain `union` would add de-duplication work and might collapse rows in ways that hide useful source-specific scores.
+A row can qualify from both sources. Keeping both candidates lets the next CTE choose the best rank. Plain `union` adds de-duplication work and might hide useful source-specific scores.
 
 The `src` column is currently not used after `candidates`. It is useful while debugging or if later ranking needs source-specific tie-breaks. If it remains unused, it can be removed.
 
@@ -221,7 +221,7 @@ order by scored.rank desc nulls last, s.id
 limit 10 offset 0;
 ```
 
-The CTE keeps candidates narrow, then joins back to fetch full rows. That is a good pattern when candidate generation is selective.
+The CTE keeps candidates narrow, then joins to fetch full rows—a useful pattern when candidate generation is selective.
 
 The `order by` uses rank first and `s.id` as a deterministic tie-breaker. Stable tie-breaks matter for pagination and repeatable tests.
 
@@ -285,7 +285,7 @@ limit $2;
 commit;
 ```
 
-The conventional RRF constant `60` dampens the effect of small position changes; it is not universal product truth. Validate it, candidate limits, threshold, and any business boosts against labeled searches. Empty or stop-word-only input can produce an empty `tsquery`, so reject or route such queries before this SQL.
+The conventional RRF constant `60` dampens small position changes; it is not a universal optimum. Validate it, candidate limits, threshold, and any business boosts against labeled searches. Empty or stop-word-only input can produce an empty `tsquery`, so reject or route such queries before this SQL.
 
 Example supporting indexes:
 

@@ -12,7 +12,7 @@ status: published
 ---
 ## Draw the API Boundary Before Splitting Files
 
-Usually start with one API slice per base URL/coherent backend domain. It gives related endpoints a shared invalidation namespace and avoids multiplying middleware. This is a default, not a law that unrelated backends must share authentication, timeouts, or lifecycle policy. Each API slice needs its own unique reducer path and middleware registration. [API organization](https://redux-toolkit.js.org/rtk-query/api/createApi).
+Usually start with one API slice per base URL/coherent backend domain. It gives related endpoints a shared invalidation namespace and avoids multiplying middleware. Unrelated backends can use separate authentication, timeouts, and lifecycle policies. Each API slice needs its own unique reducer path and middleware registration. [API organization](https://redux-toolkit.js.org/rtk-query/api/createApi).
 
 **Bad:** one `createApi` per screen, all declaring `Author` tags, assuming those tags cross API boundaries. **Better:** share a base API and use endpoint injection to split feature files. Import the injected API's hooks so TypeScript sees the added endpoint types. [Code splitting](https://redux-toolkit.js.org/rtk-query/usage/code-splitting).
 
@@ -42,7 +42,7 @@ export const authorApi = baseApi.injectEndpoints({
 export const { useGetAuthorQuery } = authorApi;
 ```
 
-Register `baseApi` once. Do not register its middleware again for every injected module. Generated OpenAPI clients can reduce endpoint typing work, but review response schemas, tags, errors, authorization, and generated changes before assuming domain correctness.
+Register `baseApi` once. Do not register its middleware again for every injected module. Generated OpenAPI clients can reduce endpoint typing work, but review their response schemas, tags, errors, authorization, and generated changes for correctness.
 
 ## Select Less, Allocate Deliberately
 
@@ -92,11 +92,11 @@ async onCacheEntryAdded(arg, { cacheDataLoaded, cacheEntryRemoved, updateCachedD
 }
 ```
 
-This is a lifecycle skeleton, not a complete reliable transport. A real stream needs a snapshot-plus-cursor handshake or replay so events between the HTTP snapshot and connection are not lost, reconnect/backoff, authorization refresh, gap detection, and resync. Catch expected transport failures with a visible recovery policy. Out-of-order messages must not overwrite newer revisions. [Streaming updates](https://redux-toolkit.js.org/rtk-query/usage/streaming-updates).
+This example covers the lifecycle only. A real stream needs a snapshot-plus-cursor handshake or replay so events between the HTTP snapshot and connection are not lost, reconnect/backoff, authorization refresh, gap detection, and resync. Catch expected transport failures with a visible recovery policy. Out-of-order messages must not overwrite newer revisions. [Streaming updates](https://redux-toolkit.js.org/rtk-query/usage/streaming-updates).
 
 ## Browser, Native, and Server Have Different Lifecycles
 
-In the browser, `setupListeners` enables focus/reconnect integration. React Native must connect platform lifecycle/connectivity signals through an appropriate custom listener handler; browser window events are not a native networking strategy. Clean up subscriptions and listeners when their owning scope ends. [Listener setup](https://redux-toolkit.js.org/rtk-query/api/setupListeners).
+In the browser, `setupListeners` enables focus/reconnect integration. React Native must connect platform lifecycle/connectivity signals through an appropriate custom listener handler; browser window events do not provide native connectivity signals. Clean up subscriptions and listeners when their owning scope ends. [Listener setup](https://redux-toolkit.js.org/rtk-query/api/setupListeners).
 
 In Next.js App Router, avoid a server-global Redux store shared across requests. Create request-safe store/provider boundaries; React Server Components should not read/write the Redux client store. Official guidance recommends RTK Query for client-side fetching and server `fetch` for server-component reads. Framework caching is separate from the browser RTK cache, so explain how a write refreshes each affected owner. [Next.js guidance](https://redux-toolkit.js.org/usage/nextjs).
 
@@ -116,7 +116,7 @@ Use a real configured store and controlled transport such as MSW or a determinis
 | Browser/device | Cold load, refresh failure, retry, filter switch, pagination failure, logout/login |
 | Lifecycle | Last unsubscribe, retention expiry, removal, abort, socket cleanup using controlled time |
 
-Create a fresh store per test; clean up subscriptions and reset handlers/timers. Observe request counts and final states without coupling assertions to undocumented action order. A UI passing after a mocked hook says nothing about a blocked query thunk.
+Create a fresh store per test; clean up subscriptions and reset handlers/timers. Observe request counts and final states without coupling assertions to undocumented action order. Mocked-hook UI tests cannot detect a blocked query thunk.
 
 ## Production Review Prompt
 

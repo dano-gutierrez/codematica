@@ -1,7 +1,7 @@
 {
   "slug": "backend-engineer-readiness",
   "title": "Backend Engineer Readiness",
-  "summary": "A role path for practicing the systems, operations, and boundary thinking expected of backend engineers.",
+  "summary": "Practice the systems, operations, and boundary analysis expected of backend engineers.",
   "kind": "role",
   "category": "Engineering Careers",
   "audience": "Backend and full-stack engineers who want stronger production design judgment.",
@@ -10,7 +10,7 @@
     {
       "slug": "production-judgment",
       "title": "Production Judgment",
-      "summary": "Connect cache behavior, observability choices, and interface boundaries into review-ready engineering habits.",
+      "summary": "Practice reviewing cache behavior, observability choices, and interface boundaries.",
       "nodes": [
         { "kind": "document", "slug": "system-design/cache-invalidation" },
         { "kind": "exercise", "slug": "system-design/cache-product-contract" },

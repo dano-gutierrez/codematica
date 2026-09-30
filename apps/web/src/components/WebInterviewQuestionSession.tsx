@@ -117,7 +117,7 @@ export function WebInterviewQuestionSession({
       </div>
       <section>
         <h2 className="text-2xl font-semibold text-[#263238]">
-          Choose a solution recipe
+          Choose an approach
         </h2>
         <p className="mt-2 text-[#4d5c65]">
           Start with approach 1. Compare alternatives after you can explain and
@@ -224,7 +224,7 @@ export function WebInterviewQuestionSession({
               </section>
               <section>
                 <h4 className="text-lg font-semibold">
-                  How it meets the practice contract
+                  How it meets the requirements
                 </h4>
                 <p className="mt-2 leading-7 text-[#33434b]">
                   {track.acceptanceRationale}
@@ -284,8 +284,8 @@ export function WebInterviewQuestionSession({
             </p>
             <p className="mt-3 leading-7 text-[#33434b]">
               Save as solution.py and open with{" "}
-              <code>python3 -i solution.py</code> to call the functions. Browser
-              behavior is demonstrated in the TypeScript project.
+              <code>python3 -i solution.py</code> to call the functions. The TypeScript
+              project demonstrates browser behavior.
             </p>
             <CodeBlock
               code={track.python!.code}

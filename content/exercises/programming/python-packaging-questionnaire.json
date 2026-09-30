@@ -11,7 +11,7 @@
     {
       "id": "pyproject-role",
       "kind": "choice",
-      "prompt": "What is the best senior framing for pyproject.toml in a modern Python project?",
+      "prompt": "How should you describe pyproject.toml in a modern Python project?",
       "options": [
         {
           "id": "manifest",
@@ -85,7 +85,7 @@
           "match": "tool-specific configuration"
         }
       ],
-      "explanation": "Keeping these tables conceptually separate makes packaging reviews less tool-driven and more contract-driven."
+      "explanation": "Review these tables separately to distinguish build, package, and tool requirements."
     },
     {
       "id": "import-name",
@@ -131,7 +131,7 @@
           "match": "dependency graph can drift"
         }
       ],
-      "explanation": "Packaging problems often look like environment mysteries until the repo contract is explicit."
+      "explanation": "Explicit repository setup requirements help explain environment-related packaging failures."
     }
   ]
 }

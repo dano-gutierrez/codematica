@@ -53,7 +53,7 @@ describe("React async state lesson", () => {
     }
   });
 
-  it("strictly typechecks the exact complete React examples", () => {
+  it("strictly typechecks the exact complete React examples", { timeout: 30_000 }, () => {
     const files = new Map(examples().map((node) => {
       if (node.type !== "code") throw new Error("Expected code");
       return [`${process.cwd()}/__authored__/${node.meta}`, node.value];

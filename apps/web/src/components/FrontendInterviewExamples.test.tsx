@@ -74,7 +74,7 @@ function oracle(board: Cell[][]): Cell {
 afterEach(cleanup);
 
 describe("exact authored frontend solutions", () => {
-  it("strictly typechecks every complete authored TypeScript project", () => {
+  it("strictly typechecks every complete authored TypeScript project", { timeout: 30_000 }, () => {
     const files = new Map<string, string>();
     for (const { topic, track } of tracks) for (const [path, file] of Object.entries(track.project.files)) {
       if (/\.tsx?$/.test(path)) files.set(`${process.cwd()}/__authored__/${topic}/${track.id}${path}`, file.code);

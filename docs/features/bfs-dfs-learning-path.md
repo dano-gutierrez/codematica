@@ -19,7 +19,7 @@
 
 ## One-Minute Brief
 
-This path turns graph traversal from a memorized queue-versus-stack rule into a reusable problem-solving model. Learners first identify nodes, edges, visited timing, and the traversal invariant. They then practice connected components, unweighted shortest paths, and dependency cycles with Python and TypeScript examples. Existing path, Markdown, questionnaire, passive-feed, code-block, and interview-session components render the feature; no BFS/DFS-specific UI was added.
+This path teaches graph traversal by first identifying nodes, edges, visited timing, and the traversal invariant. They then practice connected components, unweighted shortest paths, and dependency cycles with Python and TypeScript examples. The path reuses existing path, Markdown, questionnaire, passive-feed, code-block, and interview-session components.
 
 ## Outcome / Contract
 
@@ -33,7 +33,7 @@ This path turns graph traversal from a memorized queue-versus-stack rule into a 
 
 ## Current State
 
-The path, lessons, two six-question questionnaires, sixteen-card passive feed, three guided Google prompts, generated index entries, integration coverage, and a mobile Playwright journey are shipped. The generic shared renderers already support all required UI.
+The path, lessons, two six-question questionnaires, sixteen-card passive feed, three guided Google prompts, generated index entries, integration coverage, and a mobile Playwright journey are shipped. Shared renderers provide all required UI.
 
 ## Scope
 

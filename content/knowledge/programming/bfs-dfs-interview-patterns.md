@@ -26,11 +26,11 @@ Interview prompts rarely say “run graph traversal.” Instead, they describe r
 - A course connects to the courses that depend on it.
 - A tree node connects to its children and sometimes its parent.
 
-Before coding, name the node, name the edge, and decide when a node becomes visited. That short translation prevents most traversal bugs.
+Before coding, define the nodes, edges, and when a node becomes visited to help prevent traversal bugs.
 
 ## Pattern One: Count Connected Components
 
-In **Number Of Islands**, each land cell is a node and an edge joins orthogonally adjacent land. Scan every cell. When an unvisited land cell appears, a new component has been found; traverse from it to mark the entire island.
+In **Number Of Islands**, each land cell is a node and an edge joins orthogonally adjacent land. Scan every cell. Each unvisited land cell starts a new component; traverse from it to mark the entire island.
 
 ### BFS Version
 
@@ -173,7 +173,7 @@ export function countIslandsDfs(grid: string[][]): number {
 
 Both island solutions run in `O(rows * cols)` time and use `O(rows * cols)` worst-case auxiliary space. Neither has an asymptotic advantage here because the problem asks for components, not a shortest path.
 
-The practical differences are more interesting:
+The practical differences are:
 
 | Concern | BFS | DFS |
 | --- | --- | --- |
@@ -187,13 +187,13 @@ For this prompt, choose the version you can implement and explain reliably. If i
 
 ## Pattern Two: Shortest Unweighted Path
 
-For a shortest path in a binary matrix, BFS has a correctness shortcut: the first time the destination leaves the queue, no shorter path can still be waiting. DFS does not have this guarantee. A DFS solution must enumerate possible simple paths or add more complex pruning, so it is usually less readable and can take exponential time.
+For a shortest path in a binary matrix, BFS guarantees that no shorter path is waiting when the destination first leaves the queue. DFS does not have this guarantee. A DFS solution must enumerate possible simple paths or add more complex pruning, so it is usually less readable and can take exponential time.
 
-The interview signal is the word **shortest** combined with equal-cost moves. That points to BFS.
+Look for **shortest** combined with equal-cost moves to identify BFS problems.
 
 ## Pattern Three: Dependency Cycles
 
-Course scheduling turns prerequisites into a directed graph. Two classic answers expose different viewpoints:
+Course scheduling models prerequisites as a directed graph. Two approaches are:
 
 - DFS colors nodes as unseen, visiting, or complete. Reaching a visiting node finds a back edge and therefore a cycle.
 - Kahn's algorithm uses BFS over nodes with zero incoming edges. If fewer than all courses can be removed, a cycle prevented the remaining nodes from becoming ready.
@@ -204,10 +204,10 @@ Both run in `O(V + E)` time. DFS is often compact for “does a cycle exist?” 
 
 The guided interview catalog includes:
 
-1. **Number Of Islands** — compare BFS and DFS flood fill directly.
-2. **Shortest Path In A Binary Matrix** — explain why BFS provides the optimal unweighted path.
-3. **Course Schedule** — compare DFS cycle coloring with BFS topological processing.
-4. **Word Ladder** — model words as nodes and one-letter changes as equal-cost edges.
+- **Number Of Islands** — compare BFS and DFS flood fill directly.
+- **Shortest Path In A Binary Matrix** — explain why BFS provides the optimal unweighted path.
+- **Course Schedule** — compare DFS cycle coloring with BFS topological processing.
+- **Word Ladder** — model words as nodes and one-letter changes as equal-cost edges.
 
 For every solution, state the graph model, traversal invariant, visited timing, and complexity before writing code. Those four points make the implementation easier to review and debug.
 

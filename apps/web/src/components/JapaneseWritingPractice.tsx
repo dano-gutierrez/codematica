@@ -94,7 +94,7 @@ export function JapaneseWritingPractice({
     }
   }
 
-  if (!character) return <p className="mt-6 text-sm font-medium text-[#68737d]">This writing exercise has no available characters.</p>;
+  if (!character) return <p className="mt-6 text-sm font-medium text-[#68737d]">No characters are available for this exercise.</p>;
 
   const expectedStroke = character.strokes[strokes.length];
 
@@ -154,7 +154,7 @@ export function JapaneseWritingPractice({
         {result?.isCorrect && characterIndex + 1 < characters.length ? (
           <button type="button" onClick={() => { const nextIndex = characterIndex + 1; onProgressEvent?.("started", { mode, characterSlug: characters[nextIndex]?.slug }); resetForCharacter(nextIndex); }} className="inline-flex min-h-12 items-center rounded-xl border border-[#1d4e9e] bg-[#245fba] px-4 py-2 text-sm font-semibold text-white" data-testid="writing-next-character">Next character</button>
         ) : null}
-        {result?.isCorrect && characterIndex + 1 >= characters.length && nextHref ? <Link href={nextHref} className="inline-flex min-h-12 items-center gap-2 rounded-xl border border-[#1d4e9e] bg-[#245fba] px-4 py-2 text-sm font-semibold text-white">Next node <ArrowRight className="h-4 w-4" aria-hidden="true" /></Link> : null}
+        {result?.isCorrect && characterIndex + 1 >= characters.length && nextHref ? <Link href={nextHref} className="inline-flex min-h-12 items-center gap-2 rounded-xl border border-[#1d4e9e] bg-[#245fba] px-4 py-2 text-sm font-semibold text-white">Next activity <ArrowRight className="h-4 w-4" aria-hidden="true" /></Link> : null}
       </div>
     </div>
   );

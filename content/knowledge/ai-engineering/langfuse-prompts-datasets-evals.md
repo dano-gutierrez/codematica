@@ -20,7 +20,7 @@ status: published
 
 ## Evaluation Lens
 
-Prompt changes are product changes. A small wording update can change tone, refusal behavior, citation quality, token usage, latency, and safety. Langfuse prompt management and evaluation features help teams move from "try a prompt and hope" to a measured release loop.
+Prompt changes affect product behavior: tone, refusals, citation quality, token usage, latency, and safety. Langfuse prompt management and evaluation let teams measure these effects before release.
 
 The feedback loop is:
 
@@ -33,7 +33,7 @@ The feedback loop is:
 
 ## Prompt Management
 
-Prompt management gives prompts names, versions, labels, and deployment control. That matters because prompts are not just copy. They encode product policy and operational behavior.
+Prompt management provides names, versions, labels, and deployment control for prompts, which encode product policy and operational behavior.
 
 Use prompt management when:
 
@@ -42,11 +42,11 @@ Use prompt management when:
 - prompt performance must be compared across versions
 - traces should show which prompt version produced an output
 
-Do not hide prompt changes in anonymous string literals scattered across code. That makes rollback and evaluation harder.
+Scattered, anonymous prompt strings make rollback and evaluation harder.
 
 ## Datasets
 
-A dataset is a set of inputs and expected outputs or review expectations. It can come from curated examples, synthetic examples, or production traces that humans mark as important.
+A dataset pairs inputs with expected outputs or review expectations. Sources include curated examples, synthetic examples, and production traces selected by humans.
 
 Good dataset items are specific:
 
@@ -56,11 +56,11 @@ Good dataset items are specific:
 - unacceptable behavior
 - metadata such as language, region, tenant type, or risk category
 
-Avoid building a dataset that only contains easy happy paths. A useful evaluation set includes ambiguity, missing context, adversarial wording, policy boundaries, and previously failed traces.
+Include ambiguity, missing context, adversarial wording, policy boundaries, and previously failed traces alongside easy happy paths.
 
 ## Scores
 
-Scores turn outputs into reviewable signals. Langfuse supports different score shapes, including numeric, categorical, boolean, and text. Choose the simplest score that supports the decision.
+Langfuse scores make outputs reviewable as numeric, categorical, boolean, or text values. Choose the simplest score that supports the decision.
 
 Examples:
 
@@ -95,7 +95,7 @@ LLM-as-a-judge is useful for scale, not an unquestionable oracle. Calibrate judg
 
 A team changes a prompt to be friendlier. Human review likes the tone, but the experiment shows answers are longer, costlier, and less likely to cite policy sections. The prompt improved one dimension and regressed two others.
 
-That is not a failure of evaluation. That is evaluation doing its job before users pay the cost.
+The evaluation catches the regression before it affects users.
 
 ## Coding Challenge: Score A Support Answer
 

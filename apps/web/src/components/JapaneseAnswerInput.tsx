@@ -41,7 +41,7 @@ export function JapaneseAnswerInput({ value, disabled, onChange }: { value: stri
         />
       </label>
       <p id="japanese-answer-help" className="text-sm font-normal leading-6 text-[#53616c]">
-        Choose a conversion below. On iPad, you can write directly in this blank with Apple Pencil Scribble.
+        Choose a conversion below. On iPad, write in this blank with Apple Pencil Scribble.
       </p>
       {/[a-z]/i.test(draft) && conversion.candidates.length ? (
         <div className="flex flex-wrap gap-2" aria-label="Japanese conversion candidates" data-testid="japanese-ime-candidates">

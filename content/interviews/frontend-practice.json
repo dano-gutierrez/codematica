@@ -2,7 +2,7 @@
   "kind": "real-world",
   "slug": "frontend-practice",
   "name": "Frontend Interview Practice",
-  "summary": "Seven anonymous frontend challenges with guided recipes, three React/TypeScript solutions each, and matching Python logic companions.",
+  "summary": "Seven anonymous frontend challenges with guided steps, three React/TypeScript solutions each, and matching Python logic examples.",
   "status": "published",
   "questions": [
     {
@@ -40,7 +40,7 @@
         "Explain useRef, useMemo, and useCallback without adding them solely to sound advanced."
       ],
       "evaluation": {
-        "intent": "Render independently sized rows and columns and explain React identity, state, refs, and memoization. Explain the contract before coding, deliver a small working interface, then validate its data model and discuss tradeoffs.",
+        "intent": "Render independently sized rows and columns and explain React identity, state, refs, and memoization. Explain the requirements, build a small working interface, then validate its data model and discuss tradeoffs.",
         "expectedSignals": [
           "Render a non-square case before adding abstractions.",
           "Explain that keys preserve sibling identity and do not prevent rerenders.",
@@ -91,7 +91,7 @@
             }
           ],
           "explanation": "Every coordinate is produced exactly once by the row/column product. Each inner array is separate, so editing one row cannot accidentally edit another. The three approaches differ in representation and composition, while all render the same number of cells.",
-          "acceptanceRationale": "This implementation satisfies the stated practice contract. In an interview, demonstrate the edge cases and explain the tradeoffs; meeting this rubric does not guarantee an interview outcome.",
+          "acceptanceRationale": "This implementation meets the practice requirements. Demonstrate edge cases and explain tradeoffs in the interview; meeting this rubric does not guarantee an interview outcome.",
           "tradeoffs": [
             "Avoid Array(rows).fill(sharedRow) and Python [shared_row] * rows: both alias the same row object.",
             "All approaches render every cell. A generator does not reduce the final DOM size, and memoization is not required for correctness."
@@ -123,7 +123,7 @@
           },
           "python": {
             "code": "def dimensions(rows, columns):\n    if any(type(n) is not int or not 0 <= n <= 50 for n in (rows, columns)):\n        raise ValueError(\"Dimensions must be integers from 0 to 50\")\ndef create_board(rows, columns):\n    dimensions(rows, columns)\n    board = []\n    for row in range(rows):\n        cells = []\n        for column in range(columns):\n            cells.append(row * columns + column)\n        board.append(cells)\n    return board\n",
-            "explanation": "This Python companion implements the same data model and observable rules without a browser. Run it locally with Python 3.11 or later. React hooks, DOM events, focus, and rendering remain responsibilities of the TypeScript interface.",
+            "explanation": "Run this equivalent data model and behavior locally with Python 3.11 or later, without a browser. The TypeScript interface handles React hooks, DOM events, focus, and rendering.",
             "complexity": {
               "time": "O(rows × columns + rows)",
               "space": "O(rows × columns + rows)"
@@ -153,7 +153,7 @@
             }
           ],
           "explanation": "Every coordinate is produced exactly once by the row/column product. Each inner array is separate, so editing one row cannot accidentally edit another. The three approaches differ in representation and composition, while all render the same number of cells.",
-          "acceptanceRationale": "This implementation satisfies the stated practice contract. In an interview, demonstrate the edge cases and explain the tradeoffs; meeting this rubric does not guarantee an interview outcome.",
+          "acceptanceRationale": "This implementation meets the practice requirements. Demonstrate edge cases and explain tradeoffs in the interview; meeting this rubric does not guarantee an interview outcome.",
           "tradeoffs": [
             "Avoid Array(rows).fill(sharedRow) and Python [shared_row] * rows: both alias the same row object.",
             "All approaches render every cell. A generator does not reduce the final DOM size, and memoization is not required for correctness."
@@ -185,7 +185,7 @@
           },
           "python": {
             "code": "def dimensions(rows, columns):\n    if any(type(n) is not int or not 0 <= n <= 50 for n in (rows, columns)):\n        raise ValueError(\"Dimensions must be integers from 0 to 50\")\ndef create_board(rows, columns):\n    dimensions(rows, columns)\n    cells = list(range(rows * columns))\n    return [cells[row * columns:(row + 1) * columns] for row in range(rows)]\n",
-            "explanation": "This Python companion implements the same data model and observable rules without a browser. Run it locally with Python 3.11 or later. React hooks, DOM events, focus, and rendering remain responsibilities of the TypeScript interface.",
+            "explanation": "Run this equivalent data model and behavior locally with Python 3.11 or later, without a browser. The TypeScript interface handles React hooks, DOM events, focus, and rendering.",
             "complexity": {
               "time": "O(rows × columns + rows)",
               "space": "O(rows × columns + rows)"
@@ -215,7 +215,7 @@
             }
           ],
           "explanation": "Every coordinate is produced exactly once by the row/column product. Each inner array is separate, so editing one row cannot accidentally edit another. The three approaches differ in representation and composition, while all render the same number of cells.",
-          "acceptanceRationale": "This implementation satisfies the stated practice contract. In an interview, demonstrate the edge cases and explain the tradeoffs; meeting this rubric does not guarantee an interview outcome.",
+          "acceptanceRationale": "This implementation meets the practice requirements. Demonstrate edge cases and explain tradeoffs in the interview; meeting this rubric does not guarantee an interview outcome.",
           "tradeoffs": [
             "Avoid Array(rows).fill(sharedRow) and Python [shared_row] * rows: both alias the same row object.",
             "All approaches render every cell. A generator does not reduce the final DOM size, and memoization is not required for correctness."
@@ -247,7 +247,7 @@
           },
           "python": {
             "code": "def dimensions(rows, columns):\n    if any(type(n) is not int or not 0 <= n <= 50 for n in (rows, columns)):\n        raise ValueError(\"Dimensions must be integers from 0 to 50\")\ndef board_rows(rows, columns):\n    dimensions(rows, columns)\n    for row in range(rows):\n        yield [row * columns + column for column in range(columns)]\n\ndef create_board(rows, columns):\n    return list(board_rows(rows, columns))\n",
-            "explanation": "This Python companion implements the same data model and observable rules without a browser. Run it locally with Python 3.11 or later. React hooks, DOM events, focus, and rendering remain responsibilities of the TypeScript interface.",
+            "explanation": "Run this equivalent data model and behavior locally with Python 3.11 or later, without a browser. The TypeScript interface handles React hooks, DOM events, focus, and rendering.",
             "complexity": {
               "time": "O(rows × columns + rows)",
               "space": "O(rows × columns + rows)"
@@ -291,7 +291,7 @@
         "Unrelated renders must preserve the current generated board."
       ],
       "evaluation": {
-        "intent": "Select exactly k distinct zero positions while keeping generated React state stable and testable. Explain the contract before coding, deliver a small working interface, then validate its data model and discuss tradeoffs.",
+        "intent": "Select exactly k distinct zero positions while keeping generated React state stable and testable. Explain the requirements, build a small working interface, then validate its data model and discuss tradeoffs.",
         "expectedSignals": [
           "Distinguish exact count from Bernoulli per-cell probability.",
           "Account for both sampling work and the materialized output.",
@@ -342,7 +342,7 @@
             }
           ],
           "explanation": "At each step, Fisher–Yates swaps a uniformly chosen remaining item into the current position. The first k positions of the resulting permutation form a sample without replacement. Distinct indexes guarantee distinct zero cells.",
-          "acceptanceRationale": "This implementation satisfies the stated practice contract. In an interview, demonstrate the edge cases and explain the tradeoffs; meeting this rubric does not guarantee an interview outcome.",
+          "acceptanceRationale": "This implementation meets the practice requirements. Demonstrate edge cases and explain tradeoffs in the interview; meeting this rubric does not guarantee an interview outcome.",
           "tradeoffs": [
             "The uniformity argument assumes independent uniform random draws in [0, 1). The small seeded generator is a reproducible teaching aid, not cryptographic randomness.",
             "Avoid random sort comparators and unbounded retry-until-unique loops. Count zeros and test k = 0 and k = n."
@@ -374,7 +374,7 @@
           },
           "python": {
             "code": "import random\ndef dimensions(rows, columns):\n    if any(type(n) is not int or not 0 <= n <= 50 for n in (rows, columns)):\n        raise ValueError(\"Dimensions must be integers from 0 to 50\")\ndef seeded(seed):\n    value = seed & 0xffffffff\n    def random():\n        nonlocal value\n        value = (value * 1664525 + 1013904223) & 0xffffffff\n        return value / 4294967296\n    return random\ndef create_matrix(rows, columns, k, rng=random.random):\n    dimensions(rows, columns)\n    n = rows * columns\n    if type(k) is not int or not 0 <= k <= n:\n        raise ValueError(\"k must fit the matrix\")\n    pool = list(range(n))\n    for i in range(n - 1, 0, -1):\n        j = int(rng() * (i + 1))\n        pool[i], pool[j] = pool[j], pool[i]\n    chosen = set(pool[:k])\n    return [[0 if r * columns + c in chosen else 1 for c in range(columns)] for r in range(rows)]\n",
-            "explanation": "This Python companion implements the same data model and observable rules without a browser. Run it locally with Python 3.11 or later. React hooks, DOM events, focus, and rendering remain responsibilities of the TypeScript interface.",
+            "explanation": "Run this equivalent data model and behavior locally with Python 3.11 or later, without a browser. The TypeScript interface handles React hooks, DOM events, focus, and rendering.",
             "complexity": {
               "time": "O(n + rows), n = rows × columns",
               "space": "O(n + rows) output; O(n) selection memory"
@@ -404,7 +404,7 @@
             }
           ],
           "explanation": "Each iteration chooses uniformly from the remaining suffix and fixes one new selected position. No index can appear twice. Only k swaps are needed, although allocating the pool and rendering the matrix still require O(n) work.",
-          "acceptanceRationale": "This implementation satisfies the stated practice contract. In an interview, demonstrate the edge cases and explain the tradeoffs; meeting this rubric does not guarantee an interview outcome.",
+          "acceptanceRationale": "This implementation meets the practice requirements. Demonstrate edge cases and explain tradeoffs in the interview; meeting this rubric does not guarantee an interview outcome.",
           "tradeoffs": [
             "The uniformity argument assumes independent uniform random draws in [0, 1). The small seeded generator is a reproducible teaching aid, not cryptographic randomness.",
             "Avoid random sort comparators and unbounded retry-until-unique loops. Count zeros and test k = 0 and k = n."
@@ -436,7 +436,7 @@
           },
           "python": {
             "code": "import random\ndef dimensions(rows, columns):\n    if any(type(n) is not int or not 0 <= n <= 50 for n in (rows, columns)):\n        raise ValueError(\"Dimensions must be integers from 0 to 50\")\ndef seeded(seed):\n    value = seed & 0xffffffff\n    def random():\n        nonlocal value\n        value = (value * 1664525 + 1013904223) & 0xffffffff\n        return value / 4294967296\n    return random\ndef create_matrix(rows, columns, k, rng=random.random):\n    dimensions(rows, columns)\n    n = rows * columns\n    if type(k) is not int or not 0 <= k <= n:\n        raise ValueError(\"k must fit the matrix\")\n    pool = list(range(n))\n    for i in range(k):\n        j = i + int(rng() * (n - i))\n        pool[i], pool[j] = pool[j], pool[i]\n    chosen = set(pool[:k])\n    return [[0 if r * columns + c in chosen else 1 for c in range(columns)] for r in range(rows)]\n",
-            "explanation": "This Python companion implements the same data model and observable rules without a browser. Run it locally with Python 3.11 or later. React hooks, DOM events, focus, and rendering remain responsibilities of the TypeScript interface.",
+            "explanation": "Run this equivalent data model and behavior locally with Python 3.11 or later, without a browser. The TypeScript interface handles React hooks, DOM events, focus, and rendering.",
             "complexity": {
               "time": "O(n + rows), n = rows × columns",
               "space": "O(n + rows) output; O(n) selection memory"
@@ -466,7 +466,7 @@
             }
           ],
           "explanation": "The reservoir starts with k indexes. At stream position i, an index enters with probability k/(i+1), replacing a uniformly chosen reservoir slot. Induction gives every processed index the same inclusion probability. It saves selection memory, but the materialized matrix still costs O(n).",
-          "acceptanceRationale": "This implementation satisfies the stated practice contract. In an interview, demonstrate the edge cases and explain the tradeoffs; meeting this rubric does not guarantee an interview outcome.",
+          "acceptanceRationale": "This implementation meets the practice requirements. Demonstrate edge cases and explain tradeoffs in the interview; meeting this rubric does not guarantee an interview outcome.",
           "tradeoffs": [
             "The uniformity argument assumes independent uniform random draws in [0, 1). The small seeded generator is a reproducible teaching aid, not cryptographic randomness.",
             "Avoid random sort comparators and unbounded retry-until-unique loops. Count zeros and test k = 0 and k = n."
@@ -498,7 +498,7 @@
           },
           "python": {
             "code": "import random\ndef dimensions(rows, columns):\n    if any(type(n) is not int or not 0 <= n <= 50 for n in (rows, columns)):\n        raise ValueError(\"Dimensions must be integers from 0 to 50\")\ndef seeded(seed):\n    value = seed & 0xffffffff\n    def random():\n        nonlocal value\n        value = (value * 1664525 + 1013904223) & 0xffffffff\n        return value / 4294967296\n    return random\ndef create_matrix(rows, columns, k, rng=random.random):\n    dimensions(rows, columns)\n    n = rows * columns\n    if type(k) is not int or not 0 <= k <= n:\n        raise ValueError(\"k must fit the matrix\")\n    pool = list(range(k))\n    if k > 0:\n        for i in range(k, n):\n            j = int(rng() * (i + 1))\n            if j < k:\n                pool[j] = i\n    chosen = set(pool)\n    return [[0 if r * columns + c in chosen else 1 for c in range(columns)] for r in range(rows)]\n",
-            "explanation": "This Python companion implements the same data model and observable rules without a browser. Run it locally with Python 3.11 or later. React hooks, DOM events, focus, and rendering remain responsibilities of the TypeScript interface.",
+            "explanation": "Run this equivalent data model and behavior locally with Python 3.11 or later, without a browser. The TypeScript interface handles React hooks, DOM events, focus, and rendering.",
             "complexity": {
               "time": "O(n + rows), n = rows × columns",
               "space": "O(n + rows) output; O(k) selection memory"
@@ -512,7 +512,7 @@
       "slug": "click-board",
       "title": "Click-to-place 5×5 Game",
       "summary": "Model legal turns and detect contiguous horizontal or vertical wins without adding unstated game rules.",
-      "prompt": "Build a 5×5 board where clicking an empty cell places a token in that exact cell. Alternate R and Y after valid nonterminal moves. Four contiguous horizontal or vertical tokens wins; stop the game and display the result.",
+      "prompt": "Build a 5×5 board where clicking an empty cell places a token in that exact cell. Alternate R and Y after valid nonterminal moves. Four contiguous horizontal or vertical tokens win; stop the game and display the result.",
       "difficulty": "practitioner",
       "tags": [
         "frontend",
@@ -543,7 +543,7 @@
         "Diagonal wins are deliberately excluded."
       ],
       "evaluation": {
-        "intent": "Model legal turns and detect contiguous horizontal or vertical wins without adding unstated game rules. Explain the contract before coding, deliver a small working interface, then validate its data model and discuss tradeoffs.",
+        "intent": "Model legal turns and detect contiguous horizontal or vertical wins without adding unstated game rules. Explain the requirements, build a small working interface, then validate its data model and discuss tradeoffs.",
         "expectedSignals": [
           "Implement a visible board before optimizing winner detection.",
           "Keep invalid moves and terminal moves from corrupting turn state.",
@@ -552,7 +552,7 @@
         "acceptanceCriteria": [
           {
             "title": "Working behavior",
-            "explanation": "Build a 5×5 board where clicking an empty cell places a token in that exact cell. Alternate R and Y after valid nonterminal moves. Four contiguous horizontal or vertical tokens wins; stop the game and display the result."
+            "explanation": "Build a 5×5 board where clicking an empty cell places a token in that exact cell. Alternate R and Y after valid nonterminal moves. Four contiguous horizontal or vertical tokens win; stop the game and display the result."
           },
           {
             "title": "Evidence and communication",
@@ -598,7 +598,7 @@
             }
           ],
           "explanation": "Every possible horizontal and vertical start is checked, and only four contiguous matching tokens qualify. Scanning all possible windows is easy to verify and adequate for this tiny board. The state transition updates the board, result, move count, and player together, so an invalid move cannot consume a turn. A full board without a winner is a draw.",
-          "acceptanceRationale": "This implementation satisfies the stated practice contract. In an interview, demonstrate the edge cases and explain the tradeoffs; meeting this rubric does not guarantee an interview outcome.",
+          "acceptanceRationale": "This implementation meets the practice requirements. Demonstrate edge cases and explain tradeoffs in the interview; meeting this rubric does not guarantee an interview outcome.",
           "tradeoffs": [
             "Diagonal wins are an extension, not part of this brief. Never substitute familiar game rules without asking.",
             "For fixed 5×5 or 6×7 sizes the work is bounded. Generalized bounds below distinguish detection from total move cost.",
@@ -631,7 +631,7 @@
           },
           "python": {
             "code": "ROWS, COLUMNS = 5, 5\n\ndef create_game():\n    return {\"cells\": [[None for _ in range(COLUMNS)] for _ in range(ROWS)], \"player\": \"R\", \"winner\": None, \"draw\": False, \"moves\": 0}\n\ndef board_of(game):\n    return game[\"cells\"]\ndef winner_at(board, row, column):\n    for r in range(ROWS):\n        for c in range(COLUMNS):\n            token = board[r][c]\n            if token is None:\n                continue\n            for dr, dc in ((0, 1), (1, 0)):\n                if r + 3 * dr < ROWS and c + 3 * dc < COLUMNS:\n                    if all(board[r + i * dr][c + i * dc] == token for i in (1, 2, 3)):\n                        return token\n    return None\ndef move(game, row, column):\n    if game[\"winner\"] or game[\"draw\"] or type(row) is not int or type(column) is not int or not 0 <= row < ROWS or not 0 <= column < COLUMNS:\n        return game\n    current = board_of(game)\n    if current[row][column] is not None:\n        return game\n    cells = [[game[\"player\"] if c == column else value for c, value in enumerate(line)] if r == row else line for r, line in enumerate(current)]\n    board = cells\n    winner = winner_at(board, row, column)\n    moves = game[\"moves\"] + 1\n    draw = winner is None and moves == ROWS * COLUMNS\n    return {\"cells\": cells, \"winner\": winner, \"draw\": draw, \"moves\": moves, \"player\": game[\"player\"] if winner or draw else (\"Y\" if game[\"player\"] == \"R\" else \"R\")}\n",
-            "explanation": "This Python companion implements the same data model and observable rules without a browser. Run it locally with Python 3.11 or later. React hooks, DOM events, focus, and rendering remain responsibilities of the TypeScript interface.",
+            "explanation": "Run this equivalent data model and behavior locally with Python 3.11 or later, without a browser. The TypeScript interface handles React hooks, DOM events, focus, and rendering.",
             "complexity": {
               "time": "O(RC) per move; detection O(RC)",
               "space": "O(RC) board; O(R+C) transient row-copy allocation"
@@ -665,7 +665,7 @@
             }
           ],
           "explanation": "Before the valid move, there was no winner. Only one cell changes, so every newly completed winning line must contain it. Count matching tokens in both directions on each allowed axis, including the placed token once. The state transition updates the board, result, move count, and player together, so an invalid move cannot consume a turn. A full board without a winner is a draw.",
-          "acceptanceRationale": "This implementation satisfies the stated practice contract. In an interview, demonstrate the edge cases and explain the tradeoffs; meeting this rubric does not guarantee an interview outcome.",
+          "acceptanceRationale": "This implementation meets the practice requirements. Demonstrate edge cases and explain tradeoffs in the interview; meeting this rubric does not guarantee an interview outcome.",
           "tradeoffs": [
             "Diagonal wins are an extension, not part of this brief. Never substitute familiar game rules without asking.",
             "For fixed 5×5 or 6×7 sizes the work is bounded. Generalized bounds below distinguish detection from total move cost.",
@@ -698,7 +698,7 @@
           },
           "python": {
             "code": "ROWS, COLUMNS = 5, 5\n\ndef create_game():\n    return {\"cells\": [[None for _ in range(COLUMNS)] for _ in range(ROWS)], \"player\": \"R\", \"winner\": None, \"draw\": False, \"moves\": 0}\n\ndef board_of(game):\n    return game[\"cells\"]\ndef winner_at(board, row, column):\n    token = board[row][column]\n    for dr, dc in ((0, 1), (1, 0)):\n        count = 1\n        for sign in (-1, 1):\n            r, c = row + dr * sign, column + dc * sign\n            while 0 <= r < ROWS and 0 <= c < COLUMNS and board[r][c] == token:\n                count += 1\n                r, c = r + dr * sign, c + dc * sign\n        if count >= 4:\n            return token\n    return None\ndef move(game, row, column):\n    if game[\"winner\"] or game[\"draw\"] or type(row) is not int or type(column) is not int or not 0 <= row < ROWS or not 0 <= column < COLUMNS:\n        return game\n    current = board_of(game)\n    if current[row][column] is not None:\n        return game\n    cells = [[game[\"player\"] if c == column else value for c, value in enumerate(line)] if r == row else line for r, line in enumerate(current)]\n    board = cells\n    winner = winner_at(board, row, column)\n    moves = game[\"moves\"] + 1\n    draw = winner is None and moves == ROWS * COLUMNS\n    return {\"cells\": cells, \"winner\": winner, \"draw\": draw, \"moves\": moves, \"player\": game[\"player\"] if winner or draw else (\"Y\" if game[\"player\"] == \"R\" else \"R\")}\n",
-            "explanation": "This Python companion implements the same data model and observable rules without a browser. Run it locally with Python 3.11 or later. React hooks, DOM events, focus, and rendering remain responsibilities of the TypeScript interface.",
+            "explanation": "Run this equivalent data model and behavior locally with Python 3.11 or later, without a browser. The TypeScript interface handles React hooks, DOM events, focus, and rendering.",
             "complexity": {
               "time": "O(R+C) per move; detection O(R+C)",
               "space": "O(RC) board; O(R+C) transient row-copy allocation"
@@ -732,7 +732,7 @@
             }
           ],
           "explanation": "Precompute every legal four-cell horizontal/vertical window and index it under its cells. After a valid move, only windows containing that cell can become newly complete. The same last-move invariant justifies skipping all other windows. The state transition updates the board, result, move count, and player together, so an invalid move cannot consume a turn. A full board without a winner is a draw.",
-          "acceptanceRationale": "This implementation satisfies the stated practice contract. In an interview, demonstrate the edge cases and explain the tradeoffs; meeting this rubric does not guarantee an interview outcome.",
+          "acceptanceRationale": "This implementation meets the practice requirements. Demonstrate edge cases and explain tradeoffs in the interview; meeting this rubric does not guarantee an interview outcome.",
           "tradeoffs": [
             "Diagonal wins are an extension, not part of this brief. Never substitute familiar game rules without asking.",
             "For fixed 5×5 or 6×7 sizes the work is bounded. Generalized bounds below distinguish detection from total move cost.",
@@ -765,7 +765,7 @@
           },
           "python": {
             "code": "ROWS, COLUMNS = 5, 5\n\ndef create_game():\n    return {\"cells\": [[None for _ in range(COLUMNS)] for _ in range(ROWS)], \"player\": \"R\", \"winner\": None, \"draw\": False, \"moves\": 0}\n\ndef board_of(game):\n    return game[\"cells\"]\nWINDOWS_BY_CELL = [[] for _ in range(ROWS * COLUMNS)]\nfor r in range(ROWS):\n    for c in range(COLUMNS):\n        for dr, dc in ((0, 1), (1, 0)):\n            if r + 3 * dr < ROWS and c + 3 * dc < COLUMNS:\n                window = [(r + i * dr) * COLUMNS + c + i * dc for i in range(4)]\n                for index in window:\n                    WINDOWS_BY_CELL[index].append(window)\n\ndef winner_at(board, row, column):\n    token = board[row][column]\n    for window in WINDOWS_BY_CELL[row * COLUMNS + column]:\n        if all(board[index // COLUMNS][index % COLUMNS] == token for index in window):\n            return token\n    return None\ndef move(game, row, column):\n    if game[\"winner\"] or game[\"draw\"] or type(row) is not int or type(column) is not int or not 0 <= row < ROWS or not 0 <= column < COLUMNS:\n        return game\n    current = board_of(game)\n    if current[row][column] is not None:\n        return game\n    cells = [[game[\"player\"] if c == column else value for c, value in enumerate(line)] if r == row else line for r, line in enumerate(current)]\n    board = cells\n    winner = winner_at(board, row, column)\n    moves = game[\"moves\"] + 1\n    draw = winner is None and moves == ROWS * COLUMNS\n    return {\"cells\": cells, \"winner\": winner, \"draw\": draw, \"moves\": moves, \"player\": game[\"player\"] if winner or draw else (\"Y\" if game[\"player\"] == \"R\" else \"R\")}\n",
-            "explanation": "This Python companion implements the same data model and observable rules without a browser. Run it locally with Python 3.11 or later. React hooks, DOM events, focus, and rendering remain responsibilities of the TypeScript interface.",
+            "explanation": "Run this equivalent data model and behavior locally with Python 3.11 or later, without a browser. The TypeScript interface handles React hooks, DOM events, focus, and rendering.",
             "complexity": {
               "time": "O(R+C) per move; detection O(K²), K=4",
               "space": "O(RC) board; O(RCK) shared window indexes, K=4"
@@ -779,7 +779,7 @@
       "slug": "column-game",
       "title": "Column-drop 6×7 Game",
       "summary": "Model legal turns and detect contiguous horizontal or vertical wins without adding unstated game rules.",
-      "prompt": "Build a 6×7 board where clicking any cell drops a token into the lowest empty cell in its column. Alternate R and Y after valid nonterminal moves. Four contiguous horizontal or vertical tokens wins; stop the game and display the result.",
+      "prompt": "Build a 6×7 board where clicking any cell drops a token into the lowest empty cell in its column. Alternate R and Y after valid nonterminal moves. Four contiguous horizontal or vertical tokens win; stop the game and display the result.",
       "difficulty": "practitioner",
       "tags": [
         "frontend",
@@ -810,7 +810,7 @@
         "Diagonal wins are deliberately excluded."
       ],
       "evaluation": {
-        "intent": "Model legal turns and detect contiguous horizontal or vertical wins without adding unstated game rules. Explain the contract before coding, deliver a small working interface, then validate its data model and discuss tradeoffs.",
+        "intent": "Model legal turns and detect contiguous horizontal or vertical wins without adding unstated game rules. Explain the requirements, build a small working interface, then validate its data model and discuss tradeoffs.",
         "expectedSignals": [
           "Implement a visible board before optimizing winner detection.",
           "Keep invalid moves and terminal moves from corrupting turn state.",
@@ -819,7 +819,7 @@
         "acceptanceCriteria": [
           {
             "title": "Working behavior",
-            "explanation": "Build a 6×7 board where clicking any cell drops a token into the lowest empty cell in its column. Alternate R and Y after valid nonterminal moves. Four contiguous horizontal or vertical tokens wins; stop the game and display the result."
+            "explanation": "Build a 6×7 board where clicking any cell drops a token into the lowest empty cell in its column. Alternate R and Y after valid nonterminal moves. Four contiguous horizontal or vertical tokens win; stop the game and display the result."
           },
           {
             "title": "Evidence and communication",
@@ -865,7 +865,7 @@
             }
           ],
           "explanation": "Every possible horizontal and vertical start is checked, and only four contiguous matching tokens qualify. Scanning all possible windows is easy to verify and adequate for this tiny board. The state transition updates the board, result, move count, and player together, so an invalid move cannot consume a turn. A full board without a winner is a draw.",
-          "acceptanceRationale": "This implementation satisfies the stated practice contract. In an interview, demonstrate the edge cases and explain the tradeoffs; meeting this rubric does not guarantee an interview outcome.",
+          "acceptanceRationale": "This implementation meets the practice requirements. Demonstrate edge cases and explain tradeoffs in the interview; meeting this rubric does not guarantee an interview outcome.",
           "tradeoffs": [
             "Diagonal wins are an extension, not part of this brief. Never substitute familiar game rules without asking.",
             "For fixed 5×5 or 6×7 sizes the work is bounded. Generalized bounds below distinguish detection from total move cost.",
@@ -898,7 +898,7 @@
           },
           "python": {
             "code": "ROWS, COLUMNS = 6, 7\n\ndef create_game():\n    return {\"cells\": [[None for _ in range(COLUMNS)] for _ in range(ROWS)], \"player\": \"R\", \"winner\": None, \"draw\": False, \"moves\": 0}\n\ndef board_of(game):\n    return game[\"cells\"]\ndef winner_at(board, row, column):\n    for r in range(ROWS):\n        for c in range(COLUMNS):\n            token = board[r][c]\n            if token is None:\n                continue\n            for dr, dc in ((0, 1), (1, 0)):\n                if r + 3 * dr < ROWS and c + 3 * dc < COLUMNS:\n                    if all(board[r + i * dr][c + i * dc] == token for i in (1, 2, 3)):\n                        return token\n    return None\ndef move(game, row, column):\n    if game[\"winner\"] or game[\"draw\"] or type(row) is not int or type(column) is not int or not 0 <= row < ROWS or not 0 <= column < COLUMNS:\n        return game\n    current = board_of(game)\n    row = ROWS - 1\n    while row >= 0 and current[row][column] is not None:\n        row -= 1\n    if row < 0:\n        return game\n    cells = [[game[\"player\"] if c == column else value for c, value in enumerate(line)] if r == row else line for r, line in enumerate(current)]\n    board = cells\n    winner = winner_at(board, row, column)\n    moves = game[\"moves\"] + 1\n    draw = winner is None and moves == ROWS * COLUMNS\n    return {\"cells\": cells, \"winner\": winner, \"draw\": draw, \"moves\": moves, \"player\": game[\"player\"] if winner or draw else (\"Y\" if game[\"player\"] == \"R\" else \"R\")}\n",
-            "explanation": "This Python companion implements the same data model and observable rules without a browser. Run it locally with Python 3.11 or later. React hooks, DOM events, focus, and rendering remain responsibilities of the TypeScript interface.",
+            "explanation": "Run this equivalent data model and behavior locally with Python 3.11 or later, without a browser. The TypeScript interface handles React hooks, DOM events, focus, and rendering.",
             "complexity": {
               "time": "O(RC) per move; detection O(RC)",
               "space": "O(RC) board; O(R+C) transient row-copy allocation"
@@ -932,7 +932,7 @@
             }
           ],
           "explanation": "Before the valid move, there was no winner. Only one cell changes, so every newly completed winning line must contain it. Count matching tokens in both directions on each allowed axis, including the placed token once. The state transition updates the board, result, move count, and player together, so an invalid move cannot consume a turn. A full board without a winner is a draw.",
-          "acceptanceRationale": "This implementation satisfies the stated practice contract. In an interview, demonstrate the edge cases and explain the tradeoffs; meeting this rubric does not guarantee an interview outcome.",
+          "acceptanceRationale": "This implementation meets the practice requirements. Demonstrate edge cases and explain tradeoffs in the interview; meeting this rubric does not guarantee an interview outcome.",
           "tradeoffs": [
             "Diagonal wins are an extension, not part of this brief. Never substitute familiar game rules without asking.",
             "For fixed 5×5 or 6×7 sizes the work is bounded. Generalized bounds below distinguish detection from total move cost.",
@@ -965,7 +965,7 @@
           },
           "python": {
             "code": "ROWS, COLUMNS = 6, 7\n\ndef create_game():\n    return {\"cells\": [[None for _ in range(COLUMNS)] for _ in range(ROWS)], \"player\": \"R\", \"winner\": None, \"draw\": False, \"moves\": 0}\n\ndef board_of(game):\n    return game[\"cells\"]\ndef winner_at(board, row, column):\n    token = board[row][column]\n    for dr, dc in ((0, 1), (1, 0)):\n        count = 1\n        for sign in (-1, 1):\n            r, c = row + dr * sign, column + dc * sign\n            while 0 <= r < ROWS and 0 <= c < COLUMNS and board[r][c] == token:\n                count += 1\n                r, c = r + dr * sign, c + dc * sign\n        if count >= 4:\n            return token\n    return None\ndef move(game, row, column):\n    if game[\"winner\"] or game[\"draw\"] or type(row) is not int or type(column) is not int or not 0 <= row < ROWS or not 0 <= column < COLUMNS:\n        return game\n    current = board_of(game)\n    row = ROWS - 1\n    while row >= 0 and current[row][column] is not None:\n        row -= 1\n    if row < 0:\n        return game\n    cells = [[game[\"player\"] if c == column else value for c, value in enumerate(line)] if r == row else line for r, line in enumerate(current)]\n    board = cells\n    winner = winner_at(board, row, column)\n    moves = game[\"moves\"] + 1\n    draw = winner is None and moves == ROWS * COLUMNS\n    return {\"cells\": cells, \"winner\": winner, \"draw\": draw, \"moves\": moves, \"player\": game[\"player\"] if winner or draw else (\"Y\" if game[\"player\"] == \"R\" else \"R\")}\n",
-            "explanation": "This Python companion implements the same data model and observable rules without a browser. Run it locally with Python 3.11 or later. React hooks, DOM events, focus, and rendering remain responsibilities of the TypeScript interface.",
+            "explanation": "Run this equivalent data model and behavior locally with Python 3.11 or later, without a browser. The TypeScript interface handles React hooks, DOM events, focus, and rendering.",
             "complexity": {
               "time": "O(R+C) per move; detection O(R+C)",
               "space": "O(RC) board; O(R+C) transient row-copy allocation"
@@ -999,7 +999,7 @@
             }
           ],
           "explanation": "Precompute every legal four-cell horizontal/vertical window and index it under its cells. After a valid move, only windows containing that cell can become newly complete. The same last-move invariant justifies skipping all other windows. The state transition updates the board, result, move count, and player together, so an invalid move cannot consume a turn. A full board without a winner is a draw.",
-          "acceptanceRationale": "This implementation satisfies the stated practice contract. In an interview, demonstrate the edge cases and explain the tradeoffs; meeting this rubric does not guarantee an interview outcome.",
+          "acceptanceRationale": "This implementation meets the practice requirements. Demonstrate edge cases and explain tradeoffs in the interview; meeting this rubric does not guarantee an interview outcome.",
           "tradeoffs": [
             "Diagonal wins are an extension, not part of this brief. Never substitute familiar game rules without asking.",
             "For fixed 5×5 or 6×7 sizes the work is bounded. Generalized bounds below distinguish detection from total move cost.",
@@ -1032,7 +1032,7 @@
           },
           "python": {
             "code": "ROWS, COLUMNS = 6, 7\n\ndef create_game():\n    return {\"cells\": [[] for _ in range(COLUMNS)], \"player\": \"R\", \"winner\": None, \"draw\": False, \"moves\": 0}\n\ndef board_of(game):\n    return [[game[\"cells\"][c][ROWS - 1 - r] if ROWS - 1 - r < len(game[\"cells\"][c]) else None for c in range(COLUMNS)] for r in range(ROWS)]\nWINDOWS_BY_CELL = [[] for _ in range(ROWS * COLUMNS)]\nfor r in range(ROWS):\n    for c in range(COLUMNS):\n        for dr, dc in ((0, 1), (1, 0)):\n            if r + 3 * dr < ROWS and c + 3 * dc < COLUMNS:\n                window = [(r + i * dr) * COLUMNS + c + i * dc for i in range(4)]\n                for index in window:\n                    WINDOWS_BY_CELL[index].append(window)\n\ndef winner_at(board, row, column):\n    token = board[row][column]\n    for window in WINDOWS_BY_CELL[row * COLUMNS + column]:\n        if all(board[index // COLUMNS][index % COLUMNS] == token for index in window):\n            return token\n    return None\ndef move(game, row, column):\n    if game[\"winner\"] or game[\"draw\"] or type(row) is not int or type(column) is not int or not 0 <= row < ROWS or not 0 <= column < COLUMNS:\n        return game\n    current = board_of(game)\n    row = ROWS - 1\n    while row >= 0 and current[row][column] is not None:\n        row -= 1\n    if row < 0:\n        return game\n    cells = [stack + [game[\"player\"]] if c == column else stack for c, stack in enumerate(game[\"cells\"])]\n    board = board_of({**game, \"cells\": cells})\n    winner = winner_at(board, row, column)\n    moves = game[\"moves\"] + 1\n    draw = winner is None and moves == ROWS * COLUMNS\n    return {\"cells\": cells, \"winner\": winner, \"draw\": draw, \"moves\": moves, \"player\": game[\"player\"] if winner or draw else (\"Y\" if game[\"player\"] == \"R\" else \"R\")}\n",
-            "explanation": "This Python companion implements the same data model and observable rules without a browser. Run it locally with Python 3.11 or later. React hooks, DOM events, focus, and rendering remain responsibilities of the TypeScript interface.",
+            "explanation": "Run this equivalent data model and behavior locally with Python 3.11 or later, without a browser. The TypeScript interface handles React hooks, DOM events, focus, and rendering.",
             "complexity": {
               "time": "O(RC) per move; detection O(RC)",
               "space": "O(RC) board; O(RCK) shared window indexes, K=4"
@@ -1077,7 +1077,7 @@
         "Data is a finite acyclic tree; cycle validation is a follow-up for untrusted input."
       ],
       "evaluation": {
-        "intent": "Combine both supplied tree briefs into a recursive explorer with explicit expansion-state behavior. Explain the contract before coding, deliver a small working interface, then validate its data model and discuss tradeoffs.",
+        "intent": "Combine both supplied tree briefs into a recursive explorer with explicit expansion-state behavior. Explain the requirements, build a small working interface, then validate its data model and discuss tradeoffs.",
         "expectedSignals": [
           "Use the explicit node type to handle empty folders.",
           "Explain local unmount/reset behavior versus controlled expansion.",
@@ -1132,7 +1132,7 @@
             }
           ],
           "explanation": "A recursive renderer matches the tree definition: display the current node, then apply the same rule to each visible child. Stable IDs distinguish equal filenames. Rendering only expanded descendants prevents collapsed content from appearing, while nested lists encode the hierarchy.",
-          "acceptanceRationale": "This implementation satisfies the stated practice contract. In an interview, demonstrate the edge cases and explain the tradeoffs; meeting this rubric does not guarantee an interview outcome.",
+          "acceptanceRationale": "This implementation meets the practice requirements. Demonstrate edge cases and explain tradeoffs in the interview; meeting this rubric does not guarantee an interview outcome.",
           "tradeoffs": [
             "Local expansion resets after ancestor unmounting; controlled and normalized versions preserve it. Both policies are valid when stated explicitly.",
             "Do not use names as keys, mutate a Set in place, or infer a folder from nonempty children. Empty folders still have type folder.",
@@ -1169,7 +1169,7 @@
           },
           "python": {
             "code": "def toggle_local(expanded, node):\n    return not expanded if node[\"type\"] == \"folder\" else expanded\n\ndef visible_rows(nodes, expanded, depth=0):\n    rows = []\n    for node in nodes:\n        rows.append({\"id\": node[\"id\"], \"name\": node[\"name\"], \"depth\": depth})\n        if node[\"type\"] == \"folder\" and node[\"id\"] in expanded:\n            rows.extend(visible_rows(node[\"children\"], expanded, depth + 1))\n    return rows\n",
-            "explanation": "This Python companion implements the same data model and observable rules without a browser. Run it locally with Python 3.11 or later. React hooks, DOM events, focus, and rendering remain responsibilities of the TypeScript interface.",
+            "explanation": "Run this equivalent data model and behavior locally with Python 3.11 or later, without a browser. The TypeScript interface handles React hooks, DOM events, focus, and rendering.",
             "complexity": {
               "time": "UI O(v) traversal; companion O(v × h) worst case; v visible nodes, h depth, e expanded IDs",
               "space": "O(n + e + v + h) including data, expansion, rows, and stack"
@@ -1203,7 +1203,7 @@
             }
           ],
           "explanation": "A recursive renderer matches the tree definition: display the current node, then apply the same rule to each visible child. Stable IDs distinguish equal filenames. Rendering only expanded descendants prevents collapsed content from appearing, while nested lists encode the hierarchy.",
-          "acceptanceRationale": "This implementation satisfies the stated practice contract. In an interview, demonstrate the edge cases and explain the tradeoffs; meeting this rubric does not guarantee an interview outcome.",
+          "acceptanceRationale": "This implementation meets the practice requirements. Demonstrate edge cases and explain tradeoffs in the interview; meeting this rubric does not guarantee an interview outcome.",
           "tradeoffs": [
             "Local expansion resets after ancestor unmounting; controlled and normalized versions preserve it. Both policies are valid when stated explicitly.",
             "Do not use names as keys, mutate a Set in place, or infer a folder from nonempty children. Empty folders still have type folder.",
@@ -1240,7 +1240,7 @@
           },
           "python": {
             "code": "def toggle(expanded, node):\n    next_ids = set(expanded)\n    if node[\"type\"] == \"folder\":\n        if node[\"id\"] in next_ids:\n            next_ids.remove(node[\"id\"])\n        else:\n            next_ids.add(node[\"id\"])\n    return next_ids\n\ndef visible_rows(nodes, expanded, depth=0):\n    rows = []\n    for node in nodes:\n        rows.append({\"id\": node[\"id\"], \"name\": node[\"name\"], \"depth\": depth})\n        if node[\"type\"] == \"folder\" and node[\"id\"] in expanded:\n            rows.extend(visible_rows(node[\"children\"], expanded, depth + 1))\n    return rows\n",
-            "explanation": "This Python companion implements the same data model and observable rules without a browser. Run it locally with Python 3.11 or later. React hooks, DOM events, focus, and rendering remain responsibilities of the TypeScript interface.",
+            "explanation": "Run this equivalent data model and behavior locally with Python 3.11 or later, without a browser. The TypeScript interface handles React hooks, DOM events, focus, and rendering.",
             "complexity": {
               "time": "UI O(v) traversal; companion O(v × h) worst case; v visible nodes, h depth, e expanded IDs",
               "space": "O(n + e + v + h) including data, expansion, rows, and stack"
@@ -1274,7 +1274,7 @@
             }
           ],
           "explanation": "A recursive renderer matches the tree definition: display the current node, then apply the same rule to each visible child. Stable IDs distinguish equal filenames. Rendering only expanded descendants prevents collapsed content from appearing, while nested lists encode the hierarchy.",
-          "acceptanceRationale": "This implementation satisfies the stated practice contract. In an interview, demonstrate the edge cases and explain the tradeoffs; meeting this rubric does not guarantee an interview outcome.",
+          "acceptanceRationale": "This implementation meets the practice requirements. Demonstrate edge cases and explain tradeoffs in the interview; meeting this rubric does not guarantee an interview outcome.",
           "tradeoffs": [
             "Local expansion resets after ancestor unmounting; controlled and normalized versions preserve it. Both policies are valid when stated explicitly.",
             "Do not use names as keys, mutate a Set in place, or infer a folder from nonempty children. Empty folders still have type folder.",
@@ -1311,7 +1311,7 @@
           },
           "python": {
             "code": "def normalize(input_nodes):\n    tree = {\"roots\": [node[\"id\"] for node in input_nodes], \"nodes\": {}}\n    def visit(node):\n        if node[\"id\"] in tree[\"nodes\"]:\n            raise ValueError(\"IDs must be globally unique\")\n        children = node.get(\"children\", []) if node[\"type\"] == \"folder\" else []\n        tree[\"nodes\"][node[\"id\"]] = {**node, \"children\": [child[\"id\"] for child in children]}\n        for child in children:\n            visit(child)\n    for node in input_nodes:\n        visit(node)\n    return tree\n\ndef toggle(expanded, node):\n    next_ids = set(expanded)\n    if node[\"type\"] == \"folder\":\n        if node[\"id\"] in next_ids:\n            next_ids.remove(node[\"id\"])\n        else:\n            next_ids.add(node[\"id\"])\n    return next_ids\n\ndef visible_rows(tree, expanded):\n    rows = []\n    def visit(node_id, depth):\n        node = tree[\"nodes\"][node_id]\n        rows.append({\"id\": node_id, \"name\": node[\"name\"], \"depth\": depth})\n        if node[\"type\"] == \"folder\" and node_id in expanded:\n            for child in node[\"children\"]:\n                visit(child, depth + 1)\n    for root in tree[\"roots\"]:\n        visit(root, 0)\n    return rows\n",
-            "explanation": "This Python companion implements the same data model and observable rules without a browser. Run it locally with Python 3.11 or later. React hooks, DOM events, focus, and rendering remain responsibilities of the TypeScript interface.",
+            "explanation": "Run this equivalent data model and behavior locally with Python 3.11 or later, without a browser. The TypeScript interface handles React hooks, DOM events, focus, and rendering.",
             "complexity": {
               "time": "UI O(v) traversal; normalization O(n), companion O(v); v visible nodes, h depth, e expanded IDs",
               "space": "O(n + e + v + h) including data, expansion, rows, and stack"
@@ -1357,7 +1357,7 @@
         "Support Tab/Enter/Space, Escape, outside pointer dismissal, and visible focus."
       ],
       "evaluation": {
-        "intent": "Model selection and derived filtering while preserving disabled options, keyboard access, and dismissal behavior. Explain the contract before coding, deliver a small working interface, then validate its data model and discuss tradeoffs.",
+        "intent": "Model selection and derived filtering while preserving disabled options, keyboard access, and dismissal behavior. Explain the requirements, build a small working interface, then validate its data model and discuss tradeoffs.",
         "expectedSignals": [
           "Derive the filtered list rather than storing redundant results.",
           "Reject disabled options even if selection is called programmatically.",
@@ -1412,7 +1412,7 @@
             }
           ],
           "explanation": "The visible list is a pure function of options, selected IDs, and query, so removing or selecting cannot leave a stale dropdown. Selection checks run inside the model as well as in disabled buttons. A single transition clears the query and adds the chip atomically.",
-          "acceptanceRationale": "This implementation satisfies the stated practice contract. In an interview, demonstrate the edge cases and explain the tradeoffs; meeting this rubric does not guarantee an interview outcome.",
+          "acceptanceRationale": "This implementation meets the practice requirements. Demonstrate edge cases and explain tradeoffs in the interview; meeting this rubric does not guarantee an interview outcome.",
           "tradeoffs": [
             "Do not present these organization alternatives as three faster filtering algorithms: each scans the option labels.",
             "Native labeled inputs and buttons are intentional here. A full ARIA combobox would also require its complete arrow-key and active-descendant behavior.",
@@ -1449,7 +1449,7 @@
           },
           "python": {
             "code": "def initial_state():\n    return {\"selected\": [], \"query\": \"\", \"open\": False}\n\ndef visible_options(options, state):\n    selected, query = set(state[\"selected\"]), state[\"query\"].lower()\n    return [option for option in options if option[\"id\"] not in selected and query in option[\"label\"].lower()]\n\ndef select_ids(selected, option_id, options):\n    option = next((item for item in options if item[\"id\"] == option_id), None)\n    if option is None or option.get(\"disabled\", False) or option_id in selected:\n        return selected\n    return selected + [option_id]\n\ndef reduce(state, action, options):\n    kind = action[\"type\"]\n    if kind == \"query\":\n        return {**state, \"query\": action[\"value\"], \"open\": True}\n    if kind in (\"open\", \"close\"):\n        return {**state, \"open\": kind == \"open\"}\n    if kind == \"remove\":\n        return {**state, \"selected\": [item for item in state[\"selected\"] if item != action[\"id\"]]}\n    if kind == \"select\":\n        selected = select_ids(state[\"selected\"], action[\"id\"], options)\n        return state if selected is state[\"selected\"] else {\"selected\": selected, \"query\": \"\", \"open\": True}\n    raise ValueError(\"Unknown action\")\n",
-            "explanation": "This Python companion implements the same data model and observable rules without a browser. Run it locally with Python 3.11 or later. React hooks, DOM events, focus, and rendering remain responsibilities of the TypeScript interface.",
+            "explanation": "Run this equivalent data model and behavior locally with Python 3.11 or later, without a browser. The TypeScript interface handles React hooks, DOM events, focus, and rendering.",
             "complexity": {
               "time": "O(n × L + s) filtering; O(n + s) selection, n options, L label length, s selected IDs",
               "space": "O(n + s) derived options and selection"
@@ -1483,7 +1483,7 @@
             }
           ],
           "explanation": "The visible list is a pure function of options, selected IDs, and query, so removing or selecting cannot leave a stale dropdown. Selection checks run inside the model as well as in disabled buttons. A single transition clears the query and adds the chip atomically.",
-          "acceptanceRationale": "This implementation satisfies the stated practice contract. In an interview, demonstrate the edge cases and explain the tradeoffs; meeting this rubric does not guarantee an interview outcome.",
+          "acceptanceRationale": "This implementation meets the practice requirements. Demonstrate edge cases and explain tradeoffs in the interview; meeting this rubric does not guarantee an interview outcome.",
           "tradeoffs": [
             "Do not present these organization alternatives as three faster filtering algorithms: each scans the option labels.",
             "Native labeled inputs and buttons are intentional here. A full ARIA combobox would also require its complete arrow-key and active-descendant behavior.",
@@ -1520,7 +1520,7 @@
           },
           "python": {
             "code": "def initial_state():\n    return {\"selected\": [], \"query\": \"\", \"open\": False}\n\ndef visible_options(options, state):\n    selected, query = set(state[\"selected\"]), state[\"query\"].lower()\n    return [option for option in options if option[\"id\"] not in selected and query in option[\"label\"].lower()]\n\ndef select_ids(selected, option_id, options):\n    option = next((item for item in options if item[\"id\"] == option_id), None)\n    if option is None or option.get(\"disabled\", False) or option_id in selected:\n        return selected\n    return selected + [option_id]\n\ndef reduce(state, action, options):\n    kind = action[\"type\"]\n    if kind == \"query\":\n        return {**state, \"query\": action[\"value\"], \"open\": True}\n    if kind in (\"open\", \"close\"):\n        return {**state, \"open\": kind == \"open\"}\n    if kind == \"remove\":\n        return {**state, \"selected\": [item for item in state[\"selected\"] if item != action[\"id\"]]}\n    if kind == \"select\":\n        selected = select_ids(state[\"selected\"], action[\"id\"], options)\n        return state if selected is state[\"selected\"] else {\"selected\": selected, \"query\": \"\", \"open\": True}\n    raise ValueError(\"Unknown action\")\n",
-            "explanation": "This Python companion implements the same data model and observable rules without a browser. Run it locally with Python 3.11 or later. React hooks, DOM events, focus, and rendering remain responsibilities of the TypeScript interface.",
+            "explanation": "Run this equivalent data model and behavior locally with Python 3.11 or later, without a browser. The TypeScript interface handles React hooks, DOM events, focus, and rendering.",
             "complexity": {
               "time": "O(n × L + s) filtering; O(n + s) selection, n options, L label length, s selected IDs",
               "space": "O(n + s) derived options and selection"
@@ -1554,7 +1554,7 @@
             }
           ],
           "explanation": "The visible list is a pure function of options, selected IDs, and query, so removing or selecting cannot leave a stale dropdown. Selection checks run inside the model as well as in disabled buttons. A single transition clears the query and adds the chip atomically.",
-          "acceptanceRationale": "This implementation satisfies the stated practice contract. In an interview, demonstrate the edge cases and explain the tradeoffs; meeting this rubric does not guarantee an interview outcome.",
+          "acceptanceRationale": "This implementation meets the practice requirements. Demonstrate edge cases and explain tradeoffs in the interview; meeting this rubric does not guarantee an interview outcome.",
           "tradeoffs": [
             "Do not present these organization alternatives as three faster filtering algorithms: each scans the option labels.",
             "Native labeled inputs and buttons are intentional here. A full ARIA combobox would also require its complete arrow-key and active-descendant behavior.",
@@ -1591,7 +1591,7 @@
           },
           "python": {
             "code": "def initial_state():\n    return {\"selected\": [], \"query\": \"\", \"open\": False}\n\ndef visible_options(options, state):\n    selected, query = set(state[\"selected\"]), state[\"query\"].lower()\n    return [option for option in options if option[\"id\"] not in selected and query in option[\"label\"].lower()]\n\ndef select_ids(selected, option_id, options):\n    option = next((item for item in options if item[\"id\"] == option_id), None)\n    if option is None or option.get(\"disabled\", False) or option_id in selected:\n        return selected\n    return selected + [option_id]\n\ndef reduce(state, action, options):\n    kind = action[\"type\"]\n    if kind == \"query\":\n        return {**state, \"query\": action[\"value\"], \"open\": True}\n    if kind in (\"open\", \"close\"):\n        return {**state, \"open\": kind == \"open\"}\n    if kind == \"remove\":\n        return {**state, \"selected\": [item for item in state[\"selected\"] if item != action[\"id\"]]}\n    if kind == \"select\":\n        selected = select_ids(state[\"selected\"], action[\"id\"], options)\n        return state if selected is state[\"selected\"] else {\"selected\": selected, \"query\": \"\", \"open\": True}\n    raise ValueError(\"Unknown action\")\nclass SelectionController:\n    \"\"\"Parent-owned state; a UI can subscribe through on_change.\"\"\"\n    def __init__(self, options, on_change=lambda state: None):\n        self.options, self.on_change, self.state = options, on_change, initial_state()\n\n    def dispatch(self, action):\n        self.state = reduce(self.state, action, self.options)\n        self.on_change(self.state)\n        return self.state\n",
-            "explanation": "This Python companion implements the same data model and observable rules without a browser. Run it locally with Python 3.11 or later. React hooks, DOM events, focus, and rendering remain responsibilities of the TypeScript interface.",
+            "explanation": "Run this equivalent data model and behavior locally with Python 3.11 or later, without a browser. The TypeScript interface handles React hooks, DOM events, focus, and rendering.",
             "complexity": {
               "time": "O(n × L + s) filtering; O(n + s) selection, n options, L label length, s selected IDs",
               "space": "O(n + s) derived options and selection"
@@ -1637,7 +1637,7 @@
         "A reload starts a new assignment; unrelated renders and individual responses do not."
       ],
       "evaluation": {
-        "intent": "Fetch user counts, handle partial failures, and place results in stable unique cells despite out-of-order requests. Explain the contract before coding, deliver a small working interface, then validate its data model and discuss tradeoffs.",
+        "intent": "Fetch user counts, handle partial failures, and place results in stable unique cells despite out-of-order requests. Explain the requirements, build a small working interface, then validate its data model and discuss tradeoffs.",
         "expectedSignals": [
           "Notice the source URL typo and pagination limit.",
           "Separate fetching, placement, and rendering.",
@@ -1692,7 +1692,7 @@
             }
           ],
           "explanation": "Sampling cells without replacement prevents collisions. Binding each request to its preassigned user/index prevents completion order from moving users. Pagination counts every returned page; cancellation checks guard publication even if a transport ignores cancellation. Per-user errors remain data rather than wiping out unrelated successes.",
-          "acceptanceRationale": "This implementation satisfies the stated practice contract. In an interview, demonstrate the edge cases and explain the tradeoffs; meeting this rubric does not guarantee an interview outcome.",
+          "acceptanceRationale": "This implementation meets the practice requirements. Demonstrate edge cases and explain tradeoffs in the interview; meeting this rubric does not guarantee an interview outcome.",
           "tradeoffs": [
             "The playground uses deterministic mocks and never calls GitHub. The adapter can use fetch in a local experiment; never embed tokens in browser code.",
             "A paginated listing is not a transactional snapshot. Concurrent repository creation/deletion can affect a live count; tests use fixed pages.",
@@ -1730,7 +1730,7 @@
           },
           "python": {
             "code": "def seeded(seed):\n    value = seed & 0xffffffff\n    def random():\n        nonlocal value\n        value = (value * 1664525 + 1013904223) & 0xffffffff\n        return value / 4294967296\n    return random\nimport asyncio\nfrom urllib.parse import quote\n\nclass Cancelled(Exception):\n    pass\n\nclass Cancellation:\n    def __init__(self):\n        self.cancelled = False\n    def cancel(self):\n        self.cancelled = True\n    def check(self):\n        if self.cancelled:\n            raise Cancelled(\"Cancelled\")\n\nasync def get_json(url, fetcher, cancellation):\n    cancellation.check()\n    response = await fetcher(url, cancellation)\n    cancellation.check()\n    if not response[\"ok\"]:\n        raise ValueError(f'HTTP {response[\"status\"]}')\n    return response[\"data\"]\n\nasync def count_repos(name, fetcher, cancellation):\n    count, page = 0, 1\n    while True:\n        url = f'https://api.github.com/users/{quote(name, safe=\"\")}/repos?type=owner&per_page=100&page={page}'\n        data = await get_json(url, fetcher, cancellation)\n        if not isinstance(data, list):\n            raise ValueError(\"Expected a repository array\")\n        count += len(data)\n        if len(data) < 100:\n            return count\n        page += 1\n\ndef place_users(names, rng):\n    if len(names) > 3:\n        raise ValueError(\"At most three users\")\n    cells, result = list(range(9)), []\n    for i, name in enumerate(names):\n        j = i + int(rng() * (9 - i))\n        cells[i], cells[j] = cells[j], cells[i]\n        result.append({\"name\": name, \"cell\": cells[i], \"count\": None, \"error\": None})\n    return result\n\nasync def load_matrix(fetcher, rng, cancellation, on_update):\n    data = await get_json(\"/userList\", fetcher, cancellation)\n    if not isinstance(data, list) or len(data) > 3 or any(not isinstance(item, dict) or not isinstance(item.get(\"name\"), str) or not item[\"name\"].strip() for item in data):\n        raise ValueError(\"Expected up to three named users\")\n    unique = {item[\"name\"].strip().lower(): item[\"name\"].strip() for item in data}\n    cells = place_users(list(unique.values()), rng)\n    def publish():\n        cancellation.check()\n        on_update([dict(cell) for cell in cells])\n    publish()\n    async def load(index):\n        try:\n            count = await count_repos(cells[index][\"name\"], fetcher, cancellation)\n            cancellation.check()\n            cells[index] = {**cells[index], \"count\": count}\n        except Cancelled:\n            raise\n        except Exception as error:\n            cancellation.check()\n            cells[index] = {**cells[index], \"error\": str(error)}\n    for index in range(len(cells)):\n        await load(index)\n    publish()\n    return cells\n",
-            "explanation": "This Python companion implements the same data model and observable rules without a browser. Run it locally with Python 3.11 or later. React hooks, DOM events, focus, and rendering remain responsibilities of the TypeScript interface.",
+            "explanation": "Run this equivalent data model and behavior locally with Python 3.11 or later, without a browser. The TypeScript interface handles React hooks, DOM events, focus, and rendering.",
             "complexity": {
               "time": "O(u + total returned repositories) parsing; requests equal all pages. Latency is the sum of user page chains.",
               "space": "O(u + 100) retained data per active page chain; nine rendered cells"
@@ -1764,7 +1764,7 @@
             }
           ],
           "explanation": "Sampling cells without replacement prevents collisions. Binding each request to its preassigned user/index prevents completion order from moving users. Pagination counts every returned page; cancellation checks guard publication even if a transport ignores cancellation. Per-user errors remain data rather than wiping out unrelated successes.",
-          "acceptanceRationale": "This implementation satisfies the stated practice contract. In an interview, demonstrate the edge cases and explain the tradeoffs; meeting this rubric does not guarantee an interview outcome.",
+          "acceptanceRationale": "This implementation meets the practice requirements. Demonstrate edge cases and explain tradeoffs in the interview; meeting this rubric does not guarantee an interview outcome.",
           "tradeoffs": [
             "The playground uses deterministic mocks and never calls GitHub. The adapter can use fetch in a local experiment; never embed tokens in browser code.",
             "A paginated listing is not a transactional snapshot. Concurrent repository creation/deletion can affect a live count; tests use fixed pages.",
@@ -1802,7 +1802,7 @@
           },
           "python": {
             "code": "def seeded(seed):\n    value = seed & 0xffffffff\n    def random():\n        nonlocal value\n        value = (value * 1664525 + 1013904223) & 0xffffffff\n        return value / 4294967296\n    return random\nimport asyncio\nfrom urllib.parse import quote\n\nclass Cancelled(Exception):\n    pass\n\nclass Cancellation:\n    def __init__(self):\n        self.cancelled = False\n    def cancel(self):\n        self.cancelled = True\n    def check(self):\n        if self.cancelled:\n            raise Cancelled(\"Cancelled\")\n\nasync def get_json(url, fetcher, cancellation):\n    cancellation.check()\n    response = await fetcher(url, cancellation)\n    cancellation.check()\n    if not response[\"ok\"]:\n        raise ValueError(f'HTTP {response[\"status\"]}')\n    return response[\"data\"]\n\nasync def count_repos(name, fetcher, cancellation):\n    count, page = 0, 1\n    while True:\n        url = f'https://api.github.com/users/{quote(name, safe=\"\")}/repos?type=owner&per_page=100&page={page}'\n        data = await get_json(url, fetcher, cancellation)\n        if not isinstance(data, list):\n            raise ValueError(\"Expected a repository array\")\n        count += len(data)\n        if len(data) < 100:\n            return count\n        page += 1\n\ndef place_users(names, rng):\n    if len(names) > 3:\n        raise ValueError(\"At most three users\")\n    cells, result = list(range(9)), []\n    for i, name in enumerate(names):\n        j = i + int(rng() * (9 - i))\n        cells[i], cells[j] = cells[j], cells[i]\n        result.append({\"name\": name, \"cell\": cells[i], \"count\": None, \"error\": None})\n    return result\n\nasync def load_matrix(fetcher, rng, cancellation, on_update):\n    data = await get_json(\"/userList\", fetcher, cancellation)\n    if not isinstance(data, list) or len(data) > 3 or any(not isinstance(item, dict) or not isinstance(item.get(\"name\"), str) or not item[\"name\"].strip() for item in data):\n        raise ValueError(\"Expected up to three named users\")\n    unique = {item[\"name\"].strip().lower(): item[\"name\"].strip() for item in data}\n    cells = place_users(list(unique.values()), rng)\n    def publish():\n        cancellation.check()\n        on_update([dict(cell) for cell in cells])\n    publish()\n    async def load(index):\n        try:\n            count = await count_repos(cells[index][\"name\"], fetcher, cancellation)\n            cancellation.check()\n            cells[index] = {**cells[index], \"count\": count}\n        except Cancelled:\n            raise\n        except Exception as error:\n            cancellation.check()\n            cells[index] = {**cells[index], \"error\": str(error)}\n    await asyncio.gather(*(load(index) for index in range(len(cells))), return_exceptions=True)\n    publish()\n    return cells\n",
-            "explanation": "This Python companion implements the same data model and observable rules without a browser. Run it locally with Python 3.11 or later. React hooks, DOM events, focus, and rendering remain responsibilities of the TypeScript interface.",
+            "explanation": "Run this equivalent data model and behavior locally with Python 3.11 or later, without a browser. The TypeScript interface handles React hooks, DOM events, focus, and rendering.",
             "complexity": {
               "time": "O(u + total returned repositories) parsing; requests equal all pages. Latency approaches the slowest user page chain.",
               "space": "O(u + 100) retained data per active page chain; nine rendered cells"
@@ -1836,7 +1836,7 @@
             }
           ],
           "explanation": "Sampling cells without replacement prevents collisions. Binding each request to its preassigned user/index prevents completion order from moving users. Pagination counts every returned page; cancellation checks guard publication even if a transport ignores cancellation. Per-user errors remain data rather than wiping out unrelated successes.",
-          "acceptanceRationale": "This implementation satisfies the stated practice contract. In an interview, demonstrate the edge cases and explain the tradeoffs; meeting this rubric does not guarantee an interview outcome.",
+          "acceptanceRationale": "This implementation meets the practice requirements. Demonstrate edge cases and explain tradeoffs in the interview; meeting this rubric does not guarantee an interview outcome.",
           "tradeoffs": [
             "The playground uses deterministic mocks and never calls GitHub. The adapter can use fetch in a local experiment; never embed tokens in browser code.",
             "A paginated listing is not a transactional snapshot. Concurrent repository creation/deletion can affect a live count; tests use fixed pages.",
@@ -1874,7 +1874,7 @@
           },
           "python": {
             "code": "def seeded(seed):\n    value = seed & 0xffffffff\n    def random():\n        nonlocal value\n        value = (value * 1664525 + 1013904223) & 0xffffffff\n        return value / 4294967296\n    return random\nimport asyncio\nfrom urllib.parse import quote\n\nclass Cancelled(Exception):\n    pass\n\nclass Cancellation:\n    def __init__(self):\n        self.cancelled = False\n    def cancel(self):\n        self.cancelled = True\n    def check(self):\n        if self.cancelled:\n            raise Cancelled(\"Cancelled\")\n\nasync def get_json(url, fetcher, cancellation):\n    cancellation.check()\n    response = await fetcher(url, cancellation)\n    cancellation.check()\n    if not response[\"ok\"]:\n        raise ValueError(f'HTTP {response[\"status\"]}')\n    return response[\"data\"]\n\nasync def count_repos(name, fetcher, cancellation):\n    count, page = 0, 1\n    while True:\n        url = f'https://api.github.com/users/{quote(name, safe=\"\")}/repos?type=owner&per_page=100&page={page}'\n        data = await get_json(url, fetcher, cancellation)\n        if not isinstance(data, list):\n            raise ValueError(\"Expected a repository array\")\n        count += len(data)\n        if len(data) < 100:\n            return count\n        page += 1\n\ndef place_users(names, rng):\n    if len(names) > 3:\n        raise ValueError(\"At most three users\")\n    cells, result = list(range(9)), []\n    for i, name in enumerate(names):\n        j = i + int(rng() * (9 - i))\n        cells[i], cells[j] = cells[j], cells[i]\n        result.append({\"name\": name, \"cell\": cells[i], \"count\": None, \"error\": None})\n    return result\n\nasync def load_matrix(fetcher, rng, cancellation, on_update):\n    data = await get_json(\"/userList\", fetcher, cancellation)\n    if not isinstance(data, list) or len(data) > 3 or any(not isinstance(item, dict) or not isinstance(item.get(\"name\"), str) or not item[\"name\"].strip() for item in data):\n        raise ValueError(\"Expected up to three named users\")\n    unique = {item[\"name\"].strip().lower(): item[\"name\"].strip() for item in data}\n    cells = place_users(list(unique.values()), rng)\n    def publish():\n        cancellation.check()\n        on_update([dict(cell) for cell in cells])\n    publish()\n    async def load(index):\n        try:\n            count = await count_repos(cells[index][\"name\"], fetcher, cancellation)\n            cancellation.check()\n            cells[index] = {**cells[index], \"count\": count}\n        except Cancelled:\n            raise\n        except Exception as error:\n            cancellation.check()\n            cells[index] = {**cells[index], \"error\": str(error)}\n    semaphore = asyncio.Semaphore(2)\n    async def worker(index):\n        async with semaphore:\n            await load(index)\n            publish()\n    await asyncio.gather(*(worker(index) for index in range(len(cells))))\n    publish()\n    return cells\n",
-            "explanation": "This Python companion implements the same data model and observable rules without a browser. Run it locally with Python 3.11 or later. React hooks, DOM events, focus, and rendering remain responsibilities of the TypeScript interface.",
+            "explanation": "Run this equivalent data model and behavior locally with Python 3.11 or later, without a browser. The TypeScript interface handles React hooks, DOM events, focus, and rendering.",
             "complexity": {
               "time": "O(u + total returned repositories) parsing; requests equal all pages. Two user chains at a time; progressive completion.",
               "space": "O(u + 100) retained data per active page chain; nine rendered cells"

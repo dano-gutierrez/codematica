@@ -1,14 +1,14 @@
 # Learning Paths
 
-This folder contains curated role and skill paths for Codematica.
+Author curated role and skill paths here.
 
 - Author one path per `.json` file.
 - Use `kind: "role"` for career-oriented paths and `kind: "skill"` for topic-oriented paths.
 - Keep `units[].nodes[]` ordered. Nodes can reference published documents, external diagrams, exercises, or primary-source nodes.
 - Language-refresh paths should pair searchable Markdown docs with practice nodes that reinforce the same concept.
 - AI engineering paths should pair source-anchored Markdown lessons with diagrams, questionnaires, and passive flashcard feeds. Coding challenge sections may appear inside Markdown as non-executable prompts until a future executable challenge contract exists.
-- Database index paths should pair source-anchored Markdown lessons with questionnaires and passive flashcard feeds. SQL query editor practice is future work and should not be modeled as executable path nodes yet.
-- Front-End Development paths should pair official-source-anchored framework lessons with hard questionnaires and passive one-minute brief feeds when the path is intended for vertical scroll review.
+- Database index paths should pair source-anchored Markdown lessons with questionnaires and passive flashcard feeds. SQL editor practice is future work; do not add executable SQL path nodes yet.
+- Front-End Development paths should pair framework lessons grounded in official sources with hard questionnaires. Add passive one-minute brief feeds for paths intended for vertical scroll review.
 - Algorithm paths should pair explanatory Markdown with readable language examples, selection-focused questionnaires, passive review, and relevant guided interview prompts. The BFS/DFS path uses this contract for graph traversal.
 - Diagram-authoring paths should pair rendered source examples with diagram-selection guidance, choice-only knowledge checks, and passive review; the Mermaid path uses the deployed renderer for browser validation.
 - The Advanced Next.js 16 path is hard-only and targets experienced App Router engineers; keep factual claims aligned with official Next.js docs, official release notes, and npm registry version metadata.
@@ -17,7 +17,7 @@ This folder contains curated role and skill paths for Codematica.
 - Progression-enabled paths use the shared generic career/language model: stable skills/categories, stage level/status, outcomes linked by `skillId`, required nodes, optional planned checkpoints, and required published checkpoints/thresholds.
 - Paths with `sourcePolicy: "required"` must declare path-level primary sources and source every internal document/exercise node. Published stages may use source nodes only when a published local companion exists; planned stages may link directly upstream.
 - Path-scoped passive flashcard feeds live in `content/flashcard-feeds/` and should not be added to ordered `units[].nodes[]`.
-- Beginner language paths should introduce one script at a time, keep recognition checks near each row group, and link their reference guides and passive review feed outside the ordered node sequence so learners can open them at any time.
+- Beginner language paths should introduce one script at a time and place recognition checks near each row group. Link reference guides and passive review outside the ordered nodes so learners can open them at any time.
 - All referenced slugs must exist before running `npm run content:index`.
 - Paths are open in the current milestone. `required` identifies milestone calculations; it never locks a node. Do not add lock or payment fields until the feature contract changes.
 

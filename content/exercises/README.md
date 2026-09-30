@@ -1,8 +1,8 @@
 # Exercises
 
-This folder contains manually authored practice prompts for Codematica learning paths.
+Author practice prompts for Codematica learning paths here.
 
-The Product Engineering preparation pack under `software-engineering/product-interview-*.json` uses three six-question checkpoints and one 75-minute guided lab. The lab is an original rehearsal with evidence checks; only questionnaire answers receive automatic grading. Scratch code and architectural reasoning remain self-assessed.
+The Product Engineering pack in `software-engineering/product-interview-*.json` has three six-question checkpoints and one 75-minute guided lab. The lab is an original rehearsal with evidence checks. Only questionnaire answers are graded automatically; learners assess their own scratch code and architectural reasoning.
 
 - Author exercises as `.json` files under concept folders.
 - Supported `type` values are `flashcard`, `cloze`, `questionnaire`, `writing`, and `guided-lab`.
@@ -17,13 +17,13 @@ The Product Engineering preparation pack under `software-engineering/product-int
 - Questionnaire questions may declare stable `skillIds`; checkpoint completion calculates overall and per-skill scores without persisting individual answers.
 - Source-linked exercises declare `sourceRefs` from `content/sources/`; the primary source remains authoritative.
 - `documentSlug` must reference an existing Markdown document.
-- Non-executable coding challenges currently belong inside Markdown lessons as challenge sections with starter code and acceptance checks. Do not model executable challenges in exercise JSON until a future code editor feature adds that schema.
-- Database SQL query practice is future work. Until a dedicated SQL editor feature defines demo data, validation, and allowed SQL behavior, database path practice should use the existing questionnaire model.
-- Advanced Next.js 16 practice should stay hard-only (`senior` or `principal`) and test production judgment about rendering, caching, invalidation, migration, and boundary failures instead of basic API recall.
+- Put non-executable coding challenges in Markdown lessons with starter code and acceptance checks. Executable challenges require a future code editor schema before they can be modeled in exercise JSON.
+- Use questionnaires for database practice until a dedicated SQL editor defines demo data, validation, and allowed SQL behavior.
+- Keep Advanced Next.js 16 practice hard-only (`senior` or `principal`). Test production judgment about rendering, caching, invalidation, migration, and boundary failures rather than basic API recall.
 - BFS/DFS questionnaires should test traversal invariants, visited timing, complexity, recursion risk, hidden graph modeling, and algorithm selection instead of code punctuation.
 - Mermaid authoring questionnaires are choice-only, require exactly one correct option, and must explain why every distractor is incorrect instead of only restating the right answer.
 
-Exercise generation, executable code validation, executable SQL validation, AI feedback, persisted questionnaire answers/scores, and generic adaptive review queues are future work. Coarse started/completed progress already uses the shared optional progress layer. Japanese has a separate deterministic skill-review contract that stores only its narrow mastery snapshot, never individual exercise answers. Run `npm run content:check` before committing exercise changes.
+Exercise generation, executable code/SQL validation, AI feedback, persisted questionnaire answers/scores, and generic adaptive review queues are future work. The shared optional progress layer stores coarse started/completed progress. Japanese skill review separately stores a deterministic mastery snapshot, never individual answers. Run `npm run content:check` before committing exercise changes.
 
 Passive scroll-only flashcards are authored separately in `content/flashcard-feeds/`; do not model them as interactive `type: "flashcard"` exercises.
 

@@ -10,7 +10,7 @@
       "id": "indexes-are-read-models-concept",
       "type": "concept",
       "title": "Indexes Are Read Models",
-      "prompt": "A database index is a maintained read structure, not a free lookup spell.",
+      "prompt": "A database index is a maintained read structure with ongoing costs.",
       "explanation": "Every index trades faster matching query shapes for write overhead, storage, vacuum work, and migration cost. Review the workload that pays for it.",
       "difficulty": "senior",
       "tags": ["database-indexes", "performance", "review"],

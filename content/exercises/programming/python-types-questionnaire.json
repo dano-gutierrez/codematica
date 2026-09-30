@@ -11,7 +11,7 @@
     {
       "id": "annotation-runtime",
       "kind": "choice",
-      "prompt": "A Python handler accepts payload: UserPayload from an HTTP request. What is the correct senior interpretation?",
+      "prompt": "A Python handler accepts payload: UserPayload from an HTTP request. What does this annotation guarantee?",
       "options": [
         {
           "id": "runtime-safe",
@@ -67,7 +67,7 @@
     {
       "id": "typing-match",
       "kind": "matching",
-      "prompt": "Match the Python typing concept to the TypeScript-oriented review lens.",
+      "prompt": "Match each Python typing concept to its TypeScript comparison.",
       "pairs": [
         {
           "id": "any",

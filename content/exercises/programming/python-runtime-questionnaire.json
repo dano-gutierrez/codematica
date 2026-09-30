@@ -11,7 +11,7 @@
     {
       "id": "binding-review",
       "kind": "choice",
-      "prompt": "A teammate writes alias = settings and then mutates alias. What is the senior review note?",
+      "prompt": "A teammate writes alias = settings and then mutates alias. What should a reviewer note?",
       "options": [
         {
           "id": "clone",
@@ -86,7 +86,7 @@
     {
       "id": "truthiness-state",
       "kind": "choice",
-      "prompt": "A branch treats an empty list and a missing value the same way. What should a senior reviewer ask for?",
+      "prompt": "A branch treats an empty list and a missing value the same way. What should a reviewer ask for?",
       "options": [
         {
           "id": "truthy-only",
@@ -104,7 +104,7 @@
           "isCorrect": false
         }
       ],
-      "explanation": "Missing, empty, and disabled states often mean different product things and should not be collapsed casually."
+      "explanation": "Missing, empty, and disabled states often have different product meanings. Preserve those distinctions."
     },
     {
       "id": "exception-scope",

@@ -26,7 +26,7 @@ Validate structure, types, ranges, missingness, uniqueness, temporal ordering, c
 
 ## Leakage and split strategy
 
-Choose splits that represent deployment. Random splitting can leak users, time, locations, or near-duplicates across partitions. Write down what information is available at prediction time and reject features that depend on the future.
+Choose splits that represent deployment. Random splitting can leak users, time, locations, or near-duplicates across partitions. Document the information available at prediction time. Reject features that depend on the future.
 
 ## Lineage and transformations
 
@@ -34,7 +34,7 @@ Track source, extraction time, transformation code, parameters, output version, 
 
 ## Monitor the pipeline and population
 
-Monitor freshness, volume, schema, label delay, distribution movement, and slice coverage. Drift is a signal to investigate, not automatic proof of harm. Connect changes to model and mission outcomes before retraining blindly.
+Monitor freshness, volume, schema, label delay, distribution movement, and slice coverage. Drift is a signal to investigate, not automatic proof of harm. Connect changes to model and mission outcomes before retraining.
 
 ## Practical output
 

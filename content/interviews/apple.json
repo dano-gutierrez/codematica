@@ -2,7 +2,7 @@
   "kind": "company",
   "slug": "apple",
   "name": "Apple",
-  "summary": "Practice clean data-structure fundamentals and edge-case-heavy prompts aligned with Apple-style interviews.",
+  "summary": "Practice data-structure fundamentals and edge cases for Apple-style interviews.",
   "status": "published",
   "questions": [
     {

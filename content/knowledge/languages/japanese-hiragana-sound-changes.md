@@ -11,9 +11,9 @@ diagramRefs: []
 status: published
 ---
 
-## A Few Marks Unlock Many Sounds
+## Small Marks Change Sounds
 
-You do not need to memorize a second large chart. Start from kana you already know and notice the small change.
+Build on kana you already know by learning the small marks that change their sounds.
 
 ## Dakuten: The Two Little Marks
 

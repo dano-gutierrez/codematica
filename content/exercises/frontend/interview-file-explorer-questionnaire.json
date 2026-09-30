@@ -183,7 +183,7 @@
     {
       "id": "file-explorer-recipe",
       "kind": "ordering",
-      "prompt": "Put this baseline implementation recipe in dependency order. Each step prepares the next.",
+      "prompt": "Order these baseline implementation steps by dependency. Each step prepares the next.",
       "items": [
         {
           "id": "step-1",
@@ -208,7 +208,7 @@
         "step-3",
         "step-4"
       ],
-      "explanation": "First establish the input and state contract, then implement the dependent transformation, and finally validate the observable result. Reversing these steps risks testing a UI whose rules or input identity have not been defined. This order is a rehearsal recipe, not the only possible engineering workflow."
+      "explanation": "Define the input and state rules, implement the dependent transformation, then validate the result. Reversing this order risks testing a UI before its rules or input identity are defined. This is one rehearsal sequence; other engineering workflows can work."
     }
   ]
 }

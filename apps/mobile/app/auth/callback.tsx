@@ -7,7 +7,7 @@ import { syncNativeAnonymousProgress } from "../../src/lib/progress";
 export default function AuthCallbackRoute() {
   const params = useLocalSearchParams<{ code?: string }>();
   const [done, setDone] = useState(false);
-  const [message, setMessage] = useState("Completing sign in");
+  const [message, setMessage] = useState("Completing sign-in");
 
   useEffect(() => {
     let mounted = true;
@@ -16,7 +16,7 @@ export default function AuthCallbackRoute() {
       const client = createNativeSupabaseClient();
 
       if (!client || !params.code) {
-        setMessage("Auth callback is missing a code.");
+        setMessage("The sign-in callback is missing a code.");
         setDone(true);
         return;
       }

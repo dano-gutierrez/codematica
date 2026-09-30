@@ -13,7 +13,7 @@ status: "published"
 
 # Japanese Everyday Navigator
 
-Begin with the situation, then notice the grammar that makes it work. Each section ends with a small task you can perform immediately.
+Read each situation, identify its grammar, and try the practice tasks.
 
 ## Finding people and things
 
@@ -82,7 +82,7 @@ Task: say one thing you did yesterday, do today, and will do tomorrow.
 
 > 🚭 ここでたばこをすってはいけません。 — You must not smoke here.
 
-The request `〜てください` and permission pattern `〜てもいいですか` are best learned first as complete tools. Later lessons can show how verbs form the `て` form.
+Learn the request `〜てください` and permission pattern `〜てもいいですか` as complete phrases first. Later lessons explain how to form the `て` form.
 
 ## Shopping, signs, and messages
 
@@ -108,7 +108,7 @@ Short message:
 >
 > アナ
 
-Information-search task: Who is the message for? When and where will they meet? What will Ana wear?
+Find these details: Who is the message for? When and where will they meet? What will Ana wear?
 
 ## Mini-reader: えきまで (Level 0)
 

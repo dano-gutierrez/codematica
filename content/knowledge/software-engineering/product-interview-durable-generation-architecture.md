@@ -14,7 +14,7 @@ status: published
 
 Design a collaborative AI image editor with interactive previews and durable paid exports. Users refresh tabs, switch workspaces, lose connections, and retry requests. GPU workers can crash after finishing the expensive operation. Prevent stale images, lost accepted jobs, cross-tenant access, and duplicate customer charges.
 
-This is an original mock scenario. All scale numbers, SLOs, APIs, and architecture below are **exercise assumptions**, not any company's measured traffic, internal implementation, or promised service levels. Durable execution and enterprise correctness are the focus of this exercise.
+This is an original mock scenario. All scale numbers, SLOs, APIs, and architecture below are **exercise assumptions**, not any company's measured traffic, internal implementation, or promised service levels. Focus on durable execution and enterprise correctness.
 
 ## Clarify before drawing
 
@@ -22,7 +22,7 @@ Ask what is ephemeral, what must survive disconnect, how charging works, whether
 
 Use 2,000 active editors averaging two preview intents/second. That is **4,000 incoming intents/second**, before coalescing and admission control. If all were admitted and mean service time were 0.5 seconds, Little's Law suggests roughly **2,000 concurrent requests** in a stable system. That is not 2,000 GPUs: batching, model size, device utilization, and per-device concurrency require measurement. With capacity for 400 requests/second, choose a freshness/admission policy; an ever-growing FIFO cannot preserve interactive latency. Keep exports in a separate capacity budget so previews cannot starve them.
 
-## A defensible starting design
+## Starting design
 
 ```mermaid
 flowchart TD
@@ -44,9 +44,9 @@ flowchart TD
   Status --> DB
 ```
 
-Postgres owns durable job state and charging decisions. Redis can help with admission, short-lived coordination, and caches. ClickHouse can serve analytics; it should not be the transactional entitlement authority in this design. Queue notifications and WebSocket messages are delivery mechanisms, not the sole record of accepted work.
+Postgres owns durable job state and charging decisions. Redis can help with admission, short-lived coordination, and caches. ClickHouse can serve analytics; it should not be the transactional entitlement authority in this design. Queue notifications and WebSocket messages deliver updates; retain a separate durable record of accepted work.
 
-Define pending, intermediate, and terminal states explicitly in the API contract. An intermediate preview is progress, not a completed paid export. Specify which transitions generate notifications and how duplicate deliveries are handled. The proposed database/outbox design is an illustrative architecture.
+Define pending, intermediate, and terminal states explicitly in the API contract. An intermediate preview is progress, not a completed paid export. Specify which transitions generate notifications and how duplicate deliveries are handled. The database/outbox design is illustrative.
 
 ## The transaction boundary that matters
 
@@ -66,7 +66,7 @@ The dispatcher publishes pending outbox records and marks delivery afterward. A 
 
 ## The hard failure: provider succeeded, worker disappeared
 
-Suppose the provider rendered the image but the worker died before saving success. Redelivery alone cannot tell you whether generating again duplicates cost. Persist a stable provider request key before submission and use provider-supported idempotency or queryable operation IDs. Reconcile the outcome on retry. If the provider cannot deduplicate or reveal the result, describe the uncertainty and choose an explicit policy: pause for reconciliation or accept a bounded duplicate compute cost. Do not promise end-to-end exactly-once effects from a queue guarantee.
+Suppose the provider rendered the image but the worker died before saving success. Redelivery alone cannot tell you whether another generation repeats the cost. Persist a stable provider request key before submission and use provider-supported idempotency or queryable operation IDs. Reconcile the outcome on retry. If the provider cannot deduplicate or reveal the result, describe the uncertainty and choose an explicit policy: pause for reconciliation or accept a bounded duplicate compute cost. Do not promise end-to-end exactly-once effects from a queue guarantee.
 
 Once a result is verified, commit the winning asset pointer, terminal state, one ledger capture, and status outbox event in one database transaction. Store blobs before that transaction at immutable attempt-specific keys; a stale worker cannot replace the canonical pointer. Orphan cleanup is a separate retention-reviewed operation, not part of a retry shortcut. Failed/cancelled transitions release the reservation once. Cancellation racing success uses the same guarded state machine and an explicit product policy.
 
@@ -99,7 +99,7 @@ Authorize every status read, event subscription, retry, cancellation, and asset 
 
 [Pub/Sub supports pull and push subscriptions](https://docs.cloud.google.com/pubsub/docs/subscriber). A push subscriber receives HTTP requests; a durable bus can sit behind a webhook receiver. Compare producer/consumer coupling, fan-out, retention, replay, retry ownership, and operational control. Acknowledge only after durable acceptance or the effect your contract requires, and budget lease extensions for variable work. Keep retry delay bounded with jitter, retryable error classification, an attempt/deadline budget, and a dead-letter/reconciliation path.
 
-When reviewing a provider integration, confirm exactly which transitions produce notifications: admission, start, intermediate progress, or terminal outcome. Document signature verification, delivery retry windows, and ordering guarantees before relying on them. Missing documentation should prompt clarification, not an assumption that a capability is absent. Never treat possession of a job ID as proof a webhook is authentic—verify a supported signature or reconcile with an authenticated status read before trusted side effects.
+When reviewing a provider integration, confirm exactly which transitions produce notifications: admission, start, intermediate progress, or terminal outcome. Document signature verification, delivery retry windows, and ordering guarantees before relying on them. Clarify undocumented capabilities before assuming they are absent. Never treat possession of a job ID as proof a webhook is authentic—verify a supported signature or reconcile with an authenticated status read before trusted side effects.
 
 ## Define reliability from the user's view
 

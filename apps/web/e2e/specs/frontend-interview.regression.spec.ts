@@ -8,7 +8,7 @@ test("@regression follows frontend recipes, checkpoints, and continuous review",
   await page.goto("/paths/frontend-interview-practice");
   await expect(page.getByTestId("path-flashcard-feed-link")).toBeVisible();
   await page.getByTestId("path-node-document-frontend-interview-dynamic-board").click();
-  await page.getByRole("link", { name: /Next node/i }).click();
+  await page.getByRole("link", { name: /Next activity/i }).click();
   await expect(page).toHaveURL(/interviews\/frontend-practice\/dynamic-board\?path=frontend-interview-practice/);
   await page.reload();
   await expect(page.getByTestId("web-recipe-position")).toContainText("Step 1");

@@ -2,7 +2,7 @@
   "slug": "mermaid-diagram-authoring",
   "pathSlug": "mermaid-diagram-authoring",
   "title": "Mermaid Diagram Authoring Scrolling Review",
-  "summary": "Short Mermaid syntax, selection, debugging, and readability briefs for reviewing diagram authoring one screen at a time.",
+  "summary": "Review Mermaid syntax, diagram selection, debugging, and readability one screen at a time.",
   "audience": "Developers and technical writers learning to read, create, and maintain Mermaid diagrams.",
   "status": "published",
   "cards": [
@@ -174,7 +174,7 @@
       "id": "one-question-per-diagram",
       "type": "interview",
       "title": "One Question Per Diagram",
-      "prompt": "What is the fastest way to improve an everything-architecture diagram?",
+      "prompt": "What is the fastest way to improve a diagram that tries to show the entire architecture?",
       "explanation": "Split it into focused views with explicit questions and consistent abstraction levels instead of adding more color or smaller text.",
       "difficulty": "practitioner",
       "tags": ["architecture", "readability", "interview"],

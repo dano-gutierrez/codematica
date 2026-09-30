@@ -18,11 +18,11 @@ const difficultyLabels: Record<Difficulty, string> = {
 };
 
 const difficultyOptions = [
-  { value: "all", label: "All levels", description: "Every learning depth" },
+  { value: "all", label: "All levels", description: "All difficulty levels" },
   { value: "foundation", label: difficultyLabels.foundation, description: "Core concepts" },
   { value: "practitioner", label: difficultyLabels.practitioner, description: "Production patterns" },
-  { value: "senior", label: difficultyLabels.senior, description: "Tradeoff-heavy guides" },
-  { value: "principal", label: difficultyLabels.principal, description: "Org-scale decisions" },
+  { value: "senior", label: difficultyLabels.senior, description: "Guides to tradeoffs" },
+  { value: "principal", label: difficultyLabels.principal, description: "Organization-wide decisions" },
 ] satisfies DropdownOption[];
 
 export function KnowledgeBrowser({ index }: { index: ContentIndex }) {
@@ -142,7 +142,7 @@ export function KnowledgeBrowser({ index }: { index: ContentIndex }) {
               ))}
               {results.length === 0 ? (
                 <div className="rounded-xl border border-[#d5e2e8] bg-white p-5 text-sm font-medium text-[#68737d]" data-testid="empty-results">
-                  No indexed nodes match the current filters.
+                  No lessons or diagrams match these filters.
                 </div>
               ) : null}
             </div>
@@ -177,15 +177,15 @@ export function KnowledgeBrowser({ index }: { index: ContentIndex }) {
             <section className="rounded-xl border border-[#d5e2e8] bg-white p-4">
               <h2 className="flex items-center gap-2 text-sm font-semibold uppercase text-[#68737d]">
                 <CheckCircle2 className="h-4 w-4 text-[#007c78]" aria-hidden="true" />
-                Progression
+                Library overview
               </h2>
               <div className="mt-4 grid gap-2 text-sm font-medium text-[#68737d]">
                 <div className="flex items-center justify-between rounded-xl bg-[#f6fbfc] px-3 py-2">
-                  <span>Published nodes</span>
+                  <span>Published lessons</span>
                   <span className="font-semibold text-[#007c78]">{index.documents.filter((doc) => doc.status === "published").length}</span>
                 </div>
                 <div className="flex items-center justify-between rounded-xl bg-[#f6fbfc] px-3 py-2">
-                  <span>Diagram nodes</span>
+                  <span>Diagrams</span>
                   <span className="font-semibold text-[#245fba]">{index.diagrams.length}</span>
                 </div>
                 <div className="flex items-center justify-between rounded-xl bg-[#f6fbfc] px-3 py-2">

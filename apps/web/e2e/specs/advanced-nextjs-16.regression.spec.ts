@@ -80,7 +80,7 @@ test("@regression mobile user studies force-dynamic and opens the Next.js brief 
   await page.getByTestId("questionnaire-check").click();
   await expect(page.getByTestId("questionnaire-feedback")).toContainText("Correct");
   await page.getByTestId("questionnaire-finish").click();
-  await expect(page.getByTestId("questionnaire-complete")).toContainText("Refresh complete");
+  await expect(page.getByTestId("questionnaire-complete")).toContainText("Practice complete");
 
   await page.goto("/paths/advanced-nextjs-16");
   await page.getByTestId("path-flashcard-feed-link").click();

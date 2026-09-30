@@ -39,7 +39,7 @@ The catalog stores typed interview collections as local JSON. Company algorithm 
 - Web sessions default to the first approach, reveal recipe steps, and expose code/explanation at the end or via Show full solution. Optional Python companions share the language switch; one editable Sandpack project mounts at a time.
 - Web playground edits are transient. Sandpack code runs in a cross-origin iframe and receives no Codematica auth, progress, or secret data.
 - Expo renders all web-exercise explanations and source files read-only; execution remains web-only.
-- Catalog language says the prompts are reported/public prep, not official company question banks.
+- Catalog copy identifies prompts as reported/public preparation, not official company question banks.
 - Scoring, grading, persistence of edits, backend execution, and native WebView execution remain out of scope.
 
 ## Data Model
@@ -83,18 +83,18 @@ Corrections:
 
 | Area | Verified finding and correction |
 | --- | --- |
-| Airbnb | “Reverse trie” repeated hash-split code. Replaced it with an honest pairwise baseline in all languages, retained its stored track ID, and included output space. Added missing flat-map reads and standard filesystem method aliases. Documented valid-path assumptions and language-specific path/string costs. |
+| Airbnb | “Reverse trie” repeated hash-split code. Replaced it with a pairwise baseline in all languages, retained its stored track ID, and included output space. Added missing flat-map reads and standard filesystem method aliases. Documented valid-path assumptions and language-specific path/string costs. |
 | Amazon | TS top-k used full sorting under a heap label; now includes an actual binary heap. Fixed k=0 bucket handling, stated valid k, guarded TS iterator typing, and widened Java two-sum arithmetic. |
 | Apple | The second delimiter solution only supported parentheses. Replaced it with a complete three-type reduction baseline and O(n²) cost. Replaced overflow-prone Java interval comparison. |
 | Google | Fixed identical word-ladder endpoints and included string construction in complexity; clarified nonempty median inputs and widened Java median addition. Number-of-islands now shows character cells, matching its implementations. The first Java binary-matrix track now preserves input with visited state. |
 | Meta | Fixed UTF-16 index/code-point mismatch that corrupted emoji while removing parentheses. Avoided repeatedly copying a BFS column array; corrected its complexity and the bounded recursion cost of the one-deletion variant. Explicitly distinguished vertical-order tie contracts. |
 | Microsoft | Added missing `top` in both stacks and missing deserializers; tree codecs now round-trip sparse/null trees. Stated valid operations and wire-input assumptions. |
 | Netflix | Added heap-cache reads in all languages, implemented the TS binary heap, and accounted for obsolete expiry records and cleanup work. Clarified window space variables. |
-| Uber | Implemented real TS heaps for Dijkstra and rooms. Replaced the unit-weight-only second road solution with Bellman–Ford in all languages while retaining its ID. Stated positive-duration meetings and honest conservative complexity for compression-only union-find. |
+| Uber | Implemented real TS heaps for Dijkstra and rooms. Replaced the unit-weight-only second road solution with Bellman–Ford in all languages while retaining its ID. Stated positive-duration meetings and conservative complexity for compression-only union-find. |
 | Mondrian | Replaced “would be accepted” guarantees with practice-criteria rationale. All three existing runnable approaches remain available through explicit reveal. |
 | BFS/DFS | Corrected review/guide memory claims: a head-index array retains processed entries; iterative DFS marking on pop can retain O(E) pending entries. Corrected TypeScript snippet labels. |
 | Other review snippets | Backfilled actual TS/Python/SQL/Mermaid/TOML/bash/plain-text languages instead of rendering every snippet as Python. Source-lesson links retain path context. |
 
-`interview-audit.test.ts` began with 12 reproduced failures and now executes the repaired TS behaviors. Python regressions execute the corresponding canonical snippets and parse all 54 algorithm examples. All 54 Java snippets were compiled locally with JDK 17 using minimal standard node/import wrappers; this is compilation evidence, not full Java behavioral coverage. The new frontend solutions have the stronger exact-project/Python execution gate described in [Frontend Interview Practice](frontend-interview-practice.md).
+`interview-audit.test.ts` began with 12 reproduced failures and now executes the repaired TS behaviors. Python regressions execute the corresponding canonical snippets and parse all 54 algorithm examples. All 54 Java snippets were compiled locally with JDK 17 using minimal standard node/import wrappers; this is compilation evidence, not full Java behavioral coverage. The new frontend solutions use the stricter exact-project/Python execution gate described in [Frontend Interview Practice](frontend-interview-practice.md).
 
 The Product Engineering contracts and answer keys needed no factual correction. RTK's dated 2.12.0 baseline and release milestones were checked against [official release notes](https://github.com/reduxjs/redux-toolkit/releases/tag/v2.12.0), [infinite query documentation](https://redux-toolkit.js.org/rtk-query/usage/infinite-queries), and [createApi](https://redux-toolkit.js.org/rtk-query/api/createApi). The persistence lesson already separates raw Redux restoration from RTK rehydration and code validation from deployment. Its private incident is retained as a dated attributed report, not newly verified production evidence. Existing Product/RTK content tests and browser journeys remain part of validation.

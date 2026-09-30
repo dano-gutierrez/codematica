@@ -16,7 +16,7 @@ test("@regression discovers Product Engineering research, reads the design, and 
   await page.goto("/paths");
   await page.getByTestId(`path-card-${pathSlug}`).getByRole("link", { name: /Open path/i }).click();
   await page.getByTestId("path-node-document-software-engineering-product-interview-research-brief").click();
-  await expect(page.getByTestId("markdown-renderer")).toContainText("not a reported company question bank");
+  await expect(page.getByTestId("markdown-renderer")).toContainText("It contains no reported company questions.");
   await expect(page.getByTestId("source-references")).toContainText("Monitoring Distributed Systems");
   await expect(page.getByTestId("document-next-node")).toHaveAttribute("href", `/docs/${prefix}javascript-preview-coordinator?path=${pathSlug}`);
 
@@ -44,7 +44,7 @@ test("@regression discovers Product Engineering research, reads the design, and 
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
   await page.screenshot({ path: test.info().outputPath("product-interview-mock-mobile.png"), fullPage: true });
   await page.getByTestId("guided-lab-complete").click();
-  await page.getByRole("link", { name: "Next node", exact: true }).click();
+  await page.getByRole("link", { name: "Next activity", exact: true }).click();
   await expect(page).toHaveURL(new RegExp(`/practice/${prefix}mock-interview-questionnaire\\?path=${pathSlug}`));
   await page.reload();
   await expect(page.getByTestId("questionnaire-session")).toHaveAttribute("data-ready", "true");
@@ -75,7 +75,7 @@ test("@regression reviews a wrong Product Engineering coding answer, finishes th
     await page.getByTestId(index === answers.length - 1 ? "questionnaire-finish" : "questionnaire-next").click();
   }
   await expect(page.getByTestId("questionnaire-complete")).toBeVisible();
-  await page.getByRole("link", { name: "Next node", exact: true }).click();
+  await page.getByRole("link", { name: "Next activity", exact: true }).click();
   await expect(page).toHaveURL(new RegExp(`/docs/${prefix}durable-generation-architecture\\?path=${pathSlug}`));
   await page.goto(`/paths/${pathSlug}`);
   await page.getByTestId("path-flashcard-feed-link").click();

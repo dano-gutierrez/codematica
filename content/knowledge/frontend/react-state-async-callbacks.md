@@ -15,7 +15,7 @@ status: published
 
 You start with `useState([])`. A button appends an item with `setItems([...items, newItem])`. A timeout then runs an asynchronous operation, and its success or failure callback reads `items` without that new item.
 
-**Yes, this behavior makes sense.** A callback closes over the variables from the render in which it was created. Calling the setter schedules an update; it does not replace the `items` variable inside that already-running handler. A timeout or `await` does not refresh that variable. The UI can show the new item while the old callback still sees the earlier array. [React: state as a snapshot](https://react.dev/learn/state-as-a-snapshot).
+A callback captures the variables from the render that created it. Calling the setter schedules an update; it does not replace the `items` variable inside that already-running handler. A timeout or `await` does not refresh that variable. The UI can show the new item while the old callback still sees the earlier array. [React: state as a snapshot](https://react.dev/learn/state-as-a-snapshot).
 
 `useSetTimeout` is not a built-in React hook. If that name refers to a custom or library hook, check its implementation: does it keep the first callback, replace it on later renders, or cancel and reschedule the timer? Call hooks at the component's top level. A scheduling function returned by a hook can be called from a click handler; the hook itself cannot be called there. [React: Rules of Hooks](https://react.dev/reference/rules/rules-of-hooks).
 
@@ -82,7 +82,7 @@ setItems((current) => current.map((item) =>
 
 Use this form for the initial append **and every subsequent update that depends on that array**. Fixing only the append leaves a later stale replacement free to erase it. Conversely, `setItems([])` is appropriate when your intent is to clear everything.
 
-Notice what stays captured: the new item's stable ID and request input. Those describe this operation. What must be current is the array being updated. A functional updater refreshes its argument; it does not refresh other captured props or variables.
+Keep the new item's stable ID and request input captured for this operation, but update the current array. A functional updater refreshes its argument; it does not refresh other captured props or variables.
 
 ## Complete working example
 
@@ -190,7 +190,7 @@ The generation check ignores late results locally. It does not cancel an already
 
 Use `useReducer` when add, save, fail, remove, retry, and reset transitions become difficult to review. Your handler dispatches an addition, performs the async operation outside the reducer, and dispatches a result containing the item ID. React passes the reducer its pending state.
 
-For example, the completion transition can be expressed as this standalone module:
+This standalone module expresses the completion transition:
 
 ```ts
 export type Item = { id: string; status: "pending" | "saved" | "error" };
@@ -210,7 +210,7 @@ export function itemsReducer(items: Item[], action: Action): Item[] {
 }
 ```
 
-The reducer organizes transitions; it has the same O(n) copying costs. Keep timers, requests, random IDs, logging side effects, and cancellation outside it. The request-ID and cleanup rules still apply. For an interview with only append and status changes, start with functional setters. [React: useReducer](https://react.dev/reference/react/useReducer).
+The reducer organizes transitions; it has the same O(n) copying costs. Keep timers, requests, random IDs, logging side effects, and cancellation outside it. Request-ID and cleanup rules still apply. For an interview with only append and status changes, start with functional setters. [React: useReducer](https://react.dev/reference/react/useReducer).
 
 ## When a ref or effect is appropriate
 
