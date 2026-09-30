@@ -15,7 +15,7 @@ status: published
 
 Hiragana is not an alphabet with separate consonant and vowel letters. Most symbols represent one **mora**, a steady timing unit such as `か` (`ka`) or `み` (`mi`). Learn the sound and shape together, then recall it before revealing the answer.
 
-The Japan Foundation's IRODORI Starter course introduces hiragana before katakana. That is our order too: hiragana appears constantly in grammar, word endings, and beginner vocabulary.
+Like the Japan Foundation's IRODORI Starter course, we introduce hiragana before katakana because it appears throughout grammar, word endings, and beginner vocabulary.
 
 ## The Gojūon Map
 
@@ -37,7 +37,7 @@ Read each row from left to right. The five vowel sounds always stay in the order
 
 ## Five Sounds That Break The Simple Pattern
 
-The grid is a memory aid, not a command to pronounce every cell mechanically.
+Use the grid to remember patterns, but learn these pronunciations separately.
 
 - `し` is **shi**, not “si.”
 - `ち` is **chi**, not “ti.”

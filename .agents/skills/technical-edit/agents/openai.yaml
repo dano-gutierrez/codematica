@@ -1,0 +1,4 @@
+interface:
+  display_name: "Technical Edit"
+  short_description: "Clarify and condense text without losing technical detail"
+  default_prompt: "Use $technical-edit to make this text or file concise, concrete, and easy to understand while preserving its technical substance."

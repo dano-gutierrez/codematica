@@ -6,7 +6,7 @@
 - Last updated: `2026-08-05`
 - Owner thread: `n/a`
 - Current state: The repo has an Expo Router app in `apps/mobile`, shared runtime logic in `packages/core`, shared React Native screens in `packages/ui`, adaptive phone/iPad Japanese handwriting and review, Pencil Scribble-compatible open answers, offline Japanese conversion, `expo-audio` playback, enforced Jest coverage, credential-free EAS Android/iOS E2E profiles, and checked-in Maestro regression workflows.
-- Target outcome: Codematica can run locally on web/Android/iOS, ship Android and iOS internal builds, and prepare Play Console/App Store Connect submissions while preserving the existing Next/Vercel mobile web app and coding shared product behavior once.
+- Target outcome: Codematica can run locally on web/Android/iOS, ship Android and iOS internal builds, and prepare Play Console/App Store Connect submissions while preserving the Next/Vercel mobile web app and sharing product logic.
 - Code touchpoints:
   - `apps/mobile/`
   - `packages/core/`
@@ -21,7 +21,7 @@
 
 ## One-Minute Brief
 
-Codematica now uses an npm workspace model. The existing Next app lives in `apps/web`. The native Android/iOS app lives in `apps/mobile` and uses Expo Router. Shared content, search, practice, interview, and progress contracts live in `packages/core`; shared React Native-compatible screens and design tokens live in `packages/ui`.
+Codematica uses npm workspaces. The Next app lives in `apps/web`. The native Android/iOS app lives in `apps/mobile` and uses Expo Router. Shared content, search, practice, interview, and progress contracts live in `packages/core`; shared React Native-compatible screens and design tokens live in `packages/ui`.
 
 The native app bundles `packages/core/src/generated/content-index.json`, so home discovery, cross-section search, browsing, reading, language lookup, and practice work offline until the next app or update release. Supabase remains optional for anonymous use and is used only for native Auth/progress sync when anon-safe `EXPO_PUBLIC_*` env vars are configured.
 
@@ -121,7 +121,7 @@ EXPO_OWNER=
 EAS_PROJECT_ID=
 ```
 
-Use the final reverse-DNS identifier before creating store records. Changing `ios.bundleIdentifier` or `android.package` after the first App Store Connect or Play Console app record creates release-management friction and may require new records.
+Use the final reverse-DNS identifier before creating store records. Changing `ios.bundleIdentifier` or `android.package` after the first App Store Connect or Play Console app record complicates releases and may require new records.
 
 Store-side setup still required:
 
@@ -153,7 +153,7 @@ Store-side setup still required:
 
 ## Adaptive Interface
 
-The root layout wraps the existing Stack with safe-area-aware `NativeNavigation`: a phone bottom bar and iPad sidebar, responsive to Split View and font scaling. Existing route adapters, content, and progress behavior are unchanged. See [Adaptive Interface And Navigation](adaptive-ui.md).
+The root layout wraps the existing Stack with safe-area-aware `NativeNavigation`: a phone bottom bar and iPad sidebar, responsive to Split View and font scaling. It preserves route adapters, content, and progress behavior. See [Adaptive Interface And Navigation](adaptive-ui.md).
 
 ## Test Plan
 
@@ -162,7 +162,7 @@ The root layout wraps the existing Stack with safe-area-aware `NativeNavigation`
 - Navigation: `adaptive-navigation.test.tsx` proves compact menu and tablet destinations; `.maestro/adaptive-navigation.yaml` must pass on Android and iOS before native release.
 
 - Core: `npm run typecheck -w @codematica/core` and `npm test` for generated index, route helpers, search, practice, and progress contracts.
-- UI/mobile: `npm run typecheck -w @codematica/ui`, `npm run typecheck -w @codematica/mobile`, and `npm run test:mobile:coverage` for adapters, failure/retry behavior, configuration, and the complete shared-screen matrix.
+- UI/mobile: `npm run typecheck -w @codematica/ui`, `npm run typecheck -w @codematica/mobile`, and `npm run test:mobile:coverage` for adapters, failure/retry behavior, configuration, and the complete shared-screen matrix. Preserve learner-facing practice labels and the missing-Supabase explanation in disabled sign-in states.
 - Web: `npm run typecheck -w @codematica/web`, `npm test`, and `npm run e2e:smoke` for the existing web mobile workflow.
 - Content: `npm run content:check` after content, parser, schema, or generated index changes.
 - Expo: `npm run doctor -w @codematica/mobile` before EAS build work.

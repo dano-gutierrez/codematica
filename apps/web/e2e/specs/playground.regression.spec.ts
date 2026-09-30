@@ -59,7 +59,7 @@ test("@regression @playground recovers from a blocked runtime without losing edi
   await editApp(page);
   // Advance the real connection deadline; no wall-clock sleep or fake app state.
   await page.clock.fastForward(40_001);
-  await expect(page.getByTestId("web-playground-connection-error")).toContainText("Your edits are still here");
+  await expect(page.getByTestId("web-playground-connection-error")).toContainText("Your edits are preserved");
   await expect(page.getByRole("textbox", { name: "Code Editor for App.tsx", exact: true }).last()).toContainText("Edited counter");
   await page.unroute(bundler);
   await page.getByRole("button", { name: "Retry preview", exact: true }).click();

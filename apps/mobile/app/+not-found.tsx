@@ -10,7 +10,7 @@ export default function NotFoundScreen() {
       <View>
         <Text style={{ color: "#263238", fontSize: 32, fontWeight: "900" }}>Not found</Text>
         <Text style={{ color: "#68737d", fontSize: 16, fontWeight: "700", marginTop: 12 }} onPress={() => adapters.navigation.navigate("/")}>
-          Return to paths
+          Return to home
         </Text>
       </View>
     </AppScreen>

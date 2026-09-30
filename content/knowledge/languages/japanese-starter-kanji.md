@@ -21,13 +21,13 @@ This first kanji set focuses on visible, high-frequency beginner characters:
 人 大 小 中 本 山 川
 ```
 
-The goal is not to memorize every compound or reading at once. The goal is to connect each character to a core meaning, one beginner reading, and a repeatable writing pattern.
+Start with each character's core meaning, one beginner reading, and a repeatable writing pattern. Learn other readings and compounds later.
 
 ## Practice Loop
 
 Use assisted mode first. It shows the expected stroke sequence and completes a stroke only when your line follows the right start, direction, and path.
 
-Then use free mode. Free mode removes the guide while you draw. After you submit, Codematica checks the stroke count, order, direction, and shape against the local character data.
+Then use free mode, which hides the guide while you draw. After you submit, Codematica checks the stroke count, order, direction, and shape against the local character data.
 
 ## V2 Audio Boundary
 

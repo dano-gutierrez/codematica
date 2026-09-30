@@ -7,7 +7,7 @@ export function SourceReferences({ sources, title = "Primary sources" }: { sourc
   return (
     <section className="rounded-xl border border-[#9cc7ff] bg-[#edf5ff] p-4" data-testid="source-references">
       <h2 className="text-sm font-semibold uppercase text-[#1d4e9e]">{title}</h2>
-      <p className="mt-1 text-sm font-normal leading-6 text-[#53616c]">These upstream pages are authoritative. Codematica provides a study companion and progress layer.</p>
+      <p className="mt-1 text-sm font-normal leading-6 text-[#53616c]">These are the authoritative sources. Use Codematica to study and track progress.</p>
       <ul className="mt-3 grid gap-3">
         {sources.map((source) => (
           <li key={source.id}>

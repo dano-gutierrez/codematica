@@ -1,6 +1,18 @@
 # Product And Engineering Changelog
 
-This changelog records durable, user-visible and architectural changes. Feature documents remain the authoritative contracts; this file explains when a group of related changes landed and points readers to the owning documentation.
+This changelog dates durable product and architecture changes and links to their authoritative feature contracts.
+
+## 2026-09-29 — Technical Editing Skill And Clearer Copy
+
+- Added the repo-local technical editing skill to shorten prose while preserving technical details, code, conditions, warnings, and uncertainty.
+- Reviewed all 123 Markdown files, 142 app source files, and 160 authored content files. Simplified documentation, lessons, exercises, flashcards, interview explanations, and web/native UI copy where needed. Practice labels now include Next activity, Practice complete, Quick review, and Choose your prediction.
+- Kept commands, code examples, technical values, Japanese examples, translations, and source metadata intact. Flagged conflicting schema/stage descriptions instead of silently changing them.
+- Fixed a literal pipe splitting a Japanese vocabulary definition across table columns. Generator and mobile browser regressions verify the full definition remains in one cell.
+- Coverage thresholds and exclusions are unchanged.
+- Validation passed: content freshness, lint, typechecking, production build, 358 Vitest tests with aggregate and per-file coverage, 50 native tests with coverage, 13 Python tests, and all 49 browser journeys across the full run and targeted rerun. The first browser run exposed two outdated text assertions; both were updated and their four related journeys passed. Failure evidence was retained.
+- Expo Doctor passed 19/20 checks and reported 10 existing package-version mismatches. Installed-device validation remains open: no Android device or booted iOS simulator was available, and Maestro was not installed. No deployment was performed.
+
+Owning contracts: `docs/README.md#technical-editing-skill`, `docs/features/learning-paths-and-practice.md`, and `docs/features/japanese-language-learning.md`.
 
 ## 2026-09-28 — Readable Lesson Code Blocks
 

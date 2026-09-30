@@ -1,6 +1,6 @@
 {
   "slug": "software-engineering/product-interview-mock-interview-lab",
-  "title": "Product Engineering 75-Minute Product Engineering Mock",
+  "title": "Product Engineering 75-Minute Mock",
   "type": "guided-lab",
   "documentSlug": "software-engineering/product-interview-mock-interview",
   "concept": "Coding, architecture, and production ownership",
@@ -17,7 +17,7 @@
     "product-interview-websocket"
   ],
   "estimatedMinutes": 75,
-  "briefing": "Original, company-neutral product engineering rehearsal, not a reported interview question. Build a plain JavaScript preview coordinator, design durable paid exports, and defend two ownership stories. Use a local scratch file, blank diagram, and your own 75-minute timer. Code/design are self-assessed; the final checkpoint is scored. Reference lessons are linked from the mock interview article. Do the first attempt without AI tools or solutions.",
+  "briefing": "This original, company-neutral rehearsal is not a reported interview question. Build a plain JavaScript preview coordinator, design durable paid exports, and defend two ownership stories. Use a local scratch file, blank diagram, and your own 75-minute timer. Assess your code and design yourself; the final checkpoint is scored. The mock interview article links to reference lessons. Attempt it first without AI tools or solutions.",
   "objectives": [
     "Prove one active generation and one newest pending input with controlled promises.",
     "Separate ephemeral previews from durable jobs, authorization, and charging.",

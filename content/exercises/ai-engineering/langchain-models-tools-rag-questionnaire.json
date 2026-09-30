@@ -67,7 +67,7 @@
     {
       "id": "langchain-match",
       "kind": "matching",
-      "prompt": "Match the LangChain concept to the engineering review lens.",
+      "prompt": "Match each LangChain concept to its role.",
       "pairs": [
         {
           "id": "structured",

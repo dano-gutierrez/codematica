@@ -21,7 +21,7 @@
 
 ## One-Minute Brief
 
-Codematica deploys the web app as a Next.js app on Vercel. The first production web target is the free Vercel-provided URL, not a custom domain. The runtime remains local-index first: Vercel runs `npm run build`, which regenerates `packages/core/src/generated/content-index.json` before building `apps/web`, and the app serves the generated content without requiring Supabase runtime credentials.
+Codematica deploys the web app as a Next.js app on Vercel. The first production web target uses a free Vercel-provided URL. Runtime content comes from the local index: Vercel runs `npm run build`, which regenerates `packages/core/src/generated/content-index.json` before building `apps/web`, and the app serves the generated content without requiring Supabase runtime credentials.
 
 Supabase remains the backend scaffold and manual sync destination for content search. Auth and saved progress are optional runtime features controlled by public anon-safe Supabase env vars.
 
@@ -46,7 +46,7 @@ Detailed Play Console, Apple Developer Program, App Store Connect, EAS credentia
 
 ## Current State
 
-The app builds locally with `npm run build`. Content pages have been refactored so the server pages no longer read `searchParams` for next-node navigation. Vercel deployment config and `.env.example` are committed. `apps/mobile/eas.json` defines development, preview, production, e2e-test, and submit profiles. The first live web deploy, first EAS internal build, first production native builds, and first EAS submissions still need to be created in their respective dashboard/CLI flows.
+The app builds locally with `npm run build`. Server content pages no longer read `searchParams` for navigation to the next activity. Vercel deployment config and `.env.example` are committed. `apps/mobile/eas.json` defines development, preview, production, e2e-test, and submit profiles. The first live web deploy, first EAS internal build, first production native builds, and first EAS submissions still need to be created in their respective dashboard/CLI flows.
 
 ## Scope
 
@@ -58,7 +58,7 @@ The app builds locally with `npm run build`. Content pages have been refactored 
 - Expo internal preview builds for Android/iOS
 - Expo production builds and EAS Submit command/profile wiring
 - manual Supabase migration/content sync guidance
-- cost posture and upgrade triggers
+- costs and upgrade criteria
 
 ### Out Of Scope
 
@@ -106,7 +106,7 @@ The app builds locally with `npm run build`. Content pages have been refactored 
 - The native app must not use `SUPABASE_SERVICE_ROLE_KEY`; it uses anon-safe `EXPO_PUBLIC_*` variables only.
 - Android submission defaults to the Play internal track. iOS submission uploads to App Store Connect/TestFlight; public App Store release still happens in App Store Connect after review submission.
 
-### Cost And Upgrade Posture
+### Costs And Upgrade Criteria
 
 - Vercel Hobby is the first deploy target. As of 2026-06-21, Vercel describes Hobby as free and usage-capped, while Pro starts at `$20/month`; Hobby cannot buy additional usage beyond included caps. Source: [Vercel Pricing](https://vercel.com/pricing).
 - Supabase Free is acceptable for the early auth/progress scaffold. As of 2026-06-21, Supabase lists Free with 50,000 monthly active users, 500 MB database size, and 5 GB egress. Source: [Supabase Pricing](https://supabase.com/pricing).
@@ -116,7 +116,7 @@ The app builds locally with `npm run build`. Content pages have been refactored 
 ### Failure And Edge Handling
 
 - If Vercel build fails, reproduce locally with `npm run build` before changing deployment settings.
-- If a path-scoped content page is opened without `?path=`, it renders normally and hides the next-node link.
+- If a path-scoped content page is opened without `?path=`, it renders normally without a link to the next activity.
 - If a Supabase sync fails, the hosted V1 app remains available because runtime browsing does not depend on Supabase.
 - If EAS credentials are missing, local Expo development and tests still run; internal build creation waits for EAS account setup.
 

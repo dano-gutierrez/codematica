@@ -10,19 +10,19 @@ sourceRefs: ["frontend-react-state", "frontend-react-arrays", "frontend-accessib
 status: "published"
 ---
 
-## What you are being asked to build
+## Build requirements
 
-Build a filterable multi-select. Selecting an enabled option adds a removable chip, clears the input, and removes that option from the dropdown. Show matching disabled options as unavailable. Close outside the component and show No results when nothing matches.
+Build a filterable multi-select. Selecting an enabled option adds a removable chip, clears the input, and removes that option from the dropdown. Show matching disabled options as unavailable. Close the list when interaction moves outside the component. Show No results when nothing matches.
 
 ## Keep the state small
 
-The essential state is selected IDs, filter text, and whether the dropdown is open. Derive the options from the original catalog each time. Selected choices are excluded; matching disabled choices remain visible. The transition refuses unknown, disabled, and duplicate selections.
+The essential state is selected IDs, filter text, and whether the dropdown is open. Derive the options from the original catalog each time. Selected choices are excluded; matching disabled choices remain visible. Reject unknown, disabled, and duplicate selections.
 
 ## Follow one interaction
 
 Type “script” → TypeScript appears → select it → a chip appears and the query clears → TypeScript disappears from options → remove its chip → TypeScript is available again. A query such as “zzzz” shows No results. Clicking elsewhere, moving focus outside, or pressing Escape closes the list.
 
-## Three organizations, one filtering rule
+## Three state designs, one filtering rule
 
 Local state is suitable for the initial implementation. A reducer gives names to events and makes growing rules easy to test. A controlled component with a hook moves ownership to a parent. These are architecture alternatives with the same filter algorithm; none turns a label scan into constant-time search.
 
@@ -42,7 +42,7 @@ The Python versions model events and derived options. They cannot exercise brows
 | Reducer transitions | Name every event and use a pure reducer to make state transitions explicit. |
 | Controlled selection model | Separate a parent-owned controller from the controlled presentation component. |
 
-Start with the first approach. Learn the other two as tradeoff discussions; do not try to build all three in one interview. Each walkthrough includes a numbered recipe, correctness argument, pain points, full React/TypeScript project, and a Python logic companion.
+Build the first approach and discuss the other two as alternatives; do not build all three in one interview. Each walkthrough includes numbered steps, a correctness argument, pitfalls, a full React/TypeScript project, and a Python logic companion.
 
 ## Senior-engineer rehearsal
 
@@ -52,7 +52,7 @@ Start with the first approach. Learn the other two as tradeoff discussions; do n
 4. Check correctness before discussing optimization. Include copying, output, and I/O costs.
 5. Summarize what works, what you tested, and which extension you would build next.
 
-Spend roughly 20–30 minutes on the baseline as a practice budget, then explain an alternative without coding it. This is an authored rehearsal schedule, not a claim about an actual interview duration.
+Practice the baseline for roughly 20–30 minutes, then explain an alternative without coding it. This suggested rehearsal schedule does not describe an actual interview duration.
 
 ## Worked example
 
@@ -66,4 +66,4 @@ The dropdown is derived from current selection and query, so the two views canno
 
 [Open the three guided solutions](/interviews/frontend-practice/multi-select?path=frontend-interview-practice), then [take the checkpoint](/practice/frontend/interview-multi-select-questionnaire?path=frontend-interview-practice). The final checkpoint leads into the combined vertical review feed.
 
-The prompts are original adaptations of privately supplied preparation material. The sources below support technical claims; they do not establish employer endorsement or interview outcomes.
+These original prompts adapt privately supplied preparation material. The sources support technical claims, not employer endorsement or interview outcomes.

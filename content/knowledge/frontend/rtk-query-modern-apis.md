@@ -12,13 +12,13 @@ status: published
 ---
 ## Date the Answer Before Giving It
 
-The npm registry and official releases report **2.12.0** as the current published `@reduxjs/toolkit` version on **2026-09-09**. This is a dated baseline, not an evergreen “latest” claim. The incident lesson examines an application on **2.2.8**. RTK Query is included in the RTK package.
+The npm registry and official releases report **2.12.0** as the current published `@reduxjs/toolkit` version on **2026-09-09**. This version baseline applies to that date. The incident lesson examines an application on **2.2.8**. RTK Query is included in the RTK package.
 
 | Release | Capability or change | Interview consequence |
 | --- | --- | --- |
 | 2.0 | Delayed invalidation became the default; modern Redux/TS APIs | Know which pending work can delay a refresh |
 | 2.6.0 | `build.infiniteQuery` | Old merge recipes are no longer the only option for scrolling feeds |
-| 2.7.0 | Standard Schema validation | Types alone are no longer the endpoint's only declared contract |
+| 2.7.0 | Standard Schema validation | Endpoints can declare runtime validation as well as types |
 | 2.9.0 | Subscription/polling improvements; abort pending work on cache-entry removal | Unmount and cache removal are distinct events |
 | 2.11.0 | `refetchCachedPages` | Choose between refetching retained pages and resetting to one page |
 | 2.11.2 | Abort fallback where `DOMException` is unavailable; infinite-hook type fix | React Native compatibility deserves runtime tests |
@@ -28,7 +28,7 @@ Sources: [2.0 migration](https://redux-toolkit.js.org/usage/migrating-rtk-2), [2
 
 ## Infinite Query: Collection Identity Versus Page Position
 
-An infinite endpoint separates the **query argument** identifying the collection from the **page parameter** locating the next page. Its cached result contains `pages` and `pageParams`. A cursor should not accidentally become a different collection key; a tenant or filter must not disappear from that key.
+An infinite endpoint separates the **query argument** identifying the collection from the **page parameter** locating the next page. Its cached result contains `pages` and `pageParams`. Keep page cursors separate from collection keys; include tenants and filters in those keys.
 
 Standalone `feedApi.ts`. Fictional API contract: a forward cursor feed accepts `cursor` and returns `{ items, nextCursor }`, with `null` at the end. `maxPages` is deliberately omitted so the first example has straightforward forward-only semantics.
 
@@ -63,7 +63,7 @@ Use `data?.pages.flatMap(page => page.items)` to render retained items. Use `has
 
 ### Refresh Is a Product Decision
 
-By default, refetching an infinite cache entry sequentially refetches its retained pages. This can correct cursor relationships but may cost many reads. Starting with **2.11.0**, `refetchCachedPages: false` refetches only the **first cached page** and shrinks the entry to one page. It does not refresh page one while preserving every later page unchanged. With a bounded window, “first cached” may not mean the original beginning of the feed.
+By default, refetching an infinite cache entry sequentially refetches its retained pages. This can correct cursor relationships but may cost many reads. Starting with **2.11.0**, `refetchCachedPages: false` refetches only the **first cached page** and shrinks the entry to one page. Later cached pages are removed. With a bounded window, “first cached” may not mean the original beginning of the feed.
 
 ```ts
 // Inside a component using the infinite hook:
@@ -111,4 +111,4 @@ export const validatedApi = createApi({
 
 Can a pre-upgrade persisted cache be safely restored? Does a next-page error keep existing results visible? Does changing tenant/filter clear the previous argument's display? Does a custom base query honor `api.signal`? Does native startup have the required platform APIs? RTK 2.9+ abort-on-removal does not mean every component unmount cancels shared work immediately.
 
-Record installed RTK, React Redux, TypeScript, and any persistence/schema/codegen packages. Use a clean dependency install, inspect release notes across skipped versions, test old storage through the real restore path, and record rollback implications. Current improvements do not make application-specific persistence, identity, or retry contracts automatic.
+Record installed RTK, React Redux, TypeScript, and any persistence/schema/codegen packages. Use a clean dependency install, inspect release notes across skipped versions, test old storage through the real restore path, and record rollback implications. The application still needs explicit persistence, identity, and retry rules.

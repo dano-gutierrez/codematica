@@ -4,12 +4,12 @@
 
 - Status: `in_progress`
 - Last updated: `2026-08-09`
-- Current state: schema-v10 carries a kana-to-N5 roadmap, 650 N5-aligned vocabulary profiles, 60 structured grammar patterns, ten progressive A1 units, mixed/open-answer/listening questionnaires, a shared offline Japanese IME, Pencil Scribble-compatible text input, substantive flashcard/writing review routes, and approval-gated OpenAI TTS metadata across web and Expo.
+- Current state: schema-v10 provides a kana-to-N5 roadmap, 650 N5-aligned vocabulary profiles, 60 grammar patterns, ten progressive A1 units, and mixed/open-answer/listening questionnaires. Web and Expo share an offline Japanese IME, Pencil Scribble-compatible text input, flashcard/writing review routes, and OpenAI TTS metadata requiring approval.
 - Target outcome: English-speaking teens and adults can move from kana discovery to practical JF A1 Can-dos while keeping the entire course, reviews, dictionary, handwriting, flashcards, and resources open.
 
 ## One-Minute Brief
 
-Japanese Foundations is an open stamp-rally course organized around JF/CEFR `Pre-A1` and `A1`. Friendly stages—Kana Explorer, First Connections, and Everyday Navigator—carry measurable Can-do statements and original contextual checkpoints. Children’s literacy mechanics such as sound grouping, tracing, cumulative recall, picture cues, and short readers are adapted for adult second-language learners.
+Japanese Foundations is an open stamp-rally course organized around JF/CEFR `Pre-A1` and `A1`. Stages—Kana Explorer, First Connections, and Everyday Navigator—have measurable Can-do statements and original contextual checkpoints. [Unclear: these stage names differ from the N5 roadmap in the Snapshot.] The course adapts sound grouping, tracing, cumulative recall, picture cues, and short readers from children’s literacy teaching for adult second-language learners.
 
 The learning loop is hear, notice, trace/manipulate, recall, read in context, use for a task, and review later. Current lessons use concrete scene cues and short readers; original illustration assets remain future visual work. Audio-dependent steps are modeled but are not marked complete until original, released recordings are added. Third-party learning media is never redistributed merely because it is publicly accessible.
 
@@ -18,7 +18,7 @@ The learning loop is hear, notice, trace/manipulate, recall, read in context, us
 - `ContentIndex.schemaVersion` is `10`.
 - Learning paths may declare proficiency levels, skill strands, required nodes, JF Can-dos, open stages, checkpoint thresholds, and estimated time.
 - `/languages/japanese` and the Expo Japanese hub keep four destinations visible: Learn, Review, Dictionary, and Resources.
-- `/languages/japanese/review` keeps the due queue primary and links to substantive 650-card vocabulary and 80-prompt open-answer modes. Listening is linked only when its complete referenced audio is approved.
+- `/languages/japanese/review` keeps the due queue primary and links to 650-card vocabulary and 80-prompt open-answer modes. Listening is linked only when its complete referenced audio is approved.
 - Open answers accept Japanese directly or convert romaji locally into kana/kanji candidates. iPad uses the same native `TextInput`, allowing on-device Apple Pencil Scribble without retaining raw ink.
 - Review uses six boxes: Again → box 0/10 minutes; Hard → back one/1 day; Good → forward one/1, 3, 7, 14, 30, 60 days; Easy → forward two/3, 7, 14, 30, 60, 120 days. Box 4+ is mastered.
 - Web and Expo review ratings expose a persistent selected/pressed state, announce the saved choice, and lock the four ratings after one choice so an accidental repeated tap cannot create extra attempts. `Practice again` explicitly starts another recall and re-enables rating.
@@ -49,7 +49,7 @@ The catalog contains the exact 80 Grade-1 educational kanji plus `私・食・�
 
 ### N5 Foundation
 
-Ten A1 units progress through identity, time, home, routines, shopping, description, requests, travel, past activities, and integrated readiness. The catalog contains exactly 650 independently selected study entries aligned against a pinned open N5 deck and exactly 60 authored grammar patterns. Each unit has a searchable lesson, twelve-item mixed quiz, eight open answers, and six draft listening questions. The word set is explicitly N5-aligned rather than official; JLPT publishes level and item-format guidance, not an official exhaustive vocabulary list.
+Ten A1 units progress through identity, time, home, routines, shopping, description, requests, travel, past activities, and integrated readiness. The catalog contains exactly 650 independently selected study entries aligned against a pinned open N5 deck and exactly 60 authored grammar patterns. Each unit has a searchable lesson, twelve-item mixed quiz, eight open answers, and six draft listening questions. The word set is N5-aligned, not official: JLPT publishes level and item-format guidance without an exhaustive vocabulary list.
 
 The offline IME uses deterministic romaji-to-kana rules, curriculum boosts, and a compact 12,000-reading JMdict common-word candidate map. Candidate data is local, carries attribution/share-alike notices, and never sends learner input to a service.
 
@@ -96,6 +96,10 @@ The offline IME uses deterministic romaji-to-kana rules, curriculum boosts, and 
 - Persistence: `supabase/migrations/202608040001_create_user_skill_progress.sql`
 - Tests: exact N5 content counts and references, schema/grading/IME/audio filtering, assisted and free handwriting tolerance, stage progression, mastery scheduling, web/native open-answer and review modes, Japanese Playwright regression, coverage floors, and the Maestro installed-app journey.
 
+## Test Plan
+
+Preserve Japanese expressions, readings, translations, answer keys, and study counts during copy edits. Keep generator templates and authored lessons consistent. The N5 builder regression parses generated vocabulary tables as GFM and verifies that a literal pipe stays within its definition cell. The Japanese browser regression checks that the full definition is visible in exactly three table columns.
+
 ## Implementation Map
 
 | Concern | Canonical or primary implementation |
@@ -131,7 +135,7 @@ flowchart LR
   Batch --> Remote
 ```
 
-The merge is snapshot-based: the newest practice timestamp owns box/state/due scheduling, while best score and attempt count take their maximum values. This avoids lowering either device’s stored state but does not sum independent concurrent attempt histories; retaining that information would require the per-attempt event log that the privacy contract deliberately excludes.
+The merge uses snapshots: the newest practice timestamp determines box/state/due scheduling, while best score and attempt count take their maximum values. Neither device’s stored score or attempt count decreases. Independent concurrent attempts are not summed; that would require the per-attempt event log excluded by the privacy contract.
 
 ```mermaid
 flowchart LR

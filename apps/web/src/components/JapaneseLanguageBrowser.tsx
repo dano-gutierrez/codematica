@@ -21,7 +21,7 @@ export function JapaneseLanguageBrowser({ index }: { index: ContentIndex }) {
           Japanese
         </h1>
         <p className="mt-4 max-w-3xl text-base font-normal leading-7 text-[#68737d]">
-          Search beginner Japanese characters and phrases with romaji, meanings, and IPA pronunciation support.
+          Find beginner Japanese characters and phrases with romaji, meanings, and IPA pronunciation.
         </p>
         <nav className="mt-5 grid gap-3 sm:grid-cols-2 lg:grid-cols-4" aria-label="Japanese study tools" data-testid="japanese-study-tools">
           <StudyToolLink href="/paths/japanese-foundations" label="Learn" description="Open Pre-A1 and A1 roadmap" icon={<BookOpen className="h-5 w-5" aria-hidden="true" />} testId="japanese-path-link" />
@@ -69,8 +69,8 @@ export function JapaneseLanguageBrowser({ index }: { index: ContentIndex }) {
 
         <section id="resources" className="mt-8 scroll-mt-6 rounded-xl border border-[#d2bd76] bg-[#fffaf0] p-4 sm:p-6" data-testid="japanese-resource-shelf">
           <p className="text-sm font-semibold uppercase text-[#7a5200]">Trusted, always available</p>
-          <h2 className="mt-1 text-3xl font-semibold text-[#263238]">Resource shelf</h2>
-          <p className="mt-2 max-w-3xl text-base font-normal leading-7 text-[#53616c]">These materials stay on their publishers’ sites. Access and reuse labels make it clear what Codematica links to and what it may redistribute.</p>
+          <h2 className="mt-1 text-3xl font-semibold text-[#263238]">Learning resources</h2>
+          <p className="mt-2 max-w-3xl text-base font-normal leading-7 text-[#53616c]">Materials link to their publishers’ sites. Access and reuse labels show what Codematica may link to or redistribute.</p>
           <div className="mt-5 grid gap-3 md:grid-cols-2">
             {index.languageResources.map((resource) => (
               <a key={resource.id} href={resource.url} target="_blank" rel="noreferrer" className="min-w-0 rounded-xl border border-[#d2bd76] bg-white p-4 [overflow-wrap:anywhere] focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-2 focus-visible:outline-[#007c78]">

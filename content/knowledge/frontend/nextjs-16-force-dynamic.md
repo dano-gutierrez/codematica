@@ -22,7 +22,7 @@ status: published
 
 In a Next.js App Router page or layout, `export const dynamic = 'force-dynamic';` was a route segment config from the previous caching model. It told Next.js to render that route for each request and to force the route's server `fetch` calls away from persistent caching. In previous-model terms, it was the App Router equivalent of request-time SSR plus segment-wide no-store fetch behavior.
 
-For teams using Next.js 16 with Cache Components, the official migration guidance is different: remove it. With Cache Components, pages are dynamic by default and caching is opt-in through `"use cache"`, `cacheLife`, and related APIs.
+For Next.js 16 with Cache Components, official migration guidance says to remove it. With Cache Components, pages are dynamic by default and caching is opt-in through `"use cache"`, `cacheLife`, and related APIs.
 
 ```ts
 export const dynamic = 'force-dynamic';
@@ -32,17 +32,17 @@ export const dynamic = 'force-dynamic';
 
 The previous model exposed route-level switches such as `dynamic`, `revalidate`, and `fetchCache`. `dynamic = 'force-dynamic'` forced dynamic rendering for the route segment. It also made the route behave as though every server `fetch` in that segment opted out of caching, and as though the segment's fetch cache policy were force-no-store.
 
-That mattered because older App Router caching could cache `fetch` results depending on where the request was discovered and which route settings existed. A developer surprised by stale data often reached for `force-dynamic` to make the whole segment request-time. It worked, but it was broad.
+That mattered because older App Router caching could cache `fetch` results depending on where the request was discovered and which route settings existed. A developer surprised by stale data often reached for `force-dynamic` to make the whole segment request-time. This affected the whole segment.
 
 ## Why It Became A Blunt Tool
 
-`force-dynamic` can be appropriate when an entire route is truly per-request and every server fetch should bypass persistent cache. It is also easy to overuse. It can throw away useful caching for stable shell content, product copy, navigation data, or expensive shared queries.
+`force-dynamic` can be appropriate when an entire route is truly per-request and every server fetch should bypass persistent cache. Overuse discards useful caching for stable shell content, product copy, navigation data, or expensive shared queries.
 
 A route-level dynamic switch can hide the more precise decision: which data must be fresh, which data can be cached by tag, and which UI can stream independently?
 
 ## Next.js 16 With Cache Components
 
-Cache Components changes the default posture. Dynamic code runs at request time unless you explicitly cache a page, component, or function. That means `force-dynamic` is no longer the normal way to ask for fresh rendering. The modern review should look for accidental caching, missing Suspense boundaries, or an incorrectly cached function, not for a missing segment-level dynamic flag.
+With Cache Components, dynamic code runs at request time unless you explicitly cache a page, component, or function. That means `force-dynamic` is no longer the normal way to ask for fresh rendering. Review accidental caching, missing Suspense boundaries, and incorrectly cached functions before looking for a segment-level dynamic flag.
 
 ```ts
 import { cacheLife, cacheTag } from 'next/cache';

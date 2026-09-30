@@ -116,7 +116,7 @@ export function JapaneseReview({ learningPath, hasListening = false }: { learnin
         <p className="text-sm font-semibold uppercase text-[#7a5200]">Always open</p>
         <h1 className="mt-2 text-3xl font-semibold leading-tight text-[#263238] sm:text-4xl">Ready to review</h1>
         <p className="mt-4 max-w-3xl text-base font-normal leading-7 text-[#53616c]">
-          The due queue is for focused skill recall. Lessons, handwriting, the dictionary, and other practice modes stay available from their own study screens. Ratings are saved on this device immediately.
+          Use the due queue to practice skill recall. Lessons, handwriting, the dictionary, and other practice modes remain available on their study screens. Ratings save on this device immediately.
         </p>
 
         <div className="mt-6 flex flex-wrap gap-3">
@@ -161,7 +161,7 @@ export function JapaneseReview({ learningPath, hasListening = false }: { learnin
               <p className="mt-3 text-base font-normal leading-7 text-[#53616c]">{selectedSkill.description}</p>
               <div className="mt-6 rounded-xl border border-dashed border-[#d2bd76] bg-white p-5">
                 <p className="text-lg font-semibold text-[#263238]">Recall before you reveal</p>
-                <p className="mt-2 text-base font-normal leading-7 text-[#53616c]">Name one example you can recognize or use for this skill. Then rate how independently you recalled it.</p>
+                <p className="mt-2 text-base font-normal leading-7 text-[#53616c]">Recall one example you can recognize or use for this skill. Then rate how much help you needed.</p>
               </div>
               <div className="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-4" aria-label="Review rating">
                 {ratingOptions.map((option) => {

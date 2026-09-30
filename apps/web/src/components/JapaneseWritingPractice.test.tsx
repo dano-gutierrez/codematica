@@ -74,7 +74,7 @@ describe("JapaneseWritingPractice", () => {
     drawStroke();
     fireEvent.click(screen.getByTestId("writing-check"));
     expect(onProgressEvent).toHaveBeenCalledWith("completed", expect.objectContaining({ passed: true }));
-    expect(screen.getByRole("link", { name: /next node/i })).toHaveAttribute("href", "/next");
+    expect(screen.getByRole("link", { name: /next activity/i })).toHaveAttribute("href", "/next");
   });
 
   it("accepts a recognizable imperfect multi-stroke character in free mode", () => {
@@ -100,6 +100,6 @@ describe("JapaneseWritingPractice", () => {
 
   it("renders a stable empty state when a writing exercise has no characters", () => {
     render(<JapaneseWritingPractice characters={[]} prompt="Nothing to write." />);
-    expect(screen.getByText(/no available characters/i)).toBeVisible();
+    expect(screen.getByText(/no characters are available/i)).toBeVisible();
   });
 });

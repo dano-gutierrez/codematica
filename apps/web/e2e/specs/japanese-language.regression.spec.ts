@@ -111,6 +111,13 @@ test("@regression mobile user searches Japanese and opens a writing drill", asyn
   await expect(page.getByTestId("questionnaire-open-answer-input")).not.toHaveValue("watashi wa gakusei desu");
 });
 
+test("@regression Japanese vocabulary tables retain literal pipes inside definitions", async ({ page }) => {
+  await page.goto("/docs/languages/japanese-n5-past-activities-and-messages");
+  const row = page.getByRole("row").filter({ has: page.getByRole("cell", { name: "半", exact: true }) });
+  await expect(row.getByRole("cell")).toHaveCount(3);
+  await expect(row.getByRole("cell", { name: "half (e.g., にじはん | half-past two)", exact: true })).toBeVisible();
+});
+
 test("@regression assisted writing accepts a rough trace that follows the guide", async ({ page }) => {
   await page.goto("/languages/japanese/characters/kanji/one");
 

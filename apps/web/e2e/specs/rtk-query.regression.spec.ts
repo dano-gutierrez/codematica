@@ -44,8 +44,8 @@ test("@regression studies the RTK incident, completes its checkpoint, and contin
     await expect(page.getByTestId("questionnaire-feedback")).toContainText("Correct");
     await page.getByTestId(index === answers.length - 1 ? "questionnaire-finish" : "questionnaire-next").click();
   }
-  await expect(page.getByTestId("questionnaire-complete")).toContainText("Refresh complete");
-  await page.getByRole("link", { name: /Next node/i }).click();
+  await expect(page.getByTestId("questionnaire-complete")).toContainText("Practice complete");
+  await page.getByRole("link", { name: /Next activity/i }).click();
   await expect(page).toHaveURL(new RegExp(`/docs/frontend/rtk-query-modern-apis\\?path=${pathSlug}`));
   await expect(page.getByTestId("markdown-renderer")).toContainText("build.infiniteQuery<Page, FeedArg, string | null>");
   await expect(page.getByTestId("markdown-renderer")).toContainText("responseSchema: authorSchema");
@@ -62,5 +62,5 @@ test("@regression finds RTK lessons and opens the existing review feed", async (
   await page.getByTestId("path-flashcard-feed-link").click();
   await expect(page).toHaveURL(new RegExp(`/paths/${pathSlug}/flashcards`));
   await expect(page.getByTestId("passive-flashcard-feed")).toHaveAttribute("data-ready", "true");
-  await expect(page.getByTestId("passive-flashcard-card-0")).toContainText("They share the cache entry and an in-flight request.");
+  await expect(page.getByTestId("passive-flashcard-card-0")).toContainText("They share the cache entry and an in-flight request because the endpoint and serialized argument identify the entry.");
 });

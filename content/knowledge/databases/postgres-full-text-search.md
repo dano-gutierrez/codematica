@@ -19,7 +19,7 @@ status: published
 
 ## Search Is Not String Contains
 
-Full text search is for matching documents by normalized terms, not for checking whether one raw string appears inside another raw string. PostgreSQL models this with two important types:
+Full text search matches normalized terms rather than raw substrings. PostgreSQL uses two types:
 
 - `tsvector`: the searchable document representation.
 - `tsquery`: the parsed query representation.
@@ -44,7 +44,7 @@ select to_tsvector('english', 'The Fat Rats');
 -- 'fat':2 'rat':3
 ```
 
-The `english` configuration stems plural forms and drops stop words. The `simple` configuration is more literal: it lowercases tokens but does not apply English stemming. That distinction matters for product search. English stemming helps prose search; `simple` can be better for names, tags, codes, or titles where changing a word shape might be surprising.
+The `english` configuration stems plural forms and drops stop words. The `simple` configuration is more literal: it lowercases tokens but does not apply English stemming. English stemming helps prose search; `simple` can suit names, tags, codes, or titles where word forms should stay literal.
 
 Use `coalesce` when building vectors from nullable fields:
 
@@ -90,7 +90,7 @@ create index articles_search_document_idx
   );
 ```
 
-The index can find candidate rows. Ranking then uses the vector and the query to decide order.
+The index finds candidates; ranking orders them using the vector and query.
 
 For frequently searched content, store the vector in a generated column or a maintained column instead of rebuilding it in every query:
 
@@ -139,7 +139,7 @@ create index articles_search_document_idx
   using gin (search_document);
 ```
 
-GIN indexes store lexemes, not the original document and not all ranking weight information. PostgreSQL may need to recheck table rows for visibility and ranking. This is normal.
+GIN stores lexemes without the original document or all ranking weights. PostgreSQL may therefore recheck table rows for visibility and ranking.
 
 ## Highlighting
 
@@ -151,13 +151,13 @@ from articles, websearch_to_tsquery('english', 'cache invalidation') q(query)
 where search_document @@ q.query;
 ```
 
-It works from the original document text, not from the `tsvector`. That can be expensive, so use it deliberately on a limited result set rather than every row in a broad candidate pool.
+It reads the original document rather than the `tsvector`. Limit it to the result set to avoid processing a large candidate pool.
 
 ## FTS Failure Modes
 
 Full text search is strong for token and lexeme search. It is weak for typos, arbitrary substrings, and very short malformed queries. Searching for `private` can match a document containing `private`; searching for `prvte` will usually not match because `prvte` is a different lexeme.
 
-That is why production search often combines:
+Production search often combines:
 
 - FTS for exact lexeme and phrase behavior.
 - Trigram search for typo tolerance.

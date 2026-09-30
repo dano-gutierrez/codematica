@@ -1,6 +1,6 @@
 # Codematica
 
-Codematica is a mobile-first, gamified learning app. V1 browses, renders, searches, and practices repo-authored Markdown and structured study content for software engineering and beginner Japanese, including an open JF/CEFR Pre-A1/A1 roadmap, embedded and external Mermaid diagrams, handwriting, review, and optional cross-device progress.
+Codematica is a mobile-first, gamified app for learning software engineering and beginner Japanese. V1 lets learners browse, render, search, and practice repo-authored Markdown and structured content. It includes an open JF/CEFR Pre-A1/A1 roadmap, embedded and external Mermaid diagrams, handwriting, review, and optional cross-device progress.
 
 ## Stack
 
@@ -26,7 +26,7 @@ npm install
 npm run content:index
 ```
 
-Run the unchanged Next/Vercel web app:
+Run the Next/Vercel web app:
 
 ```bash
 npm run dev
@@ -54,7 +54,7 @@ Build command: npm run build
 Framework: Next.js
 ```
 
-No Supabase environment variables are required for anonymous browsing. To enable login and cross-device progress sync, configure `NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`; set `NEXT_PUBLIC_AUTH_APPLE_ENABLED=true` only after Apple OAuth is configured.
+Anonymous browsing needs no Supabase environment variables. To enable login and cross-device progress sync, configure `NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`; set `NEXT_PUBLIC_AUTH_APPLE_ENABLED=true` only after Apple OAuth is configured.
 
 Native Android/iOS builds use EAS from `apps/mobile`. Configure the final app identity in `.env` before creating store records:
 
@@ -87,7 +87,7 @@ npm run mobile:submit:ios
 
 Android submission defaults to the Play internal track. iOS submission uploads to App Store Connect/TestFlight; public App Store release still requires selecting the build and submitting it for review in App Store Connect. Detailed native instructions live in `apps/mobile/README.md`.
 
-Full account setup and publishing steps live in `docs/runbooks/native-store-publishing.md`. Public app-store publishing is not fully free: Google Play Console requires a one-time developer registration fee, and App Store distribution requires Apple Developer Program membership unless Apple grants a fee waiver.
+Full account setup and publishing steps live in `docs/runbooks/native-store-publishing.md`. Google Play Console requires a one-time developer registration fee. App Store distribution requires Apple Developer Program membership unless Apple grants a fee waiver.
 
 ## Useful Commands
 
@@ -108,7 +108,13 @@ npm run mobile:build:preview
 
 ## Content
 
-Markdown is canonical. Add articles to `content/knowledge/` with the frontmatter contract defined in `packages/core/src/content/schema.ts`. Add external Mermaid diagrams to `content/diagrams/`, then reference them from article frontmatter with `diagramRefs`. Add human-language character, vocabulary, audio metadata, and rights-aware resources to `content/languages/`; writing exercises reference those character slugs from `content/exercises/`. Run `npm run content:audio` after adding released Japanese audio files and manifest entries.
+Markdown is canonical.
+
+- Add articles to `content/knowledge/` using the frontmatter contract in `packages/core/src/content/schema.ts`.
+- Add external Mermaid diagrams to `content/diagrams/`, then reference them in article frontmatter with `diagramRefs`.
+- Add human-language characters, vocabulary, audio metadata, and resources with rights metadata to `content/languages/`. Writing exercises in `content/exercises/` reference those character slugs.
+
+Run `npm run content:audio` after adding released Japanese audio files and manifest entries.
 
 Supabase is optional for browsing. Apply the migrations in `supabase/migrations/` before enabling Auth/progress. To sync indexed content manually, copy `.env.example` to `.env`, configure `SUPABASE_URL` and `SUPABASE_SERVICE_ROLE_KEY`, and run:
 
@@ -120,6 +126,7 @@ Keep the service role key server-side only. Do not add it to browser code or Ver
 
 ## Workspace Layout
 
+- `.agents/skills`: repo-local Codex skills; see [technical editing](docs/README.md#technical-editing-skill) for concise documentation rewrites.
 - `apps/web`: existing Next/Vercel web app.
 - `apps/mobile`: Expo Router Android/iOS app with EAS internal, production, and submit profiles.
 - `packages/core`: shared content, search, practice, and progress contracts.

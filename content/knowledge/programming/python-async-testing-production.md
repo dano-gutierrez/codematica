@@ -20,9 +20,9 @@ status: published
 
 ## Async Lens
 
-Python `asyncio` and JavaScript promises both use `async` and `await`, but the runtime expectations are not identical. In Python, calling an async function creates a coroutine object. It does not run to completion until it is awaited or scheduled. This is a common migration trap for JavaScript engineers because promise-returning functions usually start work when called.
+Python `asyncio` and JavaScript promises both use `async` and `await`, but the runtime expectations are not identical. In Python, calling an async function creates a coroutine object. It does not run to completion until it is awaited or scheduled. JavaScript promise-returning functions usually start work when called, making this a common migration trap.
 
-The senior review question is whether concurrency is explicit. If code creates a task, who owns cancellation, errors, and lifetime? If code awaits sequentially, is that intentional? If code performs blocking I/O inside an async path, the event loop can stall.
+Check whether concurrency is explicit. If code creates a task, who owns cancellation, errors, and lifetime? If code awaits sequentially, is that intentional? If code performs blocking I/O inside an async path, the event loop can stall.
 
 ## Coroutines, Tasks, And Ownership
 
@@ -33,17 +33,17 @@ coroutine = refresh_cache()
 task = asyncio.create_task(refresh_cache())
 ```
 
-The first line creates work that has not been scheduled. The second schedules work and now needs ownership. A task without a retained reference can lose observability and error handling. Keep background tasks in a tracked structure or use structured concurrency primitives where appropriate.
+The first line creates work that has not been scheduled. The second schedules work that needs an owner. A task without a retained reference can lose observability and error handling. Keep background tasks in a tracked structure or use structured concurrency primitives where appropriate.
 
 ## Blocking Work
 
-Async Python does not make CPU-bound or blocking I/O work disappear. A synchronous database driver, filesystem call, or CPU-heavy transform inside an async handler can block the event loop. That is similar to blocking the JavaScript event loop, but Python services often mix sync and async libraries during migration.
+A synchronous database driver, filesystem call, or CPU-heavy transform can block the event loop even inside an async handler. That is similar to blocking the JavaScript event loop, but Python services often mix sync and async libraries during migration.
 
-Review every dependency on an async path. Is it truly async? Does it use a thread pool? Does it expose cancellation? Does it preserve context for tracing? The answer determines whether the service is concurrent or only syntactically async.
+Review every dependency on an async path. Is it truly async? Does it use a thread pool? Does it expose cancellation? Does it preserve context for tracing? These answers determine whether the service can run work concurrently.
 
 ## Testing Boundaries
 
-Python's standard library includes `unittest`, and many teams use pytest, but the standard is not the specific test runner. The standard is having stable boundaries:
+Python's standard library includes `unittest`, and many teams use pytest. With either runner, use stable test boundaries:
 
 - Unit tests for pure transforms and validation.
 - Integration tests for filesystem, database, network adapter, and packaging behavior.
@@ -53,15 +53,15 @@ Avoid testing implementation timing with sleeps. Prefer awaiting observable stat
 
 ## Style Is A Production Tool
 
-PEP 8 is not about ornamental formatting. It creates a shared reading baseline. In a Python codebase, readable names, explicit imports, simple control flow, and consistent layout reduce review cost.
+PEP 8 provides shared style conventions. Readable names, explicit imports, simple control flow, and consistent layout make Python code easier to review.
 
-Senior engineers should be willing to break style rules when the local convention demands it, but they should not make every file a personal dialect. Python's concise syntax is effective when the code remains direct.
+Follow local conventions when they require exceptions to style rules. Keep code direct and style consistent across files.
 
 ## Error And Timeout Standards
 
 Production async code needs explicit timeout and cancellation behavior. A JavaScript engineer may reach for `Promise.all`; Python has APIs such as `asyncio.gather`, tasks, and task groups, each with different error behavior. Pick the primitive that matches the failure contract.
 
-If one child operation fails, should siblings continue? Should results be partial? Should the request be cancelled? Should cleanup run? The code should answer these questions directly instead of relying on accidental defaults.
+If one child operation fails, should siblings continue? Should results be partial? Should the request be cancelled? Should cleanup run? Make these choices explicit in the code.
 
 On Python 3.11+, `asyncio.TaskGroup` is usually the clearest default when child tasks share a lifetime: exiting the context waits for all children, and a non-cancellation failure cancels the remaining tasks before raising an exception group. `asyncio.gather` remains useful when ordered results or deliberately collected exceptions are the contract. Neither primitive removes the need to make timeout, cancellation, and cleanup behavior explicit.
 

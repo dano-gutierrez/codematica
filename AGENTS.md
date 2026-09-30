@@ -6,9 +6,9 @@ Instructions for AI agents working on this codebase.
 
 ## What This App Is
 
-Codematica is a gamified learning app. V1 is a mobile-first Next.js web app plus an Expo Router Android/iOS app that browse, render, search, and practice AI-authored Markdown and structured study content about system design, programming, coding, production engineering, and beginner human languages.
+Codematica is a gamified learning app for system design, programming, coding, production engineering, and beginner human languages. V1 uses a mobile-first Next.js web app and an Expo Router Android/iOS app to browse, render, search, and practice AI-authored Markdown and structured content.
 
-Markdown files are the durable source of truth. Supabase is scaffolded as an optional sync/search backend and is used for optional Auth/progress when public runtime env vars are configured, but the app must run from the local generated content index without requiring Supabase credentials for anonymous browsing.
+Markdown files are the durable source of truth. Supabase provides an optional sync/search scaffold and optional Auth/progress when public runtime env vars are configured. Anonymous browsing must work from the generated local content index without Supabase credentials.
 
 Future product areas include:
 
@@ -19,7 +19,7 @@ Future product areas include:
 - code snaps and deeper grading/persistence on top of the editable React/TS playground
 - Duolingo-style scoring, progress, streaks, and challenge loops
 - expanded Japanese language study with sound, larger dictionaries, and richer writing drills
-- richer profiles, deeper saved progress/scoring, and eventually native clients
+- richer profiles, deeper saved progress/scoring, and eventually native clients [Unclear: native clients are also described as part of V1 above.]
 
 Frontend is split across `apps/web` for Next.js App Router and `apps/mobile` for Expo Router. Shared content/search/practice/progress logic lives in `packages/core`; shared native screens live in `packages/ui`. Content indexing is local-first. Supabase is optional infrastructure for hosted search, Auth/progress, and later AI workflows.
 
@@ -95,7 +95,7 @@ Every new durable addition to the project must be documented in the same branch 
 - Update `docs/codex-context.md` when the repo map, source-of-truth rules, domain terms, or working rules change.
 - Update `docs/README.md` and any nested `README.md` files when new folders, workflows, commands, conventions, or documentation surfaces are added.
 - If a directory gains a durable purpose that is not obvious from names alone, add or update that directory's README.
-- A feature is not fully complete until the docs and README surfaces that describe it match the shipped or intended contract.
+- A feature is complete only when its docs and READMEs match the shipped or intended contract.
 
 ## Feature Docs
 
@@ -109,11 +109,11 @@ Every new durable product feature should create or update a dedicated feature do
 
 ### Engineering Overview And Mermaid Maintenance
 
-Every new big feature must also evaluate whether the repo-level engineer overview needs to change:
+For every major feature, check whether the engineering overview needs updating:
 
 - Update `docs/engineering-overview.md` whenever the feature changes the project architecture, system boundaries, major execution flows, storage/query model, provider stack, backend topology, or the recommended "start reading here" map for new engineers.
 - If the feature changes any architecture or workflow represented in Mermaid, update the relevant Mermaid diagrams in `docs/engineering-overview.md` and in any affected feature docs in the same branch.
-- Do not leave Mermaid diagrams as historical sketches. If the implementation changed the actual contract, the diagrams must change too.
+- Update Mermaid diagrams whenever implementation changes their documented contract.
 - A big feature is not fully documented until both the feature doc and the shared engineer overview are current.
 
 ---
@@ -308,7 +308,7 @@ Testing is a release contract, not a cleanup step.
 ### React Components
 
 - Reuse existing components before creating new ones. Start every UI task by checking `apps/web/src/components/` and nearby route usage for a component or pattern to extend.
-- Prefer adding a small prop, slot, or composition path to an existing component over creating another bespoke component for the same behavior. Less code is good. Reusing is good. Abstracting repeated UI and logic is good.
+- Prefer a small prop, slot, or composition path in an existing component over a new component for the same behavior. Reuse and abstract repeated UI and logic to reduce code.
 - Create a new component only when no existing component can reasonably own the behavior, state, styling, or accessibility contract. If you create one, add it to the reusable component inventory in this file and update the relevant docs.
 - Use `data-testid` on any element that E2E tests interact with.
 - Naming: `{feature}-{element}-{qualifier}`.
@@ -319,7 +319,7 @@ Testing is a release contract, not a cleanup step.
 
 ### Reusable Component Inventory
 
-All sessions should reuse and, when necessary, expand these existing components instead of rebuilding equivalent UI from scratch:
+Reuse these components and extend them when needed; avoid rebuilding equivalent UI:
 
 - `apps/web/src/components/BackButton.tsx`: shared client-side back navigation button with an optional label.
 - `apps/web/src/components/AppHeader.tsx`: shared context header and root AppNavigation with phone bottom navigation, More dialog, and desktop sidebar.

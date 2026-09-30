@@ -20,7 +20,7 @@
 
 ## One-Minute Brief
 
-`WebExerciseProject` is the reusable authored-project boundary. It selects a Sandpack runtime, supplies an absolute safe file map, identifies visible and active files, and optionally declares an entry file and npm dependencies. The web component renders CodeMirror, an adjacent preview, Run, refresh, Reset, errors, and console output. Projects run in Sandpack's cross-origin iframe; Codematica never sends auth state, secrets, progress data, or backend authority into the project.
+`WebExerciseProject` defines the shared format for authored projects. It selects a Sandpack runtime, supplies an absolute safe file map, identifies visible and active files, and optionally declares an entry file and npm dependencies. The web component renders CodeMirror, an adjacent preview, Run, refresh, Reset, errors, and console output. Projects run in Sandpack's cross-origin iframe; Codematica never sends auth state, secrets, progress data, or backend authority into the project.
 
 ## Outcome / Contract
 
@@ -30,7 +30,7 @@
 - Subsequent edits wait for explicit Run. Run replaces the connection using the current files and active tab. Reset creates a fresh session from the authored files and active tab, so the preview cannot rerun a stale edited snapshot.
 - Switching solutions remounts only the selected project and discards transient edits.
 - The CodeSandbox export/new-tab action is disabled. Runtime errors stay inside the preview overlay and console.
-- Startup, ready, code-error, and connection-timeout states are visible and announced. After the Sandpack connection deadline (40 seconds), Retry preview creates a fresh connection while preserving current files and the active tab. Keep the failed preview mounted but hidden until retry; unregistering it clears Sandpack's timeout status.
+- Startup, ready, code-error, and connection-timeout states are visible and announced. After the Sandpack connection deadline (40 seconds), Retry preview creates a fresh connection while preserving current files and the active tab. Keep a failed preview mounted and hidden until retry, because unregistering it clears Sandpack's timeout status.
 - If the React editor itself fails to initialize, the error boundary retains authored source with a separate Retry playground action.
 - Editor and console surfaces remain dark. Syntax colors are explicit, including comments and numeric/boolean literals, to meet 4.5:1 contrast. Initialization-failure source uses the shared `CodeBlock` with a filename label and language inferred from the file extension. Theme selection remains deferred.
 - The hosted bundler is the only remote dependency. Catalog content and read-only source remain local-first.
@@ -45,9 +45,9 @@
 ## Test Plan
 
 - Schema tests reject unsafe paths and missing active, visible, or entry files.
-- Component tests verify immediate initialization, a shared console, file/dependency mapping, compilation status, fresh Run/Reset sessions, timeout recovery with edits, project switching, and listener cleanup.
+- Component tests verify immediate initialization, a shared console, file/dependency mapping, compilation status, fresh Run/Reset sessions, timeout recovery with edits, project switching, and listener cleanup. Timeout copy must tell learners that their edits are preserved and the preview needs internet access to its hosted runtime.
 - The error-boundary regression forces editor initialization failure, verifies every authored file uses the shared source renderer, and retries successfully. `code-contrast.regression.spec.ts` checks actual editor syntax colors with hosted execution blocked, so contrast verification does not depend on the remote runtime.
-- Console browser assertions are scoped to `web-playground-console` and use a log emitted by clicking the running preview. A page-wide text locator can falsely match the same string in the editor; module-startup logs can race bridge initialization. The separate iframe-count assertion and component test protect the single-runtime contract.
+- Console browser assertions are scoped to `web-playground-console` and use a log emitted by clicking the running preview. A page-wide locator can match the editor's source text instead; startup logs can arrive before the console bridge initializes. The separate iframe-count assertion and component test protect the single-runtime contract.
 - Interview-session tests prove all authored projects are reachable.
 - The `@playground` regression lane runs in mobile Chromium, desktop Chromium, and mobile WebKit. It verifies automatic startup without clicking Run, a single runtime iframe, edit → Run → interactive output, console output, Reset restoring actual preview output, and recovery after deliberately blocking the hosted runtime. The timeout test advances the browser clock, not application state.
 - Run `npx playwright test --config=apps/web/e2e/playwright.config.ts apps/web/e2e/specs/playground.regression.spec.ts` and the interview/frontend regressions, plus lint, typecheck, and aggregate/per-file coverage. The browser runner builds production assets.
@@ -71,7 +71,7 @@ flowchart TD
 
 ## Connection Incident (2026-09-28)
 
-The reported blank preview reached Sandpack's `TIME_OUT`; retrying in the same browser successfully rendered the board. The original network failure's cause was not established. Inspection did verify that `standalone` console mode created a second hidden runtime, and that Reset called Run before React committed restored files. The fix removes duplicate execution, starts on reveal, replaces connections on Run/Retry, and restores the actual preview on Reset. Hosted-runtime availability is still required; this is not an offline bundler.
+The reported blank preview reached Sandpack's `TIME_OUT`; retrying in the same browser successfully rendered the board. The original network failure's cause was not established. Inspection did verify that `standalone` console mode created a second hidden runtime, and that Reset called Run before React committed restored files. The fix removes duplicate execution, starts on reveal, replaces connections on Run/Retry, and restores the actual preview on Reset. The hosted runtime must remain available for execution.
 
 ## Thread Handoff Prompt
 

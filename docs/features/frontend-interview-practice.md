@@ -25,13 +25,13 @@ Eight privately supplied PDFs (17 pages, including two overlapping file-explorer
 
 ## Current State
 
-The curriculum, rendering, path validation, and verification commands are implemented. See the validation notes below for environment gaps; local tests do not establish installed Android/iOS behavior or deployment.
+The curriculum, rendering, path validation, and verification commands are implemented. The validation notes list environment gaps. Local tests do not verify installed Android/iOS behavior or deployment.
 
 ## Supplementary React State Lesson
 
 `/docs/frontend/react-state-async-callbacks` teaches the user-reported append → delayed async success/failure scenario. A render snapshot and queued updates explain the lost item. The default fix uses functional setters for both append and completion, stable item IDs, pure updaters, and generation checks plus timer cleanup. It distinguishes independent items from concurrent requests for the same item, local cancellation from server effects, and a custom `useSetTimeout` hook from React hooks.
 
-The canonical Markdown contains a complete intentionally broken component and a complete working component, both executed directly by `ReactAsyncStateLesson.test.tsx`. It also compares reducers, refs, effects, common failed fixes, costs, and an interview recipe. The working example uses mocked I/O and can be pasted into the existing board playground. These standalone lesson examples are authoritative in Markdown; the original seven challenges retain their code in interview JSON.
+The canonical Markdown contains complete broken and working components, both executed directly by `ReactAsyncStateLesson.test.tsx`. It also compares reducers, refs, effects, common failed fixes, costs, and an interview recipe. The working example uses mocked I/O and can be pasted into the existing board playground. These standalone lesson examples are authoritative in Markdown; the original seven challenges retain their code in interview JSON.
 
 The lesson is searchable in Lessons and linked from the board and async-matrix guides. Its six-question checkpoint uses the existing questionnaire and has feedback for every distractor. This is supplementary content, so the seven required units and 42-card review feed keep their existing routes and completion behavior. The shared index makes the reader and quiz available anonymously on web and native without schema, UI, or persistence changes.
 
@@ -56,7 +56,7 @@ Live GitHub credentials, code grading, Python execution in the browser, native p
 
 ### UI / UX
 
-Each lesson states requirements versus practice defaults, clarification questions, and a worked example. Each track supplies an implementation recipe, full code, correctness reasoning, complexity, pain points, and a time-pressure recommendation. State organization is not presented as an asymptotic improvement. Native buttons and inputs in the projects provide keyboard operation, names, focus, and disabled enforcement. The walkthrough's grid uses a bounded column so long code lines scroll inside the editor rather than widening the mobile page.
+Each lesson states requirements versus practice defaults, clarification questions, and a worked example. Each approach includes implementation steps, full code, correctness reasoning, complexity, pitfalls, and advice for limited interview time. State organization is not presented as an asymptotic improvement. Native buttons and inputs in the projects provide keyboard operation, names, focus, and disabled enforcement. The walkthrough's grid uses a bounded column so long code lines scroll inside the editor rather than widening the mobile page.
 
 ### Data Model And Persistence
 
@@ -86,7 +86,7 @@ Tests cover rectangular/independent rows, exact zero counts, game boundaries/dra
 - `content/flashcard-feeds/frontend-interview-practice.json`: 42 review cards.
 - `scripts/content/verify-frontend-python.py`: executes exact companion strings with deterministic fixtures.
 - `scripts/content/verify-interview-audit.py`: Python regressions for repaired earlier examples.
-- Existing reader, session, playground, questionnaire, and passive-feed components own presentation; no parallel practice framework was added.
+- Existing reader, session, playground, questionnaire, and passive-feed components present the content; no separate practice framework was added.
 
 ## Test Plan
 

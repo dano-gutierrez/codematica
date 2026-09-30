@@ -10,7 +10,7 @@ sourceRefs: [product-interview-sre-monitoring]
 status: published
 ---
 
-Use the [guided mock lab](/practice/software-engineering/product-interview-mock-interview-lab?path=product-engineering-interview) to record a prediction, check your evidence, and reflect. Set your own 75-minute timer and use a plain JavaScript scratch file and a blank drawing surface. This is an original rehearsal, not a leaked question or a prediction of your exact interview. The lab records coarse completion; it does not automatically grade your code or architecture.
+Use the [guided mock lab](/practice/software-engineering/product-interview-mock-interview-lab?path=product-engineering-interview) to record a prediction, check your evidence, and reflect. Set your own 75-minute timer and use a plain JavaScript scratch file and a blank drawing surface. This original rehearsal does not predict your interview or use leaked questions. The lab records coarse completion; it does not automatically grade your code or architecture.
 
 ## Interviewer script
 
@@ -43,7 +43,7 @@ Score each row 0–4. **0:** missing/incorrect. **1:** named a mechanism but can
 
 ## Translate your experience into answers
 
-Use the following story patterns to select examples from your own experience. These are personal rehearsal prompts, not independently verified employment claims. Use only facts and metrics you can defend. Keep confidential implementation/customer details out of public answers.
+Use these rehearsal prompts to select examples from your experience; they are not independently verified employment claims. Use only facts and metrics you can defend. Keep confidential implementation/customer details out of public answers.
 
 | Story from the briefing | Rehearsal question | Evidence to prepare |
 | --- | --- | --- |
@@ -56,13 +56,13 @@ Use the following story patterns to select examples from your own experience. Th
 
 For each story, rehearse **90 seconds**: problem and constraint (15s), your decision and alternative (25s), hardest failure and response (30s), measured outcome and lesson (20s). Then rehearse the five-minute deep dive with a diagram. Favor two well-defended stories over six shallow summaries.
 
-An honest opening scaffold: “I moved a CRM integration from polling toward a durable event-driven flow because [measured constraint]. I owned [specific boundary]; the team owned [other work]. We chose [design] over [alternative] because [tradeoff]. The hardest failure was [real example]. We validated [tests/artifact] and observed [actual production signal]. I would revisit [decision] if [changed condition].” Fill the brackets with your history; do not memorize invented details.
+Opening template: “I moved a CRM integration from polling toward a durable event-driven flow because [measured constraint]. I owned [specific boundary]; the team owned [other work]. We chose [design] over [alternative] because [tradeoff]. The hardest failure was [real example]. We validated [tests/artifact] and observed [actual production signal]. I would revisit [decision] if [changed condition].” Fill the brackets with your history; do not memorize invented details.
 
 ## Product exploration: 15 minutes before the interview
 
-Open the product you are interviewing for and compare a continuous real-time edit with an explicit generation/export. Observe rapid input changes, loading/progress language, history/undo, image comparison, navigation away/back, and model/quality selection. Record **observed behavior**, **hypothesis about implementation**, and **question for the team** in separate columns. Treat this as your own observation exercise; the pack does not claim a hands-on benchmark or an internal trace.
+Open the product you are interviewing for and compare a continuous real-time edit with an explicit generation/export. Observe rapid input changes, loading/progress language, history/undo, image comparison, navigation away/back, and model/quality selection. Record **observed behavior**, **hypothesis about implementation**, and **question for the team** in separate columns. These will be your observations; the pack provides no hands-on benchmark or internal trace.
 
-Choose one concrete improvement, such as making the current input revision and last completed preview easier to distinguish. Explain the user benefit, a minimal implementation, and a measurement. Avoid declaring the product broken from a single slow request. Connect product taste to engineering judgment by explaining the user benefit and how you would measure it.
+Choose one concrete improvement, such as making the current input revision and last completed preview easier to distinguish. Explain the user benefit, a minimal implementation, and a measurement. Avoid declaring the product broken from a single slow request.
 
 ## Second-session variants
 

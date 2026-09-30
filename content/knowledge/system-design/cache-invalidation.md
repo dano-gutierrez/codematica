@@ -20,9 +20,9 @@ status: published
 
 ## Core Decision
 
-Cache invalidation is not a cleanup task. It is a product contract about how stale the user experience is allowed to be, how expensive recomputation can become, and which system owns truth when writes happen.
+Cache invalidation defines acceptable staleness, recomputation cost, and which system is authoritative after a write.
 
-The first question is not "which cache should we use?" The first question is "what is the acceptable lie?" A product feed can tolerate seconds of drift. A billing ledger cannot. A permissions system usually cannot either, unless every sensitive operation re-checks the source of truth.
+Define acceptable staleness before choosing a cache. A product feed can tolerate seconds of drift; a billing ledger cannot. A permissions system usually cannot either, unless every sensitive operation re-checks the source of truth.
 
 ## Strategy Map
 
@@ -43,7 +43,7 @@ flowchart TD
 
 Use time-based expiration when stale data is cheap and obvious. Use event-driven invalidation when stale data creates user-visible contradictions. Use versioned keys when reads fan out and deletion is hard to make complete.
 
-The write and its invalidation event must have an ordering contract. Publishing before commit can evict the cache and let a concurrent reader repopulate it with old data. Committing and then publishing can lose the event if the process crashes between those operations. A transactional outbox records the state change and event atomically; an idempotent publisher and consumers handle retries. This provides repairable at-least-once delivery, not magical exactly-once execution.
+The write and its invalidation event must have an ordering contract. Publishing before commit can evict the cache and let a concurrent reader repopulate it with old data. Committing and then publishing can lose the event if the process crashes between those operations. A transactional outbox records the state change and event atomically; an idempotent publisher and consumers handle retries. This provides repairable at-least-once delivery, not exactly-once execution.
 
 ## Read-Path Safety
 
@@ -53,7 +53,7 @@ In multi-level caches, invalidating only the application cache is insufficient i
 
 ## Operational Tests
 
-Good invalidation designs answer these questions before launch:
+Before launch, answer:
 
 - Can a failed invalidation be replayed without corrupting newer data?
 - Does the read path have a deterministic fallback when the cache is cold?
@@ -64,7 +64,7 @@ Good invalidation designs answer these questions before launch:
 
 ## Failure Modes
 
-The dangerous failures are silent. A stale permission cache may look like a fast system until it becomes a security incident. A stale recommendation cache may only look like weak personalization. Treat cache classes differently instead of forcing one global freshness rule.
+Silent failures have different consequences: stale permissions can cause a security incident while the system appears fast; stale recommendations may look like weak personalization. Set freshness rules by cache class.
 
 ## Implementation Heuristic
 

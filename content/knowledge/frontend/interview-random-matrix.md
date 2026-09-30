@@ -10,7 +10,7 @@ sourceRefs: ["frontend-react-arrays", "frontend-python-random"]
 status: "published"
 ---
 
-## What you are being asked to build
+## Build requirements
 
 Create a 10×10 matrix filled with ones except for exactly k randomly chosen distinct positions containing zeros. Store the result in React state and regenerate on an explicit button press.
 
@@ -30,13 +30,15 @@ Say: “I will sample indexes without replacement, then project them into fresh 
 
 ## Choose a solution
 
-| Approach | When to choose it |
-| --- | --- |
-| Full Fisher–Yates shuffle | Select exactly k unique cells before projecting indexes into independent matrix rows. |
-| Partial Fisher–Yates shuffle | Select exactly k unique cells before projecting indexes into independent matrix rows. |
-| Reservoir sampling | Select exactly k unique cells before projecting indexes into independent matrix rows. |
+Select exactly k unique cells before projecting indexes into independent matrix rows.
 
-Start with the first approach. Learn the other two as tradeoff discussions; do not try to build all three in one interview. Each walkthrough includes a numbered recipe, correctness argument, pain points, full React/TypeScript project, and a Python logic companion.
+The three approaches are:
+
+- Full Fisher–Yates shuffle.
+- Partial Fisher–Yates shuffle.
+- Reservoir sampling.
+
+Build the first approach and discuss the other two as alternatives; do not build all three in one interview. Each walkthrough includes numbered steps, a correctness argument, pitfalls, a full React/TypeScript project, and a Python logic companion.
 
 ## Senior-engineer rehearsal
 
@@ -46,7 +48,7 @@ Start with the first approach. Learn the other two as tradeoff discussions; do n
 4. Check correctness before discussing optimization. Include copying, output, and I/O costs.
 5. Summarize what works, what you tested, and which extension you would build next.
 
-Spend roughly 20–30 minutes on the baseline as a practice budget, then explain an alternative without coding it. This is an authored rehearsal schedule, not a claim about an actual interview duration.
+Practice the baseline for roughly 20–30 minutes, then explain an alternative without coding it. This suggested rehearsal schedule does not describe an actual interview duration.
 
 ## Worked example
 
@@ -60,4 +62,4 @@ Exactly two distinct positions are zero; the specific positions depend on the ra
 
 [Open the three guided solutions](/interviews/frontend-practice/random-matrix?path=frontend-interview-practice), then [take the checkpoint](/practice/frontend/interview-random-matrix-questionnaire?path=frontend-interview-practice). The final checkpoint leads into the combined vertical review feed.
 
-The prompts are original adaptations of privately supplied preparation material. The sources below support technical claims; they do not establish employer endorsement or interview outcomes.
+These original prompts adapt privately supplied preparation material. The sources support technical claims, not employer endorsement or interview outcomes.

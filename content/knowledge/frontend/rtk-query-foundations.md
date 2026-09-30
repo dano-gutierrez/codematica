@@ -12,9 +12,9 @@ status: published
 ---
 ## Your Interview Goal
 
-Explain who owns a request, what identifies its cached result, and how the UI behaves when data becomes stale. Then defend the design under account switches, overlapping writes, and process restarts. Memorizing hook names is only the starting point.
+Explain who owns a request, what identifies its cached result, and how the UI behaves when data becomes stale. Then defend the design under account switches, overlapping writes, and process restarts. Hook names alone do not explain those decisions.
 
-This seven-part path moves from an API you can explain on a whiteboard to a production incident and a mock interview. Allow roughly three hours for reading, running examples in a scratch project, and answering the checkpoints; that is a study suggestion, not a completion requirement. Know React hooks, TypeScript, promises, and HTTP first. Use the final workshop for a timed rehearsal and the path's flashcards for quick review.
+This seven-part path covers a small API, a production incident, and a mock interview. Allow roughly three hours for reading, running examples in a scratch project, and answering the checkpoints; that is a study suggestion, not a completion requirement. Know React hooks, TypeScript, promises, and HTTP first. Use the final workshop for a timed rehearsal and the path's flashcards for quick review.
 
 Examples target **Redux Toolkit 2.12.0**, verified on **2026-09-09**. RTK Query ships inside `@reduxjs/toolkit`; it has no separately selected runtime version. The later persistence case compares 2.2.8 explicitly. [Current release](https://github.com/reduxjs/redux-toolkit/releases/tag/v2.12.0).
 
@@ -28,7 +28,7 @@ In a reading app, the server owns an author's profile and the followed-author li
 
 ## A Small API You Can Explain
 
-Standalone `libraryApi.ts` example. The example server contract is `GET /api/authors/:id` returning an author and `GET /api/authors?search=...` returning an array. These are fictional routes for learning.
+Standalone `libraryApi.ts` example. The fictional server contract is `GET /api/authors/:id` returning an author and `GET /api/authors?search=...` returning an array. Use these routes for practice.
 
 ```ts
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
@@ -105,7 +105,7 @@ export function AuthorPanel({ id }: { id?: string }) {
 
 Within one API/store, two mounted `useGetAuthorQuery('a1')` calls share the entry and an in-flight request. A list endpoint containing author `a1` and the detail endpoint are separate cached documents. RTK Query does not create a global normalized entity graph. A new plain object with the same serializable field values normally produces the same default key; `useMemo` is not required merely to deduplicate it. [Cache behavior](https://redux-toolkit.js.org/rtk-query/usage/cache-behavior).
 
-**Bad:** copy every query result into `authorsSlice` in an effect. Now invalidation updates one owner while the UI reads another. **Better:** select data from the API cache; normalize a particular response with `createEntityAdapter` only when lookup patterns justify it. A deliberately editable draft can be a separate copy with an explicit reset/save contract.
+**Bad:** copy every query result into `authorsSlice` in an effect. Invalidation then updates the cache while the UI reads the separate copy. **Better:** select data from the API cache; normalize a particular response with `createEntityAdapter` only when lookup patterns justify it. A deliberately editable draft can be a separate copy with an explicit reset/save contract.
 
 ## Interview Follow-ups
 
@@ -117,4 +117,4 @@ Within one API/store, two mounted `useGetAuthorQuery('a1')` calls share the entr
 | Query or mutation for a POST search? | Choose by semantics: an idempotent read can be a query even when transport uses POST. |
 | Is `.unwrap()` required for every query hook? | No. Query hooks expose state; unwrap is useful when an imperative result needs promise-style success/failure handling. |
 
-Before continuing, sketch the route from hook to endpoint, cache key, middleware, HTTP response, reducer, and rerender. Explain which part survives a component unmount and which part cannot survive process death.
+Before continuing, sketch the flow from hook to endpoint, cache key, middleware, HTTP response, reducer, and rerender. Explain which part survives a component unmount and which part cannot survive process death.

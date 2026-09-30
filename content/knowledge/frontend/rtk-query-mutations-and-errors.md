@@ -36,7 +36,7 @@ Without unwrap, inspect the returned `{ data }` or `{ error }` result explicitly
 | Update a heavily filtered admin table | Invalidate affected collections | Local membership/order rules can be complicated |
 | Save several overlapping edits | Serialize per entity, or use revisions and reconcile | Naive inverse patches can undo newer work |
 
-These are product choices. RTK Query supplies mechanisms; it cannot infer your transaction rules.
+Choose transaction rules for your product; RTK Query supplies the mechanisms.
 
 ## A Bounded Optimistic Example
 
@@ -83,7 +83,7 @@ export const optimisticApi = createApi({
 
 ### The Rollback Race Interviewers Ask About
 
-Initial name is A. Edit one patches B; edit two patches C. Edit one fails late and undoes its patch, restoring A over C. Even replacing data with an earlier successful response can clobber a newer edit. For overlapping writes, invalidate and read authoritative state after outstanding work settles, serialize per entity, or use server revisions with a conflict policy. “Immer handles it” is not a concurrency design.
+Initial name is A. Edit one patches B; edit two patches C. Edit one fails late and undoes its patch, restoring A over C. Even replacing data with an earlier successful response can clobber a newer edit. For overlapping writes, invalidate and read authoritative state after outstanding work settles, serialize per entity, or use server revisions with a conflict policy. Immer alone does not resolve these concurrency risks.
 
 ## Errors Need a Transport Contract
 
@@ -113,4 +113,4 @@ For simultaneous 401s, a reauthentication wrapper can coordinate one refresh wit
 
 ## Interview Follow-ups
 
-Explain how you would test a delayed first failure after a successful second edit, an absent detail cache entry, and a server-normalized name. Then describe a network timeout after the server commits. The strongest answer separates what the client observed from what the server may have done.
+Explain how you would test a delayed first failure after a successful second edit, an absent detail cache entry, and a server-normalized name. Then describe a network timeout after the server commits. Distinguish what the client observed from what the server may have done.

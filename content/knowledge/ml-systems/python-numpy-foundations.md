@@ -14,13 +14,13 @@ status: published
 
 ## Why this prerequisite exists
 
-The Harvard curriculum assumes Python proficiency and familiarity with NumPy. This companion narrows that large prerequisite to the behaviors you will use throughout the path: reading shapes, predicting memory, vectorizing work, testing numerical code, and measuring before optimizing. The [official Volume I homepage](https://mlsysbook.ai/vol1/) remains the authoritative statement of prerequisites and curriculum scope.
+The Harvard curriculum assumes Python proficiency and familiarity with NumPy. This guide focuses on the skills used throughout the path: reading shapes, predicting memory, vectorizing work, testing numerical code, and measuring before optimizing. The [official Volume I homepage](https://mlsysbook.ai/vol1/) remains the authoritative statement of prerequisites and curriculum scope.
 
 ## Arrays are layouts, not just lists
 
 For an array with shape `(batch, features)`, make every axis nameable. Shape bugs often execute successfully because broadcasting produces a valid but unintended result. Before running an operation, write the expected input and output shapes. Then confirm them with assertions.
 
-Memory is approximately `element_count × bytes_per_element`. A `1000 × 1000` `float32` array holds one million four-byte values, or about 4 MB before temporary arrays and framework overhead. Changing to `float64` doubles that payload. This simple calculation becomes essential when activations, optimizer state, and batches compete for memory.
+Memory is approximately `element_count × bytes_per_element`. A `1000 × 1000` `float32` array holds one million four-byte values, or about 4 MB before temporary arrays and framework overhead. Changing to `float64` doubles that payload. Use this calculation when activations, optimizer state, and batches compete for memory.
 
 ```python
 import numpy as np
@@ -40,7 +40,7 @@ Use explicit random generators, small deterministic fixtures, tolerance-aware co
 
 ## Measure a baseline
 
-Use `time.perf_counter()` around repeated work, warm up code whose first call initializes caches, and report the environment with the result. One timing is an anecdote; a distribution with inputs and hardware recorded is evidence.
+Use `time.perf_counter()` around repeated work, warm up code whose first call initializes caches, and report the environment with the result. Measure a timing distribution and record inputs and hardware; one timing is insufficient evidence.
 
 ## Practical exercise
 

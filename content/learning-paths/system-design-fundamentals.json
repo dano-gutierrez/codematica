@@ -1,7 +1,7 @@
 {
   "slug": "system-design-fundamentals",
   "title": "System Design Fundamentals",
-  "summary": "A focused skill path for learning how production design choices become user-facing contracts.",
+  "summary": "Learn how production design choices define the behavior users can rely on.",
   "kind": "skill",
   "category": "System Design",
   "audience": "Engineers preparing for system design interviews, architecture reviews, and production tradeoff discussions.",
