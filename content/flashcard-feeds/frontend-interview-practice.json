@@ -1,0 +1,752 @@
+{
+  "slug": "frontend-interview-practice",
+  "pathSlug": "frontend-interview-practice",
+  "title": "Frontend Interview Review",
+  "summary": "Forty-two concise cards reinforce the contracts, recipes, pitfalls, and language-specific details of the seven frontend interview challenges.",
+  "audience": "Engineers reinforcing interview reasoning after guided practice.",
+  "status": "published",
+  "cards": [
+    {
+      "id": "dynamic-board-concept-1",
+      "type": "concept",
+      "title": "Dynamic Rectangular Board: Contract",
+      "prompt": "Which small input best exposes an accidental square-board assumption?",
+      "explanation": "2 rows and 3 columns. A non-square board requires independent bounds. Square and single-cell cases can pass even when the column loop incorrectly uses the row count.",
+      "difficulty": "practitioner",
+      "tags": [
+        "frontend",
+        "interview",
+        "react",
+        "typescript",
+        "python",
+        "dynamic-board"
+      ],
+      "sourceDocSlug": "frontend/interview-dynamic-board"
+    },
+    {
+      "id": "dynamic-board-concept-2",
+      "type": "practical",
+      "title": "Dynamic Rectangular Board: Reasoning",
+      "prompt": "With 3 columns, what are the coordinates of flat index 5?",
+      "explanation": "Row 1, column 2. Integer division 5 // 3 gives row 1 and remainder 5 % 3 gives column 2. Dividing by the row count swaps the contract and fails rectangular inputs.",
+      "difficulty": "practitioner",
+      "tags": [
+        "frontend",
+        "interview",
+        "react",
+        "typescript",
+        "python",
+        "dynamic-board"
+      ],
+      "sourceDocSlug": "frontend/interview-dynamic-board"
+    },
+    {
+      "id": "dynamic-board-concept-3",
+      "type": "interview",
+      "title": "Dynamic Rectangular Board: Pitfall",
+      "prompt": "Python: rows = [[0] * 3] * 2; rows[0][0] = 9. What happens?",
+      "explanation": "Both rows begin with 9. List multiplication repeats references to the same inner list. Allocate each inner list in a comprehension to preserve row independence; nested assignment itself is legal.",
+      "difficulty": "practitioner",
+      "tags": [
+        "frontend",
+        "interview",
+        "react",
+        "typescript",
+        "python",
+        "dynamic-board"
+      ],
+      "sourceDocSlug": "frontend/interview-dynamic-board"
+    },
+    {
+      "id": "dynamic-board-recipe",
+      "type": "practical",
+      "title": "Dynamic Rectangular Board: Recipe",
+      "prompt": "How would you start the baseline under interview time pressure?",
+      "explanation": "Clarify independent dimensions → Create a small rectangular model → Render the coordinates → Test resizing and explain identity. Explain one invariant and one adverse case before optimizing.",
+      "difficulty": "practitioner",
+      "tags": [
+        "frontend",
+        "interview",
+        "react",
+        "typescript",
+        "python",
+        "dynamic-board"
+      ],
+      "sourceDocSlug": "frontend/interview-dynamic-board"
+    },
+    {
+      "id": "dynamic-board-typescript",
+      "type": "snippet",
+      "title": "Dynamic Rectangular Board: Typescript",
+      "prompt": "Name the invariant protected by this excerpt. It belongs inside the complete solution linked below.",
+      "explanation": "Each iteration allocates a fresh row, so changing row zero does not change row one.",
+      "difficulty": "practitioner",
+      "tags": [
+        "frontend",
+        "interview",
+        "react",
+        "typescript",
+        "python",
+        "dynamic-board"
+      ],
+      "sourceDocSlug": "frontend/interview-dynamic-board",
+      "code": "const rows = Array.from({length: 2}, () => Array(3).fill(0));",
+      "codeLanguage": "typescript"
+    },
+    {
+      "id": "dynamic-board-python",
+      "type": "snippet",
+      "title": "Dynamic Rectangular Board: Python",
+      "prompt": "Name the invariant protected by this excerpt. It belongs inside the complete solution linked below.",
+      "explanation": "Each iteration allocates a fresh row, so changing row zero does not change row one.",
+      "difficulty": "practitioner",
+      "tags": [
+        "frontend",
+        "interview",
+        "react",
+        "typescript",
+        "python",
+        "dynamic-board"
+      ],
+      "sourceDocSlug": "frontend/interview-dynamic-board",
+      "code": "rows = [[0] * 3 for _ in range(2)]",
+      "codeLanguage": "python"
+    },
+    {
+      "id": "random-matrix-concept-1",
+      "type": "concept",
+      "title": "Randomized Zero Matrix: Contract",
+      "prompt": "Which requirement guarantees exactly 10 zeros?",
+      "explanation": "Sample 10 distinct positions without replacement. Independent per-cell probability gives an expected count, not an exact count. Independent position draws can collide, so overwriting may produce fewer than 10 zeros.",
+      "difficulty": "practitioner",
+      "tags": [
+        "frontend",
+        "interview",
+        "react",
+        "typescript",
+        "python",
+        "random-matrix"
+      ],
+      "sourceDocSlug": "frontend/interview-random-matrix"
+    },
+    {
+      "id": "random-matrix-concept-2",
+      "type": "practical",
+      "title": "Randomized Zero Matrix: Reasoning",
+      "prompt": "Why is sort(() => Math.random() - 0.5) unsuitable for a uniform shuffle?",
+      "explanation": "Its inconsistent comparator does not establish uniform permutation probabilities. A random comparator violates the ordering assumptions of sorting and yields implementation-dependent bias. Fisher–Yates has a direct uniformity argument under uniform independent draws.",
+      "difficulty": "practitioner",
+      "tags": [
+        "frontend",
+        "interview",
+        "react",
+        "typescript",
+        "python",
+        "random-matrix"
+      ],
+      "sourceDocSlug": "frontend/interview-random-matrix"
+    },
+    {
+      "id": "random-matrix-concept-3",
+      "type": "interview",
+      "title": "Randomized Zero Matrix: Pitfall",
+      "prompt": "Partial shuffle: at iteration i, where must j be sampled?",
+      "explanation": "From i through n - 1, inclusive. The prefix before i is already fixed. Sampling the remaining suffix preserves uniqueness and gives each remaining position an equal chance to enter the selected prefix.",
+      "difficulty": "practitioner",
+      "tags": [
+        "frontend",
+        "interview",
+        "react",
+        "typescript",
+        "python",
+        "random-matrix"
+      ],
+      "sourceDocSlug": "frontend/interview-random-matrix"
+    },
+    {
+      "id": "random-matrix-recipe",
+      "type": "practical",
+      "title": "Randomized Zero Matrix: Recipe",
+      "prompt": "How would you start the baseline under interview time pressure?",
+      "explanation": "Clarify exact k and bounds → Sample unique flat indexes → Project fresh matrix rows → Store output and test regeneration. Explain one invariant and one adverse case before optimizing.",
+      "difficulty": "practitioner",
+      "tags": [
+        "frontend",
+        "interview",
+        "react",
+        "typescript",
+        "python",
+        "random-matrix"
+      ],
+      "sourceDocSlug": "frontend/interview-random-matrix"
+    },
+    {
+      "id": "random-matrix-typescript",
+      "type": "snippet",
+      "title": "Randomized Zero Matrix: Typescript",
+      "prompt": "Name the invariant protected by this excerpt. It belongs inside the complete solution linked below.",
+      "explanation": "Partial Fisher–Yates fixes one new selected position using the remaining suffix. The pool and output still require linear storage.",
+      "difficulty": "practitioner",
+      "tags": [
+        "frontend",
+        "interview",
+        "react",
+        "typescript",
+        "python",
+        "random-matrix"
+      ],
+      "sourceDocSlug": "frontend/interview-random-matrix",
+      "code": "const j = i + Math.floor(random() * (n - i));\n[pool[i], pool[j]] = [pool[j], pool[i]];",
+      "codeLanguage": "typescript"
+    },
+    {
+      "id": "random-matrix-python",
+      "type": "snippet",
+      "title": "Randomized Zero Matrix: Python",
+      "prompt": "Name the invariant protected by this excerpt. It belongs inside the complete solution linked below.",
+      "explanation": "Partial Fisher–Yates fixes one new selected position using the remaining suffix. The pool and output still require linear storage.",
+      "difficulty": "practitioner",
+      "tags": [
+        "frontend",
+        "interview",
+        "react",
+        "typescript",
+        "python",
+        "random-matrix"
+      ],
+      "sourceDocSlug": "frontend/interview-random-matrix",
+      "code": "j = i + int(rng() * (n - i))\npool[i], pool[j] = pool[j], pool[i]",
+      "codeLanguage": "python"
+    },
+    {
+      "id": "click-board-concept-1",
+      "type": "concept",
+      "title": "Click-to-place 5×5 Game: Contract",
+      "prompt": "Where does a click at row 1, column 2 place a token?",
+      "explanation": "In that exact empty cell. This 5×5 brief is click-to-place. Gravity belongs to the separate 6×7 challenge. A familiar game rule must not silently replace the actual requirement.",
+      "difficulty": "practitioner",
+      "tags": [
+        "frontend",
+        "interview",
+        "react",
+        "typescript",
+        "python",
+        "click-board"
+      ],
+      "sourceDocSlug": "frontend/interview-click-board"
+    },
+    {
+      "id": "click-board-concept-2",
+      "type": "practical",
+      "title": "Click-to-place 5×5 Game: Reasoning",
+      "prompt": "What happens after a click on an occupied cell?",
+      "explanation": "The board and current player stay unchanged. A rejected move does not consume a turn. Returning the existing state preserves both ownership and board contents, making this invariant simple to test.",
+      "difficulty": "practitioner",
+      "tags": [
+        "frontend",
+        "interview",
+        "react",
+        "typescript",
+        "python",
+        "click-board"
+      ],
+      "sourceDocSlug": "frontend/interview-click-board"
+    },
+    {
+      "id": "click-board-concept-3",
+      "type": "interview",
+      "title": "Click-to-place 5×5 Game: Pitfall",
+      "prompt": "Do four matching diagonal tokens win under the stated contract?",
+      "explanation": "No; only horizontal and vertical runs count. The source names horizontal and vertical runs. Diagonal detection is a useful extension only after agreement; board fullness does not change the allowed directions.",
+      "difficulty": "practitioner",
+      "tags": [
+        "frontend",
+        "interview",
+        "react",
+        "typescript",
+        "python",
+        "click-board"
+      ],
+      "sourceDocSlug": "frontend/interview-click-board"
+    },
+    {
+      "id": "click-board-recipe",
+      "type": "practical",
+      "title": "Click-to-place 5×5 Game: Recipe",
+      "prompt": "How would you start the baseline under interview time pressure?",
+      "explanation": "Render the 5×5 board → Reject invalid moves → Place a token and check the result → Advance only a valid nonterminal turn. Explain one invariant and one adverse case before optimizing.",
+      "difficulty": "practitioner",
+      "tags": [
+        "frontend",
+        "interview",
+        "react",
+        "typescript",
+        "python",
+        "click-board"
+      ],
+      "sourceDocSlug": "frontend/interview-click-board"
+    },
+    {
+      "id": "click-board-typescript",
+      "type": "snippet",
+      "title": "Click-to-place 5×5 Game: Typescript",
+      "prompt": "Name the invariant protected by this excerpt. It belongs inside the complete solution linked below.",
+      "explanation": "A terminal guard belongs in the transition as well as the UI. It prevents queued or programmatic moves from changing a finished game.",
+      "difficulty": "practitioner",
+      "tags": [
+        "frontend",
+        "interview",
+        "react",
+        "typescript",
+        "python",
+        "click-board"
+      ],
+      "sourceDocSlug": "frontend/interview-click-board",
+      "code": "if (game.winner || game.draw) return game;",
+      "codeLanguage": "typescript"
+    },
+    {
+      "id": "click-board-python",
+      "type": "snippet",
+      "title": "Click-to-place 5×5 Game: Python",
+      "prompt": "Name the invariant protected by this excerpt. It belongs inside the complete solution linked below.",
+      "explanation": "A terminal guard belongs in the transition as well as the UI. It prevents queued or programmatic moves from changing a finished game.",
+      "difficulty": "practitioner",
+      "tags": [
+        "frontend",
+        "interview",
+        "react",
+        "typescript",
+        "python",
+        "click-board"
+      ],
+      "sourceDocSlug": "frontend/interview-click-board",
+      "code": "if game[\"winner\"] or game[\"draw\"]:\n    return game",
+      "codeLanguage": "python"
+    },
+    {
+      "id": "column-game-concept-1",
+      "type": "concept",
+      "title": "Column-drop 6×7 Game: Contract",
+      "prompt": "A user clicks the top cell in column 2. Where does the token go?",
+      "explanation": "Into the lowest empty cell in column 2. Clicking identifies a column; the illustrated rule applies gravity within that column. The chosen row is determined by occupancy, not by pointer height.",
+      "difficulty": "practitioner",
+      "tags": [
+        "frontend",
+        "interview",
+        "react",
+        "typescript",
+        "python",
+        "column-game"
+      ],
+      "sourceDocSlug": "frontend/interview-column-game"
+    },
+    {
+      "id": "column-game-concept-2",
+      "type": "practical",
+      "title": "Column-drop 6×7 Game: Reasoning",
+      "prompt": "What happens when the selected column is full?",
+      "explanation": "Reject the move and preserve the current player. A full column has no legal insertion point. Changing columns or overwriting silently changes the move, while changing the player would consume a rejected turn.",
+      "difficulty": "practitioner",
+      "tags": [
+        "frontend",
+        "interview",
+        "react",
+        "typescript",
+        "python",
+        "column-game"
+      ],
+      "sourceDocSlug": "frontend/interview-column-game"
+    },
+    {
+      "id": "column-game-concept-3",
+      "type": "interview",
+      "title": "Column-drop 6×7 Game: Pitfall",
+      "prompt": "How must directional counting treat the newly placed token?",
+      "explanation": "Count it once, then scan outward in both directions. Starting at one and adding matching neighbors avoids double-counting the center. Counting it in both directions can incorrectly declare a three-token run a win.",
+      "difficulty": "practitioner",
+      "tags": [
+        "frontend",
+        "interview",
+        "react",
+        "typescript",
+        "python",
+        "column-game"
+      ],
+      "sourceDocSlug": "frontend/interview-column-game"
+    },
+    {
+      "id": "column-game-recipe",
+      "type": "practical",
+      "title": "Column-drop 6×7 Game: Recipe",
+      "prompt": "How would you start the baseline under interview time pressure?",
+      "explanation": "Identify the clicked column → Find its lowest empty cell → Place and check horizontal/vertical wins → Preserve terminal state or advance the turn. Explain one invariant and one adverse case before optimizing.",
+      "difficulty": "practitioner",
+      "tags": [
+        "frontend",
+        "interview",
+        "react",
+        "typescript",
+        "python",
+        "column-game"
+      ],
+      "sourceDocSlug": "frontend/interview-column-game"
+    },
+    {
+      "id": "column-game-typescript",
+      "type": "snippet",
+      "title": "Column-drop 6×7 Game: Typescript",
+      "prompt": "Name the invariant protected by this excerpt. It belongs inside the complete solution linked below.",
+      "explanation": "Scan upward from the bottom. If row becomes negative, the column is full and the current player must keep their turn.",
+      "difficulty": "practitioner",
+      "tags": [
+        "frontend",
+        "interview",
+        "react",
+        "typescript",
+        "python",
+        "column-game"
+      ],
+      "sourceDocSlug": "frontend/interview-column-game",
+      "code": "row = ROWS - 1;\nwhile (row >= 0 && board[row][column] !== null) row--;",
+      "codeLanguage": "typescript"
+    },
+    {
+      "id": "column-game-python",
+      "type": "snippet",
+      "title": "Column-drop 6×7 Game: Python",
+      "prompt": "Name the invariant protected by this excerpt. It belongs inside the complete solution linked below.",
+      "explanation": "Scan upward from the bottom. If row becomes negative, the column is full and the current player must keep their turn.",
+      "difficulty": "practitioner",
+      "tags": [
+        "frontend",
+        "interview",
+        "react",
+        "typescript",
+        "python",
+        "column-game"
+      ],
+      "sourceDocSlug": "frontend/interview-column-game",
+      "code": "row = ROWS - 1\nwhile row >= 0 and board[row][column] is not None:\n    row -= 1",
+      "codeLanguage": "python"
+    },
+    {
+      "id": "file-explorer-concept-1",
+      "type": "concept",
+      "title": "Recursive File Explorer: Contract",
+      "prompt": "How should an empty folder be identified?",
+      "explanation": "By its explicit type, even when children is empty. Files can have extensionless names and folders can be empty. The discriminated type is the structural contract, so child count and name heuristics are unreliable.",
+      "difficulty": "practitioner",
+      "tags": [
+        "frontend",
+        "interview",
+        "react",
+        "typescript",
+        "python",
+        "file-explorer"
+      ],
+      "sourceDocSlug": "frontend/interview-file-explorer"
+    },
+    {
+      "id": "file-explorer-concept-2",
+      "type": "practical",
+      "title": "Recursive File Explorer: Reasoning",
+      "prompt": "Why are filenames unsuitable as the general key?",
+      "explanation": "Different nodes can have the same filename. Stable unique IDs preserve identity even when names repeat or change. React accepts string keys; generating new keys on each toggle would reset component state.",
+      "difficulty": "practitioner",
+      "tags": [
+        "frontend",
+        "interview",
+        "react",
+        "typescript",
+        "python",
+        "file-explorer"
+      ],
+      "sourceDocSlug": "frontend/interview-file-explorer"
+    },
+    {
+      "id": "file-explorer-concept-3",
+      "type": "interview",
+      "title": "Recursive File Explorer: Pitfall",
+      "prompt": "What happens to local child state when its conditional subtree unmounts?",
+      "explanation": "It resets when the child is mounted again. Removing the child from the rendered tree destroys its local state. A parent-owned expanded-ID set can retain the preference independently of child mounting.",
+      "difficulty": "practitioner",
+      "tags": [
+        "frontend",
+        "interview",
+        "react",
+        "typescript",
+        "python",
+        "file-explorer"
+      ],
+      "sourceDocSlug": "frontend/interview-file-explorer"
+    },
+    {
+      "id": "file-explorer-recipe",
+      "type": "practical",
+      "title": "Recursive File Explorer: Recipe",
+      "prompt": "How would you start the baseline under interview time pressure?",
+      "explanation": "Define file and folder types → Handle the empty root list → Render FileItem recursively → Test collapse ownership and hierarchy lines. Explain one invariant and one adverse case before optimizing.",
+      "difficulty": "practitioner",
+      "tags": [
+        "frontend",
+        "interview",
+        "react",
+        "typescript",
+        "python",
+        "file-explorer"
+      ],
+      "sourceDocSlug": "frontend/interview-file-explorer"
+    },
+    {
+      "id": "file-explorer-typescript",
+      "type": "snippet",
+      "title": "Recursive File Explorer: Typescript",
+      "prompt": "Name the invariant protected by this excerpt. It belongs inside the complete solution linked below.",
+      "explanation": "Copy expansion state before removal. A parent-owned set retains hidden descendant IDs, so reopening can preserve their expansion.",
+      "difficulty": "practitioner",
+      "tags": [
+        "frontend",
+        "interview",
+        "react",
+        "typescript",
+        "python",
+        "file-explorer"
+      ],
+      "sourceDocSlug": "frontend/interview-file-explorer",
+      "code": "const next = new Set(expanded);\nnext.delete(folderId);",
+      "codeLanguage": "typescript"
+    },
+    {
+      "id": "file-explorer-python",
+      "type": "snippet",
+      "title": "Recursive File Explorer: Python",
+      "prompt": "Name the invariant protected by this excerpt. It belongs inside the complete solution linked below.",
+      "explanation": "Copy expansion state before removal. A parent-owned set retains hidden descendant IDs, so reopening can preserve their expansion.",
+      "difficulty": "practitioner",
+      "tags": [
+        "frontend",
+        "interview",
+        "react",
+        "typescript",
+        "python",
+        "file-explorer"
+      ],
+      "sourceDocSlug": "frontend/interview-file-explorer",
+      "code": "next_ids = set(expanded)\nnext_ids.discard(folder_id)",
+      "codeLanguage": "python"
+    },
+    {
+      "id": "multi-select-concept-1",
+      "type": "concept",
+      "title": "Multi-select with Removable Chips: Contract",
+      "prompt": "Filtering for \"SCRIPT\" should match which option?",
+      "explanation": "TypeScript. The contract is a case-insensitive substring match anywhere in the label. Normalize the query and label consistently before checking inclusion.",
+      "difficulty": "practitioner",
+      "tags": [
+        "frontend",
+        "interview",
+        "react",
+        "typescript",
+        "python",
+        "multi-select"
+      ],
+      "sourceDocSlug": "frontend/interview-multi-select"
+    },
+    {
+      "id": "multi-select-concept-2",
+      "type": "practical",
+      "title": "Multi-select with Removable Chips: Reasoning",
+      "prompt": "What should a matching disabled option do?",
+      "explanation": "Stay visible and reject selection. Unavailable choices are explicitly visible in the brief. Enforce disabled status in both the control and the state transition so alternate interaction paths cannot select them.",
+      "difficulty": "practitioner",
+      "tags": [
+        "frontend",
+        "interview",
+        "react",
+        "typescript",
+        "python",
+        "multi-select"
+      ],
+      "sourceDocSlug": "frontend/interview-multi-select"
+    },
+    {
+      "id": "multi-select-concept-3",
+      "type": "interview",
+      "title": "Multi-select with Removable Chips: Pitfall",
+      "prompt": "What changes atomically when an enabled option is selected?",
+      "explanation": "Add its ID, clear the query, and derive a list without that ID. Selection adds rather than replaces. Deriving the list from current IDs and query avoids synchronization bugs, while clearing the query satisfies the explicit interaction contract.",
+      "difficulty": "practitioner",
+      "tags": [
+        "frontend",
+        "interview",
+        "react",
+        "typescript",
+        "python",
+        "multi-select"
+      ],
+      "sourceDocSlug": "frontend/interview-multi-select"
+    },
+    {
+      "id": "multi-select-recipe",
+      "type": "practical",
+      "title": "Multi-select with Removable Chips: Recipe",
+      "prompt": "How would you start the baseline under interview time pressure?",
+      "explanation": "Define IDs and selection state → Derive matching unselected options → Apply guarded selection and removal → Test keyboard and outside dismissal. Explain one invariant and one adverse case before optimizing.",
+      "difficulty": "practitioner",
+      "tags": [
+        "frontend",
+        "interview",
+        "react",
+        "typescript",
+        "python",
+        "multi-select"
+      ],
+      "sourceDocSlug": "frontend/interview-multi-select"
+    },
+    {
+      "id": "multi-select-typescript",
+      "type": "snippet",
+      "title": "Multi-select with Removable Chips: Typescript",
+      "prompt": "Name the invariant protected by this excerpt. It belongs inside the complete solution linked below.",
+      "explanation": "Derive the list from options, selected IDs, and query. Do not filter disabled choices out; reject their selection separately.",
+      "difficulty": "practitioner",
+      "tags": [
+        "frontend",
+        "interview",
+        "react",
+        "typescript",
+        "python",
+        "multi-select"
+      ],
+      "sourceDocSlug": "frontend/interview-multi-select",
+      "code": "options.filter(option => !selected.has(option.id)\n  && option.label.toLowerCase().includes(query.toLowerCase()));",
+      "codeLanguage": "typescript"
+    },
+    {
+      "id": "multi-select-python",
+      "type": "snippet",
+      "title": "Multi-select with Removable Chips: Python",
+      "prompt": "Name the invariant protected by this excerpt. It belongs inside the complete solution linked below.",
+      "explanation": "Derive the list from options, selected IDs, and query. Do not filter disabled choices out; reject their selection separately.",
+      "difficulty": "practitioner",
+      "tags": [
+        "frontend",
+        "interview",
+        "react",
+        "typescript",
+        "python",
+        "multi-select"
+      ],
+      "sourceDocSlug": "frontend/interview-multi-select",
+      "code": "[o for o in options if o[\"id\"] not in selected\n and query.lower() in o[\"label\"].lower()]",
+      "codeLanguage": "python"
+    },
+    {
+      "id": "user-matrix-concept-1",
+      "type": "concept",
+      "title": "Asynchronous User Repository Matrix: Contract",
+      "prompt": "What is the corrected repository endpoint for username ada?",
+      "explanation": "/users/ada/repos. GitHub lists a user’s repositories under /users/{username}/repos. The supplied brief has a malformed URL, which should be clarified rather than copied into working code.",
+      "difficulty": "practitioner",
+      "tags": [
+        "frontend",
+        "interview",
+        "react",
+        "typescript",
+        "python",
+        "user-matrix"
+      ],
+      "sourceDocSlug": "frontend/interview-user-matrix"
+    },
+    {
+      "id": "user-matrix-concept-2",
+      "type": "practical",
+      "title": "Asynchronous User Repository Matrix: Reasoning",
+      "prompt": "A first page has 100 repositories and a second has 3. What is the count?",
+      "explanation": "103. Counting only the first response undercounts paginated results. Sum all pages until the listing ends; the fixture is stable so the expected total is exactly 103.",
+      "difficulty": "practitioner",
+      "tags": [
+        "frontend",
+        "interview",
+        "react",
+        "typescript",
+        "python",
+        "user-matrix"
+      ],
+      "sourceDocSlug": "frontend/interview-user-matrix"
+    },
+    {
+      "id": "user-matrix-concept-3",
+      "type": "interview",
+      "title": "Asynchronous User Repository Matrix: Pitfall",
+      "prompt": "When should cells be assigned to users?",
+      "explanation": "Once after loading the user list, before individual counts arrive. Assignments are part of this load’s state. Preassigning them prevents response order and unrelated renders from moving users or causing collisions.",
+      "difficulty": "practitioner",
+      "tags": [
+        "frontend",
+        "interview",
+        "react",
+        "typescript",
+        "python",
+        "user-matrix"
+      ],
+      "sourceDocSlug": "frontend/interview-user-matrix"
+    },
+    {
+      "id": "user-matrix-recipe",
+      "type": "practical",
+      "title": "Asynchronous User Repository Matrix: Recipe",
+      "prompt": "How would you start the baseline under interview time pressure?",
+      "explanation": "Load and validate usernames → Assign unique cells → Fetch every user page with lifecycle guards → Publish counts and per-user errors. Explain one invariant and one adverse case before optimizing.",
+      "difficulty": "practitioner",
+      "tags": [
+        "frontend",
+        "interview",
+        "react",
+        "typescript",
+        "python",
+        "user-matrix"
+      ],
+      "sourceDocSlug": "frontend/interview-user-matrix"
+    },
+    {
+      "id": "user-matrix-typescript",
+      "type": "snippet",
+      "title": "Asynchronous User Repository Matrix: Typescript",
+      "prompt": "Name the invariant protected by this excerpt. It belongs inside the complete solution linked below.",
+      "explanation": "Check again after awaiting work. An adapter can ignore cancellation, so a pre-request check alone cannot prevent late local publication.",
+      "difficulty": "practitioner",
+      "tags": [
+        "frontend",
+        "interview",
+        "react",
+        "typescript",
+        "python",
+        "user-matrix"
+      ],
+      "sourceDocSlug": "frontend/interview-user-matrix",
+      "code": "const data = await response.json();\nif (signal.aborted) throw new DOMException(\"Cancelled\", \"AbortError\");",
+      "codeLanguage": "typescript"
+    },
+    {
+      "id": "user-matrix-python",
+      "type": "snippet",
+      "title": "Asynchronous User Repository Matrix: Python",
+      "prompt": "Name the invariant protected by this excerpt. It belongs inside the complete solution linked below.",
+      "explanation": "Check again after awaiting work. An adapter can ignore cancellation, so a pre-request check alone cannot prevent late local publication.",
+      "difficulty": "practitioner",
+      "tags": [
+        "frontend",
+        "interview",
+        "react",
+        "typescript",
+        "python",
+        "user-matrix"
+      ],
+      "sourceDocSlug": "frontend/interview-user-matrix",
+      "code": "response = await fetcher(url, cancellation)\ncancellation.check()",
+      "codeLanguage": "python"
+    }
+  ]
+}

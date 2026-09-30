@@ -47,7 +47,7 @@
         "code"
       ],
       "sourceDocSlug": "programming/python-runtime-model",
-      "code": "items = []\nalias = items\nitems.append(1)\nassert alias == [1]"
+      "code": "items = []\nalias = items\nitems.append(1)\nassert alias == [1]", "codeLanguage": "python"
     },
     {
       "id": "runtime-names-bind-objects-interview",
@@ -104,7 +104,7 @@
         "code"
       ],
       "sourceDocSlug": "programming/python-runtime-model",
-      "code": "value = None\nif value is None:\n    handle_missing()"
+      "code": "value = None\nif value is None:\n    handle_missing()", "codeLanguage": "python"
     },
     {
       "id": "runtime-identity-vs-equality-interview",
@@ -161,7 +161,7 @@
         "code"
       ],
       "sourceDocSlug": "programming/python-runtime-model",
-      "code": "def collect(value, items=None):\n    if items is None:\n        items = []\n    items.append(value)\n    return items"
+      "code": "def collect(value, items=None):\n    if items is None:\n        items = []\n    items.append(value)\n    return items", "codeLanguage": "python"
     },
     {
       "id": "runtime-mutable-defaults-interview",
@@ -218,7 +218,7 @@
         "code"
       ],
       "sourceDocSlug": "programming/python-runtime-model",
-      "code": "if user_id is None:\n    raise ValueError(\"missing user_id\")\nif not name:\n    use_fallback_name()"
+      "code": "if user_id is None:\n    raise ValueError(\"missing user_id\")\nif not name:\n    use_fallback_name()", "codeLanguage": "python"
     },
     {
       "id": "runtime-truthiness-contract-interview",
@@ -275,7 +275,7 @@
         "code"
       ],
       "sourceDocSlug": "programming/python-runtime-model",
-      "code": "try:\n    payload = json.loads(raw)\nexcept json.JSONDecodeError as exc:\n    raise BadRequest(\"invalid json\") from exc"
+      "code": "try:\n    payload = json.loads(raw)\nexcept json.JSONDecodeError as exc:\n    raise BadRequest(\"invalid json\") from exc", "codeLanguage": "python"
     },
     {
       "id": "runtime-exceptions-are-boundaries-interview",
@@ -332,7 +332,7 @@
         "code"
       ],
       "sourceDocSlug": "programming/python-runtime-model",
-      "code": "def main():\n    run_job()\n\nif __name__ == \"__main__\":\n    main()"
+      "code": "def main():\n    run_job()\n\nif __name__ == \"__main__\":\n    main()", "codeLanguage": "python"
     },
     {
       "id": "runtime-imports-execute-modules-interview",
@@ -389,7 +389,7 @@
         "code"
       ],
       "sourceDocSlug": "programming/python-runtime-model",
-      "code": "count = 0\n\ndef bump():\n    global count\n    count += 1"
+      "code": "count = 0\n\ndef bump():\n    global count\n    count += 1", "codeLanguage": "python"
     },
     {
       "id": "runtime-scope-resolution-legb-interview",
@@ -446,7 +446,7 @@
         "code"
       ],
       "sourceDocSlug": "programming/python-runtime-model",
-      "code": "def traced(fn):\n    def wrapper(*args, **kwargs):\n        return fn(*args, **kwargs)\n    return wrapper"
+      "code": "def traced(fn):\n    def wrapper(*args, **kwargs):\n        return fn(*args, **kwargs)\n    return wrapper", "codeLanguage": "python"
     },
     {
       "id": "runtime-functions-are-objects-interview",
@@ -503,7 +503,7 @@
         "code"
       ],
       "sourceDocSlug": "programming/python-runtime-model",
-      "code": "with open(\"events.log\", \"a\", encoding=\"utf-8\") as file:\n    file.write(\"ready\\n\")"
+      "code": "with open(\"events.log\", \"a\", encoding=\"utf-8\") as file:\n    file.write(\"ready\\n\")", "codeLanguage": "python"
     },
     {
       "id": "runtime-gc-not-cleanup-contract-interview",
@@ -560,7 +560,7 @@
         "code"
       ],
       "sourceDocSlug": "programming/python-runtime-model",
-      "code": "result = lookup(key)\nif result is not None:\n    use(result)"
+      "code": "result = lookup(key)\nif result is not None:\n    use(result)", "codeLanguage": "python"
     },
     {
       "id": "runtime-none-singleton-interview",
@@ -617,7 +617,7 @@
         "code"
       ],
       "sourceDocSlug": "programming/python-runtime-model",
-      "code": "class Bag:\n    def __len__(self):\n        return len(self._items)"
+      "code": "class Bag:\n    def __len__(self):\n        return len(self._items)", "codeLanguage": "python"
     },
     {
       "id": "data-model-dunder-protocols-interview",
@@ -674,7 +674,7 @@
         "code"
       ],
       "sourceDocSlug": "programming/python-runtime-model",
-      "code": "class User:\n    @property\n    def display_name(self):\n        return self.name.strip()"
+      "code": "class User:\n    @property\n    def display_name(self):\n        return self.name.strip()", "codeLanguage": "python"
     },
     {
       "id": "data-model-descriptors-interview",
@@ -731,7 +731,7 @@
         "code"
       ],
       "sourceDocSlug": "programming/python-runtime-model",
-      "code": "class Counter:\n    def bump(self):\n        self.count += 1"
+      "code": "class Counter:\n    def bump(self):\n        self.count += 1", "codeLanguage": "python"
     },
     {
       "id": "data-model-bound-methods-interview",
@@ -788,7 +788,7 @@
         "code"
       ],
       "sourceDocSlug": "programming/python-runtime-model",
-      "code": "class Settings:\n    retries = int(os.getenv(\"RETRIES\", \"3\"))"
+      "code": "class Settings:\n    retries = int(os.getenv(\"RETRIES\", \"3\"))", "codeLanguage": "python"
     },
     {
       "id": "data-model-class-body-executes-interview",
@@ -845,7 +845,7 @@
         "code"
       ],
       "sourceDocSlug": "programming/python-runtime-model",
-      "code": "class Service(CacheMixin, BaseService):\n    pass\n\nprint(Service.__mro__)"
+      "code": "class Service(CacheMixin, BaseService):\n    pass\n\nprint(Service.__mro__)", "codeLanguage": "python"
     },
     {
       "id": "data-model-mro-interview",
@@ -902,7 +902,7 @@
         "code"
       ],
       "sourceDocSlug": "programming/python-runtime-model",
-      "code": "with lock:\n    update_shared_state()"
+      "code": "with lock:\n    update_shared_state()", "codeLanguage": "python"
     },
     {
       "id": "data-model-context-managers-interview",
@@ -959,7 +959,7 @@
         "code"
       ],
       "sourceDocSlug": "programming/python-runtime-model",
-      "code": "numbers = (n * 2 for n in range(3))\nlist(numbers)\nlist(numbers)  # []"
+      "code": "numbers = (n * 2 for n in range(3))\nlist(numbers)\nlist(numbers)  # []", "codeLanguage": "python"
     },
     {
       "id": "data-model-stateful-iterators-interview",
@@ -1016,7 +1016,7 @@
         "code"
       ],
       "sourceDocSlug": "programming/python-runtime-model",
-      "code": "def read_ids(rows):\n    for row in rows:\n        yield row[\"id\"]"
+      "code": "def read_ids(rows):\n    for row in rows:\n        yield row[\"id\"]", "codeLanguage": "python"
     },
     {
       "id": "data-model-generators-interview",
@@ -1073,7 +1073,7 @@
         "code"
       ],
       "sourceDocSlug": "programming/python-runtime-model",
-      "code": "@dataclass(frozen=True)\nclass UserId:\n    value: str"
+      "code": "@dataclass(frozen=True)\nclass UserId:\n    value: str", "codeLanguage": "python"
     },
     {
       "id": "data-model-dataclasses-interview",
@@ -1130,7 +1130,7 @@
         "code"
       ],
       "sourceDocSlug": "programming/python-runtime-model",
-      "code": "class Point:\n    __slots__ = (\"x\", \"y\")\n    def __init__(self, x, y):\n        self.x = x\n        self.y = y"
+      "code": "class Point:\n    __slots__ = (\"x\", \"y\")\n    def __init__(self, x, y):\n        self.x = x\n        self.y = y", "codeLanguage": "python"
     },
     {
       "id": "data-model-slots-interview",
@@ -1187,7 +1187,7 @@
         "code"
       ],
       "sourceDocSlug": "programming/python-runtime-model",
-      "code": "items.append(new_item)\nfirst = items.pop(0)  # shifts remaining items"
+      "code": "items.append(new_item)\nfirst = items.pop(0)  # shifts remaining items", "codeLanguage": "python"
     },
     {
       "id": "collections-list-dynamic-array-interview",
@@ -1244,7 +1244,7 @@
         "code"
       ],
       "sourceDocSlug": "programming/python-runtime-model",
-      "code": "for key in sorted(config):\n    emit(key, config[key])"
+      "code": "for key in sorted(config):\n    emit(key, config[key])", "codeLanguage": "python"
     },
     {
       "id": "collections-dict-order-interview",
@@ -1301,7 +1301,7 @@
         "code"
       ],
       "sourceDocSlug": "programming/python-runtime-model",
-      "code": "seen = set()\nif user_id not in seen:\n    seen.add(user_id)"
+      "code": "seen = set()\nif user_id not in seen:\n    seen.add(user_id)", "codeLanguage": "python"
     },
     {
       "id": "collections-set-membership-interview",
@@ -1358,7 +1358,7 @@
         "code"
       ],
       "sourceDocSlug": "programming/python-runtime-model",
-      "code": "pair = (\"tags\", [])\npair[1].append(\"python\")"
+      "code": "pair = (\"tags\", [])\npair[1].append(\"python\")", "codeLanguage": "python"
     },
     {
       "id": "collections-tuple-fixed-shape-interview",
@@ -1415,7 +1415,7 @@
         "code"
       ],
       "sourceDocSlug": "programming/python-runtime-model",
-      "code": "active_ids = [user.id for user in users if user.active]"
+      "code": "active_ids = [user.id for user in users if user.active]", "codeLanguage": "python"
     },
     {
       "id": "collections-comprehensions-interview",
@@ -1472,7 +1472,7 @@
         "code"
       ],
       "sourceDocSlug": "programming/python-runtime-model",
-      "code": "copy = rows[:]\ncopy[0][\"status\"] = \"done\""
+      "code": "copy = rows[:]\ncopy[0][\"status\"] = \"done\"", "codeLanguage": "python"
     },
     {
       "id": "collections-slicing-interview",
@@ -1529,7 +1529,7 @@
         "code"
       ],
       "sourceDocSlug": "programming/python-runtime-model",
-      "code": "for index, item in enumerate(items):\n    audit(index, item)"
+      "code": "for index, item in enumerate(items):\n    audit(index, item)", "codeLanguage": "python"
     },
     {
       "id": "collections-enumerate-interview",
@@ -1586,7 +1586,7 @@
         "code"
       ],
       "sourceDocSlug": "programming/python-runtime-model",
-      "code": "for name, value in zip(names, values, strict=True):\n    bind(name, value)"
+      "code": "for name, value in zip(names, values, strict=True):\n    bind(name, value)", "codeLanguage": "python"
     },
     {
       "id": "collections-zip-strict-interview",
@@ -1643,7 +1643,7 @@
         "code"
       ],
       "sourceDocSlug": "programming/python-runtime-model",
-      "code": "clone = original.copy()\nclone[\"tags\"].append(\"shared\")"
+      "code": "clone = original.copy()\nclone[\"tags\"].append(\"shared\")", "codeLanguage": "python"
     },
     {
       "id": "collections-copy-depth-interview",
@@ -1700,7 +1700,7 @@
         "code"
       ],
       "sourceDocSlug": "programming/python-runtime-model",
-      "code": "queue = deque([root])\nwhile queue:\n    node = queue.popleft()"
+      "code": "queue = deque([root])\nwhile queue:\n    node = queue.popleft()", "codeLanguage": "python"
     },
     {
       "id": "collections-deque-interview",
@@ -1757,7 +1757,7 @@
         "code"
       ],
       "sourceDocSlug": "programming/python-types-and-contracts",
-      "code": "def parse_count(value: int) -> int:\n    return value + 1"
+      "code": "def parse_count(value: int) -> int:\n    return value + 1", "codeLanguage": "python"
     },
     {
       "id": "typing-annotations-no-enforce-interview",
@@ -1814,7 +1814,7 @@
         "code"
       ],
       "sourceDocSlug": "programming/python-types-and-contracts",
-      "code": "def handle(payload: Any) -> User:\n    data = validate_user(payload)\n    return User(**data)"
+      "code": "def handle(payload: Any) -> User:\n    data = validate_user(payload)\n    return User(**data)", "codeLanguage": "python"
     },
     {
       "id": "typing-any-escape-hatch-interview",
@@ -1871,7 +1871,7 @@
         "code"
       ],
       "sourceDocSlug": "programming/python-types-and-contracts",
-      "code": "raw_limit = os.getenv(\"LIMIT\", \"100\")\nlimit = int(raw_limit)"
+      "code": "raw_limit = os.getenv(\"LIMIT\", \"100\")\nlimit = int(raw_limit)", "codeLanguage": "python"
     },
     {
       "id": "typing-runtime-validation-interview",
@@ -1928,7 +1928,7 @@
         "code"
       ],
       "sourceDocSlug": "programming/python-types-and-contracts",
-      "code": "class Sender(Protocol):\n    def send(self, message: str) -> None: ..."
+      "code": "class Sender(Protocol):\n    def send(self, message: str) -> None: ...", "codeLanguage": "python"
     },
     {
       "id": "typing-protocols-interview",
@@ -1985,7 +1985,7 @@
         "code"
       ],
       "sourceDocSlug": "programming/python-types-and-contracts",
-      "code": "Mode = Literal[\"read\", \"write\"]\n\ndef open_job(mode: Mode) -> None: ..."
+      "code": "Mode = Literal[\"read\", \"write\"]\n\ndef open_job(mode: Mode) -> None: ...", "codeLanguage": "python"
     },
     {
       "id": "typing-literal-interview",
@@ -2042,7 +2042,7 @@
         "code"
       ],
       "sourceDocSlug": "programming/python-types-and-contracts",
-      "code": "if name is None:\n    return \"anonymous\"\nreturn name.upper()"
+      "code": "if name is None:\n    return \"anonymous\"\nreturn name.upper()", "codeLanguage": "python"
     },
     {
       "id": "typing-narrowing-interview",
@@ -2099,7 +2099,7 @@
         "code"
       ],
       "sourceDocSlug": "programming/python-types-and-contracts",
-      "code": "UserId = NewType(\"UserId\", str)\nOrgId = NewType(\"OrgId\", str)"
+      "code": "UserId = NewType(\"UserId\", str)\nOrgId = NewType(\"OrgId\", str)", "codeLanguage": "python"
     },
     {
       "id": "typing-newtype-interview",
@@ -2156,7 +2156,7 @@
         "code"
       ],
       "sourceDocSlug": "programming/python-types-and-contracts",
-      "code": "@dataclass(frozen=True)\nclass Batch:\n    tags: list[str]"
+      "code": "@dataclass(frozen=True)\nclass Batch:\n    tags: list[str]", "codeLanguage": "python"
     },
     {
       "id": "typing-frozen-dataclass-interview",
@@ -2213,7 +2213,7 @@
         "code"
       ],
       "sourceDocSlug": "programming/python-types-and-contracts",
-      "code": "T = TypeVar(\"T\")\n\ndef first(items: Sequence[T]) -> T:\n    return items[0]"
+      "code": "T = TypeVar(\"T\")\n\ndef first(items: Sequence[T]) -> T:\n    return items[0]", "codeLanguage": "python"
     },
     {
       "id": "typing-generics-interview",
@@ -2270,7 +2270,7 @@
         "code"
       ],
       "sourceDocSlug": "programming/python-types-and-contracts",
-      "code": "user = cast(User, maybe_user)\nreturn user.email"
+      "code": "user = cast(User, maybe_user)\nreturn user.email", "codeLanguage": "python"
     },
     {
       "id": "typing-casts-interview",
@@ -2327,7 +2327,7 @@
         "code"
       ],
       "sourceDocSlug": "programming/python-packaging-environments",
-      "code": "[project]\nname = \"billing-service\"\nrequires-python = \">=3.12\""
+      "code": "[project]\nname = \"billing-service\"\nrequires-python = \">=3.12\"", "codeLanguage": "toml"
     },
     {
       "id": "packaging-pyproject-interview",
@@ -2384,7 +2384,7 @@
         "code"
       ],
       "sourceDocSlug": "programming/python-packaging-environments",
-      "code": "python -m venv .venv\n. .venv/bin/activate\npython -m pip install -e ."
+      "code": "python -m venv .venv\n. .venv/bin/activate\npython -m pip install -e .", "codeLanguage": "bash"
     },
     {
       "id": "packaging-venv-interview",
@@ -2441,7 +2441,7 @@
         "code"
       ],
       "sourceDocSlug": "programming/python-packaging-environments",
-      "code": "import PIL  # installed by the Pillow distribution"
+      "code": "import PIL  # installed by the Pillow distribution", "codeLanguage": "python"
     },
     {
       "id": "packaging-distribution-import-name-interview",
@@ -2498,7 +2498,7 @@
         "code"
       ],
       "sourceDocSlug": "programming/python-packaging-environments",
-      "code": "project/\n  pyproject.toml\n  src/\n    service/\n      __init__.py"
+      "code": "project/\n  pyproject.toml\n  src/\n    service/\n      __init__.py", "codeLanguage": "plaintext"
     },
     {
       "id": "packaging-src-layout-interview",
@@ -2555,7 +2555,7 @@
         "code"
       ],
       "sourceDocSlug": "programming/python-packaging-environments",
-      "code": "python -m pip install -r requirements.lock"
+      "code": "python -m pip install -r requirements.lock", "codeLanguage": "bash"
     },
     {
       "id": "packaging-lockfiles-interview",
@@ -2612,7 +2612,7 @@
         "code"
       ],
       "sourceDocSlug": "programming/python-packaging-environments",
-      "code": "[dependency-groups]\ndev = [\"pytest\", \"mypy\", \"ruff\"]"
+      "code": "[dependency-groups]\ndev = [\"pytest\", \"mypy\", \"ruff\"]", "codeLanguage": "toml"
     },
     {
       "id": "packaging-dependency-groups-interview",
@@ -2669,7 +2669,7 @@
         "code"
       ],
       "sourceDocSlug": "programming/python-packaging-environments",
-      "code": "[project]\nrequires-python = \">=3.12\""
+      "code": "[project]\nrequires-python = \">=3.12\"", "codeLanguage": "toml"
     },
     {
       "id": "packaging-python-version-interview",
@@ -2726,7 +2726,7 @@
         "code"
       ],
       "sourceDocSlug": "programming/python-packaging-environments",
-      "code": "python -m pip install -e \".[dev]\""
+      "code": "python -m pip install -e \".[dev]\"", "codeLanguage": "bash"
     },
     {
       "id": "packaging-editable-install-interview",
@@ -2783,7 +2783,7 @@
         "code"
       ],
       "sourceDocSlug": "programming/python-packaging-environments",
-      "code": "[project.scripts]\nworker = \"service.cli:main\""
+      "code": "[project.scripts]\nworker = \"service.cli:main\"", "codeLanguage": "toml"
     },
     {
       "id": "packaging-entry-points-interview",
@@ -2840,7 +2840,7 @@
         "code"
       ],
       "sourceDocSlug": "programming/python-packaging-environments",
-      "code": "# Bad local filename in an app package:\n# json.py"
+      "code": "# Bad local filename in an app package:\n# json.py", "codeLanguage": "python"
     },
     {
       "id": "packaging-shadowing-stdlib-interview",
@@ -2897,7 +2897,7 @@
         "code"
       ],
       "sourceDocSlug": "programming/python-async-testing-production",
-      "code": "async def fetch_user():\n    return await client.get(\"/user\")\n\nuser = await fetch_user()"
+      "code": "async def fetch_user():\n    return await client.get(\"/user\")\n\nuser = await fetch_user()", "codeLanguage": "python"
     },
     {
       "id": "asyncio-await-coroutines-interview",
@@ -2954,7 +2954,7 @@
         "code"
       ],
       "sourceDocSlug": "programming/python-async-testing-production",
-      "code": "result = await asyncio.to_thread(blocking_parse, payload)"
+      "code": "result = await asyncio.to_thread(blocking_parse, payload)", "codeLanguage": "python"
     },
     {
       "id": "asyncio-nonblocking-event-loop-interview",
@@ -3011,7 +3011,7 @@
         "code"
       ],
       "sourceDocSlug": "programming/python-async-testing-production",
-      "code": "task = asyncio.create_task(send_metric())\ntry:\n    await task\nexcept Exception:\n    logger.exception(\"metric failed\")"
+      "code": "task = asyncio.create_task(send_metric())\ntry:\n    await task\nexcept Exception:\n    logger.exception(\"metric failed\")", "codeLanguage": "python"
     },
     {
       "id": "asyncio-task-ownership-interview",
@@ -3068,7 +3068,7 @@
         "code"
       ],
       "sourceDocSlug": "programming/python-async-testing-production",
-      "code": "results = await asyncio.gather(*calls, return_exceptions=True)"
+      "code": "results = await asyncio.gather(*calls, return_exceptions=True)", "codeLanguage": "python"
     },
     {
       "id": "asyncio-gather-semantics-interview",
@@ -3125,7 +3125,7 @@
         "code"
       ],
       "sourceDocSlug": "programming/python-async-testing-production",
-      "code": "async with asyncio.timeout(2.0):\n    return await client.fetch()"
+      "code": "async with asyncio.timeout(2.0):\n    return await client.fetch()", "codeLanguage": "python"
     },
     {
       "id": "asyncio-timeouts-interview",
@@ -3182,7 +3182,7 @@
         "code"
       ],
       "sourceDocSlug": "programming/python-async-testing-production",
-      "code": "try:\n    await worker()\nfinally:\n    await cleanup()"
+      "code": "try:\n    await worker()\nfinally:\n    await cleanup()", "codeLanguage": "python"
     },
     {
       "id": "asyncio-cancellation-interview",
@@ -3239,7 +3239,7 @@
         "code"
       ],
       "sourceDocSlug": "programming/python-async-testing-production",
-      "code": "async with session.begin():\n    await repository.save(order)"
+      "code": "async with session.begin():\n    await repository.save(order)", "codeLanguage": "python"
     },
     {
       "id": "asyncio-async-context-managers-interview",
@@ -3296,7 +3296,7 @@
         "code"
       ],
       "sourceDocSlug": "programming/python-async-testing-production",
-      "code": "queue: asyncio.Queue[Job] = asyncio.Queue(maxsize=100)"
+      "code": "queue: asyncio.Queue[Job] = asyncio.Queue(maxsize=100)", "codeLanguage": "python"
     },
     {
       "id": "asyncio-queues-interview",
@@ -3353,7 +3353,7 @@
         "code"
       ],
       "sourceDocSlug": "programming/python-async-testing-production",
-      "code": "async for chunk in response.aiter_bytes():\n    await sink.write(chunk)"
+      "code": "async for chunk in response.aiter_bytes():\n    await sink.write(chunk)", "codeLanguage": "python"
     },
     {
       "id": "asyncio-async-iterators-interview",
@@ -3410,7 +3410,7 @@
         "code"
       ],
       "sourceDocSlug": "programming/python-async-testing-production",
-      "code": "rows = await asyncio.to_thread(sync_client.query, sql)"
+      "code": "rows = await asyncio.to_thread(sync_client.query, sql)", "codeLanguage": "python"
     },
     {
       "id": "asyncio-sync-libraries-block-interview",
@@ -3467,7 +3467,7 @@
         "code"
       ],
       "sourceDocSlug": "programming/python-async-testing-production",
-      "code": "@pytest.fixture\ndef user_repo(tmp_path):\n    return UserRepo(tmp_path)"
+      "code": "@pytest.fixture\ndef user_repo(tmp_path):\n    return UserRepo(tmp_path)", "codeLanguage": "python"
     },
     {
       "id": "testing-production-pytest-fixtures-interview",
@@ -3524,7 +3524,7 @@
         "code"
       ],
       "sourceDocSlug": "programming/python-async-testing-production",
-      "code": "result = service.apply_discount(order)\nassert result.total == Money(\"9.00\")"
+      "code": "result = service.apply_discount(order)\nassert result.total == Money(\"9.00\")", "codeLanguage": "python"
     },
     {
       "id": "testing-production-behavior-tests-interview",
@@ -3581,7 +3581,7 @@
         "code"
       ],
       "sourceDocSlug": "programming/python-async-testing-production",
-      "code": "monkeypatch.setenv(\"REGION\", \"us-west-2\")"
+      "code": "monkeypatch.setenv(\"REGION\", \"us-west-2\")", "codeLanguage": "python"
     },
     {
       "id": "testing-production-monkeypatch-interview",
@@ -3638,7 +3638,7 @@
         "code"
       ],
       "sourceDocSlug": "programming/python-async-testing-production",
-      "code": "logger.info(\"order accepted\", extra={\"order_id\": order.id})"
+      "code": "logger.info(\"order accepted\", extra={\"order_id\": order.id})", "codeLanguage": "python"
     },
     {
       "id": "testing-production-logging-interview",
@@ -3695,7 +3695,7 @@
         "code"
       ],
       "sourceDocSlug": "programming/python-async-testing-production",
-      "code": "python -m ruff check .\npython -m ruff format ."
+      "code": "python -m ruff check .\npython -m ruff format .", "codeLanguage": "bash"
     },
     {
       "id": "testing-production-style-interview",
@@ -3752,7 +3752,7 @@
         "code"
       ],
       "sourceDocSlug": "programming/python-async-testing-production",
-      "code": "payload = parse_request(request)\ncommand = validate(payload)\nresult = handler.execute(command)"
+      "code": "payload = parse_request(request)\ncommand = validate(payload)\nresult = handler.execute(command)", "codeLanguage": "python"
     },
     {
       "id": "testing-production-boundaries-interview",
@@ -3809,7 +3809,7 @@
         "code"
       ],
       "sourceDocSlug": "programming/python-async-testing-production",
-      "code": "async with lifespan(app):\n    app.state.db = await create_pool()"
+      "code": "async with lifespan(app):\n    app.state.db = await create_pool()", "codeLanguage": "python"
     },
     {
       "id": "testing-production-resource-lifetime-interview",
@@ -3866,7 +3866,7 @@
         "code"
       ],
       "sourceDocSlug": "programming/python-async-testing-production",
-      "code": "@dataclass(frozen=True)\nclass Settings:\n    timeout_seconds: float"
+      "code": "@dataclass(frozen=True)\nclass Settings:\n    timeout_seconds: float", "codeLanguage": "python"
     },
     {
       "id": "testing-production-configuration-interview",
@@ -3923,7 +3923,7 @@
         "code"
       ],
       "sourceDocSlug": "programming/python-async-testing-production",
-      "code": "class DependencyTimeout(RuntimeError):\n    pass"
+      "code": "class DependencyTimeout(RuntimeError):\n    pass", "codeLanguage": "python"
     },
     {
       "id": "testing-production-error-taxonomy-interview",
@@ -3980,7 +3980,7 @@
         "code"
       ],
       "sourceDocSlug": "programming/python-async-testing-production",
-      "code": "requests_total.labels(route=\"/orders\", status=\"2xx\").inc()"
+      "code": "requests_total.labels(route=\"/orders\", status=\"2xx\").inc()", "codeLanguage": "python"
     },
     {
       "id": "testing-production-metric-cardinality-interview",
@@ -4037,7 +4037,7 @@
         "code"
       ],
       "sourceDocSlug": "programming/python-types-and-contracts",
-      "code": "with ThreadPoolExecutor() as pool:\n    pool.map(fetch_url, urls)"
+      "code": "with ThreadPoolExecutor() as pool:\n    pool.map(fetch_url, urls)", "codeLanguage": "python"
     },
     {
       "id": "interview-theory-gil-interview",
@@ -4093,7 +4093,7 @@
         "code"
       ],
       "sourceDocSlug": "programming/python-types-and-contracts",
-      "code": "def timed(fn):\n    @wraps(fn)\n    def wrapper(*args, **kwargs):\n        return fn(*args, **kwargs)\n    return wrapper"
+      "code": "def timed(fn):\n    @wraps(fn)\n    def wrapper(*args, **kwargs):\n        return fn(*args, **kwargs)\n    return wrapper", "codeLanguage": "python"
     },
     {
       "id": "interview-theory-decorators-interview",
@@ -4149,7 +4149,7 @@
         "code"
       ],
       "sourceDocSlug": "programming/python-types-and-contracts",
-      "code": "class Invoice:\n    @property\n    def total(self):\n        return sum(line.amount for line in self.lines)"
+      "code": "class Invoice:\n    @property\n    def total(self):\n        return sum(line.amount for line in self.lines)", "codeLanguage": "python"
     },
     {
       "id": "interview-theory-property-vs-method-interview",
@@ -4205,7 +4205,7 @@
         "code"
       ],
       "sourceDocSlug": "programming/python-types-and-contracts",
-      "code": "key = (tenant_id, user_id)\ncache[key] = profile"
+      "code": "key = (tenant_id, user_id)\ncache[key] = profile", "codeLanguage": "python"
     },
     {
       "id": "interview-theory-hashability-interview",
@@ -4261,7 +4261,7 @@
         "code"
       ],
       "sourceDocSlug": "programming/python-types-and-contracts",
-      "code": "if not hasattr(stream, \"read\"):\n    raise TypeError(\"stream must be readable\")"
+      "code": "if not hasattr(stream, \"read\"):\n    raise TypeError(\"stream must be readable\")", "codeLanguage": "python"
     },
     {
       "id": "interview-theory-duck-typing-interview",
@@ -4317,7 +4317,7 @@
         "code"
       ],
       "sourceDocSlug": "programming/python-types-and-contracts",
-      "code": "class Model(metaclass=ModelMeta):\n    pass"
+      "code": "class Model(metaclass=ModelMeta):\n    pass", "codeLanguage": "python"
     },
     {
       "id": "interview-theory-metaclasses-interview",
@@ -4373,7 +4373,7 @@
         "code"
       ],
       "sourceDocSlug": "programming/python-types-and-contracts",
-      "code": "# Move shared types to a lower-level module\nfrom app.contracts import Command"
+      "code": "# Move shared types to a lower-level module\nfrom app.contracts import Command", "codeLanguage": "python"
     },
     {
       "id": "interview-theory-import-cycles-interview",
@@ -4429,7 +4429,7 @@
         "code"
       ],
       "sourceDocSlug": "programming/python-types-and-contracts",
-      "code": "snapshot = dataclasses.replace(order, status=\"submitted\")"
+      "code": "snapshot = dataclasses.replace(order, status=\"submitted\")", "codeLanguage": "python"
     },
     {
       "id": "interview-theory-deepcopy-interview",
@@ -4485,7 +4485,7 @@
         "code"
       ],
       "sourceDocSlug": "programming/python-types-and-contracts",
-      "code": "try:\n    token = decode(raw)\nexcept DecodeError as exc:\n    raise AuthError(\"bad token\") from exc"
+      "code": "try:\n    token = decode(raw)\nexcept DecodeError as exc:\n    raise AuthError(\"bad token\") from exc", "codeLanguage": "python"
     },
     {
       "id": "interview-theory-exception-chaining-interview",
@@ -4541,7 +4541,7 @@
         "code"
       ],
       "sourceDocSlug": "programming/python-types-and-contracts",
-      "code": "def is_retryable(error: Exception) -> bool:\n    return isinstance(error, (TimeoutError, DependencyBusy))"
+      "code": "def is_retryable(error: Exception) -> bool:\n    return isinstance(error, (TimeoutError, DependencyBusy))", "codeLanguage": "python"
     },
     {
       "id": "interview-theory-small-functions-interview",

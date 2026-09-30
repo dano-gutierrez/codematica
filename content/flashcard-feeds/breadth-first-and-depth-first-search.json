@@ -75,7 +75,7 @@
       "difficulty": "foundation",
       "tags": ["typescript", "bfs", "queue"],
       "sourceDocSlug": "programming/bfs-dfs-fundamentals",
-      "code": "for (let head = 0; head < queue.length; head += 1) {\n  const node = queue[head];\n}"
+      "code": "for (let head = 0; head < queue.length; head += 1) {\n  const node = queue[head];\n}", "codeLanguage": "typescript"
     },
     {
       "id": "python-deque-pop",
@@ -86,7 +86,7 @@
       "difficulty": "foundation",
       "tags": ["python", "bfs", "deque"],
       "sourceDocSlug": "programming/bfs-dfs-fundamentals",
-      "code": "from collections import deque\nqueue = deque([start])\nnode = queue.popleft()"
+      "code": "from collections import deque\nqueue = deque([start])\nnode = queue.popleft()", "codeLanguage": "python"
     },
     {
       "id": "iterative-dfs-safety",
@@ -153,7 +153,7 @@
       "type": "concept",
       "title": "Shape Drives Memory",
       "prompt": "BFS stores a frontier; DFS stores an active path and pending branches.",
-      "explanation": "Wide graphs pressure a BFS queue, while deep graphs pressure a DFS stack even though both have O(V) worst-case space.",
+      "explanation": "A FIFO frontier is wide on broad graphs; recursive DFS is deep on long paths. The lesson’s TS queue retains processed entries (O(V)); its iterative DFS marks on pop and may retain duplicate pending entries (O(E)). Do not infer memory solely from the algorithm name.",
       "difficulty": "practitioner",
       "tags": ["complexity", "memory", "graphs"],
       "sourceDocSlug": "programming/bfs-dfs-fundamentals"

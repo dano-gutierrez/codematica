@@ -215,7 +215,7 @@
             },
             "java": {
               "label": "Java",
-              "code": "List<int[]> mergeByEvents(int[][] intervals) {\n  List<int[]> events = new ArrayList<>();\n  for (int[] interval : intervals) {\n    events.add(new int[] { interval[0], 1 });\n    events.add(new int[] { interval[1], -1 });\n  }\n  events.sort((a, b) -> a[0] != b[0] ? a[0] - b[0] : b[1] - a[1]);\n  List<int[]> out = new ArrayList<>();\n  int active = 0, start = 0;\n  for (int[] event : events) {\n    if (active == 0) start = event[0];\n    active += event[1];\n    if (active == 0) out.add(new int[] { start, event[0] });\n  }\n  return out;\n}"
+              "code": "List<int[]> mergeByEvents(int[][] intervals) {\n  List<int[]> events = new ArrayList<>();\n  for (int[] interval : intervals) {\n    events.add(new int[] { interval[0], 1 });\n    events.add(new int[] { interval[1], -1 });\n  }\n  events.sort((a, b) -> a[0] != b[0] ? Integer.compare(a[0], b[0]) : b[1] - a[1]);\n  List<int[]> out = new ArrayList<>();\n  int active = 0, start = 0;\n  for (int[] event : events) {\n    if (active == 0) start = event[0];\n    active += event[1];\n    if (active == 0) out.add(new int[] { start, event[0] });\n  }\n  return out;\n}"
             }
           }
         }
@@ -247,7 +247,7 @@
         }
       ],
       "constraints": [
-        "Support parentheses, brackets, and braces in the stack solution."
+        "Input contains only (, ), [, ], {, and }. Both solutions support all three types."
       ],
       "diagrams": [],
       "solutionTracks": [
@@ -291,39 +291,39 @@
         },
         {
           "id": "single-type-counter",
-          "title": "Counter For Single Bracket Type",
-          "summary": "When the stream uses only parentheses, a simple balance counter can replace the stack.",
+          "title": "Repeated Adjacent-Pair Removal",
+          "summary": "Remove valid neighboring pairs until no change remains.",
           "steps": [
             {
-              "title": "Increment opens",
-              "explanation": "Every opening parenthesis raises the number of closes still required."
+              "title": "Find adjacent pairs",
+              "explanation": "Look for (), [], and {}."
             },
             {
-              "title": "Reject negative balance",
-              "explanation": "If a close appears when balance is zero, there is no open parenthesis available to match it."
+              "title": "Remove them repeatedly",
+              "explanation": "Removing an inner valid pair can expose an outer pair."
             },
             {
-              "title": "Check final balance",
-              "explanation": "A valid stream must finish with no unmatched opening parentheses."
+              "title": "Check the remainder",
+              "explanation": "Empty means balanced. A nonempty fixed point cannot be a valid bracket string."
             }
           ],
-          "explanation": "For one bracket type, there is no nesting-type mismatch to remember. The count of unmatched opens fully describes whether future closes can be valid.",
+          "explanation": "Every nonempty balanced bracket string has an innermost adjacent pair. Removing that pair preserves validity; repeated removal therefore empties every valid string. Removing valid adjacent pairs cannot repair a mismatched nesting order. Use the linear stack solution under interview time pressure; this baseline is simpler to explain but may scan O(n) times.",
           "complexity": {
-            "time": "O(n)",
-            "space": "O(1)"
+            "time": "O(n²) worst case",
+            "space": "O(n)"
           },
           "languages": {
             "python": {
               "label": "Python",
-              "code": "def is_valid_parentheses(s):\n    balance = 0\n    for ch in s:\n        if ch == '(':\n            balance += 1\n        elif ch == ')':\n            if balance == 0:\n                return False\n            balance -= 1\n    return balance == 0"
+              "code": "def valid_by_reduction(s):\n    while True:\n        reduced = s.replace('()', '').replace('[]', '').replace('{}', '')\n        if reduced == s:\n            return not s\n        s = reduced"
             },
             "typescript": {
               "label": "TypeScript",
-              "code": "export function isValidParentheses(s: string): boolean {\n  let balance = 0;\n  for (const ch of s) {\n    if (ch === '(') balance += 1;\n    else if (ch === ')') {\n      if (balance === 0) return false;\n      balance -= 1;\n    }\n  }\n  return balance === 0;\n}"
+              "code": "export function validByReduction(s: string): boolean {\n  let previous: string;\n  do { previous = s; s = s.replaceAll('()', '').replaceAll('[]', '').replaceAll('{}', ''); } while (s !== previous);\n  return s.length === 0;\n}"
             },
             "java": {
               "label": "Java",
-              "code": "boolean isValidParentheses(String s) {\n  int balance = 0;\n  for (char ch : s.toCharArray()) {\n    if (ch == '(') balance++;\n    else if (ch == ')') {\n      if (balance == 0) return false;\n      balance--;\n    }\n  }\n  return balance == 0;\n}"
+              "code": "boolean validByReduction(String s) {\n  String previous;\n  do { previous = s; s = s.replace(\"()\", \"\").replace(\"[]\", \"\").replace(\"{}\", \"\"); } while (!s.equals(previous));\n  return s.isEmpty();\n}"
             }
           }
         }

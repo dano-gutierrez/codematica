@@ -161,9 +161,28 @@ describe("mobile shared screens", () => {
     expect(detail.getByTestId("mobile-web-interview-evaluation")).toBeOnTheScreen();
     expect(detail.getByTestId("mobile-web-interview-red-flags")).toBeOnTheScreen();
     expect(detail.getAllByText("Weighted CSS Grid").length).toBeGreaterThan(0);
+    await fireEvent.press(detail.getByTestId("mobile-web-show-solution"));
     expect(detail.getByText("Interactive runner available on web")).toBeOnTheScreen();
     expect(detail.getByText(/createGridComposition/)).toBeOnTheScreen();
     await fireEvent.press(detail.getByText("Recursive Rectangular Subdivision"));
     expect(detail.getAllByText("Recursive Rectangular Subdivision").length).toBeGreaterThan(1);
   });
+  it("guides a frontend recipe in both languages and continues to its quiz", async () => {
+    const question = getInterviewQuestionBySlug("frontend-practice", "dynamic-board")!;
+    const nextHref = "/practice/frontend/interview-dynamic-board-questionnaire?path=frontend-interview-practice";
+    const view = await render(<InterviewQuestionScreen question={question} nextHref={nextHref} adapters={adapters} />);
+    expect(view.getByTestId("mobile-web-recipe-position")).toHaveTextContent("Step 1 of 4");
+    expect(view.queryByText("Interactive runner available on web")).toBeNull();
+    await fireEvent.press(view.getByTestId("mobile-web-next-step"));
+    expect(view.getByTestId("mobile-web-recipe-position")).toHaveTextContent("Step 2 of 4");
+    await fireEvent.press(view.getByTestId("mobile-web-previous-step"));
+    await fireEvent.press(view.getByTestId("mobile-web-show-solution"));
+    await fireEvent.press(view.getByText("Python"));
+    expect(view.getByText(/def create_board/)).toBeOnTheScreen();
+    await fireEvent.press(view.getByTestId("mobile-interview-next-node"));
+    expect(adapters.navigation.navigate).toHaveBeenCalledWith(nextHref);
+    await fireEvent.press(view.getByText("Flat indexes"));
+    expect(view.getByTestId("mobile-web-recipe-position")).toHaveTextContent("Step 1 of 4");
+  });
+
 });

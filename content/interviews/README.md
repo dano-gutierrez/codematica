@@ -15,3 +15,5 @@ This folder contains local-first interview coding catalog files.
 - Keep wording clear that this is reported/public prep, not an official company question bank.
 
 Run `npm run content:check` after editing interview files.
+
+Web tracks may include `python` with complete `code`, `explanation`, and language-specific `complexity`. Frontend Interview Practice uses three tracks per question; all 21 TS projects and Python companions are executed by tests. `sourceRefs` resolve through the shared source catalog. Run `npm run test:interview:python` and the authored-project Vitest checks after editing solutions.

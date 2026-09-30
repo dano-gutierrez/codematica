@@ -1,0 +1,215 @@
+{
+  "slug": "frontend/interview-user-matrix-questionnaire",
+  "title": "Asynchronous User Repository Matrix Checkpoint",
+  "type": "questionnaire",
+  "documentSlug": "frontend/interview-user-matrix",
+  "concept": "Asynchronous User Repository Matrix",
+  "difficulty": "practitioner",
+  "tags": [
+    "frontend",
+    "interview",
+    "react",
+    "typescript",
+    "python",
+    "user-matrix"
+  ],
+  "status": "published",
+  "sourceRefs": [
+    "frontend-github-repos",
+    "frontend-react-effects",
+    "frontend-python-async"
+  ],
+  "questions": [
+    {
+      "id": "user-matrix-check-1",
+      "kind": "choice",
+      "prompt": "What is the corrected repository endpoint for username ada?",
+      "options": [
+        {
+          "id": "answer",
+          "label": "/users/ada/repos.",
+          "isCorrect": true
+        },
+        {
+          "id": "misconception-one",
+          "label": "/ada/repos at the API root.",
+          "isCorrect": false
+        },
+        {
+          "id": "misconception-two",
+          "label": "/repos/ada without a repository name.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "GitHub lists a user’s repositories under /users/{username}/repos. The supplied brief has a malformed URL, which should be clarified rather than copied into working code."
+    },
+    {
+      "id": "user-matrix-check-2",
+      "kind": "choice",
+      "prompt": "A first page has 100 repositories and a second has 3. What is the count?",
+      "options": [
+        {
+          "id": "answer",
+          "label": "103.",
+          "isCorrect": true
+        },
+        {
+          "id": "misconception-one",
+          "label": "100.",
+          "isCorrect": false
+        },
+        {
+          "id": "misconception-two",
+          "label": "3.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "Counting only the first response undercounts paginated results. Sum all pages until the listing ends; the fixture is stable so the expected total is exactly 103."
+    },
+    {
+      "id": "user-matrix-check-3",
+      "kind": "choice",
+      "prompt": "When should cells be assigned to users?",
+      "options": [
+        {
+          "id": "answer",
+          "label": "Once after loading the user list, before individual counts arrive.",
+          "isCorrect": true
+        },
+        {
+          "id": "misconception-one",
+          "label": "Whenever any request resolves.",
+          "isCorrect": false
+        },
+        {
+          "id": "misconception-two",
+          "label": "On every render.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "Assignments are part of this load’s state. Preassigning them prevents response order and unrelated renders from moving users or causing collisions."
+    },
+    {
+      "id": "user-matrix-check-4",
+      "kind": "choice",
+      "prompt": "One user fails while the others succeed. What should the grid show?",
+      "options": [
+        {
+          "id": "answer",
+          "label": "Successful counts and an error attached to the failed user.",
+          "isCorrect": true
+        },
+        {
+          "id": "misconception-one",
+          "label": "A count of zero for the failed user.",
+          "isCorrect": false
+        },
+        {
+          "id": "misconception-two",
+          "label": "No successful users.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "An error is not a zero count. Independent outcomes preserve useful results and show which request failed without losing the original user-to-cell mapping."
+    },
+    {
+      "id": "user-matrix-check-5",
+      "kind": "choice",
+      "prompt": "Why check cancellation after awaiting the adapter?",
+      "options": [
+        {
+          "id": "answer",
+          "label": "An adapter may ignore cancellation and resolve late.",
+          "isCorrect": true
+        },
+        {
+          "id": "misconception-one",
+          "label": "Cancellation guarantees every remote request stopped.",
+          "isCorrect": false
+        },
+        {
+          "id": "misconception-two",
+          "label": "It changes the assigned cells.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "A local guard prevents stale publication even if transport cancellation is ignored. It does not prove that remote processing stopped or roll back remote work."
+    },
+    {
+      "id": "user-matrix-check-6",
+      "kind": "choice",
+      "prompt": "What does a concurrency limit of two bound here?",
+      "options": [
+        {
+          "id": "answer",
+          "label": "Two user page chains at once.",
+          "isCorrect": true
+        },
+        {
+          "id": "misconception-one",
+          "label": "Exactly two total HTTP requests across the whole exercise.",
+          "isCorrect": false
+        },
+        {
+          "id": "misconception-two",
+          "label": "Two repositories in each page.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "Each user follows pages serially while occupying a worker slot. The bound limits simultaneously active chains, not total requests or the number of returned repositories."
+    },
+    {
+      "id": "user-matrix-check-7",
+      "kind": "choice",
+      "prompt": "Why use a fixed random seed in a test?",
+      "options": [
+        {
+          "id": "answer",
+          "label": "To reproduce placement while asserting uniqueness and range.",
+          "isCorrect": true
+        },
+        {
+          "id": "misconception-one",
+          "label": "To prove cryptographic randomness.",
+          "isCorrect": false
+        },
+        {
+          "id": "misconception-two",
+          "label": "To guarantee live repository counts never change.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "Deterministic randomness makes a failed placement reproducible. It says nothing about cryptographic strength or mutable external data; those need separate contracts."
+    },
+    {
+      "id": "user-matrix-recipe",
+      "kind": "ordering",
+      "prompt": "Put this baseline implementation recipe in dependency order. Each step prepares the next.",
+      "items": [
+        {
+          "id": "step-1",
+          "label": "Load and validate usernames"
+        },
+        {
+          "id": "step-2",
+          "label": "Assign unique cells"
+        },
+        {
+          "id": "step-3",
+          "label": "Fetch every user page with lifecycle guards"
+        },
+        {
+          "id": "step-4",
+          "label": "Publish counts and per-user errors"
+        }
+      ],
+      "correctOrder": [
+        "step-1",
+        "step-2",
+        "step-3",
+        "step-4"
+      ],
+      "explanation": "First establish the input and state contract, then implement the dependent transformation, and finally validate the observable result. Reversing these steps risks testing a UI whose rules or input identity have not been defined. This order is a rehearsal recipe, not the only possible engineering workflow."
+    }
+  ]
+}

@@ -1,6 +1,6 @@
 # Codematica Engineering Overview
 
-Last updated: 2026-09-05
+Last updated: 2026-09-27
 
 Codematica is a mobile-first learning app for system design, coding, programming, software engineering, ML systems, and beginner human-language study. V1 stays local-first: Markdown and structured JSON remain canonical, including a validated external-source catalog for source-linked companions.
 
@@ -121,7 +121,7 @@ Learning paths live in `content/learning-paths/*.json` and contain ordered units
 
 Passive flashcard feeds live in `content/flashcard-feeds/*.json` and attach short review cards to learning paths.
 
-Interview collections live in `content/interviews/*.json` and are discriminated as `company` or `real-world`. Company algorithm questions retain reported-public links and guided Python, TypeScript, and Java tracks. Anonymous real-world questions require provenance notes and may provide structured evaluation rubrics plus at least three `WebExerciseProject` solutions. Web projects are authored locally, validated into the index, and executed only in Sandpack's cross-origin iframe; Expo shows the same files read-only.
+Interview collections live in `content/interviews/*.json` and are discriminated as `company` or `real-world`. Company algorithm questions retain reported-public links and guided Python, TypeScript, and Java tracks. Anonymous real-world questions require provenance notes and may provide structured evaluation rubrics plus at least three `WebExerciseProject` solutions. Web projects are authored locally, validated into the index, and executed only in Sandpack's cross-origin iframe; Expo shows the same files read-only. Revealing a web solution starts one runtime shared with its console. Run/Retry replace the connection with the current draft; Reset starts from authored files. The connection lifecycle and recovery diagram live in `docs/features/react-typescript-playground.md`.
 
 Human-language catalogs live in `content/languages/**/*.json`. Schema v10 adds structured grammar, N5 study metadata, Japanese open-answer/listening question kinds, and synthetic-audio provenance while retaining generic progression and resource-rights metadata. Japanese indexes complete kana, an exact 100-kanji target, 650 N5-aligned words, 60 grammar patterns, learner romaji, IPA, study order, and normalized paths for published handwriting profiles. A compact pinned JMdict asset supplies local IME candidates. Only human-approved audio enters generated web/Expo registries; external resources remain link-only unless redistribution rights are explicit.
 
@@ -204,3 +204,24 @@ The stable command and workflow contract is documented in `docs/features/automat
 The likely next step remains hybrid: keep Markdown documents and local structured study content canonical, keep `@codematica/core` as the shared contract surface, and expand Supabase-backed search, AI summaries, scoring, streaks, and study features behind explicit contracts.
 
 Before relying on Supabase for production user progress at scale, revisit plan level, backups, RLS policy coverage, and operational ownership. The service role key remains server-only.
+
+## Frontend Interview Study Flow
+
+Index v11 resolves interview path nodes alongside documents and exercises. Optional Python companions remain structured interview content; anonymous browsing and progress boundaries are unchanged. Exact authored code is verified before indexing/release. See `docs/features/frontend-interview-practice.md`.
+
+```mermaid
+flowchart LR
+  Brief[Markdown concepts] --> Recipe[Interview recipe]
+  Recipe --> TS[Web TypeScript playground]
+  Recipe --> Python[Python companion source]
+  TS --> Quiz[Eight-question checkpoint]
+  Python --> Quiz
+  Quiz --> Next[Next topic]
+  Quiz --> Final[Final topic: continuous review]
+  Path[Path overview] --> Final
+  Final --> Brief
+  Brief -. Supplement .-> State[React state snapshots lesson]
+  State --> StateQuiz[Six-question state checkpoint]
+```
+
+Native follows the same nodes and code display, with execution available on web only. Review cards carry explicit code language and canonical lesson references. `npm run test:interview:python` complements TS/React execution tests and is required in CI.

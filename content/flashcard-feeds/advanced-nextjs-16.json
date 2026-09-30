@@ -75,7 +75,7 @@
         "typescript"
       ],
       "sourceDocSlug": "frontend/nextjs-16-rendering-model",
-      "code": "async function getNav() {\n  'use cache';\n  cacheLife('hours');\n  cacheTag('nav');\n}"
+      "code": "async function getNav() {\n  'use cache';\n  cacheLife('hours');\n  cacheTag('nav');\n}", "codeLanguage": "typescript"
     },
     {
       "id": "nextjs-16-rendering-model-snippet-06",
@@ -90,7 +90,7 @@
         "typescript"
       ],
       "sourceDocSlug": "frontend/nextjs-16-rendering-model",
-      "code": "const theme = (await cookies()).get('theme')?.value;"
+      "code": "const theme = (await cookies()).get('theme')?.value;", "codeLanguage": "typescript"
     },
     {
       "id": "nextjs-16-rendering-model-interview-07",
@@ -161,7 +161,7 @@
         "typescript"
       ],
       "sourceDocSlug": "frontend/nextjs-16-rendering-model",
-      "code": "updateTag('project:' + projectId);\nupdateTag('org:' + orgId + ':projects');"
+      "code": "updateTag('project:' + projectId);\nupdateTag('org:' + orgId + ':projects');", "codeLanguage": "typescript"
     },
     {
       "id": "nextjs-16-rendering-model-interview-12",
@@ -246,7 +246,7 @@
         "typescript"
       ],
       "sourceDocSlug": "frontend/nextjs-16-force-dynamic",
-      "code": "async function getNav() {\n  'use cache';\n  cacheLife('hours');\n  cacheTag('nav');\n}"
+      "code": "async function getNav() {\n  'use cache';\n  cacheLife('hours');\n  cacheTag('nav');\n}", "codeLanguage": "typescript"
     },
     {
       "id": "nextjs-16-force-dynamic-snippet-06",
@@ -261,7 +261,7 @@
         "typescript"
       ],
       "sourceDocSlug": "frontend/nextjs-16-force-dynamic",
-      "code": "const theme = (await cookies()).get('theme')?.value;"
+      "code": "const theme = (await cookies()).get('theme')?.value;", "codeLanguage": "typescript"
     },
     {
       "id": "nextjs-16-force-dynamic-interview-07",
@@ -332,7 +332,7 @@
         "typescript"
       ],
       "sourceDocSlug": "frontend/nextjs-16-force-dynamic",
-      "code": "updateTag('project:' + projectId);\nupdateTag('org:' + orgId + ':projects');"
+      "code": "updateTag('project:' + projectId);\nupdateTag('org:' + orgId + ':projects');", "codeLanguage": "typescript"
     },
     {
       "id": "nextjs-16-force-dynamic-interview-12",
@@ -417,7 +417,7 @@
         "typescript"
       ],
       "sourceDocSlug": "frontend/nextjs-16-cache-components",
-      "code": "async function getNav() {\n  'use cache';\n  cacheLife('hours');\n  cacheTag('nav');\n}"
+      "code": "async function getNav() {\n  'use cache';\n  cacheLife('hours');\n  cacheTag('nav');\n}", "codeLanguage": "typescript"
     },
     {
       "id": "nextjs-16-cache-components-snippet-06",
@@ -432,7 +432,7 @@
         "typescript"
       ],
       "sourceDocSlug": "frontend/nextjs-16-cache-components",
-      "code": "const theme = (await cookies()).get('theme')?.value;"
+      "code": "const theme = (await cookies()).get('theme')?.value;", "codeLanguage": "typescript"
     },
     {
       "id": "nextjs-16-cache-components-interview-07",
@@ -503,7 +503,7 @@
         "typescript"
       ],
       "sourceDocSlug": "frontend/nextjs-16-cache-components",
-      "code": "updateTag('project:' + projectId);\nupdateTag('org:' + orgId + ':projects');"
+      "code": "updateTag('project:' + projectId);\nupdateTag('org:' + orgId + ':projects');", "codeLanguage": "typescript"
     },
     {
       "id": "nextjs-16-cache-components-interview-12",
@@ -588,7 +588,7 @@
         "typescript"
       ],
       "sourceDocSlug": "frontend/nextjs-16-data-fetching-caching",
-      "code": "async function getNav() {\n  'use cache';\n  cacheLife('hours');\n  cacheTag('nav');\n}"
+      "code": "async function getNav() {\n  'use cache';\n  cacheLife('hours');\n  cacheTag('nav');\n}", "codeLanguage": "typescript"
     },
     {
       "id": "nextjs-16-data-fetching-caching-snippet-06",
@@ -603,7 +603,7 @@
         "typescript"
       ],
       "sourceDocSlug": "frontend/nextjs-16-data-fetching-caching",
-      "code": "const theme = (await cookies()).get('theme')?.value;"
+      "code": "const theme = (await cookies()).get('theme')?.value;", "codeLanguage": "typescript"
     },
     {
       "id": "nextjs-16-data-fetching-caching-interview-07",
@@ -674,7 +674,7 @@
         "typescript"
       ],
       "sourceDocSlug": "frontend/nextjs-16-data-fetching-caching",
-      "code": "updateTag('project:' + projectId);\nupdateTag('org:' + orgId + ':projects');"
+      "code": "updateTag('project:' + projectId);\nupdateTag('org:' + orgId + ':projects');", "codeLanguage": "typescript"
     },
     {
       "id": "nextjs-16-data-fetching-caching-interview-12",
@@ -759,7 +759,7 @@
         "typescript"
       ],
       "sourceDocSlug": "frontend/nextjs-16-invalidation-mutations",
-      "code": "async function getNav() {\n  'use cache';\n  cacheLife('hours');\n  cacheTag('nav');\n}"
+      "code": "async function getNav() {\n  'use cache';\n  cacheLife('hours');\n  cacheTag('nav');\n}", "codeLanguage": "typescript"
     },
     {
       "id": "nextjs-16-invalidation-mutations-snippet-06",
@@ -774,7 +774,7 @@
         "typescript"
       ],
       "sourceDocSlug": "frontend/nextjs-16-invalidation-mutations",
-      "code": "const theme = (await cookies()).get('theme')?.value;"
+      "code": "const theme = (await cookies()).get('theme')?.value;", "codeLanguage": "typescript"
     },
     {
       "id": "nextjs-16-invalidation-mutations-interview-07",
@@ -845,7 +845,7 @@
         "typescript"
       ],
       "sourceDocSlug": "frontend/nextjs-16-invalidation-mutations",
-      "code": "updateTag('project:' + projectId);\nupdateTag('org:' + orgId + ':projects');"
+      "code": "updateTag('project:' + projectId);\nupdateTag('org:' + orgId + ':projects');", "codeLanguage": "typescript"
     },
     {
       "id": "nextjs-16-invalidation-mutations-interview-12",
@@ -930,7 +930,7 @@
         "typescript"
       ],
       "sourceDocSlug": "frontend/nextjs-16-painful-production-lessons",
-      "code": "async function getNav() {\n  'use cache';\n  cacheLife('hours');\n  cacheTag('nav');\n}"
+      "code": "async function getNav() {\n  'use cache';\n  cacheLife('hours');\n  cacheTag('nav');\n}", "codeLanguage": "typescript"
     },
     {
       "id": "nextjs-16-painful-production-lessons-snippet-06",
@@ -945,7 +945,7 @@
         "typescript"
       ],
       "sourceDocSlug": "frontend/nextjs-16-painful-production-lessons",
-      "code": "const theme = (await cookies()).get('theme')?.value;"
+      "code": "const theme = (await cookies()).get('theme')?.value;", "codeLanguage": "typescript"
     },
     {
       "id": "nextjs-16-painful-production-lessons-interview-07",
@@ -1016,7 +1016,7 @@
         "typescript"
       ],
       "sourceDocSlug": "frontend/nextjs-16-painful-production-lessons",
-      "code": "updateTag('project:' + projectId);\nupdateTag('org:' + orgId + ':projects');"
+      "code": "updateTag('project:' + projectId);\nupdateTag('org:' + orgId + ':projects');", "codeLanguage": "typescript"
     },
     {
       "id": "nextjs-16-painful-production-lessons-interview-12",
@@ -1101,7 +1101,7 @@
         "typescript"
       ],
       "sourceDocSlug": "frontend/nextjs-16-performance-architecture",
-      "code": "async function getNav() {\n  'use cache';\n  cacheLife('hours');\n  cacheTag('nav');\n}"
+      "code": "async function getNav() {\n  'use cache';\n  cacheLife('hours');\n  cacheTag('nav');\n}", "codeLanguage": "typescript"
     },
     {
       "id": "nextjs-16-performance-architecture-snippet-06",
@@ -1116,7 +1116,7 @@
         "typescript"
       ],
       "sourceDocSlug": "frontend/nextjs-16-performance-architecture",
-      "code": "const theme = (await cookies()).get('theme')?.value;"
+      "code": "const theme = (await cookies()).get('theme')?.value;", "codeLanguage": "typescript"
     },
     {
       "id": "nextjs-16-performance-architecture-interview-07",
@@ -1187,7 +1187,7 @@
         "typescript"
       ],
       "sourceDocSlug": "frontend/nextjs-16-performance-architecture",
-      "code": "updateTag('project:' + projectId);\nupdateTag('org:' + orgId + ':projects');"
+      "code": "updateTag('project:' + projectId);\nupdateTag('org:' + orgId + ':projects');", "codeLanguage": "typescript"
     },
     {
       "id": "nextjs-16-performance-architecture-interview-12",
@@ -1272,7 +1272,7 @@
         "typescript"
       ],
       "sourceDocSlug": "frontend/nextjs-16-migration-review",
-      "code": "async function getNav() {\n  'use cache';\n  cacheLife('hours');\n  cacheTag('nav');\n}"
+      "code": "async function getNav() {\n  'use cache';\n  cacheLife('hours');\n  cacheTag('nav');\n}", "codeLanguage": "typescript"
     },
     {
       "id": "nextjs-16-migration-review-snippet-06",
@@ -1287,7 +1287,7 @@
         "typescript"
       ],
       "sourceDocSlug": "frontend/nextjs-16-migration-review",
-      "code": "const theme = (await cookies()).get('theme')?.value;"
+      "code": "const theme = (await cookies()).get('theme')?.value;", "codeLanguage": "typescript"
     },
     {
       "id": "nextjs-16-migration-review-interview-07",
@@ -1358,7 +1358,7 @@
         "typescript"
       ],
       "sourceDocSlug": "frontend/nextjs-16-migration-review",
-      "code": "updateTag('project:' + projectId);\nupdateTag('org:' + orgId + ':projects');"
+      "code": "updateTag('project:' + projectId);\nupdateTag('org:' + orgId + ':projects');", "codeLanguage": "typescript"
     },
     {
       "id": "nextjs-16-migration-review-interview-12",

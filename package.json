@@ -52,10 +52,11 @@
     "e2e:web:smoke": "playwright test --config=apps/web/e2e/playwright.config.ts --grep @smoke",
     "e2e:web:regression": "playwright test --config=apps/web/e2e/playwright.config.ts --project=mobile-chromium --grep @regression",
     "e2e:web:release": "playwright test --config=apps/web/e2e/playwright.config.ts",
-    "test:release": "npm run content:check && npm run lint && npm run typecheck && npm run mobile:doctor && npm run test:coverage && npm run test:mobile:coverage && npm run test:db && npm run build && npm run e2e:web:release",
+    "test:release": "npm run content:check && npm run lint && npm run typecheck && npm run mobile:doctor && npm run test:interview:python && npm run test:coverage && npm run test:mobile:coverage && npm run test:db && npm run build && npm run e2e:web:release",
     "mobile:e2e:android": "cd apps/mobile && NODE_OPTIONS=--no-deprecation eas workflow:run .eas/workflows/e2e-android-pr.yml",
     "mobile:e2e:release": "cd apps/mobile && NODE_OPTIONS=--no-deprecation eas workflow:run .eas/workflows/e2e-release.yml",
-    "mobile:doctor": "npm run doctor -w @codematica/mobile"
+    "mobile:doctor": "npm run doctor -w @codematica/mobile",
+    "test:interview:python": "python3 scripts/content/verify-frontend-python.py && python3 scripts/content/verify-interview-audit.py"
   },
   "dependencies": {
     "@fontsource-variable/noto-sans-jp": "^5.3.0",

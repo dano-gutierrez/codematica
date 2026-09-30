@@ -25,3 +25,5 @@ Run `npm run content:check` before committing path changes.
 
 - The RTK Query Interview Preparation path pairs seven sourced lessons with scenario checkpoints and passive briefs. Keep modern 2.12.0 behavior separate from the PR-inspired 2.2.8 persistence case.
 - `product-engineering-interview.json` pairs a company-neutral research guide with original JavaScript/architecture lessons, eighteen checkpoint questions, and a 75-minute guided mock. Use neutral slugs and general technical references; distinguish rehearsal assumptions from real interview evidence.
+
+Interview nodes use `{ "kind": "interview", "slug": "collection/question" }` and require a published target. Source-required paths also require primary references on that question. Opt into `{ "completionDestination": "flashcard-feed" }` to send the final node to the path’s published feed. Other path endings are unchanged.

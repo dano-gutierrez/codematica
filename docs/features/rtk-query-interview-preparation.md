@@ -114,3 +114,7 @@ The private inspiration URL may require authentication, but the full generalized
 ## Thread Handoff Prompt
 
 `Read docs/codex-context.md and docs/features/rtk-query-interview-preparation.md first. Compare canonical RTK content with its pinned official references, preserve the distinction between raw restoration and extractRehydrationInfo, update scenario explanations and version metadata together, regenerate the index, and run the documented checks. Do not infer deployment or incident recovery from content validation.`
+
+## 2026-09-27 Audit
+
+Reviewed all seven guides, 42 questions and 21 briefs. Confirmed dated release milestones against official Redux Toolkit notes and cache/schema/infinite-query documentation. No answer-key correction was needed. The 2.12.0 example baseline remains explicitly dated; the private persistence incident is an attributed report rather than newly observed recovery. Existing core content tests and the RTK browser journey remain required.

@@ -2,6 +2,40 @@
 
 This changelog records durable, user-visible and architectural changes. Feature documents remain the authoritative contracts; this file explains when a group of related changes landed and points readers to the owning documentation.
 
+## 2026-09-28 — Readable Lesson Code Blocks
+
+- Fixed a prose CSS rule that replaced highlighted blocks' dark background with a pale surface while retaining light syntax colors.
+- Kept inline-code styling separate and added rendered contrast checks at phone and desktop widths. The regression reproduced 1.21:1 body-text contrast before the fix and requires at least 4.5:1 for every code text node.
+- Audited all web/native code surfaces. Converted playground failure source to the shared dark renderer, aligned plain prose fallbacks and native indented Markdown, and fixed low-contrast inherited playground syntax colors. Added fallback recovery, native style, and cross-surface browser regressions. Theme selection remains deferred; coverage gates are unchanged.
+
+Owning contract: `docs/features/markdown-knowledge-browser.md`.
+
+## 2026-09-28 — React State Snapshots Lesson
+
+- Added a supplementary lesson explaining stale state in timers and promise callbacks, functional updates by ID, reducers/ref tradeoffs, and late-result cleanup.
+- Added complete broken/fixed React examples with exact-source execution tests and six quiz questions. Linked the lesson from the board and async-matrix guides and made it searchable through the generated index.
+- Reused the Markdown reader and questionnaire; no schema, runtime dependency, or coverage gate changes.
+
+Owning contract: `docs/features/frontend-interview-practice.md#supplementary-react-state-lesson`.
+
+## 2026-09-28 — Playground Connection Recovery
+
+- Start a single preview when a solution is revealed; the console observes the same runtime instead of executing a hidden copy.
+- Show startup and connection status. Retry preserves edits and opens a fresh connection; Reset restores and executes the authored files.
+- Add component coverage and Chromium/WebKit regressions for automatic startup, editing, console output, Reset, and blocked-runtime recovery. Exclude generated nested Playwright reports from lint while retaining failure evidence. Coverage thresholds and exclusions are unchanged.
+
+Owning contract: `docs/features/react-typescript-playground.md`. A hosted-runtime connection is still required.
+
+## 2026-09-27 — Frontend Interview Practice and Content Audit
+
+- Added seven anonymous guided challenges, 21 React/TypeScript projects, 21 Python companions, 56 quiz questions, and 42 review cards.
+- Connected lesson → recipe → quiz → next lesson/final feed on web and native. Added explicit snippet languages and lesson links.
+- Added index v11 contracts, exact authored-code verification, a required Python CI gate, component/browser/native coverage, and a Maestro journey. Coverage thresholds/exclusions are unchanged.
+- Corrected existing interview API omissions, algorithm/complexity mismatches, Unicode/arithmetic boundaries, and unsupported acceptance guarantees. See the audit table in the interview catalog contract.
+- Native release validation remains open: local Mobile Doctor flags existing Expo patch mismatches; the new installed-device flow has not been run locally.
+
+Owning contract: `docs/features/frontend-interview-practice.md`.
+
 ## 2026-09-10 — Product Engineering Interview Preparation
 
 - Added a company-neutral interview research guide, role-fit questions, and general technical references. Names, recruiting links, routes, tags, and metadata reveal no target employer.

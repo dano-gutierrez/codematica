@@ -66,3 +66,5 @@ The most important sections are:
 - `Thread Handoff Prompt`
 
 - `rtk-query-interview-preparation.md` owns the RTK Query interview curriculum and its source/version refresh and validation contract.
+
+- [Frontend Interview Practice](frontend-interview-practice.md): seven guided frontend challenges, TS/Python companions, quizzes, and review. Existing material corrections are recorded in the interview catalog audit.

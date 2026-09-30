@@ -420,7 +420,7 @@ function NextNodeLink({ href }: { href: string }) {
       href={href}
       className="inline-flex min-h-12 items-center gap-2 rounded-xl border border-[#1d4e9e] bg-[#245fba] px-4 py-2 text-sm font-semibold text-white transition hover:-translate-y-0.5"
     >
-      Next node
+      {href.endsWith("/flashcards") ? "Start review feed" : "Next node"}
       <ArrowRight className="h-4 w-4" aria-hidden="true" />
     </Link>
   );

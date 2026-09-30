@@ -1,0 +1,214 @@
+{
+  "slug": "frontend/interview-click-board-questionnaire",
+  "title": "Click-to-place 5×5 Game Checkpoint",
+  "type": "questionnaire",
+  "documentSlug": "frontend/interview-click-board",
+  "concept": "Click-to-place 5×5 Game",
+  "difficulty": "practitioner",
+  "tags": [
+    "frontend",
+    "interview",
+    "react",
+    "typescript",
+    "python",
+    "click-board"
+  ],
+  "status": "published",
+  "sourceRefs": [
+    "frontend-react-arrays",
+    "frontend-react-state"
+  ],
+  "questions": [
+    {
+      "id": "click-board-check-1",
+      "kind": "choice",
+      "prompt": "Where does a click at row 1, column 2 place a token?",
+      "options": [
+        {
+          "id": "answer",
+          "label": "In that exact empty cell.",
+          "isCorrect": true
+        },
+        {
+          "id": "misconception-one",
+          "label": "At the bottom of column 2.",
+          "isCorrect": false
+        },
+        {
+          "id": "misconception-two",
+          "label": "In the next empty row-major cell.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "This 5×5 brief is click-to-place. Gravity belongs to the separate 6×7 challenge. A familiar game rule must not silently replace the actual requirement."
+    },
+    {
+      "id": "click-board-check-2",
+      "kind": "choice",
+      "prompt": "What happens after a click on an occupied cell?",
+      "options": [
+        {
+          "id": "answer",
+          "label": "The board and current player stay unchanged.",
+          "isCorrect": true
+        },
+        {
+          "id": "misconception-one",
+          "label": "The turn changes but the board does not.",
+          "isCorrect": false
+        },
+        {
+          "id": "misconception-two",
+          "label": "The previous token is overwritten.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "A rejected move does not consume a turn. Returning the existing state preserves both ownership and board contents, making this invariant simple to test."
+    },
+    {
+      "id": "click-board-check-3",
+      "kind": "choice",
+      "prompt": "Do four matching diagonal tokens win under the stated contract?",
+      "options": [
+        {
+          "id": "answer",
+          "label": "No; only horizontal and vertical runs count.",
+          "isCorrect": true
+        },
+        {
+          "id": "misconception-one",
+          "label": "Yes; every familiar four-in-a-row rule applies.",
+          "isCorrect": false
+        },
+        {
+          "id": "misconception-two",
+          "label": "Only if the board is full.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "The source names horizontal and vertical runs. Diagonal detection is a useful extension only after agreement; board fullness does not change the allowed directions."
+    },
+    {
+      "id": "click-board-check-4",
+      "kind": "choice",
+      "prompt": "Why can a last-move check ignore other rows and columns?",
+      "options": [
+        {
+          "id": "answer",
+          "label": "A new winning line must include the only changed cell.",
+          "isCorrect": true
+        },
+        {
+          "id": "misconception-one",
+          "label": "Every occupied cell is adjacent to the new token.",
+          "isCorrect": false
+        },
+        {
+          "id": "misconception-two",
+          "label": "A winner can only appear on the outer border.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "The invariant is that the previous legal game state had no winner and exactly one cell changes. Any newly completed line therefore contains that cell."
+    },
+    {
+      "id": "click-board-check-5",
+      "kind": "choice",
+      "prompt": "Does R R empty R R form a winning row?",
+      "options": [
+        {
+          "id": "answer",
+          "label": "No; the four tokens are not contiguous.",
+          "isCorrect": true
+        },
+        {
+          "id": "misconception-one",
+          "label": "Yes; four matching tokens anywhere are enough.",
+          "isCorrect": false
+        },
+        {
+          "id": "misconception-two",
+          "label": "Only when R plays next.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "The requirement is consecutive matching cells. Counting all tokens in a row without resetting at gaps incorrectly treats separated groups as one run."
+    },
+    {
+      "id": "click-board-check-6",
+      "kind": "choice",
+      "prompt": "TypeScript: why use setGame(previous => move(previous, r, c))?",
+      "options": [
+        {
+          "id": "answer",
+          "label": "It computes the complete next game from the latest queued state.",
+          "isCorrect": true
+        },
+        {
+          "id": "misconception-one",
+          "label": "It allows direct mutation of previous.",
+          "isCorrect": false
+        },
+        {
+          "id": "misconception-two",
+          "label": "It prevents every future rerender.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "The functional update receives the current queued state and keeps turn, board, and winner together. It still requires immutable updates and does not suppress normal rendering."
+    },
+    {
+      "id": "click-board-check-7",
+      "kind": "choice",
+      "prompt": "Python: why does copying only the outer list not make nested mutation safe?",
+      "options": [
+        {
+          "id": "answer",
+          "label": "The inner row lists are still shared.",
+          "isCorrect": true
+        },
+        {
+          "id": "misconception-one",
+          "label": "Python lists cannot contain lists.",
+          "isCorrect": false
+        },
+        {
+          "id": "misconception-two",
+          "label": "A shallow copy always deep-copies children.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "An outer copy creates a new container but retains row references. Copy the changed row as well, or build a new board, before writing the token."
+    },
+    {
+      "id": "click-board-recipe",
+      "kind": "ordering",
+      "prompt": "Put this baseline implementation recipe in dependency order. Each step prepares the next.",
+      "items": [
+        {
+          "id": "step-1",
+          "label": "Render the 5×5 board"
+        },
+        {
+          "id": "step-2",
+          "label": "Reject invalid moves"
+        },
+        {
+          "id": "step-3",
+          "label": "Place a token and check the result"
+        },
+        {
+          "id": "step-4",
+          "label": "Advance only a valid nonterminal turn"
+        }
+      ],
+      "correctOrder": [
+        "step-1",
+        "step-2",
+        "step-3",
+        "step-4"
+      ],
+      "explanation": "First establish the input and state contract, then implement the dependent transformation, and finally validate the observable result. Reversing these steps risks testing a UI whose rules or input identity have not been defined. This order is a rehearsal recipe, not the only possible engineering workflow."
+    }
+  ]
+}

@@ -1,0 +1,157 @@
+{
+  "slug": "frontend-interview-practice",
+  "title": "Frontend Interview Practice",
+  "summary": "Build seven real-world frontend exercises, compare 21 TypeScript and 21 Python solutions, complete 56 checkpoint questions, and refresh with 42 scrolling cards.",
+  "kind": "skill",
+  "category": "Front-End Development",
+  "audience": "Engineers preparing to explain, implement, and test React and TypeScript solutions during technical interviews.",
+  "status": "published",
+  "sourcePolicy": "required",
+  "sourceRefs": [
+    "frontend-react-arrays",
+    "frontend-react-hooks",
+    "frontend-react-state",
+    "frontend-react-keys",
+    "frontend-react-effects",
+    "frontend-python-random",
+    "frontend-python-async",
+    "frontend-github-repos",
+    "frontend-accessible-buttons"
+  ],
+  "completionDestination": "flashcard-feed",
+  "units": [
+    {
+      "slug": "dynamic-board",
+      "title": "Dynamic Rectangular Board",
+      "summary": "Render independently sized rows and columns and explain React identity, state, refs, and memoization.",
+      "nodes": [
+        {
+          "kind": "document",
+          "slug": "frontend/interview-dynamic-board"
+        },
+        {
+          "kind": "interview",
+          "slug": "frontend-practice/dynamic-board"
+        },
+        {
+          "kind": "exercise",
+          "slug": "frontend/interview-dynamic-board-questionnaire"
+        }
+      ]
+    },
+    {
+      "slug": "random-matrix",
+      "title": "Randomized Zero Matrix",
+      "summary": "Select exactly k distinct zero positions while keeping generated React state stable and testable.",
+      "nodes": [
+        {
+          "kind": "document",
+          "slug": "frontend/interview-random-matrix"
+        },
+        {
+          "kind": "interview",
+          "slug": "frontend-practice/random-matrix"
+        },
+        {
+          "kind": "exercise",
+          "slug": "frontend/interview-random-matrix-questionnaire"
+        }
+      ]
+    },
+    {
+      "slug": "click-board",
+      "title": "Click-to-place 5×5 Game",
+      "summary": "Model legal turns and detect contiguous horizontal or vertical wins without adding unstated game rules.",
+      "nodes": [
+        {
+          "kind": "document",
+          "slug": "frontend/interview-click-board"
+        },
+        {
+          "kind": "interview",
+          "slug": "frontend-practice/click-board"
+        },
+        {
+          "kind": "exercise",
+          "slug": "frontend/interview-click-board-questionnaire"
+        }
+      ]
+    },
+    {
+      "slug": "column-game",
+      "title": "Column-drop 6×7 Game",
+      "summary": "Model legal turns and detect contiguous horizontal or vertical wins without adding unstated game rules.",
+      "nodes": [
+        {
+          "kind": "document",
+          "slug": "frontend/interview-column-game"
+        },
+        {
+          "kind": "interview",
+          "slug": "frontend-practice/column-game"
+        },
+        {
+          "kind": "exercise",
+          "slug": "frontend/interview-column-game-questionnaire"
+        }
+      ]
+    },
+    {
+      "slug": "file-explorer",
+      "title": "Recursive File Explorer",
+      "summary": "Combine both supplied tree briefs into a recursive explorer with explicit expansion-state behavior.",
+      "nodes": [
+        {
+          "kind": "document",
+          "slug": "frontend/interview-file-explorer"
+        },
+        {
+          "kind": "interview",
+          "slug": "frontend-practice/file-explorer"
+        },
+        {
+          "kind": "exercise",
+          "slug": "frontend/interview-file-explorer-questionnaire"
+        }
+      ]
+    },
+    {
+      "slug": "multi-select",
+      "title": "Multi-select with Removable Chips",
+      "summary": "Model selection and derived filtering while preserving disabled options, keyboard access, and dismissal behavior.",
+      "nodes": [
+        {
+          "kind": "document",
+          "slug": "frontend/interview-multi-select"
+        },
+        {
+          "kind": "interview",
+          "slug": "frontend-practice/multi-select"
+        },
+        {
+          "kind": "exercise",
+          "slug": "frontend/interview-multi-select-questionnaire"
+        }
+      ]
+    },
+    {
+      "slug": "user-matrix",
+      "title": "Asynchronous User Repository Matrix",
+      "summary": "Fetch user counts, handle partial failures, and place results in stable unique cells despite out-of-order requests.",
+      "nodes": [
+        {
+          "kind": "document",
+          "slug": "frontend/interview-user-matrix"
+        },
+        {
+          "kind": "interview",
+          "slug": "frontend-practice/user-matrix"
+        },
+        {
+          "kind": "exercise",
+          "slug": "frontend/interview-user-matrix-questionnaire"
+        }
+      ]
+    }
+  ]
+}

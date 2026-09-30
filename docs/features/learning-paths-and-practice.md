@@ -190,3 +190,7 @@ The shipped content includes skill and role paths using Markdown articles, exter
 ## Thread Handoff Prompt
 
 `Read docs/codex-context.md and docs/features/learning-paths-and-practice.md first. Compare the documented path, practice, and passive feed contract against packages/core/src/content/schema.ts, packages/core/src/content/build-index.ts, packages/core/src/flashcards/passive.ts, packages/core/src/practice/questionnaire.ts, apps/web/src/components/LearningPathMap.tsx, apps/web/src/components/PracticeCard.tsx, apps/web/src/components/QuestionnaireSession.tsx, and apps/web/src/components/PassiveFlashcardFeed.tsx, then update tests and docs with any behavior changes.`
+
+## Frontend Interview Path Extension (2026-09-27)
+
+Index v11 accepts published interview nodes (`collection/question`) and optional `completionDestination: "flashcard-feed"`. The final destination requires a published feed. Interview sources are checked under required source policy. Review snippets now declare `codeLanguage` and offer lesson links with path context. See [Frontend Interview Practice](frontend-interview-practice.md) for flow and test commands. Regression coverage lives in `frontend-interview.test.ts`, build-index tests, component tests, and `frontend-interview.regression.spec.ts`.

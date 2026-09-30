@@ -51,7 +51,7 @@ Jest covers native adapters, offline and partial-failure progress behavior, Supa
 
 ## Native E2E
 
-Credential-free native E2E builds use the `e2e-test` EAS profile: Android produces an APK and iOS produces a simulator app. Checked-in Maestro flows live in `.maestro/`, use stable `testID` selectors, and cover offline discovery, path-to-practice, browse-to-diagram, Japanese study/review, interviews, and unconfigured login.
+Credential-free native E2E builds use the `e2e-test` EAS profile: Android produces an APK and iOS produces a simulator app. Checked-in Maestro flows live in `.maestro/`, use stable `testID` selectors, and cover offline discovery, path-to-practice, browse-to-diagram, Japanese study/review, interviews, and unconfigured login. The frontend interview journey also captures Python code for dark-surface visual review; local `code-styles.test.tsx` verifies fenced/indented Markdown and standalone code styles separately.
 
 Run the Android smoke workflow manually or by applying the `mobile-e2e` pull-request label:
 

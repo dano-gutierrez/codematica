@@ -20,6 +20,7 @@ Conventions:
 - `docs/features/_template.md` is the format new feature docs should follow.
 - `docs/features/README.md` explains how threads should consume and maintain feature docs.
 - `docs/features/adaptive-ui.md` owns the shared visual language, bottom navigation, desktop/tablet sidebars, responsive layout, and redesign validation gaps.
+- `docs/features/markdown-knowledge-browser.md` owns article rendering, the web/native code-surface audit, the fixed dark code theme, and rendered contrast regressions. Theme selection is deferred.
 - `docs/features/home-discovery.md` owns the cross-section home, global local search, curated rows, section themes, and full catalog routes.
 - `docs/features/learning-paths-and-practice.md` owns local path JSON, path detail, local exercise JSON, and practice sessions.
 - `docs/features/ml-systems-career-path.md` owns the Harvard CS249r source-linked career roadmap, authored prerequisites/Foundation companions, guided labs, and upstream refresh contract.
@@ -29,8 +30,9 @@ Conventions:
 - `docs/features/advanced-nextjs-16-learning-path.md` owns the hard Front-End Development skill path for Next.js 16 rendering, caching, `force-dynamic`, invalidation, performance, migration, quizzes, and one-minute brief cards.
 - `docs/features/rtk-query-interview-preparation.md` owns the RTK Query interview path, seven sourced lessons, 42 scenario questions, 21 briefs, and versioned persistence case study.
 - `docs/features/product-engineering-interview-preparation.md` owns the Product Engineering research brief, plain JavaScript/durable workflow drills, 75-minute guided mock, 18 checkpoint questions, and twelve review cards.
-- `docs/features/interview-coding-catalog.md` owns company and anonymous real-world interview collections, guided algorithm walkthroughs, and accepted frontend solutions.
-- `docs/features/react-typescript-playground.md` owns the reusable web-project schema, Sandpack execution boundary, editor behavior, and native fallback.
+- `docs/features/interview-coding-catalog.md` owns company and anonymous real-world interview collections, guided algorithm walkthroughs, and frontend practice solutions.
+- `docs/features/react-typescript-playground.md` owns the reusable web-project schema, Sandpack execution boundary, automatic startup, retry/reset lifecycle, and native fallback.
+- `docs/features/frontend-interview-practice.md#supplementary-react-state-lesson` describes the stale-closure lesson, executable Markdown examples, cleanup rules, and six-question checkpoint.
 - `docs/features/bfs-dfs-learning-path.md` owns the Programming skill path for BFS/DFS fundamentals, Python and TypeScript examples, questionnaires, scrolling review, and guided graph interview comparisons.
 - `docs/features/mermaid-diagram-authoring.md` owns the Mermaid reading/writing skill path, progressive rendered examples, choice-only questionnaires, scrolling review, and diagram-selection guidance.
 - `docs/features/auth-and-progress.md` owns Supabase Auth, user profile minimalism, saved progress, anonymous progress buffering, and Keep reading behavior.
@@ -83,3 +85,4 @@ Maintenance rules:
 - If no README owns a new durable area and the area is not self-explanatory, add one.
 - Do not let README files become historical sketches. If implementation changes the actual contract, update the README in the same branch.
 - Add a dated changelog entry for a release-sized change that spans several feature contracts; do not use the changelog as a replacement for updating those contracts.
+- `docs/features/frontend-interview-practice.md` owns the seven frontend challenges, Python companions, quiz/review flow, and exact-solution verification. The existing-content audit is in `docs/features/interview-coding-catalog.md`.

@@ -45,7 +45,7 @@
       "difficulty": "foundation",
       "tags": ["flowchart", "decisions", "syntax"],
       "sourceDocSlug": "programming/mermaid-syntax-fundamentals",
-      "code": "Valid{Input valid?}\nValid -->|Yes| Save\nValid -->|No| Explain"
+      "code": "Valid{Input valid?}\nValid -->|Yes| Save\nValid -->|No| Explain", "codeLanguage": "mermaid"
     },
     {
       "id": "subgraphs-mean-boundaries",
@@ -76,7 +76,7 @@
       "difficulty": "practitioner",
       "tags": ["sequence-diagram", "control-flow", "syntax"],
       "sourceDocSlug": "programming/mermaid-software-diagrams",
-      "code": "alt Approved\n  API-->>Web: 201\nelse Rejected\n  API-->>Web: 409\nend"
+      "code": "alt Approved\n  API-->>Web: 201\nelse Rejected\n  API-->>Web: 409\nend", "codeLanguage": "mermaid"
     },
     {
       "id": "class-is-static",
@@ -107,7 +107,7 @@
       "difficulty": "practitioner",
       "tags": ["er-diagram", "cardinality", "data-modeling"],
       "sourceDocSlug": "programming/mermaid-software-diagrams",
-      "code": "CUSTOMER ||--o{ ORDER : places"
+      "code": "CUSTOMER ||--o{ ORDER : places", "codeLanguage": "mermaid"
     },
     {
       "id": "gantt-needs-ownership",
@@ -148,7 +148,7 @@
       "difficulty": "foundation",
       "tags": ["mindmap", "hierarchy", "syntax"],
       "sourceDocSlug": "programming/mermaid-planning-and-data-diagrams",
-      "code": "mindmap\n  root((Diagrams))\n    Behavior\n      Sequence\n      State"
+      "code": "mindmap\n  root((Diagrams))\n    Behavior\n      Sequence\n      State", "codeLanguage": "mermaid"
     },
     {
       "id": "timeline-versus-gantt",

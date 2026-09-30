@@ -22,3 +22,5 @@ This folder contains path-scoped passive flashcard feeds for short review sessio
 Passive flashcards are separate from interactive `type: "flashcard"` exercises in `content/exercises/`. Run `npm run content:check` before committing feed changes.
 
 - RTK Query interview briefs provide three concise concept/practical/interview cards per lesson, each linked to its source document; keep version claims aligned with that lesson.
+
+Set `codeLanguage` for every authored snippet (for example `typescript`, `python`, or `sql`). `sourceDocSlug` links back to the canonical lesson and preserves the feed’s path context. Frontend Interview Practice supplies 42 cards covering seven briefs and their implementation recipes.

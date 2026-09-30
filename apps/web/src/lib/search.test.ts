@@ -4,7 +4,7 @@ import type { ContentIndex } from "./content/schema";
 import { buildSnippet, searchContent } from "./search";
 
 const index: ContentIndex = {
-  schemaVersion: 10,
+  schemaVersion: 11,
   sources: [],
   homeDiscovery: { sections: { paths: [], lessons: [], interviews: [], practice: [], languages: [] } },
   tracks: [],

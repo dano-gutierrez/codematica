@@ -180,3 +180,7 @@ If either traversal is correct, prefer the version whose invariant is easiest to
 
 - [Python deque](https://docs.python.org/3/library/collections.html#collections.deque)
 - [JavaScript Set](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Set)
+
+## Memory details for these implementations
+
+The TypeScript head-index queue retains processed entries until traversal ends, so its backing array holds O(V) entries even when the live frontier is small. The iterative DFS above marks on pop; duplicate pending neighbors can occupy O(E) stack entries in a general graph. Recursive DFS uses O(V) visited space and at most O(V) active calls. Marking on push bounds a simple iterative stack to O(V), but can change the discovery order compared with recursive DFS. State which implementation you are analyzing.

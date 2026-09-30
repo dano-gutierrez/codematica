@@ -41,6 +41,9 @@ const languageLabels: Record<string, string> = {
   markdown: "Markdown",
   mermaid: "Mermaid",
   python: "Python",
+  sql: "SQL",
+  toml: "TOML",
+  plaintext: "Plain text",
   typescript: "TypeScript",
   xml: "HTML/XML",
 };

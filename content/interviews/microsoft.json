@@ -31,7 +31,8 @@
         }
       ],
       "constraints": [
-        "All primary operations should be constant time."
+        "All primary operations should be constant time.",
+        "pop, top, and getMin are called only on a nonempty stack. Values are 32-bit integers."
       ],
       "diagrams": [],
       "solutionTracks": [
@@ -61,15 +62,15 @@
           "languages": {
             "python": {
               "label": "Python",
-              "code": "class MinStack:\n    def __init__(self):\n        self.values = []\n        self.mins = []\n    def push(self, value):\n        self.values.append(value)\n        self.mins.append(value if not self.mins else min(value, self.mins[-1]))\n    def pop(self):\n        self.mins.pop()\n        return self.values.pop()\n    def get_min(self):\n        return self.mins[-1]"
+              "code": "class MinStack:\n    def __init__(self):\n        self.values = []\n        self.mins = []\n    def push(self, value):\n        self.values.append(value)\n        self.mins.append(value if not self.mins else min(value, self.mins[-1]))\n    def pop(self):\n        self.mins.pop()\n        return self.values.pop()\n    def get_min(self):\n        return self.mins[-1]\n    def top(self):\n        return self.values[-1]"
             },
             "typescript": {
               "label": "TypeScript",
-              "code": "export class MinStack {\n  private values: number[] = [];\n  private mins: number[] = [];\n  push(value: number): void { this.values.push(value); this.mins.push(this.mins.length ? Math.min(value, this.mins[this.mins.length - 1]) : value); }\n  pop(): number | undefined { this.mins.pop(); return this.values.pop(); }\n  getMin(): number { return this.mins[this.mins.length - 1]; }\n}"
+              "code": "export class MinStack {\n  private values: number[] = [];\n  private mins: number[] = [];\n  push(value: number): void { this.values.push(value); this.mins.push(this.mins.length ? Math.min(value, this.mins[this.mins.length - 1]) : value); }\n  pop(): number | undefined { this.mins.pop(); return this.values.pop(); }\n  getMin(): number { return this.mins[this.mins.length - 1]; }\n  top(): number { return this.values[this.values.length - 1]; }\n}"
             },
             "java": {
               "label": "Java",
-              "code": "class MinStack {\n  private final Deque<Integer> values = new ArrayDeque<>();\n  private final Deque<Integer> mins = new ArrayDeque<>();\n  void push(int value) { values.push(value); mins.push(mins.isEmpty() ? value : Math.min(value, mins.peek())); }\n  int pop() { mins.pop(); return values.pop(); }\n  int getMin() { return mins.peek(); }\n}"
+              "code": "class MinStack {\n  private final Deque<Integer> values = new ArrayDeque<>();\n  private final Deque<Integer> mins = new ArrayDeque<>();\n  void push(int value) { values.push(value); mins.push(mins.isEmpty() ? value : Math.min(value, mins.peek())); }\n  int pop() { mins.pop(); return values.pop(); }\n  int getMin() { return mins.peek(); }\n  int top() { return values.peek(); }\n}"
             }
           }
         },
@@ -99,15 +100,15 @@
           "languages": {
             "python": {
               "label": "Python",
-              "code": "class MinStackEncoded:\n    def __init__(self):\n        self.stack = []\n        self.min_value = 0\n    def push(self, value):\n        if not self.stack:\n            self.stack.append(0)\n            self.min_value = value\n        else:\n            delta = value - self.min_value\n            self.stack.append(delta)\n            if delta < 0:\n                self.min_value = value\n    def pop(self):\n        delta = self.stack.pop()\n        value = self.min_value if delta < 0 else self.min_value + delta\n        if delta < 0:\n            self.min_value -= delta\n        return value\n    def get_min(self):\n        return self.min_value"
+              "code": "class MinStackEncoded:\n    def __init__(self):\n        self.stack = []\n        self.min_value = 0\n    def push(self, value):\n        if not self.stack:\n            self.stack.append(0)\n            self.min_value = value\n        else:\n            delta = value - self.min_value\n            self.stack.append(delta)\n            if delta < 0:\n                self.min_value = value\n    def pop(self):\n        delta = self.stack.pop()\n        value = self.min_value if delta < 0 else self.min_value + delta\n        if delta < 0:\n            self.min_value -= delta\n        return value\n    def get_min(self):\n        return self.min_value\n    def top(self):\n        delta = self.stack[-1]\n        return self.min_value if delta < 0 else self.min_value + delta"
             },
             "typescript": {
               "label": "TypeScript",
-              "code": "export class MinStackEncoded {\n  private stack: number[] = [];\n  private minValue = 0;\n  push(value: number): void {\n    if (!this.stack.length) { this.stack.push(0); this.minValue = value; return; }\n    const delta = value - this.minValue;\n    this.stack.push(delta);\n    if (delta < 0) this.minValue = value;\n  }\n  pop(): number {\n    const delta = this.stack.pop()!;\n    const value = delta < 0 ? this.minValue : this.minValue + delta;\n    if (delta < 0) this.minValue -= delta;\n    return value;\n  }\n  getMin(): number { return this.minValue; }\n}"
+              "code": "export class MinStackEncoded {\n  private stack: number[] = [];\n  private minValue = 0;\n  push(value: number): void {\n    if (!this.stack.length) { this.stack.push(0); this.minValue = value; return; }\n    const delta = value - this.minValue;\n    this.stack.push(delta);\n    if (delta < 0) this.minValue = value;\n  }\n  pop(): number {\n    const delta = this.stack.pop()!;\n    const value = delta < 0 ? this.minValue : this.minValue + delta;\n    if (delta < 0) this.minValue -= delta;\n    return value;\n  }\n  getMin(): number { return this.minValue; }\n  top(): number { const delta = this.stack[this.stack.length - 1]; return delta < 0 ? this.minValue : this.minValue + delta; }\n}"
             },
             "java": {
               "label": "Java",
-              "code": "class MinStackEncoded {\n  private final Deque<Long> stack = new ArrayDeque<>();\n  private long minValue = 0;\n  void push(int value) {\n    if (stack.isEmpty()) { stack.push(0L); minValue = value; return; }\n    long delta = value - minValue;\n    stack.push(delta);\n    if (delta < 0) minValue = value;\n  }\n  int pop() {\n    long delta = stack.pop();\n    long value = delta < 0 ? minValue : minValue + delta;\n    if (delta < 0) minValue -= delta;\n    return (int) value;\n  }\n  int getMin() { return (int) minValue; }\n}"
+              "code": "class MinStackEncoded {\n  private final Deque<Long> stack = new ArrayDeque<>();\n  private long minValue = 0;\n  void push(int value) {\n    if (stack.isEmpty()) { stack.push(0L); minValue = value; return; }\n    long delta = value - minValue;\n    stack.push(delta);\n    if (delta < 0) minValue = value;\n  }\n  int pop() {\n    long delta = stack.pop();\n    long value = delta < 0 ? minValue : minValue + delta;\n    if (delta < 0) minValue -= delta;\n    return (int) value;\n  }\n  int getMin() { return (int) minValue; }\n  int top() { long delta = stack.peek(); return (int) (delta < 0 ? minValue : minValue + delta); }\n}"
             }
           }
         }
@@ -139,7 +140,8 @@
         }
       ],
       "constraints": [
-        "The serialized format only needs to be understood by your own deserializer."
+        "The serialized format only needs to be understood by your own deserializer.",
+        "Values are 32-bit integers. Deserialize only the matching serializer’s output; malformed-wire-format validation is a follow-up."
       ],
       "diagrams": [],
       "solutionTracks": [
@@ -169,15 +171,15 @@
           "languages": {
             "python": {
               "label": "Python",
-              "code": "def serialize(root):\n    out = []\n    def dfs(node):\n        if not node:\n            out.append('#')\n            return\n        out.append(str(node.val))\n        dfs(node.left)\n        dfs(node.right)\n    dfs(root)\n    return ','.join(out)\n\ndef deserialize(data):\n    values = iter(data.split(','))\n    def build():\n        value = next(values)\n        if value == '#':\n            return None\n        node = TreeNode(int(value))\n        node.left = build()\n        node.right = build()\n        return node\n    return build()"
+              "code": "class TreeNode:\n    def __init__(self, val, left=None, right=None):\n        self.val, self.left, self.right = val, left, right\n\ndef serialize(root):\n    out = []\n    def dfs(node):\n        if not node:\n            out.append('#')\n            return\n        out.append(str(node.val))\n        dfs(node.left)\n        dfs(node.right)\n    dfs(root)\n    return ','.join(out)\n\ndef deserialize(data):\n    values = iter(data.split(','))\n    def build():\n        value = next(values)\n        if value == '#':\n            return None\n        node = TreeNode(int(value))\n        node.left = build()\n        node.right = build()\n        return node\n    return build()"
             },
             "typescript": {
               "label": "TypeScript",
-              "code": "type TreeNode = { val: number; left: TreeNode | null; right: TreeNode | null };\nexport function serialize(root: TreeNode | null): string {\n  const out: string[] = [];\n  function dfs(node: TreeNode | null): void {\n    if (!node) { out.push('#'); return; }\n    out.push(String(node.val));\n    dfs(node.left); dfs(node.right);\n  }\n  dfs(root);\n  return out.join(',');\n}"
+              "code": "type TreeNode = { val: number; left: TreeNode | null; right: TreeNode | null };\nexport function serialize(root: TreeNode | null): string {\n  const out: string[] = [];\n  function dfs(node: TreeNode | null): void {\n    if (!node) { out.push('#'); return; }\n    out.push(String(node.val));\n    dfs(node.left); dfs(node.right);\n  }\n  dfs(root);\n  return out.join(',');\n}\n\nexport function deserialize(data: string): TreeNode | null {\n  const values = data.split(','); let i = 0;\n  function build(): TreeNode | null {\n    const value = values[i++]; if (value === '#') return null;\n    return {val: Number(value), left: build(), right: build()};\n  }\n  return build();\n}"
             },
             "java": {
               "label": "Java",
-              "code": "String serialize(TreeNode root) {\n  List<String> out = new ArrayList<>();\n  serializeDfs(root, out);\n  return String.join(\",\", out);\n}\nvoid serializeDfs(TreeNode node, List<String> out) {\n  if (node == null) { out.add(\"#\"); return; }\n  out.add(String.valueOf(node.val));\n  serializeDfs(node.left, out);\n  serializeDfs(node.right, out);\n}"
+              "code": "static class TreeNode { int val; TreeNode left, right; TreeNode(int value) { val = value; } }\nString serialize(TreeNode root) {\n  List<String> out = new ArrayList<>();\n  serializeDfs(root, out);\n  return String.join(\",\", out);\n}\nvoid serializeDfs(TreeNode node, List<String> out) {\n  if (node == null) { out.add(\"#\"); return; }\n  out.add(String.valueOf(node.val));\n  serializeDfs(node.left, out);\n  serializeDfs(node.right, out);\n}\n\nTreeNode deserialize(String data) { return buildTree(Arrays.asList(data.split(\",\")).iterator()); }\nTreeNode buildTree(Iterator<String> values) {\n  String value = values.next(); if (value.equals(\"#\")) return null;\n  TreeNode node = new TreeNode(Integer.parseInt(value));\n  node.left = buildTree(values); node.right = buildTree(values); return node;\n}"
             }
           }
         },
@@ -207,15 +209,15 @@
           "languages": {
             "python": {
               "label": "Python",
-              "code": "from collections import deque\n\ndef serialize_level(root):\n    out = []\n    queue = deque([root])\n    while queue:\n        node = queue.popleft()\n        if not node:\n            out.append('#')\n            continue\n        out.append(str(node.val))\n        queue.append(node.left)\n        queue.append(node.right)\n    return ','.join(out)"
+              "code": "class TreeNode:\n    def __init__(self, val, left=None, right=None):\n        self.val, self.left, self.right = val, left, right\n\nfrom collections import deque\n\ndef serialize_level(root):\n    out = []\n    queue = deque([root])\n    while queue:\n        node = queue.popleft()\n        if not node:\n            out.append('#')\n            continue\n        out.append(str(node.val))\n        queue.append(node.left)\n        queue.append(node.right)\n    return ','.join(out)\n\ndef deserialize_level(data):\n    values = iter(data.split(','))\n    first = next(values)\n    if first == '#':\n        return None\n    root = TreeNode(int(first))\n    queue = deque([root])\n    while queue:\n        node = queue.popleft()\n        left, right = next(values), next(values)\n        if left != '#':\n            node.left = TreeNode(int(left)); queue.append(node.left)\n        if right != '#':\n            node.right = TreeNode(int(right)); queue.append(node.right)\n    return root"
             },
             "typescript": {
               "label": "TypeScript",
-              "code": "type TreeNode = { val: number; left: TreeNode | null; right: TreeNode | null };\nexport function serializeLevel(root: TreeNode | null): string {\n  const out: string[] = [];\n  const queue: Array<TreeNode | null> = [root];\n  for (let i = 0; i < queue.length; i += 1) {\n    const node = queue[i];\n    if (!node) { out.push('#'); continue; }\n    out.push(String(node.val));\n    queue.push(node.left, node.right);\n  }\n  return out.join(',');\n}"
+              "code": "type TreeNode = { val: number; left: TreeNode | null; right: TreeNode | null };\nexport function serializeLevel(root: TreeNode | null): string {\n  const out: string[] = [];\n  const queue: Array<TreeNode | null> = [root];\n  for (let i = 0; i < queue.length; i += 1) {\n    const node = queue[i];\n    if (!node) { out.push('#'); continue; }\n    out.push(String(node.val));\n    queue.push(node.left, node.right);\n  }\n  return out.join(',');\n}\n\nexport function deserializeLevel(data: string): TreeNode | null {\n  const values = data.split(','); if (values[0] === '#') return null;\n  const node = (v: string): TreeNode => ({val: Number(v), left: null, right: null});\n  const root = node(values[0]), queue = [root]; let i = 1;\n  for (let head = 0; head < queue.length; head++) {\n    const parent = queue[head], left = values[i++], right = values[i++];\n    if (left !== '#') { parent.left = node(left); queue.push(parent.left); }\n    if (right !== '#') { parent.right = node(right); queue.push(parent.right); }\n  }\n  return root;\n}"
             },
             "java": {
               "label": "Java",
-              "code": "String serializeLevel(TreeNode root) {\n  List<String> out = new ArrayList<>();\n  Queue<TreeNode> queue = new LinkedList<>();\n  queue.add(root);\n  while (!queue.isEmpty()) {\n    TreeNode node = queue.remove();\n    if (node == null) { out.add(\"#\"); continue; }\n    out.add(String.valueOf(node.val));\n    queue.add(node.left);\n    queue.add(node.right);\n  }\n  return String.join(\",\", out);\n}"
+              "code": "static class TreeNode { int val; TreeNode left, right; TreeNode(int value) { val = value; } }\nString serializeLevel(TreeNode root) {\n  List<String> out = new ArrayList<>();\n  Queue<TreeNode> queue = new LinkedList<>();\n  queue.add(root);\n  while (!queue.isEmpty()) {\n    TreeNode node = queue.remove();\n    if (node == null) { out.add(\"#\"); continue; }\n    out.add(String.valueOf(node.val));\n    queue.add(node.left);\n    queue.add(node.right);\n  }\n  return String.join(\",\", out);\n}\n\nTreeNode deserializeLevel(String data) {\n  String[] values = data.split(\",\"); if (values[0].equals(\"#\")) return null;\n  TreeNode root = new TreeNode(Integer.parseInt(values[0]));\n  Queue<TreeNode> queue = new ArrayDeque<>(); queue.add(root); int i = 1;\n  while (!queue.isEmpty()) {\n    TreeNode parent = queue.remove(); String left = values[i++], right = values[i++];\n    if (!left.equals(\"#\")) { parent.left = new TreeNode(Integer.parseInt(left)); queue.add(parent.left); }\n    if (!right.equals(\"#\")) { parent.right = new TreeNode(Integer.parseInt(right)); queue.add(parent.right); }\n  }\n  return root;\n}"
             }
           }
         }

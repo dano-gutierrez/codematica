@@ -120,13 +120,13 @@ export function PassiveFlashcardFeed({
       </header>
 
       {visibleCards.map(({ card, instanceId, sequenceIndex }) => (
-        <PassiveFlashcard key={instanceId} card={card} sequenceIndex={sequenceIndex} />
+        <PassiveFlashcard key={instanceId} card={card} sequenceIndex={sequenceIndex} pathSlug={feed.pathSlug} />
       ))}
     </main>
   );
 }
 
-function PassiveFlashcard({ card, sequenceIndex }: { card: PassiveFlashcardCard; sequenceIndex: number }) {
+function PassiveFlashcard({ card, sequenceIndex, pathSlug }: { card: PassiveFlashcardCard; sequenceIndex: number; pathSlug: string }) {
   const typeMeta = getCardTypeMeta(card.type);
 
   return (
@@ -156,7 +156,9 @@ function PassiveFlashcard({ card, sequenceIndex }: { card: PassiveFlashcardCard;
           <p className="mt-5 text-xl font-normal leading-8 text-[#33434b] sm:text-2xl sm:leading-9">{card.prompt}</p>
           <p className="mt-5 text-base font-normal leading-7 text-[#68737d] sm:text-lg sm:leading-8">{card.explanation}</p>
 
-          {card.code ? <CodeBlock code={card.code} language="python" className="mt-5" /> : null}
+          {card.code ? <CodeBlock code={card.code} language={card.codeLanguage} className="mt-5" /> : null}
+
+          {card.sourceDocSlug ? <Link href={`/docs/${card.sourceDocSlug}?path=${encodeURIComponent(pathSlug)}`} className="mt-4 inline-flex min-h-11 items-center font-semibold text-[#1d4e9e] underline" data-testid={`passive-flashcard-source-${sequenceIndex}`}>Review the lesson</Link> : null}
 
           <div className="mt-6 flex flex-wrap gap-2">
             {card.tags.slice(0, 5).map((tag) => (

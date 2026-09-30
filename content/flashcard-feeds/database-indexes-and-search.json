@@ -175,7 +175,7 @@
       "difficulty": "senior",
       "tags": ["btree", "sql", "query-planning"],
       "sourceDocSlug": "databases/index-fundamentals",
-      "code": "create index orders_account_created_idx\n  on orders (account_id, created_at desc);"
+      "code": "create index orders_account_created_idx\n  on orders (account_id, created_at desc);", "codeLanguage": "sql"
     },
     {
       "id": "partial-index-snippet",
@@ -186,7 +186,7 @@
       "difficulty": "senior",
       "tags": ["partial-index", "sql", "postgres"],
       "sourceDocSlug": "databases/index-fundamentals",
-      "code": "create index orders_unfulfilled_recent_idx\n  on orders (created_at desc)\n  where fulfilled_at is null;"
+      "code": "create index orders_unfulfilled_recent_idx\n  on orders (created_at desc)\n  where fulfilled_at is null;", "codeLanguage": "sql"
     },
     {
       "id": "fts-vector-snippet",
@@ -197,7 +197,7 @@
       "difficulty": "senior",
       "tags": ["full-text-search", "tsvector", "sql"],
       "sourceDocSlug": "databases/postgres-full-text-search",
-      "code": "setweight(to_tsvector('english', coalesce(title, '')), 'A') ||\nsetweight(to_tsvector('english', coalesce(body, '')), 'C')"
+      "code": "setweight(to_tsvector('english', coalesce(title, '')), 'A') ||\nsetweight(to_tsvector('english', coalesce(body, '')), 'C')", "codeLanguage": "sql"
     },
     {
       "id": "fts-gin-snippet",
@@ -208,7 +208,7 @@
       "difficulty": "senior",
       "tags": ["gin-index", "full-text-search", "sql"],
       "sourceDocSlug": "databases/postgres-full-text-search",
-      "code": "create index articles_search_document_idx\n  on articles\n  using gin (search_document);"
+      "code": "create index articles_search_document_idx\n  on articles\n  using gin (search_document);", "codeLanguage": "sql"
     },
     {
       "id": "drizzle-trigram-snippet",
@@ -219,7 +219,7 @@
       "difficulty": "senior",
       "tags": ["drizzle", "pg-trgm", "gin-index"],
       "sourceDocSlug": "databases/trigram-fuzzy-indexes",
-      "code": "index('tag_localization_name_trgm_idx').using(\n  'gin',\n  sql`(lower(${table.name}) gin_trgm_ops)`,\n)"
+      "code": "index('tag_localization_name_trgm_idx').using(\n  'gin',\n  sql`(lower(${table.name}) gin_trgm_ops)`,\n)", "codeLanguage": "typescript"
     },
     {
       "id": "trigram-query-snippet",
@@ -230,7 +230,7 @@
       "difficulty": "senior",
       "tags": ["pg-trgm", "fuzzy-search", "sql"],
       "sourceDocSlug": "databases/trigram-fuzzy-indexes",
-      "code": "where lower(title) % lower($1)\norder by similarity(lower(title), lower($1)) desc"
+      "code": "where lower(title) % lower($1)\norder by similarity(lower(title), lower($1)) desc", "codeLanguage": "sql"
     },
     {
       "id": "hybrid-candidates-snippet",
@@ -241,7 +241,7 @@
       "difficulty": "senior",
       "tags": ["hybrid-search", "sql", "ranking"],
       "sourceDocSlug": "databases/postgres-hybrid-search-query",
-      "code": "select id, fts_rank as rank from fts_candidates\nunion all\nselect id, trigram_rank as rank from trigram_candidates"
+      "code": "select id, fts_rank as rank from fts_candidates\nunion all\nselect id, trigram_rank as rank from trigram_candidates", "codeLanguage": "sql"
     },
     {
       "id": "set-local-snippet",
@@ -252,7 +252,7 @@
       "difficulty": "senior",
       "tags": ["pg-trgm", "postgres", "sql"],
       "sourceDocSlug": "databases/postgres-hybrid-search-query",
-      "code": "begin;\nset local pg_trgm.similarity_threshold = 0.11;\nselect ...;\ncommit;"
+      "code": "begin;\nset local pg_trgm.similarity_threshold = 0.11;\nselect ...;\ncommit;", "codeLanguage": "sql"
     },
     {
       "id": "index-cost-interview",
@@ -383,7 +383,7 @@
       "difficulty": "senior",
       "tags": ["hot-updates", "sql", "postgres"],
       "sourceDocSlug": "databases/postgres-hot-updates",
-      "code": "update accounts\nset last_seen_at = clock_timestamp()\nwhere id = 42;"
+      "code": "update accounts\nset last_seen_at = clock_timestamp()\nwhere id = 42;", "codeLanguage": "sql"
     },
     {
       "id": "hot-stats-snippet",
@@ -394,7 +394,7 @@
       "difficulty": "senior",
       "tags": ["hot-updates", "monitoring", "sql"],
       "sourceDocSlug": "databases/postgres-hot-updates",
-      "code": "select relname, n_tup_upd, n_tup_hot_upd,\n  round(100.0 * n_tup_hot_upd / nullif(n_tup_upd, 0), 2) as hot_pct\nfrom pg_stat_user_tables;"
+      "code": "select relname, n_tup_upd, n_tup_hot_upd,\n  round(100.0 * n_tup_hot_upd / nullif(n_tup_upd, 0), 2) as hot_pct\nfrom pg_stat_user_tables;", "codeLanguage": "sql"
     },
     {
       "id": "hot-index-tradeoff-interview",

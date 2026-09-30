@@ -126,3 +126,9 @@ The first hosted web target is Vercel Hobby on the Vercel-provided URL. Vercel r
 - `docs/features/japanese-language-learning.md`: open JF/CEFR Japanese roadmap, complete basic kana, 100-kanji target, romaji/IME input, deterministic review, resource/audio contracts, iPad accessibility, dictionary profiles, and assisted/free handwriting practice.
 
 - `docs/features/rtk-query-interview-preparation.md`: Front-End Development RTK Query mechanics, incident recovery, modern APIs, production architecture, and interview practice.
+
+## Frontend interview curriculum
+
+Read `docs/features/frontend-interview-practice.md` for the seven-topic path. Index v11 adds interview path nodes, optional final-feed navigation, web-track Python companions, and review snippet languages. Complete solution code is canonical in interview JSON; concepts live in Markdown. `npm run test:interview:python` requires Python and executes authored snippets.
+
+The supplementary `frontend/react-state-async-callbacks` lesson and its six-question checkpoint use the existing reader and questionnaire. Its standalone broken/fixed examples are canonical Markdown fences, typechecked and executed by `ReactAsyncStateLesson.test.tsx`; they are not duplicated in interview JSON.

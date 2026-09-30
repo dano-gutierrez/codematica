@@ -88,8 +88,9 @@ Branch protection is an account-side follow-up: after the five PR jobs have comp
 ### Browser Matrix
 
 - `mobile-chromium`: complete smoke and regression suite.
-- `desktop-chromium`: smoke journeys.
-- `mobile-webkit`: smoke journeys.
+- `desktop-chromium`: smoke journeys and `@playground` regressions.
+- `mobile-webkit`: smoke journeys and `@playground` regressions.
+- Playground regressions exercise a real hosted runtime and a controlled connection failure, including automatic startup, edit/run/reset, and recovery with drafts intact.
 - Trace, screenshot, and video are retained only for failures. HTML/JUnit reports and failure evidence are uploaded by CI.
 
 ### Native Matrix
@@ -170,3 +171,7 @@ Must not regress: local anonymous operation, Auth-disabled recovery, stale progr
 ## Thread Handoff Prompt
 
 `Read docs/codex-context.md and docs/features/automated-testing-and-release-regression.md first. Preserve the coverage floors and stable check names, start behavior changes with the narrowest failing test, update the owning feature-doc test plan, run every affected local lane, and report any CI/EAS validation that still requires account-side execution.`
+
+## Authored Interview Solutions (2026-09-27)
+
+`npm run test:interview:python` is a required CI/release gate with Python 3.13 setup; missing Python fails. It executes canonical frontend companions and prior-content regression fixtures with mocked I/O. `FrontendInterviewExamples.test.tsx` compiles/executes all 21 TS projects and cross-checks Python outcomes. `interview-audit.test.ts` protects verified legacy fixes. No threshold or exclusion was lowered. The new browser and Maestro frontend-interview journeys cover the shared study flow.

@@ -89,6 +89,7 @@ function PathCatalogCard({ path }: { path: LearningPath }) {
   const nodes = path.units.flatMap((unit) => unit.nodes);
   const nodeCounts = {
     document: nodes.filter((node) => node.kind === "document").length,
+    interview: nodes.filter((node) => node.kind === "interview").length,
     diagram: nodes.filter((node) => node.kind === "diagram").length,
     exercise: nodes.filter((node) => node.kind === "exercise").length,
   };
@@ -103,6 +104,7 @@ function PathCatalogCard({ path }: { path: LearningPath }) {
       <p className="mt-2 text-sm font-normal leading-6 text-[#68737d]">{path.summary}</p>
       <div className="mt-4 flex flex-wrap gap-2 text-xs font-semibold text-[#68737d]">
         <span>{path.units.length} units</span><span aria-hidden="true">·</span><span>{nodeCounts.document} lessons</span><span aria-hidden="true">·</span><span>{nodeCounts.exercise} practice</span>
+        {nodeCounts.interview > 0 ? <><span aria-hidden="true">·</span><span>{nodeCounts.interview} walkthroughs</span></> : null}
         {nodeCounts.diagram > 0 ? <><span aria-hidden="true">·</span><span>{nodeCounts.diagram} diagrams</span></> : null}
       </div>
       <Link href={path.route} className="mt-auto inline-flex min-h-12 items-center justify-center gap-2 rounded-xl border border-[#004d49] bg-[#00645f] px-4 py-2 text-sm font-semibold text-white transition hover:-translate-y-0.5">

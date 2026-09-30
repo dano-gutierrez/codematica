@@ -75,7 +75,7 @@
             },
             "java": {
               "label": "Java",
-              "code": "int[] twoSum(int[] nums, int target) {\n  Map<Integer, Integer> seen = new HashMap<>();\n  for (int i = 0; i < nums.length; i++) {\n    int need = target - nums[i];\n    if (seen.containsKey(need)) return new int[] { seen.get(need), i };\n    seen.put(nums[i], i);\n  }\n  return new int[0];\n}"
+              "code": "int[] twoSum(int[] nums, int target) {\n  Map<Long, Integer> seen = new HashMap<>();\n  for (int i = 0; i < nums.length; i++) {\n    long need = (long) target - nums[i];\n    if (seen.containsKey(need)) return new int[] { seen.get(need), i };\n    seen.put((long) nums[i], i);\n  }\n  return new int[0];\n}"
             }
           }
         },
@@ -113,7 +113,7 @@
             },
             "java": {
               "label": "Java",
-              "code": "int[] twoSumSorted(int[] nums, int target) {\n  int[][] pairs = new int[nums.length][2];\n  for (int i = 0; i < nums.length; i++) pairs[i] = new int[] { nums[i], i };\n  Arrays.sort(pairs, Comparator.comparingInt(a -> a[0]));\n  int left = 0, right = pairs.length - 1;\n  while (left < right) {\n    int total = pairs[left][0] + pairs[right][0];\n    if (total == target) return new int[] { pairs[left][1], pairs[right][1] };\n    if (total < target) left++; else right--;\n  }\n  return new int[0];\n}"
+              "code": "int[] twoSumSorted(int[] nums, int target) {\n  int[][] pairs = new int[nums.length][2];\n  for (int i = 0; i < nums.length; i++) pairs[i] = new int[] { nums[i], i };\n  Arrays.sort(pairs, Comparator.comparingInt(a -> a[0]));\n  int left = 0, right = pairs.length - 1;\n  while (left < right) {\n    long total = (long) pairs[left][0] + pairs[right][0];\n    if (total == target) return new int[] { pairs[left][1], pairs[right][1] };\n    if (total < target) left++; else right--;\n  }\n  return new int[0];\n}"
             }
           }
         }
@@ -146,7 +146,8 @@
         }
       ],
       "constraints": [
-        "Aim for constant-time get and put in the main solution."
+        "Aim for constant-time get and put in the main solution.",
+        "Capacity is a non-negative integer. Built-in hash maps provide expected/amortized constant-time operations, not a worst-case latency guarantee."
       ],
       "diagrams": [
         {
@@ -185,7 +186,7 @@
             },
             "typescript": {
               "label": "TypeScript",
-              "code": "export class LRUCache {\n  private data = new Map<number, number>();\n  constructor(private capacity: number) {}\n\n  get(key: number): number {\n    if (!this.data.has(key)) return -1;\n    const value = this.data.get(key)!;\n    this.data.delete(key);\n    this.data.set(key, value);\n    return value;\n  }\n\n  put(key: number, value: number): void {\n    if (this.data.has(key)) this.data.delete(key);\n    this.data.set(key, value);\n    if (this.data.size > this.capacity) this.data.delete(this.data.keys().next().value);\n  }\n}"
+              "code": "export class LRUCache {\n  private data = new Map<number, number>();\n  constructor(private capacity: number) {}\n\n  get(key: number): number {\n    if (!this.data.has(key)) return -1;\n    const value = this.data.get(key)!;\n    this.data.delete(key);\n    this.data.set(key, value);\n    return value;\n  }\n\n  put(key: number, value: number): void {\n    if (this.data.has(key)) this.data.delete(key);\n    this.data.set(key, value);\n    if (this.data.size > this.capacity) this.data.delete(this.data.keys().next().value!);\n  }\n}"
             },
             "java": {
               "label": "Java",
@@ -260,7 +261,8 @@
         }
       ],
       "constraints": [
-        "Any order is acceptable unless the prompt adds a tie-breaker."
+        "Any order is acceptable unless the prompt adds a tie-breaker.",
+        "k is an integer from zero through the number of distinct values. Any tied values at the cutoff are acceptable."
       ],
       "diagrams": [],
       "solutionTracks": [
@@ -284,7 +286,7 @@
           ],
           "explanation": "The min heap always removes the least frequent value among the candidates it has seen. After all counts are processed, only the k strongest candidates remain.",
           "complexity": {
-            "time": "O(n log k)",
+            "time": "O(n + d log(k + 1)), d distinct values",
             "space": "O(n)"
           },
           "languages": {
@@ -294,7 +296,7 @@
             },
             "typescript": {
               "label": "TypeScript",
-              "code": "export function topKFrequent(nums: number[], k: number): number[] {\n  const counts = new Map<number, number>();\n  for (const value of nums) counts.set(value, (counts.get(value) ?? 0) + 1);\n  return [...counts.entries()]\n    .sort((a, b) => b[1] - a[1])\n    .slice(0, k)\n    .map(([value]) => value);\n}"
+              "code": "class MinHeap<T> {\n  private items: T[] = [];\n  constructor(private compare: (a: T, b: T) => number) {}\n  get size(): number { return this.items.length; }\n  peek(): T | undefined { return this.items[0]; }\n  push(value: T): void {\n    const a = this.items; a.push(value);\n    let i = a.length - 1;\n    while (i > 0) { const p = Math.floor((i - 1) / 2); if (this.compare(a[p], a[i]) <= 0) break; [a[p], a[i]] = [a[i], a[p]]; i = p; }\n  }\n  pop(): T | undefined {\n    const a = this.items;\n    if (!a.length) return undefined;\n    const first = a[0], last = a.pop()!;\n    if (a.length) {\n      a[0] = last; let i = 0;\n      while (2 * i + 1 < a.length) {\n        let child = 2 * i + 1;\n        if (child + 1 < a.length && this.compare(a[child + 1], a[child]) < 0) child++;\n        if (this.compare(a[i], a[child]) <= 0) break;\n        [a[i], a[child]] = [a[child], a[i]]; i = child;\n      }\n    }\n    return first;\n  }\n}\nexport function topKFrequent(nums: number[], k: number): number[] {\n  const counts = new Map<number, number>();\n  for (const value of nums) counts.set(value, (counts.get(value) ?? 0) + 1);\n  const h = new MinHeap<[number, number]>((a, b) => a[0] - b[0]);\n  for (const [value, count] of counts) { h.push([count, value]); if (h.size > k) h.pop(); }\n  const out: number[] = []; while (h.size) out.push(h.pop()![1]); return out;\n}"
             },
             "java": {
               "label": "Java",
@@ -328,11 +330,11 @@
           "languages": {
             "python": {
               "label": "Python",
-              "code": "from collections import Counter\n\ndef top_k_bucket(nums, k):\n    counts = Counter(nums)\n    buckets = [[] for _ in range(len(nums) + 1)]\n    for value, count in counts.items():\n        buckets[count].append(value)\n    out = []\n    for count in range(len(buckets) - 1, -1, -1):\n        for value in buckets[count]:\n            out.append(value)\n            if len(out) == k:\n                return out\n    return out"
+              "code": "from collections import Counter\n\ndef top_k_bucket(nums, k):\n    if k == 0:\n        return []\n    counts = Counter(nums)\n    buckets = [[] for _ in range(len(nums) + 1)]\n    for value, count in counts.items():\n        buckets[count].append(value)\n    out = []\n    for count in range(len(buckets) - 1, -1, -1):\n        for value in buckets[count]:\n            out.append(value)\n            if len(out) == k:\n                return out\n    return out"
             },
             "typescript": {
               "label": "TypeScript",
-              "code": "export function topKBucket(nums: number[], k: number): number[] {\n  const counts = new Map<number, number>();\n  for (const value of nums) counts.set(value, (counts.get(value) ?? 0) + 1);\n  const buckets: number[][] = Array.from({ length: nums.length + 1 }, () => []);\n  for (const [value, count] of counts) buckets[count].push(value);\n  const out: number[] = [];\n  for (let count = buckets.length - 1; count >= 0; count -= 1) {\n    for (const value of buckets[count]) {\n      out.push(value);\n      if (out.length === k) return out;\n    }\n  }\n  return out;\n}"
+              "code": "export function topKBucket(nums: number[], k: number): number[] {\n  if (k === 0) return [];\n  const counts = new Map<number, number>();\n  for (const value of nums) counts.set(value, (counts.get(value) ?? 0) + 1);\n  const buckets: number[][] = Array.from({ length: nums.length + 1 }, () => []);\n  for (const [value, count] of counts) buckets[count].push(value);\n  const out: number[] = [];\n  for (let count = buckets.length - 1; count >= 0; count -= 1) {\n    for (const value of buckets[count]) {\n      out.push(value);\n      if (out.length === k) return out;\n    }\n  }\n  return out;\n}"
             },
             "java": {
               "label": "Java",

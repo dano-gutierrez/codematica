@@ -28,3 +28,7 @@ Exercise generation, executable code validation, executable SQL validation, AI f
 Passive scroll-only flashcards are authored separately in `content/flashcard-feeds/`; do not model them as interactive `type: "flashcard"` exercises.
 
 - RTK Query checkpoints use six single-answer scenario choices per lesson. Explanations must address the correct rule and both distractors; retain the distinction between client observation and server mutation outcome.
+
+Frontend interview checkpoints contain eight questions each: seven requirement/trace/bug/tradeoff choices and one ordered implementation recipe. Explain why distractors fail; quiz completion remains transient and supports continuing to the next lesson or an opt-in final review feed.
+
+The supplementary `frontend/react-state-async-questionnaire.json` has six scenario choices about snapshots, functional updates, updater purity, same-item races, and cleanup. It links to its standalone Markdown lesson and does not extend the seven-unit interview path.

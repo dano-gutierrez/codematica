@@ -157,6 +157,8 @@ The root layout wraps the existing Stack with safe-area-aware `NativeNavigation`
 
 ## Test Plan
 
+- `code-styles.test.tsx` verifies dark fenced and indented Markdown, unknown languages, standalone code, and separate inline styling. The frontend Maestro journey captures Python source for installed-device visual review; Jest success alone does not establish native visual contrast on a device.
+
 - Navigation: `adaptive-navigation.test.tsx` proves compact menu and tablet destinations; `.maestro/adaptive-navigation.yaml` must pass on Android and iOS before native release.
 
 - Core: `npm run typecheck -w @codematica/core` and `npm test` for generated index, route helpers, search, practice, and progress contracts.
@@ -194,3 +196,7 @@ The root layout wraps the existing Stack with safe-area-aware `NativeNavigation`
 ## Thread Handoff Prompt
 
 `Read docs/codex-context.md, docs/engineering-overview.md, and docs/features/native-mobile-deployment.md first. Compare the native contract against apps/mobile, packages/core, packages/ui, package.json workspace scripts, and .env.example. Preserve Next/Vercel web behavior while adding native changes, keep Supabase optional for anonymous browsing, and update tests/docs with any behavior changes.`
+
+## Frontend Interview Study Flow (2026-09-27)
+
+Native supports the same seven guides, revealed recipes, TypeScript/Python source, quizzes, and final continuous feed. Source execution remains web-only. The interview route passes path-aware next-node destinations; source-lesson links retain path queries. Jest covers the guide and language switch, and `.maestro/frontend-interview.yaml` joins the existing release-directory lane. Local verification found ten existing Expo patch mismatches; installed Android/iOS Maestro verification remains required before release.
