@@ -46,22 +46,39 @@ describe("native code surfaces", () => {
     expect(view.getByText("inline")).toHaveStyle({ color: "#245fba" });
   });
 
-  it("labels the language without showing fence metadata or trimming authored blank lines", async () => {
-    const view = await render(<MarkdownReader markdown={'```typescript title=example\n  const value = 1;\n\n```'} adapters={adapters} />);
-    expect(view.getByText("typescript")).toBeOnTheScreen();
-    expect(view.queryByText(/title=example/)).toBeNull();
-    expect(view.getByTestId("mobile-code-source").props.children).toBe("  const value = 1;\n");
+  it.each([
+    ["typescript", "typescript"],
+    [" \t typescript \t title=example  ", "typescript"],
+    ["", undefined],
+    [" \t ", undefined],
+  ])("keeps the language label outside scrolling for fence info %j", async (info, language) => {
+    const code = "  const value = 1;\n";
+    const view = await render(<MarkdownReader markdown={`\`\`\`${info}\n${code}\n\`\`\``} adapters={adapters} />);
+    const block = view.getByTestId("mobile-code-block");
+    const scroll = view.getByTestId("mobile-code-scroll");
+    expect(within(block).getAllByText(/.+/).map((text) => text.props.children)).toEqual(language ? [language, code] : [code]);
+    expect(within(scroll).getAllByText(/.+/).map((text) => text.props.children)).toEqual([code]);
+    if (language) expect(view.getByText(language).props.allowFontScaling).not.toBe(false);
+    expect(view.getByTestId("mobile-code-source").props.children).toBe(code);
   });
 
   it("does not cap tall code or constrain long source lines to the page width", async () => {
     const code = Array.from({ length: 40 }, (_, index) => `  line${index}: ${"long_source_".repeat(12)}`).join("\n");
     const view = await render(<CodeBlock code={code} language="typescript" />);
     const block = view.getByTestId("mobile-code-block");
+    const scroll = view.getByTestId("mobile-code-scroll");
+    const source = view.getByTestId("mobile-code-source");
     const blockStyle = StyleSheet.flatten(block.props.style);
     expect(blockStyle).toMatchObject({ maxWidth: "100%", minWidth: 0, alignSelf: "stretch", flexGrow: 0, flexShrink: 0 });
-    expect(blockStyle.height).toBeUndefined();
-    expect(blockStyle.maxHeight).toBeUndefined();
-    const source = view.getByText(/line0:/);
+    for (const style of [block.props.style, scroll.props.style, scroll.props.contentContainerStyle, source.props.style]) {
+      const flattened = StyleSheet.flatten(style);
+      expect(flattened.height).toBeUndefined();
+      expect(flattened.maxHeight).toBeUndefined();
+    }
+    expect(scroll.props.showsHorizontalScrollIndicator).toBe(true);
+    expect(scroll.props.indicatorStyle).toBe("white");
+    expect(StyleSheet.flatten(source.props.style).width).toBeUndefined();
+    expect(StyleSheet.flatten(source.props.style).maxWidth).toBeUndefined();
     expect(source.props.children).toBe(code);
     expect(source.props.numberOfLines).toBeUndefined();
     expect(source.props.allowFontScaling).not.toBe(false);

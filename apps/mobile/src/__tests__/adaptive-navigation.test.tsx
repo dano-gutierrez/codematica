@@ -39,6 +39,15 @@ describe("adaptive native navigation", () => {
     await fireEvent.press(view.getByTestId("mobile-nav-sign-in"));
     expect(navigate).toHaveBeenCalledWith("/login");
   });
+  it("keeps tablet labels naturally wrapping at the system text size", async () => {
+    const view = await render(<NativeNavigation pathname="/" navigate={jest.fn()} wide isAdmin />);
+    for (const label of ["Home", "Paths", "Lessons", "Practice", "Interviews", "Languages", "LinkedIn"]) {
+      const text = view.getByText(label);
+      expect(text.props.numberOfLines).toBeUndefined();
+      expect(text.props.adjustsFontSizeToFit).toBe(false);
+      expect(text.props.allowFontScaling).not.toBe(false);
+    }
+  });
 });
 
 // Exercise the real root shell's responsive decision as well as the shared control.

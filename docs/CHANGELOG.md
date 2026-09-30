@@ -29,6 +29,7 @@ Owning contracts: `docs/README.md#technical-editing-skill`, `docs/features/learn
 - Reuse the native code renderer for fenced and indented Markdown, preserving indentation and blank lines while scrolling long lines horizontally inside the code surface.
 - Keep language labels and surrounding prose/navigation fixed; remove the height cap that could hide the end of long code. System font scaling remains enabled. Phone tab labels fit on one line to avoid mid-word wrapping at larger text sizes.
 - Add regression-first Jest coverage, a Maestro lesson journey, and an agent-device runner that asserts real source movement and unchanged surrounding bounds on Android/iOS, with retained screenshots and native trees.
+- Review follow-up (2026-09-30): strengthen regression assertions for stationary language labels, padded/blank fence metadata, inner height clipping, and tablet label wrapping. All four deliberate defects passed the previous tests and fail the strengthened suite. Merge current `main` while preserving its admin navigation tests and Expo dependency alignment.
 
 Owning contract: `docs/features/markdown-knowledge-browser.md`. Device setup and regression command: `apps/mobile/e2e/README.md`.
 

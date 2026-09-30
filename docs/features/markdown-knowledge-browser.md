@@ -3,7 +3,7 @@
 ## Snapshot
 
 - Status: `shipped`
-- Last updated: `2026-09-29`
+- Last updated: `2026-09-30`
 - Owner thread: `n/a`
 - Current state: The content library lives at `/browse` and reads a generated local index from repo-authored Markdown, Mermaid, path, exercise, passive flashcard feed, and interview files.
 - Target outcome: Users can browse, search, read articles, and render diagrams on mobile without Supabase credentials.
@@ -128,6 +128,7 @@ The Web playground regression reproduced 3.88:1 comments and 3.71:1 numeric/bool
 - `WebPlayground.test.tsx` reproduces initialization failure and verifies shared source rendering and recovery. `code-styles.test.tsx` renders native fenced/indented/unknown-language Markdown plus standalone and inline code; the indented case failed before the fix.
 - `code-contrast.regression.spec.ts` checks actual backgrounds and every rendered code text node in lessons, three algorithm languages, Python companions, passive review, SQL without highlighting, Mermaid source, and an edited playground containing comments, numbers, and booleans. Editor contrast is checked with the remote bundler blocked. Theme selection is intentionally absent.
 - Run web/core and native coverage, lint, typecheck, production build, the contrast regression and smoke lane. Native installed-device checks complement local Jest assertions: `npm run mobile:e2e:code-layout -- --session <session>` measures real native rectangles before/after horizontal swipes and checks reverse and vertical scrolling. Run it on both Android and iOS; see `apps/mobile/e2e/README.md`. The EAS release lane also runs `.maestro/code-layout.yaml` and retains screenshots.
+- Native renderer assertions cover plain, padded, empty, and whitespace-only fence metadata, language labels outside the scroll viewport, and uncapped height at the outer container, scroll viewport, content container, and source. Deliberately moving the language label into scrolling, adding an inner height cap, or removing language trimming must fail the targeted Jest suite.
 
 - Unit: frontmatter validation, parsing, headings, Mermaid block extraction, code block rendering, fuzzy ranking, snippets.
 - Integration: generated index loads starter content and validates external diagrams.
@@ -148,6 +149,12 @@ The Web playground regression reproduced 3.88:1 comments and 3.71:1 numeric/bool
 - The checked-in Maestro journey covers the real BFS lesson, swipes in both directions, and verifies following prose/navigation. Geometry assertions run in the local agent-device lane; Maestro screenshots require visual review. Simulator verification uses Expo Go and is not a signed release-artifact check.
 - Mutation check: temporarily disabling horizontal scrolling makes the device runner fail at “A horizontal swipe must move the code source”; restoring it passes. Failure screenshots and native trees are retained.
 - Validation: agent-device geometry checks pass on iPhone 17 (iOS 26.3) and the S24 Android emulator. Maestro 2.8.0 passes the same flow on both, using temporary Expo Go app/deep-link substitutions. Manual visual checks also cover iOS diagram source, the full Android Number Of Islands solution, enlarged iOS accessibility text, and Android 1.5× text; system settings were restored. Mobile coverage passes 59 tests; web/core coverage passes 358 tests; lint, workspace typecheck, content check, production build, and all nine browser smoke tests pass (smoke used port 3102 because another server owns 3100). Expo Doctor still reports the existing ten patch-version mismatches (19/20 checks); no dependency upgrade or EAS release-artifact validation is claimed.
+
+### Review validation — 2026-09-30
+
+- Merged `main` at `582ce78`, preserving the admin-navigation mock and checks. Its Expo alignment fixes bring Doctor to 20/20 passing checks.
+- Strengthened Jest coverage after four deliberate mutations survived the original tests: a scrolling language label, an inner height cap, clamped tablet labels, and untrimmed language metadata. Each now fails its specific regression assertion; restored code passes.
+- Current validation passes 71 native tests, 389 web/core tests and both coverage gates, lint, workspace typecheck, content check, production build, nine browser smoke tests, four browser code-contrast regressions, and production-only HTTP readiness. The native geometry runner passes again on iPhone 17 and S24, with before/after screenshots inspected. These Expo Go checks still do not validate final EAS artifacts.
 
 ## Open Questions
 

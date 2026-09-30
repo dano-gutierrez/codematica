@@ -84,7 +84,7 @@ Keep no-result, optional-auth, renderer fallback, and recovery UI. Small screens
 - Copy edits update text-based assertions in web component, native screen, and Playwright tests. Keep route, action, disabled-state, progress, and recovery assertions intact; run the affected suites and responsive browser checks.
 - Regression-first component tests fail before navigation implementation, then prove destination preservation, nested active states, menu links, and close behavior.
 - Vitest: `npx vitest run apps/web/src/components/AppHeader.test.tsx apps/web/src/components/HomeDiscovery.test.tsx`.
-- Jest: `npm run test:mobile -- adaptive-navigation.test.tsx`; phone menu destinations and tablet sidebar state.
+- Jest: `npm run test:mobile -- adaptive-navigation.test.tsx`; phone menu destinations, single-line phone labels, and naturally wrapping tablet labels, including the admin destination. System font scaling stays enabled in both layouts. Clamping tablet labels to one line must fail the regression.
 - Browser smoke: `adaptive-navigation.smoke.spec.ts` runs on mobile Chromium, desktop Chromium, and iPhone WebKit, including Escape/focus restoration.
 - Browser regression: run the full `npm run e2e:web:release` lane for every study flow, including questionnaire continuation with a visible save prompt and Japanese 200% text sizing. `adaptive-layout.regression.spec.ts` checks eight catalogs at 320, 390, 768, 1024, and 1440 px; home discovery and top-level accessibility regressions remain required.
 - Installed native smoke: `.maestro/adaptive-navigation.yaml`, including phone More and tablet direct links. Run on Android and iOS before native release readiness is claimed.
