@@ -15,6 +15,8 @@
   --blue: #245fba;
   --rose: #d83a52;
   --purple: #5840b8;
+  --code-background: #101820;
+  --code-foreground: #d9e7ef;
 }
 
 * {
@@ -140,12 +142,15 @@ select {
   font-size: 0.92em;
 }
 
-.prose-codematica pre {
+/* Highlighted blocks own their frame; plain preformatted fallbacks use the
+   same dark surface. Inline code keeps its separate prose style. */
+.prose-codematica pre:not(.code-block-pre) {
   overflow-x: auto;
-  border: 1px solid var(--line);
+  border: 1px solid #263544;
   border-bottom-width: 1px;
   border-radius: 0.5rem;
-  background: #f6fbfc;
+  background: var(--code-background);
+  color: var(--code-foreground);
   padding: 1rem;
 }
 
@@ -153,7 +158,7 @@ select {
   border: 0;
   background: transparent;
   padding: 0;
-  color: #243b53;
+  color: inherit;
 }
 
 .prose-codematica blockquote {
@@ -187,7 +192,13 @@ select {
   box-shadow:
     inset 0 0.25rem 0 var(--code-accent),
     0 0.25rem 0 #d5e2e8;
-  color: #d9e7ef;
+  background: var(--code-background);
+  color: var(--code-foreground);
+}
+
+.code-block,
+.prose-codematica pre {
+  color-scheme: dark;
 }
 
 .code-block-header {
@@ -201,9 +212,9 @@ select {
   overflow: auto;
   background:
     linear-gradient(90deg, rgba(255, 255, 255, 0.035) 0 1px, transparent 1px 100%),
-    #101820;
+    var(--code-background);
   background-size: 3rem 100%;
-  color: #d9e7ef;
+  color: var(--code-foreground);
   font-weight: 400;
   tab-size: 2;
 }
@@ -220,7 +231,7 @@ select {
 
 .code-block .hljs {
   background: transparent;
-  color: #d9e7ef;
+  color: var(--code-foreground);
 }
 
 .code-block .hljs-keyword,

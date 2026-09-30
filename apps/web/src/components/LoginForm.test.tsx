@@ -40,7 +40,7 @@ describe("LoginForm", () => {
     view.rerender(<LoginForm nextPath="/" isAuthConfigured={false} isAppleEnabled={false} shouldSync={false} />);
     expect(screen.getByRole("button", { name: /continue with google/i })).toBeDisabled();
     expect(screen.getByRole("button", { name: /sign in with email/i })).toBeDisabled();
-    expect(screen.getByText(/auth is not configured/i)).toBeVisible();
+    expect(screen.getByText(/sign-in is not set up here/i)).toBeVisible();
   });
 
   it("starts OAuth with a safe callback and surfaces provider errors", async () => {

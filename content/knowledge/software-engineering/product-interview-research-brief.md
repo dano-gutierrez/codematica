@@ -10,7 +10,7 @@ sourceRefs: [product-interview-sre-monitoring, product-interview-websocket]
 status: published
 ---
 
-This is an original, company-neutral preparation pack, not a reported company question bank. The target is a product engineering deep dive combining plain JavaScript, frontend state, architecture, and production ownership. Your actual invitation controls the format.
+This original, company-neutral pack prepares you for a product engineering deep dive in plain JavaScript, frontend state, architecture, and production ownership. It contains no reported company questions. Your actual invitation controls the format.
 
 ## Start here
 
@@ -28,7 +28,7 @@ Treat the following as examples of how to interpret a job description, not facts
 | Cross-service ownership | Explain how you follow a request across boundaries and choose an actionable alert. | A latency breakdown, a failure trace, and a defensible user-facing reliability target. |
 | First-principles coding | Rehearse a small JavaScript implementation without framework helpers. | Controlled-promise tests proving concurrency, stale-result handling, and cleanup. |
 
-The [WebSocket reference](https://developer.mozilla.org/en-US/docs/Web/API/WebSockets_API) is useful for separating transport from application flow control. The [Google SRE monitoring chapter](https://sre.google/sre-book/monitoring-distributed-systems/) provides a foundation for choosing meaningful signals. These are technical references, not evidence about an employer's interview process.
+Use the [WebSocket reference](https://developer.mozilla.org/en-US/docs/Web/API/WebSockets_API) to distinguish transport from application flow control, and the [Google SRE monitoring chapter](https://sre.google/sre-book/monitoring-distributed-systems/) to choose meaningful signals. These are technical references, not evidence about an employer's interview process.
 
 ## Evaluate interview reports carefully
 
@@ -53,11 +53,11 @@ Prepare both a 90-second and a five-minute version of two ownership stories. Sta
 
 ## Questions worth taking to the interview
 
-1. **Ownership and on-call:** Which product boundary would I own first? What breaks most often, who responds, and how much time is protected for reliability work?
-2. **Product success:** What defines a successful creative session: first useful preview, edit fidelity, completion rate, collaboration, or cost per usable result?
-3. **Execution semantics:** What is the hardest retry or cancellation edge case across providers? How are unknown outcomes reconciled?
-4. **Collaboration:** Which state needs merging, and which operations require authoritative server validation? How are model outputs attached to document revisions?
-5. **API contracts:** Which job transitions generate notifications? What are the authentication, retry-window, ordering, and reconciliation guarantees?
-6. **Product direction:** How do recent demonstrations affect the role, and which capabilities are available to customers today?
+- **Ownership and on-call:** Which product boundary would I own first? What breaks most often, who responds, and how much time is protected for reliability work?
+- **Product success:** What defines a successful creative session: first useful preview, edit fidelity, completion rate, collaboration, or cost per usable result?
+- **Execution semantics:** What is the hardest retry or cancellation edge case across providers? How are unknown outcomes reconciled?
+- **Collaboration:** Which state needs merging, and which operations require authoritative server validation? How are model outputs attached to document revisions?
+- **API contracts:** Which job transitions generate notifications? What are the authentication, retry-window, ordering, and reconciliation guarantees?
+- **Product direction:** How do recent demonstrations affect the role, and which capabilities are available to customers today?
 
-Ask these as concrete engineering questions. A topic being worth discussing does not establish that a production defect exists.
+Ask concrete engineering questions without assuming that a production defect exists.

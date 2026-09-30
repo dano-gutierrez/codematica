@@ -1,0 +1,36 @@
+{
+  "sources": [
+    {
+      "id": "react-state-snapshot",
+      "title": "State as a Snapshot",
+      "provider": "React",
+      "url": "https://react.dev/learn/state-as-a-snapshot",
+      "attribution": "Official React documentation supporting an original lesson on state snapshots and asynchronous updates.",
+      "lastVerifiedAt": "2026-09-28"
+    },
+    {
+      "id": "react-state-update-queue",
+      "title": "Queueing a Series of State Updates",
+      "provider": "React",
+      "url": "https://react.dev/learn/queueing-a-series-of-state-updates",
+      "attribution": "Official React documentation supporting an original lesson on state snapshots and asynchronous updates.",
+      "lastVerifiedAt": "2026-09-28"
+    },
+    {
+      "id": "react-state-setter",
+      "title": "useState",
+      "provider": "React",
+      "url": "https://react.dev/reference/react/useState",
+      "attribution": "Official React documentation supporting an original lesson on state snapshots and asynchronous updates.",
+      "lastVerifiedAt": "2026-09-28"
+    },
+    {
+      "id": "react-effect-cleanup",
+      "title": "Synchronizing with Effects",
+      "provider": "React",
+      "url": "https://react.dev/learn/synchronizing-with-effects",
+      "attribution": "Official React documentation supporting an original lesson on state snapshots and asynchronous updates.",
+      "lastVerifiedAt": "2026-09-28"
+    }
+  ]
+}

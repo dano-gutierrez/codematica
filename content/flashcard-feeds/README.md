@@ -2,10 +2,10 @@
 
 The Product Engineering Interview feed contains twelve review briefs linked to its JavaScript, durable generation, and mock interview lessons. These are original preparation cards, not reported company questions.
 
-This folder contains path-scoped passive flashcard feeds for short review sessions.
+Author path-scoped passive flashcard feeds for short review sessions here.
 
 - Author one feed per `.json` file.
-- A feed must reference an existing `pathSlug` and renders at `/paths/[pathSlug]/flashcards`.
+- Each feed references an existing `pathSlug` and renders at `/paths/[pathSlug]/flashcards`.
 - Supported card `type` values are `concept`, `practical`, `snippet`, and `interview`.
 - Each card needs a unique `id`, `title`, `prompt`, `explanation`, `difficulty`, and `tags`.
 - `sourceDocSlug` is optional, but if present it must reference an existing Markdown document.
@@ -15,10 +15,12 @@ This folder contains path-scoped passive flashcard feeds for short review sessio
 - Advanced Next.js 16 feeds are one-minute vertical briefs and should stay hard-only, concise enough for one mobile viewport, and balanced across concept, practical, snippet, and interview cards.
 - Algorithm feeds should mix core invariants, implementation pitfalls, compact Python/TypeScript snippets, and interview-recognition prompts; the BFS/DFS feed follows this balance.
 - Diagram-authoring feeds should balance grammar recognition, selection rules, compact Mermaid snippets, debugging, compatibility, and readability review.
-- Beginner alphabet feeds should mix row recall, confusing-shape comparisons, sound changes, and real-word decoding; they must stay useful without requiring the learner to finish the ordered path first.
-- New learning paths that intend to replace passive social scrolling with meaningful review should include a path-scoped passive feed unless the owning feature doc explicitly says otherwise.
-- Passive feeds emit only a coarse latest-card resume position through the optional progress layer. They do not store answers, score, mastery, streaks, or raw interaction history.
+- Beginner alphabet feeds should mix row recall, confusing-shape comparisons, sound changes, and real-word decoding. They must work for learners who have not finished the ordered path.
+- New paths intended to replace social scrolling with review should include a passive feed unless the owning feature doc explicitly says otherwise.
+- Passive feeds save only the latest-card resume position through the optional progress layer. They store no answers, score, mastery, streaks, or raw interaction history.
 
 Passive flashcards are separate from interactive `type: "flashcard"` exercises in `content/exercises/`. Run `npm run content:check` before committing feed changes.
 
 - RTK Query interview briefs provide three concise concept/practical/interview cards per lesson, each linked to its source document; keep version claims aligned with that lesson.
+
+Set `codeLanguage` for every authored snippet (for example `typescript`, `python`, or `sql`). `sourceDocSlug` links back to the canonical lesson and preserves the feed’s path context. Frontend Interview Practice supplies 42 cards covering seven briefs and their implementation recipes.

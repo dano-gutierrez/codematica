@@ -19,7 +19,7 @@
 
 ## One-Minute Brief
 
-This path turns graph traversal from a memorized queue-versus-stack rule into a reusable problem-solving model. Learners first identify nodes, edges, visited timing, and the traversal invariant. They then practice connected components, unweighted shortest paths, and dependency cycles with Python and TypeScript examples. Existing path, Markdown, questionnaire, passive-feed, code-block, and interview-session components render the feature; no BFS/DFS-specific UI was added.
+This path teaches graph traversal by first identifying nodes, edges, visited timing, and the traversal invariant. They then practice connected components, unweighted shortest paths, and dependency cycles with Python and TypeScript examples. The path reuses existing path, Markdown, questionnaire, passive-feed, code-block, and interview-session components.
 
 ## Outcome / Contract
 
@@ -33,7 +33,7 @@ This path turns graph traversal from a memorized queue-versus-stack rule into a 
 
 ## Current State
 
-The path, lessons, two six-question questionnaires, sixteen-card passive feed, three guided Google prompts, generated index entries, integration coverage, and a mobile Playwright journey are shipped. The generic shared renderers already support all required UI.
+The path, lessons, two six-question questionnaires, sixteen-card passive feed, three guided Google prompts, generated index entries, integration coverage, and a mobile Playwright journey are shipped. Shared renderers provide all required UI.
 
 ## Scope
 
@@ -119,3 +119,7 @@ The path, lessons, two six-question questionnaires, sixteen-card passive feed, t
 ## Thread Handoff Prompt
 
 `Read docs/codex-context.md and docs/features/bfs-dfs-learning-path.md first. Compare the documented path against content/learning-paths/breadth-first-and-depth-first-search.json, content/knowledge/programming/bfs-dfs-*.md, content/exercises/programming/bfs-dfs-*.json, content/flashcard-feeds/breadth-first-and-depth-first-search.json, content/interviews/google.json, and packages/core/src/content/index.test.ts, then update content, tests, generated index, and docs together.`
+
+## 2026-09-27 Audit
+
+Reviewed both lessons, 12 quiz questions and 16 feed cards. Clarified O(V) retained head-index queue storage and O(E) possible pending entries in the mark-on-pop DFS example; corrected the TS queue snippet language. Answer keys remain unchanged. The BFS/DFS browser regression and core content checks validate the updated references. See the interview catalog audit for related grid/graph repairs.

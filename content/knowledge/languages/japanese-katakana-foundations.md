@@ -41,11 +41,11 @@ Katakana is common in loanwords, foreign names, sound effects, scientific names,
 - [タクシー](/languages/japanese/vocabulary/taxi) `takushii` — taxi
 - [スーパー](/languages/japanese/vocabulary/supermarket) `suupaa` — supermarket
 
-The dash is sound, not punctuation. In horizontal writing it is horizontal; in traditional vertical writing it turns vertical.
+This mark represents sound, not punctuation. It follows the writing direction: horizontal or traditionally vertical.
 
 ## The Four Famous Look-Alikes
 
-Compare stroke direction and placement, not only the final silhouette.
+Compare stroke direction and placement as well as the final shape.
 
 - `シ` shi: the short strokes sit more horizontally; the long stroke rises from lower left.
 - `ツ` tsu: the short strokes stand more vertically; the long stroke falls from upper right.

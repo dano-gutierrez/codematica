@@ -19,13 +19,13 @@ status: published
 
 ## Boundary Principle
 
-Types are most valuable where data crosses trust boundaries. They are less valuable when they freeze incidental implementation choices inside one module. In large frontends, the highest-leverage boundaries are network responses, persisted state, route parameters, analytics events, and shared component props.
+Types are most valuable where data crosses trust boundaries. They are less valuable when they freeze incidental implementation choices inside one module. In large frontends, prioritize network responses, persisted state, route parameters, analytics events, and shared component props.
 
 ## Contract Types
 
-Contract types should be boring, explicit, and stable. Prefer parseable schemas for untrusted input, especially API responses and local storage. A compile-time type is not validation when the value came from the network.
+Keep contract types explicit and stable. Prefer parseable schemas for untrusted input, especially API responses and local storage. A compile-time type is not validation when the value came from the network.
 
-Keep transport types separate from view models. The server may return nullable fields, legacy names, or denormalized shapes. The UI should usually consume a normalized model that encodes what the screen actually needs.
+Keep transport types separate from view models. The server may return nullable fields, legacy names, or denormalized shapes. The UI should usually consume a normalized model of what the screen needs.
 
 Use `unknown` at untrusted boundaries, parse once, and return a validated type. Avoid type assertions that merely silence the compiler: `payload as User` changes no runtime value. When a protocol has variants, use a discriminated union and an exhaustive `never` check so a new server case creates a compile-time review point.
 
@@ -33,7 +33,7 @@ Version network and persisted contracts deliberately. Additive fields are usuall
 
 ## Avoid Type Gravity
 
-Shared types create gravity. Once a type is imported everywhere, changing it becomes expensive. That cost is useful for public contracts and harmful for local state. Do not export a component's internal reducer state unless another module genuinely owns part of that state.
+Widely imported types are expensive to change. That constraint helps stabilize public contracts but hinders local state changes. Export a component's internal reducer state only if another module owns part of it.
 
 ## Practical Pattern
 

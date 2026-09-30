@@ -94,7 +94,7 @@ function GuidedLab({
       </div>
 
       <fieldset className="rounded-xl border border-[#f7cf5d] bg-[#fffaf0] p-4">
-        <legend className="px-2 text-sm font-semibold uppercase text-[#7a5200]">Commit your prediction</legend>
+        <legend className="px-2 text-sm font-semibold uppercase text-[#7a5200]">Choose your prediction</legend>
         <p className="text-base font-normal leading-7 text-[#263238]">{exercise.prediction.prompt}</p>
         <div className="mt-3 grid gap-2">
           {exercise.prediction.options.map((option) => (
@@ -293,7 +293,7 @@ function NextLink({ href }: { href: string }) {
       href={href}
       className="inline-flex min-h-12 items-center gap-2 rounded-xl border border-[#1d4e9e] bg-[#245fba] px-4 py-2 text-sm font-semibold text-white transition hover:-translate-y-0.5"
     >
-      Next node
+      Next activity
       <ArrowRight className="h-4 w-4" aria-hidden="true" />
     </Link>
   );

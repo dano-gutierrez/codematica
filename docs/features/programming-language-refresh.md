@@ -24,7 +24,7 @@
 
 ## One-Minute Brief
 
-Language refresh paths are skill paths that teach one programming language from the perspective of engineers already senior in a neighboring ecosystem. The first shipped path is Python for TypeScript and JavaScript engineers. It focuses on similarities, differences, migration traps, senior review standards, and production pain points.
+Language refresh paths teach one programming language to engineers with senior experience in a related ecosystem. The first shipped path is Python for TypeScript and JavaScript engineers. It covers similarities, differences, migration traps, senior review standards, and production pitfalls.
 
 ## Outcome / Contract
 
@@ -69,4 +69,4 @@ The passive feed contains 320 senior cards for short mobile refresh sessions. Ca
 
 - Language refresh content remains local-first Markdown plus structured JSON until hosted authoring exists. Optional resume/completion progress is owned by `docs/features/auth-and-progress.md`.
 - Python v1 is intentionally senior-level and written for TypeScript/JavaScript engineers, not absolute beginners.
-- New language refresh paths should reuse the questionnaire type for active practice and the passive feed type for scroll-only review instead of adding one-off route surfaces.
+- New language refresh paths should reuse questionnaires for active practice and passive feeds for scroll-only review, without adding bespoke routes.

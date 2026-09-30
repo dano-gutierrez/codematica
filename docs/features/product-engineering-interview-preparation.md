@@ -12,7 +12,7 @@
 
 ## One-Minute Brief
 
-This company-neutral pack connects a practical research brief to a latest-intent preview coding drill and durable paid-export architecture exercise. A guided mock supplies timing, evidence checks, story rehearsal, and reflection. It is original preparation, not a reported company question bank.
+This company-neutral pack combines a research brief, a coding drill that keeps previews aligned with the latest input, and a durable paid-export architecture exercise. A guided mock supplies timing, evidence checks, story rehearsal, and reflection. It is original preparation, not a reported company question bank.
 
 ## Outcome / Contract
 
@@ -26,7 +26,7 @@ This company-neutral pack connects a practical research brief to a latest-intent
 
 ## Current State
 
-Content is bundled into the local generated index and discoverable through paths, browse, global search, and practice. Existing Markdown, Mermaid, source panels, questionnaires, guided-lab evidence/reflection controls, and passive feeds own presentation. No new UI, runtime import, dependency, schema, backend, or database change is introduced.
+Content is bundled into the local generated index and discoverable through paths, browse, global search, and practice. Existing Markdown, Mermaid, source panels, questionnaires, guided-lab evidence/reflection controls, and passive feeds present the content. No new UI, runtime import, dependency, schema, backend, or database change is introduced.
 
 ## Scope
 
@@ -63,7 +63,7 @@ The proposed export architecture uses tenant-scoped idempotency, atomic acceptan
 
 ### Failure And Edge Handling
 
-The research brief teaches how to disambiguate employer identity and evaluate candidate accounts without retaining identifying examples. Provider documentation questions are generic checks, not proven defects. The pack retains only general MDN, Google Cloud, Google SRE, and OpenTelemetry references. Source verification dates remain the dates of actual checks; anonymization does not count as re-verification.
+The research brief teaches how to verify employer identity and evaluate candidate accounts without retaining identifying examples. Provider documentation questions identify what to check; they do not establish defects. The pack retains only general MDN, Google Cloud, Google SRE, and OpenTelemetry references. Source verification dates remain the dates of actual checks; anonymization does not count as re-verification.
 
 ## Code Touchpoints
 
@@ -79,6 +79,7 @@ The research brief teaches how to disambiguate employer identity and evaluate ca
 - Unit: controlled promises prove coalescing, stale result/error suppression, current error recovery, ignored abort after disposal, repeated disposal, and synchronous adapter failure.
 - Integration: source-backed published documents, path traversal, questionnaire answers/distractors, source-document review links, and generic interview search results.
 - E2E: `@regression` mobile Chromium journeys cover discovery, neutral attribution, both Mermaid diagrams, code/layout containment, wrong-answer feedback, checkpoint completion, guided-lab evidence gating, next routes/reload, and passive review.
+- Copy regression: the research brief states that the pack contains no reported company questions. Keep that attribution caveat visible and asserted when editing the prose.
 - Native: existing generic content rendering is reused; no native library or UI implementation changes. Mobile aggregate coverage validates the shared index. Installed-device pack-specific execution is not newly claimed.
 - Coverage impact: no new instrumented production code; no floors lowered or exclusions added. The reference is tested as authored content, not shipped application code.
 - Required local commands: targeted Vitest, `npm run content:check`, `npm run lint`, `npm run typecheck`, `npm run test:coverage`, `npm run test:mobile:coverage`, and `npx playwright test --config=apps/web/e2e/playwright.config.ts apps/web/e2e/specs/product-engineering-interview.regression.spec.ts`. Run the smoke lane; Playwright builds and serves the production Next artifact.
@@ -101,3 +102,7 @@ The research brief teaches how to disambiguate employer identity and evaluate ca
 ## Thread Handoff Prompt
 
 `Read docs/codex-context.md and docs/features/product-engineering-interview-preparation.md first. Compare the documented path and anonymity contract against the content, tests, and general technical references. Preserve original prompt provenance, rerun the inert JavaScript and mobile browser checks, and update docs with any contract change.`
+
+## 2026-09-27 Audit
+
+Reviewed all four lessons, 18 questions, mock lab and 12 briefs for ownership boundaries, concurrency, units, retry guarantees, assumptions, and misleading answers. No factual answer-key correction was needed. Existing exact coordinator tests and the Product Engineering browser regression remain the verification baseline. See the interview catalog audit for the full scope.

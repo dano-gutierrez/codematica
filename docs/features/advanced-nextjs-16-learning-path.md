@@ -5,7 +5,7 @@
 - Status: `shipped`
 - Last updated: `2026-08-02`
 - Owner thread: `n/a`
-- Current state: A published `advanced-nextjs-16` skill path ships with eight hard Next.js lessons, eight questionnaires, and a passive one-minute brief feed.
+- Current state: A published `advanced-nextjs-16` skill path ships with eight advanced Next.js lessons, eight questionnaires, and a passive one-minute brief feed.
 - Target outcome: Experienced Next.js engineers can study rendering, caching, `force-dynamic`, invalidation, production pain points, performance, and migration behavior for Next.js 16 without Supabase or remote services.
 - Code touchpoints:
   - `content/knowledge/frontend/*.md`
@@ -19,9 +19,9 @@
 
 ## One-Minute Brief
 
-The Advanced Next.js 16 path is a hard front-end development track for people already shipping App Router apps. It turns the most painful production topics into searchable lessons, active questionnaires, and a vertical passive feed meant to replace low-value social scrolling with short, useful review cards.
+The Advanced Next.js 16 path covers production topics for engineers already shipping App Router apps. It combines searchable lessons, active questionnaires, and short review cards in a vertical passive feed.
 
-The feature is content-only and local-first. It does not change the path UI, practice schema, passive feed schema, auth model, Supabase dependency, or progress persistence.
+This local-first content addition preserves the path UI, practice and passive feed schemas, auth model, Supabase dependency, and progress persistence.
 
 ## Outcome / Contract
 
@@ -101,7 +101,7 @@ The shipped path includes:
 
 - Missing document, exercise, path, or source document references fail content indexing.
 - Invalid questionnaire or passive feed structure fails content indexing through existing validation.
-- A practice page opened without `?path=` still works, but next-node navigation only appears for path-scoped sessions.
+- Practice works without `?path=`; navigation to the next activity appears only in path-scoped sessions.
 
 ## Code Touchpoints
 

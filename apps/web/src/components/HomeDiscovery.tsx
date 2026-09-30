@@ -112,7 +112,7 @@ function SearchResults({ query, sections, total }: { query: string; sections: Ho
         </div>
       ) : (
         <div className="mt-5 rounded-xl border border-[#d5e2e8] bg-white p-5 text-sm font-medium text-[#68737d]">
-          No paths, lessons, interviews, practice, or language content matches that search.
+          No matching paths, lessons, interviews, practice, or language content.
         </div>
       )}
     </section>

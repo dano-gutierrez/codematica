@@ -18,11 +18,11 @@ test("@smoke catalogs, signed-out Auth, and recovery routes remain available", a
 
   await test.step("keep optional Auth and 404 recovery usable", async () => {
     await page.goto("/login");
-    await expect(page.getByTestId("login-form")).toContainText("Auth is not configured");
+    await expect(page.getByTestId("login-form")).toContainText("Sign-in is not set up here.");
     await expect(page.getByRole("button", { name: /continue with google/i })).toBeDisabled();
 
     await page.goto("/docs/does-not-exist");
-    await expect(page.getByRole("heading", { name: /outside the map/i })).toBeVisible();
-    await expect(page.getByRole("link", { name: /back to paths/i })).toBeVisible();
+    await expect(page.getByRole("heading", { name: /this page is unavailable/i })).toBeVisible();
+    await expect(page.getByRole("link", { name: /back to home/i })).toBeVisible();
   });
 });

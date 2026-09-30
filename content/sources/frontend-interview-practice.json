@@ -1,0 +1,76 @@
+{
+  "sources": [
+    {
+      "id": "frontend-react-arrays",
+      "title": "Updating Arrays in State",
+      "provider": "React",
+      "url": "https://react.dev/learn/updating-arrays-in-state",
+      "attribution": "React documentation. Technical background for original interview preparation exercises.",
+      "lastVerifiedAt": "2026-09-27"
+    },
+    {
+      "id": "frontend-react-hooks",
+      "title": "Built-in React Hooks",
+      "provider": "React",
+      "url": "https://react.dev/reference/react/hooks",
+      "attribution": "React documentation. Technical background for original interview preparation exercises.",
+      "lastVerifiedAt": "2026-09-27"
+    },
+    {
+      "id": "frontend-react-state",
+      "title": "Preserving and Resetting State",
+      "provider": "React",
+      "url": "https://react.dev/learn/preserving-and-resetting-state",
+      "attribution": "React documentation. Technical background for original interview preparation exercises.",
+      "lastVerifiedAt": "2026-09-27"
+    },
+    {
+      "id": "frontend-react-keys",
+      "title": "Rendering Lists",
+      "provider": "React",
+      "url": "https://react.dev/learn/rendering-lists",
+      "attribution": "React documentation. Technical background for original interview preparation exercises.",
+      "lastVerifiedAt": "2026-09-27"
+    },
+    {
+      "id": "frontend-react-effects",
+      "title": "useEffect",
+      "provider": "React",
+      "url": "https://react.dev/reference/react/useEffect",
+      "attribution": "React documentation. Technical background for original interview preparation exercises.",
+      "lastVerifiedAt": "2026-09-27"
+    },
+    {
+      "id": "frontend-python-random",
+      "title": "Random sampling",
+      "provider": "Python",
+      "url": "https://docs.python.org/3/library/random.html",
+      "attribution": "Python documentation. Technical background for original interview preparation exercises.",
+      "lastVerifiedAt": "2026-09-27"
+    },
+    {
+      "id": "frontend-python-async",
+      "title": "Coroutines and Tasks",
+      "provider": "Python",
+      "url": "https://docs.python.org/3/library/asyncio-task.html",
+      "attribution": "Python documentation. Technical background for original interview preparation exercises.",
+      "lastVerifiedAt": "2026-09-27"
+    },
+    {
+      "id": "frontend-github-repos",
+      "title": "List repositories for a user",
+      "provider": "GitHub",
+      "url": "https://docs.github.com/en/rest/repos/repos#list-repositories-for-a-user",
+      "attribution": "GitHub documentation. Technical background for original interview preparation exercises.",
+      "lastVerifiedAt": "2026-09-27"
+    },
+    {
+      "id": "frontend-accessible-buttons",
+      "title": "Button Pattern",
+      "provider": "W3C WAI",
+      "url": "https://www.w3.org/WAI/ARIA/apg/patterns/button/",
+      "attribution": "W3C WAI documentation. Technical background for original interview preparation exercises.",
+      "lastVerifiedAt": "2026-09-27"
+    }
+  ]
+}

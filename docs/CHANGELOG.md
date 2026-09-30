@@ -1,6 +1,62 @@
 # Product And Engineering Changelog
 
-This changelog records durable, user-visible and architectural changes. Feature documents remain the authoritative contracts; this file explains when a group of related changes landed and points readers to the owning documentation.
+This changelog dates durable product and architecture changes and links to their authoritative feature contracts.
+
+## 2026-09-29 — PR Check Reliability
+
+- Aligned Expo SDK 57 dependencies and root overrides with Expo 57.0.26 and React Native 0.86.3. Added the required `expo-asset` native peer, pinned compatible animation packages, and regenerated stale nested workspace resolutions in the lockfile.
+- Scoped Japanese hub test queries to their sections while strengthening character-group and reuse-label assertions. Complete authored TypeScript compiler tests now have a 30-second timeout; other timeouts, coverage floors, and exclusions are unchanged.
+- A clean install, full dependency-tree check, Expo Doctor (20/20), content freshness, lint, typechecking, 358 Vitest tests with both coverage gates, 50 native tests with coverage, 13 Python tests, Android/iOS bundle exports, production web build, and nine browser smoke journeys passed locally.
+- The copied production web build also reached readiness and returned HTTP 200 for home, browse, login, and a lesson after `npm ci --omit=dev` in a disposable directory.
+- Installed-device startup, native binary compatibility, and store readiness remain unverified by these checks.
+
+Owning contracts: `docs/features/automated-testing-and-release-regression.md` and `docs/features/native-mobile-deployment.md`.
+
+## 2026-09-29 — Technical Editing Skill And Clearer Copy
+
+- Added the repo-local technical editing skill to shorten prose while preserving technical details, code, conditions, warnings, and uncertainty.
+- Reviewed all 123 Markdown files, 142 app source files, and 160 authored content files. Simplified documentation, lessons, exercises, flashcards, interview explanations, and web/native UI copy where needed. Practice labels now include Next activity, Practice complete, Quick review, and Choose your prediction.
+- Kept commands, code examples, technical values, Japanese examples, translations, and source metadata intact. Flagged conflicting schema/stage descriptions instead of silently changing them.
+- Fixed a literal pipe splitting a Japanese vocabulary definition across table columns. Generator and mobile browser regressions verify the full definition remains in one cell.
+- Coverage thresholds and exclusions are unchanged.
+- Validation passed: content freshness, lint, typechecking, production build, 358 Vitest tests with aggregate and per-file coverage, 50 native tests with coverage, 13 Python tests, and all 49 browser journeys across the full run and targeted rerun. The first browser run exposed two outdated text assertions; both were updated and their four related journeys passed. Failure evidence was retained.
+- Expo Doctor passed 19/20 checks and reported 10 existing package-version mismatches. Installed-device validation remains open: no Android device or booted iOS simulator was available, and Maestro was not installed. No deployment was performed.
+
+Owning contracts: `docs/README.md#technical-editing-skill`, `docs/features/learning-paths-and-practice.md`, and `docs/features/japanese-language-learning.md`.
+
+## 2026-09-28 — Readable Lesson Code Blocks
+
+- Fixed a prose CSS rule that replaced highlighted blocks' dark background with a pale surface while retaining light syntax colors.
+- Kept inline-code styling separate and added rendered contrast checks at phone and desktop widths. The regression reproduced 1.21:1 body-text contrast before the fix and requires at least 4.5:1 for every code text node.
+- Audited all web/native code surfaces. Converted playground failure source to the shared dark renderer, aligned plain prose fallbacks and native indented Markdown, and fixed low-contrast inherited playground syntax colors. Added fallback recovery, native style, and cross-surface browser regressions. Theme selection remains deferred; coverage gates are unchanged.
+
+Owning contract: `docs/features/markdown-knowledge-browser.md`.
+
+## 2026-09-28 — React State Snapshots Lesson
+
+- Added a supplementary lesson explaining stale state in timers and promise callbacks, functional updates by ID, reducers/ref tradeoffs, and late-result cleanup.
+- Added complete broken/fixed React examples with exact-source execution tests and six quiz questions. Linked the lesson from the board and async-matrix guides and made it searchable through the generated index.
+- Reused the Markdown reader and questionnaire; no schema, runtime dependency, or coverage gate changes.
+
+Owning contract: `docs/features/frontend-interview-practice.md#supplementary-react-state-lesson`.
+
+## 2026-09-28 — Playground Connection Recovery
+
+- Start a single preview when a solution is revealed; the console observes the same runtime instead of executing a hidden copy.
+- Show startup and connection status. Retry preserves edits and opens a fresh connection; Reset restores and executes the authored files.
+- Add component coverage and Chromium/WebKit regressions for automatic startup, editing, console output, Reset, and blocked-runtime recovery. Exclude generated nested Playwright reports from lint while retaining failure evidence. Coverage thresholds and exclusions are unchanged.
+
+Owning contract: `docs/features/react-typescript-playground.md`. A hosted-runtime connection is still required.
+
+## 2026-09-27 — Frontend Interview Practice and Content Audit
+
+- Added seven anonymous guided challenges, 21 React/TypeScript projects, 21 Python companions, 56 quiz questions, and 42 review cards.
+- Connected lesson → recipe → quiz → next lesson/final feed on web and native. Added explicit snippet languages and lesson links.
+- Added index v11 contracts, exact authored-code verification, a required Python CI gate, component/browser/native coverage, and a Maestro journey. Coverage thresholds/exclusions are unchanged.
+- Corrected existing interview API omissions, algorithm/complexity mismatches, Unicode/arithmetic boundaries, and unsupported acceptance guarantees. See the audit table in the interview catalog contract.
+- Native release validation remains open: local Mobile Doctor flags existing Expo patch mismatches; the new installed-device flow has not been run locally.
+
+Owning contract: `docs/features/frontend-interview-practice.md`.
 
 ## 2026-09-30 — Manual LinkedIn Drafts
 

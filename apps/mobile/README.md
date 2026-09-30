@@ -2,11 +2,13 @@
 
 Expo Router Android/iOS app for Codematica.
 
-The app consumes `@codematica/core` for content/search/progress contracts and `@codematica/ui` for React Native screens. Content is bundled from the generated core index so discovery, anonymous reading, complete basic hiragana/katakana lookup, romaji/IME-aware search, always-available Japanese flashcards/guides, internal lesson links, dictionary-style character details, and embedded/path writing practice work offline. Signed-out progress retains every unique item locally and syncs to the optional Supabase account in bounded batches after sign-in.
+The app uses `@codematica/core` for content/search/progress contracts and `@codematica/ui` for React Native screens. The bundled core index supports offline discovery, anonymous reading, complete basic hiragana/katakana lookup, romaji/IME-aware search, always-available Japanese flashcards/guides, internal lesson links, dictionary-style character details, and embedded/path writing practice.
+
+Signed-out progress retains every unique item locally. After sign-in, it syncs to the optional Supabase account in bounded batches.
 
 ## Local Web And Native Runs
 
-From the repo root, the unchanged web app still runs through the Next workspace:
+Run the Next web app from the repo root:
 
 ```bash
 npm install
@@ -29,7 +31,7 @@ npm run mobile:android
 npm run mobile:ios
 ```
 
-`expo run:ios` performs prebuild and CocoaPods installation automatically. If you need to inspect or refresh generated iOS pods manually, run:
+`expo run:ios` runs prebuild and installs CocoaPods automatically. To inspect or refresh generated iOS pods manually, run:
 
 ```bash
 npm run mobile:prebuild:ios
@@ -49,9 +51,11 @@ npm run test:mobile:coverage
 
 Jest covers native adapters, offline and partial-failure progress behavior, Supabase configuration, app/EAS configuration, and the shared React Native screen matrix. Coverage is enforced at 80% lines/statements/functions and 70% branches for mobile libraries, and 70%/60% for shared native UI.
 
+Keep SDK 57 patch versions aligned across this workspace, root development dependencies, root overrides, and `package-lock.json`. Install required native peers directly in this app; `expo-audio` requires `expo-asset`. After updating versions, verify a clean `npm ci`, Expo Doctor, typechecking, native coverage, and Android/iOS bundle exports before installed-device checks. Follow the [Expo dependency upgrade guide](https://docs.expo.dev/workflow/upgrading-expo-sdk-walkthrough/).
+
 ## Native E2E
 
-Credential-free native E2E builds use the `e2e-test` EAS profile: Android produces an APK and iOS produces a simulator app. Checked-in Maestro flows live in `.maestro/`, use stable `testID` selectors, and cover offline discovery, path-to-practice, browse-to-diagram, Japanese study/review, interviews, and unconfigured login.
+Credential-free native E2E builds use the `e2e-test` EAS profile: Android produces an APK and iOS produces a simulator app. Checked-in Maestro flows live in `.maestro/`, use stable `testID` selectors, and cover offline discovery, path-to-practice, browse-to-diagram, Japanese study/review, interviews, and unconfigured login. The frontend interview journey also captures Python code for dark-surface visual review; local `code-styles.test.tsx` verifies fenced/indented Markdown and standalone code styles separately.
 
 Run the Android smoke workflow manually or by applying the `mobile-e2e` pull-request label:
 
@@ -69,7 +73,7 @@ Both workflows pin Maestro 2.8.0 and retain JUnit plus screen recordings. EAS cu
 
 ## App Identity
 
-Store identity is configured in `app.config.ts` and can be overridden with env vars before the first store records are created:
+Configure store identity in `app.config.ts` or override it with env vars before creating store records:
 
 ```bash
 EXPO_APP_NAME=Codematica
@@ -135,7 +139,7 @@ npm run mobile:submit:all
 
 The checked-in submit profile sends Android builds to the Play internal track first. Move to alpha, beta, or production only after Play Console metadata, screenshots, privacy/data-safety forms, and tester/release settings are ready. iOS submissions go to App Store Connect/TestFlight; release to the public App Store still requires selecting the build and submitting it for App Review in App Store Connect.
 
-Full Play Console, Apple Developer Program, App Store Connect, EAS credentials, metadata, and first-release account setup steps are documented in `../../docs/runbooks/native-store-publishing.md`.
+See `../../docs/runbooks/native-store-publishing.md` for Play Console, Apple Developer Program, App Store Connect, EAS credentials, metadata, and first-release account setup.
 
 References:
 
@@ -148,7 +152,9 @@ References:
 
 ## Japanese On iPad
 
-Expo orientation is adaptive and `supportsTablet` remains enabled. Japanese handwriting uses window dimensions so compact phone and Split View remain stacked while larger iPad windows receive a wider canvas. Review mastery is stored immediately with AsyncStorage; signed-in sessions validate and merge the remote RLS snapshot before bounded uploads, without clearing the local copy. Every lesson, flashcard, dictionary profile, and resource remains directly reachable. Run `npm run content:audio` after adding released Japanese audio so Expo receives a static asset registry.
+Expo uses adaptive orientation with `supportsTablet` enabled. Japanese handwriting adapts to window size: phones and compact Split View stay stacked; larger iPad windows get a wider canvas.
+
+Review mastery saves immediately to AsyncStorage. Signed-in sessions validate and merge the remote RLS snapshot before bounded uploads, preserving the local copy. Every lesson, flashcard, dictionary profile, and resource stays directly reachable. Run `npm run content:audio` after adding released Japanese audio to generate Expo's static asset registry.
 
 ## Adaptive UI
 

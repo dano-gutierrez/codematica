@@ -5,6 +5,10 @@ import os from "node:os";
 import path from "node:path";
 import { promisify } from "node:util";
 import { afterEach, describe, expect, it } from "vitest";
+import { toString } from "mdast-util-to-string";
+import remarkGfm from "remark-gfm";
+import remarkParse from "remark-parse";
+import { unified } from "unified";
 import { buildJapaneseN5 } from "./build-japanese-n5";
 
 const execFileAsync = promisify(execFile);
@@ -24,7 +28,7 @@ async function createFixture(itemCount = 650) {
     expression: `語${index + 1}`,
     reading: "ことば",
     romaji: "kotoba",
-    meanings: [`word ${index + 1}`],
+    meanings: [index === 0 ? "half (e.g., にじはん | half-past two)" : `word ${index + 1}`],
     status: "published",
   }));
   await fs.writeFile(path.join(root, "content/languages/japanese/vocabulary.json"), JSON.stringify({ kind: "vocabulary", language: "ja", items }));
@@ -79,6 +83,12 @@ describe("Japanese N5 curriculum builder", () => {
     expect(dictionary).toEqual({ がくせい: ["学生"], みず: ["水"] });
     expect(await fs.readdir(path.join(root, "content/knowledge/languages"))).toHaveLength(10);
     expect(await fs.readdir(path.join(root, "content/exercises/languages"))).toHaveLength(30);
+
+    const lesson = await fs.readFile(path.join(root, "content/knowledge/languages/japanese-n5-identity-and-demonstratives.md"), "utf8");
+    const table = unified().use(remarkParse).use(remarkGfm).parse(lesson).children.find((node) => node.type === "table");
+    expect(table?.children[1]?.children.map((cell) => toString(cell))).toEqual([
+      "語1", "ことば", "half (e.g., にじはん | half-past two)",
+    ]);
   });
 
   it("fills a partial catalog from quoted CSV rows and assigns deterministic study metadata", async () => {

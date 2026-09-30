@@ -31,7 +31,7 @@
         }
       ],
       "constraints": [
-        "Weights are non-negative in the Dijkstra solution."
+        "Weights are non-negative integers. Path costs fit signed 32-bit integers in these examples. Return −1 for an unreachable target."
       ],
       "diagrams": [
         {
@@ -60,7 +60,7 @@
           ],
           "explanation": "With non-negative weights, the first time a node is popped with its best distance, no future path can improve it. The priority queue enforces that safe processing order.",
           "complexity": {
-            "time": "O((V + E) log V)",
+            "time": "O((V + E) log(E + 2)), including stale priority-queue records",
             "space": "O(V + E)"
           },
           "languages": {
@@ -70,7 +70,7 @@
             },
             "typescript": {
               "label": "TypeScript",
-              "code": "export function shortestPath(graph: Map<string, Array<[string, number]>>, start: string, target: string): number {\n  const dist = new Map<string, number>([[start, 0]]);\n  const heap: Array<[number, string]> = [[0, start]];\n  while (heap.length) {\n    heap.sort((a, b) => a[0] - b[0]);\n    const [cost, node] = heap.shift()!;\n    if (node === target) return cost;\n    if (cost !== dist.get(node)) continue;\n    for (const [next, weight] of graph.get(node) ?? []) {\n      const newCost = cost + weight;\n      if (newCost < (dist.get(next) ?? Infinity)) { dist.set(next, newCost); heap.push([newCost, next]); }\n    }\n  }\n  return -1;\n}"
+              "code": "class MinHeap<T> {\n  private items: T[] = [];\n  constructor(private compare: (a: T, b: T) => number) {}\n  get size(): number { return this.items.length; }\n  peek(): T | undefined { return this.items[0]; }\n  push(value: T): void {\n    const a = this.items; a.push(value);\n    let i = a.length - 1;\n    while (i > 0) { const p = Math.floor((i - 1) / 2); if (this.compare(a[p], a[i]) <= 0) break; [a[p], a[i]] = [a[i], a[p]]; i = p; }\n  }\n  pop(): T | undefined {\n    const a = this.items;\n    if (!a.length) return undefined;\n    const first = a[0], last = a.pop()!;\n    if (a.length) {\n      a[0] = last; let i = 0;\n      while (2 * i + 1 < a.length) {\n        let child = 2 * i + 1;\n        if (child + 1 < a.length && this.compare(a[child + 1], a[child]) < 0) child++;\n        if (this.compare(a[i], a[child]) <= 0) break;\n        [a[i], a[child]] = [a[child], a[i]]; i = child;\n      }\n    }\n    return first;\n  }\n}\n\nexport function shortestPath(graph: Map<string, Array<[string, number]>>, start: string, target: string): number {\n  const dist = new Map<string, number>([[start, 0]]);\n  const heap = new MinHeap<[number, string]>((a, b) => a[0] - b[0]);\n  heap.push([0, start]);\n  while (heap.size) {\n    const [cost, node] = heap.pop()!;\n    if (node === target) return cost;\n    if (cost !== dist.get(node)) continue;\n    for (const [next, weight] of graph.get(node) ?? []) {\n      const newCost = cost + weight;\n      if (newCost < (dist.get(next) ?? Infinity)) { dist.set(next, newCost); heap.push([newCost, next]); }\n    }\n  }\n  return -1;\n}"
             },
             "java": {
               "label": "Java",
@@ -80,39 +80,39 @@
         },
         {
           "id": "unweighted-bfs",
-          "title": "BFS For Unit Roads",
-          "summary": "When every road has equal cost, regular BFS finds the shortest number of hops without a priority queue.",
+          "title": "Bellman–Ford Relaxation",
+          "summary": "Use repeated edge relaxation as a simple weighted baseline.",
           "steps": [
             {
-              "title": "Queue the start",
-              "explanation": "The start city begins at distance zero."
+              "title": "Initialize distances",
+              "explanation": "Start is zero; all other nodes are unreachable."
             },
             {
-              "title": "Visit each city once",
-              "explanation": "The first time a city is reached is through the fewest number of roads."
+              "title": "Relax every edge",
+              "explanation": "For at most V−1 passes, improve the target distance with distance[source] + weight."
             },
             {
-              "title": "Stop at target",
-              "explanation": "When the target leaves the queue, its stored distance is the shortest hop count."
+              "title": "Stop and report",
+              "explanation": "Stop on an unchanged pass; return −1 if the requested target is still unreachable."
             }
           ],
-          "explanation": "BFS explores paths by hop count: all one-hop routes, then all two-hop routes, and so on. Equal edge weights make hop count the optimization target.",
+          "explanation": "After pass i, all paths with at most i edges have been considered. A shortest path without a negative cycle can be chosen simple and uses at most V−1 edges. Stop early when no distance improves. For this prompt weights are non-negative; BFS would be valid only when all edges have equal weight.",
           "complexity": {
-            "time": "O(V + E)",
+            "time": "O(V E) worst case",
             "space": "O(V)"
           },
           "languages": {
             "python": {
               "label": "Python",
-              "code": "from collections import deque\n\ndef shortest_hops(graph, start, target):\n    queue = deque([(start, 0)])\n    seen = {start}\n    while queue:\n        node, dist = queue.popleft()\n        if node == target:\n            return dist\n        for nxt in graph.get(node, []):\n            if nxt not in seen:\n                seen.add(nxt)\n                queue.append((nxt, dist + 1))\n    return -1"
+              "code": "def shortest_path(graph, start, target):\n    nodes = {start, target, *graph}\n    for edges in graph.values():\n        nodes.update(v for v, _ in edges)\n    dist = {start: 0}\n    for _ in range(len(nodes) - 1):\n        changed = False\n        for u, edges in graph.items():\n            for v, weight in edges:\n                candidate = dist.get(u, float('inf')) + weight\n                if candidate < dist.get(v, float('inf')):\n                    dist[v] = candidate\n                    changed = True\n        if not changed:\n            break\n    return dist.get(target, -1)"
             },
             "typescript": {
               "label": "TypeScript",
-              "code": "export function shortestHops(graph: Map<string, string[]>, start: string, target: string): number {\n  const queue: Array<[string, number]> = [[start, 0]];\n  const seen = new Set([start]);\n  for (let i = 0; i < queue.length; i += 1) {\n    const [node, dist] = queue[i];\n    if (node === target) return dist;\n    for (const next of graph.get(node) ?? []) if (!seen.has(next)) { seen.add(next); queue.push([next, dist + 1]); }\n  }\n  return -1;\n}"
+              "code": "export function shortestPath(graph: Map<string, Array<[string, number]>>, start: string, target: string): number {\n  const nodes = new Set([start, target]);\n  for (const [u, edges] of graph) { nodes.add(u); for (const [v] of edges) nodes.add(v); }\n  const dist = new Map<string, number>([[start, 0]]);\n  for (let pass = 1; pass < nodes.size; pass++) {\n    let changed = false;\n    for (const [u, edges] of graph) for (const [v, weight] of edges) {\n      const candidate = (dist.get(u) ?? Infinity) + weight;\n      if (candidate < (dist.get(v) ?? Infinity)) { dist.set(v, candidate); changed = true; }\n    }\n    if (!changed) break;\n  }\n  return dist.get(target) ?? -1;\n}"
             },
             "java": {
               "label": "Java",
-              "code": "int shortestHops(Map<String, List<String>> graph, String start, String target) {\n  Queue<String> queue = new ArrayDeque<>();\n  Map<String, Integer> dist = new HashMap<>();\n  queue.add(start); dist.put(start, 0);\n  while (!queue.isEmpty()) {\n    String node = queue.remove();\n    if (node.equals(target)) return dist.get(node);\n    for (String next : graph.getOrDefault(node, List.of())) if (!dist.containsKey(next)) { dist.put(next, dist.get(node) + 1); queue.add(next); }\n  }\n  return -1;\n}"
+              "code": "int shortestPath(Map<String, List<Edge>> graph, String start, String target) {\n  Set<String> nodes = new HashSet<>(List.of(start, target)); nodes.addAll(graph.keySet());\n  for (List<Edge> edges : graph.values()) for (Edge edge : edges) nodes.add(edge.to());\n  Map<String, Integer> dist = new HashMap<>(); dist.put(start, 0);\n  for (int pass = 1; pass < nodes.size(); pass++) {\n    boolean changed = false;\n    for (var entry : graph.entrySet()) if (dist.containsKey(entry.getKey())) for (Edge edge : entry.getValue()) {\n      int candidate = dist.get(entry.getKey()) + edge.weight();\n      if (candidate < dist.getOrDefault(edge.to(), Integer.MAX_VALUE)) { dist.put(edge.to(), candidate); changed = true; }\n    }\n    if (!changed) break;\n  }\n  return dist.getOrDefault(target, -1);\n}\nrecord Edge(String to, int weight) {}"
             }
           }
         }
@@ -144,7 +144,8 @@
         }
       ],
       "constraints": [
-        "A meeting ending at time t frees the room for another meeting starting at t."
+        "A meeting ending at time t frees the room for another meeting starting at t.",
+        "Intervals have positive duration: start < end."
       ],
       "diagrams": [],
       "solutionTracks": [
@@ -166,7 +167,7 @@
               "explanation": "After adding the current end, the maximum heap size is the number of rooms required."
             }
           ],
-          "explanation": "The heap represents rooms currently in use, ordered by when they free. Whenever the earliest room is free, reusing it cannot hurt future meetings.",
+          "explanation": "The heap contains one next-available time per allocated room. A start can reuse the room with the earliest end; otherwise allocate a new room. Only one room needs to be reused per meeting. The heap size never decreases across iterations and equals the maximum rooms allocated. These examples sort the supplied interval array in place.",
           "complexity": {
             "time": "O(n log n)",
             "space": "O(n)"
@@ -178,7 +179,7 @@
             },
             "typescript": {
               "label": "TypeScript",
-              "code": "export function minMeetingRooms(intervals: number[][]): number {\n  intervals.sort((a, b) => a[0] - b[0]);\n  const ends: number[] = [];\n  let best = 0;\n  for (const [start, end] of intervals) {\n    ends.sort((a, b) => a - b);\n    if (ends.length && ends[0] <= start) ends.shift();\n    ends.push(end);\n    best = Math.max(best, ends.length);\n  }\n  return best;\n}"
+              "code": "class MinHeap<T> {\n  private items: T[] = [];\n  constructor(private compare: (a: T, b: T) => number) {}\n  get size(): number { return this.items.length; }\n  peek(): T | undefined { return this.items[0]; }\n  push(value: T): void {\n    const a = this.items; a.push(value);\n    let i = a.length - 1;\n    while (i > 0) { const p = Math.floor((i - 1) / 2); if (this.compare(a[p], a[i]) <= 0) break; [a[p], a[i]] = [a[i], a[p]]; i = p; }\n  }\n  pop(): T | undefined {\n    const a = this.items;\n    if (!a.length) return undefined;\n    const first = a[0], last = a.pop()!;\n    if (a.length) {\n      a[0] = last; let i = 0;\n      while (2 * i + 1 < a.length) {\n        let child = 2 * i + 1;\n        if (child + 1 < a.length && this.compare(a[child + 1], a[child]) < 0) child++;\n        if (this.compare(a[i], a[child]) <= 0) break;\n        [a[i], a[child]] = [a[child], a[i]]; i = child;\n      }\n    }\n    return first;\n  }\n}\n\nexport function minMeetingRooms(intervals: number[][]): number {\n  intervals.sort((a, b) => a[0] - b[0]);\n  const ends = new MinHeap<number>((a, b) => a - b);\n  let best = 0;\n  for (const [start, end] of intervals) {\n    if (ends.size && ends.peek()! <= start) ends.pop();\n    ends.push(end);\n    best = Math.max(best, ends.size);\n  }\n  return best;\n}"
             },
             "java": {
               "label": "Java",
@@ -253,7 +254,8 @@
         }
       ],
       "constraints": [
-        "Use four-direction adjacency unless the prompt says diagonal connections count."
+        "Use four-direction adjacency unless the prompt says diagonal connections count.",
+        "Input is a nonempty rectangular grid."
       ],
       "diagrams": [],
       "solutionTracks": [
@@ -313,9 +315,9 @@
               "explanation": "After all unions, the number of distinct roots among land ids is the number of regions."
             }
           ],
-          "explanation": "Union find stores connected components explicitly. Unioning adjacent land cells merges exactly the cells that share a region, and final roots identify distinct regions.",
+          "explanation": "Union find stores connected components explicitly. Unioning adjacent land cells merges exactly the cells that share a region, and final roots identify distinct regions. This compact implementation uses path compression without union by rank/size. Do not claim the inverse-Ackermann bound for it. Add union by size to obtain the usual near-linear amortized bound; recursive find can otherwise be deep.",
           "complexity": {
-            "time": "O(rows * cols * alpha(n))",
+            "time": "O(N²) conservative worst-case bound, N = rows × columns",
             "space": "O(rows * cols)"
           },
           "languages": {

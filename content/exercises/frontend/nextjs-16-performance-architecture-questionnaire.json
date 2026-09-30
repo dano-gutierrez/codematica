@@ -16,7 +16,7 @@
     {
       "id": "prefetch-review",
       "kind": "choice",
-      "prompt": "Next.js 16 shows more granular prefetch requests in dev tools. What should a senior engineer check first?",
+      "prompt": "Next.js 16 shows more granular prefetch requests in dev tools. What should an engineer check first?",
       "options": [
         {
           "id": "disable",

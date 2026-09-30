@@ -1,0 +1,215 @@
+{
+  "slug": "frontend/interview-multi-select-questionnaire",
+  "title": "Multi-select with Removable Chips Checkpoint",
+  "type": "questionnaire",
+  "documentSlug": "frontend/interview-multi-select",
+  "concept": "Multi-select with Removable Chips",
+  "difficulty": "practitioner",
+  "tags": [
+    "frontend",
+    "interview",
+    "react",
+    "typescript",
+    "python",
+    "multi-select"
+  ],
+  "status": "published",
+  "sourceRefs": [
+    "frontend-react-state",
+    "frontend-react-arrays",
+    "frontend-accessible-buttons"
+  ],
+  "questions": [
+    {
+      "id": "multi-select-check-1",
+      "kind": "choice",
+      "prompt": "Filtering for \"SCRIPT\" should match which option?",
+      "options": [
+        {
+          "id": "answer",
+          "label": "TypeScript.",
+          "isCorrect": true
+        },
+        {
+          "id": "misconception-one",
+          "label": "Only labels beginning exactly with uppercase SCRIPT.",
+          "isCorrect": false
+        },
+        {
+          "id": "misconception-two",
+          "label": "No labels because matching is case-sensitive.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "The contract is a case-insensitive substring match anywhere in the label. Normalize the query and label consistently before checking inclusion."
+    },
+    {
+      "id": "multi-select-check-2",
+      "kind": "choice",
+      "prompt": "What should a matching disabled option do?",
+      "options": [
+        {
+          "id": "answer",
+          "label": "Stay visible and reject selection.",
+          "isCorrect": true
+        },
+        {
+          "id": "misconception-one",
+          "label": "Disappear from the results.",
+          "isCorrect": false
+        },
+        {
+          "id": "misconception-two",
+          "label": "Be selectable through keyboard activation.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "Unavailable choices are explicitly visible in the brief. Enforce disabled status in both the control and the state transition so alternate interaction paths cannot select them."
+    },
+    {
+      "id": "multi-select-check-3",
+      "kind": "choice",
+      "prompt": "What changes atomically when an enabled option is selected?",
+      "options": [
+        {
+          "id": "answer",
+          "label": "Add its ID, clear the query, and derive a list without that ID.",
+          "isCorrect": true
+        },
+        {
+          "id": "misconception-one",
+          "label": "Add its ID but retain a separate stale filtered list.",
+          "isCorrect": false
+        },
+        {
+          "id": "misconception-two",
+          "label": "Replace all existing chips with the option.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "Selection adds rather than replaces. Deriving the list from current IDs and query avoids synchronization bugs, while clearing the query satisfies the explicit interaction contract."
+    },
+    {
+      "id": "multi-select-check-4",
+      "kind": "choice",
+      "prompt": "Why reject an already selected ID in the model?",
+      "options": [
+        {
+          "id": "answer",
+          "label": "It preserves uniqueness even for repeated or programmatic events.",
+          "isCorrect": true
+        },
+        {
+          "id": "misconception-one",
+          "label": "It makes all labels unique.",
+          "isCorrect": false
+        },
+        {
+          "id": "misconception-two",
+          "label": "It removes the need for a chip removal button.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "UI filtering reduces duplicate opportunities but is not the invariant itself. The model must reject repeats so repeated events cannot create duplicate chips."
+    },
+    {
+      "id": "multi-select-check-5",
+      "kind": "choice",
+      "prompt": "What happens after removing a chip?",
+      "options": [
+        {
+          "id": "answer",
+          "label": "Its option becomes eligible for the derived dropdown again.",
+          "isCorrect": true
+        },
+        {
+          "id": "misconception-one",
+          "label": "The option is deleted permanently.",
+          "isCorrect": false
+        },
+        {
+          "id": "misconception-two",
+          "label": "Every chip is removed.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "Removing one ID changes selection, not the option catalog. The filter then includes that option whenever it matches the current query."
+    },
+    {
+      "id": "multi-select-check-6",
+      "kind": "choice",
+      "prompt": "What must happen to the document pointer listener on unmount?",
+      "options": [
+        {
+          "id": "answer",
+          "label": "Remove it using the same function reference.",
+          "isCorrect": true
+        },
+        {
+          "id": "misconception-one",
+          "label": "Leave it active to support future instances.",
+          "isCorrect": false
+        },
+        {
+          "id": "misconception-two",
+          "label": "Add a second listener to cancel it.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "Each component instance owns its outside-pointer listener. Cleanup prevents obsolete handlers from reacting after unmount; another listener does not undo the original registration."
+    },
+    {
+      "id": "multi-select-check-7",
+      "kind": "choice",
+      "prompt": "Do reducer and controlled-hook versions improve filtering asymptotically?",
+      "options": [
+        {
+          "id": "answer",
+          "label": "No; they organize ownership while still scanning option labels.",
+          "isCorrect": true
+        },
+        {
+          "id": "misconception-one",
+          "label": "Yes; a reducer makes filtering O(1).",
+          "isCorrect": false
+        },
+        {
+          "id": "misconception-two",
+          "label": "Yes; a callback cache permanently stores every query result.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "State organization changes maintainability and testability. The implemented filter still visits options and compares labels, so its asymptotic work is unchanged."
+    },
+    {
+      "id": "multi-select-recipe",
+      "kind": "ordering",
+      "prompt": "Order these baseline implementation steps by dependency. Each step prepares the next.",
+      "items": [
+        {
+          "id": "step-1",
+          "label": "Define IDs and selection state"
+        },
+        {
+          "id": "step-2",
+          "label": "Derive matching unselected options"
+        },
+        {
+          "id": "step-3",
+          "label": "Apply guarded selection and removal"
+        },
+        {
+          "id": "step-4",
+          "label": "Test keyboard and outside dismissal"
+        }
+      ],
+      "correctOrder": [
+        "step-1",
+        "step-2",
+        "step-3",
+        "step-4"
+      ],
+      "explanation": "Define the input and state rules, implement the dependent transformation, then validate the result. Reversing this order risks testing a UI before its rules or input identity are defined. This is one rehearsal sequence; other engineering workflows can work."
+    }
+  ]
+}

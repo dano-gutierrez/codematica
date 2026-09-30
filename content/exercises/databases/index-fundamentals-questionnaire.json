@@ -29,7 +29,7 @@
           "isCorrect": false
         }
       ],
-      "explanation": "A useful index accelerates matching query shapes, but inserts, updates, deletes, storage, and maintenance now pay for it."
+      "explanation": "A useful index accelerates matching query shapes but adds costs to inserts, updates, deletes, storage, and maintenance."
     },
     {
       "id": "leftmost-prefix",

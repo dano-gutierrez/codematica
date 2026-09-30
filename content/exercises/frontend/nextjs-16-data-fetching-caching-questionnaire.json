@@ -81,7 +81,7 @@
     {
       "id": "layer-match",
       "kind": "matching",
-      "prompt": "Match the cache layer to the risk.",
+      "prompt": "Match each cache layer to its behavior.",
       "pairs": [
         {
           "id": "memo",
@@ -122,7 +122,7 @@
           "isCorrect": false
         }
       ],
-      "explanation": "No-store is right for genuinely unreusable data, not as a substitute for finding a bad cache key."
+      "explanation": "Use no-store for data that cannot be reused safely. It does not replace finding a bad cache key."
     },
     {
       "id": "incident-order",

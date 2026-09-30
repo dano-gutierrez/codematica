@@ -1,10 +1,10 @@
 {
   "slug": "advanced-nextjs-16",
   "title": "Advanced Next.js 16",
-  "summary": "A hard front-end development path for experienced Next.js engineers covering rendering, caching, force-dynamic, invalidation, performance, and migration pain points in Next.js 16.",
+  "summary": "An advanced path for experienced frontend engineers covering Next.js 16 rendering, caching, force-dynamic, invalidation, performance, and migration challenges.",
   "kind": "skill",
   "category": "Front-End Development",
-  "audience": "Experienced Next.js App Router engineers who already ship production React applications and need hard-level caching, SSR, rendering, and migration judgment.",
+  "audience": "Experienced Next.js App Router engineers who ship React applications and need advanced caching, SSR, rendering, and migration skills.",
   "status": "published",
   "units": [
     {

@@ -39,7 +39,7 @@
     {
       "id": "proxy-file",
       "kind": "cloze",
-      "prompt": "Fill the new file convention replacing middleware naming direction.",
+      "prompt": "Fill in the new file convention replacing middleware.",
       "template": "Next.js 16 uses {{blank}} to make the network boundary clearer.",
       "acceptedAnswers": [
         "proxy.ts",

@@ -159,7 +159,7 @@ describe("complete shared native screen matrix", () => {
     await fireEvent.press(session.getByTestId("mobile-questionnaire-check"));
     await fireEvent.press(session.getByTestId("mobile-questionnaire-finish"));
     expect(session.getByTestId("mobile-questionnaire-complete")).toBeOnTheScreen();
-    await fireEvent.press(session.getByText("Next node"));
+    await fireEvent.press(session.getByText("Next activity"));
     expect(adapters.navigation.navigate).toHaveBeenCalledWith("/questionnaire-next");
     await fireEvent.press(session.getByText("Restart"));
     expect(session.getByTestId("mobile-questionnaire-session")).toBeOnTheScreen();
@@ -184,7 +184,7 @@ describe("complete shared native screen matrix", () => {
     await draw();
     await fireEvent.press(view.getByTestId("mobile-writing-check"));
     expect(view.getByText("Correct")).toBeOnTheScreen();
-    await fireEvent.press(view.getByText("Next node"));
+    await fireEvent.press(view.getByText("Next activity"));
     expect(adapters.navigation.navigate).toHaveBeenCalledWith("/writing-next");
   });
 
@@ -238,7 +238,7 @@ describe("complete shared native screen matrix", () => {
 
   it("handles unconfigured, successful, and failed native Auth without hiding errors", async () => {
     const unconfigured = await render(<LoginScreen adapters={createAdapters()} />);
-    expect(unconfigured.getByText(/environment variables are not configured/i)).toBeOnTheScreen();
+    expect(unconfigured.getByText(/environment variables are missing/i)).toBeOnTheScreen();
     await fireEvent.press(unconfigured.getByTestId("mobile-sign-in"));
     await waitFor(() => expect(unconfigured.getByText("Signed in")).toBeOnTheScreen());
     await unconfigured.unmount();

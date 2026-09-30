@@ -19,15 +19,15 @@ status: published
 
 ## Type System Reality
 
-Python is dynamically typed at runtime and gradually typed for static tooling. A TypeScript engineer can use annotations productively, but the mental model must shift: Python type hints do not make runtime values safe. They help type checkers, editors, linters, and readers.
+Python is dynamically typed at runtime and gradually typed for static tooling. Type hints help checkers, editors, linters, and readers; they do not make runtime values safe.
 
-The official typing docs state the runtime does not enforce function and variable annotations. The practical consequence is simple: if data is untrusted, parse it. Do not treat `def create_user(payload: UserPayload)` as proof that `payload` actually has the right shape.
+The official typing docs state that the runtime does not enforce function or variable annotations. Parse untrusted data. Do not treat `def create_user(payload: UserPayload)` as proof that `payload` actually has the right shape.
 
 ## Any Is A Boundary Leak
 
 In TypeScript, `any` is a contagious escape hatch. Python's `Any` plays a similar role for static tools. A value typed as `Any` can flow into precise types without static pushback, and unannotated parameters often become implicit `Any`.
 
-Senior Python code does not ban `Any`; it isolates it. Use `Any` at intentionally dynamic integration points, then narrow quickly. Prefer `object` when the value is unknown but operations should remain type-safe. This mirrors the TypeScript distinction between `any` and `unknown`.
+Isolate `Any` rather than banning it. Use `Any` at intentionally dynamic integration points, then narrow quickly. Prefer `object` when the value is unknown but operations should remain type-safe. This mirrors the TypeScript distinction between `any` and `unknown`.
 
 ## Runtime Validation Still Matters
 
@@ -40,7 +40,7 @@ The reusable pattern is:
 3. Convert to a domain object.
 4. Keep domain code away from raw transport data.
 
-This pattern is language-neutral. The Python-specific part is resisting the temptation to assume annotations performed step two.
+The pattern applies across languages. Python annotations do not perform step two.
 
 ## Dataclasses Are Not Schemas
 
@@ -50,13 +50,13 @@ Use dataclasses when the object is already trusted enough to enter the domain mo
 
 ## Protocols And Duck Typing
 
-Python has nominal types and structural typing support through protocols. This can feel close to TypeScript interfaces, but runtime duck typing has always been part of Python. The senior choice is to type behavior at the narrowest useful interface.
+Python supports nominal types, structural typing through protocols, and longstanding runtime duck typing. Protocols may feel familiar from TypeScript interfaces. Describe behavior with the narrowest useful interface.
 
 If a function only needs something iterable, annotate the iterable behavior instead of requiring a concrete list. If it needs an object that can persist a message, annotate that protocol. This keeps tests flexible and avoids forcing production code into inheritance just to satisfy a checker.
 
 ## Generics And Modern Syntax
 
-Python 3.12 introduced type-parameter syntax that feels more direct to TypeScript engineers. Use it only when the project's declared minimum Python version supports it and when it makes a real contract clearer. Do not chase generic abstractions just because they are available. A specific domain name is usually better than a reusable type variable that hides the product concept.
+Python 3.12 introduced type-parameter syntax that feels more direct to TypeScript engineers. Use it only when the project's declared minimum Python version supports it and when it makes a real contract clearer. Prefer a specific domain name over a generic type variable that hides the product concept.
 
 ```python
 def first[T](items: list[T]) -> T:

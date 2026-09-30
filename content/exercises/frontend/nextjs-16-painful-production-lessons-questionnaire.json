@@ -51,7 +51,7 @@
     {
       "id": "stale-debug-order",
       "kind": "ordering",
-      "prompt": "Order a cache debugging incident packet.",
+      "prompt": "Order the cache incident debugging steps.",
       "items": [
         {
           "id": "visible",
@@ -99,7 +99,7 @@
           "match": "Suspense boundary too broad"
         }
       ],
-      "explanation": "Boundary classification makes production debugging faster and less superstitious."
+      "explanation": "Identifying the failed boundary speeds production debugging and reduces guesswork."
     },
     {
       "id": "static-dynamic",

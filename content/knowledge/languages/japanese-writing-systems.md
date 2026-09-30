@@ -17,13 +17,13 @@ Japanese uses hiragana, katakana, and kanji together.
 
 Hiragana is the first phonetic script most beginners learn. It carries native grammar endings, particles, and many beginner words.
 
-Katakana writes the same basic sounds with a different visual system. It often appears in loanwords, emphasis, names, and technical terms.
+Katakana represents the same basic sounds with different shapes. It often appears in loanwords, emphasis, names, and technical terms.
 
-Kanji are meaning-bearing characters. A beginner does not need every reading at once. Start with the visible meaning, the most useful beginner reading, and correct stroke habits.
+Kanji represent meanings. Start with each character's meaning, most useful beginner reading, and correct stroke habits; learn other readings later.
 
 ## Why Stroke Order Matters
 
-Writing practice is not only shape copying. Stroke order teaches how the character is constructed, makes handwriting faster, and helps distinguish similar forms.
+Stroke order shows how a character is constructed, makes handwriting faster, and helps distinguish similar forms.
 
 Codematica's Japanese writing drills start with assisted tracing, then move to free writing. Assisted mode shows the expected stroke path. Free mode hides the outline while you draw, then checks stroke count, stroke direction, and overall shape.
 

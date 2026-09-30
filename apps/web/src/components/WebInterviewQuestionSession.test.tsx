@@ -9,7 +9,8 @@ vi.mock("next/dynamic", () => ({
   ),
 }));
 
-vi.mock("@/lib/progress/client", () => ({ recordProgress: vi.fn() }));
+vi.mock("@/lib/progress/client", () => ({ recordProgress: vi.fn(), appendPathToHref: (href: string, path?: string) => path ? `${href}?path=${path}` : href }));
+vi.mock("next/navigation", () => ({ useSearchParams: () => new URLSearchParams("path=frontend-interview-practice") }));
 
 describe("WebInterviewQuestionSession", () => {
   it("shows the evaluation guide and switches among all runnable approaches", () => {
@@ -21,6 +22,7 @@ describe("WebInterviewQuestionSession", () => {
     expect(screen.getByTestId("interview-evaluation-guide")).toHaveTextContent("ambiguous visual request");
     expect(screen.getByText("Hardcodes one painting")).toBeVisible();
     expect(screen.getByTestId("web-solution-detail")).toHaveTextContent("Weighted CSS Grid");
+    fireEvent.click(screen.getByRole("button", { name: "Show full solution" }));
     expect(screen.getByTestId("mock-web-playground")).toHaveTextContent("/App.tsx");
 
     fireEvent.click(screen.getByTestId("web-solution-tab-recursive-rectangular-subdivision"));
@@ -28,6 +30,32 @@ describe("WebInterviewQuestionSession", () => {
 
     fireEvent.click(screen.getByTestId("web-solution-tab-responsive-svg-geometry"));
     expect(screen.getByTestId("web-solution-detail")).toHaveTextContent("Responsive SVG Geometry");
+    fireEvent.click(screen.getByRole("button", { name: "Show full solution" }));
     expect(screen.getByText(/precise invariants/i)).toBeVisible();
+  });
+
+  it("reveals a recipe, switches language, and links to its path checkpoint", () => {
+    const question = getInterviewQuestionBySlug("frontend-practice", "dynamic-board");
+    if (question?.kind !== "web") throw new Error("Missing frontend challenge");
+    render(<WebInterviewQuestionSession question={question} nextHrefsByPath={{ "frontend-interview-practice": "/practice/frontend/interview-dynamic-board-questionnaire?path=frontend-interview-practice" }} />);
+    expect(screen.getByTestId("web-recipe-position")).toHaveTextContent("Step 1 of 4");
+    expect(screen.queryByTestId("mock-web-playground")).not.toBeInTheDocument();
+    fireEvent.click(screen.getByRole("button", { name: "Next step" }));
+    expect(screen.getByTestId("web-recipe-position")).toHaveTextContent("Step 2 of 4");
+    fireEvent.click(screen.getByRole("button", { name: "Previous step" }));
+    expect(screen.getByTestId("web-recipe-position")).toHaveTextContent("Step 1 of 4");
+    for (let i = 0; i < 3; i++) fireEvent.click(screen.getByRole("button", { name: "Next step" }));
+    fireEvent.click(screen.getByRole("button", { name: "Reveal solution" }));
+    expect(screen.getByTestId("web-recipe-position")).toHaveTextContent("Full solution");
+    fireEvent.click(screen.getByRole("button", { name: "Python" }));
+    expect(screen.getByTestId("web-python-companion")).toHaveTextContent("def create_board");
+    expect(screen.queryByTestId("mock-web-playground")).not.toBeInTheDocument();
+    expect(screen.getByTestId("interview-next-node")).toHaveAttribute("href", expect.stringContaining("interview-dynamic-board-questionnaire"));
+    fireEvent.click(screen.getByRole("button", { name: "TypeScript" }));
+    expect(screen.getByTestId("mock-web-playground")).toBeVisible();
+    fireEvent.click(screen.getByRole("button", { name: "Restart recipe" }));
+    expect(screen.queryByTestId("mock-web-playground")).not.toBeInTheDocument();
+    fireEvent.click(screen.getByTestId("web-solution-tab-flat-indexes"));
+    expect(screen.getByTestId("web-recipe-position")).toHaveTextContent("Step 1 of 4");
   });
 });

@@ -50,6 +50,10 @@ jobs:
           node-version: 22
           cache: npm
       - run: npm ci
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.13"
+      - run: npm run test:interview:python
       - run: npm run test:coverage
         env:
           CI: true

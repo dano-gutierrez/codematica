@@ -1,8 +1,8 @@
 # Feature Docs
 
-Each file in this folder should describe one durable product feature, not one PR and not one temporary task list.
+Use one file per durable product feature. Keep PR summaries and temporary task lists elsewhere.
 
-The goal is to let a new thread answer these questions quickly:
+Each doc should help a new task answer:
 
 - What is the feature supposed to do?
 - What is already implemented versus still planned?
@@ -34,7 +34,7 @@ Most threads should not need the full document before they start exploring code.
 
 ## What To Update After A Change
 
-Update the feature doc in the same branch when any of these changed:
+Update the feature doc in the same branch when any of these change:
 
 - User-visible behavior
 - Data model or persistence expectations
@@ -65,6 +65,10 @@ The most important sections are:
 - `Test Plan`
 - `Thread Handoff Prompt`
 
+## Feature References
+
 - `rtk-query-interview-preparation.md` owns the RTK Query interview curriculum and its source/version refresh and validation contract.
 
 - `linkedin-editorial.md`: private admin web/native post review, durable refinement/scheduling queue and exact-revision human approvals.
+
+- [Frontend Interview Practice](frontend-interview-practice.md): seven guided frontend challenges, TS/Python companions, quizzes, and review. Existing material corrections are recorded in the interview catalog audit.

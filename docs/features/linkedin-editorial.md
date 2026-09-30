@@ -34,7 +34,7 @@ The initial storage/recovery migrations are applied to hosted Supabase. The manu
 
 The Buffer personal channel is connected, with one recommended slot each day in America/Los_Angeles. Runtime configuration is local; no app deployment or native store build is implied by database setup. The manual worker requires a complete local developer install and an explicit request such as “Process the LinkedIn queue.” It consumes the existing Codex account allowance, not a separately billed model API. This is not an always-on cloud worker.
 
-Personal admin identity must be confirmed and a verified Supabase Auth account created through the normal sign-in flow before privileged bootstrap. Installed-device Maestro validation remains outstanding. Expo Doctor currently reports preexisting SDK patch-version mismatches; resolve them before native release readiness.
+Personal admin identity must be confirmed and a verified Supabase Auth account created through the normal sign-in flow before privileged bootstrap. Installed-device Maestro validation remains outstanding. The SDK patch alignment from `main` now passes all 20 Expo Doctor checks; this does not replace installed-device validation.
 
 ## Scope
 
@@ -104,7 +104,7 @@ Transient refinement failures become eligible after a one-hour backoff and are r
 ## Open Questions
 
 - Confirm the personal admin email and complete verified app sign-in/bootstrap.
-- Complete installed Android/iOS verification and align existing Expo patch versions before native release.
+- Complete installed Android/iOS verification before native release.
 
 ## Decision Log
 
@@ -127,10 +127,14 @@ Read `docs/codex-context.md`, this feature and `docs/runbooks/linkedin-editorial
 
 Checks repeated on the isolated PR branch passed: 324 Vitest tests with aggregate/per-file coverage gates, 52 native Jest tests with coverage gates, 85 transactional pgTAP assertions after clean migration replay, nine public browser smoke checks and two editorial browser checks. The CLI local lifecycle, lint, workspace typecheck, content check, production build and clean production-only artifact startup also passed. The artifact check verifies privileged worker code/service-key names are absent from built HTTP JavaScript. Failure logs and the mobile layout regression trace remain in local evidence; fixes were rechecked.
 
-The `linkedin-editorial-worker` recurring automation was deleted at the user’s request. Processing now runs only on explicit manual requests. Hosted state was verified at 100 posts, all `review`, zero queued jobs and zero app Auth users. Local web production serving is available at `http://127.0.0.1:3100/admin/linkedin` for onboarding. This does not establish a hosted app deployment or installed native release; the account/device/Expo Doctor gaps above still apply.
+The `linkedin-editorial-worker` recurring automation was deleted at the user’s request. Processing now runs only on explicit manual requests. Hosted state was verified at 100 posts, all `review`, zero queued jobs and zero app Auth users. Local web production serving is available at `http://127.0.0.1:3100/admin/linkedin` for onboarding. This does not establish a hosted app deployment or installed native release; account/device checks remain; the later merge validation below supersedes the Expo Doctor gap.
 
 ## Manual-create validation — 2026-09-30
 
 The manual-create extension passed 336 Vitest tests with coverage gates, 53 native Jest tests with coverage gates, 116 pgTAP assertions after clean migration replay, and a real local Auth/REST/CLI flow including concurrent idempotent creation and analysis-gated approval. Nine public browser smoke checks and three editorial browser checks passed. The dedicated mobile browser journey covers text selection/styling, a reported create error, retry, reload, proposal adoption and approval. Lint, typecheck, content validation, the production build and clean production-only artifact HTTP readiness checks passed. No new production dependencies were introduced; the formatter uses the existing core workspace import in web/native, and worker code remains outside HTTP startup.
 
-This PR includes the hosted migration but does not deploy it or the clients. Existing personal account, Expo Doctor patch-alignment and installed-device checks still apply. No Buffer mutation was made by this extension.
+This PR includes the hosted migration but does not deploy it or the clients. Personal account and installed-device checks still apply; the later merge validation below resolves Expo Doctor patch alignment. No Buffer mutation was made by this extension.
+
+## Latest-main merge validation — 2026-09-30
+
+Merged `main` at `d8c295b`, preserving both frontend interview documentation and the LinkedIn workflow, Python verification and editorial npm scripts, and separate public/editorial browser configurations. No editorial database migration or publishing behavior changed. A clean dependency install, 389 Vitest tests with coverage gates, 58 native Jest tests with coverage gates, authored Python verification, content check, lint and workspace typecheck passed. Expo Doctor passes all 20 checks after the upstream SDK alignment. The merged production build, nine public browser smoke cases, three editorial browser cases and startup with a clean production-only dependency install also passed. Installed-device validation and hosted deployment remain separate tasks.

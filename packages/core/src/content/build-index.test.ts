@@ -535,7 +535,7 @@ describe("buildContentIndex", () => {
 
     const index = await buildContentIndex({ rootDir });
 
-    expect(index.schemaVersion).toBe(10);
+    expect(index.schemaVersion).toBe(11);
     expect(index.documents).toHaveLength(1);
     expect(index.diagrams).toHaveLength(1);
     expect(index.exercises).toEqual([
@@ -614,6 +614,22 @@ describe("buildContentIndex", () => {
       }],
     });
     await expect(buildContentIndex({ rootDir: exerciseAttributionRoot })).rejects.toThrow(/exercise node.*needs a primary source/i);
+  });
+
+  it("validates published interview nodes, their sources, and completion feeds", async () => {
+    const rootDir = await makeTempRoot();
+    const units = [{ slug: "interview", title: "Interview unit", summary: "An interview walkthrough in a study path.", nodes: [{ kind: "interview", slug: "amazon/two-sum-product-pair" }] }];
+    await writeLearningPath(rootDir, "interview-path", undefined, { units });
+    await expect(buildContentIndex({ rootDir })).rejects.toThrow(/missing published interview/);
+    await writeInterviewCompany(rootDir, "amazon", { status: "draft" });
+    await expect(buildContentIndex({ rootDir })).rejects.toThrow(/missing published interview/);
+    await writeInterviewCompany(rootDir, "amazon");
+    await expect(buildContentIndex({ rootDir })).resolves.toHaveProperty("schemaVersion", 11);
+    await writeSourceCatalog(rootDir);
+    await writeLearningPath(rootDir, "interview-path", undefined, { units, sourcePolicy: "required", sourceRefs: ["test-primary-source"] });
+    await expect(buildContentIndex({ rootDir })).rejects.toThrow(/interview node.*needs a primary source/);
+    await writeLearningPath(rootDir, "interview-path", undefined, { units, completionDestination: "flashcard-feed" });
+    await expect(buildContentIndex({ rootDir })).rejects.toThrow(/published completion flashcard feed/);
   });
 
   it("rejects path nodes that reference skills outside the career taxonomy", async () => {
@@ -979,7 +995,7 @@ describe("buildContentIndex", () => {
 
     const index = await buildContentIndex({ rootDir });
 
-    expect(index.schemaVersion).toBe(10);
+    expect(index.schemaVersion).toBe(11);
     expect(index.interviewCollections).toEqual([
       expect.objectContaining({
         slug: "amazon",

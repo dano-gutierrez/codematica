@@ -34,7 +34,7 @@
 
 ## One-Minute Brief
 
-Codematica uses learning paths as the main study surface. Paths are inspired by career and skill paths, language-app progression maps, and older interactive programming courses, but this milestone stays local-first: documents remain Markdown, paths and exercises are structured JSON, and all content remains open.
+Learning paths organize study using ideas from career and skill paths, language-app progression maps, and older interactive programming courses. This milestone stays local-first and open: documents use Markdown; paths and exercises use structured JSON.
 
 ## Outcome / Contract
 
@@ -45,7 +45,7 @@ Codematica uses learning paths as the main study surface. Paths are inspired by 
 - `/paths/[slug]/flashcards` renders one passive flashcard feed when a path has a published feed.
 - `/practice/[...slug]` renders one flashcard, cloze prompt, questionnaire session, or writing exercise.
 - Exercise content is manually authored in `content/exercises/**/*.json`; path content is authored in `content/learning-paths/*.json`; passive flashcard feeds are authored in `content/flashcard-feeds/*.json`.
-- `packages/core/src/generated/content-index.json` has `schemaVersion: 10` and includes validated primary sources, generic progression, structured Japanese grammar, approval-gated audio, learning/language/interview content, and home discovery.
+- `packages/core/src/generated/content-index.json` has `schemaVersion: 10` and includes validated primary sources, generic progression, structured Japanese grammar, approval-gated audio, learning/language/interview content, and home discovery. [Unclear: the Frontend Interview Path Extension below describes index v11.]
 - Path nodes may be documents, diagrams, exercises, or sources. Generic progressions declare a framework, roadmap label, stable skills/categories, stages with level/status/outcomes, required nodes, and published checkpoints/thresholds.
 - Index generation additionally fails on duplicate/missing sources, unknown outcome/question skills, missing source-required references, or published source stages without a published local companion. Planned stages may omit checkpoint requirements.
 - No node is locked, disabled, gated, or paywalled in this milestone. Optional saved progress is owned by `docs/features/auth-and-progress.md`.
@@ -74,9 +74,8 @@ The shipped content includes skill and role paths using Markdown articles, exter
 
 ### Out Of Scope
 
-- streaks, leaderboards, or generic adaptive review scheduling; Japanese skill mastery remains the bounded review exception
 - persisted questionnaire answers, raw reflection text, evidence artifacts, or answer history
-- locked levels, hearts, streaks, achievements, leaderboards, generic cross-path adaptive review queues, and paywalls
+- locked levels, hearts, streaks, achievements, leaderboards, generic adaptive review scheduling and cross-path queues, and paywalls; Japanese skill mastery is the bounded review exception
 - generated exercises or AI feedback
 - Supabase migrations for paths or exercises
 - coding sandboxes or compiled challenges
@@ -101,9 +100,9 @@ The shipped content includes skill and role paths using Markdown articles, exter
 - Flashcards reveal answer and explanation after the user taps the reveal button.
 - Cloze prompts compare trimmed, case-insensitive answers against `acceptedAnswers`.
 - Questionnaires render one question per screen, randomize question and answer order once per attempt, show immediate feedback, and report overall/per-skill aggregate scores.
-- Guided labs require a prediction commitment and evidence checklist before completion; reflection inputs remain local component state and are not saved.
+- Guided labs require a chosen prediction and completed evidence checklist; reflections remain unsaved local component state.
 - Ordering questions use accessible up/down controls. Matching questions use mobile-friendly select controls.
-- When practice is opened from a path, completing the prompt or questionnaire exposes the next node in that path order.
+- When practice opens from a path, completing the prompt or questionnaire shows **Next activity** for the next node in path order.
 - Published passive flashcard feeds appear as a path-level entry point, not as ordered path nodes.
 - Passive feeds show one card per mobile viewport, shuffle card order once per page load, append more cards as the user scrolls, and expose no reveal/check/progress controls.
 - Practice and passive feed components emit minimal progress events for the optional auth/progress layer, but they do not store answers or scores.
@@ -153,7 +152,8 @@ The shipped content includes skill and role paths using Markdown articles, exter
 
 - Unit: path, progression, exercise, passive feed, language schema coverage, cloze validation, questionnaire validation, handwriting scoring, review scheduling/merge, passive feed windowing, duplicate ID validation, and missing reference validation.
 - Integration: generated index loads starter paths, exercises, passive feeds, and path-scoped next routes.
-- Component: flashcard reveal, cloze answer checking, questionnaire feedback/navigation, and passive feed rendering.
+- Editorial checks: compare authored JSON structure, IDs, answer keys, technical literals, code, links, and Japanese text against the source. Review each changed explanation for lost conditions or meaning, then regenerate the index and run content and rendering checks. Keep already concise text unchanged.
+- Component: flashcard reveal, cloze answer checking, questionnaire feedback/navigation, and passive feed rendering. Verify the learner-facing labels **Next activity**, **Practice complete**, **Quick review**, and **Choose your prediction**.
 - E2E: mobile path landing, passive Python feed, document open from a path, practice flow, Python questionnaire flow, `/browse` fuzzy search, Mermaid diagram rendering, and the Japanese open-roadmap/review/dictionary workflow.
 
 ## Open Questions
@@ -190,3 +190,7 @@ The shipped content includes skill and role paths using Markdown articles, exter
 ## Thread Handoff Prompt
 
 `Read docs/codex-context.md and docs/features/learning-paths-and-practice.md first. Compare the documented path, practice, and passive feed contract against packages/core/src/content/schema.ts, packages/core/src/content/build-index.ts, packages/core/src/flashcards/passive.ts, packages/core/src/practice/questionnaire.ts, apps/web/src/components/LearningPathMap.tsx, apps/web/src/components/PracticeCard.tsx, apps/web/src/components/QuestionnaireSession.tsx, and apps/web/src/components/PassiveFlashcardFeed.tsx, then update tests and docs with any behavior changes.`
+
+## Frontend Interview Path Extension (2026-09-27)
+
+Index v11 accepts published interview nodes (`collection/question`) and optional `completionDestination: "flashcard-feed"`. The final destination requires a published feed. Interview sources are checked under required source policy. Review snippets now declare `codeLanguage` and offer lesson links with path context. See [Frontend Interview Practice](frontend-interview-practice.md) for flow and test commands. Regression coverage lives in `frontend-interview.test.ts`, build-index tests, component tests, and `frontend-interview.regression.spec.ts`.

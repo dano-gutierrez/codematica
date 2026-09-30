@@ -119,7 +119,7 @@ const learningPathNodeMetadata = {
 };
 
 const internalLearningPathNodeSchema = z.object({
-  kind: z.enum(["document", "diagram", "exercise"]),
+  kind: z.enum(["document", "diagram", "exercise", "interview"]),
   ...learningPathNodeMetadata,
 });
 
@@ -152,6 +152,7 @@ export const learningPathFileSchema = z.object({
   sourceRefs: z.array(curriculumIdSchema).optional(),
   units: z.array(learningPathUnitSchema).min(1),
   progression: learningProgressionSchema.optional(),
+  completionDestination: z.literal("flashcard-feed").optional(),
 }).superRefine((path, context) => {
   if (!path.progression) return;
 
@@ -520,6 +521,7 @@ export const passiveFlashcardCardSchema = z.object({
   tags: z.array(z.string().min(2)).min(1),
   sourceDocSlug: slugSchema.optional(),
   code: z.string().min(6).optional(),
+  codeLanguage: z.string().min(1).optional(),
 });
 
 export const passiveFlashcardFeedFileSchema = z.object({
@@ -626,6 +628,11 @@ const interviewWebSolutionTrackSchema = z.object({
     space: z.string().min(3),
   }),
   project: webExerciseProjectSchema,
+  python: z.object({
+    code: z.string().min(10),
+    explanation: z.string().min(40),
+    complexity: z.object({ time: z.string().min(3), space: z.string().min(3) }),
+  }).optional(),
 });
 
 const interviewRubricItemSchema = z.object({
@@ -648,6 +655,7 @@ const interviewQuestionBaseSchema = z.object({
   difficulty: difficultySchema,
   tags: z.array(z.string().min(2)).min(1),
   sourceLinks: z.array(externalLinkSchema).default([]),
+  sourceRefs: z.array(curriculumIdSchema).optional(),
   sourceNote: z.string().min(20).optional(),
   resources: z.array(externalLinkSchema).default([]),
   examples: z.array(interviewExampleSchema).default([]),
@@ -885,7 +893,7 @@ export type ContentTrack = {
 };
 
 export type ContentIndex = {
-  schemaVersion: 10;
+  schemaVersion: 11;
   sources: ContentSource[];
   documents: KnowledgeDocument[];
   diagrams: MermaidDiagram[];

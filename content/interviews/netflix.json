@@ -97,23 +97,23 @@
               "explanation": "If a key was overwritten, only delete it when the heap expiry matches the map expiry."
             }
           ],
-          "explanation": "The heap tells which entries can expire next, while the map holds the authoritative latest value. Matching expiry times prevents old heap records from deleting newer writes.",
+          "explanation": "The heap tells which entries can expire next, while the map holds the authoritative latest value. Matching expiry times prevents old heap records from deleting newer writes. Repeated writes can leave many pending heap records for one key, so h can exceed the number of keys n. Cleanup runs when called or on get; it is not a background timer.",
           "complexity": {
-            "time": "O(log n) set, amortized O(log n) cleanup",
-            "space": "O(n)"
+            "time": "O(log h) set; O(1 + c log h) get/cleanup removing c records",
+            "space": "O(n + h), n current keys and h pending expiry records"
           },
           "languages": {
             "python": {
               "label": "Python",
-              "code": "import heapq\n\nclass ExpiringCacheHeap:\n    def __init__(self):\n        self.data = {}\n        self.heap = []\n\n    def set(self, key, value, ttl, now):\n        expires = now + ttl\n        self.data[key] = (value, expires)\n        heapq.heappush(self.heap, (expires, key))\n\n    def cleanup(self, now):\n        while self.heap and self.heap[0][0] <= now:\n            expires, key = heapq.heappop(self.heap)\n            if self.data.get(key, (None, None))[1] == expires:\n                del self.data[key]"
+              "code": "import heapq\n\nclass ExpiringCacheHeap:\n    def __init__(self):\n        self.data = {}\n        self.heap = []\n\n    def set(self, key, value, ttl, now):\n        expires = now + ttl\n        self.data[key] = (value, expires)\n        heapq.heappush(self.heap, (expires, key))\n\n    def cleanup(self, now):\n        while self.heap and self.heap[0][0] <= now:\n            expires, key = heapq.heappop(self.heap)\n            if self.data.get(key, (None, None))[1] == expires:\n                del self.data[key]\n    def get(self, key, now):\n        self.cleanup(now)\n        return self.data.get(key, (None, None))[0]"
             },
             "typescript": {
               "label": "TypeScript",
-              "code": "export class ExpiringCacheHeap<V> {\n  private data = new Map<string, { value: V; expiresAt: number }>();\n  private heap: Array<[number, string]> = [];\n  set(key: string, value: V, ttl: number, now: number): void {\n    const expiresAt = now + ttl;\n    this.data.set(key, { value, expiresAt });\n    this.heap.push([expiresAt, key]);\n    this.heap.sort((a, b) => a[0] - b[0]);\n  }\n  cleanup(now: number): void {\n    while (this.heap.length && this.heap[0][0] <= now) {\n      const [expiresAt, key] = this.heap.shift()!;\n      if (this.data.get(key)?.expiresAt === expiresAt) this.data.delete(key);\n    }\n  }\n}"
+              "code": "class MinHeap<T> {\n  private items: T[] = [];\n  constructor(private compare: (a: T, b: T) => number) {}\n  get size(): number { return this.items.length; }\n  peek(): T | undefined { return this.items[0]; }\n  push(value: T): void {\n    const a = this.items; a.push(value);\n    let i = a.length - 1;\n    while (i > 0) { const p = Math.floor((i - 1) / 2); if (this.compare(a[p], a[i]) <= 0) break; [a[p], a[i]] = [a[i], a[p]]; i = p; }\n  }\n  pop(): T | undefined {\n    const a = this.items;\n    if (!a.length) return undefined;\n    const first = a[0], last = a.pop()!;\n    if (a.length) {\n      a[0] = last; let i = 0;\n      while (2 * i + 1 < a.length) {\n        let child = 2 * i + 1;\n        if (child + 1 < a.length && this.compare(a[child + 1], a[child]) < 0) child++;\n        if (this.compare(a[i], a[child]) <= 0) break;\n        [a[i], a[child]] = [a[child], a[i]]; i = child;\n      }\n    }\n    return first;\n  }\n}\n\nexport class ExpiringCacheHeap<V> {\n  private data = new Map<string, { value: V; expiresAt: number }>();\n  private heap = new MinHeap<[number, string]>((a, b) => a[0] - b[0]);\n  set(key: string, value: V, ttl: number, now: number): void {\n    const expiresAt = now + ttl;\n    this.data.set(key, { value, expiresAt });\n    this.heap.push([expiresAt, key]);\n  }\n  cleanup(now: number): void {\n    while (this.heap.size && this.heap.peek()![0] <= now) {\n      const [expiresAt, key] = this.heap.pop()!;\n      if (this.data.get(key)?.expiresAt === expiresAt) this.data.delete(key);\n    }\n  }\n  get(key: string, now: number): V | undefined { this.cleanup(now); return this.data.get(key)?.value; }\n}"
             },
             "java": {
               "label": "Java",
-              "code": "class ExpiringCacheHeap<V> {\n  record Entry<V>(V value, long expiresAt) {}\n  private final Map<String, Entry<V>> data = new HashMap<>();\n  private final PriorityQueue<Object[]> heap = new PriorityQueue<>(Comparator.comparingLong(a -> (Long) a[0]));\n  void set(String key, V value, long ttl, long now) {\n    long expires = now + ttl;\n    data.put(key, new Entry<>(value, expires));\n    heap.add(new Object[] { expires, key });\n  }\n  void cleanup(long now) {\n    while (!heap.isEmpty() && (Long) heap.peek()[0] <= now) {\n      Object[] item = heap.remove();\n      Entry<V> current = data.get((String) item[1]);\n      if (current != null && current.expiresAt() == (Long) item[0]) data.remove((String) item[1]);\n    }\n  }\n}"
+              "code": "class ExpiringCacheHeap<V> {\n  record Entry<V>(V value, long expiresAt) {}\n  private final Map<String, Entry<V>> data = new HashMap<>();\n  private final PriorityQueue<Object[]> heap = new PriorityQueue<>(Comparator.comparingLong(a -> (Long) a[0]));\n  void set(String key, V value, long ttl, long now) {\n    long expires = now + ttl;\n    data.put(key, new Entry<>(value, expires));\n    heap.add(new Object[] { expires, key });\n  }\n  void cleanup(long now) {\n    while (!heap.isEmpty() && (Long) heap.peek()[0] <= now) {\n      Object[] item = heap.remove();\n      Entry<V> current = data.get((String) item[1]);\n      if (current != null && current.expiresAt() == (Long) item[0]) data.remove((String) item[1]);\n    }\n  }\n  V get(String key, long now) { cleanup(now); Entry<V> item = data.get(key); return item == null ? null : item.value(); }\n}"
             }
           }
         }
@@ -284,7 +284,7 @@
           "explanation": "The window invariant is that every item inside it is unique. Each pointer moves only forward, so the scan stays linear while considering every maximal distinct window.",
           "complexity": {
             "time": "O(n)",
-            "space": "O(k)"
+            "space": "O(d), d distinct values stored (current window for set; all seen values for last-index map)"
           },
           "languages": {
             "python": {
@@ -322,7 +322,7 @@
           "explanation": "The left edge never moves backward. Jumping past the previous duplicate preserves uniqueness and avoids removing each intermediate item one by one.",
           "complexity": {
             "time": "O(n)",
-            "space": "O(k)"
+            "space": "O(d), d distinct values stored (current window for set; all seen values for last-index map)"
           },
           "languages": {
             "python": {

@@ -632,7 +632,19 @@ function assertContentReferences(
     }
   }
 
+  const interviewQuestions = new Map(interviewCollections.filter((collection) => collection.status === "published").flatMap((collection) => collection.questions.map((question) => [String(`${collection.slug}/${question.slug}`), question] as const)));
+  for (const collection of interviewCollections) {
+    for (const question of collection.questions) {
+      for (const sourceRef of question.sourceRefs ?? []) {
+        if (!sourceIds.has(sourceRef)) throw new Error(`${collection.sourcePath} references missing source "${sourceRef}"`);
+      }
+    }
+  }
+
   for (const learningPath of learningPaths) {
+    if (learningPath.completionDestination === "flashcard-feed" && !passiveFlashcardFeeds.some((feed) => feed.pathSlug === learningPath.slug && feed.status === "published")) {
+      throw new Error(`${learningPath.sourcePath} needs a published completion flashcard feed.`);
+    }
     const pathNodeSlugs = new Set(learningPath.units.flatMap((unit) => unit.nodes.map((node) => node.slug)));
 
     for (const sourceRef of learningPath.sourceRefs ?? []) {
@@ -647,6 +659,12 @@ function assertContentReferences(
       for (const node of unit.nodes) {
         if (node.kind === "source" && !sourceIds.has(node.sourceRef)) {
           throw new Error(`${learningPath.sourcePath} references missing source "${node.sourceRef}"`);
+        }
+
+        if (node.kind === "interview") {
+          const question = interviewQuestions.get(node.slug);
+          if (!question) throw new Error(`${learningPath.sourcePath} references missing published interview "${node.slug}"`);
+          if (learningPath.sourcePolicy === "required" && !question.sourceRefs?.length) throw new Error(`${learningPath.sourcePath} interview node "${node.slug}" needs a primary source reference.`);
         }
 
         if (node.kind === "document" && !documentSlugs.has(node.slug)) {
@@ -864,7 +882,7 @@ export async function buildContentIndex({ rootDir }: BuildContentIndexOptions): 
   );
 
   return {
-    schemaVersion: 10,
+    schemaVersion: 11,
     sources: sortedSources,
     documents: sortedDocuments,
     diagrams: sortedDiagrams,

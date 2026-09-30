@@ -1,0 +1,162 @@
+{
+  "slug": "frontend/react-state-async-questionnaire",
+  "title": "React Async State Checkpoint",
+  "type": "questionnaire",
+  "documentSlug": "frontend/react-state-async-callbacks",
+  "concept": "State snapshots and delayed updates",
+  "difficulty": "practitioner",
+  "tags": [
+    "react",
+    "useState",
+    "async",
+    "stale-closure",
+    "interview"
+  ],
+  "status": "published",
+  "sourceRefs": [
+    "react-state-snapshot",
+    "react-state-update-queue",
+    "react-state-setter",
+    "react-effect-cleanup"
+  ],
+  "questions": [
+    {
+      "id": "trace",
+      "kind": "choice",
+      "prompt": "Starting from items = [], a click queues [A], then its timer calls setItems(items.map(...)). What array does that captured map read?",
+      "options": [
+        {
+          "id": "answer",
+          "label": "The empty array from the render that created the handler.",
+          "isCorrect": true
+        },
+        {
+          "id": "misconception-one",
+          "label": "The latest committed array, because the timer runs later.",
+          "isCorrect": false
+        },
+        {
+          "id": "misconception-two",
+          "label": "A Promise that resolves to the next state.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "The callback keeps the render’s empty array, so mapping it returns []. A later timer does not refresh a closure. useState supplies a value and a setter; neither the captured array nor the setter result is a Promise for future state."
+    },
+    {
+      "id": "updates",
+      "kind": "choice",
+      "prompt": "Which change preserves independently added items when asynchronous completions arrive out of order?",
+      "options": [
+        {
+          "id": "answer",
+          "label": "Use functional updates for both appending and updating the matching item ID.",
+          "isCorrect": true
+        },
+        {
+          "id": "misconception-one",
+          "label": "Fix only the append, then replace the array captured by each callback.",
+          "isCorrect": false
+        },
+        {
+          "id": "misconception-two",
+          "label": "Make the timeout long enough for every render to finish.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "Each dependent write must build on pending state, and each completion must target its own item ID. A later stale replacement can undo a correct append. Waiting longer does not change the captured array or establish an ordering policy."
+    },
+    {
+      "id": "await",
+      "kind": "choice",
+      "prompt": "Why does await setItems(next) fail to make the old handler read the new items value?",
+      "options": [
+        {
+          "id": "answer",
+          "label": "The setter does not return a commit Promise, and this handler keeps its render snapshot.",
+          "isCorrect": true
+        },
+        {
+          "id": "misconception-one",
+          "label": "React setters cannot be called from async functions.",
+          "isCorrect": false
+        },
+        {
+          "id": "misconception-two",
+          "label": "await freezes React rendering until the component unmounts.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "Calling a setter from async code is valid. Its return value is not a Promise that waits for a commit, and await does not replace the handler’s captured variables. It also does not freeze React rendering; calculate dependent state with a pure updater."
+    },
+    {
+      "id": "pure",
+      "kind": "choice",
+      "prompt": "Where should a request run when its result updates an item?",
+      "options": [
+        {
+          "id": "answer",
+          "label": "Outside the state updater; await it, then queue a pure update by ID.",
+          "isCorrect": true
+        },
+        {
+          "id": "misconception-one",
+          "label": "Inside an async updater passed to setItems.",
+          "isCorrect": false
+        },
+        {
+          "id": "misconception-two",
+          "label": "Inside a synchronous updater so it runs exactly once.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "Perform I/O outside the updater, then calculate the next state synchronously. An async updater returns a Promise instead of an array. A synchronous updater with I/O is still impure: development Strict Mode can invoke updaters twice, so it cannot promise one request."
+    },
+    {
+      "id": "races",
+      "kind": "choice",
+      "prompt": "Two requests edit the same item. The newer result arrives first. Do functional updates alone stop the older response from overwriting it?",
+      "options": [
+        {
+          "id": "answer",
+          "label": "No. Use a per-item request revision or serialize writes according to the chosen policy.",
+          "isCorrect": true
+        },
+        {
+          "id": "misconception-one",
+          "label": "Yes. Functional updates sort responses by request start time.",
+          "isCorrect": false
+        },
+        {
+          "id": "misconception-two",
+          "label": "Yes. Using an item ID makes every response for that ID current.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "Functional updates receive pending state but do not infer which request is authoritative. Responses are not sorted by start time. An item ID identifies the target; a request revision distinguishes competing operations for that target."
+    },
+    {
+      "id": "cleanup",
+      "kind": "choice",
+      "prompt": "A timeout has already started awaiting a request when Clear items is clicked. What prevents its late response from affecting a new list?",
+      "options": [
+        {
+          "id": "answer",
+          "label": "Invalidate its generation and check that generation before applying the result.",
+          "isCorrect": true
+        },
+        {
+          "id": "misconception-one",
+          "label": "Only call clearTimeout on the timer that already fired.",
+          "isCorrect": false
+        },
+        {
+          "id": "misconception-two",
+          "label": "Assume aborting the client request rolls back any server write.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "A generation guard rejects the old operation’s result locally. clearTimeout cannot stop an already-running callback. Abort can reduce unnecessary work when supported, but it is not proof that the server rolled back or never committed a mutation."
+    }
+  ]
+}

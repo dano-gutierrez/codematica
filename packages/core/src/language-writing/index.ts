@@ -150,7 +150,7 @@ function createFeedback({
   }
 
   if (!strokeCountCorrect) {
-    return "Check the stroke count first, then try the character again.";
+    return "Check the stroke count, then try the character again.";
   }
 
   if (!strokeOrderCorrect) {
@@ -158,7 +158,7 @@ function createFeedback({
   }
 
   if (shapeScore < 0.5) {
-    return "Use the guide shape and keep each stroke closer to the expected path.";
+    return "Follow the guide shape and keep each stroke closer to its expected path.";
   }
 
   return "Almost there. Slow down and match the start and end of each stroke.";

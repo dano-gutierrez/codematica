@@ -21,12 +21,14 @@ const languageOptions: { value: LanguageKey; label: string }[] = [
 export function InterviewQuestionSession({
   question,
   onProgressEvent,
+  nextHrefsByPath,
 }: {
+  nextHrefsByPath?: Record<string, string>;
   question: InterviewQuestion;
   onProgressEvent?: (status: ProgressStatus, position: Record<string, unknown>) => void;
 }) {
   if (question.kind === "web") {
-    return <WebInterviewQuestionSession question={question} />;
+    return <WebInterviewQuestionSession question={question} nextHrefsByPath={nextHrefsByPath} />;
   }
 
   return <AlgorithmInterviewQuestionSession question={question} onProgressEvent={onProgressEvent} />;

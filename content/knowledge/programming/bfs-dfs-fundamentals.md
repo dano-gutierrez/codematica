@@ -20,18 +20,18 @@ status: published
 
 ## The Shared Traversal Idea
 
-A graph is a set of **vertices** (or nodes) connected by **edges**. Trees, dependency maps, social networks, maps, and two-dimensional grids can all be treated as graphs. Breadth-first search (BFS) and depth-first search (DFS) differ in the order in which they explore that graph, but both follow the same safe skeleton:
+A graph is a set of **vertices** (or nodes) connected by **edges**. Trees, dependency maps, social networks, maps, and two-dimensional grids can all be treated as graphs. Breadth-first search (BFS) and depth-first search (DFS) explore nodes in different orders, but share these steps:
 
 1. Choose a starting node.
 2. Remember which nodes have already been discovered.
 3. Repeatedly take one discovered node, inspect it, and discover its unvisited neighbors.
 4. Stop when the target is found or no reachable node remains.
 
-The visited set is part of the algorithm, not an optional optimization. A general graph may contain cycles. Without visited tracking, an edge such as `A -> B -> A` can make traversal repeat forever.
+A visited set is required because general graphs may contain cycles. Without it, a path such as `A -> B -> A` can make traversal repeat forever.
 
 ## Breadth-First Search
 
-BFS explores in layers: first distance zero from the start, then distance one, then distance two, and so on. A **queue** provides exactly this first-in, first-out order. The first node discovered is also the first one expanded.
+BFS explores in layers: first distance zero from the start, then distance one, then distance two, and so on. A **queue** provides this first-in, first-out order: the first node discovered is the first expanded.
 
 This layer guarantee makes BFS the standard choice for the shortest number of edges in an **unweighted** graph. It does not automatically solve weighted shortest paths; different edge costs require an algorithm such as Dijkstra's.
 
@@ -159,13 +159,13 @@ Their temporary memory shapes differ:
 - BFS holds a frontier. On a wide tree, that queue can contain many nodes at once.
 - DFS holds a path plus pending branches. On a deep tree, the stack can grow to the tree height.
 
-Big-O describes the worst case, but the graph's shape decides which memory profile matters in practice.
+The graph's shape determines which worst-case memory cost matters in practice.
 
 ## Choose By The Question
 
 Choose BFS when the question asks for the nearest target, minimum number of unweighted steps, level order, or all nodes at a given distance. Choose DFS when the question asks whether a route exists, needs backtracking, naturally processes a whole component, or depends on entry/exit ordering such as cycle detection and topological reasoning.
 
-If either traversal is correct, prefer the version whose invariant is easiest to explain. “The queue contains the next distance layer” and “the recursive call completely processes one subtree” are both strong interview explanations.
+If either traversal is correct, prefer the version whose invariant is easiest to explain. “The queue contains the next distance layer” and “the recursive call completely processes one subtree” both explain the invariant.
 
 ## Common Mistakes
 
@@ -180,3 +180,7 @@ If either traversal is correct, prefer the version whose invariant is easiest to
 
 - [Python deque](https://docs.python.org/3/library/collections.html#collections.deque)
 - [JavaScript Set](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Set)
+
+## Memory details for these implementations
+
+The TypeScript head-index queue retains processed entries until traversal ends, so its backing array holds O(V) entries even when the live frontier is small. The iterative DFS above marks on pop; duplicate pending neighbors can occupy O(E) stack entries in a general graph. Recursive DFS uses O(V) visited space and at most O(V) active calls. Marking on push bounds a simple iterative stack to O(V), but can change the discovery order compared with recursive DFS. State which implementation you are analyzing.

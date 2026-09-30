@@ -26,5 +26,5 @@ test("@regression follows the source-linked ML Systems path into a guided lab", 
   await page.getByLabel("The next action has an explicit decision rule").check();
   await expect(page.getByTestId("guided-lab-complete")).toBeEnabled();
   await page.getByTestId("guided-lab-complete").click();
-  await expect(page.getByRole("link", { name: "Next node" })).toBeVisible();
+  await expect(page.getByRole("link", { name: "Next activity" })).toBeVisible();
 });
