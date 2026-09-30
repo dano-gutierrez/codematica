@@ -1,3 +1,4 @@
+jest.mock("../lib/use-admin-access", () => ({ useAdminAccess: () => false }));
 import { fireEvent, render } from "@testing-library/react-native";
 import { NativeNavigation } from "../../../../packages/ui/src/screens";
 
@@ -58,4 +59,11 @@ describe("native window adaptation", () => {
     const view = await render(<RootLayout />);
     expect(view.getByTestId(String(testId))).toBeOnTheScreen();
   });
+});
+
+it("exposes editorial navigation only for admins", async () => {
+  const navigate=jest.fn();const view=await render(<NativeNavigation pathname="/admin/linkedin" navigate={navigate} wide={false} isAdmin />);
+  await fireEvent.press(view.getByTestId("mobile-nav-more")); await fireEvent.press(view.getByTestId("mobile-menu-linkedin")); expect(navigate).toHaveBeenCalledWith("/admin/linkedin");
+  await view.rerender(<NativeNavigation pathname="/admin/linkedin" navigate={navigate} wide isAdmin />);
+  expect(view.getByTestId("mobile-nav-linkedin")).toBeOnTheScreen();
 });

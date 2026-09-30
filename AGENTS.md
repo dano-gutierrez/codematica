@@ -353,6 +353,10 @@ Reuse these components and extend them when needed; avoid rebuilding equivalent 
 - `packages/ui/src/screens.tsx` also exports `NativeNavigation`: shared phone/tab navigation and More modal around the Expo Stack.
 - `packages/ui/src/tokens.ts`: shared native design tokens for React Native screens.
 
+- `apps/web/src/components/LinkedInPostText.tsx`: reusable LinkedIn plain-text textarea with Unicode formatting and selection preservation.
+- `apps/web/src/components/LinkedInAdmin.tsx`: private source-grounded post review, revision comparison and approval controls.
+- `packages/ui/src/LinkedInAdminScreen.tsx`: shared native editorial review using the same core store and RPC contracts.
+
 ### Content And Search
 
 - Plain Markdown is the default authoring format.

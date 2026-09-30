@@ -134,6 +134,10 @@ Keep the service role key server-side only. Do not add it to browser code or Ver
 
 Start documentation work at `docs/README.md`. See `docs/CHANGELOG.md` for dated delivery summaries and the linked feature documents for authoritative behavior.
 
+## Private LinkedIn editorial workflow
+
+Admin web/native manual creation, Unicode text formatting and review at `/admin/linkedin` uses optional Supabase persistence and a manually invoked local Codex worker. Drafts are private; a human must approve the exact revision before Buffer scheduling. See [feature contract](docs/features/linkedin-editorial.md) and [operations runbook](docs/runbooks/linkedin-editorial.md). Commands: `npm run linkedin -- status`, `npm run e2e:linkedin`, `npm run test:linkedin:local`, and `npm run test:production:smoke` (after build).
+
 ## Frontend interview practice
 
 Open `/paths/frontend-interview-practice` for seven lessons, guided TS/Python solutions, checkpoints, and continuous review. Canonical code is in `content/interviews/frontend-practice.json`. After editing it, run `npm run content:index`, `npm run test:interview:python` (requires Python 3), and the authored-project Vitest checks. See [the feature contract](docs/features/frontend-interview-practice.md) for the complete verification workflow and native release gaps.

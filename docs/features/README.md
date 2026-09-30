@@ -69,4 +69,6 @@ The most important sections are:
 
 - `rtk-query-interview-preparation.md` owns the RTK Query interview curriculum and its source/version refresh and validation contract.
 
+- `linkedin-editorial.md`: private admin web/native post review, durable refinement/scheduling queue and exact-revision human approvals.
+
 - [Frontend Interview Practice](frontend-interview-practice.md): seven guided frontend challenges, TS/Python companions, quizzes, and review. Existing material corrections are recorded in the interview catalog audit.
