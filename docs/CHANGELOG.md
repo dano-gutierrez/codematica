@@ -2,6 +2,15 @@
 
 This changelog records durable, user-visible and architectural changes. Feature documents remain the authoritative contracts; this file explains when a group of related changes landed and points readers to the owning documentation.
 
+## 2026-09-30 — Manual LinkedIn Drafts
+
+- Added admin Create flows on web/native that save manual drafts and queue analysis together.
+- Added selection-based Unicode bold/italic, bullets and plain text to creation and review editors.
+- Enforced analysis/adoption before manual-post approval, safe request retries and UTF-16 limits on new revisions; text edits require reanalysis.
+- Added database, shared, web/native and browser regressions without new runtime dependencies or coverage exclusions.
+
+Owning contract: `docs/features/linkedin-editorial.md`.
+
 ## 2026-09-10 — Product Engineering Interview Preparation
 
 - Added a company-neutral interview research guide, role-fit questions, and general technical references. Names, recruiting links, routes, tags, and metadata reveal no target employer.

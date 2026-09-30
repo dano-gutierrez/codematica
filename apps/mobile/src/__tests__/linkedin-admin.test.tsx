@@ -3,7 +3,7 @@ import { LinkedInAdminScreen } from "../../../../packages/ui/src/LinkedInAdminSc
 import { analysisFixture, editorialFixture } from "../../../../packages/core/src/test/linkedin-fixture";
 describe("native editorial review", () => {
   it("protects the collection and supports refine and approve", async () => {
-    const api = { isAdmin: jest.fn().mockResolvedValue(true), snapshot: jest.fn().mockResolvedValue(editorialFixture), review: jest.fn().mockResolvedValue(null) };
+    const api = { isAdmin: jest.fn().mockResolvedValue(true), snapshot: jest.fn().mockResolvedValue(editorialFixture), create: jest.fn().mockResolvedValue("10000000-0000-4000-8000-000000000001"), review: jest.fn().mockResolvedValue(null) };
     const view = await render(<LinkedInAdminScreen client={api} onSignIn={jest.fn()} />);
     await waitFor(() => expect(view.getByText("Retries need a budget")).toBeOnTheScreen());
     await fireEvent.press(view.getByText("Retries need a budget"));
@@ -13,7 +13,7 @@ describe("native editorial review", () => {
     await waitFor(() => expect(api.review).toHaveBeenCalledWith(expect.any(String), expect.any(String), "approve", undefined));
   });
   it("shows denied access without loading private content", async () => {
-    const api = { isAdmin: jest.fn().mockResolvedValue(false), snapshot: jest.fn(), review: jest.fn() };
+    const api = { isAdmin: jest.fn().mockResolvedValue(false), snapshot: jest.fn(), create: jest.fn().mockResolvedValue("10000000-0000-4000-8000-000000000001"), review: jest.fn() };
     const signIn = jest.fn(); const view = await render(<LinkedInAdminScreen client={api} onSignIn={signIn} />);
     await waitFor(() => expect(view.getByText("Admin access required")).toBeOnTheScreen());
     await fireEvent.press(view.getByText("Sign in")); expect(signIn).toHaveBeenCalled(); expect(api.snapshot).not.toHaveBeenCalled();
@@ -24,7 +24,7 @@ it("edits text, confirms facts, adopts proposals and filters the collection", as
   const data = structuredClone(editorialFixture);
   data.revisions[0].analysis = { ...analysisFixture, verificationNotes: ["Check the metric"], visualOutline: ["Slide 1: a retry budget"] };
   data.revisions.push({ ...data.revisions[0], id: "20000000-0000-4000-8000-000000000002", kind: "refine", parent_revision_id: data.revisions[0].id, body: analysisFixture.rewrittenPost });
-  const api = { isAdmin: jest.fn().mockResolvedValue(true), snapshot: jest.fn().mockResolvedValue(data), review: jest.fn().mockResolvedValue(null) };
+  const api = { isAdmin: jest.fn().mockResolvedValue(true), snapshot: jest.fn().mockResolvedValue(data), create: jest.fn().mockResolvedValue("10000000-0000-4000-8000-000000000001"), review: jest.fn().mockResolvedValue(null) };
   const view = await render(<LinkedInAdminScreen client={api} onSignIn={jest.fn()} />);
   await waitFor(() => expect(view.getByText("Retries need a budget")).toBeOnTheScreen());
   await fireEvent.changeText(view.getByTestId("linkedin-search"),"missing"); expect(view.queryByText("Retries need a budget")).toBeNull();
@@ -54,10 +54,37 @@ it("locks approved versions and requests cancellation", async () => {
   data.settings.worker_last_seen="2026-09-29T00:00:00Z"; data.settings.publishing_enabled=true;
   data.publications=[{id:"30000000-0000-4000-8000-000000000001",post_id:data.posts[0].id,revision_id:data.revisions[0].id,buffer_id:"external",status:"scheduled",scheduled_at:"2026-10-01T00:00:00Z",sent_at:null,url:null,error:null}];
   data.jobs=[{id:"40000000-0000-4000-8000-000000000001",post_id:data.posts[0].id,revision_id:data.revisions[0].id,kind:"schedule",status:"succeeded",attempts:1,error:null,created_at:"2026-09-29T00:00:00Z",result_revision_id:null}];
-  const api={isAdmin:jest.fn().mockResolvedValue(true),snapshot:jest.fn().mockResolvedValue(data),review:jest.fn().mockResolvedValue(null)};
+  const api={isAdmin:jest.fn().mockResolvedValue(true),snapshot:jest.fn().mockResolvedValue(data),create: jest.fn().mockResolvedValue("10000000-0000-4000-8000-000000000001"), review:jest.fn().mockResolvedValue(null)};
   const view=await render(<LinkedInAdminScreen client={api} onSignIn={jest.fn()} />);
   await waitFor(()=>expect(view.getByText("Retries need a budget")).toBeOnTheScreen());
   await fireEvent.press(view.getByText("Retries need a budget")); expect(view.getByTestId("linkedin-body").props.editable).toBe(false);
   await fireEvent.press(view.getByTestId("linkedin-withdraw"));
   await waitFor(()=>expect(api.review).toHaveBeenCalledWith(expect.any(String),expect.any(String),"withdraw",undefined));
+});
+
+it("creates and formats a manual post, preserves failed input and gates approval", async () => {
+  const data = structuredClone(editorialFixture); data.posts[0].origin = "manual"; data.revisions[0].sources = [];
+  const api = { isAdmin: jest.fn().mockResolvedValue(true), snapshot: jest.fn().mockResolvedValue(data), review: jest.fn(), create: jest.fn().mockRejectedValueOnce(new Error("Offline")).mockResolvedValue(data.posts[0].id) };
+  const view = await render(<LinkedInAdminScreen client={api} onSignIn={jest.fn()} />);
+  await waitFor(() => expect(view.getByTestId("linkedin-create")).toBeOnTheScreen());
+  await fireEvent.press(view.getByTestId("linkedin-create"));
+  expect(view.getByTestId("linkedin-create-submit")).toBeDisabled();
+  await fireEvent.changeText(view.getByTestId("linkedin-create-title"), "My lesson");
+  await fireEvent.changeText(view.getByTestId("linkedin-create-topic"), "Systems");
+  await fireEvent.changeText(view.getByTestId("linkedin-create-body"), "Hello");
+  await fireEvent(view.getByTestId("linkedin-create-body"), "selectionChange", { nativeEvent: { selection: { start: 0, end: 5 } } });
+  await fireEvent.press(view.getByText("Bold")); expect(view.getByTestId("linkedin-create-body").props.value).toBe("𝗛𝗲𝗹𝗹𝗼");
+  await fireEvent.press(view.getByText("Italic")); expect(view.getByTestId("linkedin-create-body").props.value).toBe("𝘏𝘦𝘭𝘭𝘰");
+  await fireEvent.press(view.getByText("Plain text"));
+  await fireEvent.press(view.getByText("Bullets")); expect(view.getByTestId("linkedin-create-body").props.value).toBe("• Hello");
+  await fireEvent.press(view.getByTestId("linkedin-create-submit"));
+  await waitFor(() => expect(view.getByText("Offline")).toBeOnTheScreen());
+  expect(view.getByTestId("linkedin-create-body").props.value).toBe("• Hello");
+  await fireEvent.press(view.getByTestId("linkedin-create-submit"));
+  await waitFor(() => expect(view.queryByTestId("linkedin-create-form")).toBeNull());
+  expect(api.create).toHaveBeenCalledWith(expect.any(String), { title: "My lesson", topic: "Systems", body: "• Hello" });
+  expect(view.getByTestId("linkedin-approve")).toBeDisabled(); expect(api.review).not.toHaveBeenCalled();
+  await fireEvent.press(view.getByTestId("linkedin-back"));
+  await fireEvent.press(view.getByTestId("linkedin-create")); await fireEvent.press(view.getByText("Cancel"));
+  expect(view.queryByTestId("linkedin-create-form")).toBeNull();
 });

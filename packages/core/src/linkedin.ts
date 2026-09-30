@@ -18,12 +18,12 @@ export type LinkedInAnalysis = z.infer<typeof analysisSchema>;
 export const sourceSchema = z.object({ path: z.string().min(1), hash: z.string().min(1), title: z.string().min(1), excerpt: z.string().min(1), urls: z.array(z.url()).default([]) });
 export const revisionSchema = z.object({
   id: z.uuid(), post_id: z.uuid(), parent_revision_id: z.uuid().nullable(), body: postTextSchema,
-  first_comment: z.string().max(1248), sources: z.array(sourceSchema).min(1), analysis: analysisSchema.nullable(),
+  first_comment: z.string().max(1248), sources: z.array(sourceSchema), analysis: analysisSchema.nullable(),
   facts_confirmed: z.boolean(), prompt_hash: z.string().nullable(), kind: z.enum(["initial", "edit", "refine"]), created_at: z.string(),
 });
 export type LinkedInRevision = z.infer<typeof revisionSchema>;
 export const postSchema = z.object({
-  id: z.uuid(), seed_key: z.string(), title: z.string(), topic: z.string(), status: z.enum(["review", "approved", "rejected", "withdrawing"]),
+  id: z.uuid(), origin: z.enum(["material", "manual"]).default("material"), seed_key: z.string(), title: z.string(), topic: z.string(), status: z.enum(["review", "approved", "rejected", "withdrawing"]),
   current_revision_id: z.uuid(), approved_revision_id: z.uuid().nullable(), approved_at: z.string().nullable(), created_at: z.string(), updated_at: z.string(),
 });
 export type LinkedInPost = z.infer<typeof postSchema>;
@@ -34,14 +34,17 @@ export const snapshotSchema = z.object({ posts: z.array(postSchema), revisions: 
 export type EditorialSnapshot = z.infer<typeof snapshotSchema>;
 export type ReviewAction = "save" | "refine" | "use" | "approve" | "reject" | "withdraw";
 
-export function canApprove(revision: { body: string; analysis: Pick<LinkedInAnalysis, "verificationNotes"> | null; facts_confirmed: boolean }) {
-  return postTextSchema.safeParse(revision.body).success && !/\[(?:ADD|VERIFY|TODO)\b[^\]]*\]/i.test(revision.body) && (!revision.analysis?.verificationNotes.length || revision.facts_confirmed);
+export function canApprove(revision: { body: string; analysis: Pick<LinkedInAnalysis, "verificationNotes"> | null; facts_confirmed: boolean; prompt_hash?: string | null }, requiresAnalysis = false) {
+  return (!requiresAnalysis || Boolean(revision.analysis && revision.prompt_hash)) && postTextSchema.safeParse(revision.body).success && !/\[(?:ADD|VERIFY|TODO)\b[^\]]*\]/i.test(revision.body) && (!revision.analysis?.verificationNotes.length || revision.facts_confirmed);
 }
 
 export function filterPosts<T extends { title: string; topic: string; status: string }>(posts: T[], search: string, topic: string, status: string) {
   const query = search.trim().toLocaleLowerCase();
   return posts.filter((post) => (topic === "all" || post.topic === topic) && (status === "all" || post.status === status) && `${post.title} ${post.topic}`.toLocaleLowerCase().includes(query));
 }
+
+export const manualPostSchema = z.object({ title: z.string().trim().min(1).max(200), topic: z.string().trim().min(1).max(100), body: postTextSchema });
+export type ManualPost = z.infer<typeof manualPostSchema>;
 
 // Structural interface keeps the shared module independent of either Supabase SDK or React.
 export type EditorialTransport = { rpc: (name: string, args: Record<string, unknown>) => PromiseLike<{ data: unknown; error: { message: string } | null }> };
@@ -54,6 +57,10 @@ export function createEditorialClient(transport: EditorialTransport) {
   return {
     isAdmin: async () => (await rpc("linkedin_is_admin")) === true,
     snapshot: async () => snapshotSchema.parse(await rpc("linkedin_snapshot")),
+    create: (requestKey: string, input: ManualPost) => {
+      const post = manualPostSchema.parse(input);
+      return rpc("linkedin_create", { p_request_key: requestKey, p_title: post.title, p_topic: post.topic, p_body: post.body }).then((id) => z.uuid().parse(id));
+    },
     review: (postId: string, revisionId: string, action: ReviewAction, fields: { body?: string; firstComment?: string; proposalId?: string; factsConfirmed?: boolean } = {}) => rpc("linkedin_review", {
       p_post_id: postId, p_expected_revision: revisionId, p_action: action,
       ...(fields.body !== undefined ? { p_body: postTextSchema.parse(fields.body) } : {}),

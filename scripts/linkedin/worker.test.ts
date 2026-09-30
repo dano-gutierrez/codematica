@@ -21,3 +21,11 @@ describe("local LinkedIn worker boundaries", () => {
     expect(() => validateSeed([{ ...post, sources: [] }])).toThrow();
   });
 });
+
+it("requires analyzed manual text even when an envelope claims approval", () => {
+  const revision = { ...editorialFixture.revisions[0], body: "𝗛𝗲𝗹𝗹𝗼 🚀" };
+  const post = { ...editorialFixture.posts[0], origin: "manual" as const, status: "approved" as const, approved_revision_id: revision.id };
+  const settings = { ...editorialFixture.settings, publishing_enabled: true, buffer_channel_id: "personal" };
+  expect(() => createPublishArguments(post, revision, settings)).toThrow();
+  expect(createPublishArguments(post, { ...revision, analysis: analysisFixture, prompt_hash: "a".repeat(64) }, settings).text).toBe(revision.body);
+});

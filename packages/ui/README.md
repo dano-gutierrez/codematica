@@ -12,4 +12,4 @@ See `docs/features/adaptive-ui.md` for persistent phone navigation, desktop/iPad
 
 ## Private editorial screen
 
-`LinkedInAdminScreen` composes `AppScreen` and existing design tokens with the shared editorial store. NativeNavigation accepts an admin-membership flag for its private destination. Database RLS and RPC guards enforce authorization. Native review supports edits, proposals, approval, rejection, withdrawal, sources and history. See `docs/features/linkedin-editorial.md`.
+`LinkedInAdminScreen` composes `AppScreen` and existing design tokens with the shared editorial store. NativeNavigation accepts an admin-membership flag for its private destination. Database RLS and RPC guards enforce authorization. Native review supports manual creation, Unicode bold/italic/bullets/plain text, required analysis for manual drafts, edits, proposals, approval, rejection, withdrawal, sources and history. See `docs/features/linkedin-editorial.md`.

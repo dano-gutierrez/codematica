@@ -14,7 +14,7 @@ This grants database-backed admin membership. Sign in again or focus the app to 
 
 ## Review and daily scheduling
 
-1. Review the source-grounded draft, edit if needed, then Save revision.
+1. Select an existing draft, or use Create → title/topic/post text → Add for analysis. Manual drafts automatically queue a refinement and require Use revision before approval. Select text for Unicode bold/italic or bullets; Plain text removes supported styling. Editing analyzed manual text requires another Refine. Review the draft, edit if needed, then Save revision.
 2. Refine queues analysis with `prompts/linkedin/refine.md`. Ask Codex to process the queue; the manual worker records a proposal. Use revision adopts it without approving it.
 3. Verify flagged facts, save that confirmation and resolve placeholders.
 4. Approve & queue authorizes the exact revision to be scheduled on the configured Buffer channel. Approvals beyond Buffer's free capacity stay in Supabase.
@@ -56,7 +56,7 @@ A `running` refinement has a twenty-minute lease. It can be renewed and retried 
 
 ## Validation and release limits
 
-Use `supabase db reset --local` only on the disposable local stack. `npm run test:linkedin:local` refuses a non-loopback API and exercises Auth, RLS, CLI leases, refinement, approval, reconciliation, cancellation and export with fixture Buffer IDs; it never contacts Buffer. Run after a fresh reset for deterministic queue order.
+Use `supabase db reset --local` only on the disposable local stack. `npm run test:linkedin:local` refuses a non-loopback API and exercises Auth, RLS, manual creation/idempotent retry/analysis gating, CLI leases, refinement, approval, reconciliation, cancellation and export with fixture Buffer IDs; it never contacts Buffer. Run after a fresh reset for deterministic queue order.
 
 `npm run e2e:linkedin` uses mocked editorial RPCs and fake public configuration; it never reads hosted drafts. `npm run test:production:smoke` expects an existing production build and makes a clean production-only install in a temporary directory. Retained install/runtime logs identify packaging failures without pruning the working install. Local worker commands require the full developer install (`tsx` is intentionally a development tool, absent from the web runtime).
 

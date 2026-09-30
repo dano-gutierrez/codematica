@@ -157,3 +157,5 @@ See `docs/features/adaptive-ui.md` for persistent phone navigation, desktop/iPad
 ## LinkedIn admin review
 
 Verified allowlisted accounts can open More → LinkedIn posts (`/admin/linkedin`). The app uses public Supabase credentials and shared editorial schemas/state; only the local worker has service credentials. `src/__tests__/linkedin-admin.test.tsx` and `admin-access.test.tsx` cover review/auth behavior. `.maestro/linkedin-admin.yaml` requires an installed app already signed into an allowlisted disposable account with publishing disabled. See `docs/runbooks/linkedin-editorial.md`.
+
+The LinkedIn admin screen also supports Create → Add for analysis and selection-based Unicode bold/italic, bullets and plain text. Manual drafts require analyzed proposal adoption before approval; `.maestro/linkedin-admin.yaml` covers creation against disposable data.

@@ -8,4 +8,6 @@ Runtime-safe language modules live under `src/languages/` and `src/language-writ
 
 ## Editorial contracts
 
-`@codematica/core/linkedin` exports shared schemas, exact-revision approval checks, filtering and the Supabase RPC adapter; `@codematica/core/linkedin-store` owns race-aware review state for web/native. Neither module imports service credentials or the local worker. Private post data is fetched only after database-backed admin membership is checked. See `docs/features/linkedin-editorial.md`.
+`@codematica/core/linkedin` exports shared schemas, manual-create RPCs and analysis gates, exact-revision approval checks, filtering and the Supabase RPC adapter; `@codematica/core/linkedin-store` owns race-aware review state for web/native. Neither module imports service credentials or the local worker. Private post data is fetched only after database-backed admin membership is checked. See `docs/features/linkedin-editorial.md`.
+
+`@codematica/core/linkedin-formatting` provides shared Unicode selection formatting for the web and native post editors.

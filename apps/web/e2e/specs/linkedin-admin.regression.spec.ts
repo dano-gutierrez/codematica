@@ -50,3 +50,56 @@ test("@regression ordinary users cannot load the editorial collection", async ({
   expect(snapshots).toBe(0);
   await expect(page.getByTestId("linkedin-post-list")).toHaveCount(0);
 });
+
+test("@regression creates formatted manual text, preserves a failed submission and requires analysis", async ({ page }) => {
+  const data = structuredClone(editorialFixture); data.posts = []; data.revisions = [];
+  const creates: Record<string, string>[] = []; const actions: string[] = [];
+  await page.route("**/rest/v1/rpc/linkedin_*", async (route) => {
+    const name = new URL(route.request().url()).pathname.split("/").pop();
+    if (name === "linkedin_is_admin") return route.fulfill({ json: true });
+    if (name === "linkedin_snapshot") return route.fulfill({ json: data });
+    const args = route.request().postDataJSON();
+    if (name === "linkedin_create") {
+      creates.push(args);
+      if (creates.length === 1) return route.fulfill({ status: 400, json: { message: "Try again with this draft" } });
+      data.posts = [{ ...editorialFixture.posts[0], origin: "manual", title: args.p_title, topic: args.p_topic }];
+      data.revisions = [{ ...editorialFixture.revisions[0], body: args.p_body, sources: [] }];
+      data.jobs = [{ id: "40000000-0000-4000-8000-000000000001", post_id: data.posts[0].id, revision_id: data.revisions[0].id, kind: "refine", status: "pending", attempts: 0, error: null, result_revision_id: null, created_at: "2026-09-30T00:00:00Z" }];
+      return route.fulfill({ json: data.posts[0].id });
+    }
+    if (name === "linkedin_review") {
+      actions.push(args.p_action);
+      if (args.p_action === "use") data.posts[0].current_revision_id = args.p_proposal_id;
+      if (args.p_action === "approve") { data.posts[0].status = "approved"; data.posts[0].approved_revision_id = data.posts[0].current_revision_id; }
+      return route.fulfill({ json: null });
+    }
+    throw new Error(`Unexpected RPC ${name}`);
+  });
+  await page.goto("/admin/linkedin");
+  await page.getByTestId("linkedin-create").click();
+  await expect(page.getByTestId("linkedin-create-submit")).toBeDisabled();
+  await page.getByTestId("linkedin-create-title").fill("My manual lesson");
+  await page.getByTestId("linkedin-create-topic").fill("Systems");
+  const text = page.getByTestId("linkedin-create-body"); await text.fill("Hello engineers 🚀\n#Systems https://example.test");
+  await text.selectText(); await page.getByRole("button", { name: "Bold", exact: true }).click();
+  await expect(text).toHaveValue("𝗛𝗲𝗹𝗹𝗼 𝗲𝗻𝗴𝗶𝗻𝗲𝗲𝗿𝘀 🚀\n#Systems https://example.test");
+  await page.screenshot({ path: test.info().outputPath("manual-create-mobile.png"), fullPage: true });
+  await page.getByTestId("linkedin-create-submit").click();
+  await expect(page.getByTestId("linkedin-admin").getByRole("alert")).toHaveText("Try again with this draft");
+  await page.getByTestId("linkedin-create-submit").click();
+  await expect(page.getByTestId("linkedin-review")).toBeVisible();
+  expect(creates[0]).toEqual(creates[1]);
+  await expect(page.getByRole("button", { name: "Approve & queue" })).toBeDisabled();
+  await expect(page.getByRole("button", { name: "Refinement queued" })).toBeDisabled();
+  await page.reload(); await page.getByRole("button", { name: /My manual lesson/ }).click();
+  await expect(page.getByTestId("linkedin-body")).toHaveValue(creates[1].p_body);
+  data.jobs[0].status = "succeeded";
+  data.revisions.push({ ...data.revisions[0], id: "20000000-0000-4000-8000-000000000002", parent_revision_id: data.revisions[0].id, kind: "refine", body: analysisFixture.rewrittenPost, analysis: analysisFixture, prompt_hash: "a".repeat(64) });
+  await page.getByRole("button", { name: "Refresh", exact: true }).click();
+  await expect(page.getByRole("button", { name: "Approve & queue" })).toBeDisabled();
+  await page.getByRole("button", { name: "Use revision" }).click();
+  await page.getByRole("button", { name: "Approve & queue" }).click();
+  await expect(page.getByTestId("linkedin-body")).toBeDisabled(); expect(actions).toEqual(["use", "approve"]);
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
+  await page.screenshot({ path: test.info().outputPath("manual-post-mobile.png"), fullPage: true });
+});

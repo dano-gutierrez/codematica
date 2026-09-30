@@ -207,13 +207,16 @@ Before relying on Supabase for production user progress at scale, revisit plan l
 
 ## Private LinkedIn editorial workflow
 
-Anonymous learning remains local-index first. The optional `/admin/linkedin` web/native surface reads private drafts through Supabase Auth, RLS and admin-only RPCs. `private.app_admins` is operator provisioned. Post revisions are immutable; approval binds the exact text. Shared schemas/store live in `packages/core/src/linkedin*.ts`. The HTTP/mobile graphs never import the local service-role worker.
+Anonymous learning remains local-index first. The optional `/admin/linkedin` web/native surface reads private drafts through Supabase Auth, RLS and admin-only RPCs. `private.app_admins` is operator provisioned. Post revisions are immutable; approval binds the exact text. Manual creation atomically inserts a draft and refinement job. Manual drafts require an analyzed proposal to be adopted before approval, and text edits invalidate analysis. Shared schemas/store live in `packages/core/src/linkedin*.ts`. The HTTP/mobile graphs never import the local service-role worker.
 
 ```mermaid
 flowchart LR
   Sources[Canonical learning Markdown] --> Drafts[Private Supabase drafts and revisions]
   Human[Verified personal admin] --> Review[Web or native review]
-  Review -->|Refine| Jobs[Durable Postgres jobs]
+  Review -->|Create manual draft| Create[Atomic draft and analysis request]
+  Create --> Drafts
+  Create --> Jobs[Durable Postgres jobs]
+  Review -->|Refine| Jobs
   Review -->|Approve exact revision| Jobs
   Jobs --> Worker[Manual local Codex run]
   Prompt[Checked-in refinement prompt] --> Worker

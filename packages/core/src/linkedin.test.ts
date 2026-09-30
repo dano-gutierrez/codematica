@@ -34,3 +34,17 @@ describe("LinkedIn editorial contract", () => {
     expect(filterPosts(posts, "", "Reliability", "approved")).toEqual([]);
   });
 });
+
+it("requires analyzed manual revisions and counts styled letters as two units", () => {
+  expect(canApprove({ ...revision, prompt_hash: null }, true)).toBe(false);
+  expect(canApprove({ ...revision, analysis: { verificationNotes: [] }, prompt_hash: "hash" }, true)).toBe(true);
+  expect(canApprove({ ...revision, analysis: { verificationNotes: ["Verify"] }, prompt_hash: "hash" }, true)).toBe(false);
+  expect(postTextSchema.safeParse("𝗔".repeat(1501)).success).toBe(false);
+});
+it("validates manual creation and passes the retry identity to its atomic RPC", async () => {
+  const rpc = vi.fn().mockResolvedValue({ data: "10000000-0000-4000-8000-000000000001", error: null });
+  const client = createEditorialClient({ rpc });
+  await client.create("request-key", { title: " Lesson ", topic: " Systems ", body: " Hello " });
+  expect(rpc).toHaveBeenCalledWith("linkedin_create", { p_request_key: "request-key", p_title: "Lesson", p_topic: "Systems", p_body: "Hello" });
+  expect(() => client.create("request-key", { title: "", topic: "Systems", body: "Hello" })).toThrow();
+});

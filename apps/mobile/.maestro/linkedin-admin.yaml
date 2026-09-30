@@ -17,3 +17,27 @@ appId: com.codematica.app
 - tapOn:
     id: linkedin-refine
 - assertVisible: Refinement queued
+- tapOn:
+    id: linkedin-back
+- tapOn:
+    id: linkedin-create
+- tapOn:
+    id: linkedin-create-title
+- inputText: Manual device lesson
+- tapOn:
+    id: linkedin-create-topic
+- inputText: Reliability
+- tapOn:
+    id: linkedin-create-body
+- inputText: Bound retries before adding load.
+- hideKeyboard
+- scrollUntilVisible:
+    element:
+      id: linkedin-create-submit
+- tapOn:
+    id: linkedin-create-submit
+- assertVisible: Manual device lesson
+- scrollUntilVisible:
+    element:
+      id: linkedin-refine
+- assertVisible: Refinement queued
