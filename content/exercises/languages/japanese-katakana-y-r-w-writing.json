@@ -1,1 +1,34 @@
-{"slug":"languages/japanese-katakana-y-r-w-writing","title":"Write Final Basic Katakana Rows","type":"writing","documentSlug":"languages/japanese-katakana-foundations","concept":"Final basic katakana rows and moraic n","difficulty":"foundation","tags":["japanese","katakana","writing","alphabet"],"status":"published","prompt":"Complete the basic katakana chart with the y-row, r-row, wa, wo, and moraic n.","characterSlugs":["japanese/katakana/ya","japanese/katakana/yu","japanese/katakana/yo","japanese/katakana/ra","japanese/katakana/ri","japanese/katakana/ru","japanese/katakana/re","japanese/katakana/ro","japanese/katakana/wa","japanese/katakana/wo","japanese/katakana/n"],"modes":["assisted","free"],"explanation":"This drill completes all 46 basic katakana and highlights ン, which beginners should compare directly with ソ, シ, and ツ."}
+{
+  "slug": "languages/japanese-katakana-y-r-w-writing",
+  "title": "Write Final Basic Katakana Rows",
+  "type": "writing",
+  "documentSlug": "languages/japanese-katakana-foundations",
+  "concept": "Final basic katakana rows and moraic n",
+  "difficulty": "foundation",
+  "tags": [
+    "japanese",
+    "katakana",
+    "writing",
+    "alphabet"
+  ],
+  "status": "published",
+  "prompt": "Fill the notebook with 24 repetitions of each prompt. Write anywhere on the paper; recognizable shapes are enough.",
+  "characterSlugs": [
+    "japanese/katakana/ya",
+    "japanese/katakana/yu",
+    "japanese/katakana/yo",
+    "japanese/katakana/ra",
+    "japanese/katakana/ri",
+    "japanese/katakana/ru",
+    "japanese/katakana/re",
+    "japanese/katakana/ro",
+    "japanese/katakana/wa",
+    "japanese/katakana/wo",
+    "japanese/katakana/n"
+  ],
+  "modes": [
+    "assisted",
+    "free"
+  ],
+  "explanation": "Use the examples and stroke guides to learn the character, then copy and recall it. Stroke order is optional guidance; your handwriting does not need to be exact."
+}

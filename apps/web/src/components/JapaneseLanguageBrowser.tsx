@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { BookOpen, Library, Layers, RotateCcw, Search } from "lucide-react";
+import { BookOpen, Library, Layers, Pencil, RotateCcw, Search } from "lucide-react";
 import { useMemo, useState, type ReactNode } from "react";
 import { getJapaneseCharacterGroups, searchJapanese, type ContentIndex, type JapaneseSearchResult, type LanguageCharacter, type LanguageVocabulary } from "@codematica/core";
 import { AppHeader } from "@/components/AppHeader";
@@ -25,6 +25,7 @@ export function JapaneseLanguageBrowser({ index }: { index: ContentIndex }) {
         </p>
         <nav className="mt-5 grid gap-3 sm:grid-cols-2 lg:grid-cols-4" aria-label="Japanese study tools" data-testid="japanese-study-tools">
           <StudyToolLink href="/paths/japanese-foundations" label="Learn" description="Open Pre-A1 and A1 roadmap" icon={<BookOpen className="h-5 w-5" aria-hidden="true" />} testId="japanese-path-link" />
+          <StudyToolLink href="/languages/japanese/notebooks" label="Notebook practice" description="Repeated handwriting · your own pages" icon={<Pencil className="h-5 w-5" aria-hidden="true" />} testId="japanese-notebooks-link" />
           <StudyToolLink href="/languages/japanese/review" label="Review" description="Due queue and all cards" icon={<RotateCcw className="h-5 w-5" aria-hidden="true" />} testId="japanese-review-link" />
           <StudyToolLink href="#dictionary" label="Dictionary" description="Characters, words, and writing" icon={<Search className="h-5 w-5" aria-hidden="true" />} testId="japanese-dictionary-link" />
           <StudyToolLink href="#resources" label="Resources" description="Trusted free learning links" icon={<Library className="h-5 w-5" aria-hidden="true" />} testId="japanese-resources-link" />
@@ -32,6 +33,8 @@ export function JapaneseLanguageBrowser({ index }: { index: ContentIndex }) {
 
         <div className="mt-4 flex flex-wrap gap-3" aria-label="Always available Japanese resources">
           {flashcards ? <StudyToolLink href={flashcards.route} label="Open flashcards" description="Recall kana at any time" icon={<Layers className="h-5 w-5" aria-hidden="true" />} testId="japanese-flashcards-link" /> : null}
+          <StudyToolLink href="/practice/languages/japanese-hiragana-vowels-writing?path=japanese-foundations" label="Hiragana 101 · planas" description="Trace, copy, recall, and match" icon={<Pencil className="h-5 w-5" aria-hidden="true" />} testId="japanese-writing-sheets-link" />
+          <StudyToolLink href="/practice/languages/japanese-katakana-vowels-writing?path=japanese-foundations" label="Katakana planas" description="Repeat characters and short words" icon={<Pencil className="h-5 w-5" aria-hidden="true" />} testId="japanese-katakana-sheets-link" />
           <StudyToolLink href="/docs/languages/japanese-hiragana-foundations?path=japanese-foundations" label="Hiragana guide" description="All 46 basic characters" icon={<span className="text-xl" aria-hidden="true">あ</span>} testId="japanese-hiragana-guide-link" />
           <StudyToolLink href="/docs/languages/japanese-katakana-foundations?path=japanese-foundations" label="Katakana guide" description="All 46 basic characters" icon={<span className="text-xl" aria-hidden="true">ア</span>} testId="japanese-katakana-guide-link" />
         </div>

@@ -85,3 +85,9 @@ it("exposes editorial navigation only for admins", async () => {
   await view.rerender(<NativeNavigation pathname="/admin/linkedin" navigate={navigate} wide isAdmin />);
   expect(view.getByTestId("mobile-nav-linkedin")).toBeOnTheScreen();
 });
+
+it("shows Japanese notebook links inside the tablet language menu and phone More",async()=>{
+ const navigate=jest.fn(),view=await render(<NativeNavigation pathname="/languages/japanese/notebooks" navigate={navigate} wide/>);
+ await fireEvent.press(view.getByTestId("mobile-nav-japanese"));await fireEvent.press(view.getByTestId("mobile-nav-notebooks"));await fireEvent.press(view.getByTestId("mobile-nav-languages-expand"));expect(view.queryByTestId("mobile-nav-notebooks")).toBeNull();await fireEvent.press(view.getByTestId("mobile-nav-languages-expand"));
+ await view.rerender(<NativeNavigation pathname="/practice/languages/japanese-hiragana-vowels-writing" navigate={navigate} wide={false}/>);await fireEvent.press(view.getByTestId("mobile-nav-more"));await fireEvent.press(view.getByTestId("mobile-menu-japanese"));expect(navigate).toHaveBeenCalledWith("/languages/japanese");
+});

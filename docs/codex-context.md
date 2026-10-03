@@ -14,6 +14,7 @@ This file preserves repo context across Codex tasks.
 - Canonical passive flashcard feeds live in `content/flashcard-feeds/`.
 - Canonical interview coding catalog content lives in `content/interviews/`.
 - Canonical human-language character and vocabulary catalogs live in `content/languages/`.
+- Published kana stroke geometry uses pinned KanjiVG sources with CC BY-SA 3.0 attribution recorded per character and in `THIRD_PARTY_NOTICES.md`; preserve it when modifying the canonical points. Web/native share curved rendering and beginner stroke scoring from core.
 - Canonical Japanese audio metadata and curated resource metadata live beside the language catalogs in `content/languages/japanese/`; generated platform audio registries are artifacts, not authoring surfaces.
 - Canonical home discovery curation lives in `content/discovery/home.json`.
 - Generated content search data lives in `packages/core/src/generated/content-index.json` and must be regenerated, not edited by hand.
@@ -91,7 +92,7 @@ The first hosted web target is Vercel Hobby on the Vercel-provided URL. Vercel r
 - Preserve discovery JSON as the editorial source of truth for curated home rows.
 - Keep questionnaire answers transient; progress may store current position, completion, and aggregate overall/per-skill scores only.
 - Keep guided-lab predictions, evidence details, and reflections transient; progress may store only coarse prediction/checklist completion.
-- Keep writing strokes transient; progress may store only coarse practice state such as mode, character slug, and completion.
+- Notebook vector ink persists locally only (IndexedDB/AsyncStorage); remote progress stores bounded counts and unlocks, never ink. See docs/features/japanese-writing-notebooks.md.
 - Keep Japanese mastery separate from completion history. Local/remote merge may retain only best score, attempt count, review box, mastery state, last practice time, and next review time.
 - Passive flashcards must not collect answers; progress may store only the latest feed/card position.
 - Keep Supabase optional for local browsing. Auth/progress sync may require public Supabase runtime env vars, but content rendering must keep working without them.
@@ -138,3 +139,5 @@ LinkedIn posts are a separate optional Supabase-backed admin feature, documented
 Read `docs/features/frontend-interview-practice.md` for the seven-topic path. Index v11 adds interview path nodes, optional final-feed navigation, web-track Python companions, and review snippet languages. Complete solution code is canonical in interview JSON; concepts live in Markdown. `npm run test:interview:python` requires Python and executes authored snippets.
 
 The supplementary `frontend/react-state-async-callbacks` lesson and its six-question checkpoint use the existing reader and questionnaire. Its standalone broken/fixed examples are canonical Markdown fences, typechecked and executed by `ReactAsyncStateLesson.test.tsx`; they are not duplicated in interview JSON.
+
+Japanese planas share the core notebook engine and React-only `@codematica/ui/notebook-session` hook. Each sheet requires 24 whole-prompt repetitions. Web uses Pointer Events, installed iOS uses the local PencilKit module, and Android uses SVG. Local ink and maximum earned progress are distinct; restart preserves unlocks. Vocabulary `writing-starter` tags own starter-word curation.

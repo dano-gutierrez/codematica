@@ -118,3 +118,7 @@ Updated home discovery, native deployment, the docs hub, package/mobile/E2E READ
 ### Native tab text at accessibility sizes — 2026-09-29
 
 Phone tab labels fit on a single line, scaling down only when needed to fit the available tab width. System font scaling stays enabled; the full destination label remains the tab accessibility label. This prevents the long Interviews label from breaking mid-word at larger iOS text sizes. The iPad rail keeps natural text wrapping. `adaptive-navigation.test.tsx` guards these text props, and simulator visual QA covers enlarged system text.
+
+## Japanese notebook update — 2026-10-02
+
+Languages exposes Japanese and Notebook practice in the tablet/sidebar and phone More menus. `/languages/japanese/notebooks` supports curated and custom 1–5-character prompts and saved pages. [Japanese writing notebooks](japanese-writing-notebooks.md) owns the shared 24-repetition engine, device-local ink, maximum-progress synchronization and validation gates. Live ink and feedback preserve page position; Input is detected automatically. Mouse wheel/trackpad scrolling remains available on web; two-finger gestures scroll the paper on touch screens and installed apps without adding ink. There are no Draw, Pen or Scroll buttons.

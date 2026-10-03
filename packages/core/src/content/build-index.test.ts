@@ -794,6 +794,21 @@ describe("buildContentIndex", () => {
     await expect(buildContentIndex({ rootDir })).rejects.toThrow(/references missing language character/);
   });
 
+  it("validates notebook prompt models and preserves authored short prompts", async () => {
+    const rootDir = await makeTempRoot();
+    await writeKnowledge(rootDir, "languages/japanese-starter-kanji");
+    await writeLanguageCharacters(rootDir);
+    const prompt = { id: "one", text: "一", kind: "characters", romaji: "ichi", meaning: "one" };
+    await writeWritingExercise(rootDir, "languages/notebook", { notebookPrompts: [prompt] });
+    expect((await buildContentIndex({ rootDir })).exercises[0]).toMatchObject({ notebookPrompts: [prompt] });
+    await writeWritingExercise(rootDir, "languages/notebook", { notebookPrompts: [{ ...prompt, text: "あ" }] });
+    await expect(buildContentIndex({ rootDir })).rejects.toThrow(/No writing guide/);
+    await writeWritingExercise(rootDir, "languages/notebook", { notebookPrompts: [prompt, prompt] });
+    await expect(buildContentIndex({ rootDir })).rejects.toThrow(/duplicate notebook prompt/);
+    await writeWritingExercise(rootDir, "languages/notebook", { notebookPrompts: [{ ...prompt, text: "一一一一一一" }] });
+    await expect(buildContentIndex({ rootDir })).rejects.toThrow(/1–5/);
+  });
+
   it("fails when a vocabulary breakdown references a missing language character", async () => {
     const rootDir = await makeTempRoot();
     await writeLanguageCharacters(rootDir);

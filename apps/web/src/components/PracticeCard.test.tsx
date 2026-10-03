@@ -122,7 +122,7 @@ describe("PracticeCard", () => {
     randomSpy.mockRestore();
   });
 
-  it("renders Japanese writing practice with assisted and free modes", () => {
+  it("renders Japanese writing practice with automatic notebook input", () => {
     const exercise = getExerciseBySlug("languages/japanese-hiragana-vowels-writing");
 
     expect(exercise?.type).toBe("writing");
@@ -131,8 +131,8 @@ describe("PracticeCard", () => {
 
     expect(screen.getByTestId("writing-practice")).toBeVisible();
     expect(screen.getByTestId("writing-pad")).toBeVisible();
-    expect(screen.getByRole("button", { name: /assisted/i })).toBeVisible();
-    expect(screen.getByRole("button", { name: /free/i })).toBeVisible();
+    expect(screen.queryByRole("button", { name: "Draw" })).not.toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: "Pen" })).not.toBeInTheDocument();
     expect(screen.getByText(/Hiragana Vowel Writing/i)).toBeVisible();
   });
 

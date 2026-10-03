@@ -1,4 +1,4 @@
-import { fireEvent, render, waitFor } from "@testing-library/react-native";
+import { act, fireEvent, render, waitFor } from "@testing-library/react-native";
 import {
   getContentIndex,
   getExerciseBySlug,
@@ -48,7 +48,7 @@ describe("complete shared native screen matrix", () => {
     jest.spyOn(Math, "random").mockReturnValue(0.99);
   });
 
-  afterEach(() => jest.restoreAllMocks());
+  afterEach(() => { jest.restoreAllMocks(); jest.useRealTimers(); });
 
   it("renders path, practice, and language catalogs and routes their primary actions", async () => {
     const index = getContentIndex();
@@ -165,13 +165,32 @@ describe("complete shared native screen matrix", () => {
     expect(session.getByTestId("mobile-questionnaire-session")).toBeOnTheScreen();
   });
 
+  it("normalizes native ink using the measured tablet pad and discards cancellation", async () => {
+    jest.useFakeTimers();
+    const source = getExerciseBySlug("languages/japanese-starter-kanji-writing")!;
+    const exercise = { ...source, characterSlugs: ["japanese/kanji/one"] };
+    const view = await render(<PracticeScreen exercise={exercise} adapters={createAdapters()} />);
+    const pad = view.getByTestId("mobile-writing-pad");
+    await fireEvent(pad, "layout", { persist: jest.fn(), nativeEvent: { layout: { x: 0, y: 0, width: 400, height: 400 } } });
+    await fireEvent(pad, "responderGrant", { nativeEvent: { locationX: 96, locationY: 256 } });
+    await fireEvent(pad, "responderTerminate", { nativeEvent: { locationX: 308, locationY: 248 } });
+    expect(view.queryByTestId("mobile-writing-assisted-feedback")).toBeNull();
+    await fireEvent(pad, "responderGrant", { nativeEvent: { locationX: 96, locationY: 256 } });
+    await fireEvent(pad, "responderRelease", { nativeEvent: { locationX: 308, locationY: 248 } });
+    await act(() => jest.advanceTimersByTime(400));
+    expect(view.getByText(/Correct ·/)).toBeOnTheScreen();
+    expect(view.getByTestId("mobile-writing-sheet-progress")).toHaveTextContent(/Trace · Sheet 1/);
+  });
+
   it("draws, edits, clears, and completes native writing strokes", async () => {
+    jest.useFakeTimers();
     const source = getExerciseBySlug("languages/japanese-starter-kanji-writing")!;
     expect(source.type).toBe("writing");
     const exercise = { ...source, characterSlugs: ["japanese/kanji/one"], modes: ["free" as const] };
     const adapters = createAdapters();
     const view = await render(<PracticeScreen exercise={exercise} nextHref="/writing-next" adapters={adapters} />);
     const pad = view.getByTestId("mobile-writing-pad");
+    await fireEvent(pad, "layout", { nativeEvent: { layout: { width: 280, height: 280 } } });
     const draw = async () => {
       await fireEvent(pad, "responderGrant", { nativeEvent: { locationX: 50.4, locationY: 140 } });
       await fireEvent(pad, "responderMove", { nativeEvent: { locationX: 229.6, locationY: 140 } });
@@ -180,10 +199,16 @@ describe("complete shared native screen matrix", () => {
     await draw();
     await fireEvent.press(view.getByText("Undo"));
     await draw();
-    await fireEvent.press(view.getByText("Clear"));
+    await fireEvent.press(view.getByText("Clear current character"));
     await draw();
-    await fireEvent.press(view.getByTestId("mobile-writing-check"));
-    expect(view.getByText("Correct")).toBeOnTheScreen();
+    await act(() => jest.advanceTimersByTime(400));
+    expect(view.getByText(/Correct ·/)).toBeOnTheScreen();
+    expect(adapters.progress?.record).not.toHaveBeenCalledWith(expect.anything(), "completed", expect.anything());
+    for (let round = 1; round < 24; round += 1) {
+      await draw();
+      await act(() => jest.advanceTimersByTime(400));
+    }
+    expect(adapters.progress?.record).toHaveBeenCalledWith(expect.anything(), "completed", expect.objectContaining({ repetitions: 24 }));
     await fireEvent.press(view.getByText("Next activity"));
     expect(adapters.navigation.navigate).toHaveBeenCalledWith("/writing-next");
   });

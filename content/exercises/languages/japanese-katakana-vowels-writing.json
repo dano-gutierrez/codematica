@@ -5,9 +5,13 @@
   "documentSlug": "languages/japanese-writing-systems",
   "concept": "Katakana vowels",
   "difficulty": "foundation",
-  "tags": ["japanese", "katakana", "handwriting"],
+  "tags": [
+    "japanese",
+    "katakana",
+    "handwriting"
+  ],
   "status": "published",
-  "prompt": "Write each katakana vowel with correct stroke order and shape.",
+  "prompt": "Fill the notebook with 24 repetitions of each prompt. Write anywhere on the paper; recognizable shapes are enough.",
   "characterSlugs": [
     "japanese/katakana/a",
     "japanese/katakana/i",
@@ -15,6 +19,9 @@
     "japanese/katakana/e",
     "japanese/katakana/o"
   ],
-  "modes": ["assisted", "free"],
-  "explanation": "Katakana uses the same vowel sounds as hiragana but a sharper visual system."
+  "modes": [
+    "assisted",
+    "free"
+  ],
+  "explanation": "Use the examples and stroke guides to learn the character, then copy and recall it. Stroke order is optional guidance; your handwriting does not need to be exact."
 }

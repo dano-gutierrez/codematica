@@ -19,7 +19,7 @@ const installLog=join(target,'install.log');
 try { const output=execFileSync('npm',['ci','--omit=dev'],{cwd:target,encoding:'utf8',stdio:['ignore','pipe','pipe']}); await writeFile(installLog,output); }
 catch(error) { await writeFile(installLog,String(error.stdout)+String(error.stderr)); throw new Error(`Production install failed; evidence: ${installLog}`); }
 const require=createRequire(join(target,'package.json'));
-for(const dependency of ['next','react','@supabase/supabase-js','zod']) assert.ok(require.resolve(dependency));
+for(const dependency of ['next','react','@supabase/supabase-js','zod','@codematica/ui/notebook-session']) assert.ok(require.resolve(dependency));
 const manifest=JSON.parse(await readFile(join(target,'apps/web/.next/server/app-paths-manifest.json'),'utf8'));
 assert.ok(manifest['/admin/linkedin/page']);
 // Both server and client artifacts must keep privileged worker code out of HTTP startup.
@@ -35,6 +35,6 @@ try {
   let ready=false;
   for(let i=0;i<100;i++){try{ready=(await globalThis.fetch(`http://127.0.0.1:${port}/`)).ok;}catch{ /* Server is still starting. */ }if(ready)break;if(server.exitCode!==null)break;await delay(200);}
   assert.ok(ready,'Pruned HTTP artifact must reach readiness');
-  for(const path of ['/browse','/admin/linkedin']) assert.equal((await globalThis.fetch(`http://127.0.0.1:${port}${path}`)).status,200);
+  for(const path of ['/browse','/admin/linkedin','/languages/japanese/notebooks','/practice/languages/japanese-hiragana-vowels-writing']) assert.equal((await globalThis.fetch(`http://127.0.0.1:${port}${path}`)).status,200);
   console.log(`Production-only artifact reached readiness and served public/admin shells. Evidence retained: ${target}`);
 }finally{server.kill('SIGTERM');await writeFile(join(target,'runtime.log'),output);}

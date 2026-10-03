@@ -7,6 +7,10 @@ import { createNativeSupabaseClient, getNativeAuthRedirectUrl, hasSupabasePublic
 import { recordNativeProgress, syncNativeAnonymousProgress } from "./progress";
 import { japaneseAudioAssets } from "../generated/japanese-audio";
 
+import type { NotebookDataClient } from "@codematica/core";
+import { createNativeNotebookStorage } from "./notebook-storage";
+import { nativeHandwritingCanvas } from "./handwriting-canvas";
+
 let activeAudioPlayer: AudioPlayer | undefined;
 
 function playJapaneseAudio(audioId: string, playbackRate = 1) {
@@ -36,6 +40,8 @@ export function useCodematicaAdapters(): CodematicaAdapters {
         record: (target: ProgressTarget, status, position) => recordNativeProgress(supabase, target, status, position),
       },
       audio: { play: playJapaneseAudio },
+      notebooks: createNativeNotebookStorage(supabase as unknown as NotebookDataClient | undefined),
+      handwritingCanvas: nativeHandwritingCanvas,
       auth: {
         isConfigured: hasSupabasePublicEnv(),
         signInWithPassword: async (email: string, password: string) => {
