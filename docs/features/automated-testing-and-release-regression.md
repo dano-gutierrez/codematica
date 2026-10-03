@@ -88,8 +88,8 @@ Configure branch protection in the account: after the five PR jobs have complete
 ### Browser Matrix
 
 - `mobile-chromium`: complete smoke and regression suite.
-- `desktop-chromium`: smoke journeys and `@playground` regressions.
-- `mobile-webkit`: smoke journeys and `@playground` regressions.
+- `desktop-chromium`: smoke journeys, `@playground` and `@notebook-catalog` regressions.
+- `mobile-webkit`: smoke journeys, `@playground` and `@notebook-catalog` regressions. Catalog coverage protects Safari's ruby annotation layout when romaji is hidden.
 - Playground regressions exercise a real hosted runtime and a controlled connection failure, including automatic startup, edit/run/reset, and recovery with drafts intact.
 - Trace, screenshot, and video are retained only for failures. HTML/JUnit reports and failure evidence are uploaded by CI.
 

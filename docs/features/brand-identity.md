@@ -96,9 +96,9 @@ Evidence: `test-results/brand/native-assets.log`, `test-results/brand/prebuild.l
 ## Verification — October 3, 2026
 
 - Current main is integrated with the campaign and approved branding. Its Expo patch alignment resolves the earlier Doctor warning: all 20 checks now pass. The October 2 results above describe that earlier source revision.
-- Brand/game export freshness, lint, typecheck, production web build, 529 core/web tests and 127 native tests pass. All 78 selected browser cases pass, including the three-browser branding smoke cases. Coverage floors remain unchanged.
+- Brand/game export freshness, lint, typecheck, production web build, 536 core/web tests and 145 native tests pass. All 76 selected browser cases pass, including the three-browser branding smoke cases. Coverage floors remain unchanged.
 - Both disposable production-only startup lanes pass; served branding matches the committed exports. Android/iOS Metro exports and a fresh Android Release APK build pass. The APK asset check verifies the bundled game textures and local runners.
-- The freshly installed Android API 35 app displays the approved header logo and wordmark. Offline CSS/SQL clears and progress after process restart pass. Installed iOS, complete Maestro journeys, and physical-device frame-rate profiling remain release checks. No deployment or store submission was performed.
+- The Android API 35 installed check before the final icon-rounding correction and notebook integration displayed the approved header logo and wordmark; offline CSS/SQL and process restart passed. Installed iOS, complete Maestro journeys, and physical-device frame-rate profiling remain release checks. No deployment or store submission was performed.
 
 The Linux CI freshness check exposed a one-step rounding difference in opaque icon compositing. Direct flattening fixes it; all 20 brand outputs match byte-for-byte between macOS ARM and Linux x64.
 

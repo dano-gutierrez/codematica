@@ -15,10 +15,23 @@ import {
   notebookSnapshotSchema,
   getNotebookProgress,
   getNotebookGeometry,
+  getNotebookCatalogPreview,
 } from "./notebook";
 
 const index = getContentIndex();
 const a = getLanguageCharacterBySlug("japanese/hiragana/a")!;
+it("previews actual Japanese prompts with their authored readings, bounded and deduplicated", () => {
+  const exercise = index.exercises.find(e => e.slug === "languages/japanese-hiragana-h-m-writing")!;
+  if (exercise.type !== "writing") throw new Error("Expected writing fixture");
+  const preview = getNotebookCatalogPreview(createExerciseNotebook(exercise, index));
+  expect(preview.map(p => p.label)).toEqual(["はひ", "ふへ", "ほま", "みむ", "めも"]);
+  expect(preview[0]!.romaji).toBe("ha · hi");
+  expect(getNotebookCatalogPreview(createCustomNotebook("あい", index))).toEqual([{ label: "あい", romaji: "a i" }]);
+  const phrases = index.exercises.find(e => e.type === "writing" && e.notebookPrompts?.some(p => p.text === "こんにちは"));
+  if (phrases?.type !== "writing") throw new Error("Expected phrase fixture");
+  expect(getNotebookCatalogPreview(createExerciseNotebook(phrases, index))).toContainEqual({ label: "こんにちは", romaji: "konnichiwa" });
+  expect(getNotebookCatalogPreview({ id: "empty", title: "Empty", sheets: [] })).toEqual([]);
+});
 const roughA = [
   [
     [25, 37],

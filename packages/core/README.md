@@ -27,6 +27,8 @@ Runtime-safe language modules live under `src/languages/` and `src/language-writ
 
 Japanese writing notebooks use 24 whole-prompt repetitions per sheet and support curated/custom text of 1–5 published characters. Ink stays on the device; coarse completion/unlocks optionally sync. See `docs/features/japanese-writing-notebooks.md` for the implementation, persistence and validation contract.
 
+`getNotebookCatalogPreview` returns up to five distinct authored Japanese prompts and their whole-prompt readings for both catalog clients. Notebook storage optionally reads/writes a device-level romaji display preference; this does not alter sheet definitions or progress snapshots.
+
 ## Restore the Signal
 
 `src/game/` owns the schema-v12 campaign contract, pure game rules, seeded traffic, transient sessions, local CSS/SQL sandbox documents, shared animation sampling, rewards/streaks, and account-scoped merge. It imports no graphics engine. `content/game/` is canonical; regenerate the index after authored changes.

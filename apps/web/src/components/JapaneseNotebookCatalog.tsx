@@ -2,21 +2,24 @@
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { ArrowLeft, ArrowRight, BookOpen, Pencil } from "lucide-react";
+import { ArrowLeft, ArrowRight, BookOpen, Languages, Pencil } from "lucide-react";
 import {
   createCustomNotebook,
   createExerciseNotebook,
   getContentIndex,
+  getNotebookCatalogPreview,
   resolveNotebookCharacters,
   type WritingNotebook,
 } from "@codematica/core";
 import { createWebNotebookStorage } from "@/lib/notebooks/storage";
 import { JapaneseWritingPractice } from "./JapaneseWritingPractice";
+import { useNotebookRomaji } from "@codematica/ui/notebook-session";
 
 export function JapaneseNotebookCatalog() {
   const storage = useMemo(() => createWebNotebookStorage(), []),
     router = useRouter(),
     params = useSearchParams();
+  const { showRomaji, toggleRomaji } = useNotebookRomaji(storage);
   const curated = useMemo(
     () =>
       getContentIndex()
@@ -87,6 +90,31 @@ export function JapaneseNotebookCatalog() {
       );
     }
     open(notebook);
+  }
+  function notebookCard(notebook: WritingNotebook, saved: boolean) {
+    const prompts = getNotebookCatalogPreview(notebook);
+    return (
+      <button
+        type="button"
+        key={notebook.id}
+        onClick={() => open(notebook)}
+        aria-label={prompts.map(p => p.label).join("、") + " · " + notebook.title}
+        data-testid={saved ? "notebook-saved-" + notebook.id : "notebook-curated-" + notebook.id.replaceAll("/", "-")}
+      >
+        <span className="notebook-catalog-prompts" aria-hidden="true">
+          {prompts.map(prompt => (
+            <ruby key={prompt.label} lang="ja" className="notebook-catalog-prompt">
+              {prompt.label}
+              <rt lang="en" aria-hidden="true" style={{ visibility: showRomaji ? "visible" : "hidden" }}>{prompt.romaji}</rt>
+            </ruby>
+          ))}
+        </span>
+        <span className="notebook-catalog-meta">
+          {saved ? "Continue on this device · " : ""}{notebook.sheets.length} practice sheets
+        </span>
+        <ArrowRight size={20} aria-hidden="true" />
+      </button>
+    );
   }
   if (current)
     return (
@@ -198,24 +226,27 @@ export function JapaneseNotebookCatalog() {
           ))}
         </div>
       </form>
+      <div className="notebook-catalog-options">
+        <button
+          type="button"
+          role="switch"
+          aria-checked={showRomaji}
+          onClick={toggleRomaji}
+          className="notebook-romaji-toggle"
+          data-testid="notebook-romaji-toggle"
+        >
+          <Languages size={18} aria-hidden="true" />
+          Show romaji
+          <span className="notebook-toggle-track" aria-hidden="true"><span /></span>
+        </button>
+      </div>
       {saved.some((n) => n.id.startsWith("custom-")) ? (
         <>
           <h2 className="mt-7 text-xl font-semibold">Your saved notebooks</h2>
           <div className="notebook-catalog-list">
             {saved
               .filter((n) => n.id.startsWith("custom-"))
-              .map((n) => (
-                <button
-                  type="button"
-                  key={n.id}
-                  onClick={() => open(n)}
-                  data-testid={"notebook-saved-" + n.id}
-                >
-                  <span lang="ja">{n.sheets[0]!.label}</span>
-                  <span>Continue on this device · 3 sheets</span>
-                  <ArrowRight size={20} aria-hidden="true" />
-                </button>
-              ))}
+              .map((n) => notebookCard(n, true))}
           </div>
         </>
       ) : null}
@@ -224,18 +255,7 @@ export function JapaneseNotebookCatalog() {
         Guided notebooks
       </h2>
       <div className="notebook-catalog-list">
-        {curated.map((n) => (
-          <button
-            type="button"
-            key={n.id}
-            onClick={() => open(n)}
-            data-testid={"notebook-curated-" + n.id.replaceAll("/", "-")}
-          >
-            <span>{n.title}</span>
-            <span>{n.sheets.length} sheets · characters and words</span>
-            <ArrowRight size={20} aria-hidden="true" />
-          </button>
-        ))}
+        {curated.map((n) => notebookCard(n, false))}
       </div>
       {error ? (
         <button

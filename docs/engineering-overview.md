@@ -335,3 +335,7 @@ flowchart LR
 ```
 
 See [Japanese writing notebooks](features/japanese-writing-notebooks.md) for failure recovery, native build limits and tests.
+
+Native writing protects the SVG responder from ancestor ScrollView interception and drives paper scrolling explicitly through touch centroids or accessibility actions. `apps/mobile/src/lib/handwriting-navigation.ts` supplies the Expo Stack gesture policy for handwriting routes, preventing iPad swipe-back from consuming rightward strokes. The native catalog uses a compact selected-page header; `AppScreen` has an optional keyboard-tap policy for form buttons. `apps/mobile/e2e/notebook-{layout,gestures}.mjs` retain measured layout, real-contact results and screenshots; physical PencilKit validation remains a separate supported-build/device gate.
+
+The notebook catalog derives Japanese previews and authored romaji readings from the shared engine. `useNotebookRomaji` shares the display preference between catalog implementations through optional storage methods. The preference is device-local (web localStorage/native AsyncStorage) and separate from notebook ink and synchronized progress.

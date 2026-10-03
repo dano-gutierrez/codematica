@@ -41,6 +41,8 @@ export type NotebookSnapshot = {
   pages: Record<string, NotebookPage>;
 };
 export type NotebookStorage = {
+  loadRomajiPreference?: () => Promise<boolean>;
+  saveRomajiPreference?: (showRomaji: boolean) => Promise<void>;
   load: (notebook: WritingNotebook) => Promise<NotebookSnapshot | undefined>;
   save: (snapshot: NotebookSnapshot) => Promise<void>;
   list: () => Promise<WritingNotebook[]>;
@@ -50,6 +52,16 @@ export type NotebookStorage = {
     snapshot: NotebookSnapshot,
   ) => Promise<NotebookProgress[]>;
 };
+
+/** Preview authored prompts, preserving phrase readings and avoiding custom-sheet duplicates. */
+export function getNotebookCatalogPreview(notebook: WritingNotebook) {
+  const seen = new Set<string>();
+  return notebook.sheets.filter(sheet => {
+    if (seen.has(sheet.label)) return false;
+    seen.add(sheet.label);
+    return true;
+  }).slice(0, 5).map(({ label, romaji }) => ({ label, romaji }));
+}
 
 const idSchema = z
   .string()

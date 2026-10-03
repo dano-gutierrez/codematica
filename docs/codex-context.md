@@ -66,7 +66,7 @@ The first hosted web target is Vercel Hobby on the Vercel-provided URL. Vercel r
 - `apps/mobile/src/lib/`: native navigation, Supabase Auth, secure session storage, and local progress adapters
 - `apps/mobile/src/lib/skill-progress.ts`: native Japanese mastery read, validation, and bounded sync
 - `apps/mobile/src/__tests__/`: mobile Jest and React Native Testing Library screen tests
-- `apps/mobile/e2e/`: agent-device phone simulator regression scripts for code scrolling and page layout, with retained screenshot/tree evidence
+- `apps/mobile/e2e/`: agent-device phone/tablet simulator and emulator regressions for code scrolling, notebook layout and handwriting gestures, with retained screenshot/tree evidence
 - `apps/mobile/.maestro/`: installed-app Android/iOS regression flows
 - `apps/mobile/.eas/workflows/`: native smoke and `v*` release E2E orchestration
 - `packages/core/src/content/`: content schema, parser, index builder, and generated index access
@@ -155,3 +155,5 @@ Read `docs/features/frontend-interview-practice.md` for the seven-topic path. In
 The supplementary `frontend/react-state-async-callbacks` lesson and its six-question checkpoint use the existing reader and questionnaire. Its standalone broken/fixed examples are canonical Markdown fences, typechecked and executed by `ReactAsyncStateLesson.test.tsx`; they are not duplicated in interview JSON.
 
 Japanese planas share the core notebook engine and React-only `@codematica/ui/notebook-session` hook. Each sheet requires 24 whole-prompt repetitions. Web uses Pointer Events, installed iOS uses the local PencilKit module, and Android uses SVG. Local ink and maximum earned progress are distinct; restart preserves unlocks. Vocabulary `writing-starter` tags own starter-word curation.
+
+Native handwriting routes disable swipe-back through `apps/mobile/src/lib/handwriting-navigation.ts`. The paper blocks automatic one-finger ScrollView interception; explicit two-finger and accessibility scrolling remain available. Device regressions run against disposable notebooks. Expo Go validates the SVG fallback; the physical iPad/PencilKit checklist remains a separate installed-build gate in the notebook feature doc.

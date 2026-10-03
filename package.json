@@ -71,7 +71,9 @@
     "game:artifact-smoke": "node scripts/game/artifact-smoke.mjs",
     "game:flows": "tsx scripts/game/build-maestro.ts",
     "game:character-preview": "node scripts/game/capture-character-kit.mjs",
-    "game:miniature-preview": "node scripts/game/capture-miniatures.mjs"
+    "game:miniature-preview": "node scripts/game/capture-miniatures.mjs",
+    "mobile:e2e:notebook-layout": "node apps/mobile/e2e/notebook-layout.mjs",
+    "mobile:e2e:notebook-gestures": "node apps/mobile/e2e/notebook-gestures.mjs"
   },
   "dependencies": {
     "@fontsource-variable/noto-sans-jp": "^5.3.0",

@@ -1,4 +1,5 @@
 import { useAdminAccess } from "../src/lib/use-admin-access";
+import { isNativeHandwritingRoute } from "../src/lib/handwriting-navigation";
 import { Stack, usePathname, useRouter, useGlobalSearchParams } from "expo-router";
 import { View, Pressable, Text, useWindowDimensions } from "react-native";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
@@ -19,7 +20,7 @@ export default function RootLayout() {
           {wide ? navigation : null}
           <View style={{ flex: 1, minWidth: 0 }}>
             <>{returnTo && /^\/play\/[a-z0-9-]+\/[a-z0-9-]+$/.test(returnTo) ? <Pressable accessibilityRole="button" testID="game-return" onPress={()=>router.push(returnTo as never)} style={{padding:15,backgroundColor:"#dce7cf"}}><Text>Return to your challenge →</Text></Pressable>:null}</>
-            <Stack screenOptions={{ headerShown: false, contentStyle: { backgroundColor: colors.background } }} />
+            <Stack screenOptions={{ headerShown: false, gestureEnabled: !isNativeHandwritingRoute(pathname), contentStyle: { backgroundColor: colors.background } }} />
           </View>
           {wide ? null : navigation}
         </View>
