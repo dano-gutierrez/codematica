@@ -2,6 +2,8 @@
 
 Expo Router Android/iOS app for Codematica.
 
+Notebook catalog cards show actual Japanese sheet prompts. Show romaji optionally annotates the prompts and remembers the choice in AsyncStorage separately from ink and progress. Native writing/catalog and storage Jest tests cover restoration and toggling; the Japanese writing Maestro flow exercises the switch.
+
 The app uses `@codematica/core` for content/search/progress contracts and `@codematica/ui` for React Native screens. The bundled core index supports offline discovery, anonymous reading, complete basic hiragana/katakana lookup, romaji/IME-aware search, always-available Japanese flashcards/guides, internal lesson links, dictionary-style character details, and embedded/path writing practice.
 
 Signed-out progress retains every unique item locally. After sign-in, it syncs to the optional Supabase account in bounded batches.
@@ -169,3 +171,5 @@ Verified allowlisted accounts can open More → LinkedIn posts (`/admin/linkedin
 The LinkedIn admin screen also supports Create → Add for analysis and selection-based Unicode bold/italic, bullets and plain text. Manual drafts require analyzed proposal adoption before approval; `.maestro/linkedin-admin.yaml` covers creation against disposable data.
 
 Japanese writing notebooks use 24 whole-prompt repetitions per sheet and support curated/custom text of 1–5 published characters. Ink and Easy/Balanced/Precise difficulty preferences stay on the device; coarse completion/unlocks optionally sync. Input detection is automatic with no mode buttons; one finger writes, two fingers scroll the paper, and web wheel/trackpad scrolling stays available. Whole characters check automatically after a 400ms pen-up pause, with errors delayed until 1.2 seconds after pen-up. Sheet controls use an accessible restart icon. The installed-app regression flow selects difficulty and draws without a submit button. See `docs/features/japanese-writing-notebooks.md` for the implementation, persistence and validation contract.
+
+Native notebook writing now protects strokes from ScrollView interception and iPad swipe-back. Selected pages use compact headers and show feedback above the paper; custom creation handles keyboard taps. `src/lib/handwriting-navigation.ts` protects notebook, writing-review, dictionary detail and authored writing-exercise routes while preserving swipe-back elsewhere. Run `npm run mobile:e2e:notebook-layout` and `npm run mobile:e2e:notebook-gestures` against disposable agent-device sessions; see [e2e setup](e2e/README.md). Physical Apple Pencil and SDK 57 build checks were deferred by the user; follow the [physical iPad checklist](../../docs/features/japanese-writing-notebooks.md#deferred-physical-ipad-checklist).

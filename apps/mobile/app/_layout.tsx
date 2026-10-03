@@ -1,4 +1,5 @@
 import { useAdminAccess } from "../src/lib/use-admin-access";
+import { isNativeHandwritingRoute } from "../src/lib/handwriting-navigation";
 import { Stack, usePathname, useRouter } from "expo-router";
 import { View, useWindowDimensions } from "react-native";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
@@ -17,7 +18,7 @@ export default function RootLayout() {
         <View style={{ flex: 1, flexDirection: wide ? "row" : "column" }}>
           {wide ? navigation : null}
           <View style={{ flex: 1, minWidth: 0 }}>
-            <Stack screenOptions={{ headerShown: false, contentStyle: { backgroundColor: colors.background } }} />
+            <Stack screenOptions={{ headerShown: false, gestureEnabled: !isNativeHandwritingRoute(pathname), contentStyle: { backgroundColor: colors.background } }} />
           </View>
           {wide ? null : navigation}
         </View>

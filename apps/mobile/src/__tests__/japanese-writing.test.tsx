@@ -1,4 +1,4 @@
-import { act, fireEvent, render, waitFor } from "@testing-library/react-native";
+import { act, fireEvent, render, waitFor, within } from "@testing-library/react-native";
 import { AccessibilityInfo, ScrollView } from "react-native";
 import {
   buildWritingPracticeSheets,
@@ -98,6 +98,24 @@ async function glyph(
   );
   await act(() => jest.advanceTimersByTime(400));
 }
+it("keeps writing instructions in the feedback area and only offers hints during recall", async () => {
+  const notebook = createCustomNotebook("あ", index);
+  const view = await render(<JapaneseNotebookPractice notebook={notebook} adapters={adapters} />);
+  expect(view.getByTestId("mobile-writing-feedback-slot")).toHaveTextContent(/two fingers.*pause/i);
+  expect(view.queryByRole("button", { name: "Show example" })).toBeNull();
+});
+it("prevents the native paper scroll view from stealing single-finger handwriting", async () => {
+  const notebook = createCustomNotebook("あ", index);
+  const view = await render(<JapaneseNotebookPractice notebook={notebook} adapters={adapters} />);
+  expect(view.getByTestId("mobile-writing-notebook-viewport").props.scrollEnabled).toBe(false);
+  let blocksNativeScroll;
+  await act(() => {
+    blocksNativeScroll = view.getByTestId("mobile-writing-pad").props.onResponderGrant({
+      nativeEvent: { locationX: 80, locationY: 150, touches: [] },
+    });
+  });
+  expect(blocksNativeScroll).toBe(true);
+});
 it("waits for multi-stroke handwriting before showing an error and exposes a labeled restart icon", async () => {
   const n = createCustomNotebook("あ", index);
   const view = await render(<JapaneseNotebookPractice notebook={n} adapters={adapters} />);
@@ -268,7 +286,7 @@ it("accepts rough あ anywhere after reordered strokes, preserves curves, and su
   expect(view.queryByTestId("mobile-writing-cell-0-ink-0")).toBeNull();
   expect(
     view.getByTestId("mobile-writing-notebook-viewport").props.scrollEnabled,
-  ).toBe(true);
+  ).toBe(false);
   await fireEvent(
     view.getByTestId("mobile-writing-notebook-viewport"),
     "scroll",
@@ -521,6 +539,7 @@ it("creates, validates, saves and reopens custom notebooks from Japanese navigat
       adapters={{ ...adapters, notebooks: storage }}
     />,
   );
+  expect(view.getByTestId("mobile-page-scroll").props.keyboardShouldPersistTaps).toBe("handled");
   await fireEvent.changeText(view.getByTestId("mobile-notebook-input"), "abc");
   expect(view.getByText(/No writing guide/)).toBeOnTheScreen();
   expect(view.getByTestId("mobile-notebook-create")).toBeDisabled();
@@ -553,6 +572,33 @@ it("creates, validates, saves and reopens custom notebooks from Japanese navigat
   expect(adapters.navigation.navigate).toHaveBeenCalledWith(
     "/languages/japanese/notebooks",
   );
+});
+
+it("shows Japanese catalog previews and restores the accessible romaji toggle", async () => {
+  const storage: NotebookStorage = {
+    list: jest.fn(async () => [createCustomNotebook("あい", index)]),
+    saveDefinition: jest.fn(), load: jest.fn(), save: jest.fn(),
+    loadRomajiPreference: jest.fn(async () => false),
+    saveRomajiPreference: jest.fn(async () => undefined),
+  };
+  const view = await render(<JapaneseNotebookCatalogScreen index={index} adapters={{ ...adapters, notebooks: storage }} />);
+  const card = view.getByTestId("mobile-notebook-curated-languages/japanese-hiragana-h-m-writing-notebook-v1");
+  expect(card).toHaveTextContent(/はひ/);
+  expect(card).not.toHaveTextContent(/H And M/);
+  const toggle = view.getByRole("switch", { name: "Show romaji" });
+  await waitFor(() => expect(toggle).not.toBeChecked());
+  expect(within(card).getByText("ha · hi", { includeHiddenElements: true })).not.toBeVisible();
+  expect(view.getByText("double next consonant", { includeHiddenElements: true })).not.toBeVisible();
+  await fireEvent(toggle, "valueChange", true);
+  expect(toggle).toBeChecked();
+  expect(within(card).getByText("ha · hi")).toBeOnTheScreen();
+  expect(view.getByText("konnichiwa")).toBeOnTheScreen();
+  expect(view.getByText("a i")).toBeOnTheScreen();
+  await waitFor(() => expect(storage.saveRomajiPreference).toHaveBeenCalledWith(true));
+  await fireEvent.press(card);
+  expect(view.getByTestId("mobile-writing-notebook")).toBeOnTheScreen();
+  await fireEvent.press(view.getByTestId("mobile-notebook-back"));
+  expect(view.getByRole("switch", { name: "Show romaji" })).toBeChecked();
 });
 
 it("automatically handles inputs and cancels live ink for two-finger scrolling", async () => {

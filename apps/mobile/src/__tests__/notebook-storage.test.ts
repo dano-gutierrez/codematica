@@ -17,6 +17,14 @@ afterEach(async () => {
   await AsyncStorage.clear();
   jest.clearAllMocks();
 });
+it("retains the catalog romaji preference separately from sheet and cell records", async () => {
+  const storage = createNativeNotebookStorage();
+  expect(await storage.loadRomajiPreference!()).toBe(true);
+  await storage.saveRomajiPreference!(false);
+  expect(await createNativeNotebookStorage().loadRomajiPreference!()).toBe(false);
+  await storage.saveRomajiPreference!(true);
+  expect(await storage.loadRomajiPreference!()).toBe(true);
+});
 it("keeps ink in separate cell records and restores every page, pressure, difficulty and progress", async () => {
   const notebook = createCustomNotebook("あ", getContentIndex()),
     storage = createNativeNotebookStorage();

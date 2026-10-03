@@ -129,7 +129,12 @@ export function NativeNavigation({ pathname, navigate, wide, isAdmin = false }: 
   );
 }
 
-export function AppScreen({ title, children, footer }: { title?: string; children: ReactNode; footer?: ReactNode }) {
+export function AppScreen({ title, children, footer, keyboardShouldPersistTaps }: {
+  title?: string;
+  children: ReactNode;
+  footer?: ReactNode;
+  keyboardShouldPersistTaps?: "never" | "always" | "handled";
+}) {
   const [drawing,setDrawing]=useState(false);
   const pageScroll = useRef<ScrollView>(null);
   const pageBounds = useRef({ y: 0, viewport: 0, content: 0 });
@@ -146,6 +151,7 @@ export function AppScreen({ title, children, footer }: { title?: string; childre
         ref={pageScroll}
         testID="mobile-page-scroll"
         scrollEnabled={!drawing}
+        keyboardShouldPersistTaps={keyboardShouldPersistTaps}
         contentContainerStyle={styles.screenContent}
         onLayout={(event) => { pageBounds.current.viewport = event.nativeEvent.layout.height; }}
         onContentSizeChange={(_width, height) => { pageBounds.current.content = height; }}
