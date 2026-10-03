@@ -75,7 +75,7 @@ The single JSON repair retry receives the failed output and validation location.
 
 Inference caches include pinned model revisions and stable served model IDs. Request timestamps in the MLX model inventory are excluded. Benchmark resumption also checks extraction progress, which can change without a new authored catalog ID.
 
-BGE runs on CPU with 384-token windows and 48-token overlap, normalized pooling and four PyTorch threads. Evaluation retrieves diverse parent resources so one lesson's sections do not crowd out alternatives. Exact matching preserves case-sensitive code and literal whitespace, including Python indentation. The local API requires a private bearer token and accepts only loopback model origins, with redirects and environment proxies disabled.
+BGE runs on CPU with 384-token windows and 48-token overlap, normalized pooling and four PyTorch threads. Evaluation retrieves diverse parent resources so one lesson's sections do not crowd out alternatives. Each match retains a literal source window near candidate terms; evidence can come from later sections of a long resource. Qwen summarizes at most three 700-character supporting passages with an 800-token output limit. These selected passages do not establish that the catalog lacks other coverage. Exact matching preserves case-sensitive code and literal whitespace, including Python indentation. The local API requires a private bearer token and accepts only loopback model origins, with redirects and environment proxies disabled.
 
 After preparation enrollment, run `enable-knowledge --all-review` to enroll unapproved review drafts. Approved/rejected drafts are left alone. The command backs up editorial state first, requires an active graph and no running preparation/refinement jobs, and replaces pending unbound work. Newly created drafts inherit enrollment. Suggested imports start analysis when the reviewer requests refinement.
 
@@ -98,7 +98,7 @@ A new graph projection invalidates pending review/publication bindings. Stop and
 
 ## Test Plan
 
-- Unit/integration: full authored inventory, human-language exclusions, retained programming material, stable IDs, scoped skills, granular interviews, campaign/level/scenario coverage, status-preserving post hashes, stale evidence, transport validation, cache/inference locking and graph override recovery.
+- Unit/integration: full authored inventory, human-language exclusions, retained programming material, stable IDs, scoped skills, granular interviews, campaign/level/scenario coverage, status-preserving post hashes, stale evidence, transport validation, stable model-ID cache versions, source windows beyond introductory text, bounded explanations, cache/inference locking and graph override recovery.
 - Database: RLS/anonymous rejection, atomic activation, idempotent offline submissions, expired leases, candidate hashes, evidence validation and stale preparation/verification/adoption/publication.
 - Browser: graph/table navigation, evidence, candidate queueing, review, denied access, offline freshness and LinkedIn context. Regression classification: `@regression`.
 - Real local experiment: graph retrieval plus OpenJev/Qwen first pass, independent agent verification, authenticated synthetic adoption/approval and inert Buffer scheduling/reconciliation. No real Buffer request.

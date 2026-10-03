@@ -17,6 +17,53 @@ class FakeModels:
     async def explain(self, evidence): return {"explanation": "Compare the cited source."}
 
 class EvaluationTests(unittest.IsolatedAsyncioTestCase):
+    async def test_deep_matching_passage_reaches_decisions_and_bounded_explanation(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            store=Store(Path(tmp)/'db');text='Unrelated introductory material. '*150+'Each worker has an independent pool; direct connection budgets multiply across workers.'+' Unrelated trailing notes.'*100
+            data=snapshot(text=text)
+            for i in range(3):data['resources'].append({**data['resources'][0],'id':f'document:other-{i}','title':f'Other resource {i}','text':'Other introductory material. '*150+'Workers can hold database connections.','hash':f'other-{i}'})
+            store.activate(data);models=FakeModels();seen={}
+            async def decide(state,questions):seen['decision']=state;return await FakeModels.decide(models,state,questions)
+            async def explain(evidence):seen['explanation']=evidence;return {'explanation':'Inspect the worker pool budget.'}
+            models.decide=decide;models.explain=explain
+            report=await evaluate(store,FakeEmbeddings(),models,{'title':'Worker pool budgets','body':'Independent worker pools multiply direct database connections.','kind':'document'})
+            self.assertIn('independent pool',seen['decision']['matches'][0]['text'])
+            self.assertIn('independent pool',report['matches'][0]['text'])
+            self.assertIn(report['matches'][0]['text'],text)
+            self.assertLessEqual(len(report['matches'][0]['text']),1800)
+            self.assertEqual(len(seen['explanation']['matches']),3)
+            self.assertTrue(all(len(r['text'])<=700 for r in seen['explanation']['matches']))
+            self.assertIn('independent pool',seen['explanation']['matches'][0]['text'])
+
+    def test_source_windows_preserve_code_and_bound_anchor_work(self):
+        from knowledge.evaluate import supporting_passage
+        from unittest.mock import patch
+        import re
+        self.assertEqual(supporting_passage('x'*1800,'unknown'),'x'*1800)
+        text='Unrelated words. '*200+'\nif ready:\n    send()\naudit()\n'
+        excerpt=supporting_passage(text,'send audit',80)
+        self.assertIn('    send()',excerpt);self.assertIn('\naudit()',excerpt);self.assertIn(excerpt,text);self.assertLessEqual(len(excerpt),80)
+        long='x'*151+' '+('pool'+' '*46)*201
+        original=re.finditer;scans=[]
+        def count(pattern,value,*args,**kwargs):
+            if len(value)<=1800:scans.append(True)
+            return original(pattern,value,*args,**kwargs)
+        with patch('knowledge.evaluate.re.finditer',side_effect=count):supporting_passage(long,'pool')
+        self.assertLessEqual(len(scans),200+len(range(0,len(long),900)))
+
+    async def test_explanation_request_has_a_small_output_budget(self):
+        from knowledge.models import LocalModels
+        import json
+        with tempfile.TemporaryDirectory() as tmp:
+            models=LocalModels(Store(Path(tmp)/'db'));requests=[]
+            async def call(origin,path,body):
+                requests.append(body)
+                return {'choices':[{'finish_reason':'stop','message':{'content':json.dumps({'explanation':'Inspect the cited budget.','missing_material':[],'overlapping_material':[]})}}]}
+            models.call=call
+            await models.explain({'matches':[],'action':'needs_review'})
+            self.assertEqual(requests[0]['max_tokens'],800)
+            self.assertIn('selected supporting passages',requests[0]['messages'][0]['content'])
+
     async def test_readiness_timestamps_do_not_invalidate_cache_but_model_ids_do(self):
         from knowledge.models import LocalModels
         with tempfile.TemporaryDirectory() as tmp:

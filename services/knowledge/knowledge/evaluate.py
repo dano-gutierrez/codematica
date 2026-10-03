@@ -1,9 +1,24 @@
 import asyncio
 import time
+import re
 from .store import digest
 
 ACTIONS = {"update_existing": "Existing resource covers this scope but benefits from this addition or correction", "create_resource": "Useful distinct resource that fits an existing learning path", "create_path": "New coherent subject with no appropriate existing path", "skip_duplicate": "Same purpose, scope, audience and level are already covered; no useful new material", "split": "Candidate contains multiple independent lessons that should be separated", "needs_review": "Evidence, coverage or decision certainty is insufficient"}
 RELATIONS = {"duplicate": "Interchangeable content at the same level and format", "extends": "Adds useful missing material to this resource", "derived_from": "Useful adaptation to another format, such as lesson to social post", "related": "Connected topic, different purpose or level", "distinct": "Different topic or learning objective", "unknown": "Insufficient evidence"}
+
+def supporting_passage(text,query,limit=1800):
+    """Return a literal source window near matching terms, preserving code whitespace."""
+    if len(text)<=limit:return text
+    stop=set('the and to a in of for is it with on as by an be from this that are or at can not its we i you have'.split())
+    terms=set(re.findall(r'\w+',query.casefold()))-stop
+    starts=set(range(0,len(text),max(1,limit//2)))
+    anchors=[m.start() for m in re.finditer(r'\w+',text) if m.group().casefold() in terms][:200]
+    starts.update(max(0,position-min(150,limit//4)) for position in anchors)
+    def rank(start):
+        tokens=[m for m in re.finditer(r'\w+',text[start:start+limit]) if m.group().casefold() in terms]
+        return (len({m.group().casefold() for m in tokens}),-tokens[0].start() if tokens else -limit,-start)
+    start=max(starts,key=rank)
+    return text[start:start+limit]
 
 async def evaluate(store, embeddings, models, candidate):
     started = time.monotonic()
@@ -34,6 +49,8 @@ async def evaluate(store, embeddings, models, candidate):
     for r in graph["resources"]:
         if r["id"] in nearby_ids and r["id"] not in selected_ids and r["kind"] not in ["concept","source"] and len(selected)<16:
             selected.append({**r,"score":semantic.get(r["id"],0)})
+    query=candidate["title"]+"\n"+candidate["body"]
+    selected=[{**r,"text":supporting_passage(r["text"],query)} for r in selected]
     context_ids = {e["target"] for r in selected for e in store.relationships(r["id"])["relationships"] if e["type"] in ["teaches", "assesses", "requires"]}
     paths = [r for r in store.snapshot()["resources"] if r["kind"] in ["path", "unit", "skill"] and (r["kind"] == "path" or r["id"] in context_ids or any(p in [v for h in selected for v in h["paths"]] for p in r["paths"]))][:30]
     state = {"candidate": {**candidate, "body": candidate["body"][:12000]}, "matches": [{**r, "text": r["text"][:1800]} for r in selected], "placements": [{"id": r["id"], "title": r["title"], "kind": r["kind"], "text": r["text"][:300]} for r in paths], "coverage": {k:status[k] for k in ["snapshot_id","counts","semantic_complete","extracted","extraction_total"]}, "graph_context":graph_context}
@@ -74,7 +91,9 @@ async def evaluate(store, embeddings, models, candidate):
     explanation = "Local evidence requires review. Inspect the cited matches before changing content."
     details = {}
     try:
-        details = await models.explain({"action": action, "candidate": state["candidate"], "matches": state["matches"], "decisions": answers, "warnings": warnings})
+        details = await models.explain({"action": action, "candidate": {**state["candidate"],"body":candidate["body"][:2000]},
+          "matches":[{**r,"text":supporting_passage(r["text"],query,700)} for r in selected[:3]],
+          "decisions":{"action":action_answer["choice"],"confidence":confidence,"placement":chosen}, "warnings": warnings})
         explanation = details["explanation"]
     except (ValueError, KeyError):
         action="needs_review"
