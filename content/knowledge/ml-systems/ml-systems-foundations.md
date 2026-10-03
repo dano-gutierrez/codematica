@@ -18,7 +18,7 @@ Read Harvard’s [ML Systems chapter](https://mlsysbook.ai/vol1/ml_systems/ml_sy
 
 ## Define the system boundary
 
-Name inputs, outputs, users, upstream dependencies, downstream decisions, feedback, and the deployment environment. A model is one component inside that boundary. Requirements must cover the complete path from data arrival to an action and its monitoring.
+Name inputs, outputs, users, upstream dependencies, downstream decisions, feedback, and the deployment environment. The model is one component within that boundary. Requirements must cover the complete path from data arrival to an action and its monitoring.
 
 ## Make metrics operational
 
@@ -30,7 +30,7 @@ Start with a simple baseline and a fixed evaluation contract. A complex model ea
 
 ## Failure budget
 
-List statistical, software, data, and infrastructure failure modes. For each, name detection, containment, recovery, and the owner who responds. Silent degradation deserves explicit monitoring because success responses can hide worsening predictions.
+List statistical, software, data, and infrastructure failure modes. For each, name detection, containment, recovery, and the owner who responds. Monitor silent degradation: successful responses can hide worsening predictions.
 
 ## Practical output
 

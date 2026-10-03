@@ -9,11 +9,11 @@ import { DiscoveryCard } from "@/components/HomeDiscovery";
 import { Dropdown, type DropdownOption } from "@/components/Dropdown";
 
 const difficultyOptions = [
-  { value: "all", label: "All levels", description: "Every learning depth" },
+  { value: "all", label: "All levels", description: "All difficulty levels" },
   { value: "foundation", label: "Foundation", description: "Core concepts" },
   { value: "practitioner", label: "Practitioner", description: "Production patterns" },
-  { value: "senior", label: "Senior", description: "Tradeoff-heavy material" },
-  { value: "principal", label: "Principal", description: "Org-scale decisions" },
+  { value: "senior", label: "Senior", description: "Guides to tradeoffs" },
+  { value: "principal", label: "Principal", description: "Organization-wide decisions" },
 ] satisfies DropdownOption[];
 
 export function LearningPathCatalog({ index }: { index: ContentIndex }) {
@@ -39,7 +39,7 @@ export function LearningPathCatalog({ index }: { index: ContentIndex }) {
       <AppHeader subtitle="Learning paths" />
       <section className="mx-auto w-full max-w-7xl px-4 py-7 sm:py-9">
         <h1 className="mt-2 max-w-4xl text-3xl font-semibold leading-tight text-[#263238] sm:text-4xl">Learning paths</h1>
-        <p className="mt-3 max-w-3xl text-base font-normal leading-7 text-[#68737d]">A guided route from curiosity to confidence.</p>
+        <p className="mt-3 max-w-3xl text-base font-normal leading-7 text-[#68737d]">Follow guided learning paths.</p>
 
         <div className="mt-6 grid gap-3 lg:grid-cols-[minmax(0,1fr)_15rem_16rem]" data-testid="path-catalog-controls">
           <SearchInput value={query} onChange={setQuery} placeholder="Search paths and categories" testId="path-catalog-search" />
@@ -89,6 +89,7 @@ function PathCatalogCard({ path }: { path: LearningPath }) {
   const nodes = path.units.flatMap((unit) => unit.nodes);
   const nodeCounts = {
     document: nodes.filter((node) => node.kind === "document").length,
+    interview: nodes.filter((node) => node.kind === "interview").length,
     diagram: nodes.filter((node) => node.kind === "diagram").length,
     exercise: nodes.filter((node) => node.kind === "exercise").length,
   };
@@ -103,6 +104,7 @@ function PathCatalogCard({ path }: { path: LearningPath }) {
       <p className="mt-2 text-sm font-normal leading-6 text-[#68737d]">{path.summary}</p>
       <div className="mt-4 flex flex-wrap gap-2 text-xs font-semibold text-[#68737d]">
         <span>{path.units.length} units</span><span aria-hidden="true">·</span><span>{nodeCounts.document} lessons</span><span aria-hidden="true">·</span><span>{nodeCounts.exercise} practice</span>
+        {nodeCounts.interview > 0 ? <><span aria-hidden="true">·</span><span>{nodeCounts.interview} walkthroughs</span></> : null}
         {nodeCounts.diagram > 0 ? <><span aria-hidden="true">·</span><span>{nodeCounts.diagram} diagrams</span></> : null}
       </div>
       <Link href={path.route} className="mt-auto inline-flex min-h-12 items-center justify-center gap-2 rounded-xl border border-[#004d49] bg-[#00645f] px-4 py-2 text-sm font-semibold text-white transition hover:-translate-y-0.5">
@@ -188,7 +190,7 @@ export function LanguageCatalog({ index }: { index: ContentIndex }) {
       <AppHeader subtitle="Languages" />
       <section className="mx-auto w-full max-w-7xl px-4 py-7 sm:py-9">
         <h1 className="mt-2 max-w-4xl text-3xl font-semibold leading-tight text-[#263238] sm:text-4xl">Languages</h1>
-        <p className="mt-3 max-w-3xl text-base font-normal leading-7 text-[#68737d]">Choose a language hub for its course, reference catalog, vocabulary, pronunciation, and writing practice.</p>
+        <p className="mt-3 max-w-3xl text-base font-normal leading-7 text-[#68737d]">Choose a language to explore its course, reference catalog, vocabulary, pronunciation, and writing practice.</p>
 
         <article className="mt-7 grid gap-6 rounded-xl border border-[#e8c45c] bg-white p-5 md:grid-cols-[minmax(0,1fr)_18rem] md:p-7">
           <div>

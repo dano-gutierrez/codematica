@@ -4,9 +4,9 @@ Last verified: 2026-08-05
 
 This runbook covers the account setup and release steps needed to publish Codematica to Google Play and the Apple App Store using Expo EAS.
 
-## Cost Reality
+## Costs
 
-There is no fully free public-store path.
+Public-store distribution requires fees.
 
 - Expo EAS has a free plan with limited monthly Android/iOS builds and app-store submit support.
 - Google Play Console requires a one-time developer registration fee of US$25.
@@ -23,7 +23,7 @@ Lowest-cost path for now:
 
 ## Before Creating Store Accounts
 
-Decide these values first because changing them later can create store-record or signing friction:
+Choose these values first; later changes can complicate store records or signing:
 
 ```bash
 EXPO_APP_NAME=Codematica
@@ -62,7 +62,7 @@ CODEMATICA_GOOGLE_ANNUAL_BASE_PLAN_ID=annual
 CODEMATICA_MONTHLY_INTRO_OFFER_ID=monthly_intro_099_first_month
 ```
 
-Use stable product ids. Renaming products after Apple, Google, Stripe, and RevenueCat are connected creates avoidable reconciliation and support work.
+Use stable product ids. Renaming products after connecting Apple, Google, Stripe, and RevenueCat adds reconciliation and support work.
 
 ## Repo Release Prep
 
@@ -87,7 +87,7 @@ Before pushing a `v*` tag, run `npm run test:release`. After the tag is pushed, 
 - GitHub `Release Candidate Regression`: quality, coverage, clean database replay/pgTAP, and complete Playwright regression.
 - EAS `Native Release Regression`: credential-free Android APK and iOS simulator builds followed by every Maestro flow on both platforms.
 
-A release candidate is promotable only when both systems are green. Their coverage, JUnit, Playwright traces/screenshots/videos, EAS builds, and Maestro recordings are the failure evidence. Neither workflow submits a store build or publishes a release.
+A release candidate is promotable only when both systems are green. Retain their coverage, JUnit, Playwright traces/screenshots/videos, EAS builds, and Maestro recordings as failure evidence. Neither workflow submits a store build or publishes a release.
 
 For native smoke on a pull request, apply the `mobile-e2e` label. It builds the Android E2E APK and runs the Maestro smoke set; it does not require store signing credentials.
 
@@ -124,18 +124,18 @@ For iOS, let EAS manage the distribution certificate and provisioning profile un
 
 ## RevenueCat Subscription Setup
 
-RevenueCat is the planned cross-platform entitlement authority for Codematica subscriptions. Set it up after the Apple, Google, and Stripe account shells exist, but before wiring production paywalls in the apps.
+RevenueCat is the planned cross-platform entitlement authority for Codematica subscriptions. Set it up after creating Apple, Google, and Stripe accounts and before adding production paywalls.
 
 Official starting points:
 
-- RevenueCat Expo SDK: https://www.revenuecat.com/docs/getting-started/installation/expo
-- RevenueCat store connections: https://www.revenuecat.com/docs/projects/connect-a-store
-- RevenueCat Stripe Billing: https://www.revenuecat.com/docs/web/integrations/stripe
-- RevenueCat webhooks: https://www.revenuecat.com/docs/integrations/webhooks
+- [RevenueCat Expo SDK](https://www.revenuecat.com/docs/getting-started/installation/expo)
+- [RevenueCat store connections](https://www.revenuecat.com/docs/projects/connect-a-store)
+- [RevenueCat Stripe Billing](https://www.revenuecat.com/docs/web/integrations/stripe)
+- [RevenueCat webhooks](https://www.revenuecat.com/docs/integrations/webhooks)
 
 Create the RevenueCat project:
 
-1. Create or sign in to the RevenueCat account that should own Codematica billing.
+1. Create or sign in to the RevenueCat account for Codematica billing.
 2. Create a project named `Codematica`.
 3. Add iOS, Android, and Web apps.
 4. Use Supabase `auth.users.id` as the RevenueCat App User ID in app code and backend reconciliation.
@@ -194,7 +194,7 @@ RevenueCat launch checks:
 - Apple sandbox purchase, Google license-test purchase, and Stripe test-mode purchase all activate the same Supabase user id.
 - Restore purchases refreshes entitlement on iOS and Android.
 - A canceled/refunded/expired test subscription removes protected content access after the provider state changes.
-- The web backend can still deny private content when RevenueCat or Supabase is unavailable instead of failing open.
+- The web backend denies private content when RevenueCat or Supabase is unavailable.
 
 ## Supabase Auth And Progress Setup
 
@@ -275,7 +275,7 @@ Configure Apple sign-in only after Apple Developer Program enrollment:
 
 ## Google Play Console Account
 
-Official starting point: https://support.google.com/googleplay/android-developer/answer/6112435
+[Official starting point](https://support.google.com/googleplay/android-developer/answer/6112435)
 
 1. Create or choose the Google Account that should own the developer account.
 2. Enable two-step verification on that Google Account.
@@ -292,7 +292,7 @@ For new personal developer accounts, plan for Google’s production-access gate:
 
 ## Google Play App Record
 
-Official app setup guide: https://support.google.com/googleplay/android-developer/answer/9859152
+[Official app setup guide](https://support.google.com/googleplay/android-developer/answer/9859152)
 
 1. In Play Console, click Create app.
 2. Enter:
@@ -345,7 +345,7 @@ After submission:
 
 ## Apple Developer Program Account
 
-Official membership comparison: https://developer.apple.com/support/compare-memberships/
+[Official membership comparison](https://developer.apple.com/support/compare-memberships/)
 
 1. Create or choose the Apple Account that should own the developer membership.
 2. Enable two-factor authentication.
@@ -359,7 +359,7 @@ Official membership comparison: https://developer.apple.com/support/compare-memb
 
 ## Apple Bundle ID And App Store Connect Record
 
-Official App Store Connect app record guide: https://developer.apple.com/help/app-store-connect/create-an-app-record/add-a-new-app/
+[Official App Store Connect app record guide](https://developer.apple.com/help/app-store-connect/create-an-app-record/add-a-new-app/)
 
 1. In the Apple Developer account, create an explicit App ID / Bundle ID matching `EXPO_APP_IDENTIFIER`, currently `com.codematica.app`.
 2. In App Store Connect, open Apps and click `+` > New App.
@@ -412,7 +412,7 @@ Submit the latest iOS production build:
 npm run mobile:submit:ios
 ```
 
-EAS Submit uploads the `.ipa` to App Store Connect. It does not publish the app to the public App Store by itself.
+EAS Submit uploads the `.ipa` to App Store Connect; public App Store publication is a separate step.
 
 After submission:
 
@@ -474,30 +474,30 @@ Data currently expected for privacy forms:
 
 ## References
 
-- Supabase Auth redirect URLs: https://supabase.com/docs/guides/auth/redirect-urls
-- Supabase native mobile deep linking: https://supabase.com/docs/guides/auth/native-mobile-deep-linking
-- Supabase Google Auth: https://supabase.com/docs/guides/auth/social-login/auth-google
-- Supabase Apple Auth: https://supabase.com/docs/guides/auth/social-login/auth-apple
-- Expo EAS environment variables: https://docs.expo.dev/eas/environment-variables/
-- Expo deep linking: https://docs.expo.dev/linking/into-your-app/
-- Expo authentication guide: https://docs.expo.dev/guides/authentication/
-- Google Play Console getting started: https://support.google.com/googleplay/android-developer/answer/6112435
-- Google Play required account information: https://support.google.com/googleplay/android-developer/answer/13628312
-- Google Play account type requirements: https://support.google.com/googleplay/android-developer/answer/13634885
-- Google Play personal account testing requirements: https://support.google.com/googleplay/android-developer/answer/14151465
-- Google Play app setup: https://support.google.com/googleplay/android-developer/answer/9859152
-- Google Play Data safety: https://support.google.com/googleplay/android-developer/answer/10787469
-- Google Play release rollout: https://support.google.com/googleplay/android-developer/answer/9859348
-- Apple membership comparison: https://developer.apple.com/support/compare-memberships/
-- Apple Developer Program enrollment: https://developer.apple.com/programs/enroll/
-- Free Apple developer registration: https://developer.apple.com/register/
-- Apple D-U-N-S guidance: https://developer.apple.com/help/account/membership/D-U-N-S/
-- App Store Connect overview: https://developer.apple.com/app-store-connect/
-- App Store Connect new app record: https://developer.apple.com/help/app-store-connect/create-an-app-record/add-a-new-app/
-- App Store publishing overview: https://developer.apple.com/help/app-store-connect/manage-your-apps-availability/overview-of-publishing-your-app-on-the-app-store/
-- Apple app privacy: https://developer.apple.com/help/app-store-connect/manage-app-information/manage-app-privacy/
-- Expo EAS plans: https://docs.expo.dev/billing/plans/
-- Expo EAS pricing: https://expo.dev/pricing
-- Expo EAS Submit: https://docs.expo.dev/submit/introduction/
-- Expo Android submit: https://docs.expo.dev/submit/android/
-- Expo iOS submit: https://docs.expo.dev/submit/ios/
+- [Supabase Auth redirect URLs](https://supabase.com/docs/guides/auth/redirect-urls)
+- [Supabase native mobile deep linking](https://supabase.com/docs/guides/auth/native-mobile-deep-linking)
+- [Supabase Google Auth](https://supabase.com/docs/guides/auth/social-login/auth-google)
+- [Supabase Apple Auth](https://supabase.com/docs/guides/auth/social-login/auth-apple)
+- [Expo EAS environment variables](https://docs.expo.dev/eas/environment-variables/)
+- [Expo deep linking](https://docs.expo.dev/linking/into-your-app/)
+- [Expo authentication guide](https://docs.expo.dev/guides/authentication/)
+- [Google Play Console getting started](https://support.google.com/googleplay/android-developer/answer/6112435)
+- [Google Play required account information](https://support.google.com/googleplay/android-developer/answer/13628312)
+- [Google Play account type requirements](https://support.google.com/googleplay/android-developer/answer/13634885)
+- [Google Play personal account testing requirements](https://support.google.com/googleplay/android-developer/answer/14151465)
+- [Google Play app setup](https://support.google.com/googleplay/android-developer/answer/9859152)
+- [Google Play Data safety](https://support.google.com/googleplay/android-developer/answer/10787469)
+- [Google Play release rollout](https://support.google.com/googleplay/android-developer/answer/9859348)
+- [Apple membership comparison](https://developer.apple.com/support/compare-memberships/)
+- [Apple Developer Program enrollment](https://developer.apple.com/programs/enroll/)
+- [Free Apple developer registration](https://developer.apple.com/register/)
+- [Apple D-U-N-S guidance](https://developer.apple.com/help/account/membership/D-U-N-S/)
+- [App Store Connect overview](https://developer.apple.com/app-store-connect/)
+- [App Store Connect new app record](https://developer.apple.com/help/app-store-connect/create-an-app-record/add-a-new-app/)
+- [App Store publishing overview](https://developer.apple.com/help/app-store-connect/manage-your-apps-availability/overview-of-publishing-your-app-on-the-app-store/)
+- [Apple app privacy](https://developer.apple.com/help/app-store-connect/manage-app-information/manage-app-privacy/)
+- [Expo EAS plans](https://docs.expo.dev/billing/plans/)
+- [Expo EAS pricing](https://expo.dev/pricing)
+- [Expo EAS Submit](https://docs.expo.dev/submit/introduction/)
+- [Expo Android submit](https://docs.expo.dev/submit/android/)
+- [Expo iOS submit](https://docs.expo.dev/submit/ios/)

@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { BookOpen, Library, Layers, RotateCcw, Search } from "lucide-react";
+import { BookOpen, Library, Layers, Pencil, RotateCcw, Search } from "lucide-react";
 import { useMemo, useState, type ReactNode } from "react";
 import { getJapaneseCharacterGroups, searchJapanese, type ContentIndex, type JapaneseSearchResult, type LanguageCharacter, type LanguageVocabulary } from "@codematica/core";
 import { AppHeader } from "@/components/AppHeader";
@@ -21,10 +21,11 @@ export function JapaneseLanguageBrowser({ index }: { index: ContentIndex }) {
           Japanese
         </h1>
         <p className="mt-4 max-w-3xl text-base font-normal leading-7 text-[#68737d]">
-          Search beginner Japanese characters and phrases with romaji, meanings, and IPA pronunciation support.
+          Find beginner Japanese characters and phrases with romaji, meanings, and IPA pronunciation.
         </p>
         <nav className="mt-5 grid gap-3 sm:grid-cols-2 lg:grid-cols-4" aria-label="Japanese study tools" data-testid="japanese-study-tools">
           <StudyToolLink href="/paths/japanese-foundations" label="Learn" description="Open Pre-A1 and A1 roadmap" icon={<BookOpen className="h-5 w-5" aria-hidden="true" />} testId="japanese-path-link" />
+          <StudyToolLink href="/languages/japanese/notebooks" label="Notebook practice" description="Repeated handwriting · your own pages" icon={<Pencil className="h-5 w-5" aria-hidden="true" />} testId="japanese-notebooks-link" />
           <StudyToolLink href="/languages/japanese/review" label="Review" description="Due queue and all cards" icon={<RotateCcw className="h-5 w-5" aria-hidden="true" />} testId="japanese-review-link" />
           <StudyToolLink href="#dictionary" label="Dictionary" description="Characters, words, and writing" icon={<Search className="h-5 w-5" aria-hidden="true" />} testId="japanese-dictionary-link" />
           <StudyToolLink href="#resources" label="Resources" description="Trusted free learning links" icon={<Library className="h-5 w-5" aria-hidden="true" />} testId="japanese-resources-link" />
@@ -32,6 +33,8 @@ export function JapaneseLanguageBrowser({ index }: { index: ContentIndex }) {
 
         <div className="mt-4 flex flex-wrap gap-3" aria-label="Always available Japanese resources">
           {flashcards ? <StudyToolLink href={flashcards.route} label="Open flashcards" description="Recall kana at any time" icon={<Layers className="h-5 w-5" aria-hidden="true" />} testId="japanese-flashcards-link" /> : null}
+          <StudyToolLink href="/practice/languages/japanese-hiragana-vowels-writing?path=japanese-foundations" label="Hiragana 101 · planas" description="Trace, copy, recall, and match" icon={<Pencil className="h-5 w-5" aria-hidden="true" />} testId="japanese-writing-sheets-link" />
+          <StudyToolLink href="/practice/languages/japanese-katakana-vowels-writing?path=japanese-foundations" label="Katakana planas" description="Repeat characters and short words" icon={<Pencil className="h-5 w-5" aria-hidden="true" />} testId="japanese-katakana-sheets-link" />
           <StudyToolLink href="/docs/languages/japanese-hiragana-foundations?path=japanese-foundations" label="Hiragana guide" description="All 46 basic characters" icon={<span className="text-xl" aria-hidden="true">あ</span>} testId="japanese-hiragana-guide-link" />
           <StudyToolLink href="/docs/languages/japanese-katakana-foundations?path=japanese-foundations" label="Katakana guide" description="All 46 basic characters" icon={<span className="text-xl" aria-hidden="true">ア</span>} testId="japanese-katakana-guide-link" />
         </div>
@@ -69,8 +72,8 @@ export function JapaneseLanguageBrowser({ index }: { index: ContentIndex }) {
 
         <section id="resources" className="mt-8 scroll-mt-6 rounded-xl border border-[#d2bd76] bg-[#fffaf0] p-4 sm:p-6" data-testid="japanese-resource-shelf">
           <p className="text-sm font-semibold uppercase text-[#7a5200]">Trusted, always available</p>
-          <h2 className="mt-1 text-3xl font-semibold text-[#263238]">Resource shelf</h2>
-          <p className="mt-2 max-w-3xl text-base font-normal leading-7 text-[#53616c]">These materials stay on their publishers’ sites. Access and reuse labels make it clear what Codematica links to and what it may redistribute.</p>
+          <h2 className="mt-1 text-3xl font-semibold text-[#263238]">Learning resources</h2>
+          <p className="mt-2 max-w-3xl text-base font-normal leading-7 text-[#53616c]">Materials link to their publishers’ sites. Access and reuse labels show what Codematica may link to or redistribute.</p>
           <div className="mt-5 grid gap-3 md:grid-cols-2">
             {index.languageResources.map((resource) => (
               <a key={resource.id} href={resource.url} target="_blank" rel="noreferrer" className="min-w-0 rounded-xl border border-[#d2bd76] bg-white p-4 [overflow-wrap:anywhere] focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-2 focus-visible:outline-[#007c78]">

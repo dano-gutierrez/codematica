@@ -3,9 +3,9 @@
 ## Snapshot
 
 - Status: `shipped`
-- Last updated: `2026-10-02`
+- Last updated: `2026-10-03`
 - Owner thread: `n/a`
-- Current state: Approved artwork is integrated into web/native headers, browser icons, native launcher icons and splash assets. Web production and native packaging checks pass; this revision has not been deployed or installed on devices.
+- Current state: Approved artwork is integrated into web/native headers, browser icons, native launcher icons and splash assets. Web production and native packaging checks pass. The October 3 Android Release APK includes the approved artwork; installed iOS remains unverified.
 - Target outcome: The same recognizable Patch identity appears across app entry points, with readable small icons and preserved accessibility.
 - Code touchpoints: `assets/brand/`, `scripts/brand/`, `apps/web/src/components/AppHeader.tsx`, `apps/web/src/app/layout.tsx`, `packages/ui/src/screens.tsx`, `apps/mobile/app.config.ts`.
 - Primary tests: `brand.smoke.spec.ts`, `adaptive-navigation.test.tsx`, `npm run brand:check`, `scripts/game/artifact-smoke.mjs`.
@@ -24,7 +24,7 @@ Patch replaces the generic network/C identity. The user approved option 1's simp
 
 ## Current State
 
-Source integration and reproducible exports are complete. The [preview sheet](../../assets/brand/preview.png) shows header size, light/dark favicons, native masks and true transparency. Raster masters are provided; vector reconstruction is outside this change. Native launcher/splash changes require a new installed build.
+Source integration and reproducible exports are complete. The [preview sheet](../../assets/brand/preview.png) shows header size, light/dark favicons, native masks and true transparency. Raster masters are provided; vector reconstruction is outside this change. Native launcher/splash changes require a new installed build. The October 3 review rebuilt and installed the Android Release APK and regenerated both Metro exports; installed iOS verification remains open.
 
 ## Scope
 
@@ -92,6 +92,16 @@ None about the selected design.
 - No deployment, store submission or new installed Android/iOS build was performed. Launcher/splash changes become visible after rebuilding the native app; installed-device visual verification is still required for release.
 
 Evidence: `test-results/brand/native-assets.log`, `test-results/brand/prebuild.log`, the Playwright report and `test-results/game-artifact.log` (local/CI artifacts).
+
+## Verification — October 3, 2026
+
+- Current main is integrated with the campaign and approved branding. Its Expo patch alignment resolves the earlier Doctor warning: all 20 checks now pass. The October 2 results above describe that earlier source revision.
+- Brand/game export freshness, lint, typecheck, production web build, 529 core/web tests and 127 native tests pass. All 78 selected browser cases pass, including the three-browser branding smoke cases. Coverage floors remain unchanged.
+- Both disposable production-only startup lanes pass; served branding matches the committed exports. Android/iOS Metro exports and a fresh Android Release APK build pass. The APK asset check verifies the bundled game textures and local runners.
+- The freshly installed Android API 35 app displays the approved header logo and wordmark. Offline CSS/SQL clears and progress after process restart pass. Installed iOS, complete Maestro journeys, and physical-device frame-rate profiling remain release checks. No deployment or store submission was performed.
+
+Current review evidence: `test-results/pr-14-review/`. See the [campaign’s current state](restore-the-signal.md#current-state) for installed-device results and toolchain limitations.
+
 
 ## Decision Log
 

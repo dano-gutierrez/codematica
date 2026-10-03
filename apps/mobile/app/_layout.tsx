@@ -1,15 +1,17 @@
+import { useAdminAccess } from "../src/lib/use-admin-access";
 import { Stack, usePathname, useRouter, useGlobalSearchParams } from "expo-router";
 import { View, Pressable, Text, useWindowDimensions } from "react-native";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import { colors, NativeNavigation } from "@codematica/ui";
 
 export default function RootLayout() {
+  const isAdmin = useAdminAccess();
   const pathname = usePathname();
   const { returnTo } = useGlobalSearchParams<{returnTo?:string}>();
   const router = useRouter();
   const { width, fontScale } = useWindowDimensions();
   const wide = width >= 768 && width / fontScale >= 600;
-  const navigation = <NativeNavigation pathname={pathname} navigate={(href) => router.navigate(href as never)} wide={wide} />;
+  const navigation = <NativeNavigation isAdmin={isAdmin} pathname={pathname} navigate={(href) => router.navigate(href as never)} wide={wide} />;
   return (
     <SafeAreaProvider>
       <SafeAreaView style={{ flex: 1, backgroundColor: colors.panel }}>

@@ -1,5 +1,6 @@
 import {
   act,
+  cleanup,
   fireEvent,
   render,
   screen,
@@ -186,4 +187,47 @@ it("freezes live editing while paused, requires resume after backgrounding, and 
   );
   expect(session.getSnapshot().attempt.assisted).toBe(true);
   expect(screen.getByTestId("game-run")).toHaveTextContent("Run solution");
+});
+
+it.each(["fetch", "body"])("discards a %s rejection after resetting the attempt", async (boundary) => {
+  const session = await open(1);
+  let reject!: (error: Error) => void;
+  const pending = new Promise<never>((_resolve, fail) => { reject = fail; });
+  if (boundary === "fetch") vi.mocked(fetch).mockReturnValueOnce(pending);
+  else vi.mocked(fetch).mockResolvedValueOnce(Object.assign(new Response(""), { text: () => pending }));
+  fireEvent.click(screen.getByTestId("game-run"));
+  await act(async () => {});
+  const signal = vi.mocked(fetch).mock.calls.at(-1)?.[1]?.signal;
+  fireEvent.click(screen.getByTestId("game-reset"));
+  await act(async () => { reject(Error("late failure")); });
+  expect(session.getSnapshot().failures).toBe(0);
+  expect(session.getSnapshot().result).toBeNull();
+  expect(signal?.aborted).toBe(true);
+});
+
+it("discards a late worker download after timeout and preserves the replacement draft", async () => {
+  const session = await open(1);
+  let resolve!: (response: Response) => void;
+  vi.mocked(fetch).mockReturnValueOnce(new Promise<Response>((done) => { resolve = done; }));
+  vi.useFakeTimers();
+  fireEvent.click(screen.getByTestId("game-run"));
+  await act(async () => { vi.advanceTimersByTime(10000); });
+  expect(session.getSnapshot().failures).toBe(1);
+  await act(async () => { resolve({ ok: true, text: async () => "late worker" } as Response); });
+  expect(screen.queryByTestId("game-sandbox")).not.toBeInTheDocument();
+  fireEvent.change(screen.getByTestId("game-code"), { target: { value: "SELECT id FROM zombies WHERE threat > 4;" } });
+  expect(session.getSnapshot().code).toBe("SELECT id FROM zombies WHERE threat > 4;");
+  expect(session.getSnapshot().result).toBeNull();
+});
+
+it("cancels the worker download when leaving for a lesson", async () => {
+  const session = await open(1);
+  let reject!: (error: Error) => void;
+  vi.mocked(fetch).mockReturnValueOnce(new Promise<Response>((_done, fail) => { reject = fail; }));
+  fireEvent.click(screen.getByTestId("game-run"));
+  const signal = vi.mocked(fetch).mock.calls.at(-1)?.[1]?.signal;
+  cleanup();
+  await act(async () => { reject(Error("after navigation")); });
+  expect(session.getSnapshot().failures).toBe(0);
+  expect(signal?.aborted).toBe(true);
 });

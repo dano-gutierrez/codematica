@@ -20,7 +20,7 @@ status: published
 ---
 ## Migration Is A Risk Review
 
-A Next.js 16 migration is not just a dependency bump. It changes defaults and surfaces in areas that affect correctness: caching APIs, async request APIs, routing and prefetch behavior, image defaults, middleware naming, bundler defaults, and removed or deprecated configuration. Treat the upgrade as a product risk review.
+Next.js 16 changes defaults and APIs that affect correctness: caching APIs, async request APIs, routing and prefetch behavior, image defaults, middleware naming, bundler defaults, and removed or deprecated configuration. Treat the upgrade as a product risk review.
 
 The official codemod can do mechanical work. It cannot decide whether stale data is acceptable, whether a custom webpack assumption works under Turbopack, or whether a legacy `dynamic` config was masking a design bug.
 
@@ -37,9 +37,9 @@ The official codemod can do mechanical work. It cannot decide whether stale data
 
 ## proxy.ts And Network Boundaries
 
-Next.js 16 replaces the middleware naming direction with `proxy.ts` to make the network boundary clearer. The name matters because teams often put too much application logic into middleware. Proxy code should stay small, predictable, and safe for the runtime it runs in.
+Next.js 16 introduces the `proxy.ts` name to clarify the network boundary. Keep proxy code small, predictable, and compatible with its runtime; avoid putting excess application logic there.
 
-The `proxy` convention runs on the Node.js runtime and cannot be configured for Edge. Teams that still require Edge middleware must keep the deprecated `middleware` convention while planning a supported migration. Treat a filename rename as a runtime review, not only a codemod result.
+The `proxy` convention runs on the Node.js runtime and cannot be configured for Edge. Teams that still require Edge middleware must keep the deprecated `middleware` convention while planning a supported migration. Review runtime behavior when renaming the file.
 
 ## Cache Components Adoption
 
@@ -57,11 +57,11 @@ Cache Components requires the Node.js runtime. Validate that constraint before e
 
 ## Release Criteria
 
-A migration is ready when the team can explain which route configs were removed, which cached scopes were added, which async request APIs changed shape, which routes remain intentionally dynamic, and which browser journeys prove navigation, forms, auth, images, and reading flows still work.
+Before release, document removed route configs, added cached scopes, changed async request APIs, and intentionally dynamic routes. Verify navigation, forms, auth, images, and reading flows with browser journeys.
 
 ## One-Minute Brief
 
-A Next.js 16 upgrade is a boundary and caching audit. Let codemods handle syntax, but make humans own cache semantics, request-time APIs, proxy behavior, routing changes, and rollout monitoring.
+Use codemods for syntax. Review Next.js 16 cache semantics, request-time APIs, proxy behavior, routing changes, and rollout monitoring yourself.
 
 ## Official Source Anchors
 This lesson is anchored to official Next.js documentation and release material. The repository manifest and lockfile define the version under test.

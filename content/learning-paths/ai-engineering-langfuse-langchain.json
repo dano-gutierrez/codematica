@@ -1,7 +1,7 @@
 {
   "slug": "ai-engineering-langfuse-langchain",
   "title": "Langfuse And LangChain AI Engineering",
-  "summary": "Learn how production LLM applications are built, traced, evaluated, and governed with LangChain, LangGraph, Langfuse, and trusted AI risk practices.",
+  "summary": "Build, trace, evaluate, and govern production LLM applications with LangChain, LangGraph, Langfuse, and trusted AI risk practices.",
   "kind": "skill",
   "category": "AI Engineering",
   "audience": "Engineers moving from LLM prototypes toward production-ready AI applications, from beginner foundations through principal review standards.",
@@ -10,7 +10,7 @@
     {
       "slug": "llm-application-foundations",
       "title": "LLM Application Foundations",
-      "summary": "Map the moving pieces of an LLM application: prompts, retrieval, tools, traces, evaluations, cost, and safety.",
+      "summary": "Map the parts of an LLM application: prompts, retrieval, tools, traces, evaluations, cost, and safety.",
       "nodes": [
         { "kind": "document", "slug": "ai-engineering/llm-application-map" },
         { "kind": "diagram", "slug": "ai-engineering/llm-observability-loop" },

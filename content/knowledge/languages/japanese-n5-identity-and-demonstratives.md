@@ -11,7 +11,7 @@ diagramRefs: []
 status: published
 ---
 
-## What You Will Do
+## Practice Goals
 
 Read, recognize, type, and use beginner Japanese for **Identity And Demonstratives**. This is original N5-aligned preparation, not an official JLPT word list or score guarantee. Writing tasks support learning; the official JLPT N5 exam itself measures language knowledge, reading, and listening.
 
@@ -140,7 +140,7 @@ Point to a thing near the speaker, listener, or neither person.
 1. Read each word aloud without romaji.
 2. Complete the mixed recognition quiz.
 3. Use the open-answer activity to convert romaji or Pencil handwriting into Japanese.
-4. Return later through Japanese review for cumulative flashcards.
+4. Return to Japanese review later for cumulative flashcards.
 
 ## Trusted Follow-up
 

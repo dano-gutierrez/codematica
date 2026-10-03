@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+import { render, screen, within } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
 import { getContentIndex } from "@codematica/core";
 import { JapaneseLanguageBrowser } from "./JapaneseLanguageBrowser";
@@ -20,17 +20,26 @@ describe("JapaneseLanguageBrowser", () => {
   it("separates the complete basic katakana set from sound extras", () => {
     render(<JapaneseLanguageBrowser index={getContentIndex()} />);
 
-    expect(screen.getByRole("heading", { name: "Basic katakana" })).toBeVisible();
-    expect(screen.getByRole("heading", { name: "Katakana sound extras" })).toBeVisible();
-    expect(screen.getByRole("link", { name: "ンn" })).toBeVisible();
-    expect(screen.getByRole("link", { name: "ーlong vowel" })).toBeVisible();
+    const basicHeading = screen.getByRole("heading", { name: "Basic katakana" });
+    const extrasHeading = screen.getByRole("heading", { name: "Katakana sound extras" });
+    expect(basicHeading).toBeVisible();
+    expect(extrasHeading).toBeVisible();
+    const basic = within(basicHeading.parentElement!);
+    const extras = within(extrasHeading.parentElement!);
+    expect(basic.getAllByRole("link")).toHaveLength(46);
+    expect(basic.getByRole("link", { name: "ンn" })).toBeVisible();
+    expect(basic.queryByRole("link", { name: "ーlong vowel" })).not.toBeInTheDocument();
+    expect(extras.getByRole("link", { name: "ーlong vowel" })).toBeVisible();
+    expect(extras.queryByRole("link", { name: "ンn" })).not.toBeInTheDocument();
   });
 
   it("shows trusted resources with access and reuse metadata", () => {
     render(<JapaneseLanguageBrowser index={getContentIndex()} />);
 
-    expect(screen.getByTestId("japanese-resource-shelf")).toBeVisible();
-    expect(screen.getByRole("link", { name: /Irodori/ })).toHaveAttribute("href", "https://www.irodori.jpf.go.jp/en/");
-    expect(screen.getAllByText("Link only").length).toBeGreaterThan(0);
+    const resources = screen.getByTestId("japanese-resource-shelf");
+    expect(resources).toBeVisible();
+    const irodori = within(resources).getByRole("link", { name: /Irodori/ });
+    expect(irodori).toHaveAttribute("href", "https://www.irodori.jpf.go.jp/en/");
+    expect(irodori).toHaveTextContent("Link only");
   });
 });

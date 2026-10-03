@@ -7,7 +7,8 @@
   "types": "./src/index.ts",
   "exports": {
     ".": "./src/index.ts",
-    "./game": "./src/game/screens.tsx"
+    "./game": "./src/game/screens.tsx",
+    "./notebook-session": "./src/notebook-session.ts"
   },
   "scripts": {
     "typecheck": "tsc --noEmit -p tsconfig.json"

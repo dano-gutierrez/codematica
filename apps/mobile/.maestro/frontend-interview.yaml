@@ -1,0 +1,63 @@
+appId: com.codematica.app
+tags:
+  - regression
+---
+- launchApp:
+    clearState: true
+- openLink: "codematica://interviews/frontend-practice/dynamic-board?path=frontend-interview-practice"
+- scrollUntilVisible:
+    element:
+      id: mobile-web-next-step
+    direction: DOWN
+- tapOn:
+    id: mobile-web-next-step
+- assertVisible: "Step 2 of 4"
+- tapOn:
+    id: mobile-web-show-solution
+- scrollUntilVisible:
+    element:
+      text: Python
+    direction: DOWN
+- tapOn: Python
+- scrollUntilVisible:
+    element:
+      id: mobile-code-block
+    direction: DOWN
+- assertVisible:
+    id: mobile-code-block
+- takeScreenshot: frontend-python-dark-code
+- scrollUntilVisible:
+    element:
+      id: mobile-interview-next-node
+    direction: DOWN
+- tapOn:
+    id: mobile-interview-next-node
+- assertVisible:
+    id: mobile-questionnaire-session
+- openLink: "codematica://practice/frontend/interview-user-matrix-questionnaire?path=frontend-interview-practice"
+# Completion is allowed after reviewing incorrect answers as well. Core tests grade every option.
+- repeat:
+    times: 8
+    commands:
+      - scrollUntilVisible:
+          element:
+            id: mobile-questionnaire-check
+          direction: DOWN
+      - tapOn:
+          id: mobile-questionnaire-check
+      - scrollUntilVisible:
+          element:
+            id: "mobile-questionnaire-(next|finish)"
+          direction: DOWN
+      - tapOn:
+          id: "mobile-questionnaire-(next|finish)"
+- tapOn: Start review feed
+- assertVisible:
+    id: mobile-passive-flashcard-feed
+- repeat:
+    times: 14
+    commands:
+      - swipe:
+          direction: UP
+- assertVisible:
+    id: mobile-passive-flashcard-list

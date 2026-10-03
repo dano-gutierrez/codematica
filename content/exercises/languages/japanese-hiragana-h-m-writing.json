@@ -1,1 +1,32 @@
-{"slug":"languages/japanese-hiragana-h-m-writing","title":"Hiragana H And M Rows","type":"writing","documentSlug":"languages/japanese-romaji-kana-input","concept":"Hiragana h and m rows","difficulty":"foundation","tags":["japanese","hiragana","handwriting"],"status":"published","prompt":"Write the h and m rows in standard gojuon order.","characterSlugs":["japanese/hiragana/ha","japanese/hiragana/hi","japanese/hiragana/fu","japanese/hiragana/he","japanese/hiragana/ho","japanese/hiragana/ma","japanese/hiragana/mi","japanese/hiragana/mu","japanese/hiragana/me","japanese/hiragana/mo"],"modes":["assisted","free"],"explanation":"Practice ha and he as characters before comparing their special particle pronunciations wa and e."}
+{
+  "slug": "languages/japanese-hiragana-h-m-writing",
+  "title": "Hiragana H And M Rows",
+  "type": "writing",
+  "documentSlug": "languages/japanese-romaji-kana-input",
+  "concept": "Hiragana h and m rows",
+  "difficulty": "foundation",
+  "tags": [
+    "japanese",
+    "hiragana",
+    "handwriting"
+  ],
+  "status": "published",
+  "prompt": "Fill the notebook with 24 repetitions of each prompt. Write anywhere on the paper; recognizable shapes are enough.",
+  "characterSlugs": [
+    "japanese/hiragana/ha",
+    "japanese/hiragana/hi",
+    "japanese/hiragana/fu",
+    "japanese/hiragana/he",
+    "japanese/hiragana/ho",
+    "japanese/hiragana/ma",
+    "japanese/hiragana/mi",
+    "japanese/hiragana/mu",
+    "japanese/hiragana/me",
+    "japanese/hiragana/mo"
+  ],
+  "modes": [
+    "assisted",
+    "free"
+  ],
+  "explanation": "Use the examples and stroke guides to learn the character, then copy and recall it. Stroke order is optional guidance; your handwriting does not need to be exact."
+}

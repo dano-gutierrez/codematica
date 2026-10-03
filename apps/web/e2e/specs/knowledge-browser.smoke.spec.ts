@@ -24,8 +24,8 @@ test("@smoke mobile user can follow a path, practice, search, and open a diagram
   await expect(page.getByTestId("practice-page")).toBeVisible();
   await page.getByRole("button", { name: /Reveal answer/i }).click();
   await expect(page.getByText(/It defines how stale the user experience may become/)).toBeVisible();
-  await expect(page.getByRole("link", { name: /Next node/i })).toHaveCSS("color", "rgb(255, 255, 255)");
-  await page.getByRole("link", { name: /Next node/i }).click();
+  await expect(page.getByRole("link", { name: /Next activity/i })).toHaveCSS("color", "rgb(255, 255, 255)");
+  await page.getByRole("link", { name: /Next activity/i }).click();
   await expect(page.getByRole("heading", { name: "Versioned Keys Cloze" })).toBeVisible();
   await page.getByLabel("Answer").fill("versioned keys");
   await page.getByRole("button", { name: /Check answer/i }).click();

@@ -32,7 +32,8 @@
       ],
       "constraints": [
         "Use at most one deletion.",
-        "Treat the input as case-sensitive plain characters."
+        "Treat the input as case-sensitive plain characters.",
+        "Use ASCII input for identical indexing behavior across these language examples."
       ],
       "diagrams": [],
       "solutionTracks": [
@@ -95,7 +96,7 @@
           "explanation": "The recursive state describes exactly what remains to prove. Because the budget can branch only once, the solution still checks at most two linear substrings.",
           "complexity": {
             "time": "O(n)",
-            "space": "O(n) recursion stack"
+            "space": "O(1): at most two active calls with a one-deletion budget"
           },
           "languages": {
             "python": {
@@ -141,7 +142,7 @@
         }
       ],
       "constraints": [
-        "Preserve top-to-bottom order within a column for the BFS variant."
+        "Both approaches order columns left to right and nodes top to bottom. The BFS variant breaks equal-position ties left to right; the coordinate-sorting variant breaks those ties by value. Clarify which variant the interviewer wants."
       ],
       "diagrams": [
         {
@@ -170,7 +171,7 @@
           ],
           "explanation": "Column indexes group nodes that should appear together. BFS gives the expected top-to-bottom order inside each column without sorting every node by depth.",
           "complexity": {
-            "time": "O(n log c)",
+            "time": "O(n + c log c), c occupied columns",
             "space": "O(n)"
           },
           "languages": {
@@ -180,7 +181,7 @@
             },
             "typescript": {
               "label": "TypeScript",
-              "code": "type TreeNode = { val: number; left?: TreeNode | null; right?: TreeNode | null };\nexport function verticalOrder(root: TreeNode | null): number[][] {\n  if (!root) return [];\n  const cols = new Map<number, number[]>();\n  const queue: Array<[TreeNode, number]> = [[root, 0]];\n  for (let i = 0; i < queue.length; i += 1) {\n    const [node, col] = queue[i];\n    cols.set(col, [...(cols.get(col) ?? []), node.val]);\n    if (node.left) queue.push([node.left, col - 1]);\n    if (node.right) queue.push([node.right, col + 1]);\n  }\n  return [...cols.keys()].sort((a, b) => a - b).map((col) => cols.get(col)!);\n}"
+              "code": "type TreeNode = { val: number; left?: TreeNode | null; right?: TreeNode | null };\nexport function verticalOrder(root: TreeNode | null): number[][] {\n  if (!root) return [];\n  const cols = new Map<number, number[]>();\n  const queue: Array<[TreeNode, number]> = [[root, 0]];\n  for (let i = 0; i < queue.length; i += 1) {\n    const [node, col] = queue[i];\n    if (!cols.has(col)) cols.set(col, []);\n    cols.get(col)!.push(node.val);\n    if (node.left) queue.push([node.left, col - 1]);\n    if (node.right) queue.push([node.right, col + 1]);\n  }\n  return [...cols.keys()].sort((a, b) => a - b).map((col) => cols.get(col)!);\n}"
             },
             "java": {
               "label": "Java",
@@ -288,7 +289,7 @@
             },
             "typescript": {
               "label": "TypeScript",
-              "code": "export function cleanParentheses(s: string): string {\n  const stack: number[] = [];\n  const remove = new Set<number>();\n  for (let i = 0; i < s.length; i += 1) {\n    if (s[i] === '(') stack.push(i);\n    else if (s[i] === ')') {\n      if (stack.length) stack.pop();\n      else remove.add(i);\n    }\n  }\n  for (const i of stack) remove.add(i);\n  return [...s].filter((_, i) => !remove.has(i)).join('');\n}"
+              "code": "export function cleanParentheses(s: string): string {\n  const stack: number[] = [];\n  const remove = new Set<number>();\n  for (let i = 0; i < s.length; i += 1) {\n    if (s[i] === '(') stack.push(i);\n    else if (s[i] === ')') {\n      if (stack.length) stack.pop();\n      else remove.add(i);\n    }\n  }\n  for (const i of stack) remove.add(i);\n  return s.split('').filter((_, i) => !remove.has(i)).join('');\n}"
             },
             "java": {
               "label": "Java",

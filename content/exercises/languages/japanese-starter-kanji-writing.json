@@ -5,9 +5,13 @@
   "documentSlug": "languages/japanese-starter-kanji",
   "concept": "Starter kanji",
   "difficulty": "foundation",
-  "tags": ["japanese", "kanji", "handwriting"],
+  "tags": [
+    "japanese",
+    "kanji",
+    "handwriting"
+  ],
   "status": "published",
-  "prompt": "Write starter kanji with correct stroke count, order, direction, and shape.",
+  "prompt": "Fill the notebook with 24 repetitions of each prompt. Write anywhere on the paper; recognizable shapes are enough.",
   "characterSlugs": [
     "japanese/kanji/one",
     "japanese/kanji/two",
@@ -34,6 +38,9 @@
     "japanese/kanji/mountain",
     "japanese/kanji/river"
   ],
-  "modes": ["assisted", "free"],
-  "explanation": "Starter kanji practice starts with highly visible numbers, nature words, and beginner nouns."
+  "modes": [
+    "assisted",
+    "free"
+  ],
+  "explanation": "Use the examples and stroke guides to learn the character, then copy and recall it. Stroke order is optional guidance; your handwriting does not need to be exact."
 }

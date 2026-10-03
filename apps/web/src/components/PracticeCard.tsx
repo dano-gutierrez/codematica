@@ -23,7 +23,7 @@ export function PracticeCard({
   onProgressEvent?: PracticeProgressHandler;
 }) {
   return (
-    <section className="rounded-xl border border-[#d5e2e8] bg-white p-5 sm:p-7" data-testid="practice-card">
+    <section className={exercise.type === "writing" ? "py-2" : "rounded-xl border border-[#d5e2e8] bg-white p-5 sm:p-7"} data-testid="practice-card">
       <div className="flex flex-wrap items-center gap-2">
         <span className="inline-flex items-center gap-1 rounded-xl border border-[#d5e2e8] bg-[#f6fbfc] px-2.5 py-1 text-xs font-semibold text-[#5840b8]">
           <Sparkles className="h-3.5 w-3.5" aria-hidden="true" />
@@ -94,7 +94,7 @@ function GuidedLab({
       </div>
 
       <fieldset className="rounded-xl border border-[#f7cf5d] bg-[#fffaf0] p-4">
-        <legend className="px-2 text-sm font-semibold uppercase text-[#7a5200]">Commit your prediction</legend>
+        <legend className="px-2 text-sm font-semibold uppercase text-[#7a5200]">Choose your prediction</legend>
         <p className="text-base font-normal leading-7 text-[#263238]">{exercise.prediction.prompt}</p>
         <div className="mt-3 grid gap-2">
           {exercise.prediction.options.map((option) => (
@@ -284,7 +284,7 @@ function WritingCard({
     const character = getLanguageCharacterBySlug(slug);
     return character ? [character] : [];
   });
-  return <JapaneseWritingPractice characters={characters} prompt={exercise.prompt} modes={exercise.modes} nextHref={nextHref} onProgressEvent={onProgressEvent} />;
+  return <JapaneseWritingPractice characters={characters} exercise={exercise} prompt={exercise.prompt} nextHref={nextHref} onProgressEvent={onProgressEvent} />;
 }
 
 function NextLink({ href }: { href: string }) {
@@ -293,7 +293,7 @@ function NextLink({ href }: { href: string }) {
       href={href}
       className="inline-flex min-h-12 items-center gap-2 rounded-xl border border-[#1d4e9e] bg-[#245fba] px-4 py-2 text-sm font-semibold text-white transition hover:-translate-y-0.5"
     >
-      Next node
+      Next activity
       <ArrowRight className="h-4 w-4" aria-hidden="true" />
     </Link>
   );

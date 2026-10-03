@@ -535,7 +535,7 @@ describe("buildContentIndex", () => {
 
     const index = await buildContentIndex({ rootDir });
 
-    expect(index.schemaVersion).toBe(11);
+    expect(index.schemaVersion).toBe(12);
     expect(index.documents).toHaveLength(1);
     expect(index.diagrams).toHaveLength(1);
     expect(index.exercises).toEqual([
@@ -614,6 +614,22 @@ describe("buildContentIndex", () => {
       }],
     });
     await expect(buildContentIndex({ rootDir: exerciseAttributionRoot })).rejects.toThrow(/exercise node.*needs a primary source/i);
+  });
+
+  it("validates published interview nodes, their sources, and completion feeds", async () => {
+    const rootDir = await makeTempRoot();
+    const units = [{ slug: "interview", title: "Interview unit", summary: "An interview walkthrough in a study path.", nodes: [{ kind: "interview", slug: "amazon/two-sum-product-pair" }] }];
+    await writeLearningPath(rootDir, "interview-path", undefined, { units });
+    await expect(buildContentIndex({ rootDir })).rejects.toThrow(/missing published interview/);
+    await writeInterviewCompany(rootDir, "amazon", { status: "draft" });
+    await expect(buildContentIndex({ rootDir })).rejects.toThrow(/missing published interview/);
+    await writeInterviewCompany(rootDir, "amazon");
+    await expect(buildContentIndex({ rootDir })).resolves.toHaveProperty("schemaVersion", 12);
+    await writeSourceCatalog(rootDir);
+    await writeLearningPath(rootDir, "interview-path", undefined, { units, sourcePolicy: "required", sourceRefs: ["test-primary-source"] });
+    await expect(buildContentIndex({ rootDir })).rejects.toThrow(/interview node.*needs a primary source/);
+    await writeLearningPath(rootDir, "interview-path", undefined, { units, completionDestination: "flashcard-feed" });
+    await expect(buildContentIndex({ rootDir })).rejects.toThrow(/published completion flashcard feed/);
   });
 
   it("rejects path nodes that reference skills outside the career taxonomy", async () => {
@@ -776,6 +792,21 @@ describe("buildContentIndex", () => {
     });
 
     await expect(buildContentIndex({ rootDir })).rejects.toThrow(/references missing language character/);
+  });
+
+  it("validates notebook prompt models and preserves authored short prompts", async () => {
+    const rootDir = await makeTempRoot();
+    await writeKnowledge(rootDir, "languages/japanese-starter-kanji");
+    await writeLanguageCharacters(rootDir);
+    const prompt = { id: "one", text: "一", kind: "characters", romaji: "ichi", meaning: "one" };
+    await writeWritingExercise(rootDir, "languages/notebook", { notebookPrompts: [prompt] });
+    expect((await buildContentIndex({ rootDir })).exercises[0]).toMatchObject({ notebookPrompts: [prompt] });
+    await writeWritingExercise(rootDir, "languages/notebook", { notebookPrompts: [{ ...prompt, text: "あ" }] });
+    await expect(buildContentIndex({ rootDir })).rejects.toThrow(/No writing guide/);
+    await writeWritingExercise(rootDir, "languages/notebook", { notebookPrompts: [prompt, prompt] });
+    await expect(buildContentIndex({ rootDir })).rejects.toThrow(/duplicate notebook prompt/);
+    await writeWritingExercise(rootDir, "languages/notebook", { notebookPrompts: [{ ...prompt, text: "一一一一一一" }] });
+    await expect(buildContentIndex({ rootDir })).rejects.toThrow(/1–5/);
   });
 
   it("fails when a vocabulary breakdown references a missing language character", async () => {
@@ -979,7 +1010,7 @@ describe("buildContentIndex", () => {
 
     const index = await buildContentIndex({ rootDir });
 
-    expect(index.schemaVersion).toBe(11);
+    expect(index.schemaVersion).toBe(12);
     expect(index.interviewCollections).toEqual([
       expect.objectContaining({
         slug: "amazon",

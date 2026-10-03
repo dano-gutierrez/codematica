@@ -19,7 +19,7 @@
 
 ## One-Minute Brief
 
-The module teaches diagrams as maintainable text rather than static pictures. Learners compare source with rendered output, progressing from flowchart declarations and node relationships to sequence, class, state, ER, Gantt, journey, pie, mindmap, timeline, and Git graph diagrams. The module reuses the existing Markdown, Mermaid, questionnaire, code-block, path, and passive-feed components; no feature-specific UI was introduced.
+The module teaches how to write and maintain diagrams as text. Learners compare source with rendered output, progressing from flowchart declarations and node relationships to sequence, class, state, ER, Gantt, journey, pie, mindmap, timeline, and Git graph diagrams. It reuses existing Markdown, Mermaid, questionnaire, code-block, path, and passive-feed components.
 
 ## Outcome / Contract
 
@@ -35,7 +35,7 @@ The module teaches diagrams as maintainable text rather than static pictures. Le
 
 ## Current State
 
-The path, three lessons, 13 browser-rendered diagrams, three eight-question questionnaires, passive feed, generated index entries, integration assertions, mobile E2E rendering coverage, and documentation are shipped. The lessons are aligned with Mermaid's official syntax documentation and are rendered by the repository's installed Mermaid 11 dependency.
+The path, three lessons, 13 browser-rendered diagrams, three eight-question questionnaires, passive feed, generated index entries, integration assertions, mobile E2E rendering coverage, and documentation are shipped. The lessons follow Mermaid's official syntax documentation and render with the repository's installed Mermaid 11 dependency.
 
 ## Scope
 
@@ -84,7 +84,7 @@ The path, three lessons, 13 browser-rendered diagrams, three eight-question ques
 - Diagram selection begins with the question being answered, not the desired visual appearance.
 - Source examples move from the smallest valid declaration to boundaries, alternatives, composite state, cardinality, scheduling, and specialized grammars.
 - Choice validation enforces one correct option at index-build time; integration coverage additionally asserts the authored questionnaires remain choice-only.
-- Explanation text is part of the teaching contract and must cover every wrong answer, not only restate the correct one.
+- Explanations must cover why every wrong answer is incorrect, as well as the correct rule.
 
 ### Failure And Edge Handling
 

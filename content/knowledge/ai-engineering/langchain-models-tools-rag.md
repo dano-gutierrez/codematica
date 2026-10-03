@@ -20,9 +20,9 @@ status: published
 
 ## Builder Lens
 
-LangChain is useful when the model call is only one step in a larger workflow. It gives engineers shared building blocks for chat models, prompt assembly, tools, structured output, retrieval, and agents.
+LangChain provides building blocks for workflows that combine chat models, prompt assembly, tools, structured output, retrieval, and agents.
 
-Do not start with the most complex agent. Start with the smallest deterministic flow that solves the user job. Add tool calling, retrieval, memory, and orchestration only when the product need is real.
+Start with the smallest deterministic flow that solves the user's task. Add tool calling, retrieval, memory, and orchestration only when the product needs them.
 
 ## Model Calls
 
@@ -32,7 +32,7 @@ A model call has three parts:
 - model configuration
 - response handling
 
-The beginner mistake is to focus only on the prompt text. The engineering contract includes timeout behavior, retries, token budgets, output validation, error handling, and trace metadata.
+Model calls need more than prompt text: define timeout behavior, retries, token budgets, output validation, error handling, and trace metadata.
 
 ```python
 from langchain.agents import create_agent
@@ -48,11 +48,11 @@ result = agent.invoke({
 })
 ```
 
-The exact model name and provider can change. The durable idea is that model invocation is application code and should be tested like application code.
+Model names and providers can change. Test model invocation as application code.
 
 ## Tool Contracts
 
-Tools let a model ask the application to do real work. A tool can fetch data, search an index, run a calculation, or create an action request. The application still owns the tool boundary.
+Tools let a model request data, search an index, run a calculation, or create an action request. The application controls the tool boundary.
 
 Good tool contracts are narrow:
 
@@ -87,7 +87,7 @@ The model may choose when to request this tool, but it does not get to bypass th
 
 Structured output asks the model to return data that matches a schema. It is useful for extraction, classification, routing, and downstream automation.
 
-Use structured output when the next step expects fields, not prose. Still validate the result. The model is helping produce the structure; the application owns whether the structure is acceptable.
+Use structured output when the next step expects fields. The application must still validate the model's result.
 
 Example shape:
 
@@ -107,7 +107,7 @@ Review questions:
 
 ## RAG In Plain Terms
 
-Retrieval augmented generation, or RAG, gives the model relevant source material before it answers. The model is not expected to know everything from training. The application retrieves trusted context and asks the model to answer from that context.
+Retrieval augmented generation (RAG) gives the model relevant source material before it answers. The application retrieves trusted context so the model can use it instead of relying entirely on training.
 
 Basic RAG flow:
 
@@ -123,7 +123,7 @@ Basic RAG flow:
 
 An internal HR assistant answers policy questions. LangChain can organize the retrieval and model call. Langfuse can record the trace.
 
-The important product rule is simple: the assistant should say "I do not have enough policy context" when retrieval fails. A polished hallucination is worse than a boring fallback because employees may act on the answer.
+When retrieval fails, the assistant should say "I do not have enough policy context". Employees may act on its answer, so a fallback is safer than an unsupported claim.
 
 ## Coding Challenge: Safe Tool Router
 
@@ -154,7 +154,7 @@ Acceptance checks:
 
 ## Senior Review Bar
 
-Senior LangChain code makes control flow visible. It does not hide product decisions inside a giant prompt. It has small tools, validated outputs, fallbacks, trace metadata, and tests for low-confidence and missing-context cases.
+Make control flow and product decisions visible in code. Use small tools, validated outputs, fallbacks, trace metadata, and tests for low-confidence and missing-context cases.
 
 ## Reference Anchors
 

@@ -13,4 +13,14 @@ tags:
     id: mobile-question-mondrian-composition-generator
 - assertVisible:
     id: mobile-web-interview-evaluation
+- scrollUntilVisible:
+    element:
+      id: mobile-web-show-solution
+    direction: DOWN
+- tapOn:
+    id: mobile-web-show-solution
+- scrollUntilVisible:
+    element:
+      id: mobile-web-playground-note
+    direction: DOWN
 - assertVisible: "Interactive runner available on web"

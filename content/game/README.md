@@ -1,6 +1,6 @@
 # Game campaign content
 
-`restore-the-signal.json` is the canonical twelve-level campaign, with three scenarios per level. Run `npm run content:index` after editing. The schema-v11 generated index is an output, not an authoring surface.
+`restore-the-signal.json` is the canonical twelve-level campaign, with three scenarios per level. Run `npm run content:index` after editing. The schema-v12 generated index is an output, not an authoring surface.
 
 Each scenario must include an objective, three progressive hints, a concrete explanation, a stable seed, authored fixtures/constraints, and a known solution for regression verification. Main scenario IDs are `main`; replay IDs are `mastery-1` and `mastery-2`. Level order is consecutive. Lesson/path, district, landmark, graph, and data references must resolve.
 

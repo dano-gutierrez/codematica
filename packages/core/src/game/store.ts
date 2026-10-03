@@ -23,6 +23,7 @@ export class GameStore {
   private account: string | null = null;
   private generation = 0;
   private loadRevision = 0;
+  private claimQueue: Promise<void> = Promise.resolve();
   private incompatible = new Map<string, string>();
   persistenceError: string | null = null;
   constructor(
@@ -82,6 +83,8 @@ export class GameStore {
       if (this.remote.account && (await this.remote.account()) !== account)
         return;
       const data = await this.remote.load(account ?? undefined);
+      if (this.remote.account && (await this.remote.account()) !== account)
+        return;
       if (generation !== this.generation) return;
       if (data)
         this.emit(
@@ -92,6 +95,7 @@ export class GameStore {
         );
       if (this.remote.account && (await this.remote.account()) !== account)
         return;
+      if (generation !== this.generation) return;
       const response = await this.remote.save(this.value, account ?? undefined);
       if (generation !== this.generation) return;
       if (response)
@@ -118,22 +122,32 @@ export class GameStore {
       }
       const generation = this.generation;
       const local = await this.read(this.scopedKey(account));
-      if (generation !== this.generation) return;
+      if (generation !== this.generation || revision !== this.loadRevision) return;
       if (local) this.emit(mergeGameProgress(this.value, local));
       if (account) {
-        const claimant = await this.storage.getItem(`${this.key}:claimed`);
-        if (!claimant || claimant === account) {
-          const anonymous = await this.read(this.key);
-          if (anonymous) {
-            await this.storage.setItem(`${this.key}:claimed`, account);
-            if (generation !== this.generation) return;
-            this.emit(mergeGameProgress(this.value, anonymous));
-            await this.write(this.scopedKey(account), this.value);
+        // Only one account may claim the anonymous buffer, including while storage is awaiting I/O.
+        this.claimQueue = this.claimQueue.catch(() => {}).then(async () => {
+          const current = () => generation === this.generation && revision === this.loadRevision;
+          if (!current()) return;
+          const claimant = await this.storage.getItem(`${this.key}:claimed`);
+          if (!current()) return;
+          if (!claimant || claimant === account) {
+            const anonymous = await this.read(this.key);
+            if (!current()) return;
+            if (anonymous) {
+              await this.storage.setItem(`${this.key}:claimed`, account);
+              if (!current()) return;
+              this.emit(mergeGameProgress(this.value, anonymous));
+              await this.write(this.scopedKey(account), this.value);
+            }
           }
-        }
+        });
+        await this.claimQueue;
       }
+      if (revision !== this.loadRevision) return;
       this.status(null);
     } catch {
+      if (revision !== this.loadRevision) return;
       this.status(
         "Progress is held in memory because local storage is unavailable.",
       );

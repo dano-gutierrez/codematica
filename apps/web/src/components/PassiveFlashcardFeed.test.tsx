@@ -40,6 +40,7 @@ const feed: PassiveFlashcardFeedType = {
       difficulty: "senior",
       tags: ["typing", "validation"],
       sourceDocSlug: "programming/python-types-and-contracts",
+      codeLanguage: "python",
       code: "def load_user(user_id: int) -> User:\n    ...",
     },
     {
@@ -67,6 +68,8 @@ describe("PassiveFlashcardFeed", () => {
 
     await waitFor(() => expect(screen.getByTestId("passive-flashcard-feed")).toHaveAttribute("data-ready", "true"));
 
+    expect(screen.getAllByRole("link", { name: "Review the lesson" })[0]).toHaveAttribute("href", "/docs/programming/python-runtime-model?path=python-for-ts-js-engineers");
+    expect(screen.getByText("Python")).toBeVisible();
     expect(screen.getByText("Names Bind Objects")).toBeVisible();
     expect(screen.getByText("Annotations Are Metadata")).toBeVisible();
     expect(screen.getByText("load_user").closest("code")).toHaveTextContent("def load_user(user_id: int) -> User:");

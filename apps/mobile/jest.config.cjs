@@ -12,6 +12,11 @@ module.exports = {
     "apps/mobile/src/lib/**/*.{ts,tsx}",
     "packages/ui/src/screens.tsx",
     "packages/ui/src/game/**/*.tsx",
+
+    "packages/ui/src/LinkedInAdminScreen.tsx",
+    "packages/ui/src/JapaneseNotebookPractice.tsx",
+    "packages/ui/src/JapaneseNotebookCatalogScreen.tsx",
+    "packages/ui/src/notebook-session.ts",
     "!apps/mobile/src/generated/**",
   ],
   forceCoverageMatch: ["<rootDir>/packages/ui/src/screens.tsx"],

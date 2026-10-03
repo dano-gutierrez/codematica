@@ -284,7 +284,8 @@ export function NativeGamePlay({
   store,
   navigate,
   workerSource,
-}: Props & { level: GameLevel; workerSource: string }) {
+  active = true,
+}: Props & { level: GameLevel; workerSource: string; active?: boolean }) {
   const [session] = useState(() => getGameSession(campaign.id, level)),
     [loaded, setLoaded] = useState(false),
     [from, setFrom] = useState(""),
@@ -292,6 +293,12 @@ export function NativeGamePlay({
       null,
     ),
     [busy, setBusy] = useState(false);
+  const runnerNonce = useRef<string | null>(null);
+  const cancelRunner = useCallback(() => {
+    runnerNonce.current = null;
+    setBusy(false);
+    setOutput(null);
+  }, []);
   const storageStatus = useSyncExternalStore(
     store.subscribe,
     store.getStatus,
@@ -308,6 +315,7 @@ export function NativeGamePlay({
       session.getSnapshot,
     );
   useEffect(() => {
+    if (!active) return;
     void store.load().finally(() => setLoaded(true));
     const timer = setInterval(() => session.tick(), 1000);
     const sub = AppState.addEventListener("change", (state) => {
@@ -316,11 +324,12 @@ export function NativeGamePlay({
     return () => {
       clearInterval(timer);
       sub.remove();
+      cancelRunner();
       session.pause();
     };
-  }, [store, session]);
+  }, [store, session, active, cancelRunner]);
   useEffect(() => {
-    if (!loaded || s.attempt.phase !== "won") return;
+    if (!active || !loaded || s.attempt.phase !== "won") return;
     const award = session.takeAward();
     if (award)
       void store.save(
@@ -333,12 +342,11 @@ export function NativeGamePlay({
           award.at,
         ),
       );
-  }, [loaded, s.attempt.phase, session, store, campaign, level.id]);
+  }, [active, loaded, s.attempt.phase, session, store, campaign, level.id]);
   useEffect(() => {
-    if (!busy) return;
+    if (!active || !busy) return;
     const timeout = setTimeout(() => {
-      setBusy(false);
-      setOutput(null);
+      cancelRunner();
       session.submit({
         passed: false,
         reasons: ["The local runner timed out. Retry your solution."],
@@ -346,14 +354,15 @@ export function NativeGamePlay({
       });
     }, 10000);
     return () => clearTimeout(timeout);
-  }, [busy, session]);
+  }, [active, busy, session, cancelRunner]);
   const [sceneVisible, setSceneVisible] = useState(true);
-  const editable = session.editable && !busy,
+  const editable = active && session.editable && !busy,
     sc = s.scenario;
   const run = () => {
     if (!editable) return;
     if (sc.kind === "grid" || sc.kind === "sql") {
       const nonce = `${Date.now()}-${Math.random()}`;
+      runnerNonce.current = nonce;
       setBusy(true);
       setOutput({
         nonce,
@@ -362,8 +371,7 @@ export function NativeGamePlay({
     } else session.run();
   };
   const reset = () => {
-    setBusy(false);
-    setOutput(null);
+    cancelRunner();
     setFrom("");
     session.reset();
   };
@@ -419,8 +427,7 @@ export function NativeGamePlay({
                 i > 0 && !p.awards[awardKey(campaign.id, level.id, "main")]
               }
               onPress={() => {
-                setOutput(null);
-                setBusy(false);
+                cancelRunner();
                 setFrom("");
                 session.choose(variant.id);
               }}
@@ -428,7 +435,7 @@ export function NativeGamePlay({
           ))}
         </View>
         <NativeGameScene
-          visible={sceneVisible}
+          visible={active && sceneVisible}
           cosmetic={p.cosmetic}
           state={
             s.attempt.phase === "won"
@@ -459,7 +466,7 @@ export function NativeGamePlay({
               value={s.code}
               editable={editable}
               onChangeText={(text) => {
-                setOutput(null);
+                cancelRunner();
                 session.edit(text);
               }}
             />
@@ -618,19 +625,23 @@ export function NativeGamePlay({
               try {
                 const message = JSON.parse(event.nativeEvent.data);
                 if (
+                  !runnerNonce.current ||
+                  output?.nonce !== runnerNonce.current ||
                   message.channel !== "codematica-game" ||
-                  message.nonce !== output?.nonce ||
+                  message.nonce !== runnerNonce.current ||
                   typeof message.result?.passed !== "boolean"
                 )
                   return;
+                runnerNonce.current = null;
                 setBusy(false);
                 session.submit(message.result as EvaluationResult);
               } catch {
-                setBusy(false);
+                // Ignore malformed messages; the bounded runner can still reply.
               }
             }}
             onError={() => {
-              setBusy(false);
+              if (!runnerNonce.current || output?.nonce !== runnerNonce.current) return;
+              cancelRunner();
               session.submit({
                 passed: false,
                 reasons: ["The local runner failed. Please retry."],

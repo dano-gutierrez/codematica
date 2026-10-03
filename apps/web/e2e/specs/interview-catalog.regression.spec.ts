@@ -8,7 +8,7 @@ test("@regression opens the interview catalog and completes a guided coding walk
     await expect(page.getByTestId("interview-company-logo-amazon").first()).toBeVisible();
     await page.getByTestId("interview-random-button").click();
     await expect(page.getByTestId("interview-question-page")).toBeVisible();
-    await expect(page.getByTestId("interview-question-session")).toBeVisible();
+    await expect(page.getByTestId(/^(interview-question-session|web-interview-session)$/)).toBeVisible();
   });
 
   await test.step("open a known company question", async () => {
@@ -55,17 +55,19 @@ test("@regression explores the anonymous Mondrian interview and runs all web sol
   await test.step("run and compare all three solutions", async () => {
     const preview = () => page.frameLocator('iframe[title="Sandpack Preview"]');
     await expect(page.getByTestId("web-solution-detail")).toContainText("Weighted CSS Grid");
+    await page.getByRole("button", { name: "Show full solution" }).click();
     await expect(page.getByTestId("web-playground")).toBeVisible({ timeout: 30_000 });
-    await page.getByTestId("web-playground-run").click({ force: true });
     await expect(preview().getByRole("img", { name: /generated composition/i })).toBeVisible({ timeout: 30_000 });
 
-    await page.getByTestId("web-solution-tab-recursive-rectangular-subdivision").click({ force: true });
+    await page.getByTestId("web-solution-tab-recursive-rectangular-subdivision").click();
     await expect(page.getByTestId("web-solution-detail")).toContainText("Recursive Rectangular Subdivision");
+    await page.getByRole("button", { name: "Show full solution" }).click();
     await expect(preview().getByRole("img", { name: /generated tree/i })).toBeVisible({ timeout: 30_000 });
 
-    await page.getByTestId("web-solution-tab-responsive-svg-geometry").click({ force: true });
+    await page.getByTestId("web-solution-tab-responsive-svg-geometry").click();
     await expect(page.getByTestId("web-solution-detail")).toContainText("Responsive SVG Geometry");
+    await page.getByRole("button", { name: "Show full solution" }).click();
     await expect(preview().getByRole("img", { name: /generated SVG composition/i })).toBeVisible({ timeout: 30_000 });
-    await page.getByTestId("web-playground-reset").click({ force: true });
+    await page.getByTestId("web-playground-reset").click();
   });
 });

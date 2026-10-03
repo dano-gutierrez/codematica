@@ -19,13 +19,16 @@ status: published
 
 ## Review Lens
 
-Observability is not the amount of telemetry a service emits. It is the speed and confidence with which an engineer can answer a novel production question without shipping new code.
+Observability is how quickly and confidently an engineer can answer a new production question without shipping code. Telemetry volume alone does not establish it.
 
 In a design review, ask for the debugging path. If a payment submission slows down, which graph moves first? If queue latency grows, can we tell whether producers, consumers, dependencies, or retries are responsible? If a single tenant reports bad data, can we follow one request across boundaries?
 
 ## Signal Roles
 
-Metrics should expose aggregate health and alertable symptoms. Traces should explain request shape, fan-out, latency distribution, and dependency cost. Logs should preserve high-cardinality facts and decisions that are not useful as metrics. Domain events should describe business transitions that operators and analysts can reason about later.
+- Metrics should expose aggregate health and symptoms worth alerting on.
+- Traces should explain request shape, fan-out, latency distribution, and dependency cost.
+- Logs should preserve high-cardinality facts and decisions unsuitable for metrics.
+- Domain events should record business transitions for later operational and analytical review.
 
 Start with user-visible service-level indicators: availability, correctness, latency, durability, and freshness where those are product promises. Set an SLO and alert on error-budget burn over both fast and slow windows. Infrastructure saturation and dependency errors explain symptoms, but they should not replace the symptom-based page.
 
@@ -35,11 +38,11 @@ Use RED—rate, errors, duration—for request-driven services and USE—utiliza
 
 Propagate trace context through HTTP, queues, scheduled jobs, and retries. Keep correlation IDs in logs, but do not put unbounded user IDs, request IDs, URLs, or exception messages into metric labels. High-cardinality dimensions belong in traces or logs with explicit cost and privacy controls.
 
-Head sampling is cheap but can discard rare failures before they are known. Tail sampling can retain errors and slow traces after observing an entire trace, at higher buffering and operational cost. Record the sampling decision and rate so aggregate analysis does not pretend sampled traces are a complete population.
+Head sampling is cheap but can discard rare failures before they are known. Tail sampling can retain errors and slow traces after observing an entire trace, at higher buffering and operational cost. Record the sampling decision and rate so aggregate analysis can account for the incomplete population.
 
 ## What To Avoid
 
-Do not log every object and call that observability. Do not create dashboards that mirror implementation details nobody owns. Do not alert on causes before symptoms unless the cause is highly predictive and actionable.
+Avoid indiscriminate object logging and dashboards of unowned implementation details. Alert on symptoms before causes unless a cause is highly predictive and actionable.
 
 Do not log secrets, session tokens, authorization headers, raw payment data, or unrestricted payloads. Redaction at query time is too late: shape or exclude sensitive telemetry before export, then define access, retention, and deletion rules.
 

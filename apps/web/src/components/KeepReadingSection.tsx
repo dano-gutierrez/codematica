@@ -38,7 +38,7 @@ export function KeepReadingSection({ initialItems, isSignedIn }: KeepReadingSect
             <BookOpenCheck className="h-5 w-5 text-[#007c78]" aria-hidden="true" />
             Keep reading
           </h2>
-          <p className="mt-1 text-sm font-semibold text-[#53616c]">{items.length === 0 ? "Your recent learning will appear here." : isSignedIn ? "Synced from your latest activity." : "Saved on this device until you sign in."}</p>
+          <p className="mt-1 text-sm font-semibold text-[#53616c]">{items.length === 0 ? "Your recent learning will appear here." : isSignedIn ? "Your latest synced activity." : "Saved on this device until you sign in."}</p>
         </div>
         {!isSignedIn ? (
           <Link href="/login" className="hidden rounded-xl border border-[#d5e2e8] bg-[#f6fbfc] px-3 py-2 text-sm font-semibold text-[#245fba] sm:inline-flex">

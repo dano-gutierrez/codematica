@@ -22,7 +22,7 @@ status: published
 
 PostgreSQL uses multiversion concurrency control (MVCC). An `UPDATE` does not normally overwrite a row in place. It creates a new row version in the table heap and leaves the old version available for transactions whose snapshots can still see it.
 
-That behavior gives PostgreSQL strong concurrency, but a normal update can create work in several places:
+MVCC supports concurrency, but a normal update can require:
 
 - write the new heap tuple
 - mark the old tuple as superseded
@@ -30,7 +30,7 @@ That behavior gives PostgreSQL strong concurrency, but a normal update can creat
 - write corresponding WAL records
 - leave heap and index versions that later maintenance must reclaim
 
-Heap-Only Tuple, or HOT, updates are PostgreSQL's optimization for avoiding part of that cost. A HOT update still creates a new heap tuple. The important difference is that PostgreSQL can avoid creating replacement entries in the table's regular indexes.
+Heap-Only Tuple (HOT) updates reduce that cost. They still create a new heap tuple but can avoid replacement entries in the table's regular indexes.
 
 HOT is not a SQL command or planner hint. It is an internal decision PostgreSQL makes for each updated row.
 
@@ -41,7 +41,7 @@ An update can be HOT when both conditions are true:
 1. The update does not modify a column referenced by any non-summarizing index on the table.
 2. The heap page containing the old row has enough free space for the new row version.
 
-Meeting these rules makes an update eligible; it does not make every update to that table permanently HOT. Page space, row size, and the indexes present when the statement runs decide the outcome for each row.
+Eligibility applies per row, not permanently to the table. Page space, row size, and indexes present when the statement runs determine the outcome.
 
 Consider this table:
 
@@ -97,7 +97,7 @@ Long-running transactions can delay pruning because older versions may still be 
 
 ## How Index Design Changes HOT Eligibility
 
-The relevant question is not merely "does this table have indexes?" It is "does this update modify a column referenced by any of them?"
+Check whether the update modifies a column referenced by an index.
 
 | Index shape | Effect when a referenced column is updated |
 | --- | --- |
@@ -109,7 +109,7 @@ The relevant question is not merely "does this table have indexes?" It is "does 
 | Partial index | Updating a column used by the indexed keys or predicate prevents HOT because membership may change. |
 | BRIN summarizing index on PostgreSQL 16+ | Does not by itself disqualify HOT, although the BRIN summary may still need maintenance. |
 
-Index access methods do not make updates faster merely by existing. For HOT, most index types share the same rule: if the update touches data the index depends on, PostgreSQL must assume the index representation could change.
+Most index types share the same HOT rule: if an update touches data the index depends on, PostgreSQL must assume its representation could change.
 
 ### Expression, Partial, And Included Columns
 
@@ -136,7 +136,7 @@ All three updates lose HOT eligibility. `INCLUDE` is especially important: a pay
 
 ### One Extra Index Can Change A Hot Write Path
 
-The original `last_seen_at` update was HOT-eligible. Adding this seemingly useful index changes that:
+Adding this index removes HOT eligibility from the earlier `last_seen_at` update:
 
 ```sql
 create index accounts_last_seen_idx
@@ -149,7 +149,7 @@ where id = 42;
 
 The second statement now modifies an indexed column and cannot be HOT. Before indexing a frequently changing column, compare the read benefit with the update rate, index maintenance, WAL volume, vacuum work, and additional index storage.
 
-Redundant and speculative indexes expand the set of updates that must maintain index entries. Removing an index solely to chase a HOT ratio is also a mistake if important reads depend on it. Optimize the whole workload.
+Redundant or speculative indexes force more updates to maintain index entries. Still, retain indexes needed by important reads; optimize the whole workload, not just the HOT ratio.
 
 ## The BRIN Version Boundary
 
@@ -176,14 +176,14 @@ alter table accounts set (fillfactor = 80);
 
 A fillfactor of 80 asks PostgreSQL to leave roughly 20 percent of each newly populated heap page available for future row versions. This can improve the HOT rate for update-heavy tables.
 
-The tradeoff is real:
+Lower fillfactor has costs:
 
 - the table uses more pages for the same live rows
 - sequential scans may read more pages
 - fewer rows fit in shared buffers
 - indexes may point across a larger heap footprint
 
-Changing the setting does not immediately repack existing pages or create free space throughout the current table. It influences future page population and future rewrites. Operations that physically rewrite a table have meaningful locking, disk-space, and operational costs, so do not schedule one only to apply a guessed fillfactor.
+Changing the setting affects future page population and rewrites; it does not repack existing pages or immediately free space. Table rewrites have locking, disk-space, and operational costs. Do not schedule one solely to apply a guessed fillfactor.
 
 Wide rows and updates that make values larger can exhaust the reserved space quickly. TOAST can change the stored row shape, but it does not turn HOT into a guarantee. Measure the actual workload before and after tuning.
 
@@ -266,7 +266,7 @@ When reviewing an update-heavy PostgreSQL table, ask:
 7. Are autovacuum and transaction age healthy even when the HOT rate is high?
 8. Does the deployed PostgreSQL version include the PostgreSQL 16 BRIN exception?
 
-HOT is best treated as one signal in a workload review. Design indexes for real reads, preserve page space for real update patterns, and verify the result with production-shaped measurements.
+Treat HOT as one workload signal. Design indexes for actual reads, reserve page space for update patterns, and measure with representative production workloads.
 
 ## Reference Anchors
 

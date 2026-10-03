@@ -1,0 +1,214 @@
+{
+  "slug": "frontend/interview-dynamic-board-questionnaire",
+  "title": "Dynamic Rectangular Board Checkpoint",
+  "type": "questionnaire",
+  "documentSlug": "frontend/interview-dynamic-board",
+  "concept": "Dynamic Rectangular Board",
+  "difficulty": "practitioner",
+  "tags": [
+    "frontend",
+    "interview",
+    "react",
+    "typescript",
+    "python",
+    "dynamic-board"
+  ],
+  "status": "published",
+  "sourceRefs": [
+    "frontend-react-arrays",
+    "frontend-react-hooks"
+  ],
+  "questions": [
+    {
+      "id": "dynamic-board-check-1",
+      "kind": "choice",
+      "prompt": "Which small input best exposes an accidental square-board assumption?",
+      "options": [
+        {
+          "id": "answer",
+          "label": "2 rows and 3 columns.",
+          "isCorrect": true
+        },
+        {
+          "id": "misconception-one",
+          "label": "3 rows and 3 columns.",
+          "isCorrect": false
+        },
+        {
+          "id": "misconception-two",
+          "label": "1 row and 1 column.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "A non-square board requires independent bounds. Square and single-cell cases can pass even when the column loop incorrectly uses the row count."
+    },
+    {
+      "id": "dynamic-board-check-2",
+      "kind": "choice",
+      "prompt": "With 3 columns, what are the coordinates of flat index 5?",
+      "options": [
+        {
+          "id": "answer",
+          "label": "Row 1, column 2.",
+          "isCorrect": true
+        },
+        {
+          "id": "misconception-one",
+          "label": "Row 2, column 1.",
+          "isCorrect": false
+        },
+        {
+          "id": "misconception-two",
+          "label": "Row 1, column 1.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "Integer division 5 // 3 gives row 1 and remainder 5 % 3 gives column 2. Dividing by the row count swaps the contract and fails rectangular inputs."
+    },
+    {
+      "id": "dynamic-board-check-3",
+      "kind": "choice",
+      "prompt": "Python: rows = [[0] * 3] * 2; rows[0][0] = 9. What happens?",
+      "options": [
+        {
+          "id": "answer",
+          "label": "Both rows begin with 9.",
+          "isCorrect": true
+        },
+        {
+          "id": "misconception-one",
+          "label": "Only the first row changes.",
+          "isCorrect": false
+        },
+        {
+          "id": "misconception-two",
+          "label": "Python rejects the assignment.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "List multiplication repeats references to the same inner list. Allocate each inner list in a comprehension to preserve row independence; nested assignment itself is legal."
+    },
+    {
+      "id": "dynamic-board-check-4",
+      "kind": "choice",
+      "prompt": "What is the correct statement about useRef?",
+      "options": [
+        {
+          "id": "answer",
+          "label": "Changing ref.current does not itself schedule a render.",
+          "isCorrect": true
+        },
+        {
+          "id": "misconception-one",
+          "label": "Changing ref.current always rerenders its component.",
+          "isCorrect": false
+        },
+        {
+          "id": "misconception-two",
+          "label": "A ref is a memoized function.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "A ref holds a mutable value across renders without triggering one when changed. Visible board dimensions belong in state. useCallback caches a function definition."
+    },
+    {
+      "id": "dynamic-board-check-5",
+      "kind": "choice",
+      "prompt": "Which description distinguishes useMemo from useCallback?",
+      "options": [
+        {
+          "id": "answer",
+          "label": "useMemo caches a calculation result; useCallback caches a function definition.",
+          "isCorrect": true
+        },
+        {
+          "id": "misconception-one",
+          "label": "Both are required to render arrays.",
+          "isCorrect": false
+        },
+        {
+          "id": "misconception-two",
+          "label": "Both guarantee a component never rerenders.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "Memoization is a performance tool, not a correctness requirement. Neither hook stops all rerenders, and a small coordinate grid can compute directly during rendering."
+    },
+    {
+      "id": "dynamic-board-check-6",
+      "kind": "choice",
+      "prompt": "When would coordinate keys become the wrong identity?",
+      "options": [
+        {
+          "id": "answer",
+          "label": "When cells represent entities that reorder independently of positions.",
+          "isCorrect": true
+        },
+        {
+          "id": "misconception-one",
+          "label": "Whenever the board has more than one row.",
+          "isCorrect": false
+        },
+        {
+          "id": "misconception-two",
+          "label": "Whenever a component rerenders.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "Keys connect sibling identity across renders. Coordinates fit stateless positions, but movable entity records need stable entity IDs so state follows the record."
+    },
+    {
+      "id": "dynamic-board-check-7",
+      "kind": "choice",
+      "prompt": "Does generating rows lazily remove the O(rows × columns) rendered-cell cost?",
+      "options": [
+        {
+          "id": "answer",
+          "label": "No; materializing and rendering every cell still costs that work.",
+          "isCorrect": true
+        },
+        {
+          "id": "misconception-one",
+          "label": "Yes; generators make all rendering constant time.",
+          "isCorrect": false
+        },
+        {
+          "id": "misconception-two",
+          "label": "Yes; keys eliminate the cell traversal.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "A generator can avoid building some intermediates, but this interface ultimately materializes every row and cell. Keys guide identity rather than eliminating traversal."
+    },
+    {
+      "id": "dynamic-board-recipe",
+      "kind": "ordering",
+      "prompt": "Order these baseline implementation steps by dependency. Each step prepares the next.",
+      "items": [
+        {
+          "id": "step-1",
+          "label": "Clarify independent dimensions"
+        },
+        {
+          "id": "step-2",
+          "label": "Create a small rectangular model"
+        },
+        {
+          "id": "step-3",
+          "label": "Render the coordinates"
+        },
+        {
+          "id": "step-4",
+          "label": "Test resizing and explain identity"
+        }
+      ],
+      "correctOrder": [
+        "step-1",
+        "step-2",
+        "step-3",
+        "step-4"
+      ],
+      "explanation": "Define the input and state rules, implement the dependent transformation, then validate the result. Reversing this order risks testing a UI before its rules or input identity are defined. This is one rehearsal sequence; other engineering workflows can work."
+    }
+  ]
+}

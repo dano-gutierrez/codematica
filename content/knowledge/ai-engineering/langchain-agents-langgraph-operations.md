@@ -21,9 +21,9 @@ status: published
 
 ## Agent Lens
 
-An agent is a system where the model can choose steps, often including tool calls. That flexibility is powerful, but it increases operational risk. The application still owns boundaries: available tools, tool schemas, approval gates, memory, retries, budgets, and audit trails.
+An agent lets the model choose steps, often including tool calls. This flexibility increases operational risk. The application controls available tools, tool schemas, approval gates, memory, retries, budgets, and audit trails.
 
-LangChain provides agent building blocks and prebuilt loops. LangGraph focuses on durable execution, streaming, persistence, human-in-the-loop, and lower-level orchestration. Use LangChain when a prebuilt agent shape is enough. Use LangGraph when the workflow needs explicit state, checkpoints, interrupts, or long-running control.
+LangChain provides agent building blocks and prebuilt loops. LangGraph focuses on durable execution, streaming, persistence, human-in-the-loop, and lower-level orchestration. Use LangChain when a prebuilt agent loop is enough. Use LangGraph when the workflow needs explicit state, checkpoints, interrupts, or long-running control.
 
 ## Workflow Or Agent
 
@@ -33,7 +33,7 @@ Use a workflow when the steps are known:
 classify -> retrieve -> draft -> check -> respond
 ```
 
-Use an agent when the system genuinely needs dynamic choice:
+Use an agent when the system needs dynamic choices:
 
 ```text
 model decides whether to search docs, inspect an order, ask a clarifying question, or stop
@@ -43,9 +43,7 @@ The more freedom the model has, the more guardrails the application needs.
 
 ## Tool Safety
 
-Tool safety starts before the model sees the tool.
-
-Review each tool for:
+Before exposing a tool to the model, review its:
 
 - read or write capability
 - data sensitivity
@@ -56,11 +54,11 @@ Review each tool for:
 - human approval requirement
 - trace fields
 
-Do not give an agent one "do anything" tool. Give it narrow tools that match product actions.
+Give agents narrow tools for specific product actions, never one "do anything" tool.
 
 ## LangGraph Operations
 
-LangGraph is useful when agent execution must survive more than one simple request. Common needs include:
+Use LangGraph when execution must span requests or needs:
 
 - checkpointed state
 - short-term thread memory
@@ -70,13 +68,13 @@ LangGraph is useful when agent execution must survive more than one simple reque
 - time travel or replay for debugging
 - explicit graph nodes for complex workflows
 
-Durability changes the review standard. A workflow that can resume later must define which state is safe to persist, which tool calls are idempotent, and which approvals expire.
+Resumable workflows must define safe persisted state, idempotent tool calls, and expiring approvals.
 
 Checkpointing does not make side effects exactly-once. A process can perform an external write and crash before recording the successful checkpoint. Use idempotency keys, durable operation records, and reconciliation for money movement, messages, provisioning, and other external commitments. Resume logic must distinguish "not attempted" from "outcome unknown."
 
 ## Human-In-The-Loop
 
-Human approval is not a weakness. It is the right design when a tool can spend money, send messages, change data, access sensitive records, or create external commitments.
+Use human approval when a tool can spend money, send messages, change data, access sensitive records, or create external commitments.
 
 A good approval step shows:
 

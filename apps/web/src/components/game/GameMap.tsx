@@ -49,9 +49,16 @@ export function GameMap({ campaign }: { campaign: GameCampaign }) {
   }, [store]);
   useEffect(() => {
     if (!loaded) return;
-    const saved = sessionStorage.getItem("game-map-scroll");
-    if (saved !== null) window.scrollTo(0, Number(saved));
-    else active.current?.scrollIntoView({ block: "center" });
+    try {
+      const saved = sessionStorage.getItem("game-map-scroll");
+      if (saved !== null) {
+        window.scrollTo(0, Number(saved));
+        return;
+      }
+    } catch {
+      // Scroll memory is optional when browser storage is unavailable.
+    }
+    active.current?.scrollIntoView({ block: "center" });
   }, [loaded]);
   useEffect(() => {
     const scroll = () => {
@@ -67,8 +74,13 @@ export function GameMap({ campaign }: { campaign: GameCampaign }) {
     window.addEventListener("scroll", scroll, { passive: true });
     return () => window.removeEventListener("scroll", scroll);
   }, []);
-  const leave = () =>
-    sessionStorage.setItem("game-map-scroll", String(window.scrollY));
+  const leave = () => {
+    try {
+      sessionStorage.setItem("game-map-scroll", String(window.scrollY));
+    } catch {
+      // Navigation remains available without scroll persistence.
+    }
+  };
   return (
     <main className="game-home" data-testid="game-map">
       {storageStatus ? <p role="status">{storageStatus}</p> : null}

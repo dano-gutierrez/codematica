@@ -1,0 +1,36 @@
+appId: com.codematica.app
+tags:
+  - regression
+---
+- launchApp
+- openLink: "codematica://docs/programming/bfs-dfs-fundamentals"
+- scrollUntilVisible:
+    element:
+      id: mobile-code-scroll
+      index: 0
+    direction: DOWN
+    visibilityPercentage: 100
+- assertVisible:
+    id: mobile-code-source
+    index: 0
+- takeScreenshot: code-layout-before
+- swipe:
+    from:
+      id: mobile-code-scroll
+      index: 0
+    direction: LEFT
+- assertVisible:
+    id: mobile-navigation-bar
+- takeScreenshot: code-layout-horizontal
+- swipe:
+    from:
+      id: mobile-code-scroll
+      index: 0
+    direction: RIGHT
+- scrollUntilVisible:
+    element:
+      text: "Mark a node visited when it enters the queue.*"
+    direction: DOWN
+- assertVisible:
+    text: "Mark a node visited when it enters the queue.*"
+- takeScreenshot: code-layout-prose

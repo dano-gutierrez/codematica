@@ -19,7 +19,7 @@ status: published
 
 ## Why Trigram Search Exists
 
-Full text search is lexeme search. It is good at matching normalized words. It is not designed to decide that `prvte` is close to `private`.
+Full text search matches normalized words (lexemes). It is not designed to recognize that `prvte` is close to `private`.
 
 `pg_trgm` fills that gap. It breaks strings into trigrams, which are three-character fragments, and compares how many fragments two strings share. Similar strings usually share many trigrams even when a user inserts, deletes, or swaps a character.
 
@@ -33,7 +33,7 @@ The extension must be installed in the database before its functions, operators,
 create extension if not exists pg_trgm;
 ```
 
-In application code, this belongs in migrations or database setup, not inside every search request. Running it inside a hot query path is unnecessary operational noise.
+Install the extension through migrations or database setup, never on each search request.
 
 PostgreSQL documents `pg_trgm` as a trusted extension, which means users with `CREATE` privilege on the database can install it. Hosted providers may still impose their own extension policies.
 
@@ -71,9 +71,9 @@ commit;
 
 The threshold controls candidate admission for `%`. Lower values admit weaker matches. Higher values require stronger trigram overlap.
 
-A low threshold such as `0.11` can be useful for short typo-heavy search terms, but it increases candidate volume. More candidates means more rechecks, more ranking work, and a higher chance that irrelevant strings enter the top results unless another signal pushes them down.
+A low threshold such as `0.11` can be useful for short typo-heavy search terms, but it increases candidate volume. More candidates increase rechecks, ranking work, and irrelevant top results unless another signal pushes them down.
 
-Threshold tuning is product tuning, not only database tuning:
+Tune thresholds for the product and database:
 
 - Short queries need care because they produce fewer trigrams.
 - Names and titles often need lower thresholds than long prose.
@@ -123,7 +123,7 @@ select unaccent('Hôtel');
 
 Be careful with indexing `unaccent(name)` directly. PostgreSQL expression indexes require immutable expressions. The built-in `unaccent` function depends on dictionary rules, so teams often use a stored normalized column or a carefully reviewed immutable wrapper when they need accent-insensitive indexed search.
 
-The safest production model is explicit:
+Make the production model explicit:
 
 ```sql
 alter table tag_localization
@@ -134,7 +134,7 @@ create index tag_localization_name_search_trgm_idx
   using gin (name_search gin_trgm_ops);
 ```
 
-If accent-insensitive behavior is required, make the normalization strategy part of the schema contract instead of hiding it in scattered queries.
+If search must ignore accents, define normalization in the schema contract rather than scattered queries.
 
 ## GIN Versus GiST For Trigrams
 
@@ -187,7 +187,7 @@ means:
 4. Use trigram operator behavior from `gin_trgm_ops`.
 5. Accelerate queries whose predicates use compatible trigram operators on the same expression.
 
-It is not a normal B-tree index. It is not an exact unique constraint. It does not make every `order by similarity(...)` free. It gives PostgreSQL a fast way to find rows whose normalized text shares enough trigrams with the query.
+This index quickly finds rows whose normalized text shares enough trigrams with the query. It is neither a normal B-tree nor an exact unique constraint, and it does not make `order by similarity(...)` free.
 
 ## Reference Anchors
 

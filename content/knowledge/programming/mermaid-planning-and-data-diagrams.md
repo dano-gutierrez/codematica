@@ -19,7 +19,7 @@ status: published
 
 ## Beyond Boxes And Arrows
 
-Not every explanation is a system topology. Mermaid also includes grammars for schedules, user experience, proportions, hierarchy, chronology, and version-control history. These specialized diagrams are effective because they encode meaning directly. A Gantt task has a duration; a journey step has a score and actors; a pie slice has a numeric value.
+Mermaid has grammars for schedules, user experience, proportions, hierarchy, chronology, and version-control history. Each encodes specific meaning. A Gantt task has a duration; a journey step has a score and actors; a pie slice has a numeric value.
 
 The tradeoff is that each grammar has its own rules. Always begin with the declaration, then check that the data shape matches the question.
 
@@ -51,7 +51,7 @@ Use Gantt when dates, durations, dependencies, and parallel work matter.
 - Status markers include `done`, `active`, `crit`, and `milestone`.
 - `excludes weekends` adjusts task duration across excluded days; it does not cut a hole inside one continuous task bar.
 
-A Gantt chart is not a replacement for a project system. It is a documentation snapshot. Keep its dates owned and reviewed, or it will become confident-looking stale data.
+A Gantt chart is a documentation snapshot, not a project system. Assign an owner to review its dates and prevent stale plans.
 
 ## User Journey: Experience By Actor
 
@@ -79,7 +79,7 @@ Task name: score: actor, another actor
 
 Scores range from 1 to 5 in the conventional Mermaid journey model. Use them consistently within one diagram. A score is an author judgment, not measured analytics unless the text says where the measurement came from.
 
-Journey diagrams become especially useful when a failure and recovery path matter. A flowchart might show what the system does; the journey shows how that sequence feels to the learner and which actors participate.
+Journey diagrams are especially useful for failure and recovery paths. They show the learner's experience and the actors involved; a flowchart shows the system's actions.
 
 ## Pie: A Small Part-To-Whole Story
 
@@ -119,7 +119,7 @@ mindmap
       Sankey
 ```
 
-Mindmaps are indentation-based. The hierarchy comes from whitespace, so consistent indentation is semantic, not cosmetic. They work well for topic maps, discovery, taxonomies, and decomposing a broad idea.
+Mindmap indentation defines the hierarchy, so keep it consistent. They work well for topic maps, discovery, taxonomies, and decomposing a broad idea.
 
 A mindmap does not express time, cardinality, or runtime message order. If branches begin to need arrows and conditions, move to a flowchart.
 
@@ -176,7 +176,7 @@ Mermaid's official syntax catalog includes more specialized options. Availabilit
 | Treemap | Hierarchical part-to-whole area |
 | Ishikawa | Cause-and-effect or fishbone analysis |
 
-Do not choose an exotic grammar merely because it exists. Choose it when its visual rules directly answer the reader's question and your deployed Mermaid version supports it.
+Choose a grammar when its visual rules answer the reader's question and your deployed Mermaid version supports it.
 
 ## Debugging A Diagram That Will Not Render
 
@@ -190,7 +190,7 @@ Work from the parser outward:
 6. Test the exact Mermaid version and configuration used by the application.
 7. Keep the source fallback visible so readers are not left with an empty box.
 
-Unknown grammar keywords usually fail parsing. Some unsupported parameters may instead be ignored, which is more dangerous because the diagram renders without the requested meaning. Review the output, not only the absence of errors.
+Unknown grammar keywords usually fail parsing. Unsupported parameters may be silently ignored, leaving a rendered diagram with the wrong meaning. Check the output even when there are no errors.
 
 ## Advanced Readability Rules
 

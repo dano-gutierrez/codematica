@@ -5,19 +5,19 @@
 - Status: `in_progress`
 - Last updated: `2026-09-05`
 - Owner thread: `n/a`
-- Current state: Implemented a shared visual refresh and persistent web/native navigation; installed native verification remains pending local toolchain repair.
+- Current state: Shared visual styles and persistent web/native navigation are implemented. Installed native verification awaits local toolchain repair.
 - Target outcome: A quieter, consistent interface with clearly named destinations and comfortable phone, tablet, and desktop layouts.
 - Code touchpoints: `apps/web/src/components/AppHeader.tsx`, `apps/web/src/app/layout.tsx`, `apps/web/src/app/globals.css`, `packages/ui/src/screens.tsx`, `packages/ui/src/tokens.ts`, `apps/mobile/app/_layout.tsx`.
 - Primary tests: `AppHeader.test.tsx`, `adaptive-navigation.test.tsx`, `adaptive-navigation.smoke.spec.ts`, `adaptive-layout.regression.spec.ts`, `.maestro/adaptive-navigation.yaml`.
 
 ## One-Minute Brief
 
-The redesign addresses competing heavy borders, repeated explanatory headings, and hard-to-find sections. It reuses existing catalog, card, dropdown, practice, reader, and native screen components. Content, search, grading, progress, authentication, external links, and route contracts stay unchanged.
+The redesign reduces heavy borders and repeated headings and makes sections easier to find. It reuses catalog, card, dropdown, practice, reader, and native screen components. Content, search, grading, progress, authentication, external links, and routes keep their existing behavior.
 
 ## Outcome / Contract
 
 - Web below 768 px uses persistent Play, Learn, Paths, Practice, and More bottom controls. More contains Interviews, Lessons, Languages, and Sign in.
-- Web at 768 px and above shows all six destinations plus Sign in in a left sidebar.
+- Web at 768 px and above shows all seven destinations plus Sign in in a left sidebar.
 - Native uses the same destinations. A sidebar appears when width is at least 768 pt and width divided by font scale is at least 600; Split View and large text can return to compact navigation.
 - Section selection includes nested routes; standalone documents and diagrams select Lessons.
 - The existing URL and native route structures remain intact. Native top-level switches use Expo Router `navigate`; existing in-content navigation remains unchanged.
@@ -27,7 +27,7 @@ The redesign addresses competing heavy borders, repeated explanatory headings, a
 
 ## Current State
 
-Shared navigation, concise catalog headings, lighter typography and borders, consistent corners, focus states, and compact discovery cards are implemented. Native source coverage passes. Native execution is not yet verified: the installed Expo toolchain fails startup while requiring `expo-router/_ctx-shared`; Expo Doctor reports nine patch-version mismatches. Xcode remains 26.3, matching the previously documented native compilation blocker. Dependency upgrades are outside this presentation-only change.
+Shared navigation, concise catalog headings, lighter typography and borders, consistent corners, focus states, and compact discovery cards are implemented. Native source coverage passes. Native execution remains unverified: Expo fails startup while requiring `expo-router/_ctx-shared`, and Expo Doctor reports nine patch-version mismatches. Xcode is still 26.3, the documented native compilation blocker. This presentation change excludes dependency upgrades.
 
 ## Scope
 
@@ -49,6 +49,8 @@ Shared navigation, concise catalog headings, lighter typography and borders, con
 ### UI / UX
 
 - App branding uses the approved Patch head and wordmark in existing web/native headers and sidebars. See `brand-identity.md` for source ownership, browser icons and native packaging.
+
+- Use concrete copy that names the item or action. Shared study controls say “Next activity,” “Practice complete,” and “Quick review.” Preserve instructions, prerequisites, error meaning, and technical values when shortening text.
 - Neutral canvas, white surfaces, teal primary navigation, and restrained category colors.
 - Semibold titles, regular body copy, thin borders, and consistent 12–16 px corners replace raised heavy controls.
 - Home section actions use the same teal text treatment. Category colors remain in icons and metadata.
@@ -59,7 +61,7 @@ Shared navigation, concise catalog headings, lighter typography and borders, con
 
 ### Data Model And Persistence
 
-No changes to content schemas, generated data, persisted progress, or API contracts.
+Adaptive layout preserves content schemas, generated data, persisted progress, and API contracts.
 
 ### Business Logic
 
@@ -81,9 +83,10 @@ Keep no-result, optional-auth, renderer fallback, and recovery UI. Small screens
 
 ## Test Plan
 
+- Copy edits update text-based assertions in web component, native screen, and Playwright tests. Keep route, action, disabled-state, progress, and recovery assertions intact; run the affected suites and responsive browser checks.
 - Regression-first component tests fail before navigation implementation, then prove destination preservation, nested active states, menu links, and close behavior.
 - Vitest: `npx vitest run apps/web/src/components/AppHeader.test.tsx apps/web/src/components/HomeDiscovery.test.tsx`.
-- Jest: `npm run test:mobile -- adaptive-navigation.test.tsx`; phone menu destinations and tablet sidebar state.
+- Jest: `npm run test:mobile -- adaptive-navigation.test.tsx`; phone menu destinations, single-line phone labels, and naturally wrapping tablet labels, including the admin destination. System font scaling stays enabled in both layouts. Clamping tablet labels to one line must fail the regression.
 - Browser smoke: `adaptive-navigation.smoke.spec.ts` runs on mobile Chromium, desktop Chromium, and iPhone WebKit, including Escape/focus restoration.
 - Browser regression: run the full `npm run e2e:web:release` lane for every study flow, including questionnaire continuation with a visible save prompt and Japanese 200% text sizing. `adaptive-layout.regression.spec.ts` checks eight catalogs at 320, 390, 768, 1024, and 1440 px; home discovery and top-level accessibility regressions remain required.
 - Installed native smoke: `.maestro/adaptive-navigation.yaml`, including phone More and tablet direct links. Run on Android and iOS before native release readiness is claimed.
@@ -117,3 +120,11 @@ Updated home discovery, native deployment, the docs hub, package/mobile/E2E READ
 ## Game surfaces
 
 The campaign at `/` and `/play/*` uses the original cream/teal painted-world treatment described in [Restore the Signal](restore-the-signal.md). Editors and controls stay in normal UI with keyboard/tap alternatives. `/learn` retains the quiet discovery layout. Mobile and desktop expose the same destinations; `/play/*` marks Play active. Reduced motion removes decorative parallax and movement.
+
+### Native tab text at accessibility sizes — 2026-09-29
+
+Phone tab labels fit on a single line, scaling down only when needed to fit the available tab width. System font scaling stays enabled; the full destination label remains the tab accessibility label. This prevents the long Interviews label from breaking mid-word at larger iOS text sizes. The iPad rail keeps natural text wrapping. `adaptive-navigation.test.tsx` guards these text props, and simulator visual QA covers enlarged system text.
+
+## Japanese notebook update — 2026-10-02
+
+Languages exposes Japanese and Notebook practice in the tablet/sidebar and phone More menus. `/languages/japanese/notebooks` supports curated and custom 1–5-character prompts and saved pages. [Japanese writing notebooks](japanese-writing-notebooks.md) owns the shared 24-repetition engine, device-local ink, maximum-progress synchronization and validation gates. Live ink and feedback preserve page position; Input is detected automatically. Mouse wheel/trackpad scrolling remains available on web; two-finger gestures scroll the paper on touch screens and installed apps without adding ink. There are no Draw, Pen or Scroll buttons.

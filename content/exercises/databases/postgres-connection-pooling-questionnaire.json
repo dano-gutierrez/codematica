@@ -1,0 +1,250 @@
+{
+  "slug": "databases/postgres-connection-pooling-questionnaire",
+  "title": "Connection Pooling Production Checkpoint",
+  "type": "questionnaire",
+  "documentSlug": "databases/postgres-connection-pooling",
+  "concept": "PostgreSQL connection budgets and resilient pooling",
+  "difficulty": "senior",
+  "tags": [
+    "postgres",
+    "connection-pooling",
+    "pgdog",
+    "database-optimization",
+    "graceful-shutdown"
+  ],
+  "status": "published",
+  "questions": [
+    {
+      "id": "multiplexing",
+      "kind": "choice",
+      "prompt": "A pooler has 80 backends and 1,000 connected clients. What allows it to serve them without 1,000 PostgreSQL sessions?",
+      "options": [
+        {
+          "id": "reuse-after-transaction",
+          "label": "Reuse a backend after each completed transaction; excess simultaneous work waits or fails admission.",
+          "isCorrect": true
+        },
+        {
+          "id": "parallel-on-one",
+          "label": "Run all 1,000 transactions simultaneously on one backend.",
+          "isCorrect": false
+        },
+        {
+          "id": "cache-everything",
+          "label": "Cache every query result so transactions never reach PostgreSQL.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "Transaction pooling shares backends over time. It does not execute independent transactions simultaneously on one backend or automatically cache all query results. Long transactions reduce opportunities for reuse."
+    },
+    {
+      "id": "direct-budget",
+      "kind": "cloze",
+      "prompt": "Use the lesson assumptions: total ceiling 1,187; reserve/headroom 187 not already deducted; other consumers 200; 25 pods; 2 processes per pod; 2 pools per process targeting the same server.",
+      "template": "The largest whole-number max per pool that preserves this budget is {{blank}}.",
+      "acceptedAnswers": [
+        "8"
+      ],
+      "explanation": "The application allowance is 1,187 - 187 - 200 = 800. There are 25 × 2 × 2 = 100 pools, so the cap is 8. A cap of 10 allows 1,200 connections including other consumers and exceeds the ceiling. This arithmetic is illustrative, not a verified Titan setting."
+    },
+    {
+      "id": "surge-budget",
+      "kind": "cloze",
+      "prompt": "Five extra pods overlap during replacement: 30 pods, 2 processes per pod, 2 pools per process, max 8, and 200 other connections.",
+      "template": "The potential total is {{blank}} connections.",
+      "acceptedAnswers": [
+        "1160",
+        "1,160"
+      ],
+      "explanation": "30 × 2 × 2 × 8 + 200 = 1,160. This is below 1,187 but exceeds the 1,000 operating budget by 160. Omitting overlap incorrectly gives 1,000. A ceiling check alone does not preserve headroom."
+    },
+    {
+      "id": "proxy-budget",
+      "kind": "cloze",
+      "prompt": "Three pooler replicas each have two independent pools aimed at one database. Each pool permits 80 backends, and 120 direct connections bypass the pooler.",
+      "template": "The potential database total is {{blank}} connections.",
+      "acceptedAnswers": [
+        "600"
+      ],
+      "explanation": "3 × 2 × 80 + 120 = 600. Counting one pool gives 200 and misses both replicas and user/database pool groups. Application client connections are a separate budget; a fourth overlapping pooler replica raises this total to 760."
+    },
+    {
+      "id": "hold-time",
+      "kind": "cloze",
+      "prompt": "A stable workload completes 600 transactions/s. Mean backend hold time is 0.04 s, excluding acquisition wait.",
+      "template": "The mean occupied backend count is {{blank}}.",
+      "acceptedAnswers": [
+        "24"
+      ],
+      "explanation": "600 × 0.04 = 24 occupied backends on average. This does not establish a pool size for bursts or p99 latency. Throughput is not a connection count; at 0.20 s, the same throughput would require 120 occupied backends on average."
+    },
+    {
+      "id": "session-state",
+      "kind": "choice",
+      "prompt": "An application uses named prepared statements, tenant settings, and LISTEN. What evidence is needed before moving it to transaction pooling?",
+      "options": [
+        {
+          "id": "test-exact-features",
+          "label": "Test the exact pooler release, driver protocols, session features, isolation, and reconnect behavior.",
+          "isCorrect": true
+        },
+        {
+          "id": "all-unsupported",
+          "label": "Reject every transaction pooler because all prepared statements are unsupported.",
+          "isCorrect": false
+        },
+        {
+          "id": "smoke-enough",
+          "label": "Accept one successful SELECT in staging as proof that all session behavior is compatible.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "Compatibility depends on the implementation and configuration. PgBouncer can support protocol-level prepared statements with max_prepared_statements enabled, but SQL PREPARE is different. PgDog documents additional session support. A basic SELECT does not prove listener, tenant isolation, or reconnect correctness."
+    },
+    {
+      "id": "shutdown-order",
+      "kind": "ordering",
+      "prompt": "Order the normal successful shutdown path; an independent deadline still bounds the entire sequence.",
+      "items": [
+        {
+          "id": "stop",
+          "label": "Stop admitting HTTP work and new jobs"
+        },
+        {
+          "id": "drain",
+          "label": "Drain in-flight work and release checked-out clients"
+        },
+        {
+          "id": "close",
+          "label": "Await closure of every application pool"
+        },
+        {
+          "id": "exit",
+          "label": "Exit before the actual termination deadline"
+        }
+      ],
+      "correctOrder": [
+        "stop",
+        "drain",
+        "close",
+        "exit"
+      ],
+      "explanation": "Stop producers before draining consumers, then close their pools. Closing pools first can break accepted work; immediate exit skips asynchronous cleanup. Hung work needs a tested deadline and cancellation path."
+    },
+    {
+      "id": "termination-window",
+      "kind": "choice",
+      "prompt": "A deployment mentions a 30-second shutdown warning. Which statement is justified?",
+      "options": [
+        {
+          "id": "best-effort",
+          "label": "Verify provider and Kubernetes timing; preStop consumes grace time and an interruption may allow less usable time.",
+          "isCorrect": true
+        },
+        {
+          "id": "guaranteed",
+          "label": "Every spot interruption guarantees the application a full 30 seconds after SIGTERM.",
+          "isCorrect": false
+        },
+        {
+          "id": "end-cancels",
+          "label": "pool.end() immediately cancels all running transactions, so drain timing is irrelevant.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "Kubernetes termination grace and a provider warning are distinct. Google Compute Engine Spot shutdown is best effort and up to 30 seconds; other platforms differ. Pool closure is not a universal cancellation mechanism, and stuck checkouts can delay it."
+    },
+    {
+      "id": "spot-placement",
+      "kind": "choice",
+      "prompt": "Several spot nodes disappear together, and replacement pods reconnect at once. Which plan addresses the availability and connection risks?",
+      "options": [
+        {
+          "id": "stable-baseline",
+          "label": "Keep a tested stable-capacity baseline, cap the spot tier, spread replicas, and bound reconnection and retries.",
+          "isCorrect": true
+        },
+        {
+          "id": "pdb-protects",
+          "label": "Use only a PodDisruptionBudget; it prevents the provider from preempting nodes.",
+          "isCorrect": false
+        },
+        {
+          "id": "soft-cap",
+          "label": "Use a soft preference for ordinary nodes; that guarantees a fixed maximum number of spot pods.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "A stable baseline and explicit tier bounds can limit exposure; topology spread reduces some correlated loss. A PDB cannot prevent involuntary node loss. A soft scheduling preference is not a numerical spot cap, and all-spot spreading is not a survival guarantee."
+    },
+    {
+      "id": "saturated-database",
+      "kind": "choice",
+      "prompt": "Pooler wait time rises while database CPU and lock waits are high. What should you investigate first?",
+      "options": [
+        {
+          "id": "reduce-work",
+          "label": "Reduce expensive or blocked work and transaction duration; evaluate concurrency limits against measured latency.",
+          "isCorrect": true
+        },
+        {
+          "id": "raise-cap",
+          "label": "Raise every application and pooler cap until waiting disappears.",
+          "isCorrect": false
+        },
+        {
+          "id": "raise-clients",
+          "label": "Raise only the pooler client-connection limit; that increases database execution capacity.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "A queue can reflect saturated execution capacity. More active work may amplify CPU or lock contention; accepting more clients does not add database CPU. Use query plans, transaction timing, and load tests to distinguish the bottleneck before changing caps."
+    },
+    {
+      "id": "ambiguous-commit",
+      "kind": "choice",
+      "prompt": "The client loses its connection after sending COMMIT for a write, before receiving the response. What should happen next?",
+      "options": [
+        {
+          "id": "reconcile",
+          "label": "Treat the outcome as uncertain and reconcile using durable operation identity or a proven idempotent retry design.",
+          "isCorrect": true
+        },
+        {
+          "id": "retry-blindly",
+          "label": "Repeat the write immediately because a missing response proves rollback.",
+          "isCorrect": false
+        },
+        {
+          "id": "assume-success",
+          "label": "Report success because sending COMMIT proves the database committed.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "The transaction may have committed even though its response was lost. Neither success nor rollback follows from the missing response alone. Reconcile the outcome and retry only through a safe bounded policy; a pooler cannot make arbitrary retries exactly once."
+    },
+    {
+      "id": "pooling-modes",
+      "kind": "matching",
+      "prompt": "Match each pooling mode to the end of its backend assignment.",
+      "pairs": [
+        {
+          "id": "session",
+          "prompt": "Session mode",
+          "match": "Client disconnects"
+        },
+        {
+          "id": "transaction",
+          "prompt": "Transaction mode",
+          "match": "Transaction finishes"
+        },
+        {
+          "id": "statement",
+          "prompt": "Statement mode",
+          "match": "Statement finishes; explicit multi-statement transactions disallowed"
+        }
+      ],
+      "explanation": "Session mode preserves a client/server session but shares less. Transaction mode releases the assignment between transactions. Statement mode requires autocommit work and cannot support an explicit multi-statement transaction."
+    }
+  ]
+}

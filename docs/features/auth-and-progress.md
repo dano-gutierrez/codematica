@@ -31,7 +31,7 @@
 
 ## One-Minute Brief
 
-Auth and progress are additive. Codematica still renders local content without Supabase credentials, but when web `NEXT_PUBLIC_*` or native `EXPO_PUBLIC_*` Supabase variables are configured, users can sign in and persist resume/completion state to Supabase. Signed-out web users keep unique progress items in `localStorage`; signed-out native users keep them in native local storage. Local items are deduplicated by surface, slug, and path, but are not silently evicted by an arbitrary item-count cap.
+Codematica renders local content without Supabase credentials. Configure web `NEXT_PUBLIC_*` or native `EXPO_PUBLIC_*` Supabase variables to enable sign-in and save resume/completion state in Supabase across devices. Signed-out progress stays in `localStorage` on web and native local storage on mobile. Items are deduplicated by surface, slug, and path, with no arbitrary item-count eviction.
 
 ## Outcome / Contract
 
@@ -65,7 +65,7 @@ Auth and progress are additive. Codematica still renders local content without S
 - `public.user_profiles` stores only `user_id` and timestamps.
 - `public.user_progress_items` stores `user_id`, `surface`, `slug`, `path_slug`, `status`, `position`, `first_seen_at`, `last_seen_at`, `completed_at`, and timestamps.
 - `public.user_skill_progress` is additive and unique by `(user_id, path_slug, skill_id)`; its trigger never lowers best score or attempt count.
-- Mastery merge selects the row with the newest `lastPracticedAt` for review box/state/due time, then keeps the maximum `bestScore` and maximum `attemptCount`. This is deterministic and non-destructive for the stored snapshot, but intentionally cannot reconstruct the sum of two independent device histories because no per-attempt event log is stored.
+- Mastery merge uses the newest `lastPracticedAt` for review box/state/due time and the maximum `bestScore` and `attemptCount`. The merge is deterministic and never lowers the best score or attempt count. It cannot sum independent device histories because no per-attempt event log is stored.
 - `(user_id, surface, slug, path_slug)` is unique.
 - RLS is enabled; authenticated users can only select, insert, update, and delete their own rows.
 - Repo Markdown, path JSON, exercise JSON, flashcard feeds, and interview JSON remain canonical. Supabase does not become the content source of truth.
@@ -82,7 +82,7 @@ Auth and progress are additive. Codematica still renders local content without S
 
 - Unit: progress payload validation, content-index mapping, stale slug filtering, local dedupe/retention, bounded web/native batch sync, and clear-after-complete behavior.
 - Server helper: authenticated upsert, unauthenticated rejection, summary mapping, anonymous sync batching, and skill-progress loading/sync.
-- Component: login provider gating, Keep reading rendering, save-progress prompt, progress callbacks from practice/interview/passive-feed components.
+- Component: login provider gating, Keep reading rendering, save-progress prompt, and progress callbacks from practice/interview/passive-feed components. Unconfigured web login displays “Sign-in is not set up here.” and keeps provider buttons disabled. Native copy retains the missing Supabase public-variable explanation.
 - E2E: signed-out user reads and practices without redirects, sees the save-progress prompt, and sees local Keep reading state.
 
 ## Open Questions
@@ -108,3 +108,9 @@ Auth and progress are additive. Codematica still renders local content without S
 ## Separate game progress (2026-09-29)
 
 [Restore the Signal](restore-the-signal.md) adds account-scoped local game awards and optional Supabase sync through `/api/progress/game` and `merge_game_progress`. Awards and successful calendar days merge by union. A replay cannot duplicate XP. The saved timezone defines streak dates; preferences retain earned cosmetics. Owner RLS and expected-account checks prevent cross-account reads/writes. Answers, code, and attempts stay transient. The existing save-progress prompt also recognizes anonymous game awards; learning-path progress tables and access rules are unchanged.
+
+## Japanese notebook update — 2026-10-02
+
+Languages exposes Japanese and Notebook practice in the tablet/sidebar and phone More menus. `/languages/japanese/notebooks` supports curated and custom 1–5-character prompts and saved pages. [Japanese writing notebooks](japanese-writing-notebooks.md) owns the shared 24-repetition engine, device-local ink, maximum-progress synchronization and validation gates. Live ink and feedback preserve page position; Input is detected automatically. Mouse wheel/trackpad scrolling remains available on web; two-finger gestures scroll the paper on touch screens and installed apps without adding ink. There are no Draw, Pen or Scroll buttons.
+
+The additive `user_writing_notebook_progress` table and writing-notebooks API store bounded best counts and prompts with RLS ownership. Restart/stale updates preserve earned completion. Notebook ink is retained only in IndexedDB or separate AsyncStorage sheet/cell records; existing lesson/skill tables do not receive vectors.

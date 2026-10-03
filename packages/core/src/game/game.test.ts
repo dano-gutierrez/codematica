@@ -136,3 +136,10 @@ describe("Restore the Signal", () => {
     );
   });
 });
+
+it("requires a new zone predicate for Target Lock mastery rather than the story's kind filter", () => {
+  const scenario = campaign().levels[1].scenarios[1];
+  if (scenario.kind !== "sql") throw Error();
+  expect(scenario.zombies.filter(z => z.zone === "canal").map(z => z.id)).toEqual(scenario.expectedIds);
+  expect(scenario.zombies.filter(z => z.kind === "runner").map(z => z.id)).not.toEqual(scenario.expectedIds);
+});

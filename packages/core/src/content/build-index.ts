@@ -449,7 +449,7 @@ function assertQuestionnaireExercise(exercise: LearningExercise, sourcePath: str
   }
 }
 
-function assertWritingExercise(exercise: LearningExercise, sourcePath: string, languageCharacterSlugs: Set<string>) {
+function assertWritingExercise(exercise: LearningExercise, sourcePath: string, languageCharacterSlugs: Set<string>, characters: LanguageCharacter[]) {
   if (exercise.type !== "writing") {
     return;
   }
@@ -459,6 +459,15 @@ function assertWritingExercise(exercise: LearningExercise, sourcePath: string, l
   for (const characterSlug of exercise.characterSlugs) {
     if (!languageCharacterSlugs.has(characterSlug)) {
       throw new Error(`${sourcePath} references missing language character "${characterSlug}"`);
+    }
+  }
+  if (exercise.notebookPrompts) {
+    assertUniqueValues(exercise.notebookPrompts.map(prompt => prompt.id), "notebook prompt", sourcePath);
+    const supported = new Set(characters.filter(character => character.status === "published" && character.strokes.length && exercise.characterSlugs.includes(character.slug)).map(character => character.glyph));
+    for (const prompt of exercise.notebookPrompts) {
+      for (const glyph of prompt.text.normalize("NFC")) {
+        if (!supported.has(glyph)) throw new Error(`${sourcePath}: No writing guide for "${glyph}" in notebook prompt "${prompt.id}".`);
+      }
     }
   }
 }
@@ -600,7 +609,7 @@ function assertContentReferences(
 
   for (const exercise of exercises) {
     assertQuestionnaireExercise(exercise, exercise.sourcePath);
-    assertWritingExercise(exercise, exercise.sourcePath, languageCharacterSlugs);
+    assertWritingExercise(exercise, exercise.sourcePath, languageCharacterSlugs, languageCharacters);
 
     if (!documentSlugs.has(exercise.documentSlug)) {
       throw new Error(`${exercise.sourcePath} references missing document "${exercise.documentSlug}"`);
@@ -633,7 +642,19 @@ function assertContentReferences(
     }
   }
 
+  const interviewQuestions = new Map(interviewCollections.filter((collection) => collection.status === "published").flatMap((collection) => collection.questions.map((question) => [String(`${collection.slug}/${question.slug}`), question] as const)));
+  for (const collection of interviewCollections) {
+    for (const question of collection.questions) {
+      for (const sourceRef of question.sourceRefs ?? []) {
+        if (!sourceIds.has(sourceRef)) throw new Error(`${collection.sourcePath} references missing source "${sourceRef}"`);
+      }
+    }
+  }
+
   for (const learningPath of learningPaths) {
+    if (learningPath.completionDestination === "flashcard-feed" && !passiveFlashcardFeeds.some((feed) => feed.pathSlug === learningPath.slug && feed.status === "published")) {
+      throw new Error(`${learningPath.sourcePath} needs a published completion flashcard feed.`);
+    }
     const pathNodeSlugs = new Set(learningPath.units.flatMap((unit) => unit.nodes.map((node) => node.slug)));
 
     for (const sourceRef of learningPath.sourceRefs ?? []) {
@@ -648,6 +669,12 @@ function assertContentReferences(
       for (const node of unit.nodes) {
         if (node.kind === "source" && !sourceIds.has(node.sourceRef)) {
           throw new Error(`${learningPath.sourcePath} references missing source "${node.sourceRef}"`);
+        }
+
+        if (node.kind === "interview") {
+          const question = interviewQuestions.get(node.slug);
+          if (!question) throw new Error(`${learningPath.sourcePath} references missing published interview "${node.slug}"`);
+          if (learningPath.sourcePolicy === "required" && !question.sourceRefs?.length) throw new Error(`${learningPath.sourcePath} interview node "${node.slug}" needs a primary source reference.`);
         }
 
         if (node.kind === "document" && !documentSlugs.has(node.slug)) {
@@ -873,7 +900,7 @@ export async function buildContentIndex({ rootDir }: BuildContentIndexOptions): 
     if (level.pathSlug && !sortedLearningPaths.some(p => p.slug === level.pathSlug)) throw new Error(`Missing game path: ${level.pathSlug}`);
   }
   return {
-    schemaVersion: 11,
+    schemaVersion: 12,
     gameCampaigns,
     sources: sortedSources,
     documents: sortedDocuments,

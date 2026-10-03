@@ -1,0 +1,80 @@
+appId: com.codematica.app
+tags:
+  - regression
+---
+- launchApp:
+    clearState: true
+- openLink: codematica://languages/japanese/notebooks
+- scrollUntilVisible:
+    element:
+      id: mobile-notebook-input
+    direction: DOWN
+- tapOn:
+    id: mobile-notebook-input
+- inputText: "一"
+- hideKeyboard
+- tapOn:
+    id: mobile-notebook-create
+- scrollUntilVisible:
+    element:
+      id: mobile-writing-difficulty-balanced
+    direction: DOWN
+- tapOn:
+    id: mobile-writing-difficulty-balanced
+- tapOn:
+    id: mobile-writing-difficulty-easy
+- scrollUntilVisible:
+    element:
+      id: mobile-writing-pad
+    direction: DOWN
+- assertVisible:
+    id: mobile-writing-pad
+- swipe:
+    start: 25%, 55%
+    end: 75%, 55%
+    duration: 300
+- assertVisible: "Correct.*"
+- tapOn:
+    id: mobile-writing-undo
+- tapOn:
+    id: mobile-writing-clear
+- assertNotVisible:
+    id: mobile-writing-input-draw
+- assertNotVisible:
+    id: mobile-writing-input-pen
+- assertNotVisible:
+    id: mobile-writing-input-scroll
+# Scroll from the outer page gutter; two-finger paper pan requires device QA.
+- swipe:
+    start: 4%, 80%
+    end: 4%, 20%
+    duration: 500
+- assertVisible:
+    id: mobile-writing-repeat
+- tapOn:
+    id: mobile-writing-repeat
+- openLink: codematica://languages/japanese/notebooks
+- scrollUntilVisible:
+    element:
+      id: mobile-notebook-saved-custom-4e00-v1
+    direction: DOWN
+- tapOn:
+    id: mobile-notebook-saved-custom-4e00-v1
+- assertVisible:
+    id: mobile-writing-notebook
+- openLink: codematica://practice/languages/japanese-hiragana-vowels-writing
+- scrollUntilVisible:
+    element:
+      id: mobile-writing-activity-match
+    direction: DOWN
+- tapOn:
+    id: mobile-writing-activity-match
+- scrollUntilVisible:
+    element:
+      id: mobile-writing-match-kana-characters-0-0
+    direction: DOWN
+- tapOn:
+    id: mobile-writing-match-kana-characters-0-0
+- tapOn:
+    id: mobile-writing-match-romaji-characters-0-1
+- assertVisible: "Try another pair. You have time."

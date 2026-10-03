@@ -236,14 +236,14 @@
             {
               "id": 11,
               "kind": "runner",
-              "zone": "canal",
+              "zone": "garden",
               "threat": 2,
               "shield": 1
             },
             {
               "id": 12,
               "kind": "armored",
-              "zone": "tower",
+              "zone": "canal",
               "threat": 3,
               "shield": 0
             },
@@ -305,7 +305,7 @@
             }
           ],
           "expectedIds": [
-            11,
+            12,
             14,
             17
           ],

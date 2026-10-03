@@ -35,14 +35,16 @@ it("supports drag placement, pointer rearrangement, keyboard movement and tap co
   fireEvent.pointerDown(node, { clientX: 50, clientY: 50, pointerId: 1 });
   fireEvent.pointerMove(node, { clientX: 53, clientY: 52, pointerId: 1 });
   fireEvent.pointerMove(node, { clientX: 300, clientY: 180, pointerId: 1 });
-  expect(onMove).toHaveBeenCalled();
+  expect(onMove).toHaveBeenCalledExactlyOnceWith("client", 0.5, 0.5);
   fireEvent.click(node);
   expect(onConnect).not.toHaveBeenCalled();
   fireEvent.pointerCancel(node);
   fireEvent.click(node);
   expect(onConnect).toHaveBeenCalledWith("client");
   fireEvent.keyDown(node, { key: "ArrowDown" });
+  expect(onMove).toHaveBeenLastCalledWith("client", 0.18, 0.3);
   fireEvent.keyDown(node, { key: "a" });
+  expect(onMove).toHaveBeenCalledTimes(2);
   view.rerender(<GameBoard {...props} disabled />);
   fireEvent.drop(canvas, { dataTransfer: { getData: () => "api-2" } });
   expect(onPlace).toHaveBeenCalledTimes(1);

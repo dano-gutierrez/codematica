@@ -30,8 +30,8 @@ it("arranges a native component with touch while preserving the tap connection a
   handlers.onPanResponderMove?.({} as never, gesture);
   expect(onMove).toHaveBeenCalledWith(
     "client",
-    expect.any(Number),
-    expect.any(Number),
+    0.18 + 30 / 320,
+    0.22 + 40 / 350,
   );
   await fireEvent(view.getByTestId("game-board"), "layout", {
     nativeEvent: { layout: { width: 400, height: 350 } },

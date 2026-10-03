@@ -20,11 +20,11 @@ status: published
 ---
 ## Invalidation Is Part Of The Mutation
 
-A mutation is not complete when the database write succeeds. In a cached app, the mutation is complete when the user-visible read path has the correct freshness semantics. That might mean immediate expiration for the acting user, stale-while-revalidate for public viewers, or a conservative fail-closed read for sensitive state.
+In a cached app, a mutation must both write successfully and provide the required freshness on user-visible reads. That might mean immediate expiration for the acting user, stale-while-revalidate for public viewers, or a conservative fail-closed read for sensitive state.
 
 ## updateTag For Read-Your-Own-Writes
 
-`updateTag` belongs in Server Actions. Use it when a user performs a mutation and the next read should wait for fresh data instead of seeing stale cached content. It is the right mental model for edit screens, profile updates, dashboard mutations, and workflows where the actor expects their change to be visible immediately.
+`updateTag` belongs in Server Actions. Use it when a user performs a mutation and the next read should wait for fresh data instead of seeing stale cached content. This suits edit screens, profile updates, dashboard mutations, and other workflows where users expect to see their changes immediately.
 
 ```ts
 'use server';
@@ -43,7 +43,7 @@ export async function renameProject(projectId: string, name: string) {
 
 Use the two-argument form, such as `revalidateTag(tag, "max")`, for this behavior. The legacy single-argument immediate-expiration form is deprecated. `revalidatePath` is a separate tool for invalidating data used on a route path; tags are usually the better domain-level contract when the same entity appears on several routes.
 
-That is good for public content and poor for read-your-own-writes. If a user just edited a record, serving the old version and refreshing later feels broken.
+Stale-while-revalidate suits public content, but showing an old record after an edit violates read-your-own-writes.
 
 ## Tag Design
 
@@ -51,9 +51,9 @@ Tags are an index into your cache. Design them like production identifiers: stab
 
 ## Failure Modes
 
-The hardest bugs are silent. The database is correct, the mutation returned success, and only one cached route is stale. Build tests or review checklists that trace the write to each affected read. Include webhook retries, idempotency, and what happens when invalidation fails after the write succeeds.
+A mutation can succeed while leaving one cached route stale. Build tests or review checklists that trace the write to each affected read. Include webhook retries, idempotency, and what happens when invalidation fails after the write succeeds.
 
-Do not claim atomicity that the framework does not provide. A database commit and a later cache invalidation are two operations. For high-value writes, use an outbox or durable retry record so a crash between them can be repaired; keep expiration as a backstop rather than the primary consistency mechanism.
+A database commit and a later cache invalidation are two separate operations; do not claim they are atomic. For high-value writes, use an outbox or durable retry record so a crash between them can be repaired; keep expiration as a backstop rather than the primary consistency mechanism.
 
 ## One-Minute Brief
 

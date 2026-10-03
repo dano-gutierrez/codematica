@@ -4,7 +4,7 @@
 
 - App identity: the approved Patch logo, browser favicons and native launcher/splash assets are owned by [the brand feature](brand-identity.md); game rigs and portraits retain their own asset pipeline.
 - Status: `in_progress`
-- Last updated: `2026-09-30`
+- Last updated: `2026-10-03`
 - Owner thread: `01a0ea98-ae1a-7291-b1c5-a1986b9b92a6`
 - Current state: The complete chapter is authored and implemented on web and native; release verification is in progress.
 - Target outcome: Twelve sequential levels and 24 mastery variations work offline in installed Android/iOS builds and in the production web app, using the same learning rules.
@@ -32,17 +32,22 @@ The user supplied [Rails for Zombies](../design-references/rails-for-zombies.png
 
 ## Current State
 
-The complete chapter is implemented on web and native. All 36 authored solutions pass in the production browser build. The current game browser lane passes 57 tests, including both live defenses, pause/background, lesson return, keyboard movement, reduced motion, and CSS/SQLite on Chromium and WebKit. After the miniature refinement, core/web coverage passes 364 tests; native Jest coverage passes 74 tests. Coverage floors are preserved.
+The complete chapter is implemented on web and native. The October 3 integration review merges the current learning features and Expo patches, advances the combined content index to schema 12, and gives the unpublished game migration a unique version. It also fixes stale runner callbacks, duplicate native simulation clocks, interrupted account synchronization, and denied map scroll storage. The SQL zone mastery now requires different reasoning from the story scenario.
 
-The release Android APK builds and installs. The original chapter verification passed Expo Doctor 20/20; the mascot pass now reports 19/20 because Expo recommends three newer patches (`expo` 57.0.26, `expo-constants` 57.0.20, `expo-router` 57.0.24). This art change does not alter dependency versions. An independent installed-app check on an Android API 35 ARM64 emulator passes all 36 scenarios offline, including real CSS/SQLite, touch connections, both story defenses live, pause/background/resume, and earned progress across process restarts. Defense mastery scenarios pass in assisted untimed mode. The final saved map shows 36/36 stars and 1,800 XP. Logs, screenshots, the independent check scripts, and a verification summary are retained under `test-results/game-verification/` and `test-results/android-installed-game/`. Maestro 2.8.0 fails before app interaction with DADB transport errors (`device offline` / `device not found`), matching the [upstream issue](https://github.com/mobile-dev-inc/maestro/issues/3451). Its failure reports are retained; the independent check does not close the Maestro release gate.
+Current verification on the integrated source:
 
-Production pruning is verified in a disposable install using the actual manifests and Next configuration. HTTP readiness, every district layer, real CSS, and local SQLite pass. The APK check matches decoded texture pixels despite Android resource renaming and verifies embedded worker/WASM bytes. The isolated database migration replay and all 45 pgTAP assertions pass. Final Android/iOS exports include the shared assets and local runner.
+- All 529 core/web tests and 127 native Jest tests pass with the existing aggregate and per-file coverage floors. Ten targeted mutation checks confirm the account, clock, callback, coordinate, budget, and latency regressions detect their corresponding defects.
+- All 78 selected browser cases pass, including all 36 authored solutions, both live defenses, help-and-return, interrupted SQL execution, keyboard controls, reduced motion, miniatures, discovery, and three-browser smoke coverage.
+- Lint, typecheck, content/brand/game reproducibility checks, Python companion checks, and the production web build pass. Expo Doctor passes 20/20 after retaining main’s SDK-aligned patch versions.
+- Both production artifact lanes pass in separate disposable installations after development dependencies are omitted. They verify HTTP readiness, the ordinary app/worker import boundary, exact brand and miniature assets, district layers, real CSS, and bundled SQLite.
+- All eight migrations replay successfully in a new disposable local database; all 145 assertions across nine pgTAP suites pass. Existing application data is untouched.
+- Android and iOS Metro exports pass. The Android Release APK builds and includes all required textures and local CSS/SQLite runner assets; its packaged textures match the source exports after decoding Android’s renamed resources.
 
-The mascot refinement was verified separately: reproducible atlas/thumbnail exports, lint, typecheck, content checks, both coverage suites, production web and Android builds, and four browser smoke/accessibility tests pass. The pruned web artifact serves all 32 thumbnail files; the rebuilt APK contains the revised atlas. Patch and all three enemies were visually checked in the production browser and installed Android API 35 app. The refreshed contact sheet and character kit are saved under `assets/game/previews/`; logs and the installed screenshot are in `test-results/mascot-refinement/`. The full 36-scenario installed journey above predates this art-only refinement.
+A fresh install of that APK on an Android API 35 ARM64 emulator passes offline CSS and SQLite clears, level unlocking, and earned progress after a process restart. Patch and all three miniature zombies render correctly in the installed scene. This targeted check does not replace the full native regression lane.
 
-The September 30 miniature pass adds successful all-level 320px scene captures, reduced-motion pixel stability and resize checks, shared pose bounds for every state/cosmetic, and native measured-container transforms. The updated production web and Android APK build and pass the pruned artifact check, including all transparent miniature exports and the revised atlas. The installed Android app shows the same miniature proportions as web; offline CSS/SQL clears, unlocks and successful expression/opacity changes pass. Evidence is retained under `test-results/miniatures/`. The Maestro CLI is unavailable in this session; the updated smoke flow still requires its device lane.
+Logs, mutation results, the per-hunk review ledger, and current verification artifacts are retained locally under `test-results/pr-14-review/`. An earlier installed Android API 35 journey completed all 36 scenarios offline, including both live story defenses, assisted mastery defenses, background/resume, and process restart, reaching 36 stars and 1,800 XP. That earlier evidence in `test-results/game-verification/`, `test-results/android-installed-game/`, and `test-results/miniatures/` predates the October 3 lifecycle fixes and is not a fresh full installed-device run.
 
-Installed iOS remains unverified: a fresh Release simulator build fails in ExpoModulesJSI’s `RuntimeScheduler.h` because the compiler rejects its `SWIFT_RETURNS_RETAINED` annotations. This host has Xcode 26.3, below the repository’s documented Expo SDK 57 Xcode 26.4 baseline. The build log is retained under `test-results/game-verification/`; rerun with the supported toolchain. Export and Jest success do not prove installed iOS behavior. Representative physical-device 60 FPS profiling and the complete Android/iOS Maestro lanes remain release requirements.
+Installed iOS remains unverified. The earlier Release simulator build failed in ExpoModulesJSI’s `RuntimeScheduler.h` on `SWIFT_RETURNS_RETAINED` annotations. This host still has Xcode 26.3, below the documented Expo SDK 57 Xcode 26.4 baseline. Rerun with the supported toolchain; Metro export and Jest do not establish installed behavior. The Maestro CLI is unavailable in this review session. Complete Android/iOS Maestro journeys and representative physical-device 60 FPS profiling remain release requirements.
 
 No production deployment, store submission, hosted migration, or live-data mutation is part of this change.
 
@@ -91,13 +96,13 @@ The target grid is visible before submission. SQL datasets are visible beside th
 
 ### Data Model And Persistence
 
-`content/game/*.json` is canonical. The generated content index is schema version 11 and adds `gameCampaigns`. `GameCampaign` defines ordered levels and districts with landmark references. `GameLevel` owns scenarios, objectives, hints, scene references, restoration details, and lessons. `GameSession` owns transient code, graph input, editing state, logical clock, results, and a single consumable completion event. `EvaluationResult` supplies reasons, textual events, and metrics. Renderer-independent animation types and poses live in core.
+`content/game/*.json` is canonical. The generated content index is schema version 12 and adds `gameCampaigns`. `GameCampaign` defines ordered levels and districts with landmark references. `GameLevel` owns scenarios, objectives, hints, scene references, restoration details, and lessons. `GameSession` owns transient code, graph input, editing state, logical clock, results, and a single consumable completion event. `EvaluationResult` supplies reasons, textual events, and metrics. Renderer-independent animation types and poses live in core.
 
 `GameProgress` stores unique earned objective IDs and their original completion mode/date, successful calendar dates, an IANA timezone, and the selected cosmetic. Stars, XP, unlocks, and restoration derive from awards. A streak includes today or yesterday and walks back through consecutive dates; a missed day resets it without deleting rewards. Locale time is converted to dates before streak arithmetic, including DST boundaries.
 
-Local writes are serialized. Account caches use separate keys. The anonymous buffer is claimed by one signed-in account; switching accounts cannot upload the prior account’s cached awards. In-flight requests include the expected account identity. Malformed/newer persisted bytes are backed up before replacement; storage failure keeps the active snapshot in memory.
+Local writes and anonymous ownership claims are serialized. Account caches use separate keys. The anonymous buffer is claimed by one signed-in account; switching accounts cannot upload the prior account’s cached awards. In-flight requests include the expected account identity. Generation checks after asynchronous account reads prevent stale loads from merging into or uploading another account’s snapshot. Malformed/newer persisted bytes are backed up before replacement; storage failure keeps the active snapshot in memory.
 
-The additive migration creates `user_game_awards`, `user_game_activity_days`, and `user_game_preferences`. Owner-only SELECT RLS plus authenticated merge RPCs prevent direct unvalidated writes. A per-account transaction lock serializes concurrent merges. Awards and days merge by union; the earliest award timestamp/mode survives replay. The first cloud timezone is retained. Cosmetic preferences use the newest preference timestamp. Retry never removes an earned record. These are learning records, not tamper-proof competitive rewards.
+The additive migration `202610030001_create_game_progress.sql` creates `user_game_awards`, `user_game_activity_days`, and `user_game_preferences`. Owner-only SELECT RLS plus authenticated merge RPCs prevent direct unvalidated writes. A per-account transaction lock serializes concurrent merges. Awards and days merge by union; the earliest award timestamp/mode survives replay. The first cloud timezone is retained. Cosmetic preferences use the newest preference timestamp. Retry never removes an earned record. These are learning records, not tamper-proof competitive rewards.
 
 ### Business Logic
 
@@ -126,7 +131,7 @@ Four square portrait masters export to PNG/WebP at 64, 128, 256 and 512 pixels t
 
 ### Failure And Edge Handling
 
-Locked routes explain the preceding clear requirement. Missing graphics do not disable the text editor or grading. Parser errors and timed-out workers produce retryable results. Lesson navigation pauses live attempts; returning never resumes automatically. Process restarts preserve rewards, not code drafts. Cloud failures keep local progress available for retry. Existing learning-path locks/progress are unaffected.
+Locked routes explain the preceding clear requirement. Missing graphics do not disable the text editor or grading. Parser errors and timed-out workers produce retryable results. Lesson navigation pauses live attempts; returning never resumes automatically. Only the focused native level screen advances the shared simulation, including when Expo keeps an older copy mounted. Reset, scenario changes, and leaving a level invalidate outstanding runner callbacks; web also aborts the pending worker download. Each runner result is consumed once. Process restarts preserve rewards, not code drafts. Cloud failures keep local progress available for retry. Unavailable browser scroll storage falls back to centering the current level and cannot prevent navigation. Existing learning-path locks/progress are unaffected.
 
 ## Code Touchpoints
 
@@ -139,14 +144,15 @@ Locked routes explain the preceding clear requirement. Missing graphics do not d
 - `apps/web/src/components/game/`: map, scene, editable board, and level UI.
 - `packages/ui/src/game/`: native UI, Skia atlas, and district scenery.
 - `apps/web/src/app/api/progress/game/route.ts`: account-bound progress API.
-- `supabase/migrations/202609290001_create_game_progress.sql`: additive tables, RLS, and merge RPCs.
+- `supabase/migrations/202610030001_create_game_progress.sql`: additive tables, RLS, and merge RPCs.
 
 ## Test Plan
 
 Core tests began with failing evaluator/progression contracts. Regression tests also precede account-isolation, single-consumption completion events, unequal load, unavailable balancers, cache capacity, and animation controls. No coverage floor is lowered and no authored game source is excluded from coverage.
 
+- Review regressions: deferred identity changes before merge/save, overlapping anonymous claims, stale SQL download success/failure after reset/timeout/unmount, native focus ownership and stale WebView callbacks, unavailable map storage, game-only save prompts, exact drag coordinates, and independent budget/latency limits. The Target Lock zone mastery dataset distinguishes zone selection from the story’s kind filter.
 - Unit: alternative/wrong solutions; every authored system and pipe variation; deterministic traffic and poses; pause/edit guards; reward replay; DST; account switches; malformed storage; bounded CSS/SQL.
-- Integration: schema-v11 generation and references; disposable SQLite runner; actual CSS geometry; API authentication/validation/error handling; asset reproducibility.
+- Integration: schema-v12 generation and references; disposable SQLite runner; actual CSS geometry; API authentication/validation/error handling; asset reproducibility.
 - Miniature regression: shared geometry stays inside 240–900px containers for all seven states and every cosmetic; renderers apply the same transforms. Browser coverage captures the crew in all twelve levels at 320px, checks reduced-motion pixel stability and resize; native Jest verifies measured-container transforms and success opacity. Maestro smoke asserts the scene is present.
 - Art exports: `scripts/game/assets.test.ts` verifies rig/frame compatibility, transparent nonempty sprites, four portrait identities, every thumbnail size, and exact web copies. `game:check` includes nested thumbnail outputs; the production artifact smoke check serves and validates each variant.
 - Web: `game.smoke.spec.ts` first clear and persisted unlock; `game.regression.spec.ts` all 36 scenarios, help return, wrong queries, live pause/background, keyboard, reduced motion.

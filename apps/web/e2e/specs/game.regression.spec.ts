@@ -204,3 +204,31 @@ for (const order of [8, 12])
     await expect(page.getByTestId("game-run")).toHaveText(/Start defense/);
     await expect(page.getByTestId("game-scenario-mastery-1")).toBeEnabled();
   });
+
+test("@regression resetting a pending SQL runner keeps the replacement attempt intact", async ({ page }) => {
+  await page.addInitScript(() => {
+    localStorage.setItem("codematica.game.v1", JSON.stringify({
+      version: 1, timezone: "UTC", cosmetic: "none", activityDays: [], updatedAt: "2026-10-03T00:00:00Z",
+      awards: { "restore-the-signal/courtyard-defense/main": { earnedAt: "2026-10-03T00:00:00Z", mode: "standard" } },
+    }));
+  });
+  let release!: () => void;
+  const waiting = new Promise<void>(done => { release = done; });
+  let requested!: () => void;
+  const requestStarted = new Promise<void>(done => { requested = done; });
+  await page.route("**/game/sql-worker.js", async route => {
+    requested();
+    await waiting;
+    await route.abort("failed");
+  });
+  await page.goto("/play/restore-the-signal/target-lock");
+  await page.getByTestId("game-run").click();
+  await requestStarted;
+  await page.getByTestId("game-reset").click();
+  await page.getByTestId("game-code").fill("SELECT id FROM zombies WHERE threat >= 3;");
+  release();
+  await expect(page.getByTestId("game-code")).toHaveValue("SELECT id FROM zombies WHERE threat >= 3;");
+  await expect(page.getByTestId("game-run")).toBeEnabled();
+  await expect(page.getByTestId("game-result")).toHaveCount(0);
+  await expect(page.getByTestId("game-scenario-mastery-1")).toBeDisabled();
+});

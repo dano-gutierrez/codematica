@@ -1,6 +1,6 @@
 # Codematica Engineering Overview
 
-Last updated: 2026-09-05
+Last updated: 2026-09-27
 
 Codematica is a mobile-first learning app for system design, coding, programming, software engineering, ML systems, and beginner human-language study. V1 stays local-first: Markdown and structured JSON remain canonical, including a validated external-source catalog for source-linked companions.
 
@@ -29,6 +29,7 @@ Codematica is a mobile-first learning app for system design, coding, programming
 - Jest + React Native Testing Library with coverage gates for mobile adapters and shared screens
 - pgTAP against a disposable local Supabase stack for migrations, RLS, triggers, and search
 - Maestro 2.8.0 through credential-free EAS Android/iOS test builds for installed-app journeys
+- local agent-device geometry/gesture checks for native code scrolling, with screenshot and accessibility-tree evidence (`apps/mobile/e2e/`)
 - optional Supabase Postgres scaffold for hosted search and saved progress
 
 ## Content Flow
@@ -94,7 +95,7 @@ flowchart TD
 
 ## Interface Shell
 
-Web `AppNavigation` lives in the Next root layout; existing `AppHeader` callers supply only context labels. Native `NativeNavigation` wraps the Expo Stack inside safe-area layout. Phones use a bottom bar and modal More menu, while desktop and iPad use a sidebar. Both call existing routes and leave all content/progress adapters intact. See `docs/features/adaptive-ui.md`.
+Web `AppNavigation` lives in the Next root layout; existing `AppHeader` callers supply only context labels. Native `NativeNavigation` wraps the Expo Stack inside safe-area layout. Phones use a bottom bar and modal More menu, while desktop and iPad use a sidebar. Both use existing routes and preserve content/progress adapters. See `docs/features/adaptive-ui.md`.
 
 ## Runtime Boundaries
 
@@ -124,19 +125,29 @@ Supabase is optional at runtime:
 
 ## Content Model
 
+### Articles And Diagrams
+
 Every article has frontmatter with title, slug, summary, track, topic, difficulty, tags, prerequisites, diagram references, primary-source references, and status. The parser validates this contract before generating the index. `content/sources/*.json` centralizes authoritative URLs, attribution, license when verified, version/commit, maturity, and verification date.
 
 External diagrams are stored separately and referenced by slug from article frontmatter. Embedded Mermaid blocks inside Markdown are also rendered. Fenced code blocks and app-authored solution snippets use the shared highlighted code block theme with language labels for Python, TypeScript, Java, JSON, shell, Markdown, and related aliases.
+
+### Paths And Practice
 
 Learning paths live in `content/learning-paths/*.json` and contain ordered units of document, diagram, exercise, and primary-source nodes. A source node resolves to its published local companion or the authoritative external URL. Exercises support `flashcard`, `cloze`, `questionnaire`, `writing`, and `guided-lab`. Questionnaires calculate aggregate overall/per-skill scores while answers stay transient. Guided labs enforce prediction and evidence-checklist completion while reflection text stays transient. Writing exercises reference language character slugs and use shared stroke-count, order/direction, and shape checks.
 
 Passive flashcard feeds live in `content/flashcard-feeds/*.json` and attach short review cards to learning paths.
 
-Interview collections live in `content/interviews/*.json` and are discriminated as `company` or `real-world`. Company algorithm questions retain reported-public links and guided Python, TypeScript, and Java tracks. Anonymous real-world questions require provenance notes and may provide structured evaluation rubrics plus at least three `WebExerciseProject` solutions. Web projects are authored locally, validated into the index, and executed only in Sandpack's cross-origin iframe; Expo shows the same files read-only.
+### Interviews
+
+Interview collections live in `content/interviews/*.json` and are discriminated as `company` or `real-world`. Company algorithm questions retain reported-public links and guided Python, TypeScript, and Java tracks. Anonymous real-world questions require provenance notes and may provide structured evaluation rubrics plus at least three `WebExerciseProject` solutions. Web projects are authored locally, validated into the index, and executed only in Sandpack's cross-origin iframe; Expo shows the same files read-only. Revealing a web solution starts one runtime shared with its console. Run/Retry replace the connection with the current draft; Reset starts from authored files. The connection lifecycle and recovery diagram live in `docs/features/react-typescript-playground.md`.
+
+### Languages And Discovery
 
 Human-language catalogs live in `content/languages/**/*.json`. Schema v10 adds structured grammar, N5 study metadata, Japanese open-answer/listening question kinds, and synthetic-audio provenance while retaining generic progression and resource-rights metadata. Japanese indexes complete kana, an exact 100-kanji target, 650 N5-aligned words, 60 grammar patterns, learner romaji, IPA, study order, and normalized paths for published handwriting profiles. A compact pinned JMdict asset supplies local IME candidates. Only human-approved audio enters generated web/Expo registries; external resources remain link-only unless redistribution rights are explicit.
 
-Home discovery curation lives in `content/discovery/home.json`. It references canonical published content by kind and slug; index generation validates every reference and serializes the ordered sections into content index schema version 11. `packages/core/src/discovery.ts` resolves those references and provides cross-section local search to web and native.
+Home discovery curation lives in `content/discovery/home.json`. It references canonical published content by kind and slug; index generation validates every reference and serializes the ordered sections into content index schema version 12. `packages/core/src/discovery.ts` resolves those references and provides cross-section local search to web and native.
+
+### Course Catalog
 
 The ML Systems Engineer path is the first source-linked career curriculum. It maps the complete Harvard CS249r student surface—both books, labs, TinyTorch, MLSys·im, optional hardware, and StaffML—while locally publishing prerequisites and Volume I companions through Data Engineering. Later stages remain explicitly planned but open their primary sources now.
 
@@ -144,9 +155,9 @@ The Python language refresh path is the first reusable language-refresh slice. I
 
 The Langfuse and LangChain AI engineering path is the first AI engineering slice. It pairs searchable Markdown lessons, Mermaid diagrams, questionnaires, and passive flashcards for LLM application architecture, LangChain tools/RAG/agents, LangGraph operations, Langfuse tracing/evaluation workflows, and OWASP/NIST-aligned production risk governance. Coding challenge sections in these lessons are non-executable until the future code editor feature adds an executable challenge contract.
 
-The database indexes and search path teaches production index judgment, PostgreSQL Heap-Only Tuple update behavior, full text search, trigram fuzzy matching, and hybrid SQL search query design. Its HOT unit connects MVCC row versions, same-page space, regular and BRIN index effects, fillfactor, pruning, vacuuming, and statistics monitoring. The path pairs searchable Markdown lessons with senior-level questionnaires and passive flashcards, while keeping executable SQL query practice as future roadmap work.
+The database indexes and search path teaches index selection for production, PostgreSQL Heap-Only Tuple update behavior, full text search, trigram fuzzy matching, hybrid SQL search query design, and resilient connection management. Its pooling unit covers application and proxy budgets, transaction sharing, shutdown, spot interruptions, and compatibility through diagrams, calculated examples, and interactive questions. It adds no live database connection or new runtime component. Its HOT unit connects MVCC row versions, same-page space, regular and BRIN index effects, fillfactor, pruning, vacuuming, and statistics monitoring. The path pairs searchable Markdown lessons with senior-level questionnaires and passive flashcards, while keeping executable SQL query practice as future roadmap work.
 
-The Advanced Next.js 16 path is the first Front-End Development skill slice. It pairs hard-only searchable Markdown lessons, senior/principal questionnaires, and one-minute passive brief cards for App Router rendering, `force-dynamic`, Cache Components, data fetching, invalidation, production failure modes, performance architecture, and migration review. Next.js content must stay anchored to official Next.js documentation, official release notes, and npm registry version metadata.
+The Advanced Next.js 16 path is the first Front-End Development skill slice. It pairs advanced searchable Markdown lessons, senior/principal questionnaires, and one-minute passive brief cards for App Router rendering, `force-dynamic`, Cache Components, data fetching, invalidation, production failure modes, performance architecture, and migration review. Next.js content must stay anchored to official Next.js documentation, official release notes, and npm registry version metadata.
 
 The RTK Query Interview Preparation path extends Front-End Development using seven source-required lessons and checkpoints plus 21 passive briefs. It covers cache/request ownership, mutations, a generalized persisted-pending incident, modern RTK 2.12.0 APIs, architecture, and a mock interview. It reuses the content pipeline and study components without adding Redux or RTK as an application runtime dependency. See `docs/features/rtk-query-interview-preparation.md`.
 
@@ -158,7 +169,9 @@ The Reading And Writing Mermaid Diagrams path is the source-first technical docu
 
 The Japanese Foundations path is the first human-language slice. Its open progression spans Kana Explorer followed by Core Connections, Everyday Japanese, Reading and Listening, and N5 Readiness. Ten progressive A1 units combine original lessons, mixed quizzes, open-answer IME composition, cumulative flashcards, and approval-gated listening across web and Expo. Pencil Scribble writes into the same transient native text input; no raw ink or answer history is persisted.
 
-Progress is user state, not authored content. Existing completion remains in `user_progress_items`. Japanese mastery is additive: anonymous review state persists locally, while `user_skill_progress` provides an RLS-protected signed-in target for best score, attempt count, review box, mastery state, and review times. Web and Expo load the remote snapshot when authenticated, validate it, merge it deterministically with retained local state, save the merged snapshot locally, and upload it in batches of at most 20. Neither path stores answers, raw handwriting, recordings, or full attempt history.
+### Progress
+
+Progress is user state, separate from authored content. Existing completion remains in `user_progress_items`. Japanese mastery is additive: anonymous review state persists locally, while `user_skill_progress` provides an RLS-protected signed-in target for best score, attempt count, review box, mastery state, and review times. Web and Expo load the remote snapshot when authenticated, validate it, merge it deterministically with retained local state, save the merged snapshot locally, and upload it in batches of at most 20. Neither path stores answers, raw handwriting, recordings, or full attempt history.
 
 ## Route Model
 
@@ -214,18 +227,18 @@ The stable command and workflow contract is documented in `docs/features/automat
 
 ## Future Architecture Direction
 
-The likely next step remains hybrid: keep Markdown documents and local structured study content canonical, keep `@codematica/core` as the shared contract surface, and expand Supabase-backed search, AI summaries, scoring, streaks, and study features behind explicit contracts.
+The likely next step combines canonical Markdown and local structured content with expanded Supabase-backed search, AI summaries, scoring, streaks, and study features. Keep `@codematica/core` as the shared contract and define each new feature explicitly.
 
 Before relying on Supabase for production user progress at scale, revisit plan level, backups, RLS policy coverage, and operational ownership. The service role key remains server-only.
 
 ## Game runtime and progression
 
-The [game feature contract](features/restore-the-signal.md) owns the chapter. `content/game/` passes the shared Zod/index pipeline; all 36 scenarios ship in schema version 11. Game rules import no graphics libraries. Web loads PixiJS on the client, while native Skia/Reanimated consume the same atlas and keyframes. CSS uses actual local layout; sql.js and WASM are bundled into a terminable local worker. Native hosts the same sandbox document in a local WebView.
+The [game feature contract](features/restore-the-signal.md) owns the chapter. `content/game/` passes the shared Zod/index pipeline; all 36 scenarios ship in schema version 12. Game rules import no graphics libraries. Web loads PixiJS on the client, while native Skia/Reanimated consume the same atlas and keyframes. CSS uses actual local layout; sql.js and WASM are bundled into a terminable local worker. Native hosts the same sandbox document in a local WebView.
 
 ```mermaid
 flowchart TD
     Campaign["content/game JSON + local lessons"] --> Validate["Core schema + reference validation"]
-    Validate --> Index["Generated content index v11"]
+    Validate --> Index["Generated content index v12"]
     Artwork["Editable SVG parts + painted layers + portraits + rig timelines"] --> Export["game:assets"]
     Export --> Atlas["Shared atlas + district textures"]
     Export --> Thumbnails["Sized PNG/WebP portraits + identity manifest"]
@@ -256,3 +269,69 @@ Android prebuild also registers shared package sources and game assets as Gradle
 Portrait masters are separate from the animation atlas. `game:assets` emits 64/128/256/512px thumbnails and a manifest with names and alt text; it copies all variants into the web public directory. Native screens can statically import a chosen PNG size when needed. `game:check` recursively verifies generated subfolders, and the pruned web artifact smoke check validates every served thumbnail.
 
 The game renderers share `packages/core/src/game/miniatures.ts` for layer ordering, animation transforms, success opacity and fitting the figures to the measured container. The asset build samples this same pose to export transparent full-body miniatures; portrait icons remain separate. No renderer library enters core.
+
+## Private LinkedIn editorial workflow
+
+Anonymous learning remains local-index first. The optional `/admin/linkedin` web/native surface reads private drafts through Supabase Auth, RLS and admin-only RPCs. `private.app_admins` is operator provisioned. Post revisions are immutable; approval binds the exact text. Manual creation atomically inserts a draft and refinement job. Manual drafts require an analyzed proposal to be adopted before approval, and text edits invalidate analysis. Shared schemas/store live in `packages/core/src/linkedin*.ts`. The HTTP/mobile graphs never import the local service-role worker.
+
+```mermaid
+flowchart LR
+  Sources[Canonical learning Markdown] --> Drafts[Private Supabase drafts and revisions]
+  Human[Verified personal admin] --> Review[Web or native review]
+  Review -->|Create manual draft| Create[Atomic draft and analysis request]
+  Create --> Drafts
+  Create --> Jobs[Durable Postgres jobs]
+  Review -->|Refine| Jobs
+  Review -->|Approve exact revision| Jobs
+  Jobs --> Worker[Manual local Codex run]
+  Prompt[Checked-in refinement prompt] --> Worker
+  Worker -->|Proposed revision only| Drafts
+  Worker -->|Approved text and free capacity| Buffer[Buffer daily queue]
+  Buffer --> LinkedIn[Personal LinkedIn profile]
+  Worker -->|Confirmed identity and status| Publications[Supabase publications]
+  Drafts --> Review
+  Publications --> Review
+```
+
+The existing Codex account processes queued requests locally when the user asks. Requests persist between manual runs. Buffer Free owns daily slots and holds at most ten scheduled posts; additional approvals remain durable in Supabase. First comments are manual. Scheduling attempts are recorded before external calls; unknown results are reconciled instead of retried. Private exports before each day’s first mutations and insert-only restore preserve history; restore always pauses publishing. See `features/linkedin-editorial.md` and `runbooks/linkedin-editorial.md` for account onboarding, failure recovery and validation boundaries.
+
+## Frontend Interview Study Flow
+
+Index v11 resolves interview path nodes alongside documents and exercises. Optional Python companions remain structured interview content; anonymous browsing and progress boundaries are unchanged. Exact authored code is verified before indexing/release. See `docs/features/frontend-interview-practice.md`.
+
+```mermaid
+flowchart LR
+  Brief[Markdown concepts] --> Recipe[Interview recipe]
+  Recipe --> TS[Web TypeScript playground]
+  Recipe --> Python[Python companion source]
+  TS --> Quiz[Eight-question checkpoint]
+  Python --> Quiz
+  Quiz --> Next[Next topic]
+  Quiz --> Final[Final topic: continuous review]
+  Path[Path overview] --> Final
+  Final --> Brief
+  Brief -. Supplement .-> State[React state snapshots lesson]
+  State --> StateQuiz[Six-question state checkpoint]
+```
+
+Native follows the same nodes and code display, with execution available on web only. Review cards carry explicit code language and canonical lesson references. `npm run test:interview:python` complements TS/React execution tests and is required in CI.
+
+Japanese notebook practice extends the existing local character/vocabulary catalogs with versioned sheets and 24 whole-prompt repetitions. Canonical kana geometry remains pinned and attributed to KanjiVG. The whole-shape grader ignores stroke order/direction and accepts extra lifts, while checking major-feature coverage with Easy/Balanced/Precise tolerances. Device snapshots retain learner ink and the per-notebook difficulty preference; optional progress synchronization stores counts and unlocks only. Both clients check accumulated ink automatically after a pen-up pause. The following flow describes the shared notebook engine and its client adapters.
+
+## Writing notebook flow
+
+The versioned notebook engine in core owns prompt validation, 24-repetition schedules, shape coverage, cell cursors and monotonic earned progress. The React-only `@codematica/ui/notebook-session` subpath coordinates both clients without importing React Native into the web entrypoint. Both clients detect contact types automatically and preserve completed pending strokes during two-finger paper scrolling. The iOS Expo view bridges UIKit pan phases/deltas to the RN viewport, keeping PencilKit ink aligned with the paper. `NotebookScrollContext` hands remaining pan distance to the native outer page at the paper bounds. Web keeps its viewport scrollable for wheel, trackpad, scrollbar and keyboard input. Web has a direct production dependency on `@codematica/ui`; the pruned-artifact smoke serves the notebook catalog and existing writing routes.
+
+```mermaid
+flowchart LR
+  Content["Canonical writing JSON + published stroke models"] --> Engine["Core notebook definitions + shape grader"]
+  Engine --> Web["Pointer Events / smooth SVG"]
+  Engine --> Native["PencilKit iOS / SVG Android"]
+  Web --> LocalWeb[("IndexedDB vectors + pages")]
+  Native --> LocalNative[("AsyncStorage manifests + cells")]
+  Web --> Merge["Bounded furthest-progress merge"]
+  Native --> Merge
+  Merge <--> Remote[("RLS notebook counts; no ink")]
+```
+
+See [Japanese writing notebooks](features/japanese-writing-notebooks.md) for failure recovery, native build limits and tests.

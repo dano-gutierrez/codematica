@@ -11,7 +11,7 @@
     {
       "id": "coroutine-start",
       "kind": "choice",
-      "prompt": "A Python async function is called but not awaited or scheduled. What is the senior review note?",
+      "prompt": "A Python async function is called but not awaited or scheduled. What should a reviewer note?",
       "options": [
         {
           "id": "started",
@@ -67,7 +67,7 @@
     {
       "id": "async-match",
       "kind": "matching",
-      "prompt": "Match the asyncio concept to the production review lens.",
+      "prompt": "Match each asyncio concept to its production concern.",
       "pairs": [
         {
           "id": "coroutine",
@@ -90,7 +90,7 @@
     {
       "id": "sleep-test",
       "kind": "choice",
-      "prompt": "A flaky async test uses arbitrary sleeps to wait for work. What should a senior reviewer prefer?",
+      "prompt": "A flaky async test uses arbitrary sleeps to wait for work. What should a reviewer prefer?",
       "options": [
         {
           "id": "longer-sleep",
@@ -113,7 +113,7 @@
     {
       "id": "failure-contract-order",
       "kind": "ordering",
-      "prompt": "Order the senior questions for choosing an async concurrency primitive.",
+      "prompt": "Order the review questions for choosing an async concurrency primitive.",
       "items": [
         {
           "id": "fail",

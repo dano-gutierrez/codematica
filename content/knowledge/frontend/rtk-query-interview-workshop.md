@@ -57,11 +57,11 @@ async function save() {
 const persistOptions = { whitelist: ['drafts', 'authorsApi'] };
 ```
 
-### What a Strong Review Finds
+### Review Findings
 
-The custom serializer collapses tenants and search strings into one entry. Copying data creates another owner that can survive account changes. Full-screen loading hides existing useful results on every refresh. Fifteen seconds is unused retention, not a freshness guarantee. The save handler may announce success for a handled error. Persisting a whole API slice requires a migration and rehydration policy, especially around pending state.
+The custom serializer collapses tenants and search strings into one entry. Copying data creates another owner that can survive account changes. Full-screen loading hides existing results on every refresh. Fifteen seconds is unused retention, not a freshness guarantee. The save handler may announce success for a handled error. Persisting a whole API slice requires a migration and rehydration policy, especially around pending state.
 
-Repair cache identity first; then read current scoped data, show background/error states separately, unwrap or inspect the mutation result, declare collection/detail invalidation, and explicitly define durable storage. Add one behavioral test per observed failure. Do not promise that changing one flag resolves all six issues.
+Repair cache identity first; then read current scoped data, show background/error states separately, unwrap or inspect the mutation result, declare collection/detail invalidation, and define what belongs in durable storage. Add one behavioral test per observed failure. Do not promise that changing one flag resolves all six issues.
 
 **Follow-up:** Which issue is highest priority? Cross-account display is a confidentiality risk. Fix and test scope boundaries first, while recognizing that server-side authorization remains mandatory. Do not present the cache key as a security boundary by itself.
 
@@ -95,7 +95,7 @@ Sketch edits A→B→C with the earlier operation failing late. State why invers
 
 In a scratch project, implement a fake author API and a real RTK store. Start with a failing test for two accounts accidentally sharing results, or for a raw restored pending entry blocking initiation. Implement the smallest correction. Then add the UI journey: display, mutate, fail/refetch, switch account, and restart using synthetic storage. The supplied lesson snippets are reference code; these tasks are not executable or auto-graded inside the reader.
 
-Deliver a before/after behavior description, explicit cache/persistence policy, source/version references, and test evidence. A strong solution names what it cannot prove yet: real native restart behavior, backend idempotency, or an old persisted format that has not been replayed.
+Deliver a before/after behavior description, explicit cache/persistence policy, source/version references, and test evidence. State what the solution cannot yet prove: real native restart behavior, backend idempotency, or an old persisted format that has not been replayed.
 
 ## Self-Assessment Rubric
 
@@ -109,4 +109,4 @@ Score each dimension 0–2: 0 means incorrect or missing, 1 means mechanism name
 | Modern APIs | Versioned infinite/schema behavior with a practical tradeoff |
 | Engineering judgment | Small fix, realistic tests, observable result, explicit unknowns |
 
-Revisit any zero before the next rehearsal. Complete the checkpoint to check concrete decisions, then use the review feed to practice concise explanations without rereading the full path.
+Review any dimension scored zero before the next rehearsal. Complete the checkpoint to check concrete decisions, then use the review feed to practice concise explanations without rereading the full path.

@@ -1,4 +1,4 @@
-import { useCallback } from "react";
+import { useCallback, useState } from "react";
 import { getGameSession } from "@codematica/core/game";
 import { getContentIndex } from "@codematica/core";
 import { NativeGamePlay } from "@codematica/ui/game";
@@ -13,10 +13,15 @@ export default function GameLevel() {
       (c) => c.id === params.campaign,
     ),
     level = campaign?.levels.find((l) => l.id === params.level);
+  const [active, setActive] = useState(false);
   useFocusEffect(
     useCallback(
-      () => () => {
-        if (campaign && level) getGameSession(campaign.id, level).pause();
+      () => {
+        setActive(true);
+        return () => {
+          setActive(false);
+          if (campaign && level) getGameSession(campaign.id, level).pause();
+        };
       },
       [campaign, level],
     ),
@@ -25,6 +30,7 @@ export default function GameLevel() {
   return (
     <NativeGamePlay
       key={level.id}
+      active={active}
       campaign={campaign}
       level={level}
       store={nativeGameStore(campaign)}

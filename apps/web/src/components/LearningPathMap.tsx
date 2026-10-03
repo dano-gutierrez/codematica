@@ -138,6 +138,11 @@ function PathNodes({
 }
 
 function getNodeDisplay(index: ContentIndex, node: LearningPathNode) {
+  if (node.kind === "interview") {
+    const question = index.interviewCollections.flatMap((collection) => collection.questions).find((item) => `${item.collectionSlug}/${item.slug}` === node.slug);
+    return { title: question?.title ?? node.slug, summary: question?.summary ?? "Interview walkthrough", kindLabel: "Guided solutions", difficulty: question?.difficulty, icon: <Brain className="h-3.5 w-3.5" />, colorClass: "border-[#9cc7ff] bg-[#edf5ff] text-[#245fba]" };
+  }
+
   if (node.kind === "source") {
     const source = index.sources.find((item) => item.id === node.sourceRef);
     const document = node.companionKind === "document" ? index.documents.find((item) => item.slug === node.slug) : undefined;

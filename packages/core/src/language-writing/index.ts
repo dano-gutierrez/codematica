@@ -2,6 +2,7 @@ import type { LanguageStroke, LanguageStrokePoint } from "../content/schema";
 
 export type WritingStroke = {
   points: LanguageStrokePoint[];
+  pressures?: number[];
 };
 
 export type WritingCheckInput = {
@@ -20,15 +21,40 @@ export type WritingCheckResult = {
 };
 
 const sampleCount = 16;
-const assistedCompletionThreshold = 0.6;
+const assistedCompletionThreshold = 0.5;
 const minimumOrderedStrokeScore = 0.5;
-const assistedAttemptThreshold = 0.6;
-const freeAttemptThreshold = 0.65;
+const assistedAttemptThreshold = assistedCompletionThreshold;
+const freeAttemptThreshold = assistedCompletionThreshold;
 
 export function normalizeWritingStroke(stroke: WritingStroke): WritingStroke {
   return {
     points: simplifyPoints(stroke.points).map(clampPoint),
   };
+}
+
+/** A light cubic interpolation keeps the learner's positions and endpoints intact. */
+export function getWritingStrokePath(points: LanguageStrokePoint[], clampControls = true): string {
+  if (!points.length) return "";
+  const [first] = points;
+  const start = `M ${first![0]} ${first![1]}`;
+  if (points.length < 3) return [start, ...points.slice(1).map(([x, y]) => `L ${x} ${y}`)].join(" ");
+  const segments = points.slice(1).map((end, index) => {
+    const begin = points[index]!;
+    const previous = points[Math.max(0, index - 1)]!;
+    const next = points[Math.min(points.length - 1, index + 2)]!;
+    // Keep tangent direction at each join; cap handle length to avoid spikes
+    // when consecutive pointer samples are unevenly spaced.
+    const maxHandle = distance(begin, end) / 3;
+    const control = (anchor: LanguageStrokePoint, tangent: LanguageStrokePoint, sign: number) => {
+      const scale = Math.min(1 / 6, maxHandle / Math.max(Math.hypot(...tangent), Number.EPSILON));
+      const point: LanguageStrokePoint = [anchor[0] + sign * tangent[0] * scale, anchor[1] + sign * tangent[1] * scale];
+      return (clampControls ? clampPoint(point) : point).map((value) => Math.round(value * 100) / 100);
+    };
+    const c1 = control(begin, [end[0] - previous[0], end[1] - previous[1]], 1);
+    const c2 = control(end, [next[0] - begin[0], next[1] - begin[1]], -1);
+    return `C ${c1[0]} ${c1[1]} ${c2[0]} ${c2[1]} ${end[0]} ${end[1]}`;
+  });
+  return [start, ...segments].join(" ");
 }
 
 export function checkWritingAttempt(input: WritingCheckInput): WritingCheckResult {
@@ -69,13 +95,24 @@ function compareStroke(expected: WritingStroke, actual: WritingStroke | undefine
 
   const expectedSamples = sampleStroke(expected.points, sampleCount);
   const actualSamples = sampleStroke(actual.points, sampleCount);
+  const lengthRatio = strokeLength(actual.points) / Math.max(strokeLength(expected.points), 0.1);
+  // A dot or a short chord across a loop is not a completed stroke.
+  if (lengthRatio < 0.35 || lengthRatio > 2.5) return 0;
   const forwardDistance = averageDistance(expectedSamples, actualSamples);
   const reverseDistance = averageDistance(expectedSamples, [...actualSamples].reverse());
-  const directionPenalty = reverseDistance < forwardDistance ? 0.22 : 0;
-  const distance = Math.min(forwardDistance, reverseDistance + 14);
-  const normalized = Math.max(0, 1 - distance / 42);
+  if (reverseDistance + 6 < forwardDistance) return 0;
+  const offset: LanguageStrokePoint = [
+    average(expectedSamples.map(([x]) => x)) - average(actualSamples.map(([x]) => x)),
+    average(expectedSamples.map(([, y]) => y)) - average(actualSamples.map(([, y]) => y)),
+  ];
+  // Allow modest placement drift, while retaining the stroke's size and shape.
+  const adjustment = Math.min(1, 12 / Math.max(Math.hypot(...offset), 0.1));
+  const aligned = actualSamples.map(([x, y]) => [x + offset[0] * adjustment, y + offset[1] * adjustment] satisfies LanguageStrokePoint);
+  return Math.max(0, 1 - averageDistance(expectedSamples, aligned) / 44);
+}
 
-  return Math.max(0, normalized - directionPenalty);
+function strokeLength(points: LanguageStrokePoint[]) {
+  return points.slice(1).reduce((total, point, index) => total + distance(points[index]!, point), 0);
 }
 
 function sampleStroke(points: LanguageStrokePoint[], count: number) {
@@ -105,7 +142,7 @@ function sampleStroke(points: LanguageStrokePoint[], count: number) {
     const index = Math.max(1, rightIndex === -1 ? distances.length - 1 : rightIndex);
     const leftDistance = distances[index - 1]!;
     const rightDistance = distances[index]!;
-    const segmentLength = Math.max(rightDistance - leftDistance, 1);
+    const segmentLength = Math.max(rightDistance - leftDistance, Number.EPSILON);
     const ratio = (targetDistance - leftDistance) / segmentLength;
     const left = points[index - 1]!;
     const right = points[index]!;
@@ -115,7 +152,11 @@ function sampleStroke(points: LanguageStrokePoint[], count: number) {
 }
 
 function simplifyPoints(points: LanguageStrokePoint[]) {
-  return points.filter((point, index) => index === 0 || distance(point, points[index - 1]!) >= 1.5);
+  const kept: LanguageStrokePoint[] = [];
+  points.forEach((point, index) => {
+    if (!kept.length || index === points.length - 1 || distance(point, kept.at(-1)!) >= 0.2) kept.push(point);
+  });
+  return kept;
 }
 
 function averageDistance(left: LanguageStrokePoint[], right: LanguageStrokePoint[]) {
@@ -146,19 +187,19 @@ function createFeedback({
   shapeScore: number;
 }) {
   if (isCorrect) {
-    return "Correct. The stroke count, order, and shape match the target.";
+    return "Nicely done. Your strokes follow the character. They don't need to be exact.";
   }
 
   if (!strokeCountCorrect) {
-    return "Check the stroke count first, then try the character again.";
+    return "Check the stroke count, then try the character again.";
   }
 
   if (!strokeOrderCorrect) {
-    return "The shape is close, but the stroke order or direction needs review.";
+    return "Follow the numbered strokes in their general direction. A rough shape is enough.";
   }
 
   if (shapeScore < 0.5) {
-    return "Use the guide shape and keep each stroke closer to the expected path.";
+    return "Follow the guide shape and keep each stroke closer to its expected path.";
   }
 
   return "Almost there. Slow down and match the start and end of each stroke.";

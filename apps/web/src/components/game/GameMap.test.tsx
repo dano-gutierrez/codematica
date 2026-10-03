@@ -92,3 +92,15 @@ it("allows only local campaign paths in the lesson return affordance", () => {
   render(<GameLessonReturn />);
   expect(screen.getByTestId("game-return")).toHaveAttribute("href", returnTo);
 });
+
+it("keeps the map and level links usable when scroll storage is denied", async () => {
+  store = new GameStore(c, { getItem: () => null, setItem: vi.fn() });
+  const read = vi.spyOn(Storage.prototype, "getItem").mockImplementation(() => { throw Error("storage denied"); });
+  const write = vi.spyOn(Storage.prototype, "setItem").mockImplementation(() => { throw Error("storage denied"); });
+  try {
+    render(<GameMap campaign={c} />);
+    await waitFor(() => expect(screen.getByTestId("game-level-1")).toBeEnabled());
+    expect(() => fireEvent.click(screen.getByTestId("game-continue"))).not.toThrow();
+    expect(screen.getByTestId("game-continue")).toHaveAttribute("href", `/play/${c.id}/${c.levels[0].id}`);
+  } finally { read.mockRestore(); write.mockRestore(); }
+});

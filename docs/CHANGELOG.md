@@ -1,5 +1,15 @@
 # Product And Engineering Changelog
 
+This changelog dates durable product and architecture changes and links to their authoritative feature contracts.
+
+## 2026-10-03 — Campaign integration review
+
+- Merged the current learning features and Expo patches while preserving Play/Learn navigation, notebook access, and the private admin destination. The combined content index is version 12; the game migration has a unique version after the editorial migrations.
+- Cancelled stale web runner requests and native WebView callbacks after reset or navigation. Only the focused native level advances the shared defense clock.
+- Serialized anonymous-progress claims and guarded deferred account checks so stale requests cannot merge or upload another account’s awards. Unavailable map scroll storage no longer interrupts play.
+- Made the SQL zone mastery fixture require a different predicate from the story. Strengthened exact drag-coordinate, independent budget/latency, save-prompt, and async-race regressions; retained all coverage floors.
+- Current validation and remaining installed-iOS, Maestro, and physical-device performance requirements are recorded in the [campaign contract](features/restore-the-signal.md).
+
 ## 2026-10-02 — Approved Patch app identity
 
 - Removed the two thin lines above Patch's left eyebrow in the large and medium icons and regenerated their exports; retained the eyebrow, lettering and tiny favicon.
@@ -33,7 +43,105 @@
 - Added core/browser/native/database coverage and retained existing coverage floors. Generated worker/asset files are artifacts; no authored game source is excluded from coverage.
 - Release verification and current toolchain limits are tracked in [the feature contract](features/restore-the-signal.md); source and bundle success do not imply installed-iOS or deployment readiness.
 
-This changelog records durable, user-visible and architectural changes. Feature documents remain the authoritative contracts; this file explains when a group of related changes landed and points readers to the owning documentation.
+## 2026-09-29 — PR Check Reliability
+
+- Aligned Expo SDK 57 dependencies and root overrides with Expo 57.0.26 and React Native 0.86.3. Added the required `expo-asset` native peer, pinned compatible animation packages, and regenerated stale nested workspace resolutions in the lockfile.
+- Scoped Japanese hub test queries to their sections while strengthening character-group and reuse-label assertions. Complete authored TypeScript compiler tests now have a 30-second timeout; other timeouts, coverage floors, and exclusions are unchanged.
+- A clean install, full dependency-tree check, Expo Doctor (20/20), content freshness, lint, typechecking, 358 Vitest tests with both coverage gates, 50 native tests with coverage, 13 Python tests, Android/iOS bundle exports, production web build, and nine browser smoke journeys passed locally.
+- The copied production web build also reached readiness and returned HTTP 200 for home, browse, login, and a lesson after `npm ci --omit=dev` in a disposable directory.
+- Installed-device startup, native binary compatibility, and store readiness remain unverified by these checks.
+
+Owning contracts: `docs/features/automated-testing-and-release-regression.md` and `docs/features/native-mobile-deployment.md`.
+
+## 2026-09-29 — Technical Editing Skill And Clearer Copy
+
+- Added the repo-local technical editing skill to shorten prose while preserving technical details, code, conditions, warnings, and uncertainty.
+- Reviewed all 123 Markdown files, 142 app source files, and 160 authored content files. Simplified documentation, lessons, exercises, flashcards, interview explanations, and web/native UI copy where needed. Practice labels now include Next activity, Practice complete, Quick review, and Choose your prediction.
+- Kept commands, code examples, technical values, Japanese examples, translations, and source metadata intact. Flagged conflicting schema/stage descriptions instead of silently changing them.
+- Fixed a literal pipe splitting a Japanese vocabulary definition across table columns. Generator and mobile browser regressions verify the full definition remains in one cell.
+- Coverage thresholds and exclusions are unchanged.
+- Validation passed: content freshness, lint, typechecking, production build, 358 Vitest tests with aggregate and per-file coverage, 50 native tests with coverage, 13 Python tests, and all 49 browser journeys across the full run and targeted rerun. The first browser run exposed two outdated text assertions; both were updated and their four related journeys passed. Failure evidence was retained.
+- Expo Doctor passed 19/20 checks and reported 10 existing package-version mismatches. Installed-device validation remains open: no Android device or booted iOS simulator was available, and Maestro was not installed. No deployment was performed.
+
+Owning contracts: `docs/README.md#technical-editing-skill`, `docs/features/learning-paths-and-practice.md`, and `docs/features/japanese-language-learning.md`.
+
+## 2026-09-29 — Native Code Scrolling
+
+- Reuse the native code renderer for fenced and indented Markdown, preserving indentation and blank lines while scrolling long lines horizontally inside the code surface.
+- Keep language labels and surrounding prose/navigation fixed; remove the height cap that could hide the end of long code. System font scaling remains enabled. Phone tab labels fit on one line to avoid mid-word wrapping at larger text sizes.
+- Add regression-first Jest coverage, a Maestro lesson journey, and an agent-device runner that asserts real source movement and unchanged surrounding bounds on Android/iOS, with retained screenshots and native trees.
+- Review follow-up (2026-09-30): strengthen regression assertions for stationary language labels, padded/blank fence metadata, inner height clipping, and tablet label wrapping. All four deliberate defects passed the previous tests and fail the strengthened suite. Merge current `main` while preserving its admin navigation tests and Expo dependency alignment.
+
+Owning contract: `docs/features/markdown-knowledge-browser.md`. Device setup and regression command: `apps/mobile/e2e/README.md`.
+
+## 2026-10-02 — Saved Japanese writing notebooks
+
+- Removed Draw/Pen/Scroll controls. Input detection follows mouse, finger and Pencil contacts automatically; wheel/trackpad scrolling and two-finger paper scrolling preserve completed ink. Installed iOS bridges UIKit pan gestures to the shared notebook viewport.
+
+- Kept Next sheet compact and replaced the full-width restart button with an accessible icon. Delayed error feedback until 1.2 seconds after pen-up to allow more time between mouse strokes; correct characters still save after 400ms.
+- Added Easy (default), Balanced and Precise handwriting difficulty, saved locally per notebook. Relaxed mouse/finger shape checks while retaining missing-feature and scribble rejection. Removed the manual Check character fallback; correction and tool/difficulty changes recheck automatically. Shortened error bounce and fade timings.
+- Added cancellable rejection feedback: a gentle focused-cell bounce, a short correction window and a fade that clears temporary ink. Widened the left gutter so character cells clear the red notebook line. Web/native honor reduced-motion settings.
+- Added warm ruled notebook pages with 24 complete prompt repetitions, curated character pairs/words/expressions, and custom 1–5-character notebooks with three progressively less guided sheets.
+- Accepted recognizable complete characters anywhere on the paper, independent of stroke order and extra lifts; retained the learner's ink, pressure samples, correction controls and earned sheet unlocks.
+- Added explicit Japanese/Notebook navigation, IndexedDB and per-cell AsyncStorage saving, optional owner-protected completion sync, and a local iOS PencilKit module with Android SVG fallback.
+- Passed core/web/native coverage, Japanese and navigation browser journeys, clean migration replay, transactional database tests and HTTP readiness with a clean production-only install. Installed-device Maestro and physical iPad Pencil validation remain outstanding; Xcode 26.3 is below Expo SDK 57's supported baseline and installed-device verification remains pending. Expo Doctor passes 20/20 on the current dependencies.
+
+Owning contract: [Japanese writing notebooks](features/japanese-writing-notebooks.md).
+
+## 2026-10-02 — Fluid kana guides and easier handwriting
+
+- Replaced 109 crude published kana models with attributed, pinned KanjiVG curve geometry, including あ's full third-stroke loop.
+- Added shared cubic rendering, preserved learner ink after assisted acceptance, retained slow/coalesced samples, and relaxed placement/size grading while rejecting missing, reversed, or tiny strokes.
+- Added core/content, web, native, and browser regressions. See [Japanese planas](features/japanese-language-learning.md#handwriting-practice-sheets-planas) and [data attribution](../THIRD_PARTY_NOTICES.md).
+
+## 2026-09-30 — Japanese planas and writing space
+
+- Added repeatable character-pair and kana word sheets with trace, copy, recall, and matching activities on web/native.
+- Enlarged and rounded the web writing surface, reserved feedback space, and fixed native tablet coordinate scaling/release/cancellation handling.
+- Added regression coverage for sequence/completion, finger/pen input, phone/iPad layout stability, native matching, and a Maestro writing-sheet journey. Physical Pencil and installed-device validation remains required before native release.
+
+## 2026-09-28 — Readable Lesson Code Blocks
+
+- Fixed a prose CSS rule that replaced highlighted blocks' dark background with a pale surface while retaining light syntax colors.
+- Kept inline-code styling separate and added rendered contrast checks at phone and desktop widths. The regression reproduced 1.21:1 body-text contrast before the fix and requires at least 4.5:1 for every code text node.
+- Audited all web/native code surfaces. Converted playground failure source to the shared dark renderer, aligned plain prose fallbacks and native indented Markdown, and fixed low-contrast inherited playground syntax colors. Added fallback recovery, native style, and cross-surface browser regressions. Theme selection remains deferred; coverage gates are unchanged.
+
+Owning contract: `docs/features/markdown-knowledge-browser.md`.
+
+## 2026-09-28 — React State Snapshots Lesson
+
+- Added a supplementary lesson explaining stale state in timers and promise callbacks, functional updates by ID, reducers/ref tradeoffs, and late-result cleanup.
+- Added complete broken/fixed React examples with exact-source execution tests and six quiz questions. Linked the lesson from the board and async-matrix guides and made it searchable through the generated index.
+- Reused the Markdown reader and questionnaire; no schema, runtime dependency, or coverage gate changes.
+
+Owning contract: `docs/features/frontend-interview-practice.md#supplementary-react-state-lesson`.
+
+## 2026-09-28 — Playground Connection Recovery
+
+- Start a single preview when a solution is revealed; the console observes the same runtime instead of executing a hidden copy.
+- Show startup and connection status. Retry preserves edits and opens a fresh connection; Reset restores and executes the authored files.
+- Add component coverage and Chromium/WebKit regressions for automatic startup, editing, console output, Reset, and blocked-runtime recovery. Exclude generated nested Playwright reports from lint while retaining failure evidence. Coverage thresholds and exclusions are unchanged.
+
+Owning contract: `docs/features/react-typescript-playground.md`. A hosted-runtime connection is still required.
+
+## 2026-09-27 — Frontend Interview Practice and Content Audit
+
+- Added seven anonymous guided challenges, 21 React/TypeScript projects, 21 Python companions, 56 quiz questions, and 42 review cards.
+- Connected lesson → recipe → quiz → next lesson/final feed on web and native. Added explicit snippet languages and lesson links.
+- Added index v11 contracts, exact authored-code verification, a required Python CI gate, component/browser/native coverage, and a Maestro journey. Coverage thresholds/exclusions are unchanged.
+- Corrected existing interview API omissions, algorithm/complexity mismatches, Unicode/arithmetic boundaries, and unsupported acceptance guarantees. See the audit table in the interview catalog contract.
+- Native release validation remains open: local Mobile Doctor flags existing Expo patch mismatches; the new installed-device flow has not been run locally.
+
+Owning contract: `docs/features/frontend-interview-practice.md`.
+
+## 2026-09-30 — Manual LinkedIn Drafts
+
+- Added admin Create flows on web/native that save manual drafts and queue analysis together.
+- Added selection-based Unicode bold/italic, bullets and plain text to creation and review editors.
+- Enforced analysis/adoption before manual-post approval, safe request retries and UTF-16 limits on new revisions; text edits require reanalysis.
+- Added database, shared, web/native and browser regressions without new runtime dependencies or coverage exclusions.
+
+Owning contract: `docs/features/linkedin-editorial.md`.
 
 ## 2026-09-10 — Product Engineering Interview Preparation
 
@@ -148,3 +256,11 @@ Owning contracts: `docs/features/japanese-language-learning.md`, `docs/features/
 - Added the beginner distinction between learner-facing romanization and Japanese IME keystrokes, including particle spellings such as `こんばんは`: learner romaji `konbanwa`, IME input `konbanha`.
 - Added structured examples, vocabulary breakdowns, IME-aware Japanese search, character detail profiles, and reusable assisted/free handwriting practice.
 - Preserved transient raw strokes while allowing coarse practice completion to use the existing progress system.
+
+## 2026-09-29 — Private LinkedIn editorial workflow
+
+Added admin web/native review, immutable Supabase revisions, approval-bound Buffer jobs, fixed refinement prompt and manual local worker contract. Seeded 100 unapproved private drafts; no drafts entered the public content index. Added pgTAP, shared/web/native tests, isolated editorial E2E and production artifact smoke. Existing coverage floors are preserved; CLI orchestration uses local subprocess integration coverage instead of unit instrumentation. See `features/linkedin-editorial.md` for onboarding and device-release gaps.
+
+### LinkedIn worker switched to manual execution
+
+Removed the recurring Codex automation at the user’s request. Web/native copy and operating instructions now explain that requests wait for an explicit manual run. Queue, approval, and publication behavior is unchanged.

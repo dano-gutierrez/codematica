@@ -86,6 +86,10 @@ export function getPathNodeRoute(node: LearningPathNode, pathSlug?: string) {
     return `/docs/${node.slug}${pathSearch}`;
   }
 
+  if (node.kind === "interview") {
+    return `/interviews/${node.slug}${pathSearch}`;
+  }
+
   if (node.kind === "diagram") {
     return `/diagrams/${node.slug}${pathSearch}`;
   }
@@ -115,7 +119,12 @@ export function getNextPathNodeRoute(pathSlug: string, currentNode: LearningPath
   );
   const nextNode = currentIndex >= 0 ? nodes[currentIndex + 1] : undefined;
 
-  return nextNode ? getPathNodeRoute(nextNode, learningPath.slug) : undefined;
+  if (nextNode) return getPathNodeRoute(nextNode, learningPath.slug);
+  if (currentIndex >= 0 && learningPath.completionDestination === "flashcard-feed") {
+    const feed = getPassiveFlashcardFeedByPathSlug(learningPath.slug);
+    return feed?.status === "published" ? feed.route : undefined;
+  }
+  return undefined;
 }
 
 export function getNextPathNodeRoutesByPath(currentNode: LearningPathNode) {

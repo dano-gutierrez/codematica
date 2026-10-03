@@ -1,0 +1,214 @@
+{
+  "slug": "frontend/interview-random-matrix-questionnaire",
+  "title": "Randomized Zero Matrix Checkpoint",
+  "type": "questionnaire",
+  "documentSlug": "frontend/interview-random-matrix",
+  "concept": "Randomized Zero Matrix",
+  "difficulty": "practitioner",
+  "tags": [
+    "frontend",
+    "interview",
+    "react",
+    "typescript",
+    "python",
+    "random-matrix"
+  ],
+  "status": "published",
+  "sourceRefs": [
+    "frontend-react-arrays",
+    "frontend-python-random"
+  ],
+  "questions": [
+    {
+      "id": "random-matrix-check-1",
+      "kind": "choice",
+      "prompt": "Which requirement guarantees exactly 10 zeros?",
+      "options": [
+        {
+          "id": "answer",
+          "label": "Sample 10 distinct positions without replacement.",
+          "isCorrect": true
+        },
+        {
+          "id": "misconception-one",
+          "label": "Give each of 100 cells a 10% chance of zero.",
+          "isCorrect": false
+        },
+        {
+          "id": "misconception-two",
+          "label": "Draw 10 positions independently and overwrite repeats.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "Independent per-cell probability gives an expected count, not an exact count. Independent position draws can collide, so overwriting may produce fewer than 10 zeros."
+    },
+    {
+      "id": "random-matrix-check-2",
+      "kind": "choice",
+      "prompt": "Why is sort(() => Math.random() - 0.5) unsuitable for a uniform shuffle?",
+      "options": [
+        {
+          "id": "answer",
+          "label": "Its inconsistent comparator does not establish uniform permutation probabilities.",
+          "isCorrect": true
+        },
+        {
+          "id": "misconception-one",
+          "label": "Array sorting cannot move numbers.",
+          "isCorrect": false
+        },
+        {
+          "id": "misconception-two",
+          "label": "It always returns the input unchanged.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "A random comparator violates the ordering assumptions of sorting and yields implementation-dependent bias. Fisher–Yates has a direct uniformity argument under uniform independent draws."
+    },
+    {
+      "id": "random-matrix-check-3",
+      "kind": "choice",
+      "prompt": "Partial shuffle: at iteration i, where must j be sampled?",
+      "options": [
+        {
+          "id": "answer",
+          "label": "From i through n - 1, inclusive.",
+          "isCorrect": true
+        },
+        {
+          "id": "misconception-one",
+          "label": "From 0 through i - 1.",
+          "isCorrect": false
+        },
+        {
+          "id": "misconception-two",
+          "label": "Only from the original first k entries.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "The prefix before i is already fixed. Sampling the remaining suffix preserves uniqueness and gives each remaining position an equal chance to enter the selected prefix."
+    },
+    {
+      "id": "random-matrix-check-4",
+      "kind": "choice",
+      "prompt": "What happens when k = 0?",
+      "options": [
+        {
+          "id": "answer",
+          "label": "Every cell is one.",
+          "isCorrect": true
+        },
+        {
+          "id": "misconception-one",
+          "label": "Every cell is zero.",
+          "isCorrect": false
+        },
+        {
+          "id": "misconception-two",
+          "label": "The algorithm must retry until it picks a zero.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "Selecting an empty set means no index is marked zero. The zero-count boundary is valid and should terminate immediately without retry loops or special random outcomes."
+    },
+    {
+      "id": "random-matrix-check-5",
+      "kind": "choice",
+      "prompt": "What should changing an unrelated React input do to the stored matrix?",
+      "options": [
+        {
+          "id": "answer",
+          "label": "Preserve the current matrix until Generate is pressed.",
+          "isCorrect": true
+        },
+        {
+          "id": "misconception-one",
+          "label": "Resample it on every render.",
+          "isCorrect": false
+        },
+        {
+          "id": "misconception-two",
+          "label": "Mutate the previous board silently.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "Generated output is durable component state for this interaction. Render-time randomness makes unrelated updates change the exercise and can obscure state bugs."
+    },
+    {
+      "id": "random-matrix-check-6",
+      "kind": "choice",
+      "prompt": "Python: does random.sample(range(100), 10) sample with replacement?",
+      "options": [
+        {
+          "id": "answer",
+          "label": "No; it returns 10 distinct population positions.",
+          "isCorrect": true
+        },
+        {
+          "id": "misconception-one",
+          "label": "Yes; repeated positions are expected.",
+          "isCorrect": false
+        },
+        {
+          "id": "misconception-two",
+          "label": "Only if the population is sorted.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "random.sample performs sampling without replacement. The ordering of range is irrelevant to uniqueness; random choices with replacement use a different operation."
+    },
+    {
+      "id": "random-matrix-check-7",
+      "kind": "choice",
+      "prompt": "What memory does reservoir sampling save in this exercise?",
+      "options": [
+        {
+          "id": "answer",
+          "label": "Selection storage can be O(k), but the returned matrix still occupies O(n).",
+          "isCorrect": true
+        },
+        {
+          "id": "misconception-one",
+          "label": "The entire rendered board becomes O(k).",
+          "isCorrect": false
+        },
+        {
+          "id": "misconception-two",
+          "label": "It removes every allocation.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "The reservoir holds k selected indexes while scanning n positions. Returning n matrix cells still costs O(n), so selection-space savings are not total-output savings."
+    },
+    {
+      "id": "random-matrix-recipe",
+      "kind": "ordering",
+      "prompt": "Order these baseline implementation steps by dependency. Each step prepares the next.",
+      "items": [
+        {
+          "id": "step-1",
+          "label": "Clarify exact k and bounds"
+        },
+        {
+          "id": "step-2",
+          "label": "Sample unique flat indexes"
+        },
+        {
+          "id": "step-3",
+          "label": "Project fresh matrix rows"
+        },
+        {
+          "id": "step-4",
+          "label": "Store output and test regeneration"
+        }
+      ],
+      "correctOrder": [
+        "step-1",
+        "step-2",
+        "step-3",
+        "step-4"
+      ],
+      "explanation": "Define the input and state rules, implement the dependent transformation, then validate the result. Reversing this order risks testing a UI before its rules or input identity are defined. This is one rehearsal sequence; other engineering workflows can work."
+    }
+  ]
+}

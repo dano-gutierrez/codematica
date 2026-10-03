@@ -39,6 +39,18 @@ jobs:
           name: game-production-smoke-${{ github.run_id }}
           path: test-results/game-artifact.log
 
+      - run: npm run test:production:smoke
+      - name: Preserve production smoke logs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: production-smoke-${{ github.run_id }}
+          path: |
+            /tmp/codematica-production-*/install.log
+            /tmp/codematica-production-*/runtime.log
+          if-no-files-found: warn
+          retention-days: 14
+
   unit-integration-coverage:
     name: unit-integration-coverage
     runs-on: ubuntu-latest
@@ -49,6 +61,10 @@ jobs:
           node-version: 22
           cache: npm
       - run: npm ci
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.13"
+      - run: npm run test:interview:python
       - run: npm run test:coverage
         env:
           CI: true
@@ -97,7 +113,13 @@ jobs:
           version: latest
       - run: supabase start
       - run: supabase db reset --local
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
       - run: npm run test:db
+      - run: npm run test:linkedin:local
       - name: Stop local Supabase
         if: always()
         run: supabase stop --no-backup
@@ -114,6 +136,9 @@ jobs:
       - run: npm ci
       - run: npx playwright install --with-deps chromium webkit
       - run: npm run e2e:web:smoke
+        env:
+          CI: true
+      - run: npm run e2e:linkedin
         env:
           CI: true
       - name: Upload Playwright smoke report

@@ -55,3 +55,15 @@ it("produces deterministic seeded traffic within authored wave bounds", () => {
     waveAt({ ...s, seed: s.seed + 1 }, 10).rps,
   );
 });
+
+it("enforces budget and latency independently, accepting each exact limit", () => {
+  const s = system(3);
+  const baseline = evaluateSystem(s, s.solution);
+  expect(baseline.passed).toBe(true);
+  const cost = baseline.metrics!.cost;
+  const latency = baseline.metrics!.latency;
+  expect(evaluateSystem({ ...s, budget: cost }, s.solution).passed).toBe(true);
+  expect(evaluateSystem({ ...s, budget: cost - 1 }, s.solution)).toMatchObject({ passed: false, reasons: [expect.stringMatching(/budget/i)] });
+  expect(evaluateSystem({ ...s, maxLatency: latency }, s.solution).passed).toBe(true);
+  expect(evaluateSystem({ ...s, maxLatency: latency - 1 }, s.solution)).toMatchObject({ passed: false, reasons: [expect.stringMatching(/latency/i)] });
+});

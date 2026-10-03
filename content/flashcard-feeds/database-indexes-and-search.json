@@ -2,15 +2,15 @@
   "slug": "database-indexes-and-search",
   "pathSlug": "database-indexes-and-search",
   "title": "Database Indexes And Search Flashcard Feed",
-  "summary": "Passive database index and PostgreSQL search cards for short mobile review sessions.",
-  "audience": "Backend, full-stack, and platform engineers reviewing database indexing and search behavior.",
+  "summary": "Passive database index, PostgreSQL search, and connection pooling cards for short mobile review sessions.",
+  "audience": "Backend, full-stack, and platform engineers reviewing database indexing, search, and connection management.",
   "status": "published",
   "cards": [
     {
       "id": "indexes-are-read-models-concept",
       "type": "concept",
       "title": "Indexes Are Read Models",
-      "prompt": "A database index is a maintained read structure, not a free lookup spell.",
+      "prompt": "A database index is a maintained read structure with ongoing costs.",
       "explanation": "Every index trades faster matching query shapes for write overhead, storage, vacuum work, and migration cost. Review the workload that pays for it.",
       "difficulty": "senior",
       "tags": ["database-indexes", "performance", "review"],
@@ -175,7 +175,7 @@
       "difficulty": "senior",
       "tags": ["btree", "sql", "query-planning"],
       "sourceDocSlug": "databases/index-fundamentals",
-      "code": "create index orders_account_created_idx\n  on orders (account_id, created_at desc);"
+      "code": "create index orders_account_created_idx\n  on orders (account_id, created_at desc);", "codeLanguage": "sql"
     },
     {
       "id": "partial-index-snippet",
@@ -186,7 +186,7 @@
       "difficulty": "senior",
       "tags": ["partial-index", "sql", "postgres"],
       "sourceDocSlug": "databases/index-fundamentals",
-      "code": "create index orders_unfulfilled_recent_idx\n  on orders (created_at desc)\n  where fulfilled_at is null;"
+      "code": "create index orders_unfulfilled_recent_idx\n  on orders (created_at desc)\n  where fulfilled_at is null;", "codeLanguage": "sql"
     },
     {
       "id": "fts-vector-snippet",
@@ -197,7 +197,7 @@
       "difficulty": "senior",
       "tags": ["full-text-search", "tsvector", "sql"],
       "sourceDocSlug": "databases/postgres-full-text-search",
-      "code": "setweight(to_tsvector('english', coalesce(title, '')), 'A') ||\nsetweight(to_tsvector('english', coalesce(body, '')), 'C')"
+      "code": "setweight(to_tsvector('english', coalesce(title, '')), 'A') ||\nsetweight(to_tsvector('english', coalesce(body, '')), 'C')", "codeLanguage": "sql"
     },
     {
       "id": "fts-gin-snippet",
@@ -208,7 +208,7 @@
       "difficulty": "senior",
       "tags": ["gin-index", "full-text-search", "sql"],
       "sourceDocSlug": "databases/postgres-full-text-search",
-      "code": "create index articles_search_document_idx\n  on articles\n  using gin (search_document);"
+      "code": "create index articles_search_document_idx\n  on articles\n  using gin (search_document);", "codeLanguage": "sql"
     },
     {
       "id": "drizzle-trigram-snippet",
@@ -219,7 +219,7 @@
       "difficulty": "senior",
       "tags": ["drizzle", "pg-trgm", "gin-index"],
       "sourceDocSlug": "databases/trigram-fuzzy-indexes",
-      "code": "index('tag_localization_name_trgm_idx').using(\n  'gin',\n  sql`(lower(${table.name}) gin_trgm_ops)`,\n)"
+      "code": "index('tag_localization_name_trgm_idx').using(\n  'gin',\n  sql`(lower(${table.name}) gin_trgm_ops)`,\n)", "codeLanguage": "typescript"
     },
     {
       "id": "trigram-query-snippet",
@@ -230,7 +230,7 @@
       "difficulty": "senior",
       "tags": ["pg-trgm", "fuzzy-search", "sql"],
       "sourceDocSlug": "databases/trigram-fuzzy-indexes",
-      "code": "where lower(title) % lower($1)\norder by similarity(lower(title), lower($1)) desc"
+      "code": "where lower(title) % lower($1)\norder by similarity(lower(title), lower($1)) desc", "codeLanguage": "sql"
     },
     {
       "id": "hybrid-candidates-snippet",
@@ -241,7 +241,7 @@
       "difficulty": "senior",
       "tags": ["hybrid-search", "sql", "ranking"],
       "sourceDocSlug": "databases/postgres-hybrid-search-query",
-      "code": "select id, fts_rank as rank from fts_candidates\nunion all\nselect id, trigram_rank as rank from trigram_candidates"
+      "code": "select id, fts_rank as rank from fts_candidates\nunion all\nselect id, trigram_rank as rank from trigram_candidates", "codeLanguage": "sql"
     },
     {
       "id": "set-local-snippet",
@@ -252,7 +252,7 @@
       "difficulty": "senior",
       "tags": ["pg-trgm", "postgres", "sql"],
       "sourceDocSlug": "databases/postgres-hybrid-search-query",
-      "code": "begin;\nset local pg_trgm.similarity_threshold = 0.11;\nselect ...;\ncommit;"
+      "code": "begin;\nset local pg_trgm.similarity_threshold = 0.11;\nselect ...;\ncommit;", "codeLanguage": "sql"
     },
     {
       "id": "index-cost-interview",
@@ -383,7 +383,7 @@
       "difficulty": "senior",
       "tags": ["hot-updates", "sql", "postgres"],
       "sourceDocSlug": "databases/postgres-hot-updates",
-      "code": "update accounts\nset last_seen_at = clock_timestamp()\nwhere id = 42;"
+      "code": "update accounts\nset last_seen_at = clock_timestamp()\nwhere id = 42;", "codeLanguage": "sql"
     },
     {
       "id": "hot-stats-snippet",
@@ -394,7 +394,7 @@
       "difficulty": "senior",
       "tags": ["hot-updates", "monitoring", "sql"],
       "sourceDocSlug": "databases/postgres-hot-updates",
-      "code": "select relname, n_tup_upd, n_tup_hot_upd,\n  round(100.0 * n_tup_hot_upd / nullif(n_tup_upd, 0), 2) as hot_pct\nfrom pg_stat_user_tables;"
+      "code": "select relname, n_tup_upd, n_tup_hot_upd,\n  round(100.0 * n_tup_hot_upd / nullif(n_tup_upd, 0), 2) as hot_pct\nfrom pg_stat_user_tables;", "codeLanguage": "sql"
     },
     {
       "id": "hot-index-tradeoff-interview",
@@ -415,6 +415,122 @@
       "difficulty": "senior",
       "tags": ["interview", "hot-updates", "autovacuum"],
       "sourceDocSlug": "databases/postgres-hot-updates"
+    },
+    {
+      "id": "pool-reuse-concept",
+      "type": "concept",
+      "title": "Clients Are Not Backends",
+      "prompt": "A transaction pooler separates client socket lifetime from backend transaction lifetime.",
+      "explanation": "After a transaction finishes and cleanup completes, another client can use that backend. Simultaneous demand beyond backend capacity must wait or fail admission.",
+      "difficulty": "senior",
+      "tags": [
+        "postgres",
+        "connection-pooling",
+        "production"
+      ],
+      "sourceDocSlug": "databases/postgres-connection-pooling"
+    },
+    {
+      "id": "pool-hold-time-concept",
+      "type": "concept",
+      "title": "Hold Time Sets Occupancy",
+      "prompt": "At 600 transactions/s and 0.04 s mean backend hold time, average occupancy is 24.",
+      "explanation": "This mean relationship is not a p99 sizing rule. Holding transactions open during remote calls consumes backends even without active SQL.",
+      "difficulty": "senior",
+      "tags": [
+        "postgres",
+        "connection-pooling",
+        "production"
+      ],
+      "sourceDocSlug": "databases/postgres-connection-pooling"
+    },
+    {
+      "id": "pool-budget-practical",
+      "type": "practical",
+      "title": "Count Every Pool",
+      "prompt": "Budget peak pods × processes × pools × per-pool max, then add other consumers.",
+      "explanation": "Include old/new overlap, jobs, and direct tools. A singleton per process still multiplies across the fleet. A pool aimed at a different server belongs in that server budget.",
+      "difficulty": "senior",
+      "tags": [
+        "postgres",
+        "connection-pooling",
+        "production"
+      ],
+      "sourceDocSlug": "databases/postgres-connection-pooling"
+    },
+    {
+      "id": "pool-drain-practical",
+      "type": "practical",
+      "title": "Drain Before Closing Pools",
+      "prompt": "Stop admission and job intake, drain bounded work, then await pool closure before exiting.",
+      "explanation": "A preStop hook consumes Kubernetes grace time. Provider interruption warnings may be best effort. Cleanup cannot guarantee immediate backend release after node loss.",
+      "difficulty": "senior",
+      "tags": [
+        "postgres",
+        "connection-pooling",
+        "production"
+      ],
+      "sourceDocSlug": "databases/postgres-connection-pooling"
+    },
+    {
+      "id": "pool-budget-snippet",
+      "type": "snippet",
+      "title": "Headroom Is Part Of The Limit",
+      "prompt": "Calculate the per-pool ceiling using the same-server budget.",
+      "explanation": "The example leaves 187 slots for reserves/headroom and 200 for other consumers. It assumes those reserves were not already deducted from 1,187. The result is illustrative, not a Titan setting.",
+      "difficulty": "senior",
+      "tags": [
+        "postgres",
+        "connection-pooling",
+        "production"
+      ],
+      "sourceDocSlug": "databases/postgres-connection-pooling",
+      "codeLanguage": "text",
+      "code": "floor((1187 - 187 - 200) / (25 * 2 * 2)) = 8"
+    },
+    {
+      "id": "pool-proxy-snippet",
+      "type": "snippet",
+      "title": "Pooler Replicas Multiply Too",
+      "prompt": "Three replicas with two 80-backend pools each, plus 120 direct connections, permit 600.",
+      "explanation": "A fourth overlapping replica raises the ceiling to 760. Client admission limits are separate from database backend limits.",
+      "difficulty": "senior",
+      "tags": [
+        "postgres",
+        "connection-pooling",
+        "production"
+      ],
+      "sourceDocSlug": "databases/postgres-connection-pooling",
+      "codeLanguage": "text",
+      "code": "3 * 2 * 80 + 120 = 600\n4 * 2 * 80 + 120 = 760"
+    },
+    {
+      "id": "pool-compatibility-interview",
+      "type": "interview",
+      "title": "Would You Change Only The URL?",
+      "prompt": "A staging SELECT passes through a pooler. Is the application ready for transaction mode?",
+      "explanation": "No. Validate the pinned pooler and driver, tenant/session state, prepared statement protocols, listeners, rollback, cancellation, and reconnect behavior using fixtures.",
+      "difficulty": "senior",
+      "tags": [
+        "postgres",
+        "connection-pooling",
+        "production"
+      ],
+      "sourceDocSlug": "databases/postgres-connection-pooling"
+    },
+    {
+      "id": "pool-outcome-interview",
+      "type": "interview",
+      "title": "A Lost COMMIT Response",
+      "prompt": "A connection drops after a write sends COMMIT. Should the application retry immediately?",
+      "explanation": "The result is uncertain. Reconcile through durable operation identity or a proven idempotent design; use bounded retries. Neither success nor rollback is established by a missing response.",
+      "difficulty": "senior",
+      "tags": [
+        "postgres",
+        "connection-pooling",
+        "production"
+      ],
+      "sourceDocSlug": "databases/postgres-connection-pooling"
     }
   ]
 }

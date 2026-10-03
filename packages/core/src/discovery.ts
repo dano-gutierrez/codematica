@@ -35,7 +35,7 @@ const sectionDetails: Record<DiscoverySectionId, Omit<HomeDiscoverySection, "id"
   },
   lessons: {
     title: "Lessons & diagrams",
-    description: "Read focused guides and inspect visual explanations.",
+    description: "Read focused guides and visual explanations.",
     route: "/browse",
   },
   interviews: {
@@ -99,7 +99,7 @@ export function createDiscoveryItems(index: ContentIndex): DiscoveryResult[] {
         kind: "diagram",
         section: "lessons",
         title: item.title,
-        summary: "A rendered Mermaid diagram with its source available for study.",
+        summary: "Study a rendered Mermaid diagram and its source.",
         route: item.route,
         eyebrow: "Visual guide",
         status: "published",

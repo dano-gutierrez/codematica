@@ -1,0 +1,214 @@
+{
+  "slug": "frontend/interview-file-explorer-questionnaire",
+  "title": "Recursive File Explorer Checkpoint",
+  "type": "questionnaire",
+  "documentSlug": "frontend/interview-file-explorer",
+  "concept": "Recursive File Explorer",
+  "difficulty": "practitioner",
+  "tags": [
+    "frontend",
+    "interview",
+    "react",
+    "typescript",
+    "python",
+    "file-explorer"
+  ],
+  "status": "published",
+  "sourceRefs": [
+    "frontend-react-state",
+    "frontend-react-keys"
+  ],
+  "questions": [
+    {
+      "id": "file-explorer-check-1",
+      "kind": "choice",
+      "prompt": "How should an empty folder be identified?",
+      "options": [
+        {
+          "id": "answer",
+          "label": "By its explicit type, even when children is empty.",
+          "isCorrect": true
+        },
+        {
+          "id": "misconception-one",
+          "label": "By having at least one child.",
+          "isCorrect": false
+        },
+        {
+          "id": "misconception-two",
+          "label": "By a filename without a period.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "Files can have extensionless names and folders can be empty. The discriminated type is the structural contract, so child count and name heuristics are unreliable."
+    },
+    {
+      "id": "file-explorer-check-2",
+      "kind": "choice",
+      "prompt": "Why are filenames unsuitable as the general key?",
+      "options": [
+        {
+          "id": "answer",
+          "label": "Different nodes can have the same filename.",
+          "isCorrect": true
+        },
+        {
+          "id": "misconception-one",
+          "label": "React keys must be numeric.",
+          "isCorrect": false
+        },
+        {
+          "id": "misconception-two",
+          "label": "A key must change whenever a folder opens.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "Stable unique IDs preserve identity even when names repeat or change. React accepts string keys; generating new keys on each toggle would reset component state."
+    },
+    {
+      "id": "file-explorer-check-3",
+      "kind": "choice",
+      "prompt": "What happens to local child state when its conditional subtree unmounts?",
+      "options": [
+        {
+          "id": "answer",
+          "label": "It resets when the child is mounted again.",
+          "isCorrect": true
+        },
+        {
+          "id": "misconception-one",
+          "label": "It is automatically saved forever by the parent.",
+          "isCorrect": false
+        },
+        {
+          "id": "misconception-two",
+          "label": "It becomes a global variable.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "Removing the child from the rendered tree destroys its local state. A parent-owned expanded-ID set can retain the preference independently of child mounting."
+    },
+    {
+      "id": "file-explorer-check-4",
+      "kind": "choice",
+      "prompt": "Why clone the expanded-ID Set before updating React state?",
+      "options": [
+        {
+          "id": "answer",
+          "label": "To produce a new state reference without mutating the previous set.",
+          "isCorrect": true
+        },
+        {
+          "id": "misconception-one",
+          "label": "Because Sets cannot be changed at all.",
+          "isCorrect": false
+        },
+        {
+          "id": "misconception-two",
+          "label": "To make lookup linear-time deliberately.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "A Set is mutable, but React state should be treated as read-only. Replacing it preserves previous snapshots and avoids relying on same-reference updates."
+    },
+    {
+      "id": "file-explorer-check-5",
+      "kind": "choice",
+      "prompt": "What does an empty root array render?",
+      "options": [
+        {
+          "id": "answer",
+          "label": "A clear No files message.",
+          "isCorrect": true
+        },
+        {
+          "id": "misconception-one",
+          "label": "An infinite recursive call.",
+          "isCorrect": false
+        },
+        {
+          "id": "misconception-two",
+          "label": "A fabricated root folder.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "The brief asks for an empty state. Guarding the root list communicates that there is no data; inventing nodes changes the supplied filesystem."
+    },
+    {
+      "id": "file-explorer-check-6",
+      "kind": "choice",
+      "prompt": "Does normalization eliminate recursive rendering?",
+      "options": [
+        {
+          "id": "answer",
+          "label": "No; nodes can be looked up by ID and their children rendered recursively.",
+          "isCorrect": true
+        },
+        {
+          "id": "misconception-one",
+          "label": "Yes; a dictionary cannot represent hierarchy.",
+          "isCorrect": false
+        },
+        {
+          "id": "misconception-two",
+          "label": "Yes; normalized data must be rendered as one flat string.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "Normalization separates storage from traversal. Child IDs preserve edges, and a recursive FileItem still follows those edges when expanded."
+    },
+    {
+      "id": "file-explorer-check-7",
+      "kind": "choice",
+      "prompt": "Python recursion on an extremely deep tree may hit what limit?",
+      "options": [
+        {
+          "id": "answer",
+          "label": "The interpreter recursion limit.",
+          "isCorrect": true
+        },
+        {
+          "id": "misconception-one",
+          "label": "The browser DOM limit.",
+          "isCorrect": false
+        },
+        {
+          "id": "misconception-two",
+          "label": "A mandatory three-folder limit.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "Each recursive call uses stack depth. The practice fixture is finite and modest; a very deep or untrusted tree needs separate validation and traversal decisions."
+    },
+    {
+      "id": "file-explorer-recipe",
+      "kind": "ordering",
+      "prompt": "Order these baseline implementation steps by dependency. Each step prepares the next.",
+      "items": [
+        {
+          "id": "step-1",
+          "label": "Define file and folder types"
+        },
+        {
+          "id": "step-2",
+          "label": "Handle the empty root list"
+        },
+        {
+          "id": "step-3",
+          "label": "Render FileItem recursively"
+        },
+        {
+          "id": "step-4",
+          "label": "Test collapse ownership and hierarchy lines"
+        }
+      ],
+      "correctOrder": [
+        "step-1",
+        "step-2",
+        "step-3",
+        "step-4"
+      ],
+      "explanation": "Define the input and state rules, implement the dependent transformation, then validate the result. Reversing this order risks testing a UI before its rules or input identity are defined. This is one rehearsal sequence; other engineering workflows can work."
+    }
+  ]
+}

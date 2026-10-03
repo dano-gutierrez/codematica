@@ -1,0 +1,214 @@
+{
+  "slug": "frontend/interview-column-game-questionnaire",
+  "title": "Column-drop 6×7 Game Checkpoint",
+  "type": "questionnaire",
+  "documentSlug": "frontend/interview-column-game",
+  "concept": "Column-drop 6×7 Game",
+  "difficulty": "practitioner",
+  "tags": [
+    "frontend",
+    "interview",
+    "react",
+    "typescript",
+    "python",
+    "column-game"
+  ],
+  "status": "published",
+  "sourceRefs": [
+    "frontend-react-arrays",
+    "frontend-react-state"
+  ],
+  "questions": [
+    {
+      "id": "column-game-check-1",
+      "kind": "choice",
+      "prompt": "A user clicks the top cell in column 2. Where does the token go?",
+      "options": [
+        {
+          "id": "answer",
+          "label": "Into the lowest empty cell in column 2.",
+          "isCorrect": true
+        },
+        {
+          "id": "misconception-one",
+          "label": "Into the clicked top cell.",
+          "isCorrect": false
+        },
+        {
+          "id": "misconception-two",
+          "label": "Into the lowest empty cell in any column.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "Clicking identifies a column; the illustrated rule applies gravity within that column. The chosen row is determined by occupancy, not by pointer height."
+    },
+    {
+      "id": "column-game-check-2",
+      "kind": "choice",
+      "prompt": "What happens when the selected column is full?",
+      "options": [
+        {
+          "id": "answer",
+          "label": "Reject the move and preserve the current player.",
+          "isCorrect": true
+        },
+        {
+          "id": "misconception-one",
+          "label": "Overwrite its top token.",
+          "isCorrect": false
+        },
+        {
+          "id": "misconception-two",
+          "label": "Switch to the next column automatically.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "A full column has no legal insertion point. Changing columns or overwriting silently changes the move, while changing the player would consume a rejected turn."
+    },
+    {
+      "id": "column-game-check-3",
+      "kind": "choice",
+      "prompt": "How must directional counting treat the newly placed token?",
+      "options": [
+        {
+          "id": "answer",
+          "label": "Count it once, then scan outward in both directions.",
+          "isCorrect": true
+        },
+        {
+          "id": "misconception-one",
+          "label": "Count it once for each side and add both totals unchanged.",
+          "isCorrect": false
+        },
+        {
+          "id": "misconception-two",
+          "label": "Ignore it because it was not on the previous board.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "Starting at one and adding matching neighbors avoids double-counting the center. Counting it in both directions can incorrectly declare a three-token run a win."
+    },
+    {
+      "id": "column-game-check-4",
+      "kind": "choice",
+      "prompt": "Can the next player move after a winner is displayed?",
+      "options": [
+        {
+          "id": "answer",
+          "label": "No; terminal state rejects all further moves.",
+          "isCorrect": true
+        },
+        {
+          "id": "misconception-one",
+          "label": "Yes; only the winner message is final.",
+          "isCorrect": false
+        },
+        {
+          "id": "misconception-two",
+          "label": "Only if they choose a different column.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "Stopping is a core requirement. Guard the transition as well as disabling controls so programmatic calls and queued events cannot mutate a finished game."
+    },
+    {
+      "id": "column-game-check-5",
+      "kind": "choice",
+      "prompt": "What is the meaning of a stack index in the column-stack approach?",
+      "options": [
+        {
+          "id": "answer",
+          "label": "Index 0 is the bottom token in that column.",
+          "isCorrect": true
+        },
+        {
+          "id": "misconception-one",
+          "label": "Index 0 is always the top rendered row.",
+          "isCorrect": false
+        },
+        {
+          "id": "misconception-two",
+          "label": "It identifies the player rather than the cell.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "The stack appends upward from the bottom. A rendered row r maps to stack index ROWS - 1 - r; using r directly inverts gravity."
+    },
+    {
+      "id": "column-game-check-6",
+      "kind": "choice",
+      "prompt": "Does indexed winner detection make the full stack-based move constant time?",
+      "options": [
+        {
+          "id": "answer",
+          "label": "No; projecting stacks into a matrix still visits the board.",
+          "isCorrect": true
+        },
+        {
+          "id": "misconception-one",
+          "label": "Yes; every array copy disappears.",
+          "isCorrect": false
+        },
+        {
+          "id": "misconception-two",
+          "label": "Yes; React renders only the winning window.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "The small set of candidate windows limits detection, but matrix projection and rendering still touch board cells. State the cost of the complete operation separately."
+    },
+    {
+      "id": "column-game-check-7",
+      "kind": "choice",
+      "prompt": "When is the board a draw?",
+      "options": [
+        {
+          "id": "answer",
+          "label": "Every cell is occupied and no winner was found.",
+          "isCorrect": true
+        },
+        {
+          "id": "misconception-one",
+          "label": "Whenever a column is full.",
+          "isCorrect": false
+        },
+        {
+          "id": "misconception-two",
+          "label": "Whenever both players have equal token counts.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "A successful-move count detects total occupancy. Winner detection takes precedence on the final move; a full column or balanced counts alone says nothing about a draw."
+    },
+    {
+      "id": "column-game-recipe",
+      "kind": "ordering",
+      "prompt": "Order these baseline implementation steps by dependency. Each step prepares the next.",
+      "items": [
+        {
+          "id": "step-1",
+          "label": "Identify the clicked column"
+        },
+        {
+          "id": "step-2",
+          "label": "Find its lowest empty cell"
+        },
+        {
+          "id": "step-3",
+          "label": "Place and check horizontal/vertical wins"
+        },
+        {
+          "id": "step-4",
+          "label": "Preserve terminal state or advance the turn"
+        }
+      ],
+      "correctOrder": [
+        "step-1",
+        "step-2",
+        "step-3",
+        "step-4"
+      ],
+      "explanation": "Define the input and state rules, implement the dependent transformation, then validate the result. Reversing this order risks testing a UI before its rules or input identity are defined. This is one rehearsal sequence; other engineering workflows can work."
+    }
+  ]
+}

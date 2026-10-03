@@ -63,7 +63,7 @@
     {
       "id": "trigram-index-match",
       "kind": "matching",
-      "prompt": "Match each trigram indexing term to the right production meaning.",
+      "prompt": "Match each trigram indexing term to its meaning.",
       "pairs": [
         {
           "id": "gin",

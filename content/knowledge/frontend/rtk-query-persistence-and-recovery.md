@@ -12,11 +12,11 @@ status: published
 ---
 ## The Case: an App Restarts, but a Request Never Does
 
-This lesson is inspired by [inkitt/flash PR #12666](https://github.com/inkitt/flash/pull/12666), reviewed at commit `4d5768c99ef905136512da2374041636bcd7b7e6` on **2026-09-09**. Access to that private repository may be required. The explanation below is self-contained, uses a generalized reading app, and does not require customer records.
+This lesson is inspired by [inkitt/flash PR #12666](https://github.com/inkitt/flash/pull/12666), reviewed at commit `4d5768c99ef905136512da2374041636bcd7b7e6` on **2026-09-09**. Access to that private repository may be required. This self-contained explanation uses a generalized reading app without customer records.
 
 The PR reports that an app persisted RTK Query slices using redux-persist and synchronous device storage. Killing the process during a followed-author request left a cached entry with `status: 'pending'`. On restart, that entry returned without the promise or network request that had produced it. The UI kept rendering a loader. The proposed transform removes pending query and mutation entries both before storage and after reading old storage.
 
-That is the PR's reported reproduction and proposed repair, not evidence of deployment or confirmed customer recovery. This learning path neither changes Flash nor verifies its rollout.
+The PR reports a reproduction and proposed repair; deployment and customer recovery remain unverified here. This learning path does not change Flash.
 
 ## Why “Just Force a Refetch” Can Fail
 
@@ -46,7 +46,7 @@ sequenceDiagram
 
 RTK's `extractRehydrationInfo` path is designed to process restored API data. The inspected **2.2.8 and 2.12.0 reducers both accept fulfilled/rejected query entries and skip pending entries** through that path. That makes “RTK always restores pending requests” an incorrect generalization. [2.2.8 reducer](https://github.com/reduxjs/redux-toolkit/blob/v2.2.8/packages/toolkit/src/query/core/buildSlice.ts), [2.12.0 reducer](https://github.com/reduxjs/redux-toolkit/blob/v2.12.0/packages/toolkit/src/query/core/buildSlice.ts).
 
-A generic persistence reconciler or raw Redux `preloadedState` can instead inject an entire API slice. Inspect the actual root reducer, persist nesting, reconciler, migrations, and `extractRehydrationInfo` wiring. A helper that filters entries proves little if the real restore path bypasses it. Test the installed version and exact persistence configuration together.
+A generic persistence reconciler or raw Redux `preloadedState` can instead inject an entire API slice. Inspect the actual root reducer, persist nesting, reconciler, migrations, and `extractRehydrationInfo` wiring. A filtering helper cannot protect a restore path that bypasses it. Test the installed version and exact persistence configuration together.
 
 ## Choose What Deserves to Survive
 
@@ -64,7 +64,7 @@ const persistOptions = {
 };
 ```
 
-That fragment is not a complete migration. Excluding future writes does not by itself prove that previously stored API slices disappear on the next read. Add and test a versioned migration for known legacy keys. Preserve unrelated durable data. A blanket `purge()` may erase unsynced drafts; clearing all storage is not a routine repair.
+That fragment is not a complete migration. Excluding future writes does not ensure previously stored API slices disappear on the next read. Add and test a versioned migration for known legacy keys. Preserve unrelated durable data. A blanket `purge()` may erase unsynced drafts; clearing all storage is not a routine repair.
 
 For offline reading, prefer validated content snapshots with a schema version, owner/account identity, saved timestamp, expiry policy, and explicit refresh. Do not treat cached entitlements as authority. If retaining RTK state, test stale fulfilled data, old internal formats, failed states, tenant switches, and listener/subscription restoration on each upgrade. Internal `queries`, `provided`, and subscription shapes are not your stable business schema.
 
@@ -106,7 +106,7 @@ export const pendingRepair = createTransform(
 // Include pendingRepair in the existing persist config's transforms array.
 ```
 
-Shape detection avoids importing API modules into persistence utilities, which can introduce initialization cycles. However, another slice could coincidentally have those fields. Use known persisted keys where feasible; validate compatibility before deploying any shape-based adapter. Removing query entries while retaining other internal metadata also needs integration testing. The example deliberately teaches a constrained emergency repair, not generic long-term cache serialization. [redux-persist transforms and migrations](https://github.com/rt2zz/redux-persist).
+Shape detection avoids importing API modules into persistence utilities, which can introduce initialization cycles. However, another slice could coincidentally have those fields. Use known persisted keys where feasible; validate compatibility before deploying any shape-based adapter. Removing query entries while retaining other internal metadata also needs integration testing. Use this example for a constrained emergency repair, not long-term cache serialization. [redux-persist transforms and migrations](https://github.com/rt2zz/redux-persist).
 
 ## Recovery Must Prove Progress
 

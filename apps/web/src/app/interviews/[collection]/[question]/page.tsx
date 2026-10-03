@@ -1,11 +1,13 @@
+import { Suspense } from "react";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ArrowLeft } from "lucide-react";
+import { SourceReferences } from "@/components/SourceReferences";
 import { DifficultyPill } from "@/components/DifficultyPill";
 import { InterviewHeader } from "@/components/InterviewCatalog";
 import { InterviewQuestionSession } from "@/components/InterviewQuestionSession";
-import { getContentIndex, getInterviewCollectionBySlug, getInterviewQuestionBySlug } from "@/lib/content";
+import { getContentIndex, getInterviewCollectionBySlug, getInterviewQuestionBySlug, getNextPathNodeRoutesByPath, getSourcesByRefs } from "@/lib/content";
 
 type InterviewQuestionPageProps = {
   params: Promise<{
@@ -97,7 +99,8 @@ export default async function InterviewQuestionPage({ params }: InterviewQuestio
           ) : null}
         </div>
 
-        <InterviewQuestionSession question={question} />
+        <SourceReferences sources={getSourcesByRefs(question.sourceRefs)} />
+        <Suspense fallback={<p>Loading solution guide…</p>}><InterviewQuestionSession question={question} nextHrefsByPath={getNextPathNodeRoutesByPath({ kind: "interview", slug: `${collectionSlug}/${questionSlug}` })} /></Suspense>
       </section>
     </main>
   );

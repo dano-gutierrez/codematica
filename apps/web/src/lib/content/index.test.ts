@@ -16,7 +16,7 @@ describe("generated content index", () => {
   it("loads starter documents and diagrams", () => {
     const index = getContentIndex();
 
-    expect(index.schemaVersion).toBe(11);
+    expect(index.schemaVersion).toBe(12);
     expect(index.documents.length).toBeGreaterThanOrEqual(3);
     expect(index.diagrams.length).toBeGreaterThanOrEqual(2);
     expect(index.learningPaths.length).toBeGreaterThanOrEqual(2);
@@ -118,6 +118,8 @@ describe("generated content index", () => {
       "databases/trigram-fuzzy-indexes-questionnaire",
       "databases/postgres-hybrid-search-query",
       "databases/postgres-hybrid-search-query-questionnaire",
+      "databases/postgres-connection-pooling",
+      "databases/postgres-connection-pooling-questionnaire",
     ]);
     expect(hotDocument?.track).toBe("Databases");
     expect(hotDocument?.tags).toEqual(expect.arrayContaining(["postgres", "hot-updates", "mvcc"]));
@@ -130,7 +132,7 @@ describe("generated content index", () => {
     expect(trigramQuiz?.route).toBe("/practice/databases/trigram-fuzzy-indexes-questionnaire");
     expect(feed?.title).toBe("Database Indexes And Search Flashcard Feed");
     expect(feed?.route).toBe("/paths/database-indexes-and-search/flashcards");
-    expect(feed?.cards).toHaveLength(40);
+    expect(feed?.cards).toHaveLength(48);
     expect(feed?.cards.map((card) => card.type)).toEqual(expect.arrayContaining(["concept", "practical", "snippet", "interview"]));
     expect(feed?.cards.some((card) => card.code?.includes("gin_trgm_ops"))).toBe(true);
     expect(feed?.cards.some((card) => card.sourceDocSlug === "databases/postgres-hot-updates" && card.code?.includes("n_tup_hot_upd"))).toBe(true);

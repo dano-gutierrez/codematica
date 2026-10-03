@@ -1,6 +1,6 @@
 # Discovery Curation
 
-`home.json` is the canonical editorial order for the curated rows on the web and native home screens.
+`home.json` defines the order of curated rows on web and native home screens.
 
 - Every reference must resolve to published local content in the generated index.
 - Keep rows short and varied; the full catalogs belong on their section routes.

@@ -1,6 +1,6 @@
 "use client";
 import Link from "next/link";
-import { useEffect, useRef, useState, useSyncExternalStore } from "react";
+import { useCallback, useEffect, useRef, useState, useSyncExternalStore } from "react";
 import {
   ArrowLeft,
   ArrowRight,
@@ -56,11 +56,18 @@ export function GamePlay({
     [busy, setBusy] = useState(false);
   const iframe = useRef<HTMLIFrameElement>(null),
     run = useRef(0),
+    workerRequest = useRef<AbortController | null>(null),
     expectedNonce = useRef<string | null>(null);
+  const cancelRun = useCallback(() => {
+    run.current++;
+    expectedNonce.current = null;
+    workerRequest.current?.abort();
+    workerRequest.current = null;
+  }, []);
   useEffect(() => {
     void store.load().finally(() => setLoaded(true));
-    return () => session.pause();
-  }, [store, session]);
+    return () => { cancelRun(); session.pause(); };
+  }, [store, session, cancelRun]);
   useEffect(() => {
     const timer = setInterval(() => session.tick(), 1000);
     const pause = () => {
@@ -77,12 +84,14 @@ export function GamePlay({
       if (
         event.source !== iframe.current?.contentWindow ||
         event.data?.channel !== "codematica-game" ||
+        expectedNonce.current === null ||
         event.data.nonce !== expectedNonce.current
       )
         return;
       const result = event.data.result as EvaluationResult;
       if (typeof result?.passed !== "boolean" || !Array.isArray(result.reasons))
         return;
+      expectedNonce.current = null;
       setBusy(false);
       session.submit(result);
     };
@@ -107,6 +116,7 @@ export function GamePlay({
   useEffect(() => {
     if (!busy) return;
     const timeout = setTimeout(() => {
+      cancelRun();
       setBusy(false);
       setFrame(null);
       session.submit({
@@ -116,16 +126,19 @@ export function GamePlay({
       });
     }, 10000);
     return () => clearTimeout(timeout);
-  }, [busy, session]);
+  }, [busy, session, cancelRun]);
   const execute = async () => {
     if (busy || !session.editable) return;
     if (s.scenario.kind === "grid" || s.scenario.kind === "sql") {
       setBusy(true);
-      const id = ++run.current;
+      cancelRun();
+      const id = run.current;
+      const controller = new AbortController();
+      workerRequest.current = controller;
       try {
         const worker =
           s.scenario.kind === "sql"
-            ? await fetch("/game/sql-worker.js").then((r) => {
+            ? await fetch("/game/sql-worker.js", { signal: controller.signal }).then((r) => {
                 if (!r.ok) throw new Error();
                 return r.text();
               })
@@ -138,6 +151,7 @@ export function GamePlay({
           nonce,
         });
       } catch {
+        if (id !== run.current) return;
         setBusy(false);
         session.submit({
           passed: false,
@@ -166,8 +180,7 @@ export function GamePlay({
       ? s.scenario.pieces.flatMap((p) => p.ports)
       : [];
   const reset = () => {
-    run.current++;
-    expectedNonce.current = null;
+    cancelRun();
     setBusy(false);
     setFrame(null);
     setFrom("");
@@ -199,8 +212,7 @@ export function GamePlay({
               }
               aria-pressed={scenario.id === s.scenario.id}
               onClick={() => {
-                run.current++;
-                expectedNonce.current = null;
+                cancelRun();
                 setBusy(false);
                 setFrame(null);
                 setFrom("");
@@ -277,8 +289,7 @@ export function GamePlay({
                 value={s.code}
                 disabled={!editable}
                 onChange={(e) => {
-                  run.current++;
-                  expectedNonce.current = null;
+                  cancelRun();
                   setFrame(null);
                   session.edit(e.target.value);
                 }}

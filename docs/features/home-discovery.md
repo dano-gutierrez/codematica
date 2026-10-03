@@ -6,7 +6,7 @@
 - Last updated: `2026-09-05`
 - Owner thread: `n/a`
 - Current state: Web and native `/learn` routes are cross-section discovery hubs with curated rows, global local-first search, stable section colors, and full catalog destinations.
-- Target outcome: Users can understand Codematica's major learning surfaces immediately, search across all of them, and reach a complete organized catalog without guessing which route owns the content.
+- Target outcome: Users can identify Codematica's learning sections, search them together, and open each complete catalog.
 - Code touchpoints:
   - `content/discovery/home.json`
   - `packages/core/src/discovery.ts`
@@ -24,7 +24,7 @@
 
 ## One-Minute Brief
 
-The root route is a discovery surface rather than the complete learning-path catalog. It presents Keep reading when available, a local cross-section search input, and curated rows for Learning paths, Lessons & diagrams, Interview prep, Practice & review, and Languages. Each row has a stable accessible accent and a `View all` destination that exposes the full section catalog.
+The Learn route provides discovery; the complete learning-path catalog has its own route. Home shows Keep reading when available, local search across sections, and curated rows for Learning paths, Lessons & diagrams, Interview prep, Practice & review, and Languages. Each row has a stable accessible accent and a `View all` link to the full catalog.
 
 ## Outcome / Contract
 
@@ -37,7 +37,7 @@ The root route is a discovery surface rather than the complete learning-path cat
 - Home search covers paths, documents, diagrams, exercises, passive feeds, interview companies/questions, language characters, vocabulary, and language hubs without Supabase.
 - An active home query replaces curated rows with results grouped by section. Clearing it restores the curated home.
 - `content/discovery/home.json` owns editorial ordering. Index generation rejects missing, duplicate, or section-incompatible references.
-- Generated content index schema version `11` includes `homeDiscovery`.
+- Generated content index schema version `12` includes `homeDiscovery`.
 
 ## Detailed Behavior
 
@@ -49,7 +49,7 @@ The root route is a discovery surface rather than the complete learning-path cat
 - Practice & review: rose `#a6263c`.
 - Languages: ochre `#7a5200`.
 - Section actions use a consistent teal text link on the neutral canvas. Category accents remain in icons and metadata.
-- Section identity is also expressed through headings, icons, and labels; color is not the only signal.
+- Headings, icons, and labels identify sections alongside color.
 - Application controls such as Sign in and Back remain neutral.
 
 ### Curation And Search
@@ -66,7 +66,7 @@ The root route is a discovery surface rather than the complete learning-path cat
 - Practice is grouped into Active practice and Quick review feeds and filterable by type and difficulty.
 - The language catalog exposes Japanese counts and links to both the lookup hub and ordered foundations path.
 - Interview company tiles remain available while all questions are searchable and filterable below them.
-- The lesson library no longer truncates its result set at 30 and supports a lesson/diagram type filter.
+- The lesson library supports a lesson/diagram filter and returns the full result set, removing the former cap of 30.
 
 ## Data Model And Failure Handling
 
@@ -83,8 +83,8 @@ See [Adaptive Interface And Navigation](adaptive-ui.md) for the persistent phone
 - Navigation/layout: `adaptive-navigation.smoke.spec.ts`, `adaptive-layout.regression.spec.ts`, and `AppHeader.test.tsx`; native `adaptive-navigation.test.tsx` and Maestro navigation smoke.
 
 - Unit: search covers every section, exact-title ranking, published-only results, route de-duplication, and curated section resolution.
-- Integration: index generation serializes schema version 11 and rejects invalid home references.
-- Component: web home renders all section destinations and swaps curated rows for grouped search results.
+- Integration: index generation serializes schema version 12 and rejects invalid home references.
+- Component: web home renders all section destinations and swaps curated rows for grouped search results. Copy edits preserve search scope and the no-result message’s meaning.
 - Native: shared home renders every section and searches interview questions from the bundled index.
 - E2E: mobile-sized web home exposes Japanese, searches interviews and language content, preserves consistent accessible section actions, and navigates to a full catalog.
 

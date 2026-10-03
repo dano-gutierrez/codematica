@@ -1,1 +1,33 @@
-{"slug":"languages/japanese-katakana-t-n-writing","title":"Write Katakana T And N Rows","type":"writing","documentSlug":"languages/japanese-katakana-foundations","concept":"Katakana t-row and n-row handwriting","difficulty":"foundation","tags":["japanese","katakana","writing","alphabet"],"status":"published","prompt":"Trace, then write the katakana t-row and n-row with attention to stroke direction.","characterSlugs":["japanese/katakana/ta","japanese/katakana/chi","japanese/katakana/tsu","japanese/katakana/te","japanese/katakana/to","japanese/katakana/na","japanese/katakana/ni","japanese/katakana/nu","japanese/katakana/ne","japanese/katakana/no"],"modes":["assisted","free"],"explanation":"This drill contrasts ツ with シ and builds recognition of the simple, high-frequency n-row shapes."}
+{
+  "slug": "languages/japanese-katakana-t-n-writing",
+  "title": "Write Katakana T And N Rows",
+  "type": "writing",
+  "documentSlug": "languages/japanese-katakana-foundations",
+  "concept": "Katakana t-row and n-row handwriting",
+  "difficulty": "foundation",
+  "tags": [
+    "japanese",
+    "katakana",
+    "writing",
+    "alphabet"
+  ],
+  "status": "published",
+  "prompt": "Fill the notebook with 24 repetitions of each prompt. Write anywhere on the paper; recognizable shapes are enough.",
+  "characterSlugs": [
+    "japanese/katakana/ta",
+    "japanese/katakana/chi",
+    "japanese/katakana/tsu",
+    "japanese/katakana/te",
+    "japanese/katakana/to",
+    "japanese/katakana/na",
+    "japanese/katakana/ni",
+    "japanese/katakana/nu",
+    "japanese/katakana/ne",
+    "japanese/katakana/no"
+  ],
+  "modes": [
+    "assisted",
+    "free"
+  ],
+  "explanation": "Use the examples and stroke guides to learn the character, then copy and recall it. Stroke order is optional guidance; your handwriting does not need to be exact."
+}

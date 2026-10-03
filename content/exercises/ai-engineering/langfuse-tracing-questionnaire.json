@@ -42,7 +42,7 @@
     {
       "id": "trace-order",
       "kind": "ordering",
-      "prompt": "Order a healthy traced support answer request.",
+      "prompt": "Order the tracing steps for a support answer request.",
       "items": [
         {
           "id": "start",

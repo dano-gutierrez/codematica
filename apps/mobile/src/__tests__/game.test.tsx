@@ -290,3 +290,44 @@ it("fits the native miniatures to their measured container while paused", async 
   await view.rerender(<NativeGameScene paused state="celebrate" />);
   expect(mockAtlasProps.at(-1)!.colors.value.at(-1)).toBe("rgba(255,255,255,0.35)");
 });
+
+it("ticks only the focused copy of a level when returning from a lesson", async () => {
+  jest.useFakeTimers();
+  try {
+    const { view, session, store, navigate } = await open(7);
+    const props = { campaign, level: campaign.levels[7], store, navigate, workerSource: "worker" };
+    await view.rerender(<NativeGamePlay {...props} active={false} />);
+    const returned = await render(<NativeGamePlay {...props} active />);
+    await waitFor(() => expect(returned.getByTestId("game-play")).toBeOnTheScreen());
+    const tick = jest.spyOn(session, "tick");
+    await act(() => { session.run(); jest.advanceTimersByTime(1000); });
+    expect(tick).toHaveBeenCalledTimes(1);
+    expect(session.getSnapshot().attempt.elapsed).toBe(1);
+    await returned.rerender(<NativeGamePlay {...props} active={false} />);
+    await act(() => { jest.advanceTimersByTime(2000); });
+    expect(session.getSnapshot().attempt.phase).toBe("paused");
+    expect(session.getSnapshot().attempt.elapsed).toBe(1);
+    await returned.rerender(<NativeGamePlay {...props} active />);
+    expect(session.getSnapshot().attempt.phase).toBe("paused");
+    await act(() => { session.resume(); jest.advanceTimersByTime(1000); });
+    expect(session.getSnapshot().attempt.elapsed).toBe(2);
+  } finally { jest.useRealTimers(); }
+});
+
+it.each(["reset", "blur", "unmount"])("ignores retained runner callbacks after %s", async (interruption) => {
+  const { view, session, store, navigate } = await open(0);
+  await fireEvent.press(view.getByTestId("game-run"));
+  const { onMessage, onError, source } = view.getByTestId("game-sandbox").props;
+  const nonce = JSON.parse(source.html.match(/const data=(.*);\nconst send/)[1]).nonce;
+  if (interruption === "reset") await fireEvent.press(view.getByTestId("game-reset"));
+  else if (interruption === "blur") await view.rerender(<NativeGamePlay campaign={campaign} level={campaign.levels[0]} store={store} navigate={navigate} workerSource="worker" active={false} />);
+  else await view.unmount();
+  const submit = jest.spyOn(session, "submit");
+  await act(() => {
+    onMessage({ nativeEvent: { data: JSON.stringify({ channel: "codematica-game", nonce, result: { passed: true, reasons: [], events: [] } }) } });
+    onError();
+  });
+  expect(submit).not.toHaveBeenCalled();
+  expect(session.getSnapshot().attempt.phase).toBe("briefing");
+  expect(Object.keys(store.getSnapshot().awards)).toHaveLength(0);
+});

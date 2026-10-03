@@ -1,17 +1,19 @@
 import {
   buildPassiveFlashcardWindow,
+  buildWritingPracticeSheets,
+  createExerciseNotebook,
+  getWritingMatchPairs,
+  getWritingStrokePath,
+  getContentIndex,
   calculateQuestionnaireSkillScores,
-  checkWritingAttempt,
   checkQuestionAnswer,
   createQuestionnaireAttempt,
   convertJapaneseInput,
-  getAssistedStrokeCompletion,
   getJapaneseCharacterGroups,
   getHomeDiscoverySections,
   getLanguageCharacterBySlug,
   getPathNodeRoute,
   getSourcesByRefs,
-  normalizeWritingStroke,
   searchJapanese,
   searchDiscovery,
   createDiscoveryItems,
@@ -27,7 +29,6 @@ import {
   type KnowledgeDocument,
   type JapaneseSearchResult,
   type LanguageCharacter,
-  type LanguageStrokePoint,
   type LanguageVocabulary,
   type LearningExercise,
   type LearningPath,
@@ -45,13 +46,12 @@ import {
   type QuestionnaireAttemptQuestion,
   type QuestionnaireExercise,
   type SearchResult,
-  type WritingCheckResult,
-  type WritingStroke,
 } from "@codematica/core";
 import Markdown from "react-native-markdown-display";
+import type { ASTNode, RenderRules } from "react-native-markdown-display";
 import Svg, { Circle, Path, Text as SvgText } from "react-native-svg";
 import { WebView } from "react-native-webview";
-import { Fragment, useMemo, useRef, useState } from "react";
+import { Fragment, useCallback, useMemo, useRef, useState } from "react";
 import type { ReactNode } from "react";
 import {
   FlatList,
@@ -67,9 +67,10 @@ import {
   useWindowDimensions,
   View,
 } from "react-native";
-import type { GestureResponderEvent, NativeScrollEvent, NativeSyntheticEvent } from "react-native";
+import type { NativeScrollEvent, NativeSyntheticEvent } from "react-native";
 import type { CodematicaAdapters, ProgressTarget } from "./adapters";
 import { colors, radii, spacing } from "./tokens";
+import { JapaneseNotebookPractice, NotebookDrawingContext, NotebookScrollContext } from "./JapaneseNotebookPractice";
 
 // Metro bundles these local images for offline native use.
 // eslint-disable-next-line @typescript-eslint/no-require-imports
@@ -106,28 +107,32 @@ const nativeDestinations = [
 ];
 
 /** Persistent shell navigation; the Expo adapter owns routing and safe-area insets. */
-export function NativeNavigation({ pathname, navigate, wide }: { pathname: string; navigate: (href: string) => void; wide: boolean }) {
+export function NativeNavigation({ pathname, navigate, wide, isAdmin = false }: { pathname: string; navigate: (href: string) => void; wide: boolean; isAdmin?: boolean }) {
   const [menuOpen, setMenuOpen] = useState(false);
-  const active = pathname.startsWith("/play/") ? "/" : pathname.startsWith("/docs/") || pathname.startsWith("/diagrams/") ? "/browse" : `/${pathname.split("/")[1]}`;
-  const items = wide ? nativeDestinations : nativeDestinations.filter(({ href }) => !["/browse", "/languages", "/interviews"].includes(href));
-  const menuItems = [...nativeDestinations.filter(({ href }) => ["/browse", "/languages", "/interviews"].includes(href)), { href: "/login", label: "Sign in", path: "M4 21v-3a8 8 0 0 1 16 0v3M16 6a4 4 0 1 1-8 0 4 4 0 0 1 8 0" }];
+  const [languagesOpen,setLanguagesOpen]=useState(pathname.includes("japanese"));
+  const active = pathname.startsWith("/play/") ? "/" : pathname.startsWith("/practice/languages/japanese") ? "/languages" : pathname.startsWith("/docs/") || pathname.startsWith("/diagrams/") ? "/browse" : `/${pathname.split("/")[1]}`;
+  const adminDestination = { href: "/admin/linkedin", label: "LinkedIn", path: "M4 4h16v16H4ZM8 10v7m4-7v7m0-4a3 3 0 0 1 6 0v4" };
+  const items = wide ? [...nativeDestinations, ...(isAdmin ? [adminDestination] : [])] : nativeDestinations.filter(({ href }) => !["/browse", "/languages", "/interviews"].includes(href));
+  const menuItems = [...(isAdmin ? [adminDestination] : []), ...nativeDestinations.filter(({ href }) => ["/browse", "/languages", "/interviews"].includes(href)), { href: "/login", label: "Sign in", path: "M4 21v-3a8 8 0 0 1 16 0v3M16 6a4 4 0 1 1-8 0 4 4 0 0 1 8 0" }];
   return (
     <View style={wide ? styles.navigationRail : styles.navigationBar} testID={wide ? "mobile-navigation-rail" : "mobile-navigation-bar"}>
       {wide ? <Pressable accessibilityRole="button" accessibilityLabel="Codematica home" onPress={() => navigate("/")} style={styles.navigationBrand}>
         <Image source={patchBrandMark} style={styles.brandMark} resizeMode="contain" accessible={false} />
         <Image source={codematicaWordmark} style={styles.brandWordmark} resizeMode="contain" accessible={false} />
       </Pressable> : null}
-      {items.map(({ href, label, path }) => <Pressable key={href} accessibilityRole="tab" accessibilityLabel={label} accessibilityState={{ selected: active === href }} onPress={() => navigate(href)} style={({ pressed }) => [wide ? styles.navigationRailItem : styles.navigationItem, active === href && styles.navigationSelected, pressed && styles.navigationPressed]} testID={`mobile-nav-${label.toLowerCase()}`}>
+      {items.map(({ href, label, path }) => <Fragment key={href}><Pressable accessibilityRole="tab" accessibilityLabel={label} accessibilityState={{ selected: active === href }} onPress={() => navigate(href)} style={({ pressed }) => [wide ? styles.navigationRailItem : styles.navigationItem, active === href && styles.navigationSelected, pressed && styles.navigationPressed]} testID={`mobile-nav-${label.toLowerCase()}`}>
         <Svg width={22} height={22} viewBox="0 0 24 24" accessible={false}><Path d={path} stroke={active === href ? colors.accentStrong : colors.textMuted} strokeWidth={1.7} fill="none" strokeLinecap="round" strokeLinejoin="round" /></Svg>
-        <Text style={[styles.navigationLabel, wide && styles.navigationRailLabel, active === href && styles.navigationSelectedText]}>{label}</Text>
-      </Pressable>)}
-      {wide ? <Button label="Sign in" variant="ghost" onPress={() => navigate("/login")} testID="mobile-nav-sign-in" /> : <Pressable accessibilityRole="button" accessibilityLabel="More" accessibilityState={{selected:["/browse","/languages","/interviews","/login"].includes(active)}} onPress={() => setMenuOpen(true)} style={[styles.navigationItem, ["/browse", "/languages", "/interviews", "/login"].includes(active) && styles.navigationSelected]} testID="mobile-nav-more"><Svg width={22} height={22} viewBox="0 0 24 24" accessible={false}>{[5,12,19].map((cx) => <Circle key={cx} cx={cx} cy={12} r={1.5} fill={colors.textMuted} />)}</Svg><Text style={styles.navigationLabel}>More</Text></Pressable>}
+        <Text numberOfLines={wide ? undefined : 1} adjustsFontSizeToFit={!wide} style={[styles.navigationLabel, wide && styles.navigationRailLabel, active === href && styles.navigationSelectedText]}>{label}</Text>
+      </Pressable>{wide && href==="/languages" ? <><Button label="Supported languages" variant="ghost" onPress={()=>setLanguagesOpen(v=>!v)} testID="mobile-nav-languages-expand"/>{languagesOpen ? <View style={{paddingLeft:20}}><Button label="Japanese" variant="ghost" onPress={()=>navigate("/languages/japanese")} testID="mobile-nav-japanese"/><Button label="Notebook practice" variant="ghost" onPress={()=>navigate("/languages/japanese/notebooks")} testID="mobile-nav-notebooks"/></View> : null}</> : null}</Fragment>)}
+
+      {wide ? <Button label="Sign in" variant="ghost" onPress={() => navigate("/login")} testID="mobile-nav-sign-in" /> : <Pressable accessibilityRole="button" accessibilityLabel="More" accessibilityState={{ selected: ["/browse", "/languages", "/interviews", "/login", "/admin"].includes(active) }} onPress={() => setMenuOpen(true)} style={[styles.navigationItem, ["/browse", "/languages", "/interviews", "/login", "/admin"].includes(active) && styles.navigationSelected]} testID="mobile-nav-more"><Svg width={22} height={22} viewBox="0 0 24 24" accessible={false}>{[5,12,19].map((cx) => <Circle key={cx} cx={cx} cy={12} r={1.5} fill={colors.textMuted} />)}</Svg><Text numberOfLines={1} adjustsFontSizeToFit style={styles.navigationLabel}>More</Text></Pressable>}
       <Modal visible={menuOpen} transparent animationType="slide" onRequestClose={() => setMenuOpen(false)}>
         <View style={styles.navigationBackdrop}>
           <Pressable style={StyleSheet.absoluteFill} accessibilityLabel="Close menu" onPress={() => setMenuOpen(false)} />
           <ScrollView style={styles.navigationSheet} contentContainerStyle={styles.navigationSheetContent} accessibilityViewIsModal>
             <View style={styles.discoverySectionHeader}><Text style={styles.cardTitle}>Explore Codematica</Text><Button label="Close" variant="ghost" onPress={() => setMenuOpen(false)} testID="mobile-menu-close" /></View>
-            {menuItems.map(({ href, label, path }) => <Pressable key={href} accessibilityRole="button" accessibilityLabel={label} onPress={() => { setMenuOpen(false); navigate(href); }} style={styles.navigationRailItem} testID={`mobile-menu-${label.toLowerCase().replaceAll(" ", "-")}`}><Svg width={22} height={22} viewBox="0 0 24 24" accessible={false}><Path d={path} fill="none" stroke={colors.accentStrong} strokeWidth={1.7} strokeLinecap="round" strokeLinejoin="round" /></Svg><Text style={styles.bodyText}>{label}</Text></Pressable>)}
+
+            {menuItems.map(({ href, label, path }) => <Fragment key={href}><Pressable accessibilityRole="button" accessibilityLabel={label} onPress={() => { setMenuOpen(false); navigate(href); }} style={styles.navigationRailItem} testID={`mobile-menu-${label.toLowerCase().replaceAll(" ", "-")}`}><Svg width={22} height={22} viewBox="0 0 24 24" accessible={false}><Path d={path} fill="none" stroke={colors.accentStrong} strokeWidth={1.7} strokeLinecap="round" strokeLinejoin="round" /></Svg><Text style={styles.bodyText}>{label}</Text></Pressable>{href==="/languages" ? <View style={{paddingLeft:20}}><Text style={styles.mutedText}>Supported languages</Text><Button label="Japanese" variant="ghost" onPress={()=>{setMenuOpen(false);navigate("/languages/japanese");}} testID="mobile-menu-japanese"/><Button label="Notebook practice" variant="ghost" onPress={()=>{setMenuOpen(false);navigate("/languages/japanese/notebooks");}} testID="mobile-menu-notebooks"/></View> : null}</Fragment>)}
           </ScrollView>
         </View>
       </Modal>
@@ -136,14 +141,35 @@ export function NativeNavigation({ pathname, navigate, wide }: { pathname: strin
 }
 
 export function AppScreen({ title, children, footer }: { title?: string; children: ReactNode; footer?: ReactNode }) {
+  const [drawing,setDrawing]=useState(false);
+  const pageScroll = useRef<ScrollView>(null);
+  const pageBounds = useRef({ y: 0, viewport: 0, content: 0 });
+  const scrollNotebookPage = useCallback((deltaY: number) => {
+    const bounds = pageBounds.current;
+    bounds.y = Math.max(0, Math.min(Math.max(0, bounds.content - bounds.viewport), bounds.y + deltaY));
+    pageScroll.current?.scrollTo({ y: bounds.y, animated: false });
+  }, []);
   return (
+    <NotebookScrollContext.Provider value={scrollNotebookPage}>
+    <NotebookDrawingContext.Provider value={setDrawing}>
     <View style={styles.screen}>
-      <ScrollView contentContainerStyle={styles.screenContent}>
+      <ScrollView
+        ref={pageScroll}
+        testID="mobile-page-scroll"
+        scrollEnabled={!drawing}
+        contentContainerStyle={styles.screenContent}
+        onLayout={(event) => { pageBounds.current.viewport = event.nativeEvent.layout.height; }}
+        onContentSizeChange={(_width, height) => { pageBounds.current.content = height; }}
+        onScroll={(event) => { pageBounds.current.y = event.nativeEvent.contentOffset.y; }}
+        scrollEventThrottle={16}
+      >
         {title ? <Text style={styles.screenEyebrow}>{title}</Text> : null}
         {children}
       </ScrollView>
       {footer ? <View style={styles.footer}>{footer}</View> : null}
     </View>
+    </NotebookDrawingContext.Provider>
+    </NotebookScrollContext.Provider>
   );
 }
 
@@ -178,7 +204,7 @@ export function LearningPathHomeScreen({
     <AppScreen>
       <Header adapters={adapters} />
       <Text style={styles.heroTitle}>Learning paths</Text>
-      <Text style={styles.heroCopy}>A guided route from curiosity to confidence.</Text>
+      <Text style={styles.heroCopy}>Follow guided learning paths.</Text>
 
       <KeepReadingSection items={keepReadingItems} isSignedIn={isSignedIn} adapters={adapters} />
 
@@ -491,7 +517,7 @@ export function BrowseScreen({ index, adapters }: { index: ContentIndex } & Scre
         {results.map((result) => (
           <SearchResultCard key={`${result.kind}-${result.id}`} result={result} adapters={adapters} />
         ))}
-        {results.length === 0 ? <Text style={styles.emptyText}>No indexed nodes match the current filters.</Text> : null}
+        {results.length === 0 ? <Text style={styles.emptyText}>No lessons or diagrams match these filters.</Text> : null}
       </View>
     </AppScreen>
   );
@@ -521,14 +547,17 @@ export function JapaneseLanguageHubScreen({ index, adapters }: { index: ContentI
 
   return (
     <AppScreen>
+      <Button label="Notebook practice" variant="secondary" onPress={()=>adapters.navigation.navigate("/languages/japanese/notebooks")} testID="mobile-japanese-notebooks"/>
       <Header adapters={adapters} subtitle="Japanese" />
       <Text style={styles.eyebrow}>Japanese</Text>
       <Text style={styles.heroTitle}>Japanese</Text>
-      <Text style={styles.heroCopy}>Search beginner Japanese characters and phrases with romaji and IPA support.</Text>
+      <Text style={styles.heroCopy}>Find beginner Japanese characters and phrases with romaji and IPA.</Text>
       <View style={styles.actionRow}>
         <Button label="Learn" onPress={() => adapters.navigation.navigate("/paths/japanese-foundations")} testID="mobile-japanese-path-link" />
         <Button label="Review" variant="secondary" onPress={() => adapters.navigation.navigate("/languages/japanese/review")} testID="mobile-japanese-review-link" />
         {flashcards ? <Button label="Flashcards" variant="secondary" onPress={() => adapters.navigation.navigate(flashcards.route)} testID="mobile-japanese-flashcards-link" /> : null}
+        <Button label="Hiragana 101 · planas" variant="ghost" onPress={() => adapters.navigation.navigate("/practice/languages/japanese-hiragana-vowels-writing?path=japanese-foundations")} testID="mobile-japanese-writing-sheets-link" />
+        <Button label="Katakana planas" variant="ghost" onPress={() => adapters.navigation.navigate("/practice/languages/japanese-katakana-vowels-writing?path=japanese-foundations")} testID="mobile-japanese-katakana-sheets-link" />
         <Button label="Hiragana guide" variant="ghost" onPress={() => adapters.navigation.navigate("/docs/languages/japanese-hiragana-foundations?path=japanese-foundations")} testID="mobile-japanese-hiragana-guide-link" />
         <Button label="Katakana guide" variant="ghost" onPress={() => adapters.navigation.navigate("/docs/languages/japanese-katakana-foundations?path=japanese-foundations")} testID="mobile-japanese-katakana-guide-link" />
       </View>
@@ -567,8 +596,8 @@ export function JapaneseLanguageHubScreen({ index, adapters }: { index: ContentI
         </View>
       ) : null}
       <View style={styles.card} testID="mobile-japanese-resources">
-        <Text style={styles.cardTitle}>Trusted resource shelf</Text>
-        <Text style={styles.mutedText}>External materials stay with their publishers and are labeled by access and reuse rights.</Text>
+        <Text style={styles.cardTitle}>Trusted resources</Text>
+        <Text style={styles.mutedText}>External materials link to their publishers and list access and reuse rights.</Text>
         {index.languageResources.map((resource) => (
           <Pressable
             key={resource.id}
@@ -614,7 +643,7 @@ export function JapaneseReviewScreen({
       <Header adapters={adapters} subtitle="Japanese review" />
       <Text style={styles.eyebrow}>Always open · {dueCount} due</Text>
       <Text style={styles.heroTitle}>Ready to review</Text>
-      <Text style={styles.heroCopy}>The queue is for focused skill recall. Other practice modes stay available from their own study screens.</Text>
+      <Text style={styles.heroCopy}>Use this queue to practice skill recall. Other practice modes remain available on their study screens.</Text>
       <View style={styles.actionRow}>
         <Button label="Dictionary" variant="ghost" onPress={() => adapters.navigation.navigate("/languages/japanese")} />
         <Button label="N5 flashcards" variant="ghost" onPress={() => adapters.navigation.navigate("/languages/japanese/review/flashcards")} testID="mobile-japanese-review-flashcards" />
@@ -638,7 +667,7 @@ export function JapaneseReviewScreen({
           <Text style={styles.cardEyebrow}>{selected.category} practice</Text>
           <Text style={styles.cardTitle}>{selected.label}</Text>
           <Text style={styles.bodyText}>{selected.description}</Text>
-          <Text style={styles.mutedText}>Recall one example before rating how independently you remembered it.</Text>
+          <Text style={styles.mutedText}>Recall an example, then rate how much help you needed.</Text>
           <View style={styles.actionRow}>
             {(["again", "hard", "good", "easy"] as const).map((rating) => (
               <Button
@@ -738,9 +767,9 @@ function VocabularyCard({ vocabulary, adapters }: { vocabulary: LanguageVocabula
 export function JapaneseCharacterDetailScreen({ character, relatedVocabulary = [], adapters }: { character: LanguageCharacter; relatedVocabulary?: LanguageVocabulary[] } & ScreenProps) {
   const { width } = useWindowDimensions();
   const writingPadSize = Math.min(width >= 900 ? 560 : width >= 600 ? 480 : 360, Math.max(260, width - 48));
-  const writingExercise: Extract<LearningExercise, { type: "writing" }> = {
+  const writingExercise = useMemo<Extract<LearningExercise, { type: "writing" }>>(() => ({
     id: `character-${character.id}`,
-    slug: `${character.slug}/writing`,
+    slug: `characters/${character.glyph.codePointAt(0)!.toString(16)}`,
     route: character.route,
     sourcePath: character.sourcePath,
     contentHash: character.contentHash,
@@ -751,11 +780,11 @@ export function JapaneseCharacterDetailScreen({ character, relatedVocabulary = [
     difficulty: "foundation",
     tags: ["japanese", "handwriting"],
     status: "published",
-    prompt: "Trace the highlighted strokes in order, then switch to free mode and write from memory.",
+    prompt: "Fill the notebook with 24 repetitions. Write anywhere on the paper.",
     characterSlugs: [character.slug],
     modes: ["assisted", "free"],
-    explanation: "This practice is transient and does not store raw stroke coordinates.",
-  };
+    explanation: "Your handwriting is saved only on this device. Recognizable shapes are enough.",
+  }), [character]);
 
   return (
     <AppScreen>
@@ -787,7 +816,7 @@ export function JapaneseCharacterDetailScreen({ character, relatedVocabulary = [
             <Path d="M 50 0 L 50 100 M 0 50 L 100 50" stroke={colors.lineSoft} strokeWidth={0.8} fill="none" />
             {character.strokes.map((stroke, index) => (
               <Fragment key={stroke.id}>
-                <Path d={pointsToPath(stroke.points)} stroke={colors.text} strokeWidth={4} strokeLinecap="round" strokeLinejoin="round" fill="none" />
+                <Path d={getWritingStrokePath(stroke.points)} stroke={colors.text} strokeWidth={4} strokeLinecap="round" strokeLinejoin="round" fill="none" />
                 <Circle cx={stroke.points[0][0]} cy={stroke.points[0][1]} r={4.5} fill={colors.accent} />
                 <SvgText x={stroke.points[0][0]} y={stroke.points[0][1] + 2} textAnchor="middle" fontSize={5} fontWeight="800" fill="#fff">{index + 1}</SvgText>
               </Fragment>
@@ -795,7 +824,7 @@ export function JapaneseCharacterDetailScreen({ character, relatedVocabulary = [
           </Svg>
         </View>
       </View>
-      <View style={styles.card} testID="mobile-japanese-character-practice">
+      <View style={styles.stack} testID="mobile-japanese-character-practice">
         <Text style={styles.cardTitle}>Practice writing {character.glyph}</Text>
         <WritingPractice exercise={writingExercise} adapters={adapters} onProgress={() => undefined} />
       </View>
@@ -918,7 +947,7 @@ export function DocumentReaderScreen({
       ) : null}
       {nextHref ? (
         <Button
-          label="Next node"
+          label="Next activity"
           onPress={() => {
             void adapters.progress?.record(target, "completed", { nextHref });
             adapters.navigation.navigate(nextHref);
@@ -944,7 +973,7 @@ export function DiagramReaderScreen({
       <Text style={styles.heroTitle}>{diagram.title}</Text>
       <Text style={styles.heroCopy}>Mermaid diagram stored in {diagram.sourcePath}.</Text>
       <MermaidBlock source={diagram.source} adapters={adapters} />
-      {nextHref ? <Button label="Next node" onPress={() => adapters.navigation.navigate(nextHref)} testID="mobile-diagram-next-node" /> : null}
+      {nextHref ? <Button label="Next activity" onPress={() => adapters.navigation.navigate(nextHref)} testID="mobile-diagram-next-node" /> : null}
     </AppScreen>
   );
 }
@@ -976,7 +1005,7 @@ export function PracticeScreen({
     <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : undefined} style={styles.screen}>
       <AppScreen>
         <Header adapters={adapters} subtitle="Practice" />
-        <View style={styles.card} testID="mobile-practice-card">
+        <View style={exercise.type === "writing" ? styles.stack : styles.card} testID="mobile-practice-card">
           <View style={styles.pillRow}>
             <Pill label={exerciseKindLabel(exercise)} tone="purple" />
             <DifficultyPill difficulty={exercise.difficulty} />
@@ -1006,7 +1035,7 @@ function SourceReferencePanel({ sources, adapters }: { sources: ContentSource[] 
   return (
     <View style={styles.subPanel} testID="mobile-source-references">
       <Text style={styles.cardEyebrow}>Primary sources</Text>
-      <Text style={styles.mutedText}>These upstream pages are authoritative. Codematica is the study and progress companion.</Text>
+      <Text style={styles.mutedText}>These are the authoritative sources. Use Codematica to study and track progress.</Text>
       {sources.map((source) => <Button key={source.id} label={`${source.title} · ${source.provider}`} variant="ghost" onPress={() => adapters.navigation.openExternalUrl?.(source.url)} />)}
     </View>
   );
@@ -1032,7 +1061,7 @@ function GuidedLabPractice({
       <Text style={styles.bodyText}>{exercise.briefing}</Text>
       {exercise.objectives.map((objective) => <Text key={objective} style={styles.mutedText}>• {objective}</Text>)}
       <View style={styles.subPanel}>
-        <Text style={styles.cardTitle}>Commit your prediction</Text>
+        <Text style={styles.cardTitle}>Choose your prediction</Text>
         <Text style={styles.bodyText}>{exercise.prediction.prompt}</Text>
         {exercise.prediction.options.map((option) => (
           <Pressable key={option.id} onPress={() => { setPredictionId(option.id); void onProgress("started", { predictionCommitted: true }); }} style={[styles.choice, predictionId === option.id && styles.choiceSelected]}>
@@ -1054,7 +1083,7 @@ function GuidedLabPractice({
         <Text style={styles.mutedText}>Extension: {exercise.extensionChallenge}</Text>
       </View>
       <Button label="Complete lab" disabled={!complete} onPress={() => void onProgress("completed", { predictionCommitted: true, evidenceCount: evidenceIds.length, evidenceTotal: exercise.evidenceChecklist.length })} testID="mobile-guided-lab-complete" />
-      {complete && nextHref ? <Button label="Next node" variant="secondary" onPress={() => adapters.navigation.navigate(nextHref)} /> : null}
+      {complete && nextHref ? <Button label={nextHref.endsWith("/flashcards") ? "Start review feed" : "Next activity"} variant="secondary" onPress={() => adapters.navigation.navigate(nextHref)} /> : null}
     </View>
   );
 }
@@ -1091,7 +1120,7 @@ function FlashcardPractice({
         testID="mobile-flashcard-reveal"
       />
       {revealed ? <Button label="Reset" variant="ghost" onPress={() => setRevealed(false)} /> : null}
-      {revealed && nextHref ? <Button label="Next node" variant="secondary" onPress={() => adapters.navigation.navigate(nextHref)} /> : null}
+      {revealed && nextHref ? <Button label={nextHref.endsWith("/flashcards") ? "Start review feed" : "Next activity"} variant="secondary" onPress={() => adapters.navigation.navigate(nextHref)} /> : null}
     </View>
   );
 }
@@ -1136,181 +1165,39 @@ function ClozePractice({
           <Text style={styles.mutedText}>{exercise.explanation}</Text>
         </View>
       ) : null}
-      {result && nextHref ? <Button label="Next node" variant="secondary" onPress={() => adapters.navigation.navigate(nextHref)} /> : null}
+      {result && nextHref ? <Button label={nextHref.endsWith("/flashcards") ? "Start review feed" : "Next activity"} variant="secondary" onPress={() => adapters.navigation.navigate(nextHref)} /> : null}
     </View>
   );
 }
 
-function WritingPractice({
-  exercise,
-  nextHref,
-  adapters,
-  onProgress,
-}: {
-  exercise: Extract<LearningExercise, { type: "writing" }>;
-  nextHref?: string;
+function WritingPractice({ exercise, nextHref, adapters, onProgress }: {
+  exercise: Extract<LearningExercise, { type: "writing" }>; nextHref?: string;
   onProgress: (status: ProgressStatus, position?: Record<string, unknown>) => void | Promise<void>;
 } & ScreenProps) {
-  const { width } = useWindowDimensions();
-  const writingPadSize = Math.min(width >= 900 ? 560 : width >= 600 ? 480 : 360, Math.max(260, width - 64));
-  const characters = exercise.characterSlugs.flatMap((slug) => {
-    const character = getLanguageCharacterBySlug(slug);
-    return character ? [character] : [];
-  });
-  const [mode, setMode] = useState<"assisted" | "free">(exercise.modes.includes("assisted") ? "assisted" : "free");
-  const [characterIndex, setCharacterIndex] = useState(0);
-  const [strokes, setStrokes] = useState<WritingStroke[]>([]);
-  const [currentStroke, setCurrentStroke] = useState<WritingStroke | undefined>();
-  const [result, setResult] = useState<WritingCheckResult | undefined>();
-  const [assistedFeedback, setAssistedFeedback] = useState<string | undefined>();
-  const character = characters[characterIndex];
+  const notebook=useMemo(()=>createExerciseNotebook(exercise,getContentIndex()),[exercise]);
+  const sheets=useMemo(()=>buildWritingPracticeSheets(exercise.characterSlugs.flatMap(slug=>{const c=getLanguageCharacterBySlug(slug);return c ? [c] : [];}),getContentIndex()),[exercise]);
+  const [activity,setActivity]=useState("write");
+  return <View style={styles.stack} testID="mobile-writing-practice"><Text style={styles.bodyText}>{exercise.prompt}</Text><View style={styles.actionRow}><Button label="Write · planas" selected={activity==="write"} onPress={()=>setActivity("write")} testID="mobile-writing-activity-write"/><Button label="Match pairs" selected={activity==="match"} onPress={()=>setActivity("match")} testID="mobile-writing-activity-match"/></View>{activity==="match" ? <NativeWritingMatch sheets={sheets}/> : <JapaneseNotebookPractice notebook={notebook} adapters={adapters} nextHref={nextHref} onProgress={onProgress}/>}</View>;
+}
 
-  function resetForCharacter(nextIndex = characterIndex) {
-    setCharacterIndex(nextIndex);
-    setStrokes([]);
-    setCurrentStroke(undefined);
-    setResult(undefined);
-    setAssistedFeedback(undefined);
+function NativeWritingMatch({ sheets }: { sheets: ReturnType<typeof buildWritingPracticeSheets> }) {
+  const pairs = useMemo(() => getWritingMatchPairs(sheets), [sheets]);
+  const [selected, setSelected] = useState<{ kana?: string; romaji?: string }>({});
+  const [matched, setMatched] = useState<string[]>([]);
+  const [message, setMessage] = useState("Choose a Japanese tile and its reading.");
+  const [round, setRound] = useState(0);
+  const readings = [...pairs.slice((round + 1) % pairs.length), ...pairs.slice(0, (round + 1) % pairs.length)];
+  function choose(side: "kana" | "romaji", id: string) {
+    const next = { ...selected, [side]: id };
+    if (next.kana && next.romaji) {
+      if (next.kana === next.romaji) { setMatched((value) => [...value, id]); setSelected({}); setMessage(matched.length + 1 === pairs.length ? "Nicely done! Every pair matched." : "Nice match. Keep going!"); }
+      else { setSelected({ [side === "kana" ? "romaji" : "kana"]: selected[side === "kana" ? "romaji" : "kana"] }); setMessage("Try another pair. You have time."); }
+    } else { setSelected(next); setMessage("Now choose its matching tile."); }
   }
-
-  function startStroke(event: GestureResponderEvent) {
-    if (result) {
-      return;
-    }
-
-    setCurrentStroke({ points: [eventPoint(event)] });
-  }
-
-  function moveStroke(event: GestureResponderEvent) {
-    if (!currentStroke || result) {
-      return;
-    }
-
-    const nextPoint = eventPoint(event);
-    setCurrentStroke((stroke) => (stroke ? { points: [...stroke.points, nextPoint] } : stroke));
-  }
-
-  function endStroke() {
-    if (!character || !currentStroke || result) {
-      setCurrentStroke(undefined);
-      return;
-    }
-
-    const normalizedStroke = normalizeWritingStroke(currentStroke);
-    const expectedStroke = character.strokes[strokes.length];
-    if (mode === "assisted" && expectedStroke) {
-      const completion = getAssistedStrokeCompletion(expectedStroke, normalizedStroke);
-      if (!completion.shouldComplete) {
-        setCurrentStroke(undefined);
-        setAssistedFeedback(`Try stroke ${strokes.length + 1} again. Start at the numbered dot.`);
-        return;
-      }
-      setStrokes((value) => [...value, { points: expectedStroke.points }]);
-    } else {
-      setStrokes((value) => [...value, normalizedStroke]);
-    }
-    setCurrentStroke(undefined);
-    setAssistedFeedback(undefined);
-  }
-
-  function checkCurrentCharacter() {
-    if (!character) {
-      return;
-    }
-
-    const nextResult = checkWritingAttempt({
-      expectedStrokes: character.strokes,
-      actualStrokes: strokes,
-      mode,
-    });
-    setResult(nextResult);
-
-    if (nextResult.isCorrect && characterIndex + 1 >= characters.length) {
-      void onProgress("completed", { mode, characterSlug: character.slug, passed: true });
-    }
-  }
-
-  if (!character) {
-    return <Text style={styles.emptyText}>This writing exercise has no available characters.</Text>;
-  }
-
-  return (
-    <View style={styles.stack} testID="mobile-writing-practice">
-      <Text style={styles.bodyText}>{exercise.prompt}</Text>
-      <View style={styles.pillRow}>
-        {exercise.modes.includes("assisted") ? (
-          <Button label="Assisted" variant={mode === "assisted" ? "secondary" : "ghost"} onPress={() => setMode("assisted")} testID="mobile-writing-mode-assisted" />
-        ) : null}
-        {exercise.modes.includes("free") ? (
-          <Button label="Free" variant={mode === "free" ? "secondary" : "ghost"} onPress={() => setMode("free")} testID="mobile-writing-mode-free" />
-        ) : null}
-      </View>
-      <View style={styles.subPanel}>
-        <Text style={styles.cardEyebrow}>
-          Character {characterIndex + 1} of {characters.length}
-        </Text>
-        <Text style={styles.japaneseGlyph}>{character.glyph}</Text>
-        <Text style={styles.cardTitle}>
-          {character.romaji} /{character.ipa}/
-        </Text>
-        {character.inputSequences.length ? <Text style={styles.mutedText}>IME: {character.inputSequences.join(" or ")}</Text> : null}
-        <Text style={styles.mutedText}>{character.meanings.join(", ")}</Text>
-      </View>
-      <View
-        style={[styles.writingPad, { height: writingPadSize, width: writingPadSize }]}
-        testID="mobile-writing-pad"
-        onStartShouldSetResponder={() => true}
-        onResponderGrant={startStroke}
-        onResponderMove={moveStroke}
-        onResponderRelease={endStroke}
-        onResponderTerminate={endStroke}
-      >
-        <Svg width="100%" height="100%" viewBox="0 0 100 100">
-          <Path d="M 50 0 L 50 100 M 0 50 L 100 50" stroke={colors.lineSoft} strokeWidth={0.8} fill="none" />
-          {mode === "assisted"
-            ? character.strokes.slice(strokes.length).map((stroke, index) => <Path key={stroke.id} d={pointsToPath(stroke.points)} stroke={index === 0 ? colors.accent : colors.line} strokeWidth={index === 0 ? 5 : 3} strokeLinecap="round" strokeLinejoin="round" fill="none" />)
-            : null}
-          {mode === "assisted" && character.strokes[strokes.length] ? (
-            <>
-              <Circle cx={character.strokes[strokes.length]!.points[0][0]} cy={character.strokes[strokes.length]!.points[0][1]} r={5} fill={colors.accent} />
-              <SvgText x={character.strokes[strokes.length]!.points[0][0]} y={character.strokes[strokes.length]!.points[0][1] + 2} textAnchor="middle" fontSize={6} fontWeight="800" fill="#fff">{strokes.length + 1}</SvgText>
-            </>
-          ) : null}
-          {[...strokes, ...(currentStroke ? [currentStroke] : [])].map((stroke, index) => (
-            <Path key={`${index}-${stroke.points.length}`} d={pointsToPath(stroke.points)} stroke={colors.text} strokeWidth={4} strokeLinecap="round" strokeLinejoin="round" fill="none" />
-          ))}
-        </Svg>
-      </View>
-      {assistedFeedback ? <View style={styles.feedback} testID="mobile-writing-assisted-feedback"><Text style={styles.feedbackTitle}>{assistedFeedback}</Text></View> : null}
-      {result ? (
-        <View style={[styles.feedback, result.isCorrect ? styles.feedbackCorrect : styles.feedbackReview]} testID="mobile-writing-feedback">
-          <Text style={styles.feedbackTitle}>{result.isCorrect ? "Correct" : "Review this"}</Text>
-          <Text style={styles.bodyText}>{result.feedback}</Text>
-          <Text style={styles.mutedText}>Score {result.score}</Text>
-        </View>
-      ) : null}
-      <View style={styles.actionRow}>
-        <Button label="Undo" variant="ghost" disabled={strokes.length === 0 || Boolean(result)} onPress={() => setStrokes((value) => value.slice(0, -1))} />
-        <Button label="Clear" variant="ghost" onPress={() => resetForCharacter()} />
-        <Button label="Check" disabled={strokes.length === 0 || Boolean(result) || strokes.length !== character.strokes.length} onPress={checkCurrentCharacter} testID="mobile-writing-check" />
-      </View>
-      {result?.isCorrect && characterIndex + 1 < characters.length ? (
-        <Button
-          label="Next character"
-          variant="secondary"
-          onPress={() => {
-            const nextIndex = characterIndex + 1;
-            void onProgress("started", { mode, characterSlug: characters[nextIndex]?.slug });
-            resetForCharacter(nextIndex);
-          }}
-          testID="mobile-writing-next-character"
-        />
-      ) : null}
-      {result?.isCorrect && characterIndex + 1 >= characters.length && nextHref ? (
-        <Button label="Next node" variant="secondary" onPress={() => adapters.navigation.navigate(nextHref)} />
-      ) : null}
-    </View>
-  );
+  return <View style={styles.stack} testID="mobile-writing-match"><Text style={styles.cardTitle} accessibilityRole="header">Tap the matching pairs</Text><Text style={styles.mutedText}>{matched.length} / {pairs.length} matched</Text>
+    <View style={styles.writingMatchGrid}>{(["kana", "romaji"] as const).map((side) => <View key={side} style={styles.writingMatchColumn}>{(side === "kana" ? pairs : readings).map((pair) => <Pressable key={pair.id} accessibilityRole="button" accessibilityState={{ selected: selected[side] === pair.id, disabled: matched.includes(pair.id) }} disabled={matched.includes(pair.id)} onPress={() => choose(side, pair.id)} style={[styles.writingMatchTile, selected[side] === pair.id && styles.writingTileSelected, matched.includes(pair.id) && styles.writingTileMatched]} testID={`mobile-writing-match-${side}-${pair.id}`}><Text style={styles.cardTitle} accessibilityLanguage={side === "kana" ? "ja-JP" : "en-US"}>{side === "kana" ? pair.label : pair.romaji}{matched.includes(pair.id) ? " ✓" : ""}</Text></Pressable>)}</View>)}</View>
+    <View style={styles.writingFeedbackSlot} accessibilityLiveRegion="polite"><Text style={styles.cardTitle}>{message}</Text></View><Button label="Practice again" disabled={matched.length !== pairs.length} onPress={() => { setRound((value) => value + 1); setMatched([]); setSelected({}); setMessage("A fresh round. Match the same pairs again."); }} testID="mobile-writing-match-repeat" />
+  </View>;
 }
 
 function QuestionnairePractice({
@@ -1371,12 +1258,12 @@ function QuestionnairePractice({
     return (
       <View style={styles.stack} testID="mobile-questionnaire-complete">
         <View style={[styles.feedback, styles.feedbackCorrect]}>
-          <Text style={styles.feedbackTitle}>Refresh complete</Text>
-          <Text style={styles.mutedText}>You reached the end of this practice session.</Text>
+          <Text style={styles.feedbackTitle}>Practice complete</Text>
+          <Text style={styles.mutedText}>You finished this practice session.</Text>
           <Text style={styles.mutedText}>Score {Math.round(calculateQuestionnaireSkillScores(attempt.map((attemptQuestion) => ({ question: attemptQuestion, isCorrect: graded[attemptQuestion.id] ?? false }))).overall * 100)}%</Text>
         </View>
         <Button label="Restart" variant="ghost" onPress={restart} />
-        {nextHref ? <Button label="Next node" variant="secondary" onPress={() => adapters.navigation.navigate(nextHref)} /> : null}
+        {nextHref ? <Button label={nextHref.endsWith("/flashcards") ? "Start review feed" : "Next activity"} variant="secondary" onPress={() => adapters.navigation.navigate(nextHref)} /> : null}
       </View>
     );
   }
@@ -1469,7 +1356,7 @@ function QuestionBody({
           style={styles.input}
           testID="mobile-questionnaire-open-answer-input"
         />
-        <Text style={styles.mutedText}>Choose a conversion below. On iPad, you can write directly in the blank with Apple Pencil Scribble.</Text>
+        <Text style={styles.mutedText}>Choose a conversion below. On iPad, write in the blank with Apple Pencil Scribble.</Text>
         {/[a-z]/i.test(openAnswerValue) ? (
           <View style={styles.actionRow} testID="mobile-japanese-ime-candidates">
             {conversion.candidates.map((candidate, index) => (
@@ -1619,7 +1506,7 @@ export function PassiveFlashcardFeedScreen({
         <Button label="Path" variant="ghost" onPress={() => adapters.navigation.navigate(`/paths/${feed.pathSlug}`)} />
         <View style={styles.fill}>
           <Text style={styles.brandTitle}>{feed.title}</Text>
-          <Text style={styles.brandSubtitle}>Passive refresh</Text>
+          <Text style={styles.brandSubtitle}>Quick review</Text>
         </View>
       </View>
       <FlatList
@@ -1629,13 +1516,13 @@ export function PassiveFlashcardFeedScreen({
         pagingEnabled
         onScroll={recordPosition}
         scrollEventThrottle={250}
-        renderItem={({ item }) => <PassiveFlashcard card={item.card} sequenceIndex={item.sequenceIndex} />}
+        renderItem={({ item }) => <PassiveFlashcard card={item.card} sequenceIndex={item.sequenceIndex} adapters={adapters} pathSlug={feed.pathSlug} />}
       />
     </View>
   );
 }
 
-function PassiveFlashcard({ card, sequenceIndex }: { card: PassiveFlashcardCard; sequenceIndex: number }) {
+function PassiveFlashcard({ card, sequenceIndex, adapters, pathSlug }: { card: PassiveFlashcardCard; sequenceIndex: number; pathSlug: string } & ScreenProps) {
   return (
     <View style={styles.flashcardPage} testID={`mobile-passive-flashcard-card-${sequenceIndex}`}>
       <View style={styles.card}>
@@ -1646,7 +1533,8 @@ function PassiveFlashcard({ card, sequenceIndex }: { card: PassiveFlashcardCard;
         <Text style={styles.heroTitle}>{card.title}</Text>
         <Text style={styles.bodyText}>{card.prompt}</Text>
         <Text style={styles.mutedText}>{card.explanation}</Text>
-        {card.code ? <CodeBlock code={card.code} language="python" /> : null}
+        {card.code ? <CodeBlock code={card.code} language={card.codeLanguage} /> : null}
+        {card.sourceDocSlug ? <Button label="Review the lesson" variant="ghost" onPress={() => adapters.navigation.navigate(`/docs/${card.sourceDocSlug}?path=${encodeURIComponent(pathSlug)}`)} testID={`mobile-passive-flashcard-source-${sequenceIndex}`} /> : null}
         <TagRow tags={card.tags} />
       </View>
     </View>
@@ -1708,9 +1596,9 @@ export function InterviewCollectionScreen({ collection, adapters }: { collection
   );
 }
 
-export function InterviewQuestionScreen({ question, adapters }: { question: InterviewQuestion } & ScreenProps) {
+export function InterviewQuestionScreen({ question, adapters, nextHref }: { question: InterviewQuestion; nextHref?: string } & ScreenProps) {
   if (question.kind === "web") {
-    return <WebInterviewQuestionScreen question={question} adapters={adapters} />;
+    return <WebInterviewQuestionScreen question={question} adapters={adapters} nextHref={nextHref} />;
   }
 
   return <AlgorithmInterviewQuestionScreen question={question} adapters={adapters} />;
@@ -1785,9 +1673,12 @@ function SolutionTrack({ track, language }: { track: InterviewAlgorithmSolutionT
   );
 }
 
-function WebInterviewQuestionScreen({ question, adapters }: { question: Extract<InterviewQuestion, { kind: "web" }> } & ScreenProps) {
+function WebInterviewQuestionScreen({ question, adapters, nextHref }: { question: Extract<InterviewQuestion, { kind: "web" }>; nextHref?: string } & ScreenProps) {
   const [selectedTrackId, setSelectedTrackId] = useState(question.solutionTracks[0].id);
   const selectedTrack = question.solutionTracks.find((track) => track.id === selectedTrackId) ?? question.solutionTracks[0];
+  const [stepIndex, setStepIndex] = useState(0);
+  const [revealed, setRevealed] = useState(false);
+  const [language, setLanguage] = useState("typescript");
   const [selectedFile, setSelectedFile] = useState(selectedTrack.project.activeFile);
   const activeFile = selectedTrack.project.files[selectedFile] ? selectedFile : selectedTrack.project.activeFile;
 
@@ -1795,6 +1686,8 @@ function WebInterviewQuestionScreen({ question, adapters }: { question: Extract<
     const nextTrack = question.solutionTracks.find((track) => track.id === trackId) ?? question.solutionTracks[0];
     setSelectedTrackId(nextTrack.id);
     setSelectedFile(nextTrack.project.activeFile);
+    setStepIndex(0);
+    setRevealed(false);
   }
 
   return (
@@ -1837,12 +1730,30 @@ function WebInterviewQuestionScreen({ question, adapters }: { question: Extract<
       <View style={styles.card} testID="mobile-web-solution">
         <Text style={styles.cardTitle}>{selectedTrack.title}</Text>
         <Text style={styles.mutedText}>{selectedTrack.summary}</Text>
-        {selectedTrack.steps.map((step) => <View key={step.title} style={styles.subPanel}><Text style={styles.cardTitle}>{step.title}</Text><Text style={styles.mutedText}>{step.explanation}</Text></View>)}
+        <Text style={styles.positionText} testID="mobile-web-recipe-position">{revealed ? "Full solution" : `Step ${stepIndex + 1} of ${selectedTrack.steps.length}`}</Text>
+        {(revealed ? selectedTrack.steps : [selectedTrack.steps[stepIndex]]).map((step) => <View key={step.title} style={styles.subPanel}><Text style={styles.cardTitle}>{step.title}</Text><Text style={styles.mutedText}>{step.explanation}</Text></View>)}
+        {!revealed ? <View style={styles.actionRow}>
+          <Button label="Previous step" disabled={stepIndex === 0} onPress={() => setStepIndex((value) => value - 1)} testID="mobile-web-previous-step" />
+          <Button label={stepIndex === selectedTrack.steps.length - 1 ? "Reveal solution" : "Next step"} onPress={() => { if (stepIndex === selectedTrack.steps.length - 1) setRevealed(true); else setStepIndex((value) => value + 1); }} testID="mobile-web-next-step" />
+          <Button label="Show full solution" variant="secondary" onPress={() => setRevealed(true)} testID="mobile-web-show-solution" />
+        </View> : <Button label="Restart recipe" variant="ghost" onPress={() => { setStepIndex(0); setRevealed(false); }} />}
+        {revealed ? <>
         <Text style={styles.bodyText}>{selectedTrack.explanation}</Text>
-        <Text style={styles.cardTitle}>Why it would be accepted</Text>
+        <Text style={styles.cardTitle}>How it meets the requirements</Text>
         <Text style={styles.mutedText}>{selectedTrack.acceptanceRationale}</Text>
         {selectedTrack.tradeoffs.map((tradeoff) => <Text key={tradeoff} style={styles.mutedText}>• {tradeoff}</Text>)}
+        <Text style={styles.bodyText}>Time: {language === "python" && selectedTrack.python ? selectedTrack.python.complexity.time : selectedTrack.complexity.time}</Text>
+        <Text style={styles.bodyText}>Space: {language === "python" && selectedTrack.python ? selectedTrack.python.complexity.space : selectedTrack.complexity.space}</Text>
+        </> : null}
       </View>
+      {revealed ? <>
+      {selectedTrack.python ? <HorizontalOptions label="Solution language" value={language} onChange={setLanguage} options={[{ value: "typescript", label: "TypeScript" }, { value: "python", label: "Python" }]} /> : null}
+      {language === "python" && selectedTrack.python ? <>
+        <Text style={styles.bodyText}>{selectedTrack.python.explanation}</Text>
+        <Text style={styles.mutedText}>Save as solution.py and use python3 -i solution.py locally to call its functions.</Text>
+        <CodeBlock code={selectedTrack.python.code} language="python" />
+      </> : <>
+
       <HorizontalOptions
         label="Source file"
         options={selectedTrack.project.visibleFiles.map((path) => ({ value: path, label: path.replace(/^\//, "") }))}
@@ -1852,8 +1763,15 @@ function WebInterviewQuestionScreen({ question, adapters }: { question: Extract<
       <CodeBlock code={selectedTrack.project.files[activeFile].code} language={activeFile.split(".").pop()} />
       <View style={styles.feedback} testID="mobile-web-playground-note">
         <Text style={styles.feedbackTitle}>Interactive runner available on web</Text>
-        <Text style={styles.mutedText}>Native keeps every explanation and source file offline; editing and execution use the web playground.</Text>
+        <Text style={styles.mutedText}>All explanations and source files are available offline. Use the web playground to edit and run code.</Text>
       </View>
+      </>}
+      {nextHref ? <Button label="Continue to checkpoint" testID="mobile-interview-next-node" onPress={() => {
+        void adapters.progress?.record({ surface: "interview", slug: `${question.collectionSlug}/${question.slug}`, title: question.title, summary: question.summary, href: question.route + (getPathFromHref(nextHref) ? `?path=${getPathFromHref(nextHref)}` : ""), pathSlug: getPathFromHref(nextHref), eyebrow: "Interview practice" }, "completed", { trackId: selectedTrack.id, recipeReviewed: true });
+        adapters.navigation.navigate(nextHref);
+      }} /> : null}
+      </> : null}
+      <SourceReferencePanel sources={getSourcesByRefs(question.sourceRefs)} adapters={adapters} />
       {question.sourceNote ? <Text style={styles.mutedText}>{question.sourceNote}</Text> : null}
     </AppScreen>
   );
@@ -1867,7 +1785,7 @@ export function LoginScreen({ adapters }: ScreenProps) {
 
   async function run(action?: () => Promise<void>, success = "Done") {
     if (!action) {
-      setMessage("Auth is not configured.");
+      setMessage("Sign-in is not set up here.");
       return;
     }
 
@@ -1875,7 +1793,7 @@ export function LoginScreen({ adapters }: ScreenProps) {
       await action();
       setMessage(success);
     } catch (error) {
-      setMessage(error instanceof Error ? error.message : "Unable to complete auth request.");
+      setMessage(error instanceof Error ? error.message : "Could not complete the account request.");
     }
   }
 
@@ -1885,7 +1803,7 @@ export function LoginScreen({ adapters }: ScreenProps) {
         <Header adapters={adapters} subtitle="Sign in" />
         <Text style={styles.heroTitle}>Save your progress.</Text>
         <Text style={styles.heroCopy}>Sign in to sync reading and practice progress across devices.</Text>
-        {!auth?.isConfigured ? <Text style={styles.emptyText}>Supabase public environment variables are not configured.</Text> : null}
+        {!auth?.isConfigured ? <Text style={styles.emptyText}>Sign-in is not set up: Supabase public environment variables are missing.</Text> : null}
         <TextInput value={email} onChangeText={setEmail} placeholder="Email" autoCapitalize="none" keyboardType="email-address" style={styles.input} />
         <TextInput value={password} onChangeText={setPassword} placeholder="Password" secureTextEntry style={styles.input} />
         <Button label="Sign in" onPress={() => run(() => auth?.signInWithPassword?.(email, password) ?? Promise.resolve(), "Signed in")} testID="mobile-sign-in" />
@@ -1952,6 +1870,7 @@ export function MarkdownReader({ markdown, adapters }: { markdown: string } & Sc
           <Markdown
             key={`markdown-${index}`}
             style={markdownStyles}
+            rules={markdownRules}
             onLinkPress={(href) => {
               if (href.startsWith("/")) {
                 adapters.navigation.navigate(href);
@@ -1982,7 +1901,7 @@ export function MermaidBlock({ source, title, adapters }: { source: string; titl
       ) : (
         <View style={styles.feedback}>
           <Text style={styles.feedbackTitle}>Diagram source</Text>
-          <Text style={styles.mutedText}>Bundled Mermaid runtime is unavailable, so the source is shown instead.</Text>
+          <Text style={styles.mutedText}>The bundled Mermaid renderer is unavailable. Showing diagram source.</Text>
         </View>
       )}
       <CodeBlock code={source} language="mermaid" />
@@ -1992,14 +1911,34 @@ export function MermaidBlock({ source, title, adapters }: { source: string; titl
 
 export function CodeBlock({ code, language }: { code: string; language?: string }) {
   return (
-    <ScrollView horizontal style={styles.codeBlock} contentContainerStyle={styles.codeContent} testID="mobile-code-block">
-      <View>
-        {language ? <Text style={styles.codeLanguage}>{language}</Text> : null}
-        <Text style={styles.codeText}>{code}</Text>
-      </View>
-    </ScrollView>
+    <View style={styles.codeBlock} testID="mobile-code-block">
+      {language ? <Text style={styles.codeLanguage}>{language}</Text> : null}
+      <ScrollView
+        horizontal
+        directionalLockEnabled
+        nestedScrollEnabled
+        showsHorizontalScrollIndicator
+        indicatorStyle="white"
+        style={styles.codeScroll}
+        contentContainerStyle={styles.codeContent}
+        testID="mobile-code-scroll"
+      >
+        <Text style={styles.codeText} testID="mobile-code-source">{code}</Text>
+      </ScrollView>
+    </View>
   );
 }
+
+// The parser exposes sourceInfo at runtime but omits it from its AST type.
+// Remove only its final newline; indentation and authored blank lines are source.
+function renderMarkdownCode(node: ASTNode & { sourceInfo?: string }) {
+  return <CodeBlock key={node.key} code={node.content.replace(/\n$/, "")} language={node.sourceInfo?.trim().split(/\s+/)[0]} />;
+}
+
+const markdownRules: RenderRules = {
+  fence: renderMarkdownCode,
+  code_block: renderMarkdownCode,
+};
 
 export function DifficultyPill({ difficulty }: { difficulty: Difficulty }) {
   const tone = difficulty === "foundation" ? "green" : difficulty === "practitioner" ? "blue" : difficulty === "senior" ? "amber" : "purple";
@@ -2085,23 +2024,14 @@ function HorizontalOptions({
   );
 }
 
-function eventPoint(event: GestureResponderEvent): LanguageStrokePoint {
-  const { locationX, locationY } = event.nativeEvent;
-  const size = 280;
 
-  return [Math.min(100, Math.max(0, (locationX / size) * 100)), Math.min(100, Math.max(0, (locationY / size) * 100))];
-}
-
-function pointsToPath(points: LanguageStrokePoint[]) {
-  if (points.length === 0) {
-    return "";
-  }
-
-  const [first, ...rest] = points;
-  return [`M ${first[0]} ${first[1]}`, ...rest.map((point) => `L ${point[0]} ${point[1]}`)].join(" ");
-}
 
 function getNodeDisplay(index: ContentIndex, node: LearningPathNode) {
+  if (node.kind === "interview") {
+    const question = index.interviewCollections.flatMap((collection) => collection.questions).find((item) => `${item.collectionSlug}/${item.slug}` === node.slug);
+    return { title: question?.title ?? node.slug, summary: question?.summary ?? "Interview walkthrough", kindLabel: "Guided solutions", difficulty: question?.difficulty };
+  }
+
   if (node.kind === "source") {
     const source = index.sources.find((item) => item.id === node.sourceRef);
     const document = node.companionKind === "document" ? index.documents.find((item) => item.slug === node.slug) : undefined;
@@ -2380,12 +2310,24 @@ const styles = StyleSheet.create({
     fontWeight: "600",
     lineHeight: 72,
   },
+  writingSheetPicker: { gap: 10, paddingVertical: 12 },
+  writingSheetTile: { minWidth: 100, minHeight: 76, padding: 14, borderRadius: 20, borderWidth: 2, borderBottomWidth: 4, borderColor: "#809b98", backgroundColor: colors.panel },
+  writingTileSelected: { borderColor: colors.accent, backgroundColor: colors.greenSoft },
+  writingTileMatched: { borderColor: colors.accent, backgroundColor: colors.greenSoft },
+  writingProgressTrack: { height: 12, borderRadius: 20, backgroundColor: "#e0eae6", overflow: "hidden" },
+  writingProgressFill: { height: "100%", borderRadius: 20, backgroundColor: colors.accent },
+  writingExample: { gap: 8, minHeight: 320 },
+  writingGlyph: { color: colors.text, fontSize: 48, lineHeight: 72 },
+  writingFeedbackSlot: { minHeight: 100, justifyContent: "center", paddingVertical: 12, borderTopWidth: 1, borderColor: "#c1d2cf" },
+  writingMatchGrid: { flexDirection: "row", gap: 14 },
+  writingMatchColumn: { flex: 1, gap: 14 },
+  writingMatchTile: { minHeight: 88, borderRadius: 22, borderWidth: 2, borderBottomWidth: 5, borderColor: "#809b98", backgroundColor: "#fffdf7", alignItems: "center", justifyContent: "center", padding: 10 },
   writingPad: {
     alignSelf: "center",
-    backgroundColor: colors.panel,
-    borderColor: colors.line,
-    borderRadius: radii.md,
-    borderWidth: 1,
+    backgroundColor: "#fffdf7",
+    borderColor: "#809b98",
+    borderRadius: 32,
+    borderWidth: 2,
     overflow: "hidden",
   },
   characterGrid: {
@@ -2727,11 +2669,21 @@ const styles = StyleSheet.create({
     height: 320,
   },
   codeBlock: {
+    alignSelf: "stretch",
     backgroundColor: "#101820",
     borderColor: "#14212b",
     borderRadius: radii.md,
     borderWidth: 1,
-    maxHeight: 340,
+    flexGrow: 0,
+    flexShrink: 0,
+    maxWidth: "100%",
+    minWidth: 0,
+    overflow: "hidden",
+    marginVertical: spacing.sm,
+  },
+  codeScroll: {
+    flexGrow: 0,
+    flexShrink: 0,
   },
   codeContent: {
     padding: spacing.md,
@@ -2740,10 +2692,12 @@ const styles = StyleSheet.create({
     color: "#7dd3fc",
     fontSize: 12,
     fontWeight: "600",
-    marginBottom: spacing.sm,
+    marginHorizontal: spacing.md,
+    marginTop: spacing.md,
     textTransform: "uppercase",
   },
   codeText: {
+    flexShrink: 0,
     color: "#d9e7ef",
     fontFamily: Platform.select({ ios: "Menlo", android: "monospace", default: "monospace" }),
     fontSize: 13,
@@ -2780,13 +2734,6 @@ const markdownStyles = StyleSheet.create({
   },
   paragraph: {
     marginBottom: spacing.md,
-  },
-  fence: {
-    backgroundColor: "#101820",
-    borderRadius: radii.md,
-    color: "#d9e7ef",
-    fontFamily: Platform.select({ ios: "Menlo", android: "monospace", default: "monospace" }),
-    padding: spacing.md,
   },
   code_inline: {
     backgroundColor: colors.panelMuted,

@@ -26,7 +26,7 @@ Spend 3 minutes clarifying the contract, 12 coding, 7 testing, and 3 explaining 
 - `dispose` is idempotent, drops pending work, requests cancellation, and prevents later UI callbacks. Submitting afterward throws.
 - `render` and `onError` are synchronous, non-throwing observers. Render scheduling and decoding are adapter responsibilities. Do not add automatic retries to this baseline.
 
-Start by stating: “The UI's current intent and the provider's completion order are different clocks. I need a revision guard plus a bounded backlog.”
+State the invariant: “Provider results may arrive out of order. I need a revision guard and a bounded backlog to preserve the UI's current intent.”
 
 ## Trace before coding
 
@@ -87,9 +87,9 @@ function createPreviewCoordinator({ generate, render, onError }) {
 }
 ```
 
-The active slot is claimed before the first `await`. Synchronous adapter exceptions enter `catch`, and `finally` releases the slot after success or failure. A newer input invalidates old outcomes immediately. Normal supersession waits for the active request; only disposal asks it to abort. This is a deliberate simple policy that avoids pretending an abort frees remote capacity.
+The active slot is claimed before the first `await`. Synchronous adapter exceptions enter `catch`, and `finally` releases the slot after success or failure. A newer input invalidates old outcomes immediately. Normal supersession waits for the active request; only disposal asks it to abort. This policy does not assume abort frees remote capacity.
 
-Coordinator bookkeeping takes O(1) work per submission and O(1) slots, excluding the size of the two retained input snapshots, output data, observer work, and provider execution. Continuous input can suppress every intermediate result until the user pauses; that is the specified policy, not universally good UX.
+Coordinator bookkeeping takes O(1) work per submission and O(1) slots, excluding the size of the two retained input snapshots, output data, observer work, and provider execution. Under this policy, continuous input can suppress all intermediate results until the user pauses. Decide whether that suits the product.
 
 ## Deterministic scratch test
 
@@ -139,7 +139,7 @@ verify().catch((error) => {
 
 Add cases for stale rejection followed by current success, current rejection then recovery, a synchronous adapter throw, repeated disposal, and submission after disposal. Codematica's content tests execute the authored reference against these failure scenarios; that does not grade your implementation.
 
-## Follow-ups that expose deeper reasoning
+## Follow-up scenarios
 
 1. **The adapter never settles.** The baseline blocks forever. Add a bounded operation deadline in the adapter and show an explicit unavailable state. A `Promise.race` timeout releases only local waiting; overlapping a replacement may violate a remote concurrency budget. Discuss provider cancellation acknowledgement, leases, or rejecting new work until reconciliation.
 2. **Continuous drawing never pauses.** Offer a documented alternative: display monotonically newer completed previews labeled with their revision, or sample intent at a controlled cadence. Change the stale-result contract and its tests deliberately.
@@ -147,4 +147,4 @@ Add cases for stale rejection followed by current success, current rejection the
 4. **Two editors.** A local counter does not order collaborators' edits. Keep server document revision, client session epoch, and local preview request identity distinct. Attach generated output to the immutable input revision and model configuration.
 5. **An export button.** Accepted exports need durable identity and completion tracking. Never discard them using the preview coalescing rule. Continue to the architecture lesson.
 
-Self-assess on correctness before fluency: bound work, guard both results and errors, release the slot, explain disposal, and prove the races with controlled promises.
+Check correctness before rehearsing the explanation: bound work, guard both results and errors, release the slot, explain disposal, and prove the races with controlled promises.

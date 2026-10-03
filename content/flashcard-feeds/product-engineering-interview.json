@@ -63,7 +63,7 @@
       "type": "interview",
       "title": "Interview: Uncertain",
       "prompt": "A provider finished an export; the worker crashed before recording success. What is the safest retry plan?",
-      "explanation": "Reconcile via a stable provider key or operation ID before repeating the effect. Redelivery proves the message needs handling, not that the external effect failed. Reconcile a stable operation identity where supported. Otherwise keep the uncertainty explicit; neither blind retries nor invented success preserve correctness.",
+      "explanation": "Before repeating the effect, reconcile via a stable provider key or operation ID where supported. Redelivery proves the message needs handling, not that the external effect failed. Otherwise keep the uncertainty explicit; neither blind retries nor invented success preserve correctness.",
       "difficulty": "senior",
       "tags": [
         "product-engineering",
@@ -76,7 +76,7 @@
       "type": "interview",
       "title": "Interview: Outbox",
       "prompt": "The API writes a job, then crashes before publishing its queue message. Which design closes this gap?",
-      "explanation": "Commit the job, credit reservation, and outbox record atomically. An atomic job/reservation/outbox transaction leaves durable dispatch intent after a crash. Publishing first can create work without an accepted job or reservation. A tab cannot preserve the backend acceptance contract.",
+      "explanation": "Commit the job, credit reservation, and outbox record atomically so dispatch intent survives a crash. Publishing first can create work without an accepted job or reservation. A tab cannot preserve the backend acceptance contract.",
       "difficulty": "senior",
       "tags": [
         "product-engineering",
@@ -115,7 +115,7 @@
       "type": "interview",
       "title": "Interview: Evidence",
       "prompt": "A generic interview site lists likely company questions without candidate provenance. How should you use it?",
-      "explanation": "As optional speculation, not proof of the company’s actual questions. Likely questions are inferred practice material, not candidate evidence. Neither the exact loop nor a contradiction with a specific briefing follows. Confirm logistics directly and prioritize primary role and product material.",
+      "explanation": "Treat these as optional, inferred practice material, not candidate evidence of the company’s actual questions. They establish neither the exact interview loop nor a contradiction with a specific briefing. Confirm logistics directly and prioritize primary role and product material.",
       "difficulty": "senior",
       "tags": [
         "product-engineering",
@@ -154,7 +154,7 @@
       "type": "interview",
       "title": "Interview: Recovery",
       "prompt": "Tests and a build pass after an incident fix. What can you honestly claim?",
-      "explanation": "Code validation passed; artifact startup, deployment, and recovery need their own evidence. Source validation does not establish the final pruned runtime, deployment state, or customer recovery. Separate each evidence layer and name unknown impact. Local dependencies can hide packaging failures.",
+      "explanation": "Code validation passed. The final pruned runtime’s startup, deployment, and customer recovery each need separate evidence. Name unknown impact. Local dependencies can hide packaging failures.",
       "difficulty": "senior",
       "tags": [
         "product-engineering",
