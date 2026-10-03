@@ -1,0 +1,19 @@
+{
+  "created": "2026-10-02",
+  "status": "approved-for-use",
+  "mode": "built-in imagegen",
+  "userDirection": "Use option 1's simpler large icon to redesign option 5's large icon; retain option 5's medium icon and freestanding favicon.",
+  "references": [
+    {
+      "path": "05-outpost-stamp.png",
+      "role": "edit-target"
+    },
+    {
+      "path": "01-flat-patch.png",
+      "role": "style-reference"
+    }
+  ],
+  "output": "05-outpost-refined-v2.png",
+  "transparentBackground": false,
+  "prompt": "Use case: precise-object-edit.\nAsset type: refined logo concept board for Codematica.\nInput image 1 is the edit target: option 5 Outpost Stamp. Input image 2 is a style and shape reference ONLY: option 1 Flat Patch.\nPrimary request: redesign ONLY the large upper-left icon in image 1, using the clean simple robot head from image 2 as inspiration. Keep the two right-side icons and the lettering from image 1 unchanged.\nReplace the elaborate circular large badge with a friendly, simple, freestanding Patch robot head: warm cream shell, dark teal face and bold outline, two amber oval eyes, orange side earpieces and one orange-tipped antenna. Use the clear silhouette and gentle tilted pose from image 2, refined to match the retained medium icon in image 1. Remove the large circular rings, wrench, badge backing and heavy distressed/grunge texture from the large icon. Give the main head breathing room above the wordmark with its antenna fully visible.\nStrict invariants: preserve image 1's medium teal rounded-square robot icon in the upper-right, and its small freestanding robot favicon in the lower-right, in the same positions, with the exact same silhouettes, colors and details. Do not add any container behind the small favicon. Preserve image 1's exact wordmark \"Codematica\", its slab-serif lettering, existing light print texture and orange underline ornament below it. Preserve the full 1536 by 1024 landscape composition and warm ivory presentation background.\nChange only the large icon area. No extra icons, slogans, annotations, labels or decorations. The new large icon must have no enclosing ring, badge or tile."
+}

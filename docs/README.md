@@ -22,7 +22,8 @@ Conventions:
 - `docs/features/adaptive-ui.md` owns the shared visual language, bottom navigation, desktop/tablet sidebars, responsive layout, and redesign validation gaps.
 - [Design system](features/design-system.md) owns buttons, semantic icon colors, spacing, borders, alignment, and concise disclosure patterns. Read it before new UI work.
 - `docs/features/markdown-knowledge-browser.md` owns article rendering, the web/native code-surface audit, the fixed dark code theme, native horizontal scroll containment, and rendered contrast/layout regressions. Theme selection is deferred.
-- `docs/features/home-discovery.md` owns the cross-section home, global local search, curated rows, section themes, and full catalog routes.
+- `docs/features/brand-identity.md` owns the approved Patch logo, favicons, native icons, splash artwork and reproducible exports under `assets/brand/`.
+- `docs/features/home-discovery.md` owns the Learn discovery hub, global local search, curated rows, section themes, and full catalog routes.
 - `docs/features/learning-paths-and-practice.md` owns local path JSON, path detail, local exercise JSON, and practice sessions.
 - `docs/features/ml-systems-career-path.md` owns the Harvard CS249r source-linked career roadmap, authored prerequisites/Foundation companions, guided labs, and upstream refresh contract.
 - `docs/features/programming-language-refresh.md` owns reusable programming-language refresh paths, starting with Python for TypeScript and JavaScript engineers.
@@ -115,3 +116,11 @@ Japanese handwriting includes paired trace/copy/recall planas, kana word sheets,
 - [Japanese writing notebooks](features/japanese-writing-notebooks.md): Japanese catalog previews with optional romaji, 24-repetition planas, custom pages, automatic mouse/finger/Pencil input, regular web and two-finger touch scrolling, local ink, optional unlock sync and native PencilKit.
 
 Native notebook validation now includes agent-device layout/contact runners in `apps/mobile/e2e/`, plus a [deferred physical iPad checklist](features/japanese-writing-notebooks.md#deferred-physical-ipad-checklist) for the installed PencilKit build and Safari.
+
+## Restore the Signal
+
+[Game campaign contract](features/restore-the-signal.md) owns the twelve-level home, shared evaluators, Patch, asset exports, offline runners, game rewards, and release verification. Read it before changing game rules. See [art sources](../assets/game/README.md), [campaign authoring](../content/game/README.md), and [build tools](../scripts/game/README.md).
+
+[Patch and the zombie character kit](../assets/game/previews/character-kit-v2.png) shows the refined mascot, matching enemy identities and thumbnails. The [asset guide](../assets/game/README.md) owns portrait sizes, rig parts, palette and generation provenance.
+
+The game [miniature sheet](../assets/game/previews/miniatures-v3.png) shows the full-body figures used in each level and their actual phone/wide rendering.

@@ -1,0 +1,114 @@
+{
+  "version": 1,
+  "style": "patch-enamel-v2",
+  "characters": [
+    {
+      "id": "patch",
+      "name": "Patch",
+      "alt": "Patch, a cream repair robot with amber eyes and orange fittings",
+      "variants": [
+        {
+          "size": 64,
+          "png": "patch-64.png",
+          "webp": "patch-64.webp"
+        },
+        {
+          "size": 128,
+          "png": "patch-128.png",
+          "webp": "patch-128.webp"
+        },
+        {
+          "size": 256,
+          "png": "patch-256.png",
+          "webp": "patch-256.webp"
+        },
+        {
+          "size": 512,
+          "png": "patch-512.png",
+          "webp": "patch-512.webp"
+        }
+      ]
+    },
+    {
+      "id": "shambler",
+      "name": "Shambler",
+      "alt": "A sleepy green zombie wearing a patched jacket and ochre scarf",
+      "variants": [
+        {
+          "size": 64,
+          "png": "shambler-64.png",
+          "webp": "shambler-64.webp"
+        },
+        {
+          "size": 128,
+          "png": "shambler-128.png",
+          "webp": "shambler-128.webp"
+        },
+        {
+          "size": 256,
+          "png": "shambler-256.png",
+          "webp": "shambler-256.webp"
+        },
+        {
+          "size": 512,
+          "png": "shambler-512.png",
+          "webp": "shambler-512.webp"
+        }
+      ]
+    },
+    {
+      "id": "runner",
+      "name": "Runner",
+      "alt": "A lively green zombie with swept hair and an orange work vest",
+      "variants": [
+        {
+          "size": 64,
+          "png": "runner-64.png",
+          "webp": "runner-64.webp"
+        },
+        {
+          "size": 128,
+          "png": "runner-128.png",
+          "webp": "runner-128.webp"
+        },
+        {
+          "size": 256,
+          "png": "runner-256.png",
+          "webp": "runner-256.webp"
+        },
+        {
+          "size": 512,
+          "png": "runner-512.png",
+          "webp": "runner-512.webp"
+        }
+      ]
+    },
+    {
+      "id": "armored",
+      "name": "Armored",
+      "alt": "A stocky green zombie in cream and orange salvaged armor",
+      "variants": [
+        {
+          "size": 64,
+          "png": "armored-64.png",
+          "webp": "armored-64.webp"
+        },
+        {
+          "size": 128,
+          "png": "armored-128.png",
+          "webp": "armored-128.webp"
+        },
+        {
+          "size": 256,
+          "png": "armored-256.png",
+          "webp": "armored-256.webp"
+        },
+        {
+          "size": 512,
+          "png": "armored-512.png",
+          "webp": "armored-512.webp"
+        }
+      ]
+    }
+  ]
+}

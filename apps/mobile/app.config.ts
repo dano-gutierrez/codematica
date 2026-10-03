@@ -38,17 +38,18 @@ const config: ExpoConfig = {
     versionCode: androidVersionCode,
     adaptiveIcon: {
       foregroundImage: "./assets/adaptive-icon.png",
-      backgroundColor: "#007c78"
+      backgroundColor: "#194548"
     }
   },
   plugins: [
     "expo-router",
+    "./plugins/with-shared-bundle-inputs.cjs",
     "expo-secure-store",
     "expo-web-browser",
     [
       "expo-splash-screen",
       {
-        backgroundColor: "#007c78",
+        backgroundColor: "#F7F2E8",
         image: "./assets/splash.png",
         imageWidth: 200,
         resizeMode: "contain"

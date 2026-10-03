@@ -55,6 +55,7 @@ import { Fragment, useCallback, useMemo, useRef, useState } from "react";
 import type { ReactNode } from "react";
 import {
   FlatList,
+  Image,
   Modal,
   KeyboardAvoidingView,
   Platform,
@@ -70,6 +71,12 @@ import type { NativeScrollEvent, NativeSyntheticEvent } from "react-native";
 import type { CodematicaAdapters, ProgressTarget } from "./adapters";
 import { colors, radii, spacing } from "./tokens";
 import { JapaneseNotebookPractice, NotebookDrawingContext, NotebookScrollContext } from "./JapaneseNotebookPractice";
+
+// Metro bundles these local images for offline native use.
+// eslint-disable-next-line @typescript-eslint/no-require-imports
+const patchBrandMark = require("./assets/brand/patch-mark.png");
+// eslint-disable-next-line @typescript-eslint/no-require-imports
+const codematicaWordmark = require("./assets/brand/wordmark.png");
 
 const difficultyLabels: Record<Difficulty, string> = {
   foundation: "Foundation",
@@ -90,7 +97,8 @@ type ScreenProps = {
 };
 
 const nativeDestinations = [
-  { href: "/", label: "Home", path: "M3 10 12 3 21 10V21H15V14H9V21H3Z" },
+  { href: "/", label: "Play", path: "M3 10 12 3 21 10V21H15V14H9V21H3Z" },
+  { href: "/learn", label: "Learn", path: "M3 3h8v18H3ZM13 3h8v18h-8Z" },
   { href: "/paths", label: "Paths", path: "m3 5 6-2 6 2 6-2v16l-6 2-6-2-6 2Zm6-2v16m6-14v16" },
   { href: "/browse", label: "Lessons", path: "M12 5v16M3 3h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5v16h-5a4 4 0 0 0-4 2 4 4 0 0 0-4-2H3Z" },
   { href: "/practice", label: "Practice", path: "m13 2-9 12h7l-1 8 10-12h-7Z" },
@@ -102,19 +110,22 @@ const nativeDestinations = [
 export function NativeNavigation({ pathname, navigate, wide, isAdmin = false }: { pathname: string; navigate: (href: string) => void; wide: boolean; isAdmin?: boolean }) {
   const [menuOpen, setMenuOpen] = useState(false);
   const [languagesOpen,setLanguagesOpen]=useState(pathname.includes("japanese"));
-  const active = pathname.startsWith("/practice/languages/japanese") ? "/languages" : pathname.startsWith("/docs/") || pathname.startsWith("/diagrams/") ? "/browse" : `/${pathname.split("/")[1]}`;
+  const active = pathname.startsWith("/play/") ? "/" : pathname.startsWith("/practice/languages/japanese") ? "/languages" : pathname.startsWith("/docs/") || pathname.startsWith("/diagrams/") ? "/browse" : `/${pathname.split("/")[1]}`;
   const adminDestination = { href: "/admin/linkedin", label: "LinkedIn", path: "M4 4h16v16H4ZM8 10v7m4-7v7m0-4a3 3 0 0 1 6 0v4" };
-  const items = wide ? [...nativeDestinations, ...(isAdmin ? [adminDestination] : [])] : nativeDestinations.filter(({ href }) => !["/browse", "/languages"].includes(href));
-  const menuItems = [...(isAdmin ? [adminDestination] : []), ...nativeDestinations.filter(({ href }) => ["/browse", "/languages"].includes(href)), { href: "/login", label: "Sign in", path: "M4 21v-3a8 8 0 0 1 16 0v3M16 6a4 4 0 1 1-8 0 4 4 0 0 1 8 0" }];
+  const items = wide ? [...nativeDestinations, ...(isAdmin ? [adminDestination] : [])] : nativeDestinations.filter(({ href }) => !["/browse", "/languages", "/interviews"].includes(href));
+  const menuItems = [...(isAdmin ? [adminDestination] : []), ...nativeDestinations.filter(({ href }) => ["/browse", "/languages", "/interviews"].includes(href)), { href: "/login", label: "Sign in", path: "M4 21v-3a8 8 0 0 1 16 0v3M16 6a4 4 0 1 1-8 0 4 4 0 0 1 8 0" }];
   return (
     <View style={wide ? styles.navigationRail : styles.navigationBar} testID={wide ? "mobile-navigation-rail" : "mobile-navigation-bar"}>
-      {wide ? <Text style={styles.navigationBrand}>Codematica.</Text> : null}
+      {wide ? <Pressable accessibilityRole="button" accessibilityLabel="Codematica home" onPress={() => navigate("/")} style={styles.navigationBrand}>
+        <Image source={patchBrandMark} style={styles.brandMark} resizeMode="contain" accessible={false} />
+        <Image source={codematicaWordmark} style={styles.brandWordmark} resizeMode="contain" accessible={false} />
+      </Pressable> : null}
       {items.map(({ href, label, path }) => <Fragment key={href}><Pressable accessibilityRole="tab" accessibilityLabel={label} accessibilityState={{ selected: active === href }} onPress={() => navigate(href)} style={({ pressed }) => [wide ? styles.navigationRailItem : styles.navigationItem, active === href && styles.navigationSelected, pressed && styles.navigationPressed]} testID={`mobile-nav-${label.toLowerCase()}`}>
         <Svg width={22} height={22} viewBox="0 0 24 24" accessible={false}><Path d={path} stroke={active === href ? colors.accentStrong : colors.textMuted} strokeWidth={1.7} fill="none" strokeLinecap="round" strokeLinejoin="round" /></Svg>
         <Text numberOfLines={wide ? undefined : 1} adjustsFontSizeToFit={!wide} style={[styles.navigationLabel, wide && styles.navigationRailLabel, active === href && styles.navigationSelectedText]}>{label}</Text>
       </Pressable>{wide && href==="/languages" ? <><Button label="Supported languages" variant="ghost" onPress={()=>setLanguagesOpen(v=>!v)} testID="mobile-nav-languages-expand"/>{languagesOpen ? <View style={{paddingLeft:20}}><Button label="Japanese" variant="ghost" onPress={()=>navigate("/languages/japanese")} testID="mobile-nav-japanese"/><Button label="Notebook practice" variant="ghost" onPress={()=>navigate("/languages/japanese/notebooks")} testID="mobile-nav-notebooks"/></View> : null}</> : null}</Fragment>)}
 
-      {wide ? <Button label="Sign in" variant="ghost" onPress={() => navigate("/login")} testID="mobile-nav-sign-in" /> : <Pressable accessibilityRole="button" accessibilityLabel="More" onPress={() => setMenuOpen(true)} style={[styles.navigationItem, ["/browse", "/languages", "/login"].includes(active) && styles.navigationSelected]} testID="mobile-nav-more"><Svg width={22} height={22} viewBox="0 0 24 24" accessible={false}>{[5,12,19].map((cx) => <Circle key={cx} cx={cx} cy={12} r={1.5} fill={colors.textMuted} />)}</Svg><Text numberOfLines={1} adjustsFontSizeToFit style={styles.navigationLabel}>More</Text></Pressable>}
+      {wide ? <Button label="Sign in" variant="ghost" onPress={() => navigate("/login")} testID="mobile-nav-sign-in" /> : <Pressable accessibilityRole="button" accessibilityLabel="More" accessibilityState={{ selected: ["/browse", "/languages", "/interviews", "/login", "/admin"].includes(active) }} onPress={() => setMenuOpen(true)} style={[styles.navigationItem, ["/browse", "/languages", "/interviews", "/login", "/admin"].includes(active) && styles.navigationSelected]} testID="mobile-nav-more"><Svg width={22} height={22} viewBox="0 0 24 24" accessible={false}>{[5,12,19].map((cx) => <Circle key={cx} cx={cx} cy={12} r={1.5} fill={colors.textMuted} />)}</Svg><Text numberOfLines={1} adjustsFontSizeToFit style={styles.navigationLabel}>More</Text></Pressable>}
       <Modal visible={menuOpen} transparent animationType="slide" onRequestClose={() => setMenuOpen(false)}>
         <View style={styles.navigationBackdrop}>
           <Pressable style={StyleSheet.absoluteFill} accessibilityLabel="Close menu" onPress={() => setMenuOpen(false)} />
@@ -174,12 +185,10 @@ export function AppScreen({ title, children, footer, keyboardAware = false, keyb
 export function Header({ adapters, subtitle = "Path map" }: { adapters: CodematicaAdapters; subtitle?: string }) {
   return (
     <View style={styles.header}>
-      <Pressable accessibilityRole="button" onPress={() => adapters.navigation.navigate("/")} style={styles.brand} testID="mobile-home-link">
-        <View style={styles.brandMark}>
-          <Text style={styles.brandMarkText}>C</Text>
-        </View>
+      <Pressable accessibilityRole="button" accessibilityLabel={`Codematica home, ${subtitle}`} onPress={() => adapters.navigation.navigate("/")} style={styles.brand} testID="mobile-home-link">
+        <Image source={patchBrandMark} style={styles.brandMark} resizeMode="contain" accessible={false} />
         <View style={styles.fill}>
-          <Text style={styles.brandTitle}>Codematica</Text>
+          <Image source={codematicaWordmark} style={styles.brandWordmark} resizeMode="contain" accessible={false} />
           <Text style={styles.brandSubtitle}>{subtitle}</Text>
         </View>
       </Pressable>
@@ -2164,7 +2173,7 @@ const styles = StyleSheet.create({
   homeShortcutIcon: { width: 42, height: 42, borderRadius: 12, backgroundColor: colors.greenSoft, alignItems: "center", justifyContent: "center" },
   navigationBar: { flexDirection: "row", gap: 4, padding: 8, borderTopWidth: 1, borderColor: colors.line, backgroundColor: colors.panel },
   navigationRail: { width: 208, backgroundColor: colors.panel, borderRightWidth: 1, borderColor: colors.line, padding: 16, gap: 8 },
-  navigationBrand: { fontSize: 22, fontWeight: "600", color: colors.accentStrong, marginVertical: 24 },
+  navigationBrand: { flexDirection: "row", alignItems: "center", gap: 8, minHeight: 44, marginVertical: 24 },
   navigationItem: { flex: 1, alignItems: "center", justifyContent: "center", gap: 5, minHeight: 54, paddingVertical: 6, borderRadius: 12 },
   navigationRailItem: { flexDirection: "row", alignItems: "center", gap: 14, minHeight: 52, padding: 14, borderRadius: 12 },
   navigationLabel: { fontSize: 10, fontWeight: "500", color: colors.textMuted },
@@ -2214,24 +2223,11 @@ const styles = StyleSheet.create({
     alignItems: "center",
     flex: 1,
     flexDirection: "row",
-    gap: spacing.md,
+    gap: spacing.sm,
     minWidth: 0,
   },
-  brandMark: {
-    alignItems: "center",
-    backgroundColor: colors.accent,
-    borderColor: colors.accentStrong,
-    borderRadius: radii.md,
-    borderWidth: 1,
-    height: 44,
-    justifyContent: "center",
-    width: 44,
-  },
-  brandMarkText: {
-    color: colors.panel,
-    fontSize: 18,
-    fontWeight: "600",
-  },
+  brandMark: { height: 40, width: 40 },
+  brandWordmark: { width: 128, height: 31, maxWidth: "100%" },
   brandTitle: {
     color: colors.accent,
     fontSize: 18,

@@ -5,7 +5,7 @@
 - Status: `shipped`
 - Last updated: `2026-08-07`
 - Owner thread: `n/a`
-- Current state: The complete path catalog lives at `/paths`; schema-v10 source nodes, generic career/language progression, guided labs, aggregate checkpoint scoring, passive review, Japanese open answers/listening choices, and active review are local-first across web and Expo.
+- Current state: The complete path catalog lives at `/paths`; schema-v12 source nodes, generic career/language progression, guided labs, aggregate checkpoint scoring, passive review, Japanese open answers/listening choices, and active review are local-first across web and Expo.
 - Target outcome: Users can follow role and skill paths, open local companions or authoritative sources, complete all structured practice types, and inspect published/planned progression without requiring auth or Supabase.
 - Code touchpoints:
   - `packages/core/src/content/schema.ts`
@@ -38,14 +38,14 @@ Learning paths organize study using ideas from career and skill paths, language-
 
 ## Outcome / Contract
 
-- `/` is the cross-section discovery home owned by `home-discovery.md`.
+- `/learn` is the cross-section discovery hub owned by `home-discovery.md`.
 - `/paths` shows every published learning path grouped by category with kind/category filters.
 - `/browse` preserves the content library, fuzzy search, track filter, and difficulty filter.
 - `/paths/[slug]` renders one role or skill path with ordered unit nodes.
 - `/paths/[slug]/flashcards` renders one passive flashcard feed when a path has a published feed.
 - `/practice/[...slug]` renders one flashcard, cloze prompt, questionnaire session, or writing exercise.
 - Exercise content is manually authored in `content/exercises/**/*.json`; path content is authored in `content/learning-paths/*.json`; passive flashcard feeds are authored in `content/flashcard-feeds/*.json`.
-- `packages/core/src/generated/content-index.json` has `schemaVersion: 10` and includes validated primary sources, generic progression, structured Japanese grammar, approval-gated audio, learning/language/interview content, and home discovery. [Unclear: the Frontend Interview Path Extension below describes index v11.]
+- `packages/core/src/generated/content-index.json` has `schemaVersion: 12` and includes validated primary sources, generic progression, structured Japanese grammar, approval-gated audio, learning/language/interview content, and home discovery.
 - Path nodes may be documents, diagrams, exercises, or sources. Generic progressions declare a framework, roadmap label, stable skills/categories, stages with level/status/outcomes, required nodes, and published checkpoints/thresholds.
 - Index generation additionally fails on duplicate/missing sources, unknown outcome/question skills, missing source-required references, or published source stages without a published local companion. Planned stages may omit checkpoint requirements.
 - No node is locked, disabled, gated, or paywalled in this milestone. Optional saved progress is owned by `docs/features/auth-and-progress.md`.

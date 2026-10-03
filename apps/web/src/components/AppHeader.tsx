@@ -3,14 +3,22 @@
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useRef, useState } from "react";
-import { ArrowUpRight, BookOpen, Brain, ChevronDown, Code2, Home, Languages, Linkedin, LogOut, Map, MoreHorizontal, Network, UserRound, X } from "lucide-react";
+import { ArrowUpRight, BookOpen, Brain, ChevronDown, Code2, Home, Languages, Linkedin, LogOut, Map, MoreHorizontal, UserRound, X } from "lucide-react";
 import { createBrowserSupabaseClient } from "@/lib/supabase/client";
 import { useAccountSession } from "@/lib/supabase/use-account-session";
 import { useAdminAccess } from "@/lib/supabase/use-admin-access";
 import { Button } from "./Button";
 
+function BrandLink() {
+  return <Link href="/" className="app-brand" aria-label="Codematica home">
+    <img src="/brand/patch-mark.png" width={40} height={40} alt="" className="app-brand-mark" data-testid="brand-mark" />
+    <img src="/brand/wordmark.png" width={128} height={31} alt="" className="app-brand-wordmark" data-testid="brand-wordmark" />
+  </Link>;
+}
+
 const destinations = [
-  { href: "/", label: "Home", icon: Home },
+  { href: "/", label: "Play", icon: Home },
+  { href: "/learn", label: "Learn", icon: BookOpen },
   { href: "/paths", label: "Paths", icon: Map },
   { href: "/browse", label: "Lessons", icon: BookOpen },
   { href: "/practice", label: "Practice", icon: Brain },
@@ -25,11 +33,11 @@ export function AppNavigation() {
   const pathname = usePathname() ?? "/";
   const menu = useRef<HTMLDialogElement>(null);
   const moreButton = useRef<HTMLButtonElement>(null);
-  const active = pathname.startsWith("/practice/languages/japanese") ? "/languages" : pathname.startsWith("/docs/") || pathname.startsWith("/diagrams/") ? "/browse" : `/${pathname.split("/")[1]}`;
+  const active = pathname.startsWith("/play/") ? "/" : pathname.startsWith("/practice/languages/japanese") ? "/languages" : pathname.startsWith("/docs/") || pathname.startsWith("/diagrams/") ? "/browse" : `/${pathname.split("/")[1]}`;
   const [languagesOpen, setLanguagesOpen] = useState(active === "/languages");
   const [signingOut, setSigningOut] = useState(false);
   const [signOutError, setSignOutError] = useState<string>();
-  const compactDestinations = destinations.filter(({ href }) => !["/browse", "/languages"].includes(href));
+  const compactDestinations = destinations.filter(({ href }) => !["/browse", "/languages", "/interviews"].includes(href));
   const showAdmin = admin && !!user;
   const linkedInActive = pathname === "/admin/linkedin" || pathname.startsWith("/admin/linkedin/");
   const accountName = [user?.user_metadata.full_name, user?.user_metadata.name]
@@ -64,7 +72,7 @@ export function AppNavigation() {
     <>
       <a href="#app-content" className="skip-link">Skip to content</a>
       <aside className="app-sidebar">
-        <Link href="/" className="app-brand" aria-label="Codematica home"><span className="app-brand-mark"><Network size={22} aria-hidden="true" /></span>Codematica<span className="brand-dot">.</span></Link>
+        <BrandLink />
         <div className="sidebar-navigation">
           <span className="sidebar-label">YOUR LEARNING SPACE</span>
           <nav aria-label="Primary navigation" className="sidebar-links">
@@ -77,14 +85,14 @@ export function AppNavigation() {
         </div>
         <div className="sidebar-bottom">{accountControl("sidebar")}</div>
       </aside>
-      <header className="app-mobile-header"><Link href="/" className="app-brand" aria-label="Codematica home"><span className="app-brand-mark"><Network size={19} aria-hidden="true" /></span>Codematica<span className="brand-dot">.</span></Link>{accountControl("header")}</header>
+      <header className="app-mobile-header"><BrandLink />{accountControl("header")}</header>
       <nav className="app-bottom-nav" aria-label="Mobile navigation" data-testid="app-bottom-navigation">
         {compactDestinations.map(({ href, label, icon: Icon }) => <Link key={href} href={href} aria-current={active === href ? "page" : undefined} data-testid={`mobile-nav-${label.toLowerCase()}`}><Icon size={21} aria-hidden="true" /><span>{label}</span></Link>)}
-        <button ref={moreButton} type="button" onClick={() => menu.current?.showModal()} aria-haspopup="dialog" className={["/browse", "/languages", "/login", "/admin"].includes(active) ? "is-active" : undefined} data-testid="mobile-nav-more"><MoreHorizontal size={22} aria-hidden="true" /><span>More</span></button>
+        <button ref={moreButton} type="button" onClick={() => menu.current?.showModal()} aria-haspopup="dialog" className={["/browse", "/languages", "/interviews", "/login", "/admin"].includes(active) ? "is-active" : undefined} data-testid="mobile-nav-more"><MoreHorizontal size={22} aria-hidden="true" /><span>More</span></button>
       </nav>
       <dialog ref={menu} onClose={() => moreButton.current?.focus({ preventScroll: true })} className="app-more-sheet" aria-labelledby="more-title" onClick={(event) => { if (event.target === event.currentTarget) menu.current?.close(); }}>
         <div className="sheet-heading"><h2 id="more-title">Explore Codematica</h2><button type="button" onClick={() => menu.current?.close()} aria-label="Close menu"><X size={20} aria-hidden="true" /></button></div>
-        {[destinations[2], destinations[5]].map(({ href, label, icon: Icon }) => <div key={href}><Link href={href} className="sheet-link" onClick={() => menu.current?.close()}><Icon size={22} aria-hidden="true" /><span>{label}</span><ArrowUpRight size={18} aria-hidden="true" /></Link>{href === "/languages" ? <nav className="app-language-submenu" aria-label="Supported languages in menu"><Link href="/languages/japanese" onClick={() => menu.current?.close()} data-testid="mobile-menu-japanese">Japanese <span lang="ja">日本語</span></Link><Link href="/languages/japanese/notebooks" onClick={() => menu.current?.close()} data-testid="mobile-menu-notebooks">Notebook practice</Link></nav> : null}</div>)}
+        {destinations.filter(({ href }) => ["/browse", "/languages", "/interviews"].includes(href)).map(({ href, label, icon: Icon }) => <div key={href}><Link href={href} className="sheet-link" onClick={() => menu.current?.close()}><Icon size={22} aria-hidden="true" /><span>{label}</span><ArrowUpRight size={18} aria-hidden="true" /></Link>{href === "/languages" ? <nav className="app-language-submenu" aria-label="Supported languages in menu"><Link href="/languages/japanese" onClick={() => menu.current?.close()} data-testid="mobile-menu-japanese">Japanese <span lang="ja">日本語</span></Link><Link href="/languages/japanese/notebooks" onClick={() => menu.current?.close()} data-testid="mobile-menu-notebooks">Notebook practice</Link></nav> : null}</div>)}
         {showAdmin ? <nav aria-label="Admin navigation in menu" className="sheet-admin"><span className="sheet-section-label">Admin</span><Link href="/admin/linkedin" className="sheet-link" aria-current={linkedInActive ? "page" : undefined} onClick={() => menu.current?.close()} data-testid="mobile-menu-linkedin"><Linkedin size={22} aria-hidden="true" /><span>LinkedIn</span><ArrowUpRight size={18} aria-hidden="true" /></Link></nav> : null}
         {accountControl("sheet")}
       </dialog>

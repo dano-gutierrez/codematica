@@ -2,7 +2,7 @@
 
 Playwright runs the complete suite in mobile Chromium. Critical `@smoke` journeys, `@playground` and `@notebook-catalog` regressions also run in desktop Chromium and mobile WebKit. Deeper cases use `@regression`.
 
-The runner builds and serves the production Next app, avoiding dev-server compilation and Fast Refresh during parallel tests.
+The runner builds and serves the production Next app, avoiding dev-server compilation and Fast Refresh during parallel tests. CI uses two workers to limit concurrent canvas/browser load on hosted runners; local runs use four. All browser projects and assertions remain enabled.
 
 Set `E2E_PORT=3102` (or another free port) when a local app owns the default 3100. The server and browser base URL use the same port.
 
@@ -35,6 +35,12 @@ The design regression checks synthetic drafts at 320–1440 px, keyboard tooltip
 `E2E_PORT=3102 npm run e2e:linkedin:accessibility` runs isolated synthetic editorial reflow/axe, touch labels/48 px targets, desktop tooltip dismissal, focus recovery and 200% text checks on mobile Chromium, desktop Chromium and iPhone WebKit. The six widths include portrait and landscape tablet layouts; no RPC mutation is allowed. Results remain in the editorial report directory. These tests do not replace installed native VoiceOver/TalkBack or software-keyboard checks.
 
 See `docs/features/adaptive-ui.md` for persistent phone navigation, desktop/iPad sidebars, design rules, and validation gaps. Existing screens and feature logic are reused. Navigation coverage lives in `AppHeader.test.tsx`, native `adaptive-navigation.test.tsx`, Playwright `adaptive-navigation.smoke.spec.ts` / `adaptive-layout.regression.spec.ts`, and Maestro `adaptive-navigation.yaml`.
+
+## Restore the Signal
+
+`game.smoke.spec.ts` covers the campaign first clear, earned XP, and persisted unlock. `game.regression.spec.ts` exercises all 36 configurations plus lesson return and defensive interaction cases. Use `PLAYWRIGHT_PORT=3127` to isolate the test server from another local checkout. Discovery tests now visit `/learn`; the phone nav uses Play/Learn/Paths/Practice/More.
+
+`game-miniatures.regression.spec.ts` verifies every level’s miniature scene at 320px, captures renderer evidence, and checks stable reduced-motion pixels after clock advancement and resizing.
 
 `japanese-writing.regression.spec.ts` covers browser pen/touch input, all 24 repetitions of a character pair and all three custom sheets, kana word matching, saved-page recovery, rejected-ink bounce/fade, reduced motion, red-margin clearance, phone/iPad/Split View stability, and accessibility checks. Run alongside `japanese-language.regression.spec.ts` with the mobile-Chromium project.
 

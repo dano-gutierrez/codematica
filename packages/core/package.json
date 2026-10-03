@@ -25,16 +25,19 @@
     "./progress/server": "./src/progress/server.ts",
     "./progress/mastery": "./src/progress/mastery.ts",
     "./progress/progression": "./src/progress/progression.ts",
-    "./generated/content-index.json": "./src/generated/content-index.json"
+    "./generated/content-index.json": "./src/generated/content-index.json",
+    "./game": "./src/game/index.ts"
   },
   "scripts": {
     "typecheck": "tsc --noEmit -p tsconfig.json"
   },
   "dependencies": {
+    "css-tree": "3.2.1",
     "fuse.js": "^7.3.0",
     "gray-matter": "^4.0.3",
     "mdast-util-to-string": "^4.0.0",
     "remark-parse": "^11.0.0",
+    "sqlite-parser": "1.0.1",
     "unified": "^11.0.5",
     "unist-util-visit": "^5.0.0",
     "zod": "^4.2.1"

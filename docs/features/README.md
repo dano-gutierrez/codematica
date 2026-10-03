@@ -76,3 +76,7 @@ The most important sections are:
 - [Frontend Interview Practice](frontend-interview-practice.md): seven guided frontend challenges, TS/Python companions, quizzes, and review. Existing material corrections are recorded in the interview catalog audit.
 
 - [Japanese writing notebooks](japanese-writing-notebooks.md): 24-repetition planas, custom pages, local ink, optional unlock sync and native PencilKit.
+
+## Game campaign
+
+[Restore the Signal](restore-the-signal.md) owns the chapter, shared evaluators, art production, offline runners, and web/native release gates.

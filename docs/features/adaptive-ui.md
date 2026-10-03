@@ -16,13 +16,13 @@ The redesign reduces heavy borders and repeated headings and makes sections easi
 
 ## Outcome / Contract
 
-- Web below 768 px uses persistent Home, Paths, Practice, Interviews, and More bottom controls. More contains Lessons, Languages, and Sign in.
-- Web at 768 px and above shows all six destinations plus Sign in in a left sidebar.
+- Web below 768 px uses persistent Play, Learn, Paths, Practice, and More bottom controls. More contains Interviews, Lessons, Languages, and Sign in.
+- Web at 768 px and above shows all seven destinations plus Sign in in a left sidebar.
 - Native uses the same destinations. A sidebar appears when width is at least 768 pt and width divided by font scale is at least 600; Split View and large text can return to compact navigation.
 - Section selection includes nested routes; standalone documents and diagrams select Lessons.
 - The existing URL and native route structures remain intact. Native top-level switches use Expo Router `navigate`; existing in-content navigation remains unchanged.
 - Web navigation is mounted once in the root layout, including readers and error pages. `AppHeader` remains a contextual label for existing callers.
-- Home exposes all five catalog shortcuts before the curated rows. Search and all curated entries remain available.
+- Learn exposes all five catalog shortcuts before the curated rows. Search and all curated entries remain available.
 - Native safe-area layout reserves space around the stack and navigation. Web bottom navigation and its menu account for the home indicator. Page content reserves bottom clearance.
 
 ## Current State
@@ -50,6 +50,8 @@ Shared navigation, concise catalog headings, lighter typography and borders, con
 
 - [Design system](design-system.md) is the reusable web control and spacing contract. The LinkedIn editor adopts shared named buttons and compact disclosures first; broader adoption is incremental. Editorial web actions show text on narrow or touch-capable screens and use 48 px targets; native editorial actions keep text with 48 dp targets. Editorial pane selection uses available content width so iPad portrait/Split View does not squeeze the editor beside the sidebar.
 - Signed-in editorial admins see a separate Admin group with a LinkedIn icon and active destination. The sidebar footer shows account name/email with an expandable Sign out action; phone header and More reuse the disclosure. Escape restores focus. Short-screen navigation scrolls while the footer stays reachable. Profile/settings can extend the same menu later. See [Auth and progress](auth-and-progress.md) for session and sign-out behavior.
+
+- App branding uses the approved Patch head and wordmark in existing web/native headers and sidebars. See `brand-identity.md` for source ownership, browser icons and native packaging.
 
 - Use concrete copy that names the item or action. Shared study controls say “Next activity,” “Practice complete,” and “Quick review.” Preserve instructions, prerequisites, error meaning, and technical values when shortening text.
 - Neutral canvas, white surfaces, teal primary navigation, and restrained category colors.
@@ -118,6 +120,10 @@ Updated home discovery, native deployment, the docs hub, package/mobile/E2E READ
 ## Thread Handoff Prompt
 
 `Read docs/features/adaptive-ui.md and docs/codex-context.md. Preserve all feature behavior while checking responsive presentation. Run the navigation and layout regressions, and distinguish browser/Jest success from installed native device verification.`
+
+## Game surfaces
+
+The campaign at `/` and `/play/*` uses the original cream/teal painted-world treatment described in [Restore the Signal](restore-the-signal.md). Editors and controls stay in normal UI with keyboard/tap alternatives. `/learn` retains the quiet discovery layout. Mobile and desktop expose the same destinations; `/play/*` marks Play active. Reduced motion removes decorative parallax and movement.
 
 ### Native tab text at accessibility sizes — 2026-09-29
 

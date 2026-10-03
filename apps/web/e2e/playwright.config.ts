@@ -1,6 +1,6 @@
 import { defineConfig, devices } from "@playwright/test";
 
-const port = Number(process.env.E2E_PORT ?? "3100");
+const port = Number(process.env.E2E_PORT ?? process.env.PLAYWRIGHT_PORT ?? "3100");
 const webServerEnv = Object.fromEntries(
   Object.entries(process.env).filter(([key, value]) => key !== "NO_COLOR" && value !== undefined),
 ) as Record<string, string>;
@@ -15,7 +15,8 @@ export default defineConfig({
   testDir: "./specs",
   outputDir: process.env.EDITORIAL_E2E === "1" ? "./test-results/editorial-artifacts" : "./test-results/artifacts",
   timeout: 30_000,
-  workers: 4,
+  // Keep concurrent canvas/browser processes within hosted runner capacity.
+  workers: process.env.CI ? 2 : 4,
   expect: {
     timeout: 10_000,
   },

@@ -2,6 +2,10 @@
 
 Codematica is a mobile-first, gamified app for learning software engineering and beginner Japanese. V1 lets learners browse, render, search, and practice repo-authored Markdown and structured content. It includes an open JF/CEFR Pre-A1/A1 roadmap, embedded and external Mermaid diagrams, handwriting, review, and optional cross-device progress.
 
+## Brand assets
+
+Patch is the app's approved identity. The [brand guide](assets/brand/README.md) contains the selected logo, favicon and launcher artwork. Run `npm run brand:assets` to regenerate all web/native exports, `npm run brand:check` to verify them, and `npm run brand:preview` to inspect the small-size and mask checks.
+
 ## Stack
 
 - Next.js App Router
@@ -138,6 +142,14 @@ Keep the service role key server-side only. Do not add it to browser code or Ver
 - `packages/ui`: shared React Native-compatible screens and design tokens.
 
 Start documentation work at `docs/README.md`. See `docs/CHANGELOG.md` for dated delivery summaries and the linked feature documents for authoritative behavior.
+
+## Restore the Signal
+
+The home is the Restore the Signal campaign; discovery and Keep reading are at `/learn`. See `docs/features/restore-the-signal.md`. Run `npm run game:runtime` and `npm run game:assets` when local runner or art sources change; `npm run build` includes both exports. Native bundles consume their committed offline outputs.
+
+The [character kit](assets/game/previews/character-kit-v2.png) defines Patch and the three zombie identities. `game:assets` also exports their thumbnails; `npm run game:character-preview` rebuilds the visual review sheet. See the [asset guide](assets/game/README.md) for editable sources, portrait sizes and generation prompts.
+
+The [in-level miniature kit](assets/game/previews/miniatures-v3.png) shows the actual chibi game figures. Run `npm run game:miniature-preview -- http://127.0.0.1:3128` against a completed production preview to recapture it.
 
 ## Private LinkedIn editorial workflow
 

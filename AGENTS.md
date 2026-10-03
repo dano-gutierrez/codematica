@@ -41,10 +41,10 @@ Frontend is split across `apps/web` for Next.js App Router and `apps/mobile` for
 
 - Markdown is canonical. The generated index is an artifact, not an authoring surface.
 - The app must remain useful without Supabase for anonymous browsing. Cross-device Auth/progress requires Supabase runtime env vars.
-- Routing is content-oriented: `/` is the cross-section discovery home, `/paths` is the learning-path catalog, `/browse` browses the content index, `/docs/[...slug]` renders articles, `/diagrams/[...slug]` renders external Mermaid diagrams, and `/languages/japanese` opens the Japanese language study hub.
+- Routing is content-oriented: `/` is the game campaign and `/learn` is the cross-section discovery hub, `/paths` is the learning-path catalog, `/browse` browses the content index, `/docs/[...slug]` renders articles, `/diagrams/[...slug]` renders external Mermaid diagrams, and `/languages/japanese` opens the Japanese language study hub.
 - Content boundaries are schema-validated. Authored Markdown frontmatter is untrusted until it passes `packages/core/src/content/schema.ts`.
 - Search currently runs client-side from `packages/core/src/generated/content-index.json`; future Supabase-backed search should preserve the same user-facing behavior unless a feature doc changes the contract.
-- Gamification is intentionally light in V1: tracks, difficulty, progress-ready metadata, and learning UI are present before durable scoring/auth.
+- Restore the Signal adds campaign progression, stars, XP, streaks, and cosmetic rewards. See `docs/features/restore-the-signal.md`; learning-path access remains independent of campaign locks.
 
 ## Data Protection
 
@@ -321,6 +321,9 @@ Testing is a release contract, not a cleanup step.
 
 ### Reusable Component Inventory
 
+- `apps/web/src/components/game/`: `GameMap`, `GamePlay`, `GameScene`, `GameBoard`, `GameDistrictArt`, and `GameLessonReturn` own the campaign, accessible editors, Pixi scene, draggable/tap board, lazy scenery, and lesson return.
+- `packages/ui/src/game/`: native game map/play screens, Skia actor/district renderers, and accessible draggable board share core rules with web. Both character renderers use `packages/core/src/game/miniatures.ts` for in-level chibi poses and container fitting; reuse this composition when adding miniature views.
+
 Reuse these components and extend them when needed; avoid rebuilding equivalent UI:
 
 - `apps/web/src/components/BackButton.tsx`: shared client-side back navigation button with an optional label.
@@ -339,7 +342,7 @@ Reuse these components and extend them when needed; avoid rebuilding equivalent 
 - `packages/ui/src/JapaneseNotebookPractice.tsx` and `JapaneseNotebookCatalogScreen.tsx`: shared native notebook pages and catalog.
 - `packages/ui/src/notebook-session.ts`: React-only session persistence and progress shared by web/native.
 - `apps/web/src/components/KeepReadingSection.tsx`: home-page resume panel backed by signed-in Supabase progress or signed-out local progress.
-- `apps/web/src/components/HomeDiscovery.tsx`: cross-section home search, curated section rows, section headings, and reusable discovery cards.
+- `apps/web/src/components/HomeDiscovery.tsx`: Learn discovery search, curated section rows, section headings, and reusable discovery cards.
 - `apps/web/src/components/KnowledgeBrowser.tsx`: generated content browser with search, track filters, difficulty filters, and result cards.
 - `apps/web/src/components/LearningPathMap.tsx`: learning path home and detail views, path overview stats, and path node display.
 - `apps/web/src/components/LoginForm.tsx`: Supabase Auth UI for Google, Apple-ready, and email/password flows.
