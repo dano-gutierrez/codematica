@@ -1,6 +1,5 @@
 import { defineConfig, devices } from "@playwright/test";
 
-const port = Number(process.env.PLAYWRIGHT_PORT ?? 3100);
 const webServerEnv = Object.fromEntries(
   Object.entries(process.env).filter(([key, value]) => key !== "NO_COLOR" && value !== undefined),
 ) as Record<string, string>;
