@@ -67,7 +67,7 @@ begin
     or jsonb_typeof(report->'warnings') is distinct from 'array' or jsonb_array_length(report->'warnings')>20
     or jsonb_typeof(report->'placement') is distinct from 'object'
     or report->'semantic_complete' is distinct from (select metadata->'semantic_complete' from public.knowledge_snapshots where id=sid)
-    or exists(select 1 from jsonb_array_elements(report->'matches') m where not exists(select 1 from public.knowledge_resources r where r.snapshot_id=sid and r.id=m->>'id' and r.data->>'hash'=m->>'hash' and r.data->>'text'=m->>'text'))
+    or exists(select 1 from jsonb_array_elements(report->'matches') m where not exists(select 1 from public.knowledge_resources r where r.snapshot_id=sid and r.id=m->>'id' and r.data->>'hash'=m->>'hash' and jsonb_typeof(m->'text')='string' and (r.data->>'text'=m->>'text' or length(m->>'text')>0 and strpos(r.data->>'text',m->>'text')>0)))
     or exists(select 1 from jsonb_each_text(report->'placement') v where not exists(select 1 from public.knowledge_resources r where r.snapshot_id=sid and r.id=v.value))
   then return false; end if;
   return true;
