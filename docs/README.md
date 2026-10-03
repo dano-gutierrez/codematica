@@ -120,3 +120,5 @@ Native notebook validation now includes agent-device layout/contact runners in `
 [Patch and the zombie character kit](../assets/game/previews/character-kit-v2.png) shows the refined mascot, matching enemy identities and thumbnails. The [asset guide](../assets/game/README.md) owns portrait sizes, rig parts, palette and generation provenance.
 
 The game [miniature sheet](../assets/game/previews/miniatures-v3.png) shows the full-body figures used in each level and their actual phone/wide rendering.
+
+- [Knowledge evaluator](features/knowledge-evaluator.md): local Graphiti/Qwen/OpenJev content inventory and decisions, admin graph/table exploration, offline jobs and graph-bound editorial review. [Runbook](runbooks/knowledge-evaluator.md).

@@ -29,6 +29,8 @@ export default defineConfig({
         "scripts/linkedin/preparation.ts",
         "scripts/linkedin/local-models.ts",
         "scripts/linkedin/inference.ts",
+        "scripts/linkedin/knowledge.ts",
+        "scripts/knowledge/{catalog,worker,local-api,fingerprint,review,apply,private-posts}.ts",
       ],
       // Generated assets, type/barrel files, and thin route composition are
       // validated by content checks, typecheck, and E2E rather than line coverage.
@@ -53,6 +55,7 @@ export default defineConfig({
         "apps/web/src/lib/**": { lines: 85, statements: 85, functions: 85, branches: 80 },
         "apps/web/src/app/**/route.ts": { lines: 85, statements: 85, functions: 85, branches: 80 },
         "scripts/linkedin/**": { lines: 85, statements: 85, functions: 85, branches: 80 },
+        "scripts/knowledge/**": { lines: 85, statements: 85, functions: 85, branches: 80 },
         "scripts/content/**": { lines: 85, statements: 85, functions: 85, branches: 80 },
         "apps/web/src/components/**": { lines: 75, statements: 75, functions: 75, branches: 70 },
       },

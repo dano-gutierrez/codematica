@@ -1,5 +1,7 @@
 import { describe, expect, it, vi } from "vitest";
 import { analysisFixture, editorialFixture } from "../../packages/core/src/test/linkedin-fixture";
+import { knowledgeReport } from "../../packages/core/src/test/knowledge-fixture";
+import { compactKnowledge } from "./knowledge";
 import { candidateHash, normalizeText, shortlist, prepareLocally, compactHandoff, type Answers } from "./preparation";
 
 const original = editorialFixture.revisions[0];
@@ -8,6 +10,26 @@ const context = () => ({ post, revision: original, corpus: [{ post, revision: or
 function evaluator() {
   return vi.fn(async (_state: unknown, questions: Record<string, { type: string }>): Promise<Answers> => Object.fromEntries(Object.entries(questions).map(([key, q]) => [key, q.type === "score" ? { score: 8 } : q.type === "choice" ? { choice: key === "best" ? "keep" : "distinct", probabilities: { distinct: 0.95, keep: 0.95 } } : { noul: 0.95 }])));
 }
+it("keeps graph evidence through OpenJev, local preparation, and the Codex handoff", async () => {
+  const knowledge = compactKnowledge({ ...knowledgeReport, action: "create_resource" });
+  const evaluate = evaluator();
+  const report = await prepareLocally({ ...context(), knowledge }, { write: vi.fn().mockResolvedValue([analysisFixture]), evaluate });
+  expect(evaluate.mock.calls.find(([, q]) => q.facts)?.[0]).toHaveProperty("knowledge", knowledge);
+  expect(report.knowledge).toEqual(knowledge);
+  const handoff = compactHandoff({ ...report, id: "30000000-0000-4000-8000-000000000001", job_id: "30000000-0000-4000-8000-000000000002", post_id: post.id, revision_id: original.id, created_at: "now" }, original, context().voice);
+  expect(handoff.knowledge).toEqual(knowledge);
+  expect(handoff.knowledge_hash).toBe(report.knowledge_hash);
+});
+it("allows a recorded graph override to create a flagged candidate without bypassing source failures", async () => {
+  const knowledge = compactKnowledge({ ...knowledgeReport, action: "needs_review" });
+  const models = { write: vi.fn().mockResolvedValue([analysisFixture]), evaluate: evaluator() };
+  expect((await prepareLocally({ ...context(), knowledge }, models)).analysis).toBeNull();
+  expect(models.write).not.toHaveBeenCalled();
+  const flagged = await prepareLocally({ ...context(), knowledge, overrideReason: "send_with_flags: Check the uncertain relation" }, models);
+  expect(flagged.outcome).toBe("held"); expect(flagged.analysis).not.toBeNull();
+  const invalidSource = await prepareLocally({ ...context(), knowledge, overrideReason: "send_with_flags: Check it", sourceIssues: ["Canonical source changed"] }, models);
+  expect(invalidSource.analysis).toBeNull();
+});
 describe("bounded local preparation", () => {
   it("normalizes comparison text without changing saved text or identifier case", () => {
     expect(normalizeText("𝗔  retry\nadds load")).toBe("A retry adds load");

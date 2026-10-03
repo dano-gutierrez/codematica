@@ -21,6 +21,7 @@ test("@regression admin reviews, refines and approves an exact revision", async 
     }
     throw new Error(`Unexpected editorial RPC ${name}`);
   });
+  await page.route("**/rest/v1/rpc/knowledge_*",route=>route.fulfill({json:null}));
   await page.goto("/admin/linkedin");
   await expect(page.getByTestId("linkedin-post-list")).toBeVisible();
   await page.getByRole("button", { name: /Retries need a budget/ }).click();
@@ -46,6 +47,7 @@ test("@regression ordinary users cannot load the editorial collection", async ({
     if (route.request().url().endsWith("linkedin_overview")) snapshots++;
     await route.fulfill({ json: false });
   });
+  await page.route("**/rest/v1/rpc/knowledge_*",route=>route.fulfill({json:null}));
   await page.goto("/admin/linkedin");
   await expect(page.getByRole("heading", { name: "Admin access required" })).toBeVisible();
   expect(snapshots).toBe(0);
@@ -77,6 +79,7 @@ test("@regression creates formatted manual text, preserves a failed submission a
     }
     throw new Error(`Unexpected RPC ${name}`);
   });
+  await page.route("**/rest/v1/rpc/knowledge_*",route=>route.fulfill({json:null}));
   await page.goto("/admin/linkedin");
   await page.getByTestId("linkedin-create").click();
   await expect(page.getByTestId("linkedin-create-submit")).toBeDisabled();
@@ -119,6 +122,7 @@ test("@regression reviews held local preparation without adopting or approving i
     if (name === "linkedin_preparation_action") { overrides.push(route.request().postDataJSON()); return route.fulfill({ json: null }); }
     throw new Error(`Unexpected RPC ${name}`);
   });
+  await page.route("**/rest/v1/rpc/knowledge_*",route=>route.fulfill({json:null}));
   await page.goto("/admin/linkedin");
   await expect(page.getByRole("button", { name: /Retries need a budget/ })).toBeVisible(); expect(details).toBe(0);
   await page.getByRole("button", { name: /Retries need a budget/ }).click();

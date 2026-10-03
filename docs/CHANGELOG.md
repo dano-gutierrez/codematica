@@ -275,3 +275,11 @@ Added admin web/native review, immutable Supabase revisions, approval-bound Buff
 Removed the recurring Codex automation at the user’s request. Web/native copy and operating instructions now explain that requests wait for an explicit manual run. Queue, approval, and publication behavior is unchanged.
 
 - 2026-10-03: Rebased local LinkedIn preparation onto the notebook-preview changes and serialized model POSTs with the knowledge service through a shared POSIX lock.
+
+## 2026-10-03 — Knowledge graph and graph-assisted editorial review
+
+- Added a complete non-human-language catalog, stable scoped identities, private post revisions and explicit/inferred/approved relationships.
+- Added isolated pinned Graphiti/Neo4j, local BGE/Qwen/OpenJev retrieval and staged decisions, REST/MCP, resumable extraction and a 40-case benchmark.
+- Added admin-only Supabase projections/offline jobs, a Cytoscape graph and accessible table, evidence/proposal review and reviewed relationship sidecars.
+- Persisted graph enrollment/context through LinkedIn preparation and Codex verification; enforced freshness at adoption, approval and Buffer initiation. Graph overrides now produce a flagged candidate; canonical source failures still hold.
+- Added joined real-model smoke with independent verification and inert scheduling, RLS/freshness regressions, and operating documentation. Existing coverage floors remain unchanged; hosted rollout is separate.

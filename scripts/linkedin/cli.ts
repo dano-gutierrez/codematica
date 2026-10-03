@@ -1,3 +1,4 @@
+import { assessPostKnowledge, compactKnowledge } from "./knowledge";
 import { createClient } from "@supabase/supabase-js";
 import { mkdir, readFile, writeFile } from "node:fs/promises";
 import { resolve, dirname } from "node:path";
@@ -37,6 +38,12 @@ async function main() {
     for (const name of ["posts","revisions","jobs","publications","settings","preparations","voice_profiles"]) backup[name] = await rows(`linkedin_${name}`);
     const path = await privateFile(resolve(privateRoot,"exports",`${Date.now()}-before-preparation.json`),backup);
     console.log(JSON.stringify({ backup: path, enqueued: await rpc("linkedin_enable_preparation") }));
+  } else if (command === "enable-knowledge") {
+    if (args[0] !== "--all-review") throw new Error("Use enable-knowledge --all-review after indexing, synchronization and local preparation activation");
+    const backup: Record<string, unknown> = { version: 2, exportedAt: new Date().toISOString() };
+    for (const name of ["posts","revisions","jobs","publications","settings","preparations","voice_profiles"]) backup[name] = await rows(`linkedin_${name}`);
+    const path = await privateFile(resolve(privateRoot,"exports",`${Date.now()}-before-knowledge.json`),backup);
+    console.log(JSON.stringify({backup:path,enrolled:await rpc("linkedin_enable_knowledge")}));
   } else if (command === "prepare") {
     const limit = args[0] === "--all" ? 10000 : z.coerce.number().int().min(1).max(100).parse(args[0] || "5");
     const runtime = createLocalModels(process.env.LINKEDIN_OPENJEV_URL || "http://127.0.0.1:8791", process.env.LINKEDIN_WRITER_URL || "http://127.0.0.1:8793");
@@ -60,7 +67,10 @@ async function main() {
       const renew = setInterval(() => { void rpc("linkedin_renew",lease).catch(() => undefined); },60_000);
       try {
         const voice = voiceProfileSchema.parse(envelope.settings.voice_profile);
-        const report = await prepareLocally({ post: envelope.post, revision: envelope.revision, corpus, voice, authorContext: envelope.settings.author_context, prompt, sourceIssues: await sourceIssues(root,envelope.revision), overrideReason: envelope.job.override_reason }, models);
+        const assessment = envelope.post.knowledge_required ? await assessPostKnowledge(envelope.post,envelope.revision) : undefined;
+        const saved = assessment ? await rpc("knowledge_save_post",{p_post:envelope.post.id,p_revision:envelope.revision.id,p_report:assessment}) : undefined;
+        const knowledge = assessment ? compactKnowledge(assessment,saved) : undefined;
+        const report = await prepareLocally({ post: envelope.post, revision: envelope.revision, corpus, voice, authorContext: envelope.settings.author_context, prompt, knowledge, sourceIssues: await sourceIssues(root,envelope.revision), overrideReason: envelope.job.override_reason }, models);
         await privateFile(resolve(privateRoot,"results",`${envelope.job.id}-${envelope.job.lease_token}-local.json`),report);
         await rpc("linkedin_complete_prepare",{ ...lease,p_report:report }); completed++; if(report.outcome==='held') held++;
         console.log(JSON.stringify({ jobId: envelope.job.id, outcome: report.outcome, rounds: report.metrics.rounds, elapsedMs: report.metrics.elapsed_ms }));

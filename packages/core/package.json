@@ -27,7 +27,8 @@
     "./progress/progression": "./src/progress/progression.ts",
     "./generated/content-index.json": "./src/generated/content-index.json",
     "./game": "./src/game/index.ts",
-    "./linkedin-preparation": "./src/linkedin-preparation.ts"
+    "./linkedin-preparation": "./src/linkedin-preparation.ts",
+    "./knowledge": "./src/knowledge.ts"
   },
   "scripts": {
     "typecheck": "tsc --noEmit -p tsconfig.json"

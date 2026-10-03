@@ -18,7 +18,7 @@
     "build": "npm run brand:assets && npm run game:runtime && npm run game:assets && npm run content:index && npm run build -w @codematica/web",
     "start": "npm run start -w @codematica/web",
     "lint": "eslint . --max-warnings=0",
-    "typecheck": "npm run typecheck -w @codematica/core && npm run typecheck -w @codematica/ui && npm run typecheck -w @codematica/web && npm run typecheck -w @codematica/mobile && npm run typecheck:linkedin",
+    "typecheck": "npm run typecheck -w @codematica/core && npm run typecheck -w @codematica/ui && npm run typecheck -w @codematica/web && npm run typecheck -w @codematica/mobile && npm run typecheck:linkedin && npm run typecheck:knowledge",
     "typecheck:linkedin": "tsc --noEmit -p scripts/linkedin/tsconfig.json",
     "test": "vitest run",
     "test:coverage": "vitest run --coverage && vitest run --coverage --config vitest.per-file.config.ts",
@@ -77,7 +77,18 @@
     "game:character-preview": "node scripts/game/capture-character-kit.mjs",
     "game:miniature-preview": "node scripts/game/capture-miniatures.mjs",
     "mobile:e2e:notebook-layout": "node apps/mobile/e2e/notebook-layout.mjs",
-    "mobile:e2e:notebook-gestures": "node apps/mobile/e2e/notebook-gestures.mjs"
+    "mobile:e2e:notebook-gestures": "node apps/mobile/e2e/notebook-gestures.mjs",
+    "knowledge": "python3 services/knowledge/launcher.py",
+    "knowledge:export": "node --import tsx scripts/knowledge/export.ts",
+    "knowledge:worker": "node --env-file=.local/knowledge/supabase.env --import tsx scripts/knowledge/cli.ts worker",
+    "knowledge:sync": "node --env-file=.local/knowledge/supabase.env --import tsx scripts/knowledge/cli.ts sync",
+    "knowledge:export:posts": "node --env-file=.env --import tsx scripts/knowledge/cli.ts export-with-posts",
+    "knowledge:apply-reviewed": "node --env-file=.local/knowledge/supabase.env --import tsx scripts/knowledge/cli.ts apply-reviewed",
+    "test:knowledge:python": "KNOWLEDGE_STATE=.local/knowledge/inert-tests CODEMATICA_INFERENCE_LOCK=/tmp/codematica-inert-knowledge-tests.lock PYTHONPATH=services/knowledge .local/knowledge/python/bin/python -m unittest discover -s services/knowledge/tests -v",
+    "test:knowledge:local": "python3 services/knowledge/launcher.py smoke",
+    "knowledge:benchmark": "python3 services/knowledge/launcher.py benchmark",
+    "e2e:knowledge": "EDITORIAL_E2E=1 playwright test --config=apps/web/e2e/playwright.config.ts --project=mobile-chromium knowledge-admin.regression.spec.ts",
+    "typecheck:knowledge": "tsc --noEmit -p scripts/knowledge/tsconfig.json"
   },
   "dependencies": {
     "@fontsource-variable/noto-sans-jp": "^5.3.0",

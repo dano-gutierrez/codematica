@@ -158,3 +158,7 @@ This PR includes the hosted migration but does not deploy it or the clients. Per
 ## Latest-main merge validation — 2026-09-30
 
 Merged `main` at `d8c295b`, preserving both frontend interview documentation and the LinkedIn workflow, Python verification and editorial npm scripts, and separate public/editorial browser configurations. No editorial database migration or publishing behavior changed. A clean dependency install, 389 Vitest tests with coverage gates, 58 native Jest tests with coverage gates, authored Python verification, content check, lint and workspace typecheck passed. Expo Doctor passes all 20 checks after the upstream SDK alignment. The merged production build, nine public browser smoke cases, three editorial browser cases and startup with a clean production-only dependency install also passed. Installed-device validation and hosted deployment remain separate tasks.
+
+## Graph-assisted first review
+
+The stacked knowledge evaluator adds optional persistent graph enrollment after local preparation activation. It retrieves related lessons, skills, paths and prior posts before OpenJev/editorial writing. Compact source-bound context and warnings survive into Codex verification; graph holds require a recorded reason. Database guards require the same evidence at verification, human adoption/approval and the final Buffer gate. See [the graph contract](knowledge-evaluator.md) and [runbook](../runbooks/knowledge-evaluator.md). This addition is locally implemented; hosted rollout and real external publication are not implied.

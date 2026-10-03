@@ -1,0 +1,70 @@
+// @vitest-environment node
+import { describe, expect, it } from "vitest";
+import { buildContentIndex } from "../../packages/core/src/content/build-index";
+import { buildKnowledgeCatalog } from "./catalog";
+
+describe("complete knowledge catalog", () => {
+  it("covers authored kinds and excludes human languages without excluding programming", async () => {
+    const source = await buildContentIndex({ rootDir: process.cwd() });
+    const graph = buildKnowledgeCatalog(source);
+    expect(graph.resources.some(r => r.id === "path:python-for-ts-js-engineers")).toBe(true);
+    expect(graph.resources.some(r => r.kind === "interview-question")).toBe(true);
+    expect(graph.resources.some(r => r.kind === "solution")).toBe(true);
+    expect(graph.resources.some(r => r.kind === "flashcard")).toBe(true);
+    expect(graph.resources.some(r => r.id === "skill:ml-systems-engineer:scientific-computing")).toBe(true);
+    expect(graph.resources.some(r => /japanese|^language:/.test(r.id))).toBe(false);
+    expect(graph.exclusions.length).toBeGreaterThan(0);
+    expect(graph.counts.document).toBe(source.documents.filter(d => d.track !== "Languages").length);
+    const ids = new Set(graph.resources.map(r => r.id));
+    expect(ids.size).toBe(graph.resources.length);
+    expect(graph.relationships.every(e => ids.has(e.source) && ids.has(e.target))).toBe(true);
+    expect(graph.relationships.every(e=>e.origin?.hash.length===64 && e.origin.sourcePath.startsWith("content/"))).toBe(true);
+    expect(graph.resources.every(r => r.hash.length === 64 && r.sourcePath.startsWith("content/"))).toBe(true);
+  });
+  it("keeps identities stable and fingerprints exact source changes", async () => {
+    const source = await buildContentIndex({ rootDir: process.cwd() });
+    const a = buildKnowledgeCatalog(source);
+    expect(buildKnowledgeCatalog(source).id).toBe(a.id);
+    const copy = structuredClone(source);
+    copy.documents.find(d => d.track !== "Languages")!.contentHash = "b".repeat(64);
+    const b = buildKnowledgeCatalog(copy);
+    expect(b.id).not.toBe(a.id);
+    expect(b.resources.map(r => r.id)).toEqual(a.resources.map(r => r.id));
+  });
+  it("indexes private posts without mixing their identifiers with curriculum", async () => {
+    const source = await buildContentIndex({ rootDir: process.cwd() });
+    const graph = buildKnowledgeCatalog(source, [{ id: "p1", revisionId: "r1", title: "Retries", body: "Retry budgets matter.", status: "review", published: false }]);
+    expect(graph.resources.find(r => r.id === "post:p1")).toMatchObject({ visibility: "private", revisionId: "r1", kind: "post" });
+  });
+  it("preserves published post identity when rebuilding the private collection", async () => {
+    const source = await buildContentIndex({ rootDir: process.cwd() });
+    const graph = buildKnowledgeCatalog(source, [{ id: "p1", revisionId: "r1", title: "Retries", body: "Retry budgets matter.", status: "approved", published: true }]);
+    const r = graph.resources.find(r => r.id === "post:p1")!;
+    const rebuilt = buildKnowledgeCatalog(source, [{ id: r.id.slice(5), revisionId: r.revisionId!, title: r.title, body: r.text, status: r.postStatus!, published: r.published! }]);
+    expect(rebuilt.id).toBe(graph.id);
+    expect(r).toMatchObject({ status: "published", postStatus: "approved", published: true });
+  });
+});
+
+  it("keeps resource targets out of skill identities",async()=>{
+    const snapshot=buildKnowledgeCatalog(await buildContentIndex({rootDir:process.cwd()}));
+    const kinds=new Map(snapshot.resources.map(r=>[r.id,r.kind]));
+    for(const r of snapshot.resources) for(const skill of r.skills) expect(kinds.get(skill)).toBe("skill");
+  });
+
+it("fingerprints source revision and working-tree provenance",async()=>{
+ const {catalogIdentity}=await import("./export-catalog");
+ const source={id:"content",manifest:[],sourceRevision:"a",dirty:false};
+ expect(catalogIdentity(source)).toBe(catalogIdentity({...source}));
+ expect(catalogIdentity({...source,sourceRevision:"b"})).not.toBe(catalogIdentity(source));
+ expect(catalogIdentity({...source,dirty:true})).not.toBe(catalogIdentity(source));
+});
+it("indexes the merged campaign, levels and scenarios with lesson links",async()=>{
+ const source=await buildContentIndex({rootDir:process.cwd()}),graph=buildKnowledgeCatalog(source);
+ expect(graph.counts["game-campaign"]).toBe(source.gameCampaigns.length);
+ const c=source.gameCampaigns[0],level=c.levels[0],lid=`game-level:${c.id}/${level.id}`;
+ expect(graph.counts["game-level"]).toBe(c.levels.length);expect(graph.counts["game-scenario"]).toBe(c.levels.length*3);
+ expect(graph.resources.find(r=>r.id===lid)?.sourcePath).toBe(`content/game/${c.id}.json`);
+ expect(graph.relationships).toContainEqual(expect.objectContaining({source:lid,target:`document:${level.lessonSlugs[0]}`,type:"reviews"}));
+ expect(graph.relationships.some(e=>e.source===lid&&e.target.startsWith("game-scenario:")&&e.type==="contains")).toBe(true);
+});

@@ -37,3 +37,5 @@ Japanese writing notebooks use 24 whole-prompt repetitions per sheet and support
 
 Game store claims are serialized across account changes. Deferred identity checks must verify the active generation before merging remote awards or choosing a save payload; keep the interrupted-load tests when changing synchronization.
 `@codematica/core/linkedin-preparation` validates sparse verification against an immutable candidate and derives preparation labels. Overview/detail polling retains only selected history and discards stale responses during edits. Voice rules and held-draft overrides use authenticated RPCs; local reports never authorize approval.
+
+`knowledge.ts` defines stable resource/relationship/snapshot/candidate/report contracts and the admin projection client. `linkedin.ts` carries optional graph context/hash and durable post enrollment; verification checks the exact evidence hash. These modules have no model, filesystem or graph-database runtime imports.
