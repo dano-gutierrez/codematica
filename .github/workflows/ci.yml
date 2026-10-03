@@ -64,6 +64,7 @@ jobs:
       - uses: actions/setup-python@v6
         with:
           python-version: "3.13"
+      - run: python -m unittest discover -s scripts/linkedin -p 'test_models.py' -v
       - run: npm run test:interview:python
       - run: npm run test:coverage
         env:
