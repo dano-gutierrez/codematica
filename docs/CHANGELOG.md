@@ -8,6 +8,7 @@ This changelog dates durable product and architecture changes and links to their
 - Cancelled stale web runner requests and native WebView callbacks after reset or navigation. Only the focused native level advances the shared defense clock.
 - Serialized anonymous-progress claims and guarded deferred account checks so stale requests cannot merge or upload another account’s awards. Unavailable map scroll storage no longer interrupts play.
 - Made the SQL zone mastery fixture require a different predicate from the story. Strengthened exact drag-coordinate, independent budget/latency, save-prompt, and async-race regressions; retained all coverage floors.
+- Made opaque brand icon exports byte-identical on macOS ARM and Linux x64. Reduced CI browser concurrency and changed the native progression test to completed-ink events while retaining all 48 characters, exact lock boundaries, and a real persistence restart.
 - Current validation and remaining installed-iOS, Maestro, and physical-device performance requirements are recorded in the [campaign contract](features/restore-the-signal.md).
 
 ## 2026-10-02 — Approved Patch app identity

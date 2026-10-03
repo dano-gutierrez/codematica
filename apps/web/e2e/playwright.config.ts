@@ -15,7 +15,8 @@ export default defineConfig({
   testDir: "./specs",
   outputDir: process.env.EDITORIAL_E2E === "1" ? "./test-results/editorial-artifacts" : "./test-results/artifacts",
   timeout: 30_000,
-  workers: 4,
+  // Keep concurrent canvas/browser processes within hosted runner capacity.
+  workers: process.env.CI ? 2 : 4,
   expect: {
     timeout: 10_000,
   },

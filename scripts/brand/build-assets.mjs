@@ -42,7 +42,8 @@ const wordmarkPng = await sharp(wordmark).resize({ width: 768 }).png().toBuffer(
 const headerMark = await sharp(markPng).resize(128).png().toBuffer();
 const headerWordmark = await sharp(wordmarkPng).resize({ width: 384 }).png().toBuffer();
 const logoPng = await sharp(logo).resize({ width: 1024 }).png().toBuffer();
-const appIcon = await sharp(await square(launcher, 1024, 92, teal)).flatten({ background: teal }).png().toBuffer();
+// Flatten directly: opaque compositing rounds a few colors differently on ARM and x64.
+const appIcon = await sharp(await square(launcher, 1024, 92)).flatten({ background: teal }).png().toBuffer();
 // Keep the entire foreground within Android's central safe circle.
 const adaptive = await square(launcher, 1024, 282);
 

@@ -10,6 +10,7 @@ import {
   getWritingMatchPairs,
   type LanguageCharacter,
   type NotebookStorage,
+  type NotebookSnapshot,
   type WritingNotebook,
 } from "@codematica/core";
 import {
@@ -17,7 +18,7 @@ import {
   PracticeScreen,
   NativeNavigation,
 } from "../../../../packages/ui/src/screens";
-import { JapaneseNotebookPractice } from "../../../../packages/ui/src/JapaneseNotebookPractice";
+import { JapaneseNotebookPractice, type HandwritingCanvasProps } from "../../../../packages/ui/src/JapaneseNotebookPractice";
 import { JapaneseNotebookCatalogScreen } from "../../../../packages/ui/src/JapaneseNotebookCatalogScreen";
 const index = getContentIndex(),
   exercise = getExerciseBySlug("languages/japanese-hiragana-vowels-writing")!;
@@ -348,15 +349,33 @@ it("keeps automatic checks available after cancelled extra contacts", async () =
   expect(view.getByTestId("mobile-writing-sheet-progress")).toHaveTextContent(/2 \/ 24/);
 });
 it("requires all 24 whole pairs, unlocks without advancing, and keeps earned unlocks after restart", async () => {
+  let canvas!: HandwritingCanvasProps;
+  let saved: NotebookSnapshot | undefined;
+  const Canvas = (props: HandwritingCanvasProps) => { canvas = props; return null; };
+  const storage: NotebookStorage = {
+    load: jest.fn(async () => saved),
+    save: jest.fn(async (snapshot) => { saved = JSON.parse(JSON.stringify(snapshot)) as NotebookSnapshot; }),
+    saveDefinition: jest.fn(async () => undefined),
+    list: jest.fn(async () => []),
+  };
+  const notebookAdapters = { ...adapters, notebooks: storage, handwritingCanvas: Canvas };
   const n = createCustomNotebook("あい", index),
     view = await render(
-      <JapaneseNotebookPractice notebook={n} adapters={adapters} />,
+      <JapaneseNotebookPractice notebook={n} adapters={notebookAdapters} />,
     );
   expect(
     view.getByTestId("mobile-writing-sheet-" + n.sheets[1]!.id),
   ).toBeDisabled();
-  for (let i = 0; i < 48; i++)
-    await glyph(view, n.sheets[0]!.characters[i % 2]!);
+  // Exercise complete native ink events; pointer sampling has separate gesture tests.
+  for (let i = 0; i < 48; i++) {
+    await act(() => canvas.onBegin(true));
+    await act(() => canvas.onEnd(n.sheets[0]!.characters[i % 2]!.strokes));
+    await act(() => jest.advanceTimersByTime(400));
+    expect(view.getByTestId("mobile-writing-sheet-progress")).toHaveTextContent(
+      new RegExp(` · ${Math.floor((i + 1) / 2)} / 24 repetitions$`),
+    );
+    if (i < 47) expect(view.getByTestId("mobile-writing-sheet-" + n.sheets[1]!.id)).toBeDisabled();
+  }
   expect(view.getByTestId("mobile-writing-sheet-progress")).toHaveTextContent(
     /24 \/ 24 repetitions/,
   );
@@ -372,7 +391,11 @@ it("requires all 24 whole pairs, unlocks without advancing, and keeps earned unl
   expect(
     view.getByTestId("mobile-writing-sheet-" + n.sheets[1]!.id),
   ).toBeEnabled();
-}, 60000);
+  await view.unmount();
+  const restored = await render(<JapaneseNotebookPractice notebook={n} adapters={notebookAdapters} />);
+  await waitFor(() => expect(restored.getByTestId("mobile-writing-sheet-" + n.sheets[1]!.id)).toBeEnabled());
+  expect(restored.getByTestId("mobile-writing-sheet-progress")).toHaveTextContent(/0 \/ 24 repetitions/);
+});
 it("restores recall, retains ink through save failures, retries, and completes required lessons once", async () => {
   const n = createCustomNotebook("一", index),
     initial = createNotebookSnapshot(n);

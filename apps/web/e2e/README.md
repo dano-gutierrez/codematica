@@ -2,7 +2,7 @@
 
 Playwright runs the complete suite in mobile Chromium. Critical `@smoke` journeys and `@playground` regressions also run in desktop Chromium and mobile WebKit. Deeper cases use `@regression`.
 
-The runner builds and serves the production Next app, avoiding dev-server compilation and Fast Refresh during parallel tests.
+The runner builds and serves the production Next app, avoiding dev-server compilation and Fast Refresh during parallel tests. CI uses two workers to limit concurrent canvas/browser load on hosted runners; local runs use four. All browser projects and assertions remain enabled.
 
 ```bash
 npm run e2e:web:smoke

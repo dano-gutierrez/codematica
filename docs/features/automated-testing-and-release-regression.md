@@ -142,6 +142,8 @@ flowchart LR
 
 ## Test Plan
 
+Playwright uses two concurrent workers in CI and four locally. This bounds canvas/browser load after a Linux WebKit smoke run became unresponsive during map re-entry; keep all three smoke projects and the existing timeouts and assertions.
+
 - Unit: pure schemas, parsing/indexing, route mapping, search, practice, progress, interview boundaries, environment detection, adapters, and content-audio/sync helpers.
 - Integration: generated index relationships, renderers/components, API/Auth handlers, native screen matrix, and mocked Supabase boundaries.
 - Database: clean migration replay plus transactional schema, index, constraint, trigger, RLS, isolation, published-search, ranking, and limit assertions. Protected content assertions accept either an explicit table-privilege denial or an RLS-filtered empty result, since Supabase database images can enforce the same no-read contract at different layers.

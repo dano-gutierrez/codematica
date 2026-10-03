@@ -17,6 +17,8 @@ These are raster masters. They preserve the approved artwork; they are not edita
 
 Run `npm run brand:assets` to reproducibly crop, size and package the checked-in alpha artwork with the existing build-only Sharp dependency. Run `npm run brand:check` to verify byte-for-byte freshness, transparency and native launcher constraints. `npm run brand:preview` captures the review sheet with Playwright Chromium.
 
+The opaque launcher is flattened directly from its transparent square. Compositing onto an opaque square first causes a few one-step color-rounding differences between ARM and x64. Direct flattening keeps all 20 exports byte-identical on macOS ARM and Linux x64 with the pinned Sharp build.
+
 The export command updates `apps/web/public/brand/`, Next's `favicon.ico` and `apple-icon.png`, `apps/mobile/assets/{icon,adaptive-icon,splash}.png`, and `packages/ui/src/assets/brand/`. Do not hand-edit these copies. It never calls an image-generation service.
 
 See [the brand contract](../../docs/features/brand-identity.md) for integration and verification. Browser favicons have true alpha; native launcher icons use the approved teal backdrop. Native launcher/splash changes take effect in a new native build.
