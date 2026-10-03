@@ -126,16 +126,15 @@ export function NativeNavigation({ pathname, navigate, wide, isAdmin = false }: 
   );
 }
 
-export function AppScreen({ title, children, footer }: { title?: string; children: ReactNode; footer?: ReactNode }) {
-  return (
-    <View style={styles.screen}>
-      <ScrollView contentContainerStyle={styles.screenContent}>
+export function AppScreen({ title, children, footer, keyboardAware = false }: { title?: string; children: ReactNode; footer?: ReactNode; keyboardAware?: boolean }) {
+  const content = <>
+      <ScrollView testID={keyboardAware ? "keyboard-aware-scroll" : undefined} contentContainerStyle={styles.screenContent} keyboardShouldPersistTaps={keyboardAware ? "handled" : undefined} keyboardDismissMode={keyboardAware ? "on-drag" : undefined}>
         {title ? <Text style={styles.screenEyebrow}>{title}</Text> : null}
         {children}
       </ScrollView>
       {footer ? <View style={styles.footer}>{footer}</View> : null}
-    </View>
-  );
+    </>;
+  return keyboardAware ? <KeyboardAvoidingView testID="keyboard-aware-screen" behavior={Platform.OS === "ios" ? "padding" : undefined} style={styles.screen}>{content}</KeyboardAvoidingView> : <View style={styles.screen}>{content}</View>;
 }
 
 export function Header({ adapters, subtitle = "Path map" }: { adapters: CodematicaAdapters; subtitle?: string }) {

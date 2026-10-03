@@ -5,6 +5,8 @@ This file preserves repo context across Codex tasks.
 ## Source Of Truth
 
 - Product and feature intent lives in `docs/features/<feature>.md`.
+- Web controls, spacing, alignment, and disclosure rules live in `docs/features/design-system.md`. Read it before UI work; reuse `Button`, `Dropdown`, and existing compositions.
+- Web `AppNavigation` owns the Admin group and account footer/header/menu. Its account-session hook is display state; membership RPCs and RLS own admin authorization. `e2e:linkedin` tests editorial and account navigation with synthetic Supabase requests.
 - Repo-level architecture lives in `docs/engineering-overview.md`.
 - Canonical knowledge content lives in `content/knowledge/`.
 - Canonical Mermaid diagrams live in `content/diagrams/`.
@@ -138,3 +140,7 @@ LinkedIn posts are a separate optional Supabase-backed admin feature, documented
 Read `docs/features/frontend-interview-practice.md` for the seven-topic path. Index v11 adds interview path nodes, optional final-feed navigation, web-track Python companions, and review snippet languages. Complete solution code is canonical in interview JSON; concepts live in Markdown. `npm run test:interview:python` requires Python and executes authored snippets.
 
 The supplementary `frontend/react-state-async-callbacks` lesson and its six-question checkpoint use the existing reader and questionnaire. Its standalone broken/fixed examples are canonical Markdown fences, typechecked and executed by `ReactAsyncStateLesson.test.tsx`; they are not duplicated in interview JSON.
+
+### Editorial accessibility and adaptive composition
+
+`docs/features/design-system.md` owns the platform matrix. Web editorial panes use content-width container queries; narrow/touch screens reveal button labels and 48 px targets. Native `LinkedInAdminScreen` keeps labeled 48 dp actions and opts into the existing `AppScreen` keyboard-aware composition. Both preserve unsaved drafts until save/discard. Data/store/worker boundaries and authorization are unchanged. Browser emulation and Jest do not certify native screen-reader or software-keyboard behavior.

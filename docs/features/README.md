@@ -67,6 +67,8 @@ The most important sections are:
 
 ## Feature References
 
+- [Design system](design-system.md): shared web controls, semantic colors, spacing, alignment, borders, typography, and concise disclosure patterns. Read before new UI work.
+
 - `rtk-query-interview-preparation.md` owns the RTK Query interview curriculum and its source/version refresh and validation contract.
 
 - `linkedin-editorial.md`: private admin web/native post review, durable refinement/scheduling queue and exact-revision human approvals.

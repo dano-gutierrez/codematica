@@ -97,6 +97,10 @@ The repo is an npm workspace:
 - `packages/core`: shared content schemas, generated index access, content parsing/indexing helpers, search, practice, interview, and progress contracts.
 - `packages/ui`: React Native-compatible shared screens and design tokens.
 
+Shared web action geometry and semantic tones live in `Button.tsx` and `globals.css`. New UI follows `docs/features/design-system.md` and reuses `Dropdown` and composer primitives. The LinkedIn editor is the first reference; presentation changes preserve its core store/RPC boundaries and local worker topology.
+
+`AppNavigation` shares one account disclosure across the sidebar, phone header, and More sheet. `useAccountSession` observes optional Supabase auth; existing membership checks gate a separate Admin group. Sign out clears the current browser session. UI visibility does not replace RLS/RPC authorization.
+
 Vercel is the first hosted web target. The project deploys from `main` with `npm ci` and `npm run build`, which regenerates the core content index before building `apps/web`. Article, diagram, and practice routes stay static-first; path-scoped `?path=` next-node links are selected by small client wrappers from build-time route maps so normal content traffic can be served as static/SSG output.
 
 EAS internal preview builds are the first native target. `apps/mobile/eas.json` defines development, preview, production, e2e-test, and submit profiles. Production builds produce store-ready Android app bundles and iOS archives; EAS Submit can send the latest builds to Play Console internal testing and App Store Connect/TestFlight after account-side credentials and store records are configured. Native routes mirror the web route contract and read the same generated index through `@codematica/core`.
@@ -263,3 +267,7 @@ flowchart LR
 ```
 
 Native follows the same nodes and code display, with execution available on web only. Review cards carry explicit code language and canonical lesson references. `npm run test:interview:python` complements TS/React execution tests and is required in CI.
+
+### Editorial accessibility and adaptive composition
+
+`docs/features/design-system.md` owns the platform matrix. Web editorial panes use content-width container queries; narrow/touch screens reveal button labels and 48 px targets. Native `LinkedInAdminScreen` keeps labeled 48 dp actions and opts into the existing `AppScreen` keyboard-aware composition. Both preserve unsaved drafts until save/discard. Data/store/worker boundaries and authorization are unchanged. Browser emulation and Jest do not certify native screen-reader or software-keyboard behavior.

@@ -1,5 +1,6 @@
 import { defineConfig, devices } from "@playwright/test";
 
+const port = Number(process.env.E2E_PORT ?? "3100");
 const webServerEnv = Object.fromEntries(
   Object.entries(process.env).filter(([key, value]) => key !== "NO_COLOR" && value !== undefined),
 ) as Record<string, string>;
@@ -24,7 +25,7 @@ export default defineConfig({
     ["junit", { outputFile: process.env.EDITORIAL_E2E === "1" ? "test-results/editorial-junit.xml" : "test-results/junit.xml" }],
   ],
   use: {
-    baseURL: "http://127.0.0.1:3100",
+    baseURL: `http://127.0.0.1:${port}`,
     trace: "retain-on-failure",
     screenshot: "only-on-failure",
     video: "retain-on-failure",
@@ -38,14 +39,14 @@ export default defineConfig({
     },
     {
       name: "desktop-chromium",
-      grep: /@smoke|@playground/,
+      grep: process.env.EDITORIAL_E2E === "1" ? /@regression/ : /@smoke|@playground/,
       use: {
         ...devices["Desktop Chrome"],
       },
     },
     {
       name: "mobile-webkit",
-      grep: /@smoke|@playground/,
+      grep: process.env.EDITORIAL_E2E === "1" ? /@regression/ : /@smoke|@playground/,
       use: {
         ...devices["iPhone 15"],
       },
@@ -54,9 +55,9 @@ export default defineConfig({
   webServer: {
     // Production serving avoids concurrent on-demand compilation aborting
     // navigations when the release suite uses multiple browser workers.
-    command: "env -u NO_COLOR npm run serve:e2e -w @codematica/web",
+    command: `env -u NO_COLOR npm run serve:e2e -w @codematica/web -- --port ${port}`,
     env: webServerEnv,
-    url: "http://127.0.0.1:3100",
+    url: `http://127.0.0.1:${port}`,
     reuseExistingServer: false,
     timeout: 120_000,
   },
