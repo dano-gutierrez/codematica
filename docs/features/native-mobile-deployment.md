@@ -204,3 +204,9 @@ The root layout wraps the existing Stack with safe-area-aware `NativeNavigation`
 ## Frontend Interview Study Flow (2026-09-27)
 
 Native supports the same seven guides, revealed recipes, TypeScript/Python source, quizzes, and final continuous feed. Source execution remains web-only. The interview route passes path-aware next-node destinations; source-lesson links retain path queries. Jest covers the guide and language switch, and `.maestro/frontend-interview.yaml` joins the existing release-directory lane. Local verification found ten existing Expo patch mismatches; installed Android/iOS Maestro verification remains required before release.
+
+## Japanese notebook update — 2026-10-02
+
+Languages exposes Japanese and Notebook practice in the tablet/sidebar and phone More menus. `/languages/japanese/notebooks` supports curated and custom 1–5-character prompts and saved pages. [Japanese writing notebooks](japanese-writing-notebooks.md) owns the shared 24-repetition engine, device-local ink, maximum-progress synchronization and validation gates. Live ink and feedback preserve page position; Input is detected automatically. Mouse wheel/trackpad scrolling remains available on web; two-finger gestures scroll the paper on touch screens and installed apps without adding ink. There are no Draw, Pen or Scroll buttons.
+
+The local `apps/mobile/modules/codematica-handwriting` Expo module wraps PencilKit and must be included in a new native binary. Expo Go and older binaries use the SVG fallback. JavaScript imports public native-module helpers from the direct `expo` dependency. The pod declares ExpoModulesCore and PencilKit explicitly. Xcode 26.3 cannot establish SDK 57 native readiness; rerun with Xcode 26.4+ and execute Maestro on both platforms, then physical Pencil/palm/pressure QA. Autolinking and Swift syntax checks are not a build or physical-device validation.

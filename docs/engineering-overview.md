@@ -263,3 +263,23 @@ flowchart LR
 ```
 
 Native follows the same nodes and code display, with execution available on web only. Review cards carry explicit code language and canonical lesson references. `npm run test:interview:python` complements TS/React execution tests and is required in CI.
+
+Japanese notebook practice extends the existing local character/vocabulary catalogs with versioned sheets and 24 whole-prompt repetitions. Canonical kana geometry remains pinned and attributed to KanjiVG. The whole-shape grader ignores stroke order/direction and accepts extra lifts, while checking major-feature coverage with Easy/Balanced/Precise tolerances. Device snapshots retain learner ink and the per-notebook difficulty preference; optional progress synchronization stores counts and unlocks only. Both clients check accumulated ink automatically after a pen-up pause. The following flow describes the shared notebook engine and its client adapters.
+
+## Writing notebook flow
+
+The versioned notebook engine in core owns prompt validation, 24-repetition schedules, shape coverage, cell cursors and monotonic earned progress. The React-only `@codematica/ui/notebook-session` subpath coordinates both clients without importing React Native into the web entrypoint. Both clients detect contact types automatically and preserve completed pending strokes during two-finger paper scrolling. The iOS Expo view bridges UIKit pan phases/deltas to the RN viewport, keeping PencilKit ink aligned with the paper. `NotebookScrollContext` hands remaining pan distance to the native outer page at the paper bounds. Web keeps its viewport scrollable for wheel, trackpad, scrollbar and keyboard input. Web has a direct production dependency on `@codematica/ui`; the pruned-artifact smoke serves the notebook catalog and existing writing routes.
+
+```mermaid
+flowchart LR
+  Content["Canonical writing JSON + published stroke models"] --> Engine["Core notebook definitions + shape grader"]
+  Engine --> Web["Pointer Events / smooth SVG"]
+  Engine --> Native["PencilKit iOS / SVG Android"]
+  Web --> LocalWeb[("IndexedDB vectors + pages")]
+  Native --> LocalNative[("AsyncStorage manifests + cells")]
+  Web --> Merge["Bounded furthest-progress merge"]
+  Native --> Merge
+  Merge <--> Remote[("RLS notebook counts; no ink")]
+```
+
+See [Japanese writing notebooks](features/japanese-writing-notebooks.md) for failure recovery, native build limits and tests.

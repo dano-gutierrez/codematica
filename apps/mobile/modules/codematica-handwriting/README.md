@@ -1,0 +1,7 @@
+# Local iOS handwriting module
+
+Expo autolinks this local PencilKit view into installed iOS builds. `PKCanvasView` renders live ink; completed points and force samples pass to the shared shape grader. Input policy is automatic: fingers and Pencil draw without mode controls. A Pencil contact cancels an active finger gesture and suppresses palms until 800ms after Pencil release, then finger input returns. A two-finger UIKit pan recognizer bridges `onPan` began/changed/ended events to the React Native viewport so paper and ink scroll together; a single remaining finger cannot leave accidental ink. Completed pending strokes remain; cancelled/stale tool callbacks are suppressed. Completed sheets disable drawing while retaining scrolling. The shared viewport also exposes labeled screen-reader scroll actions and hands pan distance to the outer page at its bounds. Reset/Undo truncate temporary native drawing; accepted ink is saved through the shared notebook session.
+
+The app imports native helpers from its direct `expo` dependency. The pod declares `ExpoModulesCore`, UIKit and PencilKit. No data leaves the device through this bridge. Android and binaries without the module retain SVG drawing. A new binary is required; Expo Go does not include this module.
+
+Verify autolinking, compile with SDK 57's supported Xcode (26.4+), run iOS Maestro and test physical Pencil/palm rejection/pressure. This host's Xcode 26.3 cannot establish native build readiness. See `docs/features/japanese-writing-notebooks.md`.

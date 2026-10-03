@@ -1,10 +1,9 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { getJapaneseVocabularyForCharacter } from "@codematica/core";
+import { getJapaneseVocabularyForCharacter, getWritingStrokePath } from "@codematica/core";
 import { JapaneseWritingPractice } from "@/components/JapaneseWritingPractice";
 import { getContentIndex, getLanguageCharacterBySlug } from "@/lib/content";
-import type { LanguageStrokePoint } from "@/lib/content/schema";
 
 type CharacterPageProps = {
   params: Promise<{
@@ -75,7 +74,7 @@ export default async function JapaneseCharacterPage({ params }: CharacterPagePro
               const start = stroke.points[0];
               return (
                 <g key={stroke.id}>
-                  <path d={pointsToPath(stroke.points)} stroke="#263238" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round" fill="none" />
+                  <path d={getWritingStrokePath(stroke.points)} stroke="#263238" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round" fill="none" />
                   <circle cx={start[0]} cy={start[1]} r="4.5" fill="#007c78" />
                   <text x={start[0]} y={start[1] + 1.8} textAnchor="middle" fontSize="5" fontWeight="800" fill="white">{index + 1}</text>
                 </g>
@@ -84,9 +83,9 @@ export default async function JapaneseCharacterPage({ params }: CharacterPagePro
           </svg>
         </section>
 
-        <section className="mt-5 rounded-xl border border-[#d5e2e8] bg-white p-5" data-testid="japanese-character-practice">
+        <section className="mt-8 py-2" data-testid="japanese-character-practice">
           <h2 className="text-2xl font-semibold tracking-tight text-[#263238]">Practice writing {character.glyph}</h2>
-          <JapaneseWritingPractice characters={[character]} prompt="Trace the highlighted strokes in order, then switch to free mode and write from memory." />
+          <JapaneseWritingPractice characters={[character]} prompt="Write the character anywhere on the paper. Follow the guides, copy the example, then try from memory. Stroke order is up to you." />
         </section>
 
         {relatedVocabulary.length || character.examples.length ? (
@@ -121,15 +120,6 @@ export default async function JapaneseCharacterPage({ params }: CharacterPagePro
       </div>
     </main>
   );
-}
-
-function pointsToPath(points: LanguageStrokePoint[]) {
-  if (points.length === 0) {
-    return "";
-  }
-
-  const [first, ...rest] = points;
-  return [`M ${first[0]} ${first[1]}`, ...rest.map((point) => `L ${point[0]} ${point[1]}`)].join(" ");
 }
 
 function languageCharacterRouteSlug(slug: string) {

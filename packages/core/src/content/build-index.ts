@@ -448,7 +448,7 @@ function assertQuestionnaireExercise(exercise: LearningExercise, sourcePath: str
   }
 }
 
-function assertWritingExercise(exercise: LearningExercise, sourcePath: string, languageCharacterSlugs: Set<string>) {
+function assertWritingExercise(exercise: LearningExercise, sourcePath: string, languageCharacterSlugs: Set<string>, characters: LanguageCharacter[]) {
   if (exercise.type !== "writing") {
     return;
   }
@@ -458,6 +458,15 @@ function assertWritingExercise(exercise: LearningExercise, sourcePath: string, l
   for (const characterSlug of exercise.characterSlugs) {
     if (!languageCharacterSlugs.has(characterSlug)) {
       throw new Error(`${sourcePath} references missing language character "${characterSlug}"`);
+    }
+  }
+  if (exercise.notebookPrompts) {
+    assertUniqueValues(exercise.notebookPrompts.map(prompt => prompt.id), "notebook prompt", sourcePath);
+    const supported = new Set(characters.filter(character => character.status === "published" && character.strokes.length && exercise.characterSlugs.includes(character.slug)).map(character => character.glyph));
+    for (const prompt of exercise.notebookPrompts) {
+      for (const glyph of prompt.text.normalize("NFC")) {
+        if (!supported.has(glyph)) throw new Error(`${sourcePath}: No writing guide for "${glyph}" in notebook prompt "${prompt.id}".`);
+      }
     }
   }
 }
@@ -599,7 +608,7 @@ function assertContentReferences(
 
   for (const exercise of exercises) {
     assertQuestionnaireExercise(exercise, exercise.sourcePath);
-    assertWritingExercise(exercise, exercise.sourcePath, languageCharacterSlugs);
+    assertWritingExercise(exercise, exercise.sourcePath, languageCharacterSlugs, languageCharacters);
 
     if (!documentSlugs.has(exercise.documentSlug)) {
       throw new Error(`${exercise.sourcePath} references missing document "${exercise.documentSlug}"`);

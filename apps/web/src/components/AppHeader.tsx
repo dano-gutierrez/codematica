@@ -3,8 +3,8 @@
 import Link from "next/link";
 import { useAdminAccess } from "@/lib/supabase/use-admin-access";
 import { usePathname } from "next/navigation";
-import { useRef } from "react";
-import { ArrowUpRight, BookOpen, Brain, Code2, Home, Languages, Map, MoreHorizontal, Network, UserRound, X } from "lucide-react";
+import { useRef, useState } from "react";
+import { ArrowUpRight, BookOpen, Brain, ChevronDown, Code2, Home, Languages, Map, MoreHorizontal, Network, UserRound, X } from "lucide-react";
 
 const destinations = [
   { href: "/", label: "Home", icon: Home },
@@ -21,7 +21,8 @@ export function AppNavigation() {
   const pathname = usePathname() ?? "/";
   const menu = useRef<HTMLDialogElement>(null);
   const moreButton = useRef<HTMLButtonElement>(null);
-  const active = pathname.startsWith("/docs/") || pathname.startsWith("/diagrams/") ? "/browse" : `/${pathname.split("/")[1]}`;
+  const active = pathname.startsWith("/practice/languages/japanese") ? "/languages" : pathname.startsWith("/docs/") || pathname.startsWith("/diagrams/") ? "/browse" : `/${pathname.split("/")[1]}`;
+  const [languagesOpen, setLanguagesOpen] = useState(active === "/languages");
   const compactDestinations = destinations.filter(({ href }) => !["/browse", "/languages"].includes(href));
 
   return (
@@ -31,7 +32,7 @@ export function AppNavigation() {
         <Link href="/" className="app-brand" aria-label="Codematica home"><span className="app-brand-mark"><Network size={22} aria-hidden="true" /></span>Codematica<span className="brand-dot">.</span></Link>
         <span className="sidebar-label">YOUR LEARNING SPACE</span>
         <nav aria-label="Primary navigation" className="sidebar-links">
-          {[...destinations, ...(admin ? [adminLink] : [])].map(({ href, label, icon: Icon }) => <Link key={href} href={href} className="app-nav-link" aria-current={active === href ? "page" : undefined} data-testid={`app-nav-${label.toLowerCase()}`}><Icon size={20} aria-hidden="true" />{label}</Link>)}
+          {[...destinations, ...(admin ? [adminLink] : [])].map(({ href, label, icon: Icon }) => href === "/languages" ? <div key={href}><div className="app-language-branch"><Link href={href} className="app-nav-link" aria-current={active === href ? "page" : undefined} data-testid="app-nav-languages"><Icon size={20} aria-hidden="true"/>{label}</Link><button type="button" aria-label="Show supported languages" aria-expanded={languagesOpen} onClick={()=>setLanguagesOpen(value=>!value)} data-testid="app-nav-languages-expand"><ChevronDown size={18} aria-hidden="true"/></button></div>{languagesOpen ? <nav className="app-language-submenu" aria-label="Supported languages"><Link href="/languages/japanese" data-testid="app-nav-japanese">Japanese <span lang="ja">日本語</span></Link><Link href="/languages/japanese/notebooks" aria-current={pathname.includes("/notebooks") ? "page" : undefined} data-testid="app-nav-notebooks">Notebook practice</Link></nav> : null}</div> : <Link key={href} href={href} className="app-nav-link" aria-current={active === href ? "page" : undefined} data-testid={`app-nav-${label.toLowerCase()}`}><Icon size={20} aria-hidden="true" />{label}</Link>)}
         </nav>
         <div className="sidebar-bottom"><Link href="/login" className="app-nav-link"><UserRound size={20} aria-hidden="true" />Sign in<ArrowUpRight size={16} className="ml-auto" aria-hidden="true" /></Link></div>
       </aside>
@@ -42,7 +43,7 @@ export function AppNavigation() {
       </nav>
       <dialog ref={menu} onClose={() => moreButton.current?.focus({ preventScroll: true })} className="app-more-sheet" aria-labelledby="more-title" onClick={(event) => { if (event.target === event.currentTarget) menu.current?.close(); }}>
         <div className="sheet-heading"><h2 id="more-title">Explore Codematica</h2><button type="button" onClick={() => menu.current?.close()} aria-label="Close menu"><X size={20} aria-hidden="true" /></button></div>
-        {[destinations[2], destinations[5], ...(admin ? [adminLink] : []), { href: "/login", label: "Sign in", icon: UserRound }].map(({ href, label, icon: Icon }) => <Link href={href} key={href} className="sheet-link" onClick={() => menu.current?.close()}><Icon size={22} aria-hidden="true" /><span>{label}</span><ArrowUpRight size={18} aria-hidden="true" /></Link>)}
+        {[destinations[2], destinations[5], ...(admin ? [adminLink] : []), { href: "/login", label: "Sign in", icon: UserRound }].map(({ href, label, icon: Icon }) => <div key={href}><Link href={href} className="sheet-link" onClick={() => menu.current?.close()}><Icon size={22} aria-hidden="true" /><span>{label}</span><ArrowUpRight size={18} aria-hidden="true" /></Link>{href === "/languages" ? <nav className="app-language-submenu" aria-label="Supported languages in menu"><Link href="/languages/japanese" onClick={()=>menu.current?.close()} data-testid="mobile-menu-japanese">Japanese <span lang="ja">日本語</span></Link><Link href="/languages/japanese/notebooks" onClick={()=>menu.current?.close()} data-testid="mobile-menu-notebooks">Notebook practice</Link></nav> : null}</div>)}
       </dialog>
     </>
   );

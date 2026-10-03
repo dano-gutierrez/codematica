@@ -968,7 +968,8 @@
       "jlptAlignment": "n5",
       "tags": [
         "n5",
-        "identity-and-demonstratives"
+        "identity-and-demonstratives",
+        "writing-starter"
       ],
       "status": "published",
       "sources": [
@@ -3656,7 +3657,8 @@
       "jlptAlignment": "n5",
       "tags": [
         "n5",
-        "numbers-time-and-dates"
+        "numbers-time-and-dates",
+        "writing-starter"
       ],
       "status": "published",
       "sources": [
@@ -6292,7 +6294,7 @@
       "slug": "japanese/vocabulary/n5-188",
       "expression": "カメラ",
       "reading": "カメラ",
-      "romaji": "n5-188",
+      "romaji": "kamera",
       "inputSequences": [],
       "ipa": "カメラ",
       "meanings": [
@@ -6308,7 +6310,8 @@
       "jlptAlignment": "n5",
       "tags": [
         "n5",
-        "family-home-and-location"
+        "family-home-and-location",
+        "writing-starter"
       ],
       "status": "published",
       "sources": [
@@ -10204,7 +10207,8 @@
       "jlptAlignment": "n5",
       "tags": [
         "n5",
-        "food-shopping-and-counters"
+        "food-shopping-and-counters",
+        "writing-starter"
       ],
       "status": "published",
       "sources": [
@@ -11226,7 +11230,8 @@
       "jlptAlignment": "n5",
       "tags": [
         "n5",
-        "adjectives-weather-and-preferences"
+        "adjectives-weather-and-preferences",
+        "writing-starter"
       ],
       "status": "published",
       "sources": [
@@ -18200,7 +18205,7 @@
       "slug": "japanese/vocabulary/n5-561",
       "expression": "パン",
       "reading": "パン",
-      "romaji": "n5-561",
+      "romaji": "pan",
       "inputSequences": [],
       "ipa": "パン",
       "meanings": [
@@ -18216,7 +18221,8 @@
       "jlptAlignment": "n5",
       "tags": [
         "n5",
-        "past-activities-and-messages"
+        "past-activities-and-messages",
+        "writing-starter"
       ],
       "status": "published",
       "sources": [

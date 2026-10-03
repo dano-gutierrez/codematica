@@ -1,1 +1,33 @@
-{"slug":"languages/japanese-katakana-k-s-writing","title":"Write Katakana K And S Rows","type":"writing","documentSlug":"languages/japanese-katakana-foundations","concept":"Katakana k-row and s-row handwriting","difficulty":"foundation","tags":["japanese","katakana","writing","alphabet"],"status":"published","prompt":"Trace, then write the katakana k-row and s-row with the numbered stroke starts.","characterSlugs":["japanese/katakana/ka","japanese/katakana/ki","japanese/katakana/ku","japanese/katakana/ke","japanese/katakana/ko","japanese/katakana/sa","japanese/katakana/shi","japanese/katakana/su","japanese/katakana/se","japanese/katakana/so"],"modes":["assisted","free"],"explanation":"These rows establish the angular katakana stroke rhythm and introduce シ, one of the important look-alike characters."}
+{
+  "slug": "languages/japanese-katakana-k-s-writing",
+  "title": "Write Katakana K And S Rows",
+  "type": "writing",
+  "documentSlug": "languages/japanese-katakana-foundations",
+  "concept": "Katakana k-row and s-row handwriting",
+  "difficulty": "foundation",
+  "tags": [
+    "japanese",
+    "katakana",
+    "writing",
+    "alphabet"
+  ],
+  "status": "published",
+  "prompt": "Fill the notebook with 24 repetitions of each prompt. Write anywhere on the paper; recognizable shapes are enough.",
+  "characterSlugs": [
+    "japanese/katakana/ka",
+    "japanese/katakana/ki",
+    "japanese/katakana/ku",
+    "japanese/katakana/ke",
+    "japanese/katakana/ko",
+    "japanese/katakana/sa",
+    "japanese/katakana/shi",
+    "japanese/katakana/su",
+    "japanese/katakana/se",
+    "japanese/katakana/so"
+  ],
+  "modes": [
+    "assisted",
+    "free"
+  ],
+  "explanation": "Use the examples and stroke guides to learn the character, then copy and recall it. Stroke order is optional guidance; your handwriting does not need to be exact."
+}

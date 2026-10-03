@@ -23,7 +23,7 @@ export function PracticeCard({
   onProgressEvent?: PracticeProgressHandler;
 }) {
   return (
-    <section className="rounded-xl border border-[#d5e2e8] bg-white p-5 sm:p-7" data-testid="practice-card">
+    <section className={exercise.type === "writing" ? "py-2" : "rounded-xl border border-[#d5e2e8] bg-white p-5 sm:p-7"} data-testid="practice-card">
       <div className="flex flex-wrap items-center gap-2">
         <span className="inline-flex items-center gap-1 rounded-xl border border-[#d5e2e8] bg-[#f6fbfc] px-2.5 py-1 text-xs font-semibold text-[#5840b8]">
           <Sparkles className="h-3.5 w-3.5" aria-hidden="true" />
@@ -284,7 +284,7 @@ function WritingCard({
     const character = getLanguageCharacterBySlug(slug);
     return character ? [character] : [];
   });
-  return <JapaneseWritingPractice characters={characters} prompt={exercise.prompt} modes={exercise.modes} nextHref={nextHref} onProgressEvent={onProgressEvent} />;
+  return <JapaneseWritingPractice characters={characters} exercise={exercise} prompt={exercise.prompt} nextHref={nextHref} onProgressEvent={onProgressEvent} />;
 }
 
 function NextLink({ href }: { href: string }) {

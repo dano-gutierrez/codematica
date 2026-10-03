@@ -1,1 +1,32 @@
-{"slug":"languages/japanese-hiragana-t-n-writing","title":"Hiragana T And N Rows","type":"writing","documentSlug":"languages/japanese-romaji-kana-input","concept":"Hiragana t and n rows","difficulty":"foundation","tags":["japanese","hiragana","handwriting"],"status":"published","prompt":"Write the t and n rows in standard gojuon order.","characterSlugs":["japanese/hiragana/ta","japanese/hiragana/chi","japanese/hiragana/tsu","japanese/hiragana/te","japanese/hiragana/to","japanese/hiragana/na","japanese/hiragana/ni","japanese/hiragana/nu","japanese/hiragana/ne","japanese/hiragana/no"],"modes":["assisted","free"],"explanation":"Notice that chi and tsu use learner romaji that differs from the systematic IME aliases ti and tu."}
+{
+  "slug": "languages/japanese-hiragana-t-n-writing",
+  "title": "Hiragana T And N Rows",
+  "type": "writing",
+  "documentSlug": "languages/japanese-romaji-kana-input",
+  "concept": "Hiragana t and n rows",
+  "difficulty": "foundation",
+  "tags": [
+    "japanese",
+    "hiragana",
+    "handwriting"
+  ],
+  "status": "published",
+  "prompt": "Fill the notebook with 24 repetitions of each prompt. Write anywhere on the paper; recognizable shapes are enough.",
+  "characterSlugs": [
+    "japanese/hiragana/ta",
+    "japanese/hiragana/chi",
+    "japanese/hiragana/tsu",
+    "japanese/hiragana/te",
+    "japanese/hiragana/to",
+    "japanese/hiragana/na",
+    "japanese/hiragana/ni",
+    "japanese/hiragana/nu",
+    "japanese/hiragana/ne",
+    "japanese/hiragana/no"
+  ],
+  "modes": [
+    "assisted",
+    "free"
+  ],
+  "explanation": "Use the examples and stroke guides to learn the character, then copy and recall it. Stroke order is optional guidance; your handwriting does not need to be exact."
+}
