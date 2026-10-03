@@ -7,6 +7,7 @@
   "types": "./src/index.ts",
   "exports": {
     ".": "./src/index.ts",
+    "./game": "./src/game/screens.tsx",
     "./notebook-session": "./src/notebook-session.ts"
   },
   "scripts": {
@@ -20,7 +21,10 @@
     "react": ">=19.2.0",
     "react-native": ">=0.86.0",
     "react-native-svg": "15.15.4",
-    "react-native-webview": "13.16.1"
+    "react-native-webview": "13.16.1",
+    "@shopify/react-native-skia": "2.6.2",
+    "react-native-reanimated": "4.5.1",
+    "react-native-worklets": "0.10.1"
   },
   "devDependencies": {
     "@types/react": "^19.2.7",

@@ -4,6 +4,8 @@ tags:
 ---
 - launchApp:
     clearState: true
+- tapOn:
+    id: mobile-nav-learn
 - assertVisible:
     id: mobile-home-global-search
 - tapOn:

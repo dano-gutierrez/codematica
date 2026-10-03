@@ -14,4 +14,6 @@ export * from "./progress/progress";
 export * from "./progress/server";
 export * from "./progress/mastery";
 export * from "./progress/progression";
+export * from "./game";
+
 export * from "./progress/notebooks";

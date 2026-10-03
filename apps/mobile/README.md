@@ -55,7 +55,7 @@ Keep SDK 57 patch versions aligned across this workspace, root development depen
 
 ## Native E2E
 
-Credential-free native E2E builds use the `e2e-test` EAS profile: Android produces an APK and iOS produces a simulator app. Checked-in Maestro flows live in `.maestro/`, use stable `testID` selectors, and cover offline discovery, path-to-practice, browse-to-diagram, Japanese study/review, interviews, and unconfigured login. The frontend interview journey also captures Python code for dark-surface visual review. `code-layout.yaml` exercises the lesson code viewport and captures both swipe directions and surrounding prose. Local `code-styles.test.tsx` verifies fenced/indented/nested Markdown, whitespace, language labels, full-height code, and horizontal-scroll containment separately.
+Credential-free native E2E builds use the `e2e-test` EAS profile: Android produces an APK and iOS produces a simulator app. Checked-in Maestro flows live in `.maestro/`, use stable `testID` selectors, and cover offline discovery, path-to-practice, browse-to-diagram, Japanese study/review, interviews, unconfigured login, and Restore the Signal. The generated game regression journey covers all 36 scenarios; regenerate it with root `npm run game:flows`. The frontend interview journey also captures Python code for dark-surface visual review. `code-layout.yaml` exercises the lesson code viewport and captures both swipe directions and surrounding prose. Local `code-styles.test.tsx` verifies fenced/indented/nested Markdown, whitespace, language labels, full-height code, and horizontal-scroll containment separately.
 
 Run `npm run mobile:e2e:code-layout -- --session <agent-device-session>` on each Android/iOS phone simulator to assert actual source movement, fixed prose/navigation bounds, reverse scrolling, and vertical page scrolling. See `e2e/README.md` for setup, Expo Go options, and retained screenshot/snapshot artifacts. This local geometry check complements the EAS Maestro screenshots.
 
@@ -161,6 +161,14 @@ Review mastery saves immediately to AsyncStorage. Signed-in sessions validate an
 ## Adaptive UI
 
 See `docs/features/adaptive-ui.md` for persistent phone navigation, desktop/iPad sidebars, design rules, and validation gaps. Existing screens and feature logic are reused. Navigation coverage lives in `AppHeader.test.tsx`, native `adaptive-navigation.test.tsx`, Playwright `adaptive-navigation.smoke.spec.ts` / `adaptive-layout.regression.spec.ts`, and Maestro `adaptive-navigation.yaml`.
+
+## Restore the Signal
+
+Play (`/`) opens Restore the Signal, Learn (`/learn`) keeps discovery, and `/play/[campaign]/[level]` loads the local chapter. Run root `game:runtime`/`game:assets` before native builds when sources change. All SQLite WASM/worker and textures are bundled. See `docs/features/restore-the-signal.md` for pause/background rules, local awards, and required Android/iOS game regression gates. The Xcode 26.3 limitation remains a release blocker for SDK 57 installed-iOS verification.
+
+Android prebuild uses `plugins/with-shared-bundle-inputs.cjs` so shared source and asset edits invalidate the production JS bundle. See [plugin notes](plugins/README.md) and the game feature document for installed-build verification.
+
+In-level character miniatures use the shared core scene layout and Skia atlas. The scene measures its container, redraws while paused/reduced, and retains a stable `game-scene` testID in the Maestro smoke flow. See the game feature contract for installed-device verification.
 
 ## LinkedIn admin review
 

@@ -4,6 +4,8 @@ tags:
 ---
 - launchApp:
     clearState: true
+- tapOn:
+    id: mobile-nav-learn
 - assertVisible:
     id: mobile-home-global-search
 - tapOn:
@@ -11,7 +13,9 @@ tags:
 - assertVisible:
     id: mobile-practice-catalog-search
 - tapOn:
-    id: mobile-nav-interviews
+    id: mobile-nav-more
+- tapOn:
+    id: mobile-menu-interviews
 - assertVisible: Interview prep
 - runFlow:
     when:
@@ -33,6 +37,6 @@ tags:
 - assertVisible:
     id: mobile-language-japanese
 - tapOn:
-    id: mobile-nav-home
+    id: mobile-nav-learn
 - assertVisible:
     id: mobile-home-global-search

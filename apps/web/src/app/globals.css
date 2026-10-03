@@ -341,9 +341,9 @@ input, textarea { min-width: 0; }
 .app-context { display: none; }
 .app-sidebar { display: none; }
 .app-mobile-header { height: 64px; padding: 0 20px; display: flex; align-items: center; justify-content: space-between; background: var(--panel); border-bottom: 1px solid var(--line); }
-.app-brand { display: flex; align-items: center; gap: 10px; font-size: 20px; font-weight: 700; letter-spacing: -.7px; color: var(--foreground); }
-.app-brand-mark { display: grid; place-items: center; width: 34px; height: 34px; border-radius: 11px; background: var(--accent); color: white; }
-.brand-dot { color: var(--accent); margin-left: -10px; }
+.app-brand { display: flex; align-items: center; gap: 8px; min-height: 44px; color: var(--foreground); }
+.app-brand-mark { width: 40px; height: 40px; flex: none; object-fit: contain; }
+.app-brand-wordmark { width: 128px; height: auto; object-fit: contain; }
 .account-link { display: grid; place-items: center; width: 44px; height: 44px; border: 1px solid var(--line); border-radius: 50%; color: #53616c; }
 .app-bottom-nav { position: fixed; z-index: 40; bottom: 0; left: 0; right: 0; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); padding: 8px 8px calc(8px + env(safe-area-inset-bottom)); background: rgba(255,255,255,.96); border-top: 1px solid var(--line); backdrop-filter: blur(18px); }
 .app-bottom-nav > :is(a,button) { display: flex; min-height: 50px; flex-direction: column; align-items: center; justify-content: center; gap: 4px; border-radius: 12px; color: #53616c; font-size: 11px; font-weight: 500; }

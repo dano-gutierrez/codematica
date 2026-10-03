@@ -5,7 +5,7 @@ test("@smoke persistent navigation switches sections and keeps compact menus acc
   const compact = page.viewportSize()!.width < 768;
   const navigation = page.getByRole("navigation", { name: compact ? "Mobile navigation" : "Primary navigation", exact: true });
   await expect(navigation).toBeVisible();
-  await expect(navigation.getByRole("link", { name: "Home", exact: true })).toHaveAttribute("aria-current", "page");
+  await expect(navigation.getByRole("link", { name: "Play", exact: true })).toHaveAttribute("aria-current", "page");
   await navigation.getByRole("link", { name: "Practice", exact: true }).click();
   await expect(page.getByTestId("practice-catalog")).toBeVisible();
   await expect(navigation.getByRole("link", { name: "Practice", exact: true })).toHaveAttribute("aria-current", "page");

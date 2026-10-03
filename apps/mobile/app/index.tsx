@@ -1,11 +1,5 @@
 import { getContentIndex } from "@codematica/core";
-import { HomeDiscoveryScreen } from "@codematica/ui";
-import { useCodematicaAdapters } from "../src/lib/adapters";
-import { useProgressSummary } from "../src/lib/use-progress-summary";
-
-export default function HomeRoute() {
-  const adapters = useCodematicaAdapters();
-  const progress = useProgressSummary();
-
-  return <HomeDiscoveryScreen index={getContentIndex()} keepReadingItems={progress.items} isSignedIn={progress.isSignedIn} adapters={adapters} />;
-}
+import { NativeGameMap } from "@codematica/ui/game";
+import { useRouter } from "expo-router";
+import { nativeGameStore } from "../src/lib/game-store";
+export default function GameHome(){const campaign=getContentIndex().gameCampaigns[0],router=useRouter();return <NativeGameMap campaign={campaign} store={nativeGameStore(campaign)} navigate={route=>router.push(route as never)}/>;}

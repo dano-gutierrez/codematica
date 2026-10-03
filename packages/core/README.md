@@ -26,3 +26,11 @@ Runtime-safe language modules live under `src/languages/` and `src/language-writ
 `src/language-writing/index.ts` also owns shared cubic stroke rendering, dense-ink normalization, and beginner scoring. The legacy stroke-by-stroke helpers retain their compatibility contract; notebook shape grading instead allows order/direction changes and extra lifts while requiring major-feature coverage. Kana geometry is local and attributed to KanjiVG in the canonical catalogs and third-party notices.
 
 Japanese writing notebooks use 24 whole-prompt repetitions per sheet and support curated/custom text of 1–5 published characters. Ink stays on the device; coarse completion/unlocks optionally sync. See `docs/features/japanese-writing-notebooks.md` for the implementation, persistence and validation contract.
+
+## Restore the Signal
+
+`src/game/` owns the schema-v12 campaign contract, pure game rules, seeded traffic, transient sessions, local CSS/SQL sandbox documents, shared animation sampling, rewards/streaks, and account-scoped merge. It imports no graphics engine. `content/game/` is canonical; regenerate the index after authored changes.
+
+`src/game/miniatures.ts` defines shared full-body character frames and transforms for measured web/native scenes. It keeps layout and cosmetic placement deterministic without importing graphics libraries.
+
+Game store claims are serialized across account changes. Deferred identity checks must verify the active generation before merging remote awards or choosing a save payload; keep the interrupted-load tests when changing synchronization.

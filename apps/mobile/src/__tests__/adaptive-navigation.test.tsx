@@ -5,7 +5,7 @@ import { NativeNavigation } from "../../../../packages/ui/src/screens";
 describe("adaptive native navigation", () => {
   it("fits phone tab labels on one line while allowing text scaling", async () => {
     const view = await render(<NativeNavigation pathname="/" navigate={jest.fn()} wide={false} />);
-    for (const label of ["Home", "Paths", "Practice", "Interviews", "More"]) {
+    for (const label of ["Play", "Learn", "Paths", "Practice", "More"]) {
       const text = view.getByText(label);
       expect(text.props.numberOfLines).toBe(1);
       expect(text.props.adjustsFontSizeToFit).toBe(true);
@@ -15,7 +15,7 @@ describe("adaptive native navigation", () => {
   it("keeps phone sections reachable and identifies the current section", async () => {
     const navigate = jest.fn();
     const view = await render(<NativeNavigation pathname="/interviews/google/number-of-islands" navigate={navigate} wide={false} />);
-    expect(view.getByTestId("mobile-nav-interviews").props.accessibilityState).toEqual({ selected: true });
+    expect(view.getByTestId("mobile-nav-more").props.accessibilityState).toEqual({ selected: true });
     await fireEvent.press(view.getByTestId("mobile-nav-paths"));
     expect(navigate).toHaveBeenCalledWith("/paths");
     await fireEvent.press(view.getByTestId("mobile-nav-more"));
@@ -34,6 +34,8 @@ describe("adaptive native navigation", () => {
     const view = await render(<NativeNavigation pathname="/docs/system-design/cache-invalidation" navigate={navigate} wide />);
     expect(view.getByTestId("mobile-nav-lessons").props.accessibilityState).toEqual({ selected: true });
     expect(view.queryByTestId("mobile-nav-more")).toBeNull();
+    await fireEvent.press(view.getByRole("button", { name: "Codematica home" }));
+    expect(navigate).toHaveBeenCalledWith("/");
     await fireEvent.press(view.getByTestId("mobile-nav-languages"));
     expect(navigate).toHaveBeenCalledWith("/languages");
     await fireEvent.press(view.getByTestId("mobile-nav-sign-in"));
@@ -41,7 +43,7 @@ describe("adaptive native navigation", () => {
   });
   it("keeps tablet labels naturally wrapping at the system text size", async () => {
     const view = await render(<NativeNavigation pathname="/" navigate={jest.fn()} wide isAdmin />);
-    for (const label of ["Home", "Paths", "Lessons", "Practice", "Interviews", "Languages", "LinkedIn"]) {
+    for (const label of ["Play", "Learn", "Paths", "Lessons", "Practice", "Interviews", "Languages", "LinkedIn"]) {
       const text = view.getByText(label);
       expect(text.props.numberOfLines).toBeUndefined();
       expect(text.props.adjustsFontSizeToFit).toBe(false);
@@ -54,6 +56,7 @@ describe("adaptive native navigation", () => {
 jest.mock("expo-router", () => ({
   Stack: () => null,
   usePathname: () => "/",
+  useGlobalSearchParams:()=>({}),
   useRouter: () => ({ navigate: jest.fn() }),
 }));
 jest.mock("react-native-safe-area-context", () => ({

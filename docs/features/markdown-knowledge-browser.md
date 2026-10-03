@@ -87,8 +87,8 @@ The Web playground regression reproduced 3.88:1 comments and 3.71:1 numeric/bool
 
 ### UI / UX
 
-- `/browse` immediately shows the content library and links to the discovery home and `/paths` catalog through shared navigation.
-- `/` shows the cross-section discovery home; `/paths` shows the complete learning-path catalog.
+- `/browse` shows the usable content library immediately and links to the discovery home and `/paths` catalog through shared navigation.
+- `/` shows the game campaign; `/learn` shows the cross-section discovery hub; `/paths` shows the complete learning-path catalog.
 - `/docs/[...slug]` renders one article with metadata, outline, Markdown body, and referenced diagrams.
 - `/diagrams/[...slug]` renders one standalone Mermaid diagram.
 - Article and diagram routes remain static-first. When opened from a path, a client wrapper reads `?path=` and shows the precomputed next-node link without making the server page dynamic.

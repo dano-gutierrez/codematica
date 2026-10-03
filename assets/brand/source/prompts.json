@@ -1,0 +1,23 @@
+{
+  "approvedConcept": "../concepts/2026-10-02/05-outpost-refined-v2.png",
+  "approved": "2026-10-02",
+  "mode": "built-in imagegen",
+  "exports": [
+    {
+      "output": "approved-transparent.png",
+      "prompt": "Use case: background-extraction.\nEdit target: the supplied approved Codematica logo board.\nRemove only the warm ivory presentation background and make it genuinely transparent alpha, including all background gaps around and inside the lettering. Preserve every existing artwork pixel as faithfully as possible: the large freestanding robot head upper-left, the exact distressed slab-serif \"Codematica\" lettering and orange underline below it, the medium teal rounded-square icon upper-right, and the small freestanding robot favicon lower-right. Keep the cream robot casing and eye highlights opaque; they are artwork, not background. Keep the dark teal rounded square behind the medium icon opaque. All four graphic elements must retain their exact dimensions, placement, colors, pose, typography and shapes. Do not redraw, restyle, relight, add, remove, move, or simplify the designs. Maintain the same 1536x1024 landscape canvas and layout. No checkerboard painted into the image, no new background or shadows. This is production background removal of an approved design, not another concept.",
+      "referenced_image_paths": [
+        "/Users/dano/.codex/worktrees/a97c/codematica/assets/brand/concepts/2026-10-02/05-outpost-refined-v2.png"
+      ],
+      "transparent_background": true
+    },
+    {
+      "output": "launcher-foreground.png",
+      "prompt": "Use case: background-extraction.\nInput image: approved Codematica brand board. Extract ONLY the robot HEAD from the MEDIUM icon in the upper-right (the one with a fine cream outline on a teal rounded square). Export that exact medium robot head by itself on transparent alpha, at high resolution, centered on a square canvas with generous margin. Remove the teal tile behind the head, remove all other artwork and lettering. Preserve the robot's precise shape, tilt, facial features, cream outline, orange ears, antenna and amber eyes. Keep the dark teal face panel opaque and keep the cream casing opaque. No redesign, no shadow, no glow, no badge, no text, no background. The output will be used as the foreground layer of the same approved app icon so it must match the original medium icon, not the large or tiny head.",
+      "referenced_image_paths": [
+        "/Users/dano/.codex/worktrees/a97c/codematica/assets/brand/concepts/2026-10-02/05-outpost-refined-v2.png"
+      ],
+      "transparent_background": true
+    }
+  ]
+}
