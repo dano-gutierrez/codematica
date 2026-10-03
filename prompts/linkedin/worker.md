@@ -13,6 +13,12 @@ Only the human's authenticated `Approve & queue` action authorizes scheduling. N
 
 Run `npm run linkedin -- heartbeat` and `npm run linkedin -- status`. If there is no eligible job and no publication needing reconciliation, stop quietly. Process cancellations and uncertain publications first, then at most five refinement jobs and available scheduling capacity. Record a short heartbeat summary at the end. Notify only on new completed work, failures, or required user action. Do not repeat an unchanged blocker across manual runs.
 
+## Local preparation and compact verification
+
+When local preparation is enabled, run a manually requested batch with `npm run linkedin -- prepare 5` (or the explicitly requested batch size) before claiming refinements. The local writer and OpenJev must already be ready on loopback. No model starts automatically and there is no cloud fallback. Held reports do not advance without the human's recorded reason. Never create an override as the worker.
+
+For `claim refine`, if the CLI returns a `handoff` file, read that compact file and follow `prompts/linkedin/verify.md`. Keep the full job file opaque: pass its path to renew/complete/fail without loading its duplicate analysis into the conversation. Get the response schema with `npm run linkedin -- schema verification`. Read a linked related revision only when needed with `npm run linkedin -- context POST_UUID REVISION_UUID`; the command returns a private file path. Verify the original and selected body/comment independently, then return accept, a sparse patch, or needs_input. Completion assembles the existing analysis; do not regenerate its unchanged sections. Diagnostic scores are local editorial signals, not independently validated factual claims. Use the legacy flow below only when no handoff is returned.
+
 ## Refine
 
 1. Run `npm run linkedin -- claim refine`. Read the returned private job file. Never construct shell commands by interpolating draft content. Use file-based JSON output.

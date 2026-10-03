@@ -48,3 +48,18 @@ it("validates manual creation and passes the retry identity to its atomic RPC", 
   expect(rpc).toHaveBeenCalledWith("linkedin_create", { p_request_key: "request-key", p_title: "Lesson", p_topic: "Systems", p_body: "Hello" });
   expect(() => client.create("request-key", { title: "", topic: "Systems", body: "Hello" })).toThrow();
 });
+
+it("validates preparation overrides and voice rules before making admin RPCs", async () => {
+  const {editorialFixture}=await import("./test/linkedin-fixture");
+  const rpc=vi.fn().mockResolvedValue({data:editorialFixture,error:null}); const client=createEditorialClient({rpc});
+  await client.overview(); await client.detail(editorialFixture.posts[0].id);
+  expect(rpc).toHaveBeenCalledWith("linkedin_detail",{p_post_id:editorialFixture.posts[0].id});
+  const id="30000000-0000-4000-8000-000000000001";
+  expect(()=>client.preparationAction(id,id,id,"follow_up"," ")).toThrow();
+  await client.preparationAction(id,id,id,"follow_up"," A new angle ");
+  expect(rpc).toHaveBeenLastCalledWith("linkedin_preparation_action",expect.objectContaining({p_reason:"A new angle"}));
+  expect(()=>client.setVoice([])).toThrow(); await client.setVoice([" Plain language "]);
+  expect(rpc).toHaveBeenLastCalledWith("linkedin_set_voice",{p_rules:["Plain language"]});
+  expect(canApprove({...revision,analysis:{verificationNotes:[]},prompt_hash:"hash"},true,true)).toBe(false);
+  expect(canApprove({...revision,analysis:{verificationNotes:[]},prompt_hash:"hash",preparation_id:id},true,true)).toBe(true);
+});

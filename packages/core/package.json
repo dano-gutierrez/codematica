@@ -25,7 +25,8 @@
     "./progress/server": "./src/progress/server.ts",
     "./progress/mastery": "./src/progress/mastery.ts",
     "./progress/progression": "./src/progress/progression.ts",
-    "./generated/content-index.json": "./src/generated/content-index.json"
+    "./generated/content-index.json": "./src/generated/content-index.json",
+    "./linkedin-preparation": "./src/linkedin-preparation.ts"
   },
   "scripts": {
     "typecheck": "tsc --noEmit -p tsconfig.json"

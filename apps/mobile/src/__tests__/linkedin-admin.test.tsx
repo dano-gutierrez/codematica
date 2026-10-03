@@ -1,6 +1,6 @@
 import { fireEvent, render, waitFor } from "@testing-library/react-native";
 import { LinkedInAdminScreen } from "../../../../packages/ui/src/LinkedInAdminScreen";
-import { analysisFixture, editorialFixture } from "../../../../packages/core/src/test/linkedin-fixture";
+import { analysisFixture, editorialFixture, preparationFixture } from "../../../../packages/core/src/test/linkedin-fixture";
 describe("native editorial review", () => {
   it("protects the collection and supports refine and approve", async () => {
     const api = { isAdmin: jest.fn().mockResolvedValue(true), snapshot: jest.fn().mockResolvedValue(editorialFixture), create: jest.fn().mockResolvedValue("10000000-0000-4000-8000-000000000001"), review: jest.fn().mockResolvedValue(null) };
@@ -87,4 +87,17 @@ it("creates and formats a manual post, preserves failed input and gates approval
   await fireEvent.press(view.getByTestId("linkedin-back"));
   await fireEvent.press(view.getByTestId("linkedin-create")); await fireEvent.press(view.getByText("Cancel"));
   expect(view.queryByTestId("linkedin-create-form")).toBeNull();
+});
+
+it("loads local preparation details and sends held work only with an explicit reason", async () => {
+  const data = structuredClone(editorialFixture); data.posts[0].preparation_required = true; data.preparations = [preparationFixture];
+  const api = { isAdmin: jest.fn().mockResolvedValue(true), snapshot: jest.fn(), overview: jest.fn().mockResolvedValue({ ...data, revisions: [], preparations: [], version: "1" }), detail: jest.fn().mockResolvedValue(data), create: jest.fn(), review: jest.fn(), preparationAction: jest.fn().mockResolvedValue(null) };
+  const view = await render(<LinkedInAdminScreen client={api} onSignIn={jest.fn()} />);
+  await fireEvent.press(await view.findByText("Retries need a budget"));
+  expect(await view.findByText("Local preparation · held")).toBeOnTheScreen();
+  expect(view.getByTestId("linkedin-approve")).toBeDisabled();
+  expect(view.getByTestId("linkedin-send-flags")).toBeDisabled();
+  await fireEvent.changeText(view.getByLabelText("Reason for sending"), "This is a distinct follow-up");
+  await fireEvent.press(view.getByTestId("linkedin-keep-followup"));
+  await waitFor(() => expect(api.preparationAction).toHaveBeenCalledWith(data.posts[0].id, data.posts[0].current_revision_id, preparationFixture.id, "follow_up", "This is a distinct follow-up"));
 });

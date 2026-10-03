@@ -2,6 +2,15 @@
 
 This changelog dates durable product and architecture changes and links to their authoritative feature contracts.
 
+## 2026-10-03 — Local LinkedIn Preparation
+
+- Added opt-in local writer/OpenJev preparation, immutable reports and generic voice versions, duplicate/follow-up routing, bounded editing and compact Codex verification. Originals and human adoption/approval remain separate.
+- Added selected-post detail loading, advisory local scores/hooks/flags, explicit overrides and editable voice rules to web/native review. Versioned collection polling reduces repeated history transfer.
+- Added v2 backups with backward-compatible restore, isolated CLI/model acceptance tests and manual model lifecycle. No cloud inference, scheduler or paid infrastructure was added. Hosted activation/backfill remains a separate rollout.
+- Kept coverage thresholds intact; added local model modules to instrumentation and excluded ignored private `.local` artifacts from ESLint. Production artifact smoke checks that local inference and privileged worker code stay out of web startup. Playwright accepts a separate port for concurrent checkouts.
+
+Owning contract: `docs/features/linkedin-editorial.md`; operations: `docs/runbooks/linkedin-editorial.md`.
+
 ## 2026-09-29 — PR Check Reliability
 
 - Aligned Expo SDK 57 dependencies and root overrides with Expo 57.0.26 and React Native 0.86.3. Added the required `expo-asset` native peer, pinned compatible animation packages, and regenerated stale nested workspace resolutions in the lockfile.

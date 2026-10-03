@@ -109,6 +109,7 @@ jobs:
       - run: npm ci
       - run: npm run test:db
       - run: npm run test:linkedin:local
+      - run: npm run test:linkedin:preparation
       - name: Stop local Supabase
         if: always()
         run: supabase stop --no-backup

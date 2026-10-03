@@ -26,6 +26,8 @@ export default defineConfig({
         "apps/web/src/app/auth/**/route.ts",
         "scripts/content/**/*.ts",
         "scripts/linkedin/worker.ts",
+        "scripts/linkedin/preparation.ts",
+        "scripts/linkedin/local-models.ts",
       ],
       // Generated assets, type/barrel files, and thin route composition are
       // validated by content checks, typecheck, and E2E rather than line coverage.

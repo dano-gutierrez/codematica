@@ -8,7 +8,7 @@ import { join } from "node:path";
 import { createClient } from "@supabase/supabase-js";
 import { analysisFixture, editorialFixture } from "../../packages/core/src/test/linkedin-fixture";
 
-const local = JSON.parse(execFileSync("supabase", ["status", "--output", "json"], { encoding: "utf8", stdio: ["ignore", "pipe", "pipe"] }));
+const local = JSON.parse(execFileSync("supabase", ["status", "--output", "json", ...(process.env.SUPABASE_WORKDIR ? ["--workdir", process.env.SUPABASE_WORKDIR] : [])], { encoding: "utf8", stdio: ["ignore", "pipe", "pipe"] }));
 assert.equal(new URL(local.API_URL).hostname, "127.0.0.1", "Only disposable local Supabase is allowed");
 const env = { ...process.env, SUPABASE_URL: local.API_URL, SUPABASE_SERVICE_ROLE_KEY: local.SERVICE_ROLE_KEY };
 const cli = (...args: string[]) => execFileSync(process.execPath, ["--import", "tsx", "scripts/linkedin/cli.ts", ...args], { env, encoding: "utf8", stdio: ["ignore", "pipe", "pipe"] }).trim();
