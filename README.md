@@ -153,7 +153,7 @@ The [in-level miniature kit](assets/game/previews/miniatures-v3.png) shows the a
 
 ## Private LinkedIn editorial workflow
 
-Admin web/native manual creation, Unicode text formatting and review at `/admin/linkedin` uses optional Supabase persistence and a manually invoked local Codex worker. Drafts are private; a human must approve the exact revision before Buffer scheduling. See [feature contract](docs/features/linkedin-editorial.md) and [operations runbook](docs/runbooks/linkedin-editorial.md). Commands: `npm run linkedin -- status`, `npm run e2e:linkedin`, `npm run test:linkedin:local`, and `npm run test:production:smoke` (after build).
+Admin web/native manual creation, Unicode text formatting and review at `/admin/linkedin` uses optional Supabase persistence, opt-in local writer/OpenJev preparation, and a manually invoked Codex verification worker. Drafts are private; a human must approve the exact revision before Buffer scheduling. See [feature contract](docs/features/linkedin-editorial.md) and [operations runbook](docs/runbooks/linkedin-editorial.md). Local models: `npm run linkedin:models -- status`; manual batches: `npm run linkedin -- prepare 5`. Commands: `npm run linkedin -- status`, `npm run e2e:linkedin`, `npm run test:linkedin:local`, and `npm run test:production:smoke` (after build).
 
 ## Frontend interview practice
 

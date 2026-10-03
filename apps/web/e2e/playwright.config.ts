@@ -11,6 +11,9 @@ webServerEnv.NEXT_PUBLIC_SUPABASE_URL = process.env.EDITORIAL_E2E === "1" ? "htt
 webServerEnv.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY = process.env.EDITORIAL_E2E === "1" ? "editorial-test-anon-key" : "";
 webServerEnv.NEXT_PUBLIC_SUPABASE_ANON_KEY = "";
 
+const port = Number(process.env.PLAYWRIGHT_PORT || 3100);
+if (!Number.isInteger(port) || port < 1024 || port > 65535) throw new Error("Invalid PLAYWRIGHT_PORT");
+
 export default defineConfig({
   testDir: "./specs",
   outputDir: process.env.EDITORIAL_E2E === "1" ? "./test-results/editorial-artifacts" : "./test-results/artifacts",

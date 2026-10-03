@@ -24,3 +24,5 @@ Migrations `202609290001`, `202609290002` and `202609300001` add private admin m
 Manual-create storage uses atomic admin-only `linkedin_create`, explicit origin and a required analysis/adoption gate. UTF-16 checks apply to new revisions; historical rows remain immutable. Old backups default missing origin to material.
 
 Japanese writing notebooks use 24 whole-prompt repetitions per sheet and support curated/custom text of 1–5 published characters. Ink stays on the device; coarse completion/unlocks optionally sync. See `docs/features/japanese-writing-notebooks.md` for the implementation, persistence and validation contract.
+
+Migration `202610030001` adds opt-in local preparation reports, generic voice history, preparation/verification bindings, versioned overview/detail RPCs and v2 restore. It performs no inference or automatic backfill. `linkedin_enable_preparation` enrolls review drafts only after an operator backup and refuses running editorial jobs. The local integration command `npm run test:linkedin:preparation` follows the legacy smoke in CI.
