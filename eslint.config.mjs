@@ -23,6 +23,8 @@ export default tseslint.config(
   },
   { files: ["packages/ui/src/game/*.tsx"], rules: { "@typescript-eslint/no-require-imports": "off" } },
   { files: ["scripts/game/*.mjs"], languageOptions: { globals: globals.node } },
+  { files: ["scripts/brand/*.mjs", "assets/brand/**/*.mjs"], languageOptions: { globals: globals.node } },
+  { files: ["scripts/brand/capture-preview.mjs", "assets/brand/**/build-gallery.mjs"], languageOptions: { globals: globals.browser } },
   {files:["scripts/game/capture-contact-sheet.mjs"],languageOptions:{globals:globals.browser}},
   js.configs.recommended,
   ...tseslint.configs.recommended,

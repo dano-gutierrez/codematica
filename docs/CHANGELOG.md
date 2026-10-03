@@ -1,5 +1,13 @@
 # Product And Engineering Changelog
 
+## 2026-10-02 — Approved Patch app identity
+
+- Removed the two thin lines above Patch's left eyebrow in the large and medium icons and regenerated their exports; retained the eyebrow, lettering and tiny favicon.
+- Installed the approved simple Patch head and slab wordmark in web and native identity controls.
+- Added transparent 16/32/48px favicons, multi-resolution ICO, Apple touch/manifest icons, native launcher icons and ivory splash artwork.
+- Preserved original concepts and imagegen extraction prompts; added reproducible exports, alpha/safe-area checks and a visual preview. Header copies are sized for high-density screens.
+- Added browser asset/home-navigation coverage, native sidebar home-button coverage, and exact asset checks in the production-only artifact smoke. Coverage floors remain unchanged. See [brand identity](features/brand-identity.md) for verification and platform limits.
+
 ## 2026-09-30 — In-level character miniatures
 
 - Reworked the actual Patch and zombie game figures with chibi proportions, stronger faces and short limbs; added transparent full-body exports at 48/64/96/128px.

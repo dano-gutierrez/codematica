@@ -124,6 +124,18 @@ try {
       throw Error(`Invalid miniature: ${variant.png}`);
   }
   logs += "All four full-body miniatures and their 48–128px variants are packaged.\n";
+  for (const asset of [
+    "brand/patch-mark.png", "brand/wordmark.png", "brand/logo.png", "brand/app-icon.png",
+    ...[16, 32, 48, 192, 512].map(size => `brand/icon-${size}.png`),
+    "favicon.ico", "apple-icon.png", "manifest.webmanifest",
+  ]) {
+    const response = await fetch(`${url}/${asset}`);
+    if (!response.ok) throw Error(`Missing brand asset in production artifact: ${asset}`);
+    const source = asset === "favicon.ico" || asset === "apple-icon.png" ? `apps/web/src/app/${asset}` : `apps/web/public/${asset}`;
+    const expected = await readFile(join(root, source));
+    if (!Buffer.from(await response.arrayBuffer()).equals(expected)) throw Error(`Stale brand asset in production artifact: ${asset}`);
+  }
+  logs += "Approved logo, transparent favicons, Apple icon and manifest match the packaged brand exports.\n";
   browser = await chromium.launch();
   const page = await browser.newPage();
   const campaign = JSON.parse(

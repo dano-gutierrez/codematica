@@ -24,6 +24,8 @@ describe("adaptive native navigation", () => {
     const view = await render(<NativeNavigation pathname="/docs/system-design/cache-invalidation" navigate={navigate} wide />);
     expect(view.getByTestId("mobile-nav-lessons").props.accessibilityState).toEqual({ selected: true });
     expect(view.queryByTestId("mobile-nav-more")).toBeNull();
+    await fireEvent.press(view.getByRole("button", { name: "Codematica home" }));
+    expect(navigate).toHaveBeenCalledWith("/");
     await fireEvent.press(view.getByTestId("mobile-nav-languages"));
     expect(navigate).toHaveBeenCalledWith("/languages");
     await fireEvent.press(view.getByTestId("mobile-nav-sign-in"));

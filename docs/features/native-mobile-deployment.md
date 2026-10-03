@@ -142,6 +142,7 @@ Store-side setup still required:
 - `apps/mobile/.eas/workflows/` owns the labeled Android smoke and Android/iOS `v*` release Maestro jobs.
 - `apps/mobile/.maestro/` owns the installed-app offline, learning-path, diagram, Japanese, interview, and Auth-disabled journeys.
 - `apps/mobile/assets/` stores the native icon, adaptive icon, and splash assets used by app store builds.
+- These identity assets now come from the approved Patch brand through `npm run brand:assets`. The iOS icon is opaque; Android uses a transparent foreground and teal background; splash uses the simplified large head on ivory. Shared UI PNGs live under `packages/ui/src/assets/brand/` and are covered by the shared source Gradle input hook. Rebuild native binaries to update launcher/splash resources; see `brand-identity.md`.
 - `apps/mobile/app/languages/japanese/**` mirrors the web Japanese lookup/detail/review routes.
 - `apps/mobile/src/lib/skill-progress.ts` validates, loads, merges, and uploads Japanese mastery through the anon-safe Supabase client without clearing local state.
 - `packages/core/src/` exports content schemas, generated index access, library/discovery search, curated-home resolution, questionnaire logic, handwriting scoring, language helpers, passive flashcard helpers, interview helpers, and progress helpers.

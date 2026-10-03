@@ -5,6 +5,7 @@ This file carries durable repo context across Codex threads.
 ## Source Of Truth
 
 - Product and feature intent lives in `docs/features/<feature>.md`.
+- Approved app identity lives in `assets/brand/source/`; `npm run brand:assets` regenerates web/native copies. Preserve the selected Patch design; see `docs/features/brand-identity.md`.
 - Repo-level architecture lives in `docs/engineering-overview.md`.
 - Canonical knowledge content lives in `content/knowledge/`.
 - Canonical Mermaid diagrams live in `content/diagrams/`.

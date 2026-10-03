@@ -33,6 +33,17 @@ Codematica is a mobile-first learning app for system design, coding, programming
 
 ## Content Flow
 
+The approved Patch identity has a separate static asset flow. The existing build-only Sharp dependency exports PNG/ICO files; no brand processing runs in the app or server. See `docs/features/brand-identity.md`.
+
+```mermaid
+flowchart LR
+  Brand["assets/brand/source: approved alpha artwork"] --> Export["npm run brand:assets"]
+  Export --> WebBrand["Web public assets + Next metadata icons"]
+  Export --> NativeBrand["Expo launcher/splash + shared UI PNGs"]
+  Brand --> Freshness["brand:check: reproducibility + platform constraints"]
+  WebBrand --> Artifact["Production-only HTTP asset smoke"]
+```
+
 ```mermaid
 flowchart TD
   MD["content/knowledge/**/*.md"] --> Parser["content parser + Zod validation"]

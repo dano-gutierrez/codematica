@@ -2,6 +2,7 @@
 
 ## Snapshot
 
+- App identity: the approved Patch logo, browser favicons and native launcher/splash assets are owned by [the brand feature](brand-identity.md); game rigs and portraits retain their own asset pipeline.
 - Status: `in_progress`
 - Last updated: `2026-09-30`
 - Owner thread: `01a0ea98-ae1a-7291-b1c5-a1986b9b92a6`

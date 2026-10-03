@@ -48,6 +48,7 @@ Shared navigation, concise catalog headings, lighter typography and borders, con
 
 ### UI / UX
 
+- App branding uses the approved Patch head and wordmark in existing web/native headers and sidebars. See `brand-identity.md` for source ownership, browser icons and native packaging.
 - Neutral canvas, white surfaces, teal primary navigation, and restrained category colors.
 - Semibold titles, regular body copy, thin borders, and consistent 12–16 px corners replace raised heavy controls.
 - Home section actions use the same teal text treatment. Category colors remain in icons and metadata.

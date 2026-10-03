@@ -3,7 +3,14 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useRef } from "react";
-import { ArrowUpRight, BookOpen, Brain, Code2, Home, Languages, Map, MoreHorizontal, Network, UserRound, X } from "lucide-react";
+import { ArrowUpRight, BookOpen, Brain, Code2, Home, Languages, Map, MoreHorizontal, UserRound, X } from "lucide-react";
+
+function BrandLink() {
+  return <Link href="/" className="app-brand" aria-label="Codematica home">
+    <img src="/brand/patch-mark.png" width={40} height={40} alt="" className="app-brand-mark" data-testid="brand-mark" />
+    <img src="/brand/wordmark.png" width={128} height={31} alt="" className="app-brand-wordmark" data-testid="brand-wordmark" />
+  </Link>;
+}
 
 const destinations = [
   { href: "/", label: "Play", icon: Home },
@@ -26,14 +33,14 @@ export function AppNavigation() {
     <>
       <a href="#app-content" className="skip-link">Skip to content</a>
       <aside className="app-sidebar">
-        <Link href="/" className="app-brand" aria-label="Codematica home"><span className="app-brand-mark"><Network size={22} aria-hidden="true" /></span>Codematica<span className="brand-dot">.</span></Link>
+        <BrandLink />
         <span className="sidebar-label">YOUR LEARNING SPACE</span>
         <nav aria-label="Primary navigation" className="sidebar-links">
           {destinations.map(({ href, label, icon: Icon }) => <Link key={href} href={href} className="app-nav-link" aria-current={active === href ? "page" : undefined} data-testid={`app-nav-${label.toLowerCase()}`}><Icon size={20} aria-hidden="true" />{label}</Link>)}
         </nav>
         <div className="sidebar-bottom"><Link href="/login" className="app-nav-link"><UserRound size={20} aria-hidden="true" />Sign in<ArrowUpRight size={16} className="ml-auto" aria-hidden="true" /></Link></div>
       </aside>
-      <header className="app-mobile-header"><Link href="/" className="app-brand" aria-label="Codematica home"><span className="app-brand-mark"><Network size={19} aria-hidden="true" /></span>Codematica<span className="brand-dot">.</span></Link><Link href="/login" className="account-link" aria-label="Sign in"><UserRound size={20} aria-hidden="true" /></Link></header>
+      <header className="app-mobile-header"><BrandLink /><Link href="/login" className="account-link" aria-label="Sign in"><UserRound size={20} aria-hidden="true" /></Link></header>
       <nav className="app-bottom-nav" aria-label="Mobile navigation" data-testid="app-bottom-navigation">
         {compactDestinations.map(({ href, label, icon: Icon }) => <Link key={href} href={href} aria-current={active === href ? "page" : undefined} data-testid={`mobile-nav-${label.toLowerCase()}`}><Icon size={21} aria-hidden="true" /><span>{label}</span></Link>)}
         <button ref={moreButton} type="button" onClick={() => menu.current?.showModal()} aria-haspopup="dialog" className={["/browse", "/languages", "/interviews", "/login"].includes(active) ? "is-active" : undefined} data-testid="mobile-nav-more"><MoreHorizontal size={22} aria-hidden="true" /><span>More</span></button>

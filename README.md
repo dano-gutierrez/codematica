@@ -2,6 +2,10 @@
 
 Codematica is a mobile-first, gamified learning app. V1 browses, renders, searches, and practices repo-authored Markdown and structured study content for software engineering and beginner Japanese, including an open JF/CEFR Pre-A1/A1 roadmap, embedded and external Mermaid diagrams, handwriting, review, and optional cross-device progress.
 
+## Brand assets
+
+Patch is the app's approved identity. The [brand guide](assets/brand/README.md) contains the selected logo, favicon and launcher artwork. Run `npm run brand:assets` to regenerate all web/native exports, `npm run brand:check` to verify them, and `npm run brand:preview` to inspect the small-size and mask checks.
+
 ## Stack
 
 - Next.js App Router
