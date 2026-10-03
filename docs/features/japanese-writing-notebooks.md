@@ -51,9 +51,13 @@ The UI uses the app's existing English labels. Canonical exercise/catalog JSON r
 
 Warm paper has subtle blue cells, generous row spacing, in-paper examples and dotted guides. Controls and reserved feedback sit outside the ink surface. Recall hides the example until requested. Cells begin at x=48, safely beyond the red margin at x=30; the 12px right gutter and 44px minimum cell size remain available at 280px paper width for five-character prompts. The next cell has a subtle focus outline; live ink overlays all rows.
 
+Native selected notebooks use a compact title/back row and an inline example summary so the paper is visible immediately on phones. The Show example control appears only during Recall. A reserved feedback area sits immediately above the paper and explains one-finger writing, two-finger scrolling and automatic checking. Controls retain 44pt minimum targets and font scaling. Creating a custom notebook handles the first button tap while the keyboard is open.
+
 An unrecognized character briefly warms the focused cell and bounces it over 220 ms without affecting layout, then fades only the temporary ink. iOS fades its native PencilKit layer and clears its drawing generation on expiry; Android fades its SVG overlay. Web honors `prefers-reduced-motion`; native honors the system Reduce Motion setting. Reduced motion keeps the error color and timed clearing while omitting the bounce and animated fade. Difficulty controls sit outside the paper and retain pending ink when changed.
 
 Undo removes the last pending stroke, or the last accepted cell when there is no pending ink. Clear current character removes pending ink. The footer keeps **Next sheet** at its content width alongside a 44px restart icon, labeled **Clear and restart sheet** for assistive technology; web also provides a title and visible focus outline. Restart removes current filled cells but preserves best progress. Switching sheets/activity discards unfinished ink. Pressure is retained in vectors; web ink is rendered as smooth cubic curves, with per-stroke weight on accepted cells. PencilKit renders live iOS ink natively. Its two-touch UIKit pan recognizer sends `onPan` phases and vertical deltas through the Expo bridge to the shared viewport, moving the ruled paper and native ink together. A generation guard suppresses cancelled/stale tool callbacks; native drawing is disabled on completed sheets while scrolling remains enabled. The SVG fallback uses responder touch centroids. `NotebookScrollContext` passes unconsumed pan distance to the enclosing `AppScreen` scroll view while its normal one-finger scroll stays locked during writing. Web uses Pointer Events with `touch-action: none` on the ink surface and explicit two-contact panning; its scrollable viewport remains available for wheel, trackpad, scrollbar and keyboard input.
+
+Native paper disables the ScrollView's automatic touch scrolling; programmatic two-finger and accessibility scrolling remain available. The SVG responder grant blocks native ancestor interception, matching PanResponder's behavior on Android. Without these guards, vertical strokes can move or lose samples. Native swipe-back is disabled on notebook, writing-review, character/vocabulary detail and authored writing-exercise routes: iPad's recognizer can start inside the paper and treat a rightward stroke as navigation. Other routes retain swipe-back, and persistent navigation and the notebook's explicit back control remain available.
 
 ### Data Model And Persistence
 
@@ -93,6 +97,7 @@ Local write queues preserve ordering across quick acceptance, Undo and restart. 
 - `packages/ui/src/JapaneseNotebookPractice.tsx`: native notebook and Android SVG responder.
 - `packages/ui/src/JapaneseNotebookCatalogScreen.tsx`: native notebook catalog.
 - `apps/mobile/src/lib/{notebook-storage,handwriting-canvas}.ts*`: AsyncStorage and native bridge.
+- `apps/mobile/src/lib/handwriting-navigation.ts` and `app/_layout.tsx`: protect handwriting routes from native swipe-back.
 - `apps/mobile/modules/codematica-handwriting/`: local PencilKit view and Expo module.
 
 ## Test Plan
@@ -104,6 +109,19 @@ Web/native integration tests cover correction, timer cancellation, rejection exp
 Required commands: `npm run content:check`, `npm run lint`, `npm run typecheck`, `npm run test:coverage`, `npm run test:mobile:coverage`, `npm run mobile:doctor`, `npm run build`, `npm run test:production:smoke`, the two Japanese Playwright regressions and `npm run e2e:smoke`. Run native `.maestro/japanese-writing.yaml` on Android and iOS. Coverage includes the new core, web, native components, hook and storage files; no floor is lowered or new exclusion added.
 
 Physical iPad checks must cover finger drawing, automatic Pencil palm rejection and returning to finger drawing, pressure, uninterrupted curves, responsiveness, background/foreground restore, rotation, Split View, VoiceOver and larger text in Safari and the installed app. Emulator input is not evidence for these physical properties.
+
+Native layout and real-contact regressions also run through `apps/mobile/e2e/notebook-{layout,gestures}.mjs`; see that directory's README. The layout regression starts with the phone failure of only 11pt of visible paper. Jest covers the native scroll-interception guards, recall-only hints, keyboard taps, navigation policy, timers and retained ink. `.maestro/japanese-writing.yaml` remains the installed-build workflow.
+
+### Deferred physical iPad checklist
+
+The user deferred physical Pencil and supported native-build validation during the device pass. Keep these checks pending before claiming installed PencilKit release readiness.
+
+1. Use Xcode 26.4 or newer for Expo SDK 57. Run `npm ci`, `npm run mobile:doctor`, `npm run mobile:prebuild:ios` and `npm run mobile:pods`, then `npm run mobile:ios` to build/install with the local `codematica-handwriting` module. Expo Go and older binaries exercise the SVG fallback, not PencilKit. Alternatively use a configured internal EAS build that includes the module. Record the commit, iPad/iPadOS, Xcode and build identifier.
+2. On the physical iPad, open Notebook practice in Safari against a reachable web server, then in the freshly installed app. Create `あい`, choose Easy, and write large/small characters in the header area, empty rows and over filled rows. Full あ followed by い must make one repetition, preserve the learner's ink in the next two cells and leave the page position fixed. Try reordered strokes and extra pen lifts. Missing the loop and taps must fail and fade; adding a correction before expiry must keep pending ink.
+3. Alternate finger and Apple Pencil without selecting a mode. Rest the palm on the paper while writing; it must not add marks, scroll or navigate. Draw light/heavy curves and inspect retained samples/ink. Confirm responsiveness and uninterrupted curves with fast and slow strokes. After lifting the Pencil, check finger drawing resumes after the short palm-suppression window.
+4. Use two fingers to scroll rows and continue to the outer page at the paper's bounds. Scroll while a character is unfinished; completed pending strokes must survive. Write long rightward strokes to confirm native back navigation never takes over. Complete 24 pairs; only then must Next sheet enable. Restart must retain earned unlocks.
+5. Rotate portrait/landscape and test compact Split View. Background/foreground and fully relaunch; saved vector ink, repetitions and selected sheet must return. Check VoiceOver labels/actions, Larger Text, Reduce Motion, and no overlap with navigation or the red margin. Capture before/after video and record pass/fail separately for Safari and installed PencilKit.
+6. Run the installed Android/iOS Maestro release flows in the supported build environment. Keep build errors, device recordings and failed assertions with the validation evidence; a simulator SVG pass does not replace this check.
 
 ### PR Validation — 2026-10-02
 
@@ -117,6 +135,16 @@ Expo autolinking discovers the local module. Swift syntax parsing and isolated P
 
 Earlier development browser failures remain preserved in the original checkout under `test-results/notebook-*-failure-20261002*/`; the PR worktree retains its own validation logs and failure reports. Regression-first coverage includes all 24 repetitions, custom sheet progression, slow mouse strokes, correction/fade timing, local restoration and the automatic input/scrolling contract.
 
+### Device-pass validation — 2026-10-03
+
+The follow-up uses a clean dependency install in an isolated worktree based on the merged notebook PR. Content freshness, lint, workspace typechecks, production build and a copied production-only artifact startup all pass. Vitest coverage passes 454 tests in 75 files; native Jest coverage passes 110 tests in 15 suites, including the new route, scrolling, feedback and keyboard regressions. Coverage floors and exclusions remain unchanged. Expo Doctor passes 20/20 checks. No content, schema, dependency or migration changes require a new database replay.
+
+All 25 production-build browser checks pass: 12 Japanese regressions on mobile Chromium, four handwriting checks across desktop Chromium/mobile WebKit, and nine smoke journeys across all three projects. The browser regressions cover mouse/finger/pen input, slow strokes, all 72 custom repetitions, saved ink, scrolling and phone/iPad/Split View layouts. An initial rebuild collided with a running browser server; failed traces and the old build output remain under `test-results/notebook-browser-collision*`. The build and affected browser checks then passed sequentially.
+
+Agent-device 0.20.3 dispatches native gestures in Expo Go on iPhone 17, Android S24, and iPad Pro 11-inch M4 in portrait and landscape. Each run rejects a missing あ loop and taps, accepts rough あ with 19 separate contacts at arbitrary placement exactly once, verifies rejection expiry and Undo, and scrolls with two fingers without adding ink. Relaunch restores saved ink and counts on all three devices. A separate long rightward 一 check confirms iPad swipe-back no longer steals handwriting. Initial visible paper improves from 11pt on iPhone to 266pt; Android has 187dp and iPad has 460pt portrait/361pt landscape. Screenshots, trees and gesture steps remain in `test-results/native-notebook-{layout,gestures}/` and `test-results/notebook-device-pass/`.
+
+These native runs validate the SVG fallback, not installed PencilKit. The host still has Xcode 26.3 and no physical iPad. Supported native builds, Android/iOS Maestro and physical Safari/PencilKit pressure, palm rejection and responsiveness are deferred at the user's request; use the checklist above before native release readiness is claimed.
+
 ## Open Questions
 
 - Physical-device calibration may identify additional independent handwriting examples for the deterministic grader. Preserve negative coverage regressions when adjusting tolerance.
@@ -128,6 +156,7 @@ Earlier development browser failures remain preserved in the original checkout u
 - `2026-10-02`: Make whole-character grading configurable with an easier default; save the preference per notebook. Remove the manual Check character fallback and preserve automatic rechecks after Undo/tool/difficulty changes. Shorten error motion to 220 ms and rejection cleanup to 1.2 seconds plus a 250ms fade.
 - `2026-10-02`: Remove mode buttons; automatically detect mouse, finger and Pencil contacts, keep regular web scrolling and add two-finger paper scrolling with pending-ink retention and native pan bridging.
 - `2026-10-02`: Keep sheet controls compact and make restart an accessible icon. Retain 400ms successful acceptance while delaying error feedback until 1.2 seconds after pen-up so multi-stroke mouse writing has more time.
+- `2026-10-03`: Compact native notebook headers and move feedback above the paper. Block ScrollView interception and handwriting-route swipe-back after simulator/emulator gestures reproduced lost/distorted strokes. Preserve grading thresholds. Defer physical Pencil and supported native-build checks at the user's request, with the checklist above.
 
 ## Documentation Updates
 

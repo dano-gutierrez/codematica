@@ -109,3 +109,5 @@ The skill defines editing instructions. Each edit still requires the validation 
 Japanese handwriting includes paired trace/copy/recall planas, kana word sheets, matching pairs, attributed curved kana guides, smooth retained ink, and forgiving beginner grading on web/native. See [Japanese language learning](features/japanese-language-learning.md#handwriting-practice-sheets-planas) for the geometry, licensing, input, completion, and device-validation contracts.
 
 - [Japanese writing notebooks](features/japanese-writing-notebooks.md): 24-repetition planas, custom pages, automatic mouse/finger/Pencil input, regular web and two-finger touch scrolling, local ink, optional unlock sync and native PencilKit.
+
+Native notebook validation now includes agent-device layout/contact runners in `apps/mobile/e2e/`, plus a [deferred physical iPad checklist](features/japanese-writing-notebooks.md#deferred-physical-ipad-checklist) for the installed PencilKit build and Safari.

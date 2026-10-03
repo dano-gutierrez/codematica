@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { Pressable, Text, TextInput, View } from "react-native";
+import Svg, { Path } from "react-native-svg";
 import {
   createCustomNotebook,
   createExerciseNotebook,
@@ -99,20 +100,31 @@ export function JapaneseNotebookCatalogScreen({
     );
   }
   return (
-    <AppScreen>
-      <Header adapters={adapters} subtitle="Japanese · Notebook practice" />
+    <AppScreen keyboardShouldPersistTaps="handled">
       {selected ? (
         <View style={{ gap: 16 }}>
-          {button("All notebooks", "mobile-notebook-back", () => {
-            setSelected(undefined);
-            void load();
-          })}
-          <Text
-            accessibilityRole="header"
-            style={{ fontSize: 24, color: "#263238" }}
-          >
-            {selected.title}
-          </Text>
+          <View style={{ flexDirection: "row", alignItems: "center", gap: 12 }}>
+            <Pressable
+              accessibilityRole="button"
+              accessibilityLabel="All notebooks"
+              testID="mobile-notebook-back"
+              onPress={() => {
+                setSelected(undefined);
+                void load();
+              }}
+              style={{ width: 44, height: 44, alignItems: "center", justifyContent: "center" }}
+            >
+              <Svg width={24} height={24} viewBox="0 0 24 24" accessible={false}>
+                <Path d="M19 12H5m7-7-7 7 7 7" stroke="#263238" strokeWidth={2} fill="none" strokeLinecap="round" strokeLinejoin="round" />
+              </Svg>
+            </Pressable>
+            <Text
+              accessibilityRole="header"
+              style={{ flex: 1, fontSize: 24, color: "#263238" }}
+            >
+              {selected.title}
+            </Text>
+          </View>
           <JapaneseNotebookPractice
             key={selected.id}
             notebook={selected}
@@ -121,6 +133,7 @@ export function JapaneseNotebookCatalogScreen({
         </View>
       ) : (
         <View style={{ gap: 16 }}>
+          <Header adapters={adapters} subtitle="Japanese · Notebook practice" />
           <Text
             accessibilityRole="header"
             style={{ fontSize: 28, color: "#263238" }}

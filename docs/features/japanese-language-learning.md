@@ -208,3 +208,5 @@ flowchart LR
 - `2026-08-04`: Add mastery additively rather than changing or deleting completion history.
 - `2026-08-04`: Keep public third-party materials link-only unless redistribution rights are explicit.
 - `2026-08-04`: Ship audio validation and preparation before recordings; never substitute synthetic or unlicensed media for the promised native-speaker corpus.
+
+The native device pass compacts selected notebook headers and places feedback immediately above the paper. Automatic ScrollView interception and handwriting-route swipe-back are blocked so vertical and rightward strokes remain ink. The new native layout/contact regressions and deferred physical Pencil steps are documented in [Japanese writing notebooks](japanese-writing-notebooks.md). Shape-grading thresholds are unchanged.

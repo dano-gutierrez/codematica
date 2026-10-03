@@ -11,10 +11,14 @@ tags:
     direction: DOWN
 - tapOn:
     id: mobile-notebook-input
-- inputText: "一"
-- hideKeyboard
+- evalScript: ${maestro.copiedText = '一'}
+- pasteText
 - tapOn:
     id: mobile-notebook-create
+- assertVisible:
+    id: mobile-writing-notebook
+- assertNotVisible:
+    id: mobile-writing-peek
 - scrollUntilVisible:
     element:
       id: mobile-writing-difficulty-balanced
@@ -30,12 +34,17 @@ tags:
 - assertVisible:
     id: mobile-writing-pad
 - swipe:
-    start: 25%, 55%
-    end: 75%, 55%
+    from:
+      id: mobile-writing-notebook-viewport
+    direction: RIGHT
     duration: 300
 - assertVisible: "Correct.*"
+- assertVisible: ".*1 / 24 repetitions"
+- assertVisible:
+    id: mobile-writing-notebook
 - tapOn:
     id: mobile-writing-undo
+- assertVisible: ".*0 / 24 repetitions"
 - tapOn:
     id: mobile-writing-clear
 - assertNotVisible:

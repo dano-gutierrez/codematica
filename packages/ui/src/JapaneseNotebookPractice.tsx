@@ -482,22 +482,26 @@ export function JapaneseNotebookPractice({
         />
       </View>
       <View style={styles.example} testID="mobile-writing-example">
-        <Text style={styles.glyph} accessibilityLanguage="ja-JP">
-          {visible ? sheet.label : "Write from memory"}
-        </Text>
-        <Text style={styles.caption}>
-          {sheet.romaji} · {sheet.meaning}
-        </Text>
-        <Text style={styles.caption}>
-          {character.romaji} /{character.ipa}/
-        </Text>
-        {
+        <View style={styles.exampleSummary}>
+          <Text style={styles.glyph} accessibilityLanguage="ja-JP">
+            {visible ? sheet.label : "Write from memory"}
+          </Text>
+          <View style={{ flex: 1, minWidth: 120 }}>
+            <Text style={styles.caption}>
+              {sheet.romaji} · {sheet.meaning}
+            </Text>
+            <Text style={styles.caption}>
+              {character.romaji} /{character.ipa}/
+            </Text>
+          </View>
+        </View>
+        {phase === "Recall" ? (
           <NotebookButton
             label={peek ? "Hide example" : "Show example"}
             id={"peek"}
             onPress={() => setPeek((v) => !v)}
           />
-        }
+        ) : null}
       </View>
       <Text style={styles.caption}>Handwriting difficulty</Text>
       <View style={styles.toolbar}>
@@ -529,13 +533,30 @@ export function JapaneseNotebookPractice({
           />
         }
       </View>
-      <Text style={styles.caption}>
-        Write with your finger or stylus. Use two fingers to scroll the paper. Characters check automatically when you pause.
-      </Text>
+      <View
+        style={styles.feedback}
+        accessibilityLiveRegion="polite"
+        testID="mobile-writing-feedback-slot"
+      >
+        <Text style={styles.caption}>
+          {session.loading
+            ? "Opening your notebook…"
+            : session.saveError ||
+              (session.complete
+                ? "Sheet complete! All 24 repetitions. Your next sheet is unlocked."
+                : feedback ||
+                  "One finger or stylus writes. Two fingers scroll. Pause to check the character.")}
+        </Text>
+        {session.saveError ? (
+          <NotebookButton label="Retry" id="save-retry" onPress={session.retry} />
+        ) : null}
+      </View>
       <ScrollView
         ref={scroll}
         nestedScrollEnabled
-        scrollEnabled={!Canvas}
+        // One contact draws. Native scrolling would move the coordinates under
+        // that stroke; two-finger pan and accessibility actions scroll explicitly.
+        scrollEnabled={false}
         accessible
         accessibilityLabel={"Notebook paper for " + sheet.romaji}
         accessibilityActions={[
@@ -586,7 +607,12 @@ export function JapaneseNotebookPractice({
           onResponderStart={touchStart}
           onResponderEnd={(event) => { if (panning.current) touchPan(event, true); }}
           onResponderTerminationRequest={() => false}
-          onResponderGrant={grant}
+          onResponderGrant={(event) => {
+            grant(event);
+            // Match PanResponder's native-blocking grant. Android otherwise
+            // lets an ancestor ScrollView cancel vertical handwriting.
+            return true;
+          }}
           onResponderMove={move}
           onResponderRelease={release}
           onResponderTerminate={cancelAndCheck}
@@ -672,28 +698,6 @@ export function JapaneseNotebookPractice({
           </Animated.View>
         </View>
       </ScrollView>
-      <View
-        style={styles.feedback}
-        accessibilityLiveRegion="polite"
-        testID="mobile-writing-feedback-slot"
-      >
-        <Text style={styles.caption}>
-          {session.loading
-            ? "Opening your notebook…"
-            : session.saveError ||
-              (session.complete
-                ? "Sheet complete! All 24 repetitions. Your next sheet is unlocked."
-                : feedback ||
-                  "Take your time. Recognizable shapes are enough.")}
-        </Text>
-        {session.saveError ? (
-          <NotebookButton
-            label={"Retry"}
-            id={"save-retry"}
-            onPress={session.retry}
-          />
-        ) : null}
-      </View>
       <View style={styles.toolbar}>
         {index + 1 < notebook.sheets.length ? (
           <NotebookButton
@@ -758,7 +762,7 @@ export function JapaneseNotebookPractice({
   );
 }
 const styles = StyleSheet.create({
-  stack: { gap: 12 },
+  stack: { gap: 10 },
   toolbar: { flexDirection: "row", flexWrap: "wrap", gap: 8 },
   button: {
     minHeight: 44,
@@ -776,7 +780,8 @@ const styles = StyleSheet.create({
   disabled: { opacity: 0.45 },
   caption: { fontSize: 14, lineHeight: 21, color: "#455966" },
   glyph: { fontSize: 32, color: "#263238" },
-  example: { minHeight: 148, gap: 4, alignItems: "flex-start" },
+  example: { gap: 8, alignItems: "flex-start" },
+  exampleSummary: { flexDirection: "row", flexWrap: "wrap", alignItems: "center", gap: 12 },
   track: { height: 5, backgroundColor: "#dce8e4", borderRadius: 3 },
   fill: { height: 5, backgroundColor: "#007c78", borderRadius: 3 },
   viewport: {
@@ -785,7 +790,7 @@ const styles = StyleSheet.create({
     borderColor: "#8da9aa",
     borderRadius: 16,
   },
-  feedback: { minHeight: 80, justifyContent: "center", gap: 4 },
+  feedback: { minHeight: 64, justifyContent: "center", gap: 4 },
 });
 
 function NotebookButton({
