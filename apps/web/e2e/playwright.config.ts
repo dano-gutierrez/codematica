@@ -47,6 +47,8 @@ export default defineConfig({
     },
     {
       name: "mobile-webkit",
+      // Concurrent WebKit pages stalled the game return-to-map step twice on Linux CI.
+      workers: process.env.CI ? 1 : undefined,
       grep: process.env.EDITORIAL_E2E === "1" ? /@regression/ : /@smoke|@playground|@notebook-catalog/,
       use: {
         ...devices["iPhone 15"],

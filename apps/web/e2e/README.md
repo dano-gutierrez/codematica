@@ -2,7 +2,7 @@
 
 Playwright runs the complete suite in mobile Chromium. Critical `@smoke` journeys, `@playground` and `@notebook-catalog` regressions also run in desktop Chromium and mobile WebKit. Deeper cases use `@regression`.
 
-The runner builds and serves the production Next app, avoiding dev-server compilation and Fast Refresh during parallel tests. CI uses two workers to limit concurrent canvas/browser load on hosted runners; local runs use four. All browser projects and assertions remain enabled.
+The runner builds and serves the production Next app, avoiding dev-server compilation and Fast Refresh during parallel tests. CI uses two workers overall and limits iPhone WebKit to one worker; local runs use four. Two Linux CI attempts stalled or crashed at the game's return-to-map step with concurrent WebKit pages, while three local repetitions passed. The project limit reduces concurrency without increasing timeouts or removing journeys/assertions. All browser projects remain enabled.
 
 Set `E2E_PORT=3102` (or another free port) when a local app owns the default 3100. The server and browser base URL use the same port.
 
