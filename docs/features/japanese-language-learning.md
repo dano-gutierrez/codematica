@@ -4,7 +4,7 @@
 
 - Status: `in_progress`
 - Last updated: `2026-08-09`
-- Current state: schema-v10 carries a kana-to-N5 roadmap, 650 N5-aligned vocabulary profiles, 60 structured grammar patterns, ten progressive A1 units, mixed/open-answer/listening questionnaires, a shared offline Japanese IME, Pencil Scribble-compatible text input, substantive flashcard/writing review routes, and approval-gated OpenAI TTS metadata across web and Expo.
+- Current state: schema-v11 carries a kana-to-N5 roadmap, 650 N5-aligned vocabulary profiles, 60 structured grammar patterns, ten progressive A1 units, mixed/open-answer/listening questionnaires, a shared offline Japanese IME, Pencil Scribble-compatible text input, substantive flashcard/writing review routes, and approval-gated OpenAI TTS metadata across web and Expo.
 - Target outcome: English-speaking teens and adults can move from kana discovery to practical JF A1 Can-dos while keeping the entire course, reviews, dictionary, handwriting, flashcards, and resources open.
 
 ## One-Minute Brief

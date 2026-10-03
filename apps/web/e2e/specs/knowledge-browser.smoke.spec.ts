@@ -1,7 +1,7 @@
 import { expect, test } from "@playwright/test";
 
 test("@smoke mobile user can follow a path, practice, search, and open a diagram", async ({ page }) => {
-  await page.goto("/");
+  await page.goto("/learn");
   await expect(page.getByTestId("discovery-home")).toBeVisible();
   await expect(page.getByTestId("home-section-languages")).toContainText("Japanese");
   await page.getByTestId("home-view-all-paths").click();

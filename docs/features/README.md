@@ -66,3 +66,7 @@ The most important sections are:
 - `Thread Handoff Prompt`
 
 - `rtk-query-interview-preparation.md` owns the RTK Query interview curriculum and its source/version refresh and validation contract.
+
+## Game campaign
+
+[Restore the Signal](restore-the-signal.md) owns the chapter, shared evaluators, art production, offline runners, and web/native release gates.

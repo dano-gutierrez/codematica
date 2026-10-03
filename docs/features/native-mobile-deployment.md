@@ -169,7 +169,7 @@ The root layout wraps the existing Stack with safe-area-aware `NativeNavigation`
 
 ## Known Gaps
 
-- On 2026-09-05, the local Expo preview fails on missing `expo-router/_ctx-shared`; Expo Doctor passes 19/20 with nine patch-version mismatches. The UI-only redesign does not upgrade these dependencies. Native Jest success does not prove installed-device visual readiness.
+- The Restore the Signal branch aligns Expo SDK 57 patch versions and React Native 0.86.3. Expo Doctor passes 20/20 and a release APK builds locally. Native Jest success does not prove installed-device visual readiness.
 
 - The local iPad simulator build reaches native compilation but Xcode 26.3 fails inside ExpoModulesJSI. Expo SDK 57 documents Xcode 26.4+ as its supported baseline; rerun the build after upgrading Xcode rather than patching generated dependency source.
 - Native WebView Mermaid currently falls back to source unless a bundled Mermaid runtime string is supplied to the shared adapter.
@@ -194,3 +194,11 @@ The root layout wraps the existing Stack with safe-area-aware `NativeNavigation`
 ## Thread Handoff Prompt
 
 `Read docs/codex-context.md, docs/engineering-overview.md, and docs/features/native-mobile-deployment.md first. Compare the native contract against apps/mobile, packages/core, packages/ui, package.json workspace scripts, and .env.example. Preserve Next/Vercel web behavior while adding native changes, keep Supabase optional for anonymous browsing, and update tests/docs with any behavior changes.`
+
+## Restore the Signal runtime and packaging
+
+The native home is the campaign map; discovery remains at `/learn`. `packages/ui/src/game/` renders ordinary native controls around Skia actors and district layers. CSS geometry and bundled SQLite execute in local WebViews with no remote service. See [Restore the Signal](restore-the-signal.md) for the chapter, pause, awards, assistance, and offline contract.
+
+`plugins/with-shared-bundle-inputs.cjs` extends the generated Android bundle task’s inputs to include shared package source and game assets. Metro watch folders alone do not invalidate Gradle’s cached production bundle. Keep this hook when updating Expo’s generated projects. The local release check uses `app:assembleRelease` with a 6 GB Gradle heap, 2 GB metaspace, and four workers; the generated default 512 MB metaspace was insufficient for the added renderers on this host.
+
+The generated `game-chapter.regression.yaml` exercises all 36 scenarios, real editors, touch connections, persistence, live background/resume, and Android airplane mode. `setAirplaneMode` has no effect on iOS Simulator, so offline iOS verification also requires a network-disabled test host/device. The first two scenarios have a short smoke flow. Keep failed Maestro reports and recordings. Current installed-device evidence and outstanding gates are recorded in the game feature doc.

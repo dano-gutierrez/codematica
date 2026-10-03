@@ -4,6 +4,7 @@ import Link from "next/link";
 import { X } from "lucide-react";
 import { useEffect, useState } from "react";
 import { anonymousProgressChangedEvent, getAnonymousProgressItems } from "@/lib/progress/anonymous";
+import {GAME_STORAGE_KEY,gameProgressSchema,gameTotals} from "@codematica/core/game";
 import { syncBufferedAnonymousProgress } from "@/lib/progress/client";
 
 type SaveProgressPromptProps = {
@@ -18,7 +19,8 @@ export function SaveProgressPrompt({ isAuthConfigured }: SaveProgressPromptProps
 
   useEffect(() => {
     function refreshAnonymousProgress() {
-      setHasAnonymousProgress(getAnonymousProgressItems().length > 0);
+      let gameStars=0;try{const parsed=gameProgressSchema.safeParse(JSON.parse(localStorage.getItem(GAME_STORAGE_KEY)??"null"));if(parsed.success&&!localStorage.getItem(`${GAME_STORAGE_KEY}:claimed`))gameStars=gameTotals(parsed.data).stars;}catch { /* Unreadable local data does not trigger the prompt. */ }
+      setHasAnonymousProgress(getAnonymousProgressItems().length > 0 || gameStars>0);
     }
 
     queueMicrotask(refreshAnonymousProgress);

@@ -1,7 +1,7 @@
 import { expect, test } from "@playwright/test";
 
 test("@regression home discovery exposes every section and searches across content types", async ({ page }) => {
-  await page.goto("/");
+  await page.goto("/learn");
 
   await expect(page.getByTestId("discovery-home")).toBeVisible();
   for (const section of ["paths", "lessons", "interviews", "practice", "languages"]) {

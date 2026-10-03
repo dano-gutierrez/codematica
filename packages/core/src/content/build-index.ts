@@ -1,3 +1,4 @@
+import { gameCampaignSchema } from "../game/schema";
 import crypto from "node:crypto";
 import { promises as fs } from "node:fs";
 import path from "node:path";
@@ -863,8 +864,17 @@ export async function buildContentIndex({ rootDir }: BuildContentIndexOptions): 
     sortedInterviewCollections,
   );
 
+  const gameDir = path.join(rootDir, "content", "game");
+  const gameFiles = await fs.readdir(gameDir).catch((error: NodeJS.ErrnoException) => { if (error.code === "ENOENT") return []; throw error; });
+  const gameCampaigns = await Promise.all(gameFiles.filter(name => name.endsWith(".json")).sort().map(async name => gameCampaignSchema.parse((await readJson(path.join(gameDir, name))).value)));
+  if (new Set(gameCampaigns.map(c => c.id)).size !== gameCampaigns.length) throw new Error("Duplicate game campaign");
+  for (const c of gameCampaigns) for (const level of c.levels) {
+    for (const slug of level.lessonSlugs) if (!sortedDocuments.some(d => d.slug === slug && d.status === "published")) throw new Error(`Missing game lesson: ${slug}`);
+    if (level.pathSlug && !sortedLearningPaths.some(p => p.slug === level.pathSlug)) throw new Error(`Missing game path: ${level.pathSlug}`);
+  }
   return {
-    schemaVersion: 10,
+    schemaVersion: 11,
+    gameCampaigns,
     sources: sortedSources,
     documents: sortedDocuments,
     diagrams: sortedDiagrams,

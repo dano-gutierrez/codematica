@@ -1,5 +1,4319 @@
 {
-  "schemaVersion": 10,
+  "schemaVersion": 11,
+  "gameCampaigns": [
+    {
+      "id": "restore-the-signal",
+      "title": "Restore the Signal",
+      "summary": "A city gone quiet. A little robot with a big repair list. Bring the signal back, one working system at a time.",
+      "version": 1,
+      "levels": [
+        {
+          "id": "courtyard-defense",
+          "order": 1,
+          "title": "Courtyard Defense",
+          "district": "garden",
+          "kind": "grid",
+          "mode": "untimed",
+          "story": "The courtyard lanterns have gone dark. Patch can power one net: guide it away from the survivors and into the zombie lane.",
+          "sceneRef": "garden",
+          "restoration": {
+            "landmark": false,
+            "detail": "lanterns"
+          },
+          "lessonSlugs": [
+            "game/css-grid-defense"
+          ],
+          "scenarios": [
+            {
+              "id": "main",
+              "title": "First signal",
+              "objective": "Cover row 1, columns 2–2 with the net. Keep survivor tiles clear.",
+              "explanation": "The browser places the net between grid lines. A span counts tracks, and fr units divide available space proportionally.",
+              "hints": [
+                "Grid lines begin at 1. The ending line is excluded.",
+                "The net starts at column line 2 and row line 1.",
+                "grid-column: 2 / span 1;\ngrid-row: 1 / span 1;"
+              ],
+              "seed": 100,
+              "kind": "grid",
+              "columns": 6,
+              "rows": 3,
+              "widths": [
+                300
+              ],
+              "target": {
+                "column": 2,
+                "row": 1,
+                "columnSpan": 1,
+                "rowSpan": 1
+              },
+              "forbidden": [
+                0,
+                17
+              ],
+              "starter": "grid-column: 1 / 2;\ngrid-row: 1 / 2;",
+              "solution": "grid-column: 2 / span 1;\ngrid-row: 1 / span 1;",
+              "template": "repeat(6, 1fr)"
+            },
+            {
+              "id": "mastery-1",
+              "title": "New conditions",
+              "objective": "Cover row 1, columns 3–3 with the net. Keep survivor tiles clear.",
+              "explanation": "The browser places the net between grid lines. A span counts tracks, and fr units divide available space proportionally.",
+              "hints": [
+                "Grid lines begin at 1. The ending line is excluded.",
+                "The net starts at column line 3 and row line 1.",
+                "grid-column: 3 / span 1;\ngrid-row: 1 / span 1;"
+              ],
+              "seed": 101,
+              "kind": "grid",
+              "columns": 6,
+              "rows": 3,
+              "widths": [
+                300
+              ],
+              "target": {
+                "column": 3,
+                "row": 1,
+                "columnSpan": 1,
+                "rowSpan": 1
+              },
+              "forbidden": [
+                0,
+                17
+              ],
+              "starter": "grid-column: 1 / 2;\ngrid-row: 1 / 2;",
+              "solution": "grid-column: 3 / span 1;\ngrid-row: 1 / span 1;",
+              "template": "repeat(6, 1fr)"
+            },
+            {
+              "id": "mastery-2",
+              "title": "Mastery challenge",
+              "objective": "Cover row 1, columns 4–4 with the net. Keep survivor tiles clear.",
+              "explanation": "The browser places the net between grid lines. A span counts tracks, and fr units divide available space proportionally.",
+              "hints": [
+                "Grid lines begin at 1. The ending line is excluded.",
+                "The net starts at column line 4 and row line 1.",
+                "grid-column: 4 / span 1;\ngrid-row: 1 / span 1;"
+              ],
+              "seed": 102,
+              "kind": "grid",
+              "columns": 6,
+              "rows": 3,
+              "widths": [
+                300
+              ],
+              "target": {
+                "column": 4,
+                "row": 1,
+                "columnSpan": 1,
+                "rowSpan": 1
+              },
+              "forbidden": [
+                0,
+                17
+              ],
+              "starter": "grid-column: 1 / 2;\ngrid-row: 1 / 2;",
+              "solution": "grid-column: 4 / span 1;\ngrid-row: 1 / span 1;",
+              "template": "repeat(6, 1fr)"
+            }
+          ]
+        },
+        {
+          "id": "target-lock",
+          "order": 2,
+          "title": "Target Lock",
+          "district": "garden",
+          "kind": "sql",
+          "mode": "untimed",
+          "story": "The outpost scanner sees everyone, including harmless wanderers. Tell it exactly which zombies the net should catch.",
+          "sceneRef": "garden",
+          "restoration": {
+            "landmark": false,
+            "detail": "targeting beacons"
+          },
+          "lessonSlugs": [
+            "game/sql-targeting"
+          ],
+          "scenarios": [
+            {
+              "id": "main",
+              "title": "First signal",
+              "objective": "Select every runner zombie. Return an id column; the nets fire only at returned IDs.",
+              "explanation": "SQL selects rows by their values. Equivalent SELECT queries are accepted; the unique id set determines which zombies are targeted.",
+              "hints": [
+                "Inspect both tables and identify the values the objective describes.",
+                "Use WHERE to filter rows.",
+                "SELECT id FROM zombies WHERE kind = 'runner'"
+              ],
+              "seed": 200,
+              "kind": "sql",
+              "zombies": [
+                {
+                  "id": 1,
+                  "kind": "runner",
+                  "zone": "canal",
+                  "threat": 1,
+                  "shield": 1
+                },
+                {
+                  "id": 2,
+                  "kind": "armored",
+                  "zone": "tower",
+                  "threat": 2,
+                  "shield": 0
+                },
+                {
+                  "id": 3,
+                  "kind": "shambler",
+                  "zone": "garden",
+                  "threat": 3,
+                  "shield": null
+                },
+                {
+                  "id": 4,
+                  "kind": "runner",
+                  "zone": "canal",
+                  "threat": 4,
+                  "shield": 0
+                },
+                {
+                  "id": 5,
+                  "kind": "armored",
+                  "zone": "tower",
+                  "threat": 0,
+                  "shield": 1
+                },
+                {
+                  "id": 6,
+                  "kind": "shambler",
+                  "zone": "garden",
+                  "threat": 1,
+                  "shield": null
+                },
+                {
+                  "id": 7,
+                  "kind": "runner",
+                  "zone": "canal",
+                  "threat": 2,
+                  "shield": 1
+                },
+                {
+                  "id": 8,
+                  "kind": "armored",
+                  "zone": "tower",
+                  "threat": 3,
+                  "shield": 0
+                }
+              ],
+              "zones": [
+                {
+                  "name": "garden",
+                  "evacuated": 0
+                },
+                {
+                  "name": "canal",
+                  "evacuated": 1
+                },
+                {
+                  "name": "tower",
+                  "evacuated": 1
+                }
+              ],
+              "expectedIds": [
+                1,
+                4,
+                7
+              ],
+              "starter": "SELECT id FROM zombies;",
+              "solution": "SELECT id FROM zombies WHERE kind = 'runner'"
+            },
+            {
+              "id": "mastery-1",
+              "title": "Protect the canal",
+              "objective": "Select all zombies in the canal zone, regardless of kind. Return an id column.",
+              "explanation": "SQL selects rows by their values. Equivalent SELECT queries are accepted; the unique id set determines which zombies are targeted.",
+              "hints": [
+                "Read the zone column before choosing a predicate.",
+                "Use WHERE zone = 'canal'.",
+                "SELECT id FROM zombies WHERE zone = 'canal';"
+              ],
+              "seed": 201,
+              "kind": "sql",
+              "zombies": [
+                {
+                  "id": 11,
+                  "kind": "runner",
+                  "zone": "canal",
+                  "threat": 2,
+                  "shield": 1
+                },
+                {
+                  "id": 12,
+                  "kind": "armored",
+                  "zone": "tower",
+                  "threat": 3,
+                  "shield": 0
+                },
+                {
+                  "id": 13,
+                  "kind": "shambler",
+                  "zone": "garden",
+                  "threat": 4,
+                  "shield": null
+                },
+                {
+                  "id": 14,
+                  "kind": "runner",
+                  "zone": "canal",
+                  "threat": 0,
+                  "shield": 0
+                },
+                {
+                  "id": 15,
+                  "kind": "armored",
+                  "zone": "tower",
+                  "threat": 1,
+                  "shield": 1
+                },
+                {
+                  "id": 16,
+                  "kind": "shambler",
+                  "zone": "garden",
+                  "threat": 2,
+                  "shield": null
+                },
+                {
+                  "id": 17,
+                  "kind": "runner",
+                  "zone": "canal",
+                  "threat": 3,
+                  "shield": 1
+                },
+                {
+                  "id": 18,
+                  "kind": "armored",
+                  "zone": "tower",
+                  "threat": 4,
+                  "shield": 0
+                }
+              ],
+              "zones": [
+                {
+                  "name": "garden",
+                  "evacuated": 1
+                },
+                {
+                  "name": "canal",
+                  "evacuated": 0
+                },
+                {
+                  "name": "tower",
+                  "evacuated": 1
+                }
+              ],
+              "expectedIds": [
+                11,
+                14,
+                17
+              ],
+              "starter": "SELECT id FROM zombies;",
+              "solution": "SELECT id FROM zombies WHERE zone = 'canal';"
+            },
+            {
+              "id": "mastery-2",
+              "title": "Prioritize the threat",
+              "objective": "Select every zombie with a threat score of at least 3. Return an id column.",
+              "explanation": "SQL selects rows by their values. Equivalent SELECT queries are accepted; the unique id set determines which zombies are targeted.",
+              "hints": [
+                "The comparison must include the threshold itself.",
+                "Use >= rather than >.",
+                "SELECT id FROM zombies WHERE threat >= 3;"
+              ],
+              "seed": 202,
+              "kind": "sql",
+              "zombies": [
+                {
+                  "id": 21,
+                  "kind": "runner",
+                  "zone": "canal",
+                  "threat": 3,
+                  "shield": 1
+                },
+                {
+                  "id": 22,
+                  "kind": "armored",
+                  "zone": "tower",
+                  "threat": 4,
+                  "shield": 0
+                },
+                {
+                  "id": 23,
+                  "kind": "shambler",
+                  "zone": "garden",
+                  "threat": 0,
+                  "shield": null
+                },
+                {
+                  "id": 24,
+                  "kind": "runner",
+                  "zone": "canal",
+                  "threat": 1,
+                  "shield": 0
+                },
+                {
+                  "id": 25,
+                  "kind": "armored",
+                  "zone": "tower",
+                  "threat": 2,
+                  "shield": 1
+                },
+                {
+                  "id": 26,
+                  "kind": "shambler",
+                  "zone": "garden",
+                  "threat": 3,
+                  "shield": null
+                },
+                {
+                  "id": 27,
+                  "kind": "runner",
+                  "zone": "canal",
+                  "threat": 4,
+                  "shield": 1
+                },
+                {
+                  "id": 28,
+                  "kind": "armored",
+                  "zone": "tower",
+                  "threat": 0,
+                  "shield": 0
+                }
+              ],
+              "zones": [
+                {
+                  "name": "garden",
+                  "evacuated": 1
+                },
+                {
+                  "name": "canal",
+                  "evacuated": 1
+                },
+                {
+                  "name": "tower",
+                  "evacuated": 0
+                }
+              ],
+              "expectedIds": [
+                21,
+                22,
+                26,
+                27
+              ],
+              "starter": "SELECT id FROM zombies;",
+              "solution": "SELECT id FROM zombies WHERE threat >= 3;"
+            }
+          ]
+        },
+        {
+          "id": "open-the-gate",
+          "order": 3,
+          "title": "Open the Gate",
+          "district": "garden",
+          "kind": "pipes",
+          "mode": "untimed",
+          "story": "The garden gate asks for an access code but never hears back. Repair both halves of its request journey.",
+          "sceneRef": "garden",
+          "restoration": {
+            "landmark": false,
+            "detail": "gate motor"
+          },
+          "lessonSlugs": [
+            "game/request-flow"
+          ],
+          "scenarios": [
+            {
+              "id": "main",
+              "title": "First signal",
+              "objective": "Connect the complete flow shown by the port labels.",
+              "explanation": "Every lookup needs a return path. A one-way audit sink cannot answer a request.",
+              "hints": [
+                "Select an output port, then a matching input. Requests and responses are different signals.",
+                "Every required event needs its own path. Cache writes need invalidation; render events must settle.",
+                "gate.send → service.in; service.read → store.in; store.out → service.data; service.out → gate.receive"
+              ],
+              "seed": 300,
+              "kind": "pipes",
+              "pieces": [
+                {
+                  "id": "gate",
+                  "label": "Gate",
+                  "ports": [
+                    {
+                      "id": "gate.send",
+                      "label": "Send request",
+                      "direction": "out",
+                      "signal": "request"
+                    },
+                    {
+                      "id": "gate.receive",
+                      "label": "Receive result",
+                      "direction": "in",
+                      "signal": "response"
+                    }
+                  ]
+                },
+                {
+                  "id": "service",
+                  "label": "Gate service",
+                  "ports": [
+                    {
+                      "id": "service.in",
+                      "label": "Request",
+                      "direction": "in",
+                      "signal": "request"
+                    },
+                    {
+                      "id": "service.read",
+                      "label": "Read permit",
+                      "direction": "out",
+                      "signal": "request"
+                    },
+                    {
+                      "id": "service.data",
+                      "label": "Permit result",
+                      "direction": "in",
+                      "signal": "response"
+                    },
+                    {
+                      "id": "service.out",
+                      "label": "Reply",
+                      "direction": "out",
+                      "signal": "response"
+                    }
+                  ]
+                },
+                {
+                  "id": "store",
+                  "label": "Permit store",
+                  "ports": [
+                    {
+                      "id": "store.in",
+                      "label": "Lookup",
+                      "direction": "in",
+                      "signal": "request"
+                    },
+                    {
+                      "id": "store.out",
+                      "label": "Result",
+                      "direction": "out",
+                      "signal": "response"
+                    }
+                  ]
+                }
+              ],
+              "required": [
+                {
+                  "from": "gate.send",
+                  "to": "service.in"
+                },
+                {
+                  "from": "service.read",
+                  "to": "store.in"
+                },
+                {
+                  "from": "store.out",
+                  "to": "service.data"
+                },
+                {
+                  "from": "service.out",
+                  "to": "gate.receive"
+                }
+              ],
+              "forbidden": [],
+              "solution": [
+                {
+                  "from": "gate.send",
+                  "to": "service.in"
+                },
+                {
+                  "from": "service.read",
+                  "to": "store.in"
+                },
+                {
+                  "from": "store.out",
+                  "to": "service.data"
+                },
+                {
+                  "from": "service.out",
+                  "to": "gate.receive"
+                }
+              ],
+              "events": [
+                {
+                  "label": "Request reaches storage and the result returns to the gate",
+                  "route": [
+                    "gate.send",
+                    "service.in",
+                    "service.read",
+                    "store.in",
+                    "store.out",
+                    "service.data",
+                    "service.out",
+                    "gate.receive"
+                  ]
+                }
+              ]
+            },
+            {
+              "id": "mastery-1",
+              "title": "A proxy in the middle",
+              "objective": "Route the gate request through its proxy and return the storage response all the way to the gate.",
+              "explanation": "Every lookup needs a return path. A one-way audit sink cannot answer a request.",
+              "hints": [
+                "Select an output port, then a matching input. Requests and responses are different signals.",
+                "Every required event needs its own path. Cache writes need invalidation; render events must settle.",
+                "gate.send → proxy.in; proxy.send → service.in; service.read → store.in; store.out → service.data; service.out → proxy.data; proxy.return → gate.receive"
+              ],
+              "seed": 301,
+              "kind": "pipes",
+              "pieces": [
+                {
+                  "id": "gate",
+                  "label": "Gate",
+                  "ports": [
+                    {
+                      "id": "gate.send",
+                      "label": "Send request",
+                      "direction": "out",
+                      "signal": "request"
+                    },
+                    {
+                      "id": "gate.receive",
+                      "label": "Receive result",
+                      "direction": "in",
+                      "signal": "response"
+                    }
+                  ]
+                },
+                {
+                  "id": "service",
+                  "label": "Gate service",
+                  "ports": [
+                    {
+                      "id": "service.in",
+                      "label": "Request",
+                      "direction": "in",
+                      "signal": "request"
+                    },
+                    {
+                      "id": "service.read",
+                      "label": "Read permit",
+                      "direction": "out",
+                      "signal": "request"
+                    },
+                    {
+                      "id": "service.data",
+                      "label": "Permit result",
+                      "direction": "in",
+                      "signal": "response"
+                    },
+                    {
+                      "id": "service.out",
+                      "label": "Reply",
+                      "direction": "out",
+                      "signal": "response"
+                    }
+                  ]
+                },
+                {
+                  "id": "store",
+                  "label": "Replica store",
+                  "ports": [
+                    {
+                      "id": "store.in",
+                      "label": "Lookup",
+                      "direction": "in",
+                      "signal": "request"
+                    },
+                    {
+                      "id": "store.out",
+                      "label": "Result",
+                      "direction": "out",
+                      "signal": "response"
+                    }
+                  ]
+                },
+                {
+                  "id": "proxy",
+                  "label": "Gate proxy",
+                  "ports": [
+                    {
+                      "id": "proxy.in",
+                      "label": "Incoming request",
+                      "direction": "in",
+                      "signal": "request"
+                    },
+                    {
+                      "id": "proxy.send",
+                      "label": "Forward to service",
+                      "direction": "out",
+                      "signal": "request"
+                    },
+                    {
+                      "id": "proxy.data",
+                      "label": "Service response",
+                      "direction": "in",
+                      "signal": "response"
+                    },
+                    {
+                      "id": "proxy.return",
+                      "label": "Return to gate",
+                      "direction": "out",
+                      "signal": "response"
+                    }
+                  ]
+                }
+              ],
+              "required": [
+                {
+                  "from": "gate.send",
+                  "to": "proxy.in"
+                },
+                {
+                  "from": "proxy.send",
+                  "to": "service.in"
+                },
+                {
+                  "from": "service.read",
+                  "to": "store.in"
+                },
+                {
+                  "from": "store.out",
+                  "to": "service.data"
+                },
+                {
+                  "from": "service.out",
+                  "to": "proxy.data"
+                },
+                {
+                  "from": "proxy.return",
+                  "to": "gate.receive"
+                }
+              ],
+              "forbidden": [],
+              "solution": [
+                {
+                  "from": "gate.send",
+                  "to": "proxy.in"
+                },
+                {
+                  "from": "proxy.send",
+                  "to": "service.in"
+                },
+                {
+                  "from": "service.read",
+                  "to": "store.in"
+                },
+                {
+                  "from": "store.out",
+                  "to": "service.data"
+                },
+                {
+                  "from": "service.out",
+                  "to": "proxy.data"
+                },
+                {
+                  "from": "proxy.return",
+                  "to": "gate.receive"
+                }
+              ],
+              "events": [
+                {
+                  "label": "Request and response through the gate proxy",
+                  "route": [
+                    "gate.send",
+                    "proxy.in",
+                    "proxy.send",
+                    "service.in",
+                    "service.read",
+                    "store.in",
+                    "store.out",
+                    "service.data",
+                    "service.out",
+                    "proxy.data",
+                    "proxy.return",
+                    "gate.receive"
+                  ]
+                }
+              ]
+            },
+            {
+              "id": "mastery-2",
+              "title": "A receipt for every gate opening",
+              "objective": "Route the gate request through its proxy and return the storage response all the way to the gate. Deliver a separate receipt to the audit log; never route the original request there.",
+              "explanation": "Every lookup needs a return path. A one-way audit sink cannot answer a request.",
+              "hints": [
+                "Select an output port, then a matching input. Requests and responses are different signals.",
+                "Every required event needs its own path. Cache writes need invalidation; render events must settle.",
+                "gate.send → proxy.in; proxy.send → service.in; service.read → store.in; store.out → service.data; service.out → proxy.data; proxy.return → gate.receive; proxy.receipt → receipt.in"
+              ],
+              "seed": 302,
+              "kind": "pipes",
+              "pieces": [
+                {
+                  "id": "gate",
+                  "label": "Gate",
+                  "ports": [
+                    {
+                      "id": "gate.send",
+                      "label": "Send request",
+                      "direction": "out",
+                      "signal": "request"
+                    },
+                    {
+                      "id": "gate.receive",
+                      "label": "Receive result",
+                      "direction": "in",
+                      "signal": "response"
+                    }
+                  ]
+                },
+                {
+                  "id": "service",
+                  "label": "Gate service",
+                  "ports": [
+                    {
+                      "id": "service.in",
+                      "label": "Request",
+                      "direction": "in",
+                      "signal": "request"
+                    },
+                    {
+                      "id": "service.read",
+                      "label": "Read permit",
+                      "direction": "out",
+                      "signal": "request"
+                    },
+                    {
+                      "id": "service.data",
+                      "label": "Permit result",
+                      "direction": "in",
+                      "signal": "response"
+                    },
+                    {
+                      "id": "service.out",
+                      "label": "Reply",
+                      "direction": "out",
+                      "signal": "response"
+                    }
+                  ]
+                },
+                {
+                  "id": "store",
+                  "label": "Permit store",
+                  "ports": [
+                    {
+                      "id": "store.in",
+                      "label": "Lookup",
+                      "direction": "in",
+                      "signal": "request"
+                    },
+                    {
+                      "id": "store.out",
+                      "label": "Result",
+                      "direction": "out",
+                      "signal": "response"
+                    }
+                  ]
+                },
+                {
+                  "id": "audit",
+                  "label": "Audit sink",
+                  "ports": [
+                    {
+                      "id": "audit.in",
+                      "label": "Record only; no reply",
+                      "direction": "in",
+                      "signal": "request"
+                    }
+                  ]
+                },
+                {
+                  "id": "proxy",
+                  "label": "Gate proxy",
+                  "ports": [
+                    {
+                      "id": "proxy.in",
+                      "label": "Incoming request",
+                      "direction": "in",
+                      "signal": "request"
+                    },
+                    {
+                      "id": "proxy.send",
+                      "label": "Forward to service",
+                      "direction": "out",
+                      "signal": "request"
+                    },
+                    {
+                      "id": "proxy.data",
+                      "label": "Service response",
+                      "direction": "in",
+                      "signal": "response"
+                    },
+                    {
+                      "id": "proxy.return",
+                      "label": "Return to gate",
+                      "direction": "out",
+                      "signal": "response"
+                    },
+                    {
+                      "id": "proxy.receipt",
+                      "label": "Completed request receipt",
+                      "direction": "out",
+                      "signal": "response"
+                    }
+                  ]
+                },
+                {
+                  "id": "receipt",
+                  "label": "Receipt log",
+                  "ports": [
+                    {
+                      "id": "receipt.in",
+                      "label": "Record completed response",
+                      "direction": "in",
+                      "signal": "response"
+                    }
+                  ]
+                }
+              ],
+              "required": [
+                {
+                  "from": "gate.send",
+                  "to": "proxy.in"
+                },
+                {
+                  "from": "proxy.send",
+                  "to": "service.in"
+                },
+                {
+                  "from": "service.read",
+                  "to": "store.in"
+                },
+                {
+                  "from": "store.out",
+                  "to": "service.data"
+                },
+                {
+                  "from": "service.out",
+                  "to": "proxy.data"
+                },
+                {
+                  "from": "proxy.return",
+                  "to": "gate.receive"
+                },
+                {
+                  "from": "proxy.receipt",
+                  "to": "receipt.in"
+                }
+              ],
+              "forbidden": [],
+              "solution": [
+                {
+                  "from": "gate.send",
+                  "to": "proxy.in"
+                },
+                {
+                  "from": "proxy.send",
+                  "to": "service.in"
+                },
+                {
+                  "from": "service.read",
+                  "to": "store.in"
+                },
+                {
+                  "from": "store.out",
+                  "to": "service.data"
+                },
+                {
+                  "from": "service.out",
+                  "to": "proxy.data"
+                },
+                {
+                  "from": "proxy.return",
+                  "to": "gate.receive"
+                },
+                {
+                  "from": "proxy.receipt",
+                  "to": "receipt.in"
+                }
+              ],
+              "events": [
+                {
+                  "label": "Request and response through the gate proxy",
+                  "route": [
+                    "gate.send",
+                    "proxy.in",
+                    "proxy.send",
+                    "service.in",
+                    "service.read",
+                    "store.in",
+                    "store.out",
+                    "service.data",
+                    "service.out",
+                    "proxy.data",
+                    "proxy.return",
+                    "gate.receive"
+                  ]
+                },
+                {
+                  "label": "Completed request produces one audit receipt",
+                  "route": [
+                    "proxy.receipt",
+                    "receipt.in"
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "first-outpost",
+          "order": 4,
+          "title": "First Outpost",
+          "district": "garden",
+          "kind": "system",
+          "mode": "untimed",
+          "story": "A hundred survivors share a small repair outpost. Build enough infrastructure for their actual traffic, within the outpost’s budget.",
+          "sceneRef": "garden",
+          "restoration": {
+            "landmark": true,
+            "detail": "outpost workshop"
+          },
+          "lessonSlugs": [
+            "game/load-balancing"
+          ],
+          "scenarios": [
+            {
+              "id": "main",
+              "title": "Keep it small",
+              "objective": "Handle 5 requests/sec within 20 cost units and 80 ms modeled latency. There is no service-redundancy requirement. Failure check: none.",
+              "explanation": "Capacity follows request rate, not population. A load balancer distributes traffic to healthy APIs. Cache hits reduce database reads, but API capacity and write freshness still matter.",
+              "hints": [
+                "Place clients, APIs and a database. Connect the request path. All numbers are assumptions for this scenario.",
+                "A single API is sufficient here; extra infrastructure costs budget.",
+                "Use client → API 1 → database."
+              ],
+              "seed": 400,
+              "kind": "system",
+              "population": 100,
+              "rps": 5,
+              "readRatio": 0.8,
+              "hitRatio": 0.3,
+              "maxStale": 0,
+              "maxLatency": 80,
+              "budget": 20,
+              "requiredAvailability": false,
+              "components": [
+                {
+                  "id": "client",
+                  "label": "Defense clients",
+                  "kind": "client",
+                  "capacity": 100000,
+                  "latency": 0,
+                  "cost": 0
+                },
+                {
+                  "id": "database",
+                  "label": "Database",
+                  "kind": "database",
+                  "capacity": 100,
+                  "latency": 18,
+                  "cost": 10
+                },
+                {
+                  "id": "api-1",
+                  "label": "API 1",
+                  "kind": "api",
+                  "capacity": 40,
+                  "latency": 12,
+                  "cost": 8
+                },
+                {
+                  "id": "api-2",
+                  "label": "API 2",
+                  "kind": "api",
+                  "capacity": 40,
+                  "latency": 12,
+                  "cost": 8
+                },
+                {
+                  "id": "api-3",
+                  "label": "API 3",
+                  "kind": "api",
+                  "capacity": 40,
+                  "latency": 12,
+                  "cost": 8
+                },
+                {
+                  "id": "proxy",
+                  "label": "Load balancer",
+                  "kind": "proxy",
+                  "capacity": 100000,
+                  "latency": 3,
+                  "cost": 6
+                },
+                {
+                  "id": "cache",
+                  "label": "Shared data cache",
+                  "kind": "cache",
+                  "capacity": 100000,
+                  "latency": 2,
+                  "cost": 5
+                }
+              ],
+              "solution": {
+                "nodes": [
+                  "client",
+                  "database",
+                  "api-1"
+                ],
+                "edges": [
+                  {
+                    "from": "client",
+                    "to": "api-1"
+                  },
+                  {
+                    "from": "api-1",
+                    "to": "database"
+                  }
+                ],
+                "invalidate": false
+              },
+              "waves": [
+                {
+                  "seconds": 8,
+                  "rps": 3,
+                  "failed": []
+                },
+                {
+                  "seconds": 8,
+                  "rps": 5,
+                  "failed": []
+                },
+                {
+                  "seconds": 8,
+                  "rps": 5,
+                  "failed": []
+                }
+              ]
+            },
+            {
+              "id": "mastery-1",
+              "title": "Even small outposts need uptime",
+              "objective": "Handle 15 requests/sec within 32 cost units and 80 ms modeled latency. Keep redundant APIs and survive the listed failures. Failure check: api-1.",
+              "explanation": "Capacity follows request rate, not population. A load balancer distributes traffic to healthy APIs. Cache hits reduce database reads, but API capacity and write freshness still matter.",
+              "hints": [
+                "Place clients, APIs and a database. Connect the request path. All numbers are assumptions for this scenario.",
+                "The small request rate fits one API, but the outage requires two behind a health-checking balancer.",
+                "One solution: client, database, proxy, api-1, api-2. Connect the balancer to each API and each API to the selected database."
+              ],
+              "seed": 401,
+              "kind": "system",
+              "population": 100,
+              "rps": 15,
+              "readRatio": 0.8,
+              "hitRatio": 0.3,
+              "maxStale": 0,
+              "maxLatency": 80,
+              "budget": 32,
+              "requiredAvailability": true,
+              "components": [
+                {
+                  "id": "client",
+                  "label": "Defense clients",
+                  "kind": "client",
+                  "capacity": 100000,
+                  "latency": 0,
+                  "cost": 0
+                },
+                {
+                  "id": "database",
+                  "label": "Database",
+                  "kind": "database",
+                  "capacity": 100,
+                  "latency": 18,
+                  "cost": 10
+                },
+                {
+                  "id": "api-1",
+                  "label": "API 1",
+                  "kind": "api",
+                  "capacity": 40,
+                  "latency": 12,
+                  "cost": 8
+                },
+                {
+                  "id": "api-2",
+                  "label": "API 2",
+                  "kind": "api",
+                  "capacity": 40,
+                  "latency": 12,
+                  "cost": 8
+                },
+                {
+                  "id": "api-3",
+                  "label": "API 3",
+                  "kind": "api",
+                  "capacity": 40,
+                  "latency": 12,
+                  "cost": 8
+                },
+                {
+                  "id": "proxy",
+                  "label": "Load balancer",
+                  "kind": "proxy",
+                  "capacity": 100000,
+                  "latency": 3,
+                  "cost": 6
+                },
+                {
+                  "id": "cache",
+                  "label": "Shared data cache",
+                  "kind": "cache",
+                  "capacity": 100000,
+                  "latency": 2,
+                  "cost": 5
+                }
+              ],
+              "solution": {
+                "nodes": [
+                  "client",
+                  "database",
+                  "proxy",
+                  "api-1",
+                  "api-2"
+                ],
+                "edges": [
+                  {
+                    "from": "client",
+                    "to": "proxy"
+                  },
+                  {
+                    "from": "proxy",
+                    "to": "api-1"
+                  },
+                  {
+                    "from": "api-1",
+                    "to": "database"
+                  },
+                  {
+                    "from": "proxy",
+                    "to": "api-2"
+                  },
+                  {
+                    "from": "api-2",
+                    "to": "database"
+                  }
+                ],
+                "invalidate": false,
+                "healthChecks": true,
+                "routing": "round-robin"
+              },
+              "waves": [
+                {
+                  "seconds": 8,
+                  "rps": 9,
+                  "failed": []
+                },
+                {
+                  "seconds": 8,
+                  "rps": 15,
+                  "failed": []
+                },
+                {
+                  "seconds": 8,
+                  "rps": 15,
+                  "failed": [
+                    "api-1"
+                  ]
+                }
+              ]
+            },
+            {
+              "id": "mastery-2",
+              "title": "The visiting repair fleet",
+              "objective": "Handle 65 requests/sec within 32 cost units and 80 ms modeled latency. There is no service-redundancy requirement. Failure check: none.",
+              "explanation": "Capacity follows request rate, not population. A load balancer distributes traffic to healthy APIs. Cache hits reduce database reads, but API capacity and write freshness still matter.",
+              "hints": [
+                "Place clients, APIs and a database. Connect the request path. All numbers are assumptions for this scenario.",
+                "One API serves 40/sec. The 65/sec burst needs two, even though the population is still small.",
+                "One solution: client, database, proxy, api-1, api-2. Connect the balancer to each API and each API to the selected database."
+              ],
+              "seed": 402,
+              "kind": "system",
+              "population": 100,
+              "rps": 65,
+              "readRatio": 0.8,
+              "hitRatio": 0.3,
+              "maxStale": 0,
+              "maxLatency": 80,
+              "budget": 32,
+              "requiredAvailability": false,
+              "components": [
+                {
+                  "id": "client",
+                  "label": "Defense clients",
+                  "kind": "client",
+                  "capacity": 100000,
+                  "latency": 0,
+                  "cost": 0
+                },
+                {
+                  "id": "database",
+                  "label": "Database",
+                  "kind": "database",
+                  "capacity": 100,
+                  "latency": 18,
+                  "cost": 10
+                },
+                {
+                  "id": "api-1",
+                  "label": "API 1",
+                  "kind": "api",
+                  "capacity": 40,
+                  "latency": 12,
+                  "cost": 8
+                },
+                {
+                  "id": "api-2",
+                  "label": "API 2",
+                  "kind": "api",
+                  "capacity": 40,
+                  "latency": 12,
+                  "cost": 8
+                },
+                {
+                  "id": "api-3",
+                  "label": "API 3",
+                  "kind": "api",
+                  "capacity": 40,
+                  "latency": 12,
+                  "cost": 8
+                },
+                {
+                  "id": "proxy",
+                  "label": "Load balancer",
+                  "kind": "proxy",
+                  "capacity": 100000,
+                  "latency": 3,
+                  "cost": 6
+                },
+                {
+                  "id": "cache",
+                  "label": "Shared data cache",
+                  "kind": "cache",
+                  "capacity": 100000,
+                  "latency": 2,
+                  "cost": 5
+                }
+              ],
+              "solution": {
+                "nodes": [
+                  "client",
+                  "database",
+                  "proxy",
+                  "api-1",
+                  "api-2"
+                ],
+                "edges": [
+                  {
+                    "from": "client",
+                    "to": "proxy"
+                  },
+                  {
+                    "from": "proxy",
+                    "to": "api-1"
+                  },
+                  {
+                    "from": "api-1",
+                    "to": "database"
+                  },
+                  {
+                    "from": "proxy",
+                    "to": "api-2"
+                  },
+                  {
+                    "from": "api-2",
+                    "to": "database"
+                  }
+                ],
+                "invalidate": false,
+                "healthChecks": true,
+                "routing": "round-robin"
+              },
+              "waves": [
+                {
+                  "seconds": 8,
+                  "rps": 39,
+                  "failed": []
+                },
+                {
+                  "seconds": 8,
+                  "rps": 65,
+                  "failed": []
+                },
+                {
+                  "seconds": 8,
+                  "rps": 65,
+                  "failed": []
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "crossfire",
+          "order": 5,
+          "title": "Crossfire",
+          "district": "canal",
+          "kind": "grid",
+          "mode": "untimed",
+          "story": "Two zombie lanes converge beside the occupied garden. Spread a net across the danger zone while leaving the shelter clear.",
+          "sceneRef": "canal",
+          "restoration": {
+            "landmark": false,
+            "detail": "garden bridge"
+          },
+          "lessonSlugs": [
+            "game/css-grid-defense"
+          ],
+          "scenarios": [
+            {
+              "id": "main",
+              "title": "First signal",
+              "objective": "Cover row 2, columns 2–3 with the net. Keep survivor tiles clear.",
+              "explanation": "The browser places the net between grid lines. A span counts tracks, and fr units divide available space proportionally.",
+              "hints": [
+                "Grid lines begin at 1. The ending line is excluded.",
+                "The net starts at column line 2 and row line 2.",
+                "grid-column: 2 / span 2;\ngrid-row: 2 / span 1;"
+              ],
+              "seed": 500,
+              "kind": "grid",
+              "columns": 6,
+              "rows": 3,
+              "widths": [
+                300
+              ],
+              "target": {
+                "column": 2,
+                "row": 2,
+                "columnSpan": 2,
+                "rowSpan": 1
+              },
+              "forbidden": [
+                0,
+                17
+              ],
+              "starter": "grid-column: 1 / 2;\ngrid-row: 1 / 2;",
+              "solution": "grid-column: 2 / span 2;\ngrid-row: 2 / span 1;",
+              "template": "repeat(6, 1fr)"
+            },
+            {
+              "id": "mastery-1",
+              "title": "New conditions",
+              "objective": "Cover row 2, columns 3–4 with the net. Keep survivor tiles clear.",
+              "explanation": "The browser places the net between grid lines. A span counts tracks, and fr units divide available space proportionally.",
+              "hints": [
+                "Grid lines begin at 1. The ending line is excluded.",
+                "The net starts at column line 3 and row line 2.",
+                "grid-column: 3 / span 2;\ngrid-row: 2 / span 1;"
+              ],
+              "seed": 501,
+              "kind": "grid",
+              "columns": 6,
+              "rows": 3,
+              "widths": [
+                300
+              ],
+              "target": {
+                "column": 3,
+                "row": 2,
+                "columnSpan": 2,
+                "rowSpan": 1
+              },
+              "forbidden": [
+                0,
+                17
+              ],
+              "starter": "grid-column: 1 / 2;\ngrid-row: 1 / 2;",
+              "solution": "grid-column: 3 / span 2;\ngrid-row: 2 / span 1;",
+              "template": "repeat(6, 1fr)"
+            },
+            {
+              "id": "mastery-2",
+              "title": "Mastery challenge",
+              "objective": "Cover row 2, columns 4–5 with the net. Keep survivor tiles clear.",
+              "explanation": "The browser places the net between grid lines. A span counts tracks, and fr units divide available space proportionally.",
+              "hints": [
+                "Grid lines begin at 1. The ending line is excluded.",
+                "The net starts at column line 4 and row line 2.",
+                "grid-column: 4 / span 2;\ngrid-row: 2 / span 1;"
+              ],
+              "seed": 502,
+              "kind": "grid",
+              "columns": 6,
+              "rows": 3,
+              "widths": [
+                300
+              ],
+              "target": {
+                "column": 4,
+                "row": 2,
+                "columnSpan": 2,
+                "rowSpan": 1
+              },
+              "forbidden": [
+                0,
+                17
+              ],
+              "starter": "grid-column: 1 / 2;\ngrid-row: 1 / 2;",
+              "solution": "grid-column: 4 / span 2;\ngrid-row: 2 / span 1;",
+              "template": "repeat(6, 1fr)"
+            }
+          ]
+        },
+        {
+          "id": "threat-scanner",
+          "order": 6,
+          "title": "Threat Scanner",
+          "district": "canal",
+          "kind": "sql",
+          "mode": "untimed",
+          "story": "The scanner has incomplete shield records. Build a predicate that handles unknown values and mixed threats correctly.",
+          "sceneRef": "canal",
+          "restoration": {
+            "landmark": false,
+            "detail": "scanner lights"
+          },
+          "lessonSlugs": [
+            "game/sql-targeting"
+          ],
+          "scenarios": [
+            {
+              "id": "main",
+              "title": "First signal",
+              "objective": "Select zombies with threat at least 3 and an unknown shield.",
+              "explanation": "SQL selects rows by their values. Equivalent SELECT queries are accepted; the unique id set determines which zombies are targeted.",
+              "hints": [
+                "Inspect both tables and identify the values the objective describes.",
+                "Use IS NULL for unknown values. Parenthesize OR groups before combining them with AND.",
+                "SELECT id FROM zombies WHERE threat >= 3 AND shield IS NULL"
+              ],
+              "seed": 600,
+              "kind": "sql",
+              "zombies": [
+                {
+                  "id": 1,
+                  "kind": "runner",
+                  "zone": "canal",
+                  "threat": 1,
+                  "shield": 1
+                },
+                {
+                  "id": 2,
+                  "kind": "armored",
+                  "zone": "tower",
+                  "threat": 2,
+                  "shield": 0
+                },
+                {
+                  "id": 3,
+                  "kind": "shambler",
+                  "zone": "garden",
+                  "threat": 3,
+                  "shield": null
+                },
+                {
+                  "id": 4,
+                  "kind": "runner",
+                  "zone": "canal",
+                  "threat": 4,
+                  "shield": 0
+                },
+                {
+                  "id": 5,
+                  "kind": "armored",
+                  "zone": "tower",
+                  "threat": 0,
+                  "shield": 1
+                },
+                {
+                  "id": 6,
+                  "kind": "shambler",
+                  "zone": "garden",
+                  "threat": 1,
+                  "shield": null
+                },
+                {
+                  "id": 7,
+                  "kind": "runner",
+                  "zone": "canal",
+                  "threat": 2,
+                  "shield": 1
+                },
+                {
+                  "id": 8,
+                  "kind": "armored",
+                  "zone": "tower",
+                  "threat": 3,
+                  "shield": 0
+                }
+              ],
+              "zones": [
+                {
+                  "name": "garden",
+                  "evacuated": 0
+                },
+                {
+                  "name": "canal",
+                  "evacuated": 1
+                },
+                {
+                  "name": "tower",
+                  "evacuated": 1
+                }
+              ],
+              "expectedIds": [
+                3
+              ],
+              "starter": "SELECT id FROM zombies;",
+              "solution": "SELECT id FROM zombies WHERE threat >= 3 AND shield IS NULL"
+            },
+            {
+              "id": "mastery-1",
+              "title": "New conditions",
+              "objective": "Select runners or armored zombies with threat at least 2.",
+              "explanation": "SQL selects rows by their values. Equivalent SELECT queries are accepted; the unique id set determines which zombies are targeted.",
+              "hints": [
+                "Inspect both tables and identify the values the objective describes.",
+                "Use IS NULL for unknown values. Parenthesize OR groups before combining them with AND.",
+                "SELECT id FROM zombies WHERE (kind = 'runner' OR kind = 'armored') AND threat >= 2"
+              ],
+              "seed": 601,
+              "kind": "sql",
+              "zombies": [
+                {
+                  "id": 11,
+                  "kind": "runner",
+                  "zone": "canal",
+                  "threat": 2,
+                  "shield": 1
+                },
+                {
+                  "id": 12,
+                  "kind": "armored",
+                  "zone": "tower",
+                  "threat": 3,
+                  "shield": 0
+                },
+                {
+                  "id": 13,
+                  "kind": "shambler",
+                  "zone": "garden",
+                  "threat": 4,
+                  "shield": null
+                },
+                {
+                  "id": 14,
+                  "kind": "runner",
+                  "zone": "canal",
+                  "threat": 0,
+                  "shield": 0
+                },
+                {
+                  "id": 15,
+                  "kind": "armored",
+                  "zone": "tower",
+                  "threat": 1,
+                  "shield": 1
+                },
+                {
+                  "id": 16,
+                  "kind": "shambler",
+                  "zone": "garden",
+                  "threat": 2,
+                  "shield": null
+                },
+                {
+                  "id": 17,
+                  "kind": "runner",
+                  "zone": "canal",
+                  "threat": 3,
+                  "shield": 1
+                },
+                {
+                  "id": 18,
+                  "kind": "armored",
+                  "zone": "tower",
+                  "threat": 4,
+                  "shield": 0
+                }
+              ],
+              "zones": [
+                {
+                  "name": "garden",
+                  "evacuated": 1
+                },
+                {
+                  "name": "canal",
+                  "evacuated": 0
+                },
+                {
+                  "name": "tower",
+                  "evacuated": 1
+                }
+              ],
+              "expectedIds": [
+                11,
+                12,
+                17,
+                18
+              ],
+              "starter": "SELECT id FROM zombies;",
+              "solution": "SELECT id FROM zombies WHERE (kind = 'runner' OR kind = 'armored') AND threat >= 2"
+            },
+            {
+              "id": "mastery-2",
+              "title": "Mastery challenge",
+              "objective": "Select zombies in the garden or tower with zero or unknown shields.",
+              "explanation": "SQL selects rows by their values. Equivalent SELECT queries are accepted; the unique id set determines which zombies are targeted.",
+              "hints": [
+                "Inspect both tables and identify the values the objective describes.",
+                "Use IS NULL for unknown values. Parenthesize OR groups before combining them with AND.",
+                "SELECT id FROM zombies WHERE zone IN ('garden', 'tower') AND (shield = 0 OR shield IS NULL)"
+              ],
+              "seed": 602,
+              "kind": "sql",
+              "zombies": [
+                {
+                  "id": 21,
+                  "kind": "runner",
+                  "zone": "canal",
+                  "threat": 3,
+                  "shield": 1
+                },
+                {
+                  "id": 22,
+                  "kind": "armored",
+                  "zone": "tower",
+                  "threat": 4,
+                  "shield": 0
+                },
+                {
+                  "id": 23,
+                  "kind": "shambler",
+                  "zone": "garden",
+                  "threat": 0,
+                  "shield": null
+                },
+                {
+                  "id": 24,
+                  "kind": "runner",
+                  "zone": "canal",
+                  "threat": 1,
+                  "shield": 0
+                },
+                {
+                  "id": 25,
+                  "kind": "armored",
+                  "zone": "tower",
+                  "threat": 2,
+                  "shield": 1
+                },
+                {
+                  "id": 26,
+                  "kind": "shambler",
+                  "zone": "garden",
+                  "threat": 3,
+                  "shield": null
+                },
+                {
+                  "id": 27,
+                  "kind": "runner",
+                  "zone": "canal",
+                  "threat": 4,
+                  "shield": 1
+                },
+                {
+                  "id": 28,
+                  "kind": "armored",
+                  "zone": "tower",
+                  "threat": 0,
+                  "shield": 0
+                }
+              ],
+              "zones": [
+                {
+                  "name": "garden",
+                  "evacuated": 1
+                },
+                {
+                  "name": "canal",
+                  "evacuated": 1
+                },
+                {
+                  "name": "tower",
+                  "evacuated": 0
+                }
+              ],
+              "expectedIds": [
+                22,
+                23,
+                26,
+                28
+              ],
+              "starter": "SELECT id FROM zombies;",
+              "solution": "SELECT id FROM zombies WHERE zone IN ('garden', 'tower') AND (shield = 0 OR shield IS NULL)"
+            }
+          ]
+        },
+        {
+          "id": "cache-canal",
+          "order": 7,
+          "title": "Cache Canal",
+          "district": "canal",
+          "kind": "pipes",
+          "mode": "untimed",
+          "story": "Canal sensors keep asking for the same target map. Restore their cache without serving yesterday’s positions.",
+          "sceneRef": "canal",
+          "restoration": {
+            "landmark": false,
+            "detail": "water pumps"
+          },
+          "lessonSlugs": [
+            "game/request-flow",
+            "system-design/cache-invalidation"
+          ],
+          "pathSlug": "system-design-fundamentals",
+          "scenarios": [
+            {
+              "id": "main",
+              "title": "One cold read, one warm read",
+              "objective": "Connect the cold miss path, populate the cache, and return a warm hit without a database read.",
+              "explanation": "Cache-aside reads storage after a miss and fills the cache. Writes must invalidate the affected cached value before later reads can trust it.",
+              "hints": [
+                "Select an output port, then a matching input. Requests and responses are different signals.",
+                "Every required event needs its own path. Cache writes need invalidation; render events must settle.",
+                "api.read → cache.read; cache.hit → api.hit; cache.miss → api.miss; api.load → db.read; db.out → api.data; api.fill → cache.fill"
+              ],
+              "seed": 700,
+              "kind": "pipes",
+              "pieces": [
+                {
+                  "id": "api",
+                  "label": "API",
+                  "ports": [
+                    {
+                      "id": "api.read",
+                      "label": "Read cache",
+                      "direction": "out",
+                      "signal": "request"
+                    },
+                    {
+                      "id": "api.hit",
+                      "label": "Cached value",
+                      "direction": "in",
+                      "signal": "hit"
+                    },
+                    {
+                      "id": "api.miss",
+                      "label": "Cache miss",
+                      "direction": "in",
+                      "signal": "miss"
+                    },
+                    {
+                      "id": "api.load",
+                      "label": "Load data",
+                      "direction": "out",
+                      "signal": "request"
+                    },
+                    {
+                      "id": "api.data",
+                      "label": "Fresh value",
+                      "direction": "in",
+                      "signal": "response"
+                    },
+                    {
+                      "id": "api.fill",
+                      "label": "Populate",
+                      "direction": "out",
+                      "signal": "write"
+                    },
+                    {
+                      "id": "api.invalidate",
+                      "label": "Invalidate after write",
+                      "direction": "out",
+                      "signal": "invalidate"
+                    }
+                  ]
+                },
+                {
+                  "id": "cache",
+                  "label": "Shared cache",
+                  "ports": [
+                    {
+                      "id": "cache.read",
+                      "label": "Lookup",
+                      "direction": "in",
+                      "signal": "request"
+                    },
+                    {
+                      "id": "cache.hit",
+                      "label": "Hit",
+                      "direction": "out",
+                      "signal": "hit"
+                    },
+                    {
+                      "id": "cache.miss",
+                      "label": "Miss",
+                      "direction": "out",
+                      "signal": "miss"
+                    },
+                    {
+                      "id": "cache.fill",
+                      "label": "Store value",
+                      "direction": "in",
+                      "signal": "write"
+                    },
+                    {
+                      "id": "cache.invalidate",
+                      "label": "Evict stale value",
+                      "direction": "in",
+                      "signal": "invalidate"
+                    }
+                  ]
+                },
+                {
+                  "id": "db",
+                  "label": "Database",
+                  "ports": [
+                    {
+                      "id": "db.read",
+                      "label": "Read",
+                      "direction": "in",
+                      "signal": "request"
+                    },
+                    {
+                      "id": "db.out",
+                      "label": "Fresh result",
+                      "direction": "out",
+                      "signal": "response"
+                    }
+                  ]
+                }
+              ],
+              "required": [
+                {
+                  "from": "api.read",
+                  "to": "cache.read"
+                },
+                {
+                  "from": "cache.hit",
+                  "to": "api.hit"
+                },
+                {
+                  "from": "cache.miss",
+                  "to": "api.miss"
+                },
+                {
+                  "from": "api.load",
+                  "to": "db.read"
+                },
+                {
+                  "from": "db.out",
+                  "to": "api.data"
+                },
+                {
+                  "from": "api.fill",
+                  "to": "cache.fill"
+                }
+              ],
+              "forbidden": [],
+              "solution": [
+                {
+                  "from": "api.read",
+                  "to": "cache.read"
+                },
+                {
+                  "from": "cache.hit",
+                  "to": "api.hit"
+                },
+                {
+                  "from": "cache.miss",
+                  "to": "api.miss"
+                },
+                {
+                  "from": "api.load",
+                  "to": "db.read"
+                },
+                {
+                  "from": "db.out",
+                  "to": "api.data"
+                },
+                {
+                  "from": "api.fill",
+                  "to": "cache.fill"
+                }
+              ],
+              "events": [
+                {
+                  "label": "Cold read: miss, load, then populate",
+                  "route": [
+                    "api.read",
+                    "cache.read",
+                    "cache.miss",
+                    "api.miss",
+                    "api.load",
+                    "db.read",
+                    "db.out",
+                    "api.data",
+                    "api.fill",
+                    "cache.fill"
+                  ]
+                },
+                {
+                  "label": "Warm read: return cached data without storage",
+                  "route": [
+                    "api.read",
+                    "cache.read",
+                    "cache.hit",
+                    "api.hit"
+                  ]
+                }
+              ]
+            },
+            {
+              "id": "mastery-1",
+              "title": "A changed target position",
+              "objective": "Connect the cold miss path, populate the cache, and return a warm hit without a database read. A write changes the target position; invalidate its cached value.",
+              "explanation": "Cache-aside reads storage after a miss and fills the cache. Writes must invalidate the affected cached value before later reads can trust it.",
+              "hints": [
+                "Select an output port, then a matching input. Requests and responses are different signals.",
+                "Every required event needs its own path. Cache writes need invalidation; render events must settle.",
+                "api.read → cache.read; cache.hit → api.hit; cache.miss → api.miss; api.load → db.read; db.out → api.data; api.fill → cache.fill; api.invalidate → cache.invalidate"
+              ],
+              "seed": 701,
+              "kind": "pipes",
+              "pieces": [
+                {
+                  "id": "api",
+                  "label": "API",
+                  "ports": [
+                    {
+                      "id": "api.read",
+                      "label": "Read cache",
+                      "direction": "out",
+                      "signal": "request"
+                    },
+                    {
+                      "id": "api.hit",
+                      "label": "Cached value",
+                      "direction": "in",
+                      "signal": "hit"
+                    },
+                    {
+                      "id": "api.miss",
+                      "label": "Cache miss",
+                      "direction": "in",
+                      "signal": "miss"
+                    },
+                    {
+                      "id": "api.load",
+                      "label": "Load data",
+                      "direction": "out",
+                      "signal": "request"
+                    },
+                    {
+                      "id": "api.data",
+                      "label": "Fresh value",
+                      "direction": "in",
+                      "signal": "response"
+                    },
+                    {
+                      "id": "api.fill",
+                      "label": "Populate",
+                      "direction": "out",
+                      "signal": "write"
+                    },
+                    {
+                      "id": "api.invalidate",
+                      "label": "Invalidate after write",
+                      "direction": "out",
+                      "signal": "invalidate"
+                    }
+                  ]
+                },
+                {
+                  "id": "cache",
+                  "label": "Shared cache",
+                  "ports": [
+                    {
+                      "id": "cache.read",
+                      "label": "Lookup",
+                      "direction": "in",
+                      "signal": "request"
+                    },
+                    {
+                      "id": "cache.hit",
+                      "label": "Hit",
+                      "direction": "out",
+                      "signal": "hit"
+                    },
+                    {
+                      "id": "cache.miss",
+                      "label": "Miss",
+                      "direction": "out",
+                      "signal": "miss"
+                    },
+                    {
+                      "id": "cache.fill",
+                      "label": "Store value",
+                      "direction": "in",
+                      "signal": "write"
+                    },
+                    {
+                      "id": "cache.invalidate",
+                      "label": "Evict stale value",
+                      "direction": "in",
+                      "signal": "invalidate"
+                    }
+                  ]
+                },
+                {
+                  "id": "db",
+                  "label": "Database",
+                  "ports": [
+                    {
+                      "id": "db.read",
+                      "label": "Read",
+                      "direction": "in",
+                      "signal": "request"
+                    },
+                    {
+                      "id": "db.out",
+                      "label": "Fresh result",
+                      "direction": "out",
+                      "signal": "response"
+                    }
+                  ]
+                }
+              ],
+              "required": [
+                {
+                  "from": "api.read",
+                  "to": "cache.read"
+                },
+                {
+                  "from": "cache.hit",
+                  "to": "api.hit"
+                },
+                {
+                  "from": "cache.miss",
+                  "to": "api.miss"
+                },
+                {
+                  "from": "api.load",
+                  "to": "db.read"
+                },
+                {
+                  "from": "db.out",
+                  "to": "api.data"
+                },
+                {
+                  "from": "api.fill",
+                  "to": "cache.fill"
+                },
+                {
+                  "from": "api.invalidate",
+                  "to": "cache.invalidate"
+                }
+              ],
+              "forbidden": [],
+              "solution": [
+                {
+                  "from": "api.read",
+                  "to": "cache.read"
+                },
+                {
+                  "from": "cache.hit",
+                  "to": "api.hit"
+                },
+                {
+                  "from": "cache.miss",
+                  "to": "api.miss"
+                },
+                {
+                  "from": "api.load",
+                  "to": "db.read"
+                },
+                {
+                  "from": "db.out",
+                  "to": "api.data"
+                },
+                {
+                  "from": "api.fill",
+                  "to": "cache.fill"
+                },
+                {
+                  "from": "api.invalidate",
+                  "to": "cache.invalidate"
+                }
+              ],
+              "events": [
+                {
+                  "label": "Cold read: miss, load, then populate",
+                  "route": [
+                    "api.read",
+                    "cache.read",
+                    "cache.miss",
+                    "api.miss",
+                    "api.load",
+                    "db.read",
+                    "db.out",
+                    "api.data",
+                    "api.fill",
+                    "cache.fill"
+                  ]
+                },
+                {
+                  "label": "Warm read: return cached data without storage",
+                  "route": [
+                    "api.read",
+                    "cache.read",
+                    "cache.hit",
+                    "api.hit"
+                  ]
+                },
+                {
+                  "label": "After the database write: evict the old target position",
+                  "route": [
+                    "api.invalidate",
+                    "cache.invalidate"
+                  ]
+                }
+              ]
+            },
+            {
+              "id": "mastery-2",
+              "title": "Invalidate the right key",
+              "objective": "Connect the cold miss path, populate the cache, and return a warm hit without a database read. A write changes the target position; invalidate its cached value. Also invalidate zone occupancy after evacuation. Leave the unrelated weather key alone.",
+              "explanation": "Cache-aside reads storage after a miss and fills the cache. Writes must invalidate the affected cached value before later reads can trust it.",
+              "hints": [
+                "Select an output port, then a matching input. Requests and responses are different signals.",
+                "Every required event needs its own path. Cache writes need invalidation; render events must settle.",
+                "api.read → cache.read; cache.hit → api.hit; cache.miss → api.miss; api.load → db.read; db.out → api.data; api.fill → cache.fill; api.invalidate → cache.invalidate; api.invalidate-zone → cache.invalidate-zone"
+              ],
+              "seed": 702,
+              "kind": "pipes",
+              "pieces": [
+                {
+                  "id": "api",
+                  "label": "API",
+                  "ports": [
+                    {
+                      "id": "api.read",
+                      "label": "Read cache",
+                      "direction": "out",
+                      "signal": "request"
+                    },
+                    {
+                      "id": "api.hit",
+                      "label": "Cached value",
+                      "direction": "in",
+                      "signal": "hit"
+                    },
+                    {
+                      "id": "api.miss",
+                      "label": "Cache miss",
+                      "direction": "in",
+                      "signal": "miss"
+                    },
+                    {
+                      "id": "api.load",
+                      "label": "Load data",
+                      "direction": "out",
+                      "signal": "request"
+                    },
+                    {
+                      "id": "api.data",
+                      "label": "Fresh value",
+                      "direction": "in",
+                      "signal": "response"
+                    },
+                    {
+                      "id": "api.fill",
+                      "label": "Populate",
+                      "direction": "out",
+                      "signal": "write"
+                    },
+                    {
+                      "id": "api.invalidate",
+                      "label": "Invalidate after write",
+                      "direction": "out",
+                      "signal": "invalidate"
+                    },
+                    {
+                      "id": "api.invalidate-zone",
+                      "label": "Invalidate zone occupancy",
+                      "direction": "out",
+                      "signal": "invalidate"
+                    }
+                  ]
+                },
+                {
+                  "id": "cache",
+                  "label": "Shared cache",
+                  "ports": [
+                    {
+                      "id": "cache.read",
+                      "label": "Lookup",
+                      "direction": "in",
+                      "signal": "request"
+                    },
+                    {
+                      "id": "cache.hit",
+                      "label": "Hit",
+                      "direction": "out",
+                      "signal": "hit"
+                    },
+                    {
+                      "id": "cache.miss",
+                      "label": "Miss",
+                      "direction": "out",
+                      "signal": "miss"
+                    },
+                    {
+                      "id": "cache.fill",
+                      "label": "Store value",
+                      "direction": "in",
+                      "signal": "write"
+                    },
+                    {
+                      "id": "cache.invalidate",
+                      "label": "Evict stale value",
+                      "direction": "in",
+                      "signal": "invalidate"
+                    },
+                    {
+                      "id": "cache.invalidate-zone",
+                      "label": "Evict zone occupancy",
+                      "direction": "in",
+                      "signal": "invalidate"
+                    }
+                  ]
+                },
+                {
+                  "id": "db",
+                  "label": "Database",
+                  "ports": [
+                    {
+                      "id": "db.read",
+                      "label": "Read",
+                      "direction": "in",
+                      "signal": "request"
+                    },
+                    {
+                      "id": "db.out",
+                      "label": "Fresh result",
+                      "direction": "out",
+                      "signal": "response"
+                    }
+                  ]
+                },
+                {
+                  "id": "weather",
+                  "label": "Weather cache (unchanged key)",
+                  "ports": [
+                    {
+                      "id": "weather.invalidate",
+                      "label": "Evict weather forecast",
+                      "direction": "in",
+                      "signal": "invalidate"
+                    }
+                  ]
+                }
+              ],
+              "required": [
+                {
+                  "from": "api.read",
+                  "to": "cache.read"
+                },
+                {
+                  "from": "cache.hit",
+                  "to": "api.hit"
+                },
+                {
+                  "from": "cache.miss",
+                  "to": "api.miss"
+                },
+                {
+                  "from": "api.load",
+                  "to": "db.read"
+                },
+                {
+                  "from": "db.out",
+                  "to": "api.data"
+                },
+                {
+                  "from": "api.fill",
+                  "to": "cache.fill"
+                },
+                {
+                  "from": "api.invalidate",
+                  "to": "cache.invalidate"
+                },
+                {
+                  "from": "api.invalidate-zone",
+                  "to": "cache.invalidate-zone"
+                }
+              ],
+              "forbidden": [],
+              "solution": [
+                {
+                  "from": "api.read",
+                  "to": "cache.read"
+                },
+                {
+                  "from": "cache.hit",
+                  "to": "api.hit"
+                },
+                {
+                  "from": "cache.miss",
+                  "to": "api.miss"
+                },
+                {
+                  "from": "api.load",
+                  "to": "db.read"
+                },
+                {
+                  "from": "db.out",
+                  "to": "api.data"
+                },
+                {
+                  "from": "api.fill",
+                  "to": "cache.fill"
+                },
+                {
+                  "from": "api.invalidate",
+                  "to": "cache.invalidate"
+                },
+                {
+                  "from": "api.invalidate-zone",
+                  "to": "cache.invalidate-zone"
+                }
+              ],
+              "events": [
+                {
+                  "label": "Cold read: miss, load, then populate",
+                  "route": [
+                    "api.read",
+                    "cache.read",
+                    "cache.miss",
+                    "api.miss",
+                    "api.load",
+                    "db.read",
+                    "db.out",
+                    "api.data",
+                    "api.fill",
+                    "cache.fill"
+                  ]
+                },
+                {
+                  "label": "Warm read: return cached data without storage",
+                  "route": [
+                    "api.read",
+                    "cache.read",
+                    "cache.hit",
+                    "api.hit"
+                  ]
+                },
+                {
+                  "label": "After the database write: evict the old target position",
+                  "route": [
+                    "api.invalidate",
+                    "cache.invalidate"
+                  ]
+                },
+                {
+                  "label": "Zone evacuation write invalidates the zone key only",
+                  "route": [
+                    "api.invalidate-zone",
+                    "cache.invalidate-zone"
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "bridge-siege",
+          "order": 8,
+          "title": "Bridge Siege",
+          "district": "canal",
+          "kind": "system",
+          "mode": "defense",
+          "story": "The bridge is opening, and traffic is arriving continuously. Keep requests flowing when a service fails.",
+          "sceneRef": "canal",
+          "restoration": {
+            "landmark": true,
+            "detail": "canal bridge"
+          },
+          "lessonSlugs": [
+            "game/load-balancing"
+          ],
+          "scenarios": [
+            {
+              "id": "main",
+              "title": "Hold the bridge",
+              "objective": "Handle 600 requests/sec within 42 cost units and 80 ms modeled latency. Keep redundant APIs and survive the listed failures. Failure check: api-1.",
+              "explanation": "Capacity follows request rate, not population. A load balancer distributes traffic to healthy APIs. Cache hits reduce database reads, but API capacity and write freshness still matter.",
+              "hints": [
+                "Place clients, APIs and a database. Connect the request path. All numbers are assumptions for this scenario.",
+                "The balancer needs enough healthy API capacity after one API fails. Connect each API to storage.",
+                "One solution: client, database, proxy, api-1, api-2, api-3. Connect the balancer to each API and each API to the selected database."
+              ],
+              "seed": 800,
+              "kind": "system",
+              "population": 10000,
+              "rps": 600,
+              "readRatio": 0.8,
+              "hitRatio": 0.3,
+              "maxStale": 0,
+              "maxLatency": 80,
+              "budget": 42,
+              "requiredAvailability": true,
+              "components": [
+                {
+                  "id": "client",
+                  "label": "Defense clients",
+                  "kind": "client",
+                  "capacity": 100000,
+                  "latency": 0,
+                  "cost": 0
+                },
+                {
+                  "id": "database",
+                  "label": "Database",
+                  "kind": "database",
+                  "capacity": 2500,
+                  "latency": 18,
+                  "cost": 10
+                },
+                {
+                  "id": "api-1",
+                  "label": "API 1",
+                  "kind": "api",
+                  "capacity": 400,
+                  "latency": 12,
+                  "cost": 8
+                },
+                {
+                  "id": "api-2",
+                  "label": "API 2",
+                  "kind": "api",
+                  "capacity": 400,
+                  "latency": 12,
+                  "cost": 8
+                },
+                {
+                  "id": "api-3",
+                  "label": "API 3",
+                  "kind": "api",
+                  "capacity": 400,
+                  "latency": 12,
+                  "cost": 8
+                },
+                {
+                  "id": "proxy",
+                  "label": "Load balancer",
+                  "kind": "proxy",
+                  "capacity": 100000,
+                  "latency": 3,
+                  "cost": 6
+                },
+                {
+                  "id": "cache",
+                  "label": "Shared data cache",
+                  "kind": "cache",
+                  "capacity": 100000,
+                  "latency": 2,
+                  "cost": 5
+                }
+              ],
+              "solution": {
+                "nodes": [
+                  "client",
+                  "database",
+                  "proxy",
+                  "api-1",
+                  "api-2",
+                  "api-3"
+                ],
+                "edges": [
+                  {
+                    "from": "client",
+                    "to": "proxy"
+                  },
+                  {
+                    "from": "proxy",
+                    "to": "api-1"
+                  },
+                  {
+                    "from": "api-1",
+                    "to": "database"
+                  },
+                  {
+                    "from": "proxy",
+                    "to": "api-2"
+                  },
+                  {
+                    "from": "api-2",
+                    "to": "database"
+                  },
+                  {
+                    "from": "proxy",
+                    "to": "api-3"
+                  },
+                  {
+                    "from": "api-3",
+                    "to": "database"
+                  }
+                ],
+                "invalidate": false
+              },
+              "waves": [
+                {
+                  "seconds": 8,
+                  "rps": 360,
+                  "failed": []
+                },
+                {
+                  "seconds": 8,
+                  "rps": 600,
+                  "failed": []
+                },
+                {
+                  "seconds": 8,
+                  "rps": 600,
+                  "failed": [
+                    "api-1"
+                  ]
+                }
+              ]
+            },
+            {
+              "id": "mastery-1",
+              "title": "Uneven service capacity",
+              "objective": "Handle 850 requests/sec within 42 cost units and 80 ms modeled latency. Keep redundant APIs and survive the listed failures. Failure check: api-1.",
+              "explanation": "Capacity follows request rate, not population. A load balancer distributes traffic to healthy APIs. Cache hits reduce database reads, but API capacity and write freshness still matter.",
+              "hints": [
+                "Place clients, APIs and a database. Connect the request path. All numbers are assumptions for this scenario.",
+                "Equal splitting overloads the 100/sec API. Use capacity-weighted routing, or remove it and meet all failure requirements with a valid alternative.",
+                "One solution: client, database, proxy, api-1, api-2, api-3. Connect the balancer to each API and each API to the selected database."
+              ],
+              "seed": 801,
+              "kind": "system",
+              "population": 10000,
+              "rps": 850,
+              "readRatio": 0.8,
+              "hitRatio": 0.3,
+              "maxStale": 0,
+              "maxLatency": 80,
+              "budget": 42,
+              "requiredAvailability": true,
+              "components": [
+                {
+                  "id": "client",
+                  "label": "Defense clients",
+                  "kind": "client",
+                  "capacity": 100000,
+                  "latency": 0,
+                  "cost": 0
+                },
+                {
+                  "id": "database",
+                  "label": "Database",
+                  "kind": "database",
+                  "capacity": 2500,
+                  "latency": 18,
+                  "cost": 10
+                },
+                {
+                  "id": "api-1",
+                  "label": "API 1",
+                  "kind": "api",
+                  "capacity": 100,
+                  "latency": 12,
+                  "cost": 8
+                },
+                {
+                  "id": "api-2",
+                  "label": "API 2",
+                  "kind": "api",
+                  "capacity": 500,
+                  "latency": 12,
+                  "cost": 8
+                },
+                {
+                  "id": "api-3",
+                  "label": "API 3",
+                  "kind": "api",
+                  "capacity": 500,
+                  "latency": 12,
+                  "cost": 8
+                },
+                {
+                  "id": "proxy",
+                  "label": "Load balancer",
+                  "kind": "proxy",
+                  "capacity": 100000,
+                  "latency": 3,
+                  "cost": 6
+                },
+                {
+                  "id": "cache",
+                  "label": "Shared data cache",
+                  "kind": "cache",
+                  "capacity": 100000,
+                  "latency": 2,
+                  "cost": 5
+                }
+              ],
+              "solution": {
+                "nodes": [
+                  "client",
+                  "database",
+                  "proxy",
+                  "api-1",
+                  "api-2",
+                  "api-3"
+                ],
+                "edges": [
+                  {
+                    "from": "client",
+                    "to": "proxy"
+                  },
+                  {
+                    "from": "proxy",
+                    "to": "api-1"
+                  },
+                  {
+                    "from": "api-1",
+                    "to": "database"
+                  },
+                  {
+                    "from": "proxy",
+                    "to": "api-2"
+                  },
+                  {
+                    "from": "api-2",
+                    "to": "database"
+                  },
+                  {
+                    "from": "proxy",
+                    "to": "api-3"
+                  },
+                  {
+                    "from": "api-3",
+                    "to": "database"
+                  }
+                ],
+                "invalidate": false,
+                "healthChecks": true,
+                "routing": "capacity-weighted"
+              },
+              "waves": [
+                {
+                  "seconds": 8,
+                  "rps": 510,
+                  "failed": []
+                },
+                {
+                  "seconds": 8,
+                  "rps": 850,
+                  "failed": []
+                },
+                {
+                  "seconds": 8,
+                  "rps": 850,
+                  "failed": [
+                    "api-1"
+                  ]
+                }
+              ]
+            },
+            {
+              "id": "mastery-2",
+              "title": "Two services go quiet",
+              "objective": "Handle 350 requests/sec within 34 cost units and 80 ms modeled latency. Keep redundant APIs and survive the listed failures. Failure check: api-1, api-2.",
+              "explanation": "Capacity follows request rate, not population. A load balancer distributes traffic to healthy APIs. Cache hits reduce database reads, but API capacity and write freshness still matter.",
+              "hints": [
+                "Place clients, APIs and a database. Connect the request path. All numbers are assumptions for this scenario.",
+                "API 1 and API 2 fail together. Keep API 3 on the route and preserve two instances before the failure.",
+                "One solution: client, database, proxy, api-2, api-3. Connect the balancer to each API and each API to the selected database."
+              ],
+              "seed": 802,
+              "kind": "system",
+              "population": 10000,
+              "rps": 350,
+              "readRatio": 0.8,
+              "hitRatio": 0.3,
+              "maxStale": 0,
+              "maxLatency": 80,
+              "budget": 34,
+              "requiredAvailability": true,
+              "components": [
+                {
+                  "id": "client",
+                  "label": "Defense clients",
+                  "kind": "client",
+                  "capacity": 100000,
+                  "latency": 0,
+                  "cost": 0
+                },
+                {
+                  "id": "database",
+                  "label": "Database",
+                  "kind": "database",
+                  "capacity": 2500,
+                  "latency": 18,
+                  "cost": 10
+                },
+                {
+                  "id": "api-1",
+                  "label": "API 1",
+                  "kind": "api",
+                  "capacity": 400,
+                  "latency": 12,
+                  "cost": 8
+                },
+                {
+                  "id": "api-2",
+                  "label": "API 2",
+                  "kind": "api",
+                  "capacity": 400,
+                  "latency": 12,
+                  "cost": 8
+                },
+                {
+                  "id": "api-3",
+                  "label": "API 3",
+                  "kind": "api",
+                  "capacity": 400,
+                  "latency": 12,
+                  "cost": 8
+                },
+                {
+                  "id": "proxy",
+                  "label": "Load balancer",
+                  "kind": "proxy",
+                  "capacity": 100000,
+                  "latency": 3,
+                  "cost": 6
+                },
+                {
+                  "id": "cache",
+                  "label": "Shared data cache",
+                  "kind": "cache",
+                  "capacity": 100000,
+                  "latency": 2,
+                  "cost": 5
+                }
+              ],
+              "solution": {
+                "nodes": [
+                  "client",
+                  "database",
+                  "proxy",
+                  "api-2",
+                  "api-3"
+                ],
+                "edges": [
+                  {
+                    "from": "client",
+                    "to": "proxy"
+                  },
+                  {
+                    "from": "proxy",
+                    "to": "api-2"
+                  },
+                  {
+                    "from": "api-2",
+                    "to": "database"
+                  },
+                  {
+                    "from": "proxy",
+                    "to": "api-3"
+                  },
+                  {
+                    "from": "api-3",
+                    "to": "database"
+                  }
+                ],
+                "invalidate": false,
+                "healthChecks": true,
+                "routing": "round-robin"
+              },
+              "waves": [
+                {
+                  "seconds": 8,
+                  "rps": 210,
+                  "failed": []
+                },
+                {
+                  "seconds": 8,
+                  "rps": 350,
+                  "failed": []
+                },
+                {
+                  "seconds": 8,
+                  "rps": 350,
+                  "failed": [
+                    "api-1",
+                    "api-2"
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "rooftop-relay",
+          "order": 9,
+          "title": "Rooftop Relay",
+          "district": "tower",
+          "kind": "grid",
+          "mode": "untimed",
+          "story": "Rooftop radios use different screen widths. Patch needs a responsive defense grid that keeps its proportions everywhere.",
+          "sceneRef": "tower",
+          "restoration": {
+            "landmark": false,
+            "detail": "roof relays"
+          },
+          "lessonSlugs": [
+            "game/css-grid-defense"
+          ],
+          "scenarios": [
+            {
+              "id": "main",
+              "title": "First signal",
+              "objective": "Cover row 2, columns 2–3 with the net. Keep survivor tiles clear. Set column proportions to 1:1:2:1:1:2 at both preview sizes.",
+              "explanation": "The browser places the net between grid lines. A span counts tracks, and fr units divide available space proportionally.",
+              "hints": [
+                "Grid lines begin at 1. The ending line is excluded.",
+                "The net starts at column line 2 and row line 2.",
+                "grid-template-columns: 1fr 1fr 2fr 1fr 1fr 2fr;\ngrid-column: 2 / span 2;\ngrid-row: 2 / span 1;"
+              ],
+              "seed": 900,
+              "kind": "grid",
+              "columns": 6,
+              "rows": 3,
+              "widths": [
+                300,
+                600
+              ],
+              "target": {
+                "column": 2,
+                "row": 2,
+                "columnSpan": 2,
+                "rowSpan": 1
+              },
+              "forbidden": [
+                0,
+                17
+              ],
+              "starter": "grid-column: 1 / 2;\ngrid-row: 1 / 2;",
+              "solution": "grid-template-columns: 1fr 1fr 2fr 1fr 1fr 2fr;\ngrid-column: 2 / span 2;\ngrid-row: 2 / span 1;",
+              "template": "repeat(6, 1fr)",
+              "expectedColumnFractions": [
+                1,
+                1,
+                2,
+                1,
+                1,
+                2
+              ]
+            },
+            {
+              "id": "mastery-1",
+              "title": "New conditions",
+              "objective": "Cover row 2, columns 3–4 with the net. Keep survivor tiles clear. Set column proportions to 2:1:1:2:1:1 at both preview sizes.",
+              "explanation": "The browser places the net between grid lines. A span counts tracks, and fr units divide available space proportionally.",
+              "hints": [
+                "Grid lines begin at 1. The ending line is excluded.",
+                "The net starts at column line 3 and row line 2.",
+                "grid-template-columns: 2fr 1fr 1fr 2fr 1fr 1fr;\ngrid-column: 3 / span 2;\ngrid-row: 2 / span 1;"
+              ],
+              "seed": 901,
+              "kind": "grid",
+              "columns": 6,
+              "rows": 3,
+              "widths": [
+                300,
+                600
+              ],
+              "target": {
+                "column": 3,
+                "row": 2,
+                "columnSpan": 2,
+                "rowSpan": 1
+              },
+              "forbidden": [
+                0,
+                17
+              ],
+              "starter": "grid-column: 1 / 2;\ngrid-row: 1 / 2;",
+              "solution": "grid-template-columns: 2fr 1fr 1fr 2fr 1fr 1fr;\ngrid-column: 3 / span 2;\ngrid-row: 2 / span 1;",
+              "template": "repeat(6, 1fr)",
+              "expectedColumnFractions": [
+                2,
+                1,
+                1,
+                2,
+                1,
+                1
+              ]
+            },
+            {
+              "id": "mastery-2",
+              "title": "Mastery challenge",
+              "objective": "Cover row 2, columns 4–5 with the net. Keep survivor tiles clear. Set column proportions to 1:2:1:1:2:1 at both preview sizes.",
+              "explanation": "The browser places the net between grid lines. A span counts tracks, and fr units divide available space proportionally.",
+              "hints": [
+                "Grid lines begin at 1. The ending line is excluded.",
+                "The net starts at column line 4 and row line 2.",
+                "grid-template-columns: 1fr 2fr 1fr 1fr 2fr 1fr;\ngrid-column: 4 / span 2;\ngrid-row: 2 / span 1;"
+              ],
+              "seed": 902,
+              "kind": "grid",
+              "columns": 6,
+              "rows": 3,
+              "widths": [
+                300,
+                600
+              ],
+              "target": {
+                "column": 4,
+                "row": 2,
+                "columnSpan": 2,
+                "rowSpan": 1
+              },
+              "forbidden": [
+                0,
+                17
+              ],
+              "starter": "grid-column: 1 / 2;\ngrid-row: 1 / 2;",
+              "solution": "grid-template-columns: 1fr 2fr 1fr 1fr 2fr 1fr;\ngrid-column: 4 / span 2;\ngrid-row: 2 / span 1;",
+              "template": "repeat(6, 1fr)",
+              "expectedColumnFractions": [
+                1,
+                2,
+                1,
+                1,
+                2,
+                1
+              ]
+            }
+          ]
+        },
+        {
+          "id": "mixed-horde",
+          "order": 10,
+          "title": "Mixed Horde",
+          "district": "tower",
+          "kind": "sql",
+          "mode": "untimed",
+          "story": "The tower stores evacuation data separately from sightings. Join the records so the defenses only enter cleared zones.",
+          "sceneRef": "tower",
+          "restoration": {
+            "landmark": false,
+            "detail": "watchtower lenses"
+          },
+          "lessonSlugs": [
+            "game/sql-targeting"
+          ],
+          "scenarios": [
+            {
+              "id": "main",
+              "title": "First signal",
+              "objective": "Select zombies with threat at least 2 in evacuated zones. Join zones to zombies so occupied shelters stay safe.",
+              "explanation": "SQL selects rows by their values. Equivalent SELECT queries are accepted; the unique id set determines which zombies are targeted.",
+              "hints": [
+                "Inspect both tables and identify the values the objective describes.",
+                "Join zombies.zone to zones.name and filter evacuated = 1.",
+                "SELECT z.id FROM zombies AS z JOIN zones AS a ON z.zone = a.name WHERE a.evacuated = 1 AND z.threat >= 2"
+              ],
+              "seed": 1000,
+              "kind": "sql",
+              "zombies": [
+                {
+                  "id": 1,
+                  "kind": "runner",
+                  "zone": "canal",
+                  "threat": 1,
+                  "shield": 1
+                },
+                {
+                  "id": 2,
+                  "kind": "armored",
+                  "zone": "tower",
+                  "threat": 2,
+                  "shield": 0
+                },
+                {
+                  "id": 3,
+                  "kind": "shambler",
+                  "zone": "garden",
+                  "threat": 3,
+                  "shield": null
+                },
+                {
+                  "id": 4,
+                  "kind": "runner",
+                  "zone": "canal",
+                  "threat": 4,
+                  "shield": 0
+                },
+                {
+                  "id": 5,
+                  "kind": "armored",
+                  "zone": "tower",
+                  "threat": 0,
+                  "shield": 1
+                },
+                {
+                  "id": 6,
+                  "kind": "shambler",
+                  "zone": "garden",
+                  "threat": 1,
+                  "shield": null
+                },
+                {
+                  "id": 7,
+                  "kind": "runner",
+                  "zone": "canal",
+                  "threat": 2,
+                  "shield": 1
+                },
+                {
+                  "id": 8,
+                  "kind": "armored",
+                  "zone": "tower",
+                  "threat": 3,
+                  "shield": 0
+                }
+              ],
+              "zones": [
+                {
+                  "name": "garden",
+                  "evacuated": 0
+                },
+                {
+                  "name": "canal",
+                  "evacuated": 1
+                },
+                {
+                  "name": "tower",
+                  "evacuated": 1
+                }
+              ],
+              "expectedIds": [
+                2,
+                4,
+                7,
+                8
+              ],
+              "starter": "SELECT id FROM zombies;",
+              "solution": "SELECT z.id FROM zombies AS z JOIN zones AS a ON z.zone = a.name WHERE a.evacuated = 1 AND z.threat >= 2"
+            },
+            {
+              "id": "mastery-1",
+              "title": "New conditions",
+              "objective": "Select zombies with threat at least 3 in evacuated zones. Join zones to zombies so occupied shelters stay safe.",
+              "explanation": "SQL selects rows by their values. Equivalent SELECT queries are accepted; the unique id set determines which zombies are targeted.",
+              "hints": [
+                "Inspect both tables and identify the values the objective describes.",
+                "Join zombies.zone to zones.name and filter evacuated = 1.",
+                "SELECT z.id FROM zombies AS z JOIN zones AS a ON z.zone = a.name WHERE a.evacuated = 1 AND z.threat >= 3"
+              ],
+              "seed": 1001,
+              "kind": "sql",
+              "zombies": [
+                {
+                  "id": 11,
+                  "kind": "runner",
+                  "zone": "canal",
+                  "threat": 2,
+                  "shield": 1
+                },
+                {
+                  "id": 12,
+                  "kind": "armored",
+                  "zone": "tower",
+                  "threat": 3,
+                  "shield": 0
+                },
+                {
+                  "id": 13,
+                  "kind": "shambler",
+                  "zone": "garden",
+                  "threat": 4,
+                  "shield": null
+                },
+                {
+                  "id": 14,
+                  "kind": "runner",
+                  "zone": "canal",
+                  "threat": 0,
+                  "shield": 0
+                },
+                {
+                  "id": 15,
+                  "kind": "armored",
+                  "zone": "tower",
+                  "threat": 1,
+                  "shield": 1
+                },
+                {
+                  "id": 16,
+                  "kind": "shambler",
+                  "zone": "garden",
+                  "threat": 2,
+                  "shield": null
+                },
+                {
+                  "id": 17,
+                  "kind": "runner",
+                  "zone": "canal",
+                  "threat": 3,
+                  "shield": 1
+                },
+                {
+                  "id": 18,
+                  "kind": "armored",
+                  "zone": "tower",
+                  "threat": 4,
+                  "shield": 0
+                }
+              ],
+              "zones": [
+                {
+                  "name": "garden",
+                  "evacuated": 1
+                },
+                {
+                  "name": "canal",
+                  "evacuated": 0
+                },
+                {
+                  "name": "tower",
+                  "evacuated": 1
+                }
+              ],
+              "expectedIds": [
+                12,
+                13,
+                18
+              ],
+              "starter": "SELECT id FROM zombies;",
+              "solution": "SELECT z.id FROM zombies AS z JOIN zones AS a ON z.zone = a.name WHERE a.evacuated = 1 AND z.threat >= 3"
+            },
+            {
+              "id": "mastery-2",
+              "title": "Mastery challenge",
+              "objective": "Select zombies with threat at least 1 in evacuated zones. Join zones to zombies so occupied shelters stay safe.",
+              "explanation": "SQL selects rows by their values. Equivalent SELECT queries are accepted; the unique id set determines which zombies are targeted.",
+              "hints": [
+                "Inspect both tables and identify the values the objective describes.",
+                "Join zombies.zone to zones.name and filter evacuated = 1.",
+                "SELECT z.id FROM zombies AS z JOIN zones AS a ON z.zone = a.name WHERE a.evacuated = 1 AND z.threat >= 1"
+              ],
+              "seed": 1002,
+              "kind": "sql",
+              "zombies": [
+                {
+                  "id": 21,
+                  "kind": "runner",
+                  "zone": "canal",
+                  "threat": 3,
+                  "shield": 1
+                },
+                {
+                  "id": 22,
+                  "kind": "armored",
+                  "zone": "tower",
+                  "threat": 4,
+                  "shield": 0
+                },
+                {
+                  "id": 23,
+                  "kind": "shambler",
+                  "zone": "garden",
+                  "threat": 0,
+                  "shield": null
+                },
+                {
+                  "id": 24,
+                  "kind": "runner",
+                  "zone": "canal",
+                  "threat": 1,
+                  "shield": 0
+                },
+                {
+                  "id": 25,
+                  "kind": "armored",
+                  "zone": "tower",
+                  "threat": 2,
+                  "shield": 1
+                },
+                {
+                  "id": 26,
+                  "kind": "shambler",
+                  "zone": "garden",
+                  "threat": 3,
+                  "shield": null
+                },
+                {
+                  "id": 27,
+                  "kind": "runner",
+                  "zone": "canal",
+                  "threat": 4,
+                  "shield": 1
+                },
+                {
+                  "id": 28,
+                  "kind": "armored",
+                  "zone": "tower",
+                  "threat": 0,
+                  "shield": 0
+                }
+              ],
+              "zones": [
+                {
+                  "name": "garden",
+                  "evacuated": 1
+                },
+                {
+                  "name": "canal",
+                  "evacuated": 1
+                },
+                {
+                  "name": "tower",
+                  "evacuated": 0
+                }
+              ],
+              "expectedIds": [
+                21,
+                24,
+                26,
+                27
+              ],
+              "starter": "SELECT id FROM zombies;",
+              "solution": "SELECT z.id FROM zombies AS z JOIN zones AS a ON z.zone = a.name WHERE a.evacuated = 1 AND z.threat >= 1"
+            }
+          ]
+        },
+        {
+          "id": "command-loop",
+          "order": 11,
+          "title": "Command Loop",
+          "district": "tower",
+          "kind": "pipes",
+          "mode": "untimed",
+          "story": "Two control screens disagree about the tower state. Connect commands and rendering so updates settle instead of echoing forever.",
+          "sceneRef": "tower",
+          "restoration": {
+            "landmark": false,
+            "detail": "control panels"
+          },
+          "lessonSlugs": [
+            "game/request-flow"
+          ],
+          "scenarios": [
+            {
+              "id": "main",
+              "title": "One state owner",
+              "objective": "Connect the user command to state and render state back into the view. Rendering must not emit another command.",
+              "explanation": "Bidirectional binding has distinct command and render paths. Programmatic rendering must not re-emit a user command.",
+              "hints": [
+                "Select an output port, then a matching input. Requests and responses are different signals.",
+                "Every required event needs its own path. Cache writes need invalidation; render events must settle.",
+                "view.input → state.update; state.render → view.render"
+              ],
+              "seed": 1100,
+              "kind": "pipes",
+              "pieces": [
+                {
+                  "id": "view",
+                  "label": "View",
+                  "ports": [
+                    {
+                      "id": "view.input",
+                      "label": "User action",
+                      "direction": "out",
+                      "signal": "command"
+                    },
+                    {
+                      "id": "view.render",
+                      "label": "Render state without emitting input",
+                      "direction": "in",
+                      "signal": "render"
+                    }
+                  ]
+                },
+                {
+                  "id": "state",
+                  "label": "State owner",
+                  "ports": [
+                    {
+                      "id": "state.update",
+                      "label": "Apply changed value",
+                      "direction": "in",
+                      "signal": "command"
+                    },
+                    {
+                      "id": "state.render",
+                      "label": "Publish state",
+                      "direction": "out",
+                      "signal": "render"
+                    }
+                  ]
+                },
+                {
+                  "id": "echo",
+                  "label": "Echo loop",
+                  "ports": [
+                    {
+                      "id": "echo.input",
+                      "label": "Render interpreted as input",
+                      "direction": "in",
+                      "signal": "render"
+                    },
+                    {
+                      "id": "echo.out",
+                      "label": "Re-emit user action",
+                      "direction": "out",
+                      "signal": "command"
+                    }
+                  ]
+                }
+              ],
+              "required": [
+                {
+                  "from": "view.input",
+                  "to": "state.update"
+                },
+                {
+                  "from": "state.render",
+                  "to": "view.render"
+                }
+              ],
+              "forbidden": [
+                {
+                  "from": "state.render",
+                  "to": "echo.input"
+                },
+                {
+                  "from": "echo.out",
+                  "to": "state.update"
+                }
+              ],
+              "solution": [
+                {
+                  "from": "view.input",
+                  "to": "state.update"
+                },
+                {
+                  "from": "state.render",
+                  "to": "view.render"
+                }
+              ],
+              "events": [
+                {
+                  "label": "Primary edit settles in all subscribed views",
+                  "route": [
+                    "view.input",
+                    "state.update",
+                    "state.render",
+                    "view.render"
+                  ]
+                }
+              ]
+            },
+            {
+              "id": "mastery-1",
+              "title": "Two-way editing, one state",
+              "objective": "Both control views may edit the same state. An edit in either view must update both views without an echo.",
+              "explanation": "Bidirectional binding has distinct command and render paths. Programmatic rendering must not re-emit a user command.",
+              "hints": [
+                "Select an output port, then a matching input. Requests and responses are different signals.",
+                "Every required event needs its own path. Cache writes need invalidation; render events must settle.",
+                "view.input → state.update; state.render → view.render; mirror.input → state.update; state.render → mirror.render"
+              ],
+              "seed": 1101,
+              "kind": "pipes",
+              "pieces": [
+                {
+                  "id": "view",
+                  "label": "View",
+                  "ports": [
+                    {
+                      "id": "view.input",
+                      "label": "User action",
+                      "direction": "out",
+                      "signal": "command"
+                    },
+                    {
+                      "id": "view.render",
+                      "label": "Render state without emitting input",
+                      "direction": "in",
+                      "signal": "render"
+                    }
+                  ]
+                },
+                {
+                  "id": "state",
+                  "label": "State owner",
+                  "ports": [
+                    {
+                      "id": "state.update",
+                      "label": "Apply changed value",
+                      "direction": "in",
+                      "signal": "command"
+                    },
+                    {
+                      "id": "state.render",
+                      "label": "Publish state",
+                      "direction": "out",
+                      "signal": "render"
+                    }
+                  ]
+                },
+                {
+                  "id": "echo",
+                  "label": "Echo loop",
+                  "ports": [
+                    {
+                      "id": "echo.input",
+                      "label": "Render interpreted as input",
+                      "direction": "in",
+                      "signal": "render"
+                    },
+                    {
+                      "id": "echo.out",
+                      "label": "Re-emit user action",
+                      "direction": "out",
+                      "signal": "command"
+                    }
+                  ]
+                },
+                {
+                  "id": "mirror",
+                  "label": "Second view",
+                  "ports": [
+                    {
+                      "id": "mirror.input",
+                      "label": "Second user action",
+                      "direction": "out",
+                      "signal": "command"
+                    },
+                    {
+                      "id": "mirror.render",
+                      "label": "Render state",
+                      "direction": "in",
+                      "signal": "render"
+                    }
+                  ]
+                }
+              ],
+              "required": [
+                {
+                  "from": "view.input",
+                  "to": "state.update"
+                },
+                {
+                  "from": "state.render",
+                  "to": "view.render"
+                },
+                {
+                  "from": "mirror.input",
+                  "to": "state.update"
+                },
+                {
+                  "from": "state.render",
+                  "to": "mirror.render"
+                }
+              ],
+              "forbidden": [
+                {
+                  "from": "state.render",
+                  "to": "echo.input"
+                },
+                {
+                  "from": "echo.out",
+                  "to": "state.update"
+                }
+              ],
+              "solution": [
+                {
+                  "from": "view.input",
+                  "to": "state.update"
+                },
+                {
+                  "from": "state.render",
+                  "to": "view.render"
+                },
+                {
+                  "from": "mirror.input",
+                  "to": "state.update"
+                },
+                {
+                  "from": "state.render",
+                  "to": "mirror.render"
+                }
+              ],
+              "events": [
+                {
+                  "label": "Primary edit settles in all subscribed views",
+                  "route": [
+                    "view.input",
+                    "state.update",
+                    "state.render",
+                    "view.render",
+                    "state.render",
+                    "mirror.render"
+                  ]
+                },
+                {
+                  "label": "Mirror edit settles in all subscribed views",
+                  "route": [
+                    "mirror.input",
+                    "state.update",
+                    "state.render",
+                    "view.render",
+                    "state.render",
+                    "mirror.render"
+                  ]
+                }
+              ]
+            },
+            {
+              "id": "mastery-2",
+              "title": "A read-only status display",
+              "objective": "Keep both editable views synchronized and publish the same state to a read-only status display. Avoid the echo adapter.",
+              "explanation": "Bidirectional binding has distinct command and render paths. Programmatic rendering must not re-emit a user command.",
+              "hints": [
+                "Select an output port, then a matching input. Requests and responses are different signals.",
+                "Every required event needs its own path. Cache writes need invalidation; render events must settle.",
+                "view.input → state.update; state.render → view.render; mirror.input → state.update; state.render → mirror.render; state.render → status.render"
+              ],
+              "seed": 1102,
+              "kind": "pipes",
+              "pieces": [
+                {
+                  "id": "view",
+                  "label": "View",
+                  "ports": [
+                    {
+                      "id": "view.input",
+                      "label": "User action",
+                      "direction": "out",
+                      "signal": "command"
+                    },
+                    {
+                      "id": "view.render",
+                      "label": "Render state without emitting input",
+                      "direction": "in",
+                      "signal": "render"
+                    }
+                  ]
+                },
+                {
+                  "id": "state",
+                  "label": "State owner",
+                  "ports": [
+                    {
+                      "id": "state.update",
+                      "label": "Apply changed value",
+                      "direction": "in",
+                      "signal": "command"
+                    },
+                    {
+                      "id": "state.render",
+                      "label": "Publish state",
+                      "direction": "out",
+                      "signal": "render"
+                    }
+                  ]
+                },
+                {
+                  "id": "echo",
+                  "label": "Echo loop",
+                  "ports": [
+                    {
+                      "id": "echo.input",
+                      "label": "Render interpreted as input",
+                      "direction": "in",
+                      "signal": "render"
+                    },
+                    {
+                      "id": "echo.out",
+                      "label": "Re-emit user action",
+                      "direction": "out",
+                      "signal": "command"
+                    }
+                  ]
+                },
+                {
+                  "id": "mirror",
+                  "label": "Second view",
+                  "ports": [
+                    {
+                      "id": "mirror.input",
+                      "label": "Second user action",
+                      "direction": "out",
+                      "signal": "command"
+                    },
+                    {
+                      "id": "mirror.render",
+                      "label": "Render state",
+                      "direction": "in",
+                      "signal": "render"
+                    }
+                  ]
+                },
+                {
+                  "id": "status",
+                  "label": "Read-only status",
+                  "ports": [
+                    {
+                      "id": "status.render",
+                      "label": "Render state",
+                      "direction": "in",
+                      "signal": "render"
+                    }
+                  ]
+                }
+              ],
+              "required": [
+                {
+                  "from": "view.input",
+                  "to": "state.update"
+                },
+                {
+                  "from": "state.render",
+                  "to": "view.render"
+                },
+                {
+                  "from": "mirror.input",
+                  "to": "state.update"
+                },
+                {
+                  "from": "state.render",
+                  "to": "mirror.render"
+                },
+                {
+                  "from": "state.render",
+                  "to": "status.render"
+                }
+              ],
+              "forbidden": [
+                {
+                  "from": "state.render",
+                  "to": "echo.input"
+                },
+                {
+                  "from": "echo.out",
+                  "to": "state.update"
+                }
+              ],
+              "solution": [
+                {
+                  "from": "view.input",
+                  "to": "state.update"
+                },
+                {
+                  "from": "state.render",
+                  "to": "view.render"
+                },
+                {
+                  "from": "mirror.input",
+                  "to": "state.update"
+                },
+                {
+                  "from": "state.render",
+                  "to": "mirror.render"
+                },
+                {
+                  "from": "state.render",
+                  "to": "status.render"
+                }
+              ],
+              "events": [
+                {
+                  "label": "Primary edit settles in all subscribed views",
+                  "route": [
+                    "view.input",
+                    "state.update",
+                    "state.render",
+                    "view.render",
+                    "state.render",
+                    "mirror.render",
+                    "state.render",
+                    "status.render"
+                  ]
+                },
+                {
+                  "label": "Mirror edit settles in all subscribed views",
+                  "route": [
+                    "mirror.input",
+                    "state.update",
+                    "state.render",
+                    "view.render",
+                    "state.render",
+                    "mirror.render",
+                    "state.render",
+                    "status.render"
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "restore-the-signal",
+          "order": 12,
+          "title": "Restore the Signal",
+          "district": "tower",
+          "kind": "system",
+          "mode": "defense",
+          "story": "The whole city is listening. Scale the signal service, keep targeting data fresh, and carry traffic through the final outage.",
+          "sceneRef": "tower",
+          "restoration": {
+            "landmark": true,
+            "detail": "signal tower"
+          },
+          "lessonSlugs": [
+            "game/load-balancing",
+            "system-design/cache-invalidation"
+          ],
+          "pathSlug": "system-design-fundamentals",
+          "scenarios": [
+            {
+              "id": "main",
+              "title": "Wake the signal tower",
+              "objective": "Handle 12,000 requests/sec within 48 cost units and 80 ms modeled latency. Keep redundant APIs and survive the listed failures. Failure check: api-1. Read reuse is 94%. Cached targeting data must stay fresh after writes.",
+              "explanation": "Capacity follows request rate, not population. A load balancer distributes traffic to healthy APIs. Cache hits reduce database reads, but API capacity and write freshness still matter.",
+              "hints": [
+                "Place clients, APIs and a database. Connect the request path. All numbers are assumptions for this scenario.",
+                "The balancer needs enough healthy API capacity after one API fails. Connect each API to storage.",
+                "One solution: client, database, proxy, api-1, api-2, api-3, cache. Connect the balancer to each API and each API to the selected database."
+              ],
+              "seed": 1200,
+              "kind": "system",
+              "population": 10000000,
+              "rps": 12000,
+              "readRatio": 0.97,
+              "hitRatio": 0.94,
+              "maxStale": 0,
+              "maxLatency": 80,
+              "budget": 48,
+              "requiredAvailability": true,
+              "components": [
+                {
+                  "id": "client",
+                  "label": "Defense clients",
+                  "kind": "client",
+                  "capacity": 100000,
+                  "latency": 0,
+                  "cost": 0
+                },
+                {
+                  "id": "database",
+                  "label": "Database",
+                  "kind": "database",
+                  "capacity": 2500,
+                  "latency": 18,
+                  "cost": 10
+                },
+                {
+                  "id": "api-1",
+                  "label": "API 1",
+                  "kind": "api",
+                  "capacity": 9000,
+                  "latency": 12,
+                  "cost": 8
+                },
+                {
+                  "id": "api-2",
+                  "label": "API 2",
+                  "kind": "api",
+                  "capacity": 9000,
+                  "latency": 12,
+                  "cost": 8
+                },
+                {
+                  "id": "api-3",
+                  "label": "API 3",
+                  "kind": "api",
+                  "capacity": 9000,
+                  "latency": 12,
+                  "cost": 8
+                },
+                {
+                  "id": "proxy",
+                  "label": "Load balancer",
+                  "kind": "proxy",
+                  "capacity": 100000,
+                  "latency": 3,
+                  "cost": 6
+                },
+                {
+                  "id": "cache",
+                  "label": "Shared data cache",
+                  "kind": "cache",
+                  "capacity": 100000,
+                  "latency": 2,
+                  "cost": 5
+                }
+              ],
+              "solution": {
+                "nodes": [
+                  "client",
+                  "database",
+                  "proxy",
+                  "api-1",
+                  "api-2",
+                  "api-3",
+                  "cache"
+                ],
+                "edges": [
+                  {
+                    "from": "client",
+                    "to": "proxy"
+                  },
+                  {
+                    "from": "proxy",
+                    "to": "api-1"
+                  },
+                  {
+                    "from": "api-1",
+                    "to": "database"
+                  },
+                  {
+                    "from": "proxy",
+                    "to": "api-2"
+                  },
+                  {
+                    "from": "api-2",
+                    "to": "database"
+                  },
+                  {
+                    "from": "proxy",
+                    "to": "api-3"
+                  },
+                  {
+                    "from": "api-3",
+                    "to": "database"
+                  },
+                  {
+                    "from": "api-1",
+                    "to": "cache"
+                  },
+                  {
+                    "from": "api-2",
+                    "to": "cache"
+                  },
+                  {
+                    "from": "api-3",
+                    "to": "cache"
+                  }
+                ],
+                "invalidate": true
+              },
+              "waves": [
+                {
+                  "seconds": 8,
+                  "rps": 7200,
+                  "failed": []
+                },
+                {
+                  "seconds": 8,
+                  "rps": 12000,
+                  "failed": []
+                },
+                {
+                  "seconds": 8,
+                  "rps": 12000,
+                  "failed": [
+                    "api-1"
+                  ]
+                }
+              ]
+            },
+            {
+              "id": "mastery-1",
+              "title": "Lower reuse, faster storage",
+              "objective": "Handle 15,000 requests/sec within 56 cost units and 80 ms modeled latency. Keep redundant APIs and survive the listed failures. Failure check: api-1. Read reuse is 65%. Cached targeting data must stay fresh after writes.",
+              "explanation": "Capacity follows request rate, not population. A load balancer distributes traffic to healthy APIs. Cache hits reduce database reads, but API capacity and write freshness still matter.",
+              "hints": [
+                "Place clients, APIs and a database. Connect the request path. All numbers are assumptions for this scenario.",
+                "At 65% reuse, misses overload the original database even with caching. Compare the expanded storage tier against the budget.",
+                "One solution: client, database-fast, proxy, api-1, api-2, api-3, cache. Connect the balancer to each API and each API to the selected database."
+              ],
+              "seed": 1201,
+              "kind": "system",
+              "population": 10000000,
+              "rps": 15000,
+              "readRatio": 0.97,
+              "hitRatio": 0.65,
+              "maxStale": 0,
+              "maxLatency": 80,
+              "budget": 56,
+              "requiredAvailability": true,
+              "components": [
+                {
+                  "id": "client",
+                  "label": "Defense clients",
+                  "kind": "client",
+                  "capacity": 100000,
+                  "latency": 0,
+                  "cost": 0
+                },
+                {
+                  "id": "database",
+                  "label": "Database",
+                  "kind": "database",
+                  "capacity": 2500,
+                  "latency": 18,
+                  "cost": 10
+                },
+                {
+                  "id": "api-1",
+                  "label": "API 1",
+                  "kind": "api",
+                  "capacity": 9000,
+                  "latency": 12,
+                  "cost": 8
+                },
+                {
+                  "id": "api-2",
+                  "label": "API 2",
+                  "kind": "api",
+                  "capacity": 9000,
+                  "latency": 12,
+                  "cost": 8
+                },
+                {
+                  "id": "api-3",
+                  "label": "API 3",
+                  "kind": "api",
+                  "capacity": 9000,
+                  "latency": 12,
+                  "cost": 8
+                },
+                {
+                  "id": "proxy",
+                  "label": "Load balancer",
+                  "kind": "proxy",
+                  "capacity": 100000,
+                  "latency": 3,
+                  "cost": 6
+                },
+                {
+                  "id": "cache",
+                  "label": "Shared data cache",
+                  "kind": "cache",
+                  "capacity": 100000,
+                  "latency": 2,
+                  "cost": 5
+                },
+                {
+                  "id": "database-fast",
+                  "label": "Expanded database",
+                  "kind": "database",
+                  "capacity": 6500,
+                  "latency": 20,
+                  "cost": 18
+                }
+              ],
+              "solution": {
+                "nodes": [
+                  "client",
+                  "database-fast",
+                  "proxy",
+                  "api-1",
+                  "api-2",
+                  "api-3",
+                  "cache"
+                ],
+                "edges": [
+                  {
+                    "from": "client",
+                    "to": "proxy"
+                  },
+                  {
+                    "from": "proxy",
+                    "to": "api-1"
+                  },
+                  {
+                    "from": "api-1",
+                    "to": "database-fast"
+                  },
+                  {
+                    "from": "proxy",
+                    "to": "api-2"
+                  },
+                  {
+                    "from": "api-2",
+                    "to": "database-fast"
+                  },
+                  {
+                    "from": "proxy",
+                    "to": "api-3"
+                  },
+                  {
+                    "from": "api-3",
+                    "to": "database-fast"
+                  },
+                  {
+                    "from": "api-1",
+                    "to": "cache"
+                  },
+                  {
+                    "from": "api-2",
+                    "to": "cache"
+                  },
+                  {
+                    "from": "api-3",
+                    "to": "cache"
+                  }
+                ],
+                "invalidate": true,
+                "healthChecks": true,
+                "routing": "round-robin"
+              },
+              "waves": [
+                {
+                  "seconds": 8,
+                  "rps": 9000,
+                  "failed": []
+                },
+                {
+                  "seconds": 8,
+                  "rps": 15000,
+                  "failed": []
+                },
+                {
+                  "seconds": 8,
+                  "rps": 15000,
+                  "failed": [
+                    "api-1"
+                  ]
+                }
+              ]
+            },
+            {
+              "id": "mastery-2",
+              "title": "Stay fresh through a cache outage",
+              "objective": "Handle 18,000 requests/sec within 73 cost units and 80 ms modeled latency. Keep redundant APIs and survive the listed failures. Failure check: api-1, cache. Read reuse is 94%. Cached targeting data must stay fresh after writes.",
+              "explanation": "Capacity follows request rate, not population. A load balancer distributes traffic to healthy APIs. Cache hits reduce database reads, but API capacity and write freshness still matter.",
+              "hints": [
+                "Place clients, APIs and a database. Connect the request path. All numbers are assumptions for this scenario.",
+                "A cache outage sends every read to storage. Provision a database that can carry the fallback traffic; a high-capacity design may also pass without a cache.",
+                "One solution: client, database-fast, proxy, api-1, api-2, api-3, cache. Connect the balancer to each API and each API to the selected database."
+              ],
+              "seed": 1202,
+              "kind": "system",
+              "population": 10000000,
+              "rps": 18000,
+              "readRatio": 0.97,
+              "hitRatio": 0.94,
+              "maxStale": 0,
+              "maxLatency": 80,
+              "budget": 73,
+              "requiredAvailability": true,
+              "components": [
+                {
+                  "id": "client",
+                  "label": "Defense clients",
+                  "kind": "client",
+                  "capacity": 100000,
+                  "latency": 0,
+                  "cost": 0
+                },
+                {
+                  "id": "database",
+                  "label": "Database",
+                  "kind": "database",
+                  "capacity": 2500,
+                  "latency": 18,
+                  "cost": 10
+                },
+                {
+                  "id": "api-1",
+                  "label": "API 1",
+                  "kind": "api",
+                  "capacity": 9000,
+                  "latency": 12,
+                  "cost": 8
+                },
+                {
+                  "id": "api-2",
+                  "label": "API 2",
+                  "kind": "api",
+                  "capacity": 9000,
+                  "latency": 12,
+                  "cost": 8
+                },
+                {
+                  "id": "api-3",
+                  "label": "API 3",
+                  "kind": "api",
+                  "capacity": 9000,
+                  "latency": 12,
+                  "cost": 8
+                },
+                {
+                  "id": "proxy",
+                  "label": "Load balancer",
+                  "kind": "proxy",
+                  "capacity": 100000,
+                  "latency": 3,
+                  "cost": 6
+                },
+                {
+                  "id": "cache",
+                  "label": "Shared data cache",
+                  "kind": "cache",
+                  "capacity": 100000,
+                  "latency": 2,
+                  "cost": 5
+                },
+                {
+                  "id": "database-fast",
+                  "label": "Failover database tier",
+                  "kind": "database",
+                  "capacity": 20000,
+                  "latency": 20,
+                  "cost": 36
+                }
+              ],
+              "solution": {
+                "nodes": [
+                  "client",
+                  "database-fast",
+                  "proxy",
+                  "api-1",
+                  "api-2",
+                  "api-3",
+                  "cache"
+                ],
+                "edges": [
+                  {
+                    "from": "client",
+                    "to": "proxy"
+                  },
+                  {
+                    "from": "proxy",
+                    "to": "api-1"
+                  },
+                  {
+                    "from": "api-1",
+                    "to": "database-fast"
+                  },
+                  {
+                    "from": "proxy",
+                    "to": "api-2"
+                  },
+                  {
+                    "from": "api-2",
+                    "to": "database-fast"
+                  },
+                  {
+                    "from": "proxy",
+                    "to": "api-3"
+                  },
+                  {
+                    "from": "api-3",
+                    "to": "database-fast"
+                  },
+                  {
+                    "from": "api-1",
+                    "to": "cache"
+                  },
+                  {
+                    "from": "api-2",
+                    "to": "cache"
+                  },
+                  {
+                    "from": "api-3",
+                    "to": "cache"
+                  }
+                ],
+                "invalidate": true,
+                "healthChecks": true,
+                "routing": "round-robin"
+              },
+              "waves": [
+                {
+                  "seconds": 8,
+                  "rps": 10800,
+                  "failed": []
+                },
+                {
+                  "seconds": 8,
+                  "rps": 18000,
+                  "failed": []
+                },
+                {
+                  "seconds": 8,
+                  "rps": 18000,
+                  "failed": [
+                    "api-1",
+                    "cache"
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "districts": [
+        {
+          "id": "garden",
+          "title": "The garden outpost",
+          "sceneRef": "garden",
+          "landmarkLevel": "first-outpost"
+        },
+        {
+          "id": "canal",
+          "title": "The canal works",
+          "sceneRef": "canal",
+          "landmarkLevel": "bridge-siege"
+        },
+        {
+          "id": "tower",
+          "title": "The signal tower",
+          "sceneRef": "tower",
+          "landmarkLevel": "restore-the-signal"
+        }
+      ]
+    }
+  ],
   "sources": [
     {
       "id": "harvard-cs249r-repository",
@@ -3126,6 +7440,174 @@
       "mermaidBlocks": [],
       "contentHash": "f77061f7fafe8faa81d97c59cca7d1a845a273219af6e89afd3b82926a1f1953",
       "readingMinutes": 5
+    },
+    {
+      "title": "CSS Grid Defense",
+      "slug": "game/css-grid-defense",
+      "summary": "A practical introduction for Restore the Signal challenges.",
+      "track": "Front-End Development",
+      "topic": "Grid layout",
+      "difficulty": "foundation",
+      "tags": [
+        "game",
+        "foundations",
+        "practice"
+      ],
+      "prerequisites": [],
+      "diagramRefs": [],
+      "status": "published",
+      "id": "63759f417223",
+      "route": "/docs/game/css-grid-defense",
+      "sourcePath": "content/knowledge/game/css-grid-defense.md",
+      "bodyPath": "content/knowledge/game/css-grid-defense.md",
+      "markdown": "## Place the net\n\nA grid track sits between two numbered lines. `grid-column: 2 / 4` covers columns 2 and 3. The final line is excluded.\n\n```css\ngrid-column: 2 / span 2;\ngrid-row: 2 / 3;\n```\n\n`span 2` covers two tracks. `grid-template-columns: 1fr 2fr 1fr` gives the middle track twice the space of its neighbors. The proportions hold when the container grows.\n\n## Check the result\n\nInspect both ends of the net, not just its starting point. Survivor tiles must stay uncovered. In the rooftop challenge, also check the narrow and wide previews.\n\nRead the [MDN grid guide](https://developer.mozilla.org/en-US/docs/Web/CSS/Guides/Grid_layout/Basic_concepts).",
+      "plainText": "Place the net A grid track sits between two numbered lines. grid-column: 2 / 4 covers columns 2 and 3. The final line is excluded. grid-column: 2 / span 2; grid-row: 2 / 3; span 2 covers two tracks. grid-template-columns: 1fr 2fr 1fr gives the middle track twice the space of its neighbors. The proportions hold when the container grows. Check the result Inspect both ends of the net, not just its starting point. Survivor tiles must stay uncovered. In the rooftop challenge, also check the narrow and wide previews. Read the MDN grid guide.",
+      "headings": [
+        {
+          "id": "place-the-net",
+          "depth": 2,
+          "text": "Place the net"
+        },
+        {
+          "id": "check-the-result",
+          "depth": 2,
+          "text": "Check the result"
+        }
+      ],
+      "mermaidBlocks": [],
+      "contentHash": "fd9f880f19485c7200f8be33eb9f027afcfe61f625580a5dcf2e905273e322b3",
+      "readingMinutes": 1
+    },
+    {
+      "title": "Workloads, Load Balancing and Caching",
+      "slug": "game/load-balancing",
+      "summary": "A practical introduction for Restore the Signal challenges.",
+      "track": "System Design",
+      "topic": "Capacity planning",
+      "difficulty": "foundation",
+      "tags": [
+        "game",
+        "foundations",
+        "practice"
+      ],
+      "prerequisites": [],
+      "diagramRefs": [],
+      "status": "published",
+      "id": "fd048d1035e5",
+      "route": "/docs/game/load-balancing",
+      "sourcePath": "content/knowledge/game/load-balancing.md",
+      "bodyPath": "content/knowledge/game/load-balancing.md",
+      "markdown": "## Start with the workload\n\nPopulation is not request rate. Ten million registered users making occasional requests can generate less traffic than a small number of very active clients. State the active fraction, requests per second, read/write mix, latency objective, and failure requirements.\n\n## Add capacity where it is needed\n\nA load balancer sends work to healthy service instances. Multiple APIs add capacity only when traffic can reach them. They still share downstream bottlenecks such as a database. A balancer can be useful at low traffic for availability; the outpost level simply has no redundancy requirement and a small budget.\n\n## Cache the right data\n\nCache hits reduce database reads. They do not eliminate writes or automatically fix API CPU overload. Low reuse can make caching wasteful. Freshness-sensitive targeting data needs invalidation after writes.\n\n## Inspect a failure\n\nRemove one API and check that remaining capacity can handle traffic. A connected diagram can still fail its workload. Game numbers are explicit teaching assumptions, not vendor benchmarks or a production sizing calculator. The model covers one shared database and cache-aside, not arbitrary distributed database designs.\n\nSee [AWS load balancing](https://docs.aws.amazon.com/elasticloadbalancing/latest/userguide/what-is-load-balancing.html) and [cache-aside](https://learn.microsoft.com/en-us/azure/architecture/patterns/cache-aside).",
+      "plainText": "Start with the workload Population is not request rate. Ten million registered users making occasional requests can generate less traffic than a small number of very active clients. State the active fraction, requests per second, read/write mix, latency objective, and failure requirements. Add capacity where it is needed A load balancer sends work to healthy service instances. Multiple APIs add capacity only when traffic can reach them. They still share downstream bottlenecks such as a database. A balancer can be useful at low traffic for availability; the outpost level simply has no redundancy requirement and a small budget. Cache the right data Cache hits reduce database reads. They do not eliminate writes or automatically fix API CPU overload. Low reuse can make caching wasteful. Freshness-sensitive targeting data needs invalidation after writes. Inspect a failure Remove one API and check that remaining capacity can handle traffic. A connected diagram can still fail its workload. Game numbers are explicit teaching assumptions, not vendor benchmarks or a production sizing calculator. The model covers one shared database and cache-aside, not arbitrary distributed database designs. See AWS load balancing and cache-aside.",
+      "headings": [
+        {
+          "id": "start-with-the-workload",
+          "depth": 2,
+          "text": "Start with the workload"
+        },
+        {
+          "id": "add-capacity-where-it-is-needed",
+          "depth": 2,
+          "text": "Add capacity where it is needed"
+        },
+        {
+          "id": "cache-the-right-data",
+          "depth": 2,
+          "text": "Cache the right data"
+        },
+        {
+          "id": "inspect-a-failure",
+          "depth": 2,
+          "text": "Inspect a failure"
+        }
+      ],
+      "mermaidBlocks": [],
+      "contentHash": "0b91ce95a59f76b5e699068ccbdefac70c27a34edd3c136670dc7165f57ebeaf",
+      "readingMinutes": 1
+    },
+    {
+      "title": "Request Flow and Feedback Loops",
+      "slug": "game/request-flow",
+      "summary": "A practical introduction for Restore the Signal challenges.",
+      "track": "System Design",
+      "topic": "Data flow",
+      "difficulty": "foundation",
+      "tags": [
+        "game",
+        "foundations",
+        "practice"
+      ],
+      "prerequisites": [],
+      "diagramRefs": [],
+      "status": "published",
+      "id": "65561face551",
+      "route": "/docs/game/request-flow",
+      "sourcePath": "content/knowledge/game/request-flow.md",
+      "bodyPath": "content/knowledge/game/request-flow.md",
+      "markdown": "## Follow an event in both directions\n\nA gate requests a permit from a service. The service reads storage and returns a result. A one-way audit sink can record an event, but cannot replace the service that answers it.\n\n## Cache-aside\n\nRead the cache first. On a miss, read authoritative storage and populate the cache. A write changes storage and invalidates the corresponding cached entry. Real distributed systems also need a consistency policy for races and failed invalidation.\n\n## Commands and rendering\n\nA user action sends a command to a state owner. The state owner publishes a value for views to render. Rendering must not emit another user command. Several views may share a state owner without forming an endless echo.\n\nPipe colors and labels identify signal types. A response is different from a request, and a render event is different from a command. Connect the labeled ports and inspect where the event stops.\n\nSee [cache-aside](https://learn.microsoft.com/en-us/azure/architecture/patterns/cache-aside).",
+      "plainText": "Follow an event in both directions A gate requests a permit from a service. The service reads storage and returns a result. A one-way audit sink can record an event, but cannot replace the service that answers it. Cache-aside Read the cache first. On a miss, read authoritative storage and populate the cache. A write changes storage and invalidates the corresponding cached entry. Real distributed systems also need a consistency policy for races and failed invalidation. Commands and rendering A user action sends a command to a state owner. The state owner publishes a value for views to render. Rendering must not emit another user command. Several views may share a state owner without forming an endless echo. Pipe colors and labels identify signal types. A response is different from a request, and a render event is different from a command. Connect the labeled ports and inspect where the event stops. See cache-aside.",
+      "headings": [
+        {
+          "id": "follow-an-event-in-both-directions",
+          "depth": 2,
+          "text": "Follow an event in both directions"
+        },
+        {
+          "id": "cache-aside",
+          "depth": 2,
+          "text": "Cache-aside"
+        },
+        {
+          "id": "commands-and-rendering",
+          "depth": 2,
+          "text": "Commands and rendering"
+        }
+      ],
+      "mermaidBlocks": [],
+      "contentHash": "3309fb92f92d8234dfd1c44ceb7ac4ca47993fe86be38fa742e709000a599e9d",
+      "readingMinutes": 1
+    },
+    {
+      "title": "SQL Targeting: Filters and Joins",
+      "slug": "game/sql-targeting",
+      "summary": "A practical introduction for Restore the Signal challenges.",
+      "track": "Databases",
+      "topic": "SQL",
+      "difficulty": "foundation",
+      "tags": [
+        "game",
+        "foundations",
+        "practice"
+      ],
+      "prerequisites": [],
+      "diagramRefs": [],
+      "status": "published",
+      "id": "5684ae580af6",
+      "route": "/docs/game/sql-targeting",
+      "sourcePath": "content/knowledge/game/sql-targeting.md",
+      "bodyPath": "content/knowledge/game/sql-targeting.md",
+      "markdown": "## Select rows by meaning\n\n```sql\nSELECT id FROM zombies WHERE kind = 'runner';\n```\n\nA `WHERE` condition selects matching rows. The game targets the returned IDs. It accepts equivalent queries, so formatting and aliases do not need to match a solution.\n\n## Combine conditions\n\n`AND` binds more tightly than `OR`. Use parentheses when either kind is allowed but both need a minimum threat. Use `IS NULL` for an unknown shield: `shield = NULL` does not test absence.\n\n```sql\nSELECT id FROM zombies\nWHERE (kind = 'runner' OR kind = 'armored') AND threat >= 2;\n```\n\n## Join the zone information\n\n```sql\nSELECT z.id FROM zombies AS z\nJOIN zones AS a ON z.zone = a.name\nWHERE a.evacuated = 1;\n```\n\nThe join relates each zombie to its zone. An omitted join condition can pair unrelated rows. Inspect the fixture tables before targeting anything. This chapter executes SQLite SELECT queries on disposable demo data.\n\nSee [SQLite SELECT](https://www.sqlite.org/lang_select.html).",
+      "plainText": "Select rows by meaning SELECT id FROM zombies WHERE kind = 'runner'; A WHERE condition selects matching rows. The game targets the returned IDs. It accepts equivalent queries, so formatting and aliases do not need to match a solution. Combine conditions AND binds more tightly than OR. Use parentheses when either kind is allowed but both need a minimum threat. Use IS NULL for an unknown shield: shield = NULL does not test absence. SELECT id FROM zombies WHERE (kind = 'runner' OR kind = 'armored') AND threat >= 2; Join the zone information SELECT z.id FROM zombies AS z JOIN zones AS a ON z.zone = a.name WHERE a.evacuated = 1; The join relates each zombie to its zone. An omitted join condition can pair unrelated rows. Inspect the fixture tables before targeting anything. This chapter executes SQLite SELECT queries on disposable demo data. See SQLite SELECT.",
+      "headings": [
+        {
+          "id": "select-rows-by-meaning",
+          "depth": 2,
+          "text": "Select rows by meaning"
+        },
+        {
+          "id": "combine-conditions",
+          "depth": 2,
+          "text": "Combine conditions"
+        },
+        {
+          "id": "join-the-zone-information",
+          "depth": 2,
+          "text": "Join the zone information"
+        }
+      ],
+      "mermaidBlocks": [],
+      "contentHash": "03435fa1589797a19f6a81db890ef4b7ce978af0158437835f76a2ed416db4c2",
+      "readingMinutes": 1
     },
     {
       "title": "Japanese Everyday Navigator",
@@ -92997,8 +97479,9 @@
     {
       "name": "Databases",
       "slug": "databases",
-      "documentCount": 5,
+      "documentCount": 6,
       "difficulties": [
+        "foundation",
         "senior"
       ],
       "topics": [
@@ -93006,19 +97489,22 @@
         "Fuzzy Search",
         "Indexes",
         "PostgreSQL Storage",
-        "Search Queries"
+        "Search Queries",
+        "SQL"
       ]
     },
     {
       "name": "Front-End Development",
       "slug": "front-end-development",
-      "documentCount": 15,
+      "documentCount": 16,
       "difficulties": [
+        "foundation",
         "practitioner",
         "senior",
         "principal"
       ],
       "topics": [
+        "Grid layout",
         "Next.js Caching",
         "Next.js Data Fetching",
         "Next.js Invalidation",
@@ -93085,12 +97571,15 @@
     {
       "name": "System Design",
       "slug": "system-design",
-      "documentCount": 1,
+      "documentCount": 3,
       "difficulties": [
+        "foundation",
         "senior"
       ],
       "topics": [
-        "Caching"
+        "Caching",
+        "Capacity planning",
+        "Data flow"
       ]
     }
   ],

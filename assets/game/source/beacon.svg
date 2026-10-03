@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128"><defs>
+<linearGradient id="cream" x1="0" y1="0" x2=".8" y2="1"><stop stop-color="#fff3d6"/><stop offset=".52" stop-color="#e7d1a9"/><stop offset="1" stop-color="#b29c7f"/></linearGradient>
+<linearGradient id="orange" x1="0" y1="0" x2=".7" y2="1"><stop stop-color="#f6b04c"/><stop offset=".5" stop-color="#d87f2c"/><stop offset="1" stop-color="#935126"/></linearGradient>
+<linearGradient id="metal" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#797669"/><stop offset=".5" stop-color="#434a45"/><stop offset="1" stop-color="#242f2d"/></linearGradient>
+<linearGradient id="glass" x1="0" y1="0" x2=".8" y2="1"><stop stop-color="#365f58"/><stop offset=".5" stop-color="#163f3d"/><stop offset="1" stop-color="#0e2e31"/></linearGradient>
+<radialGradient id="skin" cx=".3" cy=".22" r=".85"><stop stop-color="#bac58a"/><stop offset=".57" stop-color="#98a46b"/><stop offset="1" stop-color="#697a52"/></radialGradient>
+<linearGradient id="cloth" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#688178"/><stop offset=".6" stop-color="#425f59"/><stop offset="1" stop-color="#2b4440"/></linearGradient>
+<radialGradient id="eye"><stop stop-color="#fff5c6"/><stop offset=".65" stop-color="#ffdc77"/><stop offset="1" stop-color="#dfa940"/></radialGradient>
+</defs><g stroke="#514b39" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M36 85h56v16H36z" fill="url(#metal)"/><path d="M44 84V51q0-27 20-27t20 27v33z" fill="url(#orange)"/><path d="M49 80V52q0-18 11-21" stroke="#ffdc81" stroke-width="4" fill="none"/><path d="M61 80V49h7v31" fill="#ffe493" stroke="#e6ac3d"/><path d="M38 88h50" stroke="#b7a37d" stroke-width="3"/><path d="M26 43l-7-6m82 6 8-6M64 13V6" stroke="#eabd62" stroke-width="3"/></g></svg>

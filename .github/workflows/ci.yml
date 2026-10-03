@@ -28,6 +28,15 @@ jobs:
       - run: npm run typecheck
       - run: npm run mobile:doctor
       - run: npm run build
+      - run: npm run game:check
+      - run: npx playwright install --with-deps chromium
+      - run: npm run game:artifact-smoke
+      - name: Preserve production artifact smoke evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: game-production-smoke-${{ github.run_id }}
+          path: test-results/game-artifact.log
 
   unit-integration-coverage:
     name: unit-integration-coverage

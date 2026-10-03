@@ -89,7 +89,8 @@ type ScreenProps = {
 };
 
 const nativeDestinations = [
-  { href: "/", label: "Home", path: "M3 10 12 3 21 10V21H15V14H9V21H3Z" },
+  { href: "/", label: "Play", path: "M3 10 12 3 21 10V21H15V14H9V21H3Z" },
+  { href: "/learn", label: "Learn", path: "M3 3h8v18H3ZM13 3h8v18h-8Z" },
   { href: "/paths", label: "Paths", path: "m3 5 6-2 6 2 6-2v16l-6 2-6-2-6 2Zm6-2v16m6-14v16" },
   { href: "/browse", label: "Lessons", path: "M12 5v16M3 3h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5v16h-5a4 4 0 0 0-4 2 4 4 0 0 0-4-2H3Z" },
   { href: "/practice", label: "Practice", path: "m13 2-9 12h7l-1 8 10-12h-7Z" },
@@ -100,9 +101,9 @@ const nativeDestinations = [
 /** Persistent shell navigation; the Expo adapter owns routing and safe-area insets. */
 export function NativeNavigation({ pathname, navigate, wide }: { pathname: string; navigate: (href: string) => void; wide: boolean }) {
   const [menuOpen, setMenuOpen] = useState(false);
-  const active = pathname.startsWith("/docs/") || pathname.startsWith("/diagrams/") ? "/browse" : `/${pathname.split("/")[1]}`;
-  const items = wide ? nativeDestinations : nativeDestinations.filter(({ href }) => !["/browse", "/languages"].includes(href));
-  const menuItems = [...nativeDestinations.filter(({ href }) => ["/browse", "/languages"].includes(href)), { href: "/login", label: "Sign in", path: "M4 21v-3a8 8 0 0 1 16 0v3M16 6a4 4 0 1 1-8 0 4 4 0 0 1 8 0" }];
+  const active = pathname.startsWith("/play/") ? "/" : pathname.startsWith("/docs/") || pathname.startsWith("/diagrams/") ? "/browse" : `/${pathname.split("/")[1]}`;
+  const items = wide ? nativeDestinations : nativeDestinations.filter(({ href }) => !["/browse", "/languages", "/interviews"].includes(href));
+  const menuItems = [...nativeDestinations.filter(({ href }) => ["/browse", "/languages", "/interviews"].includes(href)), { href: "/login", label: "Sign in", path: "M4 21v-3a8 8 0 0 1 16 0v3M16 6a4 4 0 1 1-8 0 4 4 0 0 1 8 0" }];
   return (
     <View style={wide ? styles.navigationRail : styles.navigationBar} testID={wide ? "mobile-navigation-rail" : "mobile-navigation-bar"}>
       {wide ? <Text style={styles.navigationBrand}>Codematica.</Text> : null}
@@ -110,7 +111,7 @@ export function NativeNavigation({ pathname, navigate, wide }: { pathname: strin
         <Svg width={22} height={22} viewBox="0 0 24 24" accessible={false}><Path d={path} stroke={active === href ? colors.accentStrong : colors.textMuted} strokeWidth={1.7} fill="none" strokeLinecap="round" strokeLinejoin="round" /></Svg>
         <Text style={[styles.navigationLabel, wide && styles.navigationRailLabel, active === href && styles.navigationSelectedText]}>{label}</Text>
       </Pressable>)}
-      {wide ? <Button label="Sign in" variant="ghost" onPress={() => navigate("/login")} testID="mobile-nav-sign-in" /> : <Pressable accessibilityRole="button" accessibilityLabel="More" onPress={() => setMenuOpen(true)} style={[styles.navigationItem, ["/browse", "/languages", "/login"].includes(active) && styles.navigationSelected]} testID="mobile-nav-more"><Svg width={22} height={22} viewBox="0 0 24 24" accessible={false}>{[5,12,19].map((cx) => <Circle key={cx} cx={cx} cy={12} r={1.5} fill={colors.textMuted} />)}</Svg><Text style={styles.navigationLabel}>More</Text></Pressable>}
+      {wide ? <Button label="Sign in" variant="ghost" onPress={() => navigate("/login")} testID="mobile-nav-sign-in" /> : <Pressable accessibilityRole="button" accessibilityLabel="More" accessibilityState={{selected:["/browse","/languages","/interviews","/login"].includes(active)}} onPress={() => setMenuOpen(true)} style={[styles.navigationItem, ["/browse", "/languages", "/interviews", "/login"].includes(active) && styles.navigationSelected]} testID="mobile-nav-more"><Svg width={22} height={22} viewBox="0 0 24 24" accessible={false}>{[5,12,19].map((cx) => <Circle key={cx} cx={cx} cy={12} r={1.5} fill={colors.textMuted} />)}</Svg><Text style={styles.navigationLabel}>More</Text></Pressable>}
       <Modal visible={menuOpen} transparent animationType="slide" onRequestClose={() => setMenuOpen(false)}>
         <View style={styles.navigationBackdrop}>
           <Pressable style={StyleSheet.absoluteFill} accessibilityLabel="Close menu" onPress={() => setMenuOpen(false)} />

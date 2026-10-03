@@ -1,5 +1,30 @@
 # Product And Engineering Changelog
 
+## 2026-09-30 — In-level character miniatures
+
+- Reworked the actual Patch and zombie game figures with chibi proportions, stronger faces and short limbs; added transparent full-body exports at 48/64/96/128px.
+- Shared scene geometry between Pixi and Skia, corrected character scale and native container measurement, and added contact shadows.
+- Fixed initial paused rendering and redraw after resizing or changing reduced motion. Added all-level browser captures, shared geometry checks and native transform coverage.
+- Kept the earlier portrait icons as a separate asset kit. See the [miniature sheet](../assets/game/previews/miniatures-v3.png) and [feature contract](features/restore-the-signal.md).
+
+## 2026-09-29 — Mascot and enemy art refinement
+
+- Refined Patch from the original concept sheet and gave Shambler, Runner and Armored matching material, face and clothing treatments.
+- Updated editable game parts, six robot expressions, enemy sprites and cosmetic attachments; retained the animation timelines and learning rules.
+- Added four painted portrait masters and reproducible PNG/WebP thumbnails at 64, 128, 256 and 512 pixels, with an identity/alt-text manifest and character-kit preview.
+- Added atlas/portrait export regression coverage and thumbnail checks against the pruned production app. The [asset guide](../assets/game/README.md) records the visual contract and full generation prompts.
+- Verified the refined characters in production web and installed Android builds; coverage passes 360 core/web and 73 native tests. Expo Doctor reports three newer SDK patch recommendations, tracked in the feature contract.
+
+## 2026-09-29 — Restore the Signal campaign
+
+- Added the twelve-level chapter with 36 CSS Grid, SQLite, directed-flow, and system-design configurations; levels 8 and 12 offer live or assisted defense.
+- Moved discovery to `/learn` and made Play the home, while keeping lessons and paths independently accessible.
+- Added Patch, original painted districts, editable SVG parts/timelines, shared atlas exports, PixiJS/Skia renderers, local workers, and offline native assets.
+- Added unique game awards, timezone-based streaks, cosmetics, account-scoped local caches, optional RLS-protected union sync, and new introductory lessons.
+- Aligned the Expo SDK 57 patch dependencies and added a Gradle input hook so shared code edits invalidate cached Android bundles.
+- Added core/browser/native/database coverage and retained existing coverage floors. Generated worker/asset files are artifacts; no authored game source is excluded from coverage.
+- Release verification and current toolchain limits are tracked in [the feature contract](features/restore-the-signal.md); source and bundle success do not imply installed-iOS or deployment readiness.
+
 This changelog records durable, user-visible and architectural changes. Feature documents remain the authoritative contracts; this file explains when a group of related changes landed and points readers to the owning documentation.
 
 ## 2026-09-10 — Product Engineering Interview Preparation

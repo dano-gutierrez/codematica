@@ -20,7 +20,7 @@ Conventions:
 - `docs/features/_template.md` is the format new feature docs should follow.
 - `docs/features/README.md` explains how threads should consume and maintain feature docs.
 - `docs/features/adaptive-ui.md` owns the shared visual language, bottom navigation, desktop/tablet sidebars, responsive layout, and redesign validation gaps.
-- `docs/features/home-discovery.md` owns the cross-section home, global local search, curated rows, section themes, and full catalog routes.
+- `docs/features/home-discovery.md` owns the Learn discovery hub, global local search, curated rows, section themes, and full catalog routes.
 - `docs/features/learning-paths-and-practice.md` owns local path JSON, path detail, local exercise JSON, and practice sessions.
 - `docs/features/ml-systems-career-path.md` owns the Harvard CS249r source-linked career roadmap, authored prerequisites/Foundation companions, guided labs, and upstream refresh contract.
 - `docs/features/programming-language-refresh.md` owns reusable programming-language refresh paths, starting with Python for TypeScript and JavaScript engineers.
@@ -83,3 +83,11 @@ Maintenance rules:
 - If no README owns a new durable area and the area is not self-explanatory, add one.
 - Do not let README files become historical sketches. If implementation changes the actual contract, update the README in the same branch.
 - Add a dated changelog entry for a release-sized change that spans several feature contracts; do not use the changelog as a replacement for updating those contracts.
+
+## Restore the Signal
+
+[Game campaign contract](features/restore-the-signal.md) owns the twelve-level home, shared evaluators, Patch, asset exports, offline runners, game rewards, and release verification. Read it before changing game rules. See [art sources](../assets/game/README.md), [campaign authoring](../content/game/README.md), and [build tools](../scripts/game/README.md).
+
+[Patch and the zombie character kit](../assets/game/previews/character-kit-v2.png) shows the refined mascot, matching enemy identities and thumbnails. The [asset guide](../assets/game/README.md) owns portrait sizes, rig parts, palette and generation provenance.
+
+The game [miniature sheet](../assets/game/previews/miniatures-v3.png) shows the full-body figures used in each level and their actual phone/wide rendering.

@@ -6,7 +6,8 @@ import { useRef } from "react";
 import { ArrowUpRight, BookOpen, Brain, Code2, Home, Languages, Map, MoreHorizontal, Network, UserRound, X } from "lucide-react";
 
 const destinations = [
-  { href: "/", label: "Home", icon: Home },
+  { href: "/", label: "Play", icon: Home },
+  { href: "/learn", label: "Learn", icon: BookOpen },
   { href: "/paths", label: "Paths", icon: Map },
   { href: "/browse", label: "Lessons", icon: BookOpen },
   { href: "/practice", label: "Practice", icon: Brain },
@@ -18,8 +19,8 @@ export function AppNavigation() {
   const pathname = usePathname() ?? "/";
   const menu = useRef<HTMLDialogElement>(null);
   const moreButton = useRef<HTMLButtonElement>(null);
-  const active = pathname.startsWith("/docs/") || pathname.startsWith("/diagrams/") ? "/browse" : `/${pathname.split("/")[1]}`;
-  const compactDestinations = destinations.filter(({ href }) => !["/browse", "/languages"].includes(href));
+  const active = pathname.startsWith("/play/") ? "/" : pathname.startsWith("/docs/") || pathname.startsWith("/diagrams/") ? "/browse" : `/${pathname.split("/")[1]}`;
+  const compactDestinations = destinations.filter(({ href }) => !["/browse", "/languages", "/interviews"].includes(href));
 
   return (
     <>
@@ -35,11 +36,11 @@ export function AppNavigation() {
       <header className="app-mobile-header"><Link href="/" className="app-brand" aria-label="Codematica home"><span className="app-brand-mark"><Network size={19} aria-hidden="true" /></span>Codematica<span className="brand-dot">.</span></Link><Link href="/login" className="account-link" aria-label="Sign in"><UserRound size={20} aria-hidden="true" /></Link></header>
       <nav className="app-bottom-nav" aria-label="Mobile navigation" data-testid="app-bottom-navigation">
         {compactDestinations.map(({ href, label, icon: Icon }) => <Link key={href} href={href} aria-current={active === href ? "page" : undefined} data-testid={`mobile-nav-${label.toLowerCase()}`}><Icon size={21} aria-hidden="true" /><span>{label}</span></Link>)}
-        <button ref={moreButton} type="button" onClick={() => menu.current?.showModal()} aria-haspopup="dialog" className={["/browse", "/languages", "/login"].includes(active) ? "is-active" : undefined} data-testid="mobile-nav-more"><MoreHorizontal size={22} aria-hidden="true" /><span>More</span></button>
+        <button ref={moreButton} type="button" onClick={() => menu.current?.showModal()} aria-haspopup="dialog" className={["/browse", "/languages", "/interviews", "/login"].includes(active) ? "is-active" : undefined} data-testid="mobile-nav-more"><MoreHorizontal size={22} aria-hidden="true" /><span>More</span></button>
       </nav>
       <dialog ref={menu} onClose={() => moreButton.current?.focus({ preventScroll: true })} className="app-more-sheet" aria-labelledby="more-title" onClick={(event) => { if (event.target === event.currentTarget) menu.current?.close(); }}>
         <div className="sheet-heading"><h2 id="more-title">Explore Codematica</h2><button type="button" onClick={() => menu.current?.close()} aria-label="Close menu"><X size={20} aria-hidden="true" /></button></div>
-        {[destinations[2], destinations[5], { href: "/login", label: "Sign in", icon: UserRound }].map(({ href, label, icon: Icon }) => <Link href={href} key={href} className="sheet-link" onClick={() => menu.current?.close()}><Icon size={22} aria-hidden="true" /><span>{label}</span><ArrowUpRight size={18} aria-hidden="true" /></Link>)}
+        {[...destinations.filter(({ href }) => ["/browse", "/languages", "/interviews"].includes(href)), { href: "/login", label: "Sign in", icon: UserRound }].map(({ href, label, icon: Icon }) => <Link href={href} key={href} className="sheet-link" onClick={() => menu.current?.close()}><Icon size={22} aria-hidden="true" /><span>{label}</span><ArrowUpRight size={18} aria-hidden="true" /></Link>)}
       </dialog>
     </>
   );

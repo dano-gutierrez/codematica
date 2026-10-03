@@ -5,7 +5,7 @@ describe("adaptive native navigation", () => {
   it("keeps phone sections reachable and identifies the current section", async () => {
     const navigate = jest.fn();
     const view = await render(<NativeNavigation pathname="/interviews/google/number-of-islands" navigate={navigate} wide={false} />);
-    expect(view.getByTestId("mobile-nav-interviews").props.accessibilityState).toEqual({ selected: true });
+    expect(view.getByTestId("mobile-nav-more").props.accessibilityState).toEqual({ selected: true });
     await fireEvent.press(view.getByTestId("mobile-nav-paths"));
     expect(navigate).toHaveBeenCalledWith("/paths");
     await fireEvent.press(view.getByTestId("mobile-nav-more"));
@@ -35,6 +35,7 @@ describe("adaptive native navigation", () => {
 jest.mock("expo-router", () => ({
   Stack: () => null,
   usePathname: () => "/",
+  useGlobalSearchParams:()=>({}),
   useRouter: () => ({ navigate: jest.fn() }),
 }));
 jest.mock("react-native-safe-area-context", () => ({

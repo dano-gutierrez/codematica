@@ -10,11 +10,11 @@ describe("persistent app navigation", () => {
     route.pathname = "/practice/system-design/cache-product-contract";
     render(<AppNavigation />);
     const desktop = within(screen.getByRole("navigation", { name: "Primary navigation" }));
-    for (const [name, href] of [["Home", "/"], ["Paths", "/paths"], ["Lessons", "/browse"], ["Practice", "/practice"], ["Interviews", "/interviews"], ["Languages", "/languages"]]) {
+    for (const [name, href] of [["Play", "/"], ["Learn", "/learn"], ["Paths", "/paths"], ["Lessons", "/browse"], ["Practice", "/practice"], ["Interviews", "/interviews"], ["Languages", "/languages"]]) {
       expect(desktop.getByRole("link", { name })).toHaveAttribute("href", href);
     }
     expect(desktop.getByRole("link", { name: "Practice" })).toHaveAttribute("aria-current", "page");
-    expect(desktop.getByRole("link", { name: "Home" })).not.toHaveAttribute("aria-current");
+    expect(desktop.getByRole("link", { name: "Play" })).not.toHaveAttribute("aria-current");
   });
 
   it("keeps lessons, languages and sign in reachable from the compact navigation", () => {

@@ -9,3 +9,9 @@ The shared screen set includes discovery, catalogs, Japanese Learn/Review/Dictio
 ## Adaptive UI
 
 See `docs/features/adaptive-ui.md` for persistent phone navigation, desktop/iPad sidebars, design rules, and validation gaps. Existing screens and feature logic are reused. Navigation coverage lives in `AppHeader.test.tsx`, native `adaptive-navigation.test.tsx`, Playwright `adaptive-navigation.smoke.spec.ts` / `adaptive-layout.regression.spec.ts`, and Maestro `adaptive-navigation.yaml`.
+
+## Restore the Signal
+
+`src/game/` provides NativeGameMap/NativeGamePlay, NativeGameBoard, NativeGameScene, and NativeDistrictArt. Skia and Reanimated are direct native runtime dependencies and UI peer dependencies. Editors and graph controls remain accessible native UI; CSS/SQLite use the bundled isolated local WebView. Jest instruments these files; Maestro must prove installed-app behavior.
+
+`NativeGameScene` measures its own container and applies core miniature transforms to Skia, including paused/reduced-motion frames and success opacity. The shared atlas contains the editable chibi robot parts, enemies and ground shadows.

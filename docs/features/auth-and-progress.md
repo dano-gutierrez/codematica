@@ -104,3 +104,7 @@ Auth and progress are additive. Codematica still renders local content without S
 ## Thread Handoff Prompt
 
 `Read docs/codex-context.md and docs/features/auth-and-progress.md first. Compare the documented auth/progress contract against apps/web/src/lib/supabase, apps/web/src/lib/progress, apps/mobile/src/lib/supabase.ts, apps/mobile/src/lib/progress.ts, apps/mobile/src/lib/skill-progress.ts, packages/core/src/progress, apps/web/src/components/LoginForm.tsx, apps/web/src/components/KeepReadingSection.tsx, apps/web/src/components/SaveProgressPrompt.tsx, apps/web/src/components/ProgressTrackers.tsx, apps/web/src/app/api/progress/**/route.ts, and both progress migrations under supabase/migrations/, then update tests and docs with any behavior changes.`
+
+## Separate game progress (2026-09-29)
+
+[Restore the Signal](restore-the-signal.md) adds account-scoped local game awards and optional Supabase sync through `/api/progress/game` and `merge_game_progress`. Awards and successful calendar days merge by union. A replay cannot duplicate XP. The saved timezone defines streak dates; preferences retain earned cosmetics. Owner RLS and expected-account checks prevent cross-account reads/writes. Answers, code, and attempts stay transient. The existing save-progress prompt also recognizes anonymous game awards; learning-path progress tables and access rules are unchanged.

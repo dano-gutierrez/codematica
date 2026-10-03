@@ -1,3 +1,4 @@
+import type { GameCampaign } from "../game/schema";
 import { z } from "zod";
 
 export const difficultySchema = z.enum(["foundation", "practitioner", "senior", "principal"]);
@@ -885,7 +886,8 @@ export type ContentTrack = {
 };
 
 export type ContentIndex = {
-  schemaVersion: 10;
+  schemaVersion: 11;
+  gameCampaigns: GameCampaign[];
   sources: ContentSource[];
   documents: KnowledgeDocument[];
   diagrams: MermaidDiagram[];

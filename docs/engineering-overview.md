@@ -125,7 +125,7 @@ Interview collections live in `content/interviews/*.json` and are discriminated 
 
 Human-language catalogs live in `content/languages/**/*.json`. Schema v10 adds structured grammar, N5 study metadata, Japanese open-answer/listening question kinds, and synthetic-audio provenance while retaining generic progression and resource-rights metadata. Japanese indexes complete kana, an exact 100-kanji target, 650 N5-aligned words, 60 grammar patterns, learner romaji, IPA, study order, and normalized paths for published handwriting profiles. A compact pinned JMdict asset supplies local IME candidates. Only human-approved audio enters generated web/Expo registries; external resources remain link-only unless redistribution rights are explicit.
 
-Home discovery curation lives in `content/discovery/home.json`. It references canonical published content by kind and slug; index generation validates every reference and serializes the ordered sections into content index schema version 10. `packages/core/src/discovery.ts` resolves those references and provides cross-section local search to web and native.
+Home discovery curation lives in `content/discovery/home.json`. It references canonical published content by kind and slug; index generation validates every reference and serializes the ordered sections into content index schema version 11. `packages/core/src/discovery.ts` resolves those references and provides cross-section local search to web and native.
 
 The ML Systems Engineer path is the first source-linked career curriculum. It maps the complete Harvard CS249r student surface—both books, labs, TinyTorch, MLSys·im, optional hardware, and StaffML—while locally publishing prerequisites and Volume I companions through Data Engineering. Later stages remain explicitly planned but open their primary sources now.
 
@@ -151,7 +151,9 @@ Progress is user state, not authored content. Existing completion remains in `us
 
 ## Route Model
 
-- `/`: cross-section discovery home with Keep reading, curated rows, and global local search.
+- `/`: Restore the Signal campaign map.
+- `/learn`: cross-section discovery with Keep reading, curated rows, and global local search.
+- `/play/[campaign]/[level]`: game briefing, editor, simulation, hints, and results.
 - `/paths`: complete learning-path catalog grouped by category.
 - `/browse`: fuzzy content library.
 - `/paths/[slug]`: one role or skill path.
@@ -204,3 +206,42 @@ The stable command and workflow contract is documented in `docs/features/automat
 The likely next step remains hybrid: keep Markdown documents and local structured study content canonical, keep `@codematica/core` as the shared contract surface, and expand Supabase-backed search, AI summaries, scoring, streaks, and study features behind explicit contracts.
 
 Before relying on Supabase for production user progress at scale, revisit plan level, backups, RLS policy coverage, and operational ownership. The service role key remains server-only.
+
+## Game runtime and progression
+
+The [game feature contract](features/restore-the-signal.md) owns the chapter. `content/game/` passes the shared Zod/index pipeline; all 36 scenarios ship in schema version 11. Game rules import no graphics libraries. Web loads PixiJS on the client, while native Skia/Reanimated consume the same atlas and keyframes. CSS uses actual local layout; sql.js and WASM are bundled into a terminable local worker. Native hosts the same sandbox document in a local WebView.
+
+```mermaid
+flowchart TD
+    Campaign["content/game JSON + local lessons"] --> Validate["Core schema + reference validation"]
+    Validate --> Index["Generated content index v11"]
+    Artwork["Editable SVG parts + painted layers + portraits + rig timelines"] --> Export["game:assets"]
+    Export --> Atlas["Shared atlas + district textures"]
+    Export --> Thumbnails["Sized PNG/WebP portraits + identity manifest"]
+    Export --> Miniatures["Transparent full-body miniature PNGs"]
+    Thumbnails --> Static["Web static assets / native-ready PNG files"]
+    Miniatures --> Static
+    Index --> Session["GameSession: transient input + logical clock"]
+    Session --> Core["Pipes + workload evaluators"]
+    Session --> Sandbox["Local CSS layout / SQLite worker"]
+    Core --> Result["Reasons, events, metrics"]
+    Sandbox --> Result
+    Result --> Awards["Unique awards + successful activity dates"]
+    Result --> Scene["Shared poses and simulation outcomes"]
+    Atlas --> Scene
+    Geometry["Measured container + shared miniature transforms"] --> Scene
+    Geometry --> Export
+    Scene --> Pixi["Web PixiJS"]
+    Scene --> Skia["Native Skia + Reanimated"]
+    Awards --> Local["Account-scoped local game progress"]
+    Local <--> Merge["Optional authenticated union-merge RPC"]
+    Merge --> RLS["Awards / activity days / preferences with owner RLS"]
+```
+
+Game awards are separate from learning-path progress. Locks only constrain campaign levels. The anonymous buffer can be claimed by one account, and stale in-flight writes carry an expected account ID. SQL/CSS answers and full attempt history never enter the RPC. Additive migrations, clean replay, and transactional pgTAP test the merge and RLS. Final web artifacts and installed native bundles must include worker/WASM/texture assets; source-only tests cannot certify those packages.
+
+Android prebuild also registers shared package sources and game assets as Gradle bundle inputs. This keeps incremental production APKs aligned with Metro’s workspace watch folders. The artifact check compares decoded textures because Android resource shrinking renames packed files.
+
+Portrait masters are separate from the animation atlas. `game:assets` emits 64/128/256/512px thumbnails and a manifest with names and alt text; it copies all variants into the web public directory. Native screens can statically import a chosen PNG size when needed. `game:check` recursively verifies generated subfolders, and the pruned web artifact smoke check validates every served thumbnail.
+
+The game renderers share `packages/core/src/game/miniatures.ts` for layer ordering, animation transforms, success opacity and fitting the figures to the measured container. The asset build samples this same pose to export transparent full-body miniatures; portrait icons remain separate. No renderer library enters core.

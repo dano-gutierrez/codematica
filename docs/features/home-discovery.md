@@ -5,7 +5,7 @@
 - Status: `shipped`
 - Last updated: `2026-09-05`
 - Owner thread: `n/a`
-- Current state: Web and native home routes are cross-section discovery hubs with curated rows, global local-first search, stable section colors, and full catalog destinations.
+- Current state: Web and native `/learn` routes are cross-section discovery hubs with curated rows, global local-first search, stable section colors, and full catalog destinations.
 - Target outcome: Users can understand Codematica's major learning surfaces immediately, search across all of them, and reach a complete organized catalog without guessing which route owns the content.
 - Code touchpoints:
   - `content/discovery/home.json`
@@ -28,7 +28,7 @@ The root route is a discovery surface rather than the complete learning-path cat
 
 ## Outcome / Contract
 
-- `/` shows the discovery home on web and native.
+- `/learn` shows discovery on web and native. `/` is the [game campaign](restore-the-signal.md).
 - `/paths` shows every published learning path; `/paths/[slug]` remains one ordered path.
 - `/browse` shows every published lesson and diagram with track, difficulty, and content-type filters.
 - `/interviews` shows company entry points and the complete filterable interview-question catalog.
@@ -37,7 +37,7 @@ The root route is a discovery surface rather than the complete learning-path cat
 - Home search covers paths, documents, diagrams, exercises, passive feeds, interview companies/questions, language characters, vocabulary, and language hubs without Supabase.
 - An active home query replaces curated rows with results grouped by section. Clearing it restores the curated home.
 - `content/discovery/home.json` owns editorial ordering. Index generation rejects missing, duplicate, or section-incompatible references.
-- Generated content index schema version `7` includes `homeDiscovery`.
+- Generated content index schema version `11` includes `homeDiscovery`.
 
 ## Detailed Behavior
 
@@ -83,7 +83,7 @@ See [Adaptive Interface And Navigation](adaptive-ui.md) for the persistent phone
 - Navigation/layout: `adaptive-navigation.smoke.spec.ts`, `adaptive-layout.regression.spec.ts`, and `AppHeader.test.tsx`; native `adaptive-navigation.test.tsx` and Maestro navigation smoke.
 
 - Unit: search covers every section, exact-title ranking, published-only results, route de-duplication, and curated section resolution.
-- Integration: index generation serializes schema version 9 and rejects invalid home references.
+- Integration: index generation serializes schema version 11 and rejects invalid home references.
 - Component: web home renders all section destinations and swaps curated rows for grouped search results.
 - Native: shared home renders every section and searches interview questions from the bundled index.
 - E2E: mobile-sized web home exposes Japanese, searches interviews and language content, preserves consistent accessible section actions, and navigates to a full catalog.
@@ -98,3 +98,7 @@ See [Adaptive Interface And Navigation](adaptive-ui.md) for the persistent phone
 ## Thread Handoff Prompt
 
 `Read docs/codex-context.md and docs/features/home-discovery.md first. Compare content/discovery/home.json, packages/core/src/discovery.ts, apps/web/src/components/HomeDiscovery.tsx, apps/web/src/components/SectionCatalogs.tsx, packages/ui/src/screens.tsx, and the home discovery tests, then update curation, routes, tests, and docs together.`
+
+## Campaign navigation update (2026-09-29)
+
+Discovery, search, and Keep reading retain their behavior at `/learn`. `content/discovery/home.json` remains their editorial source. Play is the root campaign, and learning content remains accessible regardless of campaign progress. Existing discovery browser/device flows now enter through Learn.

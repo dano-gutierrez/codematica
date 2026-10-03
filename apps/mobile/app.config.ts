@@ -43,6 +43,7 @@ const config: ExpoConfig = {
   },
   plugins: [
     "expo-router",
+    "./plugins/with-shared-bundle-inputs.cjs",
     "expo-secure-store",
     "expo-web-browser",
     [

@@ -126,3 +126,11 @@ Keep the service role key server-side only. Do not add it to browser code or Ver
 - `packages/ui`: shared React Native-compatible screens and design tokens.
 
 Start documentation work at `docs/README.md`. See `docs/CHANGELOG.md` for dated delivery summaries and the linked feature documents for authoritative behavior.
+
+## Restore the Signal
+
+The home is the Restore the Signal campaign; discovery and Keep reading are at `/learn`. See `docs/features/restore-the-signal.md`. Run `npm run game:runtime` and `npm run game:assets` when local runner or art sources change; `npm run build` includes both exports. Native bundles consume their committed offline outputs.
+
+The [character kit](assets/game/previews/character-kit-v2.png) defines Patch and the three zombie identities. `game:assets` also exports their thumbnails; `npm run game:character-preview` rebuilds the visual review sheet. See the [asset guide](assets/game/README.md) for editable sources, portrait sizes and generation prompts.
+
+The [in-level miniature kit](assets/game/previews/miniatures-v3.png) shows the actual chibi game figures. Run `npm run game:miniature-preview -- http://127.0.0.1:3128` against a completed production preview to recapture it.

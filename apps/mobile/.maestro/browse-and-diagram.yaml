@@ -4,8 +4,7 @@ tags:
 ---
 - launchApp:
     clearState: true
-- tapOn:
-    id: mobile-home-browse
+- openLink: codematica://browse
 - assertVisible:
     id: mobile-knowledge-search-input
 - tapOn:

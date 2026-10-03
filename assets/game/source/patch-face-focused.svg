@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128"><defs>
+<linearGradient id="cream" x1="0" y1="0" x2=".8" y2="1"><stop stop-color="#fff3d6"/><stop offset=".52" stop-color="#e7d1a9"/><stop offset="1" stop-color="#b29c7f"/></linearGradient>
+<linearGradient id="orange" x1="0" y1="0" x2=".7" y2="1"><stop stop-color="#f6b04c"/><stop offset=".5" stop-color="#d87f2c"/><stop offset="1" stop-color="#935126"/></linearGradient>
+<linearGradient id="metal" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#797669"/><stop offset=".5" stop-color="#434a45"/><stop offset="1" stop-color="#242f2d"/></linearGradient>
+<linearGradient id="glass" x1="0" y1="0" x2=".8" y2="1"><stop stop-color="#365f58"/><stop offset=".5" stop-color="#163f3d"/><stop offset="1" stop-color="#0e2e31"/></linearGradient>
+<radialGradient id="skin" cx=".3" cy=".22" r=".85"><stop stop-color="#bac58a"/><stop offset=".57" stop-color="#98a46b"/><stop offset="1" stop-color="#697a52"/></radialGradient>
+<linearGradient id="cloth" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#688178"/><stop offset=".6" stop-color="#425f59"/><stop offset="1" stop-color="#2b4440"/></linearGradient>
+<radialGradient id="eye"><stop stop-color="#fff5c6"/><stop offset=".65" stop-color="#ffdc77"/><stop offset="1" stop-color="#dfa940"/></radialGradient>
+</defs><g stroke="#514b39" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><path d="M91 23l4-15" stroke="url(#metal)" stroke-width="4"/><circle cx="96" cy="7" r="5" fill="url(#orange)"/><circle cx="94.5" cy="5" r="1.4" fill="#ffe7ac" stroke="none"/>
+<rect x="7" y="40" width="14" height="31" rx="7" fill="url(#metal)"/><path d="M15 40v31" stroke="#b0a58b"/><rect x="11" y="40" width="11" height="29" rx="5" fill="url(#orange)"/>
+<rect x="106" y="40" width="15" height="31" rx="7" fill="url(#metal)"/><rect x="106" y="41" width="11" height="28" rx="5" fill="url(#orange)"/>
+<path d="M43 20Q64 16 87 21q23 4 25 25l-1 18q-2 20-23 22l-42-1q-26-1-29-23l-1-15q1-22 27-27z" fill="url(#cream)"/>
+<path d="M25 42q2-16 25-18l32 1" fill="none" stroke="#fff7de" stroke-width="3"/>
+<path d="M44 28l41 1q18 2 19 18l-1 17q-1 14-20 14l-39-1q-19-1-20-17V46q0-16 20-18z" fill="url(#metal)"/>
+<path d="M45 31l38 1q17 1 17 16l-1 14q0 12-18 12l-36-1q-17-1-17-15V47q0-14 17-16z" fill="url(#glass)" stroke="#677d6a"/>
+<path d="M34 39q6-6 21-5l25 1" stroke="#87a08b" opacity=".3" fill="none" stroke-width="2"/>
+<path d="M34 69l8 2M90 37l4 4" stroke="#b6c1a2" opacity=".25"/>
+<g fill="#ae8251" stroke="none" opacity=".72"><path d="M27 28l5-1-1 3-4 1z"/><path d="M35 33l3-1 1 2-3 1z"/><circle cx="23" cy="34" r="1"/></g><g fill="#ae8251" stroke="none" opacity=".72"><path d="M88 80l5-1-1 3-4 1z"/><path d="M96 85l3-1 1 2-3 1z"/><circle cx="84" cy="86" r="1"/></g><circle cx="22" cy="52" r="1.8" fill="#b1a081"/><path d="M21 51l1.5 1.5" stroke="#695f4c" stroke-width=".8"/><circle cx="104" cy="54" r="1.8" fill="#b1a081"/><path d="M103 53l1.5 1.5" stroke="#695f4c" stroke-width=".8"/><circle cx="48" cy="81" r="1.8" fill="#b1a081"/><path d="M47 80l1.5 1.5" stroke="#695f4c" stroke-width=".8"/><g stroke="none"><ellipse cx="46" cy="53" rx="9" ry="14" fill="#f5b645" opacity=".1"/><ellipse cx="81" cy="53" rx="9" ry="14" fill="#f5b645" opacity=".1"/></g><path d="M40 47l13 4v7q-8 10-11-1zM74 51l13-4-2 10q-4 10-11 1z" fill="url(#eye)" stroke="none"/><path d="M38 44l16 5m19 0 16-5" stroke="#ffc966" stroke-width="2"/></g></svg>
