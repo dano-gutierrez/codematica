@@ -98,11 +98,11 @@ A new graph projection invalidates pending review/publication bindings. Stop and
 
 ## Test Plan
 
-- Unit/integration: full authored inventory, human-language exclusions, retained programming material, stable IDs, scoped skills, granular interviews, campaign/level/scenario coverage, status-preserving post hashes, stale evidence, transport validation, stable model-ID cache versions, source windows beyond introductory text, bounded explanations, cache/inference locking and graph override recovery.
+- Unit/integration: full authored inventory, human-language exclusions, retained programming material, stable IDs, scoped skills, granular interviews, campaign/level/scenario coverage, status-preserving post hashes, stale evidence, transport validation, stable model-ID cache versions, source windows beyond introductory text, bounded explanations, injected content and unsupported model tool/action rejection, cache/inference locking and graph override recovery.
 - Database: RLS/anonymous rejection, atomic activation, idempotent offline submissions, expired leases, candidate hashes, literal excerpt/hash validation and stale preparation/verification/adoption/publication.
 - Browser: graph/table navigation, evidence, candidate queueing, review, denied access, offline freshness and LinkedIn context. Regression classification: `@regression`.
 - Real local experiment: graph retrieval plus OpenJev/Qwen first pass, independent agent verification, authenticated synthetic adoption/approval and inert Buffer scheduling/reconciliation. No real Buffer request.
-- Quality: 40 labeled local cases covering duplicates, updates, level changes, reuse, new paths and injection; report retrieval, routing errors, abstention, latency and process RSS. Reliability requires independent labels/calibration beyond this initial set.
+- Quality: 40 labeled local cases covering duplicates, updates, level changes, reuse and new paths; report retrieval, routing errors, abstention, latency and process RSS. Reliability requires independent labels/calibration beyond this initial set.
 - Coverage: new TypeScript domain/UI code is instrumented; existing floors are unchanged. Python has its own isolated unit lane. CLI orchestration is exercised through integration smokes.
 - Required commands: see [the runbook](../runbooks/knowledge-evaluator.md), plus lint, configured typechecks, both coverage lanes, native coverage, content freshness, Expo Doctor, web build and production-pruned HTTP smoke.
 
