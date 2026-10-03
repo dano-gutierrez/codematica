@@ -71,6 +71,8 @@ Full extraction exits unsuccessfully while gaps remain; a bounded pilot may stop
 
 Supporting quotes may be short code fragments, such as `max: 8`. Quotes must be nonempty, occur verbatim in their source passage and contain the supported concept names. Unsupported concepts and relationships are discarded and counted.
 
+The single JSON repair retry receives the failed output and validation location. It requests compact quotes while keeping schema and literal-evidence validation. Retry metadata identifies this policy separately; completed validated extraction remains reusable.
+
 BGE runs on CPU with 384-token windows and 48-token overlap, normalized pooling and four PyTorch threads. Evaluation retrieves diverse parent resources so one lesson's sections do not crowd out alternatives. Exact matching preserves case-sensitive code and literal whitespace, including Python indentation. The local API requires a private bearer token and accepts only loopback model origins, with redirects and environment proxies disabled.
 
 After preparation enrollment, run `enable-knowledge --all-review` to enroll unapproved review drafts. Approved/rejected drafts are left alone. The command backs up editorial state first, requires an active graph and no running preparation/refinement jobs, and replaces pending unbound work. Newly created drafts inherit enrollment. Suggested imports start analysis when the reviewer requests refinement.

@@ -25,6 +25,7 @@ class QwenClient(OpenAIGenericClient):
         kwargs["client"] = object()  # All network calls use the loopback-only HTTP transport below.
         super().__init__(**kwargs)
         self.local = LocalModels(store)
+        self.local.versions["extraction_retry"] = "json-repair-v1"
 
     async def generate_response(self, messages, response_model=None, max_tokens=None, **kwargs):
         schema = response_model.model_json_schema() if response_model else {}
@@ -44,8 +45,13 @@ class QwenClient(OpenAIGenericClient):
                     result = json.loads(self._strip_code_fences(choice["message"]["content"]))
                     if response_model: result = response_model.model_validate(result).model_dump()
                     return result
-                except (ValueError, KeyError, TypeError):
+                except (ValueError, KeyError, TypeError) as error:
                     if attempt: raise ValueError("Local extraction failed schema validation") from None
                     body["max_tokens"]=min(3000,body["max_tokens"]+800)
-                    body["messages"].append({"role": "user", "content": "Your output failed validation. Return actual extracted data with the required keys from the example shape. Do not return $defs, properties or a schema. Use empty arrays when the passage provides no supported entries."})
+                    previous=choice.get("message",{}).get("content","")
+                    if isinstance(previous,str): body["messages"].append({"role":"assistant","content":previous[:12000]})
+                    detail=error.msg if isinstance(error,json.JSONDecodeError) else type(error).__name__
+                    if hasattr(error,"errors"):
+                        detail="; ".join(".".join(str(part) for part in item["loc"])+": "+item["type"] for item in error.errors(include_input=False)[:8])
+                    body["messages"].append({"role": "user", "content": "Your previous output failed validation ("+detail+"). Return one complete JSON data instance, closing every object and array. Return actual extracted data with the required keys from the example shape. Do not return $defs, properties or a schema. If quotes are required, use brief verbatim quotes under 160 characters containing the concept names; never copy whole code blocks. Escape JSON newlines once, not twice. Use empty arrays when the passage provides no supported entries."})
         return await self.local.cached("graphiti-extract-v2", body, run)

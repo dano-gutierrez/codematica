@@ -13,6 +13,19 @@ from test_store import snapshot
 class Entities(BaseModel):
     entities: list[str]
 class QwenTests(unittest.IsolatedAsyncioTestCase):
+    async def test_repair_bounds_previous_output_and_token_budget(self):
+        with tempfile.TemporaryDirectory() as temp:
+            client=QwenClient(Store(Path(temp)/'db'));calls=[]
+            async def call(origin,path,body):
+                import copy
+                calls.append(copy.deepcopy(body))
+                return {'choices':[{'finish_reason':'stop','message':{'content':'x'*12001 if len(calls)==1 else '{"entities":[]}'}}]}
+            client.local.call=call
+            self.assertEqual(await client.generate_response([Message(role='user',content='Source')],Entities,max_tokens=2999),{'entities':[]})
+            self.assertEqual(len(calls),2)
+            self.assertEqual(len(calls[1]['messages'][-2]['content']),12000)
+            self.assertEqual(calls[1]['max_tokens'],3000)
+
     async def test_short_verbatim_code_evidence_is_retained(self):
         with tempfile.TemporaryDirectory() as temp:
             store=Store(Path(temp)/'db')
@@ -49,6 +62,8 @@ class QwenTests(unittest.IsolatedAsyncioTestCase):
             messages=[Message(role='system',content='Extract'),Message(role='user',content='Indexes are technical concepts')]
             self.assertEqual(await client.generate_response(messages,Entities),{'entities':['indexes']})
             self.assertEqual(len(calls),2)
+            self.assertEqual(calls[1]['messages'][-2], {'role':'assistant','content':'{"type":"object","properties":{}}'})
+            self.assertIn('brief verbatim quotes',calls[1]['messages'][-1]['content'])
             await client.generate_response(messages,Entities)
             self.assertEqual(len(calls),2)
             self.assertEqual(example(Entities.model_json_schema()),{'entities':['']})
