@@ -16,6 +16,7 @@ This file preserves repo context across Codex tasks.
 - Canonical passive flashcard feeds live in `content/flashcard-feeds/`.
 - Canonical interview coding catalog content lives in `content/interviews/`.
 - Canonical human-language character and vocabulary catalogs live in `content/languages/`.
+- Published kana stroke geometry uses pinned KanjiVG sources with CC BY-SA 3.0 attribution recorded per character and in `THIRD_PARTY_NOTICES.md`; preserve it when modifying the canonical points. Web/native share curved rendering and beginner stroke scoring from core.
 - Canonical Japanese audio metadata and curated resource metadata live beside the language catalogs in `content/languages/japanese/`; generated platform audio registries are artifacts, not authoring surfaces.
 - Canonical home discovery curation lives in `content/discovery/home.json`.
 - Generated content search data lives in `packages/core/src/generated/content-index.json` and must be regenerated, not edited by hand.
@@ -59,7 +60,7 @@ The first hosted web target is Vercel Hobby on the Vercel-provided URL. Vercel r
 - `apps/mobile/src/lib/`: native navigation, Supabase Auth, secure session storage, and local progress adapters
 - `apps/mobile/src/lib/skill-progress.ts`: native Japanese mastery read, validation, and bounded sync
 - `apps/mobile/src/__tests__/`: mobile Jest and React Native Testing Library screen tests
-- `apps/mobile/e2e/`: agent-device phone simulator regression scripts for code scrolling and page layout, with retained screenshot/tree evidence
+- `apps/mobile/e2e/`: agent-device phone/tablet simulator and emulator regressions for code scrolling, notebook layout and handwriting gestures, with retained screenshot/tree evidence
 - `apps/mobile/.maestro/`: installed-app Android/iOS regression flows
 - `apps/mobile/.eas/workflows/`: native smoke and `v*` release E2E orchestration
 - `packages/core/src/content/`: content schema, parser, index builder, and generated index access
@@ -93,7 +94,7 @@ The first hosted web target is Vercel Hobby on the Vercel-provided URL. Vercel r
 - Preserve discovery JSON as the editorial source of truth for curated home rows.
 - Keep questionnaire answers transient; progress may store current position, completion, and aggregate overall/per-skill scores only.
 - Keep guided-lab predictions, evidence details, and reflections transient; progress may store only coarse prediction/checklist completion.
-- Keep writing strokes transient; progress may store only coarse practice state such as mode, character slug, and completion.
+- Notebook vector ink persists locally only (IndexedDB/AsyncStorage); remote progress stores bounded counts and unlocks, never ink. See docs/features/japanese-writing-notebooks.md.
 - Keep Japanese mastery separate from completion history. Local/remote merge may retain only best score, attempt count, review box, mastery state, last practice time, and next review time.
 - Passive flashcards must not collect answers; progress may store only the latest feed/card position.
 - Keep Supabase optional for local browsing. Auth/progress sync may require public Supabase runtime env vars, but content rendering must keep working without them.
@@ -144,3 +145,9 @@ The supplementary `frontend/react-state-async-callbacks` lesson and its six-ques
 ### Editorial accessibility and adaptive composition
 
 `docs/features/design-system.md` owns the platform matrix. Web editorial panes use content-width container queries; narrow/touch screens reveal button labels and 48 px targets. Native `LinkedInAdminScreen` keeps labeled 48 dp actions and opts into the existing `AppScreen` keyboard-aware composition. Both preserve unsaved drafts until save/discard. Data/store/worker boundaries and authorization are unchanged. Browser emulation and Jest do not certify native screen-reader or software-keyboard behavior.
+
+### Japanese notebooks
+
+Japanese planas share the core notebook engine and React-only `@codematica/ui/notebook-session` hook. Each sheet requires 24 whole-prompt repetitions. Web uses Pointer Events, installed iOS uses the local PencilKit module, and Android uses SVG. Local ink and maximum earned progress are distinct; restart preserves unlocks. Vocabulary `writing-starter` tags own starter-word curation.
+
+Native handwriting routes disable swipe-back through `apps/mobile/src/lib/handwriting-navigation.ts`. The paper blocks automatic one-finger ScrollView interception; explicit two-finger and accessibility scrolling remain available. Device regressions run against disposable notebooks. Expo Go validates the SVG fallback; the physical iPad/PencilKit checklist remains a separate installed-build gate in the notebook feature doc.

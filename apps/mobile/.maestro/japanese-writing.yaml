@@ -1,0 +1,97 @@
+appId: com.codematica.app
+tags:
+  - regression
+---
+- launchApp:
+    clearState: true
+- openLink: codematica://languages/japanese/notebooks
+- scrollUntilVisible:
+    element:
+      id: mobile-notebook-romaji-toggle
+    direction: DOWN
+- tapOn:
+    id: mobile-notebook-romaji-toggle
+- tapOn:
+    id: mobile-notebook-romaji-toggle
+- scrollUntilVisible:
+    element:
+      id: mobile-notebook-input
+    direction: UP
+- tapOn:
+    id: mobile-notebook-input
+- evalScript: ${maestro.copiedText = '一'}
+- pasteText
+- tapOn:
+    id: mobile-notebook-create
+- assertVisible:
+    id: mobile-writing-notebook
+- assertNotVisible:
+    id: mobile-writing-peek
+- scrollUntilVisible:
+    element:
+      id: mobile-writing-difficulty-balanced
+    direction: DOWN
+- tapOn:
+    id: mobile-writing-difficulty-balanced
+- tapOn:
+    id: mobile-writing-difficulty-easy
+- scrollUntilVisible:
+    element:
+      id: mobile-writing-pad
+    direction: DOWN
+- assertVisible:
+    id: mobile-writing-pad
+- swipe:
+    from:
+      id: mobile-writing-notebook-viewport
+    direction: RIGHT
+    duration: 300
+- assertVisible: "Correct.*"
+- assertVisible: ".*1 / 24 repetitions"
+- assertVisible:
+    id: mobile-writing-notebook
+- tapOn:
+    id: mobile-writing-undo
+- assertVisible: ".*0 / 24 repetitions"
+- tapOn:
+    id: mobile-writing-clear
+- assertNotVisible:
+    id: mobile-writing-input-draw
+- assertNotVisible:
+    id: mobile-writing-input-pen
+- assertNotVisible:
+    id: mobile-writing-input-scroll
+# Scroll from the outer page gutter; two-finger paper pan requires device QA.
+- swipe:
+    start: 4%, 80%
+    end: 4%, 20%
+    duration: 500
+- assertVisible:
+    id: mobile-writing-repeat
+- tapOn:
+    id: mobile-writing-repeat
+- openLink: codematica://languages/japanese/notebooks
+- scrollUntilVisible:
+    element:
+      id: mobile-notebook-saved-custom-4e00-v1
+    direction: DOWN
+- tapOn:
+    id: mobile-notebook-saved-custom-4e00-v1
+- assertVisible:
+    id: mobile-writing-notebook
+- openLink: codematica://practice/languages/japanese-hiragana-vowels-writing
+- scrollUntilVisible:
+    element:
+      id: mobile-writing-activity-match
+    direction: DOWN
+- tapOn:
+    id: mobile-writing-activity-match
+- scrollUntilVisible:
+    element:
+      id: mobile-writing-match-kana-characters-0-0
+    direction: DOWN
+- tapOn:
+    id: mobile-writing-match-kana-characters-0-0
+- tapOn:
+    id: mobile-writing-match-romaji-characters-0-1
+- assertVisible: "Try another pair. You have time."

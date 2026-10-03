@@ -189,3 +189,13 @@ describe("account and admin navigation", () => {
     expect(more).toHaveFocus();
   });
 });
+
+it("names Japanese and notebook practice under Languages on tablet and phone",()=>{
+ route.pathname="/languages/japanese/notebooks";render(<AppNavigation/>);
+ const desktop=within(screen.getByRole("navigation",{name:"Primary navigation"}));
+ expect(desktop.getByRole("link",{name:"Languages"})).toHaveAttribute("aria-current","page");
+ expect(desktop.getByRole("link",{name:/Japanese/})).toHaveAttribute("href","/languages/japanese");
+ expect(desktop.getByRole("link",{name:"Notebook practice"})).toHaveAttribute("href","/languages/japanese/notebooks");
+ fireEvent.click(screen.getByRole("button",{name:"More"}));
+ expect(within(screen.getByRole("dialog")).getByRole("link",{name:"Notebook practice"})).toHaveAttribute("href","/languages/japanese/notebooks");
+});

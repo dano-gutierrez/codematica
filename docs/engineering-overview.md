@@ -271,3 +271,29 @@ Native follows the same nodes and code display, with execution available on web 
 ### Editorial accessibility and adaptive composition
 
 `docs/features/design-system.md` owns the platform matrix. Web editorial panes use content-width container queries; narrow/touch screens reveal button labels and 48 px targets. Native `LinkedInAdminScreen` keeps labeled 48 dp actions and opts into the existing `AppScreen` keyboard-aware composition. Both preserve unsaved drafts until save/discard. Data/store/worker boundaries and authorization are unchanged. Browser emulation and Jest do not certify native screen-reader or software-keyboard behavior.
+
+### Japanese notebooks
+
+Japanese notebook practice extends the existing local character/vocabulary catalogs with versioned sheets and 24 whole-prompt repetitions. Canonical kana geometry remains pinned and attributed to KanjiVG. The whole-shape grader ignores stroke order/direction and accepts extra lifts, while checking major-feature coverage with Easy/Balanced/Precise tolerances. Device snapshots retain learner ink and the per-notebook difficulty preference; optional progress synchronization stores counts and unlocks only. Both clients check accumulated ink automatically after a pen-up pause. The following flow describes the shared notebook engine and its client adapters.
+
+## Writing notebook flow
+
+The versioned notebook engine in core owns prompt validation, 24-repetition schedules, shape coverage, cell cursors and monotonic earned progress. The React-only `@codematica/ui/notebook-session` subpath coordinates both clients without importing React Native into the web entrypoint. Both clients detect contact types automatically and preserve completed pending strokes during two-finger paper scrolling. The iOS Expo view bridges UIKit pan phases/deltas to the RN viewport, keeping PencilKit ink aligned with the paper. `NotebookScrollContext` hands remaining pan distance to the native outer page at the paper bounds. Web keeps its viewport scrollable for wheel, trackpad, scrollbar and keyboard input. Web has a direct production dependency on `@codematica/ui`; the pruned-artifact smoke serves the notebook catalog and existing writing routes.
+
+```mermaid
+flowchart LR
+  Content["Canonical writing JSON + published stroke models"] --> Engine["Core notebook definitions + shape grader"]
+  Engine --> Web["Pointer Events / smooth SVG"]
+  Engine --> Native["PencilKit iOS / SVG Android"]
+  Web --> LocalWeb[("IndexedDB vectors + pages")]
+  Native --> LocalNative[("AsyncStorage manifests + cells")]
+  Web --> Merge["Bounded furthest-progress merge"]
+  Native --> Merge
+  Merge <--> Remote[("RLS notebook counts; no ink")]
+```
+
+See [Japanese writing notebooks](features/japanese-writing-notebooks.md) for failure recovery, native build limits and tests.
+
+Native writing protects the SVG responder from ancestor ScrollView interception and drives paper scrolling explicitly through touch centroids or accessibility actions. `apps/mobile/src/lib/handwriting-navigation.ts` supplies the Expo Stack gesture policy for handwriting routes, preventing iPad swipe-back from consuming rightward strokes. The native catalog uses a compact selected-page header; `AppScreen` has an optional keyboard-tap policy for form buttons. `apps/mobile/e2e/notebook-{layout,gestures}.mjs` retain measured layout, real-contact results and screenshots; physical PencilKit validation remains a separate supported-build/device gate.
+
+The notebook catalog derives Japanese previews and authored romaji readings from the shared engine. `useNotebookRomaji` shares the display preference between catalog implementations through optional storage methods. The preference is device-local (web localStorage/native AsyncStorage) and separate from notebook ink and synchronized progress.

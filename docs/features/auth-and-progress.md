@@ -122,3 +122,9 @@ Local follow-up validation on 2026-10-03: 421 Vitest tests with aggregate/per-fi
 ## Thread Handoff Prompt
 
 `Read docs/codex-context.md and docs/features/auth-and-progress.md first. Compare the documented auth/progress contract against apps/web/src/lib/supabase, apps/web/src/lib/progress, apps/mobile/src/lib/supabase.ts, apps/mobile/src/lib/progress.ts, apps/mobile/src/lib/skill-progress.ts, packages/core/src/progress, apps/web/src/components/LoginForm.tsx, apps/web/src/components/KeepReadingSection.tsx, apps/web/src/components/SaveProgressPrompt.tsx, apps/web/src/components/ProgressTrackers.tsx, apps/web/src/app/api/progress/**/route.ts, and both progress migrations under supabase/migrations/, then update tests and docs with any behavior changes.`
+
+## Japanese notebook update — 2026-10-02
+
+Languages exposes Japanese and Notebook practice in the tablet/sidebar and phone More menus. `/languages/japanese/notebooks` supports curated and custom 1–5-character prompts and saved pages. [Japanese writing notebooks](japanese-writing-notebooks.md) owns the shared 24-repetition engine, device-local ink, maximum-progress synchronization and validation gates. Live ink and feedback preserve page position; Input is detected automatically. Mouse wheel/trackpad scrolling remains available on web; two-finger gestures scroll the paper on touch screens and installed apps without adding ink. There are no Draw, Pen or Scroll buttons.
+
+The additive `user_writing_notebook_progress` table and writing-notebooks API store bounded best counts and prompts with RLS ownership. Restart/stale updates preserve earned completion. Notebook ink is retained only in IndexedDB or separate AsyncStorage sheet/cell records; existing lesson/skill tables do not receive vectors.

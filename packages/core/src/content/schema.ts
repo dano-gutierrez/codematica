@@ -287,6 +287,10 @@ export const writingExerciseFileSchema = exerciseBaseSchema.extend({
   prompt: z.string().min(10),
   characterSlugs: z.array(slugSchema).min(1),
   modes: z.array(z.enum(["assisted", "free"])).min(1).default(["assisted", "free"]),
+  notebookPrompts: z.array(z.object({
+    id: z.string().min(1), text: z.string().refine(text => [...text.normalize("NFC")].length >= 1 && [...text.normalize("NFC")].length <= 5 && !/\s/u.test(text), "Notebook prompts use 1–5 written characters."),
+    kind: z.enum(["characters", "word", "phrase"]), romaji: z.string().min(1), meaning: z.string().min(1),
+  })).optional(),
   explanation: z.string().min(10),
 });
 
@@ -743,6 +747,7 @@ export type LearningPathUnit = z.infer<typeof learningPathUnitSchema>;
 export type LearningPathFile = z.infer<typeof learningPathFileSchema>;
 export type QuestionnaireQuestion = z.infer<typeof questionnaireQuestionSchema>;
 export type LearningExerciseFile = z.infer<typeof learningExerciseFileSchema>;
+export type WritingExercise = Extract<LearningExercise, { type: "writing" }>;
 export type LanguageCode = z.infer<typeof languageCodeSchema>;
 export type LanguageWritingSystem = z.infer<typeof languageWritingSystemSchema>;
 export type LanguageReading = z.infer<typeof languageReadingSchema>;

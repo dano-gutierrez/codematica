@@ -1,1 +1,33 @@
-{"slug":"languages/japanese-hiragana-y-r-w-writing","title":"Hiragana Y, R, W, And N","type":"writing","documentSlug":"languages/japanese-romaji-kana-input","concept":"Final basic hiragana rows","difficulty":"foundation","tags":["japanese","hiragana","handwriting"],"status":"published","prompt":"Write the y, r, and w rows, then finish with moraic n.","characterSlugs":["japanese/hiragana/ya","japanese/hiragana/yu","japanese/hiragana/yo","japanese/hiragana/ra","japanese/hiragana/ri","japanese/hiragana/ru","japanese/hiragana/re","japanese/hiragana/ro","japanese/hiragana/wa","japanese/hiragana/wo","japanese/hiragana/n"],"modes":["assisted","free"],"explanation":"This drill completes the 46 basic hiragana and highlights the special object particle を and context-sensitive ん input."}
+{
+  "slug": "languages/japanese-hiragana-y-r-w-writing",
+  "title": "Hiragana Y, R, W, And N",
+  "type": "writing",
+  "documentSlug": "languages/japanese-romaji-kana-input",
+  "concept": "Final basic hiragana rows",
+  "difficulty": "foundation",
+  "tags": [
+    "japanese",
+    "hiragana",
+    "handwriting"
+  ],
+  "status": "published",
+  "prompt": "Fill the notebook with 24 repetitions of each prompt. Write anywhere on the paper; recognizable shapes are enough.",
+  "characterSlugs": [
+    "japanese/hiragana/ya",
+    "japanese/hiragana/yu",
+    "japanese/hiragana/yo",
+    "japanese/hiragana/ra",
+    "japanese/hiragana/ri",
+    "japanese/hiragana/ru",
+    "japanese/hiragana/re",
+    "japanese/hiragana/ro",
+    "japanese/hiragana/wa",
+    "japanese/hiragana/wo",
+    "japanese/hiragana/n"
+  ],
+  "modes": [
+    "assisted",
+    "free"
+  ],
+  "explanation": "Use the examples and stroke guides to learn the character, then copy and recall it. Stroke order is optional guidance; your handwriting does not need to be exact."
+}

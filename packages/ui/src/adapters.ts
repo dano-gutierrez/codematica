@@ -38,5 +38,7 @@ export type CodematicaAdapters = {
   progress?: ProgressAdapter;
   auth?: AuthAdapter;
   audio?: AudioAdapter;
+  notebooks?: import("@codematica/core").NotebookStorage;
+  handwritingCanvas?: import("react").ComponentType<import("./JapaneseNotebookPractice").HandwritingCanvasProps>;
   mermaidScript?: string;
 };

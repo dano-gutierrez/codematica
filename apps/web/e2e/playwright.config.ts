@@ -39,14 +39,14 @@ export default defineConfig({
     },
     {
       name: "desktop-chromium",
-      grep: process.env.EDITORIAL_E2E === "1" ? /@regression/ : /@smoke|@playground/,
+      grep: process.env.EDITORIAL_E2E === "1" ? /@regression/ : /@smoke|@playground|@notebook-catalog/,
       use: {
         ...devices["Desktop Chrome"],
       },
     },
     {
       name: "mobile-webkit",
-      grep: process.env.EDITORIAL_E2E === "1" ? /@regression/ : /@smoke|@playground/,
+      grep: process.env.EDITORIAL_E2E === "1" ? /@regression/ : /@smoke|@playground|@notebook-catalog/,
       use: {
         ...devices["iPhone 15"],
       },

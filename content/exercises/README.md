@@ -34,3 +34,7 @@ Frontend interview checkpoints contain eight questions each: seven requirement/t
 The supplementary `frontend/react-state-async-questionnaire.json` has six scenario choices about snapshots, functional updates, updater purity, same-item races, and cleanup. It links to its standalone Markdown lesson and does not extend the seven-unit interview path.
 
 The database connection-pooling checkpoint uses six scenario choices, four numerical cloze calculations, one shutdown ordering task, and one pooling-mode matching task. Keep the numerical answers aligned with the lesson assumptions; explain why unsafe shortcuts fail. It uses the existing questionnaire and executes no database operations.
+
+Japanese writing notebooks use 24 whole-prompt repetitions per sheet and support curated/custom text of 1–5 published characters. Ink stays on the device; coarse completion/unlocks optionally sync. See `docs/features/japanese-writing-notebooks.md` for the implementation, persistence and validation contract.
+
+Writing exercises may author `notebookPrompts: [{ id, text, kind, romaji, meaning }]`. IDs must be unique; text is NFC-normalized and every glyph must have a published stroke model listed in `characterSlugs`. `kind` is characters, word or phrase. Regenerate the index with `npm run content:index`.

@@ -1,0 +1,58 @@
+{
+  "slug": "languages/japanese-short-expressions-writing",
+  "title": "Everyday Japanese · notebook",
+  "type": "writing",
+  "documentSlug": "languages/japanese-writing-systems",
+  "concept": "Short Japanese expressions",
+  "difficulty": "foundation",
+  "tags": [
+    "japanese",
+    "hiragana",
+    "handwriting",
+    "notebook"
+  ],
+  "status": "published",
+  "prompt": "Fill a notebook with short expressions you can use every day. Repeat each expression 24 times.",
+  "characterSlugs": [
+    "japanese/hiragana/o",
+    "japanese/hiragana/ha",
+    "japanese/hiragana/yo",
+    "japanese/hiragana/u",
+    "japanese/hiragana/a",
+    "japanese/hiragana/ri",
+    "japanese/hiragana/ga",
+    "japanese/hiragana/to",
+    "japanese/hiragana/ko",
+    "japanese/hiragana/n",
+    "japanese/hiragana/ni",
+    "japanese/hiragana/chi"
+  ],
+  "modes": [
+    "assisted",
+    "free"
+  ],
+  "notebookPrompts": [
+    {
+      "id": "morning",
+      "text": "おはよう",
+      "kind": "phrase",
+      "romaji": "ohayou",
+      "meaning": "good morning"
+    },
+    {
+      "id": "thanks",
+      "text": "ありがとう",
+      "kind": "phrase",
+      "romaji": "arigatou",
+      "meaning": "thank you"
+    },
+    {
+      "id": "hello",
+      "text": "こんにちは",
+      "kind": "phrase",
+      "romaji": "konnichiwa",
+      "meaning": "hello"
+    }
+  ],
+  "explanation": "Copy each complete expression in order, then write it from memory. Recognizable shapes are enough; hints remain available."
+}

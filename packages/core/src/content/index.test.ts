@@ -16,6 +16,19 @@ import {
 } from ".";
 
 describe("generated content index", () => {
+  it("uses attributed curved kana models, including the full third-stroke loop of あ", () => {
+    const a = getLanguageCharacterBySlug("japanese/hiragana/a")!;
+    const loop = a.strokes[2]!.points;
+    expect(loop.length).toBeGreaterThan(80);
+    expect(loop[0]![0]).toBeCloseTo(60.21, 1);
+    expect(Math.min(...loop.map(([x]) => x))).toBeLessThan(25);
+    expect(Math.max(...loop.map(([x]) => x))).toBeGreaterThan(80);
+    expect(loop.at(-1)![0]).toBeGreaterThan(60);
+    for (const kana of getContentIndex().languageCharacters.filter((character) => character.status === "published" && character.writingSystem !== "kanji")) {
+      expect(kana.sources.some((source) => source.label.includes("KanjiVG") && source.label.includes("CC BY-SA 3.0"))).toBe(true);
+    }
+  });
+
   it("loads starter documents and diagrams", () => {
     const index = getContentIndex();
 

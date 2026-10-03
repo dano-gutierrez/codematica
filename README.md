@@ -119,6 +119,8 @@ Markdown is canonical.
 
 Run `npm run content:audio` after adding released Japanese audio files and manifest entries.
 
+Markdown is canonical. Add articles to `content/knowledge/` with the frontmatter contract defined in `packages/core/src/content/schema.ts`. Add external Mermaid diagrams to `content/diagrams/`, then reference them from article frontmatter with `diagramRefs`. Add human-language character, vocabulary, audio metadata, and rights-aware resources to `content/languages/`; writing exercises reference those character slugs from `content/exercises/`. Published kana guides use attributed KanjiVG geometry; preserve the source and CC BY-SA 3.0 notices when editing them. Run `npm run content:audio` after adding released Japanese audio files and manifest entries.
+
 Supabase is optional for browsing. Apply the migrations in `supabase/migrations/` before enabling Auth/progress. To sync indexed content manually, copy `.env.example` to `.env`, configure `SUPABASE_URL` and `SUPABASE_SERVICE_ROLE_KEY`, and run:
 
 ```bash
@@ -148,3 +150,5 @@ Admin web/native manual creation, Unicode text formatting and review at `/admin/
 Open `/paths/frontend-interview-practice` for seven lessons, guided TS/Python solutions, checkpoints, and continuous review. Canonical code is in `content/interviews/frontend-practice.json`. After editing it, run `npm run content:index`, `npm run test:interview:python` (requires Python 3), and the authored-project Vitest checks. See [the feature contract](docs/features/frontend-interview-practice.md) for the complete verification workflow and native release gaps.
 
 The supplementary lesson `/docs/frontend/react-state-async-callbacks` covers stale state in timers and promises, functional updates, cleanup, and a six-question checkpoint. Its complete examples live in Markdown and are typechecked and executed by `ReactAsyncStateLesson.test.tsx`.
+
+Japanese writing notebooks use 24 whole-prompt repetitions per sheet and support curated/custom text of 1–5 published characters. Ink stays on the device; coarse completion/unlocks optionally sync. See `docs/features/japanese-writing-notebooks.md` for the implementation, persistence and validation contract.

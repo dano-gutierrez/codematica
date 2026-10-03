@@ -74,3 +74,5 @@ The most important sections are:
 - `linkedin-editorial.md`: private admin web/native post review, durable refinement/scheduling queue and exact-revision human approvals.
 
 - [Frontend Interview Practice](frontend-interview-practice.md): seven guided frontend challenges, TS/Python companions, quizzes, and review. Existing material corrections are recorded in the interview catalog audit.
+
+- [Japanese writing notebooks](japanese-writing-notebooks.md): 24-repetition planas, custom pages, local ink, optional unlock sync and native PencilKit.

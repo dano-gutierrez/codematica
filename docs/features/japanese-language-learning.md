@@ -3,8 +3,8 @@
 ## Snapshot
 
 - Status: `in_progress`
-- Last updated: `2026-08-09`
-- Current state: schema-v10 provides a kana-to-N5 roadmap, 650 N5-aligned vocabulary profiles, 60 grammar patterns, ten progressive A1 units, and mixed/open-answer/listening questionnaires. Web and Expo share an offline Japanese IME, Pencil Scribble-compatible text input, flashcard/writing review routes, and OpenAI TTS metadata requiring approval.
+- Last updated: `2026-10-02`
+- Current state: schema-v11 provides a kana-to-N5 roadmap, 650 N5-aligned vocabulary profiles, 60 grammar patterns, ten progressive A1 units, and mixed/open-answer/listening questionnaires. Web and Expo share an offline Japanese IME, Pencil Scribble-compatible text input, flashcard/writing review routes, and OpenAI TTS metadata requiring approval.
 - Target outcome: English-speaking teens and adults can move from kana discovery to practical JF A1 Can-dos while keeping the entire course, reviews, dictionary, handwriting, flashcards, and resources open.
 
 ## One-Minute Brief
@@ -15,7 +15,7 @@ The learning loop is hear, notice, trace/manipulate, recall, read in context, us
 
 ## Shipped Contract
 
-- `ContentIndex.schemaVersion` is `10`.
+- `ContentIndex.schemaVersion` is `11`.
 - Learning paths may declare proficiency levels, skill strands, required nodes, JF Can-dos, open stages, checkpoint thresholds, and estimated time.
 - `/languages/japanese` and the Expo Japanese hub keep four destinations visible: Learn, Review, Dictionary, and Resources.
 - `/languages/japanese/review` keeps the due queue primary and links to 650-card vocabulary and 80-prompt open-answer modes. Listening is linked only when its complete referenced audio is approved.
@@ -24,10 +24,16 @@ The learning loop is hear, notice, trace/manipulate, recall, read in context, us
 - Web and Expo review ratings expose a persistent selected/pressed state, announce the saved choice, and lock the four ratings after one choice so an accidental repeated tap cannot create extra attempts. `Practice again` explicitly starts another recall and re-enables rating.
 - A delayed authenticated progress response merges against the newest in-memory review state, so it cannot overwrite a rating made while the review screen is open.
 - Anonymous review state persists locally on web and Expo. When authenticated, both clients load the remote snapshot, validate it, merge it with retained local state, save the merged result locally, and upload bounded 20-row batches. The additive `user_skill_progress` table is RLS-protected and does not change `user_progress_items`.
-- No individual answers, raw handwriting coordinates, microphone recordings, or full attempt histories are stored.
-- Handwriting is intentionally forgiving in both modes: assisted mode advances a rough trace that follows the highlighted stroke and direction, and free mode accepts a recognizable character with the correct stroke count and general order/direction. Clearly unrelated, reversed, or missing strokes still fail. Web scoring includes the pointer-release position so quick drags are not truncated before comparison.
+- Individual answers, microphone recordings and full attempt histories are not stored. Notebook vector ink is saved only on its device; remote progress never contains ink.
+- Notebook handwriting compares full shapes after alignment, allowing reordered strokes and extra pen lifts. Missing major features, taps and scribbles fail. See the notebook contract below.
 - Character/vocabulary search remains local-first and includes glyphs, readings, meanings, examples, learner romaji, and IME aliases such as `konbanha`.
 - The trusted resource shelf records publisher, URL, level, skills, access, availability, reuse policy, and attribution. Current JF, MEXT, JLPT/JFT, and Tadoku materials are link-only.
+
+## Handwriting Practice Sheets (Planas)
+
+[Japanese writing notebooks](japanese-writing-notebooks.md) owns the current 24-repetition notebook, custom creation, local ink, optional unlock sync and PencilKit contract. Handwriting difficulty offers Easy (default), Balanced and Precise, saved per notebook. Input detection is automatic with no mode buttons; one finger writes, two fingers scroll the paper, and web wheel/trackpad scrolling stays available. Characters check automatically after a 400ms pen-up pause; error feedback waits until 1.2 seconds after pen-up and is cancelled when another stroke begins. The manual Check character control is removed. Rejected ink briefly bounces the expected cell, then fades; starting another stroke cancels expiry for correction. Footer controls stay compact with an accessible restart icon. Writing cells clear the red notebook margin. The Japanese hub keeps Hiragana 101 and Katakana links and adds Notebook practice. Required pair sheets determine lesson completion; matching and supplemental word sheets keep separate completion behavior.
+
+All 109 kana models retain accurate KanjiVG curves, pinned at `70a0b7ae0c18ceb5cb358274b029cce0234a43bc`, and visible Ulrich Apel/contributor CC BY-SA 3.0 attribution. The notebook grader uses major stroke geometry for coverage without requiring user stroke order, direction or exact lifts. The older stroke-by-stroke helpers remain for compatibility and dictionary model rendering.
 
 ## Curriculum
 
@@ -90,13 +96,15 @@ The offline IME uses deterministic romaji-to-kana rules, curriculum boosts, and 
 ## Primary Touchpoints And Tests
 
 - Content: `content/learning-paths/japanese-foundations.json`, `content/knowledge/languages/`, `content/exercises/languages/`, `content/languages/japanese/`
-- Core: `packages/core/src/content/`, `packages/core/src/japanese-ime/`, `packages/core/src/practice/questionnaire.ts`, `packages/core/src/progress/mastery.ts`, `packages/core/src/progress/progression.ts`
-- Web: `JapaneseLanguageBrowser`, `JapaneseReview`, `JapaneseAnswerInput`, `JapaneseAudioPlayer`, `JapaneseFlashcardPractice`, `QuestionnaireSession`
+- Core: `packages/core/src/content/`, `packages/core/src/japanese-ime/`, `packages/core/src/practice/questionnaire.ts`, `packages/core/src/language-writing/practice.ts`, `packages/core/src/progress/mastery.ts`, `packages/core/src/progress/progression.ts`
+- Web: `JapaneseLanguageBrowser`, `JapaneseReview`, `JapaneseAnswerInput`, `JapaneseAudioPlayer`, `JapaneseFlashcardPractice`, `JapaneseWritingPractice`, `QuestionnaireSession`
 - Native: `packages/ui/src/screens.tsx`, `apps/mobile/app/languages/japanese/`
 - Persistence: `supabase/migrations/202608040001_create_user_skill_progress.sql`
 - Tests: exact N5 content counts and references, schema/grading/IME/audio filtering, assisted and free handwriting tolerance, stage progression, mastery scheduling, web/native open-answer and review modes, Japanese Playwright regression, coverage floors, and the Maestro installed-app journey.
 
 ## Test Plan
+
+The notebook feature doc owns current core, storage, component, native, Playwright, pgTAP and physical-device checks. Preserve dictionary/path navigation, IME/review behavior, source attribution, optional account configuration and the separation between required writing and optional matching.
 
 Preserve Japanese expressions, readings, translations, answer keys, and study counts during copy edits. Keep generator templates and authored lessons consistent. The N5 builder regression parses generated vocabulary tables as GFM and verifies that a literal pipe stays within its definition cell. The Japanese browser regression checks that the full definition is visible in exactly three table columns.
 
@@ -126,8 +134,11 @@ Hub component tests scope link queries to the character section or resource shel
 
 ```mermaid
 flowchart LR
-  Catalogs["Japanese catalogs, path, lessons, checkpoints"] --> Validator["Schema-v10 index validation"]
+  Catalogs["Japanese catalogs, path, lessons, checkpoints"] --> Validator["Schema-v11 index validation"]
   Validator --> Index["Generated local content index"]
+  Index --> Sheets["Shared 24-repetition notebook engine"]
+  Sheets --> Web
+  Sheets --> Native
   Index --> Web["Web Learn / Review / Dictionary / Resources"]
   Index --> Native["Expo Learn / Review / Dictionary / Resources"]
   Local["Retained anonymous mastery"] --> Merge["Validate + deterministic merge"]
@@ -197,3 +208,5 @@ flowchart LR
 - `2026-08-04`: Add mastery additively rather than changing or deleting completion history.
 - `2026-08-04`: Keep public third-party materials link-only unless redistribution rights are explicit.
 - `2026-08-04`: Ship audio validation and preparation before recordings; never substitute synthetic or unlicensed media for the promised native-speaker corpus.
+
+The native device pass compacts selected notebook headers and places feedback immediately above the paper. Automatic ScrollView interception and handwriting-route swipe-back are blocked so vertical and rightward strokes remain ink. The new native layout/contact regressions and deferred physical Pencil steps are documented in [Japanese writing notebooks](japanese-writing-notebooks.md). Shape-grading thresholds are unchanged.

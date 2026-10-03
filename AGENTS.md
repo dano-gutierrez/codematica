@@ -334,7 +334,10 @@ Reuse these components and extend them when needed; avoid rebuilding equivalent 
 - `apps/web/src/components/WebInterviewQuestionSession.tsx`: real-world web interview rubric, accepted-approach navigation, and playground composition.
 - `apps/web/src/components/WebPlayground.tsx`: reusable Sandpack-backed multi-file React/TS, vanilla TS, and static editor/preview with Run and Reset controls.
 - `apps/web/src/components/JapaneseLanguageBrowser.tsx`: Japanese language lookup hub with character/vocabulary search, IPA display, and links into the Japanese Foundations path.
-- `apps/web/src/components/JapaneseWritingPractice.tsx`: reusable assisted/free Japanese handwriting pad for path exercises and single-character dictionary detail pages.
+- `apps/web/src/components/JapaneseWritingPractice.tsx`: reusable Japanese 24-repetition character/word/phrase notebook pages with trace/copy/recall guidance, Pointer Events drawing, matching-pair recognition, repeat controls, and stable feedback space for path exercises and dictionary detail pages.
+- `apps/web/src/components/JapaneseNotebookCatalog.tsx`: curated, custom and saved notebook entry points.
+- `packages/ui/src/JapaneseNotebookPractice.tsx` and `JapaneseNotebookCatalogScreen.tsx`: shared native notebook pages and catalog.
+- `packages/ui/src/notebook-session.ts`: React-only session persistence and progress shared by web/native.
 - `apps/web/src/components/KeepReadingSection.tsx`: home-page resume panel backed by signed-in Supabase progress or signed-out local progress.
 - `apps/web/src/components/HomeDiscovery.tsx`: cross-section home search, curated section rows, section headings, and reusable discovery cards.
 - `apps/web/src/components/KnowledgeBrowser.tsx`: generated content browser with search, track filters, difficulty filters, and result cards.

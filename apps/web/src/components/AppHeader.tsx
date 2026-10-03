@@ -25,7 +25,8 @@ export function AppNavigation() {
   const pathname = usePathname() ?? "/";
   const menu = useRef<HTMLDialogElement>(null);
   const moreButton = useRef<HTMLButtonElement>(null);
-  const active = pathname.startsWith("/docs/") || pathname.startsWith("/diagrams/") ? "/browse" : `/${pathname.split("/")[1]}`;
+  const active = pathname.startsWith("/practice/languages/japanese") ? "/languages" : pathname.startsWith("/docs/") || pathname.startsWith("/diagrams/") ? "/browse" : `/${pathname.split("/")[1]}`;
+  const [languagesOpen, setLanguagesOpen] = useState(active === "/languages");
   const [signingOut, setSigningOut] = useState(false);
   const [signOutError, setSignOutError] = useState<string>();
   const compactDestinations = destinations.filter(({ href }) => !["/browse", "/languages"].includes(href));
@@ -67,7 +68,10 @@ export function AppNavigation() {
         <div className="sidebar-navigation">
           <span className="sidebar-label">YOUR LEARNING SPACE</span>
           <nav aria-label="Primary navigation" className="sidebar-links">
-            {destinations.map(({ href, label, icon: Icon }) => <Link key={href} href={href} className="app-nav-link" aria-current={active === href ? "page" : undefined} data-testid={`app-nav-${label.toLowerCase()}`}><Icon size={20} aria-hidden="true" />{label}</Link>)}
+            {destinations.map(({ href, label, icon: Icon }) => href === "/languages" ? <div key={href}>
+              <div className="app-language-branch"><Link href={href} className="app-nav-link" aria-current={active === href ? "page" : undefined} data-testid="app-nav-languages"><Icon size={20} aria-hidden="true" />{label}</Link><button type="button" aria-label="Show supported languages" aria-expanded={languagesOpen} onClick={() => setLanguagesOpen(value => !value)} data-testid="app-nav-languages-expand"><ChevronDown size={18} aria-hidden="true" /></button></div>
+              {languagesOpen ? <nav className="app-language-submenu" aria-label="Supported languages"><Link href="/languages/japanese" data-testid="app-nav-japanese">Japanese <span lang="ja">日本語</span></Link><Link href="/languages/japanese/notebooks" aria-current={pathname.includes("/notebooks") ? "page" : undefined} data-testid="app-nav-notebooks">Notebook practice</Link></nav> : null}
+            </div> : <Link key={href} href={href} className="app-nav-link" aria-current={active === href ? "page" : undefined} data-testid={`app-nav-${label.toLowerCase()}`}><Icon size={20} aria-hidden="true" />{label}</Link>)}
           </nav>
           {showAdmin ? <nav aria-label="Admin navigation" className="sidebar-admin" data-testid="app-admin-navigation"><span className="sidebar-label">Admin</span><Link href="/admin/linkedin" className="app-nav-link" aria-current={linkedInActive ? "page" : undefined} data-testid="app-nav-linkedin"><Linkedin size={20} aria-hidden="true" data-testid="app-admin-linkedin-icon" />LinkedIn</Link></nav> : null}
         </div>
@@ -80,7 +84,7 @@ export function AppNavigation() {
       </nav>
       <dialog ref={menu} onClose={() => moreButton.current?.focus({ preventScroll: true })} className="app-more-sheet" aria-labelledby="more-title" onClick={(event) => { if (event.target === event.currentTarget) menu.current?.close(); }}>
         <div className="sheet-heading"><h2 id="more-title">Explore Codematica</h2><button type="button" onClick={() => menu.current?.close()} aria-label="Close menu"><X size={20} aria-hidden="true" /></button></div>
-        {[destinations[2], destinations[5]].map(({ href, label, icon: Icon }) => <Link href={href} key={href} className="sheet-link" onClick={() => menu.current?.close()}><Icon size={22} aria-hidden="true" /><span>{label}</span><ArrowUpRight size={18} aria-hidden="true" /></Link>)}
+        {[destinations[2], destinations[5]].map(({ href, label, icon: Icon }) => <div key={href}><Link href={href} className="sheet-link" onClick={() => menu.current?.close()}><Icon size={22} aria-hidden="true" /><span>{label}</span><ArrowUpRight size={18} aria-hidden="true" /></Link>{href === "/languages" ? <nav className="app-language-submenu" aria-label="Supported languages in menu"><Link href="/languages/japanese" onClick={() => menu.current?.close()} data-testid="mobile-menu-japanese">Japanese <span lang="ja">日本語</span></Link><Link href="/languages/japanese/notebooks" onClick={() => menu.current?.close()} data-testid="mobile-menu-notebooks">Notebook practice</Link></nav> : null}</div>)}
         {showAdmin ? <nav aria-label="Admin navigation in menu" className="sheet-admin"><span className="sheet-section-label">Admin</span><Link href="/admin/linkedin" className="sheet-link" aria-current={linkedInActive ? "page" : undefined} onClick={() => menu.current?.close()} data-testid="mobile-menu-linkedin"><Linkedin size={22} aria-hidden="true" /><span>LinkedIn</span><ArrowUpRight size={18} aria-hidden="true" /></Link></nav> : null}
         {accountControl("sheet")}
       </dialog>

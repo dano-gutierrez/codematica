@@ -54,6 +54,32 @@ Owning contracts: `docs/README.md#technical-editing-skill`, `docs/features/learn
 
 Owning contract: `docs/features/markdown-knowledge-browser.md`. Device setup and regression command: `apps/mobile/e2e/README.md`.
 
+## 2026-10-02 — Saved Japanese writing notebooks
+
+- Removed Draw/Pen/Scroll controls. Input detection follows mouse, finger and Pencil contacts automatically; wheel/trackpad scrolling and two-finger paper scrolling preserve completed ink. Installed iOS bridges UIKit pan gestures to the shared notebook viewport.
+
+- Kept Next sheet compact and replaced the full-width restart button with an accessible icon. Delayed error feedback until 1.2 seconds after pen-up to allow more time between mouse strokes; correct characters still save after 400ms.
+- Added Easy (default), Balanced and Precise handwriting difficulty, saved locally per notebook. Relaxed mouse/finger shape checks while retaining missing-feature and scribble rejection. Removed the manual Check character fallback; correction and tool/difficulty changes recheck automatically. Shortened error bounce and fade timings.
+- Added cancellable rejection feedback: a gentle focused-cell bounce, a short correction window and a fade that clears temporary ink. Widened the left gutter so character cells clear the red notebook line. Web/native honor reduced-motion settings.
+- Added warm ruled notebook pages with 24 complete prompt repetitions, curated character pairs/words/expressions, and custom 1–5-character notebooks with three progressively less guided sheets.
+- Accepted recognizable complete characters anywhere on the paper, independent of stroke order and extra lifts; retained the learner's ink, pressure samples, correction controls and earned sheet unlocks.
+- Added explicit Japanese/Notebook navigation, IndexedDB and per-cell AsyncStorage saving, optional owner-protected completion sync, and a local iOS PencilKit module with Android SVG fallback.
+- Passed core/web/native coverage, Japanese and navigation browser journeys, clean migration replay, transactional database tests and HTTP readiness with a clean production-only install. Installed-device Maestro and physical iPad Pencil validation remain outstanding; Xcode 26.3 is below Expo SDK 57's supported baseline and installed-device verification remains pending. Expo Doctor passes 20/20 on the current dependencies.
+
+Owning contract: [Japanese writing notebooks](features/japanese-writing-notebooks.md).
+
+## 2026-10-02 — Fluid kana guides and easier handwriting
+
+- Replaced 109 crude published kana models with attributed, pinned KanjiVG curve geometry, including あ's full third-stroke loop.
+- Added shared cubic rendering, preserved learner ink after assisted acceptance, retained slow/coalesced samples, and relaxed placement/size grading while rejecting missing, reversed, or tiny strokes.
+- Added core/content, web, native, and browser regressions. See [Japanese planas](features/japanese-language-learning.md#handwriting-practice-sheets-planas) and [data attribution](../THIRD_PARTY_NOTICES.md).
+
+## 2026-09-30 — Japanese planas and writing space
+
+- Added repeatable character-pair and kana word sheets with trace, copy, recall, and matching activities on web/native.
+- Enlarged and rounded the web writing surface, reserved feedback space, and fixed native tablet coordinate scaling/release/cancellation handling.
+- Added regression coverage for sequence/completion, finger/pen input, phone/iPad layout stability, native matching, and a Maestro writing-sheet journey. Physical Pencil and installed-device validation remains required before native release.
+
 ## 2026-09-28 — Readable Lesson Code Blocks
 
 - Fixed a prose CSS rule that replaced highlighted blocks' dark background with a pale surface while retaining light syntax colors.
