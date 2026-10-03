@@ -68,7 +68,12 @@ class LocalModels:
         judge = await self.call(JUDGE, "/v1/version")
         writer = await self.call(WRITER, "/v1/models")
         await self.call(JUDGE, "/readyz")
-        self.versions.update(judge=json.dumps(judge, sort_keys=True), writer=json.dumps(writer, sort_keys=True))
+        inventory=writer.get("data")
+        if not isinstance(inventory,list) or any(not isinstance(entry,dict) for entry in inventory): raise ValueError("Invalid local writer model inventory")
+        ids=[entry.get("id") for entry in inventory]
+        if not ids or any(not isinstance(value,str) or not value.strip() for value in ids): raise ValueError("Invalid local writer model inventory")
+        # MLX adds request-time `created` fields; those are not weight versions.
+        self.versions.update(judge=json.dumps(judge, sort_keys=True), writer=json.dumps({"model_ids":sorted(ids)}, sort_keys=True))
         return self.versions
     async def cached(self, kind, body, run):
         key = digest([self.versions, kind, body])

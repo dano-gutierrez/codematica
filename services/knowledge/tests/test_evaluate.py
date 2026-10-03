@@ -17,6 +17,35 @@ class FakeModels:
     async def explain(self, evidence): return {"explanation": "Compare the cited source."}
 
 class EvaluationTests(unittest.IsolatedAsyncioTestCase):
+    async def test_readiness_timestamps_do_not_invalidate_cache_but_model_ids_do(self):
+        from knowledge.models import LocalModels
+        with tempfile.TemporaryDirectory() as tmp:
+            models=LocalModels(Store(Path(tmp)/'db'));current={'id':'writer','created':1};runs=[]
+            async def call(origin,path,body=None):
+                if path=='/v1/models':
+                    rows=[current.copy(),{'id':'auxiliary','created':current['created']}]
+                    return {'data':rows[::-1] if current['created']==2 else rows}
+                if path=='/v1/version':return {'version':'judge-v1'}
+                return {}
+            async def run():runs.append(True);return {'answer':'cached'}
+            models.call=call
+            await models.ready();await models.cached('test',{'candidate':'unchanged'},run)
+            current['created']=2
+            await models.ready();await models.cached('test',{'candidate':'unchanged'},run)
+            self.assertEqual(len(runs),1)
+            current['id']='different-writer'
+            await models.ready();await models.cached('test',{'candidate':'unchanged'},run)
+            self.assertEqual(len(runs),2)
+
+    async def test_invalid_writer_inventory_cannot_become_a_cache_version(self):
+        from knowledge.models import LocalModels
+        for inventory in [None,[],[{}],[{'id':' '}],[123]]:
+            with self.subTest(inventory=inventory),tempfile.TemporaryDirectory() as tmp:
+                models=LocalModels(Store(Path(tmp)/'db'))
+                async def call(origin,path,body=None):return {'data':inventory} if path=='/v1/models' else {}
+                models.call=call
+                with self.assertRaises(ValueError):await models.ready()
+
     async def test_incomplete_graph_cannot_establish_novelty(self):
         with tempfile.TemporaryDirectory() as tmp:
             store = Store(Path(tmp) / "db"); store.activate(snapshot())

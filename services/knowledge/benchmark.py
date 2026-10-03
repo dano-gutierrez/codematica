@@ -6,6 +6,9 @@ from knowledge.config import STATE, VERSIONS
 from knowledge.store import Store, digest
 from knowledge.models import Embeddings,LocalModels
 from knowledge.evaluate import evaluate
+def measurement_key(store,candidate,case):
+    # Extraction can advance without changing the authored catalog ID.
+    return digest([store.status(),candidate,case,VERSIONS,Path(__file__).with_name("knowledge").joinpath("evaluate.py").read_text()])
 async def main():
     # Hosted credentials are deliberately absent; all transports are loopback only.
     for key in list(os.environ):
@@ -19,7 +22,7 @@ async def main():
         if case.get('source_body'): candidate['body']=store.resource(case['source_body'])['text']
         path=folder/(case['id']+'.json')
         started=time.monotonic()
-        identity=digest([store.status()["snapshot_id"],candidate,case,VERSIONS,Path(__file__).with_name("knowledge").joinpath("evaluate.py").read_text()])
+        identity=measurement_key(store,candidate,case)
         cached=json.loads(path.read_text()) if path.exists() else None
         if cached and cached.get("identity")==identity and "report" in cached: row=cached
         else:
