@@ -20,6 +20,7 @@ Conventions:
 - `docs/features/_template.md` is the format new feature docs should follow.
 - `docs/features/README.md` explains how threads should consume and maintain feature docs.
 - `docs/features/adaptive-ui.md` owns the shared visual language, bottom navigation, desktop/tablet sidebars, responsive layout, and redesign validation gaps.
+- [Design system](features/design-system.md) owns buttons, semantic icon colors, spacing, borders, alignment, and concise disclosure patterns. Read it before new UI work.
 - `docs/features/markdown-knowledge-browser.md` owns article rendering, the web/native code-surface audit, the fixed dark code theme, native horizontal scroll containment, and rendered contrast/layout regressions. Theme selection is deferred.
 - `docs/features/home-discovery.md` owns the cross-section home, global local search, curated rows, section themes, and full catalog routes.
 - `docs/features/learning-paths-and-practice.md` owns local path JSON, path detail, local exercise JSON, and practice sessions.
@@ -36,6 +37,7 @@ Conventions:
 - `docs/features/bfs-dfs-learning-path.md` owns the Programming skill path for BFS/DFS fundamentals, Python and TypeScript examples, questionnaires, scrolling review, and guided graph interview comparisons.
 - `docs/features/mermaid-diagram-authoring.md` owns the Mermaid reading/writing skill path, progressive rendered examples, choice-only questionnaires, scrolling review, and diagram-selection guidance.
 - `docs/features/auth-and-progress.md` owns Supabase Auth, user profile minimalism, saved progress, anonymous progress buffering, and Keep reading behavior.
+- The same auth contract owns signed-in account navigation, local browser sign-out, and the admin-only LinkedIn group; these workflows use the isolated editorial browser lane.
 - `docs/features/subscriptions-and-content-gating.md` owns the proposed RevenueCat/Stripe/Apple/Google subscription model, strict paid content gating, entitlement cache, and paywall implementation plan.
 - `docs/features/hosting-and-deployment.md` owns the Vercel free-tier deployment contract, static-first hosting, Expo build/submission workflows, and manual Supabase sync boundary.
 - `docs/features/native-mobile-deployment.md` owns the Expo Router Android/iOS app, workspace sharing model, native auth/progress behavior, and mobile test/build lanes.
@@ -69,6 +71,8 @@ AI engineering lesson content under `content/knowledge/ai-engineering/` must sta
 Database index lesson content under `content/knowledge/databases/` must stay aligned with primary or official sources such as PostgreSQL documentation and Drizzle documentation. SQL query practice remains non-executable roadmap work until a future SQL editor feature adds a validated demo-data contract.
 
 Front-End Development lesson content under `content/knowledge/frontend/` must stay aligned with official framework documentation and release notes. The Advanced Next.js 16 path uses official Next.js docs, official Next.js release posts, and npm registry package metadata as source anchors.
+
+Responsive editorial UI uses one platform contract in `features/design-system.md`: touch labels and 48 px/dp targets, content-width tablet layout, keyboard focus, native keyboard avoidance and device-verification limits.
 
 ## Editorial Standard
 

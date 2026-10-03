@@ -60,7 +60,8 @@
     "linkedin": "node --env-file=.env --import tsx scripts/linkedin/cli.ts",
     "test:linkedin:local": "node --import tsx scripts/linkedin/smoke-local.ts",
     "test:production:smoke": "node scripts/testing/production-smoke.mjs",
-    "e2e:linkedin": "EDITORIAL_E2E=1 playwright test --config=apps/web/e2e/playwright.config.ts --project=mobile-chromium linkedin-admin.regression.spec.ts",
+    "e2e:linkedin": "EDITORIAL_E2E=1 playwright test --config=apps/web/e2e/playwright.config.ts --project=mobile-chromium linkedin-admin.regression.spec.ts account-navigation.regression.spec.ts linkedin-accessibility.regression.spec.ts",
+    "e2e:linkedin:accessibility": "EDITORIAL_E2E=1 playwright test --config=apps/web/e2e/playwright.config.ts linkedin-accessibility.regression.spec.ts",
     "test:interview:python": "python3 scripts/content/verify-frontend-python.py && python3 scripts/content/verify-interview-audit.py",
     "mobile:e2e:notebook-layout": "node apps/mobile/e2e/notebook-layout.mjs",
     "mobile:e2e:notebook-gestures": "node apps/mobile/e2e/notebook-gestures.mjs"

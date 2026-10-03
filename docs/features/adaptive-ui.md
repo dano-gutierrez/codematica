@@ -3,9 +3,9 @@
 ## Snapshot
 
 - Status: `in_progress`
-- Last updated: `2026-09-05`
+- Last updated: `2026-10-03`
 - Owner thread: `n/a`
-- Current state: Shared visual styles and persistent web/native navigation are implemented. Installed native verification awaits local toolchain repair.
+- Current state: Shared visual styles and persistent web/native navigation are implemented. Installed native editorial keyboard and screen-reader verification remains outstanding.
 - Target outcome: A quieter, consistent interface with clearly named destinations and comfortable phone, tablet, and desktop layouts.
 - Code touchpoints: `apps/web/src/components/AppHeader.tsx`, `apps/web/src/app/layout.tsx`, `apps/web/src/app/globals.css`, `packages/ui/src/screens.tsx`, `packages/ui/src/tokens.ts`, `apps/mobile/app/_layout.tsx`.
 - Primary tests: `AppHeader.test.tsx`, `adaptive-navigation.test.tsx`, `adaptive-navigation.smoke.spec.ts`, `adaptive-layout.regression.spec.ts`, `.maestro/adaptive-navigation.yaml`.
@@ -27,7 +27,7 @@ The redesign reduces heavy borders and repeated headings and makes sections easi
 
 ## Current State
 
-Shared navigation, concise catalog headings, lighter typography and borders, consistent corners, focus states, and compact discovery cards are implemented. Native source coverage passes. Native execution remains unverified: Expo fails startup while requiring `expo-router/_ctx-shared`, and Expo Doctor reports nine patch-version mismatches. Xcode is still 26.3, the documented native compilation blocker. This presentation change excludes dependency upgrades.
+Shared navigation, concise catalog headings, lighter typography and borders, consistent corners, focus states, and compact discovery cards are implemented. Native source coverage passes. The earlier September startup/patch blockers are historical: the current dependency alignment passes all 20 Expo Doctor checks. Installed native editorial keyboard, safe-area, large-text and VoiceOver/TalkBack behavior has not been verified in this October UI pass; browser emulation and Jest do not establish native release readiness.
 
 ## Scope
 
@@ -48,6 +48,9 @@ Shared navigation, concise catalog headings, lighter typography and borders, con
 
 ### UI / UX
 
+- [Design system](design-system.md) is the reusable web control and spacing contract. The LinkedIn editor adopts shared named buttons and compact disclosures first; broader adoption is incremental. Editorial web actions show text on narrow or touch-capable screens and use 48 px targets; native editorial actions keep text with 48 dp targets. Editorial pane selection uses available content width so iPad portrait/Split View does not squeeze the editor beside the sidebar.
+- Signed-in editorial admins see a separate Admin group with a LinkedIn icon and active destination. The sidebar footer shows account name/email with an expandable Sign out action; phone header and More reuse the disclosure. Escape restores focus. Short-screen navigation scrolls while the footer stays reachable. Profile/settings can extend the same menu later. See [Auth and progress](auth-and-progress.md) for session and sign-out behavior.
+
 - Use concrete copy that names the item or action. Shared study controls say “Next activity,” “Practice complete,” and “Quick review.” Preserve instructions, prerequisites, error meaning, and technical values when shortening text.
 - Neutral canvas, white surfaces, teal primary navigation, and restrained category colors.
 - Semibold titles, regular body copy, thin borders, and consistent 12–16 px corners replace raised heavy controls.
@@ -55,6 +58,7 @@ Shared navigation, concise catalog headings, lighter typography and borders, con
 - Curated rows scroll horizontally with a visible scrollbar on desktop and a next-card preview on phones. They do not truncate the curated content set.
 - Path catalog cards use full-width rows on desktop and stacked actions on phones; category filtering remains unchanged.
 - Web More uses the native HTML dialog focus trap, Escape dismissal, and trigger focus restoration. Native More uses a modal with close/back dismissal.
+- Draft selection/restoration, opt-in native keyboard-aware scrolling, text enlargement, tooltip Escape dismissal and touch geometry follow the design system. Installed native VoiceOver/TalkBack and software-keyboard verification remain separate from browser emulation.
 - Global web focus outlines, pointer affordances, press feedback, and reduced-motion handling apply consistently. Save-progress prompts stay at the top edge, away from bottom navigation and questionnaire continuation controls.
 
 ### Data Model And Persistence

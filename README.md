@@ -141,6 +141,8 @@ Start documentation work at `docs/README.md`. See `docs/CHANGELOG.md` for dated 
 
 ## Private LinkedIn editorial workflow
 
+New web UI follows the [design system](docs/features/design-system.md): shared buttons, semantic icon colors, consistent alignment and spacing, and concise expandable details. The LinkedIn editor is the first reference implementation.
+
 Admin web/native manual creation, Unicode text formatting and review at `/admin/linkedin` uses optional Supabase persistence and a manually invoked local Codex worker. Drafts are private; a human must approve the exact revision before Buffer scheduling. See [feature contract](docs/features/linkedin-editorial.md) and [operations runbook](docs/runbooks/linkedin-editorial.md). Commands: `npm run linkedin -- status`, `npm run e2e:linkedin`, `npm run test:linkedin:local`, and `npm run test:production:smoke` (after build).
 
 ## Frontend interview practice

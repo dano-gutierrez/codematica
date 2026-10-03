@@ -38,6 +38,10 @@ Codematica renders local content without Supabase credentials. Configure web `NE
 - `/login` supports Google OAuth, email/password sign-in and sign-up, and Apple OAuth when `NEXT_PUBLIC_AUTH_APPLE_ENABLED=true`.
 - `/auth/callback` exchanges OAuth/PKCE codes and returns users through `/login?sync=1` so browser-local progress can sync after login.
 - `/auth/sign-out` signs users out and redirects home.
+- Signed-in web navigation replaces Sign in with the account name/email and an expandable Sign out control. Desktop uses the sidebar footer; phones reuse it in the header and More menu.
+- Admin is a separate navigation group containing the LinkedIn icon/link, visible only for a signed-in user whose existing membership RPC succeeds. Database RLS and RPCs remain the authorization boundary.
+- Navigation Sign out calls `auth.signOut({ scope: "local" })`, clears this browser session, returns home, and refreshes server content. Failures keep a retryable account menu. Other devices remain signed in.
+- The account disclosure reserves the future Profile/settings entry point; this change adds no Profile route.
 - The app remains usable without Supabase env vars; progress POSTs then fall back to the signed-out local buffer.
 - `/api/progress/summary` returns signed-in Keep reading items or an empty signed-out summary.
 - `/api/progress` validates and upserts one progress item for the authenticated user.
@@ -48,6 +52,20 @@ Codematica renders local content without Supabase credentials. Configure web `NE
 - Native uses the same progress validation and upsert helpers from `packages/core/src/progress/`; it writes directly with an anon-safe Supabase client when signed in and falls back to local buffering when signed out or offline.
 
 ## Detailed Behavior
+
+### Navigation Account Session
+
+`use-account-session.ts` subscribes synchronously to auth changes, retrieves the initial user, and ignores a lookup that completes after a newer event or unmount. Loading shows a neutral account check. Display names use full_name, then name, then the email prefix or “Account.”
+
+The account disclosure uses native details/summary. Escape closes it and restores focus. Names and emails truncate without expanding the rail. The navigation area scrolls on short screens while the account footer stays reachable. Sign out uses the shared Button primitive.
+
+### Navigation Validation
+
+Component tests verify separate Admin grouping, active LinkedIn routes and icon, ordinary/signed-out access, identity fallbacks, failure/retry, disabled concurrent sign-out, and Escape focus. Hook tests cover optional configuration, initial lookup, auth events, stale results, and cleanup.
+
+`account-navigation.regression.spec.ts` signs into intercepted synthetic Supabase endpoints on desktop and phone, checks Admin and the account menu, signs out, and verifies cookie removal and anonymous navigation. It runs with `npm run e2e:linkedin` alongside the editorial cases. No hosted account or database is changed. Coverage gates remain unchanged.
+
+Local follow-up validation on 2026-10-03: 421 Vitest tests with aggregate/per-file coverage, six editorial/account browser journeys, nine public smoke cases, lint, workspace typechecks, production builds, and fresh production-only artifact readiness pass. The authenticated account-menu journeys also run axe checks on desktop and phone. The user requested a pull request after reviewing the local preview.
 
 ### Progress Events
 

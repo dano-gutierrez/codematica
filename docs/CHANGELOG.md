@@ -2,6 +2,28 @@
 
 This changelog dates durable product and architecture changes and links to their authoritative feature contracts.
 
+## 2026-10-03 — Touch And Accessible Editorial Review
+
+- Keep one design system with visible touch labels, 48 px/dp targets, content-width tablet panes, growing text and normal-flow action bars.
+- Preserve keyboard context through draft/create transitions; make desktop tooltips hoverable and Escape-dismissible.
+- Align native editorial controls, keyboard-aware scrolling and explicit discard before leaving unsaved edits.
+- Add Chromium/iPhone WebKit phone/tablet/desktop, 200% text and landscape regressions; retain native coverage and update the disposable-data Maestro journey. Installed native VoiceOver/TalkBack and software keyboard checks remain unverified.
+- Keep publishing permissions and coverage floors unchanged. The local visual pass was reviewed before the user requested a pull request.
+- Validation after integrating latest `main`: 490 Vitest tests with both coverage gates, 113 native tests with coverage, Expo Doctor 20/20, 27 editorial/account browser cases and nine public smoke cases pass. Content freshness, lint, typechecks, production build and pruned-artifact startup pass.
+
+Owning contracts: `docs/features/design-system.md`, `docs/features/adaptive-ui.md` and `docs/features/linkedin-editorial.md`.
+
+## 2026-10-02 — Editorial UI And Design System (Local Review)
+
+- Add shared named action buttons with consistent geometry, semantic colors, and icon tooltips.
+- Simplify LinkedIn review with compact filters, a framed composer, explicit approval, and expandable supporting material.
+- Preserve creation, formatting, analysis, and exact-revision approval. Protect unsaved draft/comment edits and offer explicit discard.
+- Document spacing, borders, alignment, typography, reuse, and accessibility. Coverage gates remain unchanged.
+- The first visual pass was reviewed locally; the user requested a pull request on 2026-10-03. No deployment is included.
+- Follow-up (2026-10-03): include the previously local Admin sidebar group, LinkedIn icon, signed-in account footer, and shared Sign out disclosure in the design checkout and preview. Add account navigation to the existing isolated browser gate.
+
+Owning contracts: `docs/features/design-system.md` and `docs/features/linkedin-editorial.md`.
+
 ## 2026-09-29 — PR Check Reliability
 
 - Aligned Expo SDK 57 dependencies and root overrides with Expo 57.0.26 and React Native 0.86.3. Added the required `expo-asset` native peer, pinned compatible animation packages, and regenerated stale nested workspace resolutions in the lockfile.
