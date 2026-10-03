@@ -348,18 +348,44 @@ it("keeps automatic checks available after cancelled extra contacts", async () =
   expect(view.getByTestId("mobile-writing-sheet-progress")).toHaveTextContent(/2 \/ 24/);
 });
 it("requires all 24 whole pairs, unlocks without advancing, and keeps earned unlocks after restart", async () => {
+  let canvas: import("../../../../packages/ui/src/JapaneseNotebookPractice").HandwritingCanvasProps;
+  const Canvas = (props: typeof canvas) => {
+    canvas = props;
+    return null;
+  };
   const n = createCustomNotebook("あい", index),
     view = await render(
-      <JapaneseNotebookPractice notebook={n} adapters={adapters} />,
+      <JapaneseNotebookPractice
+        notebook={n}
+        adapters={{ ...adapters, handwritingCanvas: Canvas }}
+      />,
     );
   expect(
     view.getByTestId("mobile-writing-sheet-" + n.sheets[1]!.id),
   ).toBeDisabled();
-  for (let i = 0; i < 48; i++)
-    await glyph(view, n.sheets[0]!.characters[i % 2]!);
+  // Exercise every acceptance through the native canvas boundary. Separate
+  // responder tests cover pointer samples without replaying them 48 times here.
+  for (let i = 0; i < 48; i++) {
+    await act(() => canvas!.onBegin());
+    await act(() => canvas!.onEnd(n.sheets[0]!.characters[i % 2]!.strokes));
+    await act(() => jest.advanceTimersByTime(400));
+    expect(view.getByTestId("mobile-writing-sheet-progress")).toHaveTextContent(
+      new RegExp(` · ${Math.floor((i + 1) / 2)} / 24 repetitions$`),
+    );
+    if (i < 47) {
+      expect(
+        view.getByTestId("mobile-writing-sheet-" + n.sheets[1]!.id),
+      ).toBeDisabled();
+      expect(view.getByTestId("mobile-writing-next-sheet")).toBeDisabled();
+    }
+  }
   expect(view.getByTestId("mobile-writing-sheet-progress")).toHaveTextContent(
-    /24 \/ 24 repetitions/,
+    /Sheet 1 of 3 · 24 \/ 24 repetitions/,
   );
+  expect(
+    view.getByTestId("mobile-writing-sheet-" + n.sheets[1]!.id),
+  ).toBeEnabled();
+  expect(view.getByTestId("mobile-writing-cell-47-ink-0")).toBeOnTheScreen();
   expect(view.getByTestId("mobile-writing-next-sheet")).toBeEnabled();
   await fireEvent.press(view.getByTestId("mobile-writing-next-sheet"));
   expect(view.getByTestId("mobile-writing-sheet-progress")).toHaveTextContent(
@@ -369,10 +395,13 @@ it("requires all 24 whole pairs, unlocks without advancing, and keeps earned unl
     view.getByTestId("mobile-writing-sheet-" + n.sheets[0]!.id),
   );
   await fireEvent.press(view.getByTestId("mobile-writing-repeat"));
+  expect(view.getByTestId("mobile-writing-sheet-progress")).toHaveTextContent(
+    /0 \/ 24 repetitions/,
+  );
   expect(
     view.getByTestId("mobile-writing-sheet-" + n.sheets[1]!.id),
   ).toBeEnabled();
-}, 60000);
+});
 it("restores recall, retains ink through save failures, retries, and completes required lessons once", async () => {
   const n = createCustomNotebook("一", index),
     initial = createNotebookSnapshot(n);

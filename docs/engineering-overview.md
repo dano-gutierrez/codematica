@@ -220,7 +220,7 @@ Before relying on Supabase for production user progress at scale, revisit plan l
 
 ## Private LinkedIn editorial workflow
 
-Anonymous learning remains local-index first. The optional `/admin/linkedin` web/native surface reads private drafts through Supabase Auth, RLS and admin-only RPCs. `private.app_admins` is operator provisioned. Post revisions are immutable; approval binds the exact text. Manual creation atomically inserts a draft and refinement job. Manual drafts require an analyzed proposal to be adopted before approval, and text edits invalidate analysis. Shared schemas/store live in `packages/core/src/linkedin*.ts`. The HTTP/mobile graphs never import the local service-role worker.
+Anonymous learning remains local-index first. The optional `/admin/linkedin` web/native surface reads private drafts through Supabase Auth, RLS and admin-only RPCs. `private.app_admins` is operator provisioned. Post revisions are immutable; approval binds the exact text. Manual creation atomically inserts a draft and a preparation job when enabled, or a legacy refinement job. Manual drafts require an analyzed proposal to be adopted before approval, and text edits invalidate analysis. Shared schemas/store live in `packages/core/src/linkedin*.ts`. The HTTP/mobile graphs never import the local service-role worker.
 
 ```mermaid
 flowchart LR
@@ -231,8 +231,13 @@ flowchart LR
   Create --> Jobs[Durable Postgres jobs]
   Review -->|Refine| Jobs
   Review -->|Approve exact revision| Jobs
-  Jobs --> Worker[Manual local Codex run]
-  Prompt[Checked-in refinement prompt] --> Worker
+  Jobs -->|prepare, manual batch| Local[Local writer and OpenJev]
+  Local --> Reports[Immutable local preparation reports]
+  Reports -->|ready, or reasoned human override| Verify[Compact verification queue]
+  Verify --> Worker[Manual local Codex verify and patch]
+  Jobs -->|approved schedule or cancel| Worker
+  Prompt[Checked-in preparation and verification prompts] --> Local
+  Prompt --> Worker
   Worker -->|Proposed revision only| Drafts
   Worker -->|Approved text and free capacity| Buffer[Buffer daily queue]
   Buffer --> LinkedIn[Personal LinkedIn profile]
@@ -241,7 +246,7 @@ flowchart LR
   Publications --> Review
 ```
 
-The existing Codex account processes queued requests locally when the user asks. Requests persist between manual runs. Buffer Free owns daily slots and holds at most ten scheduled posts; additional approvals remain durable in Supabase. First comments are manual. Scheduling attempts are recorded before external calls; unknown results are reconciled instead of retried. Private exports before each day’s first mutations and insert-only restore preserve history; restore always pauses publishing. See `features/linkedin-editorial.md` and `runbooks/linkedin-editorial.md` for account onboarding, failure recovery and validation boundaries.
+The opt-in preparation migration keeps inference on the Mac and saves only immutable reports/voice versions in Supabase. Manual batches preserve originals and hold duplicates or integrity failures before Codex. A versioned overview and on-demand detail replace collection-wide history polling. The existing Codex account verifies selected prepared text when the user asks. Requests persist between manual runs. Buffer Free owns daily slots and holds at most ten scheduled posts; additional approvals remain durable in Supabase. First comments are manual. Scheduling attempts are recorded before external calls; unknown results are reconciled instead of retried. Private exports before each day’s first mutations and insert-only restore preserve history; restore always pauses publishing. See `features/linkedin-editorial.md` and `runbooks/linkedin-editorial.md` for account onboarding, failure recovery and validation boundaries.
 
 ## Frontend Interview Study Flow
 

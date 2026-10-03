@@ -26,3 +26,5 @@ Runtime-safe language modules live under `src/languages/` and `src/language-writ
 `src/language-writing/index.ts` also owns shared cubic stroke rendering, dense-ink normalization, and beginner scoring. The legacy stroke-by-stroke helpers retain their compatibility contract; notebook shape grading instead allows order/direction changes and extra lifts while requiring major-feature coverage. Kana geometry is local and attributed to KanjiVG in the canonical catalogs and third-party notices.
 
 Japanese writing notebooks use 24 whole-prompt repetitions per sheet and support curated/custom text of 1–5 published characters. Ink stays on the device; coarse completion/unlocks optionally sync. See `docs/features/japanese-writing-notebooks.md` for the implementation, persistence and validation contract.
+
+`@codematica/core/linkedin-preparation` validates sparse verification against an immutable candidate and derives preparation labels. Overview/detail polling retains only selected history and discards stale responses during edits. Voice rules and held-draft overrides use authenticated RPCs; local reports never authorize approval.

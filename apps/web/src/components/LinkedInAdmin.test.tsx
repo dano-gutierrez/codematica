@@ -60,3 +60,20 @@ it("cancels creation without persisting a draft", async () => {
   fireEvent.click(screen.getByRole("button", { name: "Cancel" })); expect(api.create).not.toHaveBeenCalled();
   expect(screen.getByRole("button", { name: "Create" })).toBeEnabled();
 });
+
+it("loads a preparation on demand, preserves the original, and requires an override reason", async () => {
+  const { preparationFixture } = await import("../../../../packages/core/src/test/linkedin-fixture");
+  const data = structuredClone(editorialFixture); data.posts[0].preparation_required = true; data.preparations = [preparationFixture];
+  const api = { isAdmin: vi.fn().mockResolvedValue(true), snapshot: vi.fn(), overview: vi.fn().mockResolvedValue({ ...data, revisions: [], preparations: [], version: "1" }), detail: vi.fn().mockResolvedValue(data), create: vi.fn(), review: vi.fn(), preparationAction: vi.fn().mockResolvedValue(null) };
+  render(<LinkedInAdmin client={api} />);
+  expect(api.detail).not.toHaveBeenCalled();
+  fireEvent.click(await screen.findByRole("button", { name: /Retries need a budget/ }));
+  expect(await screen.findByText("Local preparation · held")).toBeInTheDocument();
+  expect(screen.getByLabelText("Post text")).toHaveValue(data.revisions[0].body);
+  expect(screen.getByRole("button", { name: "Approve & queue" })).toBeDisabled();
+  expect(screen.getByRole("button", { name: "Send to Codex with flags" })).toBeDisabled();
+  fireEvent.change(screen.getByLabelText("Reason for sending"), { target: { value: "This is a distinct follow-up" } });
+  fireEvent.click(screen.getByRole("button", { name: "Keep as a follow-up" }));
+  await waitFor(() => expect(api.preparationAction).toHaveBeenCalledWith(data.posts[0].id, data.posts[0].current_revision_id, preparationFixture.id, "follow_up", "This is a distinct follow-up"));
+  expect(api.review).not.toHaveBeenCalled();
+});
