@@ -78,7 +78,7 @@ Transient refinement failures become eligible after a one-hour backoff and are r
 
 ## Local Preparation Contract
 
-Migration `202610030001` is additive and disabled by default; hosted activation is a separate rollout. Immutable `linkedin_preparations` store selected text/analysis, related revisions, issues, before/after scores, content hashes, metrics and pinned versions. Immutable `linkedin_voice_profiles` contain generic rules only. Drafts enrolled in preparation must adopt a Codex-verified result before approval. Local reports never overwrite originals. Existing approved work keeps its current publishing contract.
+Migration `202610030002` is additive and disabled by default; hosted activation is a separate rollout. Immutable `linkedin_preparations` store selected text/analysis, related revisions, issues, before/after scores, content hashes, metrics and pinned versions. Immutable `linkedin_voice_profiles` contain generic rules only. Drafts enrolled in preparation must adopt a Codex-verified result before approval. Local reports never overwrite originals. Existing approved work keeps its current publishing contract.
 
 A manual Mac batch performs source-containment/hash checks, exact deduplication, a twelve-item lexical/topic/source shortlist, semantic relation checks, at most two writer rounds, independent integrity/quality scoring, and hook comparison with a final fidelity check. The unchanged original remains a candidate. No remote inference fallback exists. A held report needs an explicit, reasoned human override or another edit; stale results cannot enqueue Codex. Follow-up overrides preserve every flag. Local inference caches remain outside Supabase.
 
@@ -102,7 +102,7 @@ Local setup, pinned models, manual activation/backfill, retries, license constra
 - `scripts/linkedin/models.py`: manual lifecycle for the pinned local servers.
 - `scripts/linkedin/evaluate-local.ts` / `smoke-preparation.ts`: real-model synthetic checks and inert CLI integration.
 - `packages/core/src/linkedin-preparation.ts`: verification merge and collection labels.
-- `supabase/migrations/202610030001_linkedin_preparation.sql`: opt-in preparation storage, transitions, summary/detail RPCs and v2 restoration.
+- `supabase/migrations/202610030002_linkedin_preparation.sql`: opt-in preparation storage, transitions, summary/detail RPCs and v2 restoration.
 - `scripts/linkedin/smoke-local.ts`: real local Auth/REST/CLI lifecycle with inert external publications.
 - `supabase/migrations/202609290002_linkedin_recovery.sql`: cancellation race and restore settings.
 

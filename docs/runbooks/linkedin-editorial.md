@@ -95,7 +95,7 @@ OpenJev weights use CC BY-NC 4.0; the server's permissive license does not overr
 ### Activate and backfill
 
 1. Export the hosted collection. Finish running editorial jobs; activation refuses to interrupt running `prepare` or `refine` jobs. Keep publishing under its existing human approval rules.
-2. Apply `202610030001_linkedin_preparation.sql` through the normal approved migration rollout, and deploy matching review clients. Do not reset the hosted database.
+2. Apply `202610030002_linkedin_preparation.sql` through the normal approved migration rollout, and deploy matching review clients. Do not reset the hosted database.
 3. Run `npm run linkedin -- enable-preparation --all-review`. It writes an additional private v2 backup before activation, cancels superseded pending legacy refinements and enqueues all current `review` drafts. Approved, withdrawing and rejected posts remain outside this batch. Repeating activation does not overwrite text or completed reports.
 4. Start with `npm run linkedin -- prepare 5`. Review local results and holds before `npm run linkedin -- prepare --all` for the remaining eligible collection. `--all` is a bounded snapshot of eligible work, not a daemon.
 5. Ask Codex to process the prepared queue using `prompts/linkedin/worker.md`. Codex receives only the selected text, original, references, generic voice rules, related IDs and flags. It independently verifies or patches that result.
