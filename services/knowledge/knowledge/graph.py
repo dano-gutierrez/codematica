@@ -102,13 +102,13 @@ class GraphBackend:
         class Concept(BaseModel):
             name: str = Field(min_length=1, max_length=120)
             resource_id: str
-            quote: str = Field(min_length=10, max_length=600)
+            quote: str = Field(min_length=1, max_length=600)
         class Fact(BaseModel):
             source: str
             target: str
             relationship: Literal["related", "requires", "extends"]
             resource_id: str
-            quote: str = Field(min_length=10, max_length=600)
+            quote: str = Field(min_length=1, max_length=600)
         class Extraction(BaseModel):
             concepts: list[Concept]
             relationships: list[Fact]

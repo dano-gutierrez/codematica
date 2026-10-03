@@ -1,17 +1,43 @@
 import tempfile
 import unittest
+from unittest.mock import AsyncMock, patch
 from pathlib import Path
 from types import SimpleNamespace
 from pydantic import BaseModel
 from graphiti_core.prompts.models import Message
 from knowledge.qwen import QwenClient, example
 from knowledge.store import Store, extraction_batches, batch_key
-from knowledge.graph import inferred_projection
+from knowledge.graph import GraphBackend, inferred_projection
 from test_store import snapshot
 
 class Entities(BaseModel):
     entities: list[str]
 class QwenTests(unittest.IsolatedAsyncioTestCase):
+    async def test_short_verbatim_code_evidence_is_retained(self):
+        with tempfile.TemporaryDirectory() as temp:
+            store=Store(Path(temp)/'db')
+            resource={**snapshot()['resources'][0], 'text':'max: 8\nmax limit', 'offset':0}
+            async def generate(messages, response_model, **kwargs):
+                return response_model.model_validate({'concepts':[
+                    {'name':'max','resource_id':resource['id'],'quote':'max: 8'},
+                    {'name':'limit','resource_id':resource['id'],'quote':'max limit'},
+                    {'name':'remote','resource_id':resource['id'],'quote':'remote'},
+                    {'name':'missing','resource_id':resource['id'],'quote':'max: 8'},
+                ],'relationships':[
+                    {'source':'max','target':'limit','relationship':'related','resource_id':resource['id'],'quote':'max limit'},
+                    {'source':'max','target':'remote','relationship':'related','resource_id':resource['id'],'quote':'max remote'},
+                ]}).model_dump()
+            graph=GraphBackend(store,SimpleNamespace(encode=lambda text:[1.0]))
+            graph.graph=SimpleNamespace(llm_client=SimpleNamespace(generate_response=generate,local=SimpleNamespace(versions={})),driver=object())
+            with patch('graphiti_core.nodes.EntityNode.save',new=AsyncMock()) as concept_save, patch('graphiti_core.nodes.EpisodicNode.save',new=AsyncMock()), patch('graphiti_core.edges.EntityEdge.save',new=AsyncMock()) as edge_save:
+                result=await graph.extract_batch([resource])
+            self.assertEqual(result['concepts'][0]['quote'],'max: 8')
+            self.assertEqual(result['facts'][0]['quote'],'max limit')
+            self.assertEqual(result['rejected'],3)
+            self.assertEqual(concept_save.await_count,2)
+            self.assertEqual(edge_save.await_count,1)
+            self.assertEqual(store.extraction_get(batch_key([resource]))['status'],'complete')
+
     async def test_schema_echo_is_reprompted_and_validated_then_cached(self):
         with tempfile.TemporaryDirectory() as temp:
             client=QwenClient(Store(Path(temp)/'db'))
