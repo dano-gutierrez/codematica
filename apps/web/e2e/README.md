@@ -1,6 +1,6 @@
 # Web End-To-End Tests
 
-Playwright runs the complete suite in mobile Chromium. Critical `@smoke` journeys and `@playground` regressions also run in desktop Chromium and mobile WebKit. Deeper cases use `@regression`.
+Playwright runs the complete suite in mobile Chromium. Critical `@smoke` journeys, `@playground` and `@notebook-catalog` regressions also run in desktop Chromium and mobile WebKit. Deeper cases use `@regression`.
 
 The runner builds and serves the production Next app, avoiding dev-server compilation and Fast Refresh during parallel tests.
 
@@ -33,3 +33,5 @@ See `docs/features/adaptive-ui.md` for persistent phone navigation, desktop/iPad
 Japanese writing notebooks use 24 whole-prompt repetitions per sheet and support curated/custom text of 1–5 published characters. Ink stays on the device; coarse completion/unlocks optionally sync. Regression coverage includes mouse-written shapes with 900ms pauses between strokes, saved Easy/Balanced/Precise selection, automatic checking without a submit button, compact sheet controls with an accessible restart icon, delayed rejection bounce/fade, and stable phone/iPad/Split View layouts. Browser clocks advance validation/cleanup deadlines explicitly. See `docs/features/japanese-writing-notebooks.md` for the implementation, persistence and validation contract.
 
 Notebook layout regressions exercise real wheel scrolling and two-finger CDP touch gestures at phone, iPad portrait/landscape and Split View widths. They assert that mode buttons are absent, cancelled live strokes leave no ink, saved cells remain intact and the page layout stays stable. Physical iPad Safari/Pencil input remains a device QA gate.
+
+`notebook-catalog.regression.spec.ts` checks actual Japanese previews, optional romaji above the prompts, keyboard toggling, saved notebooks, navigation/reload restoration, stable card heights and phone/iPad/Split View containment. Its `@notebook-catalog` tag runs on all three projects to retain Safari coverage for ruby annotation layout. Run with `npx playwright test --config=apps/web/e2e/playwright.config.ts notebook-catalog.regression.spec.ts`.

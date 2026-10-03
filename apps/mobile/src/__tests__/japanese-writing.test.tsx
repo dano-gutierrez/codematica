@@ -1,4 +1,4 @@
-import { act, fireEvent, render, waitFor } from "@testing-library/react-native";
+import { act, fireEvent, render, waitFor, within } from "@testing-library/react-native";
 import { AccessibilityInfo, ScrollView } from "react-native";
 import {
   buildWritingPracticeSheets,
@@ -572,6 +572,33 @@ it("creates, validates, saves and reopens custom notebooks from Japanese navigat
   expect(adapters.navigation.navigate).toHaveBeenCalledWith(
     "/languages/japanese/notebooks",
   );
+});
+
+it("shows Japanese catalog previews and restores the accessible romaji toggle", async () => {
+  const storage: NotebookStorage = {
+    list: jest.fn(async () => [createCustomNotebook("あい", index)]),
+    saveDefinition: jest.fn(), load: jest.fn(), save: jest.fn(),
+    loadRomajiPreference: jest.fn(async () => false),
+    saveRomajiPreference: jest.fn(async () => undefined),
+  };
+  const view = await render(<JapaneseNotebookCatalogScreen index={index} adapters={{ ...adapters, notebooks: storage }} />);
+  const card = view.getByTestId("mobile-notebook-curated-languages/japanese-hiragana-h-m-writing-notebook-v1");
+  expect(card).toHaveTextContent(/はひ/);
+  expect(card).not.toHaveTextContent(/H And M/);
+  const toggle = view.getByRole("switch", { name: "Show romaji" });
+  await waitFor(() => expect(toggle).not.toBeChecked());
+  expect(within(card).getByText("ha · hi", { includeHiddenElements: true })).not.toBeVisible();
+  expect(view.getByText("double next consonant", { includeHiddenElements: true })).not.toBeVisible();
+  await fireEvent(toggle, "valueChange", true);
+  expect(toggle).toBeChecked();
+  expect(within(card).getByText("ha · hi")).toBeOnTheScreen();
+  expect(view.getByText("konnichiwa")).toBeOnTheScreen();
+  expect(view.getByText("a i")).toBeOnTheScreen();
+  await waitFor(() => expect(storage.saveRomajiPreference).toHaveBeenCalledWith(true));
+  await fireEvent.press(card);
+  expect(view.getByTestId("mobile-writing-notebook")).toBeOnTheScreen();
+  await fireEvent.press(view.getByTestId("mobile-notebook-back"));
+  expect(view.getByRole("switch", { name: "Show romaji" })).toBeChecked();
 });
 
 it("automatically handles inputs and cancels live ink for two-finger scrolling", async () => {

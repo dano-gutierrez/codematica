@@ -16,6 +16,7 @@ vi.mock("@/lib/supabase/client", () => ({
 import { createWebNotebookStorage } from "./storage";
 
 beforeEach(() => {
+  window.localStorage.clear();
   browserClient.mockReturnValue(null);
   vi.stubGlobal("indexedDB", new IDBFactory());
   vi.stubGlobal(
@@ -27,6 +28,14 @@ beforeEach(() => {
   );
 });
 describe("device notebook storage", () => {
+  it("saves the catalog romaji preference separately from notebook ink", async () => {
+    const storage = createWebNotebookStorage("guest");
+    expect(await storage.loadRomajiPreference!()).toBe(true);
+    await storage.saveRomajiPreference!(false);
+    expect(await createWebNotebookStorage("other-user").loadRomajiPreference!()).toBe(false);
+    await storage.saveRomajiPreference!(true);
+    expect(await storage.loadRomajiPreference!()).toBe(true);
+  });
   it("restores ink, pressure, active sheet and unlocks, and clears only the restarted page", async () => {
     const notebook = createCustomNotebook("あい", getContentIndex()),
       storage = createWebNotebookStorage("guest");

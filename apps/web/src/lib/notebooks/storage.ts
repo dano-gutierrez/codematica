@@ -99,6 +99,12 @@ export function createWebNotebookStorage(
     });
   }
   return {
+    async loadRomajiPreference() {
+      return window.localStorage.getItem("codematica:notebook-romaji:v1") !== "false";
+    },
+    async saveRomajiPreference(show) {
+      window.localStorage.setItem("codematica:notebook-romaji:v1", String(show));
+    },
     async load(notebook) {
       const owner = await scope();
       const record = await request<StoredRecord | undefined>(

@@ -7,8 +7,16 @@ tags:
 - openLink: codematica://languages/japanese/notebooks
 - scrollUntilVisible:
     element:
-      id: mobile-notebook-input
+      id: mobile-notebook-romaji-toggle
     direction: DOWN
+- tapOn:
+    id: mobile-notebook-romaji-toggle
+- tapOn:
+    id: mobile-notebook-romaji-toggle
+- scrollUntilVisible:
+    element:
+      id: mobile-notebook-input
+    direction: UP
 - tapOn:
     id: mobile-notebook-input
 - evalScript: ${maestro.copiedText = '一'}

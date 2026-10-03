@@ -1,9 +1,10 @@
 import { useEffect, useMemo, useState } from "react";
-import { Pressable, Text, TextInput, View } from "react-native";
+import { Pressable, Switch, Text, TextInput, View } from "react-native";
 import Svg, { Path } from "react-native-svg";
 import {
   createCustomNotebook,
   createExerciseNotebook,
+  getNotebookCatalogPreview,
   resolveNotebookCharacters,
   type ContentIndex,
   type WritingNotebook,
@@ -11,6 +12,7 @@ import {
 import { AppScreen, Header } from "./screens";
 import { JapaneseNotebookPractice } from "./JapaneseNotebookPractice";
 import type { CodematicaAdapters } from "./adapters";
+import { useNotebookRomaji } from "./notebook-session";
 export function JapaneseNotebookCatalogScreen({
   index,
   adapters,
@@ -18,6 +20,7 @@ export function JapaneseNotebookCatalogScreen({
   index: ContentIndex;
   adapters: CodematicaAdapters;
 }) {
+  const { showRomaji, toggleRomaji } = useNotebookRomaji(adapters.notebooks);
   const curated = useMemo(
     () =>
       index.exercises
@@ -96,6 +99,35 @@ export function JapaneseNotebookCatalogScreen({
         }}
       >
         <Text style={{ color: "#263238", fontSize: 16 }}>{label}</Text>
+      </Pressable>
+    );
+  }
+  function notebookCard(notebook: WritingNotebook, saved: boolean) {
+    const prompts = getNotebookCatalogPreview(notebook);
+    return (
+      <Pressable
+        key={notebook.id}
+        accessibilityRole="button"
+        accessibilityLabel={prompts.map(p => p.label).join("、") + " · " + notebook.title}
+        onPress={() => setSelected(notebook)}
+        testID={(saved ? "mobile-notebook-saved-" : "mobile-notebook-curated-") + notebook.id}
+        style={{ minHeight: 120, padding: 18, borderWidth: 1, borderRadius: 18, borderColor: "#abcbd4", backgroundColor: "#fffdf7", gap: 16 }}
+      >
+        <View style={{ flexDirection: "row", flexWrap: "wrap", gap: 16 }}>
+          {prompts.map(prompt => (
+            <View key={prompt.label} style={{ alignItems: "center" }}>
+              <Text
+                accessibilityElementsHidden={!showRomaji}
+                importantForAccessibility={showRomaji ? "auto" : "no"}
+                style={{ minHeight: 18, fontSize: 11, lineHeight: 18, color: "#53616c", opacity: showRomaji ? 1 : 0 }}
+              >
+                {prompt.romaji}
+              </Text>
+              <Text accessibilityLanguage="ja-JP" style={{ fontSize: 27, lineHeight: 40, color: "#263238" }}>{prompt.label}</Text>
+            </View>
+          ))}
+        </View>
+        <Text style={{ color: "#53616c", fontSize: 12 }}>{saved ? "Continue on this device · " : ""}{notebook.sheets.length} practice sheets</Text>
       </Pressable>
     );
   }
@@ -179,22 +211,27 @@ export function JapaneseNotebookCatalogScreen({
               })}
             </>
           ) : null}
+          <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "flex-end", gap: 12, minHeight: 44 }}>
+            <Text style={{ color: "#33434b", fontSize: 14, fontWeight: "600" }}>Show romaji</Text>
+            <Switch
+              accessibilityLabel="Show romaji"
+              accessibilityRole="switch"
+              accessibilityState={{ checked: showRomaji }}
+              value={showRomaji}
+              onValueChange={toggleRomaji}
+              trackColor={{ false: "#667680", true: "#007c78" }}
+              hitSlop={8}
+              testID="mobile-notebook-romaji-toggle"
+            />
+          </View>
           {saved.filter((n) => n.id.startsWith("custom-")).length ? (
             <Text accessibilityRole="header">Saved notebooks</Text>
           ) : null}
           {saved
             .filter((n) => n.id.startsWith("custom-"))
-            .map((n) =>
-              button(n.title, "mobile-notebook-saved-" + n.id, () =>
-                setSelected(n),
-              ),
-            )}
+            .map((n) => notebookCard(n, true))}
           <Text accessibilityRole="header">Practice notebooks</Text>
-          {curated.map((n) =>
-            button(n.title, "mobile-notebook-curated-" + n.id, () =>
-              setSelected(n),
-            ),
-          )}
+          {curated.map((n) => notebookCard(n, false))}
         </View>
       )}
     </AppScreen>

@@ -2,6 +2,8 @@
 
 Expo Router Android/iOS app for Codematica.
 
+Notebook catalog cards show actual Japanese sheet prompts. Show romaji optionally annotates the prompts and remembers the choice in AsyncStorage separately from ink and progress. Native writing/catalog and storage Jest tests cover restoration and toggling; the Japanese writing Maestro flow exercises the switch.
+
 The app uses `@codematica/core` for content/search/progress contracts and `@codematica/ui` for React Native screens. The bundled core index supports offline discovery, anonymous reading, complete basic hiragana/katakana lookup, romaji/IME-aware search, always-available Japanese flashcards/guides, internal lesson links, dictionary-style character details, and embedded/path writing practice.
 
 Signed-out progress retains every unique item locally. After sign-in, it syncs to the optional Supabase account in bounded batches.

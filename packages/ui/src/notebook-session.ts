@@ -14,6 +14,32 @@ import {
   type NotebookDifficulty,
 } from "@codematica/core";
 
+/** Optional device preference; a delayed read must never undo the learner's toggle. */
+export function useNotebookRomaji(storage?: NotebookStorage) {
+  const [showRomaji, setShowRomaji] = useState(true);
+  const current = useRef(true), edits = useRef(0), queue = useRef(Promise.resolve());
+  useEffect(() => {
+    let cancelled = false;
+    const version = edits.current;
+    void storage?.loadRomajiPreference?.().then(show => {
+      if (!cancelled && edits.current === version) {
+        current.current = show;
+        setShowRomaji(show);
+      }
+    }).catch(() => undefined);
+    return () => { cancelled = true; };
+  }, [storage]);
+  function toggleRomaji() {
+    const next = !current.current;
+    current.current = next;
+    edits.current += 1;
+    setShowRomaji(next);
+    // Serialize rapid changes, retaining the current UI if device storage fails.
+    queue.current = queue.current.then(() => storage?.saveRomajiPreference?.(next)).catch(() => undefined);
+  }
+  return { showRomaji, toggleRomaji };
+}
+
 /** A new stroke or correction cancels expiry; only temporary rejected ink is cleared. */
 export function useNotebookInkRejection(onExpire: () => void) {
   const [phase, setPhase] = useState<"idle" | "rejected" | "fading">("idle");

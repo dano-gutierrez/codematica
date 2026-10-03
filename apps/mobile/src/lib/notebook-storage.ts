@@ -34,6 +34,12 @@ export function createNativeNotebookStorage(
     return `writing-notebooks:${user.userId ?? "guest"}:`;
   }
   return {
+    async loadRomajiPreference() {
+      return await AsyncStorage.getItem("codematica:notebook-romaji:v1") !== "false";
+    },
+    async saveRomajiPreference(show) {
+      await AsyncStorage.setItem("codematica:notebook-romaji:v1", String(show));
+    },
     async load(notebook) {
       const base = await prefix(),
         raw = await AsyncStorage.getItem(base + "sheet:" + notebook.id);

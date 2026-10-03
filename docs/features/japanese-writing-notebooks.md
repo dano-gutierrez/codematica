@@ -3,12 +3,12 @@
 ## Snapshot
 
 - Status: `in_progress` — implementation exists; installed-device and physical Pencil validation remain outstanding.
-- Last updated: `2026-10-02`
+- Last updated: `2026-10-03`
 - Owner thread: n/a
 - Current state: web and native notebook sheets share shape grading, schedules, cell cursors and local saving; iOS has a local PencilKit Expo module.
 - Target outcome: fill generous notebook pages with recognizable handwriting, with saved ink and progressive repetition.
 - Code touchpoints: `packages/core/src/language-writing/{notebook,shape}.ts`, `packages/ui/src/notebook-session.ts`, web `JapaneseWritingPractice`, native `JapaneseNotebookPractice`, and `apps/mobile/modules/codematica-handwriting/`.
-- Primary tests: core `notebook.test.ts`, web/native writing and storage tests, `japanese-writing.regression.spec.ts`, and database `writing-notebooks.test.sql`.
+- Primary tests: core `notebook.test.ts`, web/native writing and storage tests, `japanese-writing.regression.spec.ts`, `notebook-catalog.regression.spec.ts`, and database `writing-notebooks.test.sql`.
 
 ## One-Minute Brief
 
@@ -17,6 +17,7 @@ A plana repeats the same Japanese character, word or short expression across not
 ## Outcome / Contract
 
 - `/languages/japanese/notebooks` offers curated notebooks, custom text and saved custom notebooks on web and native. Existing lesson and dictionary routes still open writing practice.
+- Catalog cards lead with up to five distinct Japanese sheet prompts instead of English row-letter titles. **Show romaji**, on by default, places each authored whole-prompt reading above its Japanese text. The switch controls both guided and saved notebook previews and reserves annotation space when off. English notebook titles remain in accessible names. The device remembers the preference across navigation/reloads in web localStorage or native AsyncStorage, independently of ink, account sync and grading. Missing/unavailable preference storage does not block the catalog; a delayed read never replaces a newer toggle.
 - Custom text is NFC-normalized, stripped of whitespace and validated against published stroke models before starting. Use 1–5 supported characters. Unsupported glyphs are named inline.
 - Curated sheets have eight Trace, eight Copy and eight Recall repetitions. Restricted authored writing modes still limit the available guidance. Custom notebooks have three sheets: 8/8/8; 12 Copy + 12 Recall; then 24 Recall. The expression notebook includes おはよう, ありがとう and こんにちは; existing starter words remain available.
 - Sheet completion unlocks the next sheet and enables **Next sheet** without automatically advancing. Prior unlocked sheets remain available. Restart and Undo preserve earned progress/unlocks while changing current ink.
@@ -106,11 +107,13 @@ Regression-first core tests reproduce rough あ, arbitrary placement/scale, wide
 
 Web/native integration tests cover correction, timer cancellation, rejection expiry/repeated submission/unmount, accepted-ink preservation, native completed samples, coalesced release samples, retained local pressure, save/restore failures, recall hints, matching independence, navigation and completion. Error feedback must stay hidden until 1.2 seconds after pen-up; 900ms gaps between mouse strokes must still produce one accepted character with no stale error. The shared hook covers cancellation of pending feedback and unmount before the grace period ends. Cancelled contacts and two-finger scroll gestures must preserve pending strokes and resume automatic checks without accidental ink. Verify automatic mouse/finger/Pencil switching, pen preemption, one-finger remainder suppression, scroll bounds, completed-page scrolling and absence of mode buttons. Difficulty selection rechecks pending ink and survives local restoration/restart; the manual submit control is absent. Core geometry tests require every cell to clear the red gutter at phone/tablet widths. Browser regressions use mouse, touch and pen input across 320px phone, iPad portrait/landscape and 507px Split View; assert compact footer sizes, accessible restart labeling, no layout shifts, rejection bounce/fade, reduced motion, restored ink, all 72 custom repetitions and serious/critical accessibility violations. Transactional pgTAP tests cover RLS, bounded counts, immutable prompt and preserved unlocks; replay all migrations against a separate disposable database, never reset the shared local database.
 
-Required commands: `npm run content:check`, `npm run lint`, `npm run typecheck`, `npm run test:coverage`, `npm run test:mobile:coverage`, `npm run mobile:doctor`, `npm run build`, `npm run test:production:smoke`, the two Japanese Playwright regressions and `npm run e2e:smoke`. Run native `.maestro/japanese-writing.yaml` on Android and iOS. Coverage includes the new core, web, native components, hook and storage files; no floor is lowered or new exclusion added.
+Required commands: `npm run content:check`, `npm run lint`, `npm run typecheck`, `npm run test:coverage`, `npm run test:mobile:coverage`, `npm run mobile:doctor`, `npm run build`, `npm run test:production:smoke`, the two Japanese Playwright regressions, `notebook-catalog.regression.spec.ts` on all three projects and `npm run e2e:smoke`. Run native `.maestro/japanese-writing.yaml` on Android and iOS. Coverage includes the new core, web, native components, hook and storage files; no floor is lowered or new exclusion added.
 
 Physical iPad checks must cover finger drawing, automatic Pencil palm rejection and returning to finger drawing, pressure, uninterrupted curves, responsiveness, background/foreground restore, rotation, Split View, VoiceOver and larger text in Safari and the installed app. Emulator input is not evidence for these physical properties.
 
 Native layout and real-contact regressions also run through `apps/mobile/e2e/notebook-{layout,gestures}.mjs`; see that directory's README. The layout regression starts with the phone failure of only 11pt of visible paper. Jest covers the native scroll-interception guards, recall-only hints, keyboard taps, navigation policy, timers and retained ink. `.maestro/japanese-writing.yaml` remains the installed-build workflow.
+
+Catalog regressions require real Japanese prompts (including hiragana, katakana and expressions), authored readings such as `konnichiwa`, deduplicated custom previews, a bounded five-prompt preview, the accessible romaji switch, saved-page previews and local preference restoration. Cover late reads, unavailable storage and serialized rapid toggles below the browser. Playwright verifies keyboard operation, navigation/reload, custom creation, unchanged card heights, 320px phone/iPad portrait/landscape/Split View containment and serious/critical accessibility violations. The `@notebook-catalog` tag includes desktop Chromium and mobile WebKit in the default matrix so Safari annotation layout remains protected. Native Jest verifies the same preview/toggle and AsyncStorage behavior; the installed Maestro flow exercises the switch before creation.
 
 ### Deferred physical iPad checklist
 
@@ -145,6 +148,12 @@ Agent-device 0.20.3 dispatches native gestures in Expo Go on iPhone 17, Android 
 
 These native runs validate the SVG fallback, not installed PencilKit. The host still has Xcode 26.3 and no physical iPad. Supported native builds, Android/iOS Maestro and physical Safari/PencilKit pressure, palm rejection and responsiveness are deferred at the user's request; use the checklist above before native release readiness is claimed.
 
+### Catalog validation — 2026-10-03
+
+Japanese previews and the optional romaji setting pass 461 Vitest tests in 75 files and 112 native Jest tests in 15 suites, including aggregate and per-file coverage checks without changed floors/exclusions. Content freshness, lint, workspace typechecks, Expo Doctor (20/20), production build and isolated production-only artifact readiness pass. All 27 production-build browser journeys pass: six catalog checks across the default three-project matrix, nine smoke journeys and 12 Japanese writing/language regressions. These retain keyboard operation, saved-page previews, preference reload, slow handwriting and all 72 custom repetitions. Phone, iPad portrait/landscape and Split View screenshots were inspected.
+
+The first browser pass caught Safari reflow when replacing ruby readings with blank annotations. Web now hides the unchanged reading with CSS visibility; native retains its text metrics with opacity and excludes hidden annotations from accessibility. Card heights remain unchanged when toggling. Regression traces and screenshots remain under `test-results/notebook-romaji-first-browser-failure/`, with reload-test failure evidence under `test-results/notebook-romaji-reload-race/` and validation logs under `test-results/notebook-romaji-validation/`. The supported installed-build/Maestro and physical Pencil gates above remain deferred.
+
 ## Open Questions
 
 - Physical-device calibration may identify additional independent handwriting examples for the deterministic grader. Preserve negative coverage regressions when adjusting tolerance.
@@ -157,6 +166,7 @@ These native runs validate the SVG fallback, not installed PencilKit. The host s
 - `2026-10-02`: Remove mode buttons; automatically detect mouse, finger and Pencil contacts, keep regular web scrolling and add two-finger paper scrolling with pending-ink retention and native pan bridging.
 - `2026-10-02`: Keep sheet controls compact and make restart an accessible icon. Retain 400ms successful acceptance while delaying error feedback until 1.2 seconds after pen-up so multi-stroke mouse writing has more time.
 - `2026-10-03`: Compact native notebook headers and move feedback above the paper. Block ScrollView interception and handwriting-route swipe-back after simulator/emulator gestures reproduced lost/distorted strokes. Preserve grading thresholds. Defer physical Pencil and supported native-build checks at the user's request, with the checklist above.
+- `2026-10-03`: Replace catalog row-letter titles with actual Japanese prompt previews and an optional romaji annotation above each prompt. Save this display preference per device without changing notebook definitions, ink or completion.
 
 ## Documentation Updates
 
