@@ -41,6 +41,19 @@ class EvaluationTests(unittest.IsolatedAsyncioTestCase):
             store = Store(Path(tmp) / "db"); store.activate(snapshot(text="Call getID() to retrieve an ID"))
             report = await evaluate(store, FakeEmbeddings(), FakeModels(), {"title": "Code", "body": "Call getId() to retrieve an ID", "kind": "document"})
             self.assertNotEqual(report["action"], "skip_duplicate")
+    async def test_significant_whitespace_is_not_an_exact_match_or_canonical_source(self):
+        source='if ready:\n    send()\naudit()'
+        changed='if ready:\n    send()\n    audit()'
+        with tempfile.TemporaryDirectory() as tmp:
+            store=Store(Path(tmp)/'db');data=snapshot(text=source)
+            data['resources'].append({**data['resources'][0],'id':'document:audit','text':'Read audit() output','hash':'other'})
+            store.activate(data)
+            candidate={'title':'Control flow','body':changed,'kind':'document'}
+            report=await evaluate(store,FakeEmbeddings(),FakeModels(),candidate)
+            self.assertNotEqual(report['action'],'skip_duplicate')
+            edited=await evaluate(store,FakeEmbeddings(),FakeModels(),{**candidate,'existingId':'document:indexes'})
+            self.assertTrue(edited['relationships'])
+            self.assertTrue(all(edge['source'].startswith('candidate:') for edge in edited['relationships']))
     async def test_python_and_editorial_helper_share_one_os_inference_lock(self):
         import asyncio, sys
         from unittest.mock import patch

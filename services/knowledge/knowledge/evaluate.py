@@ -10,10 +10,10 @@ async def evaluate(store, embeddings, models, candidate):
     initial_cache_hits=models.cache_hits
     status = store.status()
     if not status["snapshot_id"]: raise ValueError("Index the curriculum before evaluating content")
-    exact_sources = [r for r in store.snapshot()["resources"] if r["kind"]==candidate["kind"] and r["id"]!=candidate.get("existingId") and " ".join(r["text"].split())==" ".join(candidate["body"].split()) and all(not candidate.get(field) or candidate[field]==r.get(field) for field in ["audience","difficulty"])]
+    exact_sources = [r for r in store.snapshot()["resources"] if r["kind"]==candidate["kind"] and r["id"]!=candidate.get("existingId") and r["text"]==candidate["body"] and all(not candidate.get(field) or candidate[field]==r.get(field) for field in ["audience","difficulty"])]
     if exact_sources:
         target = exact_sources[0]
-        return {"snapshot_id":status["snapshot_id"],"candidate_hash":digest(candidate),"action":"skip_duplicate","model_action":"skip_duplicate","explanation":"The included catalog contains an exact text match of the same content type. Review its purpose before reusing it.","confidence":1,"warnings":[],"matches":[{**r,"score":1,"relation":"duplicate","confidence":1} for r in exact_sources[:12]],"placement":{"resource_id":target["id"]},"relationships":[],"alternatives":[],"models":{"rule":"exact-text-kind-audience-v2"},"metrics":{"elapsed_ms":round((time.monotonic()-started)*1000),"cache_hits":0},"semantic_complete":status["semantic_complete"]}
+        return {"snapshot_id":status["snapshot_id"],"candidate_hash":digest(candidate),"action":"skip_duplicate","model_action":"skip_duplicate","explanation":"The included catalog contains an exact text match of the same content type. Review its purpose before reusing it.","confidence":1,"warnings":[],"matches":[{**r,"score":1,"relation":"duplicate","confidence":1} for r in exact_sources[:12]],"placement":{"resource_id":target["id"]},"relationships":[],"alternatives":[],"models":{"rule":"exact-text-kind-audience-v3"},"metrics":{"elapsed_ms":round((time.monotonic()-started)*1000),"cache_hits":0},"semantic_complete":status["semantic_complete"]}
     await models.ready()
     semantic = await asyncio.to_thread(embeddings.similarities, candidate["title"] + "\n" + candidate["body"])
     hits = store.search(candidate["title"] + " " + candidate["body"], 60, vectors=semantic)
@@ -53,7 +53,7 @@ async def evaluate(store, embeddings, models, candidate):
     if warnings: action = "needs_review"
     relationships = []
     existing = store.resource(candidate.get("existingId"))
-    canonical = existing and " ".join(existing["text"].split()) == " ".join(candidate["body"].split())
+    canonical = existing and existing["text"] == candidate["body"]
     source_id = existing["id"] if canonical else "candidate:" + digest(candidate)
     source_hash = existing["hash"] if canonical else digest(candidate)
     source_quote = existing["text"][:300] if canonical else candidate["body"][:300]
