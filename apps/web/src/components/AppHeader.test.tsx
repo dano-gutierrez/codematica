@@ -51,6 +51,17 @@ describe("persistent app navigation", () => {
 });
 
 describe("account and admin navigation", () => {
+  it.each([
+    [{ full_name: "  Learning User  ", name: "Ignored" }, "Learning User"],
+    [{ full_name: null, name: "  Preferred Name  " }, "Preferred Name"],
+    [{ full_name: "", name: "" }, "learner"],
+    [{ full_name: "  ", name: undefined }, "learner"],
+    [{ full_name: 42, name: null }, "learner"],
+  ])("normalizes account identity for %j", (metadata, name) => {
+    auth.user = { email: "learner@example.test", user_metadata: metadata };
+    render(<AppNavigation />);
+    expect(screen.getByTestId("sidebar-account-trigger")).toHaveAttribute("aria-label", `Account: ${name}`);
+  });
   it("groups the LinkedIn destination under Admin and marks its active route", () => {
     auth.admin = true;
     auth.user = { email: "editor@example.test", user_metadata: { full_name: "Editorial User" } };
@@ -174,7 +185,7 @@ describe("account and admin navigation", () => {
     auth.admin = true;
     render(<AppNavigation />);
     const more = screen.getByTestId("mobile-nav-more");
-    for (const testId of ["mobile-menu-linkedin"]) {
+    for (const testId of ["mobile-menu-linkedin", "mobile-menu-japanese", "mobile-menu-notebooks"]) {
       fireEvent.click(more);
       fireEvent.click(screen.getByTestId(testId));
       expect(screen.getByRole("dialog", { hidden: true })).not.toHaveAttribute("open");

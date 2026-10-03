@@ -4,6 +4,25 @@ import { analysisFixture, editorialFixture } from "../../../../packages/core/src
 
 test.skip(process.env.EDITORIAL_E2E !== "1", "Run npm run e2e:linkedin for isolated Supabase mocks");
 
+test("@regression failed clipboard copy keeps the comment and offers manual recovery", async ({ page }) => {
+  await page.addInitScript(() => Object.defineProperty(navigator, "clipboard", {
+    configurable: true,
+    value: { writeText: async () => { throw new Error("Clipboard denied"); } },
+  }));
+  await page.route("**/rest/v1/rpc/linkedin_*", async route => {
+    if (route.request().url().endsWith("linkedin_is_admin")) return route.fulfill({ json: true });
+    if (route.request().url().endsWith("linkedin_snapshot")) return route.fulfill({ json: editorialFixture });
+    throw new Error("Clipboard recovery must not write editorial data");
+  });
+  await page.goto("/admin/linkedin");
+  await page.getByTestId(`linkedin-post-${editorialFixture.posts[0].id}`).click();
+  await page.getByTestId("linkedin-comment-toggle").click();
+  await page.getByRole("button", { name: "Copy first comment", exact: true }).click();
+  await expect(page.getByTestId("linkedin-admin").getByRole("alert")).toHaveText("Couldn't copy. Select the comment and copy it manually.");
+  await expect(page.getByTestId("linkedin-comment")).toHaveValue(editorialFixture.revisions[0].first_comment);
+  await expect(page.getByRole("button", { name: "Copy first comment", exact: true })).toBeEnabled();
+});
+
 test("@regression editorial design stays compact, accessible and protects unsaved edits", async ({ page }) => {
   const data = structuredClone(editorialFixture);
   const titles = [
@@ -51,6 +70,7 @@ test("@regression editorial design stays compact, accessible and protects unsave
   expect((await new AxeBuilder({ page }).analyze()).violations).toEqual([]);
   await page.evaluate(() => { (document.activeElement as HTMLElement)?.blur(); window.scrollTo(0, 0); });
   await page.screenshot({ path: test.info().outputPath("linkedin-desktop.png"), fullPage: true });
+  await page.getByTestId("linkedin-search").fill("timeout");
   for (const width of [320, 390, 768, 1024]) {
     await page.setViewportSize({ width, height: 844 });
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
@@ -68,7 +88,7 @@ test("@regression editorial design stays compact, accessible and protects unsave
   await page.getByRole("button", { name: "Discard changes" }).click();
   await page.getByRole("button", { name: "Back to collection" }).click();
   await expect(page.getByTestId("linkedin-post-list")).toBeVisible();
-  await page.getByTestId("linkedin-search").fill("timeout");
+  await expect(page.getByTestId("linkedin-search")).toBeFocused();
   await expect(page.getByTestId(`linkedin-post-${data.posts[0].id}`)).toHaveCount(0);
 });
 

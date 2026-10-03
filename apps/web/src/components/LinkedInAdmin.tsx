@@ -26,10 +26,11 @@ export function LinkedInAdmin({ client }: { client?: EditorialClient | null }) {
   const postButtons = useRef(new Map<string, HTMLButtonElement>());
   const previousView = useRef({ selected, creating });
   const createButton = useRef<HTMLButtonElement>(null);
+  const searchInput = useRef<HTMLInputElement>(null);
   useEffect(() => {
     const previous = previousView.current;
     if (!creating && previous.creating && !selected) createButton.current?.focus();
-    else if (!selected && previous.selected) postButtons.current.get(previous.selected)?.focus();
+    else if (!selected && previous.selected) (postButtons.current.get(previous.selected) ?? searchInput.current)?.focus();
     previousView.current = { selected, creating };
   }, [selected, creating]);
   useEffect(() => {
@@ -82,7 +83,7 @@ export function LinkedInAdmin({ client }: { client?: EditorialClient | null }) {
         setCreating(false); store.setEditing(false); if (id) setSelected(id);
       }} /> : <>
         <div className={`editorial-filters ${post ? "editorial-hide-compact" : ""}`} role="search" aria-label="Filter posts">
-          <label className="editorial-search"><Search size={18} aria-hidden="true" /><span className="sr-only">Search posts</span><input placeholder="Search drafts…" value={search} onChange={(e) => setSearch(e.target.value)} data-testid="linkedin-search" /></label>
+          <label className="editorial-search"><Search size={18} aria-hidden="true" /><span className="sr-only">Search posts</span><input ref={searchInput} placeholder="Search drafts…" value={search} onChange={(e) => setSearch(e.target.value)} data-testid="linkedin-search" /></label>
           <Dropdown label="Topic" value={topic} onValueChange={setTopic} triggerClassName="editorial-filter-trigger" options={[{ value: "all", label: "All topics" }, ...[...new Set(data.posts.map((p) => p.topic))].sort().map((value) => ({ value, label: value }))]} />
           <Dropdown label="Status" value={status} onValueChange={setStatus} triggerClassName="editorial-filter-trigger" options={["all", "review", "approved", "rejected", "withdrawing"].map((value) => ({ value, label: value === "all" ? "All statuses" : value }))} />
           <Dropdown label="Publication" value={publicationStatus} onValueChange={setPublicationStatus} triggerClassName="editorial-filter-trigger" options={["all", "scheduled", "sent", "error", "unknown", "cancelled"].map((value) => ({ value, label: value === "all" ? "All publications" : value }))} />
@@ -136,6 +137,25 @@ function PostEditor({ post, revision, data, store, busy }: { post: LinkedInPost;
   const [comment, setComment] = useState(revision.first_comment);
   const [confirmed, setConfirmed] = useState(revision.facts_confirmed);
   const [copied, setCopied] = useState(false);
+  const [copyError, setCopyError] = useState<string | null>(null);
+  const copyAttempt = useRef(0);
+  useEffect(() => () => { copyAttempt.current++; }, []);
+  function resetCopy() {
+    copyAttempt.current++;
+    setCopied(false);
+    setCopyError(null);
+  }
+  async function copyComment() {
+    const attempt = ++copyAttempt.current;
+    setCopied(false);
+    setCopyError(null);
+    try {
+      await navigator.clipboard.writeText(comment);
+      if (attempt === copyAttempt.current) setCopied(true);
+    } catch {
+      if (attempt === copyAttempt.current) setCopyError("Couldn't copy. Select the comment and copy it manually.");
+    }
+  }
   const heading = useRef<HTMLHeadingElement>(null);
   useEffect(() => { heading.current?.focus(); }, []);
   const dirty = body !== revision.body || comment !== revision.first_comment || confirmed !== revision.facts_confirmed;
@@ -172,7 +192,7 @@ function PostEditor({ post, revision, data, store, busy }: { post: LinkedInPost;
           <Button label={refining ? "Refinement queued" : "Refine post"} icon={refining ? Clock3 : Sparkles} iconOnly tone="assist" disabled={locked || busy || dirty || refining} onClick={() => void store.act(post, "refine")} />
           <Button label="Reject post" icon={X} iconOnly tone="danger" disabled={locked || busy || dirty || post.status === "rejected"} onClick={() => void store.act(post, "reject")} />
           {dirty ? <Button label="Discard changes" icon={RotateCcw} iconOnly disabled={busy} onClick={() => {
-            setBody(revision.body); setComment(revision.first_comment); setConfirmed(revision.facts_confirmed); store.setEditing(false);
+            setBody(revision.body); setComment(revision.first_comment); setConfirmed(revision.facts_confirmed); resetCopy(); store.setEditing(false);
           }} /> : null}
           {locked ? <Button label={post.status === "withdrawing" ? "Cancellation queued" : "Return to review"} icon={Undo2} iconOnly tone="warning" disabled={busy || post.status === "withdrawing" || publications.some((p) => p.status === "sent")} onClick={() => void store.act(post, "withdraw")} /> : null}
         </div>
@@ -192,9 +212,11 @@ function PostEditor({ post, revision, data, store, busy }: { post: LinkedInPost;
       <summary data-testid="linkedin-comment-toggle">First comment<span className="editorial-disclosure-meta">Optional</span></summary>
       <label className="sr-only" htmlFor="linkedin-comment">First comment</label>
       <textarea id="linkedin-comment" data-testid="linkedin-comment" className="ui-input editorial-comment" value={comment} disabled={locked || busy} onChange={(e) => {
-        store.setEditing(body !== revision.body || e.target.value !== revision.first_comment || confirmed !== revision.facts_confirmed); setComment(e.target.value); setCopied(false);
+        store.setEditing(body !== revision.body || e.target.value !== revision.first_comment || confirmed !== revision.facts_confirmed); setComment(e.target.value); resetCopy();
       }} />
-      <div className="editorial-comment-footer"><p>Copy manually on Buffer Free.</p><Button label={copied ? "Copied" : "Copy first comment"} icon={copied ? Check : Copy} iconOnly disabled={!comment} onClick={() => { void navigator.clipboard.writeText(comment).then(() => setCopied(true)).catch(() => setCopied(false)); }} /></div>
+      <div className="editorial-comment-footer"><p>Copy manually on Buffer Free.</p><Button label={copied ? "Copied" : "Copy first comment"} icon={copied ? Check : Copy} iconOnly disabled={!comment} onClick={() => void copyComment()} /></div>
+      {copied ? <p role="status" className="editorial-help">Comment copied.</p> : null}
+      {copyError ? <p role="alert" className="editorial-alert">{copyError}</p> : null}
       {comment.length > 1248 ? <p role="alert" className="editorial-alert">First comment exceeds 1,248 characters.</p> : null}
     </details>
     <details className="editorial-disclosure" data-testid="linkedin-sources">

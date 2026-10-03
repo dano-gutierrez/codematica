@@ -115,9 +115,9 @@ One design system owns color, spacing, naming, hierarchy and workflow rules. Ada
 | Desktop web | Two panes when there is room, compact secondary icons with hover/focus labels, full keyboard access. Approval remains labeled. |
 | iOS / Android native | Visible action text, 48 dp minimum targets, naturally wrapping text with system font scaling enabled, safe-area shell and keyboard-aware editorial scroll view. No hover dependency. |
 
-Web editorial typography uses rem units and growing controls. Reflow checks cover 320–1440 px, 200% text enlargement and short landscape screens. Keep input, source, proposal and validation text available; do not truncate instructions to make a control fit. Respect reduced motion and browser zoom.
+Web editorial typography uses rem units and growing controls. Reflow checks cover 320–1440 px, 200% text enlargement and short landscape screens, including long unbroken links in proposals. Keep input, source, proposal and validation text available; wrap long tokens instead of truncating them. Respect reduced motion and browser zoom.
 
-Selecting a web draft moves focus to its heading. Returning restores the initiating collection button; creation focuses Title and cancelling returns to New post. Saved/dirty state is announced politely and explains how to unlock navigation. On both web and native, unsaved edits require save or explicit discard before switching drafts. Native keyboard-aware `AppScreen` is opt-in: handled taps reach formatting/actions while editing, dragging dismisses the keyboard, and iOS uses padding avoidance. Android uses the platform resize behavior.
+Selecting a web draft moves focus to its heading. Returning restores the initiating collection button, or Search when filters removed that draft; creation focuses Title and cancelling returns to New post. Saved/dirty state is announced politely and explains how to unlock navigation. On both web and native, unsaved edits require save or explicit discard before switching drafts. Native keyboard-aware `AppScreen` is opt-in: handled taps reach formatting/actions while editing, dragging dismisses the keyboard, and iOS uses padding avoidance. Android uses the platform resize behavior.
 
 Automated axe checks complement keyboard, touch geometry and reflow tests; they do not certify full accessibility. VoiceOver/TalkBack, the physical software keyboard, native large text and installed-device safe areas still need manual device verification before native release readiness is claimed.
 
@@ -135,6 +135,8 @@ Preserve disabled guards, exact-revision approval, required manual-draft analysi
 
 Unsaved edits pause polling and disable creation, refresh, and navigation to another draft. Save or explicitly discard changes to continue. Validation and server failures preserve input. Never silently discard edits on list selection.
 
+Copy feedback belongs to the exact text and copy attempt. Editing, discarding or leaving a draft invalidates pending feedback. A denied or unavailable clipboard keeps the comment and offers manual selection/copy; retry clears the previous error. Announce successful copying with a polite status.
+
 ## Code Touchpoints
 
 - `apps/web/src/components/Button.tsx`: standard named action primitive.
@@ -148,7 +150,7 @@ Unsaved edits pause polling and disable creation, refresh, and navigation to ano
 ## Test Plan
 
 - Unit: accessible icon names, visible primary text, disabled behavior, and formatting selection.
-- Integration: collapsed supporting details, action semantics, unsaved-edit protection/discard, manual-create failure recovery, approval guards, and proposal adoption.
+- Integration: collapsed supporting details, action semantics, text/comment/fact-confirmation discard, manual-create failure recovery, approval guards, and proposal adoption. Exercise delayed/superseded clipboard results, denied/unavailable clipboard recovery and retry.
 - E2E: isolated RPC fixtures; existing create/refine/approve journeys plus keyboard tooltips, 44 px controls, comment editing, draft navigation, axe accessibility, and overflow checks at 320, 390, 768, 1024, and 1440 px.
 - Classification: editorial cases use `@regression`; public navigation remains `@smoke`.
 - Visual review: inspect desktop, phone and tablet captures with synthetic data. The first local pass was reviewed before the user requested a pull request.
@@ -178,6 +180,12 @@ The sample-data preview was rebuilt and verified, with no push, deployment or ho
 ### Pull-request validation — 2026-10-03
 
 After incorporating `main` at `3144320`, all 490 Vitest tests and aggregate/per-file coverage gates pass, along with 113 native Jest tests with coverage and Expo Doctor 20/20. The 21 accessibility cases across Chromium and iPhone WebKit, six editorial/account workflows and nine public smoke cases pass. Content freshness, lint, all workspace typechecks, production build and fresh production-only artifact readiness/public/admin shells pass. Notebook language navigation, native drawing/scroll contexts and the existing keyboard-tap policy are preserved during integration. The user requested a pull request after the local visual review; no deployment or hosted editorial mutation is included. Installed native accessibility checks remain open.
+
+### Polish validation — 2026-10-03
+
+Reviewed against `main` at `dec1c2d`: 576 Vitest tests with aggregate/per-file coverage gates, 147 native Jest tests with coverage, Expo Doctor 20/20, seven editorial/account browser workflows, 24 Chromium/iPhone WebKit accessibility cases and 15 public smoke cases pass. Content freshness, brand/game export checks, authored Python verification, lint, all workspace typechecks, production build, fresh production-only HTTP startup and the packaged game smoke pass.
+
+The review reproduced and fixed stale clipboard feedback, missing clipboard recovery, long-link proposal overflow and focus loss after filtering out the open draft. Tests also cover comment/fact-confirmation discard, account-name normalization and each phone language/admin link. Twelve deliberately broken behavior variants fail the regression tests. Failure traces and review evidence remain private. No production deployment or hosted Supabase/Buffer mutation was performed; installed native accessibility checks remain open.
 
 ## Open Questions
 

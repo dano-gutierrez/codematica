@@ -1,10 +1,18 @@
-import { fireEvent, render, screen, waitFor, within } from "@testing-library/react";
+import { act, fireEvent, render, screen, waitFor, within } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
 import { LinkedInAdmin } from "./LinkedInAdmin";
 import { editorialFixture, analysisFixture } from "../../../../packages/core/src/test/linkedin-fixture";
 
+const client = () => ({ isAdmin: vi.fn().mockResolvedValue(true), snapshot: vi.fn().mockResolvedValue(editorialFixture), create: vi.fn().mockResolvedValue("10000000-0000-4000-8000-000000000001"), review: vi.fn().mockResolvedValue(null) });
+
 describe("LinkedIn admin", () => {
-  const client = () => ({ isAdmin: vi.fn().mockResolvedValue(true), snapshot: vi.fn().mockResolvedValue(editorialFixture), create: vi.fn().mockResolvedValue("10000000-0000-4000-8000-000000000001"), review: vi.fn().mockResolvedValue(null) });
+  it("returns focus to search when filters removed the initiating draft", async () => {
+    render(<LinkedInAdmin client={client()} />);
+    fireEvent.click(await screen.findByRole("button", { name: /Retries need a budget/ }));
+    fireEvent.change(screen.getByTestId("linkedin-search"), { target: { value: "No matching draft" } });
+    fireEvent.click(screen.getByRole("button", { name: "Back to collection" }));
+    expect(screen.getByTestId("linkedin-search")).toHaveFocus();
+  });
   it("moves focus into a selected draft and restores it to the collection without losing edits", async () => {
     const api = client(); render(<LinkedInAdmin client={api} />);
     const draft = await screen.findByRole("button", { name: /Retries need a budget/ });
@@ -146,6 +154,80 @@ it("edits and copies the optional comment, and explicit discard restores it", as
   writeText.mockRejectedValueOnce(new Error("Clipboard denied"));
   fireEvent.click(screen.getByRole("button", { name: "Copy first comment" }));
   await waitFor(() => expect(screen.getByRole("button", { name: "Copy first comment" })).toBeInTheDocument());
+});
+
+it("does not mark a changed or discarded comment as copied when an older request finishes", async () => {
+  const api = client();
+  let finish!: () => void;
+  const writeText = vi.fn().mockImplementation(() => new Promise<void>(resolve => { finish = resolve; }));
+  Object.defineProperty(navigator, "clipboard", { value: { writeText }, configurable: true });
+  render(<LinkedInAdmin client={api} />);
+  fireEvent.click(await screen.findByRole("button", { name: /Retries need a budget/ }));
+  fireEvent.click(screen.getByTestId("linkedin-comment-toggle"));
+  fireEvent.change(screen.getByTestId("linkedin-comment"), { target: { value: "Old reading note" } });
+  fireEvent.click(screen.getByRole("button", { name: "Copy first comment" }));
+  fireEvent.change(screen.getByTestId("linkedin-comment"), { target: { value: "New reading note" } });
+  await act(async () => finish());
+  expect(screen.queryByRole("button", { name: "Copied" })).toBeNull();
+  expect(writeText).toHaveBeenCalledExactlyOnceWith("Old reading note");
+  fireEvent.click(screen.getByRole("button", { name: "Copy first comment" }));
+  fireEvent.click(screen.getByRole("button", { name: "Discard changes" }));
+  await act(async () => finish());
+  expect(screen.queryByRole("button", { name: "Copied" })).toBeNull();
+  expect(screen.getByTestId("linkedin-comment")).toHaveValue(editorialFixture.revisions[0].first_comment);
+});
+
+it.each(["denied", "unavailable"])("reports a %s clipboard while preserving the comment", async failure => {
+  const api = client();
+  const writeText = vi.fn().mockRejectedValue(new Error("Clipboard denied"));
+  Object.defineProperty(navigator, "clipboard", { value: failure === "denied" ? { writeText } : undefined, configurable: true });
+  render(<LinkedInAdmin client={api} />);
+  fireEvent.click(await screen.findByRole("button", { name: /Retries need a budget/ }));
+  fireEvent.click(screen.getByTestId("linkedin-comment-toggle"));
+  fireEvent.click(screen.getByRole("button", { name: "Copy first comment" }));
+  expect(await screen.findByRole("alert")).toHaveTextContent("Couldn't copy. Select the comment and copy it manually.");
+  expect(screen.getByTestId("linkedin-comment")).toHaveValue(editorialFixture.revisions[0].first_comment);
+  if (failure === "denied") expect(writeText).toHaveBeenCalledExactlyOnceWith(editorialFixture.revisions[0].first_comment);
+});
+
+it("retries copying and ignores an older failure after the new copy succeeds", async () => {
+  let fail!: (error: Error) => void;
+  const writeText = vi.fn().mockRejectedValueOnce(new Error("Denied"))
+    .mockImplementationOnce(() => new Promise<void>((_resolve, reject) => { fail = reject; }))
+    .mockResolvedValue(undefined);
+  Object.defineProperty(navigator, "clipboard", { value: { writeText }, configurable: true });
+  render(<LinkedInAdmin client={client()} />);
+  fireEvent.click(await screen.findByRole("button", { name: /Retries need a budget/ }));
+  fireEvent.click(screen.getByTestId("linkedin-comment-toggle"));
+  fireEvent.click(screen.getByRole("button", { name: "Copy first comment" }));
+  expect(await screen.findByRole("alert")).toHaveTextContent("Couldn't copy.");
+  fireEvent.click(screen.getByRole("button", { name: "Copy first comment" }));
+  expect(screen.queryByRole("alert")).toBeNull();
+  fireEvent.click(screen.getByRole("button", { name: "Copy first comment" }));
+  expect(await screen.findByRole("button", { name: "Copied" })).toBeInTheDocument();
+  await act(async () => fail(new Error("Older failure")));
+  expect(screen.queryByRole("alert")).toBeNull();
+  expect(screen.getByRole("button", { name: "Copied" })).toBeInTheDocument();
+  expect(writeText).toHaveBeenCalledTimes(3);
+  expect(writeText.mock.calls).toEqual(Array.from({ length: 3 }, () => [editorialFixture.revisions[0].first_comment]));
+});
+
+it("discards text, comment and fact confirmation together without a review write", async () => {
+  const data = structuredClone(editorialFixture);
+  data.revisions[0].analysis = { ...analysisFixture, verificationNotes: ["Check the metric"] };
+  const api = { ...client(), snapshot: vi.fn().mockResolvedValue(data) };
+  render(<LinkedInAdmin client={api} />);
+  fireEvent.click(await screen.findByRole("button", { name: /Retries need a budget/ }));
+  fireEvent.click(screen.getByTestId("linkedin-comment-toggle"));
+  fireEvent.change(screen.getByTestId("linkedin-body"), { target: { value: "Unsaved text" } });
+  fireEvent.change(screen.getByTestId("linkedin-comment"), { target: { value: "Unsaved comment" } });
+  fireEvent.click(screen.getByRole("checkbox"));
+  fireEvent.click(screen.getByRole("button", { name: "Discard changes" }));
+  expect(screen.getByTestId("linkedin-body")).toHaveValue(data.revisions[0].body);
+  expect(screen.getByTestId("linkedin-comment")).toHaveValue(data.revisions[0].first_comment);
+  expect(screen.getByRole("checkbox")).not.toBeChecked();
+  expect(screen.getByRole("button", { name: "Refresh posts" })).toBeEnabled();
+  expect(api.review).not.toHaveBeenCalled();
 });
 
 it("locks approved text and requests withdrawal while retaining publication status", async () => {

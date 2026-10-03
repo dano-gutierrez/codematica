@@ -3,6 +3,22 @@ import { LinkedInAdminScreen } from "../../../../packages/ui/src/LinkedInAdminSc
 import { analysisFixture, editorialFixture } from "../../../../packages/core/src/test/linkedin-fixture";
 import { StyleSheet } from "react-native";
 describe("native editorial review", () => {
+  it("preserves unsaved comments and fact confirmation until explicit discard", async () => {
+    const data = structuredClone(editorialFixture);
+    data.revisions[0].analysis = { ...analysisFixture, verificationNotes: ["Verify the metric"] };
+    const api = { isAdmin: jest.fn().mockResolvedValue(true), snapshot: jest.fn().mockResolvedValue(data), create: jest.fn(), review: jest.fn() };
+    const view = await render(<LinkedInAdminScreen client={api} onSignIn={jest.fn()} />);
+    await waitFor(() => expect(view.getByText("Retries need a budget")).toBeOnTheScreen());
+    await fireEvent.press(view.getByText("Retries need a budget"));
+    await fireEvent.changeText(view.getByTestId("linkedin-comment"), "Unsaved comment");
+    expect(view.getByTestId("linkedin-back")).toBeDisabled();
+    await fireEvent.press(view.getByText("Confirm flagged facts are verified"));
+    await fireEvent.press(view.getByTestId("linkedin-discard"));
+    expect(view.getByTestId("linkedin-comment").props.value).toBe(data.revisions[0].first_comment);
+    expect(view.getByText("Confirm flagged facts are verified")).toBeOnTheScreen();
+    expect(view.getByTestId("linkedin-back")).toBeEnabled();
+    expect(api.review).not.toHaveBeenCalled();
+  });
   it("uses touch targets, keyboard-safe editing and explicit discard before leaving a draft", async () => {
     const api = { isAdmin: jest.fn().mockResolvedValue(true), snapshot: jest.fn().mockResolvedValue(editorialFixture), create: jest.fn(), review: jest.fn() };
     const view = await render(<LinkedInAdminScreen client={api} onSignIn={jest.fn()} />);

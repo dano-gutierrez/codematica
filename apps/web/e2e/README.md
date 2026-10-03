@@ -28,6 +28,8 @@ See `docs/features/adaptive-ui.md` for persistent phone navigation, desktop/iPad
 
 The design regression checks synthetic drafts at 320–1440 px, keyboard tooltips, axe accessibility, collapsed details, unsaved-edit protection, and explicit discard. It captures desktop and phone reference images. Preserve failed traces and reports separately before rerunning this lane.
 
+Clipboard recovery uses a denied synthetic browser API and verifies that the comment remains available without a database write. Proposal reflow includes a long unbroken source URL, not only short fixture paragraphs.
+
 `account-navigation.regression.spec.ts` also runs in `npm run e2e:linkedin`: desktop/phone sign-in, Admin/LinkedIn grouping, account disclosure, Escape focus, local sign-out, and cookie removal. Its identity and tokens are synthetic and only used against the fake Supabase host.
 
 `npm run e2e:linkedin` sets `EDITORIAL_E2E=1` and runs the admin review/refinement/approval and denied-access journey with a fake Supabase URL/key and intercepted RPCs. It makes no hosted database writes. This spec is skipped outside the dedicated lane. Default public smoke/release lanes explicitly clear public Supabase config so local credentials cannot change signed-out expectations. Run both `npm run e2e:smoke` and `npm run e2e:linkedin`.

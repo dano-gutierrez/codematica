@@ -9,7 +9,8 @@ This changelog dates durable product and architecture changes and links to their
 - Align native editorial controls, keyboard-aware scrolling and explicit discard before leaving unsaved edits.
 - Add Chromium/iPhone WebKit phone/tablet/desktop, 200% text and landscape regressions; retain native coverage and update the disposable-data Maestro journey. Installed native VoiceOver/TalkBack and software keyboard checks remain unverified.
 - Keep publishing permissions and coverage floors unchanged. The local visual pass was reviewed before the user requested a pull request.
-- Validation after integrating latest `main`: 490 Vitest tests with both coverage gates, 113 native tests with coverage, Expo Doctor 20/20, 27 editorial/account browser cases and nine public smoke cases pass. Content freshness, lint, typechecks, production build and pruned-artifact startup pass.
+- Review fixes: invalidate stale copy feedback, provide manual clipboard recovery, wrap long proposal links and restore Search focus when filters remove the open draft. Pin comment/fact discard, normalized account names and each phone menu link with regression coverage.
+- Validation against `main` at `dec1c2d`: 576 Vitest tests with both coverage gates, 147 native tests with coverage, Expo Doctor 20/20, 31 editorial/account browser cases and 15 public smoke cases pass. Twelve behavior mutants are caught. Content freshness, lint, typechecks, production build and pruned-artifact startup pass.
 
 Owning contracts: `docs/features/design-system.md`, `docs/features/adaptive-ui.md` and `docs/features/linkedin-editorial.md`.
 
@@ -19,7 +20,7 @@ Owning contracts: `docs/features/design-system.md`, `docs/features/adaptive-ui.m
 - Simplify LinkedIn review with compact filters, a framed composer, explicit approval, and expandable supporting material.
 - Preserve creation, formatting, analysis, and exact-revision approval. Protect unsaved draft/comment edits and offer explicit discard.
 - Document spacing, borders, alignment, typography, reuse, and accessibility. Coverage gates remain unchanged.
-- The first visual pass was reviewed locally; the user requested a pull request on 2026-10-03. No deployment is included.
+- The first visual pass was reviewed locally; the user requested a pull request on 2026-10-03. No production deployment is included.
 - Follow-up (2026-10-03): include the previously local Admin sidebar group, LinkedIn icon, signed-in account footer, and shared Sign out disclosure in the design checkout and preview. Add account navigation to the existing isolated browser gate.
 
 Owning contracts: `docs/features/design-system.md` and `docs/features/linkedin-editorial.md`.

@@ -58,7 +58,9 @@ The web layout follows [the design system](design-system.md). “LinkedIn” has
 
 Unsaved edits disable switching drafts, Back to collection, New post, and refresh. Save or explicitly discard changes to continue. The web editor never silently discards text on list selection. Native uses the same save-or-discard guard, visibly labeled 48 dp actions, system text scaling and an opt-in keyboard-aware scroll view.
 
-Search and topic/review/publication filters lead to a post detail editor. On small screens selection replaces the list/filters with the editor and a Back to collection button; the list scrolls beside the editor when more than 48 rem of page content width is available. Opening a web draft focuses its heading; returning restores the collection button. Text and first comment are separate. Source excerpts, references, analysis scores, alternative hooks, posting plan, proposals, job status and revision history remain inspectable. Use revision is explicit. Approve & queue explains its external effect. Public anonymous users receive a sign-in/admin-access state and never load the collection.
+First-comment copy announces success only for the current text and attempt. Editing, discarding or leaving a draft invalidates pending feedback. Denied or unavailable clipboard access preserves the comment and offers manual selection/copy; retry clears the previous error.
+
+Search and topic/review/publication filters lead to a post detail editor. On small screens selection replaces the list/filters with the editor and a Back to collection button; the list scrolls beside the editor when more than 48 rem of page content width is available. Opening a web draft focuses its heading; returning restores the collection button, or Search if filters removed it. Text and first comment are separate. Source excerpts, references, analysis scores, alternative hooks, posting plan, proposals, job status and revision history remain inspectable. Use revision is explicit. Approve & queue explains its external effect. Public anonymous users receive a sign-in/admin-access state and never load the collection.
 
 Create opens a title/topic/text form on web and native. Add for analysis atomically stores a manual post, its initial immutable revision and a pending refinement job. It does not approve or schedule anything. Input survives failed submissions; retries in the same composer session reuse an idempotency key. After success the editor opens the new post, even if collection filters would hide it. Cancel leaves the form without saving. A manual post requires an analyzed, explicitly adopted revision before approval; changing post text or first comment invalidates its analysis. Saving only fact confirmation preserves the prompt hash and analysis.
 
@@ -111,6 +113,12 @@ Pull-request validation on 2026-10-03 after incorporating latest `main`: 490 Vit
 - Commands: `npm run test:coverage`, `npm run test:mobile:coverage`, `supabase db reset --local`, `npm run test:db`, `npm run test:linkedin:local`, `npm run lint`, `npm run typecheck`, `npm run content:check`, `npm run build`, `npm run test:production:smoke`, `npm run e2e:smoke`, `npm run e2e:linkedin`.
 - Production smoke installs only production dependencies in a fresh temporary copy of the built Next artifact, checks HTTP readiness and public/admin shells without service credentials. It preserves logs. No worker or Buffer mutation is executed by the web artifact.
 - First failing regressions captured stale revision approval, RLS, duplicate publishing, lost in-flight edits, and the already-sent cancellation race before fixes.
+
+### Polish validation — 2026-10-03
+
+Reviewed against `main` at `dec1c2d`: 576 Vitest tests with aggregate/per-file coverage gates, 147 native Jest tests with coverage, Expo Doctor 20/20, seven editorial/account browser workflows, 24 Chromium/iPhone WebKit accessibility cases and 15 public smoke cases pass. Content freshness, brand/game export checks, authored Python verification, lint, all workspace typechecks, production build, fresh production-only HTTP startup and the packaged game smoke pass.
+
+The review reproduced and fixed stale clipboard feedback, missing clipboard recovery, long-link proposal overflow and focus loss after filtering out the open draft. Tests also cover comment/fact-confirmation discard, account-name normalization and each phone language/admin link. Twelve deliberately broken behavior variants fail the regression tests. Failure traces and review evidence remain private. No production deployment or hosted Supabase/Buffer mutation was performed; installed native accessibility checks remain open.
 
 ## Open Questions
 

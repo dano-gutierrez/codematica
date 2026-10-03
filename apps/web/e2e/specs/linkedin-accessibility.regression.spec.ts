@@ -4,6 +4,22 @@ import { analysisFixture, editorialFixture } from "../../../../packages/core/src
 
 test.skip(process.env.EDITORIAL_E2E !== "1", "Run the isolated editorial lane with synthetic data");
 
+test("@regression long links in a proposed revision wrap on a narrow screen", async ({ page }) => {
+  const data = structuredClone(editorialFixture);
+  const link = "https://example.test/" + "source".repeat(100);
+  data.revisions.push({ ...data.revisions[0], id: "20000000-0000-4000-8000-000000000002", parent_revision_id: data.revisions[0].id, kind: "refine", body: link });
+  await page.route("**/rest/v1/rpc/linkedin_*", async route => {
+    if (route.request().url().endsWith("linkedin_is_admin")) return route.fulfill({ json: true });
+    if (route.request().url().endsWith("linkedin_snapshot")) return route.fulfill({ json: data });
+    throw new Error("Reading a proposal must not mutate editorial data");
+  });
+  await page.setViewportSize({ width: 320, height: 844 });
+  await page.goto("/admin/linkedin");
+  await page.getByTestId(`linkedin-post-${data.posts[0].id}`).click();
+  await expect(page.getByText(link, { exact: true }).first()).toBeVisible();
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
+});
+
 async function expectTarget(locator: import("@playwright/test").Locator, size: number) {
   const bounds = await locator.boundingBox();
   expect(bounds?.width).toBeGreaterThanOrEqual(size);
