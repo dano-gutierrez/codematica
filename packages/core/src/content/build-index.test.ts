@@ -535,7 +535,7 @@ describe("buildContentIndex", () => {
 
     const index = await buildContentIndex({ rootDir });
 
-    expect(index.schemaVersion).toBe(11);
+    expect(index.schemaVersion).toBe(12);
     expect(index.documents).toHaveLength(1);
     expect(index.diagrams).toHaveLength(1);
     expect(index.exercises).toEqual([
@@ -624,7 +624,7 @@ describe("buildContentIndex", () => {
     await writeInterviewCompany(rootDir, "amazon", { status: "draft" });
     await expect(buildContentIndex({ rootDir })).rejects.toThrow(/missing published interview/);
     await writeInterviewCompany(rootDir, "amazon");
-    await expect(buildContentIndex({ rootDir })).resolves.toHaveProperty("schemaVersion", 11);
+    await expect(buildContentIndex({ rootDir })).resolves.toHaveProperty("schemaVersion", 12);
     await writeSourceCatalog(rootDir);
     await writeLearningPath(rootDir, "interview-path", undefined, { units, sourcePolicy: "required", sourceRefs: ["test-primary-source"] });
     await expect(buildContentIndex({ rootDir })).rejects.toThrow(/interview node.*needs a primary source/);
@@ -1010,7 +1010,7 @@ describe("buildContentIndex", () => {
 
     const index = await buildContentIndex({ rootDir });
 
-    expect(index.schemaVersion).toBe(11);
+    expect(index.schemaVersion).toBe(12);
     expect(index.interviewCollections).toEqual([
       expect.objectContaining({
         slug: "amazon",

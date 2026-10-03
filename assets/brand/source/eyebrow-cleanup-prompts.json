@@ -1,0 +1,25 @@
+{
+  "created": "2026-10-02",
+  "mode": "built-in imagegen",
+  "request": "Remove the two thin lines above the left eyebrow; preserve the eyebrow.",
+  "edits": [
+    {
+      "id": "launcher",
+      "output": "launcher-foreground-v2.png",
+      "prompt": "Use case: precise-object-edit.\nEdit target: the provided transparent Patch robot icon.\nRemove ONLY the TWO THIN DARK TEAL LINES that run down from the upper-left outer head border to the small thick dark teal pill-shaped eyebrow on the cream forehead (approximately x430-522, y463-518 on this 1280 square image). Replace the two thin lines with matching smooth cream casing. KEEP the thick small rounded eyebrow/pill exactly as it is, as a separate floating mark, and KEEP the top head border uninterrupted. The result must have no lines connecting the left eyebrow to the top border.\nPreserve everything else exactly: the pose, framing, canvas dimensions, head silhouette, cream outline, cream shell, face panel, amber eyes, orange ear pieces and antenna, right eyebrow, color, texture and shading. Do not add any annotation or red circle. Keep the existing genuine transparent alpha background. This is a tiny two-line removal, not a redesign.",
+      "referenced_image_paths": [
+        "/Users/dano/.codex/worktrees/a97c/codematica/assets/brand/source/launcher-foreground.png"
+      ],
+      "transparent_background": true
+    },
+    {
+      "id": "board",
+      "output": "approved-transparent-v3.png",
+      "prompt": "Use case: precise-object-edit.\nEdit target: provided transparent approved Codematica logo artwork board, 1536x1024.\nMake a tiny consistent correction to the LARGE upper-left Patch robot head and the MEDIUM upper-right Patch icon: remove only the TWO THIN DARK TEAL CONNECTOR LINES above each LEFT EYEBROW (on the viewer's left), which join the small dark teal rounded eyebrow/pill to the upper border of the cream head casing. Fill those thin lines with matching cream shell color. KEEP both small thick pill-shaped eyebrows, leaving each as a separate floating mark. KEEP the curved top head borders complete and continuous. Large icon lines approximately x390-452 y224-263. Medium icon lines approximately x1208-1238 y350-369.\nStrict invariants: change only those four thin lines total. Preserve all canvas coordinates, silhouettes, dimensions, framing, colors, textures, every other feature, antenna, eyes, ears and right eyebrow, exact Codematica lettering and orange underline, rounded teal background of the medium icon, and the tiny lower-right favicon unchanged. Preserve the same 1536x1024 canvas and genuine alpha background. Do not add a background, glow, annotations, circle or labels. Do not redesign any artwork or lettering.",
+      "referenced_image_paths": [
+        "/Users/dano/.codex/worktrees/a97c/codematica/assets/brand/source/approved-transparent.png"
+      ],
+      "transparent_background": true
+    }
+  ]
+}

@@ -2,6 +2,48 @@
 
 This changelog dates durable product and architecture changes and links to their authoritative feature contracts.
 
+## 2026-10-03 — Campaign integration review
+
+- Merged the current learning features and Expo patches while preserving Play/Learn navigation, notebook access, and the private admin destination. The combined content index is version 12; the game migration has a unique version after the editorial migrations.
+- Cancelled stale web runner requests and native WebView callbacks after reset or navigation. Only the focused native level advances the shared defense clock.
+- Serialized anonymous-progress claims and guarded deferred account checks so stale requests cannot merge or upload another account’s awards. Unavailable map scroll storage no longer interrupts play.
+- Made the SQL zone mastery fixture require a different predicate from the story. Strengthened exact drag-coordinate, independent budget/latency, save-prompt, and async-race regressions; retained all coverage floors.
+- Made opaque brand icon exports byte-identical on macOS ARM and Linux x64. Reduced CI browser concurrency and changed the native progression test to completed-ink events while retaining all 48 characters, exact lock boundaries, and a real persistence restart.
+- Current validation and remaining installed-iOS, Maestro, and physical-device performance requirements are recorded in the [campaign contract](features/restore-the-signal.md).
+
+## 2026-10-02 — Approved Patch app identity
+
+- Removed the two thin lines above Patch's left eyebrow in the large and medium icons and regenerated their exports; retained the eyebrow, lettering and tiny favicon.
+- Installed the approved simple Patch head and slab wordmark in web and native identity controls.
+- Added transparent 16/32/48px favicons, multi-resolution ICO, Apple touch/manifest icons, native launcher icons and ivory splash artwork.
+- Preserved original concepts and imagegen extraction prompts; added reproducible exports, alpha/safe-area checks and a visual preview. Header copies are sized for high-density screens.
+- Added browser asset/home-navigation coverage, native sidebar home-button coverage, and exact asset checks in the production-only artifact smoke. Coverage floors remain unchanged. See [brand identity](features/brand-identity.md) for verification and platform limits.
+
+## 2026-09-30 — In-level character miniatures
+
+- Reworked the actual Patch and zombie game figures with chibi proportions, stronger faces and short limbs; added transparent full-body exports at 48/64/96/128px.
+- Shared scene geometry between Pixi and Skia, corrected character scale and native container measurement, and added contact shadows.
+- Fixed initial paused rendering and redraw after resizing or changing reduced motion. Added all-level browser captures, shared geometry checks and native transform coverage.
+- Kept the earlier portrait icons as a separate asset kit. See the [miniature sheet](../assets/game/previews/miniatures-v3.png) and [feature contract](features/restore-the-signal.md).
+
+## 2026-09-29 — Mascot and enemy art refinement
+
+- Refined Patch from the original concept sheet and gave Shambler, Runner and Armored matching material, face and clothing treatments.
+- Updated editable game parts, six robot expressions, enemy sprites and cosmetic attachments; retained the animation timelines and learning rules.
+- Added four painted portrait masters and reproducible PNG/WebP thumbnails at 64, 128, 256 and 512 pixels, with an identity/alt-text manifest and character-kit preview.
+- Added atlas/portrait export regression coverage and thumbnail checks against the pruned production app. The [asset guide](../assets/game/README.md) records the visual contract and full generation prompts.
+- Verified the refined characters in production web and installed Android builds; coverage passes 360 core/web and 73 native tests. Expo Doctor reports three newer SDK patch recommendations, tracked in the feature contract.
+
+## 2026-09-29 — Restore the Signal campaign
+
+- Added the twelve-level chapter with 36 CSS Grid, SQLite, directed-flow, and system-design configurations; levels 8 and 12 offer live or assisted defense.
+- Moved discovery to `/learn` and made Play the home, while keeping lessons and paths independently accessible.
+- Added Patch, original painted districts, editable SVG parts/timelines, shared atlas exports, PixiJS/Skia renderers, local workers, and offline native assets.
+- Added unique game awards, timezone-based streaks, cosmetics, account-scoped local caches, optional RLS-protected union sync, and new introductory lessons.
+- Aligned the Expo SDK 57 patch dependencies and added a Gradle input hook so shared code edits invalidate cached Android bundles.
+- Added core/browser/native/database coverage and retained existing coverage floors. Generated worker/asset files are artifacts; no authored game source is excluded from coverage.
+- Release verification and current toolchain limits are tracked in [the feature contract](features/restore-the-signal.md); source and bundle success do not imply installed-iOS or deployment readiness.
+
 ## 2026-09-29 — PR Check Reliability
 
 - Aligned Expo SDK 57 dependencies and root overrides with Expo 57.0.26 and React Native 0.86.3. Added the required `expo-asset` native peer, pinned compatible animation packages, and regenerated stale nested workspace resolutions in the lockfile.

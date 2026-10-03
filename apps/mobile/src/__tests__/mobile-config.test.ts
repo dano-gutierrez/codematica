@@ -75,3 +75,14 @@ describe("native app and EAS configuration", () => {
     expect(easConfig.submit).not.toHaveProperty("e2e-test");
   });
 });
+
+test('prebuild registers shared source and asset inputs without duplicating the Gradle hook',()=>{
+ // eslint-disable-next-line @typescript-eslint/no-require-imports
+ const {sharedBundleInputs}=require('../../plugins/with-shared-bundle-inputs.cjs');
+ const source='apply plugin: "com.facebook.react"\n';
+ const next=sharedBundleInputs(source);
+ expect(next).toContain('*/src/**');expect(next).toContain('assets/game');
+ expect(next.startsWith(source)).toBe(true);expect(sharedBundleInputs(next)).toBe(next);
+ // eslint-disable-next-line @typescript-eslint/no-require-imports
+ expect(require('../../app.config').default.plugins).toContain('./plugins/with-shared-bundle-inputs.cjs');
+});

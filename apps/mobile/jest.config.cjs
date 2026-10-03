@@ -11,6 +11,8 @@ module.exports = {
   collectCoverageFrom: [
     "apps/mobile/src/lib/**/*.{ts,tsx}",
     "packages/ui/src/screens.tsx",
+    "packages/ui/src/game/**/*.tsx",
+
     "packages/ui/src/LinkedInAdminScreen.tsx",
     "packages/ui/src/JapaneseNotebookPractice.tsx",
     "packages/ui/src/JapaneseNotebookCatalogScreen.tsx",
@@ -25,6 +27,7 @@ module.exports = {
     ? ["default", ["jest-junit", { outputDirectory: path.join(repositoryRoot, "test-results/mobile-jest"), outputName: "junit.xml" }]]
     : ["default"],
   coverageThreshold: {
+    [path.join(repositoryRoot,"packages/ui/src/game/**/*.tsx")]: { lines: 70, statements: 70, functions: 70, branches: 60 },
     global: { lines: 70, statements: 70, functions: 70, branches: 60 },
     [path.join(repositoryRoot, "apps/mobile/src/lib/")]: { lines: 80, statements: 80, functions: 80, branches: 70 },
     [path.join(repositoryRoot, "packages/ui/src/screens.tsx")]: { lines: 70, statements: 70, functions: 70, branches: 60 },

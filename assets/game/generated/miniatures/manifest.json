@@ -1,0 +1,99 @@
+{
+  "version": 1,
+  "kind": "in-level-miniatures",
+  "rigVersion": 3,
+  "characters": [
+    {
+      "id": "patch",
+      "name": "Patch",
+      "alt": "Patch, a cream repair robot with amber eyes and orange fittings",
+      "variants": [
+        {
+          "size": 48,
+          "png": "patch-48.png"
+        },
+        {
+          "size": 64,
+          "png": "patch-64.png"
+        },
+        {
+          "size": 96,
+          "png": "patch-96.png"
+        },
+        {
+          "size": 128,
+          "png": "patch-128.png"
+        }
+      ]
+    },
+    {
+      "id": "shambler",
+      "name": "Shambler",
+      "alt": "A sleepy green zombie wearing a patched jacket and ochre scarf",
+      "variants": [
+        {
+          "size": 48,
+          "png": "shambler-48.png"
+        },
+        {
+          "size": 64,
+          "png": "shambler-64.png"
+        },
+        {
+          "size": 96,
+          "png": "shambler-96.png"
+        },
+        {
+          "size": 128,
+          "png": "shambler-128.png"
+        }
+      ]
+    },
+    {
+      "id": "runner",
+      "name": "Runner",
+      "alt": "A lively green zombie with swept hair and an orange work vest",
+      "variants": [
+        {
+          "size": 48,
+          "png": "runner-48.png"
+        },
+        {
+          "size": 64,
+          "png": "runner-64.png"
+        },
+        {
+          "size": 96,
+          "png": "runner-96.png"
+        },
+        {
+          "size": 128,
+          "png": "runner-128.png"
+        }
+      ]
+    },
+    {
+      "id": "armored",
+      "name": "Armored",
+      "alt": "A stocky green zombie in cream and orange salvaged armor",
+      "variants": [
+        {
+          "size": 48,
+          "png": "armored-48.png"
+        },
+        {
+          "size": 64,
+          "png": "armored-64.png"
+        },
+        {
+          "size": 96,
+          "png": "armored-96.png"
+        },
+        {
+          "size": 128,
+          "png": "armored-128.png"
+        }
+      ]
+    }
+  ]
+}

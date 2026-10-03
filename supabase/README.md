@@ -13,6 +13,10 @@ supabase stop --no-backup
 
 See `docs/features/automated-testing-and-release-regression.md` for CI and release gates.
 
+## Restore the Signal
+
+`202610030001_create_game_progress.sql` adds separate game awards, successful activity dates, preferences, owner RLS, and transactional union-merge RPCs. No submitted answer or attempt history is stored. `tests/database/game.test.sql` verifies idempotency, ordering, cosmetics, malformed data, expected account identity, and RLS. Replay migrations only in an isolated disposable local database for verification. The game migration uses a distinct October 3 version because the integrated editorial migrations already own `202609290001`. `scripts/testing/migrations.test.ts` guards unique migration versions.
+
 ## LinkedIn editorial storage
 
 Migrations `202609290001`, `202609290002` and `202609300001` add private admin membership, immutable revisions, durable leased jobs, exact approval and Buffer reconciliation. Client table writes are revoked; admin reads use RLS and mutations use guarded RPCs. Worker operations are service-role only. `linkedin*.test.sql` covers RLS, stale revisions, uncertain publishing, bounded retry, cancellation races and insert-only restore. After a clean local reset, `npm run test:linkedin:local` also verifies the real CLI/Auth/REST lifecycle without Buffer requests. Never run reset against the hosted collection. See `docs/runbooks/linkedin-editorial.md`.

@@ -5,6 +5,7 @@ This file preserves repo context across Codex tasks.
 ## Source Of Truth
 
 - Product and feature intent lives in `docs/features/<feature>.md`.
+- Approved app identity lives in `assets/brand/source/`; `npm run brand:assets` regenerates web/native copies. Preserve the selected Patch design; see `docs/features/brand-identity.md`.
 - Repo-level architecture lives in `docs/engineering-overview.md`.
 - Canonical knowledge content lives in `content/knowledge/`.
 - Canonical Mermaid diagrams live in `content/diagrams/`.
@@ -23,7 +24,7 @@ This file preserves repo context across Codex tasks.
 
 The interface uses persistent phone bottom navigation and desktop/iPad sidebars. `AppNavigation` in the web root and `NativeNavigation` around the Expo Stack own the shell; existing screen components retain feature behavior. See `docs/features/adaptive-ui.md` for visual rules and outstanding native verification.
 
-Codematica V1 is a mobile-first learning app with a Next.js web app and an Expo Router Android/iOS app. The home route is a cross-section discovery hub with Keep reading, local global search, and curated rows for paths, lessons, interviews, practice, and languages. Complete catalogs live at `/paths`, `/browse`, `/interviews`, `/practice`, and `/languages`. The app renders plain Markdown articles, diagrams, flashcard, cloze, questionnaire, writing, guided-lab, passive flashcard, interview, and Japanese study surfaces. Japanese Foundations and ML Systems share the generic stage/progression contract. The ML Systems Engineer path maps Harvard CS249r with primary-source links and published companions through Volume I Data Engineering. React/TypeScript web exercises run through Sandpack on web and remain read-only on native.
+Codematica V1 is a mobile-first learning app with a Next.js web app and an Expo Router Android/iOS app. The home route is the Restore the Signal campaign. `/learn` contains the discovery hub with Keep reading, local global search, and curated rows for paths, lessons, interviews, practice, and languages. Complete catalogs live at `/paths`, `/browse`, `/interviews`, `/practice`, and `/languages`. The app renders plain Markdown articles, diagrams, flashcard, cloze, questionnaire, writing, guided-lab, passive flashcard, interview, and Japanese study surfaces. Japanese Foundations and ML Systems share the generic stage/progression contract. The ML Systems Engineer path maps Harvard CS249r with primary-source links and published companions through Volume I Data Engineering. React/TypeScript web exercises run through Sandpack on web and remain read-only on native.
 
 Supabase provides optional Auth and saved progress when public runtime env vars are configured. The app still browses and renders local content without Supabase credentials; signed-out progress is buffered locally.
 
@@ -32,7 +33,14 @@ The first hosted web target is Vercel Hobby on the Vercel-provided URL. Vercel r
 ## Repo Map
 
 - `.agents/skills/technical-edit/`: reusable technical editing instructions and Codex UI metadata; usage and validation live in `docs/README.md#technical-editing-skill`
-- `apps/web/src/app/page.tsx`: web discovery home route
+- `apps/web/src/app/page.tsx`: game campaign home
+- `apps/web/src/app/learn/page.tsx`: discovery and Keep reading
+- `apps/web/src/app/play/[campaign]/[level]/page.tsx`: playable game levels
+- `content/game/`: canonical game campaigns; index schema version 12
+- `packages/core/src/game/`: deterministic evaluators, local execution contracts, sessions, rewards, and sync
+- `assets/game/`: editable original artwork, rigs, timelines, generated atlases
+- `assets/game/source/characters/` and `source/portraits/`: refined character identity references, exact generation prompts and four thumbnail masters; `generated/thumbnails/` contains reproducible size variants and their manifest
+- `packages/ui/src/game/`: native map, controls, and Skia scenes
 - `apps/web/src/app/paths/page.tsx`: complete web learning-path catalog
 - `apps/web/src/app/practice/page.tsx`: complete web practice/review catalog
 - `apps/web/src/app/languages/page.tsx`: web language directory
@@ -108,9 +116,9 @@ The first hosted web target is Vercel Hobby on the Vercel-provided URL. Vercel r
 
 - `docs/features/product-engineering-interview-preparation.md`: company-neutral interview research, original JavaScript/architecture exercises, and a guided mock using existing study components.
 - `docs/CHANGELOG.md`: dated cross-feature delivery summaries; feature documents remain authoritative.
-- `docs/features/home-discovery.md`: cross-section home, global local search, curated rows, stable themes, and full catalog routes.
+- `docs/features/home-discovery.md`: Learn discovery hub, global local search, curated rows, stable themes, and full catalog routes.
 - `docs/features/markdown-knowledge-browser.md`: V1 Markdown browser, search, diagrams, content indexing, and Supabase scaffold.
-- `docs/features/learning-paths-and-practice.md`: path catalog and detail maps, schema-v10 career/language progression, source nodes, flashcards, open answers, listening choices, guided labs, and local path/exercise content.
+- `docs/features/learning-paths-and-practice.md`: path catalog and detail maps, schema-v12 career/language progression, source nodes, flashcards, open answers, listening choices, guided labs, and local path/exercise content.
 - `docs/features/ml-systems-career-path.md`: Harvard CS249r source-linked roadmap, published prerequisites/Volume I Foundations companions, guided labs, and planned career stages.
 - `docs/features/programming-language-refresh.md`: reusable language refresh paths and the Python-for-TS/JS module.
 - `docs/features/llm-application-engineering.md`: Langfuse and LangChain AI engineering path, including LLM app architecture, tracing, evals, RAG, agents, risk governance, and non-executable coding challenge sections.
@@ -129,6 +137,12 @@ The first hosted web target is Vercel Hobby on the Vercel-provided URL. Vercel r
 - `docs/features/japanese-language-learning.md`: open JF/CEFR Japanese roadmap, complete basic kana, 100-kanji target, romaji/IME input, deterministic review, resource/audio contracts, iPad accessibility, dictionary profiles, and assisted/free handwriting practice.
 
 - `docs/features/rtk-query-interview-preparation.md`: Front-End Development RTK Query mechanics, incident recovery, modern APIs, production architecture, and interview practice.
+
+## Campaign design principle
+
+Rails for Zombies remains the teaching reference: present a concrete problem, let the player build a solution, show its consequences, and explain the result. Read `docs/features/restore-the-signal.md` and the supplied visual references before extending the chapter. Game attempts stay transient; only account-scoped awards, activity dates, and preferences sync. Graphics and animation callbacks never grade a solution.
+
+Game miniatures: `packages/core/src/game/miniatures.ts` owns renderer-independent layout and poses; the actual animated characters use `assets/game/source/*.svg` and rig v3. `assets/game/generated/miniatures/` contains transparent full-body exports, distinct from portrait icons in `generated/thumbnails/`.
 
 ## Private editorial domain
 

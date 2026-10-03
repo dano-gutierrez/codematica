@@ -1,0 +1,56 @@
+appId: com.codematica.app
+tags:
+  - smoke
+---
+- launchApp:
+    clearState: true
+- assertVisible:
+    id: game-map
+- openLink: "codematica://play/restore-the-signal/courtyard-defense"
+- assertVisible:
+    id: game-scene
+- scrollUntilVisible:
+    element:
+      id: game-code
+    direction: DOWN
+- tapOn:
+    id: game-code
+- eraseText
+- inputText: "grid-column: 2 / 3; grid-row: 1 / 2;"
+- hideKeyboard
+- scrollUntilVisible:
+    element:
+      id: game-run
+    direction: DOWN
+- tapOn:
+    id: game-run
+- scrollUntilVisible:
+    element:
+      text: "Signal restored!"
+    direction: DOWN
+- assertVisible: "Signal restored!"
+- launchApp
+- openLink: "codematica://play/restore-the-signal/target-lock"
+- assertVisible: "Target Lock"
+- assertVisible:
+    id: game-scene
+- scrollUntilVisible:
+    element:
+      id: game-code
+    direction: DOWN
+- tapOn:
+    id: game-code
+- eraseText
+- inputText: "SELECT id FROM zombies WHERE kind = 'runner';"
+- hideKeyboard
+- scrollUntilVisible:
+    element:
+      id: game-run
+    direction: DOWN
+- tapOn:
+    id: game-run
+- scrollUntilVisible:
+    element:
+      text: "Signal restored!"
+    direction: DOWN
+- assertVisible: "Signal restored!"
