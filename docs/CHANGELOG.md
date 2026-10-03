@@ -2,6 +2,13 @@
 
 This changelog dates durable product and architecture changes and links to their authoritative feature contracts.
 
+## 2026-10-03 — Native CI Test Reliability
+
+- Exercise all 24 Japanese character pairs through the native completed-stroke callback instead of replaying every pointer movement. Keep the real grader, assert progress and locks after every character, and verify completion, explicit navigation and retained unlocks after restart.
+- Remove the test's 60-second timeout override; it now uses the suite's 30-second limit. Existing responder tests, production behavior and coverage thresholds are unchanged.
+
+Owning contract: `docs/features/japanese-writing-notebooks.md`.
+
 ## 2026-10-03 — Local LinkedIn Preparation
 
 - Added opt-in local writer/OpenJev preparation, immutable reports and generic voice versions, duplicate/follow-up routing, bounded editing and compact Codex verification. Originals and human adoption/approval remain separate.
