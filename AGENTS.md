@@ -325,7 +325,7 @@ Reuse these components and extend them when needed; avoid rebuilding equivalent 
 
 - `apps/web/src/components/BackButton.tsx`: shared client-side back navigation button with an optional label.
 - `apps/web/src/components/Button.tsx`: shared named action button with semantic tones, primary/secondary/quiet treatments, and icon tooltips.
-- `apps/web/src/components/AppHeader.tsx`: shared context header and root AppNavigation with phone bottom navigation, More dialog, and desktop sidebar.
+- `apps/web/src/components/AppHeader.tsx`: shared context header and root AppNavigation with phone bottom navigation, More dialog, desktop sidebar, admin-only navigation and a shared account disclosure for sign-out; extend its internal `AccountMenu` when profile settings ship.
 - `apps/web/src/components/CodeBlock.tsx`: shared language-aware code block renderer for Markdown, interview solutions, flashcard code, and Mermaid source fallbacks.
 - `apps/web/src/components/DifficultyPill.tsx`: shared difficulty badge for beginner, intermediate, and advanced content.
 - `apps/web/src/components/Dropdown.tsx`: custom Radix-backed dropdown primitive for filters and select-style controls; use this instead of native selects or one-off dropdowns.

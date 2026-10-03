@@ -9,6 +9,7 @@ This changelog dates durable product and architecture changes and links to their
 - Align native editorial controls, keyboard-aware scrolling and explicit discard before leaving unsaved edits.
 - Add Chromium/iPhone WebKit phone/tablet/desktop, 200% text and landscape regressions; retain native coverage and update the disposable-data Maestro journey. Installed native VoiceOver/TalkBack and software keyboard checks remain unverified.
 - Keep publishing permissions and coverage floors unchanged. The local visual pass was reviewed before the user requested a pull request.
+- Validation after integrating latest `main`: 490 Vitest tests with both coverage gates, 113 native tests with coverage, Expo Doctor 20/20, 27 editorial/account browser cases and nine public smoke cases pass. Content freshness, lint, typechecks, production build and pruned-artifact startup pass.
 
 Owning contracts: `docs/features/design-system.md`, `docs/features/adaptive-ui.md` and `docs/features/linkedin-editorial.md`.
 

@@ -175,6 +175,10 @@ Additional gates: `E2E_PORT=3102 npm run e2e:linkedin:accessibility` runs touch/
 
 The sample-data preview was rebuilt and verified, with no push, deployment or hosted data mutation. Native installed-device and physical screen-reader/keyboard checks remain unverified; the updated Maestro journey is ready for a disposable test account.
 
+### Pull-request validation — 2026-10-03
+
+After incorporating `main` at `3144320`, all 490 Vitest tests and aggregate/per-file coverage gates pass, along with 113 native Jest tests with coverage and Expo Doctor 20/20. The 21 accessibility cases across Chromium and iPhone WebKit, six editorial/account workflows and nine public smoke cases pass. Content freshness, lint, all workspace typechecks, production build and fresh production-only artifact readiness/public/admin shells pass. Notebook language navigation, native drawing/scroll contexts and the existing keyboard-tap policy are preserved during integration. The user requested a pull request after the local visual review; no deployment or hosted editorial mutation is included. Installed native accessibility checks remain open.
+
 ## Open Questions
 
 Installed native VoiceOver/TalkBack, large-text, keyboard and safe-area checks remain open. Broader adoption uses the same primitive as existing screens are revised.

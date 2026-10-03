@@ -65,7 +65,7 @@ Component tests verify separate Admin grouping, active LinkedIn routes and icon,
 
 `account-navigation.regression.spec.ts` signs into intercepted synthetic Supabase endpoints on desktop and phone, checks Admin and the account menu, signs out, and verifies cookie removal and anonymous navigation. It runs with `npm run e2e:linkedin` alongside the editorial cases. No hosted account or database is changed. Coverage gates remain unchanged.
 
-Local follow-up validation on 2026-10-03: 421 Vitest tests with aggregate/per-file coverage, six editorial/account browser journeys, nine public smoke cases, lint, workspace typechecks, production builds, and fresh production-only artifact readiness pass. The authenticated account-menu journeys also run axe checks on desktop and phone. Changes remain local pending visual acceptance.
+Local follow-up validation on 2026-10-03: 421 Vitest tests with aggregate/per-file coverage, six editorial/account browser journeys, nine public smoke cases, lint, workspace typechecks, production builds, and fresh production-only artifact readiness pass. The authenticated account-menu journeys also run axe checks on desktop and phone. The user requested a pull request after reviewing the local preview.
 
 ### Progress Events
 
