@@ -273,3 +273,5 @@ Added admin web/native review, immutable Supabase revisions, approval-bound Buff
 ### LinkedIn worker switched to manual execution
 
 Removed the recurring Codex automation at the user’s request. Web/native copy and operating instructions now explain that requests wait for an explicit manual run. Queue, approval, and publication behavior is unchanged.
+
+- 2026-10-03: Rebased local LinkedIn preparation onto the notebook-preview changes and serialized model POSTs with the knowledge service through a shared POSIX lock.

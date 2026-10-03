@@ -29,6 +29,7 @@ export default defineConfig({
         "scripts/linkedin/worker.ts",
         "scripts/linkedin/preparation.ts",
         "scripts/linkedin/local-models.ts",
+        "scripts/linkedin/inference.ts",
       ],
       exclude: [
         "**/*.{test,spec}.{ts,tsx}",

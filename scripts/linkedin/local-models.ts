@@ -3,6 +3,7 @@ import { relative, resolve, sep } from "node:path";
 import { z } from "zod";
 import { analysisSchema, type LinkedInRevision } from "../../packages/core/src/linkedin";
 import { digest, MODEL_VERSIONS, localDraftSchema, assembleCandidate, type Answers, type LocalModels } from "./preparation";
+import { withInferenceLock } from "./inference";
 
 export function localEndpoint(value: string) {
   const url = new URL(value);
@@ -12,9 +13,12 @@ export function localEndpoint(value: string) {
 export function createLocalModels(judgeUrl: string, writerUrl: string, request: typeof fetch = fetch): LocalModels & { ready: () => Promise<void> } {
   const judge = localEndpoint(judgeUrl); const writer = localEndpoint(writerUrl);
   async function call(url: string, body?: unknown) {
-    const response = await request(url, { method: body ? "POST" : "GET", headers: body ? { "Content-Type": "application/json" } : {}, ...(body ? { body: JSON.stringify(body) } : {}), signal: AbortSignal.timeout(body ? 180_000 : 10_000), redirect: "error" });
-    if (!response.ok) throw new Error(`Local model request failed (${response.status})`);
-    return response.json();
+    const perform = async () => {
+      const response = await request(url, { method: body ? "POST" : "GET", headers: body ? { "Content-Type": "application/json" } : {}, ...(body ? { body: JSON.stringify(body) } : {}), signal: AbortSignal.timeout(body ? 180_000 : 10_000), redirect: "error" });
+      if (!response.ok) throw new Error(`Local model request failed (${response.status})`);
+      return response.json();
+    };
+    return body ? withInferenceLock(perform) : perform();
   }
   return {
     async ready() { await call(judge + "/readyz"); await call(writer + "/v1/models"); },

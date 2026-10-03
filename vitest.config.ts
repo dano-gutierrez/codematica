@@ -28,6 +28,7 @@ export default defineConfig({
         "scripts/linkedin/worker.ts",
         "scripts/linkedin/preparation.ts",
         "scripts/linkedin/local-models.ts",
+        "scripts/linkedin/inference.ts",
       ],
       // Generated assets, type/barrel files, and thin route composition are
       // validated by content checks, typecheck, and E2E rather than line coverage.

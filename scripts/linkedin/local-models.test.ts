@@ -6,6 +6,8 @@ import { describe, expect, it, vi } from "vitest";
 import { analysisFixture, editorialFixture } from "../../packages/core/src/test/linkedin-fixture";
 import { createLocalModels, localEndpoint, sourceIssues } from "./local-models";
 import { digest, assembleCandidate, localDraftSchema } from "./preparation";
+import { withInferenceLock } from "./inference";
+vi.mock("./inference", () => ({ withInferenceLock: vi.fn(async (run: () => Promise<unknown>) => run()) }));
 
 describe("local model boundary", () => {
   it("permits only literal loopback origins, preventing credential or remote fallbacks", () => {
@@ -21,6 +23,7 @@ describe("local model boundary", () => {
     expect(await models.evaluate({}, { safe: { type: "noul", instructions: "Safe?" } })).toEqual({safe:{noul:0.9}});
     expect(await models.write({ instructions: "Write" })).toEqual([assembleCandidate(localDraftSchema.parse({ ...analysisFixture, firstComment: analysisFixture.postingPlan.firstComment }))]);
     expect(request.mock.calls.every(([, args]) => args?.redirect === "error")).toBe(true);
+    expect(withInferenceLock).toHaveBeenCalledTimes(2);
     const body = JSON.parse(String(request.mock.calls.at(-1)?.[1]?.body));
     expect(body.model).toBe("default_model");
     expect(body.chat_template_kwargs.enable_thinking).toBe(false);
