@@ -11,6 +11,15 @@ beforeAll(async () => {
 function freshContent() { return structuredClone(validatedIndex); }
 
 describe("complete knowledge catalog", () => {
+  it.each(["legalzoom-tsindex-navigation", "codebase-memory-v011-contracts"])("exports %s as cited bounded-retrieval evidence", (source) => {
+    const graph = buildKnowledgeCatalog(freshContent());
+    const lesson = "document:ai-engineering/evidence-first-agent-handoffs";
+    expect(graph.resources.find(resource => resource.id === `source:${source}`)).toMatchObject({visibility:"curriculum",status:"published"});
+    expect(graph.relationships).toContainEqual(expect.objectContaining({source:lesson,target:`source:${source}`,type:"cites",provenance:"explicit"}));
+    expect(graph.resources.find(resource => resource.id === `${lesson}#bound-retrieval-without-hiding-missing-evidence`)).toMatchObject({paths:["path:ai-engineering-langfuse-langchain"]});
+    expect(graph.unresolved.some(resource => resource.resourceId === lesson)).toBe(false);
+  });
+
   it.each([
     ["traffic-rate-contracts", "traffic-rate-checkpoint", "traffic-rate", 5, ["redis-rate-limiting-guide", "rfc-6585-status-codes"]],
     ["webhook-authenticity-and-replay", "webhook-authenticity-checkpoint", "webhook-authenticity", 6, ["stripe-webhook-contracts", "python-hmac-verification"]],

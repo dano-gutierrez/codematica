@@ -7,7 +7,7 @@ topic: Agent Operations
 difficulty: practitioner
 tags: [agents, harnesses, provenance, evaluation]
 prerequisites: [ai-engineering/langchain-agents-langgraph-operations]
-sourceRefs: [anthropic-long-running-harnesses, anthropic-harness-design-experiment, walkinglabs-harness-course, ulfaslak-architecture-cleanse]
+sourceRefs: [anthropic-long-running-harnesses, anthropic-harness-design-experiment, walkinglabs-harness-course, ulfaslak-architecture-cleanse, legalzoom-tsindex-navigation, codebase-memory-v011-contracts]
 status: published
 ---
 
@@ -158,6 +158,29 @@ Try this original review exercise against one feature:
 5. Stage the smallest correction, check every affected caller and re-review its diff. Preserve the original evidence and any remaining uncertainty in the handoff.
 
 Do not make the audit pass by silently weakening an approved constraint, rewriting history or removing a test that exposes the defect. A deliberate product change needs its own recorded decision. This exercise supplies a review method; it does not certify that a repository, migration or deployed service is correct.
+
+## Bound retrieval without hiding missing evidence
+
+A structural index can help an agent ask for an outline, selected symbol body or references before reading a whole repository. Start from the required change and its contracts; retrieve enough source and callers to test that change. Less text is useful only when omitted evidence stays discoverable.
+
+LegalZoom's pinned [TSIndex README](https://github.com/legalzoom/tsindex/blob/daf6a3d560742f01e932e95d91aa1eebc8e2563b/README.md) describes bounded, paginated navigation. Its indexed reads report initial unreadiness and partial/stale source; live queries have a different freshness boundary. References are syntactic. A syntactic occurrence is not a binding-aware dependency proof. The documented surface also includes a symbol-replacement write tool over MCP, so tool availability must not be mistaken for permission to edit. Its output-size estimates do not establish actual model-billing savings. No tool was installed or executed for this reading.
+
+The [codebase-memory-mcp v0.11.0 release](https://github.com/DeusData/codebase-memory-mcp/releases/tag/v0.11.0) describes spilling completed extraction results, preserving the prior serving index when an over-budget build fails and binding continuation to the query and index generation. Its memory/performance results are author-reported. A memory ceiling cannot make an oversized graph fit; output pagination does not solve resident-memory demand. Release notes can be edited after publication, so retain the inspected date and excerpt as well as the version's commit.
+
+Work this original retrieval review against fictional repository `payments-demo`, revision `rev-a`, query `refund`, and a configured result budget. Write the next evidence step for every row:
+
+| Observed result | Next evidence step |
+| --- | --- |
+| The first build is still running | Keep the build/job identity and unreadiness visible. An empty initial index does not prove the symbol is absent. |
+| A completed search returns zero inside `src/api/**` | Record the exact scope and exclusions. Search other authorized relevant paths before claiming whole-repository absence. |
+| One page returns three rows and reports more | Preserve total, returned count and continuation. Retrieve further bounded pages needed for the requirement; do not treat this page as the complete result. |
+| A reference snippet cannot match its indexed source hash | Refresh or inspect current authorized source, then bind evidence to its revision. Do not splice a stale range into newer text. |
+| A cursor belongs to `rev-a`, but the index now serves `rev-b` | Restart the query against one generation. Do not merge two generations into one claimed-complete receipt. |
+| A staged build exceeds its configured budget | Keep the failure and previous serving revision visible. Reassess budget/scope before retry; failure is not a successful empty graph. |
+
+For each result, record the repository and revision, query/filter parameters, grammar or extraction version, returned identities, source hashes, freshness/readiness, truncation and continuation. Name whether a limit counts records, serialized bytes or model tokens; the units are not interchangeable. A smaller response must preserve whole semantic records and a way to retrieve omitted evidence, rather than silently cutting a source passage.
+
+Verify the selected symbol, governing decision, affected callers and tests before a refactor. A parser can miss unsupported syntax, ignored paths or dynamically resolved dependencies. Never expand tool write access just because a retrieval result suggests an edit. Compare observed result size, missing evidence, task quality and actual latency under the same workload before claiming an improvement. This is a review exercise, not an installed navigation service or a tested indexer.
 
 ## Further practice
 

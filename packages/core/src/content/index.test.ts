@@ -18,6 +18,23 @@ import {
 
 describe("generated content index", () => {
   it.each([
+    ["legalzoom-tsindex-navigation", "legalzoom/tsindex", "main", "daf6a3d560742f01e932e95d91aa1eebc8e2563b", "https://github.com/legalzoom/tsindex/blob/daf6a3d560742f01e932e95d91aa1eebc8e2563b/README.md", "MIT OR Apache-2.0", "https://github.com/legalzoom/tsindex/blob/daf6a3d560742f01e932e95d91aa1eebc8e2563b/LICENSE"],
+    ["codebase-memory-v011-contracts", "DeusData/codebase-memory-mcp", "v0.11.0", "8972ea69c6ad94b1ef1d4ffbf0a92d78d2db1798", "https://github.com/DeusData/codebase-memory-mcp/releases/tag/v0.11.0", "MIT", "https://github.com/DeusData/codebase-memory-mcp/blob/8972ea69c6ad94b1ef1d4ffbf0a92d78d2db1798/LICENSE"],
+  ])("pins navigation evidence identity and license for %s", (id, repository, ref, commit, url, license, licenseUrl) => {
+    const source = getContentIndex().sources.find(source => source.id === id);
+    expect(source).toMatchObject({ url, lastVerifiedAt: "2026-10-04", upstream: { repository, ref, commit }, license: { name: license, url: licenseUrl } });
+  });
+
+  it("keeps bounded retrieval in the existing handoff lesson", () => {
+    const lesson = getDocumentBySlug("ai-engineering/evidence-first-agent-handoffs");
+    expect(lesson?.sourceRefs).toEqual(expect.arrayContaining(["legalzoom-tsindex-navigation", "codebase-memory-v011-contracts"]));
+    expect(lesson?.headings).toContainEqual({id:"bound-retrieval-without-hiding-missing-evidence",depth:2,text:"Bound retrieval without hiding missing evidence"});
+    expect(lesson?.markdown).toContain("A syntactic occurrence is not a binding-aware dependency proof.");
+    expect(lesson?.markdown).toContain("a symbol-replacement write tool over MCP");
+    expect(getNextPathNodeRoute("ai-engineering-langfuse-langchain", {kind:"document",slug:"ai-engineering/evidence-first-agent-handoffs"})).toBe("/practice/ai-engineering/agent-handoff-checkpoint?path=ai-engineering-langfuse-langchain");
+  });
+
+  it.each([
     ["redis-rate-limiting-guide", "Redis", "https://redis.io/tutorials/howtos/ratelimiting/"],
     ["rfc-6585-status-codes", "IETF", "https://www.rfc-editor.org/rfc/rfc6585.html"],
     ["stripe-webhook-contracts", "Stripe", "https://docs.stripe.com/webhooks"],
@@ -361,7 +378,7 @@ describe("generated content index", () => {
     const document = getDocumentBySlug("ai-engineering/evidence-first-agent-handoffs");
     const checkpoint = getExerciseBySlug("ai-engineering/agent-handoff-checkpoint");
     expect(document?.sourceRefs).toEqual([
-      "anthropic-long-running-harnesses", "anthropic-harness-design-experiment", "walkinglabs-harness-course", "ulfaslak-architecture-cleanse",
+      "anthropic-long-running-harnesses", "anthropic-harness-design-experiment", "walkinglabs-harness-course", "ulfaslak-architecture-cleanse", "legalzoom-tsindex-navigation", "codebase-memory-v011-contracts",
     ]);
     if (checkpoint?.type !== "questionnaire") throw new Error("Handoff practice must be a questionnaire");
     expect(checkpoint.status).toBe("published");

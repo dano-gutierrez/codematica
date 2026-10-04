@@ -223,6 +223,12 @@ The room-date extension uses three original PostgreSQL 17 fences: partial GiST e
 
 Generated-content and graph tests preserve existing resource identity, both path memberships, exercise linkage and four new primary-source references. The browser regression scores all six questions. `npm run test:reservation:sql` verifies the canonical SQL in a pinned, disposable container, including concurrent commit/rollback, invalid fields and expiry guards. CI and release database lanes run it independently of the application database. Operating instructions are in `scripts/content/README.md`.
 
+### Bounded structural retrieval
+
+The existing handoff lesson adds a non-executable retrieval-review table: initial unreadiness, scoped zero matches, truncated pages, stale source, changed cursor generation and an over-budget staged failure. Two pinned primary sources retain project license and version identity. Structural references do not prove semantic dependencies, and an exposed write tool grants no new authority. No source code, checkpoint, path unit, runtime service or indexer is added. Existing canonical Python fences stay unchanged.
+
+Core/catalog checks pin both URLs, commits, licenses, explicit citations and section identity; the existing handoff browser journey checks both source panels and the new heading before its original scored quiz and Governance continuation. Real indexer performance, provider completeness, installation and memory enforcement are not tested here.
+
 ### Evidence-first agent handoffs
 
 AI Engineering inserts an original handoff lesson and four-question checkpoint after Agents And Operations and before Risk And Governance. The Markdown Python lab chooses the next review step from a durable receipt, preserving exact candidate/source/configuration identity, pending-job reuse, visible failures and incomplete coverage. It never applies content or approves a report. Hashes assume a trusted receipt store and do not prove execution, truth or authorization.
