@@ -6,6 +6,7 @@
   "category": "AI Engineering",
   "audience": "Engineers moving from LLM prototypes toward production-ready AI applications, from beginner foundations through principal review standards.",
   "status": "published",
+  "sourceRefs": ["stanford-cs329a-autumn-2025"],
   "units": [
     {
       "slug": "llm-application-foundations",
@@ -80,6 +81,21 @@
       "nodes": [
         { "kind": "document", "slug": "ai-engineering/llm-production-risk-governance" },
         { "kind": "exercise", "slug": "ai-engineering/llm-production-risk-governance-questionnaire" }
+      ]
+    },
+    {
+      "slug": "advanced-agent-research",
+      "title": "Optional Advanced Agent Research",
+      "summary": "Explore Stanford's Autumn 2025 research readings after the application lessons. Reading links are optional; enrollment, certification and completed projects are not included.",
+      "nodes": [
+        {
+          "kind": "source",
+          "slug": "ai-engineering/stanford-self-improving-agents",
+          "sourceRef": "stanford-cs329a-autumn-2025",
+          "activity": "read",
+          "companionKind": "document",
+          "required": false
+        }
       ]
     }
   ]

@@ -41,3 +41,5 @@ The AI Engineering path adds Evidence-First Handoffs between Agents And Operatio
 The existing cache and reservation lessons link attributed Discord/Shopify production cases. Their original review prompts distinguish shared in-flight reads from cached results and bounded reservation rows from authoritative stock. Keep engine-specific behavior and reported outcomes separate from local lab measurements.
 
 System Design inserts Routing Decisions between Capacity Decisions and API Security Boundaries. Its original static Python selection lab and four-question checkpoint test signal limits, eligibility and affinity; they do not execute a proxy. Kafka/Redis delivery review extends the existing durable architecture lesson rather than duplicating it.
+
+The AI path appends an optional Stanford CS329A Autumn 2025 research reference after Governance. It uses a source node with no local companion and `required: false`; preserve the eight application units. Public readings do not imply enrollment, certification or completed research.

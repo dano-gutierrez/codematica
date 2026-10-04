@@ -5676,6 +5676,20 @@
       "contentHash": "d811ed35df3adbdd9dc2a7b180107165ba5354f77a3985c028cb6854bb00272f"
     },
     {
+      "id": "stanford-cs329a-autumn-2025",
+      "title": "CS329A: Self-Improving AI Agents — Autumn 2025",
+      "provider": "Stanford University",
+      "url": "https://cs329a.stanford.edu/",
+      "attribution": "Stanford graduate research seminar taught by Aakanksha Chowdhery and Azalia Mirhoseini. Public syllabus and reading links cover verification, test-time compute, reinforcement learning, tools, memory and long-horizon evaluation. This reference is not enrollment, certification or an independently completed research project; the course does not allow audits.",
+      "lastVerifiedAt": "2026-10-03",
+      "upstream": {
+        "version": "Autumn 2025",
+        "maturity": "published"
+      },
+      "sourcePath": "content/sources/advanced-agent-research.json",
+      "contentHash": "7d1ecc1a962ee3c984e14428c193f505a86a511b6fbfc8f8ebd162f19d05436a"
+    },
+    {
       "id": "stripe-idempotent-requests",
       "title": "Idempotent Requests",
       "provider": "Stripe",
@@ -12379,6 +12393,9 @@
       "category": "AI Engineering",
       "audience": "Engineers moving from LLM prototypes toward production-ready AI applications, from beginner foundations through principal review standards.",
       "status": "published",
+      "sourceRefs": [
+        "stanford-cs329a-autumn-2025"
+      ],
       "units": [
         {
           "slug": "llm-application-foundations",
@@ -12511,12 +12528,27 @@
               "slug": "ai-engineering/llm-production-risk-governance-questionnaire"
             }
           ]
+        },
+        {
+          "slug": "advanced-agent-research",
+          "title": "Optional Advanced Agent Research",
+          "summary": "Explore Stanford's Autumn 2025 research readings after the application lessons. Reading links are optional; enrollment, certification and completed projects are not included.",
+          "nodes": [
+            {
+              "kind": "source",
+              "slug": "ai-engineering/stanford-self-improving-agents",
+              "required": false,
+              "sourceRef": "stanford-cs329a-autumn-2025",
+              "activity": "read",
+              "companionKind": "document"
+            }
+          ]
         }
       ],
       "id": "60dfad14d166",
       "route": "/paths/ai-engineering-langfuse-langchain",
       "sourcePath": "content/learning-paths/ai-engineering-langfuse-langchain.json",
-      "contentHash": "d21f4463c856dc2292896b36a09ae6bd526ef3a33bcdf32480b3774f7281c57d"
+      "contentHash": "c31964e0e6d48d15277f640ed7e69ed98b1636d6febdad051bc694a0ae803d23"
     },
     {
       "slug": "backend-engineer-readiness",

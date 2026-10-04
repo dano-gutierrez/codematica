@@ -1,0 +1,16 @@
+{
+  "sources": [
+    {
+      "id": "stanford-cs329a-autumn-2025",
+      "title": "CS329A: Self-Improving AI Agents — Autumn 2025",
+      "provider": "Stanford University",
+      "url": "https://cs329a.stanford.edu/",
+      "attribution": "Stanford graduate research seminar taught by Aakanksha Chowdhery and Azalia Mirhoseini. Public syllabus and reading links cover verification, test-time compute, reinforcement learning, tools, memory and long-horizon evaluation. This reference is not enrollment, certification or an independently completed research project; the course does not allow audits.",
+      "lastVerifiedAt": "2026-10-03",
+      "upstream": {
+        "version": "Autumn 2025",
+        "maturity": "published"
+      }
+    }
+  ]
+}

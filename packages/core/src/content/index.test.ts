@@ -10,6 +10,7 @@ import {
   getLanguageVocabularyBySlug,
   getLearningPathBySlug,
   getNextPathNodeRoute,
+  getPathNodeRoute,
   getNextPathNodeRoutesByPath,
   getPassiveFlashcardFeedByPathSlug,
   getReferencedDiagrams,
@@ -152,6 +153,27 @@ describe("generated content index", () => {
     expect(feed?.cards.map((card) => card.type)).toEqual(expect.arrayContaining(["concept", "practical", "snippet", "interview"]));
   });
 
+  it("adds an optional advanced research source without inventing a local companion", () => {
+    const path = getLearningPathBySlug("ai-engineering-langfuse-langchain")!;
+    expect(path.units.map(u => u.slug)).toEqual([
+      "llm-application-foundations", "langchain-building-blocks", "langfuse-tracing",
+      "prompts-datasets-evals", "rag-quality", "agents-operations",
+      "evidence-first-handoffs", "risk-governance", "advanced-agent-research",
+    ]);
+    const unit = path.units.at(-1)!;
+    expect(unit.nodes).toEqual([expect.objectContaining({
+      kind:"source",slug:"ai-engineering/stanford-self-improving-agents",
+      sourceRef:"stanford-cs329a-autumn-2025",activity:"read",companionKind:"document",required:false,
+    })]);
+    const source = getContentIndex().sources.find(s => s.id === "stanford-cs329a-autumn-2025");
+    expect(source).toMatchObject({provider:"Stanford University",url:"https://cs329a.stanford.edu/",upstream:{version:"Autumn 2025",maturity:"published"}});
+    expect(source?.attribution).toContain("not enrollment");
+    expect(source?.license).toBeUndefined();
+    expect(getDocumentBySlug(unit.nodes[0]!.slug)).toBeUndefined();
+    expect(getPathNodeRoute(unit.nodes[0]!, path.slug)).toBe("https://cs329a.stanford.edu/");
+    expect(getNextPathNodeRoute(path.slug, {kind:"exercise",slug:"ai-engineering/llm-production-risk-governance-questionnaire"})).toBe("https://cs329a.stanford.edu/");
+  });
+
   it("loads the Langfuse and LangChain AI engineering path", () => {
     const path = getLearningPathBySlug("ai-engineering-langfuse-langchain");
     const tracingDocument = getDocumentBySlug("ai-engineering/langfuse-tracing-fundamentals");
@@ -180,6 +202,7 @@ describe("generated content index", () => {
       "ai-engineering/agent-handoff-checkpoint",
       "ai-engineering/llm-production-risk-governance",
       "ai-engineering/llm-production-risk-governance-questionnaire",
+      "ai-engineering/stanford-self-improving-agents",
     ]);
     expect(tracingDocument?.track).toBe("AI Engineering");
     expect(tracingDocument?.diagramRefs).toEqual(["ai-engineering/langfuse-trace-lifecycle"]);

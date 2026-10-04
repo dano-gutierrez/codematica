@@ -11,6 +11,19 @@ beforeAll(async () => {
 function freshContent() { return structuredClone(validatedIndex); }
 
 describe("complete knowledge catalog", () => {
+  it("links the optional agent research reference to its existing path with explicit order", () => {
+    const graph = buildKnowledgeCatalog(freshContent());
+    const source = "source:stanford-cs329a-autumn-2025";
+    const path = "path:ai-engineering-langfuse-langchain";
+    const unit = "unit:ai-engineering-langfuse-langchain:advanced-agent-research";
+    expect(graph.resources.find(r => r.id === source)).toMatchObject({kind:"source",paths:[path],visibility:"curriculum"});
+    expect(graph.relationships).toContainEqual(expect.objectContaining({source:path,target:unit,type:"contains",order:8,provenance:"explicit"}));
+    expect(graph.relationships).toContainEqual(expect.objectContaining({source:unit,target:source,type:"contains",order:0,provenance:"explicit"}));
+    expect(graph.relationships).toContainEqual(expect.objectContaining({source:path,target:source,type:"cites",provenance:"explicit"}));
+    expect(graph.resources.some(r => r.id === "document:ai-engineering/stanford-self-improving-agents")).toBe(false);
+    expect(graph.unresolved.some(r => [source,unit,path].includes(r.resourceId))).toBe(false);
+  });
+
   it("keeps room-date practice inside the existing reservation resource and paths", () => {
     const graph = buildKnowledgeCatalog(freshContent());
     const lesson = "document:system-design/fair-admission-and-reservations";

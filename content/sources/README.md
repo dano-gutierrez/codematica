@@ -32,3 +32,5 @@ The same catalog includes PostgreSQL 17 ranges, `btree_gist`, partial exclusion 
 `production-case-readings.json` attributes the Discord 2023 and Shopify 2026 engineering reports. They extend existing cache and reservation lessons with original review prompts; reported production outcomes are not local benchmarks or guarantees for another database engine.
 
 `routing-and-delivery-boundaries.json` anchors routing and durable-effect review to NGINX directives, Kafka 4.1 design and Redis Pub/Sub/XACK/XAUTOCLAIM contracts. Preserve version/edition limits and distinguish readable crash traces from real proxy or broker experiments.
+
+`advanced-agent-research.json` records the official Stanford CS329A Autumn 2025 syllabus as an optional external reading in the existing AI path. Preserve the course edition and public-reading scope. Enrollment, audits, certification, API credits and independently completed projects are not included; no redistribution license is inferred.

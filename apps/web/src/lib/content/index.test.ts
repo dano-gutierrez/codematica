@@ -87,6 +87,7 @@ describe("generated content index", () => {
       "ai-engineering/agent-handoff-checkpoint",
       "ai-engineering/llm-production-risk-governance",
       "ai-engineering/llm-production-risk-governance-questionnaire",
+      "ai-engineering/stanford-self-improving-agents",
     ]);
     expect(tracingDocument?.track).toBe("AI Engineering");
     expect(tracingDocument?.diagramRefs).toEqual(["ai-engineering/langfuse-trace-lifecycle"]);
