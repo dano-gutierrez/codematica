@@ -20,3 +20,7 @@ Artifact checks retain logs under `test-results/`; they never prune the workspac
 
 - `npm run game:miniature-preview -- http://127.0.0.1:3128`: capture real phone/wide scenes and show transparent full-body miniatures at small display sizes in `assets/game/previews/miniatures-v3.{html,png}`.
 - `game:assets` exports full-body PNGs under `generated/miniatures/` from the shared idle pose. The asset tests, reproducibility check, and production artifact smoke check cover those exports separately from portrait icons.
+
+`build-map-art.ts` assembles four connected paintings before exporting twelve tiles with identical guard pixels at every seam, three foliage crops, mist, motes and a fifty-position manifest. The normal `game:assets` / `game:check` commands own these exports. Asset tests compare decoded boundary pixels and web/native copies; the production artifact lane verifies every served map asset and expects the statically imported map textures in APKs.
+
+`node scripts/game/capture-map-art.mjs <preview-url>` captures phone, wide, chapter-join, summit and reduced-motion views plus a complete terrain contact sheet. It waits for visible neighbors to decode. The parallax recording goes to ignored `test-results/map-art/parallax.webm`. Do not rebuild a production server's `.next` directory during capture.

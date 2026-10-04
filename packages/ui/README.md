@@ -31,3 +31,5 @@ Native notebook pages use a compact back/title row, inline examples and a reserv
 Notebook catalog cards preview actual Japanese sheet prompts with optional romaji above them. `useNotebookRomaji` in the React-only notebook session module shares preference restoration and serialized writes between web/native; optional notebook storage methods keep this display setting on the device. Space for the annotations remains when they are hidden. See the notebook feature doc and catalog/native writing regressions.
 
 The game level route passes focus ownership to `NativeGamePlay`. Covered native screens stop their simulation timer and invalidate runner callbacks while preserving the shared attempt for explicit return/resume.
+
+The map uses the shared fifty-position art manifest and statically imported contiguous textures in `assets/game/generated/map/`. `NativeDistrictArt` keeps terrain fixed and renders mist, amber motes and foliage at three bounded Reanimated depths. Measured panel positions drive culling and motion; reduced-motion changes reset all offsets. Future scenery has no playable controls and is omitted from the ascending level list.

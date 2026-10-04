@@ -240,6 +240,12 @@ flowchart TD
     Campaign["content/game JSON + local lessons"] --> Validate["Core schema + reference validation"]
     Validate --> Index["Generated content index v12"]
     Artwork["Editable SVG parts + painted layers + portraits + rig timelines"] --> Export["game:assets"]
+    Landscape["Four connected map paintings + overlay sources"] --> Stitch["Aligned overlap blend + shared-guard tile cuts"]
+    Stitch --> Export
+    MapRules["50 art positions + bounded offsets in core"] --> WebMap["Web map: fixed terrain + 3 parallax depths"]
+    MapRules --> NativeMap["Skia map: fixed terrain + 3 parallax depths"]
+    Export --> WebMap
+    Export --> NativeMap
     Export --> Atlas["Shared atlas + district textures"]
     Export --> Thumbnails["Sized PNG/WebP portraits + identity manifest"]
     Export --> Miniatures["Transparent full-body miniature PNGs"]
@@ -339,3 +345,5 @@ See [Japanese writing notebooks](features/japanese-writing-notebooks.md) for fai
 Native writing protects the SVG responder from ancestor ScrollView interception and drives paper scrolling explicitly through touch centroids or accessibility actions. `apps/mobile/src/lib/handwriting-navigation.ts` supplies the Expo Stack gesture policy for handwriting routes, preventing iPad swipe-back from consuming rightward strokes. The native catalog uses a compact selected-page header; `AppScreen` has an optional keyboard-tap policy for form buttons. `apps/mobile/e2e/notebook-{layout,gestures}.mjs` retain measured layout, real-contact results and screenshots; physical PencilKit validation remains a separate supported-build/device gate.
 
 The notebook catalog derives Japanese previews and authored romaji readings from the shared engine. `useNotebookRomaji` shares the display preference between catalog implementations through optional storage methods. The preference is device-local (web localStorage/native AsyncStorage) and separate from notebook ink and synchronized progress.
+
+The campaign map assembles its terrain before export and cuts twelve shared-guard tiles. Exact edge pixels make joins independent of viewport cropping. Terrain remains stationary beneath mist, motes and foliage; panel-relative motion is bounded without modulo resets. Future art reserves fifty positions while progression stays at twelve authored levels. Both renderers cull distant scenery and react to reduced-motion preferences. Web uses clip overflow so centering a node cannot scroll inside a district. The map/list switch retains the last map offset; a versioned session key discards obsolete offsets from the shorter map.

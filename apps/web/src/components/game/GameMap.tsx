@@ -19,6 +19,8 @@ import {
   isLevelUnlocked,
   levelStars,
   awardKey,
+  MAP_PANELS,
+  MAP_CAPACITY,
 } from "@codematica/core/game";
 import { webGameStore } from "@/lib/game/store";
 import { GameDistrictArt } from "./GameDistrictArt";
@@ -38,7 +40,7 @@ export function GameMap({ campaign }: { campaign: GameCampaign }) {
   const [loaded, setLoaded] = useState(false),
     [list, setList] = useState(false);
   const active = useRef<HTMLAnchorElement>(null);
-  const scenery = useRef<HTMLDivElement>(null);
+
   const totals = gameTotals(progress),
     current =
       campaign.levels.find(
@@ -48,9 +50,9 @@ export function GameMap({ campaign }: { campaign: GameCampaign }) {
     void store.load().finally(() => setLoaded(true));
   }, [store]);
   useEffect(() => {
-    if (!loaded) return;
+    if (!loaded || list) return;
     try {
-      const saved = sessionStorage.getItem("game-map-scroll");
+      const saved = sessionStorage.getItem("game-map-scroll.v2");
       if (saved !== null) {
         window.scrollTo(0, Number(saved));
         return;
@@ -59,24 +61,11 @@ export function GameMap({ campaign }: { campaign: GameCampaign }) {
       // Scroll memory is optional when browser storage is unavailable.
     }
     active.current?.scrollIntoView({ block: "center" });
-  }, [loaded]);
-  useEffect(() => {
-    const scroll = () => {
-      if (
-        scenery.current &&
-        !matchMedia("(prefers-reduced-motion: reduce)").matches
-      )
-        scenery.current.style.setProperty(
-          "--parallax",
-          `${window.scrollY * 0.08}px`,
-        );
-    };
-    window.addEventListener("scroll", scroll, { passive: true });
-    return () => window.removeEventListener("scroll", scroll);
-  }, []);
+  }, [loaded, list]);
   const leave = () => {
+    if (list) return;
     try {
-      sessionStorage.setItem("game-map-scroll", String(window.scrollY));
+      sessionStorage.setItem("game-map-scroll.v2", String(window.scrollY));
     } catch {
       // Navigation remains available without scroll persistence.
     }
@@ -110,7 +99,13 @@ export function GameMap({ campaign }: { campaign: GameCampaign }) {
           <Flame size={18} />
           {getStreak(progress)} day streak
         </span>
-        <button onClick={() => setList(!list)} data-testid="game-map-view">
+        <button
+          onClick={() => {
+            if (!list) leave();
+            setList(!list);
+          }}
+          data-testid="game-map-view"
+        >
           {list ? <Map size={17} /> : <List size={17} />}{" "}
           {list ? "Map" : "Level list"}
         </button>
@@ -137,9 +132,59 @@ export function GameMap({ campaign }: { campaign: GameCampaign }) {
       </div>
       <div
         className="game-world"
-        ref={scenery}
+        data-testid="game-map-landscape"
+        data-capacity={MAP_CAPACITY}
         data-view={list ? "list" : "map"}
       >
+        {!list &&
+          MAP_PANELS.filter((panel) => !("district" in panel)).map(
+            (panel, i) => (
+              <section
+                key={panel.id}
+                className="game-district game-frontier"
+                data-testid={`game-map-panel-${panel.id}`}
+                aria-label={`${panel.name}, future scenery`}
+              >
+                <GameDistrictArt
+                  district="tower"
+                  panel={panel.id}
+                  restored={false}
+                  details={0}
+                />
+                {i % 3 === 0 && (
+                  <div className="game-district-heading game-frontier-heading">
+                    <span>BEYOND THE SIGNAL · SCENERY PREVIEW</span>
+                    <h2>
+                      {i === 0
+                        ? "The quiet summit"
+                        : i === 3
+                          ? "Lantern woods"
+                          : "Glasshouse heights"}
+                    </h2>
+                    <p>
+                      Trail space for levels{" "}
+                      {i === 0 ? "37–50" : i === 3 ? "25–36" : "13–24"}
+                    </p>
+                    <button
+                      className="game-link"
+                      onClick={() =>
+                        active.current?.scrollIntoView({
+                          block: "center",
+                          behavior: matchMedia(
+                            "(prefers-reduced-motion: reduce)",
+                          ).matches
+                            ? "instant"
+                            : "smooth",
+                        })
+                      }
+                    >
+                      Return to current level <ArrowRight size={16} />
+                    </button>
+                  </div>
+                )}
+              </section>
+            ),
+          )}
         {(list
           ? ["garden", "canal", "tower"]
           : ["tower", "canal", "garden"]
@@ -148,6 +193,9 @@ export function GameMap({ campaign }: { campaign: GameCampaign }) {
             .filter((l) => l.district === district)
             .slice();
           if (!list) levels.reverse();
+          const panel = MAP_PANELS.find(
+            (p) => "district" in p && p.district === district,
+          )!;
           const landmark = levels.find((l) => l.restoration.landmark)!;
           const restored = Boolean(
             progress.awards[awardKey(campaign.id, landmark.id, "main")],
@@ -157,9 +205,11 @@ export function GameMap({ campaign }: { campaign: GameCampaign }) {
               key={district}
               className={`game-district ${district} ${restored ? "restored" : ""}`}
               aria-label={`${district} district`}
+              data-testid={`game-map-panel-${panel.id}`}
             >
               <GameDistrictArt
                 district={district}
+                panel={panel.id}
                 restored={restored}
                 details={
                   levels.filter(

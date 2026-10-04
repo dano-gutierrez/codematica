@@ -1,114 +1,131 @@
-/* eslint-disable @typescript-eslint/no-require-imports -- Metro resolves bundled textures from static require calls. */
+/* eslint-disable @typescript-eslint/no-require-imports -- Metro requires static asset references. */
 import { useEffect, useState } from "react";
 import { AccessibilityInfo, View } from "react-native";
 import { Canvas, Image, useImage } from "@shopify/react-native-skia";
 import { useDerivedValue, type SharedValue } from "react-native-reanimated";
-const layers = {
-  garden: [
-    require("../../../../assets/game/generated/garden.webp"),
-    require("../../../../assets/game/generated/garden-middle.webp"),
-    require("../../../../assets/game/generated/garden-foreground.webp"),
-    require("../../../../assets/game/generated/garden-restored.webp"),
-  ],
-  canal: [
-    require("../../../../assets/game/generated/canal.webp"),
-    require("../../../../assets/game/generated/canal-middle.webp"),
-    require("../../../../assets/game/generated/canal-foreground.webp"),
-    require("../../../../assets/game/generated/canal-restored.webp"),
-  ],
-  tower: [
-    require("../../../../assets/game/generated/tower.webp"),
-    require("../../../../assets/game/generated/tower-middle.webp"),
-    require("../../../../assets/game/generated/tower-foreground.webp"),
-    require("../../../../assets/game/generated/tower-restored.webp"),
-  ],
+import { parallaxOffset } from "@codematica/core/game";
+const tiles = {
+  "summit-0": require("../../../../assets/game/generated/map/summit-0.webp"),
+  "summit-1": require("../../../../assets/game/generated/map/summit-1.webp"),
+  "summit-2": require("../../../../assets/game/generated/map/summit-2.webp"),
+  "woodland-0": require("../../../../assets/game/generated/map/woodland-0.webp"),
+  "woodland-1": require("../../../../assets/game/generated/map/woodland-1.webp"),
+  "woodland-2": require("../../../../assets/game/generated/map/woodland-2.webp"),
+  "highlands-0": require("../../../../assets/game/generated/map/highlands-0.webp"),
+  "highlands-1": require("../../../../assets/game/generated/map/highlands-1.webp"),
+  "highlands-2": require("../../../../assets/game/generated/map/highlands-2.webp"),
+  "city-0": require("../../../../assets/game/generated/map/city-0.webp"),
+  "city-1": require("../../../../assets/game/generated/map/city-1.webp"),
+  "city-2": require("../../../../assets/game/generated/map/city-2.webp"),
 };
+const foliage = [
+  require("../../../../assets/game/generated/map/foliage-0.webp"),
+  require("../../../../assets/game/generated/map/foliage-1.webp"),
+  require("../../../../assets/game/generated/map/foliage-2.webp"),
+];
 export function NativeDistrictArt({
   district,
+  panel,
+  panelTop = 0,
   scroll,
   restored,
   details,
 }: {
-  district: keyof typeof layers;
+  district: "garden" | "canal" | "tower";
+  panel?: keyof typeof tiles;
+  panelTop?: number;
   scroll: SharedValue<number>;
   restored: boolean;
   details: number;
 }) {
-  const [size, setSize] = useState({ width: 350, height: 940 }),
+  const [size, setSize] = useState({ width: 350, height: 620 }),
     [reduced, setReduced] = useState(false);
-  const background = useImage(layers[district][0]),
-    middle = useImage(layers[district][1]),
-    foreground = useImage(layers[district][2]),
-    lights = useImage(layers[district][3]);
+  const tile =
+    panel ??
+    (`city-${district === "tower" ? 0 : district === "canal" ? 1 : 2}` as keyof typeof tiles);
+  const terrain = useImage(tiles[tile]),
+    mist = useImage(require("../../../../assets/game/generated/map/mist.webp")),
+    motes = useImage(
+      require("../../../../assets/game/generated/map/motes.webp"),
+    ),
+    leaves = useImage(foliage[Number(tile.at(-1))]);
   useEffect(() => {
-    void AccessibilityInfo.isReduceMotionEnabled().then(setReduced);
-    const listener = AccessibilityInfo.addEventListener(
+    let mounted = true;
+    void AccessibilityInfo.isReduceMotionEnabled().then((value) => {
+      if (mounted) setReduced(value);
+    });
+    const subscription = AccessibilityInfo.addEventListener(
       "reduceMotionChanged",
       setReduced,
     );
-    return () => listener.remove();
+    return () => {
+      mounted = false;
+      subscription.remove();
+    };
   }, []);
-  const backY = useDerivedValue(() =>
-      reduced ? -50 : -50 + (scroll.value % 940) * 0.025,
+  const mistY = useDerivedValue(() =>
+      parallaxOffset(scroll.value, panelTop, size.height, 0.025, reduced),
     ),
-    frontY = useDerivedValue(() =>
-      reduced ? -50 : -50 - (scroll.value % 940) * 0.015,
+    moteY = useDerivedValue(() =>
+      parallaxOffset(scroll.value, panelTop, size.height, -0.045, reduced),
+    ),
+    leafY = useDerivedValue(() =>
+      parallaxOffset(scroll.value, panelTop, size.height, -0.085, reduced),
     );
+  // Guard pixels are shared with the adjacent tile; terrain never moves independently.
+  const guard = (size.height * 64) / 1152;
   return (
     <View
+      testID="game-district-art"
       pointerEvents="none"
       accessibilityElementsHidden
       importantForAccessibility="no-hide-descendants"
       onLayout={(e) => setSize(e.nativeEvent.layout)}
-      style={{
-        position: "absolute",
-        inset: 0,
-        borderRadius: 24,
-        overflow: "hidden",
-      }}
+      style={{ position: "absolute", inset: 0, overflow: "hidden" }}
     >
       <Canvas style={{ flex: 1 }}>
-        {background ? (
+        {terrain && (
           <Image
-            image={background}
-            fit="cover"
+            image={terrain}
+            fit="fill"
             x={0}
-            y={backY}
+            y={-guard}
             width={size.width}
-            height={size.height + 100}
+            height={size.height + guard * 2}
           />
-        ) : null}
-        {middle ? (
+        )}
+        {mist && (
           <Image
-            image={middle}
-            fit="cover"
+            image={mist}
+            fit="fill"
             x={0}
-            y={0}
-            width={size.width}
-            height={size.height}
-          />
-        ) : null}
-        {foreground ? (
-          <Image
-            image={foreground}
-            fit="cover"
-            x={0}
-            y={frontY}
-            width={size.width}
-            height={size.height + 100}
-          />
-        ) : null}
-        {lights ? (
-          <Image
-            image={lights}
-            fit="cover"
-            x={0}
-            y={0}
+            y={mistY}
             width={size.width}
             height={size.height}
-            opacity={restored ? 1 : details * 0.16}
           />
-        ) : null}
+        )}
+        {motes && (
+          <Image
+            image={motes}
+            fit="fill"
+            x={0}
+            y={moteY}
+            width={size.width}
+            height={size.height}
+            opacity={restored ? 1 : 0.3 + details * 0.12}
+          />
+        )}
+        {leaves && (
+          <Image
+            image={leaves}
+            fit="fill"
+            x={0}
+            y={leafY}
+            width={size.width}
+            height={size.height}
+            opacity={0.7}
+          />
+        )}
       </Canvas>
     </View>
   );

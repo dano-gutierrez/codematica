@@ -2,6 +2,13 @@
 
 This changelog dates durable product and architecture changes and links to their authoritative feature contracts.
 
+## 2026-10-03 — Continuous campaign landscape
+
+- Created four connected original paintings and a transparent foliage kit with retained built-in imagegen prompts. Assembled terrain before cutting twelve tiles with pixel-identical edge guards.
+- Added mist, amber motes and foreground foliage at three bounded depths on web and native, behind ordinary level controls. Reduced motion freezes parallax; offscreen scenery is culled.
+- Reserved fifty art positions with twelve authored playable levels and a compact ascending list. Fixed centering-induced blank strips, smeared chapter blends, dangling route marks, and obsolete map scroll offsets.
+- Recorded the improve-game-ux create/review/fix/review cycle and visual evidence. New installed-device art/FPS checks remain pending. See [Restore the Signal](features/restore-the-signal.md) and the [map review](../assets/game/previews/continuous-map/review.md).
+
 ## 2026-10-03 — Campaign integration review
 
 - Merged the current learning features and Expo patches while preserving Play/Learn navigation, notebook access, and the private admin destination. The combined content index is version 12; the game migration has a unique version after the editorial migrations.

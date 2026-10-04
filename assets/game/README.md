@@ -51,3 +51,13 @@ The painted assets were generated as original portrait 2:3 game scenery with no 
 Patch’s model sheet prompt described an original compact cream/orange/teal maintenance robot, front/side/three-quarter views, six expressive face displays, articulated arms, repair tools, and antenna/toolbelt/beacon attachments. Production SVG parts and explicit timelines interpret that concept as controllable artwork; the concept raster is not an animation rig.
 
 Reference screenshots in `docs/design-references/` are for design discussion only and are not bundled as production game art. The asset kit contains no copied game characters or textures. Third-party runtime licenses belong to their packages (`pixi.js`, Skia, Reanimated, sql.js, and their bundled SQLite notices).
+
+## Continuous campaign landscape
+
+The map now uses four original connected paintings in `source/map/`: city, highlands, woodland, and summit. They replace the separate horizon-based district backgrounds on the campaign map. The older district exports remain available to existing asset tools. `source/map/prompts-v1.json` contains the exact built-in imagegen prompts; source paintings and the transparent foliage master are versioned PNGs. Mist and amber motes are editable SVG overlays.
+
+`game:assets` runs `scripts/game/build-map-art.ts`: normalize each painting, blend aligned 384px chapter overlaps, assemble the landscape, then cut twelve lossless 768×1280 WebP tiles. Each has a 1152px interior and 64px guard at each edge. Neighboring guards contain identical pixels; never crop or resize panels independently. `generated/map/manifest.json` records dimensions, panel order, three depth families, and capacity. The web public copies and statically imported native textures come from the same exports.
+
+The terrain stays fixed so scrolling cannot separate the joins. Above it, mist, amber motes, and foreground foliage move at three bounded local speeds. Three foliage crops avoid repeating the full border every panel. All layers stay behind level controls. Reduced motion freezes them, and offscreen scenery is culled. Art reserves exactly 50 positions; only the existing twelve levels have controls, objectives, or rewards. Future scenery has three quiet region labels with a return-to-current-level action.
+
+See the [visual review](previews/continuous-map/review.md), [complete terrain sheet](previews/continuous-map/terrain-contact-sheet.png), and [phone map](previews/continuous-map/final-phone.png). Capture actual viewports with `node scripts/game/capture-map-art.mjs http://127.0.0.1:3174`; the scroll recording is saved under ignored `test-results/map-art/`. Physical device FPS and installed Android/iOS checks remain release requirements.

@@ -1,4 +1,5 @@
 import sharp from "sharp";
+import { buildMapArt } from "./build-map-art";
 import {
   miniatureFrames,
   miniatureScene,
@@ -14,6 +15,7 @@ const root = "assets/game",
   files = (await readdir(`${root}/source`))
     .filter((f) => f.endsWith(".svg"))
     .sort();
+await buildMapArt();
 const frames: Record<
   string,
   {

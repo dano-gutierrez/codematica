@@ -61,13 +61,13 @@ it("opens the current signal, offers an ascending level list, saves scroll, and 
     screen.getAllByRole("link", { name: /Level \d:/ })[0],
   ).toHaveAccessibleName(/Level 1:/);
   fireEvent.click(screen.getByTestId("game-continue"));
-  expect(sessionStorage.getItem("game-map-scroll")).not.toBeNull();
+  expect(sessionStorage.getItem("game-map-scroll.v2")).not.toBeNull();
   fireEvent.click(screen.getByRole("button", { name: "antenna" }));
   await waitFor(() => expect(store.getSnapshot().cosmetic).toBe("antenna"));
   fireEvent(window, new Event("scroll"));
 });
 it("restores map scroll and defers scenery until its district approaches the viewport", async () => {
-  sessionStorage.setItem("game-map-scroll", "2400");
+  sessionStorage.setItem("game-map-scroll.v2", "2400");
   store = new GameStore(c, { getItem: () => null, setItem: vi.fn() });
   const map = render(<GameMap campaign={c} />);
   await waitFor(() => expect(window.scrollTo).toHaveBeenCalledWith(0, 2400));
@@ -75,11 +75,17 @@ it("restores map scroll and defers scenery until its district approaches the vie
   const view = render(
     <GameDistrictArt district="canal" restored details={4} />,
   );
-  expect(view.container.innerHTML).not.toContain("canal.webp");
+  expect(view.container.innerHTML).not.toContain("city-1.webp");
   act(() => observer([{ isIntersecting: true }]));
-  expect(view.container.innerHTML).toContain("canal-restored.webp");
+  expect(view.container.innerHTML).toContain("city-1.webp");
+  expect(screen.getByTestId("game-parallax-city-1-motes")).toHaveStyle({
+    opacity: "1",
+  });
+  expect(
+    screen.getByTestId("game-parallax-city-1-foliage"),
+  ).toBeInTheDocument();
   act(() => observer([{ isIntersecting: false }]));
-  expect(view.container.innerHTML).not.toContain("canal.webp");
+  expect(view.container.innerHTML).not.toContain("city-1.webp");
 });
 it("allows only local campaign paths in the lesson return affordance", () => {
   for (const value of [null, "https://example.com", "/play/a/b?bad=1"]) {
@@ -95,12 +101,97 @@ it("allows only local campaign paths in the lesson return affordance", () => {
 
 it("keeps the map and level links usable when scroll storage is denied", async () => {
   store = new GameStore(c, { getItem: () => null, setItem: vi.fn() });
-  const read = vi.spyOn(Storage.prototype, "getItem").mockImplementation(() => { throw Error("storage denied"); });
-  const write = vi.spyOn(Storage.prototype, "setItem").mockImplementation(() => { throw Error("storage denied"); });
+  const read = vi.spyOn(Storage.prototype, "getItem").mockImplementation(() => {
+    throw Error("storage denied");
+  });
+  const write = vi
+    .spyOn(Storage.prototype, "setItem")
+    .mockImplementation(() => {
+      throw Error("storage denied");
+    });
   try {
     render(<GameMap campaign={c} />);
-    await waitFor(() => expect(screen.getByTestId("game-level-1")).toBeEnabled());
-    expect(() => fireEvent.click(screen.getByTestId("game-continue"))).not.toThrow();
-    expect(screen.getByTestId("game-continue")).toHaveAttribute("href", `/play/${c.id}/${c.levels[0].id}`);
-  } finally { read.mockRestore(); write.mockRestore(); }
+    await waitFor(() =>
+      expect(screen.getByTestId("game-level-1")).toBeEnabled(),
+    );
+    expect(() =>
+      fireEvent.click(screen.getByTestId("game-continue")),
+    ).not.toThrow();
+    expect(screen.getByTestId("game-continue")).toHaveAttribute(
+      "href",
+      `/play/${c.id}/${c.levels[0].id}`,
+    );
+  } finally {
+    read.mockRestore();
+    write.mockRestore();
+  }
+});
+
+it("shows fifty-position scenery without creating extra levels or changing the accessible list", async () => {
+  store = new GameStore(c, { getItem: () => null, setItem: vi.fn() });
+  render(<GameMap campaign={c} />);
+  await waitFor(() => expect(screen.getByTestId("game-level-1")).toBeEnabled());
+  expect(screen.getByTestId("game-map-landscape")).toHaveAttribute(
+    "data-capacity",
+    "50",
+  );
+  expect(screen.getByTestId("game-map-panel-summit-0")).toBeInTheDocument();
+  expect(screen.queryByTestId("game-level-13")).toBeNull();
+  fireEvent.click(
+    screen.getAllByRole("button", { name: /Return to current level/ })[0],
+  );
+  fireEvent.click(screen.getByTestId("game-map-view"));
+  expect(screen.queryByTestId("game-map-panel-summit-0")).toBeNull();
+  expect(screen.getByTestId("game-level-12")).toBeDisabled();
+});
+it("samples each visible layer on scroll and resets offsets when reduced motion changes", () => {
+  let change: () => void = () => {};
+  const motion = {
+    matches: false,
+    addEventListener: vi.fn((_: string, cb: () => void) => {
+      change = cb;
+    }),
+    removeEventListener: vi.fn(),
+  };
+  vi.stubGlobal("matchMedia", () => motion);
+  const frame = vi
+    .spyOn(window, "requestAnimationFrame")
+    .mockImplementation((cb) => {
+      cb(0);
+      return 0;
+    });
+  const view = render(
+    <GameDistrictArt district="garden" details={1} restored={false} />,
+  );
+  const host = screen.getByTestId("game-scenery-city-2");
+  vi.spyOn(host, "getBoundingClientRect").mockReturnValue({
+    top: -100,
+    height: 620,
+  } as DOMRect);
+  act(() => observer([{ isIntersecting: true }]));
+  expect(host.style.getPropertyValue("--mist-offset")).toBe("10.25px");
+  expect(host.style.getPropertyValue("--motes-offset")).toBe("-18.45px");
+  fireEvent(window, new Event("scroll"));
+  motion.matches = true;
+  act(() => change());
+  expect(host.style.getPropertyValue("--foliage-offset")).toBe("0px");
+  view.unmount();
+  expect(motion.removeEventListener).toHaveBeenCalled();
+  frame.mockRestore();
+});
+
+it("discards shorter-map offsets and preserves the map position while entering a level from the list", async () => {
+  sessionStorage.setItem("game-map-scroll", "2400");
+  store = new GameStore(c, { getItem: () => null, setItem: vi.fn() });
+  render(<GameMap campaign={c} />);
+  await waitFor(() => expect(screen.getByTestId("game-level-1")).toBeEnabled());
+  expect(window.scrollTo).not.toHaveBeenCalledWith(0, 2400);
+  vi.stubGlobal("scrollY", 1200);
+  fireEvent.click(screen.getByTestId("game-map-view"));
+  vi.stubGlobal("scrollY", 200);
+  fireEvent.click(screen.getByTestId("game-continue"));
+  expect(sessionStorage.getItem("game-map-scroll.v2")).toBe("1200");
+  fireEvent.click(screen.getByTestId("game-map-view"));
+  await waitFor(() => expect(window.scrollTo).toHaveBeenCalledWith(0, 1200));
+  vi.stubGlobal("scrollY", 0);
 });

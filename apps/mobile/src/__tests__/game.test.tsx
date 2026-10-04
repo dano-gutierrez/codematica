@@ -36,12 +36,22 @@ jest.mock("react-native-reanimated", () => ({
     return { setActive: jest.fn() };
   },
 }));
-const mockAtlasProps: { transforms: {value: unknown}; colors: {value: string[]} }[] = [];
+const mockAtlasProps: {
+  transforms: { value: unknown };
+  colors: { value: string[] };
+}[] = [];
+const mockSceneryProps: { y: number | { value: number } }[] = [];
 let mockImage: object | null = { texture: true };
 jest.mock("@shopify/react-native-skia", () => ({
   Canvas: "Canvas",
-  Atlas: (props: typeof mockAtlasProps[number]) => { mockAtlasProps.push(props); return null; },
-  Image: "SkiaImage",
+  Atlas: (props: (typeof mockAtlasProps)[number]) => {
+    mockAtlasProps.push(props);
+    return null;
+  },
+  Image: (props: (typeof mockSceneryProps)[number]) => {
+    mockSceneryProps.push(props);
+    return null;
+  },
   rect: (x: number, y: number, width: number, height: number) => ({
     x,
     y,
@@ -49,7 +59,10 @@ jest.mock("@shopify/react-native-skia", () => ({
     height,
   }),
   useImage: () => mockImage,
-  Skia: { RSXform: (...values: number[]) => values, Color: (color: string) => color },
+  Skia: {
+    RSXform: (...values: number[]) => values,
+    Color: (color: string) => color,
+  },
 }));
 const campaign = getContentIndex().gameCampaigns[0];
 function storeAt(order: number, mastery = false) {
@@ -282,52 +295,185 @@ it("renders every expression, attachment and reduced-motion scenery without affe
 
 it("fits the native miniatures to their measured container while paused", async () => {
   const view = await render(<NativeGameScene paused cosmetic="beacon" />);
-  await fireEvent(view.getByTestId("game-scene"), "layout", { nativeEvent: { layout: {width:280,height:180} } });
-  const expected = miniatureScene(280,180,"idle",0,"beacon").layers;
-  expect(mockAtlasProps.at(-1)!.transforms.value).toEqual(expected.map(p=>[p.scos,p.ssin,p.tx,p.ty]));
-  await fireEvent(view.getByTestId("game-scene"), "layout", { nativeEvent: { layout: {width:620,height:180} } });
-  expect(mockAtlasProps.at(-1)!.transforms.value).toEqual(miniatureScene(620,180,"idle",0,"beacon").layers.map(p=>[p.scos,p.ssin,p.tx,p.ty]));
+  await fireEvent(view.getByTestId("game-scene"), "layout", {
+    nativeEvent: { layout: { width: 280, height: 180 } },
+  });
+  const expected = miniatureScene(280, 180, "idle", 0, "beacon").layers;
+  expect(mockAtlasProps.at(-1)!.transforms.value).toEqual(
+    expected.map((p) => [p.scos, p.ssin, p.tx, p.ty]),
+  );
+  await fireEvent(view.getByTestId("game-scene"), "layout", {
+    nativeEvent: { layout: { width: 620, height: 180 } },
+  });
+  expect(mockAtlasProps.at(-1)!.transforms.value).toEqual(
+    miniatureScene(620, 180, "idle", 0, "beacon").layers.map((p) => [
+      p.scos,
+      p.ssin,
+      p.tx,
+      p.ty,
+    ]),
+  );
   await view.rerender(<NativeGameScene paused state="celebrate" />);
-  expect(mockAtlasProps.at(-1)!.colors.value.at(-1)).toBe("rgba(255,255,255,0.35)");
+  expect(mockAtlasProps.at(-1)!.colors.value.at(-1)).toBe(
+    "rgba(255,255,255,0.35)",
+  );
 });
 
 it("ticks only the focused copy of a level when returning from a lesson", async () => {
   jest.useFakeTimers();
   try {
     const { view, session, store, navigate } = await open(7);
-    const props = { campaign, level: campaign.levels[7], store, navigate, workerSource: "worker" };
+    const props = {
+      campaign,
+      level: campaign.levels[7],
+      store,
+      navigate,
+      workerSource: "worker",
+    };
     await view.rerender(<NativeGamePlay {...props} active={false} />);
     const returned = await render(<NativeGamePlay {...props} active />);
-    await waitFor(() => expect(returned.getByTestId("game-play")).toBeOnTheScreen());
+    await waitFor(() =>
+      expect(returned.getByTestId("game-play")).toBeOnTheScreen(),
+    );
     const tick = jest.spyOn(session, "tick");
-    await act(() => { session.run(); jest.advanceTimersByTime(1000); });
+    await act(() => {
+      session.run();
+      jest.advanceTimersByTime(1000);
+    });
     expect(tick).toHaveBeenCalledTimes(1);
     expect(session.getSnapshot().attempt.elapsed).toBe(1);
     await returned.rerender(<NativeGamePlay {...props} active={false} />);
-    await act(() => { jest.advanceTimersByTime(2000); });
+    await act(() => {
+      jest.advanceTimersByTime(2000);
+    });
     expect(session.getSnapshot().attempt.phase).toBe("paused");
     expect(session.getSnapshot().attempt.elapsed).toBe(1);
     await returned.rerender(<NativeGamePlay {...props} active />);
     expect(session.getSnapshot().attempt.phase).toBe("paused");
-    await act(() => { session.resume(); jest.advanceTimersByTime(1000); });
+    await act(() => {
+      session.resume();
+      jest.advanceTimersByTime(1000);
+    });
     expect(session.getSnapshot().attempt.elapsed).toBe(2);
-  } finally { jest.useRealTimers(); }
+  } finally {
+    jest.useRealTimers();
+  }
 });
 
-it.each(["reset", "blur", "unmount"])("ignores retained runner callbacks after %s", async (interruption) => {
-  const { view, session, store, navigate } = await open(0);
-  await fireEvent.press(view.getByTestId("game-run"));
-  const { onMessage, onError, source } = view.getByTestId("game-sandbox").props;
-  const nonce = JSON.parse(source.html.match(/const data=(.*);\nconst send/)[1]).nonce;
-  if (interruption === "reset") await fireEvent.press(view.getByTestId("game-reset"));
-  else if (interruption === "blur") await view.rerender(<NativeGamePlay campaign={campaign} level={campaign.levels[0]} store={store} navigate={navigate} workerSource="worker" active={false} />);
-  else await view.unmount();
-  const submit = jest.spyOn(session, "submit");
-  await act(() => {
-    onMessage({ nativeEvent: { data: JSON.stringify({ channel: "codematica-game", nonce, result: { passed: true, reasons: [], events: [] } }) } });
-    onError();
-  });
-  expect(submit).not.toHaveBeenCalled();
-  expect(session.getSnapshot().attempt.phase).toBe("briefing");
-  expect(Object.keys(store.getSnapshot().awards)).toHaveLength(0);
+it.each(["reset", "blur", "unmount"])(
+  "ignores retained runner callbacks after %s",
+  async (interruption) => {
+    const { view, session, store, navigate } = await open(0);
+    await fireEvent.press(view.getByTestId("game-run"));
+    const { onMessage, onError, source } =
+      view.getByTestId("game-sandbox").props;
+    const nonce = JSON.parse(
+      source.html.match(/const data=(.*);\nconst send/)[1],
+    ).nonce;
+    if (interruption === "reset")
+      await fireEvent.press(view.getByTestId("game-reset"));
+    else if (interruption === "blur")
+      await view.rerender(
+        <NativeGamePlay
+          campaign={campaign}
+          level={campaign.levels[0]}
+          store={store}
+          navigate={navigate}
+          workerSource="worker"
+          active={false}
+        />,
+      );
+    else await view.unmount();
+    const submit = jest.spyOn(session, "submit");
+    await act(() => {
+      onMessage({
+        nativeEvent: {
+          data: JSON.stringify({
+            channel: "codematica-game",
+            nonce,
+            result: { passed: true, reasons: [], events: [] },
+          }),
+        },
+      });
+      onError();
+    });
+    expect(submit).not.toHaveBeenCalled();
+    expect(session.getSnapshot().attempt.phase).toBe("briefing");
+    expect(Object.keys(store.getSnapshot().awards)).toHaveLength(0);
+  },
+);
+
+it("reserves fifty map positions but only exposes twelve campaign controls", async () => {
+  const view = await render(
+    <NativeGameMap
+      campaign={campaign}
+      store={storeAt(0)}
+      navigate={jest.fn()}
+    />,
+  );
+  const frontier = view.getByTestId("game-frontier-summit-0");
+  expect(frontier).toBeOnTheScreen();
+  await fireEvent(frontier, "layout", { nativeEvent: { layout: { y: 0 } } });
+  await fireEvent.press(
+    view.getAllByRole("button", { name: "Return to current level" })[0],
+  );
+  expect(view.queryByTestId("game-level-13")).toBeNull();
+  await fireEvent.press(view.getByRole("button", { name: "Level list" }));
+  expect(view.queryByTestId("game-frontier-summit-0")).toBeNull();
+  expect(view.getByTestId("game-level-12")).toBeOnTheScreen();
+});
+it("renders three native depths, resets them for reduced motion, and keeps terrain static", async () => {
+  const listener = jest.spyOn(AccessibilityInfo, "addEventListener");
+  const v = await render(
+    <NativeDistrictArt
+      district="garden"
+      scroll={{ value: 800 } as never}
+      panelTop={400}
+      restored={false}
+      details={0}
+    />,
+  );
+  const props = mockSceneryProps.slice(-4);
+  expect(
+    new Set(props.slice(1).map((p) => (p.y as { value: number }).value)).size,
+  ).toBe(3);
+  expect(props[0].y).toBe((-620 * 64) / 1152);
+  await fireEvent(
+    v.getByTestId("game-district-art", { includeHiddenElements: true }),
+    "layout",
+    { nativeEvent: { layout: { width: 400, height: 800 } } },
+  );
+  expect(mockSceneryProps.at(-4)!.y).toBe((-800 * 64) / 1152);
+  await act(() =>
+    (listener.mock.calls.at(-1)![1] as unknown as (v: boolean) => void)(true),
+  );
+  expect(
+    mockSceneryProps.slice(-3).map((p) => (p.y as { value: number }).value),
+  ).toEqual([0, 0, 0]);
+  await v.rerender(
+    <NativeDistrictArt
+      district="canal"
+      scroll={{ value: 700 } as never}
+      panelTop={100}
+      restored
+      details={4}
+    />,
+  );
+  await v.unmount();
+  jest
+    .spyOn(AccessibilityInfo, "isReduceMotionEnabled")
+    .mockResolvedValue(true);
+  await render(
+    <NativeDistrictArt
+      district="tower"
+      scroll={{ value: 9000 } as never}
+      restored
+      details={4}
+    />,
+  );
+  await waitFor(() =>
+    expect(
+      mockSceneryProps.slice(-3).map((p) => (p.y as { value: number }).value),
+    ).toEqual([0, 0, 0]),
+  );
 });
