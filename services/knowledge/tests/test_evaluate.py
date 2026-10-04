@@ -17,6 +17,39 @@ class FakeModels:
     async def explain(self, evidence): return {"explanation": "Compare the cited source."}
 
 class EvaluationTests(unittest.IsolatedAsyncioTestCase):
+    async def test_decision_cache_preserves_question_and_option_order(self):
+        from knowledge.models import LocalModels
+        with tempfile.TemporaryDirectory() as tmp:
+            models = LocalModels(Store(Path(tmp) / 'db'))
+            requests = []
+            async def call(origin, path, body):
+                requests.append(body)
+                return {'answers': {
+                    key: {'choice': next(iter(question['criteria'])),
+                          'probabilities': {next(iter(question['criteria'])): 1.0}}
+                    for key, question in body['questions'].items()
+                }}
+            models.call = call
+            questions = {
+                'action': {'type': 'choice', 'criteria': {'update_existing': 'Extend', 'create_resource': 'Separate'}},
+                'match': {'type': 'choice', 'criteria': {'extends': 'Add', 'related': 'Connect'}},
+            }
+            state = {'candidate': {'body': 'An original extension'}}
+            first = await models.decide(state, questions)
+            self.assertEqual(await models.decide(state, questions), first)
+            self.assertEqual(len(requests), 1)
+            reordered_options = {
+                **questions,
+                'action': {**questions['action'], 'criteria': dict(reversed(list(questions['action']['criteria'].items())))},
+            }
+            second = await models.decide(state, reordered_options)
+            self.assertEqual(second['action']['choice'], 'create_resource')
+            self.assertEqual(len(requests), 2)
+            await models.decide(state, dict(reversed(list(questions.items()))))
+            self.assertEqual(len(requests), 3)
+            self.assertEqual(list(requests[2]['questions']), ['match', 'action'])
+            self.assertEqual(models.cache_hits, 1)
+
     async def test_injected_content_cannot_authorize_model_tools_or_new_actions(self):
         from knowledge.models import LocalModels
         from knowledge.config import WRITER, JUDGE

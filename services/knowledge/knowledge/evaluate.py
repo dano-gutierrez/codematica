@@ -3,7 +3,14 @@ import time
 import re
 from .store import digest
 
-ACTIONS = {"update_existing": "Existing resource covers this scope but benefits from this addition or correction", "create_resource": "Useful distinct resource that fits an existing learning path", "create_path": "New coherent subject with no appropriate existing path", "skip_duplicate": "Same purpose, scope, audience and level are already covered; no useful new material", "split": "Candidate contains multiple independent lessons that should be separated", "needs_review": "Evidence, coverage or decision certainty is insufficient"}
+ACTIONS = {
+    "update_existing": "Add missing sections, examples, exercises or corrections to an identified existing resource with the same core learning objective. The addition does not need to be already covered; preserving an existing useful resource is preferred when the new material belongs there.",
+    "create_resource": "A distinct standalone learning objective needs its own lesson within an existing path. Do not choose this solely because there are new examples or missing details that fit an existing lesson.",
+    "create_path": "A coherent new subject needs a new path because no existing path fits its audience and objectives.",
+    "skip_duplicate": "Same purpose, scope, audience and level are already covered and no useful new material remains. Paraphrasing alone does not add value.",
+    "split": "Separate multiple independent learning objectives that do not belong together into distinct proposals.",
+    "needs_review": "Evidence, purpose, coverage or decision certainty is insufficient to choose an action.",
+}
 RELATIONS = {"duplicate": "Interchangeable content at the same level and format", "extends": "Adds useful missing material to this resource", "derived_from": "Useful adaptation to another format, such as lesson to social post", "related": "Connected topic, different purpose or level", "distinct": "Different topic or learning objective", "unknown": "Insufficient evidence"}
 
 def supporting_passage(text,query,limit=1800):

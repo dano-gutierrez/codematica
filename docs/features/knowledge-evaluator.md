@@ -108,6 +108,8 @@ Catalog tests parse validated canonical files once per suite and clone them for 
 - Coverage: new TypeScript domain/UI code is instrumented; existing floors are unchanged. Python has its own isolated unit lane. CLI orchestration is exercised through integration smokes.
 - Required commands: see [the runbook](../runbooks/knowledge-evaluator.md), plus lint, configured typechecks, both coverage lanes, native coverage, content freshness, Expo Doctor, web build and production-pruned HTTP smoke.
 
+The v5 action rubric distinguishes same-objective additions from standalone objectives: useful new examples or corrections can extend an existing lesson even when that material is not yet covered. Cache keys include ordered question/option layouts as well as model/prompt versions and request data. Different option orders cannot reuse one readout. A fake-transport regression and two layout mutations cover both boundaries. Local diagnostic fixtures exercise updates, distinct same-topic objectives, duplicates, cross-format reuse, incomplete evidence and injected instructions; they are initial engineering labels, not independent calibration. Incomplete extraction, low confidence and human-approval requirements remain unchanged.
+
 ## Open Questions
 
 - Independently label and calibrate more real authoring candidates before reducing review holds.
