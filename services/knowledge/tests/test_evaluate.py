@@ -125,6 +125,7 @@ class EvaluationTests(unittest.IsolatedAsyncioTestCase):
                 {**base,'id':'path:ml','kind':'path','title':'ML systems','text':'Model development','paths':[]},
                 {**base,'id':'skill:ml/model','kind':'skill','title':'Model development','text':'Neural networks','paths':['path:ml']},
             ]
+            data['relationships']=[{'id':'source-membership','source':'path:ml','target':'source:neural','type':'contains','provenance':'explicit'}]
             store.activate(data);models=FakeModels();seen={}
             async def decide(state,questions):
                 seen.update(state=state,questions=questions)
@@ -166,6 +167,59 @@ class EvaluationTests(unittest.IsolatedAsyncioTestCase):
                 if chosen=='unit:ml/core':
                     self.assertEqual(report['placement'],{'path_id':'path:ml','unit_id':chosen,'resource_id':'document:core','section_id':'document:core#exercise','after_id':'document:core'})
                 else:self.assertEqual(report['placement'],{})
+
+    async def test_path_reference_is_not_an_ordered_node_and_inferred_membership_is_not_authority(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            store=Store(Path(tmp)/'db');data=snapshot();base=data['resources'][0]
+            data['resources']=[
+                {**base,'id':'game-level:campaign/stage','kind':'game-level','title':'Neural game','paths':['path:ml']},
+                {**base,'id':'document:inferred','title':'Neural inferred','paths':['path:ml']},
+                {**base,'id':'document:ordered','title':'Neural ordered','paths':['path:ml']},
+                {**base,'id':'document:ordered#practice','parentId':'document:ordered','kind':'section','title':'Neural practice','paths':['path:ml']},
+                {**base,'id':'path:ml','kind':'path','title':'ML','paths':[]},
+                {**base,'id':'unit:ml/core','kind':'unit','title':'Core','paths':['path:ml']},
+            ]
+            data['relationships']=[
+                {'id':'unit','source':'path:ml','target':'unit:ml/core','type':'contains','provenance':'explicit'},
+                {'id':'ordered','source':'unit:ml/core','target':'document:ordered','type':'contains','provenance':'explicit'},
+                {'id':'inferred','source':'unit:ml/core','target':'document:inferred','type':'contains','provenance':'inferred'},
+            ]
+            store.activate(data);models=FakeModels()
+            async def decide(state,questions):
+                result=await FakeModels.decide(models,state,questions)
+                result['placement']={'choice':'path:ml','probabilities':{'path:ml':.99}}
+                return result
+            models.decide=decide
+            class Ranked:
+                def similarities(self,query):return {'game-level:campaign/stage':1,'document:inferred':.9,'document:ordered#practice':0,'document:ordered':0}
+            report=await evaluate(store,Ranked(),models,{'title':'Neural practice','body':'Original practice scenario','kind':'document'})
+            self.assertEqual(report['placement'],{'path_id':'path:ml','resource_id':'document:ordered','section_id':'document:ordered#practice','after_id':'document:ordered'})
+
+    async def test_ordered_interview_question_keeps_its_identity_and_solution_targets_question(self):
+        for use_solution in [False,True]:
+            with self.subTest(use_solution=use_solution),tempfile.TemporaryDirectory() as tmp:
+                store=Store(Path(tmp)/'db');data=snapshot();base=data['resources'][0]
+                data['resources']=[
+                    {**base,'id':'interview-collection:practice','kind':'interview-collection','title':'Practice','paths':['path:interview']},
+                    {**base,'id':'interview-question:practice/graph','parentId':'interview-collection:practice','kind':'interview-question','title':'Graph practice','paths':['path:interview']},
+                    {**base,'id':'interview-question:practice/graph/solution:python','parentId':'interview-question:practice/graph','kind':'solution','title':'Graph implementation','paths':['path:interview']},
+                    {**base,'id':'path:interview','kind':'path','title':'Interview','paths':[]},
+                    {**base,'id':'unit:interview/core','kind':'unit','title':'Core','paths':['path:interview']},
+                ]
+                data['relationships']=[{'id':'question','source':'unit:interview/core','target':'interview-question:practice/graph','type':'contains','provenance':'explicit'}]
+                store.activate(data);models=FakeModels()
+                selected_id='interview-question:practice/graph/solution:python' if use_solution else 'interview-question:practice/graph'
+                store.search=lambda *args,**kwargs:[{**store.resource(selected_id),'score':1}]
+                async def decide(state,questions):
+                    result=await FakeModels.decide(models,state,questions)
+                    result['placement']={'choice':'unit:interview/core','probabilities':{'unit:interview/core':.99}}
+                    return result
+                models.decide=decide
+                class Ranked:
+                    def similarities(self,query):return {('interview-question:practice/graph/solution:python' if use_solution else 'interview-question:practice/graph'):1}
+                report=await evaluate(store,Ranked(),models,{'title':'Graph improvement','body':'New graph decision scenario','kind':'document'})
+                self.assertEqual([r['id'] for r in report['matches']],[selected_id])
+                self.assertEqual(report['placement'],{'path_id':'path:interview','unit_id':'unit:interview/core','resource_id':'interview-question:practice/graph','after_id':'interview-question:practice/graph'})
 
     async def test_unknown_placement_can_target_an_update_without_inventing_order(self):
         with tempfile.TemporaryDirectory() as tmp:

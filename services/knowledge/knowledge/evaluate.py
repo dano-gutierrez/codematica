@@ -83,19 +83,24 @@ async def evaluate(store, embeddings, models, candidate):
     if target:
         placement["unit_id" if target["kind"] == "unit" else "path_id"] = target["id"]
         if target["kind"] == "unit" and target["paths"]: placement["path_id"] = target["paths"][0]
-    # An existing ID is insufficient: suggested ordering must belong to the
-    # selected path/unit. Cross-topic retrieval hits are evidence, not placement.
+    # Resource path tags also include game/reference associations. Only authored
+    # contains edges establish ordering, through the selected path's own units.
+    def order_id(resource):
+        return resource.get("parentId",resource["id"]) if resource["kind"] in ["section","solution"] else resource["id"]
     eligible=selected if target else [r for r in selected if r["relation"] in ["duplicate","extends"]]
-    if placement.get("path_id"):
-        eligible=[r for r in selected if placement["path_id"] in r.get("paths",[])]
-    if placement.get("unit_id"):
-        unit_members={e["target"] for e in store.relationships(placement["unit_id"])["relationships"] if e["source"]==placement["unit_id"] and e["type"]=="contains"}
-        eligible=[r for r in eligible if r.get("parentId",r["id"]) in unit_members]
+    if target:
+        authored=[e for e in store.snapshot()["relationships"] if e["type"]=="contains" and e.get("provenance")=="explicit"]
+        containers={target["id"]}
+        if target["kind"]=="path":
+            units={r["id"] for r in store.snapshot()["resources"] if r["kind"]=="unit"}
+            containers.update(e["target"] for e in authored if e["source"]==target["id"] and e["target"] in units)
+        members={e["target"] for e in authored if e["source"] in containers}
+        eligible=[r for r in eligible if order_id(r) in members]
     best=next((r for r in eligible if r["relation"] in ["duplicate","extends"]),eligible[0] if eligible else None)
     if best:
-        placement["resource_id"] = best.get("parentId", best["id"])
+        placement["resource_id"] = order_id(best)
         if best["kind"] == "section": placement["section_id"] = best["id"]
-        if target: placement["after_id"] = best.get("parentId",best["id"])
+        if target: placement["after_id"] = order_id(best)
     explanation = "Local evidence requires review. Inspect the cited matches before changing content."
     details = {}
     try:
