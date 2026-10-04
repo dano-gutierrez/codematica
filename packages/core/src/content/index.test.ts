@@ -174,6 +174,34 @@ describe("generated content index", () => {
     expect(feed?.cards.some((card) => card.code?.includes("trace_id"))).toBe(true);
   });
 
+  it("places routing practice after capacity and preserves broker effect boundaries", () => {
+    const path = getLearningPathBySlug("system-design-fundamentals");
+    expect(path?.units.map(u => u.slug)).toEqual([
+      "caching-contracts", "capacity-decisions", "routing-decisions", "api-security-boundaries", "reservation-boundaries",
+    ]);
+    const routing = getDocumentBySlug("system-design/routing-decision-lab");
+    const quiz = getExerciseBySlug("system-design/routing-decision-checkpoint");
+    expect(routing?.status).toBe("published");
+    expect(routing?.sourceRefs).toEqual(["nginx-upstream-routing"]);
+    expect(routing?.prerequisites).toEqual(["system-design/scaling-decision-worksheet"]);
+    if (quiz?.type !== "questionnaire") throw new Error("Routing practice must be a questionnaire");
+    expect(quiz.status).toBe("published");
+    expect(quiz.documentSlug).toBe(routing?.slug);
+    expect(quiz.questions.map(q => q.id)).toEqual(["signal", "affinity", "eligibility", "scope"]);
+    expect(quiz.questions.map(q => q.kind === "choice" ? q.options.find(o => o.isCorrect)?.label : "wrong kind")).toEqual([
+      "Treat connection count as one signal; measure queued work and latency for this workload.",
+      "Affinity may change and IPs may be shared; keep authorization and durable session state independent.",
+      "Exclude the ineligible backend before ranking; define a bounded no-capacity response.",
+      "The toy’s stated routing and validation cases; real proxy behavior and throughput need separate tests.",
+    ]);
+    expect(getNextPathNodeRoute("system-design-fundamentals", {kind:"exercise",slug:"system-design/scaling-decision-checkpoint"})).toBe("/docs/system-design/routing-decision-lab?path=system-design-fundamentals");
+    expect(getNextPathNodeRoute("system-design-fundamentals", {kind:"document",slug:"system-design/routing-decision-lab"})).toBe("/practice/system-design/routing-decision-checkpoint?path=system-design-fundamentals");
+    expect(getNextPathNodeRoute("system-design-fundamentals", {kind:"exercise",slug:"system-design/routing-decision-checkpoint"})).toBe("/docs/system-design/cors-csrf-and-authorization?path=system-design-fundamentals");
+    const durable = getDocumentBySlug("software-engineering/product-interview-durable-generation-architecture");
+    expect(durable?.sourceRefs).toEqual(expect.arrayContaining(["kafka-41-delivery-design", "redis-pubsub-delivery", "redis-stream-ack", "redis-stream-autoclaim"]));
+    expect(durable?.headings.map(h => h.id)).toEqual(expect.arrayContaining(["separate-kafka-progress-from-an-external-effect", "recover-redis-work-without-treating-an-ack-as-a-receipt"]));
+  });
+
   it("links primary reservation and coalescing cases to existing lessons", () => {
     const reservation = getDocumentBySlug("system-design/fair-admission-and-reservations");
     const cache = getDocumentBySlug("system-design/cache-invalidation");

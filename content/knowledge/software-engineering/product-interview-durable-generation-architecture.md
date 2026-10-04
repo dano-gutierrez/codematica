@@ -6,7 +6,7 @@ track: Software Engineering
 topic: Interview Preparation
 difficulty: senior
 tags: [product-engineering, system-design, idempotency, observability, interview]
-sourceRefs: [product-interview-pubsub, product-interview-sre-monitoring, product-interview-otel, rfc-http-idempotency, stripe-idempotent-requests, sqlite-transactions, python-sqlite-transactions]
+sourceRefs: [product-interview-pubsub, product-interview-sre-monitoring, product-interview-otel, rfc-http-idempotency, stripe-idempotent-requests, sqlite-transactions, python-sqlite-transactions, kafka-41-delivery-design, redis-pubsub-delivery, redis-stream-ack, redis-stream-autoclaim]
 status: published
 ---
 
@@ -214,6 +214,28 @@ Authorize every status read, event subscription, retry, cancellation, and asset 
 [Pub/Sub supports pull and push subscriptions](https://docs.cloud.google.com/pubsub/docs/subscriber). A push subscriber receives HTTP requests; a durable bus can sit behind a webhook receiver. Compare producer/consumer coupling, fan-out, retention, replay, retry ownership, and operational control. Acknowledge only after durable acceptance or the effect your contract requires, and budget lease extensions for variable work. Keep retry delay bounded with jitter, retryable error classification, an attempt/deadline budget, and a dead-letter/reconciliation path.
 
 When reviewing a provider integration, confirm exactly which transitions produce notifications: admission, start, intermediate progress, or terminal outcome. Document signature verification, delivery retry windows, and ordering guarantees before relying on them. Clarify undocumented capabilities before assuming they are absent. Never treat possession of a job ID as proof a webhook is authentic—verify a supported signature or reconcile with an authenticated status read before trusted side effects.
+
+## Separate Kafka progress from an external effect
+
+The [Kafka 4.1 design reference](https://kafka.apache.org/41/design/design/) distinguishes committing progress before processing from committing after processing. The former risks missing work; the latter permits repeated work after a crash. A consumer group does not prove that an external charge happens once. Kafka transactions can bind Kafka output records and consumed offsets; downstream `read_committed` matters. An external destination needs its own coordinated effect/receipt boundary.
+
+For this original export scenario, predict a crash at each boundary:
+
+| Boundary | Evidence to recover |
+| --- | --- |
+| Offset saved before the fictional debit | Progress moved, but the required effect may be missing |
+| Debit committed, offset not saved | Delivery may repeat; reuse the matching durable receipt |
+| Provider accepted work, response lost | Outcome is uncertain; reconcile the stable operation identity |
+
+Keep retention long enough for the agreed recovery window and document what happens after that window. A dead-letter route needs ownership, alerts and a replay policy; moving a failed record is not successful completion. This is a design exercise, not an executed Kafka cluster or certification of connectors, windowing, CDC or Saga implementations.
+
+## Recover Redis work without treating an ack as a receipt
+
+[Redis Pub/Sub](https://redis.io/docs/latest/develop/pubsub/) cannot replay a message lost by a disconnected subscriber. Use it only where loss is acceptable or authorized snapshot recovery supplies the missing state. A shared session store also needs an explicit outage policy; a Redis connection is not the durable job contract.
+
+For a Stream consumer group, [`XACK`](https://redis.io/docs/latest/commands/xack/) removes an entry from that group's pending list. It does not atomically commit our SQL debit or an external provider effect. [`XAUTOCLAIM`](https://redis.io/docs/latest/commands/xautoclaim/) transfers sufficiently idle pending entries; reclaiming does not stop a worker that is still executing. Guard effects with current ownership/version and durable operation identity. Retention, persistence and failover policies still bound recovery. Since Redis 7.0, the claim reply also identifies pending entries whose underlying records were removed; those entries cannot supply the missing payload.
+
+In an original review trace, worker A commits a debit and crashes before acknowledging. Worker B claims the pending entry and finds the same scoped receipt: no second debit. If A merely pauses and resumes after B claims, neither worker may bypass the effect store's guard. If retention removed the payload, surface the gap and recover from authorized durable state; do not declare the job completed from a missing pending entry. Extend the existing SQLite experiment's crash receipt; it neither runs Redis nor demonstrates an atomic transaction across the broker and SQL.
 
 ## Define reliability from the user's view
 

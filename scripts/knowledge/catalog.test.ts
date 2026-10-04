@@ -11,6 +11,18 @@ beforeAll(async () => {
 function freshContent() { return structuredClone(validatedIndex); }
 
 describe("complete knowledge catalog", () => {
+  it("keeps routing order, prerequisite and delivery citations explicit", () => {
+    const graph = buildKnowledgeCatalog(freshContent());
+    const lesson = "document:system-design/routing-decision-lab";
+    expect(graph.relationships).toContainEqual(expect.objectContaining({source:"unit:system-design-fundamentals:routing-decisions",target:lesson,type:"contains",order:0,provenance:"explicit"}));
+    expect(graph.relationships).toContainEqual(expect.objectContaining({source:"unit:system-design-fundamentals:routing-decisions",target:"exercise:system-design/routing-decision-checkpoint",type:"contains",order:1,provenance:"explicit"}));
+    expect(graph.relationships).toContainEqual(expect.objectContaining({source:lesson,target:"document:system-design/scaling-decision-worksheet",type:"requires",provenance:"explicit"}));
+    expect(graph.relationships).toContainEqual(expect.objectContaining({source:lesson,target:"source:nginx-upstream-routing",type:"cites",provenance:"explicit"}));
+    for (const source of ["kafka-41-delivery-design", "redis-pubsub-delivery", "redis-stream-ack", "redis-stream-autoclaim"]) {
+      expect(graph.relationships).toContainEqual(expect.objectContaining({source:"document:software-engineering/product-interview-durable-generation-architecture",target:`source:${source}`,type:"cites",provenance:"explicit"}));
+    }
+    expect(graph.unresolved.some(r => r.resourceId === lesson)).toBe(false);
+  });
   it("keeps handoff prerequisites and ordered path membership explicit", async () => {
     const graph = buildKnowledgeCatalog(freshContent());
     const lesson = "document:ai-engineering/evidence-first-agent-handoffs";

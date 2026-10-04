@@ -23,7 +23,7 @@ describe("Product Engineering preparation curriculum", () => {
         .filter((node) => node.kind === "exercise")
         .flatMap((node) => getExerciseBySlug(node.slug)!.sourceRefs!),
     ]);
-    const allowedHosts = new Set(["developer.mozilla.org", "docs.cloud.google.com", "sre.google", "opentelemetry.io", "www.rfc-editor.org", "docs.stripe.com", "www.sqlite.org", "docs.python.org"]);
+    const allowedHosts = new Set(["developer.mozilla.org", "docs.cloud.google.com", "sre.google", "opentelemetry.io", "www.rfc-editor.org", "docs.stripe.com", "www.sqlite.org", "docs.python.org", "kafka.apache.org", "redis.io"]);
     for (const ref of sourceRefs) {
       const source = getContentIndex().sources.find((entry) => entry.id === ref);
       expect(source).toBeDefined();

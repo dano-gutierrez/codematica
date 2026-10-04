@@ -39,3 +39,5 @@ Backend Engineer Readiness reuses the existing durable-generation architecture l
 The AI Engineering path adds Evidence-First Handoffs between Agents And Operations and Risk And Governance. The original Python resume lab and four-question checkpoint distinguish input identity, model execution, verification and approval. External course projects remain optional references, not completed or independently validated activities.
 
 The existing cache and reservation lessons link attributed Discord/Shopify production cases. Their original review prompts distinguish shared in-flight reads from cached results and bounded reservation rows from authoritative stock. Keep engine-specific behavior and reported outcomes separate from local lab measurements.
+
+System Design inserts Routing Decisions between Capacity Decisions and API Security Boundaries. Its original static Python selection lab and four-question checkpoint test signal limits, eligibility and affinity; they do not execute a proxy. Kafka/Redis delivery review extends the existing durable architecture lesson rather than duplicating it.

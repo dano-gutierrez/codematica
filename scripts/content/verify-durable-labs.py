@@ -32,6 +32,12 @@ class AuthoredLabs(unittest.TestCase):
             "concurrent retry, rollback, lost response, request conflict and tenant scope: passed",
         )
 
+    def test_routing_signals_and_eligibility(self):
+        self.run_lab(
+            "content/knowledge/system-design/routing-decision-lab.md",
+            "eligibility, capacity normalization, ties and empty pools: passed",
+        )
+
     def test_evidence_bound_session_handoff(self):
         self.run_lab(
             "content/knowledge/ai-engineering/evidence-first-agent-handoffs.md",

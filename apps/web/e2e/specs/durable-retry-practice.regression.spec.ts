@@ -6,6 +6,10 @@ test("@regression reuses durable architecture in the backend path and completes 
   await expect(page.getByRole("heading", { level: 1 })).toHaveText("Product Engineering Architecture Drill — Durable Generation and Revenue Safety");
   await expect(page.getByRole("heading", { name: "Optional lab: duplicate delivery versus one local effect", exact: true })).toBeVisible();
   await expect(page.getByTestId("source-references")).toContainText("SQLite");
+  await expect(page.getByRole("heading", { name: "Separate Kafka progress from an external effect", exact: true })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Recover Redis work without treating an ack as a receipt", exact: true })).toBeVisible();
+  await expect(page.getByTestId("source-references")).toContainText("Apache Kafka 4.1");
+  await expect(page.getByTestId("source-references")).toContainText("Redis XACK");
   await page.getByTestId("document-next-node").click();
   await expect(page).toHaveURL(/durable-retry-lab-checkpoint\?path=backend-engineer-readiness/);
   await expect(page.getByTestId("questionnaire-session")).toHaveAttribute("data-ready", "true");

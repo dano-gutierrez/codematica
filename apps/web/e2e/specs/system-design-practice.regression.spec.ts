@@ -12,6 +12,19 @@ const cases = [
       "The logical table is divided into partitions; distributed ownership is a separate design.",
       "Workload, prediction, controlled change, success/rollback conditions and observed result.",
     ],
+    next: "/docs/system-design/routing-decision-lab?path=system-design-fundamentals",
+  },
+  {
+    slug: "routing-decision-lab",
+    title: "Routing Decisions — Choose A Signal And Test Its Limits",
+    source: "NGINX HTTP Upstream Module",
+    checkpoint: "routing-decision-checkpoint",
+    answers: [
+      "Treat connection count as one signal; measure queued work and latency for this workload.",
+      "Affinity may change and IPs may be shared; keep authorization and durable session state independent.",
+      "Exclude the ineligible backend before ranking; define a bounded no-capacity response.",
+      "The toy’s stated routing and validation cases; real proxy behavior and throughput need separate tests.",
+    ],
     next: "/docs/system-design/cors-csrf-and-authorization?path=system-design-fundamentals",
   },
   {

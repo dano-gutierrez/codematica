@@ -199,7 +199,7 @@ Index v11 accepts published interview nodes (`collection/question`) and optional
 
 The existing System Design Fundamentals path retains its cache unit and appends Capacity Decisions and API Security Boundaries. The new sourced lessons use an original scaling worksheet and request timeline, with four-question checkpoints for each. Capacity estimates distinguish means from percentiles, application capacity from a shared dependency, and table partitioning from distributed sharding. API practice distinguishes CORS response sharing, anti-forgery checks and object authorization. Examples are exercises, not measured company architectures or executable production operations.
 
-Validate content-index freshness, parser/source relationships and questionnaire scoring. `system-design-practice.regression.spec.ts` covers both path → lesson → scored checkpoint journeys and continuation from capacity to security. The private saved-post review ledger and raw social text stay outside curriculum and Git. Public sources support the original lessons; source metadata does not claim that an entire linked book or collection was read.
+Validate content-index freshness, parser/source relationships and questionnaire scoring. `system-design-practice.regression.spec.ts` covers path → lesson → scored checkpoint journeys and continuation from capacity through routing to security. The private saved-post review ledger and raw social text stay outside curriculum and Git. Public sources support the original lessons; source metadata does not claim that an entire linked book or collection was read.
 
 ### Durable retries and reservations
 
@@ -214,3 +214,11 @@ The lesson cites two official Anthropic experiments and links a pinned author-ma
 ### Production case readings
 
 The existing cache and reservation lessons add source-linked Discord/Shopify case readings and original review prompts. No path, unit or exercise is added. The readings distinguish in-flight coalescing from result caching, tenant-sensitive work identity, bounded reservation pools, authoritative ledgers and shared connection pressure. Upstream outcomes are attributed reports; the PostgreSQL fixture does not certify MySQL behavior. Generated-index tests pin the source IDs and section headings, and existing reader/path journeys cover the routes.
+
+### Routing and delivery boundaries
+
+System Design inserts Routing Decisions after Capacity Decisions and before API Security Boundaries. Its original Python lab selects eligible static backends by a stated capacity-normalized signal and tie rule; it does not reproduce NGINX scheduling, live health, concurrent admission or production throughput. Four scored questions distinguish workload signals, affinity, eligibility and the experiment's limits. Official source metadata preserves proxy version/edition scope.
+
+Kafka offset and Redis acknowledgement/reclaim review extend the existing durable architecture lesson in its existing paths. Original crash traces separate broker progress from an atomic local effect/receipt and an uncertain external provider outcome. No new broker implementation, publication, persistence schema or learner-code execution surface is added.
+
+Generated-content tests pin source IDs, sections, checkpoint answers and all three path continuations. The allowlisted Python verifier runs the exact canonical routing fence with an empty environment and the existing exit/timeout/stderr checks. Routing mutations challenge eligibility, normalization, ties, empty pools and numeric validation. `system-design-practice.regression.spec.ts` adds the routing journey; durable practice checks both new evidence sections and source panels. Run content freshness, both unchanged coverage gates, native checks, lint/types, canonical Python labs, production build/pruned readiness and the remote browser lane before review readiness.

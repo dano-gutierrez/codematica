@@ -46,6 +46,21 @@
       ]
     },
     {
+      "slug": "routing-decisions",
+      "title": "Routing Decisions",
+      "summary": "Compare signals, eligibility and affinity through an original static routing experiment.",
+      "nodes": [
+        {
+          "kind": "document",
+          "slug": "system-design/routing-decision-lab"
+        },
+        {
+          "kind": "exercise",
+          "slug": "system-design/routing-decision-checkpoint"
+        }
+      ]
+    },
+    {
       "slug": "api-security-boundaries",
       "title": "API Security Boundaries",
       "summary": "Distinguish browser response sharing, request forgery and server object authorization.",
