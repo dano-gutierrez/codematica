@@ -124,3 +124,5 @@ The game [miniature sheet](../assets/game/previews/miniatures-v3.png) shows the 
 - [Knowledge evaluator](features/knowledge-evaluator.md): local Graphiti/Qwen/OpenJev content inventory and decisions, admin graph/table exploration, offline jobs and graph-bound editorial review. [Runbook](runbooks/knowledge-evaluator.md).
 
 - [Programming Contract Review](features/programming-contract-review.md): original value, demand, ASCII matching and tree/cost lessons with independent local fixtures.
+
+- [Systems Boundary Review](features/systems-boundary-review.md): original request, transport, API, derived-state, document-query and memory review with selected primary evidence.

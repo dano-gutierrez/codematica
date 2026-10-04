@@ -54,3 +54,5 @@ The Backend concurrency and pattern-selection checkpoints each use five original
 The Keypad Search checkpoint has five original choices about closed dictionary membership, prefix terminals, branch/result ownership, validation before shortcuts and reference costs. Its lesson's bounded Python fence runs only in the allowlisted isolated verifier, outside the app. The quiz neither executes learner code nor certifies a full T9 product or backtracking syllabus.
 
 Programming Contract Review has four five-choice checkpoints covering value ownership, bounded demand, text domains and shape/cost reasoning. Each question uses its path-scoped skill; explanations distinguish both distractors. Only the questionnaire is graded in the app. The original JavaScript/Python fences run separately and certify no complete runtime, upload service or algorithm family.
+
+The six Systems Boundary Review checkpoints contain thirty original paper-trace choices. Keep request form, transport ordering, resource authority, version/offset/effect, full cursor tuple and memory permission boundaries distinct. No packet, SDK, broker, database or device operation runs in the app.

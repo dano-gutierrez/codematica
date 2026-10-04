@@ -11,6 +11,36 @@ beforeAll(async () => {
 function freshContent() { return structuredClone(validatedIndex); }
 
 describe("complete knowledge catalog", () => {
+  it("exports six systems skills with source-bound order and prerequisite evidence", () => {
+    const graph = buildKnowledgeCatalog(freshContent());
+    const path = "path:systems-boundary-review";
+    const pairs = [
+      ["request-identities-and-navigation", "request-identity", "source:boundary-rfc9112"],
+      ["transport-streams-and-tunnels", "transport-scope", "source:boundary-rfc9000"],
+      ["api-interactions-and-intermediaries", "interaction-contract", "source:boundary-grpc-core"],
+      ["derived-state-and-log-boundaries", "derived-state", "source:boundary-kafka-kraft"],
+      ["document-query-and-pagination-contracts", "document-query", "source:boundary-mongo-skip"],
+      ["virtual-addresses-and-device-io", "memory-domain", "source:boundary-linux-device-io"],
+    ];
+    for (const [order, [slug, name, source]] of pairs.entries()) {
+      const unit = `unit:systems-boundary-review:${slug}`;
+      const skill = `skill:systems-boundary-review:${name}`;
+      const doc = `document:system-design/${slug}`;
+      const quiz = `exercise:system-design/${slug}-checkpoint`;
+      for (const id of [unit, skill, doc, quiz]) expect(graph.resources.find(r => r.id === id)).toMatchObject({ visibility: "curriculum", status: "published", paths: [path] });
+      expect(graph.relationships).toContainEqual(expect.objectContaining({ source: path, target: unit, type: "contains", order, provenance: "explicit" }));
+      for (const [position, target] of [doc, quiz].entries()) expect(graph.relationships).toContainEqual(expect.objectContaining({ source: unit, target, type: "contains", order: position, provenance: "explicit" }));
+      expect(graph.relationships).toContainEqual(expect.objectContaining({ source: doc, target: skill, type: "teaches", provenance: "explicit" }));
+      expect(graph.relationships).toContainEqual(expect.objectContaining({ source: quiz, target: skill, type: "assesses", provenance: "explicit" }));
+      for (const from of [doc, quiz]) expect(graph.relationships).toContainEqual(expect.objectContaining({ source: from, target: source, type: "cites", provenance: "explicit" }));
+      if (order) expect(graph.relationships).toContainEqual(expect.objectContaining({ source: `unit:systems-boundary-review:${pairs[order - 1][0]}`, target: unit, type: "next", provenance: "explicit" }));
+      expect(graph.unresolved.some(r => [unit, skill, doc, quiz].includes(r.resourceId))).toBe(false);
+      expect(graph.resources.some(r => r.id === `skill:${name}`)).toBe(false);
+    }
+    expect(graph.resources.filter(r => r.id.startsWith("skill:systems-boundary-review:")).length).toBe(6);
+    expect(graph.relationships).toContainEqual(expect.objectContaining({ source: "document:system-design/transport-streams-and-tunnels", target: "document:system-design/request-identities-and-navigation", type: "requires", provenance: "explicit" }));
+    expect(graph.relationships).toContainEqual(expect.objectContaining({ source: "document:system-design/document-query-and-pagination-contracts", target: "document:databases/index-fundamentals", type: "requires", provenance: "explicit" }));
+  });
   it("exports programming contracts with qualified skills and explicit unit order", () => {
     const graph = buildKnowledgeCatalog(freshContent());
     const path = "path:programming-contract-review";

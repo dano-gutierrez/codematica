@@ -1,0 +1,154 @@
+{
+  "slug": "system-design/request-identities-and-navigation-checkpoint",
+  "title": "Request Identity Checkpoint",
+  "type": "questionnaire",
+  "difficulty": "practitioner",
+  "status": "published",
+  "documentSlug": "system-design/request-identities-and-navigation",
+  "sourceRefs": [
+    "boundary-rfc3986",
+    "boundary-rfc8141",
+    "boundary-rfc9110",
+    "boundary-rfc9112"
+  ],
+  "concept": "Request Identity",
+  "tags": [
+    "systems-contracts",
+    "evidence"
+  ],
+  "skillIds": [
+    "request-identity"
+  ],
+  "questions": [
+    {
+      "id": "target",
+      "kind": "choice",
+      "skillIds": [
+        "request-identity"
+      ],
+      "prompt": "A direct HTTP/1.1 GET uses https://library.example:8443/books/7?edition=2#notes. Which target is correct?",
+      "options": [
+        {
+          "id": "correct",
+          "label": "Send /books/7?edition=2; keep #notes out of the HTTP target.",
+          "isCorrect": true
+        },
+        {
+          "id": "wrong-1",
+          "label": "Send /home because the origin knows the desired book.",
+          "isCorrect": false
+        },
+        {
+          "id": "wrong-2",
+          "label": "Send /books/7?edition=2#notes as the complete target.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "For this direct origin-form request, the absolute path and query form the target. The fragment is handled separately. A proxy or CONNECT would require its own request-form review."
+    },
+    {
+      "id": "components",
+      "kind": "choice",
+      "skillIds": [
+        "request-identity"
+      ],
+      "prompt": "Which component split preserves the original address?",
+      "options": [
+        {
+          "id": "wrong-1",
+          "label": "The resource is a universal sixth component after the path.",
+          "isCorrect": false
+        },
+        {
+          "id": "wrong-2",
+          "label": "The authority includes /books/7?edition=2.",
+          "isCorrect": false
+        },
+        {
+          "id": "correct",
+          "label": "The authority is library.example:8443; the path is /books/7.",
+          "isCorrect": true
+        }
+      ],
+      "explanation": "Authority includes the host and explicit port here. Path, query and fragment have distinct delimiters; the last path segment is not a separate universal component named resource."
+    },
+    {
+      "id": "identification",
+      "kind": "choice",
+      "skillIds": [
+        "request-identity"
+      ],
+      "prompt": "What does a URI establish without additional evidence?",
+      "options": [
+        {
+          "id": "wrong-2",
+          "label": "Every URI must initiate an HTTP request.",
+          "isCorrect": false
+        },
+        {
+          "id": "correct",
+          "label": "A URI can identify without promising that retrieval will succeed.",
+          "isCorrect": true
+        },
+        {
+          "id": "wrong-1",
+          "label": "Its representation is reachable and currently authorized.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "Identification does not promise a reachable representation or the current user permission. Naming and locating mechanisms need their own resolution and access evidence."
+    },
+    {
+      "id": "reuse",
+      "kind": "choice",
+      "skillIds": [
+        "request-identity"
+      ],
+      "prompt": "The trace already has an eligible secured connection. What can the reviewer conclude?",
+      "options": [
+        {
+          "id": "correct",
+          "label": "A valid reusable connection can avoid a new handshake; record the actual path.",
+          "isCorrect": true
+        },
+        {
+          "id": "wrong-1",
+          "label": "Every navigation still requires a new TCP and TLS handshake.",
+          "isCorrect": false
+        },
+        {
+          "id": "wrong-2",
+          "label": "A reusable connection proves that no network work remains.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "Under the applicable reuse rules, setup may be avoided. The request and response still need evidence, and other navigations can take different cache, proxy or setup branches."
+    },
+    {
+      "id": "ready",
+      "kind": "choice",
+      "skillIds": [
+        "request-identity"
+      ],
+      "prompt": "HTML arrives successfully while an image fails and application loading is pending. Which receipt is accurate?",
+      "options": [
+        {
+          "id": "wrong-1",
+          "label": "A 200 HTML response proves that the whole application is ready.",
+          "isCorrect": false
+        },
+        {
+          "id": "wrong-2",
+          "label": "The image failure proves that no HTML was received.",
+          "isCorrect": false
+        },
+        {
+          "id": "correct",
+          "label": "A successful response is one stage; rendering and later requests have their own evidence.",
+          "isCorrect": true
+        }
+      ],
+      "explanation": "Response success, subresource results and the application-ready condition are separate stages. Preserve the observed success and failure instead of collapsing them into one page-ready claim."
+    }
+  ]
+}
