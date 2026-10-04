@@ -96,6 +96,8 @@ A new graph projection invalidates pending review/publication bindings. Stop and
 - `scripts/linkedin/knowledge.ts`: compact evidence for local preparation and Codex.
 - `supabase/migrations/202610030004_linkedin_knowledge.sql`: durable enrollment and graph guards around existing revision/lease/approval functions.
 
+Qwen extraction retries invalid structured output once against the original source and schema, without forwarding malformed assistant text. Retry policy `bounded-fresh-json-repair-v3` separates raw-response cache entries; completed source-bound batches remain reusable. For the concepts/relationships schema, the retry prompt requests one concept, no relationships and a quote under 80 characters. Token limits, finish-reason/schema checks and supporting-passage validation remain in place. These prompt requests do not guarantee compliance; failed retries remain visible coverage gaps.
+
 ## Test Plan
 
 Catalog tests parse validated canonical files once per suite and clone them for each case. Draft-status and synthetic-exercise changes cannot leak between cases; fingerprint checks still rebuild graph projections independently. This avoids repeated full-catalog I/O without changing test deadlines, assertions or coverage floors.
