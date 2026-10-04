@@ -120,7 +120,7 @@ test("@regression notebook clock survives setup beyond its former one-second win
   await page.clock.fastForward(1500);
   await pauseNotebookClock(page);
   expect(await page.evaluate(() => Date.now())).toBe(Date.parse("2026-10-02T12:00:01Z"));
-  await page.setContent('<p data-testid="clock-timer">0</p><script>setTimeout(() => { document.querySelector("[data-testid=clock-timer]").textContent = "1"; }, 1000);</script>');
+  await page.setContent('<p data-testid="clock-timer">0</p><script>setTimeout(() => { const counter = document.querySelector("[data-testid=clock-timer]"); counter.textContent = String(Number(counter.textContent) + 1); }, 1000);</script>');
   await page.clock.runFor(999);
   await expect(page.getByTestId("clock-timer")).toHaveText("0");
   await page.clock.runFor(1);
