@@ -42,3 +42,5 @@ Writing exercises may author `notebookPrompts: [{ id, text, kind, romaji, meanin
 The ML Neural Computation checkpoint tests gradient computation versus parameter updates, finite-difference diagnosis and weight-payload memory. Its canonical lesson contains an original standard-library Python lab; the questionnaire executes no learner code and does not award the planned Framework Builder stamp.
 
 System Design decision checkpoints cover capacity assumptions, shared bottlenecks, partitioning limits, browser preflight/response behavior, object access and cookie assumptions. They use inert scenarios and perform no network or production operations.
+
+The four-question Durable Retry Lab and Reservation Boundary checkpoints add crash-point, replay and ownership practice. The original Product Engineering path retains its 18 questions; these supplementary checkpoints are placed in Backend Engineer Readiness and System Design. Code and SQL run only in a learner’s isolated lab, not inside the app.

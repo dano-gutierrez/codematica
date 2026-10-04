@@ -59,6 +59,21 @@
           "slug": "system-design/api-boundary-checkpoint"
         }
       ]
+    },
+    {
+      "slug": "reservation-boundaries",
+      "title": "Reservation Boundaries",
+      "summary": "Trace atomic inventory claims, expiry and late completion without inventing queue guarantees.",
+      "nodes": [
+        {
+          "kind": "document",
+          "slug": "system-design/fair-admission-and-reservations"
+        },
+        {
+          "kind": "exercise",
+          "slug": "system-design/reservation-boundary-checkpoint"
+        }
+      ]
     }
   ]
 }

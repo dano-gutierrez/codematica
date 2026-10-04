@@ -25,6 +25,19 @@ const cases = [
       "Check authorization for that actor, object and operation.",
       "Whether the browser’s actual cookie and request policies permit the credentials to be sent.",
     ],
+    next: "/docs/system-design/fair-admission-and-reservations?path=system-design-fundamentals",
+  },
+  {
+    slug: "fair-admission-and-reservations",
+    title: "Fair Admission And Reservations — Separate Policy From Ownership",
+    source: "PostgreSQL 17 — SELECT And SKIP LOCKED",
+    checkpoint: "reservation-boundary-checkpoint",
+    answers: [
+      "No matching row was acquired by that statement; it cannot infer sold out.",
+      "Eligibility and abuse policy; one account does not prove one legitimate human.",
+      "Reject the stale inventory transition and record/reconcile B’s payment outcome.",
+      "Completion is ineligible; expiry may win the guarded transition.",
+    ],
   },
 ];
 

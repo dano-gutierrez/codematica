@@ -33,3 +33,5 @@ The `database-indexes-and-search` skill path ends with Connection Pooling And Re
 The ML Systems path’s existing Neural Computation source node now opens a published original companion. A questionnaire follows it in Volume I Build. Keep the Framework Builder stage planned until the remaining framework, architecture and training requirements have local companions and a complete checkpoint.
 
 System Design Fundamentals appends Capacity Decisions and API Security Boundaries after its existing cache unit. Keep the authored worksheet assumptions explicit and distinguish browser response sharing, CSRF and object authorization in the lessons and checkpoints.
+
+Backend Engineer Readiness reuses the existing durable-generation architecture lesson with an optional original SQLite retry lab and a separate checkpoint. Its Reservation Boundaries unit is shared with System Design Fundamentals. Keep ordered membership explicit and the original Product Engineering path’s 18-question sequence unchanged.

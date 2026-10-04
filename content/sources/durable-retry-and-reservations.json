@@ -1,0 +1,52 @@
+{
+  "sources": [
+    {
+      "id": "rfc-http-idempotency",
+      "title": "HTTP Semantics \u2014 Idempotent Methods",
+      "provider": "RFC Editor",
+      "url": "https://www.rfc-editor.org/rfc/rfc9110.html#section-9.2.2",
+      "attribution": "RFC 9110 section 9.2.2. Intended request effects and safe retry boundaries.",
+      "lastVerifiedAt": "2026-10-03"
+    },
+    {
+      "id": "stripe-idempotent-requests",
+      "title": "Idempotent Requests",
+      "provider": "Stripe",
+      "url": "https://docs.stripe.com/api/idempotent_requests",
+      "attribution": "Stripe API reference. Provider-specific result retention and parameter checks; no provider calls are part of the lab.",
+      "lastVerifiedAt": "2026-10-03"
+    },
+    {
+      "id": "sqlite-transactions",
+      "title": "Transaction Control",
+      "provider": "SQLite",
+      "url": "https://www.sqlite.org/lang_transaction.html",
+      "attribution": "SQLite documentation. Explicit transactions and the single-writer boundary used in an original local fixture.",
+      "lastVerifiedAt": "2026-10-03"
+    },
+    {
+      "id": "python-sqlite-transactions",
+      "title": "sqlite3 Transaction Control",
+      "provider": "Python",
+      "url": "https://docs.python.org/3.13/library/sqlite3.html#transaction-control-via-the-isolation-level-attribute",
+      "attribution": "Python 3.13 documentation. Explicit transaction control with isolation_level=None.",
+      "lastVerifiedAt": "2026-10-03"
+    },
+    {
+      "id": "postgresql-17-locking",
+      "title": "PostgreSQL 17 \u2014 Explicit Locking",
+      "provider": "PostgreSQL",
+      "url": "https://www.postgresql.org/docs/17/explicit-locking.html",
+      "attribution": "PostgreSQL documentation. Row-lock lifetime and writer contention; not a payment atomicity guarantee.",
+      "lastVerifiedAt": "2026-10-03"
+    },
+    {
+      "id": "postgresql-17-select",
+      "title": "PostgreSQL 17 \u2014 SELECT And SKIP LOCKED",
+      "provider": "PostgreSQL",
+      "url": "https://www.postgresql.org/docs/17/sql-select.html",
+      "attribution": "PostgreSQL documentation. Queue-like row selection and the limits of skipping locked rows.",
+      "lastVerifiedAt": "2026-10-03"
+    }
+  ]
+}

@@ -12,12 +12,60 @@
       "title": "Production Judgment",
       "summary": "Practice reviewing cache behavior, observability choices, and interface boundaries.",
       "nodes": [
-        { "kind": "document", "slug": "system-design/cache-invalidation" },
-        { "kind": "exercise", "slug": "system-design/cache-product-contract" },
-        { "kind": "document", "slug": "software-engineering/observability-signals" },
-        { "kind": "exercise", "slug": "software-engineering/observability-signal-roles" },
-        { "kind": "document", "slug": "programming/typescript-boundaries" },
-        { "kind": "exercise", "slug": "programming/runtime-boundary-cloze" }
+        {
+          "kind": "document",
+          "slug": "system-design/cache-invalidation"
+        },
+        {
+          "kind": "exercise",
+          "slug": "system-design/cache-product-contract"
+        },
+        {
+          "kind": "document",
+          "slug": "software-engineering/observability-signals"
+        },
+        {
+          "kind": "exercise",
+          "slug": "software-engineering/observability-signal-roles"
+        },
+        {
+          "kind": "document",
+          "slug": "programming/typescript-boundaries"
+        },
+        {
+          "kind": "exercise",
+          "slug": "programming/runtime-boundary-cloze"
+        }
+      ]
+    },
+    {
+      "slug": "durable-retries",
+      "title": "Durable Retries",
+      "summary": "Run duplicate, crash-point and lost-response checks against a local atomic receipt.",
+      "nodes": [
+        {
+          "kind": "document",
+          "slug": "software-engineering/product-interview-durable-generation-architecture"
+        },
+        {
+          "kind": "exercise",
+          "slug": "software-engineering/durable-retry-lab-checkpoint"
+        }
+      ]
+    },
+    {
+      "slug": "reservation-boundaries",
+      "title": "Reservation Boundaries",
+      "summary": "Separate fair admission, inventory ownership and uncertain external outcomes.",
+      "nodes": [
+        {
+          "kind": "document",
+          "slug": "system-design/fair-admission-and-reservations"
+        },
+        {
+          "kind": "exercise",
+          "slug": "system-design/reservation-boundary-checkpoint"
+        }
       ]
     }
   ]

@@ -5006,6 +5006,26 @@
       "contentHash": "fc2cf01a065855078f84b7054ff65ccb301b3e1bf0569a507483a70349ace380"
     },
     {
+      "id": "postgresql-17-locking",
+      "title": "PostgreSQL 17 — Explicit Locking",
+      "provider": "PostgreSQL",
+      "url": "https://www.postgresql.org/docs/17/explicit-locking.html",
+      "attribution": "PostgreSQL documentation. Row-lock lifetime and writer contention; not a payment atomicity guarantee.",
+      "lastVerifiedAt": "2026-10-03",
+      "sourcePath": "content/sources/durable-retry-and-reservations.json",
+      "contentHash": "e181c2f55bf82b18952c58ae4dd569f9afe2d1074d423e876f7f82b65936edf7"
+    },
+    {
+      "id": "postgresql-17-select",
+      "title": "PostgreSQL 17 — SELECT And SKIP LOCKED",
+      "provider": "PostgreSQL",
+      "url": "https://www.postgresql.org/docs/17/sql-select.html",
+      "attribution": "PostgreSQL documentation. Queue-like row selection and the limits of skipping locked rows.",
+      "lastVerifiedAt": "2026-10-03",
+      "sourcePath": "content/sources/durable-retry-and-reservations.json",
+      "contentHash": "e181c2f55bf82b18952c58ae4dd569f9afe2d1074d423e876f7f82b65936edf7"
+    },
+    {
       "id": "postgresql-table-partitioning",
       "title": "PostgreSQL Table Partitioning",
       "provider": "PostgreSQL",
@@ -5064,6 +5084,16 @@
       "lastVerifiedAt": "2026-09-09",
       "sourcePath": "content/sources/product-engineering-interview.json",
       "contentHash": "41ff7839b4a2dd591e5121f21120b757fb6e470ec4ce9125082a961f720b72cf"
+    },
+    {
+      "id": "python-sqlite-transactions",
+      "title": "sqlite3 Transaction Control",
+      "provider": "Python",
+      "url": "https://docs.python.org/3.13/library/sqlite3.html#transaction-control-via-the-isolation-level-attribute",
+      "attribution": "Python 3.13 documentation. Explicit transaction control with isolation_level=None.",
+      "lastVerifiedAt": "2026-10-03",
+      "sourcePath": "content/sources/durable-retry-and-reservations.json",
+      "contentHash": "e181c2f55bf82b18952c58ae4dd569f9afe2d1074d423e876f7f82b65936edf7"
     },
     {
       "id": "pytorch-autograd-introduction",
@@ -5134,6 +5164,16 @@
       "lastVerifiedAt": "2026-09-09",
       "sourcePath": "content/sources/rtk-query.json",
       "contentHash": "11aa85d774f66f4569f56763a050737ceec2691d5cd46b5543d7ff9e7898e886"
+    },
+    {
+      "id": "rfc-http-idempotency",
+      "title": "HTTP Semantics — Idempotent Methods",
+      "provider": "RFC Editor",
+      "url": "https://www.rfc-editor.org/rfc/rfc9110.html#section-9.2.2",
+      "attribution": "RFC 9110 section 9.2.2. Intended request effects and safe retry boundaries.",
+      "lastVerifiedAt": "2026-10-03",
+      "sourcePath": "content/sources/durable-retry-and-reservations.json",
+      "contentHash": "e181c2f55bf82b18952c58ae4dd569f9afe2d1074d423e876f7f82b65936edf7"
     },
     {
       "id": "rtk-cache",
@@ -5486,6 +5526,16 @@
       "contentHash": "11aa85d774f66f4569f56763a050737ceec2691d5cd46b5543d7ff9e7898e886"
     },
     {
+      "id": "sqlite-transactions",
+      "title": "Transaction Control",
+      "provider": "SQLite",
+      "url": "https://www.sqlite.org/lang_transaction.html",
+      "attribution": "SQLite documentation. Explicit transactions and the single-writer boundary used in an original local fixture.",
+      "lastVerifiedAt": "2026-10-03",
+      "sourcePath": "content/sources/durable-retry-and-reservations.json",
+      "contentHash": "e181c2f55bf82b18952c58ae4dd569f9afe2d1074d423e876f7f82b65936edf7"
+    },
+    {
       "id": "sre-handling-overload",
       "title": "Handling Overload",
       "provider": "Google SRE",
@@ -5494,6 +5544,16 @@
       "lastVerifiedAt": "2026-10-03",
       "sourcePath": "content/sources/system-design-decision-practice.json",
       "contentHash": "d811ed35df3adbdd9dc2a7b180107165ba5354f77a3985c028cb6854bb00272f"
+    },
+    {
+      "id": "stripe-idempotent-requests",
+      "title": "Idempotent Requests",
+      "provider": "Stripe",
+      "url": "https://docs.stripe.com/api/idempotent_requests",
+      "attribution": "Stripe API reference. Provider-specific result retention and parameter checks; no provider calls are part of the lab.",
+      "lastVerifiedAt": "2026-10-03",
+      "sourcePath": "content/sources/durable-retry-and-reservations.json",
+      "contentHash": "e181c2f55bf82b18952c58ae4dd569f9afe2d1074d423e876f7f82b65936edf7"
     },
     {
       "id": "udlbook-notebooks",
@@ -11334,15 +11394,19 @@
       "sourceRefs": [
         "product-interview-pubsub",
         "product-interview-sre-monitoring",
-        "product-interview-otel"
+        "product-interview-otel",
+        "rfc-http-idempotency",
+        "stripe-idempotent-requests",
+        "sqlite-transactions",
+        "python-sqlite-transactions"
       ],
       "status": "published",
       "id": "6430fc007ce2",
       "route": "/docs/software-engineering/product-interview-durable-generation-architecture",
       "sourcePath": "content/knowledge/software-engineering/product-interview-durable-generation-architecture.md",
       "bodyPath": "content/knowledge/software-engineering/product-interview-durable-generation-architecture.md",
-      "markdown": "## The 30-minute design prompt\n\nDesign a collaborative AI image editor with interactive previews and durable paid exports. Users refresh tabs, switch workspaces, lose connections, and retry requests. GPU workers can crash after finishing the expensive operation. Prevent stale images, lost accepted jobs, cross-tenant access, and duplicate customer charges.\n\nThis is an original mock scenario. All scale numbers, SLOs, APIs, and architecture below are **exercise assumptions**, not any company's measured traffic, internal implementation, or promised service levels. Focus on durable execution and enterprise correctness.\n\n## Clarify before drawing\n\nAsk what is ephemeral, what must survive disconnect, how charging works, whether concurrent edits need offline merge, and which part of latency users notice. Agree to one region for durable metadata, regional workers, private workspace assets, and a success-only export charge with a temporary credit reservation. A preview is replaceable; an accepted export is not.\n\nUse 2,000 active editors averaging two preview intents/second. That is **4,000 incoming intents/second**, before coalescing and admission control. If all were admitted and mean service time were 0.5 seconds, Little's Law suggests roughly **2,000 concurrent requests** in a stable system. That is not 2,000 GPUs: batching, model size, device utilization, and per-device concurrency require measurement. With capacity for 400 requests/second, choose a freshness/admission policy; an ever-growing FIFO cannot preserve interactive latency. Keep exports in a separate capacity budget so previews cannot starve them.\n\n## Starting design\n\n```mermaid\nflowchart TD\n  UI[Editor and local draft] --> Preview[Bounded preview coordinator]\n  Preview --> Gateway[Authenticated preview gateway]\n  Gateway --> PreviewPool[Preview inference capacity]\n  PreviewPool --> Guard[Revision check and render]\n  UI --> API[Export API and authorization]\n  API --> DB[(Postgres jobs, ledger, outbox)]\n  DB --> Dispatch[Outbox dispatcher]\n  Dispatch --> Queue[Durable export queue]\n  Queue --> Worker[Leased workflow worker]\n  Worker --> Provider[Inference provider]\n  Provider --> Storage[Private object storage]\n  Worker --> DB\n  DB --> Events[Versioned status events]\n  Events --> UI\n  UI --> Status[Authorized status snapshot]\n  Status --> DB\n```\n\nPostgres owns durable job state and charging decisions. Redis can help with admission, short-lived coordination, and caches. ClickHouse can serve analytics; it should not be the transactional entitlement authority in this design. Queue notifications and WebSocket messages deliver updates; retain a separate durable record of accepted work.\n\nDefine pending, intermediate, and terminal states explicitly in the API contract. An intermediate preview is progress, not a completed paid export. Specify which transitions generate notifications and how duplicate deliveries are handled. The database/outbox design is illustrative.\n\n## The transaction boundary that matters\n\nPropose these illustrative records:\n\n| Record | Key and invariant |\n| --- | --- |\n| Job | `job_id`, `workspace_id`, immutable input revision, model/version/parameters, state, version, attempt token, provider operation ID |\n| Submission | Unique `(workspace_id, idempotency_key)` plus request fingerprint; same key/same body returns the same job, changed body conflicts |\n| Reservation/ledger | Unique `(job_id, entry_type)`; balance check and reservation are atomic; capture/release transitions cannot both win |\n| Outbox | Stable event ID, job ID, payload/version, delivery state; inserted with accepted job and reservation |\n| Asset | Workspace ownership, source job/revision, immutable object key, retention/access policy |\n\n`POST /exports` authenticates the actor, authorizes the workspace, validates the immutable input, and checks entitlement. Atomically reserve credits and create the job/outbox entry, then return an accepted job ID. Scope idempotency to the tenant and define retention beyond the permitted retry window. Rate limiting is not idempotency. Two simultaneous requests that both read an available balance cannot both spend it without transactional concurrency control.\n\nThe dispatcher publishes pending outbox records and marks delivery afterward. A crash between publish and mark causes a duplicate, so workers deduplicate by durable job state. Claim work using a lease and monotonically increasing attempt/fencing token; accept a result only for the current attempt and legal state transition. A lease without a fence still lets a paused old worker overwrite a newer result.\n\n## The hard failure: provider succeeded, worker disappeared\n\nSuppose the provider rendered the image but the worker died before saving success. Redelivery alone cannot tell you whether another generation repeats the cost. Persist a stable provider request key before submission and use provider-supported idempotency or queryable operation IDs. Reconcile the outcome on retry. If the provider cannot deduplicate or reveal the result, describe the uncertainty and choose an explicit policy: pause for reconciliation or accept a bounded duplicate compute cost. Do not promise end-to-end exactly-once effects from a queue guarantee.\n\nOnce a result is verified, commit the winning asset pointer, terminal state, one ledger capture, and status outbox event in one database transaction. Store blobs before that transaction at immutable attempt-specific keys; a stale worker cannot replace the canonical pointer. Orphan cleanup is a separate retention-reviewed operation, not part of a retry shortcut. Failed/cancelled transitions release the reservation once. Cancellation racing success uses the same guarded state machine and an explicit product policy.\n\n```mermaid\nstateDiagram-v2\n  [*] --> Accepted\n  Accepted --> Running: worker claims lease\n  Running --> Reconciling: outcome unknown\n  Reconciling --> Running: safe retry approved\n  Reconciling --> Completed: existing result recovered\n  Running --> Completed: result and charge committed\n  Running --> Failed: terminal failure\n  Accepted --> Cancelled: cancellation wins\n  Running --> CancelRequested: cancellation requested\n  CancelRequested --> Cancelled: provider cancellation confirmed\n  CancelRequested --> Completed: success won the race\n```\n\nThis is the exercise's simplified state machine, not a provider's API enum. Decide refund policy separately from whether bytes were computed. Browser abort/disconnect is not confirmed server cancellation.\n\n## Reconnect, collaboration, and authorization\n\nPersist each export's immutable input revision. Stream `{jobId, version, state}` updates; ignore stale/duplicate versions and fetch an authorized snapshot when a gap appears. On reconnect, obtain a snapshot plus a replay cursor, or subscribe-and-buffer before fetching, so no update is lost between the two. A dropped socket must not create a new export. Cursor expiry should trigger snapshot recovery.\n\nFor shared canvas state, explain a CRDT or server-ordered operation log, stable node IDs, offline edits, undo, and conflict semantics. CRDT convergence does not authorize a job, enforce balances, or guarantee the latest inference result matches the canvas. Validate graph operations and generated-result attachments separately. For a node workflow, topologically schedule ready nodes, reject cycles, deduplicate each node's execution, and invalidate descendants when an upstream input changes.\n\nAuthorize every status read, event subscription, retry, cancellation, and asset download. Cache keys include workspace, model revision, input fingerprint, parameters, and relevant policy version. Keep generated outputs private by default with short-lived authorized URLs. Client caches cannot serve as the source of truth for entitlements. Explain how revocation interrupts future actions and how already accepted work is handled.\n\n## Pub/Sub versus webhooks is not a binary choice\n\n[Pub/Sub supports pull and push subscriptions](https://docs.cloud.google.com/pubsub/docs/subscriber). A push subscriber receives HTTP requests; a durable bus can sit behind a webhook receiver. Compare producer/consumer coupling, fan-out, retention, replay, retry ownership, and operational control. Acknowledge only after durable acceptance or the effect your contract requires, and budget lease extensions for variable work. Keep retry delay bounded with jitter, retryable error classification, an attempt/deadline budget, and a dead-letter/reconciliation path.\n\nWhen reviewing a provider integration, confirm exactly which transitions produce notifications: admission, start, intermediate progress, or terminal outcome. Document signature verification, delivery retry windows, and ordering guarantees before relying on them. Clarify undocumented capabilities before assuming they are absent. Never treat possession of a job ID as proof a webhook is authentic—verify a supported signature or reconcile with an authenticated status read before trusted side effects.\n\n## Define reliability from the user's view\n\nProposed targets to negotiate: 99% of admitted preview requests reach a current, usable preview within 1 second; 99.9% of accepted exports reach a truthful terminal outcome within the agreed model-specific deadline over 30 days. These are distinct quality and liveness signals: a fast terminal failure meets truthful-outcome liveness but fails the usable-result metric. Track success rate separately, include backend failures, and report intentional cancellations separately under a documented denominator. Missing terminal outcomes remain failures after the deadline.\n\nInstrument the [four golden signals](https://sre.google/sre-book/monitoring-distributed-systems/) at the API and workers, plus queue age, active leases, coalesced intents, stale-result suppression, retries, timeouts, cancellation outcomes, reconciliation backlog, and ledger mismatches. Split end-to-end latency into client handling, queueing, inference, storage transfer, decoding, and rendering. Use model/version/region/outcome as bounded metric dimensions. Keep job/request IDs in restricted traces/logs; avoid prompts, images, tokens, or user IDs as metric labels.\n\nCarry trace context from request to outbox/queue to worker/provider adapter, and link retries to the same job. [OpenTelemetry traces](https://opentelemetry.io/docs/concepts/signals/traces/) connect operations across service boundaries. Page for sustained user-facing failure or error-budget burn; use dashboards for diagnosis. A green HTTP status does not prove an export is usable.\n\n## Incident injection and first refactor\n\nAt minute 20, introduce: **p95 preview latency jumps from 0.8 to 3 seconds after a deploy; inference duration is flat; duplicate charge reports appear after worker restarts.** These are fictional symptoms.\n\nFirst contain the charge risk using the narrowest safe admission/reconciliation control, retain evidence, and inspect ledger transitions. For latency, compare cohorts and per-stage spans; flat inference points toward queueing, request volume, network/decoding, or rendering, not automatically a GPU shortage. Roll back/canary the implicated change based on evidence. Do not claim recovery until user-facing SLIs and affected job/ledger reconciliation confirm it.\n\nPrioritize correctness at the payment/job boundary, then queue/admission observability, then expensive architectural rewrites. Require concurrency tests, duplicate/redelivery tests, crash-point injection, reconnect tests, tenant-isolation tests, and safe startup of the actual pruned artifact when packaging or entrypoints change. Never test these scenarios against live paid generations.",
-      "plainText": "The 30-minute design prompt Design a collaborative AI image editor with interactive previews and durable paid exports. Users refresh tabs, switch workspaces, lose connections, and retry requests. GPU workers can crash after finishing the expensive operation. Prevent stale images, lost accepted jobs, cross-tenant access, and duplicate customer charges. This is an original mock scenario. All scale numbers, SLOs, APIs, and architecture below are exercise assumptions, not any company's measured traffic, internal implementation, or promised service levels. Focus on durable execution and enterprise correctness. Clarify before drawing Ask what is ephemeral, what must survive disconnect, how charging works, whether concurrent edits need offline merge, and which part of latency users notice. Agree to one region for durable metadata, regional workers, private workspace assets, and a success-only export charge with a temporary credit reservation. A preview is replaceable; an accepted export is not. Use 2,000 active editors averaging two preview intents/second. That is 4,000 incoming intents/second, before coalescing and admission control. If all were admitted and mean service time were 0.5 seconds, Little's Law suggests roughly 2,000 concurrent requests in a stable system. That is not 2,000 GPUs: batching, model size, device utilization, and per-device concurrency require measurement. With capacity for 400 requests/second, choose a freshness/admission policy; an ever-growing FIFO cannot preserve interactive latency. Keep exports in a separate capacity budget so previews cannot starve them. Starting design flowchart TD UI[Editor and local draft] --> Preview[Bounded preview coordinator] Preview --> Gateway[Authenticated preview gateway] Gateway --> PreviewPool[Preview inference capacity] PreviewPool --> Guard[Revision check and render] UI --> API[Export API and authorization] API --> DB[(Postgres jobs, ledger, outbox)] DB --> Dispatch[Outbox dispatcher] Dispatch --> Queue[Durable export queue] Queue --> Worker[Leased workflow worker] Worker --> Provider[Inference provider] Provider --> Storage[Private object storage] Worker --> DB DB --> Events[Versioned status events] Events --> UI UI --> Status[Authorized status snapshot] Status --> DB Postgres owns durable job state and charging decisions. Redis can help with admission, short-lived coordination, and caches. ClickHouse can serve analytics; it should not be the transactional entitlement authority in this design. Queue notifications and WebSocket messages deliver updates; retain a separate durable record of accepted work. Define pending, intermediate, and terminal states explicitly in the API contract. An intermediate preview is progress, not a completed paid export. Specify which transitions generate notifications and how duplicate deliveries are handled. The database/outbox design is illustrative. The transaction boundary that matters Propose these illustrative records: | Record | Key and invariant | | --- | --- | | Job | job_id, workspace_id, immutable input revision, model/version/parameters, state, version, attempt token, provider operation ID | | Submission | Unique (workspace_id, idempotency_key) plus request fingerprint; same key/same body returns the same job, changed body conflicts | | Reservation/ledger | Unique (job_id, entry_type); balance check and reservation are atomic; capture/release transitions cannot both win | | Outbox | Stable event ID, job ID, payload/version, delivery state; inserted with accepted job and reservation | | Asset | Workspace ownership, source job/revision, immutable object key, retention/access policy | POST /exports authenticates the actor, authorizes the workspace, validates the immutable input, and checks entitlement. Atomically reserve credits and create the job/outbox entry, then return an accepted job ID. Scope idempotency to the tenant and define retention beyond the permitted retry window. Rate limiting is not idempotency. Two simultaneous requests that both read an available balance cannot both spend it without transactional concurrency control. The dispatcher publishes pending outbox records and marks delivery afterward. A crash between publish and mark causes a duplicate, so workers deduplicate by durable job state. Claim work using a lease and monotonically increasing attempt/fencing token; accept a result only for the current attempt and legal state transition. A lease without a fence still lets a paused old worker overwrite a newer result. The hard failure: provider succeeded, worker disappeared Suppose the provider rendered the image but the worker died before saving success. Redelivery alone cannot tell you whether another generation repeats the cost. Persist a stable provider request key before submission and use provider-supported idempotency or queryable operation IDs. Reconcile the outcome on retry. If the provider cannot deduplicate or reveal the result, describe the uncertainty and choose an explicit policy: pause for reconciliation or accept a bounded duplicate compute cost. Do not promise end-to-end exactly-once effects from a queue guarantee. Once a result is verified, commit the winning asset pointer, terminal state, one ledger capture, and status outbox event in one database transaction. Store blobs before that transaction at immutable attempt-specific keys; a stale worker cannot replace the canonical pointer. Orphan cleanup is a separate retention-reviewed operation, not part of a retry shortcut. Failed/cancelled transitions release the reservation once. Cancellation racing success uses the same guarded state machine and an explicit product policy. stateDiagram-v2 [*] --> Accepted Accepted --> Running: worker claims lease Running --> Reconciling: outcome unknown Reconciling --> Running: safe retry approved Reconciling --> Completed: existing result recovered Running --> Completed: result and charge committed Running --> Failed: terminal failure Accepted --> Cancelled: cancellation wins Running --> CancelRequested: cancellation requested CancelRequested --> Cancelled: provider cancellation confirmed CancelRequested --> Completed: success won the race This is the exercise's simplified state machine, not a provider's API enum. Decide refund policy separately from whether bytes were computed. Browser abort/disconnect is not confirmed server cancellation. Reconnect, collaboration, and authorization Persist each export's immutable input revision. Stream {jobId, version, state} updates; ignore stale/duplicate versions and fetch an authorized snapshot when a gap appears. On reconnect, obtain a snapshot plus a replay cursor, or subscribe-and-buffer before fetching, so no update is lost between the two. A dropped socket must not create a new export. Cursor expiry should trigger snapshot recovery. For shared canvas state, explain a CRDT or server-ordered operation log, stable node IDs, offline edits, undo, and conflict semantics. CRDT convergence does not authorize a job, enforce balances, or guarantee the latest inference result matches the canvas. Validate graph operations and generated-result attachments separately. For a node workflow, topologically schedule ready nodes, reject cycles, deduplicate each node's execution, and invalidate descendants when an upstream input changes. Authorize every status read, event subscription, retry, cancellation, and asset download. Cache keys include workspace, model revision, input fingerprint, parameters, and relevant policy version. Keep generated outputs private by default with short-lived authorized URLs. Client caches cannot serve as the source of truth for entitlements. Explain how revocation interrupts future actions and how already accepted work is handled. Pub/Sub versus webhooks is not a binary choice Pub/Sub supports pull and push subscriptions. A push subscriber receives HTTP requests; a durable bus can sit behind a webhook receiver. Compare producer/consumer coupling, fan-out, retention, replay, retry ownership, and operational control. Acknowledge only after durable acceptance or the effect your contract requires, and budget lease extensions for variable work. Keep retry delay bounded with jitter, retryable error classification, an attempt/deadline budget, and a dead-letter/reconciliation path. When reviewing a provider integration, confirm exactly which transitions produce notifications: admission, start, intermediate progress, or terminal outcome. Document signature verification, delivery retry windows, and ordering guarantees before relying on them. Clarify undocumented capabilities before assuming they are absent. Never treat possession of a job ID as proof a webhook is authentic—verify a supported signature or reconcile with an authenticated status read before trusted side effects. Define reliability from the user's view Proposed targets to negotiate: 99% of admitted preview requests reach a current, usable preview within 1 second; 99.9% of accepted exports reach a truthful terminal outcome within the agreed model-specific deadline over 30 days. These are distinct quality and liveness signals: a fast terminal failure meets truthful-outcome liveness but fails the usable-result metric. Track success rate separately, include backend failures, and report intentional cancellations separately under a documented denominator. Missing terminal outcomes remain failures after the deadline. Instrument the four golden signals at the API and workers, plus queue age, active leases, coalesced intents, stale-result suppression, retries, timeouts, cancellation outcomes, reconciliation backlog, and ledger mismatches. Split end-to-end latency into client handling, queueing, inference, storage transfer, decoding, and rendering. Use model/version/region/outcome as bounded metric dimensions. Keep job/request IDs in restricted traces/logs; avoid prompts, images, tokens, or user IDs as metric labels. Carry trace context from request to outbox/queue to worker/provider adapter, and link retries to the same job. OpenTelemetry traces connect operations across service boundaries. Page for sustained user-facing failure or error-budget burn; use dashboards for diagnosis. A green HTTP status does not prove an export is usable. Incident injection and first refactor At minute 20, introduce: p95 preview latency jumps from 0.8 to 3 seconds after a deploy; inference duration is flat; duplicate charge reports appear after worker restarts. These are fictional symptoms. First contain the charge risk using the narrowest safe admission/reconciliation control, retain evidence, and inspect ledger transitions. For latency, compare cohorts and per-stage spans; flat inference points toward queueing, request volume, network/decoding, or rendering, not automatically a GPU shortage. Roll back/canary the implicated change based on evidence. Do not claim recovery until user-facing SLIs and affected job/ledger reconciliation confirm it. Prioritize correctness at the payment/job boundary, then queue/admission observability, then expensive architectural rewrites. Require concurrency tests, duplicate/redelivery tests, crash-point injection, reconnect tests, tenant-isolation tests, and safe startup of the actual pruned artifact when packaging or entrypoints change. Never test these scenarios against live paid generations.",
+      "markdown": "## The 30-minute design prompt\n\nDesign a collaborative AI image editor with interactive previews and durable paid exports. Users refresh tabs, switch workspaces, lose connections, and retry requests. GPU workers can crash after finishing the expensive operation. Prevent stale images, lost accepted jobs, cross-tenant access, and duplicate customer charges.\n\nThis is an original mock scenario. All scale numbers, SLOs, APIs, and architecture below are **exercise assumptions**, not any company's measured traffic, internal implementation, or promised service levels. Focus on durable execution and enterprise correctness.\n\n## Clarify before drawing\n\nAsk what is ephemeral, what must survive disconnect, how charging works, whether concurrent edits need offline merge, and which part of latency users notice. Agree to one region for durable metadata, regional workers, private workspace assets, and a success-only export charge with a temporary credit reservation. A preview is replaceable; an accepted export is not.\n\nUse 2,000 active editors averaging two preview intents/second. That is **4,000 incoming intents/second**, before coalescing and admission control. If all were admitted and mean service time were 0.5 seconds, Little's Law suggests roughly **2,000 concurrent requests** in a stable system. That is not 2,000 GPUs: batching, model size, device utilization, and per-device concurrency require measurement. With capacity for 400 requests/second, choose a freshness/admission policy; an ever-growing FIFO cannot preserve interactive latency. Keep exports in a separate capacity budget so previews cannot starve them.\n\n## Starting design\n\n```mermaid\nflowchart TD\n  UI[Editor and local draft] --> Preview[Bounded preview coordinator]\n  Preview --> Gateway[Authenticated preview gateway]\n  Gateway --> PreviewPool[Preview inference capacity]\n  PreviewPool --> Guard[Revision check and render]\n  UI --> API[Export API and authorization]\n  API --> DB[(Postgres jobs, ledger, outbox)]\n  DB --> Dispatch[Outbox dispatcher]\n  Dispatch --> Queue[Durable export queue]\n  Queue --> Worker[Leased workflow worker]\n  Worker --> Provider[Inference provider]\n  Provider --> Storage[Private object storage]\n  Worker --> DB\n  DB --> Events[Versioned status events]\n  Events --> UI\n  UI --> Status[Authorized status snapshot]\n  Status --> DB\n```\n\nPostgres owns durable job state and charging decisions. Redis can help with admission, short-lived coordination, and caches. ClickHouse can serve analytics; it should not be the transactional entitlement authority in this design. Queue notifications and WebSocket messages deliver updates; retain a separate durable record of accepted work.\n\nDefine pending, intermediate, and terminal states explicitly in the API contract. An intermediate preview is progress, not a completed paid export. Specify which transitions generate notifications and how duplicate deliveries are handled. The database/outbox design is illustrative.\n\n## The transaction boundary that matters\n\nPropose these illustrative records:\n\n| Record | Key and invariant |\n| --- | --- |\n| Job | `job_id`, `workspace_id`, immutable input revision, model/version/parameters, state, version, attempt token, provider operation ID |\n| Submission | Unique `(workspace_id, idempotency_key)` plus request fingerprint; same key/same body returns the same job, changed body conflicts |\n| Reservation/ledger | Unique `(job_id, entry_type)`; balance check and reservation are atomic; capture/release transitions cannot both win |\n| Outbox | Stable event ID, job ID, payload/version, delivery state; inserted with accepted job and reservation |\n| Asset | Workspace ownership, source job/revision, immutable object key, retention/access policy |\n\n`POST /exports` authenticates the actor, authorizes the workspace, validates the immutable input, and checks entitlement. Atomically reserve credits and create the job/outbox entry, then return an accepted job ID. Scope idempotency to the tenant and define retention beyond the permitted retry window. Rate limiting is not idempotency. Two simultaneous requests that both read an available balance cannot both spend it without transactional concurrency control.\n\nThe dispatcher publishes pending outbox records and marks delivery afterward. A crash between publish and mark causes a duplicate, so workers deduplicate by durable job state. Claim work using a lease and monotonically increasing attempt/fencing token; accept a result only for the current attempt and legal state transition. A lease without a fence still lets a paused old worker overwrite a newer result.\n\n## The hard failure: provider succeeded, worker disappeared\n\nSuppose the provider rendered the image but the worker died before saving success. Redelivery alone cannot tell you whether another generation repeats the cost. Persist a stable provider request key before submission and use provider-supported idempotency or queryable operation IDs. Reconcile the outcome on retry. If the provider cannot deduplicate or reveal the result, describe the uncertainty and choose an explicit policy: pause for reconciliation or accept a bounded duplicate compute cost. Do not promise end-to-end exactly-once effects from a queue guarantee.\n\nOnce a result is verified, commit the winning asset pointer, terminal state, one ledger capture, and status outbox event in one database transaction. Store blobs before that transaction at immutable attempt-specific keys; a stale worker cannot replace the canonical pointer. Orphan cleanup is a separate retention-reviewed operation, not part of a retry shortcut. Failed/cancelled transitions release the reservation once. Cancellation racing success uses the same guarded state machine and an explicit product policy.\n\n```mermaid\nstateDiagram-v2\n  [*] --> Accepted\n  Accepted --> Running: worker claims lease\n  Running --> Reconciling: outcome unknown\n  Reconciling --> Running: safe retry approved\n  Reconciling --> Completed: existing result recovered\n  Running --> Completed: result and charge committed\n  Running --> Failed: terminal failure\n  Accepted --> Cancelled: cancellation wins\n  Running --> CancelRequested: cancellation requested\n  CancelRequested --> Cancelled: provider cancellation confirmed\n  CancelRequested --> Completed: success won the race\n```\n\nThis is the exercise's simplified state machine, not a provider's API enum. Decide refund policy separately from whether bytes were computed. Browser abort/disconnect is not confirmed server cancellation.\n\n## Optional lab: duplicate delivery versus one local effect\n\nRun this after the timed architecture drill. [HTTP idempotency](https://www.rfc-editor.org/rfc/rfc9110.html#section-9.2.2) concerns the intended effect of repeating a request; responses and request logs can still differ. A POST needs an application contract to make a retry safe. A missing response does not prove rollback.\n\nAn external provider has its own contract. For example, [Stripe's idempotent-request API](https://docs.stripe.com/api/idempotent_requests) retains the first executed result, including a 500 response, and documents a retention window and request-parameter checks. Do not infer another provider's behavior from this example or retry with a fresh key merely because a response was lost.\n\nThis original Python 3.13+ fixture spends fictional credits in a temporary SQLite database. It performs no network, payment or provider call. Its request is just an amount; a real endpoint must authenticate and authorize before returning receipts and fingerprint every field that changes the operation. Receipts are retained for this short experiment; production retention and key reuse need an explicit policy.\n\n[SQLite supports one writer at a time](https://www.sqlite.org/lang_transaction.html). `BEGIN IMMEDIATE` serializes the two connections before either reads the receipt. [Python's `isolation_level=None`](https://docs.python.org/3.13/library/sqlite3.html#transaction-control-via-the-isolation-level-attribute) lets this fixture control SQL transactions explicitly. This demonstrates a local atomic boundary, not PostgreSQL locking behavior, distributed exactly-once processing or a throughput benchmark.\n\nSave the block as `durable_retry_lab.py` and run `python3 durable_retry_lab.py`. Predict the balances and receipt count before executing:\n\n```python\nfrom concurrent.futures import ThreadPoolExecutor\nfrom contextlib import closing\nfrom pathlib import Path\nimport sqlite3\nfrom tempfile import TemporaryDirectory\nfrom threading import Barrier\n\nwith TemporaryDirectory() as directory:\n    database = Path(directory) / 'credits.sqlite'\n    with closing(sqlite3.connect(database, isolation_level=None)) as setup:\n        setup.executescript('''\n            CREATE TABLE credits(workspace TEXT PRIMARY KEY, balance INTEGER NOT NULL);\n            INSERT INTO credits VALUES ('a', 100), ('b', 100);\n            CREATE TABLE receipts(\n                workspace TEXT, key TEXT, amount INTEGER, result INTEGER,\n                PRIMARY KEY (workspace, key)\n            );\n        ''')\n\n    def spend(workspace, key, amount, failure=None):\n        if amount <= 0:\n            raise ValueError('amount must be positive')\n        connection = sqlite3.connect(database, timeout=5, isolation_level=None)\n        try:\n            connection.execute('BEGIN IMMEDIATE')\n            previous = connection.execute(\n                'SELECT amount, result FROM receipts WHERE workspace=? AND key=?',\n                (workspace, key),\n            ).fetchone()\n            if previous:\n                if previous[0] != amount:\n                    raise ValueError('same key, different request')\n                connection.commit()\n                return previous[1]\n            balance = connection.execute(\n                'SELECT balance FROM credits WHERE workspace=?', (workspace,),\n            ).fetchone()\n            if balance is None or balance[0] < amount:\n                raise ValueError('missing workspace or insufficient credits')\n            result = balance[0] - amount\n            connection.execute('UPDATE credits SET balance=? WHERE workspace=?',\n                               (result, workspace))\n            connection.execute('INSERT INTO receipts VALUES (?, ?, ?, ?)',\n                               (workspace, key, amount, result))\n            if failure == 'before_commit':\n                raise RuntimeError('injected before commit')\n            connection.commit()\n            if failure == 'lost_response':\n                raise RuntimeError('commit happened; response was lost')\n            return result\n        finally:\n            if connection.in_transaction:\n                connection.rollback()\n            connection.close()\n\n    barrier = Barrier(2)\n    def concurrent_retry(_):\n        barrier.wait(timeout=5)\n        return spend('a', 'export-1', 10)\n    with ThreadPoolExecutor(max_workers=2) as pool:\n        assert list(pool.map(concurrent_retry, range(2))) == [90, 90]\n    try:\n        spend('a', 'export-2', 10, 'before_commit')\n    except RuntimeError:\n        pass\n    else:\n        raise AssertionError('before-commit failure did not occur')\n    with closing(sqlite3.connect(database)) as check:\n        assert check.execute(\"SELECT balance FROM credits WHERE workspace='a'\").fetchone()[0] == 90\n        assert check.execute(\"SELECT count(*) FROM receipts WHERE key='export-2'\").fetchone()[0] == 0\n    assert spend('a', 'export-2', 10) == 80\n    try:\n        spend('a', 'export-3', 10, 'lost_response')\n    except RuntimeError:\n        pass\n    else:\n        raise AssertionError('lost-response failure did not occur')\n    with closing(sqlite3.connect(database)) as check:\n        assert check.execute(\"SELECT balance FROM credits WHERE workspace='a'\").fetchone()[0] == 70\n        assert check.execute(\"SELECT count(*) FROM receipts WHERE key='export-3'\").fetchone()[0] == 1\n    assert spend('a', 'export-3', 10) == 70\n    try:\n        spend('a', 'export-1', 20)\n    except ValueError:\n        pass\n    else:\n        raise AssertionError('changed request was accepted')\n    assert spend('b', 'export-1', 10) == 90\n    assert spend('a', 'export-1', 10) == 90  # Original receipt, not current balance.\n    with closing(sqlite3.connect(database)) as check:\n        assert check.execute('SELECT * FROM credits ORDER BY workspace').fetchall() == [('a', 70), ('b', 90)]\n        assert check.execute('SELECT count(*) FROM receipts').fetchone()[0] == 4\n    print('concurrent retry, rollback, lost response, request conflict and tenant scope: passed')\n```\n\nExpected: the final line reports all five cases passed; workspace `a` has 70 credits, `b` has 90, and four receipts remain until the temporary directory closes. A repeated `export-1` returns its original receipt of 90 even though `a` now has 70. It is an operation result, not a current-balance query.\n\nInspect state **before** retrying: a pre-commit failure leaves neither debit nor receipt; a lost post-commit response leaves both. Move the commit before receipt insertion and confirm the pre-retry assertion fails. Then remove the changed-request check or tenant scope and confirm the corresponding assertion fails. Keeping those mutations green would leave a gap in the evidence.\n\nAn external payment cannot join this SQLite transaction. Extend the design with durable intent, a stable provider operation identity, reconciliation and a guarded capture/release transition; the lab does not implement that integration. Complete the [Durable Retry Lab Checkpoint](/practice/software-engineering/durable-retry-lab-checkpoint).\n\n## Reconnect, collaboration, and authorization\n\nPersist each export's immutable input revision. Stream `{jobId, version, state}` updates; ignore stale/duplicate versions and fetch an authorized snapshot when a gap appears. On reconnect, obtain a snapshot plus a replay cursor, or subscribe-and-buffer before fetching, so no update is lost between the two. A dropped socket must not create a new export. Cursor expiry should trigger snapshot recovery.\n\nFor shared canvas state, explain a CRDT or server-ordered operation log, stable node IDs, offline edits, undo, and conflict semantics. CRDT convergence does not authorize a job, enforce balances, or guarantee the latest inference result matches the canvas. Validate graph operations and generated-result attachments separately. For a node workflow, topologically schedule ready nodes, reject cycles, deduplicate each node's execution, and invalidate descendants when an upstream input changes.\n\nAuthorize every status read, event subscription, retry, cancellation, and asset download. Cache keys include workspace, model revision, input fingerprint, parameters, and relevant policy version. Keep generated outputs private by default with short-lived authorized URLs. Client caches cannot serve as the source of truth for entitlements. Explain how revocation interrupts future actions and how already accepted work is handled.\n\n## Pub/Sub versus webhooks is not a binary choice\n\n[Pub/Sub supports pull and push subscriptions](https://docs.cloud.google.com/pubsub/docs/subscriber). A push subscriber receives HTTP requests; a durable bus can sit behind a webhook receiver. Compare producer/consumer coupling, fan-out, retention, replay, retry ownership, and operational control. Acknowledge only after durable acceptance or the effect your contract requires, and budget lease extensions for variable work. Keep retry delay bounded with jitter, retryable error classification, an attempt/deadline budget, and a dead-letter/reconciliation path.\n\nWhen reviewing a provider integration, confirm exactly which transitions produce notifications: admission, start, intermediate progress, or terminal outcome. Document signature verification, delivery retry windows, and ordering guarantees before relying on them. Clarify undocumented capabilities before assuming they are absent. Never treat possession of a job ID as proof a webhook is authentic—verify a supported signature or reconcile with an authenticated status read before trusted side effects.\n\n## Define reliability from the user's view\n\nProposed targets to negotiate: 99% of admitted preview requests reach a current, usable preview within 1 second; 99.9% of accepted exports reach a truthful terminal outcome within the agreed model-specific deadline over 30 days. These are distinct quality and liveness signals: a fast terminal failure meets truthful-outcome liveness but fails the usable-result metric. Track success rate separately, include backend failures, and report intentional cancellations separately under a documented denominator. Missing terminal outcomes remain failures after the deadline.\n\nInstrument the [four golden signals](https://sre.google/sre-book/monitoring-distributed-systems/) at the API and workers, plus queue age, active leases, coalesced intents, stale-result suppression, retries, timeouts, cancellation outcomes, reconciliation backlog, and ledger mismatches. Split end-to-end latency into client handling, queueing, inference, storage transfer, decoding, and rendering. Use model/version/region/outcome as bounded metric dimensions. Keep job/request IDs in restricted traces/logs; avoid prompts, images, tokens, or user IDs as metric labels.\n\nCarry trace context from request to outbox/queue to worker/provider adapter, and link retries to the same job. [OpenTelemetry traces](https://opentelemetry.io/docs/concepts/signals/traces/) connect operations across service boundaries. Page for sustained user-facing failure or error-budget burn; use dashboards for diagnosis. A green HTTP status does not prove an export is usable.\n\n## Incident injection and first refactor\n\nAt minute 20, introduce: **p95 preview latency jumps from 0.8 to 3 seconds after a deploy; inference duration is flat; duplicate charge reports appear after worker restarts.** These are fictional symptoms.\n\nFirst contain the charge risk using the narrowest safe admission/reconciliation control, retain evidence, and inspect ledger transitions. For latency, compare cohorts and per-stage spans; flat inference points toward queueing, request volume, network/decoding, or rendering, not automatically a GPU shortage. Roll back/canary the implicated change based on evidence. Do not claim recovery until user-facing SLIs and affected job/ledger reconciliation confirm it.\n\nPrioritize correctness at the payment/job boundary, then queue/admission observability, then expensive architectural rewrites. Require concurrency tests, duplicate/redelivery tests, crash-point injection, reconnect tests, tenant-isolation tests, and safe startup of the actual pruned artifact when packaging or entrypoints change. Never test these scenarios against live paid generations.",
+      "plainText": "The 30-minute design prompt Design a collaborative AI image editor with interactive previews and durable paid exports. Users refresh tabs, switch workspaces, lose connections, and retry requests. GPU workers can crash after finishing the expensive operation. Prevent stale images, lost accepted jobs, cross-tenant access, and duplicate customer charges. This is an original mock scenario. All scale numbers, SLOs, APIs, and architecture below are exercise assumptions, not any company's measured traffic, internal implementation, or promised service levels. Focus on durable execution and enterprise correctness. Clarify before drawing Ask what is ephemeral, what must survive disconnect, how charging works, whether concurrent edits need offline merge, and which part of latency users notice. Agree to one region for durable metadata, regional workers, private workspace assets, and a success-only export charge with a temporary credit reservation. A preview is replaceable; an accepted export is not. Use 2,000 active editors averaging two preview intents/second. That is 4,000 incoming intents/second, before coalescing and admission control. If all were admitted and mean service time were 0.5 seconds, Little's Law suggests roughly 2,000 concurrent requests in a stable system. That is not 2,000 GPUs: batching, model size, device utilization, and per-device concurrency require measurement. With capacity for 400 requests/second, choose a freshness/admission policy; an ever-growing FIFO cannot preserve interactive latency. Keep exports in a separate capacity budget so previews cannot starve them. Starting design flowchart TD UI[Editor and local draft] --> Preview[Bounded preview coordinator] Preview --> Gateway[Authenticated preview gateway] Gateway --> PreviewPool[Preview inference capacity] PreviewPool --> Guard[Revision check and render] UI --> API[Export API and authorization] API --> DB[(Postgres jobs, ledger, outbox)] DB --> Dispatch[Outbox dispatcher] Dispatch --> Queue[Durable export queue] Queue --> Worker[Leased workflow worker] Worker --> Provider[Inference provider] Provider --> Storage[Private object storage] Worker --> DB DB --> Events[Versioned status events] Events --> UI UI --> Status[Authorized status snapshot] Status --> DB Postgres owns durable job state and charging decisions. Redis can help with admission, short-lived coordination, and caches. ClickHouse can serve analytics; it should not be the transactional entitlement authority in this design. Queue notifications and WebSocket messages deliver updates; retain a separate durable record of accepted work. Define pending, intermediate, and terminal states explicitly in the API contract. An intermediate preview is progress, not a completed paid export. Specify which transitions generate notifications and how duplicate deliveries are handled. The database/outbox design is illustrative. The transaction boundary that matters Propose these illustrative records: | Record | Key and invariant | | --- | --- | | Job | job_id, workspace_id, immutable input revision, model/version/parameters, state, version, attempt token, provider operation ID | | Submission | Unique (workspace_id, idempotency_key) plus request fingerprint; same key/same body returns the same job, changed body conflicts | | Reservation/ledger | Unique (job_id, entry_type); balance check and reservation are atomic; capture/release transitions cannot both win | | Outbox | Stable event ID, job ID, payload/version, delivery state; inserted with accepted job and reservation | | Asset | Workspace ownership, source job/revision, immutable object key, retention/access policy | POST /exports authenticates the actor, authorizes the workspace, validates the immutable input, and checks entitlement. Atomically reserve credits and create the job/outbox entry, then return an accepted job ID. Scope idempotency to the tenant and define retention beyond the permitted retry window. Rate limiting is not idempotency. Two simultaneous requests that both read an available balance cannot both spend it without transactional concurrency control. The dispatcher publishes pending outbox records and marks delivery afterward. A crash between publish and mark causes a duplicate, so workers deduplicate by durable job state. Claim work using a lease and monotonically increasing attempt/fencing token; accept a result only for the current attempt and legal state transition. A lease without a fence still lets a paused old worker overwrite a newer result. The hard failure: provider succeeded, worker disappeared Suppose the provider rendered the image but the worker died before saving success. Redelivery alone cannot tell you whether another generation repeats the cost. Persist a stable provider request key before submission and use provider-supported idempotency or queryable operation IDs. Reconcile the outcome on retry. If the provider cannot deduplicate or reveal the result, describe the uncertainty and choose an explicit policy: pause for reconciliation or accept a bounded duplicate compute cost. Do not promise end-to-end exactly-once effects from a queue guarantee. Once a result is verified, commit the winning asset pointer, terminal state, one ledger capture, and status outbox event in one database transaction. Store blobs before that transaction at immutable attempt-specific keys; a stale worker cannot replace the canonical pointer. Orphan cleanup is a separate retention-reviewed operation, not part of a retry shortcut. Failed/cancelled transitions release the reservation once. Cancellation racing success uses the same guarded state machine and an explicit product policy. stateDiagram-v2 [*] --> Accepted Accepted --> Running: worker claims lease Running --> Reconciling: outcome unknown Reconciling --> Running: safe retry approved Reconciling --> Completed: existing result recovered Running --> Completed: result and charge committed Running --> Failed: terminal failure Accepted --> Cancelled: cancellation wins Running --> CancelRequested: cancellation requested CancelRequested --> Cancelled: provider cancellation confirmed CancelRequested --> Completed: success won the race This is the exercise's simplified state machine, not a provider's API enum. Decide refund policy separately from whether bytes were computed. Browser abort/disconnect is not confirmed server cancellation. Optional lab: duplicate delivery versus one local effect Run this after the timed architecture drill. HTTP idempotency concerns the intended effect of repeating a request; responses and request logs can still differ. A POST needs an application contract to make a retry safe. A missing response does not prove rollback. An external provider has its own contract. For example, Stripe's idempotent-request API retains the first executed result, including a 500 response, and documents a retention window and request-parameter checks. Do not infer another provider's behavior from this example or retry with a fresh key merely because a response was lost. This original Python 3.13+ fixture spends fictional credits in a temporary SQLite database. It performs no network, payment or provider call. Its request is just an amount; a real endpoint must authenticate and authorize before returning receipts and fingerprint every field that changes the operation. Receipts are retained for this short experiment; production retention and key reuse need an explicit policy. SQLite supports one writer at a time. BEGIN IMMEDIATE serializes the two connections before either reads the receipt. Python's isolation_level=None lets this fixture control SQL transactions explicitly. This demonstrates a local atomic boundary, not PostgreSQL locking behavior, distributed exactly-once processing or a throughput benchmark. Save the block as durable_retry_lab.py and run python3 durable_retry_lab.py. Predict the balances and receipt count before executing: from concurrent.futures import ThreadPoolExecutor from contextlib import closing from pathlib import Path import sqlite3 from tempfile import TemporaryDirectory from threading import Barrier with TemporaryDirectory() as directory: database = Path(directory) / 'credits.sqlite' with closing(sqlite3.connect(database, isolation_level=None)) as setup: setup.executescript(''' CREATE TABLE credits(workspace TEXT PRIMARY KEY, balance INTEGER NOT NULL); INSERT INTO credits VALUES ('a', 100), ('b', 100); CREATE TABLE receipts( workspace TEXT, key TEXT, amount INTEGER, result INTEGER, PRIMARY KEY (workspace, key) ); ''') def spend(workspace, key, amount, failure=None): if amount <= 0: raise ValueError('amount must be positive') connection = sqlite3.connect(database, timeout=5, isolation_level=None) try: connection.execute('BEGIN IMMEDIATE') previous = connection.execute( 'SELECT amount, result FROM receipts WHERE workspace=? AND key=?', (workspace, key), ).fetchone() if previous: if previous[0] != amount: raise ValueError('same key, different request') connection.commit() return previous[1] balance = connection.execute( 'SELECT balance FROM credits WHERE workspace=?', (workspace,), ).fetchone() if balance is None or balance[0] < amount: raise ValueError('missing workspace or insufficient credits') result = balance[0] - amount connection.execute('UPDATE credits SET balance=? WHERE workspace=?', (result, workspace)) connection.execute('INSERT INTO receipts VALUES (?, ?, ?, ?)', (workspace, key, amount, result)) if failure == 'before_commit': raise RuntimeError('injected before commit') connection.commit() if failure == 'lost_response': raise RuntimeError('commit happened; response was lost') return result finally: if connection.in_transaction: connection.rollback() connection.close() barrier = Barrier(2) def concurrent_retry(_): barrier.wait(timeout=5) return spend('a', 'export-1', 10) with ThreadPoolExecutor(max_workers=2) as pool: assert list(pool.map(concurrent_retry, range(2))) == [90, 90] try: spend('a', 'export-2', 10, 'before_commit') except RuntimeError: pass else: raise AssertionError('before-commit failure did not occur') with closing(sqlite3.connect(database)) as check: assert check.execute(\"SELECT balance FROM credits WHERE workspace='a'\").fetchone()[0] == 90 assert check.execute(\"SELECT count(*) FROM receipts WHERE key='export-2'\").fetchone()[0] == 0 assert spend('a', 'export-2', 10) == 80 try: spend('a', 'export-3', 10, 'lost_response') except RuntimeError: pass else: raise AssertionError('lost-response failure did not occur') with closing(sqlite3.connect(database)) as check: assert check.execute(\"SELECT balance FROM credits WHERE workspace='a'\").fetchone()[0] == 70 assert check.execute(\"SELECT count(*) FROM receipts WHERE key='export-3'\").fetchone()[0] == 1 assert spend('a', 'export-3', 10) == 70 try: spend('a', 'export-1', 20) except ValueError: pass else: raise AssertionError('changed request was accepted') assert spend('b', 'export-1', 10) == 90 assert spend('a', 'export-1', 10) == 90 # Original receipt, not current balance. with closing(sqlite3.connect(database)) as check: assert check.execute('SELECT * FROM credits ORDER BY workspace').fetchall() == [('a', 70), ('b', 90)] assert check.execute('SELECT count(*) FROM receipts').fetchone()[0] == 4 print('concurrent retry, rollback, lost response, request conflict and tenant scope: passed') Expected: the final line reports all five cases passed; workspace a has 70 credits, b has 90, and four receipts remain until the temporary directory closes. A repeated export-1 returns its original receipt of 90 even though a now has 70. It is an operation result, not a current-balance query. Inspect state before retrying: a pre-commit failure leaves neither debit nor receipt; a lost post-commit response leaves both. Move the commit before receipt insertion and confirm the pre-retry assertion fails. Then remove the changed-request check or tenant scope and confirm the corresponding assertion fails. Keeping those mutations green would leave a gap in the evidence. An external payment cannot join this SQLite transaction. Extend the design with durable intent, a stable provider operation identity, reconciliation and a guarded capture/release transition; the lab does not implement that integration. Complete the Durable Retry Lab Checkpoint. Reconnect, collaboration, and authorization Persist each export's immutable input revision. Stream {jobId, version, state} updates; ignore stale/duplicate versions and fetch an authorized snapshot when a gap appears. On reconnect, obtain a snapshot plus a replay cursor, or subscribe-and-buffer before fetching, so no update is lost between the two. A dropped socket must not create a new export. Cursor expiry should trigger snapshot recovery. For shared canvas state, explain a CRDT or server-ordered operation log, stable node IDs, offline edits, undo, and conflict semantics. CRDT convergence does not authorize a job, enforce balances, or guarantee the latest inference result matches the canvas. Validate graph operations and generated-result attachments separately. For a node workflow, topologically schedule ready nodes, reject cycles, deduplicate each node's execution, and invalidate descendants when an upstream input changes. Authorize every status read, event subscription, retry, cancellation, and asset download. Cache keys include workspace, model revision, input fingerprint, parameters, and relevant policy version. Keep generated outputs private by default with short-lived authorized URLs. Client caches cannot serve as the source of truth for entitlements. Explain how revocation interrupts future actions and how already accepted work is handled. Pub/Sub versus webhooks is not a binary choice Pub/Sub supports pull and push subscriptions. A push subscriber receives HTTP requests; a durable bus can sit behind a webhook receiver. Compare producer/consumer coupling, fan-out, retention, replay, retry ownership, and operational control. Acknowledge only after durable acceptance or the effect your contract requires, and budget lease extensions for variable work. Keep retry delay bounded with jitter, retryable error classification, an attempt/deadline budget, and a dead-letter/reconciliation path. When reviewing a provider integration, confirm exactly which transitions produce notifications: admission, start, intermediate progress, or terminal outcome. Document signature verification, delivery retry windows, and ordering guarantees before relying on them. Clarify undocumented capabilities before assuming they are absent. Never treat possession of a job ID as proof a webhook is authentic—verify a supported signature or reconcile with an authenticated status read before trusted side effects. Define reliability from the user's view Proposed targets to negotiate: 99% of admitted preview requests reach a current, usable preview within 1 second; 99.9% of accepted exports reach a truthful terminal outcome within the agreed model-specific deadline over 30 days. These are distinct quality and liveness signals: a fast terminal failure meets truthful-outcome liveness but fails the usable-result metric. Track success rate separately, include backend failures, and report intentional cancellations separately under a documented denominator. Missing terminal outcomes remain failures after the deadline. Instrument the four golden signals at the API and workers, plus queue age, active leases, coalesced intents, stale-result suppression, retries, timeouts, cancellation outcomes, reconciliation backlog, and ledger mismatches. Split end-to-end latency into client handling, queueing, inference, storage transfer, decoding, and rendering. Use model/version/region/outcome as bounded metric dimensions. Keep job/request IDs in restricted traces/logs; avoid prompts, images, tokens, or user IDs as metric labels. Carry trace context from request to outbox/queue to worker/provider adapter, and link retries to the same job. OpenTelemetry traces connect operations across service boundaries. Page for sustained user-facing failure or error-budget burn; use dashboards for diagnosis. A green HTTP status does not prove an export is usable. Incident injection and first refactor At minute 20, introduce: p95 preview latency jumps from 0.8 to 3 seconds after a deploy; inference duration is flat; duplicate charge reports appear after worker restarts. These are fictional symptoms. First contain the charge risk using the narrowest safe admission/reconciliation control, retain evidence, and inspect ledger transitions. For latency, compare cohorts and per-stage spans; flat inference points toward queueing, request volume, network/decoding, or rendering, not automatically a GPU shortage. Roll back/canary the implicated change based on evidence. Do not claim recovery until user-facing SLIs and affected job/ledger reconciliation confirm it. Prioritize correctness at the payment/job boundary, then queue/admission observability, then expensive architectural rewrites. Require concurrency tests, duplicate/redelivery tests, crash-point injection, reconnect tests, tenant-isolation tests, and safe startup of the actual pruned artifact when packaging or entrypoints change. Never test these scenarios against live paid generations.",
       "headings": [
         {
           "id": "the-30-minute-design-prompt",
@@ -11368,6 +11432,11 @@
           "id": "the-hard-failure-provider-succeeded-worker-disappeared",
           "depth": 2,
           "text": "The hard failure: provider succeeded, worker disappeared"
+        },
+        {
+          "id": "optional-lab-duplicate-delivery-versus-one-local-effect",
+          "depth": 2,
+          "text": "Optional lab: duplicate delivery versus one local effect"
         },
         {
           "id": "reconnect-collaboration-and-authorization",
@@ -11400,8 +11469,8 @@
           "source": "stateDiagram-v2\n  [*] --> Accepted\n  Accepted --> Running: worker claims lease\n  Running --> Reconciling: outcome unknown\n  Reconciling --> Running: safe retry approved\n  Reconciling --> Completed: existing result recovered\n  Running --> Completed: result and charge committed\n  Running --> Failed: terminal failure\n  Accepted --> Cancelled: cancellation wins\n  Running --> CancelRequested: cancellation requested\n  CancelRequested --> Cancelled: provider cancellation confirmed\n  CancelRequested --> Completed: success won the race"
         }
       ],
-      "contentHash": "51bd445449b77032c4bd465747804441f7246ea5189d07525ab5fd15d0cfaa0f",
-      "readingMinutes": 7
+      "contentHash": "574a678ac0832f8b7638e1615a9ef9bef78381e8f54ed1f45865ebf16a2d08b8",
+      "readingMinutes": 11
     },
     {
       "title": "Product Engineering Coding Drill — A Latest-Intent Preview Coordinator",
@@ -11705,6 +11774,62 @@
       "mermaidBlocks": [],
       "contentHash": "78b2c169bcb4544631befa941279f63bf9d910e5ad74c16a9f1b20acf9898ee7",
       "readingMinutes": 3
+    },
+    {
+      "title": "Fair Admission And Reservations — Separate Policy From Ownership",
+      "slug": "system-design/fair-admission-and-reservations",
+      "summary": "Define a waiting-room policy, claim inventory atomically and trace expiry against a late payment result without selling another buyer's reservation.",
+      "track": "System Design",
+      "topic": "Concurrency And Reservations",
+      "difficulty": "practitioner",
+      "tags": [
+        "reservations",
+        "concurrency",
+        "admission-control",
+        "idempotency",
+        "postgres"
+      ],
+      "prerequisites": [
+        "software-engineering/product-interview-durable-generation-architecture",
+        "system-design/scaling-decision-worksheet"
+      ],
+      "diagramRefs": [],
+      "sourceRefs": [
+        "postgresql-17-locking",
+        "postgresql-17-select"
+      ],
+      "status": "published",
+      "id": "991a9507aa8e",
+      "route": "/docs/system-design/fair-admission-and-reservations",
+      "sourcePath": "content/knowledge/system-design/fair-admission-and-reservations.md",
+      "bodyPath": "content/knowledge/system-design/fair-admission-and-reservations.md",
+      "markdown": "## Write the policy before choosing a queue\n\nIn this original scenario, 200 eligible accounts compete for 10 units. Choose a policy: randomize accounts present before the opening deadline, then append later arrivals. State how eligibility, one active place per account, quantity limits, accessibility and appeals work. Audit allocation outcomes under that policy.\n\nAn account is not proof of one human. Signed, short-lived, buyer-bound admission tokens protect a particular session; they do not solve identity fraud or guarantee equal opportunity. Queue order is a product decision. Inventory ownership and checkout capacity are separate correctness and load constraints.\n\nAdmit work within a measured capacity budget and bound queue age. A queue that grows forever cannot preserve a promised checkout deadline. Use the [scaling worksheet](/docs/system-design/scaling-decision-worksheet) to compare admission rate with the actual downstream constraint.\n\n## Give one owner authority over a transition\n\nFor an individual inventory unit, define `available → held → sold`, with `held → available` on expiry. An accepted hold records the buyer, an opaque hold ID, an expiry and a version. A transaction must claim an available unit and persist the hold together. Check the actual returned rows; a prior availability read is not an allocation.\n\nCompletion and expiry must conditionally update the current state, hold identity and version. Completion also checks the authenticated buyer and the chosen expiry policy. Every accepted transition advances the version. This prevents an old timer or payment callback from overwriting a newer reservation.\n\nKeep transactions short. [PostgreSQL row locks](https://www.postgresql.org/docs/17/explicit-locking.html) last until the transaction ends and can block competing writers. Do not hold one open while a person fills a form or a payment service responds. Persist the hold, commit, then coordinate the external operation through durable identity and reconciliation.\n\n## Observe what SKIP LOCKED actually promises\n\nUse only a disposable PostgreSQL database for this lab. The table and fixed buyer/hold strings are illustrative; they are not a production schema or secure tokens. Integer expiry values are simulated clock ticks, not wall-clock timestamps.\n\nCreate the fixture once:\n\n```sql\nCREATE TABLE lab_inventory (\n  item_id integer PRIMARY KEY,\n  state text NOT NULL CHECK (state IN ('available', 'held', 'sold')),\n  hold_id text, buyer text, expires_at integer,\n  version bigint NOT NULL DEFAULT 0\n);\nINSERT INTO lab_inventory (item_id, state)\nVALUES (1, 'available'), (2, 'available');\n```\n\nIn session A, run `BEGIN;`, then lock item 1 and leave the transaction open:\n\n```sql\nSELECT item_id FROM lab_inventory WHERE item_id = 1 FOR UPDATE;\n```\n\nIn session B with autocommit enabled, execute this claim:\n\n```sql\nWITH chosen AS (\n  SELECT item_id FROM lab_inventory WHERE state = 'available'\n  ORDER BY item_id FOR UPDATE SKIP LOCKED LIMIT 1\n)\nUPDATE lab_inventory AS inventory\nSET state = 'held', hold_id = 'hold-b', buyer = 'b', expires_at = 180,\n    version = inventory.version + 1\nFROM chosen WHERE inventory.item_id = chosen.item_id\nRETURNING inventory.item_id;\n```\n\nExpected: B claims item 2 without waiting for A. Repeat the claim while A still holds its lock: B returns no row. That means no matching row could be acquired by this statement, not that the inventory is sold out. Roll back A, then B can read item 1 as available.\n\n[PostgreSQL's SELECT contract](https://www.postgresql.org/docs/17/sql-select.html) permits skipping locked rows for queue-like consumers and warns that this produces an inconsistent view. The row lock belongs inside the selection CTE. `ORDER BY` gives a selection order among eligible rows; skipping a busy row does not enforce strict FIFO or the waiting-room fairness policy.\n\n## Trace expiry against a late result\n\nContinue the original fixture on item 2:\n\n| Step | Required predicate and observed transition |\n| --- | --- |\n| At tick 180, expire B | Item 2 is held by `hold-b`, version 1, with `expires_at <= 180`; release it and advance to version 2 |\n| Reserve it for A | State is available; write `hold-a`, buyer `a`, expiry 360 and version 3 |\n| B's payment result arrives at tick 181 | B's old hold/version cannot change A's current reservation; return no updated row |\n| A completes at tick 200 | Current `hold-a`, buyer `a`, version 3 and expiry strictly greater than 200; sell and advance to version 4 |\n| An old expiry task arrives at tick 400 | State is sold and version has changed; it cannot release the unit |\n\nUse the same atomic guard for B's late completion; do not check and then write in separate transactions:\n\n```sql\nUPDATE lab_inventory SET state = 'sold', version = version + 1\nWHERE item_id = 2 AND state = 'held'\n  AND hold_id = 'hold-b' AND buyer = 'b' AND version = 1\n  AND expires_at > 181\nRETURNING item_id;\n```\n\nUnder this chosen policy, completion at the exact expiry tick fails and expiry is eligible. Another policy is possible, but it needs one authoritative rule and race tests. A zero-row completion does not undo an external charge: record that result and reconcile through the provider's supported cancellation, refund or manual-review path. Never quietly sell A's unit to B.\n\nRead [durable generation and revenue safety](/docs/software-engineering/product-interview-durable-generation-architecture) for scoped retry identity and uncertain external outcomes. An event's delivery guarantee cannot enforce this inventory invariant by itself. Hotel date ranges need an additional no-overlap constraint; locking one existing row does not establish that missing or overlapping intervals are protected.\n\nComplete the [Reservation Boundary Checkpoint](/practice/system-design/reservation-boundary-checkpoint). Keep the policy receipt, returned rows and final states together when reviewing a design.",
+      "plainText": "Write the policy before choosing a queue In this original scenario, 200 eligible accounts compete for 10 units. Choose a policy: randomize accounts present before the opening deadline, then append later arrivals. State how eligibility, one active place per account, quantity limits, accessibility and appeals work. Audit allocation outcomes under that policy. An account is not proof of one human. Signed, short-lived, buyer-bound admission tokens protect a particular session; they do not solve identity fraud or guarantee equal opportunity. Queue order is a product decision. Inventory ownership and checkout capacity are separate correctness and load constraints. Admit work within a measured capacity budget and bound queue age. A queue that grows forever cannot preserve a promised checkout deadline. Use the scaling worksheet to compare admission rate with the actual downstream constraint. Give one owner authority over a transition For an individual inventory unit, define available → held → sold, with held → available on expiry. An accepted hold records the buyer, an opaque hold ID, an expiry and a version. A transaction must claim an available unit and persist the hold together. Check the actual returned rows; a prior availability read is not an allocation. Completion and expiry must conditionally update the current state, hold identity and version. Completion also checks the authenticated buyer and the chosen expiry policy. Every accepted transition advances the version. This prevents an old timer or payment callback from overwriting a newer reservation. Keep transactions short. PostgreSQL row locks last until the transaction ends and can block competing writers. Do not hold one open while a person fills a form or a payment service responds. Persist the hold, commit, then coordinate the external operation through durable identity and reconciliation. Observe what SKIP LOCKED actually promises Use only a disposable PostgreSQL database for this lab. The table and fixed buyer/hold strings are illustrative; they are not a production schema or secure tokens. Integer expiry values are simulated clock ticks, not wall-clock timestamps. Create the fixture once: CREATE TABLE lab_inventory ( item_id integer PRIMARY KEY, state text NOT NULL CHECK (state IN ('available', 'held', 'sold')), hold_id text, buyer text, expires_at integer, version bigint NOT NULL DEFAULT 0 ); INSERT INTO lab_inventory (item_id, state) VALUES (1, 'available'), (2, 'available'); In session A, run BEGIN;, then lock item 1 and leave the transaction open: SELECT item_id FROM lab_inventory WHERE item_id = 1 FOR UPDATE; In session B with autocommit enabled, execute this claim: WITH chosen AS ( SELECT item_id FROM lab_inventory WHERE state = 'available' ORDER BY item_id FOR UPDATE SKIP LOCKED LIMIT 1 ) UPDATE lab_inventory AS inventory SET state = 'held', hold_id = 'hold-b', buyer = 'b', expires_at = 180, version = inventory.version + 1 FROM chosen WHERE inventory.item_id = chosen.item_id RETURNING inventory.item_id; Expected: B claims item 2 without waiting for A. Repeat the claim while A still holds its lock: B returns no row. That means no matching row could be acquired by this statement, not that the inventory is sold out. Roll back A, then B can read item 1 as available. PostgreSQL's SELECT contract permits skipping locked rows for queue-like consumers and warns that this produces an inconsistent view. The row lock belongs inside the selection CTE. ORDER BY gives a selection order among eligible rows; skipping a busy row does not enforce strict FIFO or the waiting-room fairness policy. Trace expiry against a late result Continue the original fixture on item 2: | Step | Required predicate and observed transition | | --- | --- | | At tick 180, expire B | Item 2 is held by hold-b, version 1, with expires_at <= 180; release it and advance to version 2 | | Reserve it for A | State is available; write hold-a, buyer a, expiry 360 and version 3 | | B's payment result arrives at tick 181 | B's old hold/version cannot change A's current reservation; return no updated row | | A completes at tick 200 | Current hold-a, buyer a, version 3 and expiry strictly greater than 200; sell and advance to version 4 | | An old expiry task arrives at tick 400 | State is sold and version has changed; it cannot release the unit | Use the same atomic guard for B's late completion; do not check and then write in separate transactions: UPDATE lab_inventory SET state = 'sold', version = version + 1 WHERE item_id = 2 AND state = 'held' AND hold_id = 'hold-b' AND buyer = 'b' AND version = 1 AND expires_at > 181 RETURNING item_id; Under this chosen policy, completion at the exact expiry tick fails and expiry is eligible. Another policy is possible, but it needs one authoritative rule and race tests. A zero-row completion does not undo an external charge: record that result and reconcile through the provider's supported cancellation, refund or manual-review path. Never quietly sell A's unit to B. Read durable generation and revenue safety for scoped retry identity and uncertain external outcomes. An event's delivery guarantee cannot enforce this inventory invariant by itself. Hotel date ranges need an additional no-overlap constraint; locking one existing row does not establish that missing or overlapping intervals are protected. Complete the Reservation Boundary Checkpoint. Keep the policy receipt, returned rows and final states together when reviewing a design.",
+      "headings": [
+        {
+          "id": "write-the-policy-before-choosing-a-queue",
+          "depth": 2,
+          "text": "Write the policy before choosing a queue"
+        },
+        {
+          "id": "give-one-owner-authority-over-a-transition",
+          "depth": 2,
+          "text": "Give one owner authority over a transition"
+        },
+        {
+          "id": "observe-what-skip-locked-actually-promises",
+          "depth": 2,
+          "text": "Observe what SKIP LOCKED actually promises"
+        },
+        {
+          "id": "trace-expiry-against-a-late-result",
+          "depth": 2,
+          "text": "Trace expiry against a late result"
+        }
+      ],
+      "mermaidBlocks": [],
+      "contentHash": "1b05a73d115bce8b66a49b20bd76dd2b7f731389cca3c1d185d97994cab29b0e",
+      "readingMinutes": 4
     },
     {
       "title": "Scaling Decisions — Measure The Constraint First",
@@ -12121,12 +12246,42 @@
               "slug": "programming/runtime-boundary-cloze"
             }
           ]
+        },
+        {
+          "slug": "durable-retries",
+          "title": "Durable Retries",
+          "summary": "Run duplicate, crash-point and lost-response checks against a local atomic receipt.",
+          "nodes": [
+            {
+              "kind": "document",
+              "slug": "software-engineering/product-interview-durable-generation-architecture"
+            },
+            {
+              "kind": "exercise",
+              "slug": "software-engineering/durable-retry-lab-checkpoint"
+            }
+          ]
+        },
+        {
+          "slug": "reservation-boundaries",
+          "title": "Reservation Boundaries",
+          "summary": "Separate fair admission, inventory ownership and uncertain external outcomes.",
+          "nodes": [
+            {
+              "kind": "document",
+              "slug": "system-design/fair-admission-and-reservations"
+            },
+            {
+              "kind": "exercise",
+              "slug": "system-design/reservation-boundary-checkpoint"
+            }
+          ]
         }
       ],
       "id": "b4f512be8f33",
       "route": "/paths/backend-engineer-readiness",
       "sourcePath": "content/learning-paths/backend-engineer-readiness.json",
-      "contentHash": "3992b80f0dae4989598abdad7f4fea0cf118c6900a58abbff30cd928a8b5df87"
+      "contentHash": "47ca4b6fb8e0be71d1d3c8f69210195f97801296e15c1cbae27f12f629f847e3"
     },
     {
       "slug": "breadth-first-and-depth-first-search",
@@ -14708,12 +14863,27 @@
               "slug": "system-design/api-boundary-checkpoint"
             }
           ]
+        },
+        {
+          "slug": "reservation-boundaries",
+          "title": "Reservation Boundaries",
+          "summary": "Trace atomic inventory claims, expiry and late completion without inventing queue guarantees.",
+          "nodes": [
+            {
+              "kind": "document",
+              "slug": "system-design/fair-admission-and-reservations"
+            },
+            {
+              "kind": "exercise",
+              "slug": "system-design/reservation-boundary-checkpoint"
+            }
+          ]
         }
       ],
       "id": "07569d83aba4",
       "route": "/paths/system-design-fundamentals",
       "sourcePath": "content/learning-paths/system-design-fundamentals.json",
-      "contentHash": "1ddd7d65822dc2786c42f452f61553deaf437a025f318e9f7eb1c89885ff3012"
+      "contentHash": "e6fde6700b477e6fcc0d35f59b070c72f59b4b174b28f9e0655bee4e14019fb0"
     }
   ],
   "exercises": [
@@ -31115,6 +31285,123 @@
       "contentHash": "ceae32b04d6ee0c326c6229780be34680d0b56dbb24fa58e7a1f4c49adf42393"
     },
     {
+      "slug": "software-engineering/durable-retry-lab-checkpoint",
+      "title": "Durable Retry Lab Checkpoint",
+      "documentSlug": "software-engineering/product-interview-durable-generation-architecture",
+      "concept": "Durable Operations",
+      "difficulty": "senior",
+      "tags": [
+        "idempotency",
+        "concurrency"
+      ],
+      "status": "published",
+      "sourceRefs": [
+        "rfc-http-idempotency",
+        "stripe-idempotent-requests",
+        "sqlite-transactions",
+        "python-sqlite-transactions"
+      ],
+      "type": "questionnaire",
+      "questions": [
+        {
+          "id": "atomic-receipt",
+          "prompt": "The fixture raises before its transaction commits. Which state must you inspect before a retry?",
+          "explanation": "The balance and receipt belong to one transaction. Either split result leaves a crash gap. Inspect pre-retry state; a later retry alone can conceal the defect.",
+          "kind": "choice",
+          "options": [
+            {
+              "id": "answer",
+              "label": "Neither the debit nor its receipt committed.",
+              "isCorrect": true
+            },
+            {
+              "id": "alternative-one",
+              "label": "The debit committed, but the receipt can be added by the retry.",
+              "isCorrect": false
+            },
+            {
+              "id": "alternative-two",
+              "label": "The receipt committed while the debit rolled back.",
+              "isCorrect": false
+            }
+          ]
+        },
+        {
+          "id": "lost-response",
+          "prompt": "A transaction committed its debit and receipt, then its response was lost. What does the retry need?",
+          "explanation": "The lost response does not prove rollback. Reusing the authorized scoped identity recovers the result in this fixture; a fresh key or repeating the effect can charge twice.",
+          "kind": "choice",
+          "options": [
+            {
+              "id": "answer",
+              "label": "The same scoped operation identity and a matching request; return its stored result.",
+              "isCorrect": true
+            },
+            {
+              "id": "alternative-one",
+              "label": "A fresh key, because a missing response proves the first debit failed.",
+              "isCorrect": false
+            },
+            {
+              "id": "alternative-two",
+              "label": "A new debit followed by overwriting the original receipt.",
+              "isCorrect": false
+            }
+          ]
+        },
+        {
+          "id": "stored-result",
+          "prompt": "The first operation returned balance 90; later operations left balance 70. What should its idempotent replay return?",
+          "explanation": "A replay recovers the original operation result. It does not promise the current state of a mutable resource. Neither changing the response into an unrelated query nor repeating the debit satisfies this fixture.",
+          "kind": "choice",
+          "options": [
+            {
+              "id": "answer",
+              "label": "Its stored result of 90; current balance is a separate query.",
+              "isCorrect": true
+            },
+            {
+              "id": "alternative-one",
+              "label": "70, because every replay must be a current-balance query.",
+              "isCorrect": false
+            },
+            {
+              "id": "alternative-two",
+              "label": "A second debit so its response differs from the first.",
+              "isCorrect": false
+            }
+          ]
+        },
+        {
+          "id": "local-boundary",
+          "prompt": "Two SQLite writers pass the lab. What does that establish?",
+          "explanation": "The original lab uses one local database and serialized SQLite writers. It makes no network calls and proves neither an external payment boundary nor another database’s concurrency or throughput.",
+          "kind": "choice",
+          "options": [
+            {
+              "id": "answer",
+              "label": "These local atomicity and retry cases pass; provider effects and database throughput need separate evidence.",
+              "isCorrect": true
+            },
+            {
+              "id": "alternative-one",
+              "label": "An external payment is now part of the SQLite transaction.",
+              "isCorrect": false
+            },
+            {
+              "id": "alternative-two",
+              "label": "PostgreSQL and a distributed queue now guarantee end-to-end exactly-once effects.",
+              "isCorrect": false
+            }
+          ]
+        }
+      ],
+      "id": "71f8ebaa79cd",
+      "route": "/practice/software-engineering/durable-retry-lab-checkpoint",
+      "sourcePath": "content/exercises/software-engineering/durable-retry-lab-checkpoint.json",
+      "contentHash": "89ad1155cce9d26927466d7e174a53615d5edce786e254f8aeeddec3f471acb3"
+    },
+    {
       "slug": "software-engineering/observability-signal-roles",
       "title": "Observability Signal Roles",
       "documentSlug": "software-engineering/observability-signals",
@@ -31875,6 +32162,121 @@
       "route": "/practice/system-design/cache-product-contract",
       "sourcePath": "content/exercises/system-design/cache-product-contract.json",
       "contentHash": "ab92b19965e7f85e3d3833d46fa3ed6b212e85a9b0a0b0dd0630308934723f98"
+    },
+    {
+      "slug": "system-design/reservation-boundary-checkpoint",
+      "title": "Reservation Boundary Checkpoint",
+      "documentSlug": "system-design/fair-admission-and-reservations",
+      "concept": "Durable Operations",
+      "difficulty": "practitioner",
+      "tags": [
+        "idempotency",
+        "concurrency"
+      ],
+      "status": "published",
+      "sourceRefs": [
+        "postgresql-17-locking",
+        "postgresql-17-select"
+      ],
+      "type": "questionnaire",
+      "questions": [
+        {
+          "id": "skip-result",
+          "prompt": "SKIP LOCKED returns no row while an available item is locked elsewhere. What can the service conclude?",
+          "explanation": "The statement skips locked rows and does not expose a complete availability view. Neither permanent inventory exhaustion nor waiting-room fairness follows from an empty result.",
+          "kind": "choice",
+          "options": [
+            {
+              "id": "answer",
+              "label": "No matching row was acquired by that statement; it cannot infer sold out.",
+              "isCorrect": true
+            },
+            {
+              "id": "alternative-one",
+              "label": "Every unit has been sold permanently.",
+              "isCorrect": false
+            },
+            {
+              "id": "alternative-two",
+              "label": "The database proves strict first-come-first-served admission.",
+              "isCorrect": false
+            }
+          ]
+        },
+        {
+          "id": "identity",
+          "prompt": "A waiting room limits accounts to one signed admission token each. What remains unresolved?",
+          "explanation": "A signature protects a token’s integrity under its design, not the uniqueness of a person. Identity policy still matters, and inventory needs its own atomic transition.",
+          "kind": "choice",
+          "options": [
+            {
+              "id": "answer",
+              "label": "Eligibility and abuse policy; one account does not prove one legitimate human.",
+              "isCorrect": true
+            },
+            {
+              "id": "alternative-one",
+              "label": "Cryptographic signatures guarantee that every account belongs to a different human.",
+              "isCorrect": false
+            },
+            {
+              "id": "alternative-two",
+              "label": "Inventory ownership is automatically correct without a transaction.",
+              "isCorrect": false
+            }
+          ]
+        },
+        {
+          "id": "late-payment",
+          "prompt": "B’s hold expired; A now owns the unit. B’s external payment succeeds late. What should completion do?",
+          "explanation": "The current hold/version guards protect A’s ownership. They do not undo an external charge. Reconciliation or compensation follows the provider and product contract; last-write-wins is unsafe.",
+          "kind": "choice",
+          "options": [
+            {
+              "id": "answer",
+              "label": "Reject the stale inventory transition and record/reconcile B’s payment outcome.",
+              "isCorrect": true
+            },
+            {
+              "id": "alternative-one",
+              "label": "Sell A’s held unit to B because payment delivery arrived last.",
+              "isCorrect": false
+            },
+            {
+              "id": "alternative-two",
+              "label": "Ignore the external result because a zero-row update refunded it automatically.",
+              "isCorrect": false
+            }
+          ]
+        },
+        {
+          "id": "expiry-boundary",
+          "prompt": "The chosen rule permits completion only while expires_at is strictly greater than now. At the exact expiry tick, what applies?",
+          "explanation": "Under this explicit boundary, equality fails the completion predicate and satisfies expiry’s time predicate. State, identity and version still determine whether an update can commit. Both transitions cannot independently own the same unit.",
+          "kind": "choice",
+          "options": [
+            {
+              "id": "answer",
+              "label": "Completion is ineligible; expiry may win the guarded transition.",
+              "isCorrect": true
+            },
+            {
+              "id": "alternative-one",
+              "label": "Both completion and expiry must commit independently.",
+              "isCorrect": false
+            },
+            {
+              "id": "alternative-two",
+              "label": "Completion always wins regardless of the database’s current hold version.",
+              "isCorrect": false
+            }
+          ]
+        }
+      ],
+      "id": "3c1185590fec",
+      "route": "/practice/system-design/reservation-boundary-checkpoint",
+      "sourcePath": "content/exercises/system-design/reservation-boundary-checkpoint.json",
+      "contentHash": "72c9eb1a7348c2dd7dc2b5c61fc9c083173ade5733a499ea7fd8bb5428611ac0"
     },
     {
       "slug": "system-design/scaling-decision-checkpoint",
@@ -156368,7 +156770,7 @@
     {
       "name": "System Design",
       "slug": "system-design",
-      "documentCount": 5,
+      "documentCount": 6,
       "difficulties": [
         "foundation",
         "practitioner",
@@ -156379,6 +156781,7 @@
         "Caching",
         "Capacity And Tradeoffs",
         "Capacity planning",
+        "Concurrency And Reservations",
         "Data flow"
       ]
     }

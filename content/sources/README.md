@@ -22,3 +22,5 @@ Interview questions can declare `sourceRefs`, validated at build time and requir
 `neural-computation-practice.json` records the author-maintained Understanding Deep Learning notebooks at a verified commit and official PyTorch autograd documentation. These are references for an original gradient-check companion, not copied book chapters or notebook implementations.
 
 `system-design-decision-practice.json` anchors capacity and API-boundary exercises to Google SRE, PostgreSQL, MDN, WHATWG Fetch and OWASP primary material. Example workloads are original assumptions, not provider measurements.
+
+`durable-retry-and-reservations.json` links HTTP retry semantics, a provider-specific idempotency contract, Python/SQLite transaction control and PostgreSQL 17 locking/selection documentation. The labs use fictional credits and disposable inventory; no external payment or production measurement is implied.
