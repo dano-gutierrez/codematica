@@ -29,8 +29,10 @@ test("@regression @playground starts one preview, runs edits, logs interactions,
   await expect(page.getByTestId("web-playground").locator("iframe")).toHaveCount(1);
   await editApp(page);
   await expect(preview.getByRole("heading", { name: "Dynamic board", exact: true })).toBeVisible();
+  const connectedFrame = await page.getByTestId("web-playground").locator("iframe").elementHandle();
   await page.getByTestId("web-playground-run").click();
   await expect(preview.getByRole("button", { name: "Edited counter 7" })).toBeVisible({ timeout: 45_000 });
+  expect(await connectedFrame?.evaluate((frame) => frame.isConnected)).toBe(true);
   await preview.getByRole("button", { name: "Edited counter 7" }).click();
   await expect(preview.getByRole("button", { name: "Edited counter 8" })).toBeVisible();
   await page.getByText("Console", { exact: true }).click();
