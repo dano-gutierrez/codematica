@@ -47,6 +47,38 @@
       "url": "https://www.postgresql.org/docs/17/sql-select.html",
       "attribution": "PostgreSQL documentation. Queue-like row selection and the limits of skipping locked rows.",
       "lastVerifiedAt": "2026-10-03"
+    },
+    {
+      "id": "postgresql-17-ranges",
+      "title": "PostgreSQL 17 \u2014 Range Types",
+      "provider": "PostgreSQL",
+      "url": "https://www.postgresql.org/docs/17/rangetypes.html",
+      "attribution": "PostgreSQL 17 documentation. Date-range bounds and overlap constraints; room-date examples in the companion are original.",
+      "lastVerifiedAt": "2026-10-03"
+    },
+    {
+      "id": "postgresql-17-btree-gist",
+      "title": "PostgreSQL 17 \u2014 btree_gist",
+      "provider": "PostgreSQL",
+      "url": "https://www.postgresql.org/docs/17/btree-gist.html",
+      "attribution": "PostgreSQL 17 documentation. Scalar operator classes for a multicolumn GiST exclusion constraint.",
+      "lastVerifiedAt": "2026-10-03"
+    },
+    {
+      "id": "postgresql-17-exclusion",
+      "title": "PostgreSQL 17 \u2014 Exclusion Constraints",
+      "provider": "PostgreSQL",
+      "url": "https://www.postgresql.org/docs/17/sql-createtable.html#SQL-CREATETABLE-EXCLUDE",
+      "attribution": "PostgreSQL 17 CREATE TABLE contract. Partial exclusion applies to stored lifecycle state.",
+      "lastVerifiedAt": "2026-10-03"
+    },
+    {
+      "id": "postgresql-17-date-functions",
+      "title": "PostgreSQL 17 \u2014 Date And Time Functions",
+      "provider": "PostgreSQL",
+      "url": "https://www.postgresql.org/docs/17/functions-datetime.html",
+      "attribution": "PostgreSQL 17 documentation. isfinite checks explicit infinite date values separately from unbounded ranges.",
+      "lastVerifiedAt": "2026-10-03"
     }
   ]
 }

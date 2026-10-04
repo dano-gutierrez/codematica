@@ -27,6 +27,8 @@ Interview questions can declare `sourceRefs`, validated at build time and requir
 
 `durable-retry-and-reservations.json` links HTTP retry semantics, a provider-specific idempotency contract, Python/SQLite transaction control and PostgreSQL 17 locking/selection documentation. The labs use fictional credits and disposable inventory; no external payment or production measurement is implied.
 
+The same catalog includes PostgreSQL 17 ranges, `btree_gist`, partial exclusion and finite-date references for the room-date extension. Preserve lifecycle and checkout-exclusive boundaries; an overlap constraint does not implement authentication, expiry scheduling or payment compensation.
+
 `production-case-readings.json` attributes the Discord 2023 and Shopify 2026 engineering reports. They extend existing cache and reservation lessons with original review prompts; reported production outcomes are not local benchmarks or guarantees for another database engine.
 
 `routing-and-delivery-boundaries.json` anchors routing and durable-effect review to NGINX directives, Kafka 4.1 design and Redis Pub/Sub/XACK/XAUTOCLAIM contracts. Preserve version/edition limits and distinguish readable crash traces from real proxy or broker experiments.

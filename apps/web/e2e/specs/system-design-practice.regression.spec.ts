@@ -50,6 +50,8 @@ const cases = [
       "Eligibility and abuse policy; one account does not prove one legitimate human.",
       "Reject the stale inventory transition and record/reconcile B’s payment outcome.",
       "Completion is ineligible; expiry may win the guarded transition.",
+      "Enforce overlap exclusion for the same room; adjacent half-open stays may coexist.",
+      "Commit the guarded transition to expired; elapsed time alone does not remove the hold from the constraint.",
     ],
   },
 ];
@@ -60,17 +62,22 @@ for (const scenario of cases) {
     await page.getByTestId(`path-node-document-system-design-${scenario.slug}`).click();
     await expect(page.getByRole("heading", { level: 1 })).toHaveText(scenario.title);
     await expect(page.getByTestId("source-references")).toContainText(scenario.source);
+    if (scenario.slug === "fair-admission-and-reservations") {
+      await expect(page.getByRole("heading", {name:"Protect room dates with an overlap constraint",exact:true})).toBeVisible();
+      await expect(page.getByTestId("source-references")).toContainText("PostgreSQL 17 — Range Types");
+      await expect(page.getByTestId("source-references")).toContainText("PostgreSQL 17 — Exclusion Constraints");
+    }
     await page.getByTestId("document-next-node").click();
     await expect(page).toHaveURL(new RegExp(`${scenario.checkpoint}\\?path=system-design-fundamentals`));
     await expect(page.getByTestId("questionnaire-session")).toHaveAttribute("data-ready", "true");
     const correctAnswer = scenario.answers.map(answer => page.getByRole("radio", { name: answer, exact: true })).reduce((a, b) => a.or(b));
     for (let index = 0; index < scenario.answers.length; index++) {
-      await expect(page.getByText(`Question ${index + 1} of 4`, { exact: true })).toBeVisible();
+      await expect(page.getByText(`Question ${index + 1} of ${scenario.answers.length}`, { exact: true })).toBeVisible();
       await expect(correctAnswer).toHaveCount(1);
       await correctAnswer.check();
       await page.getByRole("button", { name: "Check answer", exact: true }).click();
       await expect(page.getByText("Correct", { exact: true })).toBeVisible();
-      await page.getByRole("button", { name: index === 3 ? "Finish" : "Next", exact: true }).click();
+      await page.getByRole("button", { name: index === scenario.answers.length - 1 ? "Finish" : "Next", exact: true }).click();
     }
     await expect(page.getByText("Score 100%", { exact: true })).toBeVisible();
     if (scenario.next) await expect(page.getByRole("link", { name: "Next activity" })).toHaveAttribute("href", scenario.next);

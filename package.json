@@ -26,6 +26,7 @@
     "test:mobile": "npm run test -w @codematica/mobile",
     "test:mobile:coverage": "npm run test -w @codematica/mobile -- --coverage --runInBand",
     "test:db": "supabase test db",
+    "test:reservation:sql": "python3 -I -W error::ResourceWarning scripts/content/verify-reservation-ranges.py",
     "mobile:dev": "npm run dev -w @codematica/mobile",
     "mobile:android": "npm run android -w @codematica/mobile",
     "mobile:ios": "npm run ios -w @codematica/mobile",

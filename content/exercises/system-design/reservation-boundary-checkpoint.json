@@ -12,7 +12,11 @@
   "status": "published",
   "sourceRefs": [
     "postgresql-17-locking",
-    "postgresql-17-select"
+    "postgresql-17-select",
+    "postgresql-17-ranges",
+    "postgresql-17-btree-gist",
+    "postgresql-17-exclusion",
+    "postgresql-17-date-functions"
   ],
   "questions": [
     {
@@ -106,6 +110,52 @@
         }
       ],
       "explanation": "Under this explicit boundary, equality fails the completion predicate and satisfies expiry\u2019s time predicate. State, identity and version still determine whether an update can commit. Both transitions cannot independently own the same unit."
+    },
+    {
+      "id": "room-overlap",
+      "kind": "choice",
+      "prompt": "Two unequal stays overlap for room 7. What protects allocation while permitting a checkout and check-in on the same day?",
+      "options": [
+        {
+          "id": "answer",
+          "label": "Enforce overlap exclusion for the same room; adjacent half-open stays may coexist.",
+          "isCorrect": true
+        },
+        {
+          "id": "alternative-one",
+          "label": "UNIQUE on room and range rejects every possible overlap.",
+          "isCorrect": false
+        },
+        {
+          "id": "alternative-two",
+          "label": "Locking a matching row always protects the empty availability result.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "Range equality is weaker than overlap exclusion. With checkout-exclusive dates, adjacent stays do not overlap. An empty lookup has no matching booking row to lock; allocation needs the database invariant, not a prior read."
+    },
+    {
+      "id": "room-expiry",
+      "kind": "choice",
+      "prompt": "The clock passes a held row\u2019s expiry tick. The exclusion predicate includes held and confirmed rows. When can a competing overlapping hold be accepted?",
+      "options": [
+        {
+          "id": "answer",
+          "label": "Commit the guarded transition to expired; elapsed time alone does not remove the hold from the constraint.",
+          "isCorrect": true
+        },
+        {
+          "id": "alternative-one",
+          "label": "The database removes the row automatically as soon as time passes.",
+          "isCorrect": false
+        },
+        {
+          "id": "alternative-two",
+          "label": "Any late payment may reactivate the old hold over the new one.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "The partial constraint depends on stored state. Time passing does not commit expiry. State, hold identity and version must guard the release; reactivation is checked for overlap, and the constraint does not settle an external charge."
     }
   ]
 }

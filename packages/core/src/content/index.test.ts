@@ -16,6 +16,24 @@ import {
 } from ".";
 
 describe("generated content index", () => {
+  it("extends reservation practice with room-date overlap and explicit expiry", () => {
+    const document = getDocumentBySlug("system-design/fair-admission-and-reservations");
+    const quiz = getExerciseBySlug("system-design/reservation-boundary-checkpoint");
+    expect(document?.headings.map(h => h.id)).toContain("protect-room-dates-with-an-overlap-constraint");
+    const sources = ["postgresql-17-ranges", "postgresql-17-btree-gist", "postgresql-17-exclusion", "postgresql-17-date-functions"];
+    expect(document?.sourceRefs).toEqual(expect.arrayContaining(sources));
+    if (quiz?.type !== "questionnaire") throw new Error("Reservation practice must remain a questionnaire");
+    expect(quiz.documentSlug).toBe(document?.slug);
+    expect(quiz.sourceRefs).toEqual(expect.arrayContaining(sources));
+    expect(quiz.questions.map(q => q.id)).toEqual(["skip-result", "identity", "late-payment", "expiry-boundary", "room-overlap", "room-expiry"]);
+    expect(quiz.questions.slice(4).map(q => q.kind === "choice" ? q.options.find(o => o.isCorrect)?.label : "wrong kind")).toEqual([
+      "Enforce overlap exclusion for the same room; adjacent half-open stays may coexist.",
+      "Commit the guarded transition to expired; elapsed time alone does not remove the hold from the constraint.",
+    ]);
+    for (const path of ["system-design-fundamentals", "backend-engineer-readiness"]) {
+      expect(getNextPathNodeRoute(path, {kind:"document", slug:document!.slug})).toBe(`/practice/system-design/reservation-boundary-checkpoint?path=${path}`);
+    }
+  });
   it("uses attributed curved kana models, including the full third-stroke loop of あ", () => {
     const a = getLanguageCharacterBySlug("japanese/hiragana/a")!;
     const loop = a.strokes[2]!.points;

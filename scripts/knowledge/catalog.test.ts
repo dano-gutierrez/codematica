@@ -11,6 +11,19 @@ beforeAll(async () => {
 function freshContent() { return structuredClone(validatedIndex); }
 
 describe("complete knowledge catalog", () => {
+  it("keeps room-date practice inside the existing reservation resource and paths", () => {
+    const graph = buildKnowledgeCatalog(freshContent());
+    const lesson = "document:system-design/fair-admission-and-reservations";
+    const quiz = "exercise:system-design/reservation-boundary-checkpoint";
+    expect(graph.resources.find(r => r.id === lesson)?.paths).toEqual(expect.arrayContaining(["path:system-design-fundamentals", "path:backend-engineer-readiness"]));
+    expect(graph.relationships).toContainEqual(expect.objectContaining({source:quiz,target:lesson,type:"assesses",provenance:"explicit"}));
+    for (const source of ["postgresql-17-ranges", "postgresql-17-btree-gist", "postgresql-17-exclusion", "postgresql-17-date-functions"]) {
+      for (const resource of [lesson, quiz]) {
+        expect(graph.relationships).toContainEqual(expect.objectContaining({source:resource,target:`source:${source}`,type:"cites",provenance:"explicit"}));
+      }
+    }
+    expect(graph.unresolved.some(r => [lesson, quiz].includes(r.resourceId))).toBe(false);
+  });
   it("keeps routing order, prerequisite and delivery citations explicit", () => {
     const graph = buildKnowledgeCatalog(freshContent());
     const lesson = "document:system-design/routing-decision-lab";

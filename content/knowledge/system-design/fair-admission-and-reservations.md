@@ -1,14 +1,14 @@
 ---
 title: Fair Admission And Reservations — Separate Policy From Ownership
 slug: system-design/fair-admission-and-reservations
-summary: Define a waiting-room policy, claim inventory atomically and trace expiry against a late payment result without selling another buyer's reservation.
+summary: Define admission policy, claim inventory atomically, exclude overlapping room dates and trace expiry without selling another buyer's reservation.
 track: System Design
 topic: Concurrency And Reservations
 difficulty: practitioner
 tags: [reservations, concurrency, admission-control, idempotency, postgres]
 prerequisites: [software-engineering/product-interview-durable-generation-architecture, system-design/scaling-decision-worksheet]
 diagramRefs: []
-sourceRefs: [postgresql-17-locking, postgresql-17-select, shopify-inventory-reservations-2026]
+sourceRefs: [postgresql-17-locking, postgresql-17-select, shopify-inventory-reservations-2026, postgresql-17-ranges, postgresql-17-btree-gist, postgresql-17-exclusion, postgresql-17-date-functions]
 status: published
 ---
 
@@ -101,6 +101,56 @@ RETURNING item_id;
 
 Under this chosen policy, completion at the exact expiry tick fails and expiry is eligible. Another policy is possible, but it needs one authoritative rule and race tests. A zero-row completion does not undo an external charge: record that result and reconcile through the provider's supported cancellation, refund or manual-review path. Never quietly sell A's unit to B.
 
-Read [durable generation and revenue safety](/docs/software-engineering/product-interview-durable-generation-architecture) for scoped retry identity and uncertain external outcomes. An event's delivery guarantee cannot enforce this inventory invariant by itself. Hotel date ranges need an additional no-overlap constraint; locking one existing row does not establish that missing or overlapping intervals are protected.
+Read [durable generation and revenue safety](/docs/software-engineering/product-interview-durable-generation-architecture) for scoped retry identity and uncertain external outcomes. An event's delivery guarantee cannot enforce this inventory invariant by itself.
+
+## Protect room dates with an overlap constraint
+
+Two guests request room 7 for October 10–12 and October 11–13. Locking a previously found booking cannot protect an empty search result. Define check-out as exclusive: a stay ending October 12 may precede one starting that day.
+
+In a fresh disposable PostgreSQL 17 database, create this original fixture. The fixed hold IDs and simulated expiry ticks are lab inputs, not an authentication or payment schema.
+
+```sql
+CREATE EXTENSION btree_gist;
+CREATE TABLE lab_room_holds (
+  hold_id text PRIMARY KEY,
+  room_id integer NOT NULL,
+  stay daterange NOT NULL CHECK (
+    NOT isempty(stay) AND NOT lower_inf(stay) AND NOT upper_inf(stay)
+    AND isfinite(lower(stay)) AND isfinite(upper(stay))
+  ),
+  state text NOT NULL CHECK (state IN ('held', 'confirmed', 'expired')),
+  expires_tick integer NOT NULL,
+  version integer NOT NULL DEFAULT 0,
+  EXCLUDE USING gist (room_id WITH =, stay WITH &&)
+    WHERE (state IN ('held', 'confirmed'))
+);
+```
+
+[Range overlap](https://www.postgresql.org/docs/17/rangetypes.html) differs from equality: `UNIQUE (room_id, stay)` would permit unequal but overlapping stays. [btree_gist](https://www.postgresql.org/docs/17/btree-gist.html) supplies the integer operator class. The [partial exclusion](https://www.postgresql.org/docs/17/sql-createtable.html#SQL-CREATETABLE-EXCLUDE) checks held and confirmed rows. Range checks reject empty, unbounded and [non-finite dates](https://www.postgresql.org/docs/17/functions-datetime.html). `daterange` normalizes to `[)`; this lab uses calendar dates, not timestamp/time-zone scheduling.
+
+In session A, run `BEGIN;`, then the following insert and leave the transaction open:
+
+```sql
+INSERT INTO lab_room_holds (hold_id, room_id, stay, state, expires_tick)
+VALUES ('range-a', 7, daterange('2026-10-10', '2026-10-12', '[)'), 'held', 100)
+RETURNING hold_id;
+```
+
+In session B, use autocommit and insert `range-b`, room 7, October 11–13 with state `held` and expiry 200. B may wait for A. Commit A: B fails with exclusion violation `23P01`. Start again from an empty fixture and roll back A instead: B succeeds. The committed database outcome decides ownership; browser click order and an availability preview do not.
+
+Also try an adjacent stay, the same dates in a different room, and an overlapping `confirmed` row. The first two may coexist; the third must conflict. Keep returned rows, SQLSTATE and final contents as evidence.
+
+For the expiry experiment, reset the fixture and commit A's insert. Advancing the simulated clock to 100 changes no stored row. An overlapping hold still fails until this guarded transition commits:
+
+```sql
+UPDATE lab_room_holds SET state = 'expired', version = version + 1
+WHERE hold_id = 'range-a' AND state = 'held' AND version = 0
+  AND expires_tick <= 100
+RETURNING hold_id;
+```
+
+Now B can acquire the interval. Trying to reactivate A while B owns overlapping dates must fail the same constraint. In a service, expiry/completion also needs authenticated ownership and current-version checks from the earlier section. Never remove a newer hold after a stale timer or payment result.
+
+Run `npm run test:reservation:sql` in the repository after following `scripts/content/README.md`; it verifies these canonical SQL fences in an isolated container. This proves the fixture's database boundaries, not an entire booking service. Payment capture, compensation, eligibility, capacity and fairness still need separate contracts and tests.
 
 Complete the [Reservation Boundary Checkpoint](/practice/system-design/reservation-boundary-checkpoint). Keep the policy receipt, returned rows and final states together when reviewing a design.

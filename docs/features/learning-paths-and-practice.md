@@ -203,7 +203,11 @@ Validate content-index freshness, parser/source relationships and questionnaire 
 
 ### Durable retries and reservations
 
-Backend Engineer Readiness adds Durable Retries and Reservation Boundaries after Production Judgment. The former reuses the existing product architecture lesson and its optional temporary-SQLite lab; the latter shares a new original lesson/checkpoint with System Design Fundamentals. Each supplementary checkpoint has four questions. The original Product Engineering path retains 18 questions. SQL/ Python are readable authored examples, with no new app execution surface.
+Backend Engineer Readiness adds Durable Retries and Reservation Boundaries after Production Judgment. The former reuses the existing product architecture lesson and its optional temporary-SQLite lab with four scored questions. Reservation practice shares a lesson and six-question checkpoint with System Design Fundamentals, including room-date overlap and explicit expiry. The original Product Engineering path retains 18 questions. SQL/Python are readable authored examples, with no new app execution surface.
+
+The room-date extension uses three original PostgreSQL 17 fences: partial GiST exclusion with bounded finite nonempty dates, a hold insertion, and a guarded expiry transition. Adjacent checkout-exclusive stays and different rooms may coexist; overlapping held/confirmed rows conflict. Stored state controls exclusion, so elapsed time alone does not release capacity. The constraint does not establish payment atomicity, fairness, timestamp/time-zone behavior or service authorization.
+
+Generated-content and graph tests preserve existing resource identity, both path memberships, exercise linkage and four new primary-source references. The browser regression scores all six questions. `npm run test:reservation:sql` verifies the canonical SQL in a pinned, disposable container, including concurrent commit/rollback, invalid fields and expiry guards. CI and release database lanes run it independently of the application database. Operating instructions are in `scripts/content/README.md`.
 
 ### Evidence-first agent handoffs
 
