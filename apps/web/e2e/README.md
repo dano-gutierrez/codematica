@@ -18,6 +18,8 @@ The durable matrix, CI schedules, and release contract live in `docs/features/au
 
 `playground.regression.spec.ts` verifies automatic startup, one runtime shared with the console, edited code execution, actual Reset output, and recovery with edits after a blocked hosted-runtime connection. Run it with `npx playwright test --config=apps/web/e2e/playwright.config.ts apps/web/e2e/specs/playground.regression.spec.ts`. It advances the browser clock for the connection deadline; it does not sleep or inject fake application state. Generated reports under `apps/web/e2e/` are excluded from lint, not deleted.
 
+Editor tests share `code-editor.ts`: choose CodeMirror's shortcut from the emulated browser platform, focus the editable textbox, replace the whole document, then assert its exact text before Run. An emulated iPhone uses Meta even on Linux. `scripts/testing/code-editor.test.ts` covers desktop, iOS, Android and touch-boundary cases. Each of the eight primary-route accessibility audits has its own default test budget and fresh page.
+
 ## Adaptive UI
 
 See `docs/features/adaptive-ui.md` for persistent phone navigation, desktop/iPad sidebars, design rules, and validation gaps. The adaptive UI reuses existing screens and feature logic. Navigation coverage lives in `AppHeader.test.tsx`, native `adaptive-navigation.test.tsx`, Playwright `adaptive-navigation.smoke.spec.ts` / `adaptive-layout.regression.spec.ts`, and Maestro `adaptive-navigation.yaml`.

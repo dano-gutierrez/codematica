@@ -91,6 +91,7 @@ Configure branch protection in the account: after the five PR jobs have complete
 - `desktop-chromium`: smoke journeys, `@playground` and `@notebook-catalog` regressions.
 - `mobile-webkit`: smoke journeys, `@playground` and `@notebook-catalog` regressions. Catalog coverage protects Safari's ruby annotation layout when romaji is hidden.
 - Playground regressions exercise a real hosted runtime and a controlled connection failure, including automatic startup, edit/run/reset, and recovery with drafts intact.
+- Editor fixtures select all using CodeMirror's emulated platform, then assert complete replacement before execution; iPhone WebKit uses Meta on Linux runners. Eight primary-route accessibility audits run independently with unchanged serious/critical checks and default per-test budgets.
 - Trace, screenshot, and video are retained only for failures. HTML/JUnit reports and failure evidence are uploaded by CI.
 
 ### Native Matrix
