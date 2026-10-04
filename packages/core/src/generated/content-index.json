@@ -5462,6 +5462,34 @@
       "contentHash": "da952d48ce45822980a21b22c2587a89cd9c800781fdcb509a3da30810d87228"
     },
     {
+      "id": "rfc-7009-revocation",
+      "title": "RFC 7009 — OAuth Token Revocation",
+      "provider": "IETF",
+      "url": "https://www.rfc-editor.org/rfc/rfc7009.html",
+      "attribution": "August 2013; sections 2.1–2.2.1 and 3. Token policy, propagation and response meanings. Selected passages only; no token server implemented or blanket redistribution license inferred.",
+      "lastVerifiedAt": "2026-10-04",
+      "upstream": {
+        "version": "RFC 7009",
+        "maturity": "published"
+      },
+      "sourcePath": "content/sources/token-revocation.json",
+      "contentHash": "c3a0877b6e2f0adb7ef288c04afb5ca4fd76450d21276719b859153e49ec2ea9"
+    },
+    {
+      "id": "rfc-9700-refresh",
+      "title": "RFC 9700 — Refresh Token Protection",
+      "provider": "IETF",
+      "url": "https://www.rfc-editor.org/rfc/rfc9700.html",
+      "attribution": "January 2025; sections 2.2.2 and 4.14. Public-client sender constraint or rotation/replay detection. Selected passages only; no token server implemented or blanket redistribution license inferred.",
+      "lastVerifiedAt": "2026-10-04",
+      "upstream": {
+        "version": "RFC 9700",
+        "maturity": "published"
+      },
+      "sourcePath": "content/sources/token-revocation.json",
+      "contentHash": "c3a0877b6e2f0adb7ef288c04afb5ca4fd76450d21276719b859153e49ec2ea9"
+    },
+    {
       "id": "rfc-http-idempotency",
       "title": "HTTP Semantics — Idempotent Methods",
       "provider": "RFC Editor",
@@ -5904,6 +5932,46 @@
       "lastVerifiedAt": "2026-10-04",
       "sourcePath": "content/sources/distributed-reading-reviews.json",
       "contentHash": "3be19b1501d700fd8771c7dc17243cbaeaedee9803b025e89bd3be057535e69d"
+    },
+    {
+      "id": "token-jwt-owasp",
+      "title": "OWASP — JWT Revocation And Denylist",
+      "provider": "OWASP",
+      "url": "https://github.com/OWASP/CheatSheetSeries/blob/6b6a66bae11c9e001c3576bcc3de55cc0dc5e449/cheatsheets/JSON_Web_Token_Cheat_Sheet.md",
+      "attribution": "OWASP contributors. Selected JWT denylist, identifier scope and malleability warning inspected at the pinned commit; no upstream code copied or executed.",
+      "license": {
+        "name": "CC-BY-SA-4.0",
+        "url": "https://github.com/OWASP/CheatSheetSeries/blob/6b6a66bae11c9e001c3576bcc3de55cc0dc5e449/LICENSE.md"
+      },
+      "lastVerifiedAt": "2026-10-04",
+      "upstream": {
+        "repository": "OWASP/CheatSheetSeries",
+        "ref": "master",
+        "commit": "6b6a66bae11c9e001c3576bcc3de55cc0dc5e449",
+        "maturity": "published"
+      },
+      "sourcePath": "content/sources/token-revocation.json",
+      "contentHash": "c3a0877b6e2f0adb7ef288c04afb5ca4fd76450d21276719b859153e49ec2ea9"
+    },
+    {
+      "id": "token-rest-owasp",
+      "title": "OWASP — REST Token Validation",
+      "provider": "OWASP",
+      "url": "https://github.com/OWASP/CheatSheetSeries/blob/6b6a66bae11c9e001c3576bcc3de55cc0dc5e449/cheatsheets/REST_Security_Cheat_Sheet.md",
+      "attribution": "OWASP contributors. Selected JWT verification and early session termination inspected at the pinned commit; no upstream code copied or executed.",
+      "license": {
+        "name": "CC-BY-SA-4.0",
+        "url": "https://github.com/OWASP/CheatSheetSeries/blob/6b6a66bae11c9e001c3576bcc3de55cc0dc5e449/LICENSE.md"
+      },
+      "lastVerifiedAt": "2026-10-04",
+      "upstream": {
+        "repository": "OWASP/CheatSheetSeries",
+        "ref": "master",
+        "commit": "6b6a66bae11c9e001c3576bcc3de55cc0dc5e449",
+        "maturity": "published"
+      },
+      "sourcePath": "content/sources/token-revocation.json",
+      "contentHash": "c3a0877b6e2f0adb7ef288c04afb5ca4fd76450d21276719b859153e49ec2ea9"
     },
     {
       "id": "udlbook-notebooks",
@@ -12412,15 +12480,19 @@
       "sourceRefs": [
         "web-cors-mdn",
         "web-fetch-standard",
-        "web-csrf-owasp"
+        "web-csrf-owasp",
+        "token-jwt-owasp",
+        "token-rest-owasp",
+        "rfc-7009-revocation",
+        "rfc-9700-refresh"
       ],
       "status": "published",
       "id": "3c209494ff7b",
       "route": "/docs/system-design/cors-csrf-and-authorization",
       "sourcePath": "content/knowledge/system-design/cors-csrf-and-authorization.md",
       "bodyPath": "content/knowledge/system-design/cors-csrf-and-authorization.md",
-      "markdown": "## Ask three questions about the request\n\nFor an API operation, separate transport from permission:\n\n1. Did the browser send the request?\n2. Can the calling page read the response?\n3. Does the server permit this authenticated actor to perform this operation on this object?\n\n[MDN's CORS guide](https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/CORS) describes browser-enforced response sharing. Some requests need a successful preflight; safelisted requests can be sent without one. A blocked response therefore does not establish that the server did nothing. CORS also does not restrict a server-to-server client in the same way.\n\n## Trace a concrete failure\n\nIn this original exercise, `app.example.test` operates a user's account API. The user opens another site while signed in. Assume the browser's actual cookie policy permits the relevant session cookie on the cross-site request; do not assume that for every browser or SameSite setting.\n\nThe other page makes a `fetch` POST with `credentials: \"include\"`, `Content-Type: application/x-www-form-urlencoded` and no other headers that require preflight. The API accepts the session cookie, changes a preference and returns a response without permitting that page's origin. The requesting script cannot read the response, but the preference can already have changed.\n\nDraw the timeline: request sent, cookie policy applied, server authentication, operation accepted, response sent, browser response-sharing check. Put the mutation at the server step. A browser console CORS error belongs to the response-reading observation and does not undo the preceding operation.\n\nThe [Fetch standard](https://fetch.spec.whatwg.org/#http-cors-protocol) specifies CORS request and response processing. Requests using methods or headers outside the safelist generally require preflight; successful preflight is still not authorization to a particular account object. Cached preflight results and the concrete request shape matter when interpreting a trace.\n\n## Place each protection at its boundary\n\n[OWASP's CSRF prevention guidance](https://cheatsheetseries.owasp.org/cheatsheets/Cross-Site_Request_Forgery_Prevention_Cheat_Sheet.html) addresses unwanted authenticated state changes. Use the framework's supported protection, appropriate CSRF tokens or supported origin/Fetch Metadata checks, with SameSite as part of the chosen defense. Keep state changes out of GET operations. A token design still needs correct validation and integration; an XSS flaw can undermine CSRF defenses.\n\nAuthentication establishes an actor. Authorization checks whether that actor may change the requested object and operation. A valid session or allowed origin does not grant ownership of every object ID. If a user changes `/accounts/own/preferences` to another account's identifier, the server must independently reject unauthorized access even from the legitimate app.\n\n| Observation | What it establishes | What it does not establish |\n| --- | --- | --- |\n| Preflight rejected | Browser cannot continue that preflighted request | Every other request shape is blocked |\n| Response blocked by CORS | That page cannot read the response through the checked browser API | No state change occurred |\n| Session authenticated | The server recognized an actor | The actor owns the requested object |\n| CSRF check passed | The request passed the chosen anti-forgery check | Object authorization or input validity |\n\n## Run a review exercise\n\nFor each of these cases, mark request-sent, response-readable and operation-authorized as separate observations:\n\n- A safelisted credentialed `fetch` POST accepted by the API, with a response blocked by CORS.\n- A custom-header request whose preflight fails before the state-changing request is sent.\n- An allowed-origin request with valid CSRF proof but another user's object ID.\n\nAcceptance: the first may mutate state despite unreadable response; the second does not send that guarded operation; the third still needs an object authorization rejection. State the cookie and request assumptions in your answer. Validate only with inert local fixtures or an explicitly authorized test environment, using server logs as well as browser observations.\n\nComplete the [API Boundary Checkpoint](/practice/system-design/api-boundary-checkpoint). When reviewing a diagram or security checklist, identify the exact boundary each mechanism protects before recommending it.",
-      "plainText": "Ask three questions about the request For an API operation, separate transport from permission: Did the browser send the request?Can the calling page read the response?Does the server permit this authenticated actor to perform this operation on this object? MDN's CORS guide describes browser-enforced response sharing. Some requests need a successful preflight; safelisted requests can be sent without one. A blocked response therefore does not establish that the server did nothing. CORS also does not restrict a server-to-server client in the same way. Trace a concrete failure In this original exercise, app.example.test operates a user's account API. The user opens another site while signed in. Assume the browser's actual cookie policy permits the relevant session cookie on the cross-site request; do not assume that for every browser or SameSite setting. The other page makes a fetch POST with credentials: \"include\", Content-Type: application/x-www-form-urlencoded and no other headers that require preflight. The API accepts the session cookie, changes a preference and returns a response without permitting that page's origin. The requesting script cannot read the response, but the preference can already have changed. Draw the timeline: request sent, cookie policy applied, server authentication, operation accepted, response sent, browser response-sharing check. Put the mutation at the server step. A browser console CORS error belongs to the response-reading observation and does not undo the preceding operation. The Fetch standard specifies CORS request and response processing. Requests using methods or headers outside the safelist generally require preflight; successful preflight is still not authorization to a particular account object. Cached preflight results and the concrete request shape matter when interpreting a trace. Place each protection at its boundary OWASP's CSRF prevention guidance addresses unwanted authenticated state changes. Use the framework's supported protection, appropriate CSRF tokens or supported origin/Fetch Metadata checks, with SameSite as part of the chosen defense. Keep state changes out of GET operations. A token design still needs correct validation and integration; an XSS flaw can undermine CSRF defenses. Authentication establishes an actor. Authorization checks whether that actor may change the requested object and operation. A valid session or allowed origin does not grant ownership of every object ID. If a user changes /accounts/own/preferences to another account's identifier, the server must independently reject unauthorized access even from the legitimate app. | Observation | What it establishes | What it does not establish | | --- | --- | --- | | Preflight rejected | Browser cannot continue that preflighted request | Every other request shape is blocked | | Response blocked by CORS | That page cannot read the response through the checked browser API | No state change occurred | | Session authenticated | The server recognized an actor | The actor owns the requested object | | CSRF check passed | The request passed the chosen anti-forgery check | Object authorization or input validity | Run a review exercise For each of these cases, mark request-sent, response-readable and operation-authorized as separate observations: A safelisted credentialed fetch POST accepted by the API, with a response blocked by CORS.A custom-header request whose preflight fails before the state-changing request is sent.An allowed-origin request with valid CSRF proof but another user's object ID. Acceptance: the first may mutate state despite unreadable response; the second does not send that guarded operation; the third still needs an object authorization rejection. State the cookie and request assumptions in your answer. Validate only with inert local fixtures or an explicitly authorized test environment, using server logs as well as browser observations. Complete the API Boundary Checkpoint. When reviewing a diagram or security checklist, identify the exact boundary each mechanism protects before recommending it.",
+      "markdown": "## Ask three questions about the request\n\nFor an API operation, separate transport from permission:\n\n1. Did the browser send the request?\n2. Can the calling page read the response?\n3. Does the server permit this authenticated actor to perform this operation on this object?\n\n[MDN's CORS guide](https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/CORS) describes browser-enforced response sharing. Some requests need a successful preflight; safelisted requests can be sent without one. A blocked response therefore does not establish that the server did nothing. CORS also does not restrict a server-to-server client in the same way.\n\n## Trace a concrete failure\n\nIn this original exercise, `app.example.test` operates a user's account API. The user opens another site while signed in. Assume the browser's actual cookie policy permits the relevant session cookie on the cross-site request; do not assume that for every browser or SameSite setting.\n\nThe other page makes a `fetch` POST with `credentials: \"include\"`, `Content-Type: application/x-www-form-urlencoded` and no other headers that require preflight. The API accepts the session cookie, changes a preference and returns a response without permitting that page's origin. The requesting script cannot read the response, but the preference can already have changed.\n\nDraw the timeline: request sent, cookie policy applied, server authentication, operation accepted, response sent, browser response-sharing check. Put the mutation at the server step. A browser console CORS error belongs to the response-reading observation and does not undo the preceding operation.\n\nThe [Fetch standard](https://fetch.spec.whatwg.org/#http-cors-protocol) specifies CORS request and response processing. Requests using methods or headers outside the safelist generally require preflight; successful preflight is still not authorization to a particular account object. Cached preflight results and the concrete request shape matter when interpreting a trace.\n\n## Place each protection at its boundary\n\n[OWASP's CSRF prevention guidance](https://cheatsheetseries.owasp.org/cheatsheets/Cross-Site_Request_Forgery_Prevention_Cheat_Sheet.html) addresses unwanted authenticated state changes. Use the framework's supported protection, appropriate CSRF tokens or supported origin/Fetch Metadata checks, with SameSite as part of the chosen defense. Keep state changes out of GET operations. A token design still needs correct validation and integration; an XSS flaw can undermine CSRF defenses.\n\nAuthentication establishes an actor. Authorization checks whether that actor may change the requested object and operation. A valid session or allowed origin does not grant ownership of every object ID. If a user changes `/accounts/own/preferences` to another account's identifier, the server must independently reject unauthorized access even from the legitimate app.\n\n| Observation | What it establishes | What it does not establish |\n| --- | --- | --- |\n| Preflight rejected | Browser cannot continue that preflighted request | Every other request shape is blocked |\n| Response blocked by CORS | That page cannot read the response through the checked browser API | No state change occurred |\n| Session authenticated | The server recognized an actor | The actor owns the requested object |\n| CSRF check passed | The request passed the chosen anti-forgery check | Object authorization or input validity |\n\n## Run a review exercise\n\nFor each of these cases, mark request-sent, response-readable and operation-authorized as separate observations:\n\n- A safelisted credentialed `fetch` POST accepted by the API, with a response blocked by CORS.\n- A custom-header request whose preflight fails before the state-changing request is sent.\n- An allowed-origin request with valid CSRF proof but another user's object ID.\n\nAcceptance: the first may mutate state despite unreadable response; the second does not send that guarded operation; the third still needs an object authorization rejection. State the cookie and request assumptions in your answer. Validate only with inert local fixtures or an explicitly authorized test environment, using server logs as well as browser observations.\n\n## Separate token validity from current session state\n\nA token can pass cryptographic and claim validation after a session ends: a valid signature does not prove current permission. [OWASP REST Security](https://github.com/OWASP/CheatSheetSeries/blob/6b6a66bae11c9e001c3576bcc3de55cc0dc5e449/cheatsheets/REST_Security_Cheat_Sheet.md) requires verification using trusted configuration and checks such as issuer, audience and validity times. A request still needs the actor/object/operation check described above.\n\n[OWASP's JWT denylist guidance](https://github.com/OWASP/CheatSheetSeries/blob/6b6a66bae11c9e001c3576bcc3de55cc0dc5e449/cheatsheets/JSON_Web_Token_Cheat_Sheet.md) uses an identifier such as verified `iss` plus `jti`. Define the required claims and application/audience scope; a token identifier must be uniquely server-issued in that scope. Because raw-token hashes can miss equivalent valid representations through JWT malleability, identify revocation by verified claims. Short access-token lifetimes reduce an exposure window, but do not establish immediate revocation. Choose an ordinary server-side session if its lifecycle better fits the product.\n\n## Trace revocation to every consumer\n\n[RFC 7009](https://www.rfc-editor.org/rfc/rfc7009.html) distinguishes authorization-server invalidation from propagation to consumers. Its HTTP 200 also covers an invalid submitted token; a 503 means the client must assume the token still exists. Revocation can cascade to related tokens according to server policy: revoking refresh access does not by itself prove every issued access token unusable. Inspect the actual cascade and resource-server enforcement rather than assuming them.\n\n[RFC 9700](https://www.rfc-editor.org/rfc/rfc9700.html) requires refresh tokens for public clients to be sender-constrained or rotated to detect replay. Rotation retains the token relationship; replay detection can revoke the active refresh token. This protects refresh use, with separate access-token enforcement still needed.\n\nNormal signing-key rotation can retain old verification keys: new signing keys alone do not reject tokens under an old trusted key. Emergency removal of a trusted key affects all tokens relying on it and needs a separate recovery plan; it is not selective session revocation.\n\n## Review the revocation window\n\nOriginal exercise: an access token expires at time 600. Logout records revocation at time 10; at time 12 an API still has status cached from time 0. This sensitive operation requires current session status. In this exercise, never convert unavailable status into permission. Refuse the operation until current status is established, and record the stale-consumer gap. These are exercise policy and timestamps, not measured propagation or universal availability defaults.\n\n| Change | Evidence required before claiming enforcement |\n| --- | --- |\n| Logout or compromise | Revoked identity/scope, authoritative update and every consumer's observed version |\n| Cached status | Explicit maximum age, invalidation path and behavior when that budget is exceeded |\n| Refresh invalidation | Grant/token-family policy plus treatment of already-issued access tokens |\n| Signing-key change | Which old keys consumers still trust and when that trust changes |\n\nTrace another issuer with the same `jti`, an unknown status lookup, a failed revocation request and a consumer that missed an event. Specify authorized object access independently. Preserve evidence gaps rather than reporting logout as instantaneous everywhere. This is a review exercise: no token parser, authorization server or revocation endpoint is implemented, and no live credentials or security changes are required.\n\nComplete the [API Boundary Checkpoint](/practice/system-design/api-boundary-checkpoint). When reviewing a diagram or security checklist, identify the exact boundary each mechanism protects before recommending it.",
+      "plainText": "Ask three questions about the request For an API operation, separate transport from permission: Did the browser send the request?Can the calling page read the response?Does the server permit this authenticated actor to perform this operation on this object? MDN's CORS guide describes browser-enforced response sharing. Some requests need a successful preflight; safelisted requests can be sent without one. A blocked response therefore does not establish that the server did nothing. CORS also does not restrict a server-to-server client in the same way. Trace a concrete failure In this original exercise, app.example.test operates a user's account API. The user opens another site while signed in. Assume the browser's actual cookie policy permits the relevant session cookie on the cross-site request; do not assume that for every browser or SameSite setting. The other page makes a fetch POST with credentials: \"include\", Content-Type: application/x-www-form-urlencoded and no other headers that require preflight. The API accepts the session cookie, changes a preference and returns a response without permitting that page's origin. The requesting script cannot read the response, but the preference can already have changed. Draw the timeline: request sent, cookie policy applied, server authentication, operation accepted, response sent, browser response-sharing check. Put the mutation at the server step. A browser console CORS error belongs to the response-reading observation and does not undo the preceding operation. The Fetch standard specifies CORS request and response processing. Requests using methods or headers outside the safelist generally require preflight; successful preflight is still not authorization to a particular account object. Cached preflight results and the concrete request shape matter when interpreting a trace. Place each protection at its boundary OWASP's CSRF prevention guidance addresses unwanted authenticated state changes. Use the framework's supported protection, appropriate CSRF tokens or supported origin/Fetch Metadata checks, with SameSite as part of the chosen defense. Keep state changes out of GET operations. A token design still needs correct validation and integration; an XSS flaw can undermine CSRF defenses. Authentication establishes an actor. Authorization checks whether that actor may change the requested object and operation. A valid session or allowed origin does not grant ownership of every object ID. If a user changes /accounts/own/preferences to another account's identifier, the server must independently reject unauthorized access even from the legitimate app. | Observation | What it establishes | What it does not establish | | --- | --- | --- | | Preflight rejected | Browser cannot continue that preflighted request | Every other request shape is blocked | | Response blocked by CORS | That page cannot read the response through the checked browser API | No state change occurred | | Session authenticated | The server recognized an actor | The actor owns the requested object | | CSRF check passed | The request passed the chosen anti-forgery check | Object authorization or input validity | Run a review exercise For each of these cases, mark request-sent, response-readable and operation-authorized as separate observations: A safelisted credentialed fetch POST accepted by the API, with a response blocked by CORS.A custom-header request whose preflight fails before the state-changing request is sent.An allowed-origin request with valid CSRF proof but another user's object ID. Acceptance: the first may mutate state despite unreadable response; the second does not send that guarded operation; the third still needs an object authorization rejection. State the cookie and request assumptions in your answer. Validate only with inert local fixtures or an explicitly authorized test environment, using server logs as well as browser observations. Separate token validity from current session state A token can pass cryptographic and claim validation after a session ends: a valid signature does not prove current permission. OWASP REST Security requires verification using trusted configuration and checks such as issuer, audience and validity times. A request still needs the actor/object/operation check described above. OWASP's JWT denylist guidance uses an identifier such as verified iss plus jti. Define the required claims and application/audience scope; a token identifier must be uniquely server-issued in that scope. Because raw-token hashes can miss equivalent valid representations through JWT malleability, identify revocation by verified claims. Short access-token lifetimes reduce an exposure window, but do not establish immediate revocation. Choose an ordinary server-side session if its lifecycle better fits the product. Trace revocation to every consumer RFC 7009 distinguishes authorization-server invalidation from propagation to consumers. Its HTTP 200 also covers an invalid submitted token; a 503 means the client must assume the token still exists. Revocation can cascade to related tokens according to server policy: revoking refresh access does not by itself prove every issued access token unusable. Inspect the actual cascade and resource-server enforcement rather than assuming them. RFC 9700 requires refresh tokens for public clients to be sender-constrained or rotated to detect replay. Rotation retains the token relationship; replay detection can revoke the active refresh token. This protects refresh use, with separate access-token enforcement still needed. Normal signing-key rotation can retain old verification keys: new signing keys alone do not reject tokens under an old trusted key. Emergency removal of a trusted key affects all tokens relying on it and needs a separate recovery plan; it is not selective session revocation. Review the revocation window Original exercise: an access token expires at time 600. Logout records revocation at time 10; at time 12 an API still has status cached from time 0. This sensitive operation requires current session status. In this exercise, never convert unavailable status into permission. Refuse the operation until current status is established, and record the stale-consumer gap. These are exercise policy and timestamps, not measured propagation or universal availability defaults. | Change | Evidence required before claiming enforcement | | --- | --- | | Logout or compromise | Revoked identity/scope, authoritative update and every consumer's observed version | | Cached status | Explicit maximum age, invalidation path and behavior when that budget is exceeded | | Refresh invalidation | Grant/token-family policy plus treatment of already-issued access tokens | | Signing-key change | Which old keys consumers still trust and when that trust changes | Trace another issuer with the same jti, an unknown status lookup, a failed revocation request and a consumer that missed an event. Specify authorized object access independently. Preserve evidence gaps rather than reporting logout as instantaneous everywhere. This is a review exercise: no token parser, authorization server or revocation endpoint is implemented, and no live credentials or security changes are required. Complete the API Boundary Checkpoint. When reviewing a diagram or security checklist, identify the exact boundary each mechanism protects before recommending it.",
       "headings": [
         {
           "id": "ask-three-questions-about-the-request",
@@ -12441,11 +12513,26 @@
           "id": "run-a-review-exercise",
           "depth": 2,
           "text": "Run a review exercise"
+        },
+        {
+          "id": "separate-token-validity-from-current-session-state",
+          "depth": 2,
+          "text": "Separate token validity from current session state"
+        },
+        {
+          "id": "trace-revocation-to-every-consumer",
+          "depth": 2,
+          "text": "Trace revocation to every consumer"
+        },
+        {
+          "id": "review-the-revocation-window",
+          "depth": 2,
+          "text": "Review the revocation window"
         }
       ],
       "mermaidBlocks": [],
-      "contentHash": "78b2c169bcb4544631befa941279f63bf9d910e5ad74c16a9f1b20acf9898ee7",
-      "readingMinutes": 3
+      "contentHash": "cc4b0928cdf510e50b20272fa037a22f6433702f4d047d0b414c107e47e05e38",
+      "readingMinutes": 5
     },
     {
       "title": "Distributed Readings — Review The Assumptions",
@@ -33568,7 +33655,11 @@
       "sourceRefs": [
         "web-cors-mdn",
         "web-fetch-standard",
-        "web-csrf-owasp"
+        "web-csrf-owasp",
+        "token-jwt-owasp",
+        "token-rest-owasp",
+        "rfc-7009-revocation",
+        "rfc-9700-refresh"
       ],
       "type": "questionnaire",
       "questions": [
@@ -33663,12 +33754,104 @@
               "isCorrect": false
             }
           ]
+        },
+        {
+          "id": "stale-revocation",
+          "prompt": "Revocation is recorded at time 10, but a sensitive API operation at 12 has only status cached at 0. The policy requires current status. What follows?",
+          "explanation": "The exercise requires current status. Cached or unavailable evidence cannot establish it; cryptographic validity is a separate check.",
+          "kind": "choice",
+          "options": [
+            {
+              "id": "option-0",
+              "label": "Refuse the sensitive operation until current status is established; record the propagation gap.",
+              "isCorrect": true
+            },
+            {
+              "id": "option-1",
+              "label": "Trust the still-valid signature and ignore unknown session status.",
+              "isCorrect": false
+            },
+            {
+              "id": "option-2",
+              "label": "A logout record proves every API has already enforced revocation.",
+              "isCorrect": false
+            }
+          ]
+        },
+        {
+          "id": "revocation-key",
+          "prompt": "What identity should a denylist review require after token verification?",
+          "explanation": "Equivalent valid token representations can defeat a raw-byte key. Verify required claims and preserve issuer/application scope.",
+          "kind": "choice",
+          "options": [
+            {
+              "id": "option-0",
+              "label": "Use a unique server-issued identifier in the verified issuer/application scope; raw-token hashes may be bypassed.",
+              "isCorrect": true
+            },
+            {
+              "id": "option-1",
+              "label": "Hash the serialized token and assume every valid representation has identical bytes.",
+              "isCorrect": false
+            },
+            {
+              "id": "option-2",
+              "label": "Trust an unverified jti supplied by the caller as globally unique.",
+              "isCorrect": false
+            }
+          ]
+        },
+        {
+          "id": "refresh-access",
+          "prompt": "A refresh token was revoked. What can you conclude about an already-issued access token?",
+          "explanation": "RFC 7009 allows token/grant cascade policies and recognizes propagation. Inspect actual enforcement rather than either absolute.",
+          "kind": "choice",
+          "options": [
+            {
+              "id": "option-0",
+              "label": "Check the server’s cascade policy and consumer enforcement; revoking refresh access alone is not proof about issued access tokens.",
+              "isCorrect": true
+            },
+            {
+              "id": "option-1",
+              "label": "Every access token in every consumer is necessarily invalid immediately.",
+              "isCorrect": false
+            },
+            {
+              "id": "option-2",
+              "label": "Every issued access token necessarily remains valid until expiry regardless of server policy.",
+              "isCorrect": false
+            }
+          ]
+        },
+        {
+          "id": "signing-key",
+          "prompt": "An API still trusts the old signing key after the issuer begins using a new key. Why can an old unexpired token still pass?",
+          "explanation": "Issuing keys and withdrawing consumer trust are different events; removing an old key has a broader affected-token scope.",
+          "kind": "choice",
+          "options": [
+            {
+              "id": "option-0",
+              "label": "The verifier still trusts the old key; issuing a new key alone does not revoke that token.",
+              "isCorrect": true
+            },
+            {
+              "id": "option-1",
+              "label": "Every verifier automatically rejects all old tokens whenever a new key is issued.",
+              "isCorrect": false
+            },
+            {
+              "id": "option-2",
+              "label": "Key rotation selectively revokes only the user who logged out.",
+              "isCorrect": false
+            }
+          ]
         }
       ],
       "id": "fdb1d2536298",
       "route": "/practice/system-design/api-boundary-checkpoint",
       "sourcePath": "content/exercises/system-design/api-boundary-checkpoint.json",
-      "contentHash": "43a1b76b4f3b1c76c771077d83485f30efa183f0bfd717f3e608c7c095585942"
+      "contentHash": "2cb4619295a035099d98482149e8a2411251c890f5f76830215859a6f2131402"
     },
     {
       "slug": "system-design/cache-product-contract",

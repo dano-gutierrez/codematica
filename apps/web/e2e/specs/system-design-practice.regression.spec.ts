@@ -49,6 +49,10 @@ const cases = [
       "It does not send that guarded operation after this failed preflight.",
       "Check authorization for that actor, object and operation.",
       "Whether the browser’s actual cookie and request policies permit the credentials to be sent.",
+      "Refuse the sensitive operation until current status is established; record the propagation gap.",
+      "Use a unique server-issued identifier in the verified issuer/application scope; raw-token hashes may be bypassed.",
+      "Check the server’s cascade policy and consumer enforcement; revoking refresh access alone is not proof about issued access tokens.",
+      "The verifier still trusts the old key; issuing a new key alone does not revoke that token.",
     ],
     next: "/docs/system-design/client-compatibility-contracts?path=system-design-fundamentals",
   },
@@ -121,6 +125,10 @@ for (const scenario of cases) {
     if (scenario.slug === "client-compatibility-contracts") {
       for (const heading of ["Review conditional writes before trusting a tag", "Bound filtering, sorting and continuation", "Name the resource view and preserve its meaning"]) await expect(page.getByRole("heading", {name:heading,exact:true})).toBeVisible();
       for (const source of ["RFC 9110 — If-Match And Request Preconditions", "Google AIP-160 — Filtering", "Google AIP-158 — Pagination", "Google AIP-157 — Partial Responses"]) await expect(page.getByTestId("source-references")).toContainText(source);
+    }
+    if (scenario.slug === "cors-csrf-and-authorization") {
+      for (const heading of ["Separate token validity from current session state", "Trace revocation to every consumer", "Review the revocation window"]) await expect(page.getByRole("heading", { name: heading, exact: true })).toBeVisible();
+      for (const source of ["OWASP — JWT Revocation And Denylist", "OWASP — REST Token Validation", "RFC 7009 — OAuth Token Revocation", "RFC 9700 — Refresh Token Protection"]) await expect(page.getByTestId("source-references")).toContainText(source);
     }
     if (scenario.slug === "fair-admission-and-reservations") {
       await expect(page.getByRole("heading", {name:"Protect room dates with an overlap constraint",exact:true})).toBeVisible();

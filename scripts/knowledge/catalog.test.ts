@@ -11,6 +11,17 @@ beforeAll(async () => {
 function freshContent() { return structuredClone(validatedIndex); }
 
 describe("complete knowledge catalog", () => {
+  it("exports revocation sections and primary citations on the existing API resource", () => {
+    const graph = buildKnowledgeCatalog(freshContent());
+    const lesson = "document:system-design/cors-csrf-and-authorization";
+    for (const heading of ["separate-token-validity-from-current-session-state", "trace-revocation-to-every-consumer", "review-the-revocation-window"]) expect(graph.resources.find(r => r.id === lesson + "#" + heading)).toMatchObject({kind:"section",visibility:"curriculum"});
+    for (const source of ["token-jwt-owasp", "token-rest-owasp", "rfc-7009-revocation", "rfc-9700-refresh"]) {
+      expect(graph.relationships).toContainEqual(expect.objectContaining({source:lesson,target:"source:"+source,type:"cites",provenance:"explicit"}));
+      expect(graph.relationships).toContainEqual(expect.objectContaining({source:"exercise:system-design/api-boundary-checkpoint",target:"source:"+source,type:"cites",provenance:"explicit"}));
+    }
+    expect(graph.unresolved.some(r => r.resourceId === lesson)).toBe(false);
+  });
+
   it("exports progressive state history without changing resource identity", () => {
     const graph = buildKnowledgeCatalog(freshContent());
     const lesson = "document:software-engineering/progressive-state-history", quiz = "exercise:software-engineering/progressive-state-checkpoint", unit = "unit:backend-engineer-readiness:progressive-state";

@@ -13,7 +13,11 @@
   "sourceRefs": [
     "web-cors-mdn",
     "web-fetch-standard",
-    "web-csrf-owasp"
+    "web-csrf-owasp",
+    "token-jwt-owasp",
+    "token-rest-owasp",
+    "rfc-7009-revocation",
+    "rfc-9700-refresh"
   ],
   "questions": [
     {
@@ -65,7 +69,7 @@
     {
       "id": "object-access",
       "kind": "choice",
-      "prompt": "An allowed-origin request has a valid session and CSRF proof but targets another user\u2019s object. What must the server still do?",
+      "prompt": "An allowed-origin request has a valid session and CSRF proof but targets another user’s object. What must the server still do?",
       "options": [
         {
           "id": "option-0",
@@ -92,7 +96,7 @@
       "options": [
         {
           "id": "option-0",
-          "label": "Whether the browser\u2019s actual cookie and request policies permit the credentials to be sent.",
+          "label": "Whether the browser’s actual cookie and request policies permit the credentials to be sent.",
           "isCorrect": true
         },
         {
@@ -107,6 +111,98 @@
         }
       ],
       "explanation": "Cookie attributes, browser policies and request context affect credential sending. Both absolute claims erase assumptions required by a concrete trace."
+    },
+    {
+      "id": "stale-revocation",
+      "kind": "choice",
+      "prompt": "Revocation is recorded at time 10, but a sensitive API operation at 12 has only status cached at 0. The policy requires current status. What follows?",
+      "options": [
+        {
+          "id": "option-0",
+          "label": "Refuse the sensitive operation until current status is established; record the propagation gap.",
+          "isCorrect": true
+        },
+        {
+          "id": "option-1",
+          "label": "Trust the still-valid signature and ignore unknown session status.",
+          "isCorrect": false
+        },
+        {
+          "id": "option-2",
+          "label": "A logout record proves every API has already enforced revocation.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "The exercise requires current status. Cached or unavailable evidence cannot establish it; cryptographic validity is a separate check."
+    },
+    {
+      "id": "revocation-key",
+      "kind": "choice",
+      "prompt": "What identity should a denylist review require after token verification?",
+      "options": [
+        {
+          "id": "option-0",
+          "label": "Use a unique server-issued identifier in the verified issuer/application scope; raw-token hashes may be bypassed.",
+          "isCorrect": true
+        },
+        {
+          "id": "option-1",
+          "label": "Hash the serialized token and assume every valid representation has identical bytes.",
+          "isCorrect": false
+        },
+        {
+          "id": "option-2",
+          "label": "Trust an unverified jti supplied by the caller as globally unique.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "Equivalent valid token representations can defeat a raw-byte key. Verify required claims and preserve issuer/application scope."
+    },
+    {
+      "id": "refresh-access",
+      "kind": "choice",
+      "prompt": "A refresh token was revoked. What can you conclude about an already-issued access token?",
+      "options": [
+        {
+          "id": "option-0",
+          "label": "Check the server’s cascade policy and consumer enforcement; revoking refresh access alone is not proof about issued access tokens.",
+          "isCorrect": true
+        },
+        {
+          "id": "option-1",
+          "label": "Every access token in every consumer is necessarily invalid immediately.",
+          "isCorrect": false
+        },
+        {
+          "id": "option-2",
+          "label": "Every issued access token necessarily remains valid until expiry regardless of server policy.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "RFC 7009 allows token/grant cascade policies and recognizes propagation. Inspect actual enforcement rather than either absolute."
+    },
+    {
+      "id": "signing-key",
+      "kind": "choice",
+      "prompt": "An API still trusts the old signing key after the issuer begins using a new key. Why can an old unexpired token still pass?",
+      "options": [
+        {
+          "id": "option-0",
+          "label": "The verifier still trusts the old key; issuing a new key alone does not revoke that token.",
+          "isCorrect": true
+        },
+        {
+          "id": "option-1",
+          "label": "Every verifier automatically rejects all old tokens whenever a new key is issued.",
+          "isCorrect": false
+        },
+        {
+          "id": "option-2",
+          "label": "Key rotation selectively revokes only the user who logged out.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "Issuing keys and withdrawing consumer trust are different events; removing an old key has a broader affected-token scope."
     }
   ]
 }
