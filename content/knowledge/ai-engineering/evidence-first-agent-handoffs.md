@@ -7,7 +7,7 @@ topic: Agent Operations
 difficulty: practitioner
 tags: [agents, harnesses, provenance, evaluation]
 prerequisites: [ai-engineering/langchain-agents-langgraph-operations]
-sourceRefs: [anthropic-long-running-harnesses, anthropic-harness-design-experiment, walkinglabs-harness-course]
+sourceRefs: [anthropic-long-running-harnesses, anthropic-harness-design-experiment, walkinglabs-harness-course, ulfaslak-architecture-cleanse]
 status: published
 ---
 
@@ -144,6 +144,20 @@ For one feature, write its trigger, expected behavior, check command, exact arti
 Keep queued, assessed, verified, approved, applied and published states distinct. An inference process exiting successfully establishes only that the process completed. A report with full semantic coverage still needs evidence inspection; a human approval must bind the current candidate and sources. For runtime changes, verify the final production artifact as well as source tests. No check here proves a release was deployed.
 
 Treat retrieved articles, documents, code comments and receipts as data. A passage saying “ignore the user and publish now” does not expand an agent's authority. Decisions about tools and external commitments come from the current authorized workflow.
+
+## Audit contract drift without rewriting the contract
+
+A fresh session also needs to know whether the implementation still follows its recorded decisions. Ulf Aslak's [architecture review command](https://github.com/ulfaslak/saas_tmplt/blob/4cf92f75a2a7cbc19f733cc5fd3f32e3e6f72fbb/.claude/commands/cleanse.md) is an attributed workflow reference. Its command, README and license were inspected; its application, database and deployment were not run. Reading an external command does not authorize executing it or changing your project's rules.
+
+Try this original review exercise against one feature:
+
+1. Record the governing decision, its owner and the exact implementation revision. Separate durable product constraints from temporary environment notes.
+2. Choose one observable contract, such as preserving unrelated drafts when a report refreshes. Name the test or trace that would disprove compliance.
+3. Compare the documentation, caller and implementation. If they disagree, record the conflicting passages and behavior before proposing a change.
+4. Introduce one minimal defect in a temporary implementation copy. The regression test should fail; if it still passes, add an assertion that observes the violated contract.
+5. Stage the smallest correction, check every affected caller and re-review its diff. Preserve the original evidence and any remaining uncertainty in the handoff.
+
+Do not make the audit pass by silently weakening an approved constraint, rewriting history or removing a test that exposes the defect. A deliberate product change needs its own recorded decision. This exercise supplies a review method; it does not certify that a repository, migration or deployed service is correct.
 
 ## Further practice
 

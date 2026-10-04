@@ -34,3 +34,5 @@ The same catalog includes PostgreSQL 17 ranges, `btree_gist`, partial exclusion 
 `routing-and-delivery-boundaries.json` anchors routing and durable-effect review to NGINX directives, Kafka 4.1 design and Redis Pub/Sub/XACK/XAUTOCLAIM contracts. Preserve version/edition limits and distinguish readable crash traces from real proxy or broker experiments.
 
 `advanced-agent-research.json` records the official Stanford CS329A Autumn 2025 syllabus as an optional external reading in the existing AI path. Preserve the course edition and public-reading scope. Enrollment, audits, certification, API credits and independently completed projects are not included; no redistribution license is inferred.
+
+`source-audit-readings.json` pins an author-maintained architecture review command and an ML case-study discovery index. Upstream commands were read, not installed or executed. The index is not primary evidence for its linked technical claims; inspect the original author before using a case. Only the review-command repository has a verified MIT license.

@@ -44,6 +44,8 @@ The full roadmap includes every Volume I and Volume II chapter. Student ecosyste
 
 The Neural Computation companion links Simon J. D. Prince’s notebook collection at a verified commit as optional further practice. It does not import notebook code or execute upstream notebooks. The source catalog also anchors framework behavior to the official PyTorch autograd tutorial.
 
+The existing ML Workflow companion adds an original case-study claim record and a pinned discovery index. The index's links and reported outcomes were not independently verified; learners must inspect an accessible original technical report and record missing evidence. No new path, checkpoint or completion stamp is added. Reported outcomes remain separate from local measurements and transfer hypotheses.
+
 ## Scope
 
 ### In Scope
@@ -95,8 +97,9 @@ The Neural Computation companion links Simon J. D. Prince’s notebook collectio
 ## Test Plan
 
 - Unit: schema v9 source nodes/catalogs, generic progression, planned-stage stamp denial, questionnaire skill scores.
-- Integration: repository content rebuild, source/reference checks, stable companion/external route selection.
+- Integration: repository content rebuild, source/reference checks, stable companion/external route selection. The original audit sections preserve lesson/path identity and add explicit source citations; verify pinned repository commits and evidence limits.
 - E2E: `ml-systems.regression.spec.ts` covers the source-backed Foundations guided lab and Neural Computation → scored checkpoint → next upstream chapter. Completing the neural practice must leave Framework Builder planned.
+- Reader: the ML Workflow journey checks the primary book and pinned discovery index, the claim-record table and its explicit evidence limits.
 - Regression classification: `@regression`; published ML path discovery is part of the general path smoke contract.
 - Coverage impact: core, web components, and shared native UI; no threshold changes or exclusions.
 - Required local commands: `npm run content:check`, `npm test`, `npm run test:mobile`, `npm run typecheck`, `npm run lint`, `npm run build`, and relevant Playwright smoke/regression lanes.

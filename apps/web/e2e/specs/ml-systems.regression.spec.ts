@@ -60,3 +60,14 @@ test("@regression completes the neural companion checkpoint without completing i
   await expect(page.getByTestId("path-progression-roadmap")).toContainText("Framework Builder");
   await expect(page.getByTestId("path-progression-roadmap")).toContainText("planned");
 });
+
+test("@regression reads a case-study claim record without certifying the external index", async ({ page }) => {
+  await page.goto("/docs/ml-systems/ml-workflow?path=ml-systems-engineer");
+  await expect(page.getByRole("heading", { name:"Review a case study as a claim",exact:true })).toBeVisible();
+  const sources = page.getByTestId("source-references");
+  await expect(sources).toContainText("Volume I — ML Workflow");
+  await expect(sources).toContainText("A Curated List of ML System Design Case Studies");
+  await expect(sources.getByRole("link",{name:"A Curated List of ML System Design Case Studies"})).toHaveAttribute("href","https://github.com/Engineer1999/A-Curated-List-of-ML-System-Design-Case-Studies/tree/1da84a9dc996d857fe63d1f1609fad6caa17f8cb");
+  await expect(page.getByTestId("markdown-renderer")).toContainText("reported outcomes were not independently verified");
+  await expect(page.getByTestId("markdown-renderer")).toContainText("Write unknown when omitted");
+});

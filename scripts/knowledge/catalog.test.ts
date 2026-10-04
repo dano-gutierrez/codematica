@@ -11,6 +11,17 @@ beforeAll(async () => {
 function freshContent() { return structuredClone(validatedIndex); }
 
 describe("complete knowledge catalog", () => {
+  it.each([
+    ["document:ai-engineering/evidence-first-agent-handoffs", "source:ulfaslak-architecture-cleanse", "path:ai-engineering-langfuse-langchain"],
+    ["document:ml-systems/ml-workflow", "source:ml-system-case-study-index", "path:ml-systems-engineer"],
+  ])("retains %s identity and adds its reading citation", (document, source, path) => {
+    const graph = buildKnowledgeCatalog(freshContent());
+    expect(graph.resources.find(r => r.id === document)?.paths).toContain(path);
+    expect(graph.relationships).toContainEqual(expect.objectContaining({source:document,target:source,type:"cites",provenance:"explicit"}));
+    expect(graph.resources.find(r => r.id === source)).toMatchObject({kind:"source",visibility:"curriculum"});
+    expect(graph.unresolved.some(r => r.resourceId === document && r.reference === source)).toBe(false);
+  });
+
   it("links the optional agent research reference to its existing path with explicit order", () => {
     const graph = buildKnowledgeCatalog(freshContent());
     const source = "source:stanford-cs329a-autumn-2025";

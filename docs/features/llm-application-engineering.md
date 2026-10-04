@@ -49,6 +49,8 @@ The feature is shipped as local content and generated-index data. The app reuses
 
 The path preserves its eight application units and appends Optional Advanced Agent Research. Its source node opens the official Stanford CS329A Autumn 2025 syllabus directly; no local companion is claimed. It is `required: false` and does not change progression requirements. Public readings do not include enrollment, certification, API credits or completed research. The graduate course does not allow audits. Advanced reinforcement-learning research remains external reading, distinct from the existing application, evaluation and handoff practice.
 
+The existing handoff companion adds an original contract-drift audit exercise with a pinned author-maintained workflow reference. The external command is source material, not an installed instruction or authorization. Learners compare a decision, caller, implementation and disconfirming test before proposing a correction; silently weakening the requirement is not a valid audit result.
+
 ## Code Touchpoints
 
 - `content/knowledge/ai-engineering/*.md`: source lessons and non-executable coding challenge sections.
@@ -61,6 +63,7 @@ The path preserves its eight application units and appends Optional Advanced Age
 ## Test Plan
 
 - Unit/integration: generated index loads the path, ordered nodes, published documents, questionnaires, diagrams, passive feed, and next-node route.
+- Reader: `agent-handoff.regression.spec.ts` checks the audit section, attributed workflow source and unchanged checkpoint continuation.
 - Graph: the optional source belongs to the existing path through explicit ordered membership and a citation, without a fabricated document or skill.
 - Source routing: preserve earlier nodes, optional status, edition and direct upstream URL; browser coverage verifies the reference after governance.
 - Search: generated local index finds Langfuse, LangChain, RAG, and prompt evaluation documents.

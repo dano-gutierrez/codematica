@@ -5,6 +5,9 @@ test("@regression follows evidence-bound handoff practice into risk governance",
   await page.getByTestId("path-node-document-ai-engineering-evidence-first-agent-handoffs").click();
   await expect(page.getByRole("heading", { level: 1 })).toHaveText("Evidence-First Agent Handoffs");
   await expect(page.getByTestId("source-references")).toContainText("Learn Harness Engineering");
+  await expect(page.getByTestId("source-references")).toContainText("Architecture contract review in saas_tmplt");
+  await expect(page.getByRole("heading", { name:"Audit contract drift without rewriting the contract",exact:true })).toBeVisible();
+  await expect(page.getByTestId("markdown-renderer")).toContainText("silently weakening an approved constraint");
   await expect(page.getByRole("heading", { name: "Run an original resume-boundary lab", exact: true })).toBeVisible();
   await page.getByTestId("document-next-node").click();
   await expect(page).toHaveURL(/agent-handoff-checkpoint\?path=ai-engineering-langfuse-langchain/);

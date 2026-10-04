@@ -17,6 +17,25 @@ import {
 } from ".";
 
 describe("generated content index", () => {
+  it.each([
+    ["ai-engineering/evidence-first-agent-handoffs", "ulfaslak-architecture-cleanse", "audit-contract-drift-without-rewriting-the-contract"],
+    ["ml-systems/ml-workflow", "ml-system-case-study-index", "review-a-case-study-as-a-claim"],
+  ])("links %s to an attributed reading and original audit prompts", (slug, source, heading) => {
+    const document = getDocumentBySlug(slug)!;
+    expect(document.sourceRefs).toContain(source);
+    expect(document.headings.map(h => h.id)).toContain(heading);
+    const reference = getContentIndex().sources.find(s => s.id === source)!;
+    expect(reference.provider).toBe(source === "ulfaslak-architecture-cleanse" ? "Ulf Aslak" : "Engineer1999");
+    expect(reference.upstream?.commit).toBe(source === "ulfaslak-architecture-cleanse" ? "4cf92f75a2a7cbc19f733cc5fd3f32e3e6f72fbb" : "1da84a9dc996d857fe63d1f1609fad6caa17f8cb");
+    expect(reference.url).toBe(source === "ulfaslak-architecture-cleanse"
+      ? "https://github.com/ulfaslak/saas_tmplt/blob/4cf92f75a2a7cbc19f733cc5fd3f32e3e6f72fbb/.claude/commands/cleanse.md"
+      : "https://github.com/Engineer1999/A-Curated-List-of-ML-System-Design-Case-Studies/tree/1da84a9dc996d857fe63d1f1609fad6caa17f8cb");
+    expect(reference.license).toEqual(source === "ulfaslak-architecture-cleanse"
+      ? { name: "MIT", url: "https://github.com/ulfaslak/saas_tmplt/blob/4cf92f75a2a7cbc19f733cc5fd3f32e3e6f72fbb/LICENSE" }
+      : undefined);
+    expect(reference.attribution).toContain(source === "ulfaslak-architecture-cleanse" ? "not executed" : "not independently verified");
+  });
+
   it("extends reservation practice with room-date overlap and explicit expiry", () => {
     const document = getDocumentBySlug("system-design/fair-admission-and-reservations");
     const quiz = getExerciseBySlug("system-design/reservation-boundary-checkpoint");
@@ -257,7 +276,7 @@ describe("generated content index", () => {
     const document = getDocumentBySlug("ai-engineering/evidence-first-agent-handoffs");
     const checkpoint = getExerciseBySlug("ai-engineering/agent-handoff-checkpoint");
     expect(document?.sourceRefs).toEqual([
-      "anthropic-long-running-harnesses", "anthropic-harness-design-experiment", "walkinglabs-harness-course",
+      "anthropic-long-running-harnesses", "anthropic-harness-design-experiment", "walkinglabs-harness-course", "ulfaslak-architecture-cleanse",
     ]);
     if (checkpoint?.type !== "questionnaire") throw new Error("Handoff practice must be a questionnaire");
     expect(checkpoint.status).toBe("published");
