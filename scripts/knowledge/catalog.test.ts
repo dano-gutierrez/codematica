@@ -11,6 +11,27 @@ beforeAll(async () => {
 function freshContent() { return structuredClone(validatedIndex); }
 
 describe("complete knowledge catalog", () => {
+  it("relates coding-pattern units to existing question identities and preserves graph-traversal membership", () => {
+    const graph = buildKnowledgeCatalog(freshContent());
+    const path = "path:coding-interview-pattern-practice";
+    const unit = "unit:coding-interview-pattern-practice:foundations";
+    const question = "interview-question:amazon/two-sum-product-pair";
+    expect(graph.resources.find(resource => resource.id === path)).toMatchObject({ kind: "path", status: "published" });
+    expect(graph.relationships).toContainEqual(expect.objectContaining({ source: path, target: unit, type: "contains", order: 0, provenance: "explicit" }));
+    expect(graph.relationships).toContainEqual(expect.objectContaining({ source: unit, target: question, type: "contains", order: 0, provenance: "explicit" }));
+    expect(graph.resources.filter(resource => resource.id === question)).toHaveLength(1);
+    expect(graph.resources.find(resource => resource.id === question)?.paths).toContain(path);
+    expect(graph.resources.find(resource => resource.id === "document:programming/bfs-dfs-fundamentals")?.paths).toEqual(expect.arrayContaining([path, "path:breadth-first-and-depth-first-search"]));
+    const pattern = validatedIndex.learningPaths.find(resource => resource.slug === "coding-interview-pattern-practice")!;
+    expect(graph.relationships.filter(edge => edge.source.startsWith("unit:coding-interview-pattern-practice:") && edge.type === "contains")).toHaveLength(22);
+    for (const unit of pattern.units) for (const [order, node] of unit.nodes.entries()) {
+      const target = `${node.kind === "interview" ? "interview-question" : node.kind}:${node.slug}`;
+      expect(graph.relationships).toContainEqual(expect.objectContaining({ source: `unit:coding-interview-pattern-practice:${unit.slug}`, target, type: "contains", order, provenance: "explicit" }));
+      expect(graph.resources.find(resource => resource.id === target)?.paths).toContain(path);
+    }
+    expect(graph.unresolved.some(reference => reference.resourceId.startsWith(path) || reference.resourceId.startsWith("unit:coding-interview-pattern-practice:"))).toBe(false);
+  });
+
   it.each([
     ["document:ai-engineering/evidence-first-agent-handoffs", "source:ulfaslak-architecture-cleanse", "path:ai-engineering-langfuse-langchain"],
     ["document:ml-systems/ml-workflow", "source:ml-system-case-study-index", "path:ml-systems-engineer"],

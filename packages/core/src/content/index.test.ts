@@ -17,6 +17,27 @@ import {
 } from ".";
 
 describe("generated content index", () => {
+  it("groups existing coding walkthroughs by pattern without duplicating questions", () => {
+    const path = getLearningPathBySlug("coding-interview-pattern-practice");
+    expect(path?.kind).toBe("skill");
+    expect(path?.units.map(unit => unit.slug)).toEqual(["foundations", "contiguous-data", "ordered-data", "trees-and-structure", "bounded-caches", "graph-decisions"]);
+    const nodes = path!.units.flatMap(unit => unit.nodes);
+    const questions = nodes.filter(node => node.kind === "interview");
+    expect(questions.map(node => node.slug)).toEqual([
+      "amazon/two-sum-product-pair", "apple/validate-parentheses-stream", "meta/valid-palindrome-with-one-deletion", "apple/reverse-linked-list",
+      "netflix/longest-distinct-viewing-window", "google/subarray-sum-equals-k",
+      "apple/merge-intervals", "uber/meeting-rooms-ii", "amazon/top-k-frequent-items", "google/median-two-sorted-arrays",
+      "meta/binary-tree-vertical-columns", "microsoft/serialize-deserialize-binary-tree",
+      "amazon/lru-cache", "netflix/auto-expire-cache",
+      "google/number-of-islands", "google/course-schedule", "google/shortest-path-binary-matrix", "uber/shortest-path-weighted-road-graph",
+    ]);
+    expect(new Set(questions.map(node => node.slug)).size).toBe(18);
+    expect(getContentIndex().interviewCollections.flatMap(collection => collection.questions).filter(question => question.kind === "algorithm")).toHaveLength(27);
+    expect(getNextPathNodeRoute(path!.slug, nodes[0])).toBe("/interviews/apple/validate-parentheses-stream?path=coding-interview-pattern-practice");
+    expect(path?.summary).toContain("Backtracking and comprehensive dynamic programming are outside this path");
+    expect(path?.progression).toBeUndefined();
+  });
+
   it.each([
     ["ai-engineering/evidence-first-agent-handoffs", "ulfaslak-architecture-cleanse", "audit-contract-drift-without-rewriting-the-contract"],
     ["ml-systems/ml-workflow", "ml-system-case-study-index", "review-a-case-study-as-a-claim"],

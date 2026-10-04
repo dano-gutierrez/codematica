@@ -3,7 +3,7 @@
 ## Snapshot
 
 - Status: `shipped`
-- Last updated: `2026-10-03`
+- Last updated: `2026-10-04`
 - Owner thread: `n/a`
 - Current state: The complete path catalog lives at `/paths`; schema-v12 source nodes, generic career/language progression, guided labs, aggregate checkpoint scoring, passive review, Japanese open answers/listening choices, and active review are local-first across web and Expo.
 - Target outcome: Users can follow role and skill paths, open local companions or authoritative sources, complete all structured practice types, and inspect published/planned progression without requiring auth or Supabase.
@@ -46,7 +46,7 @@ Learning paths organize study using ideas from career and skill paths, language-
 - `/practice/[...slug]` renders one flashcard, cloze prompt, questionnaire session, or writing exercise.
 - Exercise content is manually authored in `content/exercises/**/*.json`; path content is authored in `content/learning-paths/*.json`; passive flashcard feeds are authored in `content/flashcard-feeds/*.json`.
 - `packages/core/src/generated/content-index.json` has `schemaVersion: 12` and includes validated primary sources, generic progression, structured Japanese grammar, approval-gated audio, learning/language/interview content, and home discovery.
-- Path nodes may be documents, diagrams, exercises, or sources. Generic progressions declare a framework, roadmap label, stable skills/categories, stages with level/status/outcomes, required nodes, and published checkpoints/thresholds.
+- Path nodes may be documents, diagrams, exercises, interviews, or sources. Generic progressions declare a framework, roadmap label, stable skills/categories, stages with level/status/outcomes, required nodes, and published checkpoints/thresholds.
 - Index generation additionally fails on duplicate/missing sources, unknown outcome/question skills, missing source-required references, or published source stages without a published local companion. Planned stages may omit checkpoint requirements.
 - No node is locked, disabled, gated, or paywalled in this milestone. Optional saved progress is owned by `docs/features/auth-and-progress.md`.
 
@@ -109,6 +109,10 @@ The shipped content includes skill and role paths using Markdown articles, exter
 - Learning paths intended to replace passive social scrolling with one-minute vertical review should include a path-scoped passive feed unless the owning feature doc explicitly scopes that surface out.
 - Progression-enabled paths show stage level/status, friendly names, outcomes, expected time, and directly accessible published checkpoints. Stage metadata never locks a node.
 
+Coding Interview Pattern Practice reuses 18 existing algorithm walkthroughs and four BFS/DFS lesson/checkpoint nodes across six units. Questions retain their existing IDs, languages, solutions, sources and difficulty. Learners compare invariants and alternatives rather than treating a fixed question count as readiness. Backtracking and comprehensive dynamic programming remain outside this path. There is no progression object, new score or completion certificate. The existing BFS/DFS path remains unchanged.
+
+Algorithm interviews opened with a valid path query expose **Next activity** after the full web explanation; restarting hides it until the explanation is revealed again. Unknown or absent path queries do not choose another path. Native algorithm readers show the authored destination alongside their read-only explanation and do not record a completed result merely by navigating. Native routes retain existing unambiguous path inference for direct links.
+
 ### Data Model And Persistence
 
 - `content/learning-paths/*.json` stores path metadata and ordered unit nodes; `content/sources/*.json` stores authoritative external source metadata.
@@ -137,7 +141,7 @@ The shipped content includes skill and role paths using Markdown articles, exter
 - `packages/core/src/content/index.ts`: lookup helpers and path-node route helpers.
 - `apps/web/src/components/LearningPathMap.tsx`: home and path detail UI.
 - `apps/web/src/components/PracticeCard.tsx`: flashcard, cloze, questionnaire, and writing shell.
-- `apps/web/src/components/PathScopedNextLink.tsx`: client-side path query reader for static document and diagram next-node links.
+- `apps/web/src/components/PathScopedNextLink.tsx`: client-side path query reader for document, diagram and algorithm next-node links; only authored own path keys can select a destination.
 - `apps/web/src/components/PathScopedPracticeCard.tsx`: client-side path query adapter for static practice pages.
 - `apps/web/src/components/QuestionnaireSession.tsx`: mobile questionnaire interactions.
 - `apps/web/src/components/PassiveFlashcardFeed.tsx`: mobile passive flashcard feed.
@@ -149,6 +153,9 @@ The shipped content includes skill and role paths using Markdown articles, exter
 - `apps/web/src/app/browse/page.tsx`: complete lesson and diagram browser route.
 
 ## Test Plan
+
+- Coding-pattern path: exact unit/question order, existing question count/identity, explicit graph membership and preserved traversal-path membership.
+- Algorithm continuation: web selected/unknown/inherited-key/blank/absent path and restart gates; native authored/inferred/unknown/inherited path selection, exact destination, single navigation and no automatic completion. `coding-patterns.regression.spec.ts` verifies path → explanation → next question and standalone behavior.
 
 - Unit: path, progression, exercise, passive feed, language schema coverage, cloze validation, questionnaire validation, handwriting scoring, review scheduling/merge, passive feed windowing, duplicate ID validation, and missing reference validation.
 - Integration: generated index loads starter paths, exercises, passive feeds, and path-scoped next routes.
