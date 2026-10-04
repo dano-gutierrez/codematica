@@ -3,7 +3,7 @@
 ## Snapshot
 
 - Status: `shipped`
-- Last updated: `2026-08-05`
+- Last updated: `2026-10-03`
 - Owner thread: `n/a`
 - Current state: Codematica has enforced Vitest and Jest coverage, transactional pgTAP checks, multi-project Playwright suites, Maestro native flows, fast PR gates, nightly regression, and `v*` release-candidate workflows.
 - Target outcome: Every shipped feature has a reliable test at the lowest useful layer, critical journeys are exercised on browser and installed native targets, and a release cannot be promoted without reproducible evidence.
@@ -121,6 +121,7 @@ flowchart LR
 - Tests that compile complete authored TypeScript projects have a 30-second timeout to accommodate instrumented CI runs. Other tests retain Vitest's default timeout; coverage thresholds and exclusions are unchanged.
 - A failed database run must leave production untouched; CI stops and discards the local stack.
 - Playwright and Maestro failures retain reports and visual evidence rather than relying on a rerun to diagnose the regression.
+- GitHub release artifact names use the commit SHA and run attempt; slash-containing branch dispatches remain valid and reruns retain previous evidence.
 - If EAS validation cannot authenticate, validate YAML locally, keep the workflow unexecuted, and report the missing account-side verification explicitly.
 - A flaky test is fixed or quarantined with a documented owner and reason; it is not silently retagged or removed from the release lane.
 

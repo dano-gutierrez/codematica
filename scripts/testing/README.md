@@ -5,3 +5,5 @@
 The web app declares `@codematica/ui` as a direct production dependency. The smoke verifies that its React-only `notebook-session` subpath resolves in the clean install.
 
 The artifact also rejects privileged editorial worker RPC/service-key markers in built server/client JavaScript, protecting the HTTP/worker import boundary. CI uploads production install/startup logs independently of unit results.
+
+Release regression uploads use the commit SHA and run attempt in artifact names. Manual dispatch therefore accepts branches containing slashes, and reruns preserve earlier evidence. `release-workflow.test.ts` checks both upload jobs, branch/tag inputs and attempt isolation.
