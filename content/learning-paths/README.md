@@ -37,3 +37,5 @@ System Design Fundamentals appends Capacity Decisions and API Security Boundarie
 Backend Engineer Readiness reuses the existing durable-generation architecture lesson with an optional original SQLite retry lab and a separate checkpoint. Its Reservation Boundaries unit is shared with System Design Fundamentals. Keep ordered membership explicit and the original Product Engineering path’s 18-question sequence unchanged.
 
 The AI Engineering path adds Evidence-First Handoffs between Agents And Operations and Risk And Governance. The original Python resume lab and four-question checkpoint distinguish input identity, model execution, verification and approval. External course projects remain optional references, not completed or independently validated activities.
+
+The existing cache and reservation lessons link attributed Discord/Shopify production cases. Their original review prompts distinguish shared in-flight reads from cached results and bounded reservation rows from authoritative stock. Keep engine-specific behavior and reported outcomes separate from local lab measurements.

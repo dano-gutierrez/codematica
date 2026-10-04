@@ -8,7 +8,7 @@ difficulty: practitioner
 tags: [reservations, concurrency, admission-control, idempotency, postgres]
 prerequisites: [software-engineering/product-interview-durable-generation-architecture, system-design/scaling-decision-worksheet]
 diagramRefs: []
-sourceRefs: [postgresql-17-locking, postgresql-17-select]
+sourceRefs: [postgresql-17-locking, postgresql-17-select, shopify-inventory-reservations-2026]
 status: published
 ---
 
@@ -68,6 +68,14 @@ RETURNING inventory.item_id;
 Expected: B claims item 2 without waiting for A. Repeat the claim while A still holds its lock: B returns no row. That means no matching row could be acquired by this statement, not that the inventory is sold out. Roll back A, then B can read item 1 as available.
 
 [PostgreSQL's SELECT contract](https://www.postgresql.org/docs/17/sql-select.html) permits skipping locked rows for queue-like consumers and warns that this produces an inconsistent view. The row lock belongs inside the selection CTE. `ORDER BY` gives a selection order among eligible rows; skipping a busy row does not enforce strict FIFO or the waiting-room fairness policy.
+
+## Compare a bounded pool with the ledger
+
+[Shopify's May 2026 engineering report](https://shopify.engineering/scaling-inventory-reservations) describes a MySQL reservation pool capped at 1,000 available rows **per item/location combination**. The inventory ledger supplies replenishment. An empty pool can trigger serialized inline replenishment and waiting; `SKIP LOCKED` is not a guarantee that the complete request never waits. Their investigation also attributed connection pressure to other checkout work holding connections.
+
+For an original design review, draw the authoritative inventory balance, currently available pool rows, active holds and committed sales separately. State which transaction prevents replenishment from representing the same capacity twice. A pool's empty result cannot establish physical stock exhaustion by itself.
+
+Read the [connection-pooling lesson](/docs/databases/postgres-connection-pooling) to budget the whole workload. Inspect the exact engine, isolation level, indexes and lock order before adapting SQL. Our PostgreSQL fixture measures its own boundaries; it neither reproduces Shopify's MySQL implementation nor validates their reported throughput.
 
 ## Trace expiry against a late result
 

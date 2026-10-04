@@ -174,6 +174,15 @@ describe("generated content index", () => {
     expect(feed?.cards.some((card) => card.code?.includes("trace_id"))).toBe(true);
   });
 
+  it("links primary reservation and coalescing cases to existing lessons", () => {
+    const reservation = getDocumentBySlug("system-design/fair-admission-and-reservations");
+    const cache = getDocumentBySlug("system-design/cache-invalidation");
+    expect(reservation?.sourceRefs).toContain("shopify-inventory-reservations-2026");
+    expect(cache?.sourceRefs).toContain("discord-message-storage-2023");
+    expect(reservation?.headings.map(h => h.id)).toContain("compare-a-bounded-pool-with-the-ledger");
+    expect(cache?.headings.map(h => h.id)).toContain("study-coalescing-without-confusing-it-with-caching");
+  });
+
   it("links the original handoff lab and checkpoint between agents and governance", () => {
     const path = "ai-engineering-langfuse-langchain";
     const document = getDocumentBySlug("ai-engineering/evidence-first-agent-handoffs");

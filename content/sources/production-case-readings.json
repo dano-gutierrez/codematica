@@ -1,0 +1,20 @@
+{
+  "sources": [
+    {
+      "id": "discord-message-storage-2023",
+      "title": "How Discord Stores Trillions of Messages",
+      "provider": "Discord Engineering",
+      "url": "https://discord.com/blog/how-discord-stores-trillions-of-messages",
+      "attribution": "Bo Ingram, March 6, 2023. Attributed production report; not independently benchmarked here.",
+      "lastVerifiedAt": "2026-10-03"
+    },
+    {
+      "id": "shopify-inventory-reservations-2026",
+      "title": "We replaced Redis with MySQL for inventory reservations—and it scaled",
+      "provider": "Shopify Engineering",
+      "url": "https://shopify.engineering/scaling-inventory-reservations",
+      "attribution": "Emilie Noel, May 12, 2026. Attributed production report; not independently benchmarked here.",
+      "lastVerifiedAt": "2026-10-03"
+    }
+  ]
+}
