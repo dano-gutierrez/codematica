@@ -11,6 +11,17 @@ beforeAll(async () => {
 function freshContent() { return structuredClone(validatedIndex); }
 
 describe("complete knowledge catalog", () => {
+  it("exports progressive state history without changing resource identity", () => {
+    const graph = buildKnowledgeCatalog(freshContent());
+    const lesson = "document:software-engineering/progressive-state-history", quiz = "exercise:software-engineering/progressive-state-checkpoint", unit = "unit:backend-engineer-readiness:progressive-state";
+    expect(graph.resources.find(r => r.id === lesson)).toMatchObject({paths:["path:backend-engineer-readiness"],visibility:"curriculum",status:"published"});
+    expect(graph.relationships).toContainEqual(expect.objectContaining({source:"path:backend-engineer-readiness",target:unit,type:"contains",order:3,provenance:"explicit"}));
+    for (const [order,target] of [lesson,quiz].entries()) expect(graph.relationships).toContainEqual(expect.objectContaining({source:unit,target,type:"contains",order,provenance:"explicit"}));
+    expect(graph.relationships).toContainEqual(expect.objectContaining({source:quiz,target:lesson,type:"assesses",provenance:"explicit"}));
+    expect(graph.relationships).toContainEqual(expect.objectContaining({source:lesson,target:"document:programming/python-runtime-model",type:"requires",provenance:"explicit"}));
+    expect(graph.unresolved.some(r=>[lesson,quiz,unit].includes(r.resourceId))).toBe(false);
+  });
+
   it("exports array-state review in the existing coding path", () => {
     const graph = buildKnowledgeCatalog(freshContent());
     const lesson = "document:programming/array-state-invariants", quiz = "exercise:programming/array-state-checkpoint", unit = "unit:coding-interview-pattern-practice:array-state-reviews";

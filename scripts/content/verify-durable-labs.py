@@ -10,6 +10,10 @@ ROOT = Path(__file__).resolve().parents[2]
 
 
 class AuthoredLabs(unittest.TestCase):
+    def test_progressive_state_history(self):
+        self.run_lab("content/knowledge/software-engineering/progressive-state-history.md",
+                     "time, rejected state, conserved transfers, retirement and bounded replay: passed")
+
     def test_array_state_contracts(self):
         self.run_lab("content/knowledge/programming/array-state-invariants.md",
                      "nonempty/ties, unique slots, strict greater, input preservation and bounded oracles: passed")

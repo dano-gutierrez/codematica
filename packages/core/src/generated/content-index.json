@@ -12189,6 +12189,61 @@
       "readingMinutes": 4
     },
     {
+      "title": "Progressive State — Preserve History When Entities Merge",
+      "slug": "software-engineering/progressive-state-history",
+      "summary": "Extend an original in-memory credit toy through transfers, historical queries and merges, preserving rejection and retirement contracts.",
+      "track": "Software Engineering",
+      "topic": "State And History",
+      "difficulty": "practitioner",
+      "tags": [
+        "state",
+        "history",
+        "invariants",
+        "progressive-practice"
+      ],
+      "prerequisites": [
+        "programming/python-runtime-model"
+      ],
+      "diagramRefs": [],
+      "status": "published",
+      "id": "9a7618f32a6c",
+      "route": "/docs/software-engineering/progressive-state-history",
+      "sourcePath": "content/knowledge/software-engineering/progressive-state-history.md",
+      "bodyPath": "content/knowledge/software-engineering/progressive-state-history.md",
+      "markdown": "## Extend one contract at a time\n\nBuild four stages: create and credit accounts; transfer between active accounts; query historical balances; merge one active account into another. These are original fictional-credit requirements, not an employer's assessment or a real payment service. Keep every earlier stage's checks when adding the next. An interview anecdote, score or company name does not verify assessment rules or hiring outcomes.\n\n## Make time and rejection explicit\n\nUse nonblank string IDs, preserved exactly and case-sensitively. Credit and transfer amounts are positive built-in integers; booleans are rejected. Successful operations have strictly increasing nonnegative integer timestamps. A failed operation does not advance time or record history. Reject missing or identical transfer/merge participants and insufficient credits before changing state. Transfers conserve the sum across active accounts; credit operations intentionally increase it.\n\nHistorical queries accept times from zero through the latest successful timestamp. Return `None` before creation, for an unknown ID, or from retirement onward. Zero is an existing empty balance, not absence. Reject future, negative, boolean or noninteger query times. This explicit toy chooses permanent retirement: retired IDs cannot be reused.\n\n## Merge current state without rewriting history\n\nAt the merge timestamp, add the source's current balance to the target and retire the source. The earlier target history is not rewritten. If A has 7 and B has 5 at time 4, a merge at time 5 gives A 12 at time 5; A at time 4 remains 7, B at time 4 remains 5, and B at time 5 is `None`. A later merge must preserve each earlier identity's history too.\n\nThe reference stores per-ID balance events, including a retirement marker. Its slower oracle stores whole active-state snapshots. Historical reads inspect the latest event/snapshot at or before the requested time. Validate against this independently represented history rather than checking only the final combined balance.\n\n## Run the original reference\n\nRun with Python 3.13. This single-process, sequential fixture uses memory only, with no network, file or model operations. History storage grows with accepted changes; historical scans grow with the selected account's events. It is not durable or safe against concurrent/crashing operations. Authentication, request idempotency, real money and persistence need separate contracts and tests.\n\n```python\nfrom copy import deepcopy\nfrom itertools import product\n\n\nclass ToyWallet:\n    def __init__(self):\n        self._clock = -1\n        self._active = {}\n        self._history = {}\n\n    def _time(self, at):\n        if type(at) is not int or at < 0 or at <= self._clock:\n            raise ValueError(\"operation time must increase\")\n\n    def _id(self, name):\n        if type(name) is not str or not name.strip():\n            raise ValueError(\"nonblank string ID required\")\n\n    def _participant(self, name):\n        self._id(name)\n        if name not in self._active:\n            raise ValueError(\"active ID required\")\n\n    def _amount(self, amount):\n        if type(amount) is not int or amount <= 0:\n            raise ValueError(\"positive built-in integer required\")\n\n    def _commit(self, at, changes):\n        for name, balance in changes.items():\n            self._history.setdefault(name, []).append((at, balance))\n            if balance is None:\n                del self._active[name]\n            else:\n                self._active[name] = balance\n        self._clock = at\n\n    def create(self, at, name):\n        self._time(at)\n        self._id(name)\n        if name in self._history:\n            raise ValueError(\"ID has already existed\")\n        self._commit(at, {name: 0})\n\n    def credit(self, at, name, amount):\n        self._time(at)\n        self._participant(name)\n        self._amount(amount)\n        self._commit(at, {name: self._active[name] + amount})\n\n    def transfer(self, at, source, target, amount):\n        self._time(at)\n        self._participant(source)\n        self._participant(target)\n        self._amount(amount)\n        if source == target or self._active[source] < amount:\n            raise ValueError(\"distinct participants and enough credits required\")\n        self._commit(at, {source: self._active[source] - amount,\n                          target: self._active[target] + amount})\n\n    def merge(self, at, target, source):\n        self._time(at)\n        self._participant(target)\n        self._participant(source)\n        if source == target:\n            raise ValueError(\"distinct participants required\")\n        self._commit(at, {target: self._active[target] + self._active[source],\n                          source: None})\n\n    def balance_at(self, name, at):\n        self._id(name)\n        if type(at) is not int or at < 0 or at > self._clock:\n            raise ValueError(\"query time outside known history\")\n        for timestamp, balance in reversed(self._history.get(name, [])):\n            if timestamp <= at:\n                return balance\n        return None\n\n\ndef rejected_without_change(wallet, method, *args):\n    before = deepcopy(wallet.__dict__)\n    try:\n        getattr(wallet, method)(*args)\n    except ValueError:\n        pass\n    else:\n        raise AssertionError((method, args))\n    assert wallet.__dict__ == before\n\n\nw = ToyWallet()\nw.create(1, \"A\")\nw.create(2, \"B\")\nw.credit(3, \"A\", 7)\nw.credit(4, \"B\", 5)\nrejected_without_change(w, \"transfer\", 5, \"A\", \"B\", 8)\nw.merge(5, \"A\", \"B\")\nassert [w.balance_at(\"A\", t) for t in (0, 4, 5)] == [None, 7, 12]\nassert [w.balance_at(\"B\", t) for t in (1, 3, 4, 5)] == [None, 0, 5, None]\nrejected_without_change(w, \"create\", 6, \"B\")\nw.credit(6, \"A\", 2)\nw.create(7, \"C\")\nw.transfer(8, \"A\", \"C\", 4)\nassert sum(w._active.values()) == 14\nw.merge(9, \"A\", \"C\")\nassert w.balance_at(\"A\", 8) == 10\nassert w.balance_at(\"C\", 8) == 4\nassert w.balance_at(\"A\", 9) == 14\nassert w.balance_at(\"C\", 9) is None\nfor method, args in [(\"create\", (10, \"\")), (\"create\", (10, \"  \")),\n                     (\"create\", (True, \"D\")), (\"create\", (-1, \"D\")),\n                     (\"create\", (9, \"D\")), (\"create\", (10, None)),\n                     (\"credit\", (10, \"A\", 0)), (\"credit\", (10, \"A\", -1)),\n                     (\"credit\", (10, \"A\", True)), (\"credit\", (10, \"A\", 1.0)),\n                     (\"credit\", (10, \"B\", 1)), (\"credit\", (10, \"unknown\", 1)),\n                     (\"transfer\", (10, \"A\", \"A\", 1)),\n                     (\"merge\", (10, \"A\", \"A\")), (\"merge\", (10, \"A\", \"B\")),\n                     (\"balance_at\", (\"A\", 10)), (\"balance_at\", (\"A\", -1)),\n                     (\"balance_at\", (\"A\", True)), (\"balance_at\", (\"A\", 1.0))]:\n    rejected_without_change(w, method, *args)\nassert w.balance_at(\"unknown\", 9) is None\nw.create(10, \"D\")\nassert w.balance_at(\"D\", 10) == 0\nfor amount in (0, -1, True, 1.0):\n    rejected_without_change(w, \"transfer\", 11, \"A\", \"D\", amount)\nrejected_without_change(w, \"transfer\", 11, \"unknown\", \"D\", 1)\nrejected_without_change(w, \"transfer\", 11, \"A\", \"unknown\", 1)\nrejected_without_change(w, \"create\", 10.5, \"E\")\nw.transfer(11, \"A\", \"D\", 1)\nassert w.balance_at(\"A\", 11) == 13\nassert w.balance_at(\"D\", 11) == 1\nfresh = ToyWallet()\nrejected_without_change(fresh, \"create\", True, \"A\")\nfresh.create(0, \"A\")\nassert fresh.balance_at(\"A\", 0) == 0\nfresh.create(1, \" A \")\nfresh.create(2, \"a\")\nfresh.credit(3, \" A \", 1)\nassert fresh.balance_at(\"A\", 3) == 0\nassert fresh.balance_at(\" A \", 3) == 1\nassert fresh.balance_at(\"a\", 3) == 0\n\n\nactions = [(\"create\", \"A\"), (\"create\", \"B\"), (\"credit\", \"A\", 2),\n           (\"credit\", \"B\", 3), (\"transfer\", \"A\", \"B\", 1),\n           (\"transfer\", \"B\", \"A\", 1), (\"merge\", \"A\", \"B\"),\n           (\"merge\", \"B\", \"A\")]\n\n\ndef snapshot_oracle(trace):\n    active, seen, states, accepted = {}, set(), [(-1, {})], []\n    for at, action in enumerate(trace, 1):\n        kind, *args = action\n        next_state = dict(active)\n        if kind == \"create\":\n            name = args[0]\n            allowed = name not in seen\n            if allowed:\n                next_state[name] = 0\n                seen.add(name)\n        elif kind == \"credit\":\n            name, amount = args\n            allowed = name in active\n            if allowed:\n                next_state[name] += amount\n        elif kind == \"transfer\":\n            source, target, amount = args\n            allowed = source in active and target in active and active[source] >= amount\n            if allowed:\n                next_state[source] -= amount\n                next_state[target] += amount\n        else:\n            target, source = args\n            allowed = target in active and source in active\n            if allowed:\n                next_state[target] += next_state.pop(source)\n        accepted.append(allowed)\n        if allowed:\n            active = next_state\n            states.append((at, dict(active)))\n    return accepted, states\n\n\ntrace_count = 0\nsuccessful_transfers, positive_merges = 0, 0\nfor length in range(5):\n    for trace in product(actions, repeat=length):\n        wallet = ToyWallet()\n        accepted, states = snapshot_oracle(trace)\n        for at, (action, allowed) in enumerate(zip(trace, accepted), 1):\n            method, *args = action\n            if allowed:\n                if method == \"transfer\":\n                    successful_transfers += 1\n                if method == \"merge\":\n                    prior = next(state for timestamp, state in reversed(states) if timestamp < at)\n                    positive_merges += prior[args[1]] > 0\n                getattr(wallet, method)(at, *args)\n            else:\n                rejected_without_change(wallet, method, at, *args)\n        assert wallet._active == states[-1][1]\n        assert wallet._clock == states[-1][0]\n        for at in range(wallet._clock + 1):\n            state = next(state for timestamp, state in reversed(states) if timestamp <= at)\n            for name in (\"A\", \"B\"):\n                assert wallet.balance_at(name, at) == state.get(name)\n        trace_count += 1\nassert trace_count == 4681\nassert successful_transfers > 0\nassert positive_merges > 0\nprint(\"time, rejected state, conserved transfers, retirement and bounded replay: passed\")\n```\n\n## Challenge the state model\n\nThe 4,681 bounded action traces compare final state, accepted time and every query time for A/B against full snapshots. The explicit example adds chained merges, invalid inputs, zero versus absence and a successful operation using a previously rejected timestamp. These bounded replay checks are not a general proof. The oracle action set uses distinct participants and positive fixed amounts; separate checks cover those invalid partitions.\n\nPredict failures if validation advances time, if a merge rewrites old target events, if a retired ID is recreated, or if a source remains active. Retain failed traces. A production design would need atomic persistence, concurrent ownership, authorized operations and recovery; the toy's successful sequential mutations provide none of that evidence.\n\nComplete the [Progressive State Checkpoint](/practice/software-engineering/progressive-state-checkpoint). Explain which old contract each new stage might break before adding another feature.",
+      "plainText": "Extend one contract at a time Build four stages: create and credit accounts; transfer between active accounts; query historical balances; merge one active account into another. These are original fictional-credit requirements, not an employer's assessment or a real payment service. Keep every earlier stage's checks when adding the next. An interview anecdote, score or company name does not verify assessment rules or hiring outcomes. Make time and rejection explicit Use nonblank string IDs, preserved exactly and case-sensitively. Credit and transfer amounts are positive built-in integers; booleans are rejected. Successful operations have strictly increasing nonnegative integer timestamps. A failed operation does not advance time or record history. Reject missing or identical transfer/merge participants and insufficient credits before changing state. Transfers conserve the sum across active accounts; credit operations intentionally increase it. Historical queries accept times from zero through the latest successful timestamp. Return None before creation, for an unknown ID, or from retirement onward. Zero is an existing empty balance, not absence. Reject future, negative, boolean or noninteger query times. This explicit toy chooses permanent retirement: retired IDs cannot be reused. Merge current state without rewriting history At the merge timestamp, add the source's current balance to the target and retire the source. The earlier target history is not rewritten. If A has 7 and B has 5 at time 4, a merge at time 5 gives A 12 at time 5; A at time 4 remains 7, B at time 4 remains 5, and B at time 5 is None. A later merge must preserve each earlier identity's history too. The reference stores per-ID balance events, including a retirement marker. Its slower oracle stores whole active-state snapshots. Historical reads inspect the latest event/snapshot at or before the requested time. Validate against this independently represented history rather than checking only the final combined balance. Run the original reference Run with Python 3.13. This single-process, sequential fixture uses memory only, with no network, file or model operations. History storage grows with accepted changes; historical scans grow with the selected account's events. It is not durable or safe against concurrent/crashing operations. Authentication, request idempotency, real money and persistence need separate contracts and tests. from copy import deepcopy from itertools import product class ToyWallet: def __init__(self): self._clock = -1 self._active = {} self._history = {} def _time(self, at): if type(at) is not int or at < 0 or at <= self._clock: raise ValueError(\"operation time must increase\") def _id(self, name): if type(name) is not str or not name.strip(): raise ValueError(\"nonblank string ID required\") def _participant(self, name): self._id(name) if name not in self._active: raise ValueError(\"active ID required\") def _amount(self, amount): if type(amount) is not int or amount <= 0: raise ValueError(\"positive built-in integer required\") def _commit(self, at, changes): for name, balance in changes.items(): self._history.setdefault(name, []).append((at, balance)) if balance is None: del self._active[name] else: self._active[name] = balance self._clock = at def create(self, at, name): self._time(at) self._id(name) if name in self._history: raise ValueError(\"ID has already existed\") self._commit(at, {name: 0}) def credit(self, at, name, amount): self._time(at) self._participant(name) self._amount(amount) self._commit(at, {name: self._active[name] + amount}) def transfer(self, at, source, target, amount): self._time(at) self._participant(source) self._participant(target) self._amount(amount) if source == target or self._active[source] < amount: raise ValueError(\"distinct participants and enough credits required\") self._commit(at, {source: self._active[source] - amount, target: self._active[target] + amount}) def merge(self, at, target, source): self._time(at) self._participant(target) self._participant(source) if source == target: raise ValueError(\"distinct participants required\") self._commit(at, {target: self._active[target] + self._active[source], source: None}) def balance_at(self, name, at): self._id(name) if type(at) is not int or at < 0 or at > self._clock: raise ValueError(\"query time outside known history\") for timestamp, balance in reversed(self._history.get(name, [])): if timestamp <= at: return balance return None def rejected_without_change(wallet, method, *args): before = deepcopy(wallet.__dict__) try: getattr(wallet, method)(*args) except ValueError: pass else: raise AssertionError((method, args)) assert wallet.__dict__ == before w = ToyWallet() w.create(1, \"A\") w.create(2, \"B\") w.credit(3, \"A\", 7) w.credit(4, \"B\", 5) rejected_without_change(w, \"transfer\", 5, \"A\", \"B\", 8) w.merge(5, \"A\", \"B\") assert [w.balance_at(\"A\", t) for t in (0, 4, 5)] == [None, 7, 12] assert [w.balance_at(\"B\", t) for t in (1, 3, 4, 5)] == [None, 0, 5, None] rejected_without_change(w, \"create\", 6, \"B\") w.credit(6, \"A\", 2) w.create(7, \"C\") w.transfer(8, \"A\", \"C\", 4) assert sum(w._active.values()) == 14 w.merge(9, \"A\", \"C\") assert w.balance_at(\"A\", 8) == 10 assert w.balance_at(\"C\", 8) == 4 assert w.balance_at(\"A\", 9) == 14 assert w.balance_at(\"C\", 9) is None for method, args in [(\"create\", (10, \"\")), (\"create\", (10, \" \")), (\"create\", (True, \"D\")), (\"create\", (-1, \"D\")), (\"create\", (9, \"D\")), (\"create\", (10, None)), (\"credit\", (10, \"A\", 0)), (\"credit\", (10, \"A\", -1)), (\"credit\", (10, \"A\", True)), (\"credit\", (10, \"A\", 1.0)), (\"credit\", (10, \"B\", 1)), (\"credit\", (10, \"unknown\", 1)), (\"transfer\", (10, \"A\", \"A\", 1)), (\"merge\", (10, \"A\", \"A\")), (\"merge\", (10, \"A\", \"B\")), (\"balance_at\", (\"A\", 10)), (\"balance_at\", (\"A\", -1)), (\"balance_at\", (\"A\", True)), (\"balance_at\", (\"A\", 1.0))]: rejected_without_change(w, method, *args) assert w.balance_at(\"unknown\", 9) is None w.create(10, \"D\") assert w.balance_at(\"D\", 10) == 0 for amount in (0, -1, True, 1.0): rejected_without_change(w, \"transfer\", 11, \"A\", \"D\", amount) rejected_without_change(w, \"transfer\", 11, \"unknown\", \"D\", 1) rejected_without_change(w, \"transfer\", 11, \"A\", \"unknown\", 1) rejected_without_change(w, \"create\", 10.5, \"E\") w.transfer(11, \"A\", \"D\", 1) assert w.balance_at(\"A\", 11) == 13 assert w.balance_at(\"D\", 11) == 1 fresh = ToyWallet() rejected_without_change(fresh, \"create\", True, \"A\") fresh.create(0, \"A\") assert fresh.balance_at(\"A\", 0) == 0 fresh.create(1, \" A \") fresh.create(2, \"a\") fresh.credit(3, \" A \", 1) assert fresh.balance_at(\"A\", 3) == 0 assert fresh.balance_at(\" A \", 3) == 1 assert fresh.balance_at(\"a\", 3) == 0 actions = [(\"create\", \"A\"), (\"create\", \"B\"), (\"credit\", \"A\", 2), (\"credit\", \"B\", 3), (\"transfer\", \"A\", \"B\", 1), (\"transfer\", \"B\", \"A\", 1), (\"merge\", \"A\", \"B\"), (\"merge\", \"B\", \"A\")] def snapshot_oracle(trace): active, seen, states, accepted = {}, set(), [(-1, {})], [] for at, action in enumerate(trace, 1): kind, *args = action next_state = dict(active) if kind == \"create\": name = args[0] allowed = name not in seen if allowed: next_state[name] = 0 seen.add(name) elif kind == \"credit\": name, amount = args allowed = name in active if allowed: next_state[name] += amount elif kind == \"transfer\": source, target, amount = args allowed = source in active and target in active and active[source] >= amount if allowed: next_state[source] -= amount next_state[target] += amount else: target, source = args allowed = target in active and source in active if allowed: next_state[target] += next_state.pop(source) accepted.append(allowed) if allowed: active = next_state states.append((at, dict(active))) return accepted, states trace_count = 0 successful_transfers, positive_merges = 0, 0 for length in range(5): for trace in product(actions, repeat=length): wallet = ToyWallet() accepted, states = snapshot_oracle(trace) for at, (action, allowed) in enumerate(zip(trace, accepted), 1): method, *args = action if allowed: if method == \"transfer\": successful_transfers += 1 if method == \"merge\": prior = next(state for timestamp, state in reversed(states) if timestamp < at) positive_merges += prior[args[1]] > 0 getattr(wallet, method)(at, *args) else: rejected_without_change(wallet, method, at, *args) assert wallet._active == states[-1][1] assert wallet._clock == states[-1][0] for at in range(wallet._clock + 1): state = next(state for timestamp, state in reversed(states) if timestamp <= at) for name in (\"A\", \"B\"): assert wallet.balance_at(name, at) == state.get(name) trace_count += 1 assert trace_count == 4681 assert successful_transfers > 0 assert positive_merges > 0 print(\"time, rejected state, conserved transfers, retirement and bounded replay: passed\") Challenge the state model The 4,681 bounded action traces compare final state, accepted time and every query time for A/B against full snapshots. The explicit example adds chained merges, invalid inputs, zero versus absence and a successful operation using a previously rejected timestamp. These bounded replay checks are not a general proof. The oracle action set uses distinct participants and positive fixed amounts; separate checks cover those invalid partitions. Predict failures if validation advances time, if a merge rewrites old target events, if a retired ID is recreated, or if a source remains active. Retain failed traces. A production design would need atomic persistence, concurrent ownership, authorized operations and recovery; the toy's successful sequential mutations provide none of that evidence. Complete the Progressive State Checkpoint. Explain which old contract each new stage might break before adding another feature.",
+      "headings": [
+        {
+          "id": "extend-one-contract-at-a-time",
+          "depth": 2,
+          "text": "Extend one contract at a time"
+        },
+        {
+          "id": "make-time-and-rejection-explicit",
+          "depth": 2,
+          "text": "Make time and rejection explicit"
+        },
+        {
+          "id": "merge-current-state-without-rewriting-history",
+          "depth": 2,
+          "text": "Merge current state without rewriting history"
+        },
+        {
+          "id": "run-the-original-reference",
+          "depth": 2,
+          "text": "Run the original reference"
+        },
+        {
+          "id": "challenge-the-state-model",
+          "depth": 2,
+          "text": "Challenge the state model"
+        }
+      ],
+      "mermaidBlocks": [],
+      "contentHash": "1441950f4d45d92bddd4c9688f6d6a10d73f7f4a3cb17c3186892fafdf3ae3ac",
+      "readingMinutes": 6
+    },
+    {
       "title": "Cache Invalidation Under Product Pressure",
       "slug": "system-design/cache-invalidation",
       "summary": "A senior-level guide to choosing invalidation strategies when latency, freshness, and operational safety all matter.",
@@ -13159,12 +13214,27 @@
               "slug": "system-design/reservation-boundary-checkpoint"
             }
           ]
+        },
+        {
+          "slug": "progressive-state",
+          "title": "Progressive State And History",
+          "summary": "Extend an original in-memory credit toy while preserving rejected operations, past observations and retired identities.",
+          "nodes": [
+            {
+              "kind": "document",
+              "slug": "software-engineering/progressive-state-history"
+            },
+            {
+              "kind": "exercise",
+              "slug": "software-engineering/progressive-state-checkpoint"
+            }
+          ]
         }
       ],
       "id": "b4f512be8f33",
       "route": "/paths/backend-engineer-readiness",
       "sourcePath": "content/learning-paths/backend-engineer-readiness.json",
-      "contentHash": "47ca4b6fb8e0be71d1d3c8f69210195f97801296e15c1cbae27f12f629f847e3"
+      "contentHash": "8b33aca7240b6a451fdbdc6bcb144cbff5a38f2c7ccfab4271231339bd5abb41"
     },
     {
       "slug": "breadth-first-and-depth-first-search",
@@ -33371,6 +33441,118 @@
       "route": "/practice/software-engineering/product-interview-mock-interview-questionnaire",
       "sourcePath": "content/exercises/software-engineering/product-interview-mock-interview-questionnaire.json",
       "contentHash": "5c2b4a808f35e6acdc8a76cbd40fd56acee962755d22d53c0522126b1301e509"
+    },
+    {
+      "slug": "software-engineering/progressive-state-checkpoint",
+      "title": "Progressive State Checkpoint",
+      "documentSlug": "software-engineering/progressive-state-history",
+      "concept": "State And History",
+      "difficulty": "practitioner",
+      "tags": [
+        "state",
+        "history",
+        "invariants"
+      ],
+      "status": "published",
+      "type": "questionnaire",
+      "questions": [
+        {
+          "id": "premerge-history",
+          "prompt": "A has 7 and B has 5 at time 4. They merge into A at time 5. What does A at time 4 mean?",
+          "explanation": "Current-state ownership changes at the merge time; earlier observations retain their original identity.",
+          "kind": "choice",
+          "options": [
+            {
+              "id": "option-0",
+              "label": "A at time 4 remains 7; only the merge-time and later target balance includes B.",
+              "isCorrect": true
+            },
+            {
+              "id": "option-1",
+              "label": "A at time 4 becomes 12 because every earlier event must be combined.",
+              "isCorrect": false
+            },
+            {
+              "id": "option-2",
+              "label": "Historical queries should always return the latest balance.",
+              "isCorrect": false
+            }
+          ]
+        },
+        {
+          "id": "retired-history",
+          "prompt": "How should the retired source B behave in this toy?",
+          "explanation": "Permanent retirement and retained earlier observations are separate from an active zero balance.",
+          "kind": "choice",
+          "options": [
+            {
+              "id": "option-0",
+              "label": "B retains its earlier balance, returns None from retirement onward, and its ID cannot be reused.",
+              "isCorrect": true
+            },
+            {
+              "id": "option-1",
+              "label": "B remains active with zero credits and may be recreated immediately.",
+              "isCorrect": false
+            },
+            {
+              "id": "option-2",
+              "label": "Delete all B history so earlier queries cannot find it.",
+              "isCorrect": false
+            }
+          ]
+        },
+        {
+          "id": "rejected-state",
+          "prompt": "An insufficient-credit transfer at time 5 is rejected. What is the clock/history contract?",
+          "explanation": "The reference validates before changing either balances, history or the accepted-operation clock.",
+          "kind": "choice",
+          "options": [
+            {
+              "id": "option-0",
+              "label": "Reject before recording state or advancing the clock; a valid operation may still use that timestamp.",
+              "isCorrect": true
+            },
+            {
+              "id": "option-1",
+              "label": "Record time 5 before checking the balance, then reject.",
+              "isCorrect": false
+            },
+            {
+              "id": "option-2",
+              "label": "Deduct available credits and call the transfer partially successful.",
+              "isCorrect": false
+            }
+          ]
+        },
+        {
+          "id": "scope",
+          "prompt": "What evidence do the original in-memory checks establish?",
+          "explanation": "Memory-only sequential execution and bounded replay do not prove persistence, authorization or distributed correctness.",
+          "kind": "choice",
+          "options": [
+            {
+              "id": "option-0",
+              "label": "The sequential bounded state/history contract; persistence, concurrency and real payments need separate design and tests.",
+              "isCorrect": true
+            },
+            {
+              "id": "option-1",
+              "label": "A durable atomic financial service safe across crashes and concurrent requests.",
+              "isCorrect": false
+            },
+            {
+              "id": "option-2",
+              "label": "An official employer assessment score or hiring outcome.",
+              "isCorrect": false
+            }
+          ]
+        }
+      ],
+      "id": "947fc9f75213",
+      "route": "/practice/software-engineering/progressive-state-checkpoint",
+      "sourcePath": "content/exercises/software-engineering/progressive-state-checkpoint.json",
+      "contentHash": "7e621d74bf6105443fd3df9f06779bafb0d7b52ff91f6bf4d3c103a1881e1c7c"
     },
     {
       "slug": "system-design/api-boundary-checkpoint",
@@ -158827,13 +159009,15 @@
     {
       "name": "Software Engineering",
       "slug": "software-engineering",
-      "documentCount": 5,
+      "documentCount": 6,
       "difficulties": [
+        "practitioner",
         "senior"
       ],
       "topics": [
         "Interview Preparation",
-        "Observability"
+        "Observability",
+        "State And History"
       ]
     },
     {

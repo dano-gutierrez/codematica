@@ -67,6 +67,21 @@
           "slug": "system-design/reservation-boundary-checkpoint"
         }
       ]
+    },
+    {
+      "slug": "progressive-state",
+      "title": "Progressive State And History",
+      "summary": "Extend an original in-memory credit toy while preserving rejected operations, past observations and retired identities.",
+      "nodes": [
+        {
+          "kind": "document",
+          "slug": "software-engineering/progressive-state-history"
+        },
+        {
+          "kind": "exercise",
+          "slug": "software-engineering/progressive-state-checkpoint"
+        }
+      ]
     }
   ]
 }
