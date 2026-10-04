@@ -3,7 +3,7 @@
 ## Snapshot
 
 - Status: `in_progress` — implementation exists; installed-device and physical Pencil validation remain outstanding.
-- Last updated: `2026-10-03`
+- Last updated: `2026-10-04`
 - Owner thread: n/a
 - Current state: web and native notebook sheets share shape grading, schedules, cell cursors and local saving; iOS has a local PencilKit Expo module.
 - Target outcome: fill generous notebook pages with recognizable handwriting, with saved ink and progressive repetition.
@@ -103,6 +103,8 @@ Local write queues preserve ordering across quick acceptance, Undo and restart. 
 
 ## Test Plan
 
+Clock-controlled browser tests install Playwright's clock before navigation, let the notebook load, then pause at a target more than two hours after the installed time. The target exceeds the unchanged 30-second test budget; command or page-setup latency cannot consume a one-second pause window. A separate inert browser regression advances setup by 1500ms and checks the paused timestamp plus timer behavior at 999/1000ms. Handwriting acceptance, correction and fade assertions retain their existing durations. See [Playwright's clock guidance](https://playwright.dev/docs/clock). This changes the test setup only, with no product timer, content, grading or timeout change.
+
 Regression-first core tests reproduce rough あ, arbitrary placement/scale, widened mouse shapes, reordered/reversed strokes, extra lifts, taps/scribbles, missing features at every difficulty, old triangular geometry and duplicate acceptance. Every published guide passes Easy, including sparsely sampled curves; sparse polygon guides retain essential corners. Unit tests cover all 24 repetitions, pairs, Unicode limits, custom schedules, locked pages, merge and restart.
 
 Web/native integration tests cover correction, timer cancellation, rejection expiry/repeated submission/unmount, accepted-ink preservation, native completed samples, coalesced release samples, retained local pressure, save/restore failures, recall hints, matching independence, navigation and completion. Error feedback must stay hidden until 1.2 seconds after pen-up; 900ms gaps between mouse strokes must still produce one accepted character with no stale error. The shared hook covers cancellation of pending feedback and unmount before the grace period ends. Cancelled contacts and two-finger scroll gestures must preserve pending strokes and resume automatic checks without accidental ink. Verify automatic mouse/finger/Pencil switching, pen preemption, one-finger remainder suppression, scroll bounds, completed-page scrolling and absence of mode buttons. Difficulty selection rechecks pending ink and survives local restoration/restart; the manual submit control is absent. Core geometry tests require every cell to clear the red gutter at phone/tablet widths. Browser regressions use mouse, touch and pen input across 320px phone, iPad portrait/landscape and 507px Split View; assert compact footer sizes, accessible restart labeling, no layout shifts, rejection bounce/fade, reduced motion, restored ink, all 72 custom repetitions and serious/critical accessibility violations. Transactional pgTAP tests cover RLS, bounded counts, immutable prompt and preserved unlocks; replay all migrations against a separate disposable database, never reset the shared local database.
@@ -161,6 +163,8 @@ The first browser pass caught Safari reflow when replacing ruby readings with bl
 - Physical-device calibration may identify additional independent handwriting examples for the deterministic grader. Preserve negative coverage regressions when adjusting tolerance.
 
 ## Decision Log
+
+- `2026-10-04`: Fix a reproduced Playwright clock setup race in the three controlled handwriting journeys. Install before app timers and pause beyond the test budget; retain the failed CI trace and all existing timing assertions.
 
 - `2026-10-02`: Implement the approved 24-repetition notebook plan. Retain actual learner ink locally; sync only furthest coarse progress. Use PencilKit for installed iOS and shared SVG for Android.
 - `2026-10-02`: Follow-up feedback requests delayed automatic clearing of rejected handwriting, gentle error motion, and a wider left gutter. Replace indefinite rejected-ink retention with cancellable 1.6-second correction time and a 500ms fade.
