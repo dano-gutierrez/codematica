@@ -20,6 +20,8 @@ The durable matrix, CI schedules, and release contract live in `docs/features/au
 
 Editor tests share `code-editor.ts`: choose CodeMirror's shortcut from the emulated browser platform, focus the editable textbox, replace the whole document, then assert its exact text before Run. An emulated iPhone uses Meta even on Linux. `scripts/testing/code-editor.test.ts` covers desktop, iOS, Android and touch-boundary cases. Each of the eight primary-route accessibility audits has its own default test budget and fresh page.
 
+The Japanese hub Axe audit and its keyboard/font-resize/reduced-motion journey also use separate fresh pages and the default thirty-second deadline. Keep the serious/critical audit, 320px viewport, 200% font, exact skip-link focus, overflow and motion assertions; do not combine their budgets or increase the timeout to mask cumulative work.
+
 ## Adaptive UI
 
 See `docs/features/adaptive-ui.md` for persistent phone navigation, desktop/iPad sidebars, design rules, and validation gaps. The adaptive UI reuses existing screens and feature logic. Navigation coverage lives in `AppHeader.test.tsx`, native `adaptive-navigation.test.tsx`, Playwright `adaptive-navigation.smoke.spec.ts` / `adaptive-layout.regression.spec.ts`, and Maestro `adaptive-navigation.yaml`.

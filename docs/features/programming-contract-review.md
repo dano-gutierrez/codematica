@@ -23,7 +23,7 @@ Concise programming summaries can hide differences between a fixed binding and s
 
 ## Current State
 
-Canonical content and the generated index are authored on the branch. Local checks pass: both 751-test coverage gates, 154 native tests, Doctor 20/20, eleven Python labs, three JavaScript labs, four browser journeys, lint, types, freshness, build and disposable production-only readiness. All 54 targeted lab mutations fail. The first coverage run had three handwriting timeouts; all nineteen handwriting tests and both full gates passed on rerun. The first artifact copy collided with a browser-test build; the sequential retry passed. Failure evidence is retained. Exact-head remote release validation remains required; no deployment is claimed.
+Canonical content and the generated index are authored on the branch. Local checks pass: both 751-test coverage gates, 154 native tests, Doctor 20/20, eleven Python labs, three JavaScript labs, four browser journeys, lint, types, freshness, build and disposable production-only readiness. All 54 lab and 27 metadata mutations fail. The first coverage run had three handwriting timeouts; all nineteen handwriting tests and both full gates passed on rerun. The first artifact copy collided with a browser-test build; the sequential retry passed. The first remote release passed quality/database, with 159 browser passes, six configured skips and one unrelated accessibility timeout. Its roughly nineteen-second Axe scan exhausted the combined thirty-second budget with later layout work. The audit and layout journey now have separate fresh-page tests with all assertions and the same deadline. Failure evidence is retained; exact-head remote remediation validation remains required. No deployment is claimed.
 
 ## Scope
 
