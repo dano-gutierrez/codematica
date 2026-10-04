@@ -35,3 +35,5 @@ The ML Systems path’s existing Neural Computation source node now opens a publ
 System Design Fundamentals appends Capacity Decisions and API Security Boundaries after its existing cache unit. Keep the authored worksheet assumptions explicit and distinguish browser response sharing, CSRF and object authorization in the lessons and checkpoints.
 
 Backend Engineer Readiness reuses the existing durable-generation architecture lesson with an optional original SQLite retry lab and a separate checkpoint. Its Reservation Boundaries unit is shared with System Design Fundamentals. Keep ordered membership explicit and the original Product Engineering path’s 18-question sequence unchanged.
+
+The AI Engineering path adds Evidence-First Handoffs between Agents And Operations and Risk And Governance. The original Python resume lab and four-question checkpoint distinguish input identity, model execution, verification and approval. External course projects remain optional references, not completed or independently validated activities.

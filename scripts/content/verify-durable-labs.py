@@ -1,4 +1,4 @@
-"""Run the two original Markdown Python labs with isolated, inert inputs."""
+"""Run allowlisted original Markdown Python labs with isolated, inert inputs."""
 from pathlib import Path
 import re
 import subprocess
@@ -30,6 +30,12 @@ class AuthoredLabs(unittest.TestCase):
         self.run_lab(
             "content/knowledge/software-engineering/product-interview-durable-generation-architecture.md",
             "concurrent retry, rollback, lost response, request conflict and tenant scope: passed",
+        )
+
+    def test_evidence_bound_session_handoff(self):
+        self.run_lab(
+            "content/knowledge/ai-engineering/evidence-first-agent-handoffs.md",
+            "unchanged, pending, failed, stale candidate/source/model and partial coverage: passed",
         )
 
 

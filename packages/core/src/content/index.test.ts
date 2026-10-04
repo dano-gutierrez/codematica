@@ -158,6 +158,8 @@ describe("generated content index", () => {
       "ai-engineering/langchain-agents-langgraph-operations",
       "ai-engineering/agent-tool-safety-flow",
       "ai-engineering/langchain-agents-langgraph-questionnaire",
+      "ai-engineering/evidence-first-agent-handoffs",
+      "ai-engineering/agent-handoff-checkpoint",
       "ai-engineering/llm-production-risk-governance",
       "ai-engineering/llm-production-risk-governance-questionnaire",
     ]);
@@ -170,6 +172,29 @@ describe("generated content index", () => {
     expect(feed?.cards).toHaveLength(84);
     expect(feed?.cards.map((card) => card.type)).toEqual(expect.arrayContaining(["concept", "practical", "snippet", "interview"]));
     expect(feed?.cards.some((card) => card.code?.includes("trace_id"))).toBe(true);
+  });
+
+  it("links the original handoff lab and checkpoint between agents and governance", () => {
+    const path = "ai-engineering-langfuse-langchain";
+    const document = getDocumentBySlug("ai-engineering/evidence-first-agent-handoffs");
+    const checkpoint = getExerciseBySlug("ai-engineering/agent-handoff-checkpoint");
+    expect(document?.sourceRefs).toEqual([
+      "anthropic-long-running-harnesses", "anthropic-harness-design-experiment", "walkinglabs-harness-course",
+    ]);
+    if (checkpoint?.type !== "questionnaire") throw new Error("Handoff practice must be a questionnaire");
+    expect(checkpoint.status).toBe("published");
+    expect(document?.status).toBe("published");
+    expect(checkpoint?.documentSlug).toBe(document?.slug);
+    expect(checkpoint?.questions).toHaveLength(4);
+    expect(getNextPathNodeRoute(path, { kind: "exercise", slug: "ai-engineering/langchain-agents-langgraph-questionnaire" })).toBe(
+      "/docs/ai-engineering/evidence-first-agent-handoffs?path=ai-engineering-langfuse-langchain",
+    );
+    expect(getNextPathNodeRoute(path, { kind: "document", slug: "ai-engineering/evidence-first-agent-handoffs" })).toBe(
+      "/practice/ai-engineering/agent-handoff-checkpoint?path=ai-engineering-langfuse-langchain",
+    );
+    expect(getNextPathNodeRoute(path, { kind: "exercise", slug: "ai-engineering/agent-handoff-checkpoint" })).toBe(
+      "/docs/ai-engineering/llm-production-risk-governance?path=ai-engineering-langfuse-langchain",
+    );
   });
 
   it("loads the database indexes and search path", () => {

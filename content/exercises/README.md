@@ -25,6 +25,8 @@ The Product Engineering pack in `software-engineering/product-interview-*.json` 
 
 Exercise generation, executable code/SQL validation, AI feedback, persisted questionnaire answers/scores, and generic adaptive review queues are future work. The shared optional progress layer stores coarse started/completed progress. Japanese skill review separately stores a deterministic mastery snapshot, never individual answers. Run `npm run content:check` before committing exercise changes.
 
+`ai-engineering/agent-handoff-checkpoint` checks assessment reuse, stale sources, source-data authority and unequal-budget comparisons. Its Python lab runs outside the app; a checkpoint score certifies neither an external course nor permission to apply or publish a report.
+
 Passive scroll-only flashcards are authored separately in `content/flashcard-feeds/`; do not model them as interactive `type: "flashcard"` exercises.
 
 - RTK Query checkpoints use six single-answer scenario choices per lesson. Explanations must address the correct rule and both distractors; retain the distinction between client observation and server mutation outcome.

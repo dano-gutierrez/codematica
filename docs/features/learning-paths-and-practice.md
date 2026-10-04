@@ -204,3 +204,9 @@ Validate content-index freshness, parser/source relationships and questionnaire 
 ### Durable retries and reservations
 
 Backend Engineer Readiness adds Durable Retries and Reservation Boundaries after Production Judgment. The former reuses the existing product architecture lesson and its optional temporary-SQLite lab; the latter shares a new original lesson/checkpoint with System Design Fundamentals. Each supplementary checkpoint has four questions. The original Product Engineering path retains 18 questions. SQL/ Python are readable authored examples, with no new app execution surface.
+
+### Evidence-first agent handoffs
+
+AI Engineering inserts an original handoff lesson and four-question checkpoint after Agents And Operations and before Risk And Governance. The Markdown Python lab chooses the next review step from a durable receipt, preserving exact candidate/source/configuration identity, pending-job reuse, visible failures and incomplete coverage. It never applies content or approves a report. Hashes assume a trusted receipt store and do not prove execution, truth or authorization.
+
+The lesson cites two official Anthropic experiments and links a pinned author-maintained course for optional further practice. Those upstream projects were not independently executed; their product breakdowns are not certified. The existing seven units, source identities and passive feed stay intact. Canonical lab assertions and generated route/source checks validate the content; `agent-handoff.regression.spec.ts` covers path → lesson → checkpoint → governance. No new runtime, model call, content execution surface or persistence schema is added.

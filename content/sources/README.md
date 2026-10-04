@@ -23,4 +23,6 @@ Interview questions can declare `sourceRefs`, validated at build time and requir
 
 `system-design-decision-practice.json` anchors capacity and API-boundary exercises to Google SRE, PostgreSQL, MDN, WHATWG Fetch and OWASP primary material. Example workloads are original assumptions, not provider measurements.
 
+`agent-handoff-practice.json` links two official Anthropic experiments and the author-maintained WalkingLabs course at a pinned commit. The course repository/README were checked; its projects and product breakdowns were not independently executed or validated. Do not turn reported quality differences with different budgets into controlled performance claims.
+
 `durable-retry-and-reservations.json` links HTTP retry semantics, a provider-specific idempotency contract, Python/SQLite transaction control and PostgreSQL 17 locking/selection documentation. The labs use fictional credits and disposable inventory; no external payment or production measurement is implied.

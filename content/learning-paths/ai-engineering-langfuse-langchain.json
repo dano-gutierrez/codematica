@@ -65,6 +65,15 @@
       ]
     },
     {
+      "slug": "evidence-first-handoffs",
+      "title": "Evidence-First Handoffs",
+      "summary": "Resume a task from durable receipts, detect stale inputs, and keep verification and approval distinct.",
+      "nodes": [
+        { "kind": "document", "slug": "ai-engineering/evidence-first-agent-handoffs" },
+        { "kind": "exercise", "slug": "ai-engineering/agent-handoff-checkpoint" }
+      ]
+    },
+    {
       "slug": "risk-governance",
       "title": "Risk And Governance",
       "summary": "Connect OWASP and NIST risk guidance to practical LLM application safeguards and incident response.",

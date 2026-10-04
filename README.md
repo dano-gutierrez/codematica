@@ -157,7 +157,7 @@ Admin web/native manual creation, Unicode text formatting and review at `/admin/
 
 ## Frontend interview practice
 
-Open `/paths/frontend-interview-practice` for seven lessons, guided TS/Python solutions, checkpoints, and continuous review. Canonical code is in `content/interviews/frontend-practice.json`. After editing it, run `npm run content:index`, `npm run test:interview:python` (CI uses Python 3.13), and the authored-project Vitest checks. The Python gate also executes the original neural-gradient and temporary-SQLite retry labs with isolated inputs. See [the feature contract](docs/features/frontend-interview-practice.md) for the complete verification workflow and native release gaps.
+Open `/paths/frontend-interview-practice` for seven lessons, guided TS/Python solutions, checkpoints, and continuous review. Canonical code is in `content/interviews/frontend-practice.json`. After editing it, run `npm run content:index`, `npm run test:interview:python` (CI uses Python 3.13), and the authored-project Vitest checks. The Python gate also executes the original neural-gradient, temporary-SQLite retry and evidence-bound handoff labs with isolated inputs. See [the feature contract](docs/features/frontend-interview-practice.md) for the complete verification workflow and native release gaps.
 
 The supplementary lesson `/docs/frontend/react-state-async-callbacks` covers stale state in timers and promises, functional updates, cleanup, and a six-question checkpoint. Its complete examples live in Markdown and are typechecked and executed by `ReactAsyncStateLesson.test.tsx`.
 

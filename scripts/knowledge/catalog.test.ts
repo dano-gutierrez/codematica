@@ -4,6 +4,23 @@ import { buildContentIndex } from "../../packages/core/src/content/build-index";
 import { buildKnowledgeCatalog } from "./catalog";
 
 describe("complete knowledge catalog", () => {
+  it("keeps handoff prerequisites and ordered path membership explicit", async () => {
+    const graph = buildKnowledgeCatalog(await buildContentIndex({rootDir:process.cwd()}));
+    const lesson = "document:ai-engineering/evidence-first-agent-handoffs";
+    const prerequisite = "document:ai-engineering/langchain-agents-langgraph-operations";
+    expect(graph.relationships).toContainEqual(expect.objectContaining({
+      source:lesson,target:prerequisite,type:"requires",provenance:"explicit",
+    }));
+    expect(graph.relationships).toContainEqual(expect.objectContaining({
+      source:"unit:ai-engineering-langfuse-langchain:evidence-first-handoffs",
+      target:lesson,type:"contains",order:0,provenance:"explicit",
+    }));
+    expect(graph.relationships).toContainEqual(expect.objectContaining({
+      source:"unit:ai-engineering-langfuse-langchain:evidence-first-handoffs",
+      target:"exercise:ai-engineering/agent-handoff-checkpoint",type:"contains",order:1,
+    }));
+    expect(graph.unresolved.some(r => r.resourceId === lesson)).toBe(false);
+  });
   it("indexes published source companions at the source node's unit position and scoped skills", async () => {
     const index=await buildContentIndex({rootDir:process.cwd()});
     const graph=buildKnowledgeCatalog(index);

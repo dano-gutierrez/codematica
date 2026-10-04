@@ -83,6 +83,8 @@ describe("generated content index", () => {
       "ai-engineering/langchain-agents-langgraph-operations",
       "ai-engineering/agent-tool-safety-flow",
       "ai-engineering/langchain-agents-langgraph-questionnaire",
+      "ai-engineering/evidence-first-agent-handoffs",
+      "ai-engineering/agent-handoff-checkpoint",
       "ai-engineering/llm-production-risk-governance",
       "ai-engineering/llm-production-risk-governance-questionnaire",
     ]);
