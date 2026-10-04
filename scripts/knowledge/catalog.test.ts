@@ -4,6 +4,37 @@ import { buildContentIndex } from "../../packages/core/src/content/build-index";
 import { buildKnowledgeCatalog } from "./catalog";
 
 describe("complete knowledge catalog", () => {
+  it("indexes published source companions at the source node's unit position and scoped skills", async () => {
+    const index=await buildContentIndex({rootDir:process.cwd()});
+    const graph=buildKnowledgeCatalog(index);
+    const path="path:ml-systems-engineer",unit="unit:ml-systems-engineer:volume-one-foundations";
+    const companion="document:ml-systems/ai-engineering-introduction";
+    expect(graph.resources.find(r=>r.id===companion)).toMatchObject({paths:[path],skills:["skill:ml-systems-engineer:systems-thinking"]});
+    const sections=graph.resources.filter(r=>r.parentId===companion);
+    expect(sections.length).toBeGreaterThan(0);
+    expect(sections.every(r=>r.paths.includes(path)&&r.skills.includes("skill:ml-systems-engineer:systems-thinking"))).toBe(true);
+    expect(graph.relationships).toContainEqual(expect.objectContaining({source:unit,target:companion,type:"contains",order:0,provenance:"explicit",origin:expect.objectContaining({resourceId:unit})}));
+    expect(graph.relationships).toContainEqual(expect.objectContaining({source:unit,target:"source:harvard-vol1-introduction",type:"contains",order:0}));
+    expect(graph.resources.some(r=>r.id===companion)).toBe(true);
+  });
+  it("keeps absent and draft companions out of ordered membership", async () => {
+    const index=await buildContentIndex({rootDir:process.cwd()});
+    index.documents.find(d=>d.slug==="ml-systems/ai-engineering-introduction")!.status="draft";
+    const graph=buildKnowledgeCatalog(index);
+    expect(graph.relationships.some(e=>e.source==="unit:ml-systems-engineer:volume-one-foundations"&&e.target==="document:ml-systems/ai-engineering-introduction"&&e.type==="contains")).toBe(false);
+    expect(graph.resources.find(r=>r.id==="document:ml-systems/ai-engineering-introduction")?.paths).toEqual([]);
+    expect(graph.relationships.some(e=>e.target==="exercise:ml-systems/tinytorch-twenty-modules")).toBe(false);
+    expect(graph.resources.find(r=>r.id==="source:harvard-tinytorch")?.paths).toContain("path:ml-systems-engineer");
+  });
+  it("uses exercise identity and assessment edges for published exercise companions",async()=>{
+    const index=await buildContentIndex({rootDir:process.cwd()});
+    index.exercises.push({...index.exercises.find(e=>e.slug==="ml-systems/prerequisite-measurement-lab")!,slug:"ml-systems/tinytorch-twenty-modules",status:"published"});
+    const graph=buildKnowledgeCatalog(index),id="exercise:ml-systems/tinytorch-twenty-modules";
+    expect(graph.resources.find(r=>r.id===id)?.paths).toContain("path:ml-systems-engineer");
+    expect(graph.relationships).toContainEqual(expect.objectContaining({source:"unit:ml-systems-engineer:volume-one-build",target:id,type:"contains",order:4}));
+    expect(graph.relationships).toContainEqual(expect.objectContaining({source:id,target:"skill:ml-systems-engineer:model-development",type:"assesses"}));
+    expect(graph.relationships.some(e=>e.source===id&&e.type==="teaches")).toBe(false);
+  });
   it("covers authored kinds and excludes human languages without excluding programming", async () => {
     const source = await buildContentIndex({ rootDir: process.cwd() });
     const graph = buildKnowledgeCatalog(source);

@@ -57,7 +57,18 @@ export function buildKnowledgeCatalog(index: ContentIndex, posts: Post[] = [], a
       const uid = `unit:${p.slug}:${u.slug}`;
       add({ id: uid, kind: "unit", title: u.title, text: u.summary, hash: p.contentHash, sourcePath: p.sourcePath, paths: [pid], status: p.status }); link(pid, uid, "contains", order);
       if (order) link(`unit:${p.slug}:${p.units[order - 1].slug}`, uid, "next");
-      for (const [i, n] of u.nodes.entries()) { const target = `${n.kind === "interview" ? "interview-question" : n.kind}:${n.kind === "source" ? n.sourceRef : n.slug}`; link(uid, target, "contains", i); for (const skill of n.skillIds ?? []) link(target, `skill:${p.slug}:${skill}`, n.kind === "exercise" ? "assesses" : "teaches"); }
+      for (const [i, n] of u.nodes.entries()) {
+        const targets=[`${n.kind === "interview" ? "interview-question" : n.kind}:${n.kind === "source" ? n.sourceRef : n.slug}`];
+        if(n.kind==="source") {
+          const companionId=`${n.companionKind}:${n.slug}`;
+          // The reader opens published companions at this same source-node position.
+          if(resources.some(r=>r.id===companionId&&r.status==="published")) targets.push(companionId);
+        }
+        for(const target of targets) {
+          link(uid,target,"contains",i);
+          for(const skill of n.skillIds??[]) link(target,`skill:${p.slug}:${skill}`,target.startsWith("exercise:")?"assesses":"teaches");
+        }
+      }
     }
     for (const ref of p.sourceRefs ?? []) link(pid, `source:${ref}`, "cites");
   }
