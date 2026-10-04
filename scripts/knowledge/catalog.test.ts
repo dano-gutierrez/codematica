@@ -11,6 +11,32 @@ beforeAll(async () => {
 function freshContent() { return structuredClone(validatedIndex); }
 
 describe("complete knowledge catalog", () => {
+  it("exports programming contracts with qualified skills and explicit unit order", () => {
+    const graph = buildKnowledgeCatalog(freshContent());
+    const path = "path:programming-contract-review";
+    const pairs = [
+      ["javascript-value-contracts", "value-ownership"],
+      ["lazy-demand-and-stream-boundaries", "bounded-demand"],
+      ["text-domain-and-matching", "text-domain"],
+      ["tree-shapes-and-cost-models", "shape-and-cost"],
+    ];
+    for (const [order, [slug, skillName]] of pairs.entries()) {
+      const unit = `unit:programming-contract-review:${slug}`;
+      const skill = `skill:programming-contract-review:${skillName}`;
+      const doc = `document:programming/${slug}`;
+      const quiz = `exercise:programming/${slug}-checkpoint`;
+      for (const id of [unit, skill, doc, quiz]) expect(graph.resources.find(r => r.id === id)).toMatchObject({ visibility: "curriculum", status: "published", paths: [path] });
+      expect(graph.relationships).toContainEqual(expect.objectContaining({ source: path, target: unit, type: "contains", order, provenance: "explicit" }));
+      for (const [position, target] of [doc, quiz].entries()) expect(graph.relationships).toContainEqual(expect.objectContaining({ source: unit, target, type: "contains", order: position, provenance: "explicit" }));
+      expect(graph.relationships).toContainEqual(expect.objectContaining({ source: doc, target: skill, type: "teaches", provenance: "explicit" }));
+      expect(graph.relationships).toContainEqual(expect.objectContaining({ source: quiz, target: skill, type: "assesses", provenance: "explicit" }));
+      if (order) expect(graph.relationships).toContainEqual(expect.objectContaining({ source: `unit:programming-contract-review:${pairs[order - 1][0]}`, target: unit, type: "next", provenance: "explicit" }));
+      expect(graph.unresolved.some(r => [unit, skill, doc, quiz].includes(r.resourceId))).toBe(false);
+    }
+    const ids = graph.resources.filter(r => r.id.startsWith("skill:programming-contract-review:")).map(r => r.id);
+    expect(ids).toHaveLength(4);
+    expect(graph.resources.some(r => r.id === "skill:value-ownership")).toBe(false);
+  });
   it("exports bounded keypad practice with explicit identities and evidence", () => {
     const graph = buildKnowledgeCatalog(freshContent());
     const lesson = "document:programming/keypad-dictionary-search", quiz = "exercise:programming/keypad-search-checkpoint", unit = "unit:coding-interview-pattern-practice:keypad-dictionary-search";

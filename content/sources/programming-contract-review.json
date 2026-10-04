@@ -1,0 +1,244 @@
+{
+  "sources": [
+    {
+      "id": "js-contract-const",
+      "title": "MDN — Constant Bindings",
+      "provider": "MDN contributors",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/const",
+      "attribution": "selected const binding versus mutable referenced value. Original exercises; no upstream code copied or redistribution license inferred.",
+      "lastVerifiedAt": "2026-10-04",
+      "upstream": {
+        "version": "MDN reference checked 2026-10-04",
+        "maturity": "published"
+      }
+    },
+    {
+      "id": "js-contract-freeze",
+      "title": "MDN — Shallow Object Freeze",
+      "provider": "MDN contributors",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/freeze",
+      "attribution": "selected own descriptors, nested references and internal-state limits. Original exercises; no upstream code copied or redistribution license inferred.",
+      "lastVerifiedAt": "2026-10-04",
+      "upstream": {
+        "version": "MDN reference checked 2026-10-04",
+        "maturity": "published"
+      }
+    },
+    {
+      "id": "js-contract-objects",
+      "title": "MDN — Own Properties And Inheritance",
+      "provider": "MDN contributors",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Working_with_objects",
+      "attribution": "selected enumeration, own properties and inherited lookup. Original exercises; no upstream code copied or redistribution license inferred.",
+      "lastVerifiedAt": "2026-10-04",
+      "upstream": {
+        "version": "MDN guide checked 2026-10-04",
+        "maturity": "published"
+      }
+    },
+    {
+      "id": "js-contract-equality",
+      "title": "MDN — Loose Equality Rules",
+      "provider": "MDN contributors",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Equality",
+      "attribution": "selected primitive conversion, boolean-to-number and identity comparisons. Original exercises; no upstream code copied or redistribution license inferred.",
+      "lastVerifiedAt": "2026-10-04",
+      "upstream": {
+        "version": "MDN reference checked 2026-10-04",
+        "maturity": "published"
+      }
+    },
+    {
+      "id": "js-contract-this",
+      "title": "MDN — Call Receivers And Lexical This",
+      "provider": "MDN contributors",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/this",
+      "attribution": "selected ordinary call receivers, strict detached calls and lexical arrows. Original exercises; no upstream code copied or redistribution license inferred.",
+      "lastVerifiedAt": "2026-10-04",
+      "upstream": {
+        "version": "MDN reference checked 2026-10-04",
+        "maturity": "published"
+      }
+    },
+    {
+      "id": "js-contract-splice",
+      "title": "MDN — Splice And Negative Start",
+      "provider": "MDN contributors",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/splice",
+      "attribution": "selected receiver mutation and negative start interpretation. Original exercises; no upstream code copied or redistribution license inferred.",
+      "lastVerifiedAt": "2026-10-04",
+      "upstream": {
+        "version": "MDN reference checked 2026-10-04",
+        "maturity": "published"
+      }
+    },
+    {
+      "id": "js-contract-sort",
+      "title": "MDN — In-Place Sort And Comparators",
+      "provider": "MDN contributors",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/sort",
+      "attribution": "selected receiver mutation, default UTF-16 string order and lawful comparators. Original exercises; no upstream code copied or redistribution license inferred.",
+      "lastVerifiedAt": "2026-10-04",
+      "upstream": {
+        "version": "MDN reference checked 2026-10-04",
+        "maturity": "published"
+      }
+    },
+    {
+      "id": "js-contract-substr",
+      "title": "MDN — Legacy Substr Boundaries",
+      "provider": "MDN contributors",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/substr",
+      "attribution": "selected optional Annex B scope and noninterchangeable argument rules. Original exercises; no upstream code copied or redistribution license inferred.",
+      "lastVerifiedAt": "2026-10-04",
+      "upstream": {
+        "version": "MDN reference checked 2026-10-04",
+        "maturity": "published"
+      }
+    },
+    {
+      "id": "demand-mdn-iteration",
+      "title": "MDN — Iterators And Generators",
+      "provider": "MDN contributors",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Iterators_and_generators",
+      "attribution": "selected iterator state, generator exhaustion and iterable factories. Original exercises; no upstream code copied or redistribution license inferred.",
+      "lastVerifiedAt": "2026-10-04",
+      "upstream": {
+        "version": "MDN guide checked 2026-10-04",
+        "maturity": "published"
+      }
+    },
+    {
+      "id": "demand-mdn-forof",
+      "title": "MDN — Early Iteration Exit",
+      "provider": "MDN contributors",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/for...of",
+      "attribution": "selected early return cleanup and generator non-reuse. Original exercises; no upstream code copied or redistribution license inferred.",
+      "lastVerifiedAt": "2026-10-04",
+      "upstream": {
+        "version": "MDN reference checked 2026-10-04",
+        "maturity": "published"
+      }
+    },
+    {
+      "id": "demand-node-stream",
+      "title": "Node.js — Stream Pressure",
+      "provider": "Node.js project",
+      "url": "https://nodejs.org/api/stream.html",
+      "attribution": "selected write false/drain and highWaterMark threshold versus memory cap. Original exercises; no upstream code copied or redistribution license inferred.",
+      "lastVerifiedAt": "2026-10-04",
+      "upstream": {
+        "version": "Node.js v26.10.0 documentation; local value fixture uses Node 22.13.1",
+        "maturity": "published"
+      }
+    },
+    {
+      "id": "demand-node-loop",
+      "title": "Node.js — Event Loop Phases",
+      "provider": "Node.js project",
+      "url": "https://nodejs.org/en/learn/asynchronous-work/event-loop-timers-and-nexttick",
+      "attribution": "selected host phases and libuv 1.45 / Node 20 timer change; no universal scheduling claim. Original exercises; no upstream code copied or redistribution license inferred.",
+      "lastVerifiedAt": "2026-10-04",
+      "upstream": {
+        "version": "Node.js learn page checked 2026-10-04",
+        "maturity": "published"
+      }
+    },
+    {
+      "id": "demand-tus-offset",
+      "title": "tus 1.0.0 — Upload Offset Conflict",
+      "provider": "tus project",
+      "url": "https://tus.io/protocols/resumable-upload",
+      "attribution": "selected offset mismatch 409 with no upload change; original paper trace, no protocol implementation. Original exercises; no upstream code copied or redistribution license inferred.",
+      "lastVerifiedAt": "2026-10-04",
+      "upstream": {
+        "version": "tus resumable upload protocol 1.0.0",
+        "maturity": "published"
+      }
+    },
+    {
+      "id": "text-mdn-regex",
+      "title": "MDN — Regex Assertions And Escapes",
+      "provider": "MDN contributors",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_expressions",
+      "attribution": "selected assertions, classes, quantifiers, flags and escape layers. Original exercises; no upstream code copied or redistribution license inferred.",
+      "lastVerifiedAt": "2026-10-04",
+      "upstream": {
+        "version": "MDN guide checked 2026-10-04",
+        "maturity": "published"
+      }
+    },
+    {
+      "id": "text-mdn-forof",
+      "title": "MDN — String Code-Point Iteration",
+      "provider": "MDN contributors",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/for...of",
+      "attribution": "selected Unicode code-point iteration; original exercise deliberately accepts only ASCII. Original exercises; no upstream code copied or redistribution license inferred.",
+      "lastVerifiedAt": "2026-10-04",
+      "upstream": {
+        "version": "MDN reference checked 2026-10-04",
+        "maturity": "published"
+      }
+    },
+    {
+      "id": "text-regex-vis",
+      "title": "Regex Vis — Author-Maintained Visualizer",
+      "provider": "Bowen7",
+      "url": "https://github.com/Bowen7/regex-vis",
+      "attribution": "selected README visualization/edit/testing features; no installed tool, dialect certification or runtime benchmark. Original exercises; no upstream code copied or redistribution license inferred.",
+      "lastVerifiedAt": "2026-10-04",
+      "upstream": {
+        "version": "Author-maintained README checked 2026-10-04",
+        "maturity": "published"
+      }
+    },
+    {
+      "id": "shape-opendsa-binary",
+      "title": "OpenDSA — Full And Complete Binary Trees",
+      "provider": "OpenDSA Project Contributors",
+      "url": "https://opendsax.cs.vt.edu/OpenDSA/Books/Everything/html/BinaryTree.html",
+      "attribution": "selected full/complete definitions and terminology variation; original fixtures, no copied diagrams. Original exercises; no upstream code copied or redistribution license inferred.",
+      "lastVerifiedAt": "2026-10-04",
+      "upstream": {
+        "version": "Page last updated February 14, 2025",
+        "maturity": "published"
+      }
+    },
+    {
+      "id": "shape-opendsa-bst",
+      "title": "OpenDSA — Subtree Ordering And Height",
+      "provider": "OpenDSA Project Contributors",
+      "url": "https://opendsax.cs.vt.edu/OpenDSA/Books/Everything/html/BST.html",
+      "attribution": "selected global subtree order, duplicate policy and height-dependent operations; authored fixture rejects duplicates. Original exercises; no upstream code copied or redistribution license inferred.",
+      "lastVerifiedAt": "2026-10-04",
+      "upstream": {
+        "version": "OpenDSA module checked 2026-10-04",
+        "maturity": "published"
+      }
+    },
+    {
+      "id": "cost-opendsa-selection",
+      "title": "OpenDSA — Selection Scan Costs",
+      "provider": "OpenDSA Project Contributors",
+      "url": "https://opendsa.cs.vt.edu/ODSA/Books/CS3/html/SelectionSort.html",
+      "attribution": "selected remaining-part scans and bounded swaps; original minimum-first implementation. Original exercises; no upstream code copied or redistribution license inferred.",
+      "lastVerifiedAt": "2026-10-04",
+      "upstream": {
+        "version": "CS3 module last updated January 17, 2026",
+        "maturity": "published"
+      }
+    },
+    {
+      "id": "cost-oxford-b16",
+      "title": "Oxford B16 — Asymptotic Bound Definitions",
+      "provider": "Andrea Vedaldi / University of Oxford",
+      "url": "https://www.robots.ox.ac.uk/~vedaldi/assets/teach/2024/b16/b16-notes.pdf",
+      "attribution": "selected chapter 1 upper/lower/tight bounds and chapter 4 complete-tree representation; no copied figures or code. Original exercises; no upstream code copied or redistribution license inferred.",
+      "lastVerifiedAt": "2026-10-04",
+      "upstream": {
+        "version": "B16 lecture notes at author-hosted 2024 URL",
+        "maturity": "published"
+      }
+    }
+  ]
+}

@@ -4426,6 +4426,104 @@
       "contentHash": "cbce1343d0482bbd17a075943e1dedc08d3318bea6e090d838e7d26019a88cfd"
     },
     {
+      "id": "cost-opendsa-selection",
+      "title": "OpenDSA — Selection Scan Costs",
+      "provider": "OpenDSA Project Contributors",
+      "url": "https://opendsa.cs.vt.edu/ODSA/Books/CS3/html/SelectionSort.html",
+      "attribution": "selected remaining-part scans and bounded swaps; original minimum-first implementation. Original exercises; no upstream code copied or redistribution license inferred.",
+      "lastVerifiedAt": "2026-10-04",
+      "upstream": {
+        "version": "CS3 module last updated January 17, 2026",
+        "maturity": "published"
+      },
+      "sourcePath": "content/sources/programming-contract-review.json",
+      "contentHash": "d8ccaea4152c34cff89c50686760072104904ce96d89976d9368026beef28e2f"
+    },
+    {
+      "id": "cost-oxford-b16",
+      "title": "Oxford B16 — Asymptotic Bound Definitions",
+      "provider": "Andrea Vedaldi / University of Oxford",
+      "url": "https://www.robots.ox.ac.uk/~vedaldi/assets/teach/2024/b16/b16-notes.pdf",
+      "attribution": "selected chapter 1 upper/lower/tight bounds and chapter 4 complete-tree representation; no copied figures or code. Original exercises; no upstream code copied or redistribution license inferred.",
+      "lastVerifiedAt": "2026-10-04",
+      "upstream": {
+        "version": "B16 lecture notes at author-hosted 2024 URL",
+        "maturity": "published"
+      },
+      "sourcePath": "content/sources/programming-contract-review.json",
+      "contentHash": "d8ccaea4152c34cff89c50686760072104904ce96d89976d9368026beef28e2f"
+    },
+    {
+      "id": "demand-mdn-forof",
+      "title": "MDN — Early Iteration Exit",
+      "provider": "MDN contributors",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/for...of",
+      "attribution": "selected early return cleanup and generator non-reuse. Original exercises; no upstream code copied or redistribution license inferred.",
+      "lastVerifiedAt": "2026-10-04",
+      "upstream": {
+        "version": "MDN reference checked 2026-10-04",
+        "maturity": "published"
+      },
+      "sourcePath": "content/sources/programming-contract-review.json",
+      "contentHash": "d8ccaea4152c34cff89c50686760072104904ce96d89976d9368026beef28e2f"
+    },
+    {
+      "id": "demand-mdn-iteration",
+      "title": "MDN — Iterators And Generators",
+      "provider": "MDN contributors",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Iterators_and_generators",
+      "attribution": "selected iterator state, generator exhaustion and iterable factories. Original exercises; no upstream code copied or redistribution license inferred.",
+      "lastVerifiedAt": "2026-10-04",
+      "upstream": {
+        "version": "MDN guide checked 2026-10-04",
+        "maturity": "published"
+      },
+      "sourcePath": "content/sources/programming-contract-review.json",
+      "contentHash": "d8ccaea4152c34cff89c50686760072104904ce96d89976d9368026beef28e2f"
+    },
+    {
+      "id": "demand-node-loop",
+      "title": "Node.js — Event Loop Phases",
+      "provider": "Node.js project",
+      "url": "https://nodejs.org/en/learn/asynchronous-work/event-loop-timers-and-nexttick",
+      "attribution": "selected host phases and libuv 1.45 / Node 20 timer change; no universal scheduling claim. Original exercises; no upstream code copied or redistribution license inferred.",
+      "lastVerifiedAt": "2026-10-04",
+      "upstream": {
+        "version": "Node.js learn page checked 2026-10-04",
+        "maturity": "published"
+      },
+      "sourcePath": "content/sources/programming-contract-review.json",
+      "contentHash": "d8ccaea4152c34cff89c50686760072104904ce96d89976d9368026beef28e2f"
+    },
+    {
+      "id": "demand-node-stream",
+      "title": "Node.js — Stream Pressure",
+      "provider": "Node.js project",
+      "url": "https://nodejs.org/api/stream.html",
+      "attribution": "selected write false/drain and highWaterMark threshold versus memory cap. Original exercises; no upstream code copied or redistribution license inferred.",
+      "lastVerifiedAt": "2026-10-04",
+      "upstream": {
+        "version": "Node.js v26.10.0 documentation; local value fixture uses Node 22.13.1",
+        "maturity": "published"
+      },
+      "sourcePath": "content/sources/programming-contract-review.json",
+      "contentHash": "d8ccaea4152c34cff89c50686760072104904ce96d89976d9368026beef28e2f"
+    },
+    {
+      "id": "demand-tus-offset",
+      "title": "tus 1.0.0 — Upload Offset Conflict",
+      "provider": "tus project",
+      "url": "https://tus.io/protocols/resumable-upload",
+      "attribution": "selected offset mismatch 409 with no upload change; original paper trace, no protocol implementation. Original exercises; no upstream code copied or redistribution license inferred.",
+      "lastVerifiedAt": "2026-10-04",
+      "upstream": {
+        "version": "tus resumable upload protocol 1.0.0",
+        "maturity": "published"
+      },
+      "sourcePath": "content/sources/programming-contract-review.json",
+      "contentHash": "d8ccaea4152c34cff89c50686760072104904ce96d89976d9368026beef28e2f"
+    },
+    {
       "id": "discord-message-storage-2023",
       "title": "How Discord Stores Trillions of Messages",
       "provider": "Discord Engineering",
@@ -5202,6 +5300,118 @@
       "contentHash": "fc2cf01a065855078f84b7054ff65ccb301b3e1bf0569a507483a70349ace380"
     },
     {
+      "id": "js-contract-const",
+      "title": "MDN — Constant Bindings",
+      "provider": "MDN contributors",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/const",
+      "attribution": "selected const binding versus mutable referenced value. Original exercises; no upstream code copied or redistribution license inferred.",
+      "lastVerifiedAt": "2026-10-04",
+      "upstream": {
+        "version": "MDN reference checked 2026-10-04",
+        "maturity": "published"
+      },
+      "sourcePath": "content/sources/programming-contract-review.json",
+      "contentHash": "d8ccaea4152c34cff89c50686760072104904ce96d89976d9368026beef28e2f"
+    },
+    {
+      "id": "js-contract-equality",
+      "title": "MDN — Loose Equality Rules",
+      "provider": "MDN contributors",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Equality",
+      "attribution": "selected primitive conversion, boolean-to-number and identity comparisons. Original exercises; no upstream code copied or redistribution license inferred.",
+      "lastVerifiedAt": "2026-10-04",
+      "upstream": {
+        "version": "MDN reference checked 2026-10-04",
+        "maturity": "published"
+      },
+      "sourcePath": "content/sources/programming-contract-review.json",
+      "contentHash": "d8ccaea4152c34cff89c50686760072104904ce96d89976d9368026beef28e2f"
+    },
+    {
+      "id": "js-contract-freeze",
+      "title": "MDN — Shallow Object Freeze",
+      "provider": "MDN contributors",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/freeze",
+      "attribution": "selected own descriptors, nested references and internal-state limits. Original exercises; no upstream code copied or redistribution license inferred.",
+      "lastVerifiedAt": "2026-10-04",
+      "upstream": {
+        "version": "MDN reference checked 2026-10-04",
+        "maturity": "published"
+      },
+      "sourcePath": "content/sources/programming-contract-review.json",
+      "contentHash": "d8ccaea4152c34cff89c50686760072104904ce96d89976d9368026beef28e2f"
+    },
+    {
+      "id": "js-contract-objects",
+      "title": "MDN — Own Properties And Inheritance",
+      "provider": "MDN contributors",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Working_with_objects",
+      "attribution": "selected enumeration, own properties and inherited lookup. Original exercises; no upstream code copied or redistribution license inferred.",
+      "lastVerifiedAt": "2026-10-04",
+      "upstream": {
+        "version": "MDN guide checked 2026-10-04",
+        "maturity": "published"
+      },
+      "sourcePath": "content/sources/programming-contract-review.json",
+      "contentHash": "d8ccaea4152c34cff89c50686760072104904ce96d89976d9368026beef28e2f"
+    },
+    {
+      "id": "js-contract-sort",
+      "title": "MDN — In-Place Sort And Comparators",
+      "provider": "MDN contributors",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/sort",
+      "attribution": "selected receiver mutation, default UTF-16 string order and lawful comparators. Original exercises; no upstream code copied or redistribution license inferred.",
+      "lastVerifiedAt": "2026-10-04",
+      "upstream": {
+        "version": "MDN reference checked 2026-10-04",
+        "maturity": "published"
+      },
+      "sourcePath": "content/sources/programming-contract-review.json",
+      "contentHash": "d8ccaea4152c34cff89c50686760072104904ce96d89976d9368026beef28e2f"
+    },
+    {
+      "id": "js-contract-splice",
+      "title": "MDN — Splice And Negative Start",
+      "provider": "MDN contributors",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/splice",
+      "attribution": "selected receiver mutation and negative start interpretation. Original exercises; no upstream code copied or redistribution license inferred.",
+      "lastVerifiedAt": "2026-10-04",
+      "upstream": {
+        "version": "MDN reference checked 2026-10-04",
+        "maturity": "published"
+      },
+      "sourcePath": "content/sources/programming-contract-review.json",
+      "contentHash": "d8ccaea4152c34cff89c50686760072104904ce96d89976d9368026beef28e2f"
+    },
+    {
+      "id": "js-contract-substr",
+      "title": "MDN — Legacy Substr Boundaries",
+      "provider": "MDN contributors",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/substr",
+      "attribution": "selected optional Annex B scope and noninterchangeable argument rules. Original exercises; no upstream code copied or redistribution license inferred.",
+      "lastVerifiedAt": "2026-10-04",
+      "upstream": {
+        "version": "MDN reference checked 2026-10-04",
+        "maturity": "published"
+      },
+      "sourcePath": "content/sources/programming-contract-review.json",
+      "contentHash": "d8ccaea4152c34cff89c50686760072104904ce96d89976d9368026beef28e2f"
+    },
+    {
+      "id": "js-contract-this",
+      "title": "MDN — Call Receivers And Lexical This",
+      "provider": "MDN contributors",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/this",
+      "attribution": "selected ordinary call receivers, strict detached calls and lexical arrows. Original exercises; no upstream code copied or redistribution license inferred.",
+      "lastVerifiedAt": "2026-10-04",
+      "upstream": {
+        "version": "MDN reference checked 2026-10-04",
+        "maturity": "published"
+      },
+      "sourcePath": "content/sources/programming-contract-review.json",
+      "contentHash": "d8ccaea4152c34cff89c50686760072104904ce96d89976d9368026beef28e2f"
+    },
+    {
       "id": "kafka-41-delivery-design",
       "title": "Apache Kafka 4.1 — Delivery And Transaction Design",
       "provider": "Apache Kafka",
@@ -5958,6 +6168,34 @@
       "contentHash": "11aa85d774f66f4569f56763a050737ceec2691d5cd46b5543d7ff9e7898e886"
     },
     {
+      "id": "shape-opendsa-binary",
+      "title": "OpenDSA — Full And Complete Binary Trees",
+      "provider": "OpenDSA Project Contributors",
+      "url": "https://opendsax.cs.vt.edu/OpenDSA/Books/Everything/html/BinaryTree.html",
+      "attribution": "selected full/complete definitions and terminology variation; original fixtures, no copied diagrams. Original exercises; no upstream code copied or redistribution license inferred.",
+      "lastVerifiedAt": "2026-10-04",
+      "upstream": {
+        "version": "Page last updated February 14, 2025",
+        "maturity": "published"
+      },
+      "sourcePath": "content/sources/programming-contract-review.json",
+      "contentHash": "d8ccaea4152c34cff89c50686760072104904ce96d89976d9368026beef28e2f"
+    },
+    {
+      "id": "shape-opendsa-bst",
+      "title": "OpenDSA — Subtree Ordering And Height",
+      "provider": "OpenDSA Project Contributors",
+      "url": "https://opendsax.cs.vt.edu/OpenDSA/Books/Everything/html/BST.html",
+      "attribution": "selected global subtree order, duplicate policy and height-dependent operations; authored fixture rejects duplicates. Original exercises; no upstream code copied or redistribution license inferred.",
+      "lastVerifiedAt": "2026-10-04",
+      "upstream": {
+        "version": "OpenDSA module checked 2026-10-04",
+        "maturity": "published"
+      },
+      "sourcePath": "content/sources/programming-contract-review.json",
+      "contentHash": "d8ccaea4152c34cff89c50686760072104904ce96d89976d9368026beef28e2f"
+    },
+    {
       "id": "shopify-inventory-reservations-2026",
       "title": "We replaced Redis with MySQL for inventory reservations—and it scaled",
       "provider": "Shopify Engineering",
@@ -6030,6 +6268,48 @@
       "lastVerifiedAt": "2026-10-04",
       "sourcePath": "content/sources/distributed-reading-reviews.json",
       "contentHash": "3be19b1501d700fd8771c7dc17243cbaeaedee9803b025e89bd3be057535e69d"
+    },
+    {
+      "id": "text-mdn-forof",
+      "title": "MDN — String Code-Point Iteration",
+      "provider": "MDN contributors",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/for...of",
+      "attribution": "selected Unicode code-point iteration; original exercise deliberately accepts only ASCII. Original exercises; no upstream code copied or redistribution license inferred.",
+      "lastVerifiedAt": "2026-10-04",
+      "upstream": {
+        "version": "MDN reference checked 2026-10-04",
+        "maturity": "published"
+      },
+      "sourcePath": "content/sources/programming-contract-review.json",
+      "contentHash": "d8ccaea4152c34cff89c50686760072104904ce96d89976d9368026beef28e2f"
+    },
+    {
+      "id": "text-mdn-regex",
+      "title": "MDN — Regex Assertions And Escapes",
+      "provider": "MDN contributors",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_expressions",
+      "attribution": "selected assertions, classes, quantifiers, flags and escape layers. Original exercises; no upstream code copied or redistribution license inferred.",
+      "lastVerifiedAt": "2026-10-04",
+      "upstream": {
+        "version": "MDN guide checked 2026-10-04",
+        "maturity": "published"
+      },
+      "sourcePath": "content/sources/programming-contract-review.json",
+      "contentHash": "d8ccaea4152c34cff89c50686760072104904ce96d89976d9368026beef28e2f"
+    },
+    {
+      "id": "text-regex-vis",
+      "title": "Regex Vis — Author-Maintained Visualizer",
+      "provider": "Bowen7",
+      "url": "https://github.com/Bowen7/regex-vis",
+      "attribution": "selected README visualization/edit/testing features; no installed tool, dialect certification or runtime benchmark. Original exercises; no upstream code copied or redistribution license inferred.",
+      "lastVerifiedAt": "2026-10-04",
+      "upstream": {
+        "version": "Author-maintained README checked 2026-10-04",
+        "maturity": "published"
+      },
+      "sourcePath": "content/sources/programming-contract-review.json",
+      "contentHash": "d8ccaea4152c34cff89c50686760072104904ce96d89976d9368026beef28e2f"
     },
     {
       "id": "token-jwt-owasp",
@@ -11403,6 +11683,72 @@
       "readingMinutes": 5
     },
     {
+      "title": "JavaScript Value Contracts — Binding, Ownership And Calls",
+      "slug": "programming/javascript-value-contracts",
+      "summary": "Predict small JavaScript programs by separating bindings, shared values, own properties, conversion rules and call receivers.",
+      "track": "Programming",
+      "topic": "JavaScript",
+      "difficulty": "practitioner",
+      "tags": [
+        "javascript",
+        "ownership",
+        "coercion",
+        "prototypes",
+        "invariants"
+      ],
+      "prerequisites": [
+        "programming/typescript-boundaries"
+      ],
+      "diagramRefs": [],
+      "sourceRefs": [
+        "js-contract-const",
+        "js-contract-freeze",
+        "js-contract-objects",
+        "js-contract-equality",
+        "js-contract-this",
+        "js-contract-splice",
+        "js-contract-sort",
+        "js-contract-substr"
+      ],
+      "status": "published",
+      "id": "089a2a379339",
+      "route": "/docs/programming/javascript-value-contracts",
+      "sourcePath": "content/knowledge/programming/javascript-value-contracts.md",
+      "bodyPath": "content/knowledge/programming/javascript-value-contracts.md",
+      "markdown": "## Separate binding from value ownership\n\nA fixed binding can point at mutable state. [MDN's const reference](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/const) distinguishes assignment to a variable from changing its object. A shallow copy creates a new outer object while keeping nested references. [Object.freeze](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/freeze) restricts that object's own property descriptors; it does not recursively freeze nested objects or turn every internal slot into immutable state.\n\nOriginal case: a lesson preview and its saved draft both reference the same `stats` object. Changing `preview.stats.views` also changes `draft.stats.views`, even if the preview's outer object is frozen. First state who owns nested mutation. Copy the appropriate boundary, or share it deliberately; neither spread syntax nor `const` substitutes for that decision.\n\n## Distinguish lookup from membership\n\n[Working with objects](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Working_with_objects) separates own properties from inherited lookup and enumeration. `Object.keys` returns enumerable own string keys; it omits symbols, non-enumerable keys and inherited keys. Reading `obj.name` can still find an inherited value. Do not interpret a successful lookup as proof that a field was authored on this object.\n\n[splice](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/splice) mutates its receiver and interprets a negative start relative to the end. An unsuccessful `indexOf` returns `-1`; passing that directly to `splice` removes the final item. An absent delete target should leave the collection unchanged. A copy such as `slice` creates a separate array but still shares its element objects. [sort](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/sort) mutates the array; its default comparison uses string ordering. Supply a lawful numeric comparator when numeric order is the contract.\n\n## Predict conversion and call context\n\n[Loose equality](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Equality) applies conversion rules. In the original table below, `5 == true` is false: converting true to 1 does not make 5 equal to 1. `[] == false` is true under these rules, while `[] === false` is false. That observation is not permission to treat unrelated object shapes as equivalent resources. Choose the intended comparison contract explicitly.\n\n[this](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/this) depends on invocation for ordinary functions. A strict-mode detached call has an undefined receiver; an arrow captures lexical `this`. Reattaching the same ordinary function to another object changes its receiver, while calling the captured arrow with another receiver does not. A prototype supplies lookup behavior; it does not copy a method into each instance or select a receiver independently of the call.\n\n## Run the original value fixture\n\nSave this original block as `value_lab.mjs` and run `node value_lab.mjs` with Node 22+. ES modules use strict mode. All cases are local values; no file, socket or service is opened. Predict each result first, then retain the case that falsifies your assumption.\n\n```javascript\nimport assert from 'node:assert/strict';\n\nconst draft = { stats: { views: 2 }, title: 'Queue' };\nconst preview = Object.freeze({ ...draft });\npreview.stats.views = 7;\nassert.equal(draft.stats.views, 7);\nassert.notEqual(preview, draft);\nassert.equal(preview.stats, draft.stats);\nassert.throws(() => { preview.title = 'Changed'; }, TypeError);\nassert.throws(() => { draft = {}; }, TypeError);\n\nfunction removePresent(items, target) {\n  const index = items.indexOf(target);\n  if (index !== -1) items.splice(index, 1);\n  return items;\n}\nfor (const input of [[], ['a'], ['a', 'b'], ['a', 'a', 'b'], ['a', 'b', 'a']]) {\n  for (const target of ['a', 'b', 'missing']) {\n    const before = input.slice();\n    const expected = before.slice();\n    const index = expected.findIndex(value => value === target);\n    if (index >= 0) expected.splice(index, 1);\n    const actual = before.slice();\n    assert.equal(removePresent(actual, target), actual);\n    assert.deepEqual(actual, expected);\n    assert.deepEqual(input, before);\n  }\n}\nconst wrong = ['a', 'b'];\nwrong.splice(wrong.indexOf('missing'), 1);\nassert.deepEqual(wrong, ['a']);\nconst values = [3, 12, 2];\nassert.deepEqual(values.slice().sort(), [12, 2, 3]);\nassert.deepEqual(values.slice().sort((a, b) => a - b), [2, 3, 12]);\nassert.deepEqual(values, [3, 12, 2]);\nconst nested = [{ score: 1 }];\nconst shallow = nested.slice();\nshallow[0].score = 4;\nassert.equal(nested[0].score, 4);\n\nconst inherited = { inherited: 9 };\nconst record = Object.create(inherited);\nrecord.visible = 1;\nrecord[Symbol('marker')] = 2;\nObject.defineProperty(record, 'hidden', { value: 3 });\nassert.deepEqual(Object.keys(record), ['visible']);\nassert.equal(record.inherited, 9);\nassert.equal(Object.hasOwn(record, 'inherited'), false);\nassert.equal(Object.hasOwn(record, 'hidden'), true);\nconst enumerated = [];\nfor (const key in record) enumerated.push(key);\nassert.deepEqual(enumerated, ['visible', 'inherited']);\n\nconst equality = [\n  [5 == true, false], [1 == true, true], [0 == false, true],\n  [[] == false, true], [[] === false, false], ['5' == 5, true],\n  ['5' === 5, false], [null == undefined, true], [null === undefined, false],\n];\nfor (const [actual, expected] of equality) assert.equal(actual, expected);\nconst same = {};\nassert.equal(same === same, true);\nassert.equal(same === {}, false);\n\nconst origin = {\n  name: 'origin',\n  read() { return this.name; },\n  capture() { return () => this.name; },\n};\nconst receiver = { name: 'receiver', read: origin.read };\nassert.equal(receiver.read(), 'receiver');\nconst detached = origin.read;\nassert.throws(() => detached(), TypeError);\nassert.equal(detached.call(receiver), 'receiver');\nconst captured = origin.capture();\nassert.equal(captured.call(receiver), 'origin');\nconst children = [];\nfor (let i = 0; i < 3; i++) children.push(() => i);\nassert.deepEqual(children.map(read => read()), [0, 1, 2]);\nconsole.log('javascript-value-contracts: passed');\n```\n\n## Preserve scope when reviewing a cheat sheet\n\nThe fixture checks selected semantics on the recorded runtime, not every browser, proxy object, accessor or cross-realm value. Changing assertions to match the implementation removes the counterexample. Keep the expected table independent of the code being changed.\n\n[substr](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/substr) is a legacy Annex B feature; `slice`, `substring` and `substr` have different argument rules, so a mechanical rename is unsafe. For dates, distinguish mutation, UTC versus local time, invalid values and month rollover before choosing an API; this fixture contains no time-zone test. Async scheduling belongs in [Lazy Demand And Stream Boundaries](/docs/programming/lazy-demand-and-stream-boundaries), while application state snapshots belong in the existing React lesson. These selected contracts do not reproduce an external question bank or certify its entire syllabus. Complete the [checkpoint](/practice/programming/javascript-value-contracts-checkpoint).",
+      "plainText": "Separate binding from value ownership A fixed binding can point at mutable state. MDN's const reference distinguishes assignment to a variable from changing its object. A shallow copy creates a new outer object while keeping nested references. Object.freeze restricts that object's own property descriptors; it does not recursively freeze nested objects or turn every internal slot into immutable state. Original case: a lesson preview and its saved draft both reference the same stats object. Changing preview.stats.views also changes draft.stats.views, even if the preview's outer object is frozen. First state who owns nested mutation. Copy the appropriate boundary, or share it deliberately; neither spread syntax nor const substitutes for that decision. Distinguish lookup from membership Working with objects separates own properties from inherited lookup and enumeration. Object.keys returns enumerable own string keys; it omits symbols, non-enumerable keys and inherited keys. Reading obj.name can still find an inherited value. Do not interpret a successful lookup as proof that a field was authored on this object. splice mutates its receiver and interprets a negative start relative to the end. An unsuccessful indexOf returns -1; passing that directly to splice removes the final item. An absent delete target should leave the collection unchanged. A copy such as slice creates a separate array but still shares its element objects. sort mutates the array; its default comparison uses string ordering. Supply a lawful numeric comparator when numeric order is the contract. Predict conversion and call context Loose equality applies conversion rules. In the original table below, 5 == true is false: converting true to 1 does not make 5 equal to 1. [] == false is true under these rules, while [] === false is false. That observation is not permission to treat unrelated object shapes as equivalent resources. Choose the intended comparison contract explicitly. this depends on invocation for ordinary functions. A strict-mode detached call has an undefined receiver; an arrow captures lexical this. Reattaching the same ordinary function to another object changes its receiver, while calling the captured arrow with another receiver does not. A prototype supplies lookup behavior; it does not copy a method into each instance or select a receiver independently of the call. Run the original value fixture Save this original block as value_lab.mjs and run node value_lab.mjs with Node 22+. ES modules use strict mode. All cases are local values; no file, socket or service is opened. Predict each result first, then retain the case that falsifies your assumption. import assert from 'node:assert/strict'; const draft = { stats: { views: 2 }, title: 'Queue' }; const preview = Object.freeze({ ...draft }); preview.stats.views = 7; assert.equal(draft.stats.views, 7); assert.notEqual(preview, draft); assert.equal(preview.stats, draft.stats); assert.throws(() => { preview.title = 'Changed'; }, TypeError); assert.throws(() => { draft = {}; }, TypeError); function removePresent(items, target) { const index = items.indexOf(target); if (index !== -1) items.splice(index, 1); return items; } for (const input of [[], ['a'], ['a', 'b'], ['a', 'a', 'b'], ['a', 'b', 'a']]) { for (const target of ['a', 'b', 'missing']) { const before = input.slice(); const expected = before.slice(); const index = expected.findIndex(value => value === target); if (index >= 0) expected.splice(index, 1); const actual = before.slice(); assert.equal(removePresent(actual, target), actual); assert.deepEqual(actual, expected); assert.deepEqual(input, before); } } const wrong = ['a', 'b']; wrong.splice(wrong.indexOf('missing'), 1); assert.deepEqual(wrong, ['a']); const values = [3, 12, 2]; assert.deepEqual(values.slice().sort(), [12, 2, 3]); assert.deepEqual(values.slice().sort((a, b) => a - b), [2, 3, 12]); assert.deepEqual(values, [3, 12, 2]); const nested = [{ score: 1 }]; const shallow = nested.slice(); shallow[0].score = 4; assert.equal(nested[0].score, 4); const inherited = { inherited: 9 }; const record = Object.create(inherited); record.visible = 1; record[Symbol('marker')] = 2; Object.defineProperty(record, 'hidden', { value: 3 }); assert.deepEqual(Object.keys(record), ['visible']); assert.equal(record.inherited, 9); assert.equal(Object.hasOwn(record, 'inherited'), false); assert.equal(Object.hasOwn(record, 'hidden'), true); const enumerated = []; for (const key in record) enumerated.push(key); assert.deepEqual(enumerated, ['visible', 'inherited']); const equality = [ [5 == true, false], [1 == true, true], [0 == false, true], [[] == false, true], [[] === false, false], ['5' == 5, true], ['5' === 5, false], [null == undefined, true], [null === undefined, false], ]; for (const [actual, expected] of equality) assert.equal(actual, expected); const same = {}; assert.equal(same === same, true); assert.equal(same === {}, false); const origin = { name: 'origin', read() { return this.name; }, capture() { return () => this.name; }, }; const receiver = { name: 'receiver', read: origin.read }; assert.equal(receiver.read(), 'receiver'); const detached = origin.read; assert.throws(() => detached(), TypeError); assert.equal(detached.call(receiver), 'receiver'); const captured = origin.capture(); assert.equal(captured.call(receiver), 'origin'); const children = []; for (let i = 0; i < 3; i++) children.push(() => i); assert.deepEqual(children.map(read => read()), [0, 1, 2]); console.log('javascript-value-contracts: passed'); Preserve scope when reviewing a cheat sheet The fixture checks selected semantics on the recorded runtime, not every browser, proxy object, accessor or cross-realm value. Changing assertions to match the implementation removes the counterexample. Keep the expected table independent of the code being changed. substr is a legacy Annex B feature; slice, substring and substr have different argument rules, so a mechanical rename is unsafe. For dates, distinguish mutation, UTC versus local time, invalid values and month rollover before choosing an API; this fixture contains no time-zone test. Async scheduling belongs in Lazy Demand And Stream Boundaries, while application state snapshots belong in the existing React lesson. These selected contracts do not reproduce an external question bank or certify its entire syllabus. Complete the checkpoint.",
+      "headings": [
+        {
+          "id": "separate-binding-from-value-ownership",
+          "depth": 2,
+          "text": "Separate binding from value ownership"
+        },
+        {
+          "id": "distinguish-lookup-from-membership",
+          "depth": 2,
+          "text": "Distinguish lookup from membership"
+        },
+        {
+          "id": "predict-conversion-and-call-context",
+          "depth": 2,
+          "text": "Predict conversion and call context"
+        },
+        {
+          "id": "run-the-original-value-fixture",
+          "depth": 2,
+          "text": "Run the original value fixture"
+        },
+        {
+          "id": "preserve-scope-when-reviewing-a-cheat-sheet",
+          "depth": 2,
+          "text": "Preserve scope when reviewing a cheat sheet"
+        }
+      ],
+      "mermaidBlocks": [],
+      "contentHash": "4fe6731ddd9cdf8fb25673f371b142ac16cdf1d7580040e544f6423798217b8b",
+      "readingMinutes": 5
+    },
+    {
       "title": "Keypad Dictionary Search — Bound The Branch And Preserve The Word",
       "slug": "programming/keypad-dictionary-search",
       "summary": "Compare a closed-dictionary scan with bounded trie backtracking; distinguish prefixes, complete words, branch state and input validation.",
@@ -11462,6 +11808,70 @@
       "mermaidBlocks": [],
       "contentHash": "d49ba3bbe966c5c5035418b06e81263c9ca801fe3e44438dd973d91b65804a1d",
       "readingMinutes": 6
+    },
+    {
+      "title": "Lazy Demand And Stream Boundaries",
+      "slug": "programming/lazy-demand-and-stream-boundaries",
+      "summary": "Trace consumption and cleanup through lazy transforms, then separate stream pressure, scheduling and resumable-upload acknowledgements.",
+      "track": "Programming",
+      "topic": "Iteration",
+      "difficulty": "practitioner",
+      "tags": [
+        "javascript",
+        "generators",
+        "transducers",
+        "streams",
+        "backpressure",
+        "retry"
+      ],
+      "prerequisites": [
+        "programming/javascript-value-contracts"
+      ],
+      "diagramRefs": [],
+      "sourceRefs": [
+        "demand-mdn-iteration",
+        "demand-mdn-forof",
+        "demand-node-stream",
+        "demand-node-loop",
+        "demand-tus-offset"
+      ],
+      "status": "published",
+      "id": "3eacc5b1d3af",
+      "route": "/docs/programming/lazy-demand-and-stream-boundaries",
+      "sourcePath": "content/knowledge/programming/lazy-demand-and-stream-boundaries.md",
+      "bodyPath": "content/knowledge/programming/lazy-demand-and-stream-boundaries.md",
+      "markdown": "## Name the demand contract\n\nOriginal task: from a finite sequence, square odd values and return the first two results. Eager `filter().map().slice()` processes the finite collection before slicing. A lazy iterator can stop when the second qualifying result is produced. It still must inspect intervening rejected values; “two outputs” does not mean “two inputs.” Laziness alone does not reduce the work of consuming every value, and retained closures can still hold large objects.\n\n[Iterators and generators](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Iterators_and_generators) distinguishes an iterator's evolving state from an iterable that can supply iterators. Reusing an exhausted generator does not restart it. A factory can create a fresh generator; a reusable iterable and a single shared iterator have different ownership contracts.\n\n## Propagate stopping and cleanup\n\nIn the original fixture, `takeMapped` validates its limit before reading anything and returns immediately for zero demand. It pulls until the requested number of qualifying values arrives, then breaks. [for...of](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/for...of) calls an available iterator `return()` on early exit. A generator's `finally` can therefore release the resource it owns. This does not mean every iterator has cleanup, or that every unopened resource is disposed automatically.\n\nA transducer transforms a reducing step instead of building an intermediate collection. The small `filterStep(mapStep(append))` below filters each input, then maps accepted inputs, then appends. Swapping that composition changes the question asked by the predicate. The reducer example intentionally processes the full finite input; it does not implement a complete transducer protocol with termination, completion and asynchronous cancellation. The lazy `takeMapped` example separately demonstrates early stopping and cleanup.\n\n## Run the original demand fixture\n\nSave as `demand_lab.mjs` and run `node demand_lab.mjs` with Node 22+. The generator uses a synthetic ownership log, not a file handle or network connection. No asynchronous timer or stream service is started.\n\n```javascript\nimport assert from 'node:assert/strict';\n\nfunction* source(values, log) {\n  log.push('opened');\n  try {\n    for (const value of values) {\n      log.push(value);\n      yield value;\n    }\n  } finally { log.push('closed'); }\n}\nfunction takeMapped(iterable, limit, predicate, transform) {\n  if (!Number.isInteger(limit) || limit < 0 || limit > 16) throw new RangeError('limit');\n  const result = [];\n  if (limit === 0) return result;\n  for (const value of iterable) {\n    if (!predicate(value)) continue;\n    result.push(transform(value));\n    if (result.length === limit) break;\n  }\n  return result;\n}\nconst odd = value => value % 2 !== 0;\nconst square = value => value * value;\nconst values = [2, 3, 4, 5, 7];\nconst log = [];\nconst iterator = source(values, log);\nassert.deepEqual(takeMapped(iterator, 2, odd, square), [9, 25]);\nassert.deepEqual(log, ['opened', 2, 3, 4, 5, 'closed']);\nassert.deepEqual([...iterator], []);\nconst zeroLog = [];\nassert.deepEqual(takeMapped(source(values, zeroLog), 0, odd, square), []);\nassert.deepEqual(zeroLog, []);\nfor (const invalid of [-1, 17, 1.5, NaN, '2', null]) {\n  const invalidLog = [];\n  assert.throws(() => takeMapped(source(values, invalidLog), invalid, odd, square), RangeError);\n  assert.deepEqual(invalidLog, []);\n}\nconst failingLog = [];\nassert.throws(() => takeMapped(source(values, failingLog), 2, odd, () => { throw new Error('transform'); }), /transform/);\nassert.deepEqual(failingLog, ['opened', 2, 3, 'closed']);\nfor (let length = 0; length <= 12; length++) {\n  const input = Array.from({ length }, (_, index) => index - 4);\n  for (let limit = 0; limit <= 16; limit++) {\n    const trace = [];\n    const expected = input.filter(odd).map(square).slice(0, limit);\n    assert.deepEqual(takeMapped(source(input, trace), limit, odd, square), expected);\n    if (limit === 0) assert.deepEqual(trace, []);\n    else assert.equal(trace.at(-1), 'closed');\n  }\n}\nconst mapStep = transform => step => (state, value) => step(state, transform(value));\nconst filterStep = predicate => step => (state, value) => predicate(value) ? step(state, value) : state;\nconst append = (state, value) => { state.push(value); return state; };\nconst composed = filterStep(odd)(mapStep(square)(append));\nassert.deepEqual(values.reduce(composed, []), [9, 25, 49]);\n// Predicate domain changes if mapping precedes filtering.\nconst plusOne = value => value + 1;\nassert.deepEqual([1, 2, 3].reduce(filterStep(odd)(mapStep(plusOne)(append)), []), [2, 4]);\nassert.deepEqual([1, 2, 3].reduce(mapStep(plusOne)(filterStep(odd)(append)), []), [3]);\nassert.deepEqual(values, [2, 3, 4, 5, 7]);\nconsole.log('lazy-demand-and-stream-boundaries: passed');\n```\n\n## Separate pressure from acknowledgement\n\n[Node stream documentation](https://nodejs.org/api/stream.html) specifies that `write()` returning false asks the producer to wait for `drain`. The high-water mark is a pressure threshold, not a strict total-memory cap. Successful admission to a local buffer does not establish durable receipt by the remote application. Cancellation, errors, finalization and bounded queues require their own policies; collecting all chunks before sending can negate a streaming interface's memory benefit.\n\nOriginal paper trace: a twelve-byte file uses four-byte chunks. The server accepts bytes 0–3 but its reply is lost. A retry must verify upload-session and file identity, query the accepted offset (4), and create a fresh body for bytes 4–7. Replaying from the client's assumed offset (0) can conflict; silently applying it twice can corrupt the result. [tus 1.0.0 offset rules](https://tus.io/protocols/resumable-upload) require an offset mismatch to return 409 without changing the upload. A consumed request body is not a reusable retry plan. This trace implements neither tus nor browser storage/authentication, and claims no universal file-size or memory guarantee.\n\n## Record the host and evidence boundary\n\n[Node event-loop guidance](https://nodejs.org/en/learn/asynchronous-work/event-loop-timers-and-nexttick) documents Node's phases and the libuv 1.45 / Node 20 change to timer processing after poll. A timer is a scheduling threshold, not an exact deadline; synchronous callbacks can delay progress. Promise jobs, next-tick work, module evaluation, workers and browser scheduling need the stated host/context. A memorized top-level ordering is not a portable proof.\n\nAudit server entrypoints as well as the task function: an import can initialize a dependency before a later execution flag is checked. Declare runtime packages directly and verify a production-only artifact rather than relying on a development install. This lesson adds no worker, import-time SDK or upload endpoint. Bounded value checks and synthetic cleanup traces do not measure full-service latency, memory or network reliability. Complete the [checkpoint](/practice/programming/lazy-demand-and-stream-boundaries-checkpoint).",
+      "plainText": "Name the demand contract Original task: from a finite sequence, square odd values and return the first two results. Eager filter().map().slice() processes the finite collection before slicing. A lazy iterator can stop when the second qualifying result is produced. It still must inspect intervening rejected values; “two outputs” does not mean “two inputs.” Laziness alone does not reduce the work of consuming every value, and retained closures can still hold large objects. Iterators and generators distinguishes an iterator's evolving state from an iterable that can supply iterators. Reusing an exhausted generator does not restart it. A factory can create a fresh generator; a reusable iterable and a single shared iterator have different ownership contracts. Propagate stopping and cleanup In the original fixture, takeMapped validates its limit before reading anything and returns immediately for zero demand. It pulls until the requested number of qualifying values arrives, then breaks. for...of calls an available iterator return() on early exit. A generator's finally can therefore release the resource it owns. This does not mean every iterator has cleanup, or that every unopened resource is disposed automatically. A transducer transforms a reducing step instead of building an intermediate collection. The small filterStep(mapStep(append)) below filters each input, then maps accepted inputs, then appends. Swapping that composition changes the question asked by the predicate. The reducer example intentionally processes the full finite input; it does not implement a complete transducer protocol with termination, completion and asynchronous cancellation. The lazy takeMapped example separately demonstrates early stopping and cleanup. Run the original demand fixture Save as demand_lab.mjs and run node demand_lab.mjs with Node 22+. The generator uses a synthetic ownership log, not a file handle or network connection. No asynchronous timer or stream service is started. import assert from 'node:assert/strict'; function* source(values, log) { log.push('opened'); try { for (const value of values) { log.push(value); yield value; } } finally { log.push('closed'); } } function takeMapped(iterable, limit, predicate, transform) { if (!Number.isInteger(limit) || limit < 0 || limit > 16) throw new RangeError('limit'); const result = []; if (limit === 0) return result; for (const value of iterable) { if (!predicate(value)) continue; result.push(transform(value)); if (result.length === limit) break; } return result; } const odd = value => value % 2 !== 0; const square = value => value * value; const values = [2, 3, 4, 5, 7]; const log = []; const iterator = source(values, log); assert.deepEqual(takeMapped(iterator, 2, odd, square), [9, 25]); assert.deepEqual(log, ['opened', 2, 3, 4, 5, 'closed']); assert.deepEqual([...iterator], []); const zeroLog = []; assert.deepEqual(takeMapped(source(values, zeroLog), 0, odd, square), []); assert.deepEqual(zeroLog, []); for (const invalid of [-1, 17, 1.5, NaN, '2', null]) { const invalidLog = []; assert.throws(() => takeMapped(source(values, invalidLog), invalid, odd, square), RangeError); assert.deepEqual(invalidLog, []); } const failingLog = []; assert.throws(() => takeMapped(source(values, failingLog), 2, odd, () => { throw new Error('transform'); }), /transform/); assert.deepEqual(failingLog, ['opened', 2, 3, 'closed']); for (let length = 0; length <= 12; length++) { const input = Array.from({ length }, (_, index) => index - 4); for (let limit = 0; limit <= 16; limit++) { const trace = []; const expected = input.filter(odd).map(square).slice(0, limit); assert.deepEqual(takeMapped(source(input, trace), limit, odd, square), expected); if (limit === 0) assert.deepEqual(trace, []); else assert.equal(trace.at(-1), 'closed'); } } const mapStep = transform => step => (state, value) => step(state, transform(value)); const filterStep = predicate => step => (state, value) => predicate(value) ? step(state, value) : state; const append = (state, value) => { state.push(value); return state; }; const composed = filterStep(odd)(mapStep(square)(append)); assert.deepEqual(values.reduce(composed, []), [9, 25, 49]); // Predicate domain changes if mapping precedes filtering. const plusOne = value => value + 1; assert.deepEqual([1, 2, 3].reduce(filterStep(odd)(mapStep(plusOne)(append)), []), [2, 4]); assert.deepEqual([1, 2, 3].reduce(mapStep(plusOne)(filterStep(odd)(append)), []), [3]); assert.deepEqual(values, [2, 3, 4, 5, 7]); console.log('lazy-demand-and-stream-boundaries: passed'); Separate pressure from acknowledgement Node stream documentation specifies that write() returning false asks the producer to wait for drain. The high-water mark is a pressure threshold, not a strict total-memory cap. Successful admission to a local buffer does not establish durable receipt by the remote application. Cancellation, errors, finalization and bounded queues require their own policies; collecting all chunks before sending can negate a streaming interface's memory benefit. Original paper trace: a twelve-byte file uses four-byte chunks. The server accepts bytes 0–3 but its reply is lost. A retry must verify upload-session and file identity, query the accepted offset (4), and create a fresh body for bytes 4–7. Replaying from the client's assumed offset (0) can conflict; silently applying it twice can corrupt the result. tus 1.0.0 offset rules require an offset mismatch to return 409 without changing the upload. A consumed request body is not a reusable retry plan. This trace implements neither tus nor browser storage/authentication, and claims no universal file-size or memory guarantee. Record the host and evidence boundary Node event-loop guidance documents Node's phases and the libuv 1.45 / Node 20 change to timer processing after poll. A timer is a scheduling threshold, not an exact deadline; synchronous callbacks can delay progress. Promise jobs, next-tick work, module evaluation, workers and browser scheduling need the stated host/context. A memorized top-level ordering is not a portable proof. Audit server entrypoints as well as the task function: an import can initialize a dependency before a later execution flag is checked. Declare runtime packages directly and verify a production-only artifact rather than relying on a development install. This lesson adds no worker, import-time SDK or upload endpoint. Bounded value checks and synthetic cleanup traces do not measure full-service latency, memory or network reliability. Complete the checkpoint.",
+      "headings": [
+        {
+          "id": "name-the-demand-contract",
+          "depth": 2,
+          "text": "Name the demand contract"
+        },
+        {
+          "id": "propagate-stopping-and-cleanup",
+          "depth": 2,
+          "text": "Propagate stopping and cleanup"
+        },
+        {
+          "id": "run-the-original-demand-fixture",
+          "depth": 2,
+          "text": "Run the original demand fixture"
+        },
+        {
+          "id": "separate-pressure-from-acknowledgement",
+          "depth": 2,
+          "text": "Separate pressure from acknowledgement"
+        },
+        {
+          "id": "record-the-host-and-evidence-boundary",
+          "depth": 2,
+          "text": "Record the host and evidence boundary"
+        }
+      ],
+      "mermaidBlocks": [],
+      "contentHash": "8c51b7565ffb180ad3d9372ea3e7f6fafc9a7d78deadde8db99fc31c39729504",
+      "readingMinutes": 5
     },
     {
       "title": "Mermaid Planning, Data, And Advanced Diagram Authoring",
@@ -12070,6 +12480,129 @@
       "mermaidBlocks": [],
       "contentHash": "dc5ea23696fdc5a9578df36fc4201f7845eb212605fdfa8491314740164b00bd",
       "readingMinutes": 3
+    },
+    {
+      "title": "Text Domains And Matching — Keep The Contract Visible",
+      "slug": "programming/text-domain-and-matching",
+      "summary": "Reverse only ASCII letters with an independent position oracle, then review whole-input matching, escapes and regex diagrams.",
+      "track": "Programming",
+      "topic": "Text Processing",
+      "difficulty": "practitioner",
+      "tags": [
+        "javascript",
+        "regular-expressions",
+        "two-pointers",
+        "input-validation",
+        "reference-oracle"
+      ],
+      "prerequisites": [
+        "programming/javascript-value-contracts"
+      ],
+      "diagramRefs": [],
+      "sourceRefs": [
+        "text-mdn-regex",
+        "text-mdn-forof",
+        "text-regex-vis"
+      ],
+      "status": "published",
+      "id": "305d24fdd4f7",
+      "route": "/docs/programming/text-domain-and-matching",
+      "sourcePath": "content/knowledge/programming/text-domain-and-matching.md",
+      "bodyPath": "content/knowledge/programming/text-domain-and-matching.md",
+      "markdown": "## Choose the character domain\n\nOriginal task: reverse ASCII letters while preserving every other accepted ASCII character at its original index. Accept a primitive string of zero to 64 ASCII characters; reject boxed strings, non-ASCII text and longer input. Thus `a-B!c` becomes `c-B!a`, while `12-!` remains unchanged. Uppercase and lowercase both count as letters, but their case travels with the moved letter.\n\nThis policy is deliberate. [JavaScript string iteration](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/for...of) uses Unicode code points; indexing and user-perceived grapheme boundaries are separate concerns. Accents, combining sequences, emoji, normalization and locale rules need another contract. A programming lesson's ASCII bound does not create a human-language curriculum or define universal “alphabetic” text.\n\n## Make pointer progress explicit\n\nHold a left and right index. A nonletter is fixed: advance past it without moving its value. When both positions hold letters, swap them and move both pointers. Every loop iteration must advance at least one pointer. At termination, the nonletter positions equal the input and the letter subsequence equals the original letter subsequence reversed.\n\nUse a separate oracle that gathers letter positions and rewrites only those slots. It must not repeat the two-pointer loop. Tiny exhaustive inputs expose empty strings, one-sided punctuation, repeated letters, mixed case and adjacent fixed positions; none of these require a copied interview solution.\n\n## Run the original text fixture\n\nSave as `text_lab.mjs` and run `node text_lab.mjs` with Node 22+. The 3,906 generated strings use the five-symbol alphabet through length five. Each check also tests reversal twice and unchanged fixed positions. The regex cases use this engine only; no external visualizer receives inputs.\n\n```javascript\nimport assert from 'node:assert/strict';\n\nconst letter = char => (char >= 'a' && char <= 'z') || (char >= 'A' && char <= 'Z');\nfunction reverseLetters(text) {\n  if (typeof text !== 'string' || text.length > 64 || [...text].some(char => char.codePointAt(0) > 127)) throw new RangeError('ASCII string of at most 64 characters');\n  const chars = [...text];\n  let left = 0, right = chars.length - 1;\n  while (left < right) {\n    if (!letter(chars[left])) { left++; continue; }\n    if (!letter(chars[right])) { right--; continue; }\n    [chars[left], chars[right]] = [chars[right], chars[left]];\n    left++; right--;\n  }\n  return chars.join('');\n}\nfunction positionOracle(text) {\n  const letters = [...text].filter(char => /[A-Za-z]/u.test(char)).reverse();\n  let index = 0;\n  return [...text].map(char => /[A-Za-z]/u.test(char) ? letters[index++] : char).join('');\n}\nassert.equal(reverseLetters('a-B!c'), 'c-B!a');\nassert.equal(reverseLetters('12-!'), '12-!');\nassert.equal(reverseLetters('a'.repeat(64)), 'a'.repeat(64));\nfor (const invalid of [null, 12, new String('ab'), 'é', '🙂', 'a'.repeat(65)]) assert.throws(() => reverseLetters(invalid), RangeError);\nlet fixtures = [''], checked = 0;\nfor (let length = 0; length <= 5; length++) {\n  for (const text of fixtures) {\n    const actual = reverseLetters(text);\n    assert.equal(actual, positionOracle(text));\n    assert.equal(reverseLetters(actual), text);\n    for (let index = 0; index < text.length; index++) if (!/[A-Za-z]/u.test(text[index])) assert.equal(actual[index], text[index]);\n    checked++;\n  }\n  fixtures = fixtures.flatMap(prefix => ['a', 'B', 'z', '-', '1'].map(char => prefix + char));\n}\nassert.equal(checked, 3906);\nconst wholeToken = /^[A-Za-z]{2,4}$/u;\nfunction acceptsToken(text) {\n  if (typeof text !== 'string') return false;\n  const match = wholeToken.exec(text);\n  return match !== null && match[0].length === text.length;\n}\nfor (const text of ['ab', 'AbZ', 'abcd']) assert.equal(acceptsToken(text), true);\nfor (const text of ['', 'a', 'abcde', 'éa', 'ab\\n', ' ab', 'ab!', null, undefined, new String('ab')]) assert.equal(acceptsToken(text), false);\nassert.equal(/\\d+/u.test('id42x'), true);\nassert.equal(new RegExp('\\\\d+', 'u').test('id42x'), true);\nassert.equal(new RegExp('\\d+', 'u').test('42'), false);\nconsole.log('text-domain-and-matching: passed');\n```\n\n## Separate pattern syntax from acceptance\n\n[MDN regular-expression guidance](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_expressions) describes assertions, character classes, quantifiers and flags. A successful substring match is not necessarily whole-input validation. State the dialect, flags and matching API, then check accepted and rejected boundaries. A constructor string adds JavaScript's string-escape layer before the regex parser; a literal has different syntax.\n\nOriginal validator: a token has two to four ASCII letters and nothing else. Keep a newline and a trailing punctuation rejection case alongside length checks. Explicitly checking that the matched text covers the whole input avoids treating a dialect-specific end assertion as a universal full-match API. Reusing stateful `g`/`y` expressions needs an additional `lastIndex` policy; this validator uses neither flag.\n\n## Use diagrams as review aids\n\nThe author-maintained [regex-vis repository](https://github.com/Bowen7/regex-vis) presents a visualizer and editor. A diagram can expose grouping and repetition to a reader, but it does not establish identical semantics across engines or a runtime bound on adversarial input. Use synthetic examples in an external tool; private source text needs an authorized destination. No tool was installed or given private data for this lesson.\n\nThe two-pointer routine uses linear scans and a new character buffer under the ASCII bound. The small regex fixture does not benchmark arbitrary patterns or prove resistance to expensive backtracking. Parser choice, Unicode segmentation and security validation remain separate engineering decisions. Complete the [checkpoint](/practice/programming/text-domain-and-matching-checkpoint).",
+      "plainText": "Choose the character domain Original task: reverse ASCII letters while preserving every other accepted ASCII character at its original index. Accept a primitive string of zero to 64 ASCII characters; reject boxed strings, non-ASCII text and longer input. Thus a-B!c becomes c-B!a, while 12-! remains unchanged. Uppercase and lowercase both count as letters, but their case travels with the moved letter. This policy is deliberate. JavaScript string iteration uses Unicode code points; indexing and user-perceived grapheme boundaries are separate concerns. Accents, combining sequences, emoji, normalization and locale rules need another contract. A programming lesson's ASCII bound does not create a human-language curriculum or define universal “alphabetic” text. Make pointer progress explicit Hold a left and right index. A nonletter is fixed: advance past it without moving its value. When both positions hold letters, swap them and move both pointers. Every loop iteration must advance at least one pointer. At termination, the nonletter positions equal the input and the letter subsequence equals the original letter subsequence reversed. Use a separate oracle that gathers letter positions and rewrites only those slots. It must not repeat the two-pointer loop. Tiny exhaustive inputs expose empty strings, one-sided punctuation, repeated letters, mixed case and adjacent fixed positions; none of these require a copied interview solution. Run the original text fixture Save as text_lab.mjs and run node text_lab.mjs with Node 22+. The 3,906 generated strings use the five-symbol alphabet through length five. Each check also tests reversal twice and unchanged fixed positions. The regex cases use this engine only; no external visualizer receives inputs. import assert from 'node:assert/strict'; const letter = char => (char >= 'a' && char <= 'z') || (char >= 'A' && char <= 'Z'); function reverseLetters(text) { if (typeof text !== 'string' || text.length > 64 || [...text].some(char => char.codePointAt(0) > 127)) throw new RangeError('ASCII string of at most 64 characters'); const chars = [...text]; let left = 0, right = chars.length - 1; while (left < right) { if (!letter(chars[left])) { left++; continue; } if (!letter(chars[right])) { right--; continue; } [chars[left], chars[right]] = [chars[right], chars[left]]; left++; right--; } return chars.join(''); } function positionOracle(text) { const letters = [...text].filter(char => /[A-Za-z]/u.test(char)).reverse(); let index = 0; return [...text].map(char => /[A-Za-z]/u.test(char) ? letters[index++] : char).join(''); } assert.equal(reverseLetters('a-B!c'), 'c-B!a'); assert.equal(reverseLetters('12-!'), '12-!'); assert.equal(reverseLetters('a'.repeat(64)), 'a'.repeat(64)); for (const invalid of [null, 12, new String('ab'), 'é', '🙂', 'a'.repeat(65)]) assert.throws(() => reverseLetters(invalid), RangeError); let fixtures = [''], checked = 0; for (let length = 0; length <= 5; length++) { for (const text of fixtures) { const actual = reverseLetters(text); assert.equal(actual, positionOracle(text)); assert.equal(reverseLetters(actual), text); for (let index = 0; index < text.length; index++) if (!/[A-Za-z]/u.test(text[index])) assert.equal(actual[index], text[index]); checked++; } fixtures = fixtures.flatMap(prefix => ['a', 'B', 'z', '-', '1'].map(char => prefix + char)); } assert.equal(checked, 3906); const wholeToken = /^[A-Za-z]{2,4}$/u; function acceptsToken(text) { if (typeof text !== 'string') return false; const match = wholeToken.exec(text); return match !== null && match[0].length === text.length; } for (const text of ['ab', 'AbZ', 'abcd']) assert.equal(acceptsToken(text), true); for (const text of ['', 'a', 'abcde', 'éa', 'ab\\n', ' ab', 'ab!', null, undefined, new String('ab')]) assert.equal(acceptsToken(text), false); assert.equal(/\\d+/u.test('id42x'), true); assert.equal(new RegExp('\\\\d+', 'u').test('id42x'), true); assert.equal(new RegExp('\\d+', 'u').test('42'), false); console.log('text-domain-and-matching: passed'); Separate pattern syntax from acceptance MDN regular-expression guidance describes assertions, character classes, quantifiers and flags. A successful substring match is not necessarily whole-input validation. State the dialect, flags and matching API, then check accepted and rejected boundaries. A constructor string adds JavaScript's string-escape layer before the regex parser; a literal has different syntax. Original validator: a token has two to four ASCII letters and nothing else. Keep a newline and a trailing punctuation rejection case alongside length checks. Explicitly checking that the matched text covers the whole input avoids treating a dialect-specific end assertion as a universal full-match API. Reusing stateful g/y expressions needs an additional lastIndex policy; this validator uses neither flag. Use diagrams as review aids The author-maintained regex-vis repository presents a visualizer and editor. A diagram can expose grouping and repetition to a reader, but it does not establish identical semantics across engines or a runtime bound on adversarial input. Use synthetic examples in an external tool; private source text needs an authorized destination. No tool was installed or given private data for this lesson. The two-pointer routine uses linear scans and a new character buffer under the ASCII bound. The small regex fixture does not benchmark arbitrary patterns or prove resistance to expensive backtracking. Parser choice, Unicode segmentation and security validation remain separate engineering decisions. Complete the checkpoint.",
+      "headings": [
+        {
+          "id": "choose-the-character-domain",
+          "depth": 2,
+          "text": "Choose the character domain"
+        },
+        {
+          "id": "make-pointer-progress-explicit",
+          "depth": 2,
+          "text": "Make pointer progress explicit"
+        },
+        {
+          "id": "run-the-original-text-fixture",
+          "depth": 2,
+          "text": "Run the original text fixture"
+        },
+        {
+          "id": "separate-pattern-syntax-from-acceptance",
+          "depth": 2,
+          "text": "Separate pattern syntax from acceptance"
+        },
+        {
+          "id": "use-diagrams-as-review-aids",
+          "depth": 2,
+          "text": "Use diagrams as review aids"
+        }
+      ],
+      "mermaidBlocks": [],
+      "contentHash": "2346fea40cc1311511e7d76ac38bce581bc5a1d2c77318759c8aa06a650a1894",
+      "readingMinutes": 4
+    },
+    {
+      "title": "Tree Shapes And Cost Models — State The Property You Test",
+      "slug": "programming/tree-shapes-and-cost-models",
+      "summary": "Separate full, complete, perfect and ordered trees; validate ancestor bounds and count one algorithm's comparisons under explicit assumptions.",
+      "track": "Programming",
+      "topic": "Algorithm Analysis",
+      "difficulty": "practitioner",
+      "tags": [
+        "binary-trees",
+        "complexity",
+        "invariants",
+        "representation",
+        "reference-oracle"
+      ],
+      "prerequisites": [
+        "programming/bfs-dfs-fundamentals"
+      ],
+      "diagramRefs": [],
+      "sourceRefs": [
+        "shape-opendsa-binary",
+        "shape-opendsa-bst",
+        "cost-opendsa-selection",
+        "cost-oxford-b16"
+      ],
+      "status": "published",
+      "id": "e0a3f43b37f0",
+      "route": "/docs/programming/tree-shapes-and-cost-models",
+      "sourcePath": "content/knowledge/programming/tree-shapes-and-cost-models.md",
+      "bodyPath": "content/knowledge/programming/tree-shapes-and-cost-models.md",
+      "markdown": "## Separate shape from ordering\n\nThis lesson uses explicit definitions. Full means every occupied node has zero or two occupied children. Complete means levels fill from left to right with no missing breadth-first slot before an occupied slot. Perfect means every internal node has two children and every leaf has the same depth. [OpenDSA's binary-tree definitions](https://opendsax.cs.vt.edu/OpenDSA/Books/Everything/html/BinaryTree.html) distinguishes full from complete and notes that names vary between texts. State the definition rather than guessing from a picture.\n\nOriginal counterexamples: a root with only a left child is complete but not full; a root with only a right child is neither. A root with two children, whose right child has two children, is full but has a left-side gap, so is not complete. None of these shape statements establishes ordered keys. Height balance is another property; a height-balanced shape with misplaced values is not a valid AVL search tree.\n\n## Carry the ancestor constraint\n\n[OpenDSA's BST chapter](https://opendsax.cs.vt.edu/OpenDSA/Books/Everything/html/BST.html) defines ordering over entire subtrees and discusses duplicate policy and height-dependent operations. This original validator uses strictly smaller left values and strictly larger right values, so duplicates are rejected. That intentionally differs from the chapter's duplicate-on-left example.\n\nIf root 10 has left child 5 and that child's right child is 12, the local 5-to-12 comparison passes but 12 violates root 10's upper bound. Carry both ancestor bounds through recursion. A valid plain BST can still be a chain: logarithmic search requires a height guarantee, not the name “binary search tree.” The fixture checks balance, but performs no AVL rotations or updates.\n\n## Count the operation before naming the class\n\n[Oxford B16 notes](https://www.robots.ox.ac.uk/~vedaldi/assets/teach/2024/b16/b16-notes.pdf) separates asymptotic upper bounds from tight bounds. Specify input size, representation, primitive operation and case. A linear cost is also bounded above by a quadratic function; `O(n²)` is not a synonym for exponential growth or necessarily the most informative bound. Worst-case, expected cost under a distribution and amortized cost across a sequence answer different questions.\n\nThe authored selection scan below compares every remaining candidate to the current minimum. Its comparison count is `(n-1)+(n-2)+...+1 = n(n-1)/2`, even when already sorted; output correctness and comparison cost are separate checks. [OpenDSA selection sort](https://opendsa.cs.vt.edu/ODSA/Books/CS3/html/SelectionSort.html) explains scanning the remaining portion and limiting swaps. This original minimum-first code copies no upstream implementation. Constant-time comparisons are an assumption; sorting long strings or copying large outputs changes the cost model.\n\n## Run the original bounded references\n\nSave as `tree_cost_lab.py` and run `python3 tree_cost_lab.py` with Python 3.13+. A tree is `None` or a built-in `(integer, left, right)` tuple, with values between -100 and 100, at most fifteen occupied positions and depth at most seven (root depth zero). Shared immutable tuple values denote separate positions, not shared graph nodes. Reject malformed shapes before computing properties. Empty trees are full, complete, perfect, balanced and strictly ordered by this fixture's stated convention.\n\n```python\nfrom itertools import product\n\ndef inspect_tree(tree):\n    positions, leaves, ordered = [], [], []\n    def walk(node, slot, depth, low, high):\n        if node is None:\n            return 0, True, True\n        if type(node) is not tuple or len(node) != 3 or type(node[0]) is not int or not -100 <= node[0] <= 100 or depth > 7:\n            raise ValueError('bounded tuple tree')\n        positions.append(slot)\n        if len(positions) > 15:\n            raise ValueError('too many positions')\n        value, left, right = node\n        lh, lf, lb = walk(left, 2 * slot + 1, depth + 1, low, min(high, value))\n        ordered.append(low < value < high)\n        rh, rf, rb = walk(right, 2 * slot + 2, depth + 1, max(low, value), high)\n        if left is None and right is None:\n            leaves.append(depth)\n        full = lf and rf and ((left is None) == (right is None))\n        return 1 + max(lh, rh), full, lb and rb and abs(lh - rh) <= 1\n    height, full, balanced = walk(tree, 0, 0, -101, 101)\n    complete = not positions or max(positions) == len(positions) - 1\n    perfect = full and len(set(leaves)) <= 1\n    return full, complete, perfect, balanced, all(ordered), height\n\ndef inorder(tree):\n    if tree is None:\n        return []\n    return inorder(tree[1]) + [tree[0]] + inorder(tree[2])\n\ndef breadth_slots(tree):\n    queue, seen_gap, complete = [tree], False, True\n    while queue:\n        node = queue.pop(0)\n        if node is None:\n            seen_gap = True\n        else:\n            if seen_gap:\n                complete = False\n            queue.extend([node[1], node[2]])\n    return complete\n\ndef shapes(size):\n    if size == 0:\n        return [None]\n    return [(0, left, right) for left_size in range(size)\n            for left in shapes(left_size) for right in shapes(size - 1 - left_size)]\n\ndef label(shape, numbers):\n    if shape is None:\n        return None\n    # Inorder labeling deliberately differs from inspect_tree's ancestor bounds.\n    left = label(shape[1], numbers)\n    value = next(numbers)\n    right = label(shape[2], numbers)\n    return value, left, right\n\nleaf = (1, None, None)\nassert inspect_tree(None) == (True, True, True, True, True, 0)\nassert inspect_tree((-100, None, (100, None, None)))[4] is True\nperfect15 = (0, (0, (0, leaf, leaf), (0, leaf, leaf)), (0, (0, leaf, leaf), (0, leaf, leaf)))\nassert inspect_tree(perfect15)[:4] == (True, True, True, True)\naccepted_chain = None\nfor value in range(8):\n    accepted_chain = (value, accepted_chain, None)\nassert inspect_tree(accepted_chain)[5] == 8\nassert inspect_tree((2, leaf, None)) == (False, True, False, True, True, 2)\nassert inspect_tree((0, None, leaf)) == (False, False, False, True, True, 2)\nassert inspect_tree((10, (5, None, (12, None, None)), None))[4] is False\nassert inspect_tree((2, (2, None, None), None))[4] is False\nassert inspect_tree((0, None, (1, None, (2, None, None))))[3] is False\nassert inspect_tree((4, (2, None, None), (6, (5, None, None), (7, None, None))))[:3] == (True, False, False)\nchecked = 0\nfor size in range(6):\n    for shape in shapes(size):\n        for values in [list(range(size)), list(reversed(range(size))), [0] * size]:\n            tree = label(shape, iter(values))\n            full, complete, perfect, balanced, strict_bst, height = inspect_tree(tree)\n            ordered_values = inorder(tree)\n            assert strict_bst == all(a < b for a, b in zip(ordered_values, ordered_values[1:]))\n            assert complete == breadth_slots(tree)\n            assert perfect == (size == 2 ** height - 1)\n            checked += 1\nassert checked == 195\nclass TupleSubclass(tuple):\n    pass\nchain = None\nfor value in range(9):\n    chain = (value, chain, None)\ntoo_many = (0, (0, (0, leaf, leaf), (0, leaf, leaf)), (0, (0, leaf, leaf), (0, leaf, (0, leaf, leaf))))\nfor bad in [[1, None, None], (True, None, None), (1.0, None, None), ('1', None, None), (101, None, None), (-101, None, None), (1,), (1, None, None, None), (1, [], None), (0, (1, None, None), []), TupleSubclass((1, None, None)), chain, too_many]:\n    try:\n        inspect_tree(bad)\n    except ValueError:\n        pass\n    else:\n        raise AssertionError('invalid tree accepted')\n\ndef selection_count(values):\n    if type(values) is not list or len(values) > 16 or any(type(v) is not int or not -100 <= v <= 100 for v in values):\n        raise ValueError('bounded integer list')\n    output, comparisons = list(values), 0\n    for index in range(len(output) - 1):\n        minimum = index\n        for candidate in range(index + 1, len(output)):\n            comparisons += 1\n            if output[candidate] < output[minimum]:\n                minimum = candidate\n        output[index], output[minimum] = output[minimum], output[index]\n    return output, comparisons\n\nsort_checked = 0\nfor length in range(6):\n    for fixture in product([-1, 0, 1], repeat=length):\n        values = list(fixture)\n        result, comparisons = selection_count(values)\n        assert result == sorted(fixture)\n        assert comparisons == length * (length - 1) // 2\n        assert values == list(fixture)\n        sort_checked += 1\nassert sort_checked == 364\nassert selection_count(list(range(16)))[1] == 120\nassert selection_count([-100, 100]) == ([-100, 100], 1)\nfor bad in [(1, 2), [True], [1.0], [101], [-101], [0] * 17]:\n    try:\n        selection_count(bad)\n    except ValueError:\n        pass\n    else:\n        raise AssertionError('invalid sort input accepted')\nprint('shape, ancestor bounds, comparison counts and independent fixtures: passed')\n```\n\n## Preserve assumptions beyond the fixture\n\nThe independent breadth-first gap check and strict inorder sequence check use different representations of the properties. The finite cases do not prove arbitrary graphs, unbounded recursion or runtime speed. The shape walker must visit the entire accepted tree to validate it; short-circuiting on an ordering failure would hide a malformed later branch.\n\nRecursion is a control mechanism, not a complexity class: one decreasing branch and two decreasing branches have different recurrences. Hash lookup needs collision and implementation assumptions; preprocessing and output size still count. A substring-search algorithm's bound depends on its exact variant and preprocessing, while a sieve's cost is not the cost of testing one number. Avoid assigning a single label to an entire family from a cheat sheet. Extend the independent cost/representation model for the actual operation before claiming a bound. Complete the [checkpoint](/practice/programming/tree-shapes-and-cost-models-checkpoint).",
+      "plainText": "Separate shape from ordering This lesson uses explicit definitions. Full means every occupied node has zero or two occupied children. Complete means levels fill from left to right with no missing breadth-first slot before an occupied slot. Perfect means every internal node has two children and every leaf has the same depth. OpenDSA's binary-tree definitions distinguishes full from complete and notes that names vary between texts. State the definition rather than guessing from a picture. Original counterexamples: a root with only a left child is complete but not full; a root with only a right child is neither. A root with two children, whose right child has two children, is full but has a left-side gap, so is not complete. None of these shape statements establishes ordered keys. Height balance is another property; a height-balanced shape with misplaced values is not a valid AVL search tree. Carry the ancestor constraint OpenDSA's BST chapter defines ordering over entire subtrees and discusses duplicate policy and height-dependent operations. This original validator uses strictly smaller left values and strictly larger right values, so duplicates are rejected. That intentionally differs from the chapter's duplicate-on-left example. If root 10 has left child 5 and that child's right child is 12, the local 5-to-12 comparison passes but 12 violates root 10's upper bound. Carry both ancestor bounds through recursion. A valid plain BST can still be a chain: logarithmic search requires a height guarantee, not the name “binary search tree.” The fixture checks balance, but performs no AVL rotations or updates. Count the operation before naming the class Oxford B16 notes separates asymptotic upper bounds from tight bounds. Specify input size, representation, primitive operation and case. A linear cost is also bounded above by a quadratic function; O(n²) is not a synonym for exponential growth or necessarily the most informative bound. Worst-case, expected cost under a distribution and amortized cost across a sequence answer different questions. The authored selection scan below compares every remaining candidate to the current minimum. Its comparison count is (n-1)+(n-2)+...+1 = n(n-1)/2, even when already sorted; output correctness and comparison cost are separate checks. OpenDSA selection sort explains scanning the remaining portion and limiting swaps. This original minimum-first code copies no upstream implementation. Constant-time comparisons are an assumption; sorting long strings or copying large outputs changes the cost model. Run the original bounded references Save as tree_cost_lab.py and run python3 tree_cost_lab.py with Python 3.13+. A tree is None or a built-in (integer, left, right) tuple, with values between -100 and 100, at most fifteen occupied positions and depth at most seven (root depth zero). Shared immutable tuple values denote separate positions, not shared graph nodes. Reject malformed shapes before computing properties. Empty trees are full, complete, perfect, balanced and strictly ordered by this fixture's stated convention. from itertools import product def inspect_tree(tree): positions, leaves, ordered = [], [], [] def walk(node, slot, depth, low, high): if node is None: return 0, True, True if type(node) is not tuple or len(node) != 3 or type(node[0]) is not int or not -100 <= node[0] <= 100 or depth > 7: raise ValueError('bounded tuple tree') positions.append(slot) if len(positions) > 15: raise ValueError('too many positions') value, left, right = node lh, lf, lb = walk(left, 2 * slot + 1, depth + 1, low, min(high, value)) ordered.append(low < value < high) rh, rf, rb = walk(right, 2 * slot + 2, depth + 1, max(low, value), high) if left is None and right is None: leaves.append(depth) full = lf and rf and ((left is None) == (right is None)) return 1 + max(lh, rh), full, lb and rb and abs(lh - rh) <= 1 height, full, balanced = walk(tree, 0, 0, -101, 101) complete = not positions or max(positions) == len(positions) - 1 perfect = full and len(set(leaves)) <= 1 return full, complete, perfect, balanced, all(ordered), height def inorder(tree): if tree is None: return [] return inorder(tree[1]) + [tree[0]] + inorder(tree[2]) def breadth_slots(tree): queue, seen_gap, complete = [tree], False, True while queue: node = queue.pop(0) if node is None: seen_gap = True else: if seen_gap: complete = False queue.extend([node[1], node[2]]) return complete def shapes(size): if size == 0: return [None] return [(0, left, right) for left_size in range(size) for left in shapes(left_size) for right in shapes(size - 1 - left_size)] def label(shape, numbers): if shape is None: return None # Inorder labeling deliberately differs from inspect_tree's ancestor bounds. left = label(shape[1], numbers) value = next(numbers) right = label(shape[2], numbers) return value, left, right leaf = (1, None, None) assert inspect_tree(None) == (True, True, True, True, True, 0) assert inspect_tree((-100, None, (100, None, None)))[4] is True perfect15 = (0, (0, (0, leaf, leaf), (0, leaf, leaf)), (0, (0, leaf, leaf), (0, leaf, leaf))) assert inspect_tree(perfect15)[:4] == (True, True, True, True) accepted_chain = None for value in range(8): accepted_chain = (value, accepted_chain, None) assert inspect_tree(accepted_chain)[5] == 8 assert inspect_tree((2, leaf, None)) == (False, True, False, True, True, 2) assert inspect_tree((0, None, leaf)) == (False, False, False, True, True, 2) assert inspect_tree((10, (5, None, (12, None, None)), None))[4] is False assert inspect_tree((2, (2, None, None), None))[4] is False assert inspect_tree((0, None, (1, None, (2, None, None))))[3] is False assert inspect_tree((4, (2, None, None), (6, (5, None, None), (7, None, None))))[:3] == (True, False, False) checked = 0 for size in range(6): for shape in shapes(size): for values in [list(range(size)), list(reversed(range(size))), [0] * size]: tree = label(shape, iter(values)) full, complete, perfect, balanced, strict_bst, height = inspect_tree(tree) ordered_values = inorder(tree) assert strict_bst == all(a < b for a, b in zip(ordered_values, ordered_values[1:])) assert complete == breadth_slots(tree) assert perfect == (size == 2 ** height - 1) checked += 1 assert checked == 195 class TupleSubclass(tuple): pass chain = None for value in range(9): chain = (value, chain, None) too_many = (0, (0, (0, leaf, leaf), (0, leaf, leaf)), (0, (0, leaf, leaf), (0, leaf, (0, leaf, leaf)))) for bad in [[1, None, None], (True, None, None), (1.0, None, None), ('1', None, None), (101, None, None), (-101, None, None), (1,), (1, None, None, None), (1, [], None), (0, (1, None, None), []), TupleSubclass((1, None, None)), chain, too_many]: try: inspect_tree(bad) except ValueError: pass else: raise AssertionError('invalid tree accepted') def selection_count(values): if type(values) is not list or len(values) > 16 or any(type(v) is not int or not -100 <= v <= 100 for v in values): raise ValueError('bounded integer list') output, comparisons = list(values), 0 for index in range(len(output) - 1): minimum = index for candidate in range(index + 1, len(output)): comparisons += 1 if output[candidate] < output[minimum]: minimum = candidate output[index], output[minimum] = output[minimum], output[index] return output, comparisons sort_checked = 0 for length in range(6): for fixture in product([-1, 0, 1], repeat=length): values = list(fixture) result, comparisons = selection_count(values) assert result == sorted(fixture) assert comparisons == length * (length - 1) // 2 assert values == list(fixture) sort_checked += 1 assert sort_checked == 364 assert selection_count(list(range(16)))[1] == 120 assert selection_count([-100, 100]) == ([-100, 100], 1) for bad in [(1, 2), [True], [1.0], [101], [-101], [0] * 17]: try: selection_count(bad) except ValueError: pass else: raise AssertionError('invalid sort input accepted') print('shape, ancestor bounds, comparison counts and independent fixtures: passed') Preserve assumptions beyond the fixture The independent breadth-first gap check and strict inorder sequence check use different representations of the properties. The finite cases do not prove arbitrary graphs, unbounded recursion or runtime speed. The shape walker must visit the entire accepted tree to validate it; short-circuiting on an ordering failure would hide a malformed later branch. Recursion is a control mechanism, not a complexity class: one decreasing branch and two decreasing branches have different recurrences. Hash lookup needs collision and implementation assumptions; preprocessing and output size still count. A substring-search algorithm's bound depends on its exact variant and preprocessing, while a sieve's cost is not the cost of testing one number. Avoid assigning a single label to an entire family from a cheat sheet. Extend the independent cost/representation model for the actual operation before claiming a bound. Complete the checkpoint.",
+      "headings": [
+        {
+          "id": "separate-shape-from-ordering",
+          "depth": 2,
+          "text": "Separate shape from ordering"
+        },
+        {
+          "id": "carry-the-ancestor-constraint",
+          "depth": 2,
+          "text": "Carry the ancestor constraint"
+        },
+        {
+          "id": "count-the-operation-before-naming-the-class",
+          "depth": 2,
+          "text": "Count the operation before naming the class"
+        },
+        {
+          "id": "run-the-original-bounded-references",
+          "depth": 2,
+          "text": "Run the original bounded references"
+        },
+        {
+          "id": "preserve-assumptions-beyond-the-fixture",
+          "depth": 2,
+          "text": "Preserve assumptions beyond the fixture"
+        }
+      ],
+      "mermaidBlocks": [],
+      "contentHash": "bf78b4558d05d4c927eebd735a31985d73bee8c45ac38ce9f47aaf35bf5b5e31",
+      "readingMinutes": 7
     },
     {
       "title": "TypeScript Boundary Design In Large Frontends",
@@ -16257,6 +16790,268 @@
       "route": "/paths/product-engineering-interview",
       "sourcePath": "content/learning-paths/product-engineering-interview.json",
       "contentHash": "028aff2957be56aeeaa0bbf7d029f46c3b52ada6e5fcccfa3b679bdc55d77d5e"
+    },
+    {
+      "slug": "programming-contract-review",
+      "title": "Programming Contract Review",
+      "summary": "Practice selected JavaScript ownership, bounded demand, ASCII matching and tree/cost review with original finite references. This is not a complete language or algorithms syllabus.",
+      "kind": "skill",
+      "category": "Programming",
+      "audience": "Developers who want to verify concise programming summaries through explicit contracts and independent counterexamples.",
+      "status": "published",
+      "sourcePolicy": "required",
+      "sourceRefs": [
+        "js-contract-const",
+        "js-contract-freeze",
+        "js-contract-objects",
+        "js-contract-equality",
+        "js-contract-this",
+        "js-contract-splice",
+        "js-contract-sort",
+        "js-contract-substr",
+        "demand-mdn-iteration",
+        "demand-mdn-forof",
+        "demand-node-stream",
+        "demand-node-loop",
+        "demand-tus-offset",
+        "text-mdn-regex",
+        "text-mdn-forof",
+        "text-regex-vis",
+        "shape-opendsa-binary",
+        "shape-opendsa-bst",
+        "cost-opendsa-selection",
+        "cost-oxford-b16"
+      ],
+      "units": [
+        {
+          "slug": "javascript-value-contracts",
+          "title": "Value Ownership",
+          "summary": "Predict binding, nested sharing, own membership, conversion and call receivers under an explicit JavaScript context.",
+          "nodes": [
+            {
+              "kind": "document",
+              "slug": "programming/javascript-value-contracts",
+              "skillIds": [
+                "value-ownership"
+              ],
+              "required": true
+            },
+            {
+              "kind": "exercise",
+              "slug": "programming/javascript-value-contracts-checkpoint",
+              "skillIds": [
+                "value-ownership"
+              ],
+              "required": true
+            }
+          ]
+        },
+        {
+          "slug": "lazy-demand-and-stream-boundaries",
+          "title": "Bounded Demand",
+          "summary": "Trace qualifying consumption, cleanup ownership, pressure signals and accepted offsets without inferring remote effects.",
+          "nodes": [
+            {
+              "kind": "document",
+              "slug": "programming/lazy-demand-and-stream-boundaries",
+              "skillIds": [
+                "bounded-demand"
+              ],
+              "required": true
+            },
+            {
+              "kind": "exercise",
+              "slug": "programming/lazy-demand-and-stream-boundaries-checkpoint",
+              "skillIds": [
+                "bounded-demand"
+              ],
+              "required": true
+            }
+          ]
+        },
+        {
+          "slug": "text-domain-and-matching",
+          "title": "Text Domains",
+          "summary": "Preserve fixed ASCII positions and separate pattern syntax, whole-input acceptance and visualization evidence.",
+          "nodes": [
+            {
+              "kind": "document",
+              "slug": "programming/text-domain-and-matching",
+              "skillIds": [
+                "text-domain"
+              ],
+              "required": true
+            },
+            {
+              "kind": "exercise",
+              "slug": "programming/text-domain-and-matching-checkpoint",
+              "skillIds": [
+                "text-domain"
+              ],
+              "required": true
+            }
+          ]
+        },
+        {
+          "slug": "tree-shapes-and-cost-models",
+          "title": "Shape And Cost",
+          "summary": "Separate tree shape from global ordering and compare exact operation counts under explicit representation assumptions.",
+          "nodes": [
+            {
+              "kind": "document",
+              "slug": "programming/tree-shapes-and-cost-models",
+              "skillIds": [
+                "shape-and-cost"
+              ],
+              "required": true
+            },
+            {
+              "kind": "exercise",
+              "slug": "programming/tree-shapes-and-cost-models-checkpoint",
+              "skillIds": [
+                "shape-and-cost"
+              ],
+              "required": true
+            }
+          ]
+        }
+      ],
+      "progression": {
+        "framework": "career",
+        "roadmapLabel": "Selected Programming Contracts",
+        "skills": [
+          {
+            "id": "value-ownership",
+            "label": "Value Ownership",
+            "category": "programming-contracts",
+            "description": "Predict binding, nested sharing, own membership, conversion and call receivers under an explicit JavaScript context."
+          },
+          {
+            "id": "bounded-demand",
+            "label": "Bounded Demand",
+            "category": "programming-contracts",
+            "description": "Trace qualifying consumption, cleanup ownership, pressure signals and accepted offsets without inferring remote effects."
+          },
+          {
+            "id": "text-domain",
+            "label": "Text Domains",
+            "category": "programming-contracts",
+            "description": "Preserve fixed ASCII positions and separate pattern syntax, whole-input acceptance and visualization evidence."
+          },
+          {
+            "id": "shape-and-cost",
+            "label": "Shape And Cost",
+            "category": "programming-contracts",
+            "description": "Separate tree shape from global ordering and compare exact operation counts under explicit representation assumptions."
+          }
+        ],
+        "stages": [
+          {
+            "id": "value-ownership",
+            "label": "Value Ownership",
+            "level": "Practitioner",
+            "status": "published",
+            "summary": "Predict binding, nested sharing, own membership, conversion and call receivers under an explicit JavaScript context.",
+            "unitSlugs": [
+              "javascript-value-contracts"
+            ],
+            "outcomes": [
+              {
+                "id": "value-ownership-review",
+                "statement": "Predict binding, nested sharing, own membership, conversion and call receivers under an explicit JavaScript context.",
+                "skillId": "value-ownership"
+              }
+            ],
+            "requiredNodeSlugs": [
+              "programming/javascript-value-contracts",
+              "programming/javascript-value-contracts-checkpoint"
+            ],
+            "checkpointExerciseSlug": "programming/javascript-value-contracts-checkpoint",
+            "passThreshold": 0.8,
+            "minimumSkillScore": 0.8,
+            "estimatedMinutes": 30
+          },
+          {
+            "id": "bounded-demand",
+            "label": "Bounded Demand",
+            "level": "Practitioner",
+            "status": "published",
+            "summary": "Trace qualifying consumption, cleanup ownership, pressure signals and accepted offsets without inferring remote effects.",
+            "unitSlugs": [
+              "lazy-demand-and-stream-boundaries"
+            ],
+            "outcomes": [
+              {
+                "id": "bounded-demand-review",
+                "statement": "Trace qualifying consumption, cleanup ownership, pressure signals and accepted offsets without inferring remote effects.",
+                "skillId": "bounded-demand"
+              }
+            ],
+            "requiredNodeSlugs": [
+              "programming/lazy-demand-and-stream-boundaries",
+              "programming/lazy-demand-and-stream-boundaries-checkpoint"
+            ],
+            "checkpointExerciseSlug": "programming/lazy-demand-and-stream-boundaries-checkpoint",
+            "passThreshold": 0.8,
+            "minimumSkillScore": 0.8,
+            "estimatedMinutes": 30
+          },
+          {
+            "id": "text-domain",
+            "label": "Text Domains",
+            "level": "Practitioner",
+            "status": "published",
+            "summary": "Preserve fixed ASCII positions and separate pattern syntax, whole-input acceptance and visualization evidence.",
+            "unitSlugs": [
+              "text-domain-and-matching"
+            ],
+            "outcomes": [
+              {
+                "id": "text-domain-review",
+                "statement": "Preserve fixed ASCII positions and separate pattern syntax, whole-input acceptance and visualization evidence.",
+                "skillId": "text-domain"
+              }
+            ],
+            "requiredNodeSlugs": [
+              "programming/text-domain-and-matching",
+              "programming/text-domain-and-matching-checkpoint"
+            ],
+            "checkpointExerciseSlug": "programming/text-domain-and-matching-checkpoint",
+            "passThreshold": 0.8,
+            "minimumSkillScore": 0.8,
+            "estimatedMinutes": 30
+          },
+          {
+            "id": "shape-and-cost",
+            "label": "Shape And Cost",
+            "level": "Practitioner",
+            "status": "published",
+            "summary": "Separate tree shape from global ordering and compare exact operation counts under explicit representation assumptions.",
+            "unitSlugs": [
+              "tree-shapes-and-cost-models"
+            ],
+            "outcomes": [
+              {
+                "id": "shape-and-cost-review",
+                "statement": "Separate tree shape from global ordering and compare exact operation counts under explicit representation assumptions.",
+                "skillId": "shape-and-cost"
+              }
+            ],
+            "requiredNodeSlugs": [
+              "programming/tree-shapes-and-cost-models",
+              "programming/tree-shapes-and-cost-models-checkpoint"
+            ],
+            "checkpointExerciseSlug": "programming/tree-shapes-and-cost-models-checkpoint",
+            "passThreshold": 0.8,
+            "minimumSkillScore": 0.8,
+            "estimatedMinutes": 30
+          }
+        ]
+      },
+      "id": "b86d1baf1767",
+      "route": "/paths/programming-contract-review",
+      "sourcePath": "content/learning-paths/programming-contract-review.json",
+      "contentHash": "46c0b9338b4312a3a3a6aa911d22671a4f4a8599a57efef21ba08291fde424fb"
     },
     {
       "slug": "python-for-ts-js-engineers",
@@ -31993,6 +32788,168 @@
       "contentHash": "fac699d4e63df12a584beb8730cca897b311df8734e8a177ffa6afad35d1a9d5"
     },
     {
+      "slug": "programming/javascript-value-contracts-checkpoint",
+      "title": "JavaScript Value Contracts Checkpoint",
+      "documentSlug": "programming/javascript-value-contracts",
+      "concept": "JavaScript Value Contracts",
+      "difficulty": "practitioner",
+      "tags": [
+        "contract-review",
+        "invariants"
+      ],
+      "status": "published",
+      "sourceRefs": [
+        "js-contract-const",
+        "js-contract-freeze",
+        "js-contract-objects",
+        "js-contract-equality",
+        "js-contract-this",
+        "js-contract-splice",
+        "js-contract-sort",
+        "js-contract-substr"
+      ],
+      "skillIds": [
+        "value-ownership"
+      ],
+      "type": "questionnaire",
+      "questions": [
+        {
+          "id": "binding-and-copy",
+          "prompt": "A frozen shallow preview shares draft.stats. Which statement is correct?",
+          "explanation": "const restricts reassignment and the outer freeze restricts its own descriptors. Neither recursively copies or freezes draft.stats. A changed nested field is observed through both references; the two outer objects remain distinct.",
+          "skillIds": [
+            "value-ownership"
+          ],
+          "kind": "choice",
+          "options": [
+            {
+              "id": "correct",
+              "label": "The binding is fixed; the nested object remains shared and mutable.",
+              "isCorrect": true
+            },
+            {
+              "id": "wrong-1",
+              "label": "Every nested value becomes immutable because the outer binding uses const.",
+              "isCorrect": false
+            },
+            {
+              "id": "wrong-2",
+              "label": "The spread copy necessarily duplicates the complete object graph.",
+              "isCorrect": false
+            }
+          ]
+        },
+        {
+          "id": "missing-removal",
+          "prompt": "An item is absent and indexOf returns -1. How should a delete helper act?",
+          "explanation": "A negative splice start addresses from the end, so passing -1 removes the last element. Check the search result before mutation. Clearing the collection changes unrelated state and violates the absent-target contract.",
+          "skillIds": [
+            "value-ownership"
+          ],
+          "kind": "choice",
+          "options": [
+            {
+              "id": "correct",
+              "label": "Check for -1 before splice; the missing item must leave the list unchanged.",
+              "isCorrect": true
+            },
+            {
+              "id": "wrong-1",
+              "label": "Pass -1 to splice to express that no item was found.",
+              "isCorrect": false
+            },
+            {
+              "id": "wrong-2",
+              "label": "Clear the list to avoid leaving an unrecognized item behind.",
+              "isCorrect": false
+            }
+          ]
+        },
+        {
+          "id": "own-properties",
+          "prompt": "An object inherits a name and has enumerable, hidden and symbol properties. What does Object.keys expose?",
+          "explanation": "Object.keys includes only enumerable own string keys. Inherited lookup can succeed without ownership; non-enumerable and symbol keys require different inspection. None of these enumeration APIs recursively flattens nested values.",
+          "skillIds": [
+            "value-ownership"
+          ],
+          "kind": "choice",
+          "options": [
+            {
+              "id": "correct",
+              "label": "Object.keys lists enumerable own string keys; inherited keys are separate.",
+              "isCorrect": true
+            },
+            {
+              "id": "wrong-1",
+              "label": "Object.keys lists every field that ordinary property lookup can find.",
+              "isCorrect": false
+            },
+            {
+              "id": "wrong-2",
+              "label": "Object.keys recursively lists symbol keys and all hidden properties.",
+              "isCorrect": false
+            }
+          ]
+        },
+        {
+          "id": "equality-rule",
+          "prompt": "A cheat sheet says 5 == true. What does the selected equality rule predict?",
+          "explanation": "Loose equality converts the boolean to a number for this comparison, giving 5 versus 1. Truthiness is a different operation. Strict equality does not apply that coercion, so converting both values to strings is not its rule.",
+          "skillIds": [
+            "value-ownership"
+          ],
+          "kind": "choice",
+          "options": [
+            {
+              "id": "correct",
+              "label": "5 == true is false; true converts to 1, which differs from 5.",
+              "isCorrect": true
+            },
+            {
+              "id": "wrong-1",
+              "label": "It is true because every nonzero number is loosely equal to true.",
+              "isCorrect": false
+            },
+            {
+              "id": "wrong-2",
+              "label": "It is true because strict equality first converts both operands to strings.",
+              "isCorrect": false
+            }
+          ]
+        },
+        {
+          "id": "call-receiver",
+          "prompt": "An ordinary method is called on another object, while an arrow was captured inside origin.capture. What differs?",
+          "explanation": "The ordinary function gets its receiver from the invocation; a strict detached call may have undefined this. The captured arrow keeps the enclosing this and call cannot replace it. Source location alone does not bind ordinary methods.",
+          "skillIds": [
+            "value-ownership"
+          ],
+          "kind": "choice",
+          "options": [
+            {
+              "id": "correct",
+              "label": "The ordinary function uses its call receiver; the captured arrow retains its lexical this.",
+              "isCorrect": true
+            },
+            {
+              "id": "wrong-1",
+              "label": "Both always use the object where their source text was written.",
+              "isCorrect": false
+            },
+            {
+              "id": "wrong-2",
+              "label": "call can replace the captured arrow receiver just as it replaces an ordinary receiver.",
+              "isCorrect": false
+            }
+          ]
+        }
+      ],
+      "id": "02adb527f7e4",
+      "route": "/practice/programming/javascript-value-contracts-checkpoint",
+      "sourcePath": "content/exercises/programming/javascript-value-contracts-checkpoint.json",
+      "contentHash": "c3f3408d80455dac463e33423f6ba52cc07b3e593b940f4ffaa2919b536cafe4"
+    },
+    {
       "slug": "programming/keypad-search-checkpoint",
       "title": "Keypad Search Checkpoint",
       "documentSlug": "programming/keypad-dictionary-search",
@@ -32130,6 +33087,165 @@
       "route": "/practice/programming/keypad-search-checkpoint",
       "sourcePath": "content/exercises/programming/keypad-search-checkpoint.json",
       "contentHash": "b76c5d90b53cd01a32aae1823cf39b540e7643b034924c6f16a647d79a1e03a8"
+    },
+    {
+      "slug": "programming/lazy-demand-and-stream-boundaries-checkpoint",
+      "title": "Lazy Demand And Stream Boundaries Checkpoint",
+      "documentSlug": "programming/lazy-demand-and-stream-boundaries",
+      "concept": "Lazy Demand And Stream Boundaries",
+      "difficulty": "practitioner",
+      "tags": [
+        "contract-review",
+        "invariants"
+      ],
+      "status": "published",
+      "sourceRefs": [
+        "demand-mdn-iteration",
+        "demand-mdn-forof",
+        "demand-node-stream",
+        "demand-node-loop",
+        "demand-tus-offset"
+      ],
+      "skillIds": [
+        "bounded-demand"
+      ],
+      "type": "questionnaire",
+      "questions": [
+        {
+          "id": "bounded-demand",
+          "prompt": "From [2,3,4,5,7], take the first two odd squares. How much input must the lazy fixture pull?",
+          "explanation": "The lazy fixture reads 2,3,4,5 to produce 9 and 25, then stops before 7. Rejected inputs still need inspection. Eager filter/map evaluates the finite collection, and laziness does not eliminate transformation or predicate costs.",
+          "skillIds": [
+            "bounded-demand"
+          ],
+          "kind": "choice",
+          "options": [
+            {
+              "id": "correct",
+              "label": "Pull only through the second qualifying value; eager mapping reads the full finite input.",
+              "isCorrect": true
+            },
+            {
+              "id": "wrong-1",
+              "label": "Pull exactly two inputs because the result has length two.",
+              "isCorrect": false
+            },
+            {
+              "id": "wrong-2",
+              "label": "Pull nothing because laziness makes all transformations constant-time.",
+              "isCorrect": false
+            }
+          ]
+        },
+        {
+          "id": "early-cleanup",
+          "prompt": "A for...of loop breaks while consuming an opened generator with finally. What is the cleanup boundary?",
+          "explanation": "Early exit calls an available iterator return, and the generator can execute finally for its owned state. A closed generator does not restart. This is not a promise that every iterator has cleanup or that unvisited resources are disposed.",
+          "skillIds": [
+            "bounded-demand"
+          ],
+          "kind": "choice",
+          "options": [
+            {
+              "id": "correct",
+              "label": "Breaking for...of calls an available iterator return; a generator finally can release its owned resource.",
+              "isCorrect": true
+            },
+            {
+              "id": "wrong-1",
+              "label": "Every iterable necessarily reopens after break with its resource still available.",
+              "isCorrect": false
+            },
+            {
+              "id": "wrong-2",
+              "label": "Breaking disposes every unopened resource that might have been yielded later.",
+              "isCorrect": false
+            }
+          ]
+        },
+        {
+          "id": "stream-pressure",
+          "prompt": "Node write returns false after a chunk is admitted. What follows?",
+          "explanation": "False requests that the producer wait for drain; the chunk was admitted. Further writes can add buffered data, and highWaterMark is a threshold. Local buffering or drain does not establish the remote application durable effect.",
+          "skillIds": [
+            "bounded-demand"
+          ],
+          "kind": "choice",
+          "options": [
+            {
+              "id": "correct",
+              "label": "Pause after write returns false; highWaterMark is a pressure threshold, not a strict total-memory cap.",
+              "isCorrect": true
+            },
+            {
+              "id": "wrong-1",
+              "label": "Keep writing because false rejects the chunk without buffering it.",
+              "isCorrect": false
+            },
+            {
+              "id": "wrong-2",
+              "label": "Assume the remote application has durably stored the chunk and memory cannot grow.",
+              "isCorrect": false
+            }
+          ]
+        },
+        {
+          "id": "resume-offset",
+          "prompt": "A four-byte upload chunk was accepted but its reply was lost. What should guide the next request?",
+          "explanation": "The accepted offset can advance despite a lost reply. Bind it to the same session and file, then construct fresh bytes from that position. Reusing a consumed body or silently applying offset zero again can conflict or duplicate data.",
+          "skillIds": [
+            "bounded-demand"
+          ],
+          "kind": "choice",
+          "options": [
+            {
+              "id": "correct",
+              "label": "Verify session and file identity, obtain the accepted offset, then send fresh bytes from that offset.",
+              "isCorrect": true
+            },
+            {
+              "id": "wrong-1",
+              "label": "Replay the consumed body from zero until a success response appears.",
+              "isCorrect": false
+            },
+            {
+              "id": "wrong-2",
+              "label": "Trust only the last client acknowledgement even if the server reports a later offset.",
+              "isCorrect": false
+            }
+          ]
+        },
+        {
+          "id": "host-ordering",
+          "prompt": "Does one Node top-level scheduling trace establish a universal timer/promise ordering?",
+          "explanation": "Node phases, next-tick work, promise jobs and module context need explicit scope. A browser uses its own host rules. Timer thresholds permit later execution when callbacks occupy the thread; a single trace proves neither portability nor an exact deadline.",
+          "skillIds": [
+            "bounded-demand"
+          ],
+          "kind": "choice",
+          "options": [
+            {
+              "id": "correct",
+              "label": "Record the host and scheduling context; Node timer phases do not define every browser or module ordering.",
+              "isCorrect": true
+            },
+            {
+              "id": "wrong-1",
+              "label": "Yes, one trace defines every browser, worker and module evaluation order.",
+              "isCorrect": false
+            },
+            {
+              "id": "wrong-2",
+              "label": "Yes, a timer threshold guarantees an exact wall-clock execution deadline.",
+              "isCorrect": false
+            }
+          ]
+        }
+      ],
+      "id": "6e5b4155f58c",
+      "route": "/practice/programming/lazy-demand-and-stream-boundaries-checkpoint",
+      "sourcePath": "content/exercises/programming/lazy-demand-and-stream-boundaries-checkpoint.json",
+      "contentHash": "5467800103c6aa9633686dba4241e234b3c50b75b320747d6b09f409f7cc6351"
     },
     {
       "slug": "programming/mermaid-planning-and-data-diagrams-questionnaire",
@@ -33396,6 +34512,321 @@
       "route": "/practice/programming/runtime-boundary-cloze",
       "sourcePath": "content/exercises/programming/runtime-boundary-cloze.json",
       "contentHash": "ceae32b04d6ee0c326c6229780be34680d0b56dbb24fa58e7a1f4c49adf42393"
+    },
+    {
+      "slug": "programming/text-domain-and-matching-checkpoint",
+      "title": "Text Domains And Matching Checkpoint",
+      "documentSlug": "programming/text-domain-and-matching",
+      "concept": "Text Domains And Matching",
+      "difficulty": "practitioner",
+      "tags": [
+        "contract-review",
+        "invariants"
+      ],
+      "status": "published",
+      "sourceRefs": [
+        "text-mdn-regex",
+        "text-mdn-forof",
+        "text-regex-vis"
+      ],
+      "skillIds": [
+        "text-domain"
+      ],
+      "type": "questionnaire",
+      "questions": [
+        {
+          "id": "letter-domain",
+          "prompt": "The original reverseLetters accepts ASCII text a-B!c. Which contract applies?",
+          "explanation": "The result is c-B!a: only ASCII letters move, and punctuation stays at its index. Reversing all characters changes the fixed-position contract. Non-ASCII input is rejected; normalization and grapheme rules belong to a separate exercise.",
+          "skillIds": [
+            "text-domain"
+          ],
+          "kind": "choice",
+          "options": [
+            {
+              "id": "correct",
+              "label": "Reverse only ASCII letters and keep every other accepted ASCII character at its original position.",
+              "isCorrect": true
+            },
+            {
+              "id": "wrong-1",
+              "label": "Reverse all code points, including punctuation and digits.",
+              "isCorrect": false
+            },
+            {
+              "id": "wrong-2",
+              "label": "Normalize every language into ASCII before reversing, without rejecting input.",
+              "isCorrect": false
+            }
+          ]
+        },
+        {
+          "id": "pointer-progress",
+          "prompt": "What ensures the two-pointer reversal loop cannot stall on punctuation?",
+          "explanation": "Each branch progresses: skip a fixed left or right character, or swap and move both. Failing to advance on punctuation can loop forever. Removing and arbitrarily reinserting punctuation loses the specified original positions.",
+          "skillIds": [
+            "text-domain"
+          ],
+          "kind": "choice",
+          "options": [
+            {
+              "id": "correct",
+              "label": "Advance at least one pointer each iteration; skip fixed characters and move both pointers after a swap.",
+              "isCorrect": true
+            },
+            {
+              "id": "wrong-1",
+              "label": "Only advance pointers when both ends contain letters, leaving other iterations unchanged.",
+              "isCorrect": false
+            },
+            {
+              "id": "wrong-2",
+              "label": "Delete punctuation first, then insert it at arbitrary positions after reversal.",
+              "isCorrect": false
+            }
+          ]
+        },
+        {
+          "id": "whole-match",
+          "prompt": "A regex finds a substring in a candidate token. What must a whole-input validator still check?",
+          "explanation": "Matching a substring does not validate the remaining characters. State dialect, flags and API, then check complete coverage and rejected boundaries. End assertions and multiline behavior vary; an engine diagram is not a portable full-match contract.",
+          "skillIds": [
+            "text-domain"
+          ],
+          "kind": "choice",
+          "options": [
+            {
+              "id": "correct",
+              "label": "Use the intended dialect and verify the matched text covers the entire input.",
+              "isCorrect": true
+            },
+            {
+              "id": "wrong-1",
+              "label": "Any nonempty substring match makes the entire input valid.",
+              "isCorrect": false
+            },
+            {
+              "id": "wrong-2",
+              "label": "An end assertion has identical meaning for every dialect and flag set.",
+              "isCorrect": false
+            }
+          ]
+        },
+        {
+          "id": "escape-layer",
+          "prompt": "How does a RegExp constructor string differ from a regex literal?",
+          "explanation": "A constructor first receives a parsed JavaScript string, so a backslash intended for the regex must survive that layer. A literal has different source syntax. Neither a constructor nor a diagram removes the underlying regex escape rules.",
+          "skillIds": [
+            "text-domain"
+          ],
+          "kind": "choice",
+          "options": [
+            {
+              "id": "correct",
+              "label": "A constructor string needs the JavaScript escape layer before the regex parser receives the pattern.",
+              "isCorrect": true
+            },
+            {
+              "id": "wrong-1",
+              "label": "The constructor always removes the need to escape regex syntax.",
+              "isCorrect": false
+            },
+            {
+              "id": "wrong-2",
+              "label": "A visualizer guarantees that a single backslash survives every string parser unchanged.",
+              "isCorrect": false
+            }
+          ]
+        },
+        {
+          "id": "visual-evidence",
+          "prompt": "A regex diagram looks correct. What evidence does that provide?",
+          "explanation": "Visualization can aid review of grouping and repetition. Engine behavior and adversarial runtime need separate checks. A useful interface does not establish authorization to disclose private text; the original fixture uses synthetic local inputs.",
+          "skillIds": [
+            "text-domain"
+          ],
+          "kind": "choice",
+          "options": [
+            {
+              "id": "correct",
+              "label": "A diagram helps explain structure; it proves neither dialect equivalence nor bounded runtime.",
+              "isCorrect": true
+            },
+            {
+              "id": "wrong-1",
+              "label": "It proves the pattern runs in linear time on every engine and input.",
+              "isCorrect": false
+            },
+            {
+              "id": "wrong-2",
+              "label": "It grants permission to send private source text to the external tool.",
+              "isCorrect": false
+            }
+          ]
+        }
+      ],
+      "id": "5569973efd69",
+      "route": "/practice/programming/text-domain-and-matching-checkpoint",
+      "sourcePath": "content/exercises/programming/text-domain-and-matching-checkpoint.json",
+      "contentHash": "78df9ff0d6bead1678628345313fb1ab5f1a58ff31181dac77dfba8b69812450"
+    },
+    {
+      "slug": "programming/tree-shapes-and-cost-models-checkpoint",
+      "title": "Tree Shapes And Cost Models Checkpoint",
+      "documentSlug": "programming/tree-shapes-and-cost-models",
+      "concept": "Tree Shapes And Cost Models",
+      "difficulty": "practitioner",
+      "tags": [
+        "contract-review",
+        "invariants"
+      ],
+      "status": "published",
+      "sourceRefs": [
+        "shape-opendsa-binary",
+        "shape-opendsa-bst",
+        "cost-opendsa-selection",
+        "cost-oxford-b16"
+      ],
+      "skillIds": [
+        "shape-and-cost"
+      ],
+      "type": "questionnaire",
+      "questions": [
+        {
+          "id": "shape-independent",
+          "prompt": "A root has only a left child. Under the lesson definitions, what separates full from complete?",
+          "explanation": "The example is complete but not full: the occupied positions fill left to right while the root has one child. Shape and value ordering are independent. A plain BST can have linear height, so its name is not a logarithmic guarantee.",
+          "skillIds": [
+            "shape-and-cost"
+          ],
+          "kind": "choice",
+          "options": [
+            {
+              "id": "correct",
+              "label": "Full means zero or two children; complete means no missing breadth-first slot before an occupied slot.",
+              "isCorrect": true
+            },
+            {
+              "id": "wrong-1",
+              "label": "Full and complete are synonyms for any tree with logarithmic search.",
+              "isCorrect": false
+            },
+            {
+              "id": "wrong-2",
+              "label": "Ordering values automatically makes the tree full and perfect.",
+              "isCorrect": false
+            }
+          ]
+        },
+        {
+          "id": "global-order",
+          "prompt": "Root 10 has left child 5 whose right child is 12. What rejects this strict BST?",
+          "explanation": "The local edge from 5 to 12 is increasing, but 12 lies in the left subtree of 10 and violates its inherited upper bound. Balance does not supply ordering. The authored duplicate policy is strict and must also be checked.",
+          "skillIds": [
+            "shape-and-cost"
+          ],
+          "kind": "choice",
+          "options": [
+            {
+              "id": "correct",
+              "label": "Carry ancestor bounds; a locally valid child can still violate the root's range.",
+              "isCorrect": true
+            },
+            {
+              "id": "wrong-1",
+              "label": "Check only that 12 is greater than its direct parent 5.",
+              "isCorrect": false
+            },
+            {
+              "id": "wrong-2",
+              "label": "Accept every height-balanced shape regardless of key ordering.",
+              "isCorrect": false
+            }
+          ]
+        },
+        {
+          "id": "selection-count",
+          "prompt": "How many comparisons does the authored selection scan make for n sorted values?",
+          "explanation": "Each pass still scans the remaining portion, producing the arithmetic sum n(n-1)/2. Few swaps do not remove comparisons. Nested loops do not alone establish exponential cost; the exact iteration ranges determine this quadratic count.",
+          "skillIds": [
+            "shape-and-cost"
+          ],
+          "kind": "choice",
+          "options": [
+            {
+              "id": "correct",
+              "label": "The authored selection scan makes n(n-1)/2 comparisons even on sorted input.",
+              "isCorrect": true
+            },
+            {
+              "id": "wrong-1",
+              "label": "It makes n-1 comparisons because sorted input avoids scanning the remaining portion.",
+              "isCorrect": false
+            },
+            {
+              "id": "wrong-2",
+              "label": "It makes 2^n comparisons because the implementation contains nested loops.",
+              "isCorrect": false
+            }
+          ]
+        },
+        {
+          "id": "cost-claim",
+          "prompt": "A summary labels hash lookup or substring search O(1) or O(n). What must the review preserve?",
+          "explanation": "Specify representation, primitive costs, variant and case. Distribution-based expectation and sequence-based amortization differ from a worst-case bound. Big-O is an asymptotic upper bound; preprocessing and output size still matter, and quadratic growth is polynomial.",
+          "skillIds": [
+            "shape-and-cost"
+          ],
+          "kind": "choice",
+          "options": [
+            {
+              "id": "correct",
+              "label": "Name the operation and assumptions; expected, worst-case and amortized claims differ.",
+              "isCorrect": true
+            },
+            {
+              "id": "wrong-1",
+              "label": "One complexity label certifies every variant, input representation and preprocessing cost.",
+              "isCorrect": false
+            },
+            {
+              "id": "wrong-2",
+              "label": "Big-O is always a tight exact count and quadratic always means exponential.",
+              "isCorrect": false
+            }
+          ]
+        },
+        {
+          "id": "model-boundary",
+          "prompt": "The 195 tree fixtures and 364 sort fixtures pass. What can be claimed?",
+          "explanation": "The bounded tuple representation, independent gap/inorder references and exact comparison count are checked. There are no AVL rotations or arbitrary graph traversal. A logical operation count is distinct from measured time or memory on a deployed runtime.",
+          "skillIds": [
+            "shape-and-cost"
+          ],
+          "kind": "choice",
+          "options": [
+            {
+              "id": "correct",
+              "label": "The bounded fixtures check the stated representation; they do not prove arbitrary graphs or runtime speed.",
+              "isCorrect": true
+            },
+            {
+              "id": "wrong-1",
+              "label": "The fixture implements full AVL updates and validates every graph shape.",
+              "isCorrect": false
+            },
+            {
+              "id": "wrong-2",
+              "label": "The comparison count is a measured byte-memory and wall-clock throughput benchmark.",
+              "isCorrect": false
+            }
+          ]
+        }
+      ],
+      "id": "b9d8679b2921",
+      "route": "/practice/programming/tree-shapes-and-cost-models-checkpoint",
+      "sourcePath": "content/exercises/programming/tree-shapes-and-cost-models-checkpoint.json",
+      "contentHash": "1f5a95bb51d4fed1ef70826006a01b1c28be9a347f2255708e25b862802ad0bf"
     },
     {
       "slug": "software-engineering/concurrency-boundary-checkpoint",
@@ -160208,17 +161639,21 @@
     {
       "name": "Programming",
       "slug": "programming",
-      "documentCount": 12,
+      "documentCount": 16,
       "difficulties": [
         "foundation",
         "practitioner",
         "senior"
       ],
       "topics": [
+        "Algorithm Analysis",
         "Algorithms",
         "Backtracking",
+        "Iteration",
+        "JavaScript",
         "Python",
         "Technical Documentation",
+        "Text Processing",
         "TypeScript"
       ]
     },

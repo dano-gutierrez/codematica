@@ -1,0 +1,153 @@
+{
+  "slug": "programming/text-domain-and-matching-checkpoint",
+  "title": "Text Domains And Matching Checkpoint",
+  "type": "questionnaire",
+  "difficulty": "practitioner",
+  "status": "published",
+  "documentSlug": "programming/text-domain-and-matching",
+  "sourceRefs": [
+    "text-mdn-regex",
+    "text-mdn-forof",
+    "text-regex-vis"
+  ],
+  "concept": "Text Domains And Matching",
+  "tags": [
+    "contract-review",
+    "invariants"
+  ],
+  "skillIds": [
+    "text-domain"
+  ],
+  "questions": [
+    {
+      "id": "letter-domain",
+      "kind": "choice",
+      "skillIds": [
+        "text-domain"
+      ],
+      "prompt": "The original reverseLetters accepts ASCII text a-B!c. Which contract applies?",
+      "options": [
+        {
+          "id": "correct",
+          "label": "Reverse only ASCII letters and keep every other accepted ASCII character at its original position.",
+          "isCorrect": true
+        },
+        {
+          "id": "wrong-1",
+          "label": "Reverse all code points, including punctuation and digits.",
+          "isCorrect": false
+        },
+        {
+          "id": "wrong-2",
+          "label": "Normalize every language into ASCII before reversing, without rejecting input.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "The result is c-B!a: only ASCII letters move, and punctuation stays at its index. Reversing all characters changes the fixed-position contract. Non-ASCII input is rejected; normalization and grapheme rules belong to a separate exercise."
+    },
+    {
+      "id": "pointer-progress",
+      "kind": "choice",
+      "skillIds": [
+        "text-domain"
+      ],
+      "prompt": "What ensures the two-pointer reversal loop cannot stall on punctuation?",
+      "options": [
+        {
+          "id": "correct",
+          "label": "Advance at least one pointer each iteration; skip fixed characters and move both pointers after a swap.",
+          "isCorrect": true
+        },
+        {
+          "id": "wrong-1",
+          "label": "Only advance pointers when both ends contain letters, leaving other iterations unchanged.",
+          "isCorrect": false
+        },
+        {
+          "id": "wrong-2",
+          "label": "Delete punctuation first, then insert it at arbitrary positions after reversal.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "Each branch progresses: skip a fixed left or right character, or swap and move both. Failing to advance on punctuation can loop forever. Removing and arbitrarily reinserting punctuation loses the specified original positions."
+    },
+    {
+      "id": "whole-match",
+      "kind": "choice",
+      "skillIds": [
+        "text-domain"
+      ],
+      "prompt": "A regex finds a substring in a candidate token. What must a whole-input validator still check?",
+      "options": [
+        {
+          "id": "correct",
+          "label": "Use the intended dialect and verify the matched text covers the entire input.",
+          "isCorrect": true
+        },
+        {
+          "id": "wrong-1",
+          "label": "Any nonempty substring match makes the entire input valid.",
+          "isCorrect": false
+        },
+        {
+          "id": "wrong-2",
+          "label": "An end assertion has identical meaning for every dialect and flag set.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "Matching a substring does not validate the remaining characters. State dialect, flags and API, then check complete coverage and rejected boundaries. End assertions and multiline behavior vary; an engine diagram is not a portable full-match contract."
+    },
+    {
+      "id": "escape-layer",
+      "kind": "choice",
+      "skillIds": [
+        "text-domain"
+      ],
+      "prompt": "How does a RegExp constructor string differ from a regex literal?",
+      "options": [
+        {
+          "id": "correct",
+          "label": "A constructor string needs the JavaScript escape layer before the regex parser receives the pattern.",
+          "isCorrect": true
+        },
+        {
+          "id": "wrong-1",
+          "label": "The constructor always removes the need to escape regex syntax.",
+          "isCorrect": false
+        },
+        {
+          "id": "wrong-2",
+          "label": "A visualizer guarantees that a single backslash survives every string parser unchanged.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "A constructor first receives a parsed JavaScript string, so a backslash intended for the regex must survive that layer. A literal has different source syntax. Neither a constructor nor a diagram removes the underlying regex escape rules."
+    },
+    {
+      "id": "visual-evidence",
+      "kind": "choice",
+      "skillIds": [
+        "text-domain"
+      ],
+      "prompt": "A regex diagram looks correct. What evidence does that provide?",
+      "options": [
+        {
+          "id": "correct",
+          "label": "A diagram helps explain structure; it proves neither dialect equivalence nor bounded runtime.",
+          "isCorrect": true
+        },
+        {
+          "id": "wrong-1",
+          "label": "It proves the pattern runs in linear time on every engine and input.",
+          "isCorrect": false
+        },
+        {
+          "id": "wrong-2",
+          "label": "It grants permission to send private source text to the external tool.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "Visualization can aid review of grouping and repetition. Engine behavior and adversarial runtime need separate checks. A useful interface does not establish authorization to disclose private text; the original fixture uses synthetic local inputs."
+    }
+  ]
+}

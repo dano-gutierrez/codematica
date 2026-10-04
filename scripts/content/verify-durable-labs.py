@@ -10,6 +10,10 @@ ROOT = Path(__file__).resolve().parents[2]
 
 
 class AuthoredLabs(unittest.TestCase):
+    def test_tree_shape_and_cost_contracts(self):
+        self.run_lab("content/knowledge/programming/tree-shapes-and-cost-models.md",
+                     "shape, ancestor bounds, comparison counts and independent fixtures: passed")
+
     def test_keypad_dictionary_search(self):
         self.run_lab("content/knowledge/programming/keypad-dictionary-search.md",
                      "closed dictionary, prefix terminals, branch rollback, validation and independent scan: passed")
