@@ -320,7 +320,7 @@ Testing is a release contract, not a cleanup step.
 ### Reusable Component Inventory
 
 - `apps/web/src/components/game/`: `GameMap`, `GamePlay`, `GameScene`, `GameBoard`, `GameDistrictArt`, and `GameLessonReturn` own the campaign, accessible editors, Pixi scene, draggable/tap board, lazy scenery, and lesson return.
-- `packages/ui/src/game/`: native game map/play screens, Skia actor/district renderers, and accessible draggable board share core rules with web. Both character renderers use `packages/core/src/game/miniatures.ts` for in-level chibi poses and container fitting; reuse this composition when adding miniature views.
+- `packages/ui/src/game/`: native game map/play screens, Skia actor/district renderers, and accessible draggable board share core rules with web. Both character renderers use `packages/core/src/game/miniatures.ts` for in-level chibi poses and container fitting; reuse this composition when adding miniature views. Map renderers share the fifty-position art order and bounded offsets in `packages/core/src/game/map-art.ts`; reuse the contiguous terrain tiles and three overlay families when extending the campaign landscape.
 
 Reuse these components and extend them when needed; avoid rebuilding equivalent UI:
 

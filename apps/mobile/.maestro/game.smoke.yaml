@@ -6,6 +6,16 @@ tags:
     clearState: true
 - assertVisible:
     id: game-map
+- assertVisible:
+    id: game-level-1
+- tapOn:
+    id: game-map-view
+- assertVisible:
+    id: game-level-1
+- tapOn:
+    id: game-map-view
+- assertVisible:
+    id: game-level-1
 - openLink: "codematica://play/restore-the-signal/courtyard-defense"
 - assertVisible:
     id: game-scene

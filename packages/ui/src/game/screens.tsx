@@ -19,6 +19,7 @@ import {
 import { WebView } from "react-native-webview";
 import {
   awardKey,
+  MAP_PANELS,
   awardScenario,
   gameTotals,
   getStreak,
@@ -90,7 +91,10 @@ export function NativeGameMap({ campaign, store, navigate }: Props) {
     [list, setList] = useState(false);
   const scroll = useRef<ScrollView>(null),
     scrollValue = useSharedValue(0),
-    [viewport, setViewport] = useState(2500);
+    [viewport, setViewport] = useState(0),
+    [panelHeight, setPanelHeight] = useState(620),
+    [panelPositions, setPanelPositions] = useState<Record<string, number>>({}),
+    [screenHeight, setScreenHeight] = useState(700);
   const positioned = useRef(false),
     measurements = useRef<{
       height: number;
@@ -140,9 +144,13 @@ export function NativeGameMap({ campaign, store, navigate }: Props) {
         scrollValue.value = offset;
         setViewport(Math.floor(offset / 400) * 400);
       }}
-      scrollEventThrottle={32}
+      scrollEventThrottle={16}
       onLayout={(e) => {
         measurements.current.height = e.nativeEvent.layout.height;
+        setScreenHeight(e.nativeEvent.layout.height);
+        setPanelHeight(
+          Math.max(620, (e.nativeEvent.layout.width ?? 390) * 1.5),
+        );
         centerCurrent();
       }}
       onContentSizeChange={centerCurrent}
@@ -168,13 +176,73 @@ export function NativeGameMap({ campaign, store, navigate }: Props) {
       <View style={styles.row}>
         <Action
           label={list ? "Map" : "Level list"}
+          id="game-map-view"
           onPress={() => {
             positioned.current = false;
+            if (list) {
+              measurements.current.districts = {};
+              measurements.current.nodes = {};
+            }
             setList(!list);
           }}
         />
         <Action label="Explore lessons" onPress={() => navigate("/learn")} />
       </View>
+      {!list &&
+        MAP_PANELS.filter((panel) => !("district" in panel)).map((panel, i) => (
+          <View
+            key={panel.id}
+            testID={`game-frontier-${panel.id}`}
+            style={[styles.district, { height: panelHeight }]}
+            onLayout={(e) => {
+              const y = e.nativeEvent.layout.y;
+              measurements.current.districts[panel.id] = y;
+              setPanelPositions((prev) =>
+                prev[panel.id] === y ? prev : { ...prev, [panel.id]: y },
+              );
+            }}
+          >
+            {Math.abs(
+              viewport - (panelPositions[panel.id] ?? 700 + i * panelHeight),
+            ) <
+              panelHeight + screenHeight + 400 && (
+              <NativeDistrictArt
+                district="tower"
+                panel={panel.id}
+                panelTop={panelPositions[panel.id] ?? 700 + i * panelHeight}
+                scroll={scrollValue}
+                restored={false}
+                details={0}
+              />
+            )}
+            {i % 3 === 0 && (
+              <View style={styles.frontierLabel}>
+                <Text style={styles.eyebrow}>
+                  BEYOND THE SIGNAL · SCENERY PREVIEW
+                </Text>
+                <Text style={styles.heading}>
+                  {i === 0
+                    ? "The quiet summit"
+                    : i === 3
+                      ? "Lantern woods"
+                      : "Glasshouse heights"}
+                </Text>
+                <Text style={styles.body}>
+                  Trail space for levels{" "}
+                  {i === 0 ? "37–50" : i === 3 ? "25–36" : "13–24"}
+                </Text>
+                <Action
+                  label="Return to current level"
+                  onPress={() => {
+                    positioned.current = false;
+                    mapOffset = undefined;
+                    centerCurrent();
+                  }}
+                />
+              </View>
+            )}
+          </View>
+        ))}
       {(list ? ["garden", "canal", "tower"] : ["tower", "canal", "garden"]).map(
         (district, index) => {
           const levels = campaign.levels.filter((l) => l.district === district);
@@ -188,13 +256,29 @@ export function NativeGameMap({ campaign, store, navigate }: Props) {
               onLayout={(e) => {
                 measurements.current.districts[district] =
                   e.nativeEvent.layout.y;
+                const y = e.nativeEvent.layout.y;
+                setPanelPositions((prev) =>
+                  prev[district] === y ? prev : { ...prev, [district]: y },
+                );
                 centerCurrent();
               }}
-              style={[styles.district, list && { minHeight: 0 }]}
+              style={[
+                styles.district,
+                list ? { minHeight: 0 } : { height: panelHeight },
+              ]}
             >
-              {!list && Math.abs(viewport - (400 + index * 940)) < 1500 ? (
+              {!list &&
+              Math.abs(
+                viewport -
+                  (panelPositions[district] ?? 700 + (9 + index) * panelHeight),
+              ) <
+                panelHeight + screenHeight + 400 ? (
                 <NativeDistrictArt
                   district={district as "garden" | "canal" | "tower"}
+                  panel={`city-${index}` as "city-0" | "city-1" | "city-2"}
+                  panelTop={
+                    panelPositions[district] ?? 700 + (9 + index) * panelHeight
+                  }
                   scroll={scrollValue}
                   restored={restored}
                   details={
@@ -440,7 +524,7 @@ export function NativeGamePlay({
           state={
             s.attempt.phase === "won"
               ? "celebrate"
-              : (s.attempt.phase === "running" || s.attempt.phase === "paused")
+              : s.attempt.phase === "running" || s.attempt.phase === "paused"
                 ? "attack"
                 : "idle"
           }
@@ -640,7 +724,8 @@ export function NativeGamePlay({
               }
             }}
             onError={() => {
-              if (!runnerNonce.current || output?.nonce !== runnerNonce.current) return;
+              if (!runnerNonce.current || output?.nonce !== runnerNonce.current)
+                return;
               cancelRunner();
               session.submit({
                 passed: false,
@@ -816,10 +901,15 @@ const styles = StyleSheet.create({
   selected: { backgroundColor: "#305b4c" },
   row: { flexDirection: "row", gap: 8, flexWrap: "wrap", marginVertical: 8 },
   district: {
-    minHeight: 850,
+    minHeight: 620,
     padding: 20,
-    marginVertical: 8,
+    marginVertical: 0,
     justifyContent: "space-between",
+  },
+  frontierLabel: {
+    backgroundColor: "#f7f1dfef",
+    padding: 16,
+    borderRadius: 14,
   },
   districtTitle: {
     backgroundColor: "#f7f1dfee",
@@ -829,7 +919,7 @@ const styles = StyleSheet.create({
     padding: 16,
     borderRadius: 14,
   },
-  stop: { maxWidth: "85%", marginVertical: 35 },
+  stop: { maxWidth: "85%", marginVertical: 12 },
   stopText: {
     backgroundColor: "#f6f0dd",
     fontSize: 12,
