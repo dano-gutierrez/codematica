@@ -149,6 +149,21 @@
           "slug": "system-design/distributed-reading-checkpoint"
         }
       ]
+    },
+    {
+      "slug": "video-delivery",
+      "title": "Video Delivery Contracts",
+      "summary": "Review segment deadlines, protection observations and accepted playback revisions independently.",
+      "nodes": [
+        {
+          "kind": "document",
+          "slug": "system-design/video-delivery-boundaries"
+        },
+        {
+          "kind": "exercise",
+          "slug": "system-design/video-delivery-checkpoint"
+        }
+      ]
     }
   ]
 }

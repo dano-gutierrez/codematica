@@ -42,13 +42,13 @@ describe("distributed reading reviews", () => {
     ]);
   });
 
-  it("appends one unit without shifting the eight existing units or another path", () => {
+  it("keeps the distributed unit intact before the video review", () => {
     const path = getLearningPathBySlug("system-design-fundamentals")!;
-    expect(path.units.map(unit => unit.slug)).toEqual(["caching-contracts", "capacity-decisions", "routing-decisions", "api-security-boundaries", "client-compatibility", "traffic-rate", "webhook-authenticity", "reservation-boundaries", "distributed-readings"]);
-    expect(path.units.at(-1)?.nodes).toEqual([{ kind: "document", slug }, { kind: "exercise", slug: "system-design/distributed-reading-checkpoint" }]);
+    expect(path.units.map(unit => unit.slug)).toEqual(["caching-contracts", "capacity-decisions", "routing-decisions", "api-security-boundaries", "client-compatibility", "traffic-rate", "webhook-authenticity", "reservation-boundaries", "distributed-readings", "video-delivery"]);
+    expect(path.units[8]?.nodes).toEqual([{ kind: "document", slug }, { kind: "exercise", slug: "system-design/distributed-reading-checkpoint" }]);
     expect(getNextPathNodeRoute(path.slug, { kind: "exercise", slug: "system-design/reservation-boundary-checkpoint" })).toBe(`/docs/${slug}?path=${path.slug}`);
     expect(getNextPathNodeRoute(path.slug, { kind: "document", slug })).toBe(`/practice/system-design/distributed-reading-checkpoint?path=${path.slug}`);
-    expect(getNextPathNodeRoute(path.slug, { kind: "exercise", slug: "system-design/distributed-reading-checkpoint" })).toBeUndefined();
+    expect(getNextPathNodeRoute(path.slug, { kind: "exercise", slug: "system-design/distributed-reading-checkpoint" })).toBe(`/docs/system-design/video-delivery-boundaries?path=${path.slug}`);
     expect(getLearningPathBySlug("backend-engineer-readiness")?.units.flatMap(unit => unit.nodes).some(node => node.slug === slug)).toBe(false);
   });
 });

@@ -6010,6 +6010,76 @@
       "contentHash": "c08c4e80811578dcdb0b651f910c14cfc38311c05757691e93e9248ccc858a45"
     },
     {
+      "id": "video-android-drm",
+      "title": "Android MediaDrm — Software And Hardware Security Levels",
+      "provider": "Android Developers",
+      "url": "https://developer.android.com/reference/android/media/MediaDrm",
+      "attribution": "Selected API level 28 security constants and negotiated HDCP API. Software/hardware scope differs; no device or protected decoder tested.",
+      "lastVerifiedAt": "2026-10-04",
+      "upstream": {
+        "version": "API reference checked 2026-10-04",
+        "maturity": "published"
+      },
+      "sourcePath": "content/sources/video-delivery.json",
+      "contentHash": "a24dbb5b64ea35bc0e2e7e6942bda07fda5351953a5dbb7a68874d84abeabeda"
+    },
+    {
+      "id": "video-android-secure-window",
+      "title": "Android — Secure Window Capture Policy",
+      "provider": "Android Developers",
+      "url": "https://developer.android.com/security/fraud-prevention/activities",
+      "attribution": "Selected FLAG_SECURE guidance and blank-capture observation. No capture protections changed or bypassed.",
+      "lastVerifiedAt": "2026-10-04",
+      "upstream": {
+        "version": "Guide checked 2026-10-04",
+        "maturity": "published"
+      },
+      "sourcePath": "content/sources/video-delivery.json",
+      "contentHash": "a24dbb5b64ea35bc0e2e7e6942bda07fda5351953a5dbb7a68874d84abeabeda"
+    },
+    {
+      "id": "video-eme-2017",
+      "title": "W3C EME — Key Systems And Output Status",
+      "provider": "W3C",
+      "url": "https://www.w3.org/TR/2017/REC-encrypted-media-20170918/",
+      "attribution": "September 18, 2017 Recommendation; abstract, CDM definitions and 6.1 MediaKeyStatus output restrictions/downscaling. Selected passages only; no DRM implemented.",
+      "lastVerifiedAt": "2026-10-04",
+      "upstream": {
+        "version": "2017 Recommendation",
+        "maturity": "published"
+      },
+      "sourcePath": "content/sources/video-delivery.json",
+      "contentHash": "a24dbb5b64ea35bc0e2e7e6942bda07fda5351953a5dbb7a68874d84abeabeda"
+    },
+    {
+      "id": "video-hls-rfc8216",
+      "title": "RFC 8216 — HTTP Live Streaming",
+      "provider": "IETF",
+      "url": "https://www.rfc-editor.org/rfc/rfc8216.html",
+      "attribution": "August 2017; selected overview, 4.3.4.2 and 6.3.1 variant/segment/bandwidth and client-switch scope. Original deadline case; no player or complete protocol implementation.",
+      "lastVerifiedAt": "2026-10-04",
+      "upstream": {
+        "version": "RFC 8216",
+        "maturity": "published"
+      },
+      "sourcePath": "content/sources/video-delivery.json",
+      "contentHash": "a24dbb5b64ea35bc0e2e7e6942bda07fda5351953a5dbb7a68874d84abeabeda"
+    },
+    {
+      "id": "video-netflix-browser-requirements",
+      "title": "Netflix — Conditional Browser Resolution Requirements",
+      "provider": "Netflix Help Center",
+      "url": "https://help.netflix.com/en/node/30081",
+      "attribution": "2026-10-04 Windows/Mac table inspected. Conditional maxima differ by platform and browser; no playback or throughput measured.",
+      "lastVerifiedAt": "2026-10-04",
+      "upstream": {
+        "version": "Help table checked 2026-10-04",
+        "maturity": "published"
+      },
+      "sourcePath": "content/sources/video-delivery.json",
+      "contentHash": "a24dbb5b64ea35bc0e2e7e6942bda07fda5351953a5dbb7a68874d84abeabeda"
+    },
+    {
       "id": "walkinglabs-harness-course",
       "title": "Learn Harness Engineering",
       "provider": "WalkingLabs",
@@ -12834,6 +12904,70 @@
       "readingMinutes": 5
     },
     {
+      "title": "Video Delivery — Separate Transfer, Protection And Resume",
+      "slug": "system-design/video-delivery-boundaries",
+      "summary": "Review segment deadlines, protected media observations and playback-state recovery without treating a CDN or cache name as proof of correctness.",
+      "track": "System Design",
+      "topic": "Delivery Contracts",
+      "difficulty": "practitioner",
+      "tags": [
+        "video",
+        "buffering",
+        "cdn",
+        "drm",
+        "recovery"
+      ],
+      "prerequisites": [
+        "system-design/cache-invalidation",
+        "software-engineering/product-interview-durable-generation-architecture"
+      ],
+      "diagramRefs": [],
+      "sourceRefs": [
+        "video-hls-rfc8216",
+        "video-eme-2017",
+        "video-android-drm",
+        "video-android-secure-window",
+        "video-netflix-browser-requirements"
+      ],
+      "status": "published",
+      "id": "ece5e24d8938",
+      "route": "/docs/system-design/video-delivery-boundaries",
+      "sourcePath": "content/knowledge/system-design/video-delivery-boundaries.md",
+      "bodyPath": "content/knowledge/system-design/video-delivery-boundaries.md",
+      "markdown": "## Separate the delivery contracts\n\nA video design has several independent questions: can the next media segment arrive before the player needs it, can the device present the protected content, and can the application recover the user's accepted playback state? A component diagram alone answers none of them.\n\n[HTTP Live Streaming, RFC 8216](https://www.rfc-editor.org/rfc/rfc8216.html), August 2017, describes media playlists, segments and variant streams. A master playlist can advertise alternatives; the client's variant-switching algorithm is outside the RFC's scope. Multiple encodings do not by themselves guarantee stable playback.\n\nA CDN can serve eligible cached segments closer to viewers. Review cache keys, authorization, freshness, eviction, missed prewarming and origin fallback with the existing [cache contract](/docs/system-design/cache-invalidation). In particular, a CDN cache hit does not prove uninterrupted playback or remove license, control-plane and client-link constraints.\n\n## Calculate a segment deadline\n\nOriginal case: a two-second media segment has a constant encoded rate of 4 megabits/second. Its size is 8 megabits. Assume sustained payload throughput of 2 megabits/second, no parallel outstanding transfer, and no extra request or decode overhead: 8 megabits takes 4 seconds. If the player has half a second of usable buffer when it requests the needed next segment, that buffer cannot bridge the wait. Real overhead can make this worse.\n\nState units and assumptions before changing the architecture. Compare a lower-rate compatible variant and buffer/admission policy; then measure startup delay, stalls, quality changes, segment transfer time, cache misses and origin demand. Do not report a fictional release-night request count as a benchmark, or a prewarmed cache as evidence that every viewer has enough bandwidth.\n\n## Observe protection at its own boundary\n\n[Encrypted Media Extensions](https://www.w3.org/TR/2017/REC-encrypted-media-20170918/), the September 18, 2017 W3C Recommendation, describes discovery and interaction with key systems and license/key exchange. EME is an API, not a particular DRM system; application authentication and authorization remain separate. Its key statuses distinguish output restrictions from usable keys. Output may be restricted or downscaled according to policy, and downscaling is optional. Do not promise an automatic quality fallback.\n\n[Android MediaDrm](https://developer.android.com/reference/android/media/MediaDrm) documents both software and hardware security levels, including the API level 28 constants. Record the actual scheme, reported level and device capability instead of asserting that all decrypted video always stays in hardware-only memory. Output protection such as negotiated HDCP is another boundary; inspect the reported connection and applicable policy.\n\n[Android's secure-window guidance](https://developer.android.com/security/fraud-prevention/activities) describes `FLAG_SECURE` and blank captures of protected windows. Therefore, a blank screenshot does not prove hardware-only decoding: capture policy and decoder security are distinct observations. This review does not change capture protection or retrieve protected frames.\n\nThe [Netflix browser requirements](https://help.netflix.com/en/node/30081), checked on 2026-10-04, list conditional platform/browser maxima: Chrome on qualifying Windows systems can reach Ultra HD, while its Mac entry reaches Full HD. A universal browser-720p rule is incorrect. Actual playback also depends on the stated device and service requirements; a maximum is not a guarantee for every title or configuration.\n\n## Preserve playback state deliberately\n\nA per-user/video cache value helps lookup, but a cache acknowledgement is not a durable resume contract. Define the authorized account/content/session scope, accepted revision, persistence and replication policy, replay handling and recovery behavior. Link accepted updates to the [durable transition and retry contract](/docs/software-engineering/product-interview-durable-generation-architecture).\n\nOriginal case: revision 21 records position 2400; a delayed revision 20 reports 2390. Prevent the stale update from overwriting the accepted revision. A later authorized seek backward can be intentional, so taking the largest position is not a general ordering rule. Specify conflicts between concurrent playback sessions separately. Test recovery from the last accepted revision under the declared storage failure model before claiming a named cache preserves position.\n\n## Write a delivery review receipt\n\nRecord the content/playlist version, payload units and deadline calculation, eligible variants, cache/origin assumptions, device/key/output observations, accepted playback revision and unresolved evidence. Distinguish measured results from the original hypothetical cases. These are sourced review exercises: no streaming service, DRM bypass or failure injection was run.\n\nComplete the [Video Delivery Checkpoint](/practice/system-design/video-delivery-checkpoint).",
+      "plainText": "Separate the delivery contracts A video design has several independent questions: can the next media segment arrive before the player needs it, can the device present the protected content, and can the application recover the user's accepted playback state? A component diagram alone answers none of them. HTTP Live Streaming, RFC 8216, August 2017, describes media playlists, segments and variant streams. A master playlist can advertise alternatives; the client's variant-switching algorithm is outside the RFC's scope. Multiple encodings do not by themselves guarantee stable playback. A CDN can serve eligible cached segments closer to viewers. Review cache keys, authorization, freshness, eviction, missed prewarming and origin fallback with the existing cache contract. In particular, a CDN cache hit does not prove uninterrupted playback or remove license, control-plane and client-link constraints. Calculate a segment deadline Original case: a two-second media segment has a constant encoded rate of 4 megabits/second. Its size is 8 megabits. Assume sustained payload throughput of 2 megabits/second, no parallel outstanding transfer, and no extra request or decode overhead: 8 megabits takes 4 seconds. If the player has half a second of usable buffer when it requests the needed next segment, that buffer cannot bridge the wait. Real overhead can make this worse. State units and assumptions before changing the architecture. Compare a lower-rate compatible variant and buffer/admission policy; then measure startup delay, stalls, quality changes, segment transfer time, cache misses and origin demand. Do not report a fictional release-night request count as a benchmark, or a prewarmed cache as evidence that every viewer has enough bandwidth. Observe protection at its own boundary Encrypted Media Extensions, the September 18, 2017 W3C Recommendation, describes discovery and interaction with key systems and license/key exchange. EME is an API, not a particular DRM system; application authentication and authorization remain separate. Its key statuses distinguish output restrictions from usable keys. Output may be restricted or downscaled according to policy, and downscaling is optional. Do not promise an automatic quality fallback. Android MediaDrm documents both software and hardware security levels, including the API level 28 constants. Record the actual scheme, reported level and device capability instead of asserting that all decrypted video always stays in hardware-only memory. Output protection such as negotiated HDCP is another boundary; inspect the reported connection and applicable policy. Android's secure-window guidance describes FLAG_SECURE and blank captures of protected windows. Therefore, a blank screenshot does not prove hardware-only decoding: capture policy and decoder security are distinct observations. This review does not change capture protection or retrieve protected frames. The Netflix browser requirements, checked on 2026-10-04, list conditional platform/browser maxima: Chrome on qualifying Windows systems can reach Ultra HD, while its Mac entry reaches Full HD. A universal browser-720p rule is incorrect. Actual playback also depends on the stated device and service requirements; a maximum is not a guarantee for every title or configuration. Preserve playback state deliberately A per-user/video cache value helps lookup, but a cache acknowledgement is not a durable resume contract. Define the authorized account/content/session scope, accepted revision, persistence and replication policy, replay handling and recovery behavior. Link accepted updates to the durable transition and retry contract. Original case: revision 21 records position 2400; a delayed revision 20 reports 2390. Prevent the stale update from overwriting the accepted revision. A later authorized seek backward can be intentional, so taking the largest position is not a general ordering rule. Specify conflicts between concurrent playback sessions separately. Test recovery from the last accepted revision under the declared storage failure model before claiming a named cache preserves position. Write a delivery review receipt Record the content/playlist version, payload units and deadline calculation, eligible variants, cache/origin assumptions, device/key/output observations, accepted playback revision and unresolved evidence. Distinguish measured results from the original hypothetical cases. These are sourced review exercises: no streaming service, DRM bypass or failure injection was run. Complete the Video Delivery Checkpoint.",
+      "headings": [
+        {
+          "id": "separate-the-delivery-contracts",
+          "depth": 2,
+          "text": "Separate the delivery contracts"
+        },
+        {
+          "id": "calculate-a-segment-deadline",
+          "depth": 2,
+          "text": "Calculate a segment deadline"
+        },
+        {
+          "id": "observe-protection-at-its-own-boundary",
+          "depth": 2,
+          "text": "Observe protection at its own boundary"
+        },
+        {
+          "id": "preserve-playback-state-deliberately",
+          "depth": 2,
+          "text": "Preserve playback state deliberately"
+        },
+        {
+          "id": "write-a-delivery-review-receipt",
+          "depth": 2,
+          "text": "Write a delivery review receipt"
+        }
+      ],
+      "mermaidBlocks": [],
+      "contentHash": "b62bc2d68148f3ba266004c9e29072188a4f0d136a0fe769d300ffa7ec806778",
+      "readingMinutes": 3
+    },
+    {
       "title": "Webhook Authenticity — Separate A Valid Delivery From A New Effect",
       "slug": "system-design/webhook-authenticity-and-replay",
       "summary": "Test raw-byte signatures, signed time, scoped retry receipts and secret rotation in a local fixture; preserve durable acceptance and reconciliation as separate obligations.",
@@ -16153,12 +16287,27 @@
               "slug": "system-design/distributed-reading-checkpoint"
             }
           ]
+        },
+        {
+          "slug": "video-delivery",
+          "title": "Video Delivery Contracts",
+          "summary": "Review segment deadlines, protection observations and accepted playback revisions independently.",
+          "nodes": [
+            {
+              "kind": "document",
+              "slug": "system-design/video-delivery-boundaries"
+            },
+            {
+              "kind": "exercise",
+              "slug": "system-design/video-delivery-checkpoint"
+            }
+          ]
         }
       ],
       "id": "07569d83aba4",
       "route": "/paths/system-design-fundamentals",
       "sourcePath": "content/learning-paths/system-design-fundamentals.json",
-      "contentHash": "28785d5dd85ed8ed632117e63e896cb61d8526acd4119035fd96369033ff4b9f"
+      "contentHash": "f4ff3d0a8740f8714c4b72f0b2eae2fd16fb2d5015bbd7ef9e63fe5da16967be"
     }
   ],
   "exercises": [
@@ -34734,6 +34883,148 @@
       "route": "/practice/system-design/versioned-keys-cloze",
       "sourcePath": "content/exercises/system-design/versioned-keys-cloze.json",
       "contentHash": "527644ae0ac7dcf1306416eccb62465f2351c825d237ef02e1fe50331b1b9962"
+    },
+    {
+      "slug": "system-design/video-delivery-checkpoint",
+      "title": "Video Delivery Checkpoint",
+      "documentSlug": "system-design/video-delivery-boundaries",
+      "concept": "Video Delivery",
+      "difficulty": "practitioner",
+      "tags": [
+        "video",
+        "drm",
+        "recovery"
+      ],
+      "status": "published",
+      "sourceRefs": [
+        "video-hls-rfc8216",
+        "video-eme-2017",
+        "video-android-drm",
+        "video-android-secure-window",
+        "video-netflix-browser-requirements"
+      ],
+      "type": "questionnaire",
+      "questions": [
+        {
+          "id": "segment-deadline",
+          "prompt": "A two-second segment at 4 megabits/s transfers at 2 megabits/s with half a second buffered and no extra overhead. What follows?",
+          "explanation": "Segment size 8 megabits divided by payload throughput 2 megabits/s gives 4 seconds. The buffer does not cover that wait.",
+          "kind": "choice",
+          "options": [
+            {
+              "id": "option-0",
+              "label": "Four seconds to transfer; the half-second buffer cannot bridge that wait under these assumptions.",
+              "isCorrect": true
+            },
+            {
+              "id": "option-1",
+              "label": "Two seconds because transfer time always equals media duration.",
+              "isCorrect": false
+            },
+            {
+              "id": "option-2",
+              "label": "A CDN hit proves playback cannot stall.",
+              "isCorrect": false
+            }
+          ]
+        },
+        {
+          "id": "screenshot-evidence",
+          "prompt": "A protected Android window produces a blank screenshot. What does that observation establish?",
+          "explanation": "FLAG_SECURE capture behavior and MediaDrm software/hardware levels describe different boundaries.",
+          "kind": "choice",
+          "options": [
+            {
+              "id": "option-0",
+              "label": "Capture policy is observed; identify the DRM security level separately before claiming hardware-only decoding.",
+              "isCorrect": true
+            },
+            {
+              "id": "option-1",
+              "label": "Every decoded frame on every platform stays entirely in hardware-only memory.",
+              "isCorrect": false
+            },
+            {
+              "id": "option-2",
+              "label": "The browser must be limited to 720p.",
+              "isCorrect": false
+            }
+          ]
+        },
+        {
+          "id": "output-policy",
+          "prompt": "A key has output restrictions the current device cannot meet. Can the application assume uninterrupted lower-quality playback?",
+          "explanation": "The selected EME Recommendation distinguishes output-restricted/output-downscaled and does not require downscaling.",
+          "kind": "choice",
+          "options": [
+            {
+              "id": "option-0",
+              "label": "Inspect the key status and output policy; downscaling is optional and cannot be assumed.",
+              "isCorrect": true
+            },
+            {
+              "id": "option-1",
+              "label": "EME always guarantees automatic downscaling.",
+              "isCorrect": false
+            },
+            {
+              "id": "option-2",
+              "label": "A cached segment automatically removes output restrictions.",
+              "isCorrect": false
+            }
+          ]
+        },
+        {
+          "id": "resume-receipt",
+          "prompt": "An application acknowledges a playback-position update in a cache. What is still needed to promise recovery?",
+          "explanation": "Accepted revision ordering, intentional seeks and declared storage failure/recovery contracts are separate from a lookup acknowledgement.",
+          "kind": "choice",
+          "options": [
+            {
+              "id": "option-0",
+              "label": "Define persistence, scoped ordering and recovery, then test the last accepted revision after failure.",
+              "isCorrect": true
+            },
+            {
+              "id": "option-1",
+              "label": "The cache name itself proves durable recovery.",
+              "isCorrect": false
+            },
+            {
+              "id": "option-2",
+              "label": "Always keep the highest position, even after an intentional backward seek.",
+              "isCorrect": false
+            }
+          ]
+        },
+        {
+          "id": "browser-requirements",
+          "prompt": "A dated provider table says a browser can reach Ultra HD on qualifying Windows devices. What should a reviewer conclude?",
+          "explanation": "The provider table distinguishes platforms and conditional maxima; it is not a measured guarantee for an arbitrary device/title.",
+          "kind": "choice",
+          "options": [
+            {
+              "id": "option-0",
+              "label": "Check the dated platform/browser requirements and actual device configuration; the maximum is conditional.",
+              "isCorrect": true
+            },
+            {
+              "id": "option-1",
+              "label": "Every browser on every platform is permanently limited to 720p.",
+              "isCorrect": false
+            },
+            {
+              "id": "option-2",
+              "label": "Every installation of that browser always gets Ultra HD.",
+              "isCorrect": false
+            }
+          ]
+        }
+      ],
+      "id": "96f3bb95c5e1",
+      "route": "/practice/system-design/video-delivery-checkpoint",
+      "sourcePath": "content/exercises/system-design/video-delivery-checkpoint.json",
+      "contentHash": "26d0bf129ce6a421eb3ba7d4f00a91d31f887c40a4dbecce326df8302386f6c1"
     },
     {
       "slug": "system-design/webhook-authenticity-checkpoint",
@@ -159206,7 +159497,7 @@
     {
       "name": "System Design",
       "slug": "system-design",
-      "documentCount": 11,
+      "documentCount": 12,
       "difficulties": [
         "foundation",
         "practitioner",

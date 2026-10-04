@@ -11,6 +11,17 @@ beforeAll(async () => {
 function freshContent() { return structuredClone(validatedIndex); }
 
 describe("complete knowledge catalog", () => {
+  it("exports video review with stable identities and explicit path/citation evidence", () => {
+    const graph = buildKnowledgeCatalog(freshContent());
+    const lesson = "document:system-design/video-delivery-boundaries", quiz = "exercise:system-design/video-delivery-checkpoint", unit = "unit:system-design-fundamentals:video-delivery";
+    for (const id of [lesson, quiz, unit]) expect(graph.resources.find(r => r.id === id)).toMatchObject({visibility:"curriculum",status:"published"});
+    for (const [source,target,order] of [["path:system-design-fundamentals",unit,9],[unit,lesson,0],[unit,quiz,1]] as const) expect(graph.relationships).toContainEqual(expect.objectContaining({source,target,type:"contains",provenance:"explicit",order}));
+    expect(graph.relationships).toContainEqual(expect.objectContaining({source:quiz,target:lesson,type:"assesses",provenance:"explicit"}));
+    for (const target of ["document:system-design/cache-invalidation","document:software-engineering/product-interview-durable-generation-architecture"]) expect(graph.relationships).toContainEqual(expect.objectContaining({source:lesson,target,type:"requires",provenance:"explicit"}));
+    for (const source of ["video-hls-rfc8216","video-eme-2017","video-android-drm","video-android-secure-window","video-netflix-browser-requirements"]) for (const parent of [lesson,quiz]) expect(graph.relationships).toContainEqual(expect.objectContaining({source:parent,target:"source:"+source,type:"cites",provenance:"explicit"}));
+    expect(graph.unresolved.some(r=>[lesson,quiz].includes(r.resourceId))).toBe(false);
+  });
+
   it("exports revocation sections and primary citations on the existing API resource", () => {
     const graph = buildKnowledgeCatalog(freshContent());
     const lesson = "document:system-design/cors-csrf-and-authorization";

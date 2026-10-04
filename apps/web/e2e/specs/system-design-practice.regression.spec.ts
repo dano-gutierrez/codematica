@@ -2,10 +2,24 @@ import { expect, test } from "@playwright/test";
 
 const cases = [
   {
+    slug: "video-delivery-boundaries",
+    title: "Video Delivery — Separate Transfer, Protection And Resume",
+    source: "RFC 8216 — HTTP Live Streaming",
+    checkpoint: "video-delivery-checkpoint",
+    answers: [
+      "Four seconds to transfer; the half-second buffer cannot bridge that wait under these assumptions.",
+      "Capture policy is observed; identify the DRM security level separately before claiming hardware-only decoding.",
+      "Inspect the key status and output policy; downscaling is optional and cannot be assumed.",
+      "Define persistence, scoped ordering and recovery, then test the last accepted revision after failure.",
+      "Check the dated platform/browser requirements and actual device configuration; the maximum is conditional.",
+    ],
+  },
+  {
     "slug": "distributed-reading-reviews",
     "title": "Distributed Readings — Review The Assumptions",
     "source": "Dynamo — Amazon's Highly Available Key-value Store",
     "checkpoint": "distributed-reading-checkpoint",
+    next: "/docs/system-design/video-delivery-boundaries?path=system-design-fundamentals",
     "answers": [
       "Name the actual read/write participants and version reconciliation; the inequality alone does not prove a latest single value.",
       "An old-term majority count alone is insufficient; use Raft's current-term commitment rule and log/election constraints.",
@@ -122,6 +136,10 @@ for (const scenario of cases) {
     await page.getByTestId(`path-node-document-system-design-${scenario.slug}`).click();
     await expect(page.getByRole("heading", { level: 1 })).toHaveText(scenario.title);
     await expect(page.getByTestId("source-references")).toContainText(scenario.source);
+    if (scenario.slug === "video-delivery-boundaries") {
+      for (const heading of ["Separate the delivery contracts", "Calculate a segment deadline", "Observe protection at its own boundary", "Preserve playback state deliberately", "Write a delivery review receipt"]) await expect(page.getByRole("heading", {name:heading,exact:true})).toBeVisible();
+      for (const source of ["W3C EME — Key Systems And Output Status", "Android MediaDrm — Software And Hardware Security Levels", "Android — Secure Window Capture Policy", "Netflix — Conditional Browser Resolution Requirements"]) await expect(page.getByTestId("source-references")).toContainText(source);
+    }
     if (scenario.slug === "client-compatibility-contracts") {
       for (const heading of ["Review conditional writes before trusting a tag", "Bound filtering, sorting and continuation", "Name the resource view and preserve its meaning"]) await expect(page.getByRole("heading", {name:heading,exact:true})).toBeVisible();
       for (const source of ["RFC 9110 — If-Match And Request Preconditions", "Google AIP-160 — Filtering", "Google AIP-158 — Pagination", "Google AIP-157 — Partial Responses"]) await expect(page.getByTestId("source-references")).toContainText(source);
