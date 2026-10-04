@@ -1,0 +1,135 @@
+{
+  "slug": "software-engineering/pattern-selection-checkpoint",
+  "title": "Pattern Selection Checkpoint",
+  "documentSlug": "software-engineering/pattern-selection-contracts",
+  "concept": "Design Patterns",
+  "difficulty": "practitioner",
+  "tags": [
+    "contracts",
+    "backend",
+    "review"
+  ],
+  "status": "published",
+  "sourceRefs": [
+    "backend-fowler-polymorphism",
+    "backend-dotnet-di-lifetimes"
+  ],
+  "type": "questionnaire",
+  "questions": [
+    {
+      "id": "change-axis",
+      "kind": "choice",
+      "prompt": "A small conditional handles a closed, stable set. What justifies adding interchangeable policy objects?",
+      "options": [
+        {
+          "id": "option-0",
+          "label": "Keep the simple conditional until an actual change axis justifies extra indirection.",
+          "isCorrect": true
+        },
+        {
+          "id": "option-1",
+          "label": "Replace every conditional because more pattern names always improve design.",
+          "isCorrect": false
+        },
+        {
+          "id": "option-2",
+          "label": "Apply a minimum pattern count based on the developer’s seniority.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "Complexity needs an actual variation/ownership reason, not a title or count."
+    },
+    {
+      "id": "substitution",
+      "kind": "choice",
+      "prompt": "Two interchangeable shipping policies must preserve what?",
+      "options": [
+        {
+          "id": "option-0",
+          "label": "Preserve accepted inputs, returned values and errors across every strategy and caller.",
+          "isCorrect": true
+        },
+        {
+          "id": "option-1",
+          "label": "Return zero for invalid input in one policy to simplify its callers.",
+          "isCorrect": false
+        },
+        {
+          "id": "option-2",
+          "label": "Only preserve the class name; units and errors can change silently.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "A common interface name does not establish behavioral substitution."
+    },
+    {
+      "id": "unit-adapter",
+      "kind": "choice",
+      "prompt": "The provider gives decimal string 12.50 and currency USD; the caller requires integer cents and currency. What should the adapter do?",
+      "options": [
+        {
+          "id": "option-0",
+          "label": "Convert 12.50 USD to 1250 cents under an explicit currency/unit contract; reject ambiguous input.",
+          "isCorrect": true
+        },
+        {
+          "id": "option-1",
+          "label": "Drop the currency and pass numeric 12.50 as if it were 1250 cents.",
+          "isCorrect": false
+        },
+        {
+          "id": "option-2",
+          "label": "Turn missing or invalid input into zero without exposing failure.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "Validation, currency, precision and error states belong in the declared translation contract."
+    },
+    {
+      "id": "wrapper-outcome",
+      "kind": "choice",
+      "prompt": "A logging wrapper surrounds an effectful operation. What caller contract must be reviewed?",
+      "options": [
+        {
+          "id": "option-0",
+          "label": "Invoke the underlying operation once and preserve its result or exception; define instrumentation failure policy separately.",
+          "isCorrect": true
+        },
+        {
+          "id": "option-1",
+          "label": "Catch every exception and return success so logs remain quiet.",
+          "isCorrect": false
+        },
+        {
+          "id": "option-2",
+          "label": "Retry secretly inside logging so one visible call always produces an outcome.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "Wrapping can change effect count, error behavior and ordering; instrumentation failures need a separate policy."
+    },
+    {
+      "id": "singleton-scope",
+      "kind": "choice",
+      "prompt": "The DI container constructs one shared service instance safely. What remains?",
+      "options": [
+        {
+          "id": "option-0",
+          "label": "Check shared-state synchronization and dependency scope; one construction does not make the instance safe.",
+          "isCorrect": true
+        },
+        {
+          "id": "option-1",
+          "label": "Construction safety proves all mutable state is safe across requests.",
+          "isCorrect": false
+        },
+        {
+          "id": "option-2",
+          "label": "Store request/tenant state globally because the service exists only once.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "Container resolution safety does not make the instance’s state thread-safe or repair captured dependency scopes."
+    }
+  ]
+}

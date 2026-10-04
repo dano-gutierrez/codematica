@@ -48,3 +48,5 @@ System Design decision checkpoints cover capacity assumptions, shared bottleneck
 The four-question Durable Retry Lab and six-question Reservation Boundary checkpoints add crash-point, replay, ownership, room-date overlap and explicit-expiry practice. The original Product Engineering path retains its 18 questions; these supplementary checkpoints are placed in Backend Engineer Readiness and System Design. Code and SQL run only in a learner’s isolated lab, not inside the app.
 
 The four-question Routing Decision checkpoint covers workload signals, IP affinity, eligibility and toy-versus-proxy scope. Its standalone Python lab runs outside the app; quiz scoring performs no routing or broker operations.
+
+The Backend concurrency and pattern-selection checkpoints each use five original scenario choices. They test compound transitions, predicate waits, permit ownership, JVM/process scope and behavioral substitution/unit/wrapper/lifetime contracts. Scoring executes no threaded service or framework code; it does not certify an entire primitive/pattern catalog.

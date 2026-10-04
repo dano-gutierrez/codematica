@@ -82,6 +82,36 @@
           "slug": "software-engineering/progressive-state-checkpoint"
         }
       ]
+    },
+    {
+      "slug": "concurrency-boundaries",
+      "title": "Concurrency Boundaries",
+      "summary": "Review compound transitions, predicate waits and scoped ownership.",
+      "nodes": [
+        {
+          "kind": "document",
+          "slug": "software-engineering/concurrency-boundaries"
+        },
+        {
+          "kind": "exercise",
+          "slug": "software-engineering/concurrency-boundary-checkpoint"
+        }
+      ]
+    },
+    {
+      "slug": "pattern-selection",
+      "title": "Pattern Selection Contracts",
+      "summary": "Choose variation boundaries while preserving caller behavior and shared lifetimes.",
+      "nodes": [
+        {
+          "kind": "document",
+          "slug": "software-engineering/pattern-selection-contracts"
+        },
+        {
+          "kind": "exercise",
+          "slug": "software-engineering/pattern-selection-checkpoint"
+        }
+      ]
     }
   ]
 }

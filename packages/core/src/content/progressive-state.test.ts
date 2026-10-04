@@ -22,13 +22,13 @@ describe("original progressive state review", () => {
     ]);
   });
 
-  it("appends the state review and preserves both reservation path destinations", () => {
+  it("keeps state history before concurrency and preserves both reservation path destinations", () => {
     const path = getLearningPathBySlug("backend-engineer-readiness")!;
-    expect(path.units.map(u => u.slug)).toEqual(["production-judgment", "durable-retries", "reservation-boundaries", "progressive-state"]);
-    expect(path.units.at(-1)?.nodes).toEqual([{kind:"document", slug:"software-engineering/progressive-state-history"}, {kind:"exercise",slug:"software-engineering/progressive-state-checkpoint"}]);
+    expect(path.units.map(u => u.slug)).toEqual(["production-judgment", "durable-retries", "reservation-boundaries", "progressive-state", "concurrency-boundaries", "pattern-selection"]);
+    expect(path.units[3]?.nodes).toEqual([{kind:"document", slug:"software-engineering/progressive-state-history"}, {kind:"exercise",slug:"software-engineering/progressive-state-checkpoint"}]);
     expect(getNextPathNodeRoute(path.slug,{kind:"exercise",slug:"system-design/reservation-boundary-checkpoint"})).toBe("/docs/software-engineering/progressive-state-history?path=backend-engineer-readiness");
     expect(getNextPathNodeRoute("system-design-fundamentals",{kind:"exercise",slug:"system-design/reservation-boundary-checkpoint"})).toBe("/docs/system-design/distributed-reading-reviews?path=system-design-fundamentals");
     expect(getNextPathNodeRoute(path.slug,{kind:"document",slug:"software-engineering/progressive-state-history"})).toBe("/practice/software-engineering/progressive-state-checkpoint?path=backend-engineer-readiness");
-    expect(getNextPathNodeRoute(path.slug,{kind:"exercise",slug:"software-engineering/progressive-state-checkpoint"})).toBeUndefined();
+    expect(getNextPathNodeRoute(path.slug,{kind:"exercise",slug:"software-engineering/progressive-state-checkpoint"})).toBe("/docs/software-engineering/concurrency-boundaries?path=backend-engineer-readiness");
   });
 });

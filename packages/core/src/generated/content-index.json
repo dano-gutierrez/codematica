@@ -4336,6 +4336,76 @@
       "contentHash": "b6b91a4f50ebc5aa9193c39a19e77dacd67fc2278403e81d8be969109106e732"
     },
     {
+      "id": "backend-dotnet-di-lifetimes",
+      "title": "Microsoft .NET — Service Safety And Lifetime",
+      "provider": "Microsoft Learn",
+      "url": "https://learn.microsoft.com/en-us/dotnet/core/extensions/dependency-injection/guidelines",
+      "attribution": "Selected Thread safety and Recommendations sections; construction/resolution safety differs from instance state and scope. No framework/container code executed.",
+      "lastVerifiedAt": "2026-10-04",
+      "upstream": {
+        "version": "Guide checked 2026-10-04",
+        "maturity": "published"
+      },
+      "sourcePath": "content/sources/backend-concurrency-patterns.json",
+      "contentHash": "96372f93bfee01fb51a31ac485065d1eddd71ae5a3c48a8576f6db3009b9bf48"
+    },
+    {
+      "id": "backend-fowler-polymorphism",
+      "title": "Fowler — Replace Conditional With Polymorphism",
+      "provider": "Martin Fowler",
+      "url": "https://refactoring.com/catalog/replaceConditionalWithPolymorphism.html",
+      "attribution": "Selected catalog entry illustration of type-specific dispatch. Original shipping/unit/wrapper cases; no source code or whole book copied.",
+      "lastVerifiedAt": "2026-10-04",
+      "upstream": {
+        "version": "Catalog checked 2026-10-04",
+        "maturity": "published"
+      },
+      "sourcePath": "content/sources/backend-concurrency-patterns.json",
+      "contentHash": "96372f93bfee01fb51a31ac485065d1eddd71ae5a3c48a8576f6db3009b9bf48"
+    },
+    {
+      "id": "backend-java17-memory-model",
+      "title": "Java SE 17 — Ordering Versus Compound Atomicity",
+      "provider": "Oracle",
+      "url": "https://docs.oracle.com/javase/specs/jls/se17/html/jls-17.html",
+      "attribution": "Selected 17.4.3–17.4.5 sequential consistency, synchronization and happens-before passages. Visibility/order alone do not make a group of operations atomic; not a full memory-model proof.",
+      "lastVerifiedAt": "2026-10-04",
+      "upstream": {
+        "version": "Java Language Specification SE 17",
+        "maturity": "published"
+      },
+      "sourcePath": "content/sources/backend-concurrency-patterns.json",
+      "contentHash": "96372f93bfee01fb51a31ac485065d1eddd71ae5a3c48a8576f6db3009b9bf48"
+    },
+    {
+      "id": "backend-java17-thread-states",
+      "title": "Java SE 17 — JVM Thread States",
+      "provider": "Oracle",
+      "url": "https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Thread.State.html",
+      "attribution": "Java SE 17 enum overview and RUNNABLE detail; JVM states differ from operating-system states. No Java scheduler executed.",
+      "lastVerifiedAt": "2026-10-04",
+      "upstream": {
+        "version": "Java SE 17",
+        "maturity": "published"
+      },
+      "sourcePath": "content/sources/backend-concurrency-patterns.json",
+      "contentHash": "96372f93bfee01fb51a31ac485065d1eddd71ae5a3c48a8576f6db3009b9bf48"
+    },
+    {
+      "id": "backend-python313-threading",
+      "title": "Python 3.13 — Conditions, Permits And Build Scope",
+      "provider": "Python Software Foundation",
+      "url": "https://docs.python.org/3.13/library/threading.html",
+      "attribution": "Python 3.13 selected GIL/build, Condition and Semaphore/BoundedSemaphore sections. Original paper traces; no upstream code copied or threaded benchmark run.",
+      "lastVerifiedAt": "2026-10-04",
+      "upstream": {
+        "version": "Python 3.13 documentation",
+        "maturity": "published"
+      },
+      "sourcePath": "content/sources/backend-concurrency-patterns.json",
+      "contentHash": "96372f93bfee01fb51a31ac485065d1eddd71ae5a3c48a8576f6db3009b9bf48"
+    },
+    {
       "id": "codebase-memory-v011-contracts",
       "title": "Codebase Memory MCP — v0.11.0 Index Contracts",
       "provider": "DeusData",
@@ -11974,6 +12044,66 @@
       "readingMinutes": 2
     },
     {
+      "title": "Concurrency — Protect Transitions And Own Waiting",
+      "slug": "software-engineering/concurrency-boundaries",
+      "summary": "Review lost updates, predicate waiting, permit ownership and coordination scope through original bounded traces.",
+      "track": "Software Engineering",
+      "topic": "Concurrency",
+      "difficulty": "practitioner",
+      "tags": [
+        "concurrency",
+        "threads",
+        "synchronization",
+        "ownership"
+      ],
+      "prerequisites": [
+        "programming/python-runtime-model"
+      ],
+      "diagramRefs": [],
+      "sourceRefs": [
+        "backend-python313-threading",
+        "backend-java17-thread-states",
+        "backend-java17-memory-model"
+      ],
+      "status": "published",
+      "id": "6c38ee45f623",
+      "route": "/docs/software-engineering/concurrency-boundaries",
+      "sourcePath": "content/knowledge/software-engineering/concurrency-boundaries.md",
+      "bodyPath": "content/knowledge/software-engineering/concurrency-boundaries.md",
+      "markdown": "## Separate progress from simultaneous execution\n\nConcurrency lets multiple activities make progress; parallel execution requires simultaneous work. Neither promises a speedup for a particular workload. [Python 3.13 threading](https://docs.python.org/3.13/library/threading.html) shares process memory. Its usual CPython build has a GIL; experimental free-threaded builds differ. Record the interpreter/build and blocking/native workload before making a CPU-throughput claim.\n\nThe [Java SE 17 Thread.State reference](https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Thread.State.html) has six JVM states: NEW, RUNNABLE, BLOCKED, WAITING, TIMED_WAITING and TERMINATED. RUNNABLE is not proof of current CPU execution. A generic lifecycle diagram must not invent a separate RUNNING enum or equate JVM state with OS scheduling.\n\n## Protect the whole transition\n\nOriginal counter trace: A reads 0; B reads 0; A writes 1; B writes 1. Both increments attempted, but both workers write 1. Locking each individual read or write still permits this trace. Protect the entire read-modify-write transition using a mechanism valid for the declared sharing scope.\n\n[Java SE 17 memory-model sections 17.4.3–17.4.5](https://docs.oracle.com/javase/specs/jls/se17/html/jls-17.html) distinguish visibility/order from groups of operations requiring atomicity. In particular, a volatile counter increment is not one atomic transition. A successful compare-and-swap can guard one transition; it does not make arbitrary surrounding effects atomic. Define retries and side effects separately.\n\n## Wait for state, not a notification\n\nPython's Condition releases its associated lock during wait and reacquires it before returning. Its notify does not release the condition lock. Notifications are not durable reservations: recheck the predicate while holding its lock after waking, including timeout handling.\n\nOriginal trace: a producer adds one item and notifies A; before A regains the lock, B consumes the item. A must observe an empty buffer and keep waiting or take the declared timeout path. A single earlier notification cannot authorize removal from an empty buffer. Define shutdown and cancellation predicates alongside availability.\n\n## Account for permit ownership\n\nPython's semaphore acquisition can fail when a timeout expires. Track the result and release only a permit actually acquired. BoundedSemaphore detects releases beyond its initial bound; it cannot repair mistaken ownership or prove fairness.\n\nOriginal case: capacity is 2, two workers hold permits, and a third times out. The third worker has no permit to return. An unconditional cleanup release would invent capacity while the other two still work. Keep acquisition, resource cleanup and permit release within their declared lifetime.\n\n## Name the lifetime and coordination scope\n\nUse a consistent lock order where operations need multiple locks; a bounded wait needs a failure path and is not a deadlock-freedom proof. Separate active workers, queued work and request rate with the [traffic contract](/docs/system-design/traffic-rate-contracts).\n\nRemember that a process-local lock does not fence another process. If an old worker resumes after shared ownership has changed, use authoritative ownership and stale-worker rejection from the [durable transition review](/docs/software-engineering/product-interview-durable-generation-architecture). Locks, application authorization and durable effect receipts answer different questions.\n\nThese are original paper traces and source-linked reviews: no threaded benchmark or live scheduler was run. They do not implement every concurrency primitive or certify arbitrary runtimes. Complete the [Concurrency Boundary Checkpoint](/practice/software-engineering/concurrency-boundary-checkpoint).",
+      "plainText": "Separate progress from simultaneous execution Concurrency lets multiple activities make progress; parallel execution requires simultaneous work. Neither promises a speedup for a particular workload. Python 3.13 threading shares process memory. Its usual CPython build has a GIL; experimental free-threaded builds differ. Record the interpreter/build and blocking/native workload before making a CPU-throughput claim. The Java SE 17 Thread.State reference has six JVM states: NEW, RUNNABLE, BLOCKED, WAITING, TIMED_WAITING and TERMINATED. RUNNABLE is not proof of current CPU execution. A generic lifecycle diagram must not invent a separate RUNNING enum or equate JVM state with OS scheduling. Protect the whole transition Original counter trace: A reads 0; B reads 0; A writes 1; B writes 1. Both increments attempted, but both workers write 1. Locking each individual read or write still permits this trace. Protect the entire read-modify-write transition using a mechanism valid for the declared sharing scope. Java SE 17 memory-model sections 17.4.3–17.4.5 distinguish visibility/order from groups of operations requiring atomicity. In particular, a volatile counter increment is not one atomic transition. A successful compare-and-swap can guard one transition; it does not make arbitrary surrounding effects atomic. Define retries and side effects separately. Wait for state, not a notification Python's Condition releases its associated lock during wait and reacquires it before returning. Its notify does not release the condition lock. Notifications are not durable reservations: recheck the predicate while holding its lock after waking, including timeout handling. Original trace: a producer adds one item and notifies A; before A regains the lock, B consumes the item. A must observe an empty buffer and keep waiting or take the declared timeout path. A single earlier notification cannot authorize removal from an empty buffer. Define shutdown and cancellation predicates alongside availability. Account for permit ownership Python's semaphore acquisition can fail when a timeout expires. Track the result and release only a permit actually acquired. BoundedSemaphore detects releases beyond its initial bound; it cannot repair mistaken ownership or prove fairness. Original case: capacity is 2, two workers hold permits, and a third times out. The third worker has no permit to return. An unconditional cleanup release would invent capacity while the other two still work. Keep acquisition, resource cleanup and permit release within their declared lifetime. Name the lifetime and coordination scope Use a consistent lock order where operations need multiple locks; a bounded wait needs a failure path and is not a deadlock-freedom proof. Separate active workers, queued work and request rate with the traffic contract. Remember that a process-local lock does not fence another process. If an old worker resumes after shared ownership has changed, use authoritative ownership and stale-worker rejection from the durable transition review. Locks, application authorization and durable effect receipts answer different questions. These are original paper traces and source-linked reviews: no threaded benchmark or live scheduler was run. They do not implement every concurrency primitive or certify arbitrary runtimes. Complete the Concurrency Boundary Checkpoint.",
+      "headings": [
+        {
+          "id": "separate-progress-from-simultaneous-execution",
+          "depth": 2,
+          "text": "Separate progress from simultaneous execution"
+        },
+        {
+          "id": "protect-the-whole-transition",
+          "depth": 2,
+          "text": "Protect the whole transition"
+        },
+        {
+          "id": "wait-for-state-not-a-notification",
+          "depth": 2,
+          "text": "Wait for state, not a notification"
+        },
+        {
+          "id": "account-for-permit-ownership",
+          "depth": 2,
+          "text": "Account for permit ownership"
+        },
+        {
+          "id": "name-the-lifetime-and-coordination-scope",
+          "depth": 2,
+          "text": "Name the lifetime and coordination scope"
+        }
+      ],
+      "mermaidBlocks": [],
+      "contentHash": "54d5ab1cc1fef485b10c9d5b0317a676b5fcc5dff70a6c2d96e449c305ea6415",
+      "readingMinutes": 3
+    },
+    {
       "title": "Observability Signals For System Design Reviews",
       "slug": "software-engineering/observability-signals",
       "summary": "A practical framework for choosing logs, metrics, traces, and events that prove a system is understandable under failure.",
@@ -12037,6 +12167,65 @@
       ],
       "mermaidBlocks": [],
       "contentHash": "661a764aa04ee8ab014bc9fc201a4d95da863aa3e5fb870c3142ff7234d8108c",
+      "readingMinutes": 3
+    },
+    {
+      "title": "Design Patterns — Preserve Contracts Before Adding Indirection",
+      "slug": "software-engineering/pattern-selection-contracts",
+      "summary": "Choose a change axis, preserve substitution behavior, adapt units explicitly and review shared lifetimes through original cases.",
+      "track": "Software Engineering",
+      "topic": "Design Patterns",
+      "difficulty": "practitioner",
+      "tags": [
+        "design-patterns",
+        "contracts",
+        "composition",
+        "lifetime"
+      ],
+      "prerequisites": [
+        "software-engineering/concurrency-boundaries"
+      ],
+      "diagramRefs": [],
+      "sourceRefs": [
+        "backend-fowler-polymorphism",
+        "backend-dotnet-di-lifetimes"
+      ],
+      "status": "published",
+      "id": "36be94fef58c",
+      "route": "/docs/software-engineering/pattern-selection-contracts",
+      "sourcePath": "content/knowledge/software-engineering/pattern-selection-contracts.md",
+      "bodyPath": "content/knowledge/software-engineering/pattern-selection-contracts.md",
+      "markdown": "## Choose the change axis\n\nA pattern names a recurring design relationship; pattern counts are not a seniority standard. Identify what changes independently, who calls it and which behavior must remain stable. A small conditional over a closed, stable set can be simpler than a family of interchangeable objects.\n\nMartin Fowler's [Replace Conditional with Polymorphism catalog entry](https://refactoring.com/catalog/replaceConditionalWithPolymorphism.html) illustrates dispatching type-specific behavior through objects. Use it as a selected refactoring reference, not an instruction to replace every conditional. The original cases below copy none of its code.\n\n## Preserve the substitution contract\n\nOriginal quote-review case: two shipping policies accept the same validated package description and return the same documented quote shape. A Strategy-like boundary lets the caller select policy while keeping accepted input, result units and failure behavior stable.\n\nEvery substitute must preserve accepted inputs, results and errors across every implementation and caller. A substitute that silently returns zero when dimensions are invalid violates that contract. Creation through a factory does not by itself repair the violation or justify additional abstraction. Add comparative cases for each implementation before calling a change behavior-preserving.\n\n## Adapt units without hiding failures\n\nAn Adapter-like boundary translates an existing interface into the caller's required contract. Original case: a provider supplies the decimal string 12.50 and currency USD; the caller needs integer cents and a currency code. Under that explicit decimal/unit contract, 12.50 USD becomes 1250 cents.\n\nValidate currency, precision, rounding and missing/error states. A string conversion that drops currency or turns unknown input into zero hides failure. This is a paper representation exercise, not a payment parser or currency-conversion implementation. Do not confuse format conversion with authorization.\n\n## Wrap one call without changing its outcome\n\nA Decorator-like composition can add behavior around an operation while keeping the caller's interface. Original logging case: invoke the underlying operation once, preserve its returned value or propagated exception, and record the declared observation.\n\nIn particular, a logging wrapper must not turn an exception into success or secretly repeat an effect. Instrumentation itself can fail; state its failure policy separately instead of assuming it cannot affect the call. Adding wrappers also changes ordering and lifetime obligations, so test the composed caller, not just each isolated wrapper.\n\n## Own shared state and lifetimes\n\nMicrosoft's [dependency-injection guidelines](https://learn.microsoft.com/en-us/dotnet/core/extensions/dependency-injection/guidelines), selected Thread safety and Recommendations sections, separate container construction/resolution safety from service-instance synchronization. Singleton lifetime is not an automatic correctness guarantee: one construction does not make shared state thread-safe.\n\nReview who owns disposal and which request/tenant state may be shared. Review scope: a request-scoped dependency must not become global by accident. Make dependencies explicit so tests can substitute them without leaving state in a global registry; relate shared transitions to the [concurrency review](/docs/software-engineering/concurrency-boundaries).\n\nRecord the change axis, current simple alternative, input/output/error contract, ownership/lifetime and comparative test evidence. These are selected original contract cases; no complete design-pattern catalog or installed framework was tested. Complete the [Pattern Selection Checkpoint](/practice/software-engineering/pattern-selection-checkpoint).",
+      "plainText": "Choose the change axis A pattern names a recurring design relationship; pattern counts are not a seniority standard. Identify what changes independently, who calls it and which behavior must remain stable. A small conditional over a closed, stable set can be simpler than a family of interchangeable objects. Martin Fowler's Replace Conditional with Polymorphism catalog entry illustrates dispatching type-specific behavior through objects. Use it as a selected refactoring reference, not an instruction to replace every conditional. The original cases below copy none of its code. Preserve the substitution contract Original quote-review case: two shipping policies accept the same validated package description and return the same documented quote shape. A Strategy-like boundary lets the caller select policy while keeping accepted input, result units and failure behavior stable. Every substitute must preserve accepted inputs, results and errors across every implementation and caller. A substitute that silently returns zero when dimensions are invalid violates that contract. Creation through a factory does not by itself repair the violation or justify additional abstraction. Add comparative cases for each implementation before calling a change behavior-preserving. Adapt units without hiding failures An Adapter-like boundary translates an existing interface into the caller's required contract. Original case: a provider supplies the decimal string 12.50 and currency USD; the caller needs integer cents and a currency code. Under that explicit decimal/unit contract, 12.50 USD becomes 1250 cents. Validate currency, precision, rounding and missing/error states. A string conversion that drops currency or turns unknown input into zero hides failure. This is a paper representation exercise, not a payment parser or currency-conversion implementation. Do not confuse format conversion with authorization. Wrap one call without changing its outcome A Decorator-like composition can add behavior around an operation while keeping the caller's interface. Original logging case: invoke the underlying operation once, preserve its returned value or propagated exception, and record the declared observation. In particular, a logging wrapper must not turn an exception into success or secretly repeat an effect. Instrumentation itself can fail; state its failure policy separately instead of assuming it cannot affect the call. Adding wrappers also changes ordering and lifetime obligations, so test the composed caller, not just each isolated wrapper. Own shared state and lifetimes Microsoft's dependency-injection guidelines, selected Thread safety and Recommendations sections, separate container construction/resolution safety from service-instance synchronization. Singleton lifetime is not an automatic correctness guarantee: one construction does not make shared state thread-safe. Review who owns disposal and which request/tenant state may be shared. Review scope: a request-scoped dependency must not become global by accident. Make dependencies explicit so tests can substitute them without leaving state in a global registry; relate shared transitions to the concurrency review. Record the change axis, current simple alternative, input/output/error contract, ownership/lifetime and comparative test evidence. These are selected original contract cases; no complete design-pattern catalog or installed framework was tested. Complete the Pattern Selection Checkpoint.",
+      "headings": [
+        {
+          "id": "choose-the-change-axis",
+          "depth": 2,
+          "text": "Choose the change axis"
+        },
+        {
+          "id": "preserve-the-substitution-contract",
+          "depth": 2,
+          "text": "Preserve the substitution contract"
+        },
+        {
+          "id": "adapt-units-without-hiding-failures",
+          "depth": 2,
+          "text": "Adapt units without hiding failures"
+        },
+        {
+          "id": "wrap-one-call-without-changing-its-outcome",
+          "depth": 2,
+          "text": "Wrap one call without changing its outcome"
+        },
+        {
+          "id": "own-shared-state-and-lifetimes",
+          "depth": 2,
+          "text": "Own shared state and lifetimes"
+        }
+      ],
+      "mermaidBlocks": [],
+      "contentHash": "190bd4dbebf9f0d4f2061dc8d946b515d158622c0c35009a5c74b8adbfe684f5",
       "readingMinutes": 3
     },
     {
@@ -13450,12 +13639,42 @@
               "slug": "software-engineering/progressive-state-checkpoint"
             }
           ]
+        },
+        {
+          "slug": "concurrency-boundaries",
+          "title": "Concurrency Boundaries",
+          "summary": "Review compound transitions, predicate waits and scoped ownership.",
+          "nodes": [
+            {
+              "kind": "document",
+              "slug": "software-engineering/concurrency-boundaries"
+            },
+            {
+              "kind": "exercise",
+              "slug": "software-engineering/concurrency-boundary-checkpoint"
+            }
+          ]
+        },
+        {
+          "slug": "pattern-selection",
+          "title": "Pattern Selection Contracts",
+          "summary": "Choose variation boundaries while preserving caller behavior and shared lifetimes.",
+          "nodes": [
+            {
+              "kind": "document",
+              "slug": "software-engineering/pattern-selection-contracts"
+            },
+            {
+              "kind": "exercise",
+              "slug": "software-engineering/pattern-selection-checkpoint"
+            }
+          ]
         }
       ],
       "id": "b4f512be8f33",
       "route": "/paths/backend-engineer-readiness",
       "sourcePath": "content/learning-paths/backend-engineer-readiness.json",
-      "contentHash": "8b33aca7240b6a451fdbdc6bcb144cbff5a38f2c7ccfab4271231339bd5abb41"
+      "contentHash": "65106f8708e42c0fb715d0bfb045d9821b49dea2b24ba90eaa8f6d787dc3d26a"
     },
     {
       "slug": "breadth-first-and-depth-first-search",
@@ -32936,6 +33155,146 @@
       "contentHash": "ceae32b04d6ee0c326c6229780be34680d0b56dbb24fa58e7a1f4c49adf42393"
     },
     {
+      "slug": "software-engineering/concurrency-boundary-checkpoint",
+      "title": "Concurrency Boundary Checkpoint",
+      "documentSlug": "software-engineering/concurrency-boundaries",
+      "concept": "Concurrency",
+      "difficulty": "practitioner",
+      "tags": [
+        "contracts",
+        "backend",
+        "review"
+      ],
+      "status": "published",
+      "sourceRefs": [
+        "backend-python313-threading",
+        "backend-java17-thread-states",
+        "backend-java17-memory-model"
+      ],
+      "type": "questionnaire",
+      "questions": [
+        {
+          "id": "lost-update",
+          "prompt": "A reads 0; B reads 0; A writes 1; B writes 1 for two increments. What follows?",
+          "explanation": "Visibility of individual reads/writes does not protect their compound transition.",
+          "kind": "choice",
+          "options": [
+            {
+              "id": "option-0",
+              "label": "The trace can finish at 1; protect the whole read-modify-write transition.",
+              "isCorrect": true
+            },
+            {
+              "id": "option-1",
+              "label": "The final value must be 2 because every individual read/write is visible.",
+              "isCorrect": false
+            },
+            {
+              "id": "option-2",
+              "label": "Marking the counter volatile makes the increment atomic.",
+              "isCorrect": false
+            }
+          ]
+        },
+        {
+          "id": "predicate-wait",
+          "prompt": "A is notified about an item, but B consumes it before A reacquires the condition lock. What should A do?",
+          "explanation": "The predicate can cease to hold before the awakened waiter regains the lock.",
+          "kind": "choice",
+          "options": [
+            {
+              "id": "option-0",
+              "label": "Recheck the predicate under the reacquired condition lock; notification is not a reserved item.",
+              "isCorrect": true
+            },
+            {
+              "id": "option-1",
+              "label": "Consume without checking because notification reserves the item for A.",
+              "isCorrect": false
+            },
+            {
+              "id": "option-2",
+              "label": "Assume notify released the lock and gave A exclusive ownership.",
+              "isCorrect": false
+            }
+          ]
+        },
+        {
+          "id": "permit-timeout",
+          "prompt": "Two permits are held. A third worker times out while acquiring. What should its permit cleanup do?",
+          "explanation": "Cleanup must track successful acquisition; no permit was obtained by the timed-out worker.",
+          "kind": "choice",
+          "options": [
+            {
+              "id": "option-0",
+              "label": "Do not release: no permit was acquired, and unconditional release corrupts capacity accounting.",
+              "isCorrect": true
+            },
+            {
+              "id": "option-1",
+              "label": "Release unconditionally because cleanup must always increase available capacity.",
+              "isCorrect": false
+            },
+            {
+              "id": "option-2",
+              "label": "Treat the timeout as success and start work without a permit.",
+              "isCorrect": false
+            }
+          ]
+        },
+        {
+          "id": "jvm-state",
+          "prompt": "Java SE 17 reports RUNNABLE. What is established?",
+          "explanation": "The JVM state does not map directly to operating-system scheduling.",
+          "kind": "choice",
+          "options": [
+            {
+              "id": "option-0",
+              "label": "RUNNABLE is a JVM state; it does not prove the thread currently owns a CPU.",
+              "isCorrect": true
+            },
+            {
+              "id": "option-1",
+              "label": "The thread is necessarily executing on a CPU at this instant.",
+              "isCorrect": false
+            },
+            {
+              "id": "option-2",
+              "label": "The enum has a separate RUNNING state that proves simultaneous execution.",
+              "isCorrect": false
+            }
+          ]
+        },
+        {
+          "id": "process-scope",
+          "prompt": "An old worker in another process resumes after shared ownership changes. Does a mutex in the new worker suffice?",
+          "explanation": "Coordination scope, authorization and durable effect receipts are independent obligations.",
+          "kind": "choice",
+          "options": [
+            {
+              "id": "option-0",
+              "label": "Use shared authoritative ownership and stale-worker rejection; a local mutex alone cannot fence another process.",
+              "isCorrect": true
+            },
+            {
+              "id": "option-1",
+              "label": "Yes; a process-local mutex automatically locks all other processes.",
+              "isCorrect": false
+            },
+            {
+              "id": "option-2",
+              "label": "Yes; application authorization alone deduplicates every external effect.",
+              "isCorrect": false
+            }
+          ]
+        }
+      ],
+      "id": "90616ca60ddc",
+      "route": "/practice/software-engineering/concurrency-boundary-checkpoint",
+      "sourcePath": "content/exercises/software-engineering/concurrency-boundary-checkpoint.json",
+      "contentHash": "f854319a75dca3c40156f1526274aee20c6bf0e573b1800ee2d390989b599168"
+    },
+    {
       "slug": "software-engineering/durable-retry-lab-checkpoint",
       "title": "Durable Retry Lab Checkpoint",
       "documentSlug": "software-engineering/product-interview-durable-generation-architecture",
@@ -33071,6 +33430,145 @@
       "route": "/practice/software-engineering/observability-signal-roles",
       "sourcePath": "content/exercises/software-engineering/observability-signal-roles.json",
       "contentHash": "8580a63ea88b9a410cec6332d98168831da72cdda171d2dbcc321efebe241af0"
+    },
+    {
+      "slug": "software-engineering/pattern-selection-checkpoint",
+      "title": "Pattern Selection Checkpoint",
+      "documentSlug": "software-engineering/pattern-selection-contracts",
+      "concept": "Design Patterns",
+      "difficulty": "practitioner",
+      "tags": [
+        "contracts",
+        "backend",
+        "review"
+      ],
+      "status": "published",
+      "sourceRefs": [
+        "backend-fowler-polymorphism",
+        "backend-dotnet-di-lifetimes"
+      ],
+      "type": "questionnaire",
+      "questions": [
+        {
+          "id": "change-axis",
+          "prompt": "A small conditional handles a closed, stable set. What justifies adding interchangeable policy objects?",
+          "explanation": "Complexity needs an actual variation/ownership reason, not a title or count.",
+          "kind": "choice",
+          "options": [
+            {
+              "id": "option-0",
+              "label": "Keep the simple conditional until an actual change axis justifies extra indirection.",
+              "isCorrect": true
+            },
+            {
+              "id": "option-1",
+              "label": "Replace every conditional because more pattern names always improve design.",
+              "isCorrect": false
+            },
+            {
+              "id": "option-2",
+              "label": "Apply a minimum pattern count based on the developer’s seniority.",
+              "isCorrect": false
+            }
+          ]
+        },
+        {
+          "id": "substitution",
+          "prompt": "Two interchangeable shipping policies must preserve what?",
+          "explanation": "A common interface name does not establish behavioral substitution.",
+          "kind": "choice",
+          "options": [
+            {
+              "id": "option-0",
+              "label": "Preserve accepted inputs, returned values and errors across every strategy and caller.",
+              "isCorrect": true
+            },
+            {
+              "id": "option-1",
+              "label": "Return zero for invalid input in one policy to simplify its callers.",
+              "isCorrect": false
+            },
+            {
+              "id": "option-2",
+              "label": "Only preserve the class name; units and errors can change silently.",
+              "isCorrect": false
+            }
+          ]
+        },
+        {
+          "id": "unit-adapter",
+          "prompt": "The provider gives decimal string 12.50 and currency USD; the caller requires integer cents and currency. What should the adapter do?",
+          "explanation": "Validation, currency, precision and error states belong in the declared translation contract.",
+          "kind": "choice",
+          "options": [
+            {
+              "id": "option-0",
+              "label": "Convert 12.50 USD to 1250 cents under an explicit currency/unit contract; reject ambiguous input.",
+              "isCorrect": true
+            },
+            {
+              "id": "option-1",
+              "label": "Drop the currency and pass numeric 12.50 as if it were 1250 cents.",
+              "isCorrect": false
+            },
+            {
+              "id": "option-2",
+              "label": "Turn missing or invalid input into zero without exposing failure.",
+              "isCorrect": false
+            }
+          ]
+        },
+        {
+          "id": "wrapper-outcome",
+          "prompt": "A logging wrapper surrounds an effectful operation. What caller contract must be reviewed?",
+          "explanation": "Wrapping can change effect count, error behavior and ordering; instrumentation failures need a separate policy.",
+          "kind": "choice",
+          "options": [
+            {
+              "id": "option-0",
+              "label": "Invoke the underlying operation once and preserve its result or exception; define instrumentation failure policy separately.",
+              "isCorrect": true
+            },
+            {
+              "id": "option-1",
+              "label": "Catch every exception and return success so logs remain quiet.",
+              "isCorrect": false
+            },
+            {
+              "id": "option-2",
+              "label": "Retry secretly inside logging so one visible call always produces an outcome.",
+              "isCorrect": false
+            }
+          ]
+        },
+        {
+          "id": "singleton-scope",
+          "prompt": "The DI container constructs one shared service instance safely. What remains?",
+          "explanation": "Container resolution safety does not make the instance’s state thread-safe or repair captured dependency scopes.",
+          "kind": "choice",
+          "options": [
+            {
+              "id": "option-0",
+              "label": "Check shared-state synchronization and dependency scope; one construction does not make the instance safe.",
+              "isCorrect": true
+            },
+            {
+              "id": "option-1",
+              "label": "Construction safety proves all mutable state is safe across requests.",
+              "isCorrect": false
+            },
+            {
+              "id": "option-2",
+              "label": "Store request/tenant state globally because the service exists only once.",
+              "isCorrect": false
+            }
+          ]
+        }
+      ],
+      "id": "7268d99f0edc",
+      "route": "/practice/software-engineering/pattern-selection-checkpoint",
+      "sourcePath": "content/exercises/software-engineering/pattern-selection-checkpoint.json",
+      "contentHash": "34be09e47a69c0176dd56f92d9a0053c9b004942467755b6f22b461bb8836f50"
     },
     {
       "slug": "software-engineering/product-interview-durable-generation-architecture-questionnaire",
@@ -159483,12 +159981,14 @@
     {
       "name": "Software Engineering",
       "slug": "software-engineering",
-      "documentCount": 6,
+      "documentCount": 8,
       "difficulties": [
         "practitioner",
         "senior"
       ],
       "topics": [
+        "Concurrency",
+        "Design Patterns",
         "Interview Preparation",
         "Observability",
         "State And History"

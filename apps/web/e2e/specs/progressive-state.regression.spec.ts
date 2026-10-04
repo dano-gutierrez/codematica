@@ -11,13 +11,13 @@ test("@regression follows Backend reservation review into progressive history pr
         "Completion is ineligible; expiry may win the guarded transition.",
         "Enforce overlap exclusion for the same room; adjacent half-open stays may coexist.",
         "Commit the guarded transition to expired; elapsed time alone does not remove the hold from the constraint.",
-      ], next: "/docs/software-engineering/progressive-state-history?path=backend-engineer-readiness" },
+      ], next: "/docs/software-engineering/progressive-state-history?path=backend-engineer-readiness", title: "Progressive State — Preserve History When Entities Merge", section: "Merge current state without rewriting history", checkpoint: "progressive-state-checkpoint" },
     { answers: [
         "A at time 4 remains 7; only the merge-time and later target balance includes B.",
         "B retains its earlier balance, returns None from retirement onward, and its ID cannot be reused.",
         "Reject before recording state or advancing the clock; a valid operation may still use that timestamp.",
         "The sequential bounded state/history contract; persistence, concurrency and real payments need separate design and tests.",
-      ] },
+      ], next: "/docs/software-engineering/concurrency-boundaries?path=backend-engineer-readiness", title: "Concurrency — Protect Transitions And Own Waiting", section: "Protect the whole transition", checkpoint: "concurrency-boundary-checkpoint" },
   ];
   for (const stage of stages) {
     await expect(page.getByTestId("questionnaire-session")).toHaveAttribute("data-ready", "true");
@@ -35,10 +35,10 @@ test("@regression follows Backend reservation review into progressive history pr
       await expect(page.getByRole("link",{ name: "Next activity"})).toHaveAttribute("href",stage.next);
       await page.getByRole("link",{ name: "Next activity"}).click();
       await expect(page).toHaveURL(stage.next);
-      await expect(page.getByRole("heading",{level:1})).toHaveText("Progressive State — Preserve History When Entities Merge");
-      await expect(page.getByRole("heading",{ name: "Merge current state without rewriting history", exact: true})).toBeVisible();
+      await expect(page.getByRole("heading",{level:1})).toHaveText(stage.title);
+      await expect(page.getByRole("heading",{ name: stage.section, exact: true})).toBeVisible();
       await page.getByTestId("document-next-node").click();
-      await expect(page).toHaveURL("/practice/software-engineering/progressive-state-checkpoint?path=backend-engineer-readiness");
+      await expect(page).toHaveURL(`/practice/software-engineering/${stage.checkpoint}?path=backend-engineer-readiness`);
     } else await expect(page.getByRole("link",{ name: "Next activity"})).toHaveCount(0);
   }
 });

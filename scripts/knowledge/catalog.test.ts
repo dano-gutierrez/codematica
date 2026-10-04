@@ -11,6 +11,19 @@ beforeAll(async () => {
 function freshContent() { return structuredClone(validatedIndex); }
 
 describe("complete knowledge catalog", () => {
+  it.each([
+    ["concurrency-boundaries","concurrency-boundary-checkpoint",4,["backend-python313-threading","backend-java17-thread-states","backend-java17-memory-model"]],
+    ["pattern-selection-contracts","pattern-selection-checkpoint",5,["backend-fowler-polymorphism","backend-dotnet-di-lifetimes"]],
+  ] as const)("exports scoped backend review %s",(slug,checkpoint,order,sources)=>{
+    const graph=buildKnowledgeCatalog(freshContent()),lesson=`document:software-engineering/${slug}`,quiz=`exercise:software-engineering/${checkpoint}`,unit=`unit:backend-engineer-readiness:${order===4?"concurrency-boundaries":"pattern-selection"}`;
+    for(const id of [lesson,quiz,unit])expect(graph.resources.find(r=>r.id===id)).toMatchObject({visibility:"curriculum",status:"published"});
+    for(const [source,target,position]of [["path:backend-engineer-readiness",unit,order],[unit,lesson,0],[unit,quiz,1]] as const)expect(graph.relationships).toContainEqual(expect.objectContaining({source,target,type:"contains",order:position,provenance:"explicit"}));
+    expect(graph.relationships).toContainEqual(expect.objectContaining({source:quiz,target:lesson,type:"assesses",provenance:"explicit"}));
+    const prerequisite=order===4?"document:programming/python-runtime-model":"document:software-engineering/concurrency-boundaries";
+    expect(graph.relationships).toContainEqual(expect.objectContaining({source:lesson,target:prerequisite,type:"requires",provenance:"explicit"}));
+    for(const id of sources)for(const source of [lesson,quiz])expect(graph.relationships).toContainEqual(expect.objectContaining({source,target:"source:"+id,type:"cites",provenance:"explicit"}));
+    expect(graph.unresolved.some(r=>[lesson,quiz,unit].includes(r.resourceId))).toBe(false);
+  });
   it("exports video review with stable identities and explicit path/citation evidence", () => {
     const graph = buildKnowledgeCatalog(freshContent());
     const lesson = "document:system-design/video-delivery-boundaries", quiz = "exercise:system-design/video-delivery-checkpoint", unit = "unit:system-design-fundamentals:video-delivery";
