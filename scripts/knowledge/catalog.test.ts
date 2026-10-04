@@ -11,6 +11,16 @@ beforeAll(async () => {
 function freshContent() { return structuredClone(validatedIndex); }
 
 describe("complete knowledge catalog", () => {
+  it("exports bounded keypad practice with explicit identities and evidence", () => {
+    const graph = buildKnowledgeCatalog(freshContent());
+    const lesson = "document:programming/keypad-dictionary-search", quiz = "exercise:programming/keypad-search-checkpoint", unit = "unit:coding-interview-pattern-practice:keypad-dictionary-search";
+    for (const id of [lesson, quiz, unit]) expect(graph.resources.find(r => r.id === id)).toMatchObject({ visibility: "curriculum", status: "published" });
+    for (const [source, target, order] of [["path:coding-interview-pattern-practice", unit, 7], [unit, lesson, 0], [unit, quiz, 1]] as const) expect(graph.relationships).toContainEqual(expect.objectContaining({ source, target, type: "contains", order, provenance: "explicit" }));
+    expect(graph.relationships).toContainEqual(expect.objectContaining({ source: quiz, target: lesson, type: "assesses", provenance: "explicit" }));
+    for (const target of ["document:programming/python-runtime-model", "document:programming/bfs-dfs-interview-patterns"]) expect(graph.relationships).toContainEqual(expect.objectContaining({ source: lesson, target, type: "requires", provenance: "explicit" }));
+    for (const id of ["keypad-python313-mappings", "keypad-python313-product"]) for (const source of [lesson, quiz]) expect(graph.relationships).toContainEqual(expect.objectContaining({ source, target: "source:" + id, type: "cites", provenance: "explicit" }));
+    expect(graph.unresolved.some(r => [lesson, quiz, unit].includes(r.resourceId))).toBe(false);
+  });
   it.each([
     ["concurrency-boundaries","concurrency-boundary-checkpoint",4,["backend-python313-threading","backend-java17-thread-states","backend-java17-memory-model"]],
     ["pattern-selection-contracts","pattern-selection-checkpoint",5,["backend-fowler-polymorphism","backend-dotnet-di-lifetimes"]],
@@ -152,7 +162,7 @@ describe("complete knowledge catalog", () => {
     expect(graph.resources.find(resource => resource.id === question)?.paths).toContain(path);
     expect(graph.resources.find(resource => resource.id === "document:programming/bfs-dfs-fundamentals")?.paths).toEqual(expect.arrayContaining([path, "path:breadth-first-and-depth-first-search"]));
     const pattern = validatedIndex.learningPaths.find(resource => resource.slug === "coding-interview-pattern-practice")!;
-    expect(graph.relationships.filter(edge => edge.source.startsWith("unit:coding-interview-pattern-practice:") && edge.type === "contains")).toHaveLength(24);
+    expect(graph.relationships.filter(edge => edge.source.startsWith("unit:coding-interview-pattern-practice:") && edge.type === "contains")).toHaveLength(26);
     for (const unit of pattern.units) for (const [order, node] of unit.nodes.entries()) {
       const target = `${node.kind === "interview" ? "interview-question" : node.kind}:${node.slug}`;
       expect(graph.relationships).toContainEqual(expect.objectContaining({ source: `unit:coding-interview-pattern-practice:${unit.slug}`, target, type: "contains", order, provenance: "explicit" }));

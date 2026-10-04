@@ -1,0 +1,28 @@
+{
+  "sources": [
+    {
+      "id": "keypad-python313-mappings",
+      "title": "Python 3.13 \u2014 Mutable Sequences And Mappings",
+      "provider": "Python Software Foundation",
+      "url": "https://docs.python.org/3.13/library/stdtypes.html",
+      "attribution": "Python 3.13 selected mutable sequences and mappings: get/setdefault, append/pop and shared mutable references. Original bounded trie/scan code; no upstream examples copied.",
+      "lastVerifiedAt": "2026-10-04",
+      "upstream": {
+        "version": "Python 3.13 documentation (displayed 3.13.16 at check)",
+        "maturity": "published"
+      }
+    },
+    {
+      "id": "keypad-python313-product",
+      "title": "Python 3.13 \u2014 Finite Cartesian Product Fixtures",
+      "provider": "Python Software Foundation",
+      "url": "https://docs.python.org/3.13/library/itertools.html#itertools.product",
+      "attribution": "Python 3.13 itertools.product selected finite input pools and product ordering. Original finite test fixtures, not an unrestricted keypad search.",
+      "lastVerifiedAt": "2026-10-04",
+      "upstream": {
+        "version": "Python 3.13 documentation (displayed 3.13.16 at check)",
+        "maturity": "published"
+      }
+    }
+  ]
+}

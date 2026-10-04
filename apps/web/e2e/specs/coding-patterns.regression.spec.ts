@@ -3,7 +3,7 @@ import { expect, test } from "@playwright/test";
 test("@regression follows existing coding patterns through an explanation to the next question", async ({ page }) => {
   await page.goto("/paths/coding-interview-pattern-practice");
   await expect(page.getByRole("heading", { level: 1 })).toHaveText("Coding Interview Pattern Practice");
-  await expect(page.getByText(/Backtracking and comprehensive dynamic programming are outside this path/)).toBeVisible();
+  await expect(page.getByText(/Full backtracking and comprehensive dynamic programming are outside this path/)).toBeVisible();
   await page.getByTestId("path-node-interview-amazon-two-sum-product-pair").click();
   await expect(page).toHaveURL(/two-sum-product-pair\?path=coding-interview-pattern-practice/);
   await expect(page.getByTestId("interview-next-node")).toHaveCount(0);
@@ -41,7 +41,7 @@ for (const path of ["__proto__", "toString"]) {
   });
 }
 
-test("@regression reads original array contracts and completes their terminal checkpoint", async ({ page }) => {
+test("@regression reads original array contracts and continues to bounded dictionary practice", async ({ page }) => {
   await page.goto("/paths/coding-interview-pattern-practice");
   await expect(page.getByTestId("path-node-document-programming-array-state-invariants")).toBeVisible();
   await page.getByTestId("path-node-interview-uber-shortest-path-weighted-road-graph").click();
@@ -75,5 +75,7 @@ test("@regression reads original array contracts and completes their terminal ch
     await page.getByRole("button", { name: index === answers.length - 1 ? "Finish" : "Next", exact: true }).click();
   }
   await expect(page.getByText("Score 100%", { exact: true })).toBeVisible();
-  await expect(page.getByRole("link", { name: "Next activity" })).toHaveCount(0);
+  await expect(page.getByRole("link", { name: "Next activity" })).toHaveAttribute("href", "/docs/programming/keypad-dictionary-search?path=coding-interview-pattern-practice");
+  await page.getByRole("link", { name: "Next activity" }).click();
+  await expect(page.getByRole("heading", { level: 1 })).toHaveText("Keypad Dictionary Search — Bound The Branch And Preserve The Word");
 });

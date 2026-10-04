@@ -128,7 +128,7 @@ describe("generated content index", () => {
   it("groups existing coding walkthroughs by pattern without duplicating questions", () => {
     const path = getLearningPathBySlug("coding-interview-pattern-practice");
     expect(path?.kind).toBe("skill");
-    expect(path?.units.map(unit => unit.slug)).toEqual(["foundations", "contiguous-data", "ordered-data", "trees-and-structure", "bounded-caches", "graph-decisions", "array-state-reviews"]);
+    expect(path?.units.map(unit => unit.slug)).toEqual(["foundations", "contiguous-data", "ordered-data", "trees-and-structure", "bounded-caches", "graph-decisions", "array-state-reviews", "keypad-dictionary-search"]);
     const nodes = path!.units.flatMap(unit => unit.nodes);
     const questions = nodes.filter(node => node.kind === "interview");
     expect(questions.map(node => node.slug)).toEqual([
@@ -142,7 +142,7 @@ describe("generated content index", () => {
     expect(new Set(questions.map(node => node.slug)).size).toBe(18);
     expect(getContentIndex().interviewCollections.flatMap(collection => collection.questions).filter(question => question.kind === "algorithm")).toHaveLength(27);
     expect(getNextPathNodeRoute(path!.slug, nodes[0])).toBe("/interviews/apple/validate-parentheses-stream?path=coding-interview-pattern-practice");
-    expect(path?.summary).toContain("Backtracking and comprehensive dynamic programming are outside this path");
+    expect(path?.summary).toContain("Full backtracking and comprehensive dynamic programming are outside this path");
     expect(path?.progression).toBeUndefined();
   });
 

@@ -50,3 +50,5 @@ The four-question Durable Retry Lab and six-question Reservation Boundary checkp
 The four-question Routing Decision checkpoint covers workload signals, IP affinity, eligibility and toy-versus-proxy scope. Its standalone Python lab runs outside the app; quiz scoring performs no routing or broker operations.
 
 The Backend concurrency and pattern-selection checkpoints each use five original scenario choices. They test compound transitions, predicate waits, permit ownership, JVM/process scope and behavioral substitution/unit/wrapper/lifetime contracts. Scoring executes no threaded service or framework code; it does not certify an entire primitive/pattern catalog.
+
+The Keypad Search checkpoint has five original choices about closed dictionary membership, prefix terminals, branch/result ownership, validation before shortcuts and reference costs. Its lesson's bounded Python fence runs only in the allowlisted isolated verifier, outside the app. The quiz neither executes learner code nor certifies a full T9 product or backtracking syllabus.

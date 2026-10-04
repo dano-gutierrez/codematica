@@ -10,6 +10,10 @@ ROOT = Path(__file__).resolve().parents[2]
 
 
 class AuthoredLabs(unittest.TestCase):
+    def test_keypad_dictionary_search(self):
+        self.run_lab("content/knowledge/programming/keypad-dictionary-search.md",
+                     "closed dictionary, prefix terminals, branch rollback, validation and independent scan: passed")
+
     def test_progressive_state_history(self):
         self.run_lab("content/knowledge/software-engineering/progressive-state-history.md",
                      "time, rejected state, conserved transfers, retirement and bounded replay: passed")

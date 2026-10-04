@@ -24,11 +24,11 @@ describe("original array state practice", () => {
 
   it("appends the review without replacing existing interview identities", () => {
     const path = getLearningPathBySlug("coding-interview-pattern-practice")!;
-    expect(path.units.map(unit => unit.slug)).toEqual(["foundations", "contiguous-data", "ordered-data", "trees-and-structure", "bounded-caches", "graph-decisions", "array-state-reviews"]);
+    expect(path.units.map(unit => unit.slug)).toEqual(["foundations", "contiguous-data", "ordered-data", "trees-and-structure", "bounded-caches", "graph-decisions", "array-state-reviews", "keypad-dictionary-search"]);
     expect(path.units.flatMap(unit => unit.nodes).filter(node => node.kind === "interview")).toHaveLength(18);
-    expect(path.units.at(-1)?.nodes).toEqual([{ kind: "document", slug: "programming/array-state-invariants" }, { kind: "exercise", slug: "programming/array-state-checkpoint" }]);
+    expect(path.units[6]?.nodes).toEqual([{ kind: "document", slug: "programming/array-state-invariants" }, { kind: "exercise", slug: "programming/array-state-checkpoint" }]);
     expect(getNextPathNodeRoute(path.slug, { kind: "interview", slug: "uber/shortest-path-weighted-road-graph" })).toBe("/docs/programming/array-state-invariants?path=coding-interview-pattern-practice");
     expect(getNextPathNodeRoute(path.slug, { kind: "document", slug: "programming/array-state-invariants" })).toBe("/practice/programming/array-state-checkpoint?path=coding-interview-pattern-practice");
-    expect(getNextPathNodeRoute(path.slug, { kind: "exercise", slug: "programming/array-state-checkpoint" })).toBeUndefined();
+    expect(getNextPathNodeRoute(path.slug, { kind: "exercise", slug: "programming/array-state-checkpoint" })).toBe("/docs/programming/keypad-dictionary-search?path=coding-interview-pattern-practice");
   });
 });
