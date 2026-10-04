@@ -1,0 +1,57 @@
+{
+  "slug": "system-design/client-compatibility-checkpoint",
+  "title": "Client Compatibility Checkpoint",
+  "type": "questionnaire",
+  "documentSlug": "system-design/client-compatibility-contracts",
+  "concept": "Client Compatibility",
+  "difficulty": "practitioner",
+  "tags": ["api", "compatibility", "server-driven-ui"],
+  "status": "published",
+  "sourceRefs": ["duolingo-server-driven-ui", "google-aip-180-compatibility"],
+  "questions": [
+    {
+      "id": "cached-layout",
+      "kind": "choice",
+      "prompt": "An old client cannot render a new carousel, but has a compatible cached text layout and supports the fresh data contract. What plan is valid?",
+      "options": [
+        {"id":"option-0","label":"Reuse a compatible cached layout with supported fresh data; a version number alone does not prove component support.","isCorrect":true},
+        {"id":"option-1","label":"Render the unknown carousel because a server response guarantees client support.","isCorrect":false},
+        {"id":"option-2","label":"Treat a supported layout version as proof that every component is supported.","isCorrect":false}
+      ],
+      "explanation": "Selection checks the layout version, component capabilities and matching supported data contract independently. A cached compatible configuration can be useful; it cannot teach the client a new component."
+    },
+    {
+      "id": "cold-start",
+      "kind": "choice",
+      "prompt": "After reinstall, the client has no cached configuration and cannot render the fresh layout. What can the review conclude?",
+      "options": [
+        {"id":"option-0","label":"Use an explicit unavailable or upgrade state; no compatible cached layout was established.","isCorrect":true},
+        {"id":"option-1","label":"The client must have the previous layout because another device once cached it.","isCorrect":false},
+        {"id":"option-2","label":"Fresh data alone guarantees an old client can reconstruct any new layout.","isCorrect":false}
+      ],
+      "explanation": "Cached fallback requires an actual compatible configuration. The toy reports unavailable when none exists. A bundled fallback is a separate product implementation that must be tested, not assumed from a case study."
+    },
+    {
+      "id": "data-contract",
+      "kind": "choice",
+      "prompt": "The cached layout expects integer price cents, while the response now uses an unsupported data version with a formatted price string. Is cached layout fallback enough?",
+      "options": [
+        {"id":"option-0","label":"Reject the unsupported data contract; an old layout cannot repair incompatible field meaning or types.","isCorrect":true},
+        {"id":"option-1","label":"Keep the same version number and the client will infer the new unit and type.","isCorrect":false},
+        {"id":"option-2","label":"A cached button also grants permission to purchase without server authorization.","isCorrect":false}
+      ],
+      "explanation": "The client must understand the data shape and meaning independently of layout support. Numeric versions identify maintained contracts; they do not make incompatible payloads safe. Server authorization remains a separate requirement."
+    },
+    {
+      "id": "pagination-meaning",
+      "kind": "choice",
+      "prompt": "An API changes from returning all 100 items to returning 10 plus a cursor. Old clients parse the JSON but ignore the cursor. What is the compatibility problem?",
+      "options": [
+        {"id":"option-0","label":"The JSON can parse while the meaning breaks: old callers may mistake the first page for the complete result.","isCorrect":true},
+        {"id":"option-1","label":"Adding a field can never affect an existing client's result.","isCorrect":false},
+        {"id":"option-2","label":"Smaller responses prove source, wire and semantic compatibility on every platform.","isCorrect":false}
+      ],
+      "explanation": "A parser accepting the response is only one check. Existing callers may rely on the old complete-result behavior; define a compatible migration and verify actual old-client consumption before changing defaults."
+    }
+  ]
+}

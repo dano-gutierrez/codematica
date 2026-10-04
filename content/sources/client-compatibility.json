@@ -1,0 +1,24 @@
+{
+  "sources": [
+    {
+      "id": "duolingo-server-driven-ui",
+      "title": "Duolingo — Server-Driven UI",
+      "provider": "Duolingo Engineering",
+      "url": "https://blog.duolingo.com/server-driven-ui/",
+      "attribution": "Primary engineering report. Configuration/data separation and versioning sections verified; experiment counts and release improvements are author-reported, not local measurements. No upstream code or illustrations copied; no redistribution license inferred.",
+      "lastVerifiedAt": "2026-10-04"
+    },
+    {
+      "id": "google-aip-180-compatibility",
+      "title": "Google AIP-180 — Backwards Compatibility",
+      "provider": "Google",
+      "url": "https://google.aip.dev/180",
+      "attribution": "Approved API improvement proposal. Source/wire/semantic distinctions, renaming and pagination guidance verified. The page identifies CC BY 4.0 for text and Apache 2.0 for code samples; the lesson's Python fixture is original. Guidance is indicative and depends on transport and consumer scope.",
+      "license": {
+        "name": "Creative Commons Attribution 4.0 (text)",
+        "url": "https://creativecommons.org/licenses/by/4.0/"
+      },
+      "lastVerifiedAt": "2026-10-04"
+    }
+  ]
+}

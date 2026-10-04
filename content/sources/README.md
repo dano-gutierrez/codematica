@@ -36,3 +36,5 @@ The same catalog includes PostgreSQL 17 ranges, `btree_gist`, partial exclusion 
 `advanced-agent-research.json` records the official Stanford CS329A Autumn 2025 syllabus as an optional external reading in the existing AI path. Preserve the course edition and public-reading scope. Enrollment, audits, certification, API credits and independently completed projects are not included; no redistribution license is inferred.
 
 `source-audit-readings.json` pins an author-maintained architecture review command and an ML case-study discovery index. Upstream commands were read, not installed or executed. The index is not primary evidence for its linked technical claims; inspect the original author before using a case. Only the review-command repository has a verified MIT license.
+
+`client-compatibility.json` links Duolingo's server-driven UI report and Google AIP-180. The former's outcomes remain author-reported; no redistribution license is inferred. AIP-180 identifies CC BY 4.0 for text and Apache 2.0 for its code samples. The selection fixture is original; neither source certifies the toy or actual platform compatibility.

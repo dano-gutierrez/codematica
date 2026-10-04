@@ -4346,6 +4346,16 @@
       "contentHash": "add5d35e15be890b5c5dcb460b981f26d3c8ede6c9baf0b71f6db8ae2b10d5cd"
     },
     {
+      "id": "duolingo-server-driven-ui",
+      "title": "Duolingo — Server-Driven UI",
+      "provider": "Duolingo Engineering",
+      "url": "https://blog.duolingo.com/server-driven-ui/",
+      "attribution": "Primary engineering report. Configuration/data separation and versioning sections verified; experiment counts and release improvements are author-reported, not local measurements. No upstream code or illustrations copied; no redistribution license inferred.",
+      "lastVerifiedAt": "2026-10-04",
+      "sourcePath": "content/sources/client-compatibility.json",
+      "contentHash": "d83298976641874993ddcef002684438f1009f7032ad4596771a8fefc03f5a77"
+    },
+    {
       "id": "frontend-accessible-buttons",
       "title": "Button Pattern",
       "provider": "W3C WAI",
@@ -4434,6 +4444,20 @@
       "lastVerifiedAt": "2026-09-27",
       "sourcePath": "content/sources/frontend-interview-practice.json",
       "contentHash": "4c3469d88c964cca2170a6eed045d6abb68c5a564d5dcedccf67326dc51c9521"
+    },
+    {
+      "id": "google-aip-180-compatibility",
+      "title": "Google AIP-180 — Backwards Compatibility",
+      "provider": "Google",
+      "url": "https://google.aip.dev/180",
+      "attribution": "Approved API improvement proposal. Source/wire/semantic distinctions, renaming and pagination guidance verified. The page identifies CC BY 4.0 for text and Apache 2.0 for code samples; the lesson's Python fixture is original. Guidance is indicative and depends on transport and consumer scope.",
+      "license": {
+        "name": "Creative Commons Attribution 4.0 (text)",
+        "url": "https://creativecommons.org/licenses/by/4.0/"
+      },
+      "lastVerifiedAt": "2026-10-04",
+      "sourcePath": "content/sources/client-compatibility.json",
+      "contentHash": "d83298976641874993ddcef002684438f1009f7032ad4596771a8fefc03f5a77"
     },
     {
       "id": "harvard-cs249r-repository",
@@ -12012,6 +12036,55 @@
       "readingMinutes": 3
     },
     {
+      "title": "Client Compatibility — Separate Layout, Data And Meaning",
+      "slug": "system-design/client-compatibility-contracts",
+      "summary": "Test supported layouts, cached fallback, cold starts and API meaning without assuming every old client can render every new response.",
+      "track": "System Design",
+      "topic": "Client Contracts",
+      "difficulty": "practitioner",
+      "tags": [
+        "api",
+        "compatibility",
+        "server-driven-ui",
+        "versioning"
+      ],
+      "prerequisites": [
+        "system-design/cache-invalidation"
+      ],
+      "diagramRefs": [],
+      "sourceRefs": [
+        "duolingo-server-driven-ui",
+        "google-aip-180-compatibility"
+      ],
+      "status": "published",
+      "id": "f276f061762e",
+      "route": "/docs/system-design/client-compatibility-contracts",
+      "sourcePath": "content/knowledge/system-design/client-compatibility-contracts.md",
+      "bodyPath": "content/knowledge/system-design/client-compatibility-contracts.md",
+      "markdown": "## Separate the reading from the experiment\n\n[Duolingo's engineering report](https://blog.duolingo.com/server-driven-ui/) describes separating UI configuration from user data. An older client can receive fresh data while using a compatible cached configuration. New components still require client support. Its experiment count and release improvements are author-reported outcomes, not measurements from this lesson.\n\nThe following fixture is original. It checks a small selection contract, not Duolingo's implementation. It performs no network, rendering, cache persistence or account operation. A supported layout is only one condition for a useful screen; fresh data must satisfy the client's schema and business meaning too.\n\n## Choose a layout with an explicit data contract\n\nFor this exercise, layout versions, data versions and component names are separate capabilities. Prefer a compatible fresh layout, otherwise a compatible cached layout. Reject unsupported data before choosing either. Without a compatible layout, return an explicit unavailable state. Malformed version values raise an input error; they do not become an authoritative empty result.\n\nPredict these cases before running the original standard-library Python fixture:\n\n1. Fresh layout and data are supported.\n2. Fresh layout requires a new carousel; a compatible cached text layout exists.\n3. A new component arrives without a higher layout version.\n4. The old client has no cached layout after reinstall.\n5. The data contract changes while the cached layout remains old.\n6. A layout claims a zero, negative or boolean version.\n\n```python\nfrom dataclasses import dataclass\n\n\n@dataclass(frozen=True)\nclass Layout:\n    version: int\n    data_version: int\n    components: tuple[str, ...]\n\n\ndef positive_version(value):\n    return type(value) is int and value > 0\n\n\ndef select_layout(max_version, components, data_versions, response_data_version,\n                  *, fresh=None, cached=None):\n    versions = (max_version, response_data_version, *data_versions)\n    if not all(positive_version(value) for value in versions):\n        raise ValueError(\"versions must be positive integers, not booleans\")\n    for layout in (fresh, cached):\n        if layout is not None and (\n            not isinstance(layout, Layout)\n            or not positive_version(layout.version)\n            or not positive_version(layout.data_version)\n        ):\n            raise ValueError(\"invalid layout versions\")\n    if response_data_version not in data_versions:\n        return \"unsupported-data\", None\n    for mode, layout in ((\"fresh\", fresh), (\"cached\", cached)):\n        if (layout is not None\n                and layout.version <= max_version\n                and layout.data_version == response_data_version\n                and set(layout.components) <= components):\n            return mode, layout\n    return \"unavailable\", None\n\n\nold = Layout(1, 1, (\"text\", \"button\"))\nnew = Layout(2, 1, (\"text\", \"carousel\"))\ncaps = (1, {\"text\", \"button\"}, {1}, 1)\nassert select_layout(*caps, fresh=old, cached=new) == (\"fresh\", old)\nassert select_layout(*caps, fresh=new, cached=old) == (\"cached\", old)\nassert select_layout(*caps, fresh=Layout(2, 1, (\"text\",)), cached=old) == (\"cached\", old)\nassert select_layout(*caps, fresh=Layout(1, 1, (\"carousel\",)), cached=old) == (\"cached\", old)\nassert select_layout(*caps, fresh=new) == (\"unavailable\", None)\nassert select_layout(*caps) == (\"unavailable\", None)\nassert select_layout(*caps, cached=Layout(1, 2, (\"text\",))) == (\"unavailable\", None)\nassert select_layout(1, {\"text\"}, {1}, 2, cached=old) == (\"unsupported-data\", None)\nassert select_layout(2, {\"text\", \"button\", \"carousel\"}, {1}, 1, fresh=new, cached=old) == (\"fresh\", new)\n\nfor bad in (0, -1, True, 1.5, \"1\", None):\n    for arguments, layouts in (\n        ((bad, caps[1], caps[2], 1), {}),\n        ((1, caps[1], {bad}, 1), {}),\n        ((1, caps[1], caps[2], bad), {}),\n        (caps, {\"fresh\": Layout(bad, 1, (\"text\",))}),\n        (caps, {\"cached\": Layout(1, bad, (\"text\",))}),\n    ):\n        try:\n            select_layout(*arguments, **layouts)\n        except ValueError:\n            pass\n        else:\n            raise AssertionError(\"invalid version accepted\")\nfor bad_layout in (1, {}, \"unknown\"):\n    for field in (\"fresh\", \"cached\"):\n        try:\n            select_layout(*caps, **{field: bad_layout})\n        except ValueError:\n            pass\n        else:\n            raise AssertionError(\"invalid layout accepted\")\nprint(\"fresh, cached, cold-start, unsupported component/data and invalid versions: passed\")\n```\n\nThe inputs here are authored capability fixtures, not arbitrary wire payloads. A real parser also validates field types, component structures, required bindings, action targets and size limits before selection. Two schemas can share a numeric version only if the publisher preserves that contract; the number cannot repair an incompatible field change. Cached configuration must have a defined provenance and lifecycle. Decide what happens when it is missing, corrupt, expired or retired. A bundled fallback or upgrade screen is a product decision, not evidence that every old client works indefinitely.\n\nThis fixture returns a plan, not a successful render. Test actual iOS, Android and web parsers and the cold-cache path separately. Keep user data scoped to its account and expiry policy; see [RTK persistence and recovery](/docs/frontend/rtk-query-persistence-and-recovery). Visibility of a button cannot authorize its server operation; use the existing [API boundary lesson](/docs/system-design/cors-csrf-and-authorization).\n\n## Check API meaning as well as shape\n\n[Google AIP-180](https://google.aip.dev/180) distinguishes source, wire and semantic compatibility. It treats field renaming as removal plus addition and warns that adding pagination can change what old callers understand as a complete result. Its guidance assumes particular transport and consumer conditions; it is not an exhaustive compatibility proof.\n\nWork an original review: an API used to return all 100 items; it now returns 10 plus a cursor. The JSON still parses, but a caller that never follows the cursor may silently omit 90 items. State the supported old-client behavior, the migration plan and how to detect incomplete consumption before changing the default. For a field rename, preserve the old contract during migration and specify precedence if both names can be supplied. Changing a price field from integer cents to a formatted string needs more than a new layout: test the parser and interpretation separately.\n\nWrite a receipt with the client/capability set, response and cached revisions, data contract, selected plan, visible fallback, operation authorization and evidence from each supported platform. Pair this with the [Client Compatibility Checkpoint](/practice/system-design/client-compatibility-checkpoint). Passing the toy cannot establish rollout safety or all ten operational API topics; rate policy, webhook verification and long-running work need their own contracts.",
+      "plainText": "Separate the reading from the experiment Duolingo's engineering report describes separating UI configuration from user data. An older client can receive fresh data while using a compatible cached configuration. New components still require client support. Its experiment count and release improvements are author-reported outcomes, not measurements from this lesson. The following fixture is original. It checks a small selection contract, not Duolingo's implementation. It performs no network, rendering, cache persistence or account operation. A supported layout is only one condition for a useful screen; fresh data must satisfy the client's schema and business meaning too. Choose a layout with an explicit data contract For this exercise, layout versions, data versions and component names are separate capabilities. Prefer a compatible fresh layout, otherwise a compatible cached layout. Reject unsupported data before choosing either. Without a compatible layout, return an explicit unavailable state. Malformed version values raise an input error; they do not become an authoritative empty result. Predict these cases before running the original standard-library Python fixture: Fresh layout and data are supported.Fresh layout requires a new carousel; a compatible cached text layout exists.A new component arrives without a higher layout version.The old client has no cached layout after reinstall.The data contract changes while the cached layout remains old.A layout claims a zero, negative or boolean version. from dataclasses import dataclass @dataclass(frozen=True) class Layout: version: int data_version: int components: tuple[str, ...] def positive_version(value): return type(value) is int and value > 0 def select_layout(max_version, components, data_versions, response_data_version, *, fresh=None, cached=None): versions = (max_version, response_data_version, *data_versions) if not all(positive_version(value) for value in versions): raise ValueError(\"versions must be positive integers, not booleans\") for layout in (fresh, cached): if layout is not None and ( not isinstance(layout, Layout) or not positive_version(layout.version) or not positive_version(layout.data_version) ): raise ValueError(\"invalid layout versions\") if response_data_version not in data_versions: return \"unsupported-data\", None for mode, layout in ((\"fresh\", fresh), (\"cached\", cached)): if (layout is not None and layout.version <= max_version and layout.data_version == response_data_version and set(layout.components) <= components): return mode, layout return \"unavailable\", None old = Layout(1, 1, (\"text\", \"button\")) new = Layout(2, 1, (\"text\", \"carousel\")) caps = (1, {\"text\", \"button\"}, {1}, 1) assert select_layout(*caps, fresh=old, cached=new) == (\"fresh\", old) assert select_layout(*caps, fresh=new, cached=old) == (\"cached\", old) assert select_layout(*caps, fresh=Layout(2, 1, (\"text\",)), cached=old) == (\"cached\", old) assert select_layout(*caps, fresh=Layout(1, 1, (\"carousel\",)), cached=old) == (\"cached\", old) assert select_layout(*caps, fresh=new) == (\"unavailable\", None) assert select_layout(*caps) == (\"unavailable\", None) assert select_layout(*caps, cached=Layout(1, 2, (\"text\",))) == (\"unavailable\", None) assert select_layout(1, {\"text\"}, {1}, 2, cached=old) == (\"unsupported-data\", None) assert select_layout(2, {\"text\", \"button\", \"carousel\"}, {1}, 1, fresh=new, cached=old) == (\"fresh\", new) for bad in (0, -1, True, 1.5, \"1\", None): for arguments, layouts in ( ((bad, caps[1], caps[2], 1), {}), ((1, caps[1], {bad}, 1), {}), ((1, caps[1], caps[2], bad), {}), (caps, {\"fresh\": Layout(bad, 1, (\"text\",))}), (caps, {\"cached\": Layout(1, bad, (\"text\",))}), ): try: select_layout(*arguments, **layouts) except ValueError: pass else: raise AssertionError(\"invalid version accepted\") for bad_layout in (1, {}, \"unknown\"): for field in (\"fresh\", \"cached\"): try: select_layout(*caps, **{field: bad_layout}) except ValueError: pass else: raise AssertionError(\"invalid layout accepted\") print(\"fresh, cached, cold-start, unsupported component/data and invalid versions: passed\") The inputs here are authored capability fixtures, not arbitrary wire payloads. A real parser also validates field types, component structures, required bindings, action targets and size limits before selection. Two schemas can share a numeric version only if the publisher preserves that contract; the number cannot repair an incompatible field change. Cached configuration must have a defined provenance and lifecycle. Decide what happens when it is missing, corrupt, expired or retired. A bundled fallback or upgrade screen is a product decision, not evidence that every old client works indefinitely. This fixture returns a plan, not a successful render. Test actual iOS, Android and web parsers and the cold-cache path separately. Keep user data scoped to its account and expiry policy; see RTK persistence and recovery. Visibility of a button cannot authorize its server operation; use the existing API boundary lesson. Check API meaning as well as shape Google AIP-180 distinguishes source, wire and semantic compatibility. It treats field renaming as removal plus addition and warns that adding pagination can change what old callers understand as a complete result. Its guidance assumes particular transport and consumer conditions; it is not an exhaustive compatibility proof. Work an original review: an API used to return all 100 items; it now returns 10 plus a cursor. The JSON still parses, but a caller that never follows the cursor may silently omit 90 items. State the supported old-client behavior, the migration plan and how to detect incomplete consumption before changing the default. For a field rename, preserve the old contract during migration and specify precedence if both names can be supplied. Changing a price field from integer cents to a formatted string needs more than a new layout: test the parser and interpretation separately. Write a receipt with the client/capability set, response and cached revisions, data contract, selected plan, visible fallback, operation authorization and evidence from each supported platform. Pair this with the Client Compatibility Checkpoint. Passing the toy cannot establish rollout safety or all ten operational API topics; rate policy, webhook verification and long-running work need their own contracts.",
+      "headings": [
+        {
+          "id": "separate-the-reading-from-the-experiment",
+          "depth": 2,
+          "text": "Separate the reading from the experiment"
+        },
+        {
+          "id": "choose-a-layout-with-an-explicit-data-contract",
+          "depth": 2,
+          "text": "Choose a layout with an explicit data contract"
+        },
+        {
+          "id": "check-api-meaning-as-well-as-shape",
+          "depth": 2,
+          "text": "Check API meaning as well as shape"
+        }
+      ],
+      "mermaidBlocks": [],
+      "contentHash": "8c9f9199b116c973d87b95e3edf7df8c73dc105a3a4c9fc507db38c0a394c092",
+      "readingMinutes": 4
+    },
+    {
       "title": "CORS, CSRF And Authorization — Three Different Checks",
       "slug": "system-design/cors-csrf-and-authorization",
       "summary": "Trace whether a browser request is sent, whether its response is readable and whether the server should allow the operation; distinguish CORS from CSRF and object authorization.",
@@ -15416,6 +15489,21 @@
           ]
         },
         {
+          "slug": "client-compatibility",
+          "title": "Client Compatibility",
+          "summary": "Separate layout capabilities, fresh data and API meaning; test cached fallback and cold starts.",
+          "nodes": [
+            {
+              "kind": "document",
+              "slug": "system-design/client-compatibility-contracts"
+            },
+            {
+              "kind": "exercise",
+              "slug": "system-design/client-compatibility-checkpoint"
+            }
+          ]
+        },
+        {
           "slug": "reservation-boundaries",
           "title": "Reservation Boundaries",
           "summary": "Trace atomic inventory claims, expiry and late completion without inventing queue guarantees.",
@@ -15434,7 +15522,7 @@
       "id": "07569d83aba4",
       "route": "/paths/system-design-fundamentals",
       "sourcePath": "content/learning-paths/system-design-fundamentals.json",
-      "contentHash": "63ef9f28da8c51af348d06969eb76e60ccb0c024b37a7dfbfaff9b1471dded25"
+      "contentHash": "3bc9a8deeb81ea16a6e0a829a6115c7292b8890062711f04cf06a31416a13676"
     }
   ],
   "exercises": [
@@ -32829,6 +32917,122 @@
       "route": "/practice/system-design/cache-product-contract",
       "sourcePath": "content/exercises/system-design/cache-product-contract.json",
       "contentHash": "ab92b19965e7f85e3d3833d46fa3ed6b212e85a9b0a0b0dd0630308934723f98"
+    },
+    {
+      "slug": "system-design/client-compatibility-checkpoint",
+      "title": "Client Compatibility Checkpoint",
+      "documentSlug": "system-design/client-compatibility-contracts",
+      "concept": "Client Compatibility",
+      "difficulty": "practitioner",
+      "tags": [
+        "api",
+        "compatibility",
+        "server-driven-ui"
+      ],
+      "status": "published",
+      "sourceRefs": [
+        "duolingo-server-driven-ui",
+        "google-aip-180-compatibility"
+      ],
+      "type": "questionnaire",
+      "questions": [
+        {
+          "id": "cached-layout",
+          "prompt": "An old client cannot render a new carousel, but has a compatible cached text layout and supports the fresh data contract. What plan is valid?",
+          "explanation": "Selection checks the layout version, component capabilities and matching supported data contract independently. A cached compatible configuration can be useful; it cannot teach the client a new component.",
+          "kind": "choice",
+          "options": [
+            {
+              "id": "option-0",
+              "label": "Reuse a compatible cached layout with supported fresh data; a version number alone does not prove component support.",
+              "isCorrect": true
+            },
+            {
+              "id": "option-1",
+              "label": "Render the unknown carousel because a server response guarantees client support.",
+              "isCorrect": false
+            },
+            {
+              "id": "option-2",
+              "label": "Treat a supported layout version as proof that every component is supported.",
+              "isCorrect": false
+            }
+          ]
+        },
+        {
+          "id": "cold-start",
+          "prompt": "After reinstall, the client has no cached configuration and cannot render the fresh layout. What can the review conclude?",
+          "explanation": "Cached fallback requires an actual compatible configuration. The toy reports unavailable when none exists. A bundled fallback is a separate product implementation that must be tested, not assumed from a case study.",
+          "kind": "choice",
+          "options": [
+            {
+              "id": "option-0",
+              "label": "Use an explicit unavailable or upgrade state; no compatible cached layout was established.",
+              "isCorrect": true
+            },
+            {
+              "id": "option-1",
+              "label": "The client must have the previous layout because another device once cached it.",
+              "isCorrect": false
+            },
+            {
+              "id": "option-2",
+              "label": "Fresh data alone guarantees an old client can reconstruct any new layout.",
+              "isCorrect": false
+            }
+          ]
+        },
+        {
+          "id": "data-contract",
+          "prompt": "The cached layout expects integer price cents, while the response now uses an unsupported data version with a formatted price string. Is cached layout fallback enough?",
+          "explanation": "The client must understand the data shape and meaning independently of layout support. Numeric versions identify maintained contracts; they do not make incompatible payloads safe. Server authorization remains a separate requirement.",
+          "kind": "choice",
+          "options": [
+            {
+              "id": "option-0",
+              "label": "Reject the unsupported data contract; an old layout cannot repair incompatible field meaning or types.",
+              "isCorrect": true
+            },
+            {
+              "id": "option-1",
+              "label": "Keep the same version number and the client will infer the new unit and type.",
+              "isCorrect": false
+            },
+            {
+              "id": "option-2",
+              "label": "A cached button also grants permission to purchase without server authorization.",
+              "isCorrect": false
+            }
+          ]
+        },
+        {
+          "id": "pagination-meaning",
+          "prompt": "An API changes from returning all 100 items to returning 10 plus a cursor. Old clients parse the JSON but ignore the cursor. What is the compatibility problem?",
+          "explanation": "A parser accepting the response is only one check. Existing callers may rely on the old complete-result behavior; define a compatible migration and verify actual old-client consumption before changing defaults.",
+          "kind": "choice",
+          "options": [
+            {
+              "id": "option-0",
+              "label": "The JSON can parse while the meaning breaks: old callers may mistake the first page for the complete result.",
+              "isCorrect": true
+            },
+            {
+              "id": "option-1",
+              "label": "Adding a field can never affect an existing client's result.",
+              "isCorrect": false
+            },
+            {
+              "id": "option-2",
+              "label": "Smaller responses prove source, wire and semantic compatibility on every platform.",
+              "isCorrect": false
+            }
+          ]
+        }
+      ],
+      "id": "c1b4dc7807e6",
+      "route": "/practice/system-design/client-compatibility-checkpoint",
+      "sourcePath": "content/exercises/system-design/client-compatibility-checkpoint.json",
+      "contentHash": "f9b6e71f7378917c219ef7d91c3a0e580be527e1e7732fabe3f4ab2bc8bfdd94"
     },
     {
       "slug": "system-design/reservation-boundary-checkpoint",
@@ -157602,7 +157806,7 @@
     {
       "name": "System Design",
       "slug": "system-design",
-      "documentCount": 7,
+      "documentCount": 8,
       "difficulties": [
         "foundation",
         "practitioner",
@@ -157613,6 +157817,7 @@
         "Caching",
         "Capacity And Tradeoffs",
         "Capacity planning",
+        "Client Contracts",
         "Concurrency And Reservations",
         "Data flow",
         "Load Balancing"

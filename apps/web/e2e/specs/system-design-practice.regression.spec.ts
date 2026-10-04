@@ -38,6 +38,19 @@ const cases = [
       "Check authorization for that actor, object and operation.",
       "Whether the browser’s actual cookie and request policies permit the credentials to be sent.",
     ],
+    next: "/docs/system-design/client-compatibility-contracts?path=system-design-fundamentals",
+  },
+  {
+    slug: "client-compatibility-contracts",
+    title: "Client Compatibility — Separate Layout, Data And Meaning",
+    source: "Duolingo — Server-Driven UI",
+    checkpoint: "client-compatibility-checkpoint",
+    answers: [
+      "Reuse a compatible cached layout with supported fresh data; a version number alone does not prove component support.",
+      "Use an explicit unavailable or upgrade state; no compatible cached layout was established.",
+      "Reject the unsupported data contract; an old layout cannot repair incompatible field meaning or types.",
+      "The JSON can parse while the meaning breaks: old callers may mistake the first page for the complete result.",
+    ],
     next: "/docs/system-design/fair-admission-and-reservations?path=system-design-fundamentals",
   },
   {

@@ -76,6 +76,21 @@
       ]
     },
     {
+      "slug": "client-compatibility",
+      "title": "Client Compatibility",
+      "summary": "Separate layout capabilities, fresh data and API meaning; test cached fallback and cold starts.",
+      "nodes": [
+        {
+          "kind": "document",
+          "slug": "system-design/client-compatibility-contracts"
+        },
+        {
+          "kind": "exercise",
+          "slug": "system-design/client-compatibility-checkpoint"
+        }
+      ]
+    },
+    {
       "slug": "reservation-boundaries",
       "title": "Reservation Boundaries",
       "summary": "Trace atomic inventory claims, expiry and late completion without inventing queue guarantees.",

@@ -17,6 +17,33 @@ import {
 } from ".";
 
 describe("generated content index", () => {
+  it("connects client compatibility evidence to an original bounded checkpoint", () => {
+    const lesson = getDocumentBySlug("system-design/client-compatibility-contracts")!;
+    expect(lesson?.headings.map(h => h.id)).toEqual(expect.arrayContaining(["separate-the-reading-from-the-experiment", "choose-a-layout-with-an-explicit-data-contract", "check-api-meaning-as-well-as-shape"]));
+    const sources = ["duolingo-server-driven-ui", "google-aip-180-compatibility"];
+    expect(lesson?.sourceRefs).toEqual(sources);
+    const report = getContentIndex().sources.find(s => s.id === sources[0])!;
+    expect(report).toMatchObject({provider:"Duolingo Engineering",url:"https://blog.duolingo.com/server-driven-ui/"});
+    expect(report.license).toBeUndefined();
+    expect(getContentIndex().sources.find(s => s.id === sources[1])).toMatchObject({provider:"Google",url:"https://google.aip.dev/180",license:{name:"Creative Commons Attribution 4.0 (text)",url:"https://creativecommons.org/licenses/by/4.0/"}});
+    const quiz = getExerciseBySlug("system-design/client-compatibility-checkpoint");
+    if (quiz?.type !== "questionnaire") throw new Error("Client compatibility must have a questionnaire");
+    expect(quiz.documentSlug).toBe(lesson.slug);
+    expect(quiz.sourceRefs).toEqual(sources);
+    expect(quiz.questions.map(q => q.id)).toEqual(["cached-layout", "cold-start", "data-contract", "pagination-meaning"]);
+    expect(quiz.questions.map(q => q.kind === "choice" ? q.options.find(o => o.isCorrect)?.label : "wrong kind")).toEqual([
+      "Reuse a compatible cached layout with supported fresh data; a version number alone does not prove component support.",
+      "Use an explicit unavailable or upgrade state; no compatible cached layout was established.",
+      "Reject the unsupported data contract; an old layout cannot repair incompatible field meaning or types.",
+      "The JSON can parse while the meaning breaks: old callers may mistake the first page for the complete result.",
+    ]);
+    const path = getLearningPathBySlug("system-design-fundamentals")!;
+    expect(path.units.map(u => u.slug)).toEqual(["caching-contracts", "capacity-decisions", "routing-decisions", "api-security-boundaries", "client-compatibility", "reservation-boundaries"]);
+    expect(getNextPathNodeRoute(path.slug, {kind:"exercise",slug:"system-design/api-boundary-checkpoint"})).toBe("/docs/system-design/client-compatibility-contracts?path=system-design-fundamentals");
+    expect(getNextPathNodeRoute(path.slug, {kind:"document",slug:lesson.slug})).toBe("/practice/system-design/client-compatibility-checkpoint?path=system-design-fundamentals");
+    expect(getNextPathNodeRoute(path.slug, {kind:"exercise",slug:quiz.slug})).toBe("/docs/system-design/fair-admission-and-reservations?path=system-design-fundamentals");
+  });
+
   it("groups existing coding walkthroughs by pattern without duplicating questions", () => {
     const path = getLearningPathBySlug("coding-interview-pattern-practice");
     expect(path?.kind).toBe("skill");
@@ -258,7 +285,7 @@ describe("generated content index", () => {
   it("places routing practice after capacity and preserves broker effect boundaries", () => {
     const path = getLearningPathBySlug("system-design-fundamentals");
     expect(path?.units.map(u => u.slug)).toEqual([
-      "caching-contracts", "capacity-decisions", "routing-decisions", "api-security-boundaries", "reservation-boundaries",
+      "caching-contracts", "capacity-decisions", "routing-decisions", "api-security-boundaries", "client-compatibility", "reservation-boundaries",
     ]);
     const routing = getDocumentBySlug("system-design/routing-decision-lab");
     const quiz = getExerciseBySlug("system-design/routing-decision-checkpoint");

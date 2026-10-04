@@ -11,6 +11,23 @@ beforeAll(async () => {
 function freshContent() { return structuredClone(validatedIndex); }
 
 describe("complete knowledge catalog", () => {
+  it("preserves authored client compatibility sources, prerequisites and ordered path placement", () => {
+    const graph = buildKnowledgeCatalog(freshContent());
+    const lesson = "document:system-design/client-compatibility-contracts";
+    const quiz = "exercise:system-design/client-compatibility-checkpoint";
+    expect(graph.resources.find(r => r.id === lesson)).toMatchObject({paths:["path:system-design-fundamentals"],status:"published"});
+    for (const target of ["source:duolingo-server-driven-ui", "source:google-aip-180-compatibility"]) {
+      expect(graph.relationships).toContainEqual(expect.objectContaining({source:lesson,target,type:"cites",provenance:"explicit"}));
+      expect(graph.relationships).toContainEqual(expect.objectContaining({source:quiz,target,type:"cites",provenance:"explicit"}));
+    }
+    expect(graph.relationships).toContainEqual(expect.objectContaining({source:quiz,target:lesson,type:"assesses",provenance:"explicit"}));
+    expect(graph.unresolved.some(r => [lesson, quiz, "unit:system-design-fundamentals:client-compatibility"].includes(r.resourceId))).toBe(false);
+    expect(graph.relationships).toContainEqual(expect.objectContaining({source:lesson,target:"document:system-design/cache-invalidation",type:"requires",provenance:"explicit"}));
+    expect(graph.relationships).toContainEqual(expect.objectContaining({source:"path:system-design-fundamentals",target:"unit:system-design-fundamentals:client-compatibility",type:"contains",order:4,provenance:"explicit"}));
+    expect(graph.relationships).toContainEqual(expect.objectContaining({source:"unit:system-design-fundamentals:client-compatibility",target:lesson,type:"contains",order:0,provenance:"explicit"}));
+    expect(graph.relationships).toContainEqual(expect.objectContaining({source:"unit:system-design-fundamentals:client-compatibility",target:"exercise:system-design/client-compatibility-checkpoint",type:"contains",order:1,provenance:"explicit"}));
+  });
+
   it("relates coding-pattern units to existing question identities and preserves graph-traversal membership", () => {
     const graph = buildKnowledgeCatalog(freshContent());
     const path = "path:coding-interview-pattern-practice";

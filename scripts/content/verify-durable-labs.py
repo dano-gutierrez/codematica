@@ -10,6 +10,12 @@ ROOT = Path(__file__).resolve().parents[2]
 
 
 class AuthoredLabs(unittest.TestCase):
+    def test_client_layout_and_data_compatibility(self):
+        self.run_lab(
+            "content/knowledge/system-design/client-compatibility-contracts.md",
+            "fresh, cached, cold-start, unsupported component/data and invalid versions: passed",
+        )
+
     def run_lab(self, relative_path, expected):
         document = (ROOT / relative_path).read_text()
         blocks = re.findall(r"^```python\n(.*?)^```$", document, re.MULTILINE | re.DOTALL)

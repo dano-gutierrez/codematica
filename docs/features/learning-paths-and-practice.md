@@ -113,6 +113,8 @@ Coding Interview Pattern Practice reuses 18 existing algorithm walkthroughs and 
 
 Algorithm interviews opened with a valid path query expose **Next activity** after the full web explanation; restarting hides it until the explanation is revealed again. Unknown or absent path queries do not choose another path. Native algorithm readers show the authored destination alongside their read-only explanation and do not record a completed result merely by navigating. Native routes retain existing unambiguous path inference for direct links.
 
+Client Compatibility extends System Design after API Security and before Reservations. The original Python plan selector and four-question checkpoint distinguish layout version, component support and data contract; cold-cache and unsupported states remain visible. Duolingo's report and Google AIP-180 supply attributed readings. The fixture implements no renderer, network, persisted user cache or authorization. Real platform compatibility needs separate parser/rendering tests.
+
 ### Data Model And Persistence
 
 - `content/learning-paths/*.json` stores path metadata and ordered unit nodes; `content/sources/*.json` stores authoritative external source metadata.
@@ -154,6 +156,7 @@ Algorithm interviews opened with a valid path query expose **Next activity** aft
 
 ## Test Plan
 
+- Client compatibility: real canonical Python fence checks fresh/cached preference, version/component/data predicates, cold start and invalid versions. Core/graph tests pin source identities, original four-question answer keys and placement between API Security and Reservations. The browser journey verifies source panel, scoring and continuation; actual upstream/iOS/Android renderer behavior is not exercised by this fixture.
 - Coding-pattern path: exact unit/question order, existing question count/identity, explicit graph membership and preserved traversal-path membership.
 - Algorithm continuation: web selected/unknown/inherited-key/blank/absent path and restart gates; native authored/inferred/unknown/inherited path selection, exact destination, single navigation and no automatic completion. `coding-patterns.regression.spec.ts` verifies path → explanation → next question and standalone behavior.
 
