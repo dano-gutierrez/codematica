@@ -31,3 +31,5 @@ Native notebook pages use a compact back/title row, inline examples and a reserv
 Notebook catalog cards preview actual Japanese sheet prompts with optional romaji above them. `useNotebookRomaji` in the React-only notebook session module shares preference restoration and serialized writes between web/native; optional notebook storage methods keep this display setting on the device. Space for the annotations remains when they are hidden. See the notebook feature doc and catalog/native writing regressions.
 
 The game level route passes focus ownership to `NativeGamePlay`. Covered native screens stop their simulation timer and invalidate runner callbacks while preserving the shared attempt for explicit return/resume.
+
+`InterviewPreparationScreen` is the native admin tracker for private companies/roles, resume context, round editing, preparation imports and saved Markdown sharing. It shares core contracts/store and uses labeled 48 dp controls.

@@ -283,3 +283,7 @@ Removed the recurring Codex automation at the user’s request. Web/native copy 
 - Added admin-only Supabase projections/offline jobs, a Cytoscape graph and accessible table, evidence/proposal review and reviewed relationship sidecars.
 - Persisted graph enrollment/context through LinkedIn preparation and Codex verification; enforced freshness at adoption, approval and Buffer initiation. Graph overrides now produce a flagged candidate; canonical source failures still hold.
 - Added joined real-model smoke with independent verification and inert scheduling, RLS/freshness regressions, and operating documentation. Existing coverage floors remain unchanged; hosted rollout is separate.
+
+## 2026-10-04 — Private interview preparation
+
+Add a web/native admin company/role/round tracker, private candidate profile, immutable brief history, Markdown export and Codex preparation skill. Every output applies technical-edit; imports bind edited prose and input versions. Reuse private knowledge catalog/evaluation and PR #15 shared controls. No coverage thresholds are lowered. Hosted rollout and installed-device acceptance remain separate.

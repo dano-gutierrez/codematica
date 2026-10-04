@@ -154,7 +154,7 @@ from .config import VERSIONS
 EXTRACTION_VERSION = digest([VERSIONS["graphiti"], VERSIONS["writer_weights"], VERSIONS["extraction_prompt"]])
 def extraction_resources(snapshot):
     section_parents = {r.get("parentId") for r in snapshot["resources"] if r["kind"] == "section"}
-    return [r for r in snapshot["resources"] if r["kind"] in ["section", "exercise", "interview-question", "solution", "flashcard", "post", "game-campaign", "game-level", "game-scenario"] or (r["kind"] == "document" and r["id"] not in section_parents)]
+    return [r for r in snapshot["resources"] if r["kind"] in ["section", "exercise", "interview-question", "solution", "flashcard", "post", "game-campaign", "game-level", "game-scenario", "interview-preparation"] or (r["kind"] == "document" and r["id"] not in section_parents)]
 def extraction_key(resource): return digest([EXTRACTION_VERSION, resource["id"], resource["hash"], resource["text"]])
 
 def extraction_batches(snapshot):

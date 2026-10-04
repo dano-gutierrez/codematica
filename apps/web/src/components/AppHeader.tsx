@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useAdminAccess } from "@/lib/supabase/use-admin-access";
 import { usePathname } from "next/navigation";
 import { useRef, useState } from "react";
-import { ArrowUpRight, BookOpen, Brain, ChevronDown, Code2, Home, Languages, Map, MoreHorizontal, Network, UserRound, X } from "lucide-react";
+import { ArrowUpRight, BookOpen, Brain, ChevronDown, Code2, Home, Languages, Map, MoreHorizontal, BriefcaseBusiness, Network, UserRound, X } from "lucide-react";
 
 function BrandLink() {
   return <Link href="/" className="app-brand" aria-label="Codematica home">
@@ -25,7 +25,7 @@ const destinations = [
 
 export function AppNavigation() {
   const admin = useAdminAccess();
-  const adminLinks = [{ href: "/admin/linkedin", label: "LinkedIn", icon: Code2 }, { href: "/admin/knowledge", label: "Knowledge", icon: Network }];
+  const adminLinks = [{ href: "/admin/linkedin", label: "LinkedIn", icon: Code2 }, { href: "/admin/knowledge", label: "Knowledge", icon: Network }, { href: "/admin/interview-preparation", label: "Interview preparation", icon: BriefcaseBusiness }];
   const pathname = usePathname() ?? "/";
   const menu = useRef<HTMLDialogElement>(null);
   const moreButton = useRef<HTMLButtonElement>(null);
@@ -40,8 +40,9 @@ export function AppNavigation() {
         <BrandLink />
         <span className="sidebar-label">YOUR LEARNING SPACE</span>
         <nav aria-label="Primary navigation" className="sidebar-links">
-          {[...destinations, ...(admin ? adminLinks : [])].map(({ href, label, icon: Icon }) => href === "/languages" ? <div key={href}><div className="app-language-branch"><Link href={href} className="app-nav-link" aria-current={active === href ? "page" : undefined} data-testid="app-nav-languages"><Icon size={20} aria-hidden="true"/>{label}</Link><button type="button" aria-label="Show supported languages" aria-expanded={languagesOpen} onClick={()=>setLanguagesOpen(value=>!value)} data-testid="app-nav-languages-expand"><ChevronDown size={18} aria-hidden="true"/></button></div>{languagesOpen ? <nav className="app-language-submenu" aria-label="Supported languages"><Link href="/languages/japanese" data-testid="app-nav-japanese">Japanese <span lang="ja">日本語</span></Link><Link href="/languages/japanese/notebooks" aria-current={pathname.includes("/notebooks") ? "page" : undefined} data-testid="app-nav-notebooks">Notebook practice</Link></nav> : null}</div> : <Link key={href} href={href} className="app-nav-link" aria-current={active === href ? "page" : undefined} data-testid={`app-nav-${label.toLowerCase()}`}><Icon size={20} aria-hidden="true" />{label}</Link>)}
+          {destinations.map(({ href, label, icon: Icon }) => href === "/languages" ? <div key={href}><div className="app-language-branch"><Link href={href} className="app-nav-link" aria-current={active === href ? "page" : undefined} data-testid="app-nav-languages"><Icon size={20} aria-hidden="true"/>{label}</Link><button type="button" aria-label="Show supported languages" aria-expanded={languagesOpen} onClick={()=>setLanguagesOpen(value=>!value)} data-testid="app-nav-languages-expand"><ChevronDown size={18} aria-hidden="true"/></button></div>{languagesOpen ? <nav className="app-language-submenu" aria-label="Supported languages"><Link href="/languages/japanese" data-testid="app-nav-japanese">Japanese <span lang="ja">日本語</span></Link><Link href="/languages/japanese/notebooks" aria-current={pathname.includes("/notebooks") ? "page" : undefined} data-testid="app-nav-notebooks">Notebook practice</Link></nav> : null}</div> : <Link key={href} href={href} className="app-nav-link" aria-current={active === href ? "page" : undefined} data-testid={`app-nav-${label.toLowerCase()}`}><Icon size={20} aria-hidden="true" />{label}</Link>)}
         </nav>
+        {admin ? <nav aria-label="Admin" className="sidebar-links"><span className="sidebar-label">Admin</span>{adminLinks.map(({href,label,icon:Icon})=><Link key={href} href={href} className="app-nav-link" aria-current={pathname.startsWith(href)?"page":undefined}><Icon size={20} aria-hidden="true"/>{label}</Link>)}</nav> : null}
         <div className="sidebar-bottom"><Link href="/login" className="app-nav-link"><UserRound size={20} aria-hidden="true" />Sign in<ArrowUpRight size={16} className="ml-auto" aria-hidden="true" /></Link></div>
       </aside>
       <header className="app-mobile-header"><BrandLink /><Link href="/login" className="account-link" aria-label="Sign in"><UserRound size={20} aria-hidden="true" /></Link></header>

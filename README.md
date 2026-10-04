@@ -164,3 +164,7 @@ The supplementary lesson `/docs/frontend/react-state-async-callbacks` covers sta
 Japanese writing notebooks use 24 whole-prompt repetitions per sheet and support curated/custom text of 1–5 published characters. Ink stays on the device; coarse completion/unlocks optionally sync. See `docs/features/japanese-writing-notebooks.md` for the implementation, persistence and validation contract.
 
 The optional [knowledge graph and local content evaluator](docs/features/knowledge-evaluator.md) maps canonical content, supplies evidence to OpenJev and local LinkedIn preparation, and offers an admin graph/table explorer. See [operating instructions](docs/runbooks/knowledge-evaluator.md). Anonymous learning stays independent.
+
+## Private interview preparation
+
+Admin → Interview preparation tracks companies, roles and rounds on web/native. The `prepare-interview` Codex skill uses your private resume/project context, researches current evidence and always applies technical-edit. Supabase stores immutable briefs; Markdown export and private knowledge links support reuse. See [feature](docs/features/interview-preparation.md) and [operations](docs/runbooks/interview-preparation.md).

@@ -6,7 +6,7 @@ import { knowledgeRelationshipSchema } from "../../packages/core/src/knowledge";
 import { buildContentIndex } from "../../packages/core/src/content/build-index";
 import { buildKnowledgeCatalog,hash } from "./catalog";
 export const catalogIdentity = (snapshot: {id:string;manifest:unknown;sourceRevision?:string;dirty?:boolean}) => hash(JSON.stringify({catalog:snapshot.id,manifest:snapshot.manifest,sourceRevision:snapshot.sourceRevision,dirty:snapshot.dirty}));
-export async function exportCatalog(root:string,posts:Parameters<typeof buildKnowledgeCatalog>[1]=[]) {
+export async function exportCatalog(root:string,posts:Parameters<typeof buildKnowledgeCatalog>[1]=[], interviews:Parameters<typeof buildKnowledgeCatalog>[4]=null) {
   let approved:Parameters<typeof buildKnowledgeCatalog>[2]=[];
   try {approved=z.array(knowledgeRelationshipSchema).parse(JSON.parse(await readFile(resolve(root,"content/relationships.json"),"utf8")));}catch(e){if((e as NodeJS.ErrnoException).code!=="ENOENT")throw e;}
   const index=await buildContentIndex({rootDir:root});
@@ -15,7 +15,7 @@ export async function exportCatalog(root:string,posts:Parameters<typeof buildKno
     const raw=await readFile(join(root,"content/game",name),"utf8"),id=JSON.parse(raw).id as string;
     gameSources[id]={path:`content/game/${name}`,hash:hash(raw)};
   }
-  const snapshot=buildKnowledgeCatalog(index,posts,approved,gameSources);
+  const snapshot=buildKnowledgeCatalog(index,posts,approved,gameSources,interviews);
   snapshot.sourceRevision=execFileSync("git",["rev-parse","HEAD"],{cwd:root,encoding:"utf8"}).trim();
   snapshot.dirty=!!execFileSync("git",["status","--porcelain","--","content","packages/core/src/content","packages/core/src/game/schema.ts"],{cwd:root,encoding:"utf8"}).trim();
   const directory=join(root,"packages/core/src/content");

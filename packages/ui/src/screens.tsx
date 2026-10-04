@@ -112,8 +112,9 @@ export function NativeNavigation({ pathname, navigate, wide, isAdmin = false }: 
   const [languagesOpen,setLanguagesOpen]=useState(pathname.includes("japanese"));
   const active = pathname.startsWith("/play/") ? "/" : pathname.startsWith("/practice/languages/japanese") ? "/languages" : pathname.startsWith("/docs/") || pathname.startsWith("/diagrams/") ? "/browse" : `/${pathname.split("/")[1]}`;
   const adminDestination = { href: "/admin/linkedin", label: "LinkedIn", path: "M4 4h16v16H4ZM8 10v7m4-7v7m0-4a3 3 0 0 1 6 0v4" };
-  const items = wide ? [...nativeDestinations, ...(isAdmin ? [adminDestination] : [])] : nativeDestinations.filter(({ href }) => !["/browse", "/languages", "/interviews"].includes(href));
-  const menuItems = [...(isAdmin ? [adminDestination] : []), ...nativeDestinations.filter(({ href }) => ["/browse", "/languages", "/interviews"].includes(href)), { href: "/login", label: "Sign in", path: "M4 21v-3a8 8 0 0 1 16 0v3M16 6a4 4 0 1 1-8 0 4 4 0 0 1 8 0" }];
+  const adminDestinations = [adminDestination, { href: "/admin/interview-preparation", label: "Interview preparation", path: "M3 7h18v14H3ZM8 7V3h8v4M3 12h18" }];
+  const items = wide ? [...nativeDestinations, ...(isAdmin ? adminDestinations : [])] : nativeDestinations.filter(({ href }) => !["/browse", "/languages", "/interviews"].includes(href));
+  const menuItems = [...(isAdmin ? adminDestinations : []), ...nativeDestinations.filter(({ href }) => ["/browse", "/languages", "/interviews"].includes(href)), { href: "/login", label: "Sign in", path: "M4 21v-3a8 8 0 0 1 16 0v3M16 6a4 4 0 1 1-8 0 4 4 0 0 1 8 0" }];
   return (
     <View style={wide ? styles.navigationRail : styles.navigationBar} testID={wide ? "mobile-navigation-rail" : "mobile-navigation-bar"}>
       {wide ? <Pressable accessibilityRole="button" accessibilityLabel="Codematica home" onPress={() => navigate("/")} style={styles.navigationBrand}>

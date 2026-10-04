@@ -3,7 +3,20 @@ import { describe, expect, it } from "vitest";
 import { buildContentIndex } from "../../packages/core/src/content/build-index";
 import { buildKnowledgeCatalog } from "./catalog";
 
+import {sampleBrief} from '../../packages/core/src/test/interview-preparation-fixture';
+
 describe("complete knowledge catalog", () => {
+  it('catalogs preparation privately with canonical evidence and invalidates stale links', async()=>{
+    const index=await buildContentIndex({rootDir:process.cwd()});const base=buildKnowledgeCatalog(index);
+    const target=base.resources.find(r=>r.kind==='document' && r.skills.length && r.route)!;
+    const opportunity={id:sampleBrief.opportunityId,companyId:sampleBrief.opportunityId,version:1,updatedAt:'2026-10-04',company:'Example',position:'Engineer',website:'',jobUrl:'',jobDescription:'',notes:'',outcome:'',status:'potential' as const,rounds:[]};
+    const snapshot={profile:{version:1,resume:'PRIVATE RESUME',experience:'PRIVATE EXPERIENCE'},opportunities:[opportunity],revisions:[{id:opportunity.id,createdAt:'2026-10-04',brief:{...sampleBrief,resources:[{resourceId:target.id,title:target.title,hash:target.hash,quote:target.text.slice(0,30),route:target.route,paths:target.paths,skills:target.skills}]}}]};
+    const graph=buildKnowledgeCatalog(index,[],[],{},snapshot);const prep=graph.resources.find(r=>r.kind==='interview-preparation')!;
+    expect(prep.visibility).toBe('private');expect(prep.paths).toEqual(target.paths);expect(prep.skills).toEqual(target.skills);
+    expect(JSON.stringify(graph)).not.toContain('PRIVATE RESUME');expect(graph.relationships.some(e=>e.source===prep.id && e.target===target.id && e.type==='reviews')).toBe(true);
+    snapshot.revisions[0].brief.resources[0].hash='a'.repeat(64);
+    const stale=buildKnowledgeCatalog(index,[],[],{},snapshot);expect(stale.resources.find(r=>r.id===prep.id)?.paths).toEqual([]);expect(stale.unresolved.some(r=>r.resourceId===prep.id)).toBe(true);
+  });
   it("indexes published source companions at the source node's unit position and scoped skills", async () => {
     const index=await buildContentIndex({rootDir:process.cwd()});
     const graph=buildKnowledgeCatalog(index);

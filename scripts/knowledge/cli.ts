@@ -1,3 +1,4 @@
+import { interviewSnapshotSchema } from "../../packages/core/src/interview-preparation";
 import { createClient } from "@supabase/supabase-js";
 import { readFile } from "node:fs/promises";
 import { resolve } from "node:path";
@@ -22,10 +23,10 @@ else if(command==="worker") {
   await synchronize(db,engine);
   const once=process.argv.includes("--once");
   do { const result=await processKnowledgeJob(db,engine); if(result) console.log(JSON.stringify(result)); if(!once) await new Promise(r=>setTimeout(r,5000)); } while(!once);
-} else if(command==="export-with-posts") {
+} else if(["export-with-posts","export-with-private"].includes(command)) {
   const root=resolve(process.env.KNOWLEDGE_CONTENT_ROOT||process.cwd());
   const collection=await privatePosts();
-  const snapshot=await exportCatalog(root,collection);
+  const snapshot=await exportCatalog(root,collection,command==="export-with-private"?interviewSnapshotSchema.parse(await knowledgeRpc(db,"interview_snapshot")):null);
   await writeCatalog(resolve(state,"catalog.json"),snapshot);console.log(JSON.stringify({snapshot:snapshot.id,counts:snapshot.counts}));
 } else if(command==="apply-reviewed") {
   const {data,error}=await db.from("knowledge_jobs").select("*").eq("reviewed","accept").is("applied_at",null);if(error)throw error;
@@ -33,9 +34,9 @@ else if(command==="worker") {
   const snapshot=JSON.parse(await readFile(resolve(state,"catalog.json"),"utf8")) as import("../../packages/core/src/knowledge").KnowledgeSnapshot;
   if (snapshot.resources.some(r=>r.kind==="post" && (r.postStatus===undefined || r.published===undefined))) throw new Error("Re-export private posts to preserve their source status before applying reviews");
   const results=await applyReviewed(root,snapshot,data,{
-    current:async()=>exportCatalog(root,snapshot.resources.some(r=>r.kind==="post")?await privatePosts():[]),
+    current:async()=>exportCatalog(root,snapshot.resources.some(r=>r.kind==="post")?await privatePosts():[],snapshot.resources.some(r=>r.kind==="interview-preparation")?interviewSnapshotSchema.parse(await knowledgeRpc(db,"interview_snapshot")):null),
     privateEdges:id=>knowledgeRpc<number>(db,"knowledge_apply_private",{p_id:id}),
     mark:async id=>{const result=await db.from("knowledge_jobs").update({applied_at:new Date().toISOString()}).eq("id",id).eq("reviewed","accept").is("applied_at",null);if(result.error)throw result.error;},
   });
   for(const result of results)console.log(JSON.stringify(result));
-} else throw new Error("Use sync, worker [--once], export-with-posts, or apply-reviewed");
+} else throw new Error("Use sync, worker [--once], export-with-posts, export-with-private, or apply-reviewed");

@@ -16,7 +16,7 @@ class Candidate(BaseModel):
     model_config = ConfigDict(extra="forbid")
     title: str = Field(min_length=1, max_length=300)
     body: str = Field(min_length=10, max_length=100000)
-    kind: Literal["document", "section", "path", "unit", "skill", "exercise", "interview-collection", "interview-question", "solution", "diagram", "feed", "flashcard", "source", "concept", "post", "game-campaign", "game-level", "game-scenario"] = "document"
+    kind: Literal["document", "section", "path", "unit", "skill", "exercise", "interview-collection", "interview-question", "solution", "diagram", "feed", "flashcard", "source", "concept", "post", "game-campaign", "game-level", "game-scenario", "interview-preparation"] = "document"
     audience: str | None = Field(default=None,max_length=1000)
     difficulty: str | None = Field(default=None,max_length=100)
     preferredPath: str | None = Field(default=None,max_length=300)

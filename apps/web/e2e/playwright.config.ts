@@ -42,14 +42,14 @@ export default defineConfig({
     },
     {
       name: "desktop-chromium",
-      grep: /@smoke|@playground|@notebook-catalog/,
+      grep: /@smoke|@playground|@notebook-catalog|@interview-admin/,
       use: {
         ...devices["Desktop Chrome"],
       },
     },
     {
       name: "mobile-webkit",
-      grep: /@smoke|@playground|@notebook-catalog/,
+      grep: /@smoke|@playground|@notebook-catalog|@interview-admin/,
       use: {
         ...devices["iPhone 15"],
       },

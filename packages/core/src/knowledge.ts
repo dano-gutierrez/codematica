@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-export const resourceKinds = ["document", "section", "path", "unit", "skill", "exercise", "interview-collection", "interview-question", "solution", "diagram", "feed", "flashcard", "source", "concept", "post", "game-campaign", "game-level", "game-scenario"] as const;
+export const resourceKinds = ["document", "section", "path", "unit", "skill", "exercise", "interview-collection", "interview-question", "solution", "diagram", "feed", "flashcard", "source", "concept", "post", "game-campaign", "game-level", "game-scenario", "interview-preparation"] as const;
 export const knowledgeResourceSchema = z.object({
   id: z.string().min(1), kind: z.enum(resourceKinds), title: z.string(), text: z.string(),
   hash: z.string().regex(/^[a-f0-9]{64}$/), sourcePath: z.string(), route: z.string().optional(),

@@ -1,10 +1,12 @@
+import { privateInterviewResources } from "../interview-preparation/workflow";
+import type { InterviewSnapshot } from "../../packages/core/src/interview-preparation";
 import { createHash } from "node:crypto";
 import type { ContentIndex } from "../../packages/core/src/content/schema";
 import { knowledgeSnapshotSchema, type KnowledgeResource, type KnowledgeRelationship } from "../../packages/core/src/knowledge";
 
 export const hash = (value: string) => createHash("sha256").update(value).digest("hex");
 type Post = { id: string; revisionId: string; title: string; body: string; status: string; published: boolean };
-export function buildKnowledgeCatalog(index: ContentIndex, posts: Post[] = [], approved: KnowledgeRelationship[] = [], gameSources:Record<string,{path:string;hash:string}> = {}) {
+export function buildKnowledgeCatalog(index: ContentIndex, posts: Post[] = [], approved: KnowledgeRelationship[] = [], gameSources:Record<string,{path:string;hash:string}> = {}, interviews: InterviewSnapshot | null = null) {
   const resources: KnowledgeResource[] = [], relationships: KnowledgeRelationship[] = [], exclusions: { id: string; reason: string }[] = [], unresolved: { resourceId: string; reference: string }[] = [];
   const excludedPaths = new Set(index.learningPaths.filter(p => p.category === "Languages").map(p => p.slug));
   const add = (r: Omit<KnowledgeResource, "paths" | "skills" | "tags" | "visibility" | "status"> & Partial<Pick<KnowledgeResource, "paths" | "skills" | "tags" | "visibility" | "status">>) => resources.push({ paths: [], skills: [], tags: [], visibility: "curriculum", status: "published", ...r });
@@ -96,6 +98,7 @@ export function buildKnowledgeCatalog(index: ContentIndex, posts: Post[] = [], a
     }
   }
   for (const p of posts) add({ id: `post:${p.id}`, kind: "post", revisionId: p.revisionId, title: p.title, text: p.body, hash: hash(p.body + "\n" + p.revisionId + "\n" + p.status + "\n" + p.published), sourcePath: `private/linkedin/${p.id}`, visibility: "private", status: p.published ? "published" : p.status, postStatus: p.status, published: p.published });
+  if(interviews) for(const resource of privateInterviewResources(interviews)) { add(resource); const brief=interviews.revisions.find(r=>r.id===resource.revisionId)!.brief; for(const ref of brief.resources) { const target=resources.find(r=>r.id===ref.resourceId); if(target?.hash===ref.hash && target.visibility==="curriculum" && target.text.includes(ref.quote) && target.title===ref.title && (!ref.route || target.route===ref.route)) { link(resource.id,target.id,"reviews"); for(const skill of ref.skills) if(relationships.some(e=>e.source===target.id && e.target===skill && ["teaches","assesses"].includes(e.type)))link(resource.id,skill,"teaches"); } else unresolved.push({resourceId:resource.id,reference:`stale preparation link ${ref.resourceId}`}); } }
   const byId = new Map(resources.map(r => [r.id, r]));
   for (const d of index.documents) for (const ref of d.prerequisites) { const target = resources.find(r => r.kind === "document" && (r.title.toLowerCase() === ref.toLowerCase() || r.id === `document:${ref}`)); if (target && byId.has(`document:${d.slug}`)) link(`document:${d.slug}`, target.id, "requires"); else if (byId.has(`document:${d.slug}`)) unresolved.push({ resourceId: `document:${d.slug}`, reference: ref }); }
   const valid = relationships.filter(e => { if (byId.has(e.source) && byId.has(e.target)) return true; unresolved.push({ resourceId: e.source, reference: e.target }); return false; });
@@ -109,6 +112,7 @@ export function buildKnowledgeCatalog(index: ContentIndex, posts: Post[] = [], a
   }
   for (const r of resources) { const parentUnits = valid.filter(e => e.type === "contains" && e.target === r.id).map(e => byId.get(e.source)!); r.paths = [...new Set([...r.paths, ...parentUnits.flatMap(p => p.paths)])]; r.skills = valid.filter(e => ["teaches", "assesses"].includes(e.type) && e.source === r.id && byId.get(e.target)?.kind === "skill").map(e => e.target); }
   for (const r of resources) if (r.parentId) { const parent = byId.get(r.parentId); r.paths = [...new Set([...r.paths, ...parent?.paths ?? []])]; r.skills = [...new Set([...r.skills, ...parent?.skills ?? []])]; }
+  for(const resource of resources.filter(r=>r.kind==="interview-preparation")) resource.paths=[...new Set(valid.filter(e=>e.source===resource.id && e.type==="reviews").flatMap(e=>byId.get(e.target)?.paths??[]))];
   resources.sort((a, b) => a.id.localeCompare(b.id));
   valid.sort((a, b) => a.id.localeCompare(b.id));
   const counts = Object.fromEntries([...new Set(resources.map(r => r.kind))].map(kind => [kind, resources.filter(r => r.kind === kind).length]));

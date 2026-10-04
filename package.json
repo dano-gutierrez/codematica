@@ -18,7 +18,7 @@
     "build": "npm run brand:assets && npm run game:runtime && npm run game:assets && npm run content:index && npm run build -w @codematica/web",
     "start": "npm run start -w @codematica/web",
     "lint": "eslint . --max-warnings=0",
-    "typecheck": "npm run typecheck -w @codematica/core && npm run typecheck -w @codematica/ui && npm run typecheck -w @codematica/web && npm run typecheck -w @codematica/mobile && npm run typecheck:linkedin && npm run typecheck:knowledge",
+    "typecheck": "npm run typecheck -w @codematica/core && npm run typecheck -w @codematica/ui && npm run typecheck -w @codematica/web && npm run typecheck -w @codematica/mobile && npm run typecheck:linkedin && npm run typecheck:knowledge && npm run typecheck:interview-preparation",
     "typecheck:linkedin": "tsc --noEmit -p scripts/linkedin/tsconfig.json",
     "test": "vitest run",
     "test:coverage": "vitest run --coverage && vitest run --coverage --config vitest.per-file.config.ts",
@@ -88,7 +88,11 @@
     "test:knowledge:local": "python3 services/knowledge/launcher.py smoke",
     "knowledge:benchmark": "python3 services/knowledge/launcher.py benchmark",
     "e2e:knowledge": "EDITORIAL_E2E=1 playwright test --config=apps/web/e2e/playwright.config.ts --project=mobile-chromium knowledge-admin.regression.spec.ts",
-    "typecheck:knowledge": "tsc --noEmit -p scripts/knowledge/tsconfig.json"
+    "typecheck:knowledge": "tsc --noEmit -p scripts/knowledge/tsconfig.json",
+    "interview:prep": "node --env-file=.env --import tsx scripts/interview-preparation/cli.ts",
+    "e2e:interview-admin": "EDITORIAL_E2E=1 playwright test --config=apps/web/e2e/playwright.config.ts --project=mobile-chromium interview-preparation.regression.spec.ts",
+    "typecheck:interview-preparation": "tsc --noEmit -p scripts/interview-preparation/tsconfig.json",
+    "knowledge:export:private": "node --env-file=.env --import tsx scripts/knowledge/cli.ts export-with-private"
   },
   "dependencies": {
     "@fontsource-variable/noto-sans-jp": "^5.3.0",

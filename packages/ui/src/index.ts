@@ -6,3 +6,5 @@ export { LinkedInAdminScreen } from "./LinkedInAdminScreen";
 
 export { JapaneseNotebookPractice } from "./JapaneseNotebookPractice";
 export { JapaneseNotebookCatalogScreen } from "./JapaneseNotebookCatalogScreen";
+
+export { InterviewPreparationScreen } from "./InterviewPreparationScreen";
