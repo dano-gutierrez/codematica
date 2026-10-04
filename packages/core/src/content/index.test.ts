@@ -119,7 +119,7 @@ describe("generated content index", () => {
       "Treat omitted BASIC fields as unreturned, preserve their types in FULL, and document defaults before clients depend on them.",
     ]);
     const path = getLearningPathBySlug("system-design-fundamentals")!;
-    expect(path.units.map(u => u.slug)).toEqual(["caching-contracts", "capacity-decisions", "routing-decisions", "api-security-boundaries", "client-compatibility", "traffic-rate", "webhook-authenticity", "reservation-boundaries"]);
+    expect(path.units.map(u => u.slug)).toEqual(["caching-contracts", "capacity-decisions", "routing-decisions", "api-security-boundaries", "client-compatibility", "traffic-rate", "webhook-authenticity", "reservation-boundaries", "distributed-readings"]);
     expect(getNextPathNodeRoute(path.slug, {kind:"exercise",slug:"system-design/api-boundary-checkpoint"})).toBe("/docs/system-design/client-compatibility-contracts?path=system-design-fundamentals");
     expect(getNextPathNodeRoute(path.slug, {kind:"document",slug:lesson.slug})).toBe("/practice/system-design/client-compatibility-checkpoint?path=system-design-fundamentals");
     expect(getNextPathNodeRoute(path.slug, {kind:"exercise",slug:quiz.slug})).toBe("/docs/system-design/traffic-rate-contracts?path=system-design-fundamentals");
@@ -366,7 +366,7 @@ describe("generated content index", () => {
   it("places routing practice after capacity and preserves broker effect boundaries", () => {
     const path = getLearningPathBySlug("system-design-fundamentals");
     expect(path?.units.map(u => u.slug)).toEqual([
-      "caching-contracts", "capacity-decisions", "routing-decisions", "api-security-boundaries", "client-compatibility", "traffic-rate", "webhook-authenticity", "reservation-boundaries",
+      "caching-contracts", "capacity-decisions", "routing-decisions", "api-security-boundaries", "client-compatibility", "traffic-rate", "webhook-authenticity", "reservation-boundaries", "distributed-readings",
     ]);
     const routing = getDocumentBySlug("system-design/routing-decision-lab");
     const quiz = getExerciseBySlug("system-design/routing-decision-checkpoint");

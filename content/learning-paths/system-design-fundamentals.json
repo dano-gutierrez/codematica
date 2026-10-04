@@ -134,6 +134,21 @@
           "slug": "system-design/reservation-boundary-checkpoint"
         }
       ]
+    },
+    {
+      "slug": "distributed-readings",
+      "title": "Distributed Reading Reviews",
+      "summary": "Compare quorum membership, consensus commitment and fan-out evidence through selected primary readings.",
+      "nodes": [
+        {
+          "kind": "document",
+          "slug": "system-design/distributed-reading-reviews"
+        },
+        {
+          "kind": "exercise",
+          "slug": "system-design/distributed-reading-checkpoint"
+        }
+      ]
     }
   ]
 }

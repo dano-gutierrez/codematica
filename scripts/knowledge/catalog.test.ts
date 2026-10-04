@@ -11,6 +11,19 @@ beforeAll(async () => {
 function freshContent() { return structuredClone(validatedIndex); }
 
 describe("complete knowledge catalog", () => {
+  it("exports distributed readings with authored membership, prerequisites and citations", () => {
+    const graph = buildKnowledgeCatalog(freshContent());
+    const lesson = "document:system-design/distributed-reading-reviews", quiz = "exercise:system-design/distributed-reading-checkpoint", unit = "unit:system-design-fundamentals:distributed-readings";
+    expect(graph.resources.find(resource => resource.id === lesson)).toMatchObject({ paths: ["path:system-design-fundamentals"], visibility: "curriculum", status: "published" });
+    expect(graph.relationships).toContainEqual(expect.objectContaining({ source: "path:system-design-fundamentals", target: unit, type: "contains", order: 8, provenance: "explicit" }));
+    for (const [order, target] of [lesson, quiz].entries()) expect(graph.relationships).toContainEqual(expect.objectContaining({ source: unit, target, type: "contains", order, provenance: "explicit" }));
+    expect(graph.relationships).toContainEqual(expect.objectContaining({ source: quiz, target: lesson, type: "assesses", provenance: "explicit" }));
+    for (const source of ["dynamo-sosp-2007", "raft-extended-2014", "tail-at-scale-2013"]) for (const resource of [lesson, quiz]) expect(graph.relationships).toContainEqual(expect.objectContaining({ source: resource, target: `source:${source}`, type: "cites", provenance: "explicit" }));
+    for (const prerequisite of ["system-design/scaling-decision-worksheet", "software-engineering/product-interview-durable-generation-architecture"]) expect(graph.relationships).toContainEqual(expect.objectContaining({ source: lesson, target: `document:${prerequisite}`, type: "requires", provenance: "explicit" }));
+    for (const section of ["name-the-quorum-members", "commitment-needs-more-than-a-copy-count", "measure-the-whole-fan-out"]) expect(graph.resources.find(resource => resource.id === `${lesson}#${section}`)?.paths).toEqual(["path:system-design-fundamentals"]);
+    expect(graph.unresolved.some(resource => [lesson, quiz, unit].includes(resource.resourceId))).toBe(false);
+  });
+
   it.each([
     ["review-conditional-writes-before-trusting-a-tag", ["rfc-http-preconditions", "rfc-6585-status-codes"]],
     ["bound-filtering-sorting-and-continuation", ["google-aip-160-filtering", "google-aip-158-pagination"]],

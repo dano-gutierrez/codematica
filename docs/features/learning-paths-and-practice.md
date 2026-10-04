@@ -117,6 +117,8 @@ Client Compatibility extends System Design after API Security. Its original Pyth
 
 Traffic Rate Contracts and Webhook Authenticity follow Client Compatibility in System Design. Two original four-question checkpoints preserve rate/concurrency and signed-delivery/durable-effect distinctions. The rate lab tests calendar/rolling boundaries, identical-time attempts, scoped counters, exact fractional token refill, burst caps and invalid clocks. The webhook lab uses an original custom envelope, dummy keys, raw bytes, signed time, account/endpoint receipts and bounded key rotation. It is not Stripe-compatible and must not be deployed as a receiver. Neither fixture proves distributed atomicity, durable completion or upstream performance.
 
+Distributed Reading Reviews appends one lesson and four-question checkpoint after Reservations in System Design. Selected Dynamo (SOSP 2007), Raft (May 20, 2014 extended version) and The Tail at Scale (February 2013) passages ground original review cases. Membership assumptions, current-term commitment, client retry identity, independence and hedge costs stay distinct. Earlier eight units and Backend Readiness membership are unchanged; the System Design reservation checkpoint now continues into the new unit. No distributed service, consensus proof or latency benchmark is implemented.
+
 ### Data Model And Persistence
 
 - `content/learning-paths/*.json` stores path metadata and ordered unit nodes; `content/sources/*.json` stores authoritative external source metadata.
@@ -157,6 +159,8 @@ Traffic Rate Contracts and Webhook Authenticity follow Client Compatibility in S
 - `apps/web/src/app/browse/page.tsx`: complete lesson and diagram browser route.
 
 ## Test Plan
+
+- Distributed readings: primary destinations/editions, no inferred license, selected assumptions, four independently pinned answer keys, old/new unit order and final/no-next behavior. Graph tests verify authored membership, section IDs, prerequisites, cites and assesses without new unresolved references. The browser journey scores four shuffled answers, verifies source panels and terminal behavior; the preceding System Design reservation journey follows the new destination. No installed consensus service, real failure schedule or latency benchmark is exercised.
 
 - Operational contracts: canonical Python fences exercise exact boundaries, scopes, invalid inputs and visible rejection states. Core/graph tests pin independent source URLs/identities, both four-question answer keys, explicit cites/assesses/prerequisite edges and ordered continuation. Two browser journeys verify source panels, scoring and the next activity. Real Redis races, HTTP/provider SDKs and installed device rendering remain separate validation.
 

@@ -1,0 +1,28 @@
+{
+  "sources": [
+    {
+      "id": "dynamo-sosp-2007",
+      "title": "Dynamo — Amazon's Highly Available Key-value Store",
+      "provider": "Amazon.com",
+      "url": "https://www.allthingsdistributed.com/files/amazon-dynamo-sosp2007.pdf",
+      "attribution": "Giuseppe DeCandia and eight coauthors, SOSP 2007. Selected sections 4.4–4.6 verified for versioning, participant selection and hinted handoff. Original exercise; no paper text, code or figures copied. No blanket redistribution license inferred.",
+      "lastVerifiedAt": "2026-10-04"
+    },
+    {
+      "id": "raft-extended-2014",
+      "title": "Raft — In Search of an Understandable Consensus Algorithm",
+      "provider": "Diego Ongaro and John Ousterhout",
+      "url": "https://raft.github.io/raft.pdf",
+      "attribution": "Extended version, May 20, 2014. Figure 2, section 5.4.2 and section 8 inspected for commitment, retries and read leadership. Selected reading, not a full proof or installed implementation; no source code or figures copied and no redistribution license inferred.",
+      "lastVerifiedAt": "2026-10-04"
+    },
+    {
+      "id": "tail-at-scale-2013",
+      "title": "The Tail at Scale",
+      "provider": "Jeffrey Dean and Luiz André Barroso",
+      "url": "https://barroso.org/publications/TheTailAtScale.pdf",
+      "attribution": "Communications of the ACM 56(2), February 2013, pages 74–80; DOI 10.1145/2408776.2408794. Selected fan-out and hedged-request passages inspected. Historical reported workloads are not local measurements. No source code, tables or figures copied; no redistribution license inferred.",
+      "lastVerifiedAt": "2026-10-04"
+    }
+  ]
+}

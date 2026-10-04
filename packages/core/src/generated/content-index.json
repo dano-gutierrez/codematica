@@ -4376,6 +4376,16 @@
       "contentHash": "f07104cf86e7dd0239ebdf792b7817958c5eabe73ce4cf944027317a4f468606"
     },
     {
+      "id": "dynamo-sosp-2007",
+      "title": "Dynamo — Amazon's Highly Available Key-value Store",
+      "provider": "Amazon.com",
+      "url": "https://www.allthingsdistributed.com/files/amazon-dynamo-sosp2007.pdf",
+      "attribution": "Giuseppe DeCandia and eight coauthors, SOSP 2007. Selected sections 4.4–4.6 verified for versioning, participant selection and hinted handoff. Original exercise; no paper text, code or figures copied. No blanket redistribution license inferred.",
+      "lastVerifiedAt": "2026-10-04",
+      "sourcePath": "content/sources/distributed-reading-reviews.json",
+      "contentHash": "3be19b1501d700fd8771c7dc17243cbaeaedee9803b025e89bd3be057535e69d"
+    },
+    {
       "id": "frontend-accessible-buttons",
       "title": "Button Pattern",
       "provider": "W3C WAI",
@@ -5332,6 +5342,16 @@
       "contentHash": "e4000c18e4da65ef9d384c483c13a5f1935b0d72ec6e61a3327dd2f46c00f127"
     },
     {
+      "id": "raft-extended-2014",
+      "title": "Raft — In Search of an Understandable Consensus Algorithm",
+      "provider": "Diego Ongaro and John Ousterhout",
+      "url": "https://raft.github.io/raft.pdf",
+      "attribution": "Extended version, May 20, 2014. Figure 2, section 5.4.2 and section 8 inspected for commitment, retries and read leadership. Selected reading, not a full proof or installed implementation; no source code or figures copied and no redistribution license inferred.",
+      "lastVerifiedAt": "2026-10-04",
+      "sourcePath": "content/sources/distributed-reading-reviews.json",
+      "contentHash": "3be19b1501d700fd8771c7dc17243cbaeaedee9803b025e89bd3be057535e69d"
+    },
+    {
       "id": "react-effect-cleanup",
       "title": "Synchronizing with Effects",
       "provider": "React",
@@ -5874,6 +5894,16 @@
       "lastVerifiedAt": "2026-10-04",
       "sourcePath": "content/sources/traffic-and-webhook-contracts.json",
       "contentHash": "da952d48ce45822980a21b22c2587a89cd9c800781fdcb509a3da30810d87228"
+    },
+    {
+      "id": "tail-at-scale-2013",
+      "title": "The Tail at Scale",
+      "provider": "Jeffrey Dean and Luiz André Barroso",
+      "url": "https://barroso.org/publications/TheTailAtScale.pdf",
+      "attribution": "Communications of the ACM 56(2), February 2013, pages 74–80; DOI 10.1145/2408776.2408794. Selected fan-out and hedged-request passages inspected. Historical reported workloads are not local measurements. No source code, tables or figures copied; no redistribution license inferred.",
+      "lastVerifiedAt": "2026-10-04",
+      "sourcePath": "content/sources/distributed-reading-reviews.json",
+      "contentHash": "3be19b1501d700fd8771c7dc17243cbaeaedee9803b025e89bd3be057535e69d"
     },
     {
       "id": "udlbook-notebooks",
@@ -12302,6 +12332,67 @@
       "readingMinutes": 3
     },
     {
+      "title": "Distributed Readings — Review The Assumptions",
+      "slug": "system-design/distributed-reading-reviews",
+      "summary": "Compare quorum membership, consensus commitment and fan-out latency through selected primary readings and original review cases.",
+      "track": "System Design",
+      "topic": "Distributed Contracts",
+      "difficulty": "practitioner",
+      "tags": [
+        "distributed-systems",
+        "consensus",
+        "latency",
+        "evidence"
+      ],
+      "prerequisites": [
+        "system-design/scaling-decision-worksheet",
+        "software-engineering/product-interview-durable-generation-architecture"
+      ],
+      "diagramRefs": [],
+      "sourceRefs": [
+        "dynamo-sosp-2007",
+        "raft-extended-2014",
+        "tail-at-scale-2013"
+      ],
+      "status": "published",
+      "id": "b2c4c8534778",
+      "route": "/docs/system-design/distributed-reading-reviews",
+      "sourcePath": "content/knowledge/system-design/distributed-reading-reviews.md",
+      "bodyPath": "content/knowledge/system-design/distributed-reading-reviews.md",
+      "markdown": "## Read for a specific contract\n\nRead selected passages with a question to answer. Record the edition, assumed failures, participants and observable promise before selecting a mechanism. These three readings address different contracts; none supplies a universal architecture ladder. The cases below are original exercises; no distributed cluster or latency benchmark was run. They do not represent an employer's interview or a complete implementation of these papers.\n\n## Name the quorum members\n\n[Dynamo, SOSP 2007](https://www.allthingsdistributed.com/files/amazon-dynamo-sosp2007.pdf), sections 4.4–4.6, describes version reconciliation and substitute nodes under failures. Read the participants as well as the numerical quorum. R + W > N does not establish linearizability for Dynamo's sloppy membership and concurrent versions. This is the historical Dynamo paper, not a current DynamoDB API contract.\n\nOriginal case: nominal owners are A, B and C, with N=3, W=2 and R=2. A and B are unreachable to one client. A write is acknowledged by C and substitute D. Another client's read reaches A and B before repair. The two sets are disjoint despite 2+2>3: they were not subsets of the same three participants. Receiving two replies cannot establish that write's visibility.\n\nAsk which versions return, how concurrent branches are reconciled and when a substitute transfers its hint. A hint is not proof that repair completed. Do not silently replace conflicting application changes with a timestamp winner.\n\n## Commitment needs more than a copy count\n\n[Raft, extended version dated May 20, 2014](https://raft.github.io/raft.pdf), Figure 2 and section 5.4.2, constrains direct majority-based commitment to a current-term entry. Earlier entries become committed through the resulting prefix; election and log rules remain essential.\n\nOriginal review: a term-4 leader observes three copies of a term-2 entry in a five-server cluster. Reject the statement \"three copies alone commit it.\" Require the current-term rule and the surrounding log/election invariants. Do not infer a safe read merely from a process still calling itself leader.\n\nSection 8 separately discusses client identity/result deduplication and fresh leadership evidence for reads. A committed command does not deduplicate client retries: a lost response can produce another command. Connect this boundary to the [durable retry lesson](/docs/software-engineering/product-interview-durable-generation-architecture). This reading is not a Raft simulator, proof checker or installed consensus service.\n\n## Measure the whole fan-out\n\n[The Tail at Scale, February 2013](https://barroso.org/publications/TheTailAtScale.pdf), its component-variability and short-term adaptation passages, explains why waiting for many leaves amplifies latency outliers. Delayed hedges can reduce waiting while adding work; the paper's measurements belong to its reported workloads.\n\nOriginal assumption: 100 required leaves each have probability 0.01 of exceeding a chosen deadline. With independent leaf events, the probability that at least one exceeds it is `1 - 0.99^100`, approximately 63.4%. It is not 1%. Under perfectly correlated stalls, the same marginal probabilities can instead produce 1%; independence must be justified.\n\nReview any hedge against shared bottlenecks, deadline, extra-work budget and effect safety. Client cancellation does not prove the server stopped. Do not duplicate a payment just to race responses. Measure end-to-end tails and load under representative contention; isolated leaf percentiles do not establish that result. Reuse the [capacity worksheet](/docs/system-design/scaling-decision-worksheet) for the controlled comparison.\n\n## Write a comparison receipt\n\nFor one proposal, fill in these fields:\n\n| Field | Evidence to record |\n| --- | --- |\n| Required behavior | What a caller may conclude from acceptance, completion or a read |\n| Assumptions | Participants, failure model, operation identity and allowed staleness |\n| Counterexample | A specific schedule or workload that defeats a stronger claim |\n| Experiment | Controlled input, observable result, success threshold and rollback condition |\n| Remaining gap | Paper reasoning, local measurement and deployed behavior kept distinct |\n\nComplete the [Distributed Reading Checkpoint](/practice/system-design/distributed-reading-checkpoint). More papers can supply new mechanisms later; a list of titles alone supplies no implementation or evidence of readiness.",
+      "plainText": "Read for a specific contract Read selected passages with a question to answer. Record the edition, assumed failures, participants and observable promise before selecting a mechanism. These three readings address different contracts; none supplies a universal architecture ladder. The cases below are original exercises; no distributed cluster or latency benchmark was run. They do not represent an employer's interview or a complete implementation of these papers. Name the quorum members Dynamo, SOSP 2007, sections 4.4–4.6, describes version reconciliation and substitute nodes under failures. Read the participants as well as the numerical quorum. R + W > N does not establish linearizability for Dynamo's sloppy membership and concurrent versions. This is the historical Dynamo paper, not a current DynamoDB API contract. Original case: nominal owners are A, B and C, with N=3, W=2 and R=2. A and B are unreachable to one client. A write is acknowledged by C and substitute D. Another client's read reaches A and B before repair. The two sets are disjoint despite 2+2>3: they were not subsets of the same three participants. Receiving two replies cannot establish that write's visibility. Ask which versions return, how concurrent branches are reconciled and when a substitute transfers its hint. A hint is not proof that repair completed. Do not silently replace conflicting application changes with a timestamp winner. Commitment needs more than a copy count Raft, extended version dated May 20, 2014, Figure 2 and section 5.4.2, constrains direct majority-based commitment to a current-term entry. Earlier entries become committed through the resulting prefix; election and log rules remain essential. Original review: a term-4 leader observes three copies of a term-2 entry in a five-server cluster. Reject the statement \"three copies alone commit it.\" Require the current-term rule and the surrounding log/election invariants. Do not infer a safe read merely from a process still calling itself leader. Section 8 separately discusses client identity/result deduplication and fresh leadership evidence for reads. A committed command does not deduplicate client retries: a lost response can produce another command. Connect this boundary to the durable retry lesson. This reading is not a Raft simulator, proof checker or installed consensus service. Measure the whole fan-out The Tail at Scale, February 2013, its component-variability and short-term adaptation passages, explains why waiting for many leaves amplifies latency outliers. Delayed hedges can reduce waiting while adding work; the paper's measurements belong to its reported workloads. Original assumption: 100 required leaves each have probability 0.01 of exceeding a chosen deadline. With independent leaf events, the probability that at least one exceeds it is 1 - 0.99^100, approximately 63.4%. It is not 1%. Under perfectly correlated stalls, the same marginal probabilities can instead produce 1%; independence must be justified. Review any hedge against shared bottlenecks, deadline, extra-work budget and effect safety. Client cancellation does not prove the server stopped. Do not duplicate a payment just to race responses. Measure end-to-end tails and load under representative contention; isolated leaf percentiles do not establish that result. Reuse the capacity worksheet for the controlled comparison. Write a comparison receipt For one proposal, fill in these fields: | Field | Evidence to record | | --- | --- | | Required behavior | What a caller may conclude from acceptance, completion or a read | | Assumptions | Participants, failure model, operation identity and allowed staleness | | Counterexample | A specific schedule or workload that defeats a stronger claim | | Experiment | Controlled input, observable result, success threshold and rollback condition | | Remaining gap | Paper reasoning, local measurement and deployed behavior kept distinct | Complete the Distributed Reading Checkpoint. More papers can supply new mechanisms later; a list of titles alone supplies no implementation or evidence of readiness.",
+      "headings": [
+        {
+          "id": "read-for-a-specific-contract",
+          "depth": 2,
+          "text": "Read for a specific contract"
+        },
+        {
+          "id": "name-the-quorum-members",
+          "depth": 2,
+          "text": "Name the quorum members"
+        },
+        {
+          "id": "commitment-needs-more-than-a-copy-count",
+          "depth": 2,
+          "text": "Commitment needs more than a copy count"
+        },
+        {
+          "id": "measure-the-whole-fan-out",
+          "depth": 2,
+          "text": "Measure the whole fan-out"
+        },
+        {
+          "id": "write-a-comparison-receipt",
+          "depth": 2,
+          "text": "Write a comparison receipt"
+        }
+      ],
+      "mermaidBlocks": [],
+      "contentHash": "a91d0d995883781f4724676b910dad21889a225e197381a693b5d31fece9357d",
+      "readingMinutes": 3
+    },
+    {
       "title": "Fair Admission And Reservations — Separate Policy From Ownership",
       "slug": "system-design/fair-admission-and-reservations",
       "summary": "Define admission policy, claim inventory atomically, exclude overlapping room dates and trace expiry without selling another buyer's reservation.",
@@ -15814,12 +15905,27 @@
               "slug": "system-design/reservation-boundary-checkpoint"
             }
           ]
+        },
+        {
+          "slug": "distributed-readings",
+          "title": "Distributed Reading Reviews",
+          "summary": "Compare quorum membership, consensus commitment and fan-out evidence through selected primary readings.",
+          "nodes": [
+            {
+              "kind": "document",
+              "slug": "system-design/distributed-reading-reviews"
+            },
+            {
+              "kind": "exercise",
+              "slug": "system-design/distributed-reading-checkpoint"
+            }
+          ]
         }
       ],
       "id": "07569d83aba4",
       "route": "/paths/system-design-fundamentals",
       "sourcePath": "content/learning-paths/system-design-fundamentals.json",
-      "contentHash": "da18ca55ba861d43152667149f75bc4f544e9ded22ee47eede5f2b742f270ddc"
+      "contentHash": "28785d5dd85ed8ed632117e63e896cb61d8526acd4119035fd96369033ff4b9f"
     }
   ],
   "exercises": [
@@ -33427,6 +33533,122 @@
       "route": "/practice/system-design/client-compatibility-checkpoint",
       "sourcePath": "content/exercises/system-design/client-compatibility-checkpoint.json",
       "contentHash": "38053787720e4f2e9f340597d0c3df7f70cb4910e5b5ded1b5ff903ca2529397"
+    },
+    {
+      "slug": "system-design/distributed-reading-checkpoint",
+      "title": "Distributed Reading Checkpoint",
+      "documentSlug": "system-design/distributed-reading-reviews",
+      "concept": "Distributed Contracts",
+      "difficulty": "practitioner",
+      "tags": [
+        "distributed-systems",
+        "evidence"
+      ],
+      "status": "published",
+      "sourceRefs": [
+        "dynamo-sosp-2007",
+        "raft-extended-2014",
+        "tail-at-scale-2013"
+      ],
+      "type": "questionnaire",
+      "questions": [
+        {
+          "id": "quorum-membership",
+          "prompt": "N=3, R=2 and W=2, but writes use substitute nodes. What must a latest-value claim establish?",
+          "explanation": "An overlap argument requires its participant assumptions; conflicting versions and repair still need explicit handling.",
+          "kind": "choice",
+          "options": [
+            {
+              "id": "option-0",
+              "label": "Name the actual read/write participants and version reconciliation; the inequality alone does not prove a latest single value.",
+              "isCorrect": true
+            },
+            {
+              "id": "option-1",
+              "label": "R + W > N proves linearizability regardless of membership.",
+              "isCorrect": false
+            },
+            {
+              "id": "option-2",
+              "label": "Use the first reply and discard all other versions.",
+              "isCorrect": false
+            }
+          ]
+        },
+        {
+          "id": "commit-term",
+          "prompt": "A term-4 Raft leader sees an older term-2 entry on three of five servers. What establishes commitment?",
+          "explanation": "Direct commitment by counting uses the current term; the committed prefix and election/log invariants matter.",
+          "kind": "choice",
+          "options": [
+            {
+              "id": "option-0",
+              "label": "An old-term majority count alone is insufficient; use Raft's current-term commitment rule and log/election constraints.",
+              "isCorrect": true
+            },
+            {
+              "id": "option-1",
+              "label": "Any older entry is committed as soon as it appears on three machines.",
+              "isCorrect": false
+            },
+            {
+              "id": "option-2",
+              "label": "Wall-clock age proves the entry is committed.",
+              "isCorrect": false
+            }
+          ]
+        },
+        {
+          "id": "retry-effect",
+          "prompt": "A command commits, but its response is lost and the client retries. What prevents a repeated effect?",
+          "explanation": "The operation identity and result must survive the retry boundary; consensus and client deduplication answer different questions.",
+          "kind": "choice",
+          "options": [
+            {
+              "id": "option-0",
+              "label": "Preserve a client request identity and associated result; log commitment alone does not deduplicate retries.",
+              "isCorrect": true
+            },
+            {
+              "id": "option-1",
+              "label": "Commitment proves the client received a response.",
+              "isCorrect": false
+            },
+            {
+              "id": "option-2",
+              "label": "Every retry becomes safe simply by using the same leader.",
+              "isCorrect": false
+            }
+          ]
+        },
+        {
+          "id": "fanout-assumptions",
+          "prompt": "100 required leaves each miss a deadline with probability 0.01. What follows for the whole request?",
+          "explanation": "The independent calculation is 1 - 0.99^100. Marginal probabilities alone do not establish joint behavior or a safe hedge.",
+          "kind": "choice",
+          "options": [
+            {
+              "id": "option-0",
+              "label": "About 63.4% under independence; correlated stalls and extra hedge work require separate evidence.",
+              "isCorrect": true
+            },
+            {
+              "id": "option-1",
+              "label": "The whole request misses with probability 1% for every dependence structure.",
+              "isCorrect": false
+            },
+            {
+              "id": "option-2",
+              "label": "Hedging eliminates misses without extra work or effect risks.",
+              "isCorrect": false
+            }
+          ]
+        }
+      ],
+      "id": "a4385d40f4dd",
+      "route": "/practice/system-design/distributed-reading-checkpoint",
+      "sourcePath": "content/exercises/system-design/distributed-reading-checkpoint.json",
+      "contentHash": "b0d63c9b3cba72bae4b7ea5c32c708e0130a842bf425aa7d1fb99fa1f5621973"
     },
     {
       "slug": "system-design/reservation-boundary-checkpoint",
@@ -158430,7 +158652,7 @@
     {
       "name": "System Design",
       "slug": "system-design",
-      "documentCount": 10,
+      "documentCount": 11,
       "difficulties": [
         "foundation",
         "practitioner",
@@ -158446,6 +158668,7 @@
         "Concurrency And Reservations",
         "Data flow",
         "Delivery Contracts",
+        "Distributed Contracts",
         "Load Balancing"
       ]
     }

@@ -2,6 +2,18 @@ import { expect, test } from "@playwright/test";
 
 const cases = [
   {
+    "slug": "distributed-reading-reviews",
+    "title": "Distributed Readings — Review The Assumptions",
+    "source": "Dynamo — Amazon's Highly Available Key-value Store",
+    "checkpoint": "distributed-reading-checkpoint",
+    "answers": [
+      "Name the actual read/write participants and version reconciliation; the inequality alone does not prove a latest single value.",
+      "An old-term majority count alone is insufficient; use Raft's current-term commitment rule and log/election constraints.",
+      "Preserve a client request identity and associated result; log commitment alone does not deduplicate retries.",
+      "About 63.4% under independence; correlated stalls and extra hedge work require separate evidence."
+    ]
+  },
+  {
     slug: "scaling-decision-worksheet",
     title: "Scaling Decisions — Measure The Constraint First",
     source: "Handling Overload",
@@ -88,6 +100,7 @@ const cases = [
     title: "Fair Admission And Reservations — Separate Policy From Ownership",
     source: "PostgreSQL 17 — SELECT And SKIP LOCKED",
     checkpoint: "reservation-boundary-checkpoint",
+    next: "/docs/system-design/distributed-reading-reviews?path=system-design-fundamentals",
     answers: [
       "No matching row was acquired by that statement; it cannot infer sold out.",
       "Eligibility and abuse policy; one account does not prove one legitimate human.",
@@ -127,6 +140,10 @@ for (const scenario of cases) {
       await page.getByRole("button", { name: index === scenario.answers.length - 1 ? "Finish" : "Next", exact: true }).click();
     }
     await expect(page.getByText("Score 100%", { exact: true })).toBeVisible();
-    if (scenario.next) await expect(page.getByRole("link", { name: "Next activity" })).toHaveAttribute("href", scenario.next);
+    if (scenario.next) {
+      await expect(page.getByRole("link", { name: "Next activity" })).toHaveAttribute("href", scenario.next);
+      await page.getByRole("link", { name: "Next activity" }).click();
+      await expect(page).toHaveURL(scenario.next);
+    } else await expect(page.getByRole("link", { name: "Next activity" })).toHaveCount(0);
   });
 }
