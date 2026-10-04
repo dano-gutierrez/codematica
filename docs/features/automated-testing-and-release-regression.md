@@ -184,3 +184,5 @@ The optional editorial workflow adds an isolated `npm run e2e:linkedin` lane (fa
 ## Authored Interview Solutions (2026-09-27)
 
 `npm run test:interview:python` is a required CI/release gate with Python 3.13 setup; missing Python fails. It executes canonical frontend companions and prior-content regression fixtures with mocked I/O. `FrontendInterviewExamples.test.tsx` compiles/executes all 21 TS projects and cross-checks Python outcomes. `interview-audit.test.ts` protects verified legacy fixes. No threshold or exclusion was lowered. The new browser and Maestro frontend-interview journeys cover the shared study flow.
+
+Branch-dispatched release uploads use the commit SHA and run attempt; branch slashes cannot invalidate artifact names and reruns retain earlier evidence. Playground edit fixtures use the actual CodeMirror platform shortcut and assert complete text replacement before executing. This aligns the parent with the reviewed stack fixes; no production behavior, timeout or coverage floor changes.

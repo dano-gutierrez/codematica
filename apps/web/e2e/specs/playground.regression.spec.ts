@@ -1,4 +1,5 @@
 import { expect, test, type Page } from "@playwright/test";
+import { replaceAppCode } from "../code-editor";
 
 async function openBoard(page: Page) {
   await page.goto("/interviews/frontend-practice/dynamic-board?path=frontend-interview-practice");
@@ -16,13 +17,7 @@ export default function App() {
 }`;
 
 async function editApp(page: Page) {
-  // CodeMirror exposes a wrapper and an editable textbox with the same name.
-  const editor = page.getByRole("textbox", { name: "Code Editor for App.tsx", exact: true }).last();
-  await expect(editor).toHaveAttribute("contenteditable", "true");
-  // Use CodeMirror's select-all command: fill() only replaces the rendered
-  // viewport on long, virtualized documents.
-  await editor.press("ControlOrMeta+A");
-  await page.keyboard.insertText(editedApp);
+  await replaceAppCode(page, editedApp);
 }
 
 test("@regression @playground starts one preview, runs edits, logs interactions, and resets output", async ({ page }) => {
@@ -34,8 +29,13 @@ test("@regression @playground starts one preview, runs edits, logs interactions,
   await expect(page.getByTestId("web-playground").locator("iframe")).toHaveCount(1);
   await editApp(page);
   await expect(preview.getByRole("heading", { name: "Dynamic board", exact: true })).toBeVisible();
+  const connectedFrame = await page.getByTestId("web-playground").locator("iframe").elementHandle();
   await page.getByTestId("web-playground-run").click();
   await expect(preview.getByRole("button", { name: "Edited counter 7" })).toBeVisible({ timeout: 45_000 });
+  // This parent restarts the client on Run; connected-client reuse belongs to
+  // the later playground follow-up. Preserve the current lifecycle contract.
+  expect(await connectedFrame?.evaluate((frame) => frame.isConnected)).toBe(false);
+  await expect(page.getByTestId("web-playground").locator("iframe")).toHaveCount(1);
   await preview.getByRole("button", { name: "Edited counter 7" }).click();
   await expect(preview.getByRole("button", { name: "Edited counter 8" })).toBeVisible();
   await page.getByText("Console", { exact: true }).click();

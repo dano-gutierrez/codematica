@@ -5,3 +5,5 @@
 The web app declares `@codematica/ui` as a direct production dependency. The smoke verifies that its React-only `notebook-session` subpath resolves in the clean install.
 
 The artifact also rejects privileged editorial worker RPC/service-key markers in built server/client JavaScript, protecting the HTTP/worker import boundary. CI uploads production install/startup logs independently of unit results.
+
+Release evidence names use SHA plus run attempt, with branch/tag and retry-isolation regression cases. Playground fixtures focus CodeMirror, use its emulated Apple shortcut and assert complete text replacement; application logic remains unchanged.
