@@ -128,7 +128,7 @@ describe("generated content index", () => {
   it("groups existing coding walkthroughs by pattern without duplicating questions", () => {
     const path = getLearningPathBySlug("coding-interview-pattern-practice");
     expect(path?.kind).toBe("skill");
-    expect(path?.units.map(unit => unit.slug)).toEqual(["foundations", "contiguous-data", "ordered-data", "trees-and-structure", "bounded-caches", "graph-decisions"]);
+    expect(path?.units.map(unit => unit.slug)).toEqual(["foundations", "contiguous-data", "ordered-data", "trees-and-structure", "bounded-caches", "graph-decisions", "array-state-reviews"]);
     const nodes = path!.units.flatMap(unit => unit.nodes);
     const questions = nodes.filter(node => node.kind === "interview");
     expect(questions.map(node => node.slug)).toEqual([

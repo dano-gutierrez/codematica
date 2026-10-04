@@ -10958,6 +10958,67 @@
       "readingMinutes": 2
     },
     {
+      "title": "Array State Reviews — Define The Invariant Before The Pattern",
+      "slug": "programming/array-state-invariants",
+      "summary": "Test nonempty segment sums, validated cyclic placement and strict next-greater indices with original Python references and independent bounded oracles.",
+      "track": "Programming",
+      "topic": "Algorithms",
+      "difficulty": "practitioner",
+      "tags": [
+        "arrays",
+        "invariants",
+        "kadane",
+        "cyclic-placement",
+        "monotonic-stack"
+      ],
+      "prerequisites": [
+        "programming/python-runtime-model"
+      ],
+      "diagramRefs": [],
+      "status": "published",
+      "id": "2c8b01ffcfab",
+      "route": "/docs/programming/array-state-invariants",
+      "sourcePath": "content/knowledge/programming/array-state-invariants.md",
+      "bodyPath": "content/knowledge/programming/array-state-invariants.md",
+      "markdown": "## Choose the state contract\n\nA pattern name leaves important behavior undecided. These original exercises accept lists or tuples of built-in integers, reject booleans and preserve the caller's input. They return positions where that clarifies the result. The examples are not company interview questions, a complete algorithm syllabus or performance measurements.\n\n## Retain the best nonempty segment\n\nFor the Kadane-style exercise, empty input is rejected. Return `(sum, start, end)` with an exclusive end. On equal sums choose the earliest start, then earliest exclusive end. For `[-5, -2, -4]`, return `(-2, 1, 2)`; initializing the answer to zero would invent an empty winning segment. For `[0, 0]`, return `(0, 0, 1)`.\n\nAt each position, retain the best sum ending there and its earliest start. A negative prior sum cannot help the next segment, so restart; a zero prior sum stays to preserve the earlier start. Separately retain the best completed segment. Strict improvement preserves the stated tie rule. This is one narrow dynamic-programming example, not comprehensive DP coverage.\n\n## Place only values with a valid slot\n\nThe cyclic-placement exercise receives `n` unique values from `0..n`, so exactly one is absent. Value `n` has no slot in the length-`n` array. Duplicates, negative values and larger values are invalid; duplicates are rejected before swapping. For `[3, 0, 1]`, return missing value `2`. Empty input returns `0`.\n\nPlace a value below `n` into its matching slot, then recheck the displaced value. With the validated unique domain, each swap fixes a slot without displacing a previously fixed value. Scan for the unmatched slot afterward. The copied array and validation set protect caller data; this version does not promise constant auxiliary space.\n\n## Wait for a strictly greater value\n\nReturn the index of the first strictly greater value to the right, or `None`. For `[2, 2, 3]`, return `[2, 2, None]`. Equal values do not resolve a pending index. Keep pending indices with nonincreasing values; a larger new value resolves the smaller pending suffix. Every index is pushed once and popped at most once. Keeping indices preserves duplicate positions and the requested output meaning.\n\n## Run the original reference\n\nThe three algorithms perform O(n) array operations; copies and validation use O(n) extra storage. Integer bit size adds arithmetic/comparison cost. The slower oracles below serve only bounded verification. Run with Python 3.13; this code performs no network, file or model operations.\n\n```python\nfrom itertools import permutations, product\n\n\ndef integer_copy(values):\n    if not isinstance(values, (list, tuple)):\n        raise ValueError(\"expected a list or tuple\")\n    if any(type(value) is not int for value in values):\n        raise ValueError(\"expected built-in integers, excluding booleans\")\n    return list(values)\n\n\ndef best_segment(values):\n    a = integer_copy(values)\n    if not a:\n        raise ValueError(\"nonempty segment required\")\n    start, total = 0, a[0]\n    best = (total, 0, 1)\n    for end in range(1, len(a)):\n        if total < 0:\n            start, total = end, a[end]\n        else:\n            total += a[end]\n        if total > best[0]:\n            best = (total, start, end + 1)\n    return best\n\n\ndef missing_slot(values):\n    a = integer_copy(values)\n    n = len(a)\n    if any(value < 0 or value > n for value in a) or len(set(a)) != n:\n        raise ValueError(\"unique values in 0..n required\")\n    for index in range(n):\n        while a[index] < n and a[index] != index:\n            target = a[index]\n            a[index], a[target] = a[target], a[index]\n    return next((index for index in range(n) if a[index] != index), n)\n\n\ndef next_greater_indices(values):\n    a = integer_copy(values)\n    result, pending = [None] * len(a), []\n    for index, value in enumerate(a):\n        while pending and a[pending[-1]] < value:\n            result[pending.pop()] = index\n        pending.append(index)\n    return result\n\n\ndef segment_oracle(a):\n    candidates = [(sum(a[start:end]), start, end)\n                  for start in range(len(a))\n                  for end in range(start + 1, len(a) + 1)]\n    return min(candidates, key=lambda row: (-row[0], row[1], row[2]))\n\n\ndef greater_oracle(a):\n    return [next((j for j in range(i + 1, len(a)) if a[j] > a[i]), None)\n            for i in range(len(a))]\n\n\nassert best_segment([-5, -2, -4]) == (-2, 1, 2)\nassert best_segment([0, 0]) == (0, 0, 1)\nassert missing_slot([3, 0, 1]) == 2\nassert missing_slot([]) == 0\nassert next_greater_indices([2, 2, 3]) == [2, 2, None]\nassert next_greater_indices([]) == []\nassert best_segment((-5, -2, -4)) == (-2, 1, 2)\nassert missing_slot((3, 0, 1)) == 2\nassert next_greater_indices((2, 2, 3)) == [2, 2, None]\n\nsegment_cases = 0\nfor length in range(1, 7):\n    for values in product(range(-2, 3), repeat=length):\n        before = list(values)\n        assert best_segment(before) == segment_oracle(values)\n        assert before == list(values)\n        segment_cases += 1\nassert segment_cases == 19530\n\nslot_cases = 0\nfor length in range(6):\n    for values in permutations(range(length + 1), length):\n        before = list(values)\n        expected = next(value for value in range(length + 1) if value not in values)\n        assert missing_slot(before) == expected\n        assert before == list(values)\n        slot_cases += 1\nassert slot_cases == 873\n\ngreater_cases = 0\nfor length in range(7):\n    for values in product(range(-1, 2), repeat=length):\n        before = list(values)\n        assert next_greater_indices(before) == greater_oracle(values)\n        assert before == list(values)\n        greater_cases += 1\nassert greater_cases == 1093\n\nfor function, bad in [(best_segment, []), (missing_slot, [1, 1]),\n                      (missing_slot, [-1]), (missing_slot, [2]),\n                      (best_segment, [True]), (missing_slot, [False]),\n                      (next_greater_indices, [True]), (best_segment, [1.0]),\n                      (missing_slot, \"0\"), (next_greater_indices, None)]:\n    try:\n        function(bad)\n    except ValueError:\n        pass\n    else:\n        raise AssertionError((function.__name__, bad))\n\nprint(\"nonempty/ties, unique slots, strict greater, input preservation and bounded oracles: passed\")\n```\n\n## Review the evidence\n\nThe reference checks 19,530 segment arrays, 873 unique-domain permutations and 1,093 successor arrays, plus explicit invalid inputs and caller preservation. These bounded oracle checks are not a general proof. Explain the retained state and termination argument independently; change a comparison or remove a precondition and predict which case fails. Runtime, large integers, memory pressure and integration need separate measurements.\n\nComplete the [Array State Checkpoint](/practice/programming/array-state-checkpoint). Earlier coding-path questions still supply window, prefix-count, lookup, interval and ordered-search practice; this review adds the three distinct missing state contracts.",
+      "plainText": "Choose the state contract A pattern name leaves important behavior undecided. These original exercises accept lists or tuples of built-in integers, reject booleans and preserve the caller's input. They return positions where that clarifies the result. The examples are not company interview questions, a complete algorithm syllabus or performance measurements. Retain the best nonempty segment For the Kadane-style exercise, empty input is rejected. Return (sum, start, end) with an exclusive end. On equal sums choose the earliest start, then earliest exclusive end. For [-5, -2, -4], return (-2, 1, 2); initializing the answer to zero would invent an empty winning segment. For [0, 0], return (0, 0, 1). At each position, retain the best sum ending there and its earliest start. A negative prior sum cannot help the next segment, so restart; a zero prior sum stays to preserve the earlier start. Separately retain the best completed segment. Strict improvement preserves the stated tie rule. This is one narrow dynamic-programming example, not comprehensive DP coverage. Place only values with a valid slot The cyclic-placement exercise receives n unique values from 0..n, so exactly one is absent. Value n has no slot in the length-n array. Duplicates, negative values and larger values are invalid; duplicates are rejected before swapping. For [3, 0, 1], return missing value 2. Empty input returns 0. Place a value below n into its matching slot, then recheck the displaced value. With the validated unique domain, each swap fixes a slot without displacing a previously fixed value. Scan for the unmatched slot afterward. The copied array and validation set protect caller data; this version does not promise constant auxiliary space. Wait for a strictly greater value Return the index of the first strictly greater value to the right, or None. For [2, 2, 3], return [2, 2, None]. Equal values do not resolve a pending index. Keep pending indices with nonincreasing values; a larger new value resolves the smaller pending suffix. Every index is pushed once and popped at most once. Keeping indices preserves duplicate positions and the requested output meaning. Run the original reference The three algorithms perform O(n) array operations; copies and validation use O(n) extra storage. Integer bit size adds arithmetic/comparison cost. The slower oracles below serve only bounded verification. Run with Python 3.13; this code performs no network, file or model operations. from itertools import permutations, product def integer_copy(values): if not isinstance(values, (list, tuple)): raise ValueError(\"expected a list or tuple\") if any(type(value) is not int for value in values): raise ValueError(\"expected built-in integers, excluding booleans\") return list(values) def best_segment(values): a = integer_copy(values) if not a: raise ValueError(\"nonempty segment required\") start, total = 0, a[0] best = (total, 0, 1) for end in range(1, len(a)): if total < 0: start, total = end, a[end] else: total += a[end] if total > best[0]: best = (total, start, end + 1) return best def missing_slot(values): a = integer_copy(values) n = len(a) if any(value < 0 or value > n for value in a) or len(set(a)) != n: raise ValueError(\"unique values in 0..n required\") for index in range(n): while a[index] < n and a[index] != index: target = a[index] a[index], a[target] = a[target], a[index] return next((index for index in range(n) if a[index] != index), n) def next_greater_indices(values): a = integer_copy(values) result, pending = [None] * len(a), [] for index, value in enumerate(a): while pending and a[pending[-1]] < value: result[pending.pop()] = index pending.append(index) return result def segment_oracle(a): candidates = [(sum(a[start:end]), start, end) for start in range(len(a)) for end in range(start + 1, len(a) + 1)] return min(candidates, key=lambda row: (-row[0], row[1], row[2])) def greater_oracle(a): return [next((j for j in range(i + 1, len(a)) if a[j] > a[i]), None) for i in range(len(a))] assert best_segment([-5, -2, -4]) == (-2, 1, 2) assert best_segment([0, 0]) == (0, 0, 1) assert missing_slot([3, 0, 1]) == 2 assert missing_slot([]) == 0 assert next_greater_indices([2, 2, 3]) == [2, 2, None] assert next_greater_indices([]) == [] assert best_segment((-5, -2, -4)) == (-2, 1, 2) assert missing_slot((3, 0, 1)) == 2 assert next_greater_indices((2, 2, 3)) == [2, 2, None] segment_cases = 0 for length in range(1, 7): for values in product(range(-2, 3), repeat=length): before = list(values) assert best_segment(before) == segment_oracle(values) assert before == list(values) segment_cases += 1 assert segment_cases == 19530 slot_cases = 0 for length in range(6): for values in permutations(range(length + 1), length): before = list(values) expected = next(value for value in range(length + 1) if value not in values) assert missing_slot(before) == expected assert before == list(values) slot_cases += 1 assert slot_cases == 873 greater_cases = 0 for length in range(7): for values in product(range(-1, 2), repeat=length): before = list(values) assert next_greater_indices(before) == greater_oracle(values) assert before == list(values) greater_cases += 1 assert greater_cases == 1093 for function, bad in [(best_segment, []), (missing_slot, [1, 1]), (missing_slot, [-1]), (missing_slot, [2]), (best_segment, [True]), (missing_slot, [False]), (next_greater_indices, [True]), (best_segment, [1.0]), (missing_slot, \"0\"), (next_greater_indices, None)]: try: function(bad) except ValueError: pass else: raise AssertionError((function.__name__, bad)) print(\"nonempty/ties, unique slots, strict greater, input preservation and bounded oracles: passed\") Review the evidence The reference checks 19,530 segment arrays, 873 unique-domain permutations and 1,093 successor arrays, plus explicit invalid inputs and caller preservation. These bounded oracle checks are not a general proof. Explain the retained state and termination argument independently; change a comparison or remove a precondition and predict which case fails. Runtime, large integers, memory pressure and integration need separate measurements. Complete the Array State Checkpoint. Earlier coding-path questions still supply window, prefix-count, lookup, interval and ordered-search practice; this review adds the three distinct missing state contracts.",
+      "headings": [
+        {
+          "id": "choose-the-state-contract",
+          "depth": 2,
+          "text": "Choose the state contract"
+        },
+        {
+          "id": "retain-the-best-nonempty-segment",
+          "depth": 2,
+          "text": "Retain the best nonempty segment"
+        },
+        {
+          "id": "place-only-values-with-a-valid-slot",
+          "depth": 2,
+          "text": "Place only values with a valid slot"
+        },
+        {
+          "id": "wait-for-a-strictly-greater-value",
+          "depth": 2,
+          "text": "Wait for a strictly greater value"
+        },
+        {
+          "id": "run-the-original-reference",
+          "depth": 2,
+          "text": "Run the original reference"
+        },
+        {
+          "id": "review-the-evidence",
+          "depth": 2,
+          "text": "Review the evidence"
+        }
+      ],
+      "mermaidBlocks": [],
+      "contentHash": "8f7e6cc7fbfa0c4cadce985c6dd3bbc03d2663a3b6aa0c91d9305a9ecb1a7c14",
+      "readingMinutes": 5
+    },
+    {
       "title": "Breadth-First Search And Depth-First Search Fundamentals",
       "slug": "programming/bfs-dfs-fundamentals",
       "summary": "Learn the shared graph traversal model, queue-based BFS, recursive and iterative DFS, complexity, correctness, and practical selection rules with readable Python and TypeScript.",
@@ -13153,7 +13214,7 @@
     {
       "slug": "coding-interview-pattern-practice",
       "title": "Coding Interview Pattern Practice",
-      "summary": "Practice patterns through 18 existing guided questions and the BFS/DFS lessons. Explain invariants, compare alternatives and choose a difficulty. Backtracking and comprehensive dynamic programming are outside this path; it is not a complete interview syllabus or hiring guarantee.",
+      "summary": "Practice patterns through 18 existing guided questions and the BFS/DFS lessons, then review three original array-state contracts. Explain invariants, compare alternatives and choose a difficulty. Backtracking and comprehensive dynamic programming are outside this path; it is not a complete interview syllabus or hiring guarantee.",
       "kind": "skill",
       "category": "Programming",
       "audience": "Developers strengthening coding interview reasoning across foundation, practitioner and selected senior examples. Company collections are reported public preparation, not official question banks.",
@@ -13288,12 +13349,27 @@
               "slug": "uber/shortest-path-weighted-road-graph"
             }
           ]
+        },
+        {
+          "slug": "array-state-reviews",
+          "title": "Array State Reviews",
+          "summary": "Test nonempty/tie rules, validated cyclic placement and strictly greater successors with original bounded oracles.",
+          "nodes": [
+            {
+              "kind": "document",
+              "slug": "programming/array-state-invariants"
+            },
+            {
+              "kind": "exercise",
+              "slug": "programming/array-state-checkpoint"
+            }
+          ]
         }
       ],
       "id": "6a4e3f5b33a1",
       "route": "/paths/coding-interview-pattern-practice",
       "sourcePath": "content/learning-paths/coding-interview-pattern-practice.json",
-      "contentHash": "66ec9f203976cf1659e92363e2fd8dc55dc05dfc568e6887423b97ccf92a2fd5"
+      "contentHash": "d56b94e63bd38253689800c949203c45e0b68e97c6c8000c2214ab361c462f0e"
     },
     {
       "slug": "database-indexes-and-search",
@@ -30874,6 +30950,117 @@
       "route": "/practice/ml-systems/workflow-data-checkpoint",
       "sourcePath": "content/exercises/ml-systems/workflow-data-checkpoint.json",
       "contentHash": "764a4b38e078d1f4eb8de8dd191fa7f9aa9b800d1faab599cec9732b4e00141a"
+    },
+    {
+      "slug": "programming/array-state-checkpoint",
+      "title": "Array State Checkpoint",
+      "documentSlug": "programming/array-state-invariants",
+      "concept": "Array Invariants",
+      "difficulty": "practitioner",
+      "tags": [
+        "arrays",
+        "invariants"
+      ],
+      "status": "published",
+      "type": "questionnaire",
+      "questions": [
+        {
+          "id": "nonempty-segment",
+          "prompt": "What does best_segment return for [-5, -2, -4] under the nonempty contract?",
+          "explanation": "Nonempty is part of the result contract; the best single value is at index 1.",
+          "kind": "choice",
+          "options": [
+            {
+              "id": "option-0",
+              "label": "Return sum -2 with the nonempty segment [1, 2); zero would violate this contract.",
+              "isCorrect": true
+            },
+            {
+              "id": "option-1",
+              "label": "Return zero from an empty segment.",
+              "isCorrect": false
+            },
+            {
+              "id": "option-2",
+              "label": "Return the entire array because every value is negative.",
+              "isCorrect": false
+            }
+          ]
+        },
+        {
+          "id": "segment-tie",
+          "prompt": "With equal sums on [0, 0], which result matches the stated tie rule?",
+          "explanation": "Keeping an earlier zero-sum start and updating the overall best only on improvement preserves the selected tie rule.",
+          "kind": "choice",
+          "options": [
+            {
+              "id": "option-0",
+              "label": "Return (0, 0, 1): earliest start, then earliest exclusive end.",
+              "isCorrect": true
+            },
+            {
+              "id": "option-1",
+              "label": "Return (0, 1, 2) because it was visited last.",
+              "isCorrect": false
+            },
+            {
+              "id": "option-2",
+              "label": "Return (0, 0, 2) because longer ties always win.",
+              "isCorrect": false
+            }
+          ]
+        },
+        {
+          "id": "slot-domain",
+          "prompt": "A cyclic-placement input contains [1, 1]. What should happen before its swap loop?",
+          "explanation": "Duplicate values can prevent progress. The reference validates domain and uniqueness before changing its private copy.",
+          "kind": "choice",
+          "options": [
+            {
+              "id": "option-0",
+              "label": "Reject duplicate values before swaps; the unique 0..n domain is part of the contract.",
+              "isCorrect": true
+            },
+            {
+              "id": "option-1",
+              "label": "Keep swapping until a duplicate becomes unique.",
+              "isCorrect": false
+            },
+            {
+              "id": "option-2",
+              "label": "Trust annotations to prove values are unique.",
+              "isCorrect": false
+            }
+          ]
+        },
+        {
+          "id": "strict-greater",
+          "prompt": "Which successor-index result is correct for [2, 2, 3]?",
+          "explanation": "The output is the first greater position, not its value; both positions with value 2 wait for index 2.",
+          "kind": "choice",
+          "options": [
+            {
+              "id": "option-0",
+              "label": "Return [2, 2, None]; equal values stay pending until a strictly greater value appears.",
+              "isCorrect": true
+            },
+            {
+              "id": "option-1",
+              "label": "Return [1, 2, None] because equality resolves the first index.",
+              "isCorrect": false
+            },
+            {
+              "id": "option-2",
+              "label": "Return [3, 3, None] because output values and output indices are interchangeable.",
+              "isCorrect": false
+            }
+          ]
+        }
+      ],
+      "id": "2177b7b06327",
+      "route": "/practice/programming/array-state-checkpoint",
+      "sourcePath": "content/exercises/programming/array-state-checkpoint.json",
+      "contentHash": "4bc46505abafe4696eba63dba8dbe63e18a344be8f56c2eb479893a89693c042"
     },
     {
       "slug": "programming/bfs-dfs-fundamentals-questionnaire",
@@ -158624,7 +158811,7 @@
     {
       "name": "Programming",
       "slug": "programming",
-      "documentCount": 10,
+      "documentCount": 11,
       "difficulties": [
         "foundation",
         "practitioner",
