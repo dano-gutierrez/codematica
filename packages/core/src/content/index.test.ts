@@ -17,6 +17,43 @@ import {
 } from ".";
 
 describe("generated content index", () => {
+  it.each([
+    ["redis-rate-limiting-guide", "Redis", "https://redis.io/tutorials/howtos/ratelimiting/"],
+    ["rfc-6585-status-codes", "IETF", "https://www.rfc-editor.org/rfc/rfc6585.html"],
+    ["stripe-webhook-contracts", "Stripe", "https://docs.stripe.com/webhooks"],
+    ["python-hmac-verification", "Python Software Foundation", "https://docs.python.org/3.13/library/hmac.html"],
+  ])("pins the primary destination and license scope for %s", (id, provider, url) => {
+    const source = getContentIndex().sources.find(s => s.id === id)!;
+    expect(source).toMatchObject({provider,url,lastVerifiedAt:"2026-10-04"});
+    expect(source.license).toEqual(id === "python-hmac-verification" ? {name:"Python Software Foundation License Version 2 (documentation)",url:"https://docs.python.org/3/license.html"} : undefined);
+  });
+
+  it.each([
+    ["traffic-rate-contracts", "traffic-rate-checkpoint", ["redis-rate-limiting-guide", "rfc-6585-status-codes"], ["fixed-boundary", "rolling-boundary", "token-burst", "concurrency-scope"], [
+      "A calendar-window limit can allow both batches; it does not enforce the stated rolling-window contract.",
+      "Retain distinct accepted attempts inside (now - 60, now]; an attempt exactly 60 seconds old has expired.",
+      "A full bucket can admit a burst; its capacity and refill rate do not promise a strict rolling-window count.",
+      "Use an in-flight limit with bounded admission and release; a request rate alone does not bound simultaneous slow work.",
+    ]],
+    ["webhook-authenticity-and-replay", "webhook-authenticity-checkpoint", ["stripe-webhook-contracts", "python-hmac-verification"], ["raw-bytes", "signed-time", "retry-receipt", "durable-acceptance"], [
+      "Verify the exact received bytes with the configured endpoint secret before trusting parsed fields.",
+      "Authenticate the timestamp and check the configured clock tolerance; replay prevention also needs durable deduplication.",
+      "Verify each delivery, then consult a scoped event receipt; a fresh signature does not make the event new.",
+      "Acknowledge durable acceptance, process idempotently and reconcile failures; an in-memory seen set cannot prove crash-safe effects.",
+    ]],
+  ] as const)("pins %s evidence, answer keys and ordered continuation", (slug, checkpoint, sources, questions, answers) => {
+    const lesson = getDocumentBySlug(`system-design/${slug}`)!;
+    expect(lesson?.sourceRefs).toEqual(sources);
+    const quiz = getExerciseBySlug(`system-design/${checkpoint}`);
+    if (quiz?.type !== "questionnaire") throw new Error("Operational contract practice requires a questionnaire");
+    expect(quiz.documentSlug).toBe(lesson.slug);
+    expect(quiz.sourceRefs).toEqual(sources);
+    expect(quiz.questions.map(q => q.id)).toEqual(questions);
+    expect(quiz.questions.map(q => q.kind === "choice" ? q.options.find(o => o.isCorrect)?.label : "wrong kind")).toEqual(answers);
+    expect(getNextPathNodeRoute("system-design-fundamentals", {kind:"document",slug:lesson.slug})).toBe(`/practice/system-design/${checkpoint}?path=system-design-fundamentals`);
+    expect(getNextPathNodeRoute("system-design-fundamentals", {kind:"exercise",slug:quiz.slug})).toBe(slug === "traffic-rate-contracts" ? "/docs/system-design/webhook-authenticity-and-replay?path=system-design-fundamentals" : "/docs/system-design/fair-admission-and-reservations?path=system-design-fundamentals");
+  });
+
   it("connects client compatibility evidence to an original bounded checkpoint", () => {
     const lesson = getDocumentBySlug("system-design/client-compatibility-contracts")!;
     expect(lesson?.headings.map(h => h.id)).toEqual(expect.arrayContaining(["separate-the-reading-from-the-experiment", "choose-a-layout-with-an-explicit-data-contract", "check-api-meaning-as-well-as-shape"]));
@@ -38,10 +75,10 @@ describe("generated content index", () => {
       "The JSON can parse while the meaning breaks: old callers may mistake the first page for the complete result.",
     ]);
     const path = getLearningPathBySlug("system-design-fundamentals")!;
-    expect(path.units.map(u => u.slug)).toEqual(["caching-contracts", "capacity-decisions", "routing-decisions", "api-security-boundaries", "client-compatibility", "reservation-boundaries"]);
+    expect(path.units.map(u => u.slug)).toEqual(["caching-contracts", "capacity-decisions", "routing-decisions", "api-security-boundaries", "client-compatibility", "traffic-rate", "webhook-authenticity", "reservation-boundaries"]);
     expect(getNextPathNodeRoute(path.slug, {kind:"exercise",slug:"system-design/api-boundary-checkpoint"})).toBe("/docs/system-design/client-compatibility-contracts?path=system-design-fundamentals");
     expect(getNextPathNodeRoute(path.slug, {kind:"document",slug:lesson.slug})).toBe("/practice/system-design/client-compatibility-checkpoint?path=system-design-fundamentals");
-    expect(getNextPathNodeRoute(path.slug, {kind:"exercise",slug:quiz.slug})).toBe("/docs/system-design/fair-admission-and-reservations?path=system-design-fundamentals");
+    expect(getNextPathNodeRoute(path.slug, {kind:"exercise",slug:quiz.slug})).toBe("/docs/system-design/traffic-rate-contracts?path=system-design-fundamentals");
   });
 
   it("groups existing coding walkthroughs by pattern without duplicating questions", () => {
@@ -285,7 +322,7 @@ describe("generated content index", () => {
   it("places routing practice after capacity and preserves broker effect boundaries", () => {
     const path = getLearningPathBySlug("system-design-fundamentals");
     expect(path?.units.map(u => u.slug)).toEqual([
-      "caching-contracts", "capacity-decisions", "routing-decisions", "api-security-boundaries", "client-compatibility", "reservation-boundaries",
+      "caching-contracts", "capacity-decisions", "routing-decisions", "api-security-boundaries", "client-compatibility", "traffic-rate", "webhook-authenticity", "reservation-boundaries",
     ]);
     const routing = getDocumentBySlug("system-design/routing-decision-lab");
     const quiz = getExerciseBySlug("system-design/routing-decision-checkpoint");

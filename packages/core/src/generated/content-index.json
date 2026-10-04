@@ -5216,6 +5216,20 @@
       "contentHash": "41ff7839b4a2dd591e5121f21120b757fb6e470ec4ce9125082a961f720b72cf"
     },
     {
+      "id": "python-hmac-verification",
+      "title": "Python 3.13 — HMAC Verification",
+      "provider": "Python Software Foundation",
+      "url": "https://docs.python.org/3.13/library/hmac.html",
+      "attribution": "Official 3.13 documentation: HMAC input and compare_digest type/length/timing guidance verified. Page text identifies PSF License Version 2; examples additionally Zero Clause BSD. Lesson fixture is original.",
+      "license": {
+        "name": "Python Software Foundation License Version 2 (documentation)",
+        "url": "https://docs.python.org/3/license.html"
+      },
+      "lastVerifiedAt": "2026-10-04",
+      "sourcePath": "content/sources/traffic-and-webhook-contracts.json",
+      "contentHash": "da952d48ce45822980a21b22c2587a89cd9c800781fdcb509a3da30810d87228"
+    },
+    {
       "id": "python-sqlite-transactions",
       "title": "sqlite3 Transaction Control",
       "provider": "Python",
@@ -5286,6 +5300,16 @@
       "contentHash": "de57aaccb6578853a2a1c0290c7b4021cbe00271a95323584ec638968ee92102"
     },
     {
+      "id": "redis-rate-limiting-guide",
+      "title": "Redis — Rate Limiting Algorithm Comparison",
+      "provider": "Redis",
+      "url": "https://redis.io/tutorials/howtos/ratelimiting/",
+      "attribution": "Primary tutorial: algorithm distinctions, approximate counters and atomic admission discussion verified. Upstream code was not installed or executed; no throughput or licensing inference. The sequential Python fixture is original.",
+      "lastVerifiedAt": "2026-10-04",
+      "sourcePath": "content/sources/traffic-and-webhook-contracts.json",
+      "contentHash": "da952d48ce45822980a21b22c2587a89cd9c800781fdcb509a3da30810d87228"
+    },
+    {
       "id": "redis-stream-ack",
       "title": "Redis XACK — Consumer Group Acknowledgement",
       "provider": "Redis",
@@ -5324,6 +5348,16 @@
       "lastVerifiedAt": "2026-09-09",
       "sourcePath": "content/sources/rtk-query.json",
       "contentHash": "11aa85d774f66f4569f56763a050737ceec2691d5cd46b5543d7ff9e7898e886"
+    },
+    {
+      "id": "rfc-6585-status-codes",
+      "title": "RFC 6585 — Additional HTTP Status Codes",
+      "provider": "IETF",
+      "url": "https://www.rfc-editor.org/rfc/rfc6585.html",
+      "attribution": "April 2012 standards-track RFC. Section 4 defines 429, explanatory responses, optional Retry-After, unspecified counting identity and non-cacheability; section 7.2 discusses resource costs under attack. Section 3 covers conditional requests for lost updates. No RFC example code copied.",
+      "lastVerifiedAt": "2026-10-04",
+      "sourcePath": "content/sources/traffic-and-webhook-contracts.json",
+      "contentHash": "da952d48ce45822980a21b22c2587a89cd9c800781fdcb509a3da30810d87228"
     },
     {
       "id": "rfc-http-idempotency",
@@ -5738,6 +5772,16 @@
       "lastVerifiedAt": "2026-10-03",
       "sourcePath": "content/sources/durable-retry-and-reservations.json",
       "contentHash": "b43945d7a87defcc18d1f6a7971b4bc4d42489a1228aaa9199c2395a3523131c"
+    },
+    {
+      "id": "stripe-webhook-contracts",
+      "title": "Stripe — Webhook Signatures And Delivery Contracts",
+      "provider": "Stripe",
+      "url": "https://docs.stripe.com/webhooks",
+      "attribution": "Primary provider guide: raw-body verification, signed timestamp, official-library preference, renewed retry signatures, duplicate events and absent ordering guarantee verified. Custom lesson envelope is original and not Stripe-compatible; no provider code executed or license inferred.",
+      "lastVerifiedAt": "2026-10-04",
+      "sourcePath": "content/sources/traffic-and-webhook-contracts.json",
+      "contentHash": "da952d48ce45822980a21b22c2587a89cd9c800781fdcb509a3da30810d87228"
     },
     {
       "id": "udlbook-notebooks",
@@ -12321,6 +12365,110 @@
       "mermaidBlocks": [],
       "contentHash": "f5c02ec189b7e6a982aec3dcca079f22d66cfc1e01317ed720236fa98835d5d5",
       "readingMinutes": 3
+    },
+    {
+      "title": "Traffic Rate Contracts — Test The Window Before Choosing A Store",
+      "slug": "system-design/traffic-rate-contracts",
+      "summary": "Compare exact rolling limits, calendar boundaries and token bursts with a deterministic local trace; keep simultaneous work and distributed admission separate.",
+      "track": "System Design",
+      "topic": "Admission Contracts",
+      "difficulty": "practitioner",
+      "tags": [
+        "rate-limiting",
+        "overload",
+        "admission",
+        "api"
+      ],
+      "prerequisites": [
+        "system-design/scaling-decision-worksheet"
+      ],
+      "diagramRefs": [],
+      "sourceRefs": [
+        "redis-rate-limiting-guide",
+        "rfc-6585-status-codes"
+      ],
+      "status": "published",
+      "id": "26e8dccc532c",
+      "route": "/docs/system-design/traffic-rate-contracts",
+      "sourcePath": "content/knowledge/system-design/traffic-rate-contracts.md",
+      "bodyPath": "content/knowledge/system-design/traffic-rate-contracts.md",
+      "markdown": "## Write the admission promise\n\n“Three requests per minute” needs a precise interval, identity and counted event. Are these attempted requests, admitted operations or completed operations? Does a retry spend another token? Which tenant, route and cost class share the allowance? Admission does not authorize the operation or make its effect idempotent.\n\n[Redis's tutorial](https://redis.io/tutorials/howtos/ratelimiting/) compares fixed windows, exact timestamp logs, approximate weighted counters, token buckets and leaky-bucket variants. Fixed windows admit boundary bursts; token capacity permits deliberate bursts. A weighted counter is an approximation, not a strict rolling log. Its atomic-script discussion explains why concurrent check-then-write commands can over-admit. The following code is an original sequential experiment, not that Redis implementation.\n\n## Run a boundary trace\n\nThe fixture counts **admitted unit-cost attempts** under a trusted `(tenant, route)` key. Times are nonnegative integer seconds and must not move backward for that key. The rolling interval is `(now - period, now]`: a request exactly one period old has expired. Identical timestamps remain distinct attempts. Token refill uses exact fractions so a denied attempt does not lose fractional credit.\n\nPredict the result of three attempts at second 59 and three at second 61. Then test an idle token bucket, a clock reversal and another tenant:\n\n```python\nfrom collections import deque\nfrom fractions import Fraction\n\n\ndef positive_int(value):\n    return type(value) is int and value > 0\n\n\nclass Admission:\n    def __init__(self, limit, period):\n        if not positive_int(limit) or not positive_int(period):\n            raise ValueError(\"positive integer limit and period required\")\n        self.limit, self.period = limit, period\n        self.clocks = {}\n\n    def check(self, key, now):\n        if (not isinstance(key, tuple) or len(key) != 2\n                or any(not isinstance(part, str) or not part.strip() for part in key)\n                or type(now) is not int or now < 0):\n            raise ValueError(\"invalid scope or clock\")\n        if now < self.clocks.get(key, 0):\n            raise ValueError(\"clock moved backward\")\n        self.clocks[key] = now\n\n\nclass Fixed(Admission):\n    def __init__(self, limit, period):\n        super().__init__(limit, period)\n        self.windows = {}\n\n    def attempt(self, key, now):\n        self.check(key, now)\n        bucket = now // self.period\n        old_bucket, count = self.windows.get(key, (bucket, 0))\n        if old_bucket != bucket:\n            count = 0\n        allowed = count < self.limit\n        self.windows[key] = (bucket, count + int(allowed))\n        return allowed\n\n\nclass Rolling(Admission):\n    def __init__(self, limit, period):\n        super().__init__(limit, period)\n        self.accepted = {}\n\n    def attempt(self, key, now):\n        self.check(key, now)\n        log = self.accepted.setdefault(key, deque())\n        while log and log[0] <= now - self.period:\n            log.popleft()\n        if len(log) >= self.limit:\n            return False\n        log.append(now)\n        return True\n\n\nclass Bucket(Admission):\n    def __init__(self, limit, period):\n        super().__init__(limit, period)\n        self.tokens = {}\n\n    def attempt(self, key, now):\n        self.check(key, now)\n        credit, previous = self.tokens.get(key, (Fraction(self.limit), now))\n        credit = min(self.limit, credit + Fraction((now - previous) * self.limit, self.period))\n        allowed = credit >= 1\n        self.tokens[key] = (credit - int(allowed), now)\n        return allowed\n\n\na, b, c = (\"tenant-a\", \"read\"), (\"tenant-b\", \"read\"), (\"tenant-a\", \"write\")\nfor cls, expected in ((Fixed, 6), (Rolling, 3)):\n    limiter = cls(3, 60)\n    assert sum(limiter.attempt(a, t) for t in (59, 59, 59, 61, 61, 61)) == expected\n    assert limiter.attempt(b, 61)\n    assert limiter.attempt(c, 61)\nfixed = Fixed(3, 60)\nassert [fixed.attempt(a, t) for t in (10, 11, 12, 13, 59, 60)] == [True, True, True, False, False, True]\nrolling = Rolling(3, 60)\nassert all(rolling.attempt(a, 59) for _ in range(3))\nassert not rolling.attempt(a, 118)\nassert rolling.attempt(a, 119)\nassert list(rolling.accepted[a]) == [119]\nbucket = Bucket(3, 90)\nassert all(bucket.attempt(a, 0) for _ in range(3))\nassert not bucket.attempt(a, 0)\nassert not bucket.attempt(a, 29)\nassert bucket.attempt(a, 30)\nassert not bucket.attempt(a, 30)\nassert sum(bucket.attempt(a, 1_000) for _ in range(4)) == 3\nassert bucket.attempt(b, 1_000)\nassert bucket.attempt(c, 1_000)\nfor cls in (Fixed, Rolling, Bucket):\n    for bad in (0, -1, True, 1.5, \"3\", None):\n        for args in ((bad, 60), (3, bad)):\n            try:\n                cls(*args)\n            except ValueError:\n                pass\n            else:\n                raise AssertionError(\"invalid policy accepted\")\n    limiter = cls(3, 60)\n    assert limiter.attempt(a, 10)\n    for key, now in ((a, 9), (a, -1), (a, True), (a, 1.5), (a, \"10\"), (a, None),\n                     (None, 10), (\"tenant-a\", 10), ((\"tenant-a\",), 10),\n                     ((\"tenant-a\", \"read\", \"extra\"), 10), ((\"\", \"read\"), 10),\n                     ((1, \"read\"), 10), ((\"tenant-a\", \" \"), 10)):\n        before = limiter.clocks.copy()\n        try:\n            limiter.attempt(key, now)\n        except ValueError:\n            pass\n        else:\n            raise AssertionError(\"invalid scope or clock accepted\")\n        assert limiter.clocks == before\nprint(\"fixed/rolling boundaries, token refill/cap, scopes and invalid clocks: passed\")\n```\n\nThe token bucket's capacity is three and its refill is three per 90 seconds. A full bucket can admit three immediately and another after 30 seconds; it does **not** promise at most three in every rolling 90-second interval. The exact rolling log above stores at most the allowed accepted attempts per active key, but neither it nor the other fixtures retires inactive keys. Their key cardinality is unbounded. Define retention, eviction and reset semantics before turning a toy into a service.\n\n## Separate rate from simultaneous work\n\nA steady ten admissions per second can still accumulate many slow operations. A concurrency gate counts work currently holding a slot, with bounded waiting, deadlines and release on every completion/cancellation/failure path. A rate counter measures a different quantity. Pooling, downstream work and global cost limits need their own capacity evidence; use the existing [scaling worksheet](/docs/system-design/scaling-decision-worksheet) and [connection-pool lesson](/docs/databases/postgres-connection-pooling).\n\nThis experiment has no simultaneous callers, Redis, eviction, distributed clock or outage. For multiple instances, trace the complete atomic prune/check/admit transition and its clock authority. Test equal-time arrivals, same-key races, tenant/route scope, storage expiry, malformed policy, restart and unavailable storage. Choose a documented fail-open, fail-closed or bounded-local fallback by the protected operation's risk; a fallback may weaken a global quota. Do not equate a per-IP key with one person.\n\n## Return a useful rejection\n\n[RFC 6585 section 4](https://www.rfc-editor.org/rfc/rfc6585.html#section-4) defines `429`, recommends explaining the condition and permits `Retry-After`; it leaves identity and counting policy unspecified. A `429` response must not be cached. The status is optional, and answering every attack request can itself consume capacity. A retry hint is not a reservation: other callers may spend capacity before the retry arrives. Keep client backoff bounded and avoid amplifying an outage.\n\nWrite a review receipt: counted event/cost, trusted scope, precise interval or bucket capacity/refill, clock, atomic owner, concurrency budget, retention, rejection and storage-failure behavior. Pair it with the [Traffic Rate Checkpoint](/practice/system-design/traffic-rate-checkpoint). No benchmark, denial-of-service protection or distributed correctness claim follows from the sequential fixture.",
+      "plainText": "Write the admission promise “Three requests per minute” needs a precise interval, identity and counted event. Are these attempted requests, admitted operations or completed operations? Does a retry spend another token? Which tenant, route and cost class share the allowance? Admission does not authorize the operation or make its effect idempotent. Redis's tutorial compares fixed windows, exact timestamp logs, approximate weighted counters, token buckets and leaky-bucket variants. Fixed windows admit boundary bursts; token capacity permits deliberate bursts. A weighted counter is an approximation, not a strict rolling log. Its atomic-script discussion explains why concurrent check-then-write commands can over-admit. The following code is an original sequential experiment, not that Redis implementation. Run a boundary trace The fixture counts admitted unit-cost attempts under a trusted (tenant, route) key. Times are nonnegative integer seconds and must not move backward for that key. The rolling interval is (now - period, now]: a request exactly one period old has expired. Identical timestamps remain distinct attempts. Token refill uses exact fractions so a denied attempt does not lose fractional credit. Predict the result of three attempts at second 59 and three at second 61. Then test an idle token bucket, a clock reversal and another tenant: from collections import deque from fractions import Fraction def positive_int(value): return type(value) is int and value > 0 class Admission: def __init__(self, limit, period): if not positive_int(limit) or not positive_int(period): raise ValueError(\"positive integer limit and period required\") self.limit, self.period = limit, period self.clocks = {} def check(self, key, now): if (not isinstance(key, tuple) or len(key) != 2 or any(not isinstance(part, str) or not part.strip() for part in key) or type(now) is not int or now < 0): raise ValueError(\"invalid scope or clock\") if now < self.clocks.get(key, 0): raise ValueError(\"clock moved backward\") self.clocks[key] = now class Fixed(Admission): def __init__(self, limit, period): super().__init__(limit, period) self.windows = {} def attempt(self, key, now): self.check(key, now) bucket = now // self.period old_bucket, count = self.windows.get(key, (bucket, 0)) if old_bucket != bucket: count = 0 allowed = count < self.limit self.windows[key] = (bucket, count + int(allowed)) return allowed class Rolling(Admission): def __init__(self, limit, period): super().__init__(limit, period) self.accepted = {} def attempt(self, key, now): self.check(key, now) log = self.accepted.setdefault(key, deque()) while log and log[0] <= now - self.period: log.popleft() if len(log) >= self.limit: return False log.append(now) return True class Bucket(Admission): def __init__(self, limit, period): super().__init__(limit, period) self.tokens = {} def attempt(self, key, now): self.check(key, now) credit, previous = self.tokens.get(key, (Fraction(self.limit), now)) credit = min(self.limit, credit + Fraction((now - previous) * self.limit, self.period)) allowed = credit >= 1 self.tokens[key] = (credit - int(allowed), now) return allowed a, b, c = (\"tenant-a\", \"read\"), (\"tenant-b\", \"read\"), (\"tenant-a\", \"write\") for cls, expected in ((Fixed, 6), (Rolling, 3)): limiter = cls(3, 60) assert sum(limiter.attempt(a, t) for t in (59, 59, 59, 61, 61, 61)) == expected assert limiter.attempt(b, 61) assert limiter.attempt(c, 61) fixed = Fixed(3, 60) assert [fixed.attempt(a, t) for t in (10, 11, 12, 13, 59, 60)] == [True, True, True, False, False, True] rolling = Rolling(3, 60) assert all(rolling.attempt(a, 59) for _ in range(3)) assert not rolling.attempt(a, 118) assert rolling.attempt(a, 119) assert list(rolling.accepted[a]) == [119] bucket = Bucket(3, 90) assert all(bucket.attempt(a, 0) for _ in range(3)) assert not bucket.attempt(a, 0) assert not bucket.attempt(a, 29) assert bucket.attempt(a, 30) assert not bucket.attempt(a, 30) assert sum(bucket.attempt(a, 1_000) for _ in range(4)) == 3 assert bucket.attempt(b, 1_000) assert bucket.attempt(c, 1_000) for cls in (Fixed, Rolling, Bucket): for bad in (0, -1, True, 1.5, \"3\", None): for args in ((bad, 60), (3, bad)): try: cls(*args) except ValueError: pass else: raise AssertionError(\"invalid policy accepted\") limiter = cls(3, 60) assert limiter.attempt(a, 10) for key, now in ((a, 9), (a, -1), (a, True), (a, 1.5), (a, \"10\"), (a, None), (None, 10), (\"tenant-a\", 10), ((\"tenant-a\",), 10), ((\"tenant-a\", \"read\", \"extra\"), 10), ((\"\", \"read\"), 10), ((1, \"read\"), 10), ((\"tenant-a\", \" \"), 10)): before = limiter.clocks.copy() try: limiter.attempt(key, now) except ValueError: pass else: raise AssertionError(\"invalid scope or clock accepted\") assert limiter.clocks == before print(\"fixed/rolling boundaries, token refill/cap, scopes and invalid clocks: passed\") The token bucket's capacity is three and its refill is three per 90 seconds. A full bucket can admit three immediately and another after 30 seconds; it does not promise at most three in every rolling 90-second interval. The exact rolling log above stores at most the allowed accepted attempts per active key, but neither it nor the other fixtures retires inactive keys. Their key cardinality is unbounded. Define retention, eviction and reset semantics before turning a toy into a service. Separate rate from simultaneous work A steady ten admissions per second can still accumulate many slow operations. A concurrency gate counts work currently holding a slot, with bounded waiting, deadlines and release on every completion/cancellation/failure path. A rate counter measures a different quantity. Pooling, downstream work and global cost limits need their own capacity evidence; use the existing scaling worksheet and connection-pool lesson. This experiment has no simultaneous callers, Redis, eviction, distributed clock or outage. For multiple instances, trace the complete atomic prune/check/admit transition and its clock authority. Test equal-time arrivals, same-key races, tenant/route scope, storage expiry, malformed policy, restart and unavailable storage. Choose a documented fail-open, fail-closed or bounded-local fallback by the protected operation's risk; a fallback may weaken a global quota. Do not equate a per-IP key with one person. Return a useful rejection RFC 6585 section 4 defines 429, recommends explaining the condition and permits Retry-After; it leaves identity and counting policy unspecified. A 429 response must not be cached. The status is optional, and answering every attack request can itself consume capacity. A retry hint is not a reservation: other callers may spend capacity before the retry arrives. Keep client backoff bounded and avoid amplifying an outage. Write a review receipt: counted event/cost, trusted scope, precise interval or bucket capacity/refill, clock, atomic owner, concurrency budget, retention, rejection and storage-failure behavior. Pair it with the Traffic Rate Checkpoint. No benchmark, denial-of-service protection or distributed correctness claim follows from the sequential fixture.",
+      "headings": [
+        {
+          "id": "write-the-admission-promise",
+          "depth": 2,
+          "text": "Write the admission promise"
+        },
+        {
+          "id": "run-a-boundary-trace",
+          "depth": 2,
+          "text": "Run a boundary trace"
+        },
+        {
+          "id": "separate-rate-from-simultaneous-work",
+          "depth": 2,
+          "text": "Separate rate from simultaneous work"
+        },
+        {
+          "id": "return-a-useful-rejection",
+          "depth": 2,
+          "text": "Return a useful rejection"
+        }
+      ],
+      "mermaidBlocks": [],
+      "contentHash": "55c9c16f916bcbea20ecb74cb100b6a4d974ff05efdc3ee82c01665b4a7be30a",
+      "readingMinutes": 5
+    },
+    {
+      "title": "Webhook Authenticity — Separate A Valid Delivery From A New Effect",
+      "slug": "system-design/webhook-authenticity-and-replay",
+      "summary": "Test raw-byte signatures, signed time, scoped retry receipts and secret rotation in a local fixture; preserve durable acceptance and reconciliation as separate obligations.",
+      "track": "System Design",
+      "topic": "Delivery Contracts",
+      "difficulty": "practitioner",
+      "tags": [
+        "webhooks",
+        "signatures",
+        "replay",
+        "idempotency"
+      ],
+      "prerequisites": [
+        "system-design/cors-csrf-and-authorization",
+        "software-engineering/product-interview-durable-generation-architecture"
+      ],
+      "diagramRefs": [],
+      "sourceRefs": [
+        "stripe-webhook-contracts",
+        "python-hmac-verification"
+      ],
+      "status": "published",
+      "id": "be515b3f7fd6",
+      "route": "/docs/system-design/webhook-authenticity-and-replay",
+      "sourcePath": "content/knowledge/system-design/webhook-authenticity-and-replay.md",
+      "bodyPath": "content/knowledge/system-design/webhook-authenticity-and-replay.md",
+      "markdown": "## Establish the provider contract\n\n[Stripe's webhook guide](https://docs.stripe.com/webhooks) recommends its official verification libraries and preserving the raw request body. Signed timestamps mitigate old replay; retries can have fresh signatures. Duplicate deliveries and unordered events remain possible. Endpoint secrets, event versions and retry behavior belong to the specific provider contract. This lesson's custom envelope is original and **not compatible with Stripe headers or an SDK replacement**.\n\nFor an integration, verify the supported event format and account/environment before relying on parsed fields. A signed delivery is evidence about message origin/integrity, not permission for every business transition. A delivery acknowledgment does not certify completion of downstream work.\n\n## Test bytes, time and scope independently\n\nThe original standard-library fixture signs a domain label, trusted configured endpoint, timestamp and exact body bytes with HMAC-SHA256. Its test key is a dummy value. Real endpoint secrets stay in server configuration. [Python's HMAC documentation](https://docs.python.org/3.13/library/hmac.html) recommends `compare_digest` for externally supplied digests; its same-type/length constraints still matter. Timing-safe comparison does not make the whole handler timing-independent.\n\nThe fixture validates shape, freshness and signature **before** parsing the authenticated event ID. Its in-memory set models an admission receipt, not a durable effect ledger. Predict tampering, reserialization, stale/future time, endpoint substitution, renewed retry and key retirement:\n\n```python\nimport hashlib\nimport hmac\nimport json\nimport re\nfrom unittest.mock import patch\n\n\ndef unsigned_int(value):\n    return type(value) is int and value >= 0\n\n\ndef signed_bytes(endpoint, timestamp, body):\n    return b\"lesson-webhook-v1\\0\" + endpoint.encode() + b\"\\0\" + str(timestamp).encode() + b\"\\0\" + body\n\n\ndef sign(key, endpoint, timestamp, body):\n    return hmac.new(key, signed_bytes(endpoint, timestamp, body), hashlib.sha256).hexdigest()\n\n\ndef receive(endpoint, timestamp, body, signature, keys, now, max_age, seen):\n    if (not isinstance(endpoint, str) or not endpoint.strip() or \"\\0\" in endpoint\n            or not unsigned_int(timestamp) or not unsigned_int(now)\n            or type(max_age) is not int or max_age <= 0\n            or not isinstance(body, bytes) or not 0 < len(body) <= 4_096\n            or not isinstance(signature, str) or not re.fullmatch(r\"[0-9a-f]{64}\", signature)\n            or not isinstance(keys, tuple) or not 1 <= len(keys) <= 2\n            or any(not isinstance(key, bytes) or not key for key in keys)):\n        return \"invalid\"\n    if abs(now - timestamp) > max_age:\n        return \"stale\"\n    if not any(hmac.compare_digest(sign(key, endpoint, timestamp, body), signature) for key in keys):\n        return \"unauthenticated\"\n    try:\n        event = json.loads(body)\n    except (ValueError, UnicodeDecodeError):\n        return \"invalid-event\"\n    if (not isinstance(event, dict) or not isinstance(event.get(\"id\"), str)\n            or not event[\"id\"].strip()):\n        return \"invalid-event\"\n    receipt = (endpoint, event[\"id\"])\n    if receipt in seen:\n        return \"duplicate\"\n    seen.add(receipt)\n    return \"accepted\"\n\n\na, b = \"test-account-a:event-endpoint\", \"test-account-b:event-endpoint\"\nkey, retired = b\"dummy-test-key-not-a-credential\", b\"old-dummy-test-key\"\nbody = b'{\"id\":\"event-1\",\"amount\":10}'\nsignature = sign(key, a, 100, body)\nassert signed_bytes(a, 100, body) == b'lesson-webhook-v1\\0test-account-a:event-endpoint\\0' + b'100\\0' + body\nwith patch(\"hmac.compare_digest\", wraps=hmac.compare_digest) as compare:\n    assert receive(a, 100, body, signature, (key,), 100, 30, set()) == \"accepted\"\n    compare.assert_called_once_with(signature, signature)\nseen = set()\nassert receive(a, 100, body, signature, (key,), 100, 30, seen) == \"accepted\"\nassert receive(a, 100, body, signature, (key,), 100, 30, seen) == \"duplicate\"\nassert receive(a, 110, body, sign(key, a, 110, body), (key,), 110, 30, seen) == \"duplicate\"\nassert receive(b, 100, body, signature, (key,), 100, 30, seen) == \"unauthenticated\"\nassert receive(b, 100, body, sign(key, b, 100, body), (key,), 100, 30, seen) == \"accepted\"\nfor changed in (body.replace(b\"10\", b\"11\"), json.dumps(json.loads(body)).encode()):\n    assert receive(a, 100, changed, signature, (key,), 100, 30, seen) == \"unauthenticated\"\nassert receive(a, 101, body, signature, (key,), 101, 30, seen) == \"unauthenticated\"\nfor now in (69, 131):\n    assert receive(a, 100, body, signature, (key,), now, 30, seen) == \"stale\"\nfor now in (70, 130):\n    assert receive(a, 100, body, signature, (key,), now, 30, seen) == \"duplicate\"\nold_signature = sign(retired, a, 100, body)\nassert receive(a, 100, body, old_signature, (key, retired), 100, 30, seen) == \"duplicate\"\nassert receive(a, 100, body, old_signature, (key,), 100, 30, seen) == \"unauthenticated\"\nfor invalid_body in (b\"not json\", b\"\\xff\", b\"[]\", b\"{}\", b'{\"id\":\" \"}', b'{\"id\":1}'):\n    before = seen.copy()\n    assert receive(a, 100, invalid_body, sign(key, a, 100, invalid_body), (key,), 100, 30, seen) == \"invalid-event\"\n    assert seen == before\nfor timestamp, raw, sig, keys, now, age in (\n    (True, body, signature, (key,), 100, 30), (-1, body, signature, (key,), 100, 30),\n    (1.5, body, signature, (key,), 100, 30), (\"100\", body, signature, (key,), 100, 30),\n    (100, \"text\", signature, (key,), 100, 30), (100, b\"\", signature, (key,), 100, 30),\n    (100, b\"x\" * 4_097, signature, (key,), 100, 30),\n    (100, body, \"bad\", (key,), 100, 30), (100, body, \"\\u00e9\" * 64, (key,), 100, 30),\n    (100, body, None, (key,), 100, 30), (100, body, signature, (), 100, 30),\n    (100, body, signature, [key], 100, 30), (100, body, signature, (key, key, key), 100, 30),\n    (100, body, signature, (b\"\",), 100, 30), (100, body, signature, (key,), True, 30),\n    (100, body, signature, (\"key\",), 100, 30), (100, body, signature, (key,), -1, 30),\n    (100, body, signature, (key,), 100, 0), (100, body, signature, (key,), 100, True),\n    (100, body, signature, (key,), 100, -1), (100, body, signature, (key,), 100, 1.5),\n):\n    before = seen.copy()\n    assert receive(a, timestamp, raw, sig, keys, now, age, seen) == \"invalid\"\n    assert seen == before\nfor endpoint in (None, \"\", \" \", \"test\\0account\"):\n    assert receive(endpoint, 100, body, signature, (key,), 100, 30, seen) == \"invalid\"\nassert receive(a, 100, body, \"0\" * 64, (key,), 100, 30, set()) == \"unauthenticated\"\nprefix, suffix = b'{\"id\":\"boundary\",\"padding\":\"', b'\"}'\nbounded = prefix + b\"x\" * (4_096 - len(prefix) - len(suffix)) + suffix\nassert len(bounded) == 4_096\nassert receive(a, 100, bounded, sign(key, a, 100, bounded), (key,), 100, 30, set()) == \"accepted\"\nassert seen == {(a, \"event-1\"), (b, \"event-1\")}\nprint(\"raw bytes, signed time, scoped retry, rotation and invalid inputs: passed\")\n```\n\nThis toy accepts clock skew within 30 seconds in either direction, inclusive. That is its own explicit policy; check the real SDK's tolerance semantics rather than copying it. Endpoint configuration supplies trusted account scope. Body fields alone cannot choose a secret or authority. Test key rotation with a bounded overlap and explicit retirement; a new secret does not invalidate all previously admitted effects.\n\n## Admit durably, then process idempotently\n\nThe set disappears on restart and its check/add is not a distributed transaction. It grows without retention and does not record completion, version conflicts or failure recovery. The fixture validates no real provider header, HTTP framework, TLS connection or concurrent receiver. Do not deploy it as a webhook endpoint.\n\nUse a scoped unique event receipt with durable queued work in one transaction where your architecture permits. Commit admission before acknowledging; retry a failed admission. Processing needs its own idempotent transition and reconciliation, especially when an external effect succeeds before the local receipt is updated. A provider may use separate event objects for a related business change; event-ID deduplication alone cannot decide that domain equivalence. The existing [durable-generation lesson](/docs/software-engineering/product-interview-durable-generation-architecture) covers those crash/effect boundaries.\n\nWrite a review receipt for the verified endpoint/account, raw-body handling, signature scheme, signed fields, clock/freshness policy, allowed event versions/types, deduplication retention, durable acknowledgment, retries and out-of-order reconciliation. Trace an old duplicate after receipt expiry and two simultaneous deliveries. Pair it with the [Webhook Authenticity Checkpoint](/practice/system-design/webhook-authenticity-checkpoint). No live payment, webhook or external API is called by this exercise.",
+      "plainText": "Establish the provider contract Stripe's webhook guide recommends its official verification libraries and preserving the raw request body. Signed timestamps mitigate old replay; retries can have fresh signatures. Duplicate deliveries and unordered events remain possible. Endpoint secrets, event versions and retry behavior belong to the specific provider contract. This lesson's custom envelope is original and not compatible with Stripe headers or an SDK replacement. For an integration, verify the supported event format and account/environment before relying on parsed fields. A signed delivery is evidence about message origin/integrity, not permission for every business transition. A delivery acknowledgment does not certify completion of downstream work. Test bytes, time and scope independently The original standard-library fixture signs a domain label, trusted configured endpoint, timestamp and exact body bytes with HMAC-SHA256. Its test key is a dummy value. Real endpoint secrets stay in server configuration. Python's HMAC documentation recommends compare_digest for externally supplied digests; its same-type/length constraints still matter. Timing-safe comparison does not make the whole handler timing-independent. The fixture validates shape, freshness and signature before parsing the authenticated event ID. Its in-memory set models an admission receipt, not a durable effect ledger. Predict tampering, reserialization, stale/future time, endpoint substitution, renewed retry and key retirement: import hashlib import hmac import json import re from unittest.mock import patch def unsigned_int(value): return type(value) is int and value >= 0 def signed_bytes(endpoint, timestamp, body): return b\"lesson-webhook-v1\\0\" + endpoint.encode() + b\"\\0\" + str(timestamp).encode() + b\"\\0\" + body def sign(key, endpoint, timestamp, body): return hmac.new(key, signed_bytes(endpoint, timestamp, body), hashlib.sha256).hexdigest() def receive(endpoint, timestamp, body, signature, keys, now, max_age, seen): if (not isinstance(endpoint, str) or not endpoint.strip() or \"\\0\" in endpoint or not unsigned_int(timestamp) or not unsigned_int(now) or type(max_age) is not int or max_age <= 0 or not isinstance(body, bytes) or not 0 < len(body) <= 4_096 or not isinstance(signature, str) or not re.fullmatch(r\"[0-9a-f]{64}\", signature) or not isinstance(keys, tuple) or not 1 <= len(keys) <= 2 or any(not isinstance(key, bytes) or not key for key in keys)): return \"invalid\" if abs(now - timestamp) > max_age: return \"stale\" if not any(hmac.compare_digest(sign(key, endpoint, timestamp, body), signature) for key in keys): return \"unauthenticated\" try: event = json.loads(body) except (ValueError, UnicodeDecodeError): return \"invalid-event\" if (not isinstance(event, dict) or not isinstance(event.get(\"id\"), str) or not event[\"id\"].strip()): return \"invalid-event\" receipt = (endpoint, event[\"id\"]) if receipt in seen: return \"duplicate\" seen.add(receipt) return \"accepted\" a, b = \"test-account-a:event-endpoint\", \"test-account-b:event-endpoint\" key, retired = b\"dummy-test-key-not-a-credential\", b\"old-dummy-test-key\" body = b'{\"id\":\"event-1\",\"amount\":10}' signature = sign(key, a, 100, body) assert signed_bytes(a, 100, body) == b'lesson-webhook-v1\\0test-account-a:event-endpoint\\0' + b'100\\0' + body with patch(\"hmac.compare_digest\", wraps=hmac.compare_digest) as compare: assert receive(a, 100, body, signature, (key,), 100, 30, set()) == \"accepted\" compare.assert_called_once_with(signature, signature) seen = set() assert receive(a, 100, body, signature, (key,), 100, 30, seen) == \"accepted\" assert receive(a, 100, body, signature, (key,), 100, 30, seen) == \"duplicate\" assert receive(a, 110, body, sign(key, a, 110, body), (key,), 110, 30, seen) == \"duplicate\" assert receive(b, 100, body, signature, (key,), 100, 30, seen) == \"unauthenticated\" assert receive(b, 100, body, sign(key, b, 100, body), (key,), 100, 30, seen) == \"accepted\" for changed in (body.replace(b\"10\", b\"11\"), json.dumps(json.loads(body)).encode()): assert receive(a, 100, changed, signature, (key,), 100, 30, seen) == \"unauthenticated\" assert receive(a, 101, body, signature, (key,), 101, 30, seen) == \"unauthenticated\" for now in (69, 131): assert receive(a, 100, body, signature, (key,), now, 30, seen) == \"stale\" for now in (70, 130): assert receive(a, 100, body, signature, (key,), now, 30, seen) == \"duplicate\" old_signature = sign(retired, a, 100, body) assert receive(a, 100, body, old_signature, (key, retired), 100, 30, seen) == \"duplicate\" assert receive(a, 100, body, old_signature, (key,), 100, 30, seen) == \"unauthenticated\" for invalid_body in (b\"not json\", b\"\\xff\", b\"[]\", b\"{}\", b'{\"id\":\" \"}', b'{\"id\":1}'): before = seen.copy() assert receive(a, 100, invalid_body, sign(key, a, 100, invalid_body), (key,), 100, 30, seen) == \"invalid-event\" assert seen == before for timestamp, raw, sig, keys, now, age in ( (True, body, signature, (key,), 100, 30), (-1, body, signature, (key,), 100, 30), (1.5, body, signature, (key,), 100, 30), (\"100\", body, signature, (key,), 100, 30), (100, \"text\", signature, (key,), 100, 30), (100, b\"\", signature, (key,), 100, 30), (100, b\"x\" * 4_097, signature, (key,), 100, 30), (100, body, \"bad\", (key,), 100, 30), (100, body, \"\\u00e9\" * 64, (key,), 100, 30), (100, body, None, (key,), 100, 30), (100, body, signature, (), 100, 30), (100, body, signature, [key], 100, 30), (100, body, signature, (key, key, key), 100, 30), (100, body, signature, (b\"\",), 100, 30), (100, body, signature, (key,), True, 30), (100, body, signature, (\"key\",), 100, 30), (100, body, signature, (key,), -1, 30), (100, body, signature, (key,), 100, 0), (100, body, signature, (key,), 100, True), (100, body, signature, (key,), 100, -1), (100, body, signature, (key,), 100, 1.5), ): before = seen.copy() assert receive(a, timestamp, raw, sig, keys, now, age, seen) == \"invalid\" assert seen == before for endpoint in (None, \"\", \" \", \"test\\0account\"): assert receive(endpoint, 100, body, signature, (key,), 100, 30, seen) == \"invalid\" assert receive(a, 100, body, \"0\" * 64, (key,), 100, 30, set()) == \"unauthenticated\" prefix, suffix = b'{\"id\":\"boundary\",\"padding\":\"', b'\"}' bounded = prefix + b\"x\" * (4_096 - len(prefix) - len(suffix)) + suffix assert len(bounded) == 4_096 assert receive(a, 100, bounded, sign(key, a, 100, bounded), (key,), 100, 30, set()) == \"accepted\" assert seen == {(a, \"event-1\"), (b, \"event-1\")} print(\"raw bytes, signed time, scoped retry, rotation and invalid inputs: passed\") This toy accepts clock skew within 30 seconds in either direction, inclusive. That is its own explicit policy; check the real SDK's tolerance semantics rather than copying it. Endpoint configuration supplies trusted account scope. Body fields alone cannot choose a secret or authority. Test key rotation with a bounded overlap and explicit retirement; a new secret does not invalidate all previously admitted effects. Admit durably, then process idempotently The set disappears on restart and its check/add is not a distributed transaction. It grows without retention and does not record completion, version conflicts or failure recovery. The fixture validates no real provider header, HTTP framework, TLS connection or concurrent receiver. Do not deploy it as a webhook endpoint. Use a scoped unique event receipt with durable queued work in one transaction where your architecture permits. Commit admission before acknowledging; retry a failed admission. Processing needs its own idempotent transition and reconciliation, especially when an external effect succeeds before the local receipt is updated. A provider may use separate event objects for a related business change; event-ID deduplication alone cannot decide that domain equivalence. The existing durable-generation lesson covers those crash/effect boundaries. Write a review receipt for the verified endpoint/account, raw-body handling, signature scheme, signed fields, clock/freshness policy, allowed event versions/types, deduplication retention, durable acknowledgment, retries and out-of-order reconciliation. Trace an old duplicate after receipt expiry and two simultaneous deliveries. Pair it with the Webhook Authenticity Checkpoint. No live payment, webhook or external API is called by this exercise.",
+      "headings": [
+        {
+          "id": "establish-the-provider-contract",
+          "depth": 2,
+          "text": "Establish the provider contract"
+        },
+        {
+          "id": "test-bytes-time-and-scope-independently",
+          "depth": 2,
+          "text": "Test bytes, time and scope independently"
+        },
+        {
+          "id": "admit-durably-then-process-idempotently",
+          "depth": 2,
+          "text": "Admit durably, then process idempotently"
+        }
+      ],
+      "mermaidBlocks": [],
+      "contentHash": "c1836209a05d7cedc977b0b9c52324f285b4e656b21bacd04a916b49d6cbf25f",
+      "readingMinutes": 6
     }
   ],
   "diagrams": [
@@ -15504,6 +15652,36 @@
           ]
         },
         {
+          "slug": "traffic-rate",
+          "title": "Traffic Rate Contracts",
+          "summary": "Define precise rate windows, burst capacity and concurrency scope before choosing storage.",
+          "nodes": [
+            {
+              "kind": "document",
+              "slug": "system-design/traffic-rate-contracts"
+            },
+            {
+              "kind": "exercise",
+              "slug": "system-design/traffic-rate-checkpoint"
+            }
+          ]
+        },
+        {
+          "slug": "webhook-authenticity",
+          "title": "Webhook Authenticity",
+          "summary": "Separate signed delivery, replay admission and durable effects with original local evidence.",
+          "nodes": [
+            {
+              "kind": "document",
+              "slug": "system-design/webhook-authenticity-and-replay"
+            },
+            {
+              "kind": "exercise",
+              "slug": "system-design/webhook-authenticity-checkpoint"
+            }
+          ]
+        },
+        {
           "slug": "reservation-boundaries",
           "title": "Reservation Boundaries",
           "summary": "Trace atomic inventory claims, expiry and late completion without inventing queue guarantees.",
@@ -15522,7 +15700,7 @@
       "id": "07569d83aba4",
       "route": "/paths/system-design-fundamentals",
       "sourcePath": "content/learning-paths/system-design-fundamentals.json",
-      "contentHash": "3bc9a8deeb81ea16a6e0a829a6115c7292b8890062711f04cf06a31416a13676"
+      "contentHash": "da18ca55ba861d43152667149f75bc4f544e9ded22ee47eede5f2b742f270ddc"
     }
   ],
   "exercises": [
@@ -33429,6 +33607,121 @@
       "contentHash": "3c35b0ecddf2925a6b8a604f9df9ec902e8201837e363274ef760844d8efd21b"
     },
     {
+      "slug": "system-design/traffic-rate-checkpoint",
+      "title": "Traffic Rate Checkpoint",
+      "documentSlug": "system-design/traffic-rate-contracts",
+      "concept": "Traffic Rate",
+      "difficulty": "practitioner",
+      "tags": [
+        "api",
+        "contracts"
+      ],
+      "status": "published",
+      "sourceRefs": [
+        "redis-rate-limiting-guide",
+        "rfc-6585-status-codes"
+      ],
+      "type": "questionnaire",
+      "questions": [
+        {
+          "id": "fixed-boundary",
+          "prompt": "Three calls at second 59 and three at 61 pass a three-per-calendar-minute limit. What does this demonstrate?",
+          "explanation": "Match the selected algorithm to the promised interval. A calendar quota may be correct for its contract while violating a strict rolling promise.",
+          "kind": "choice",
+          "options": [
+            {
+              "id": "option-0",
+              "label": "A calendar-window limit can allow both batches; it does not enforce the stated rolling-window contract.",
+              "isCorrect": true
+            },
+            {
+              "id": "option-1",
+              "label": "It proves at most three calls in every rolling 60 seconds.",
+              "isCorrect": false
+            },
+            {
+              "id": "option-2",
+              "label": "The algorithm is defective even if the product explicitly allows calendar-boundary bursts.",
+              "isCorrect": false
+            }
+          ]
+        },
+        {
+          "id": "rolling-boundary",
+          "prompt": "For the authored rolling interval, how are equal-time calls and the exact 60-second boundary counted?",
+          "explanation": "The open lower boundary expires an attempt exactly one period old. Each admitted attempt has its own log entry even when timestamps match.",
+          "kind": "choice",
+          "options": [
+            {
+              "id": "option-0",
+              "label": "Retain distinct accepted attempts inside (now - 60, now]; an attempt exactly 60 seconds old has expired.",
+              "isCorrect": true
+            },
+            {
+              "id": "option-1",
+              "label": "Collapse equal timestamps into one attempt to save memory.",
+              "isCorrect": false
+            },
+            {
+              "id": "option-2",
+              "label": "Keep every attempt at or before now forever.",
+              "isCorrect": false
+            }
+          ]
+        },
+        {
+          "id": "token-burst",
+          "prompt": "A bucket has capacity 3 and refills 3 tokens per 90 seconds. Does it guarantee no more than 3 admissions in every rolling 90 seconds?",
+          "explanation": "The fixture admits 3 immediately and another after 30 seconds; capacity caps idle credit, but the contract differs from a strict rolling log.",
+          "kind": "choice",
+          "options": [
+            {
+              "id": "option-0",
+              "label": "A full bucket can admit a burst; its capacity and refill rate do not promise a strict rolling-window count.",
+              "isCorrect": true
+            },
+            {
+              "id": "option-1",
+              "label": "Its refill rate proves the same limit for every rolling window.",
+              "isCorrect": false
+            },
+            {
+              "id": "option-2",
+              "label": "Idle time must accumulate unlimited burst capacity.",
+              "isCorrect": false
+            }
+          ]
+        },
+        {
+          "id": "concurrency-scope",
+          "prompt": "An API admits ten requests per second, but each holds a scarce downstream slot for a long time. What else must be defined?",
+          "explanation": "Rate, in-flight capacity, authorization and idempotency are distinct contracts. Define slot ownership, deadlines and release under failure/cancellation.",
+          "kind": "choice",
+          "options": [
+            {
+              "id": "option-0",
+              "label": "Use an in-flight limit with bounded admission and release; a request rate alone does not bound simultaneous slow work.",
+              "isCorrect": true
+            },
+            {
+              "id": "option-1",
+              "label": "A per-second counter proves at most ten operations are in flight.",
+              "isCorrect": false
+            },
+            {
+              "id": "option-2",
+              "label": "Rate tokens authorize any operation requested by that client.",
+              "isCorrect": false
+            }
+          ]
+        }
+      ],
+      "id": "5eebe714bf1c",
+      "route": "/practice/system-design/traffic-rate-checkpoint",
+      "sourcePath": "content/exercises/system-design/traffic-rate-checkpoint.json",
+      "contentHash": "87fb2610820cae870a288f9027d910eeef87e8f65e2557795a84753ffffe4e41"
+    },
+    {
       "slug": "system-design/versioned-keys-cloze",
       "title": "Versioned Keys Cloze",
       "documentSlug": "system-design/cache-invalidation",
@@ -33451,6 +33744,121 @@
       "route": "/practice/system-design/versioned-keys-cloze",
       "sourcePath": "content/exercises/system-design/versioned-keys-cloze.json",
       "contentHash": "527644ae0ac7dcf1306416eccb62465f2351c825d237ef02e1fe50331b1b9962"
+    },
+    {
+      "slug": "system-design/webhook-authenticity-checkpoint",
+      "title": "Webhook Authenticity Checkpoint",
+      "documentSlug": "system-design/webhook-authenticity-and-replay",
+      "concept": "Webhook Authenticity",
+      "difficulty": "practitioner",
+      "tags": [
+        "api",
+        "contracts"
+      ],
+      "status": "published",
+      "sourceRefs": [
+        "stripe-webhook-contracts",
+        "python-hmac-verification"
+      ],
+      "type": "questionnaire",
+      "questions": [
+        {
+          "id": "raw-bytes",
+          "prompt": "A receiver parses and reserializes a signed JSON body before verification. What should it do instead?",
+          "explanation": "Raw-byte integrity covers the received representation. Trusted endpoint/account configuration selects the verifier; parsed data does not authorize the secret choice.",
+          "kind": "choice",
+          "options": [
+            {
+              "id": "option-0",
+              "label": "Verify the exact received bytes with the configured endpoint secret before trusting parsed fields.",
+              "isCorrect": true
+            },
+            {
+              "id": "option-1",
+              "label": "Whitespace changes never affect a signature over raw bytes.",
+              "isCorrect": false
+            },
+            {
+              "id": "option-2",
+              "label": "Choose a signing secret using an unauthenticated body field.",
+              "isCorrect": false
+            }
+          ]
+        },
+        {
+          "id": "signed-time",
+          "prompt": "A valid old payload is replayed with a newer timestamp supplied by the sender. What must the verifier establish?",
+          "explanation": "The timestamp must be part of the authenticated message. Freshness narrows replay time but does not prevent duplicate deliveries inside that interval.",
+          "kind": "choice",
+          "options": [
+            {
+              "id": "option-0",
+              "label": "Authenticate the timestamp and check the configured clock tolerance; replay prevention also needs durable deduplication.",
+              "isCorrect": true
+            },
+            {
+              "id": "option-1",
+              "label": "Check only that the supplied timestamp looks recent.",
+              "isCorrect": false
+            },
+            {
+              "id": "option-2",
+              "label": "A valid signature means every later replay should cause a new effect.",
+              "isCorrect": false
+            }
+          ]
+        },
+        {
+          "id": "retry-receipt",
+          "prompt": "The provider retries an already accepted event with a fresh valid signature. Is it a new business event?",
+          "explanation": "A delivery attempt and event identity differ. Verify first, then deduplicate against the configured account/endpoint scope and durable receipt policy.",
+          "kind": "choice",
+          "options": [
+            {
+              "id": "option-0",
+              "label": "Verify each delivery, then consult a scoped event receipt; a fresh signature does not make the event new.",
+              "isCorrect": true
+            },
+            {
+              "id": "option-1",
+              "label": "Use the signature value as the stable event identifier.",
+              "isCorrect": false
+            },
+            {
+              "id": "option-2",
+              "label": "Skip signature verification whenever the body contains a familiar event ID.",
+              "isCorrect": false
+            }
+          ]
+        },
+        {
+          "id": "durable-acceptance",
+          "prompt": "The toy returns accepted and stores an event in its in-memory set. What is still needed before a production receiver promises reliable effects?",
+          "explanation": "The set models admission only. Real acknowledgment follows the chosen durable acceptance boundary; external effects and local receipts require idempotency/reconciliation.",
+          "kind": "choice",
+          "options": [
+            {
+              "id": "option-0",
+              "label": "Acknowledge durable acceptance, process idempotently and reconcile failures; an in-memory seen set cannot prove crash-safe effects.",
+              "isCorrect": true
+            },
+            {
+              "id": "option-1",
+              "label": "A set plus 200 response proves exactly-once payments after process crashes.",
+              "isCorrect": false
+            },
+            {
+              "id": "option-2",
+              "label": "Mark the event completed before durable admission so failures can be ignored.",
+              "isCorrect": false
+            }
+          ]
+        }
+      ],
+      "id": "4ae0ad42e71f",
+      "route": "/practice/system-design/webhook-authenticity-checkpoint",
+      "sourcePath": "content/exercises/system-design/webhook-authenticity-checkpoint.json",
+      "contentHash": "2b2a9a5d4939e682229ed424b1b75e22a4fb8f3428b916b781ef641fd4b626f1"
     }
   ],
   "languageCharacters": [
@@ -157806,13 +158214,14 @@
     {
       "name": "System Design",
       "slug": "system-design",
-      "documentCount": 8,
+      "documentCount": 10,
       "difficulties": [
         "foundation",
         "practitioner",
         "senior"
       ],
       "topics": [
+        "Admission Contracts",
         "API Security",
         "Caching",
         "Capacity And Tradeoffs",
@@ -157820,6 +158229,7 @@
         "Client Contracts",
         "Concurrency And Reservations",
         "Data flow",
+        "Delivery Contracts",
         "Load Balancing"
       ]
     }

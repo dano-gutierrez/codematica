@@ -11,6 +11,23 @@ beforeAll(async () => {
 function freshContent() { return structuredClone(validatedIndex); }
 
 describe("complete knowledge catalog", () => {
+  it.each([
+    ["traffic-rate-contracts", "traffic-rate-checkpoint", "traffic-rate", 5, ["redis-rate-limiting-guide", "rfc-6585-status-codes"]],
+    ["webhook-authenticity-and-replay", "webhook-authenticity-checkpoint", "webhook-authenticity", 6, ["stripe-webhook-contracts", "python-hmac-verification"]],
+  ] as const)("exports %s as explicit scoped practice", (slug, checkpoint, unit, order, sources) => {
+    const graph = buildKnowledgeCatalog(freshContent());
+    const lesson = `document:system-design/${slug}`, quiz = `exercise:system-design/${checkpoint}`, uid = `unit:system-design-fundamentals:${unit}`;
+    expect(graph.resources.find(r => r.id === lesson)).toMatchObject({paths:["path:system-design-fundamentals"],status:"published"});
+    for (const source of sources) for (const resource of [lesson,quiz]) expect(graph.relationships).toContainEqual(expect.objectContaining({source:resource,target:`source:${source}`,type:"cites",provenance:"explicit"}));
+    expect(graph.relationships).toContainEqual(expect.objectContaining({source:quiz,target:lesson,type:"assesses",provenance:"explicit"}));
+    expect(graph.relationships).toContainEqual(expect.objectContaining({source:"path:system-design-fundamentals",target:uid,type:"contains",order,provenance:"explicit"}));
+    expect(graph.relationships).toContainEqual(expect.objectContaining({source:uid,target:lesson,type:"contains",order:0,provenance:"explicit"}));
+    expect(graph.relationships).toContainEqual(expect.objectContaining({source:uid,target:quiz,type:"contains",order:1,provenance:"explicit"}));
+    const prerequisites = slug === "traffic-rate-contracts" ? ["system-design/scaling-decision-worksheet"] : ["system-design/cors-csrf-and-authorization", "software-engineering/product-interview-durable-generation-architecture"];
+    for (const prerequisite of prerequisites) expect(graph.relationships).toContainEqual(expect.objectContaining({source:lesson,target:`document:${prerequisite}`,type:"requires",provenance:"explicit"}));
+    expect(graph.unresolved.some(r => [lesson,quiz,uid].includes(r.resourceId))).toBe(false);
+  });
+
   it("preserves authored client compatibility sources, prerequisites and ordered path placement", () => {
     const graph = buildKnowledgeCatalog(freshContent());
     const lesson = "document:system-design/client-compatibility-contracts";

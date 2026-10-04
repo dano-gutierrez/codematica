@@ -115,6 +115,8 @@ Algorithm interviews opened with a valid path query expose **Next activity** aft
 
 Client Compatibility extends System Design after API Security and before Reservations. The original Python plan selector and four-question checkpoint distinguish layout version, component support and data contract; cold-cache and unsupported states remain visible. Duolingo's report and Google AIP-180 supply attributed readings. The fixture implements no renderer, network, persisted user cache or authorization. Real platform compatibility needs separate parser/rendering tests.
 
+Traffic Rate Contracts and Webhook Authenticity follow Client Compatibility in System Design. Two original four-question checkpoints preserve rate/concurrency and signed-delivery/durable-effect distinctions. The rate lab tests calendar/rolling boundaries, identical-time attempts, scoped counters, exact fractional token refill, burst caps and invalid clocks. The webhook lab uses an original custom envelope, dummy keys, raw bytes, signed time, account/endpoint receipts and bounded key rotation. It is not Stripe-compatible and must not be deployed as a receiver. Neither fixture proves distributed atomicity, durable completion or upstream performance.
+
 ### Data Model And Persistence
 
 - `content/learning-paths/*.json` stores path metadata and ordered unit nodes; `content/sources/*.json` stores authoritative external source metadata.
@@ -155,6 +157,8 @@ Client Compatibility extends System Design after API Security and before Reserva
 - `apps/web/src/app/browse/page.tsx`: complete lesson and diagram browser route.
 
 ## Test Plan
+
+- Operational contracts: canonical Python fences exercise exact boundaries, scopes, invalid inputs and visible rejection states. Core/graph tests pin independent source URLs/identities, both four-question answer keys, explicit cites/assesses/prerequisite edges and ordered continuation. Two browser journeys verify source panels, scoring and the next activity. Real Redis races, HTTP/provider SDKs and installed device rendering remain separate validation.
 
 - Client compatibility: real canonical Python fence checks fresh/cached preference, version/component/data predicates, cold start and invalid versions. Core/graph tests pin source identities, original four-question answer keys and placement between API Security and Reservations. The browser journey verifies source panel, scoring and continuation; actual upstream/iOS/Android renderer behavior is not exercised by this fixture.
 - Coding-pattern path: exact unit/question order, existing question count/identity, explicit graph membership and preserved traversal-path membership.

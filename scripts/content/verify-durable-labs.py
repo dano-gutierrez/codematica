@@ -10,6 +10,14 @@ ROOT = Path(__file__).resolve().parents[2]
 
 
 class AuthoredLabs(unittest.TestCase):
+    def test_rate_window_and_token_contracts(self):
+        self.run_lab("content/knowledge/system-design/traffic-rate-contracts.md",
+                     "fixed/rolling boundaries, token refill/cap, scopes and invalid clocks: passed")
+
+    def test_webhook_bytes_time_and_retry(self):
+        self.run_lab("content/knowledge/system-design/webhook-authenticity-and-replay.md",
+                     "raw bytes, signed time, scoped retry, rotation and invalid inputs: passed")
+
     def test_client_layout_and_data_compatibility(self):
         self.run_lab(
             "content/knowledge/system-design/client-compatibility-contracts.md",

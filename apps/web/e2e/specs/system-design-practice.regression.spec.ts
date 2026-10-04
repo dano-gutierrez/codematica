@@ -51,7 +51,33 @@ const cases = [
       "Reject the unsupported data contract; an old layout cannot repair incompatible field meaning or types.",
       "The JSON can parse while the meaning breaks: old callers may mistake the first page for the complete result.",
     ],
-    next: "/docs/system-design/fair-admission-and-reservations?path=system-design-fundamentals",
+    next: "/docs/system-design/traffic-rate-contracts?path=system-design-fundamentals",
+  },
+  {
+    "slug": "traffic-rate-contracts",
+    "title": "Traffic Rate Contracts — Test The Window Before Choosing A Store",
+    "source": "Redis — Rate Limiting Algorithm Comparison",
+    "checkpoint": "traffic-rate-checkpoint",
+    "answers": [
+      "A calendar-window limit can allow both batches; it does not enforce the stated rolling-window contract.",
+      "Retain distinct accepted attempts inside (now - 60, now]; an attempt exactly 60 seconds old has expired.",
+      "A full bucket can admit a burst; its capacity and refill rate do not promise a strict rolling-window count.",
+      "Use an in-flight limit with bounded admission and release; a request rate alone does not bound simultaneous slow work."
+    ],
+    "next": "/docs/system-design/webhook-authenticity-and-replay?path=system-design-fundamentals"
+  },
+  {
+    "slug": "webhook-authenticity-and-replay",
+    "title": "Webhook Authenticity — Separate A Valid Delivery From A New Effect",
+    "source": "Stripe — Webhook Signatures And Delivery Contracts",
+    "checkpoint": "webhook-authenticity-checkpoint",
+    "answers": [
+      "Verify the exact received bytes with the configured endpoint secret before trusting parsed fields.",
+      "Authenticate the timestamp and check the configured clock tolerance; replay prevention also needs durable deduplication.",
+      "Verify each delivery, then consult a scoped event receipt; a fresh signature does not make the event new.",
+      "Acknowledge durable acceptance, process idempotently and reconcile failures; an in-memory seen set cannot prove crash-safe effects."
+    ],
+    "next": "/docs/system-design/fair-admission-and-reservations?path=system-design-fundamentals"
   },
   {
     slug: "fair-admission-and-reservations",

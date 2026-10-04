@@ -91,6 +91,36 @@
       ]
     },
     {
+      "slug": "traffic-rate",
+      "title": "Traffic Rate Contracts",
+      "summary": "Define precise rate windows, burst capacity and concurrency scope before choosing storage.",
+      "nodes": [
+        {
+          "kind": "document",
+          "slug": "system-design/traffic-rate-contracts"
+        },
+        {
+          "kind": "exercise",
+          "slug": "system-design/traffic-rate-checkpoint"
+        }
+      ]
+    },
+    {
+      "slug": "webhook-authenticity",
+      "title": "Webhook Authenticity",
+      "summary": "Separate signed delivery, replay admission and durable effects with original local evidence.",
+      "nodes": [
+        {
+          "kind": "document",
+          "slug": "system-design/webhook-authenticity-and-replay"
+        },
+        {
+          "kind": "exercise",
+          "slug": "system-design/webhook-authenticity-checkpoint"
+        }
+      ]
+    },
+    {
       "slug": "reservation-boundaries",
       "title": "Reservation Boundaries",
       "summary": "Trace atomic inventory claims, expiry and late completion without inventing queue guarantees.",
