@@ -31,7 +31,7 @@ describe("complete knowledge catalog", () => {
     index.exercises.push({...index.exercises.find(e=>e.slug==="ml-systems/prerequisite-measurement-lab")!,slug:"ml-systems/tinytorch-twenty-modules",status:"published"});
     const graph=buildKnowledgeCatalog(index),id="exercise:ml-systems/tinytorch-twenty-modules";
     expect(graph.resources.find(r=>r.id===id)?.paths).toContain("path:ml-systems-engineer");
-    expect(graph.relationships).toContainEqual(expect.objectContaining({source:"unit:ml-systems-engineer:volume-one-build",target:id,type:"contains",order:4}));
+    expect(graph.relationships).toContainEqual(expect.objectContaining({source:"unit:ml-systems-engineer:volume-one-build",target:id,type:"contains",order:5}));
     expect(graph.relationships).toContainEqual(expect.objectContaining({source:id,target:"skill:ml-systems-engineer:model-development",type:"assesses"}));
     expect(graph.relationships.some(e=>e.source===id&&e.type==="teaches")).toBe(false);
   });

@@ -18,3 +18,7 @@ Run `npm run content:check` after any source change. Never hand-edit the generat
 Interview questions can declare `sourceRefs`, validated at build time and required when a source-required path references the interview. Keep private brief provenance anonymous; cite public technical documentation for the authored explanations.
 
 `react-async-state.json` records React's state-snapshot, update-queue, setter, and effect-cleanup references for the supplementary delayed-callback lesson and checkpoint. Code examples are original and tested from their canonical Markdown fences.
+
+`neural-computation-practice.json` records the author-maintained Understanding Deep Learning notebooks at a verified commit and official PyTorch autograd documentation. These are references for an original gradient-check companion, not copied book chapters or notebook implementations.
+
+`system-design-decision-practice.json` anchors capacity and API-boundary exercises to Google SRE, PostgreSQL, MDN, WHATWG Fetch and OWASP primary material. Example workloads are original assumptions, not provider measurements.

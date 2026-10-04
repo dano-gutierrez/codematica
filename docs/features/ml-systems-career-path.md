@@ -3,9 +3,9 @@
 ## Snapshot
 
 - Status: `shipped`
-- Last updated: `2026-08-07`
+- Last updated: `2026-10-03`
 - Owner thread: `n/a`
-- Current state: `/paths/ml-systems-engineer` maps the complete Harvard CS249r student curriculum and ships enriched companions through Volume I Data Engineering.
+- Current state: `/paths/ml-systems-engineer` maps the Harvard CS249r student curriculum, ships enriched Foundations companions and adds an original Neural Computation gradient-check lesson and checkpoint.
 - Target outcome: Learners can move from prerequisites to career-ready ML systems practice while every adapted lesson and lab keeps its authoritative Harvard source visible.
 - Code touchpoints:
   - `content/learning-paths/ml-systems-engineer.json`
@@ -23,7 +23,7 @@
 
 ## One-Minute Brief
 
-This is a source-linked companion to Harvard's CS249r repository, [Volume I](https://mlsysbook.ai/vol1/), and [Volume II](https://mlsysbook.ai/vol2/). Harvard remains authoritative. Codematica supplies prerequisites, concise study guides, guided evidence recording, checkpoints, progress metadata, and a career-stage map. The roadmap covers the books, 34 interactive labs, 20 TinyTorch modules, MLSys·im, optional hardware kits, and StaffML. The first locally enriched slice ends after Volume I Data Engineering; later stages link to the exact upstream collections while their Codematica companions remain planned.
+This is a source-linked companion to Harvard's CS249r repository, [Volume I](https://mlsysbook.ai/vol1/), and [Volume II](https://mlsysbook.ai/vol2/). Harvard remains authoritative. Codematica supplies prerequisites, concise study guides, guided evidence recording, checkpoints, progress metadata, and a career-stage map. The roadmap covers the books, 34 interactive labs, 20 TinyTorch modules, MLSys·im, optional hardware kits, and StaffML. The first locally enriched slice covers Volume I Foundations. Neural Computation now adds an original gradient-check companion and checkpoint; the rest of the Build stage links upstream and remains planned.
 
 ## Outcome / Contract
 
@@ -38,9 +38,11 @@ This is a source-linked companion to Harvard's CS249r repository, [Volume I](htt
 
 ## Current State
 
-Published companions cover Python/NumPy, quantitative foundations, engineering measurement, the Volume I introduction, ML Systems, ML Workflow, and Data Engineering. Three guided labs and three scored checkpoints support the published stages Scientific Computing Apprentice, ML Foundations Analyst, and ML Systems Explorer. Framework Builder through ML Systems Portfolio are planned companion stages with live primary-source links.
+Published companions cover Python/NumPy, quantitative foundations, engineering measurement, the Volume I introduction, ML Systems, ML Workflow, and Data Engineering, plus Neural Computation with a standard-library Python gradient check. Three guided labs and three scored checkpoints support the published stages Scientific Computing Apprentice, ML Foundations Analyst, and ML Systems Explorer. The neural checkpoint adds practice but does not publish the Framework Builder stamp. Framework Builder through ML Systems Portfolio remain planned stages with live primary-source links.
 
 The full roadmap includes every Volume I and Volume II chapter. Student ecosystem collections are represented by their authoritative indexes, which enumerate all 34 labs, all 20 TinyTorch modules, MLSys·im tutorials, hardware-kit activities, and StaffML practice. Instructor-only, translation, CI, and repository-maintenance surfaces are intentionally excluded from the learner path.
+
+The Neural Computation companion links Simon J. D. Prince’s notebook collection at a verified commit as optional further practice. It does not import notebook code or execute upstream notebooks. The source catalog also anchors framework behavior to the official PyTorch autograd tutorial.
 
 ## Scope
 
@@ -49,7 +51,7 @@ The full roadmap includes every Volume I and Volume II chapter. Student ecosyste
 - source catalog and source-reference validation
 - generic career progression shared with the Japanese progression infrastructure
 - full Harvard student roadmap
-- authored prerequisites and Volume I Foundations companions
+- authored prerequisites, Volume I Foundations companions and the Neural Computation gradient-check companion
 - guided lab, questionnaire skill scoring, web/native parity
 
 ### Out Of Scope
@@ -58,7 +60,7 @@ The full roadmap includes every Volume I and Volume II chapter. Student ecosyste
 - claiming Harvard affiliation, course credit, or official assessment status
 - executing upstream notebooks inside Codematica
 - durable raw answers, reflections, notebook output, or hardware telemetry
-- locally enriched companions for the planned stages in this release
+- a complete local Build stage or a Framework Builder completion stamp
 
 ### Assumptions
 
@@ -94,10 +96,14 @@ The full roadmap includes every Volume I and Volume II chapter. Student ecosyste
 
 - Unit: schema v9 source nodes/catalogs, generic progression, planned-stage stamp denial, questionnaire skill scores.
 - Integration: repository content rebuild, source/reference checks, stable companion/external route selection.
-- E2E: add a mobile-Chromium regression for ML path → source-backed companion → guided lab → checkpoint when the browser lane is expanded.
+- E2E: `ml-systems.regression.spec.ts` covers the source-backed Foundations guided lab and Neural Computation → scored checkpoint → next upstream chapter. Completing the neural practice must leave Framework Builder planned.
 - Regression classification: `@regression`; published ML path discovery is part of the general path smoke contract.
 - Coverage impact: core, web components, and shared native UI; no threshold changes or exclusions.
 - Required local commands: `npm run content:check`, `npm test`, `npm run test:mobile`, `npm run typecheck`, `npm run lint`, `npm run build`, and relevant Playwright smoke/regression lanes.
+
+### Neural Computation validation
+
+The canonical Python fence runs without ML dependencies or hosted calls. Its centered finite-difference check independently verifies the analytic derivatives, then verifies that a small gradient-descent step lowers this fixture’s loss. Deliberately omitting the activation derivative or reversing the update sign must fail. Validate the generated index and the existing parser, questionnaire and progression checks; the new checkpoint belongs immediately after the existing neural source node. The rest of the Build stage remains planned.
 
 ## Open Questions
 
@@ -120,4 +126,3 @@ The full roadmap includes every Volume I and Volume II chapter. Student ecosyste
 ## Thread Handoff Prompt
 
 `Read docs/codex-context.md and docs/features/ml-systems-career-path.md first. Verify the pinned Harvard source inventory, then extend only planned stages with source-linked companions, tests, web/native parity, and updated source metadata.`
-

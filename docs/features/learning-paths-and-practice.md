@@ -3,7 +3,7 @@
 ## Snapshot
 
 - Status: `shipped`
-- Last updated: `2026-08-07`
+- Last updated: `2026-10-03`
 - Owner thread: `n/a`
 - Current state: The complete path catalog lives at `/paths`; schema-v12 source nodes, generic career/language progression, guided labs, aggregate checkpoint scoring, passive review, Japanese open answers/listening choices, and active review are local-first across web and Expo.
 - Target outcome: Users can follow role and skill paths, open local companions or authoritative sources, complete all structured practice types, and inspect published/planned progression without requiring auth or Supabase.
@@ -194,3 +194,9 @@ The shipped content includes skill and role paths using Markdown articles, exter
 ## Frontend Interview Path Extension (2026-09-27)
 
 Index v11 accepts published interview nodes (`collection/question`) and optional `completionDestination: "flashcard-feed"`. The final destination requires a published feed. Interview sources are checked under required source policy. Review snippets now declare `codeLanguage` and offer lesson links with path context. See [Frontend Interview Practice](frontend-interview-practice.md) for flow and test commands. Regression coverage lives in `frontend-interview.test.ts`, build-index tests, component tests, and `frontend-interview.regression.spec.ts`.
+
+## System Design decision practice
+
+The existing System Design Fundamentals path retains its cache unit and appends Capacity Decisions and API Security Boundaries. The new sourced lessons use an original scaling worksheet and request timeline, with four-question checkpoints for each. Capacity estimates distinguish means from percentiles, application capacity from a shared dependency, and table partitioning from distributed sharding. API practice distinguishes CORS response sharing, anti-forgery checks and object authorization. Examples are exercises, not measured company architectures or executable production operations.
+
+Validate content-index freshness, parser/source relationships and questionnaire scoring. `system-design-practice.regression.spec.ts` covers both path → lesson → scored checkpoint journeys and continuation from capacity to security. The private saved-post review ledger and raw social text stay outside curriculum and Git. Public sources support the original lessons; source metadata does not claim that an entire linked book or collection was read.

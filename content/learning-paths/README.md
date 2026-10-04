@@ -29,3 +29,7 @@ Run `npm run content:check` before committing path changes.
 Interview nodes use `{ "kind": "interview", "slug": "collection/question" }` and require a published target. Source-required paths also require primary references on that question. Opt into `{ "completionDestination": "flashcard-feed" }` to send the final node to the path’s published feed. Other path endings are unchanged.
 
 The `database-indexes-and-search` skill path ends with Connection Pooling And Resilience: a sourced Markdown lesson, three Mermaid diagrams, a 12-question checkpoint, and eight appended review cards. Keep the existing path slug and earlier node order stable; label reported incident context and illustrative capacity assumptions explicitly.
+
+The ML Systems path’s existing Neural Computation source node now opens a published original companion. A questionnaire follows it in Volume I Build. Keep the Framework Builder stage planned until the remaining framework, architecture and training requirements have local companions and a complete checkpoint.
+
+System Design Fundamentals appends Capacity Decisions and API Security Boundaries after its existing cache unit. Keep the authored worksheet assumptions explicit and distinguish browser response sharing, CSRF and object authorization in the lessons and checkpoints.

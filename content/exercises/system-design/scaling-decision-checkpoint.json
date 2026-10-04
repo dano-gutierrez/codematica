@@ -1,0 +1,111 @@
+{
+  "slug": "system-design/scaling-decision-checkpoint",
+  "title": "Scaling Decision Checkpoint",
+  "type": "questionnaire",
+  "documentSlug": "system-design/scaling-decision-worksheet",
+  "concept": "capacity",
+  "difficulty": "practitioner",
+  "tags": [
+    "system-design",
+    "capacity"
+  ],
+  "status": "published",
+  "sourceRefs": [
+    "sre-handling-overload",
+    "postgresql-table-partitioning"
+  ],
+  "questions": [
+    {
+      "id": "mean-concurrency",
+      "kind": "choice",
+      "prompt": "A stable service averages 1,200 requests/s and 0.2 s response time. Which average in-flight estimate follows?",
+      "options": [
+        {
+          "id": "option-0",
+          "label": "240 requests, using the stated average and stable-workload assumptions.",
+          "isCorrect": true
+        },
+        {
+          "id": "option-1",
+          "label": "6,000 requests, because rates must be divided by latency.",
+          "isCorrect": false
+        },
+        {
+          "id": "option-2",
+          "label": "Use P95 latency instead; it always gives the average concurrency.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "Rate multiplied by mean time yields 240 requests. Dividing does not produce a request count, and a latency percentile is not the mean needed for this estimate."
+    },
+    {
+      "id": "shared-limit",
+      "kind": "choice",
+      "prompt": "Application CPU has headroom, while a shared database is saturated. What does adding application machines establish?",
+      "options": [
+        {
+          "id": "option-0",
+          "label": "More application capacity; database behavior still needs measurement and bounded concurrency.",
+          "isCorrect": true
+        },
+        {
+          "id": "option-1",
+          "label": "The database limit disappears automatically.",
+          "isCorrect": false
+        },
+        {
+          "id": "option-2",
+          "label": "Every database needs distributed sharding immediately.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "Application machines do not remove the shared database constraint and may increase its load. Neither this observation nor pool wait alone justifies sharding."
+    },
+    {
+      "id": "partition-vs-shard",
+      "kind": "choice",
+      "prompt": "A PostgreSQL table has partitions. Which statement is supported?",
+      "options": [
+        {
+          "id": "option-0",
+          "label": "The logical table is divided into partitions; distributed ownership is a separate design.",
+          "isCorrect": true
+        },
+        {
+          "id": "option-1",
+          "label": "The table now automatically runs on independent database servers.",
+          "isCorrect": false
+        },
+        {
+          "id": "option-2",
+          "label": "Partitioning proves cross-shard transactions and rebalancing are solved.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "PostgreSQL table partitioning does not establish a distributed sharding topology or solve distributed operations. Those contracts require a separate design."
+    },
+    {
+      "id": "experiment",
+      "kind": "choice",
+      "prompt": "Which receipt makes a scaling experiment reviewable?",
+      "options": [
+        {
+          "id": "option-0",
+          "label": "Workload, prediction, controlled change, success/rollback conditions and observed result.",
+          "isCorrect": true
+        },
+        {
+          "id": "option-1",
+          "label": "A diagram listing Redis, Kafka and a load balancer.",
+          "isCorrect": false
+        },
+        {
+          "id": "option-2",
+          "label": "The highest throughput from an undocumented request mix.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "An experiment needs comparable conditions and a falsifiable prediction. Component names and incomparable peak numbers cannot explain why a change helped."
+    }
+  ]
+}

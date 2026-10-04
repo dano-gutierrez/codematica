@@ -12,10 +12,52 @@
       "title": "Caching Contracts",
       "summary": "Study freshness, invalidation, diagrams, and review prompts through a short cache design loop.",
       "nodes": [
-        { "kind": "document", "slug": "system-design/cache-invalidation" },
-        { "kind": "diagram", "slug": "system-design/cache-aside" },
-        { "kind": "exercise", "slug": "system-design/cache-product-contract" },
-        { "kind": "exercise", "slug": "system-design/versioned-keys-cloze" }
+        {
+          "kind": "document",
+          "slug": "system-design/cache-invalidation"
+        },
+        {
+          "kind": "diagram",
+          "slug": "system-design/cache-aside"
+        },
+        {
+          "kind": "exercise",
+          "slug": "system-design/cache-product-contract"
+        },
+        {
+          "kind": "exercise",
+          "slug": "system-design/versioned-keys-cloze"
+        }
+      ]
+    },
+    {
+      "slug": "capacity-decisions",
+      "title": "Capacity Decisions",
+      "summary": "Measure a constraint, compare interventions and preserve a scaling decision receipt.",
+      "nodes": [
+        {
+          "kind": "document",
+          "slug": "system-design/scaling-decision-worksheet"
+        },
+        {
+          "kind": "exercise",
+          "slug": "system-design/scaling-decision-checkpoint"
+        }
+      ]
+    },
+    {
+      "slug": "api-security-boundaries",
+      "title": "API Security Boundaries",
+      "summary": "Distinguish browser response sharing, request forgery and server object authorization.",
+      "nodes": [
+        {
+          "kind": "document",
+          "slug": "system-design/cors-csrf-and-authorization"
+        },
+        {
+          "kind": "exercise",
+          "slug": "system-design/api-boundary-checkpoint"
+        }
       ]
     }
   ]

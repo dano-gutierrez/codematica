@@ -91,7 +91,7 @@ describe("complete shared native screen matrix", () => {
     expect(adapters.navigation.navigate).toHaveBeenCalledWith(expect.stringContaining(node.slug));
   });
 
-  it("renders ML career stages and opens planned source nodes externally", async () => {
+  it("opens the neural companion locally and the next planned source externally", async () => {
     const index = getContentIndex();
     const path = index.learningPaths.find((item) => item.slug === "ml-systems-engineer")!;
     const adapters = createAdapters();
@@ -99,7 +99,12 @@ describe("complete shared native screen matrix", () => {
     expect(view.getByText("Scientific Computing Apprentice")).toBeOnTheScreen();
     const node = path.units.find((unit) => unit.slug === "volume-one-build")!.nodes[0]!;
     await fireEvent.press(view.getByTestId(`mobile-path-node-${node.kind}-${node.slug.replaceAll("/", "-")}`));
-    expect(adapters.navigation.openExternalUrl).toHaveBeenCalledWith("https://mlsysbook.ai/vol1/nn_computation/nn_computation.html");
+    expect(adapters.navigation.navigate).toHaveBeenCalledTimes(1);
+    expect(adapters.navigation.navigate).toHaveBeenCalledWith("/docs/ml-systems/neural-computation?path=ml-systems-engineer");
+    const planned = path.units.flatMap(unit => unit.nodes).find(item => item.slug === "ml-systems/network-architectures")!;
+    await fireEvent.press(view.getByTestId(`mobile-path-node-${planned.kind}-${planned.slug.replaceAll("/", "-")}`));
+    expect(adapters.navigation.openExternalUrl).toHaveBeenCalledTimes(1);
+    expect(adapters.navigation.openExternalUrl).toHaveBeenCalledWith("https://mlsysbook.ai/vol1/nn_architectures/nn_architectures.html");
   });
 
   it("reads documents and diagrams, records completion, and renders Mermaid success/fallback states", async () => {

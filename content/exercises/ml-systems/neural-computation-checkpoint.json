@@ -1,0 +1,17 @@
+{
+  "slug": "ml-systems/neural-computation-checkpoint",
+  "title": "Neural Computation Checkpoint",
+  "type": "questionnaire",
+  "documentSlug": "ml-systems/neural-computation",
+  "concept": "gradient validation and training state",
+  "difficulty": "practitioner",
+  "tags": ["neural-networks", "gradients", "validation"],
+  "status": "published",
+  "sourceRefs": ["harvard-vol1-neural-computation", "pytorch-autograd-introduction"],
+  "skillIds": ["model-development", "experimental-practice"],
+  "questions": [
+    { "id": "separate-update", "kind": "choice", "skillIds": ["model-development"], "prompt": "The backward pass produced correct gradients, but the parameters stayed unchanged. Which missing operation best explains this?", "options": [{ "id": "optimizer", "label": "The optimizer has not applied an update.", "isCorrect": true }, { "id": "more-loss", "label": "Printing the loss automatically updates parameters.", "isCorrect": false }, { "id": "labels", "label": "Backpropagation must rewrite the target labels.", "isCorrect": false }], "explanation": "Gradient computation and parameter updates are separate. Printing does not update weights, and changing labels would change the problem rather than apply the calculated gradient." },
+    { "id": "gradient-check", "kind": "choice", "skillIds": ["experimental-practice"], "prompt": "An analytic derivative disagrees with a centered finite difference. What is the best next step?", "options": [{ "id": "diagnose", "label": "Check the derivative, objective and epsilon on a small deterministic case.", "isCorrect": true }, { "id": "scale", "label": "Train a larger model until the discrepancy disappears.", "isCorrect": false }, { "id": "smallest", "label": "Always use the smallest representable epsilon.", "isCorrect": false }], "explanation": "A small controlled case can expose a wrong derivative or numerical error. Scaling adds uncertainty; an extremely small perturbation can cause cancellation rather than a better estimate." },
+    { "id": "memory", "kind": "choice", "skillIds": ["model-development"], "prompt": "Five float64 weights occupy 40 bytes. What does that measurement establish?", "options": [{ "id": "payload", "label": "Only the weight tensor payload under the stated representation.", "isCorrect": true }, { "id": "training", "label": "The entire training process needs exactly 40 bytes.", "isCorrect": false }, { "id": "latency", "label": "The model's serving latency is 40 milliseconds.", "isCorrect": false }], "explanation": "Weight payload excludes gradients, activations, optimizer and runtime overhead. Bytes also do not specify latency; that requires a workload and measurement." }
+  ]
+}

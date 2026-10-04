@@ -1,0 +1,112 @@
+{
+  "slug": "system-design/api-boundary-checkpoint",
+  "title": "API Boundary Checkpoint",
+  "type": "questionnaire",
+  "documentSlug": "system-design/cors-csrf-and-authorization",
+  "concept": "api-security",
+  "difficulty": "practitioner",
+  "tags": [
+    "system-design",
+    "api-security"
+  ],
+  "status": "published",
+  "sourceRefs": [
+    "web-cors-mdn",
+    "web-fetch-standard",
+    "web-csrf-owasp"
+  ],
+  "questions": [
+    {
+      "id": "blocked-response",
+      "kind": "choice",
+      "prompt": "A safelisted cross-origin POST reached the API and the browser blocked response access. What can have happened?",
+      "options": [
+        {
+          "id": "option-0",
+          "label": "The server may already have changed state; inspect server evidence.",
+          "isCorrect": true
+        },
+        {
+          "id": "option-1",
+          "label": "CORS automatically rolled the operation back.",
+          "isCorrect": false
+        },
+        {
+          "id": "option-2",
+          "label": "A blocked response proves no request was sent.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "For this request shape, sending precedes the response-sharing check. CORS does not roll back server effects and an unreadable response cannot prove absence of mutation."
+    },
+    {
+      "id": "preflight",
+      "kind": "choice",
+      "prompt": "A custom-header operation requires preflight and that preflight fails. What follows for the browser?",
+      "options": [
+        {
+          "id": "option-0",
+          "label": "It does not send that guarded operation after this failed preflight.",
+          "isCorrect": true
+        },
+        {
+          "id": "option-1",
+          "label": "It sends the operation anyway but hides only the response.",
+          "isCorrect": false
+        },
+        {
+          "id": "option-2",
+          "label": "This proves all other request shapes are blocked.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "The failed required preflight prevents this operation. That differs from response blocking after a safelisted request, and does not establish behavior for other request shapes."
+    },
+    {
+      "id": "object-access",
+      "kind": "choice",
+      "prompt": "An allowed-origin request has a valid session and CSRF proof but targets another user\u2019s object. What must the server still do?",
+      "options": [
+        {
+          "id": "option-0",
+          "label": "Check authorization for that actor, object and operation.",
+          "isCorrect": true
+        },
+        {
+          "id": "option-1",
+          "label": "Trust the origin as proof that the actor owns the object.",
+          "isCorrect": false
+        },
+        {
+          "id": "option-2",
+          "label": "Treat the CSRF token as permission to every object.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "Neither allowed response-sharing origin nor valid anti-forgery proof grants object access. Authentication identifies an actor; authorization checks the requested operation."
+    },
+    {
+      "id": "cookies",
+      "kind": "choice",
+      "prompt": "When reviewing a cross-site session attack, what assumption must be checked?",
+      "options": [
+        {
+          "id": "option-0",
+          "label": "Whether the browser\u2019s actual cookie and request policies permit the credentials to be sent.",
+          "isCorrect": true
+        },
+        {
+          "id": "option-1",
+          "label": "Cookies are always sent on every cross-site request.",
+          "isCorrect": false
+        },
+        {
+          "id": "option-2",
+          "label": "Cookies can never be sent on cross-site requests.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "Cookie attributes, browser policies and request context affect credential sending. Both absolute claims erase assumptions required by a concrete trace."
+    }
+  ]
+}

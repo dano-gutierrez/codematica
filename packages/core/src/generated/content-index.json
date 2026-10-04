@@ -5006,6 +5006,16 @@
       "contentHash": "fc2cf01a065855078f84b7054ff65ccb301b3e1bf0569a507483a70349ace380"
     },
     {
+      "id": "postgresql-table-partitioning",
+      "title": "PostgreSQL Table Partitioning",
+      "provider": "PostgreSQL",
+      "url": "https://www.postgresql.org/docs/current/ddl-partitioning.html",
+      "attribution": "PostgreSQL documentation. Table partitioning and pruning; not a claim of distributed sharding.",
+      "lastVerifiedAt": "2026-10-03",
+      "sourcePath": "content/sources/system-design-decision-practice.json",
+      "contentHash": "d811ed35df3adbdd9dc2a7b180107165ba5354f77a3985c028cb6854bb00272f"
+    },
+    {
       "id": "product-interview-abort-controller",
       "title": "AbortController",
       "provider": "MDN Web Docs",
@@ -5054,6 +5064,16 @@
       "lastVerifiedAt": "2026-09-09",
       "sourcePath": "content/sources/product-engineering-interview.json",
       "contentHash": "41ff7839b4a2dd591e5121f21120b757fb6e470ec4ce9125082a961f720b72cf"
+    },
+    {
+      "id": "pytorch-autograd-introduction",
+      "title": "A Gentle Introduction to torch.autograd",
+      "provider": "PyTorch",
+      "url": "https://docs.pytorch.org/tutorials/beginner/blitz/autograd_tutorial.html",
+      "attribution": "Official PyTorch tutorial explaining automatic differentiation, gradient accumulation and parameter updates.",
+      "lastVerifiedAt": "2026-10-03",
+      "sourcePath": "content/sources/neural-computation-practice.json",
+      "contentHash": "e4000c18e4da65ef9d384c483c13a5f1935b0d72ec6e61a3327dd2f46c00f127"
     },
     {
       "id": "react-effect-cleanup",
@@ -5464,6 +5484,62 @@
       },
       "sourcePath": "content/sources/rtk-query.json",
       "contentHash": "11aa85d774f66f4569f56763a050737ceec2691d5cd46b5543d7ff9e7898e886"
+    },
+    {
+      "id": "sre-handling-overload",
+      "title": "Handling Overload",
+      "provider": "Google SRE",
+      "url": "https://sre.google/sre-book/handling-overload/",
+      "attribution": "Alejandro Forero Cuervo; edited by Sarah Chavis. Primary source for resource-based capacity and overload responses.",
+      "lastVerifiedAt": "2026-10-03",
+      "sourcePath": "content/sources/system-design-decision-practice.json",
+      "contentHash": "d811ed35df3adbdd9dc2a7b180107165ba5354f77a3985c028cb6854bb00272f"
+    },
+    {
+      "id": "udlbook-notebooks",
+      "title": "Understanding Deep Learning — Author's Notebooks",
+      "provider": "Simon J. D. Prince",
+      "url": "https://github.com/udlbook/udlbook/tree/0d84a591362f1cc99c6dc2ce1c2544d559280681/Notebooks",
+      "attribution": "Simon J. D. Prince's companion notebook collection. Linked for further practice; notebook code and book text are not copied into Codematica.",
+      "lastVerifiedAt": "2026-10-03",
+      "upstream": {
+        "repository": "udlbook/udlbook",
+        "ref": "main",
+        "commit": "0d84a591362f1cc99c6dc2ce1c2544d559280681",
+        "maturity": "published"
+      },
+      "sourcePath": "content/sources/neural-computation-practice.json",
+      "contentHash": "e4000c18e4da65ef9d384c483c13a5f1935b0d72ec6e61a3327dd2f46c00f127"
+    },
+    {
+      "id": "web-cors-mdn",
+      "title": "Cross-Origin Resource Sharing",
+      "provider": "MDN Web Docs",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/CORS",
+      "attribution": "MDN contributors. Browser preflights, response access and credential considerations.",
+      "lastVerifiedAt": "2026-10-03",
+      "sourcePath": "content/sources/system-design-decision-practice.json",
+      "contentHash": "d811ed35df3adbdd9dc2a7b180107165ba5354f77a3985c028cb6854bb00272f"
+    },
+    {
+      "id": "web-csrf-owasp",
+      "title": "Cross-Site Request Forgery Prevention",
+      "provider": "OWASP",
+      "url": "https://cheatsheetseries.owasp.org/cheatsheets/Cross-Site_Request_Forgery_Prevention_Cheat_Sheet.html",
+      "attribution": "OWASP contributors. Server-side anti-forgery defenses and their limits.",
+      "lastVerifiedAt": "2026-10-03",
+      "sourcePath": "content/sources/system-design-decision-practice.json",
+      "contentHash": "d811ed35df3adbdd9dc2a7b180107165ba5354f77a3985c028cb6854bb00272f"
+    },
+    {
+      "id": "web-fetch-standard",
+      "title": "Fetch — CORS Protocol",
+      "provider": "WHATWG",
+      "url": "https://fetch.spec.whatwg.org/#http-cors-protocol",
+      "attribution": "WHATWG Fetch contributors. Normative browser request and response-sharing behavior.",
+      "lastVerifiedAt": "2026-10-03",
+      "sourcePath": "content/sources/system-design-decision-practice.json",
+      "contentHash": "d811ed35df3adbdd9dc2a7b180107165ba5354f77a3985c028cb6854bb00272f"
     }
   ],
   "documents": [
@@ -10230,6 +10306,72 @@
       "readingMinutes": 1
     },
     {
+      "title": "Neural Computation — Check A Gradient Before Training",
+      "slug": "ml-systems/neural-computation",
+      "summary": "Trace an original tiny neural network from prediction to loss, verify its derivatives numerically, and distinguish gradient computation from parameter updates.",
+      "track": "ML Systems",
+      "topic": "Model Development",
+      "difficulty": "practitioner",
+      "tags": [
+        "neural-networks",
+        "backpropagation",
+        "gradients",
+        "numerical-validation"
+      ],
+      "prerequisites": [
+        "ml-systems/math-foundations",
+        "ml-systems/python-numpy-foundations"
+      ],
+      "diagramRefs": [],
+      "sourceRefs": [
+        "harvard-vol1-neural-computation",
+        "pytorch-autograd-introduction",
+        "udlbook-notebooks"
+      ],
+      "status": "published",
+      "id": "6a04e86a628a",
+      "route": "/docs/ml-systems/neural-computation",
+      "sourcePath": "content/knowledge/ml-systems/neural-computation.md",
+      "bodyPath": "content/knowledge/ml-systems/neural-computation.md",
+      "markdown": "## Give the framework a checkable job\n\nContinue the existing Harvard path with the [Neural Computation chapter](https://mlsysbook.ai/vol1/nn_computation/nn_computation.html). A forward pass calculates a prediction; a loss compares it with a target. Backpropagation calculates derivatives, and an optimizer uses them to change parameters. These are separate operations. Training also retains intermediate values and gradient state, so inference weight size does not determine training memory.\n\nThis companion supplies an original five-parameter calculation rather than recreating the chapter. The [author's Understanding Deep Learning notebooks](https://github.com/udlbook/udlbook/tree/0d84a591362f1cc99c6dc2ce1c2544d559280681/Notebooks) offer further practice. Choose one exercise after checking its prerequisites; completing this small check does not establish understanding of the whole collection.\n\n## Trace one hidden unit\n\nLet `x = (1.5, -0.5)`, with target `t = 0.4`. Our model has input weights `w0, w1`, hidden bias `b`, output weight `v` and output bias `c`:\n\n```text\nz = w0*x0 + w1*x1 + b\nh = tanh(z)\nprediction = v*h + c\nloss = 0.5*(prediction - t)^2\n```\n\nWrite `e = prediction - t`. The output derivatives are `dL/dv = e*h` and `dL/dc = e`. The gradient entering the hidden preactivation is `g = e*v*(1-h^2)`. Therefore `dL/dw0 = g*x0`, `dL/dw1 = g*x1`, and `dL/db = g`. Check which forward values each derivative needs before implementing it.\n\n## Run an independent numerical check\n\nRun this with Python 3; it uses only the standard library. Before running, predict whether subtracting a small multiple of the gradient should raise or lower this loss.\n\n```python\nfrom math import tanh\n\nx, target = (1.5, -0.5), 0.4\ninitial = [0.3, -0.2, 0.1, 0.7, -0.05]\n\ndef forward(p):\n    hidden = tanh(p[0] * x[0] + p[1] * x[1] + p[2])\n    prediction = p[3] * hidden + p[4]\n    return hidden, prediction\n\ndef loss(p):\n    _, prediction = forward(p)\n    return 0.5 * (prediction - target) ** 2\n\ndef gradients(p):\n    hidden, prediction = forward(p)\n    error = prediction - target\n    hidden_gradient = error * p[3] * (1 - hidden ** 2)\n    return [hidden_gradient * x[0], hidden_gradient * x[1],\n            hidden_gradient, error * hidden, error]\n\ndef numerical(p, epsilon=1e-6):\n    result = []\n    for i in range(len(p)):\n        plus, minus = p.copy(), p.copy()\n        plus[i] += epsilon\n        minus[i] -= epsilon\n        result.append((loss(plus) - loss(minus)) / (2 * epsilon))\n    return result\n\nanalytic, checked = gradients(initial), numerical(initial)\nerror = max(abs(a - b) for a, b in zip(analytic, checked))\nassert error < 1e-7\nupdated = [p - 0.1 * g for p, g in zip(initial, analytic)]\nassert loss(updated) < loss(initial)\nprint(f\"loss: {loss(initial):.8f} -> {loss(updated):.8f}\")\nprint(f\"maximum gradient error: {error:.2e}\")\n```\n\nMeasured locally with Python 3.13.3, the loss changed from `0.00124157` to `0.00077417`; maximum absolute gradient error was approximately `2.77e-12`. Floating-point details can vary. The assertions check this fixture, not every model or learning rate.\n\n## Break the result deliberately\n\nReplace `1 - hidden ** 2` with `1` and rerun. The numerical comparison should fail because the hidden derivative is wrong. Next, restore it and use `p + 0.1*g` for the update: the loss-decrease assertion should fail for this fixture. Finally, vary epsilon through `1e-2`, `1e-6` and `1e-12`. Explain why truncation error and floating-point cancellation make both extremes less useful. A numerical check costs two forward evaluations per parameter; use it for small diagnostics, not bulk training.\n\n## Translate the check to a real system\n\n[PyTorch's autograd tutorial](https://docs.pytorch.org/tutorials/beginner/blitz/autograd_tutorial.html) shows how recorded operations supply derivatives and how gradients accumulate. When comparing it with this fixture, distinguish clearing previous gradients, running a new forward pass, calculating current gradients and applying an update. Framework defaults do not excuse checking shapes, objective scaling and a small reproducible case.\n\nFive parameters stored as float64 need 40 bytes of tensor payload. That estimate excludes Python objects, activations, gradients, optimizer state and allocator overhead. Report payload and process memory separately, as in [Engineering Measurement Foundations](/docs/ml-systems/engineering-measurement-foundations).\n\n## Evidence to keep\n\nRecord the equations, parameters, epsilon, maximum gradient error and before/after loss. Retain the deliberate failing version beside the correction. Then complete the [Neural Computation Checkpoint](/practice/ml-systems/neural-computation-checkpoint) before moving to the path's architecture and training references.",
+      "plainText": "Give the framework a checkable job Continue the existing Harvard path with the Neural Computation chapter. A forward pass calculates a prediction; a loss compares it with a target. Backpropagation calculates derivatives, and an optimizer uses them to change parameters. These are separate operations. Training also retains intermediate values and gradient state, so inference weight size does not determine training memory. This companion supplies an original five-parameter calculation rather than recreating the chapter. The author's Understanding Deep Learning notebooks offer further practice. Choose one exercise after checking its prerequisites; completing this small check does not establish understanding of the whole collection. Trace one hidden unit Let x = (1.5, -0.5), with target t = 0.4. Our model has input weights w0, w1, hidden bias b, output weight v and output bias c: z = w0*x0 + w1*x1 + b h = tanh(z) prediction = v*h + c loss = 0.5*(prediction - t)^2 Write e = prediction - t. The output derivatives are dL/dv = e*h and dL/dc = e. The gradient entering the hidden preactivation is g = e*v*(1-h^2). Therefore dL/dw0 = g*x0, dL/dw1 = g*x1, and dL/db = g. Check which forward values each derivative needs before implementing it. Run an independent numerical check Run this with Python 3; it uses only the standard library. Before running, predict whether subtracting a small multiple of the gradient should raise or lower this loss. from math import tanh x, target = (1.5, -0.5), 0.4 initial = [0.3, -0.2, 0.1, 0.7, -0.05] def forward(p): hidden = tanh(p[0] * x[0] + p[1] * x[1] + p[2]) prediction = p[3] * hidden + p[4] return hidden, prediction def loss(p): _, prediction = forward(p) return 0.5 * (prediction - target) ** 2 def gradients(p): hidden, prediction = forward(p) error = prediction - target hidden_gradient = error * p[3] * (1 - hidden ** 2) return [hidden_gradient * x[0], hidden_gradient * x[1], hidden_gradient, error * hidden, error] def numerical(p, epsilon=1e-6): result = [] for i in range(len(p)): plus, minus = p.copy(), p.copy() plus[i] += epsilon minus[i] -= epsilon result.append((loss(plus) - loss(minus)) / (2 * epsilon)) return result analytic, checked = gradients(initial), numerical(initial) error = max(abs(a - b) for a, b in zip(analytic, checked)) assert error < 1e-7 updated = [p - 0.1 * g for p, g in zip(initial, analytic)] assert loss(updated) < loss(initial) print(f\"loss: {loss(initial):.8f} -> {loss(updated):.8f}\") print(f\"maximum gradient error: {error:.2e}\") Measured locally with Python 3.13.3, the loss changed from 0.00124157 to 0.00077417; maximum absolute gradient error was approximately 2.77e-12. Floating-point details can vary. The assertions check this fixture, not every model or learning rate. Break the result deliberately Replace 1 - hidden ** 2 with 1 and rerun. The numerical comparison should fail because the hidden derivative is wrong. Next, restore it and use p + 0.1*g for the update: the loss-decrease assertion should fail for this fixture. Finally, vary epsilon through 1e-2, 1e-6 and 1e-12. Explain why truncation error and floating-point cancellation make both extremes less useful. A numerical check costs two forward evaluations per parameter; use it for small diagnostics, not bulk training. Translate the check to a real system PyTorch's autograd tutorial shows how recorded operations supply derivatives and how gradients accumulate. When comparing it with this fixture, distinguish clearing previous gradients, running a new forward pass, calculating current gradients and applying an update. Framework defaults do not excuse checking shapes, objective scaling and a small reproducible case. Five parameters stored as float64 need 40 bytes of tensor payload. That estimate excludes Python objects, activations, gradients, optimizer state and allocator overhead. Report payload and process memory separately, as in Engineering Measurement Foundations. Evidence to keep Record the equations, parameters, epsilon, maximum gradient error and before/after loss. Retain the deliberate failing version beside the correction. Then complete the Neural Computation Checkpoint before moving to the path's architecture and training references.",
+      "headings": [
+        {
+          "id": "give-the-framework-a-checkable-job",
+          "depth": 2,
+          "text": "Give the framework a checkable job"
+        },
+        {
+          "id": "trace-one-hidden-unit",
+          "depth": 2,
+          "text": "Trace one hidden unit"
+        },
+        {
+          "id": "run-an-independent-numerical-check",
+          "depth": 2,
+          "text": "Run an independent numerical check"
+        },
+        {
+          "id": "break-the-result-deliberately",
+          "depth": 2,
+          "text": "Break the result deliberately"
+        },
+        {
+          "id": "translate-the-check-to-a-real-system",
+          "depth": 2,
+          "text": "Translate the check to a real system"
+        },
+        {
+          "id": "evidence-to-keep",
+          "depth": 2,
+          "text": "Evidence to keep"
+        }
+      ],
+      "mermaidBlocks": [],
+      "contentHash": "cf0db6b14b5017316daafb3a4b2b2021dda80016ea25926f9957caf07453a24a",
+      "readingMinutes": 3
+    },
+    {
       "title": "Python And NumPy For ML Systems",
       "slug": "ml-systems/python-numpy-foundations",
       "summary": "Build the Python, array, shape, dtype, and measurement habits needed to reason about machine learning systems rather than isolated notebooks.",
@@ -11508,6 +11650,120 @@
         }
       ],
       "contentHash": "2652b7316c8d2e34f3db2395ec41c1c761eabf54d2ae8537595640b410c04515",
+      "readingMinutes": 3
+    },
+    {
+      "title": "CORS, CSRF And Authorization — Three Different Checks",
+      "slug": "system-design/cors-csrf-and-authorization",
+      "summary": "Trace whether a browser request is sent, whether its response is readable and whether the server should allow the operation; distinguish CORS from CSRF and object authorization.",
+      "track": "System Design",
+      "topic": "API Security",
+      "difficulty": "practitioner",
+      "tags": [
+        "cors",
+        "csrf",
+        "authorization",
+        "browser-security",
+        "api"
+      ],
+      "prerequisites": [],
+      "diagramRefs": [],
+      "sourceRefs": [
+        "web-cors-mdn",
+        "web-fetch-standard",
+        "web-csrf-owasp"
+      ],
+      "status": "published",
+      "id": "3c209494ff7b",
+      "route": "/docs/system-design/cors-csrf-and-authorization",
+      "sourcePath": "content/knowledge/system-design/cors-csrf-and-authorization.md",
+      "bodyPath": "content/knowledge/system-design/cors-csrf-and-authorization.md",
+      "markdown": "## Ask three questions about the request\n\nFor an API operation, separate transport from permission:\n\n1. Did the browser send the request?\n2. Can the calling page read the response?\n3. Does the server permit this authenticated actor to perform this operation on this object?\n\n[MDN's CORS guide](https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/CORS) describes browser-enforced response sharing. Some requests need a successful preflight; safelisted requests can be sent without one. A blocked response therefore does not establish that the server did nothing. CORS also does not restrict a server-to-server client in the same way.\n\n## Trace a concrete failure\n\nIn this original exercise, `app.example.test` operates a user's account API. The user opens another site while signed in. Assume the browser's actual cookie policy permits the relevant session cookie on the cross-site request; do not assume that for every browser or SameSite setting.\n\nThe other page makes a `fetch` POST with `credentials: \"include\"`, `Content-Type: application/x-www-form-urlencoded` and no other headers that require preflight. The API accepts the session cookie, changes a preference and returns a response without permitting that page's origin. The requesting script cannot read the response, but the preference can already have changed.\n\nDraw the timeline: request sent, cookie policy applied, server authentication, operation accepted, response sent, browser response-sharing check. Put the mutation at the server step. A browser console CORS error belongs to the response-reading observation and does not undo the preceding operation.\n\nThe [Fetch standard](https://fetch.spec.whatwg.org/#http-cors-protocol) specifies CORS request and response processing. Requests using methods or headers outside the safelist generally require preflight; successful preflight is still not authorization to a particular account object. Cached preflight results and the concrete request shape matter when interpreting a trace.\n\n## Place each protection at its boundary\n\n[OWASP's CSRF prevention guidance](https://cheatsheetseries.owasp.org/cheatsheets/Cross-Site_Request_Forgery_Prevention_Cheat_Sheet.html) addresses unwanted authenticated state changes. Use the framework's supported protection, appropriate CSRF tokens or supported origin/Fetch Metadata checks, with SameSite as part of the chosen defense. Keep state changes out of GET operations. A token design still needs correct validation and integration; an XSS flaw can undermine CSRF defenses.\n\nAuthentication establishes an actor. Authorization checks whether that actor may change the requested object and operation. A valid session or allowed origin does not grant ownership of every object ID. If a user changes `/accounts/own/preferences` to another account's identifier, the server must independently reject unauthorized access even from the legitimate app.\n\n| Observation | What it establishes | What it does not establish |\n| --- | --- | --- |\n| Preflight rejected | Browser cannot continue that preflighted request | Every other request shape is blocked |\n| Response blocked by CORS | That page cannot read the response through the checked browser API | No state change occurred |\n| Session authenticated | The server recognized an actor | The actor owns the requested object |\n| CSRF check passed | The request passed the chosen anti-forgery check | Object authorization or input validity |\n\n## Run a review exercise\n\nFor each of these cases, mark request-sent, response-readable and operation-authorized as separate observations:\n\n- A safelisted credentialed `fetch` POST accepted by the API, with a response blocked by CORS.\n- A custom-header request whose preflight fails before the state-changing request is sent.\n- An allowed-origin request with valid CSRF proof but another user's object ID.\n\nAcceptance: the first may mutate state despite unreadable response; the second does not send that guarded operation; the third still needs an object authorization rejection. State the cookie and request assumptions in your answer. Validate only with inert local fixtures or an explicitly authorized test environment, using server logs as well as browser observations.\n\nComplete the [API Boundary Checkpoint](/practice/system-design/api-boundary-checkpoint). When reviewing a diagram or security checklist, identify the exact boundary each mechanism protects before recommending it.",
+      "plainText": "Ask three questions about the request For an API operation, separate transport from permission: Did the browser send the request?Can the calling page read the response?Does the server permit this authenticated actor to perform this operation on this object? MDN's CORS guide describes browser-enforced response sharing. Some requests need a successful preflight; safelisted requests can be sent without one. A blocked response therefore does not establish that the server did nothing. CORS also does not restrict a server-to-server client in the same way. Trace a concrete failure In this original exercise, app.example.test operates a user's account API. The user opens another site while signed in. Assume the browser's actual cookie policy permits the relevant session cookie on the cross-site request; do not assume that for every browser or SameSite setting. The other page makes a fetch POST with credentials: \"include\", Content-Type: application/x-www-form-urlencoded and no other headers that require preflight. The API accepts the session cookie, changes a preference and returns a response without permitting that page's origin. The requesting script cannot read the response, but the preference can already have changed. Draw the timeline: request sent, cookie policy applied, server authentication, operation accepted, response sent, browser response-sharing check. Put the mutation at the server step. A browser console CORS error belongs to the response-reading observation and does not undo the preceding operation. The Fetch standard specifies CORS request and response processing. Requests using methods or headers outside the safelist generally require preflight; successful preflight is still not authorization to a particular account object. Cached preflight results and the concrete request shape matter when interpreting a trace. Place each protection at its boundary OWASP's CSRF prevention guidance addresses unwanted authenticated state changes. Use the framework's supported protection, appropriate CSRF tokens or supported origin/Fetch Metadata checks, with SameSite as part of the chosen defense. Keep state changes out of GET operations. A token design still needs correct validation and integration; an XSS flaw can undermine CSRF defenses. Authentication establishes an actor. Authorization checks whether that actor may change the requested object and operation. A valid session or allowed origin does not grant ownership of every object ID. If a user changes /accounts/own/preferences to another account's identifier, the server must independently reject unauthorized access even from the legitimate app. | Observation | What it establishes | What it does not establish | | --- | --- | --- | | Preflight rejected | Browser cannot continue that preflighted request | Every other request shape is blocked | | Response blocked by CORS | That page cannot read the response through the checked browser API | No state change occurred | | Session authenticated | The server recognized an actor | The actor owns the requested object | | CSRF check passed | The request passed the chosen anti-forgery check | Object authorization or input validity | Run a review exercise For each of these cases, mark request-sent, response-readable and operation-authorized as separate observations: A safelisted credentialed fetch POST accepted by the API, with a response blocked by CORS.A custom-header request whose preflight fails before the state-changing request is sent.An allowed-origin request with valid CSRF proof but another user's object ID. Acceptance: the first may mutate state despite unreadable response; the second does not send that guarded operation; the third still needs an object authorization rejection. State the cookie and request assumptions in your answer. Validate only with inert local fixtures or an explicitly authorized test environment, using server logs as well as browser observations. Complete the API Boundary Checkpoint. When reviewing a diagram or security checklist, identify the exact boundary each mechanism protects before recommending it.",
+      "headings": [
+        {
+          "id": "ask-three-questions-about-the-request",
+          "depth": 2,
+          "text": "Ask three questions about the request"
+        },
+        {
+          "id": "trace-a-concrete-failure",
+          "depth": 2,
+          "text": "Trace a concrete failure"
+        },
+        {
+          "id": "place-each-protection-at-its-boundary",
+          "depth": 2,
+          "text": "Place each protection at its boundary"
+        },
+        {
+          "id": "run-a-review-exercise",
+          "depth": 2,
+          "text": "Run a review exercise"
+        }
+      ],
+      "mermaidBlocks": [],
+      "contentHash": "78b2c169bcb4544631befa941279f63bf9d910e5ad74c16a9f1b20acf9898ee7",
+      "readingMinutes": 3
+    },
+    {
+      "title": "Scaling Decisions — Measure The Constraint First",
+      "slug": "system-design/scaling-decision-worksheet",
+      "summary": "Use a concrete workload, bounded capacity estimates and falsifiable experiments to choose scaling changes without following a universal architecture ladder.",
+      "track": "System Design",
+      "topic": "Capacity And Tradeoffs",
+      "difficulty": "practitioner",
+      "tags": [
+        "scaling",
+        "capacity",
+        "bottlenecks",
+        "system-design"
+      ],
+      "prerequisites": [
+        "system-design/cache-invalidation",
+        "databases/postgres-connection-pooling"
+      ],
+      "diagramRefs": [],
+      "sourceRefs": [
+        "sre-handling-overload",
+        "postgresql-table-partitioning"
+      ],
+      "status": "published",
+      "id": "2909bd9d7295",
+      "route": "/docs/system-design/scaling-decision-worksheet",
+      "sourcePath": "content/knowledge/system-design/scaling-decision-worksheet.md",
+      "bodyPath": "content/knowledge/system-design/scaling-decision-worksheet.md",
+      "markdown": "## An architecture diagram is a hypothesis\n\nA small service does not need to pass through a fixed sequence of caches, queues, replicas and shards. State the product contract first: which operations must remain correct, what can become stale, how long a user can wait and what happens during overload. Then name the resource that constrains that workload.\n\n[Google SRE's overload chapter](https://sre.google/sre-book/handling-overload/) explains why request counts alone can hide differences in request cost. Capacity decisions need resource measurements; controlled degradation, rejection and client throttling are possible responses. Adding servers does not remove a shared dependency's limit.\n\n## Work an original review case\n\nAssume a service receives 1,200 requests per second at a stable average response time of 0.2 seconds. It runs on two eight-core application machines. Profiling reports 8 ms of application CPU time per request. Database pool waits have risen while application CPU is below its budget. These are exercise assumptions, not production measurements.\n\nCalculate two different estimates:\n\n```text\nAverage requests in flight = 1,200 / second * 0.2 second = 240\nCPU-only per-machine budget = 8 cores * 0.8 / 0.008 second = 800 requests / second\n```\n\nThe first calculation uses an average in a stable system. Substituting P95 latency would not estimate average concurrency. The second assumes the CPU cost stays constant, work parallelizes and 80% utilization is acceptable; it is a budget, not a measured throughput guarantee. Neither establishes database capacity.\n\nPredict the result of adding two more application machines without changing the database or pools. A defensible answer is conditional: application headroom grows, but the shared database may receive more concurrent work and pool wait may persist or worsen. State what evidence would falsify that prediction.\n\n## Compare a small set of changes\n\n| Hypothesis | Evidence to collect | Contract to protect |\n| --- | --- | --- |\n| A query performs avoidable work | Representative query plans, row counts and time by operation | Correct result and authorized scope |\n| Excessive parallelism overloads the database | Pool wait, active connections, database CPU/I/O and queue age | Bounded waits and honest rejection |\n| Repeated reads can be reused | Reuse frequency, hit rate, freshness tolerance and invalidation behavior | The explicit cache contract |\n| Non-interactive work can move to a queue | Arrival/service rate, oldest age, redelivery and recovery behavior | Durable acceptance and eventual completion |\n\nChoose one experiment, define a success threshold and a rollback condition, then rerun the same workload. Compare before and after with the same request mix. Report remaining uncertainty instead of inferring a universal architecture from one improvement.\n\nUse the existing [pooling lesson](/docs/databases/postgres-connection-pooling) for connection budgets and [cache lesson](/docs/system-design/cache-invalidation) for freshness. They supply the detailed contracts; this worksheet connects the decisions.\n\n## Partitioning is a separate decision\n\n[PostgreSQL's partitioning documentation](https://www.postgresql.org/docs/current/ddl-partitioning.html) describes one logical table divided into partitions and explains partition pruning. That is not automatically a distributed sharding system. Before proposing multiple database owners, write how the shard key affects hotspots, cross-shard operations, uniqueness, movement and recovery. A partitioned table alone does not answer those questions.\n\nFor our case, neither an overloaded query nor pool wait proves a need for sharding. Compare query work and bounded concurrency first. Add a distributed-storage proposal only when measured constraints and the product contract justify its additional ownership and recovery work.\n\n## Keep a decision receipt\n\nWrite: workload and assumptions; required behavior; measured constraint; alternatives; predicted result; success and rollback thresholds; observed result; and the condition that would change the decision. Pair the worksheet with the [Scaling Decision Checkpoint](/practice/system-design/scaling-decision-checkpoint). A useful interview answer explains this chain of evidence rather than listing component names.",
+      "plainText": "An architecture diagram is a hypothesis A small service does not need to pass through a fixed sequence of caches, queues, replicas and shards. State the product contract first: which operations must remain correct, what can become stale, how long a user can wait and what happens during overload. Then name the resource that constrains that workload. Google SRE's overload chapter explains why request counts alone can hide differences in request cost. Capacity decisions need resource measurements; controlled degradation, rejection and client throttling are possible responses. Adding servers does not remove a shared dependency's limit. Work an original review case Assume a service receives 1,200 requests per second at a stable average response time of 0.2 seconds. It runs on two eight-core application machines. Profiling reports 8 ms of application CPU time per request. Database pool waits have risen while application CPU is below its budget. These are exercise assumptions, not production measurements. Calculate two different estimates: Average requests in flight = 1,200 / second * 0.2 second = 240 CPU-only per-machine budget = 8 cores * 0.8 / 0.008 second = 800 requests / second The first calculation uses an average in a stable system. Substituting P95 latency would not estimate average concurrency. The second assumes the CPU cost stays constant, work parallelizes and 80% utilization is acceptable; it is a budget, not a measured throughput guarantee. Neither establishes database capacity. Predict the result of adding two more application machines without changing the database or pools. A defensible answer is conditional: application headroom grows, but the shared database may receive more concurrent work and pool wait may persist or worsen. State what evidence would falsify that prediction. Compare a small set of changes | Hypothesis | Evidence to collect | Contract to protect | | --- | --- | --- | | A query performs avoidable work | Representative query plans, row counts and time by operation | Correct result and authorized scope | | Excessive parallelism overloads the database | Pool wait, active connections, database CPU/I/O and queue age | Bounded waits and honest rejection | | Repeated reads can be reused | Reuse frequency, hit rate, freshness tolerance and invalidation behavior | The explicit cache contract | | Non-interactive work can move to a queue | Arrival/service rate, oldest age, redelivery and recovery behavior | Durable acceptance and eventual completion | Choose one experiment, define a success threshold and a rollback condition, then rerun the same workload. Compare before and after with the same request mix. Report remaining uncertainty instead of inferring a universal architecture from one improvement. Use the existing pooling lesson for connection budgets and cache lesson for freshness. They supply the detailed contracts; this worksheet connects the decisions. Partitioning is a separate decision PostgreSQL's partitioning documentation describes one logical table divided into partitions and explains partition pruning. That is not automatically a distributed sharding system. Before proposing multiple database owners, write how the shard key affects hotspots, cross-shard operations, uniqueness, movement and recovery. A partitioned table alone does not answer those questions. For our case, neither an overloaded query nor pool wait proves a need for sharding. Compare query work and bounded concurrency first. Add a distributed-storage proposal only when measured constraints and the product contract justify its additional ownership and recovery work. Keep a decision receipt Write: workload and assumptions; required behavior; measured constraint; alternatives; predicted result; success and rollback thresholds; observed result; and the condition that would change the decision. Pair the worksheet with the Scaling Decision Checkpoint. A useful interview answer explains this chain of evidence rather than listing component names.",
+      "headings": [
+        {
+          "id": "an-architecture-diagram-is-a-hypothesis",
+          "depth": 2,
+          "text": "An architecture diagram is a hypothesis"
+        },
+        {
+          "id": "work-an-original-review-case",
+          "depth": 2,
+          "text": "Work an original review case"
+        },
+        {
+          "id": "compare-a-small-set-of-changes",
+          "depth": 2,
+          "text": "Compare a small set of changes"
+        },
+        {
+          "id": "partitioning-is-a-separate-decision",
+          "depth": 2,
+          "text": "Partitioning is a separate decision"
+        },
+        {
+          "id": "keep-a-decision-receipt",
+          "depth": 2,
+          "text": "Keep a decision receipt"
+        }
+      ],
+      "mermaidBlocks": [],
+      "contentHash": "f5c02ec189b7e6a982aec3dcca079f22d66cfc1e01317ed720236fa98835d5d5",
       "readingMinutes": 3
     }
   ],
@@ -13335,6 +13591,14 @@
               "companionKind": "document"
             },
             {
+              "kind": "exercise",
+              "slug": "ml-systems/neural-computation-checkpoint",
+              "skillIds": [
+                "model-development",
+                "experimental-practice"
+              ]
+            },
+            {
               "kind": "source",
               "slug": "ml-systems/network-architectures",
               "skillIds": [
@@ -14100,7 +14364,7 @@
       "id": "2785ba9029d6",
       "route": "/paths/ml-systems-engineer",
       "sourcePath": "content/learning-paths/ml-systems-engineer.json",
-      "contentHash": "575ad8c66795ddaa4e6e7862bea2c2657ceca45042ccd62e848b4279031aa474"
+      "contentHash": "f4b0f274fb6a536ec8ddb083f18e722e96bcc48e30cc355b80c9428f224059e1"
     },
     {
       "slug": "product-engineering-interview",
@@ -14414,12 +14678,42 @@
               "slug": "system-design/versioned-keys-cloze"
             }
           ]
+        },
+        {
+          "slug": "capacity-decisions",
+          "title": "Capacity Decisions",
+          "summary": "Measure a constraint, compare interventions and preserve a scaling decision receipt.",
+          "nodes": [
+            {
+              "kind": "document",
+              "slug": "system-design/scaling-decision-worksheet"
+            },
+            {
+              "kind": "exercise",
+              "slug": "system-design/scaling-decision-checkpoint"
+            }
+          ]
+        },
+        {
+          "slug": "api-security-boundaries",
+          "title": "API Security Boundaries",
+          "summary": "Distinguish browser response sharing, request forgery and server object authorization.",
+          "nodes": [
+            {
+              "kind": "document",
+              "slug": "system-design/cors-csrf-and-authorization"
+            },
+            {
+              "kind": "exercise",
+              "slug": "system-design/api-boundary-checkpoint"
+            }
+          ]
         }
       ],
       "id": "07569d83aba4",
       "route": "/paths/system-design-fundamentals",
       "sourcePath": "content/learning-paths/system-design-fundamentals.json",
-      "contentHash": "85646c8ad55f6fbcc27566d008fc98e64c652459042b299147e4f0d4fcd550ad"
+      "contentHash": "1ddd7d65822dc2786c42f452f61553deaf437a025f318e9f7eb1c89885ff3012"
     }
   ],
   "exercises": [
@@ -28867,6 +29161,112 @@
       "contentHash": "672fd80c4dad72085636f1f831dc13e63f09a2f573b9b8622b44357644ece4d4"
     },
     {
+      "slug": "ml-systems/neural-computation-checkpoint",
+      "title": "Neural Computation Checkpoint",
+      "documentSlug": "ml-systems/neural-computation",
+      "concept": "gradient validation and training state",
+      "difficulty": "practitioner",
+      "tags": [
+        "neural-networks",
+        "gradients",
+        "validation"
+      ],
+      "status": "published",
+      "sourceRefs": [
+        "harvard-vol1-neural-computation",
+        "pytorch-autograd-introduction"
+      ],
+      "skillIds": [
+        "model-development",
+        "experimental-practice"
+      ],
+      "type": "questionnaire",
+      "questions": [
+        {
+          "id": "separate-update",
+          "prompt": "The backward pass produced correct gradients, but the parameters stayed unchanged. Which missing operation best explains this?",
+          "explanation": "Gradient computation and parameter updates are separate. Printing does not update weights, and changing labels would change the problem rather than apply the calculated gradient.",
+          "skillIds": [
+            "model-development"
+          ],
+          "kind": "choice",
+          "options": [
+            {
+              "id": "optimizer",
+              "label": "The optimizer has not applied an update.",
+              "isCorrect": true
+            },
+            {
+              "id": "more-loss",
+              "label": "Printing the loss automatically updates parameters.",
+              "isCorrect": false
+            },
+            {
+              "id": "labels",
+              "label": "Backpropagation must rewrite the target labels.",
+              "isCorrect": false
+            }
+          ]
+        },
+        {
+          "id": "gradient-check",
+          "prompt": "An analytic derivative disagrees with a centered finite difference. What is the best next step?",
+          "explanation": "A small controlled case can expose a wrong derivative or numerical error. Scaling adds uncertainty; an extremely small perturbation can cause cancellation rather than a better estimate.",
+          "skillIds": [
+            "experimental-practice"
+          ],
+          "kind": "choice",
+          "options": [
+            {
+              "id": "diagnose",
+              "label": "Check the derivative, objective and epsilon on a small deterministic case.",
+              "isCorrect": true
+            },
+            {
+              "id": "scale",
+              "label": "Train a larger model until the discrepancy disappears.",
+              "isCorrect": false
+            },
+            {
+              "id": "smallest",
+              "label": "Always use the smallest representable epsilon.",
+              "isCorrect": false
+            }
+          ]
+        },
+        {
+          "id": "memory",
+          "prompt": "Five float64 weights occupy 40 bytes. What does that measurement establish?",
+          "explanation": "Weight payload excludes gradients, activations, optimizer and runtime overhead. Bytes also do not specify latency; that requires a workload and measurement.",
+          "skillIds": [
+            "model-development"
+          ],
+          "kind": "choice",
+          "options": [
+            {
+              "id": "payload",
+              "label": "Only the weight tensor payload under the stated representation.",
+              "isCorrect": true
+            },
+            {
+              "id": "training",
+              "label": "The entire training process needs exactly 40 bytes.",
+              "isCorrect": false
+            },
+            {
+              "id": "latency",
+              "label": "The model's serving latency is 40 milliseconds.",
+              "isCorrect": false
+            }
+          ]
+        }
+      ],
+      "id": "092e536e3339",
+      "route": "/practice/ml-systems/neural-computation-checkpoint",
+      "sourcePath": "content/exercises/ml-systems/neural-computation-checkpoint.json",
+      "contentHash": "06e352395567df761db2b5011a798800a81066fd235b223d7a4f464fec5f692e"
+    },
+    {
       "slug": "ml-systems/prerequisite-measurement-lab",
       "title": "Array Memory And Measurement Lab",
       "documentSlug": "ml-systems/python-numpy-foundations",
@@ -31341,6 +31741,122 @@
       "contentHash": "5c2b4a808f35e6acdc8a76cbd40fd56acee962755d22d53c0522126b1301e509"
     },
     {
+      "slug": "system-design/api-boundary-checkpoint",
+      "title": "API Boundary Checkpoint",
+      "documentSlug": "system-design/cors-csrf-and-authorization",
+      "concept": "api-security",
+      "difficulty": "practitioner",
+      "tags": [
+        "system-design",
+        "api-security"
+      ],
+      "status": "published",
+      "sourceRefs": [
+        "web-cors-mdn",
+        "web-fetch-standard",
+        "web-csrf-owasp"
+      ],
+      "type": "questionnaire",
+      "questions": [
+        {
+          "id": "blocked-response",
+          "prompt": "A safelisted cross-origin POST reached the API and the browser blocked response access. What can have happened?",
+          "explanation": "For this request shape, sending precedes the response-sharing check. CORS does not roll back server effects and an unreadable response cannot prove absence of mutation.",
+          "kind": "choice",
+          "options": [
+            {
+              "id": "option-0",
+              "label": "The server may already have changed state; inspect server evidence.",
+              "isCorrect": true
+            },
+            {
+              "id": "option-1",
+              "label": "CORS automatically rolled the operation back.",
+              "isCorrect": false
+            },
+            {
+              "id": "option-2",
+              "label": "A blocked response proves no request was sent.",
+              "isCorrect": false
+            }
+          ]
+        },
+        {
+          "id": "preflight",
+          "prompt": "A custom-header operation requires preflight and that preflight fails. What follows for the browser?",
+          "explanation": "The failed required preflight prevents this operation. That differs from response blocking after a safelisted request, and does not establish behavior for other request shapes.",
+          "kind": "choice",
+          "options": [
+            {
+              "id": "option-0",
+              "label": "It does not send that guarded operation after this failed preflight.",
+              "isCorrect": true
+            },
+            {
+              "id": "option-1",
+              "label": "It sends the operation anyway but hides only the response.",
+              "isCorrect": false
+            },
+            {
+              "id": "option-2",
+              "label": "This proves all other request shapes are blocked.",
+              "isCorrect": false
+            }
+          ]
+        },
+        {
+          "id": "object-access",
+          "prompt": "An allowed-origin request has a valid session and CSRF proof but targets another user’s object. What must the server still do?",
+          "explanation": "Neither allowed response-sharing origin nor valid anti-forgery proof grants object access. Authentication identifies an actor; authorization checks the requested operation.",
+          "kind": "choice",
+          "options": [
+            {
+              "id": "option-0",
+              "label": "Check authorization for that actor, object and operation.",
+              "isCorrect": true
+            },
+            {
+              "id": "option-1",
+              "label": "Trust the origin as proof that the actor owns the object.",
+              "isCorrect": false
+            },
+            {
+              "id": "option-2",
+              "label": "Treat the CSRF token as permission to every object.",
+              "isCorrect": false
+            }
+          ]
+        },
+        {
+          "id": "cookies",
+          "prompt": "When reviewing a cross-site session attack, what assumption must be checked?",
+          "explanation": "Cookie attributes, browser policies and request context affect credential sending. Both absolute claims erase assumptions required by a concrete trace.",
+          "kind": "choice",
+          "options": [
+            {
+              "id": "option-0",
+              "label": "Whether the browser’s actual cookie and request policies permit the credentials to be sent.",
+              "isCorrect": true
+            },
+            {
+              "id": "option-1",
+              "label": "Cookies are always sent on every cross-site request.",
+              "isCorrect": false
+            },
+            {
+              "id": "option-2",
+              "label": "Cookies can never be sent on cross-site requests.",
+              "isCorrect": false
+            }
+          ]
+        }
+      ],
+      "id": "fdb1d2536298",
+      "route": "/practice/system-design/api-boundary-checkpoint",
+      "sourcePath": "content/exercises/system-design/api-boundary-checkpoint.json",
+      "contentHash": "43a1b76b4f3b1c76c771077d83485f30efa183f0bfd717f3e608c7c095585942"
+    },
+    {
       "slug": "system-design/cache-product-contract",
       "title": "Cache Product Contract",
       "documentSlug": "system-design/cache-invalidation",
@@ -31359,6 +31875,121 @@
       "route": "/practice/system-design/cache-product-contract",
       "sourcePath": "content/exercises/system-design/cache-product-contract.json",
       "contentHash": "ab92b19965e7f85e3d3833d46fa3ed6b212e85a9b0a0b0dd0630308934723f98"
+    },
+    {
+      "slug": "system-design/scaling-decision-checkpoint",
+      "title": "Scaling Decision Checkpoint",
+      "documentSlug": "system-design/scaling-decision-worksheet",
+      "concept": "capacity",
+      "difficulty": "practitioner",
+      "tags": [
+        "system-design",
+        "capacity"
+      ],
+      "status": "published",
+      "sourceRefs": [
+        "sre-handling-overload",
+        "postgresql-table-partitioning"
+      ],
+      "type": "questionnaire",
+      "questions": [
+        {
+          "id": "mean-concurrency",
+          "prompt": "A stable service averages 1,200 requests/s and 0.2 s response time. Which average in-flight estimate follows?",
+          "explanation": "Rate multiplied by mean time yields 240 requests. Dividing does not produce a request count, and a latency percentile is not the mean needed for this estimate.",
+          "kind": "choice",
+          "options": [
+            {
+              "id": "option-0",
+              "label": "240 requests, using the stated average and stable-workload assumptions.",
+              "isCorrect": true
+            },
+            {
+              "id": "option-1",
+              "label": "6,000 requests, because rates must be divided by latency.",
+              "isCorrect": false
+            },
+            {
+              "id": "option-2",
+              "label": "Use P95 latency instead; it always gives the average concurrency.",
+              "isCorrect": false
+            }
+          ]
+        },
+        {
+          "id": "shared-limit",
+          "prompt": "Application CPU has headroom, while a shared database is saturated. What does adding application machines establish?",
+          "explanation": "Application machines do not remove the shared database constraint and may increase its load. Neither this observation nor pool wait alone justifies sharding.",
+          "kind": "choice",
+          "options": [
+            {
+              "id": "option-0",
+              "label": "More application capacity; database behavior still needs measurement and bounded concurrency.",
+              "isCorrect": true
+            },
+            {
+              "id": "option-1",
+              "label": "The database limit disappears automatically.",
+              "isCorrect": false
+            },
+            {
+              "id": "option-2",
+              "label": "Every database needs distributed sharding immediately.",
+              "isCorrect": false
+            }
+          ]
+        },
+        {
+          "id": "partition-vs-shard",
+          "prompt": "A PostgreSQL table has partitions. Which statement is supported?",
+          "explanation": "PostgreSQL table partitioning does not establish a distributed sharding topology or solve distributed operations. Those contracts require a separate design.",
+          "kind": "choice",
+          "options": [
+            {
+              "id": "option-0",
+              "label": "The logical table is divided into partitions; distributed ownership is a separate design.",
+              "isCorrect": true
+            },
+            {
+              "id": "option-1",
+              "label": "The table now automatically runs on independent database servers.",
+              "isCorrect": false
+            },
+            {
+              "id": "option-2",
+              "label": "Partitioning proves cross-shard transactions and rebalancing are solved.",
+              "isCorrect": false
+            }
+          ]
+        },
+        {
+          "id": "experiment",
+          "prompt": "Which receipt makes a scaling experiment reviewable?",
+          "explanation": "An experiment needs comparable conditions and a falsifiable prediction. Component names and incomparable peak numbers cannot explain why a change helped.",
+          "kind": "choice",
+          "options": [
+            {
+              "id": "option-0",
+              "label": "Workload, prediction, controlled change, success/rollback conditions and observed result.",
+              "isCorrect": true
+            },
+            {
+              "id": "option-1",
+              "label": "A diagram listing Redis, Kafka and a load balancer.",
+              "isCorrect": false
+            },
+            {
+              "id": "option-2",
+              "label": "The highest throughput from an undocumented request mix.",
+              "isCorrect": false
+            }
+          ]
+        }
+      ],
+      "id": "e80b2d1d2140",
+      "route": "/practice/system-design/scaling-decision-checkpoint",
+      "sourcePath": "content/exercises/system-design/scaling-decision-checkpoint.json",
+      "contentHash": "3c35b0ecddf2925a6b8a604f9df9ec902e8201837e363274ef760844d8efd21b"
     },
     {
       "slug": "system-design/versioned-keys-cloze",
@@ -155695,13 +156326,14 @@
     {
       "name": "ML Systems",
       "slug": "ml-systems",
-      "documentCount": 7,
+      "documentCount": 8,
       "difficulties": [
         "foundation",
         "practitioner"
       ],
       "topics": [
         "Foundations",
+        "Model Development",
         "Prerequisites"
       ]
     },
@@ -155736,13 +156368,16 @@
     {
       "name": "System Design",
       "slug": "system-design",
-      "documentCount": 3,
+      "documentCount": 5,
       "difficulties": [
         "foundation",
+        "practitioner",
         "senior"
       ],
       "topics": [
+        "API Security",
         "Caching",
+        "Capacity And Tradeoffs",
         "Capacity planning",
         "Data flow"
       ]
