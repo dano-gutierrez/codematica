@@ -3,6 +3,9 @@ import json
 import sqlite3
 import time
 import uuid
+import math
+import re
+from collections import Counter
 from pathlib import Path
 from contextlib import contextmanager
 
@@ -67,16 +70,30 @@ class Store:
         ids = {identifier} | {v for e in edges for v in [e["source"], e["target"]]}
         return {"relationships": edges, "resources": [r for r in current["resources"] if r["id"] in ids]}
     def search(self, query, limit=20, kind=None, vectors=None):
-        words = set(query.casefold().split())
-        out = []
-        for r in (self.snapshot() or {}).get("resources", []):
-            if kind and r["kind"] != kind: continue
-            terms = set((r["title"] + " " + r["text"]).casefold().split())
-            lexical = len(words & terms) / max(1, len(words)) + (1 if query.casefold() in r["title"].casefold() else 0)
-            semantic = (vectors or {}).get(r["id"], 0)
-            score = lexical * .45 + max(0, semantic) * .55
-            if score > 0: out.append({**r, "score": score})
-        return sorted(out, key=lambda r: (-r["score"], r["id"]))[:limit]
+        # IDF and length normalization keep generic long documents from winning
+        # merely because they contain common words from a detailed proposal.
+        stop=set('the and to a in of for is it with on as by an be from this that are or at can not its we i you have'.split())
+        def tokens(text): return [t for t in re.findall(r"\w+",text.casefold()) if t not in stop]
+        words=set(tokens(query))
+        if not words:return []
+        resources=(self.snapshot() or {}).get("resources", [])
+        documents=[Counter(tokens(r["title"]+" "+r["text"])) for r in resources]
+        frequencies=Counter(t for document in documents for t in document)
+        average=sum(sum(d.values()) for d in documents)/max(1,len(documents)) or 1
+        out=[]
+        for r,terms in zip(resources,documents,strict=True):
+            if kind and r["kind"] != kind:continue
+            length=sum(terms.values());bm25=0
+            title=set(tokens(r["title"]))
+            for word in words & terms.keys():
+                tf=terms[word];idf=math.log(1+(len(documents)-frequencies[word]+.5)/(frequencies[word]+.5))
+                bm25+=idf*(tf*2.2/(tf+1.2*(.25+.75*length/average)))*(2 if word in title else 1)
+            lexical=1-math.exp(-bm25/4)
+            if query.strip().casefold() in r["title"].casefold():lexical=1
+            semantic=(vectors or {}).get(r["id"],0)
+            score=lexical*.45+max(0,semantic)*.55
+            if score>0:out.append({**r,"score":score})
+        return sorted(out,key=lambda r:(-r["score"],r["id"]))[:limit]
     def cache_get(self, key):
         with self.connect() as db:
             row = db.execute("select data from cache where key=?", (key,)).fetchone()

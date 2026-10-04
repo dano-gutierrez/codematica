@@ -39,6 +39,19 @@ class StoreTests(unittest.TestCase):
         self.store.activate(snapshot())
         self.assertEqual(self.store.search("reads faster")[0]["id"], "document:indexes")
         self.assertFalse(self.store.status()["semantic_complete"])
+    def test_topic_terms_beat_long_generic_documents_with_punctuation(self):
+        data=snapshot()
+        data['resources'][0].update(id='document:neural',title='Neural networks and self-attention',text='Backpropagation and optimization for neural networks.')
+        for i in range(80):
+            data['resources'].append({**data['resources'][0],'id':f'document:generic-{i}','title':'System architecture overview','text':('A practical guide for understanding the existing learning curriculum and system decisions. '*100)})
+        self.store.activate(data)
+        query='Understanding neural networks, backpropagation and self-attention. A practical guide for the existing learning curriculum.'
+        vectors={r['id']:.60 if r['id']=='document:neural' else .65 for r in data['resources']}
+        hits=self.store.search(query,12,vectors=vectors)
+        self.assertEqual(hits[0]['id'],'document:neural')
+        self.assertEqual(self.store.search('BACKPROPAGATION?')[0]['id'],'document:neural')
+        self.assertEqual(self.store.search('   '),[])
+
     def test_cache_is_bound_to_version_and_sources(self):
         self.store.activate(snapshot())
         self.store.cache_put("k", {"value": 1})

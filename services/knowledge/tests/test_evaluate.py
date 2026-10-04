@@ -116,6 +116,71 @@ class EvaluationTests(unittest.IsolatedAsyncioTestCase):
                 models.call=call
                 with self.assertRaises(ValueError):await models.ready()
 
+    async def test_source_metadata_is_evidence_and_placement_stays_in_chosen_path(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            store=Store(Path(tmp)/'db');data=snapshot();base=data['resources'][0]
+            data['resources']=[
+                {**base,'id':'document:unrelated','title':'Mermaid diagram authoring','text':'Generic learning overview','paths':['path:diagrams']},
+                {**base,'id':'source:neural','kind':'source','title':'Neural Networks textbook chapter','text':'Primary chapter metadata: backpropagation and self-attention.','paths':['path:ml']},
+                {**base,'id':'path:ml','kind':'path','title':'ML systems','text':'Model development','paths':[]},
+                {**base,'id':'skill:ml/model','kind':'skill','title':'Model development','text':'Neural networks','paths':['path:ml']},
+            ]
+            store.activate(data);models=FakeModels();seen={}
+            async def decide(state,questions):
+                seen.update(state=state,questions=questions)
+                result=await FakeModels.decide(models,state,questions)
+                result['placement']={'choice':'path:ml','probabilities':{'path:ml':.99}}
+                return result
+            models.decide=decide
+            class Ranked:
+                def similarities(self,query):return {'document:unrelated':1,'source:neural':0}
+            report=await evaluate(store,Ranked(),models,{'title':'Neural networks','body':'New self-attention exercises','kind':'document'})
+            self.assertIn('source:neural',[r['id'] for r in seen['state']['matches']])
+            self.assertNotIn('skill:ml/model',seen['questions']['placement']['criteria'])
+            self.assertEqual(report['placement']['path_id'],'path:ml')
+            self.assertEqual(report['placement']['after_id'],'source:neural')
+            self.assertNotEqual(report['placement'].get('resource_id'),'document:unrelated')
+
+    async def test_ordering_requires_selected_unit_membership_and_unknown_abstains(self):
+        for chosen in ['unit:ml/core','unknown','skill:ml/model']:
+            with self.subTest(chosen=chosen),tempfile.TemporaryDirectory() as tmp:
+                store=Store(Path(tmp)/'db');data=snapshot();base=data['resources'][0]
+                data['resources']=[
+                    {**base,'id':'document:sibling','title':'Neural sibling','paths':['path:ml']},
+                    {**base,'id':'document:core','title':'Neural core','paths':['path:ml']},
+                    {**base,'id':'document:core#exercise','parentId':'document:core','kind':'section','title':'Neural exercise','paths':['path:ml']},
+                    {**base,'id':'path:ml','kind':'path','title':'ML','paths':[]},
+                    {**base,'id':'unit:ml/core','kind':'unit','title':'Core','paths':['path:ml']},
+                    {**base,'id':'skill:ml/model','kind':'skill','paths':['path:ml']},
+                ]
+                data['relationships']=[{'id':'membership','source':'unit:ml/core','target':'document:core','type':'contains','provenance':'explicit'}]
+                store.activate(data);models=FakeModels()
+                async def decide(state,questions):
+                    result=await FakeModels.decide(models,state,questions)
+                    result['placement']={'choice':chosen,'probabilities':{chosen:.99}}
+                    return result
+                models.decide=decide
+                class Ranked:
+                    def similarities(self,query):return {'document:sibling':1,'document:core#exercise':.9,'document:core':.1}
+                report=await evaluate(store,Ranked(),models,{'title':'Neural practice','body':'Original neural practice case','kind':'document'})
+                if chosen=='unit:ml/core':
+                    self.assertEqual(report['placement'],{'path_id':'path:ml','unit_id':chosen,'resource_id':'document:core','section_id':'document:core#exercise','after_id':'document:core'})
+                else:self.assertEqual(report['placement'],{})
+
+    async def test_unknown_placement_can_target_an_update_without_inventing_order(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            store=Store(Path(tmp)/'db');data=snapshot();base=data['resources'][0]
+            data['resources'].append({**base,'id':'path:database','kind':'path','title':'Database','paths':[]})
+            store.activate(data);models=FakeModels()
+            async def decide(state,questions):
+                result=await FakeModels.decide(models,state,questions)
+                result['placement']={'choice':'unknown','probabilities':{'unknown':.99}}
+                result['match_0']={'choice':'extends','probabilities':{'extends':.99}}
+                return result
+            models.decide=decide
+            report=await evaluate(store,FakeEmbeddings(),models,{'title':'Index tradeoffs','body':'Add a write-cost measurement to the existing read-speed explanation','kind':'document'})
+            self.assertEqual(report['placement'],{'resource_id':'document:indexes'})
+
     async def test_incomplete_graph_cannot_establish_novelty(self):
         with tempfile.TemporaryDirectory() as tmp:
             store = Store(Path(tmp) / "db"); store.activate(snapshot())
