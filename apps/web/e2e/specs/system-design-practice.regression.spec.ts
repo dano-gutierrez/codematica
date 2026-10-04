@@ -50,6 +50,10 @@ const cases = [
       "Use an explicit unavailable or upgrade state; no compatible cached layout was established.",
       "Reject the unsupported data contract; an old layout cannot repair incompatible field meaning or types.",
       "The JSON can parse while the meaning breaks: old callers may mistake the first page for the complete result.",
+      "Reject the stale write without overwriting A; checking the tag and committing the update must be one protected transition.",
+      "Reject unsupported fields and sort shapes explicitly, keep tenant authorization independent, and measure the allowed query plans.",
+      "Continue with the returned token and unchanged query context; zero rows alone do not prove the collection ended.",
+      "Treat omitted BASIC fields as unreturned, preserve their types in FULL, and document defaults before clients depend on them.",
     ],
     next: "/docs/system-design/traffic-rate-contracts?path=system-design-fundamentals",
   },
@@ -101,6 +105,10 @@ for (const scenario of cases) {
     await page.getByTestId(`path-node-document-system-design-${scenario.slug}`).click();
     await expect(page.getByRole("heading", { level: 1 })).toHaveText(scenario.title);
     await expect(page.getByTestId("source-references")).toContainText(scenario.source);
+    if (scenario.slug === "client-compatibility-contracts") {
+      for (const heading of ["Review conditional writes before trusting a tag", "Bound filtering, sorting and continuation", "Name the resource view and preserve its meaning"]) await expect(page.getByRole("heading", {name:heading,exact:true})).toBeVisible();
+      for (const source of ["RFC 9110 — If-Match And Request Preconditions", "Google AIP-160 — Filtering", "Google AIP-158 — Pagination", "Google AIP-157 — Partial Responses"]) await expect(page.getByTestId("source-references")).toContainText(source);
+    }
     if (scenario.slug === "fair-admission-and-reservations") {
       await expect(page.getByRole("heading", {name:"Protect room dates with an overlap constraint",exact:true})).toBeVisible();
       await expect(page.getByTestId("source-references")).toContainText("PostgreSQL 17 — Range Types");

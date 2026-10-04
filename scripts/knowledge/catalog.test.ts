@@ -11,6 +11,22 @@ beforeAll(async () => {
 function freshContent() { return structuredClone(validatedIndex); }
 
 describe("complete knowledge catalog", () => {
+  it.each([
+    ["review-conditional-writes-before-trusting-a-tag", ["rfc-http-preconditions", "rfc-6585-status-codes"]],
+    ["bound-filtering-sorting-and-continuation", ["google-aip-160-filtering", "google-aip-158-pagination"]],
+    ["name-the-resource-view-and-preserve-its-meaning", ["google-aip-157-partial-responses"]],
+  ] as const)("exports the %s section without creating a competing curriculum identity", (section, sources) => {
+    const graph = buildKnowledgeCatalog(freshContent());
+    const lesson = "document:system-design/client-compatibility-contracts";
+    const quiz = "exercise:system-design/client-compatibility-checkpoint";
+    expect(graph.resources.find(resource => resource.id === `${lesson}#${section}`)).toMatchObject({ paths: ["path:system-design-fundamentals"], visibility: "curriculum", status: "published" });
+    for (const source of sources) {
+      expect(graph.resources.find(resource => resource.id === `source:${source}`)).toMatchObject({visibility:"curriculum",status:"published"});
+      for (const resource of [lesson, quiz]) expect(graph.relationships).toContainEqual(expect.objectContaining({source:resource,target:`source:${source}`,type:"cites",provenance:"explicit"}));
+    }
+    expect(graph.unresolved.some(resource => [lesson,quiz].includes(resource.resourceId))).toBe(false);
+  });
+
   it.each(["legalzoom-tsindex-navigation", "codebase-memory-v011-contracts"])("exports %s as cited bounded-retrieval evidence", (source) => {
     const graph = buildKnowledgeCatalog(freshContent());
     const lesson = "document:ai-engineering/evidence-first-agent-handoffs";

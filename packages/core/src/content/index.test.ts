@@ -18,6 +18,29 @@ import {
 
 describe("generated content index", () => {
   it.each([
+    ["rfc-http-preconditions", "IETF", "https://www.rfc-editor.org/rfc/rfc9110.html#section-13.1.1"],
+    ["google-aip-157-partial-responses", "Google", "https://google.aip.dev/157"],
+    ["google-aip-158-pagination", "Google", "https://google.aip.dev/158"],
+    ["google-aip-160-filtering", "Google", "https://google.aip.dev/160"],
+  ])("preserves the primary API contract and license scope for %s", (id, provider, url) => {
+    const source = getContentIndex().sources.find(source => source.id === id)!;
+    expect(source).toMatchObject({ provider, url, lastVerifiedAt: "2026-10-04" });
+    expect(source.license).toEqual(provider === "Google" ? { name: "Creative Commons Attribution 4.0 (text)", url: "https://creativecommons.org/licenses/by/4.0/" } : undefined);
+    expect(getDocumentBySlug("system-design/client-compatibility-contracts")?.markdown).toContain(`](${url})`);
+  });
+
+  it("keeps conditional-write, query and projection evidence in the existing client lesson", () => {
+    const lesson = getDocumentBySlug("system-design/client-compatibility-contracts")!;
+    expect(lesson?.headings.map(heading => heading.id)).toEqual(expect.arrayContaining([
+      "review-conditional-writes-before-trusting-a-tag",
+      "bound-filtering-sorting-and-continuation",
+      "name-the-resource-view-and-preserve-its-meaning",
+    ]));
+    for (const evidence of ["comparison and mutation must share one protected transition", "page tokens do not authorize access", "absence in BASIC is not deletion", "Normal request checks precede preconditions", "The RFC permits success if the change already happened"]) expect(lesson?.markdown).toContain(evidence);
+    for (const match of lesson.markdown.matchAll(/\]\(\/docs\/([^)?#]+)(?:[?#][^)]*)?\)/g)) expect(getDocumentBySlug(match[1]), `Missing local destination ${match[1]}`).toBeDefined();
+  });
+
+  it.each([
     ["legalzoom-tsindex-navigation", "legalzoom/tsindex", "main", "daf6a3d560742f01e932e95d91aa1eebc8e2563b", "https://github.com/legalzoom/tsindex/blob/daf6a3d560742f01e932e95d91aa1eebc8e2563b/README.md", "MIT OR Apache-2.0", "https://github.com/legalzoom/tsindex/blob/daf6a3d560742f01e932e95d91aa1eebc8e2563b/LICENSE"],
     ["codebase-memory-v011-contracts", "DeusData/codebase-memory-mcp", "v0.11.0", "8972ea69c6ad94b1ef1d4ffbf0a92d78d2db1798", "https://github.com/DeusData/codebase-memory-mcp/releases/tag/v0.11.0", "MIT", "https://github.com/DeusData/codebase-memory-mcp/blob/8972ea69c6ad94b1ef1d4ffbf0a92d78d2db1798/LICENSE"],
   ])("pins navigation evidence identity and license for %s", (id, repository, ref, commit, url, license, licenseUrl) => {
@@ -74,7 +97,7 @@ describe("generated content index", () => {
   it("connects client compatibility evidence to an original bounded checkpoint", () => {
     const lesson = getDocumentBySlug("system-design/client-compatibility-contracts")!;
     expect(lesson?.headings.map(h => h.id)).toEqual(expect.arrayContaining(["separate-the-reading-from-the-experiment", "choose-a-layout-with-an-explicit-data-contract", "check-api-meaning-as-well-as-shape"]));
-    const sources = ["duolingo-server-driven-ui", "google-aip-180-compatibility"];
+    const sources = ["duolingo-server-driven-ui", "google-aip-180-compatibility", "rfc-http-preconditions", "rfc-6585-status-codes", "google-aip-160-filtering", "google-aip-158-pagination", "google-aip-157-partial-responses"];
     expect(lesson?.sourceRefs).toEqual(sources);
     const report = getContentIndex().sources.find(s => s.id === sources[0])!;
     expect(report).toMatchObject({provider:"Duolingo Engineering",url:"https://blog.duolingo.com/server-driven-ui/"});
@@ -84,12 +107,16 @@ describe("generated content index", () => {
     if (quiz?.type !== "questionnaire") throw new Error("Client compatibility must have a questionnaire");
     expect(quiz.documentSlug).toBe(lesson.slug);
     expect(quiz.sourceRefs).toEqual(sources);
-    expect(quiz.questions.map(q => q.id)).toEqual(["cached-layout", "cold-start", "data-contract", "pagination-meaning"]);
+    expect(quiz.questions.map(q => q.id)).toEqual(["cached-layout", "cold-start", "data-contract", "pagination-meaning", "conditional-write", "bounded-query", "continuation-evidence", "resource-view"]);
     expect(quiz.questions.map(q => q.kind === "choice" ? q.options.find(o => o.isCorrect)?.label : "wrong kind")).toEqual([
       "Reuse a compatible cached layout with supported fresh data; a version number alone does not prove component support.",
       "Use an explicit unavailable or upgrade state; no compatible cached layout was established.",
       "Reject the unsupported data contract; an old layout cannot repair incompatible field meaning or types.",
       "The JSON can parse while the meaning breaks: old callers may mistake the first page for the complete result.",
+      "Reject the stale write without overwriting A; checking the tag and committing the update must be one protected transition.",
+      "Reject unsupported fields and sort shapes explicitly, keep tenant authorization independent, and measure the allowed query plans.",
+      "Continue with the returned token and unchanged query context; zero rows alone do not prove the collection ended.",
+      "Treat omitted BASIC fields as unreturned, preserve their types in FULL, and document defaults before clients depend on them.",
     ]);
     const path = getLearningPathBySlug("system-design-fundamentals")!;
     expect(path.units.map(u => u.slug)).toEqual(["caching-contracts", "capacity-decisions", "routing-decisions", "api-security-boundaries", "client-compatibility", "traffic-rate", "webhook-authenticity", "reservation-boundaries"]);

@@ -7,7 +7,7 @@
   "difficulty": "practitioner",
   "tags": ["api", "compatibility", "server-driven-ui"],
   "status": "published",
-  "sourceRefs": ["duolingo-server-driven-ui", "google-aip-180-compatibility"],
+  "sourceRefs": ["duolingo-server-driven-ui", "google-aip-180-compatibility", "rfc-http-preconditions", "rfc-6585-status-codes", "google-aip-160-filtering", "google-aip-158-pagination", "google-aip-157-partial-responses"],
   "questions": [
     {
       "id": "cached-layout",
@@ -52,6 +52,50 @@
         {"id":"option-2","label":"Smaller responses prove source, wire and semantic compatibility on every platform.","isCorrect":false}
       ],
       "explanation": "A parser accepting the response is only one check. Existing callers may rely on the old complete-result behavior; define a compatible migration and verify actual old-client consumption before changing defaults."
+    },
+    {
+      "id": "conditional-write",
+      "kind": "choice",
+      "prompt": "A and B read strong tag r7. A commits r8; B sends different content with If-Match r7. Under the lesson's strict stale-write policy, what must happen?",
+      "options": [
+        {"id":"option-0","label":"Reject the stale write without overwriting A; checking the tag and committing the update must be one protected transition.","isCorrect":true},
+        {"id":"option-1","label":"Accept B after checking the tag in an earlier request; the gap before saving cannot matter.","isCorrect":false},
+        {"id":"option-2","label":"A weak r8 tag proves the same permission and can replace the strong comparison.","isCorrect":false}
+      ],
+      "explanation": "This application chooses 412 for stale tags. RFC 9110 requires strong If-Match comparison and permits a separately evidenced already-applied success exception; B's different write does not qualify. Authorization and an atomic storage/version guard still need real implementation and tests."
+    },
+    {
+      "id": "bounded-query",
+      "kind": "choice",
+      "prompt": "The work-order endpoint allows typed status/time filters and two sort shapes. A caller submits an unknown field and arbitrary sort text. What evidence supports a safe query contract?",
+      "options": [
+        {"id":"option-0","label":"Reject unsupported fields and sort shapes explicitly, keep tenant authorization independent, and measure the allowed query plans.","isCorrect":true},
+        {"id":"option-1","label":"Ignore the unknown predicate and return success; a smaller query always answers the same question.","isCorrect":false},
+        {"id":"option-2","label":"A 50-row response cap proves the database scans no more than 50 rows and needs no cost measurements.","isCorrect":false}
+      ],
+      "explanation": "A documented subset can bound supported structure, but silent predicate removal changes meaning. Typed validation, trusted query structure, bound values and separate authorization are distinct checks. Page size alone cannot establish scan, sort or write cost."
+    },
+    {
+      "id": "continuation-evidence",
+      "kind": "choice",
+      "prompt": "An AIP-158-style list returns zero rows with a nonempty next_page_token. The caller still wants all matching work orders. What should it conclude?",
+      "options": [
+        {"id":"option-0","label":"Continue with the returned token and unchanged query context; zero rows alone do not prove the collection ended.","isCorrect":true},
+        {"id":"option-1","label":"Stop permanently because a zero-row page proves the complete collection is empty.","isCorrect":false},
+        {"id":"option-2","label":"Reuse the token for a different tenant and filter because the token grants access independently.","isCorrect":false}
+      ],
+      "explanation": "Completion depends on the terminal token state under this contract. Other query arguments stay consistent; page size may change. Every continuation request still needs authorization, token validation and the service's live-versus-snapshot traversal policy."
+    },
+    {
+      "id": "resource-view",
+      "kind": "choice",
+      "prompt": "BASIC work orders omit description; FULL includes it. A client wants to save a BASIC response as a full replacement. What contract must the review preserve?",
+      "options": [
+        {"id":"option-0","label":"Treat omitted BASIC fields as unreturned, preserve their types in FULL, and document defaults before clients depend on them.","isCorrect":true},
+        {"id":"option-1","label":"An omitted description proves the server deleted it; use the partial response as a full replacement.","isCorrect":false},
+        {"id":"option-2","label":"Every endpoint must include identical fields, so named projections and authorization checks are unnecessary.","isCorrect":false}
+      ],
+      "explanation": "A partial read is not automatically an update payload. Distinguish omitted, null and explicitly cleared fields in the write contract. Document view defaults, preserve shared-field meaning and enforce field access; neither a view nor its ETag grants authority."
     }
   ]
 }
