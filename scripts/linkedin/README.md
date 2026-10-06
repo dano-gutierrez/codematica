@@ -11,3 +11,5 @@ The local smoke also creates a manual post through the authenticated RPC, verifi
 `npm run typecheck:linkedin` checks the CLI, inference adapters and their fixtures; it is included in the root typecheck gate. Python lifecycle safety checks use `python3 -m unittest discover -s scripts/linkedin -p test_models.py`.
 
 Model POST requests share a POSIX inference lock at `~/.local/share/codematica/inference.lock` with the knowledge service. The stdlib Python helper releases the lock on completion, failure, or parent exit; readiness probes do not wait for inference. Set `CODEMATICA_INFERENCE_LOCK` to an absolute path only when both services use the same override. Models still start only through the manual lifecycle command.
+
+After preparation rollout, `enable-knowledge --all-review` backs up and persistently enrolls unapproved drafts against an active synchronized graph. Preparation supplies matches, placement and warnings to both local models and Codex; verification must acknowledge `knowledge_hash`. Suggested imports begin preparation when refinement is requested. See the [knowledge runbook](../../docs/runbooks/knowledge-evaluator.md).

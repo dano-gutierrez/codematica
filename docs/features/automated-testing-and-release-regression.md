@@ -3,7 +3,7 @@
 ## Snapshot
 
 - Status: `shipped`
-- Last updated: `2026-08-05`
+- Last updated: `2026-10-03`
 - Owner thread: `n/a`
 - Current state: Codematica has enforced Vitest and Jest coverage, transactional pgTAP checks, multi-project Playwright suites, Maestro native flows, fast PR gates, nightly regression, and `v*` release-candidate workflows.
 - Target outcome: Every shipped feature has a reliable test at the lowest useful layer, critical journeys are exercised on browser and installed native targets, and a release cannot be promoted without reproducible evidence.
@@ -91,6 +91,7 @@ Configure branch protection in the account: after the five PR jobs have complete
 - `desktop-chromium`: smoke journeys, `@playground` and `@notebook-catalog` regressions.
 - `mobile-webkit`: smoke journeys, `@playground` and `@notebook-catalog` regressions. Catalog coverage protects Safari's ruby annotation layout when romaji is hidden.
 - Playground regressions exercise a real hosted runtime and a controlled connection failure, including automatic startup, edit/run/reset, and recovery with drafts intact.
+- Editor fixtures select all using CodeMirror's emulated platform, then assert complete replacement before execution; iPhone WebKit uses Meta on Linux runners. Eight primary-route accessibility audits run independently with unchanged serious/critical checks and default per-test budgets.
 - Trace, screenshot, and video are retained only for failures. HTML/JUnit reports and failure evidence are uploaded by CI.
 
 ### Native Matrix
@@ -121,6 +122,7 @@ flowchart LR
 - Tests that compile complete authored TypeScript projects have a 30-second timeout to accommodate instrumented CI runs. Other tests retain Vitest's default timeout; coverage thresholds and exclusions are unchanged.
 - A failed database run must leave production untouched; CI stops and discards the local stack.
 - Playwright and Maestro failures retain reports and visual evidence rather than relying on a rerun to diagnose the regression.
+- GitHub release artifact names use the commit SHA and run attempt; slash-containing branch dispatches remain valid and reruns retain previous evidence.
 - If EAS validation cannot authenticate, validate YAML locally, keep the workflow unexecuted, and report the missing account-side verification explicitly.
 - A flaky test is fixed or quarantined with a documented owner and reason; it is not silently retagged or removed from the release lane.
 

@@ -66,6 +66,11 @@ jobs:
           python-version: "3.13"
       - run: python -m unittest discover -s scripts/linkedin -p 'test_models.py' -v
       - run: npm run test:interview:python
+      - name: Test knowledge contracts with inert inference
+        run: |
+          python -m venv .local/knowledge/python
+          .local/knowledge/python/bin/pip install --no-deps --requirement services/knowledge/requirements.test.lock
+          npm run test:knowledge:python
       - run: npm run test:coverage
         env:
           CI: true
@@ -138,6 +143,9 @@ jobs:
       - run: npm ci
       - run: npx playwright install --with-deps chromium webkit
       - run: npm run e2e:web:smoke
+        env:
+          CI: true
+      - run: npm run e2e:knowledge
         env:
           CI: true
       - run: npm run e2e:linkedin

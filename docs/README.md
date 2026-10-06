@@ -121,4 +121,8 @@ Native notebook validation now includes agent-device layout/contact runners in `
 
 The game [miniature sheet](../assets/game/previews/miniatures-v3.png) shows the full-body figures used in each level and their actual phone/wide rendering.
 
+- [Knowledge evaluator](features/knowledge-evaluator.md): local Graphiti/Qwen/OpenJev content inventory and decisions, admin graph/table exploration, offline jobs and graph-bound editorial review. [Runbook](runbooks/knowledge-evaluator.md).
+
+- [Private interview preparation](features/interview-preparation.md): company/role tracker, mandatory technical editing and private knowledge reuse. [Operations](runbooks/interview-preparation.md).
+
 The [continuous map art review](../assets/game/previews/continuous-map/review.md) records the create/review/fix/review cycle, fifty-position landscape, three parallax depths, and visual evidence. Exact source prompts and seam export rules live in the asset guide.

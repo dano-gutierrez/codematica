@@ -1,4 +1,5 @@
 import { expect, test, type Locator } from "@playwright/test";
+import { replaceAppCode } from "../code-editor";
 
 async function expectDarkReadableText(roots: Locator) {
   const results = await roots.evaluateAll((elements) => elements.map((element) => {
@@ -100,9 +101,7 @@ test("@regression keeps playground syntax readable on its dark editor surface", 
   await page.route(/https:\/\/[^/]*sandpack\.codesandbox\.io\//, (route) => route.abort());
   await page.goto("/interviews/frontend-practice/dynamic-board");
   await page.getByRole("button", { name: "Show full solution", exact: true }).click();
-  const editor = page.getByRole("textbox", { name: "Code Editor for App.tsx", exact: true }).last();
-  await editor.press("ControlOrMeta+A");
-  await page.keyboard.insertText('// Check comments and literals too.\nexport default function App() {\n  const count = 123;\n  return <button disabled={false} title="Example">{count}</button>;\n}');
+  const editor = await replaceAppCode(page, '// Check comments and literals too.\nexport default function App() {\n  const count = 123;\n  return <button disabled={false} title="Example">{count}</button>;\n}');
   await expect(editor).toContainText("Check comments");
   await expectDarkReadableText(editor);
 });

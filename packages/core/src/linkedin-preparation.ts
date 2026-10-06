@@ -3,6 +3,7 @@ import { analysisSchema, verificationSchema, type LinkedInPreparation, type Link
 export function applyVerification(report: LinkedInPreparation, input: unknown) {
   const result = verificationSchema.parse(input);
   if (result.preparation_id !== report.id || result.candidate_hash !== report.candidate_hash || !report.analysis) throw new Error("Verification does not match the prepared candidate");
+  if (report.knowledge_hash && result.knowledge_hash !== report.knowledge_hash) throw new Error("Verification does not match the knowledge evidence");
   if (result.verdict === "needs_input") return null;
   const merged = analysisSchema.parse({ ...report.analysis, ...result.patch });
   return { ...merged, verificationNotes: [...new Set([...merged.verificationNotes, ...result.notes])], toolsUsed: [...new Set([...report.analysis.toolsUsed, ...result.toolsUsed])] };
