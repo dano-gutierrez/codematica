@@ -1,0 +1,155 @@
+{
+  "slug": "programming/java-state-and-proxy-contracts-checkpoint",
+  "title": "Java State And Proxy Contracts Checkpoint",
+  "type": "questionnaire",
+  "difficulty": "practitioner",
+  "status": "published",
+  "documentSlug": "programming/java-state-and-proxy-contracts",
+  "sourceRefs": [
+    "evidence-java23-map",
+    "evidence-jls23-memory",
+    "evidence-jls23-records",
+    "evidence-java23-threadlocal",
+    "evidence-spring-transactions"
+  ],
+  "concept": "Java State And Proxy Contracts",
+  "tags": [
+    "evidence-review",
+    "contracts"
+  ],
+  "skillIds": [
+    "java-contracts"
+  ],
+  "questions": [
+    {
+      "id": "ownership",
+      "kind": "choice",
+      "skillIds": [
+        "java-contracts"
+      ],
+      "prompt": "A key\u2019s equality fields mutate and a record wraps a shared mutable list. Which assumption is valid?",
+      "options": [
+        {
+          "id": "correct",
+          "label": "Require stable key equality and review the record\u2019s nested ownership separately.",
+          "isCorrect": true
+        },
+        {
+          "id": "wrong-1",
+          "label": "Record fields make the entire list deeply immutable.",
+          "isCorrect": false
+        },
+        {
+          "id": "wrong-2",
+          "label": "A key can change equality safely because the same object remains.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "Stable equality is a map-key obligation. A final record field prevents replacing that field, not mutation of a referenced list; object identity alone does not repair changed key equality."
+    },
+    {
+      "id": "increment",
+      "kind": "choice",
+      "skillIds": [
+        "java-contracts"
+      ],
+      "prompt": "Two workers read volatile count 4 before either writes its increment. What outcome is possible?",
+      "options": [
+        {
+          "id": "wrong-1",
+          "label": "The final count must be 6.",
+          "isCorrect": false
+        },
+        {
+          "id": "wrong-2",
+          "label": "Volatile makes every multi-field transition one operation.",
+          "isCorrect": false
+        },
+        {
+          "id": "correct",
+          "label": "Both write 5; volatile does not make the increment atomic.",
+          "isCorrect": true
+        }
+      ],
+      "explanation": "Each increment includes a read, computation and write. Volatile ordering does not combine those steps, so the supplied interleaving can lose an increment without establishing a safe transition."
+    },
+    {
+      "id": "thread",
+      "kind": "choice",
+      "skillIds": [
+        "java-contracts"
+      ],
+      "prompt": "A pooled thread handles two users through the same ThreadLocal. What cleanup is needed?",
+      "options": [
+        {
+          "id": "wrong-2",
+          "label": "Removing on another unrelated thread clears every copy.",
+          "isCorrect": false
+        },
+        {
+          "id": "correct",
+          "label": "Remove request context on the owning thread, including exceptional exits.",
+          "isCorrect": true
+        },
+        {
+          "id": "wrong-1",
+          "label": "The pool creates a new thread for every request.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "ThreadLocal holds per-thread state. Reused workers can carry earlier request context, and remove affects the current thread\u2019s copy; cleanup must cover the owning request\u2019s exit paths."
+    },
+    {
+      "id": "proxy",
+      "kind": "choice",
+      "skillIds": [
+        "java-contracts"
+      ],
+      "prompt": "A service invokes its own annotated method under default proxy-based transactions. What must be checked?",
+      "options": [
+        {
+          "id": "correct",
+          "label": "Self-invocation bypasses that proxy advice; inspect the actual intercepted entry.",
+          "isCorrect": true
+        },
+        {
+          "id": "wrong-1",
+          "label": "The annotation guarantees a new transaction on every internal call.",
+          "isCorrect": false
+        },
+        {
+          "id": "wrong-2",
+          "label": "All annotations are ignored even on external proxy calls.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "Default proxy advice operates at intercepted external entry. Self-invocation takes a different route; neither universal advice nor universal annotation failure describes both call paths."
+    },
+    {
+      "id": "rollback",
+      "kind": "choice",
+      "skillIds": [
+        "java-contracts"
+      ],
+      "prompt": "A checked exception escapes a transaction with default rules and no overrides. What is the default?",
+      "options": [
+        {
+          "id": "wrong-1",
+          "label": "Every exception always rolls back.",
+          "isCorrect": false
+        },
+        {
+          "id": "wrong-2",
+          "label": "No exception can ever roll back.",
+          "isCorrect": false
+        },
+        {
+          "id": "correct",
+          "label": "Checked exceptions do not trigger rollback by default; explicit or global rules can change this.",
+          "isCorrect": true
+        }
+      ],
+      "explanation": "The documented defaults cover RuntimeException and Error. Checked exceptions need their applicable rule; global ALL_EXCEPTIONS and method-specific configuration must be inspected separately."
+    }
+  ]
+}

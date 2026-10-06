@@ -1,0 +1,189 @@
+{
+  "slug": "creative-computing-review",
+  "title": "Creative Computing Review",
+  "summary": "Selected original review cases with primary-source scope and fictional assumptions; this path is not a comprehensive syllabus or a certification.",
+  "kind": "skill",
+  "category": "Creative Computing",
+  "audience": "Learners who want to check concise technical or business claims through explicit boundaries and evidence.",
+  "status": "published",
+  "sourcePolicy": "required",
+  "sourceRefs": [
+    "evidence-unity-anticipation",
+    "evidence-blender-scene-time",
+    "evidence-blender-position",
+    "evidence-unreal-triggers",
+    "evidence-unreal-overlap"
+  ],
+  "units": [
+    {
+      "slug": "authoritative-motion-and-prediction",
+      "title": "Authoritative Motion And Prediction",
+      "summary": "Review authoritative motion and prediction using explicit assumptions, source scope and original counterexamples.",
+      "nodes": [
+        {
+          "kind": "document",
+          "slug": "creative-computing/authoritative-motion-and-prediction",
+          "skillIds": [
+            "motion-authority"
+          ],
+          "required": true
+        },
+        {
+          "kind": "exercise",
+          "slug": "creative-computing/authoritative-motion-and-prediction-checkpoint",
+          "skillIds": [
+            "motion-authority"
+          ],
+          "required": true
+        }
+      ]
+    },
+    {
+      "slug": "sampled-surfaces-and-time",
+      "title": "Sampled Surfaces And Time",
+      "summary": "Review sampled surfaces and time using explicit assumptions, source scope and original counterexamples.",
+      "nodes": [
+        {
+          "kind": "document",
+          "slug": "creative-computing/sampled-surfaces-and-time",
+          "skillIds": [
+            "sampled-geometry"
+          ],
+          "required": true
+        },
+        {
+          "kind": "exercise",
+          "slug": "creative-computing/sampled-surfaces-and-time-checkpoint",
+          "skillIds": [
+            "sampled-geometry"
+          ],
+          "required": true
+        }
+      ]
+    },
+    {
+      "slug": "blockout-and-trigger-state",
+      "title": "Blockout And Trigger State",
+      "summary": "Review blockout and trigger state using explicit assumptions, source scope and original counterexamples.",
+      "nodes": [
+        {
+          "kind": "document",
+          "slug": "creative-computing/blockout-and-trigger-state",
+          "skillIds": [
+            "trigger-state"
+          ],
+          "required": true
+        },
+        {
+          "kind": "exercise",
+          "slug": "creative-computing/blockout-and-trigger-state-checkpoint",
+          "skillIds": [
+            "trigger-state"
+          ],
+          "required": true
+        }
+      ]
+    }
+  ],
+  "progression": {
+    "framework": "career",
+    "roadmapLabel": "Selected Evidence And Contracts",
+    "skills": [
+      {
+        "id": "motion-authority",
+        "label": "Authoritative Motion And Prediction",
+        "category": "evidence-review",
+        "description": "Review authoritative motion and prediction using explicit assumptions, source scope and original counterexamples."
+      },
+      {
+        "id": "sampled-geometry",
+        "label": "Sampled Surfaces And Time",
+        "category": "evidence-review",
+        "description": "Review sampled surfaces and time using explicit assumptions, source scope and original counterexamples."
+      },
+      {
+        "id": "trigger-state",
+        "label": "Blockout And Trigger State",
+        "category": "evidence-review",
+        "description": "Review blockout and trigger state using explicit assumptions, source scope and original counterexamples."
+      }
+    ],
+    "stages": [
+      {
+        "id": "motion-authority",
+        "label": "Authoritative Motion And Prediction",
+        "level": "Practitioner",
+        "status": "published",
+        "summary": "Review authoritative motion and prediction using explicit assumptions, source scope and original counterexamples.",
+        "unitSlugs": [
+          "authoritative-motion-and-prediction"
+        ],
+        "outcomes": [
+          {
+            "id": "motion-authority-review",
+            "statement": "Review authoritative motion and prediction using explicit assumptions, source scope and original counterexamples.",
+            "skillId": "motion-authority"
+          }
+        ],
+        "requiredNodeSlugs": [
+          "creative-computing/authoritative-motion-and-prediction",
+          "creative-computing/authoritative-motion-and-prediction-checkpoint"
+        ],
+        "checkpointExerciseSlug": "creative-computing/authoritative-motion-and-prediction-checkpoint",
+        "passThreshold": 0.8,
+        "minimumSkillScore": 0.8,
+        "estimatedMinutes": 20
+      },
+      {
+        "id": "sampled-geometry",
+        "label": "Sampled Surfaces And Time",
+        "level": "Practitioner",
+        "status": "published",
+        "summary": "Review sampled surfaces and time using explicit assumptions, source scope and original counterexamples.",
+        "unitSlugs": [
+          "sampled-surfaces-and-time"
+        ],
+        "outcomes": [
+          {
+            "id": "sampled-geometry-review",
+            "statement": "Review sampled surfaces and time using explicit assumptions, source scope and original counterexamples.",
+            "skillId": "sampled-geometry"
+          }
+        ],
+        "requiredNodeSlugs": [
+          "creative-computing/sampled-surfaces-and-time",
+          "creative-computing/sampled-surfaces-and-time-checkpoint"
+        ],
+        "checkpointExerciseSlug": "creative-computing/sampled-surfaces-and-time-checkpoint",
+        "passThreshold": 0.8,
+        "minimumSkillScore": 0.8,
+        "estimatedMinutes": 20
+      },
+      {
+        "id": "trigger-state",
+        "label": "Blockout And Trigger State",
+        "level": "Practitioner",
+        "status": "published",
+        "summary": "Review blockout and trigger state using explicit assumptions, source scope and original counterexamples.",
+        "unitSlugs": [
+          "blockout-and-trigger-state"
+        ],
+        "outcomes": [
+          {
+            "id": "trigger-state-review",
+            "statement": "Review blockout and trigger state using explicit assumptions, source scope and original counterexamples.",
+            "skillId": "trigger-state"
+          }
+        ],
+        "requiredNodeSlugs": [
+          "creative-computing/blockout-and-trigger-state",
+          "creative-computing/blockout-and-trigger-state-checkpoint"
+        ],
+        "checkpointExerciseSlug": "creative-computing/blockout-and-trigger-state-checkpoint",
+        "passThreshold": 0.8,
+        "minimumSkillScore": 0.8,
+        "estimatedMinutes": 20
+      }
+    ]
+  }
+}

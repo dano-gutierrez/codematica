@@ -62,6 +62,47 @@ describe("complete knowledge catalog", () => {
     expect(unowned.relationships.some(e => e.source === prep.id && e.target === foreignSkill.id)).toBe(false);
   });
 
+  it("exports selected evidence with canonical identities and path-scoped skills", () => {
+    const graph = buildKnowledgeCatalog(freshContent());
+    const groups = {
+      "engineering-evidence-review": [
+        ["ai-engineering/local-decision-contracts", "decision-evidence"],
+        ["software-engineering/credential-containment", "incident-evidence"],
+        ["programming/java-state-and-proxy-contracts", "java-contracts"],
+        ["software-engineering/domain-and-deployment-boundaries", "domain-boundaries"],
+        ["system-design/cloud-responsibility-and-runtime", "cloud-responsibility"],
+        ["system-design/federation-and-delegation", "identity-boundaries"],
+        ["system-design/card-payment-state-evidence", "payment-evidence"],
+      ],
+      "creative-computing-review": [
+        ["creative-computing/authoritative-motion-and-prediction", "motion-authority"],
+        ["creative-computing/sampled-surfaces-and-time", "sampled-geometry"],
+        ["creative-computing/blockout-and-trigger-state", "trigger-state"],
+      ],
+      "ownership-and-funding-review": [["business/ownership-and-funding-models", "ownership-model"]],
+    };
+    for (const [slug, pairs] of Object.entries(groups)) {
+      const path = `path:${slug}`;
+      expect(graph.resources.filter(r => r.kind === "skill" && r.paths.includes(path))).toHaveLength(pairs.length);
+      for (const [order, [document, name]] of pairs.entries()) {
+        const unit = `unit:${slug}:${document.split("/").at(-1)}`;
+        const skill = `skill:${slug}:${name}`;
+        const doc = `document:${document}`;
+        const quiz = `exercise:${document}-checkpoint`;
+        for (const id of [unit, skill, doc, quiz]) expect(graph.resources.find(r => r.id === id)).toMatchObject({ visibility: "curriculum", status: "published", paths: [path] });
+        expect(graph.relationships).toContainEqual(expect.objectContaining({ source: path, target: unit, type: "contains", order, provenance: "explicit" }));
+        for (const [position, target] of [doc, quiz].entries()) expect(graph.relationships).toContainEqual(expect.objectContaining({ source: unit, target, type: "contains", order: position, provenance: "explicit" }));
+        expect(graph.relationships).toContainEqual(expect.objectContaining({ source: doc, target: skill, type: "teaches", provenance: "explicit" }));
+        expect(graph.relationships).toContainEqual(expect.objectContaining({ source: quiz, target: skill, type: "assesses", provenance: "explicit" }));
+        expect(graph.unresolved.some(r => [unit, skill, doc, quiz].includes(r.resourceId))).toBe(false);
+        expect(graph.resources.some(r => r.id === `skill:${name}`)).toBe(false);
+        if (order) expect(graph.relationships).toContainEqual(expect.objectContaining({ source: `unit:${slug}:${pairs[order - 1][0].split("/").at(-1)}`, target: unit, type: "next", provenance: "explicit" }));
+      }
+    }
+    const sources = graph.resources.filter(r => r.kind === "source" && r.sourcePath === "content/sources/selected-evidence-review.json");
+    expect(sources).toHaveLength(27);
+    for (const source of sources) expect(graph.relationships.some(r => r.type === "cites" && r.target === source.id && r.provenance === "explicit")).toBe(true);
+  });
   it("exports six systems skills with source-bound order and prerequisite evidence", () => {
     const graph = buildKnowledgeCatalog(freshContent());
     const path = "path:systems-boundary-review";

@@ -1,0 +1,77 @@
+{
+  "slug": "ownership-and-funding-review",
+  "title": "Ownership And Funding Review",
+  "summary": "Selected original review cases with primary-source scope and fictional assumptions; this path is not a comprehensive syllabus or a certification.",
+  "kind": "skill",
+  "category": "Business",
+  "audience": "Learners who want to check concise technical or business claims through explicit boundaries and evidence.",
+  "status": "published",
+  "sourcePolicy": "required",
+  "sourceRefs": [
+    "evidence-yc-safe"
+  ],
+  "units": [
+    {
+      "slug": "ownership-and-funding-models",
+      "title": "Ownership And Funding Models",
+      "summary": "Review ownership and funding models using explicit assumptions, source scope and original counterexamples.",
+      "nodes": [
+        {
+          "kind": "document",
+          "slug": "business/ownership-and-funding-models",
+          "skillIds": [
+            "ownership-model"
+          ],
+          "required": true
+        },
+        {
+          "kind": "exercise",
+          "slug": "business/ownership-and-funding-models-checkpoint",
+          "skillIds": [
+            "ownership-model"
+          ],
+          "required": true
+        }
+      ]
+    }
+  ],
+  "progression": {
+    "framework": "career",
+    "roadmapLabel": "Selected Evidence And Contracts",
+    "skills": [
+      {
+        "id": "ownership-model",
+        "label": "Ownership And Funding Models",
+        "category": "evidence-review",
+        "description": "Review ownership and funding models using explicit assumptions, source scope and original counterexamples."
+      }
+    ],
+    "stages": [
+      {
+        "id": "ownership-model",
+        "label": "Ownership And Funding Models",
+        "level": "Practitioner",
+        "status": "published",
+        "summary": "Review ownership and funding models using explicit assumptions, source scope and original counterexamples.",
+        "unitSlugs": [
+          "ownership-and-funding-models"
+        ],
+        "outcomes": [
+          {
+            "id": "ownership-model-review",
+            "statement": "Review ownership and funding models using explicit assumptions, source scope and original counterexamples.",
+            "skillId": "ownership-model"
+          }
+        ],
+        "requiredNodeSlugs": [
+          "business/ownership-and-funding-models",
+          "business/ownership-and-funding-models-checkpoint"
+        ],
+        "checkpointExerciseSlug": "business/ownership-and-funding-models-checkpoint",
+        "passThreshold": 0.8,
+        "minimumSkillScore": 0.8,
+        "estimatedMinutes": 20
+      }
+    ]
+  }
+}
