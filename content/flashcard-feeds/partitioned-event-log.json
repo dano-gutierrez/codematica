@@ -1,0 +1,262 @@
+{
+  "slug": "partitioned-event-log",
+  "pathSlug": "partitioned-event-log",
+  "title": "Event Log Interview Review",
+  "summary": "Fourteen scrolling cards revisit offset semantics, cursor ownership, concurrency, memory and node movement.",
+  "audience": "Engineers reviewing the event-log interview after implementing a solution.",
+  "status": "published",
+  "cards": [
+    {
+      "id": "event-log-review-1",
+      "type": "concept",
+      "title": "Global IDs and local positions",
+      "prompt": "A key has IDs [0, 2, 9]. What should an inclusive read from global offset 1 return?",
+      "explanation": "[2, 9] The offset is compared with event.id. ID 2 is the first ID at least 1. Treating the offset as a count of matching events or filtering on local index loses the first qualifying event; including ID 0 violates the inclusive lower bound.",
+      "difficulty": "senior",
+      "tags": [
+        "interview",
+        "event-log",
+        "typescript",
+        "python",
+        "binary-search",
+        "cursors",
+        "partitioning"
+      ],
+      "sourceDocSlug": "system-design/partitioned-event-log"
+    },
+    {
+      "id": "event-log-review-2",
+      "type": "concept",
+      "title": "Seek once, then walk",
+      "prompt": "A sorted key log has m events. How can a page of r events avoid scanning its old prefix?",
+      "explanation": "Lower-bound by global ID, then advance at most r positions. Binary search costs O(log m); the forward page walk costs O(r). filter still examines every entry. A global offset is not a per-key array position; even a valid position with an unbounded slice copies the entire suffix.",
+      "difficulty": "senior",
+      "tags": [
+        "interview",
+        "event-log",
+        "typescript",
+        "python",
+        "binary-search",
+        "cursors",
+        "partitioning"
+      ],
+      "sourceDocSlug": "system-design/partitioned-event-log"
+    },
+    {
+      "id": "event-log-review-3",
+      "type": "concept",
+      "title": "Who owns currentIndex?",
+      "prompt": "Two consumers read the same key at different speeds. Where should their read positions live?",
+      "explanation": "In separate cursor objects or records keyed by consumer identity and key. Each consumer needs an independent next offset. One shared key cursor lets one reader advance another. The writer counter allocates new global IDs and cannot describe which events either consumer processed.",
+      "difficulty": "senior",
+      "tags": [
+        "interview",
+        "event-log",
+        "typescript",
+        "python",
+        "binary-search",
+        "cursors",
+        "partitioning"
+      ],
+      "sourceDocSlug": "system-design/partitioned-event-log"
+    },
+    {
+      "id": "event-log-review-4",
+      "type": "concept",
+      "title": "Sparse anchors",
+      "prompt": "What does adding a next pointer to every key event guarantee?",
+      "explanation": "Linear traversal after seeking; arbitrary offsets still need a scan or an index. Links make the next event reachable directly, but a missing ID cannot be looked up by position. Sparse anchors bound the seek walk. Link objects and pointer chasing can cost more memory and CPU than array references.",
+      "difficulty": "senior",
+      "tags": [
+        "interview",
+        "event-log",
+        "typescript",
+        "python",
+        "binary-search",
+        "cursors",
+        "partitioning"
+      ],
+      "sourceDocSlug": "system-design/partitioned-event-log"
+    },
+    {
+      "id": "event-log-review-5",
+      "type": "concept",
+      "title": "Publication boundary",
+      "prompt": "Why is currentIndex++ alone insufficient across independent writers?",
+      "explanation": "ID allocation, event publication and index updates must be coordinated together. A unique ID does not make its event visible in every index. BigInt is a numeric type, not a lock. A Python multi-step invariant needs explicit coordination; a process-local lock also does not coordinate separate processes.",
+      "difficulty": "senior",
+      "tags": [
+        "interview",
+        "event-log",
+        "typescript",
+        "python",
+        "binary-search",
+        "cursors",
+        "partitioning"
+      ],
+      "sourceDocSlug": "system-design/partitioned-event-log"
+    },
+    {
+      "id": "event-log-review-6",
+      "type": "concept",
+      "title": "Hot key",
+      "prompt": "One user owns almost every event. What can adding nodes achieve without changing same-key ownership?",
+      "explanation": "Move the whole key or place other keys elsewhere; it cannot split that user across nodes. The co-location rule makes the key indivisible. Splitting it requires a new requirement and ordering policy. Event counts also ignore payload sizes, so even equal counts do not prove equal memory usage.",
+      "difficulty": "senior",
+      "tags": [
+        "interview",
+        "event-log",
+        "typescript",
+        "python",
+        "binary-search",
+        "cursors",
+        "partitioning"
+      ],
+      "sourceDocSlug": "system-design/partitioned-event-log"
+    },
+    {
+      "id": "event-log-review-7",
+      "type": "concept",
+      "title": "Retry-safe progress",
+      "prompt": "A cursor reads through ID 9, but processing fails before success is recorded. Which durable checkpoint policy supports replay?",
+      "explanation": "Commit nextOffset=10 only after successful processing; distinguish fetched from acknowledged progress. The teaching cursor tracks fetching only. Durable processing needs an explicit acknowledgment policy; checkpointing before a successful effect can lose work. A process pointer is not a restart-safe token. Replaying after an ambiguous effect also requires idempotency.",
+      "difficulty": "senior",
+      "tags": [
+        "interview",
+        "event-log",
+        "typescript",
+        "python",
+        "binary-search",
+        "cursors",
+        "partitioning"
+      ],
+      "sourceDocSlug": "system-design/partitioned-event-log"
+    },
+    {
+      "id": "event-log-review-8",
+      "type": "concept",
+      "title": "Segment tail boundary",
+      "prompt": "A cursor opens beyond the current tail of a partly filled block. What must it retain?",
+      "explanation": "The last block and end slot, plus the requested global lower bound. The next append may enter the existing partial block. Jumping to the next block skips it. A copied suffix cannot observe later appends. Retain the physical position and reject future entries below the requested offset.",
+      "difficulty": "senior",
+      "tags": [
+        "interview",
+        "event-log",
+        "typescript",
+        "python",
+        "binary-search",
+        "cursors",
+        "partitioning"
+      ],
+      "sourceDocSlug": "system-design/partitioned-event-log"
+    },
+    {
+      "id": "event-log-review-9",
+      "type": "practical",
+      "title": "Array cursor",
+      "prompt": "Where does the array cursor keep position?",
+      "explanation": "A closure stores a per-consumer numeric index after one binary search. IDs remain bigint; the small array position is a different quantity.",
+      "difficulty": "senior",
+      "tags": [
+        "interview",
+        "event-log",
+        "typescript",
+        "python",
+        "binary-search",
+        "cursors",
+        "partitioning"
+      ],
+      "sourceDocSlug": "system-design/partitioned-event-log"
+    },
+    {
+      "id": "event-log-review-10",
+      "type": "practical",
+      "title": "Linked cursor",
+      "prompt": "What happens when a drained linked cursor receives a later append?",
+      "explanation": "The cursor retains the last visited link and follows its newly populated next pointer. A missing head is rechecked when the first event arrives.",
+      "difficulty": "senior",
+      "tags": [
+        "interview",
+        "event-log",
+        "typescript",
+        "python",
+        "binary-search",
+        "cursors",
+        "partitioning"
+      ],
+      "sourceDocSlug": "system-design/partitioned-event-log"
+    },
+    {
+      "id": "event-log-review-11",
+      "type": "practical",
+      "title": "Memory budget",
+      "prompt": "What should a few million events prompt you to estimate?",
+      "explanation": "Total payload bytes plus event objects, per-key/global references, blocks/anchors, node maps and active pages. Three million 200-byte payloads alone use 600 million bytes before runtime overhead.",
+      "difficulty": "senior",
+      "tags": [
+        "interview",
+        "event-log",
+        "typescript",
+        "python",
+        "binary-search",
+        "cursors",
+        "partitioning"
+      ],
+      "sourceDocSlug": "system-design/partitioned-event-log"
+    },
+    {
+      "id": "event-log-review-12",
+      "type": "practical",
+      "title": "Migration cost",
+      "prompt": "Why is moving a simulated bucket cheap?",
+      "explanation": "All nodes share one heap, so ownership transfers a reference. Actual network migration copies bytes and needs routing versions, a write barrier and safe cutover.",
+      "difficulty": "senior",
+      "tags": [
+        "interview",
+        "event-log",
+        "typescript",
+        "python",
+        "binary-search",
+        "cursors",
+        "partitioning"
+      ],
+      "sourceDocSlug": "system-design/partitioned-event-log"
+    },
+    {
+      "id": "event-log-review-13",
+      "type": "practical",
+      "title": "Global ordering",
+      "prompt": "Is this exactly Kafka ordering?",
+      "explanation": "No. This exercise requires one global order across keys. Kafka consumer offsets identify records within a partition, so its normal partition ordering does not supply this global sequence.",
+      "difficulty": "senior",
+      "tags": [
+        "interview",
+        "event-log",
+        "typescript",
+        "python",
+        "binary-search",
+        "cursors",
+        "partitioning"
+      ],
+      "sourceDocSlug": "system-design/partitioned-event-log"
+    },
+    {
+      "id": "event-log-review-14",
+      "type": "practical",
+      "title": "Bounded pages",
+      "prompt": "Is slice always an incorrect algorithm?",
+      "explanation": "No. slice(start, start + limit) after a correct seek copies only the page. slice(offset) is wrong when offset is a global ID and can copy millions of entries. A bounded loop demonstrates explicit control.",
+      "difficulty": "senior",
+      "tags": [
+        "interview",
+        "event-log",
+        "typescript",
+        "python",
+        "binary-search",
+        "cursors",
+        "partitioning"
+      ],
+      "sourceDocSlug": "system-design/partitioned-event-log"
+    }
+  ]
+}

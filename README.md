@@ -162,3 +162,7 @@ Open `/paths/frontend-interview-practice` for seven lessons, guided TS/Python so
 The supplementary lesson `/docs/frontend/react-state-async-callbacks` covers stale state in timers and promises, functional updates, cleanup, and a six-question checkpoint. Its complete examples live in Markdown and are typechecked and executed by `ReactAsyncStateLesson.test.tsx`.
 
 Japanese writing notebooks use 24 whole-prompt repetitions per sheet and support curated/custom text of 1–5 published characters. Ink stays on the device; coarse completion/unlocks optionally sync. See `docs/features/japanese-writing-notebooks.md` for the implementation, persistence and validation contract.
+
+## Event-log interview practice
+
+Open `/paths/partitioned-event-log` to review a candidate attempt and compare indexed arrays, linked chains with sparse anchors, and segmented logs. Each has complete TypeScript/Python code, followed by an eight-question quiz and fourteen scrolling review cards. `npm run test:interview:python` includes the new verifier; use `python3 scripts/content/verify-event-log.py --scale 1000003` for a local million-event check. See [the feature contract](docs/features/partitioned-event-log-interview.md).

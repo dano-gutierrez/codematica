@@ -78,3 +78,5 @@ The most important sections are:
 ## Game campaign
 
 [Restore the Signal](restore-the-signal.md) owns the chapter, shared evaluators, art production, offline runners, and web/native release gates.
+
+- [Partitioned Event Log Interview](partitioned-event-log-interview.md) owns the anonymous log exercise, scale assumptions and exact-code verification.

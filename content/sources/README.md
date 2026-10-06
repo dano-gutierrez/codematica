@@ -18,3 +18,5 @@ Run `npm run content:check` after any source change. Never hand-edit the generat
 Interview questions can declare `sourceRefs`, validated at build time and required when a source-required path references the interview. Keep private brief provenance anonymous; cite public technical documentation for the authored explanations.
 
 `react-async-state.json` records React's state-snapshot, update-queue, setter, and effect-cleanup references for the supplementary delayed-callback lesson and checkpoint. Code examples are original and tested from their canonical Markdown fences.
+
+`event-log-interview.json` records official JavaScript execution, Python bisect/locking and Kafka consumer-offset references for the original partitioned-log exercise. These references support concepts; they do not establish that the simulation is a production broker.

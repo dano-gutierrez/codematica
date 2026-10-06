@@ -122,3 +122,5 @@ Native notebook validation now includes agent-device layout/contact runners in `
 The game [miniature sheet](../assets/game/previews/miniatures-v3.png) shows the full-body figures used in each level and their actual phone/wide rendering.
 
 The [continuous map art review](../assets/game/previews/continuous-map/review.md) records the create/review/fix/review cycle, fifty-position landscape, three parallax depths, and visual evidence. Exact source prompts and seam export rules live in the asset guide.
+
+- [Partitioned Event Log Interview](features/partitioned-event-log-interview.md): candidate-attempt review, three TS/Python implementations, global-offset/cursor reasoning, checkpoint and scrolling review.

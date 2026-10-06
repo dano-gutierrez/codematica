@@ -1,5 +1,9 @@
 # Product And Engineering Changelog
 
+## 2026-10-05 — Partitioned event-log interview
+
+Added an anonymous real-world exercise with three complete TypeScript/Python pairs, a review of the candidate attempt, eight checkpoint questions and fourteen review cards. The guide distinguishes global IDs from local positions, indexed seeks from sequential reads, writer counters from consumer cursors, and in-process publication from distributed guarantees. Exact authored-code tests cover oracle comparisons, threads, migration, cursor tails and bounded seek work. Existing coverage floors and runtime dependencies are unchanged; installed-device execution is a separate verification gate.
+
 This changelog dates durable product and architecture changes and links to their authoritative feature contracts.
 
 ## 2026-10-03 — Continuous campaign landscape

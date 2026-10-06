@@ -45,3 +45,5 @@ Notebook layout regressions exercise real wheel scrolling and two-finger CDP tou
 `game-map-art.regression.spec.ts` checks fifty-position scenery with twelve playable nodes, all three moving depths, dynamic reduced motion, visual list ordering, keyboard navigation, and centering without inner overflow scrolling or blank seam strips. Run with `PLAYWRIGHT_PORT=3176 npx playwright test --config=apps/web/e2e/playwright.config.ts --project=mobile-chromium game-map-art.regression.spec.ts game.smoke.spec.ts`.
 
 The `@map-art` tag also runs this spec in desktop Chromium and mobile WebKit. Omit `--project` for the three-browser lane.
+
+`event-log.regression.spec.ts` (`@regression @playground`) covers the attempt-review lesson, all three runnable TS projects, Python switching, cursor continuation across node movement, quiz feedback and scrolling review on all three browser projects.
