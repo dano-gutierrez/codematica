@@ -46,6 +46,8 @@ When using an alternate runtime directory, set the same absolute `KNOWLEDGE_STAT
 
 Tools: `search_knowledge`, `get_resource`, `get_relationships`, `evaluate_candidate`, `get_evaluation`. Evaluation returns a staged job ID; poll `get_evaluation`. Read evidence and coverage before using recommendations. MCP and REST cannot authorize publication or write authored content.
 
+Qwen explanations interpret selected passages. Any nonempty `missing_material` list is an unverified gap proposal and holds the report as `needs_review`; inspect the complete matched resources before adding supposedly missing material. Even complete extraction cannot establish absence from those excerpts. Report metadata records `selected-passages-review-v1`. Saved historical reports retain their original metadata; reevaluate an unreviewed report to apply the new guard.
+
 ## Enroll LinkedIn preparation
 
 Before rollout, export editorial state, settle PR #13's contracts, apply all additive migrations and deploy compatible clients. Start/reuse the models, index the private-inclusive catalog, start the API and synchronize it. Keep publishing paused during enrollment. Never overwrite live drafts with test fixtures.
