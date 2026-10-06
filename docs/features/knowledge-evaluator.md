@@ -100,6 +100,8 @@ Qwen extraction retries invalid structured output once against the original sour
 
 ## Test Plan
 
+The real stdio smoke checks all five capabilities against the authenticated local API. Its child explicitly receives the selected private `KNOWLEDGE_STATE`; the process-boundary regression also rejects forwarded hosted credentials. An alternate-directory 401 failure is retained as evidence for this repair.
+
 Catalog tests parse validated canonical files once per suite and clone them for each case. Draft-status and synthetic-exercise changes cannot leak between cases; fingerprint checks still rebuild graph projections independently. This avoids repeated full-catalog I/O without changing test deadlines, assertions or coverage floors.
 
 The integrated private interview collection excludes both resume and experience profile text. Reference tests independently invalidate hash, passage, title and route matches, and reject unrelated existing skill IDs or invented path membership. An authenticated API test checks preparation submission and extraction while anonymous reads and submissions fail. The browser configuration regression retains every incoming desktop/WebKit feature tag and the complete mobile Chromium suite.

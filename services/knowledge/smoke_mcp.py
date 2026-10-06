@@ -3,8 +3,15 @@ import asyncio,json,sys
 from pathlib import Path
 from mcp import ClientSession,StdioServerParameters
 from mcp.client.stdio import stdio_client
+from knowledge.config import STATE
+
+def parameters():
+    # The MCP SDK inherits a limited environment. Bind the child to the same
+    # private token directory as this operator-selected runtime explicitly.
+    return StdioServerParameters(command=sys.executable,args=[str(Path(__file__).with_name('mcp_server.py'))],env={"KNOWLEDGE_STATE": str(STATE)})
+
 async def main():
-    server=StdioServerParameters(command=sys.executable,args=[str(Path(__file__).with_name('mcp_server.py'))])
+    server=parameters()
     async with stdio_client(server) as (read,write):
         async with ClientSession(read,write) as session:
             await session.initialize()
