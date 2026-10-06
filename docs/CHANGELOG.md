@@ -2,12 +2,64 @@
 
 This changelog dates durable product and architecture changes and links to their authoritative feature contracts.
 
+## 2026-10-05 — Native search label association
+
+Linked all four shared native search fields to their visible labels with stable, distinct IDs, preserving iOS names, query values and clearing. This addresses an empty Learn input announcing only its shortened placeholder in TalkBack. Added Android/iOS and duplicate-screen regressions; installed verification is recorded in the app-wide design audit.
+
 ## 2026-10-03 — Continuous campaign landscape
 
 - Created four connected original paintings and a transparent foliage kit with retained built-in imagegen prompts. Assembled terrain before cutting twelve tiles with pixel-identical edge guards.
 - Added mist, amber motes and foreground foliage at three bounded depths on web and native, behind ordinary level controls. Reduced motion freezes parallax; offscreen scenery is culled.
 - Reserved fifty art positions with twelve authored playable levels and a compact ascending list. Fixed centering-induced blank strips, smeared chapter blends, dangling route marks, and obsolete map scroll offsets.
 - Recorded the improve-game-ux create/review/fix/review cycle and visual evidence. New installed-device art/FPS checks remain pending. See [Restore the Signal](features/restore-the-signal.md) and the [map review](../assets/game/previews/continuous-map/review.md).
+
+## 2026-10-03 — App-wide design pass (in progress)
+- Include short visible metadata in native Learn/resume and editorial collection accessible names; preserve compact visuals and full-catalog summary hints. Add duplicate-title editorial selection and discovery/resume name regressions.
+- Reserve Android keyboard space in shared forms and campaign code editors without replacing input drafts. Rebuild native map/list terrain measurements on each switch and reject obsolete callbacks; preserve toolbar, progress and painted art. Add native keyboard-event and delayed-layout regressions.
+- Group native editorial creation/refresh, collapse optional filters with an active count, and return collection/editor/create transitions to the top without interrupting typing or failed saves. Add an opt-in installed account/editorial journey using an isolated local test project; keep publishing disabled and approvals human-only.
+- Add stable native email/password selectors and align questionnaire, skill-review and writing-match reset controls with the shared warning tone.
+- Confirm guided-lab completion only after progress acknowledgment on web and native. Keep private notes and choices through failures, offer retry and restart, and return focus/scroll to the beginning. Add storage-fault, responsive and installed source-to-lab journeys without changing the learning criteria or progress payload.
+- Wait for native skill-rating storage acknowledgment, expose save/reload recovery and retry the same recall without another attempt. Serialize mastery writes and preserve conflicting/unreadable local data.
+- Add installed cloze/checkpoint, passive/word/deck, missing-page and skill-save/restart journeys; document actual passive/deck actions and approval-gated audio.
+- Make Learn curated, search and resume cards compact with titles and labels; retain searchable summaries and detailed full-catalog cards.
+- Keep five native Learn section shortcuts, omitting its self-link, and reserve 48 dp header/sidebar home targets without resizing the brand artwork.
+- Wrap native Learn shortcuts at enlarged text sizes and shorten its search placeholder to keep labels readable.
+- Stack native Learn section headings above View all at narrow enlarged-text widths, preserving readable titles and every catalog destination.
+- Preserve the active Android route and transient input across system font-size changes; refresh responsive dimensions through the existing native module. Add an idempotent Expo prebuild hook and shared AdaptiveText for live text remeasurement; keep Markdown refresh separate from diagram state. Add configuration/state regressions and installed-validation requirements.
+- Coalesce native Learn and Browse lookup with a shared typing-pause helper, announce pending work and hide obsolete results. Defer Browse filters while typing and wait before showing its empty message. Retain the shared search universe and ranking; add timing/cancellation and installed large-text regressions.
+- Keep native campaign code/caret stable through typing, reseed on explicit reset/scenario changes, ignore replaced-field events, and run the latest session text.
+- Describe SQL deadlines as local runner timeouts and keep the existing two-second cap, including initialization. Settle each sandbox once and release its worker/blob URL on result, error or deadline; ignore queued callbacks. Add deadline/cleanup and browser retry regressions.
+
+- Keep interview questions and recipe controls ahead of long explanations. Share native supporting-detail disclosures with the editorial screen; retain full rubrics and keyboard/expanded-state coverage.
+- Place matching feedback before its choices and preserve empty native notebook pages after Undo/restart by skipping the storage SDK's rejected empty batch. Keep saved-progress milestones and write-failure recovery intact.
+- Pause native campaign art outside measured viewports and on covered routes. Share visibility logic without rerendering on every scroll event; preserve visible artwork, animation poses and scoring.
+- Apply the shared action, form, filter, disclosure and reading styles across discovery, catalogs, paths, practice, Japanese study, interviews and account flows. Preserve the painted campaign identity and learning/editorial rules.
+- Add native account/sign-out presentation, explicit PKCE callback handoff and progress-sync recovery. Keep anonymous local learning optional.
+- Add responsive/keyboard/axe browser matrices and native control regressions. Keep [the full route/platform audit](features/app-wide-design-audit.md) open until all flows and installed checks have current evidence. No release readiness, push or deployment is implied.
+
+## 2026-10-03 — Touch And Accessible Editorial Review
+
+- Keep one design system with visible touch labels, 48 px/dp targets, content-width tablet panes, growing text and normal-flow action bars.
+- Preserve keyboard context through draft/create transitions; make desktop tooltips hoverable and Escape-dismissible.
+- Align native editorial controls, keyboard-aware scrolling and explicit discard before leaving unsaved edits.
+- Add Chromium/iPhone WebKit phone/tablet/desktop, 200% text and landscape regressions; retain native coverage and update the disposable-data Maestro journey. Installed native VoiceOver/TalkBack and software keyboard checks remain unverified.
+- Keep publishing permissions and coverage floors unchanged. The local visual pass was reviewed before the user requested a pull request.
+- Review fixes: invalidate stale copy feedback, provide manual clipboard recovery, wrap long proposal links and restore Search focus when filters remove the open draft. Pin comment/fact discard, normalized account names and each phone menu link with regression coverage.
+- Limit WebKit to one CI worker after two Linux game return-to-map failures; retain all browser projects, assertions and timeouts. Local repeated runs pass; CI validation remains separately recorded on the PR.
+- Validation against `main` at `dec1c2d`: 576 Vitest tests with both coverage gates, 147 native tests with coverage, Expo Doctor 20/20, 31 editorial/account browser cases and 15 public smoke cases pass. Twelve behavior mutants are caught. Content freshness, lint, typechecks, production build and pruned-artifact startup pass.
+
+Owning contracts: `docs/features/design-system.md`, `docs/features/adaptive-ui.md` and `docs/features/linkedin-editorial.md`.
+
+## 2026-10-02 — Editorial UI And Design System (Local Review)
+
+- Add shared named action buttons with consistent geometry, semantic colors, and icon tooltips.
+- Simplify LinkedIn review with compact filters, a framed composer, explicit approval, and expandable supporting material.
+- Preserve creation, formatting, analysis, and exact-revision approval. Protect unsaved draft/comment edits and offer explicit discard.
+- Document spacing, borders, alignment, typography, reuse, and accessibility. Coverage gates remain unchanged.
+- The first visual pass was reviewed locally; the user requested a pull request on 2026-10-03. No production deployment is included.
+- Follow-up (2026-10-03): include the previously local Admin sidebar group, LinkedIn icon, signed-in account footer, and shared Sign out disclosure in the design checkout and preview. Add account navigation to the existing isolated browser gate.
+
+Owning contracts: `docs/features/design-system.md` and `docs/features/linkedin-editorial.md`.
 
 ## 2026-10-03 — Campaign integration review
 
@@ -272,3 +324,5 @@ Added admin web/native review, immutable Supabase revisions, approval-bound Buff
 ### LinkedIn worker switched to manual execution
 
 Removed the recurring Codex automation at the user’s request. Web/native copy and operating instructions now explain that requests wait for an explicit manual run. Queue, approval, and publication behavior is unchanged.
+
+- 2026-10-04: Native Learn/Browse share an offline local search runtime and concise retry feedback. Prepared-row/core-result parity, owned replies, bounded failures and bundle freshness are tested. The credential-free Android artifact passes the existing Learn/Browse journeys at normal and enlarged text; fresh installed iOS and complete accessibility acceptance remain open.

@@ -4,6 +4,9 @@ tags:
 ---
 - launchApp:
     clearState: true
+# Wait for the React navigator before delivering a warm deep link.
+- assertVisible:
+    id: mobile-nav-learn
 - openLink: codematica://languages/japanese/notebooks
 - scrollUntilVisible:
     element:
@@ -19,8 +22,13 @@ tags:
     direction: UP
 - tapOn:
     id: mobile-notebook-input
-- evalScript: ${maestro.copiedText = '一'}
+- setClipboard: "一"
 - pasteText
+- assertVisible: "一"
+- scrollUntilVisible:
+    element:
+      id: mobile-notebook-create
+    direction: DOWN
 - tapOn:
     id: mobile-notebook-create
 - assertVisible:
@@ -47,12 +55,44 @@ tags:
     direction: RIGHT
     duration: 300
 - assertVisible: "Correct.*"
+- scrollUntilVisible:
+    element:
+      text: ".*1 / 24 repetitions"
+    direction: UP
+    speed: 20
+    visibilityPercentage: 100
+    centerElement: false
+    timeout: 20000
 - assertVisible: ".*1 / 24 repetitions"
 - assertVisible:
     id: mobile-writing-notebook
+- scrollUntilVisible:
+    element:
+      id: mobile-writing-undo
+    direction: DOWN
+    speed: 20
+    visibilityPercentage: 100
+    centerElement: false
+    timeout: 20000
 - tapOn:
     id: mobile-writing-undo
+- scrollUntilVisible:
+    element:
+      text: ".*0 / 24 repetitions"
+    direction: UP
+    speed: 20
+    visibilityPercentage: 100
+    centerElement: false
+    timeout: 20000
 - assertVisible: ".*0 / 24 repetitions"
+- scrollUntilVisible:
+    element:
+      id: mobile-writing-clear
+    direction: DOWN
+    speed: 20
+    visibilityPercentage: 100
+    centerElement: false
+    timeout: 20000
 - tapOn:
     id: mobile-writing-clear
 - assertNotVisible:
@@ -62,15 +102,42 @@ tags:
 - assertNotVisible:
     id: mobile-writing-input-scroll
 # Scroll from the outer page gutter; two-finger paper pan requires device QA.
-- swipe:
-    start: 4%, 80%
-    end: 4%, 20%
-    duration: 500
+- repeat:
+    times: 6
+    while:
+      notVisible:
+        id: mobile-writing-repeat
+    commands:
+      - swipe:
+          start: 2%, 80%
+          end: 2%, 20%
+          duration: 500
 - assertVisible:
     id: mobile-writing-repeat
 - tapOn:
     id: mobile-writing-repeat
-- openLink: codematica://languages/japanese/notebooks
+# Keep upward page scrolling out of the one-finger drawing surface too.
+- repeat:
+    times: 6
+    while:
+      notVisible:
+        id: mobile-notebook-back
+    commands:
+      - swipe:
+          start: 2%, 20%
+          end: 2%, 80%
+          duration: 500
+- scrollUntilVisible:
+    element:
+      id: mobile-notebook-back
+    direction: UP
+    speed: 20
+    visibilityPercentage: 100
+    centerElement: false
+    timeout: 20000
+- assertNotVisible: "Not quite yet.*"
+- tapOn:
+    id: mobile-notebook-back
 - scrollUntilVisible:
     element:
       id: mobile-notebook-saved-custom-4e00-v1
@@ -79,6 +146,12 @@ tags:
     id: mobile-notebook-saved-custom-4e00-v1
 - assertVisible:
     id: mobile-writing-notebook
+- scrollUntilVisible:
+    element:
+      text: ".*0 / 24 repetitions"
+    direction: UP
+- assertVisible: ".*0 / 24 repetitions"
+- assertNotVisible: "Your ink is still here, but couldn't be saved.*"
 - openLink: codematica://practice/languages/japanese-hiragana-vowels-writing
 - scrollUntilVisible:
     element:

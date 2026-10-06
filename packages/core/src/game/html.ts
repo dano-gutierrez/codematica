@@ -18,15 +18,18 @@ export function gameSandboxHtml(
     nonce,
     validation,
   });
-  return `<!doctype html><html><head><meta name="viewport" content="width=device-width,initial-scale=1"><meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'unsafe-inline'; script-src 'unsafe-inline' 'wasm-unsafe-eval'; worker-src blob:;"><style>body{margin:0;font:14px system-ui;color:#163d38;background:#edf4e9}#preview{padding:12px;overflow:auto}.board{position:relative;display:grid;margin:0 auto 12px;gap:0;background:#d7e7ca;border:1px solid #557965}.cell{box-sizing:border-box;border:1px solid #91ae8c;min-height:42px;display:grid;place-items:center}.net,.target{pointer-events:none;z-index:2;border:3px solid #c98728;background:#f9ca5860;box-sizing:border-box}.target{border:3px dashed #326658;background:#32665818;z-index:1}.safe{background:#f4dbcf}pre{white-space:pre-wrap;font:13px monospace;padding:12px}</style></head><body><div id="preview"></div><script>
+  return `<!doctype html><html lang="en"><head><title>Challenge preview</title><meta name="viewport" content="width=device-width,initial-scale=1"><meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'unsafe-inline'; script-src 'unsafe-inline' 'wasm-unsafe-eval'; worker-src blob:;"><style>body{margin:0;font:14px system-ui;color:#163d38;background:#edf4e9}#preview{padding:12px;overflow:auto}.board{position:relative;display:grid;margin:0 auto 12px;gap:0;background:#d7e7ca;border:1px solid #557965}.cell{box-sizing:border-box;border:1px solid #91ae8c;min-height:42px;display:grid;place-items:center}.net,.target{pointer-events:none;z-index:2;border:3px solid #c98728;background:#f9ca5860;box-sizing:border-box}.target{border:3px dashed #326658;background:#32665818;z-index:1}.safe{background:#f4dbcf}pre{white-space:pre-wrap;font:13px monospace;padding:12px}.sr-only{position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip-path:inset(50%)}#preview:focus-visible{outline:3px solid #326658;outline-offset:-3px}</style></head><body><main aria-label="Challenge preview"><h1 class="sr-only">Challenge preview</h1><div id="preview" role="group" aria-label="Challenge output" tabindex="0"></div></main><script>
 const data=${payload};
 const send=result=>{const message={channel:'codematica-game',nonce:data.nonce,result};if(window.ReactNativeWebView)window.ReactNativeWebView.postMessage(JSON.stringify(message));else window.parent.postMessage(message,'*');};
 const error=message=>send({passed:false,reasons:[message],events:[]});
 if(!data.validation.ok){error(data.validation.error);}else if(data.scenario.kind==='sql'){
  const blob=new Blob([data.workerSource],{type:'text/javascript'}),url=URL.createObjectURL(blob);const worker=new Worker(url);
- const timer=setTimeout(()=>{worker.terminate();URL.revokeObjectURL(url);error('Query exceeded the two-second execution limit. Simplify it and retry.');},2000);
- worker.onmessage=e=>{clearTimeout(timer);worker.terminate();URL.revokeObjectURL(url);const p=document.createElement('pre');p.textContent=e.data.columns?e.data.columns.join(' | ')+'\\n'+e.data.rows.map(r=>r.join(' | ')).join('\\n'):e.data.reasons.join('\\n');document.getElementById('preview').appendChild(p);send(e.data);};
- worker.onerror=()=>{clearTimeout(timer);worker.terminate();URL.revokeObjectURL(url);error('The local SQL runner could not start. Retry this level.');};worker.postMessage({scenario:data.scenario,source:data.source});
+ let settled=false;
+ const finish=(result,render=false)=>{if(settled)return;settled=true;clearTimeout(timer);worker.terminate();URL.revokeObjectURL(url);if(render){const p=document.createElement('pre');p.textContent=result.columns?result.columns.join(' | ')+'\\n'+result.rows.map(r=>r.join(' | ')).join('\\n'):result.reasons.join('\\n');document.getElementById('preview').appendChild(p);}send(result);};
+ const fail=message=>finish({passed:false,reasons:[message],events:[]});
+ const timer=setTimeout(()=>fail('The local SQL runner took too long. Retry your query.'),2000);
+ worker.onmessage=e=>finish(e.data,true);
+ worker.onerror=()=>fail('The local SQL runner could not start. Retry this level.');worker.postMessage({scenario:data.scenario,source:data.source});
 }else{
  const s=data.scenario,boards=[];
  for(const width of s.widths){const board=document.createElement('div');board.className='board';board.style.width=width+'px';board.style.gridTemplateColumns=s.template;board.style.gridTemplateRows='repeat('+s.rows+',42px)';

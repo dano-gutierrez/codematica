@@ -1,5 +1,6 @@
 jest.mock("../lib/handwriting-canvas",()=>({nativeHandwritingCanvas:undefined}));
 import { act, renderHook, waitFor } from "@testing-library/react-native";
+import { nativeSearchWorkerSource } from "../generated/search-worker";
 import { useCodematicaAdapters } from "../lib/adapters";
 import { useProgressSummary } from "../lib/use-progress-summary";
 import { getNativeProgressSummary, recordNativeProgress, syncNativeAnonymousProgress } from "../lib/progress";
@@ -37,6 +38,7 @@ describe("native adapters and progress hook", () => {
       result.current.navigation.replace?.("/paths");
       result.current.navigation.goBack?.();
     });
+    expect(result.current.searchScript).toBe(nativeSearchWorkerSource);
     expect(mockRouter.push).toHaveBeenCalledWith("/browse");
     expect(mockRouter.replace).toHaveBeenCalledWith("/paths");
     expect(mockRouter.back).toHaveBeenCalled();
@@ -50,6 +52,18 @@ describe("native adapters and progress hook", () => {
     await result.current.auth?.signUpWithPassword?.("learner@example.com", "password");
     expect(mockAuth.signUp).toHaveBeenCalledWith(expect.objectContaining({ options: { emailRedirectTo: "codematica://auth/callback" } }));
     await unmount();
+  });
+
+  it("separates successful authentication from interrupted progress sync", async () => {
+    jest.mocked(syncNativeAnonymousProgress).mockResolvedValueOnce({ synced: 1, rejected: 1 });
+    const { result } = await renderHook(() => useCodematicaAdapters());
+    await expect(result.current.auth?.signInWithPassword?.("learner@example.com", "password")).resolves.toEqual({ progressSynced: false });
+    jest.mocked(syncNativeAnonymousProgress).mockRejectedValueOnce(new Error("offline"));
+    await expect(result.current.auth?.signInWithPassword?.("learner@example.com", "password")).resolves.toEqual({ progressSynced: false });
+    await expect(result.current.auth?.syncAnonymousProgress?.()).resolves.toEqual({ progressSynced: true });
+    mockAuth.signInWithPassword.mockResolvedValueOnce({ error: { message: "wrong password" } } as never);
+    await expect(result.current.auth?.signInWithPassword?.("learner@example.com", "bad")).rejects.toThrow("wrong password");
+    expect(syncNativeAnonymousProgress).toHaveBeenCalledTimes(3);
   });
 
   it("opens OAuth and surfaces provider errors", async () => {

@@ -37,4 +37,10 @@ Japanese writing notebooks use 24 whole-prompt repetitions per sheet and support
 
 Game store claims are serialized across account changes. Deferred identity checks must verify the active generation before merging remote awards or choosing a save payload; keep the interrupted-load tests when changing synchronization.
 
+## Native search boundaries
+
+`searchDiscoveryItems` and `searchContentItems` expose the existing matchers over prepared rows. `native-search.ts` prepares minimal transport data, validates replies and reconstructs canonical results; `native-search-worker.ts` installs a local runner only when explicitly called. These modules perform no startup I/O, SDK initialization or hosted queries. Search ranking/filter/snippet contracts remain covered alongside round-trip and malformed/stale-result tests. The generated native script is a build artifact owned by [scripts/content](../../scripts/content/README.md), never an authoring surface.
+
+## Campaign map art
+
 `src/game/map-art.ts` owns the fifty-position art panel order and bounded, renderer-independent parallax offsets. It does not create campaign levels or alter progression. Native runs its offset helper as a Reanimated worklet; web samples the same rule on scroll frames.

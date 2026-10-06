@@ -10,7 +10,11 @@ module.exports = {
   testMatch: ["<rootDir>/apps/mobile/src/**/*.test.ts", "<rootDir>/apps/mobile/src/**/*.test.tsx"],
   collectCoverageFrom: [
     "apps/mobile/src/lib/**/*.{ts,tsx}",
+    "apps/mobile/plugins/with-live-font-scale.cjs",
     "packages/ui/src/screens.tsx",
+    "packages/ui/src/Button.tsx",
+    "packages/ui/src/AdaptiveText.tsx",
+    "packages/ui/src/LocalSearch.tsx",
     "packages/ui/src/game/**/*.tsx",
 
     "packages/ui/src/LinkedInAdminScreen.tsx",
@@ -36,6 +40,7 @@ module.exports = {
     "^@codematica/core$": "<rootDir>/packages/core/src/index.ts",
     "^@codematica/core/(.*)$": "<rootDir>/packages/core/src/$1",
     "^@codematica/ui$": "<rootDir>/packages/ui/src/index.ts",
+    "^@codematica/ui/game$": "<rootDir>/packages/ui/src/game/screens.tsx",
   },
   transformIgnorePatterns: [
     "node_modules/(?!((jest-)?react-native|@react-native|expo(nent)?|expo-modules-core|@expo(nent)?/.*|expo-router|react-native-markdown-display|react-native-webview)/)"

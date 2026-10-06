@@ -89,6 +89,12 @@ afterEach(() => {
 });
 
 describe("notebook writing", () => {
+  it("keeps the restart action named and visibly labeled on touch screens", () => {
+    render(<JapaneseWritingPractice characters={[one]} storage={false} />);
+    const restart = screen.getByRole("button", { name: "Clear and restart sheet" });
+    expect(restart).toHaveTextContent("Clear and restart sheet");
+    expect(restart).toHaveAttribute("data-tone", "warning");
+  });
   it("detects inputs automatically and pans with two fingers without saving cancelled ink", () => {
     vi.useFakeTimers();
     render(<JapaneseWritingPractice characters={[one]} storage={false} />);
@@ -134,8 +140,8 @@ describe("notebook writing", () => {
     const a = getLanguageCharacterBySlug("japanese/hiragana/a")!;
     render(<JapaneseWritingPractice characters={[a]} storage={false} />);
     expect(screen.getByTestId("writing-repeat")).toHaveAccessibleName("Clear and restart sheet");
-    expect(screen.getByTestId("writing-repeat").textContent).toBe("");
-    expect(screen.queryByText("Clear and restart sheet")).not.toBeInTheDocument();
+    expect(screen.getByTestId("writing-repeat")).toHaveAttribute("data-icon-only", "true");
+    expect(screen.getByTestId("writing-repeat")).toHaveTextContent("Clear and restart sheet");
     draw(a.strokes[0]!.points, 1, "mouse");
     act(() => vi.advanceTimersByTime(900));
     expect(screen.getByTestId("writing-cell-0-feedback")).toHaveAttribute("data-error", "false");
@@ -516,6 +522,7 @@ describe("notebook writing", () => {
     fireEvent.click(screen.getByTestId("writing-match-kana-characters-0-0"));
     fireEvent.click(screen.getByTestId("writing-match-romaji-characters-0-1"));
     expect(screen.getByRole("status")).toHaveTextContent("Try another pair");
+    expect(screen.getByRole("status").compareDocumentPosition(screen.getByTestId("writing-match-kana-characters-0-0")) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
     fireEvent.click(screen.getByTestId("writing-match-romaji-characters-0-0"));
     expect(
       screen.getByTestId("writing-match-kana-characters-0-0"),

@@ -4,6 +4,7 @@ export const colors = {
   panelMuted: "#f3f5f6",
   line: "#e1e5e9",
   lineSoft: "#e4edf1",
+  controlBorder: "#7d8b94",
   text: "#202b33",
   textMuted: "#616d77",
   textStrong: "#33434b",

@@ -3,7 +3,7 @@
 ## Snapshot
 
 - Status: `shipped`
-- Last updated: `2026-09-27`
+- Last updated: `2026-10-03`
 - Owner thread: `n/a`
 - Current state: The app has company interview preparation plus an anonymous real-world section, guided algorithm walkthroughs, and runnable React/TypeScript web exercises.
 - Target outcome: Users can study public company patterns or authentic anonymous briefs, understand evaluation criteria and red flags, and run frontend practice solutions without requiring auth or Supabase.
@@ -34,6 +34,7 @@ The catalog stores typed interview collections as local JSON. Company algorithm 
 - `/interviews` separates anonymous real-world collections from company preparation, supports question search plus collection/difficulty filters, and lets random navigation choose from either.
 - `/interviews/[collection]` shows questions for a company or real-world collection; existing company URLs are unchanged.
 - `/interviews/[collection]/[question]` dispatches to an algorithm walkthrough or web exercise session.
+- Web-exercise assessment notes, criteria and red flags use named disclosures on web/native. Questions remain visible. Recipe and language controls precede long solution text; disclosure tests retain the full rubric content and accessible expanded state.
 - The algorithm session defaults to Python, lets users switch to TypeScript or Java, reveals one step per `Next`, and renders final code with language-aware highlighting.
 - Starting or restarting an algorithm session selects a solution track at random and avoids immediately repeating the previous track when another track exists.
 - Web sessions default to the first approach, reveal recipe steps, and expose code/explanation at the end or via Show full solution. Optional Python companions share the language switch; one editable Sandpack project mounts at a time.
@@ -63,12 +64,19 @@ The catalog stores typed interview collections as local JSON. Company algorithm 
 
 Seed content uses public/community-reported prep references such as InterviewQuery company guides, reported public LeetCode discussions, and public company question lists. These links are attribution and further reading; Codematica prompts, explanations, and code are original rewrites.
 
+## App-wide design pass — 2026-10-03
+
+Catalog filters and columns respond to available content width. The algorithm session uses shared Dropdown language selection and shared Previous/Next/reveal/restart controls. Source attribution and solution payloads are preserved. Explanation steps use dividers instead of nested cards; code remains in named keyboard-focusable scroll groups. Native language choices expose selected state and the same visible action language.
+
+Test plan additions: `InterviewQuestionSession.test.tsx`, `design-controls.test.tsx`, `design-content.regression.spec.ts`, and updated catalog/code browser journeys exercise language selection, reveal, restart and code focus. Installed native reading and screen-reader checks remain required.
+
 ## Test Plan
 
 - Unit: collection discrimination, conditional provenance, safe project paths, active/visible file references, web track minimums, and algorithm language requirements.
 - Integration: generated index loads company and real-world collections, including graph-search additions, and resolves both route forms.
 - Component: algorithm walkthrough behavior remains stable; web sessions switch all approaches and map files into Run/Reset playground controls.
 - Native: real-world content and every source file remain available without executing the project.
+- Installed `.maestro/interviews.yaml` scrolls the actual collection and question into view before tapping. Long revealed solutions use requirements and complexity headings as waypoints before the web-runner notice. Run at normal and enlarged system text; retain rubric, notice and capture checks with full visibility and a 20-second bound per search.
 - E2E: catalog search/filter and the existing Amazon flow remain covered; the Mondrian flow verifies rubric content, three approaches, and live preview output.
 
 ## Thread Handoff Prompt

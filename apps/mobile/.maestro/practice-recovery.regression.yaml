@@ -1,0 +1,131 @@
+appId: com.codematica.app
+tags:
+  - regression
+---
+- launchApp:
+    clearState: true
+- assertVisible:
+    id: mobile-nav-learn
+- openLink: codematica://practice/programming/runtime-boundary-cloze
+- scrollUntilVisible:
+    element:
+      id: mobile-cloze-answer-input
+    direction: DOWN
+    speed: 20
+    visibilityPercentage: 100
+    centerElement: false
+    timeout: 20000
+- tapOn:
+    id: mobile-cloze-answer-input
+- inputText: wrong
+- pressKey: Enter
+- scrollUntilVisible:
+    element:
+      id: mobile-cloze-check
+    direction: DOWN
+    speed: 20
+    visibilityPercentage: 100
+    centerElement: false
+    timeout: 20000
+- tapOn:
+    id: mobile-cloze-check
+- scrollUntilVisible:
+    element:
+      text: Try again
+    direction: DOWN
+    speed: 20
+    visibilityPercentage: 100
+    centerElement: false
+    timeout: 20000
+- assertVisible: Try again
+- scrollUntilVisible:
+    element:
+      id: mobile-cloze-answer-input
+    direction: UP
+    speed: 20
+    visibilityPercentage: 100
+    centerElement: false
+    timeout: 20000
+- tapOn:
+    id: mobile-cloze-answer-input
+- eraseText: 5
+- inputText: schema
+- pressKey: Enter
+- assertNotVisible: Try again
+- scrollUntilVisible:
+    element:
+      id: mobile-cloze-check
+    direction: DOWN
+    speed: 20
+    visibilityPercentage: 100
+    centerElement: false
+    timeout: 20000
+- tapOn:
+    id: mobile-cloze-check
+- scrollUntilVisible:
+    element:
+      text: Correct
+    direction: DOWN
+    speed: 20
+    visibilityPercentage: 100
+    centerElement: false
+    timeout: 20000
+- assertVisible: Correct
+- takeScreenshot: cloze-corrected
+- openLink: codematica://practice/ml-systems/foundations-checkpoint
+# Stable option IDs survive randomized question/option order. Exactly one matches.
+- repeat:
+    times: 3
+    commands:
+      - scrollUntilVisible:
+          element:
+            id: mobile-questionnaire-choice-(data|p95|cheap)
+          direction: DOWN
+          speed: 20
+          visibilityPercentage: 100
+          centerElement: false
+          timeout: 20000
+      - tapOn:
+          id: mobile-questionnaire-choice-(data|p95|cheap)
+      - scrollUntilVisible:
+          element:
+            id: mobile-questionnaire-check
+          direction: DOWN
+          speed: 20
+          visibilityPercentage: 100
+          centerElement: false
+          timeout: 20000
+      - tapOn:
+          id: mobile-questionnaire-check
+      - scrollUntilVisible:
+          element:
+            text: Correct
+          direction: DOWN
+          speed: 20
+          visibilityPercentage: 100
+          centerElement: false
+          timeout: 20000
+      - assertVisible: Correct
+      - scrollUntilVisible:
+          element:
+            id: mobile-questionnaire-(next|finish)
+          direction: DOWN
+          speed: 20
+          visibilityPercentage: 100
+          centerElement: false
+          timeout: 20000
+      - tapOn:
+          id: mobile-questionnaire-(next|finish)
+- scrollUntilVisible:
+    element:
+      id: mobile-questionnaire-complete
+    direction: UP
+    speed: 20
+    visibilityPercentage: 100
+    centerElement: false
+    timeout: 20000
+- assertVisible: Practice complete
+- assertVisible: Score 100%
+- takeScreenshot: checkpoint-complete
+- tapOn: Restart
+- assertVisible: Question 1 of 3

@@ -1,9 +1,9 @@
+import { AdaptiveText as Text } from "@codematica/ui";
 import { useCallback, useState } from "react";
 import { getGameSession } from "@codematica/core/game";
 import { getContentIndex } from "@codematica/core";
 import { NativeGamePlay } from "@codematica/ui/game";
 import { useLocalSearchParams, useRouter, useFocusEffect } from "expo-router";
-import { Text } from "react-native";
 import { nativeGameStore } from "../../../src/lib/game-store";
 import { gameWorkerSource } from "../../../src/generated/game-worker";
 export default function GameLevel() {

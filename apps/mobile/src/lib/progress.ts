@@ -79,7 +79,8 @@ export async function syncNativeAnonymousProgress(client?: unknown) {
     return { synced: 0, rejected: 0 };
   }
 
-  const items = await getAnonymousProgressItems();
+  await bufferWrites;
+  const items = await readBuffer();
 
   if (items.length === 0) {
     return { synced: 0, rejected: 0 };
@@ -104,7 +105,7 @@ export async function syncNativeAnonymousProgress(client?: unknown) {
     rejected += result.body.rejected;
   }
 
-  await clearAnonymousProgressItems();
+  if (rejected === 0) await clearAnonymousProgressItems(items);
   return { synced, rejected };
 }
 
@@ -122,28 +123,42 @@ async function getAnonymousProgressSummaryItems() {
   });
 }
 
+// Serialize read/modify/write operations so sync acknowledgement cannot erase
+// another screen's learning while AsyncStorage is awaiting I/O.
+let bufferWrites = Promise.resolve();
+function writeBuffer(operation: () => Promise<void>) {
+  const next = bufferWrites.then(operation, operation);
+  bufferWrites = next.catch(() => undefined);
+  return next;
+}
 async function addAnonymousProgressItem(input: ProgressInput) {
-  const key = createAnonymousProgressKey(input);
-  const nextItems = [
-    { input, lastSeenAt: new Date().toISOString() },
-    ...(await getAnonymousProgressItems()).filter((item) => createAnonymousProgressKey(item.input) !== key),
-  ];
-
-  await AsyncStorage.setItem(storageKey, JSON.stringify(nextItems));
+  return writeBuffer(async () => {
+    const key = createAnonymousProgressKey(input);
+    const nextItems = [
+      { input, lastSeenAt: new Date().toISOString() },
+      ...(await readBuffer()).filter(item => createAnonymousProgressKey(item.input) !== key),
+    ];
+    await AsyncStorage.setItem(storageKey, JSON.stringify(nextItems));
+  });
 }
-
+async function readBuffer(): Promise<AnonymousProgressItem[]> {
+  const raw = await AsyncStorage.getItem(storageKey);
+  const parsed = raw ? JSON.parse(raw) : [];
+  if (!Array.isArray(parsed)) throw new Error("Saved progress could not be read.");
+  return parsed as AnonymousProgressItem[];
+}
 export async function getAnonymousProgressItems(): Promise<AnonymousProgressItem[]> {
-  try {
-    const raw = await AsyncStorage.getItem(storageKey);
-    const parsed = raw ? JSON.parse(raw) : [];
-    return Array.isArray(parsed) ? (parsed as AnonymousProgressItem[]) : [];
-  } catch {
-    return [];
-  }
+  await bufferWrites;
+  try { return await readBuffer(); }
+  catch { return []; } // Read-only summaries can fall back; writes must preserve unreadable data.
 }
-
-export async function clearAnonymousProgressItems() {
-  await AsyncStorage.removeItem(storageKey);
+export async function clearAnonymousProgressItems(submitted?: AnonymousProgressItem[]) {
+  return writeBuffer(async () => {
+    const acknowledged = submitted && new Set(submitted.map(item => JSON.stringify(item)));
+    const remaining = acknowledged ? (await readBuffer()).filter(item => !acknowledged.has(JSON.stringify(item))) : [];
+    if (remaining.length) await AsyncStorage.setItem(storageKey, JSON.stringify(remaining));
+    else await AsyncStorage.removeItem(storageKey);
+  });
 }
 
 function createAnonymousProgressKey(input: ProgressInput) {

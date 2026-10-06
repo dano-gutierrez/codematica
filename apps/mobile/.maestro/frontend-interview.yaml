@@ -4,6 +4,9 @@ tags:
 ---
 - launchApp:
     clearState: true
+# Wait for the React navigator before delivering a warm deep link.
+- assertVisible:
+    id: mobile-nav-learn
 - openLink: "codematica://interviews/frontend-practice/dynamic-board?path=frontend-interview-practice"
 - scrollUntilVisible:
     element:
@@ -19,10 +22,33 @@ tags:
       text: Python
     direction: DOWN
 - tapOn: Python
+# Use the nearby usage note to distinguish the code heading from the choice button.
 - scrollUntilVisible:
     element:
-      id: mobile-code-block
+      text: "Time:.*"
     direction: DOWN
+    speed: 20
+    visibilityPercentage: 100
+    centerElement: false
+    timeout: 20000
+- scrollUntilVisible:
+    element:
+      text: "Save as solution.py and use python3.*"
+    direction: DOWN
+    speed: 20
+    visibilityPercentage: 100
+    centerElement: false
+    timeout: 20000
+- scrollUntilVisible:
+    element:
+      text: "(?i)^python$"
+      below:
+        text: "Save as solution.py and use python3.*"
+    direction: DOWN
+    speed: 20
+    visibilityPercentage: 100
+    centerElement: false
+    timeout: 20000
 - assertVisible:
     id: mobile-code-block
 - takeScreenshot: frontend-python-dark-code
@@ -32,6 +58,14 @@ tags:
     direction: DOWN
 - tapOn:
     id: mobile-interview-next-node
+- scrollUntilVisible:
+    element:
+      id: mobile-questionnaire-check
+    direction: DOWN
+    speed: 20
+    visibilityPercentage: 100
+    centerElement: false
+    timeout: 20000
 - assertVisible:
     id: mobile-questionnaire-session
 - openLink: "codematica://practice/frontend/interview-user-matrix-questionnaire?path=frontend-interview-practice"
@@ -51,6 +85,14 @@ tags:
           direction: DOWN
       - tapOn:
           id: "mobile-questionnaire-(next|finish)"
+- scrollUntilVisible:
+    element:
+      text: Start review feed
+    direction: DOWN
+    speed: 20
+    visibilityPercentage: 100
+    centerElement: false
+    timeout: 20000
 - tapOn: Start review feed
 - assertVisible:
     id: mobile-passive-flashcard-feed

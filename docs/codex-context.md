@@ -5,6 +5,9 @@ This file preserves repo context across Codex tasks.
 ## Source Of Truth
 
 - Product and feature intent lives in `docs/features/<feature>.md`.
+- Web controls, spacing, alignment, and disclosure rules live in `docs/features/design-system.md`. Read it before UI work; reuse web `Button`/`ButtonLink`, native `Button`, `Dropdown`, and existing compositions. `docs/features/app-wide-design-audit.md` tracks all route/platform adoption and verification.
+- Web `AppNavigation` owns the Admin group and account footer/header/menu. Its account-session hook is display state; membership RPCs and RLS own admin authorization. `e2e:linkedin` tests editorial and account navigation with synthetic Supabase requests.
+
 - Approved app identity lives in `assets/brand/source/`; `npm run brand:assets` regenerates web/native copies. Preserve the selected Patch design; see `docs/features/brand-identity.md`.
 - Repo-level architecture lives in `docs/engineering-overview.md`.
 - Canonical knowledge content lives in `content/knowledge/`.
@@ -154,8 +157,22 @@ Read `docs/features/frontend-interview-practice.md` for the seven-topic path. In
 
 The supplementary `frontend/react-state-async-callbacks` lesson and its six-question checkpoint use the existing reader and questionnaire. Its standalone broken/fixed examples are canonical Markdown fences, typechecked and executed by `ReactAsyncStateLesson.test.tsx`; they are not duplicated in interview JSON.
 
+### Editorial accessibility and adaptive composition
+
+`docs/features/design-system.md` owns the platform matrix. Web editorial panes use content-width container queries; narrow/touch screens reveal button labels and 48 px targets. Native `LinkedInAdminScreen` keeps labeled 48 dp actions and opts into the existing `AppScreen` keyboard-aware composition. Both preserve unsaved drafts until save/discard. Data/store/worker boundaries and authorization are unchanged. Browser emulation and Jest do not certify native screen-reader or software-keyboard behavior.
+
+### Japanese notebooks
+
 Japanese planas share the core notebook engine and React-only `@codematica/ui/notebook-session` hook. Each sheet requires 24 whole-prompt repetitions. Web uses Pointer Events, installed iOS uses the local PencilKit module, and Android uses SVG. Local ink and maximum earned progress are distinct; restart preserves unlocks. Vocabulary `writing-starter` tags own starter-word curation.
 
 Native handwriting routes disable swipe-back through `apps/mobile/src/lib/handwriting-navigation.ts`. The paper blocks automatic one-finger ScrollView interception; explicit two-finger and accessibility scrolling remain available. Device regressions run against disposable notebooks. Expo Go validates the SVG fallback; the physical iPad/PencilKit checklist remains a separate installed-build gate in the notebook feature doc.
+
+Native OAuth handoff and duplicate-current-code exchange live in `apps/mobile/src/lib/supabase.ts` and `auth-code.ts`; UI recovery lives in `app/auth/callback.tsx` and shared LoginScreen. Read the auth feature contract before changing these boundaries.
+
+### Native local search
+
+`packages/ui/src/LocalSearch.tsx` owns Learn/Browse request lifecycle and feedback. Pure transport and matching live in `packages/core/src/native-search*.ts`; the fixed generated native script is produced by `scripts/content/build-search-runtime.mjs`. Run `search:runtime`/`search:check` after runtime changes. Public canonical content stays in the host/index; the runtime has no credentials, hosted SDK, network or persistent writes. See the owning home-discovery contract before extending it.
+
+### Campaign scenery
 
 Campaign scenery: `assets/game/source/map/` contains four original connected paintings and overlay sources. `scripts/game/build-map-art.ts` assembles and blends before cutting shared-guard tiles into `generated/map/`. `packages/core/src/game/map-art.ts` reserves fifty art positions independently of the twelve authored levels and owns bounded parallax offsets. Web and native keep terrain stationary beneath three moving overlay families. See the [map art review](../assets/game/previews/continuous-map/review.md).

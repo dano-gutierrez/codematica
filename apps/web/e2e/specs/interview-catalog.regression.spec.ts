@@ -27,7 +27,8 @@ test("@regression opens the interview catalog and completes a guided coding walk
     await expect(page.getByTestId("interview-step-position")).toContainText("Step 2");
     await session.getByRole("button", { name: "Next" }).click();
     await expect(page.getByTestId("interview-step-position")).toContainText("Step 3");
-    await page.getByLabel("Solution language").selectOption("java");
+    await page.getByTestId("interview-solution-language").click();
+    await page.getByRole("option", { name: "Java", exact: true }).click();
     await session.getByRole("button", { name: /Show full explanation/i }).click();
     await expect(page.getByTestId("interview-final-explanation")).toContainText("works");
     await expect(page.getByTestId("interview-code")).toContainText("int[]");
@@ -48,8 +49,13 @@ test("@regression explores the anonymous Mondrian interview and runs all web sol
   await test.step("review the evaluation intent and red flags", async () => {
     await expect(page.getByRole("heading", { name: "Generate a Mondrian-style Composition" })).toBeVisible();
     await expect(page.getByTestId("interview-evaluation-guide")).toContainText("ambiguous visual request");
-    await expect(page.getByRole("heading", { name: "Red flags and why they matter" })).toBeVisible();
+    await expect(page.getByText("Hardcodes one painting")).toBeHidden();
+    const redFlags = page.getByText("Red flags and why they matter", { exact: true });
+    await redFlags.focus();
+    await redFlags.press("Enter");
     await expect(page.getByText("Hardcodes one painting")).toBeVisible();
+    await redFlags.press("Enter");
+    await expect(page.getByText("Hardcodes one painting")).toBeHidden();
   });
 
   await test.step("run and compare all three solutions", async () => {

@@ -5,15 +5,21 @@ const campaign = gameCampaignSchema.parse(
 );
 const steps: (object | string)[] = [
   { launchApp: { clearState: true } },
+  { assertVisible: { id: "mobile-nav-learn" } },
   { setAirplaneMode: "enabled" },
 ];
 let rank = 0;
 function find(selector: object, next: number) {
+  const direction = next < rank ? "UP" : "DOWN";
+  const id = (selector as { id?: string }).id ?? "";
+  const nearbyControl = /^(game-connect-|game-piece-|game-port-)/.test(id) || (id === "game-run" && direction === "UP");
   steps.push({
     scrollUntilVisible: {
       element: selector,
-      direction: next < rank ? "UP" : "DOWN",
-      centerElement: true,
+      direction,
+      // Adjacent controls and the return from results need bounded movement.
+      speed: nearbyControl ? 20 : 80,
+      centerElement: false,
       timeout: 20000,
     },
   });
@@ -32,13 +38,37 @@ for (const level of campaign.levels) {
       commands: [{ tapOn: "Open" }],
     },
   });
-  for (const scenario of level.scenarios) {
+  for (const [index, scenario] of level.scenarios.entries()) {
+    const previous = level.scenarios[index - 1];
+    // Long screens need local waypoints when returning from results.
+    // Each search keeps its original budget instead of one distant search.
+    if (previous?.kind === "system") {
+      find({ id: "game-board" }, 200);
+      find({ id: `game-piece-${previous.components[0]!.id}` }, 100);
+    } else if (previous) {
+      find({ id: "game-run" }, 600);
+      if (previous.kind === "pipes")
+        find({ id: `game-port-${previous.pieces[0]!.ports[0]!.id}` }, 100);
+      else find({ id: "game-code" }, 50);
+    }
     tap(`game-scenario-${scenario.id}`, 10);
     if (scenario.kind === "grid" || scenario.kind === "sql") {
-      tap("game-code", 50);
+      find({ id: "game-code" }, 50);
       steps.push(
-        { eraseText: scenario.starter.length },
-        { inputText: scenario.solution },
+        { longPressOn: { id: "game-code", point: "25%,20%" } },
+        { runFlow: {
+          when: { platform: "Android", notVisible: "Select [Aa]ll" },
+          commands: [{ tapOn: { id: "android:id/overflow" } }],
+        } },
+        { tapOn: "Select [Aa]ll" },
+        { eraseText: 1 },
+      );
+      for (const [lineIndex, line] of scenario.solution.split("\n").entries()) {
+        if (lineIndex) steps.push({ pressKey: "Enter" });
+        steps.push({ inputText: line });
+      }
+      steps.push(
+        { assertVisible: { id: "game-code", text: `^${scenario.solution.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}$` } },
         "hideKeyboard",
       );
     } else if (scenario.kind === "pipes") {
@@ -51,17 +81,26 @@ for (const level of campaign.levels) {
         tap(`game-port-${e.to}`, 100 + ports.findIndex((p) => p.id === e.to));
       }
     } else {
-      if (level.mode === "defense" && scenario.id !== "main")
+      if (level.mode === "defense" && scenario.id !== "main") {
         tap("game-assist", 700);
+        find({ id: "game-board" }, 200);
+      }
       for (const id of scenario.solution.nodes)
         tap(
           `game-piece-${id}`,
           100 + scenario.components.findIndex((c) => c.id === id),
         );
-      for (const e of scenario.solution.edges) {
-        tap(`game-connect-${e.from}`, 200);
-        tap(`game-connect-${e.to}`, 200);
-      }
+      // Android reports clipped container bounds as fully visible. Placement
+      // order spans the rows; check the bottom then top before direct taps.
+      find({ id: `game-connect-${scenario.solution.nodes.at(-1)}` }, 201);
+      find({ id: `game-connect-${scenario.solution.nodes[0]}` }, 200);
+      for (const id of scenario.solution.nodes)
+        steps.push({ assertVisible: { id: `game-connect-${id}` } });
+      for (const e of scenario.solution.edges)
+        steps.push(
+          { tapOn: { id: `game-connect-${e.from}` } },
+          { tapOn: { id: `game-connect-${e.to}` } },
+        );
       if (scenario.solution.routing === "capacity-weighted")
         tap("game-routing", 250);
       if (scenario.solution.invalidate) tap("game-invalidate", 270);
@@ -85,12 +124,15 @@ for (const level of campaign.levels) {
     steps.push({ assertVisible: "Signal restored!" });
   }
   // A full restart must keep all earned objectives while discarding the attempt.
-  steps.push("launchApp");
+  steps.push("launchApp", { assertVisible: { id: "mobile-nav-learn" } });
   rank = 0;
 }
 steps.push(
   { setAirplaneMode: "disabled" },
   { openLink: "codematica://" },
+  // The compact list keeps the score header within reach of the bounded lookup.
+  { assertVisible: "Level list" },
+  { tapOn: "Level list" },
   {
     scrollUntilVisible: {
       element: { text: ".*36/36.*1800 XP.*" },

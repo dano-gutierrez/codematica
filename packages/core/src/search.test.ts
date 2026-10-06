@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { getContentIndex } from "./content";
 import type { ContentIndex } from "./content/schema";
-import { buildSnippet, searchContent } from "./search";
+import { buildSnippet, createSearchItems, searchContent, searchContentItems } from "./search";
 
 const index: ContentIndex = {
   schemaVersion: 12, gameCampaigns: [],
@@ -77,6 +77,13 @@ const index: ContentIndex = {
 };
 
 describe("searchContent", () => {
+  it.each([
+    ["", {}], ["lazy loading", {}], ["cach", {}],
+    ["contracts", { track: "Programming", difficulty: "senior" as const }],
+    ["sequenceDiagram", { kind: "diagram" as const }], ["qzqznotfound", {}],
+  ])("preserves filtered library results and snippets from prepared items: %s", (query, filters) => {
+    expect(searchContentItems(createSearchItems(index), query, filters)).toEqual(searchContent(index, query, filters));
+  });
   it("performs fuzzy full-document search by default", () => {
     const results = searchContent(index, "lazy loading");
 

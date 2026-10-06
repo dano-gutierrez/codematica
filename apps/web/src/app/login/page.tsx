@@ -1,4 +1,4 @@
-import Link from "next/link";
+import { ButtonLink } from "@/components/ButtonLink";
 import { ArrowLeft } from "lucide-react";
 import { LoginForm } from "@/components/LoginForm";
 import { hasSupabasePublicEnv, isAppleAuthEnabled } from "@/lib/supabase/env";
@@ -16,15 +16,9 @@ export default async function LoginPage({ searchParams }: LoginPageProps) {
   const shouldSync = (Array.isArray(sync) ? sync[0] : sync) === "1";
 
   return (
-    <main className="min-h-screen px-4 py-5 sm:py-8" data-testid="login-page">
+    <main className="ui-page min-h-screen" data-testid="login-page">
       <div className="mx-auto w-full max-w-5xl">
-        <Link
-          href="/"
-          className="inline-flex items-center gap-2 rounded-xl border border-[#d5e2e8] bg-white px-3 py-2 text-sm font-semibold text-[#263238]"
-        >
-          <ArrowLeft className="h-4 w-4" aria-hidden="true" />
-          Paths
-        </Link>
+        <ButtonLink href="/" label="Home" icon={ArrowLeft} variant="quiet" />
 
         <div className="mt-8">
           <LoginForm nextPath={nextPath} isAuthConfigured={hasSupabasePublicEnv()} isAppleEnabled={isAppleAuthEnabled()} shouldSync={shouldSync} />

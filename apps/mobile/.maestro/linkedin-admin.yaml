@@ -1,43 +1,163 @@
 # Use a disposable test project and an already signed-in allowlisted test account.
 # Never approve a hosted production draft in a test. Publishing must remain disabled.
+# EDITORIAL_TEST_POST_ID identifies a fresh material fixture; preserve earlier test jobs.
 appId: com.codematica.app
 ---
 - launchApp
 - tapOn:
     id: mobile-nav-more
+- scrollUntilVisible:
+    element:
+      id: mobile-menu-linkedin
+    direction: DOWN
+    speed: 20
+    visibilityPercentage: 100
+    centerElement: false
+    timeout: 20000
 - tapOn:
     id: mobile-menu-linkedin
-- assertVisible: LinkedIn learning posts
-- tapOn: Retries need a budget
+- assertVisible: LinkedIn
+- assertVisible: Review queue
+- assertVisible:
+    id: linkedin-admin
+- takeScreenshot: native-editorial-collection
+- scrollUntilVisible:
+    element:
+      id: linkedin-post-${EDITORIAL_TEST_POST_ID}
+    direction: DOWN
+    speed: 20
+    visibilityPercentage: 100
+    centerElement: false
+    timeout: 20000
+- tapOn:
+    id: linkedin-post-${EDITORIAL_TEST_POST_ID}
+- scrollUntilVisible:
+    element:
+      id: linkedin-body
+    direction: DOWN
+    speed: 20
+    visibilityPercentage: 100
+    centerElement: false
+    timeout: 20000
+- assertVisible:
+    id: linkedin-body
+- tapOn:
+    id: linkedin-body
+- inputText: Unsaved device notes
+- hideKeyboard
+- scrollUntilVisible:
+    element:
+      id: linkedin-discard
+    direction: DOWN
+    speed: 20
+    visibilityPercentage: 100
+    centerElement: false
+    timeout: 20000
+- assertVisible: ".*Unsaved changes. Save or discard to switch drafts.*"
+- tapOn:
+    id: linkedin-discard
+- assertNotVisible:
+    id: linkedin-discard
+- scrollUntilVisible:
+    element:
+      id: linkedin-refine
+    direction: DOWN
+    speed: 20
+    visibilityPercentage: 100
+    centerElement: false
+    timeout: 20000
+- tapOn:
+    id: linkedin-refine
+- assertVisible: Refinement queued
+- takeScreenshot: native-editorial-refinement
+- scrollUntilVisible:
+    element:
+      id: linkedin-back
+    direction: UP
+    speed: 20
+    visibilityPercentage: 100
+    centerElement: false
+    timeout: 20000
+- tapOn:
+    id: linkedin-back
+- scrollUntilVisible:
+    element:
+      id: linkedin-create
+    direction: UP
+    speed: 20
+    visibilityPercentage: 100
+    centerElement: false
+    timeout: 20000
+- tapOn:
+    id: linkedin-create
+- scrollUntilVisible:
+    element:
+      id: linkedin-create-title
+    direction: DOWN
+    speed: 20
+    visibilityPercentage: 100
+    centerElement: false
+    timeout: 20000
+- tapOn:
+    id: linkedin-create-title
+- inputText: Manual device lesson
+- hideKeyboard
+- assertVisible: Manual device lesson
+- scrollUntilVisible:
+    element:
+      id: linkedin-create-topic
+    direction: DOWN
+    speed: 20
+    visibilityPercentage: 100
+    centerElement: false
+    timeout: 20000
+- tapOn:
+    id: linkedin-create-topic
+- inputText: Reliability
+- hideKeyboard
+- assertVisible: Reliability
+- scrollUntilVisible:
+    element:
+      id: linkedin-create-body
+    direction: DOWN
+    speed: 20
+    visibilityPercentage: 100
+    centerElement: false
+    timeout: 20000
+- tapOn:
+    id: linkedin-create-body
+- inputText: Bound retries before adding load.
+- hideKeyboard
+- assertVisible: Bound retries before adding load.
+- scrollUntilVisible:
+    element:
+      id: linkedin-create-submit
+    direction: DOWN
+    speed: 20
+    visibilityPercentage: 100
+    centerElement: false
+    timeout: 20000
+- tapOn:
+    id: linkedin-create-submit
+- assertNotVisible:
+    id: linkedin-create-form
+- scrollUntilVisible:
+    element:
+      id: linkedin-body
+    direction: DOWN
+    speed: 20
+    visibilityPercentage: 100
+    centerElement: false
+    timeout: 20000
 - assertVisible:
     id: linkedin-body
 - scrollUntilVisible:
     element:
       id: linkedin-refine
-- tapOn:
-    id: linkedin-refine
+    direction: DOWN
+    speed: 20
+    visibilityPercentage: 100
+    centerElement: false
+    timeout: 20000
 - assertVisible: Refinement queued
-- tapOn:
-    id: linkedin-back
-- tapOn:
-    id: linkedin-create
-- tapOn:
-    id: linkedin-create-title
-- inputText: Manual device lesson
-- tapOn:
-    id: linkedin-create-topic
-- inputText: Reliability
-- tapOn:
-    id: linkedin-create-body
-- inputText: Bound retries before adding load.
-- hideKeyboard
-- scrollUntilVisible:
-    element:
-      id: linkedin-create-submit
-- tapOn:
-    id: linkedin-create-submit
-- assertVisible: Manual device lesson
-- scrollUntilVisible:
-    element:
-      id: linkedin-refine
-- assertVisible: Refinement queued
+- takeScreenshot: native-editorial-manual-queued

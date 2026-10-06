@@ -1,10 +1,11 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { Chrome, Lock, Mail, UserPlus } from "lucide-react";
-import { type FormEvent, useEffect, useState } from "react";
-import { clearAnonymousProgressItems, getAnonymousProgressItems } from "@/lib/progress/anonymous";
+import { Apple, Chrome, Lock, Mail, RefreshCw, UserPlus } from "lucide-react";
+import { type FormEvent, useEffect, useRef, useState } from "react";
+import { syncBufferedAnonymousProgress } from "@/lib/progress/client";
 import { createBrowserSupabaseClient } from "@/lib/supabase/client";
+import { Button } from "./Button";
 
 type LoginFormProps = {
   nextPath: string;
@@ -21,6 +22,8 @@ export function LoginForm({ nextPath, isAuthConfigured, isAppleEnabled, shouldSy
   const [status, setStatus] = useState<string | undefined>();
   const [error, setError] = useState<string | undefined>();
   const [isBusy, setIsBusy] = useState(false);
+  const [syncPending, setSyncPending] = useState(false);
+  const requestPending = useRef(false);
 
   useEffect(() => {
     if (!shouldSync || !isAuthConfigured) {
@@ -35,207 +38,106 @@ export function LoginForm({ nextPath, isAuthConfigured, isAppleEnabled, shouldSy
 
     let isMounted = true;
 
-    supabase.auth.getUser().then(({ data }) => {
-      if (!isMounted || !data.user) {
-        return;
+    void supabase.auth.getUser().then(async ({ data }) => {
+      if (!isMounted || !data.user) return;
+      try {
+        if (!await syncBufferedAnonymousProgress()) throw new Error("Progress sync failed");
+        if (isMounted) { router.replace(nextPath); router.refresh(); }
+      } catch {
+        if (isMounted) { setSyncPending(true); setError("You're signed in, but your local progress hasn't synced. Try again or continue; your progress stays on this device."); }
       }
-
-      syncAnonymousProgress().finally(() => {
-        router.replace(nextPath);
-        router.refresh();
-      });
-    });
+    }).catch(() => { if (isMounted) setError("Couldn't check your account. Please try signing in again."); });
 
     return () => {
       isMounted = false;
     };
   }, [isAuthConfigured, nextPath, router, shouldSync]);
 
+  async function finishSignIn() {
+    try {
+      if (!await syncBufferedAnonymousProgress()) throw new Error("Progress sync failed");
+      router.replace(nextPath);
+      router.refresh();
+    } catch {
+      setSyncPending(true);
+      setError("You're signed in, but your local progress hasn't synced. Try again or continue; your progress stays on this device.");
+    }
+  }
+
   async function signInWithProvider(provider: "google" | "apple") {
-    if (!isAuthConfigured) {
-      setError("Sign-in is not set up here.");
-      return;
-    }
-
-    const supabase = createBrowserSupabaseClient();
-
-    if (!supabase) {
-      setError("Sign-in is not set up here.");
-      return;
-    }
-
+    if (requestPending.current) return;
+    const supabase = isAuthConfigured ? createBrowserSupabaseClient() : undefined;
+    if (!supabase) { setError("Sign-in is not set up here."); return; }
     setError(undefined);
     setStatus(undefined);
     setIsBusy(true);
-
-    const { error: authError } = await supabase.auth.signInWithOAuth({
-      provider,
-      options: {
-        redirectTo: `${window.location.origin}/auth/callback?next=${encodeURIComponent(nextPath)}`,
-      },
-    });
-
-    if (authError) {
-      setError(authError.message);
+    requestPending.current = true;
+    try {
+      const { error: authError } = await supabase.auth.signInWithOAuth({ provider, options: { redirectTo: `${window.location.origin}/auth/callback?next=${encodeURIComponent(nextPath)}` } });
+      if (authError) { setError(authError.message); setIsBusy(false); requestPending.current = false; }
+    } catch {
+      setError("Couldn't open sign-in. Please try again.");
       setIsBusy(false);
+      requestPending.current = false;
     }
   }
 
   async function handleEmailSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-
-    if (!isAuthConfigured) {
-      setError("Sign-in is not set up here.");
-      return;
-    }
-
-    const supabase = createBrowserSupabaseClient();
-
-    if (!supabase) {
-      setError("Sign-in is not set up here.");
-      return;
-    }
-
+    if (requestPending.current) return;
+    const supabase = isAuthConfigured ? createBrowserSupabaseClient() : undefined;
+    if (!supabase) { setError("Sign-in is not set up here."); return; }
     setError(undefined);
     setStatus(undefined);
     setIsBusy(true);
+    requestPending.current = true;
+    try {
+      const authResult = mode === "sign-in"
+        ? await supabase.auth.signInWithPassword({ email: email.trim(), password })
+        : await supabase.auth.signUp({ email: email.trim(), password, options: { emailRedirectTo: `${window.location.origin}/auth/callback?next=${encodeURIComponent(nextPath)}` } });
+      if (authResult.error) { setError(authResult.error.message); return; }
+      if (mode === "sign-up" && !authResult.data.session) { setStatus("Check your email to confirm your account."); return; }
+      await finishSignIn();
+    } catch { setError("Couldn't complete sign-in. Please try again."); }
+    finally { requestPending.current = false; setIsBusy(false); }
+  }
 
-    const authResult =
-      mode === "sign-in"
-        ? await supabase.auth.signInWithPassword({ email, password })
-        : await supabase.auth.signUp({
-            email,
-            password,
-            options: {
-              emailRedirectTo: `${window.location.origin}/auth/callback?next=${encodeURIComponent(nextPath)}`,
-            },
-          });
-
-    if (authResult.error) {
-      setError(authResult.error.message);
-      setIsBusy(false);
-      return;
-    }
-
-    if (mode === "sign-up" && !authResult.data.session) {
-      setStatus("Check your email to confirm your account.");
-      setIsBusy(false);
-      return;
-    }
-
-    await syncAnonymousProgress();
-    router.replace(nextPath);
-    router.refresh();
+  async function retrySync() {
+    if (requestPending.current) return;
+    requestPending.current = true;
+    setIsBusy(true);
+    setError(undefined);
+    try { await finishSignIn(); }
+    finally { requestPending.current = false; setIsBusy(false); }
   }
 
   const disabled = isBusy || !isAuthConfigured;
 
-  return (
-    <section className="mx-auto w-full max-w-md rounded-xl border border-[#d5e2e8] bg-white p-5 sm:p-7" data-testid="login-form">
-      <div>
-        <p className="text-sm font-semibold uppercase text-[#007c78]">Save your path</p>
-        <h1 className="mt-2 text-3xl font-semibold tracking-tight text-[#263238]">Welcome back</h1>
-        <p className="mt-3 text-sm font-normal leading-6 text-[#68737d]">Sync your latest reading, practice, and interview progress across devices.</p>
+  return <section className="ui-auth-panel" data-testid="login-form" aria-labelledby="login-title">
+    <header className="ui-page-heading">
+      <h1 id="login-title">{mode === "sign-in" ? "Welcome back" : "Create your account"}</h1>
+      <p>Keep your learning progress across devices.</p>
+    </header>
+    {!syncPending ? <>
+      <div className="ui-auth-providers">
+        <Button label="Continue with Google" icon={Chrome} disabled={disabled} onClick={() => void signInWithProvider("google")} data-testid="login-google" />
+        {isAppleEnabled ? <Button label="Continue with Apple" icon={Apple} disabled={disabled} onClick={() => void signInWithProvider("apple")} data-testid="login-apple" /> : null}
       </div>
-
-      <div className="mt-6 grid gap-3">
-        <button
-          type="button"
-          disabled={disabled}
-          onClick={() => void signInWithProvider("google")}
-          className="inline-flex min-h-12 items-center justify-center gap-2 rounded-xl border border-[#d5e2e8] bg-white px-4 py-2 text-sm font-semibold text-[#263238] disabled:opacity-60"
-        >
-          <Chrome className="h-4 w-4 text-[#245fba]" aria-hidden="true" />
-          Continue with Google
-        </button>
-
-        {isAppleEnabled ? (
-          <button
-            type="button"
-            disabled={disabled}
-            onClick={() => void signInWithProvider("apple")}
-            className="inline-flex min-h-12 items-center justify-center gap-2 rounded-xl border border-[#263238] bg-[#263238] px-4 py-2 text-sm font-semibold text-white disabled:opacity-60"
-          >
-            Continue with Apple
-          </button>
-        ) : null}
-      </div>
-
-      <div className="my-6 h-0.5 bg-[#e4edf1]" />
-
-      <form className="grid gap-3" onSubmit={(event) => void handleEmailSubmit(event)}>
-        <label className="grid gap-1 text-xs font-semibold uppercase text-[#68737d]">
-          Email
-          <span className="relative">
-            <Mail className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-[#68737d]" aria-hidden="true" />
-            <input
-              type="email"
-              required
-              disabled={disabled}
-              value={email}
-              onChange={(event) => setEmail(event.target.value)}
-              className="h-12 w-full rounded-xl border border-[#d5e2e8] bg-white pl-10 pr-3 text-sm font-medium normal-case text-[#263238] outline-none focus:border-[#007c78] disabled:opacity-60"
-            />
-          </span>
-        </label>
-
-        <label className="grid gap-1 text-xs font-semibold uppercase text-[#68737d]">
-          Password
-          <span className="relative">
-            <Lock className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-[#68737d]" aria-hidden="true" />
-            <input
-              type="password"
-              required
-              minLength={6}
-              disabled={disabled}
-              value={password}
-              onChange={(event) => setPassword(event.target.value)}
-              className="h-12 w-full rounded-xl border border-[#d5e2e8] bg-white pl-10 pr-3 text-sm font-medium normal-case text-[#263238] outline-none focus:border-[#007c78] disabled:opacity-60"
-            />
-          </span>
-        </label>
-
-        <button
-          type="submit"
-          disabled={disabled}
-          className="inline-flex min-h-12 items-center justify-center gap-2 rounded-xl border border-[#00645f] bg-[#007c78] px-4 py-2 text-sm font-semibold text-white transition hover:-translate-y-0.5 disabled:translate-y-0 disabled:opacity-60"
-        >
-          {mode === "sign-in" ? <Mail className="h-4 w-4" aria-hidden="true" /> : <UserPlus className="h-4 w-4" aria-hidden="true" />}
-          {mode === "sign-in" ? "Sign in with email" : "Create account"}
-        </button>
+      <div className="ui-auth-divider"><span>or use email</span></div>
+      <form className="ui-form" onSubmit={(event) => void handleEmailSubmit(event)} aria-busy={isBusy}>
+        <label className="ui-field">Email<span className="ui-field-icon"><Mail size={18} aria-hidden="true" /><input type="email" required autoComplete="email" inputMode="email" disabled={disabled} value={email} onChange={(event) => setEmail(event.target.value)} className="ui-input" data-testid="login-email" /></span></label>
+        <label className="ui-field">Password<span className="ui-field-icon"><Lock size={18} aria-hidden="true" /><input type="password" required minLength={6} autoComplete={mode === "sign-in" ? "current-password" : "new-password"} aria-describedby={mode === "sign-up" ? "password-hint" : undefined} disabled={disabled} value={password} onChange={(event) => setPassword(event.target.value)} className="ui-input" data-testid="login-password" /></span></label>
+        {mode === "sign-up" ? <p className="ui-field-hint" id="password-hint">Use at least 6 characters.</p> : null}
+        <Button type="submit" label={mode === "sign-in" ? "Sign in with email" : "Create account"} icon={mode === "sign-in" ? Mail : UserPlus} tone="success" variant="primary" disabled={disabled} data-testid="login-submit" />
       </form>
+      <Button label={mode === "sign-in" ? "Create an account" : "Use an existing account"} tone="info" variant="quiet" disabled={isBusy} onClick={() => { setMode(value => value === "sign-in" ? "sign-up" : "sign-in"); setError(undefined); setStatus(undefined); }} data-testid="login-mode" />
+    </> : <div className="ui-actions">
+      <Button label="Retry sync" icon={RefreshCw} tone="warning" disabled={isBusy} onClick={() => void retrySync()} data-testid="login-retry-sync" />
+      <Button label="Continue" tone="success" variant="primary" disabled={isBusy} onClick={() => { router.replace(nextPath); router.refresh(); }} data-testid="login-continue" />
+    </div>}
+    {!isAuthConfigured ? <p className="ui-notice ui-notice-warning">Sign-in is not set up here. You can keep learning on this device.</p> : null}
+    {status ? <p className="ui-notice ui-notice-success" role="status">{status}</p> : null}
+    {error ? <p className="ui-notice ui-notice-danger" role="alert">{error}</p> : null}
+  </section>;
 
-      <button
-        type="button"
-        className="mt-4 text-sm font-semibold text-[#245fba]"
-        onClick={() => setMode(mode === "sign-in" ? "sign-up" : "sign-in")}
-      >
-        {mode === "sign-in" ? "Create an account" : "Use an existing account"}
-      </button>
-
-      {!isAuthConfigured ? <p className="mt-4 rounded-xl bg-[#fff5d6] p-3 text-sm font-medium text-[#7a5200]">Sign-in is not set up here.</p> : null}
-      {status ? <p className="mt-4 rounded-xl bg-[#e8f8f6] p-3 text-sm font-medium text-[#007c78]">{status}</p> : null}
-      {error ? <p className="mt-4 rounded-xl bg-[#ffe8ed] p-3 text-sm font-medium text-[#a01632]">{error}</p> : null}
-    </section>
-  );
-}
-
-async function syncAnonymousProgress() {
-  const items = getAnonymousProgressItems();
-
-  if (items.length === 0) {
-    return;
-  }
-
-  const response = await fetch("/api/progress/sync-anonymous", {
-    method: "POST",
-    headers: {
-      "content-type": "application/json",
-    },
-    body: JSON.stringify({ items: items.map((item) => item.input) }),
-  });
-
-  if (response.ok) {
-    clearAnonymousProgressItems();
-  }
 }

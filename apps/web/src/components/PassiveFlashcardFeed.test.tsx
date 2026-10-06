@@ -72,6 +72,10 @@ describe("PassiveFlashcardFeed", () => {
     expect(screen.getByText("Python")).toBeVisible();
     expect(screen.getByText("Names Bind Objects")).toBeVisible();
     expect(screen.getByText("Annotations Are Metadata")).toBeVisible();
+    expect(screen.getAllByRole("heading", { level: 1 })).toHaveLength(1);
+    expect(screen.getByRole("heading", { level: 1 })).toHaveTextContent(feed.title);
+    expect(screen.getByRole("heading", { level: 2, name: "Names Bind Objects" })).toBeVisible();
+    expect(screen.getByTestId("passive-flashcard-feed")).toHaveAttribute("tabindex", "0");
     expect(screen.getByText("load_user").closest("code")).toHaveTextContent("def load_user(user_id: int) -> User:");
     expect(screen.queryByRole("button", { name: /reveal answer/i })).not.toBeInTheDocument();
     expect(screen.queryByRole("button", { name: /check answer/i })).not.toBeInTheDocument();

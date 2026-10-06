@@ -1,6 +1,9 @@
+import { AdaptiveText as Text } from "../AdaptiveText";
 import {
   useCallback,
   useEffect,
+  useLayoutEffect,
+  useMemo,
   useRef,
   useState,
   useSyncExternalStore,
@@ -12,9 +15,12 @@ import {
   Pressable,
   ScrollView,
   StyleSheet,
-  Text,
   TextInput,
   View,
+  useWindowDimensions,
+  type LayoutChangeEvent,
+  type NativeScrollEvent,
+  type NativeSyntheticEvent,
 } from "react-native";
 import { WebView } from "react-native-webview";
 import {
@@ -41,6 +47,7 @@ type Props = {
   campaign: GameCampaign;
   store: GameStore;
   navigate: (route: string) => void;
+  isAuthConfigured?: boolean;
 };
 function Action({
   label,
@@ -76,7 +83,38 @@ function Action({
   );
 }
 let mapOffset: number | undefined;
-export function NativeGameMap({ campaign, store, navigate }: Props) {
+function useSceneVisibility() {
+  const measurements = useRef<{
+    bounds: { y: number; height: number } | null;
+    offset: number;
+    height: number | null;
+  }>({ bounds: null, offset: 0, height: null });
+  const [visible, setVisible] = useState(true);
+  const refresh = () => {
+    const { bounds, offset, height } = measurements.current;
+    setVisible(bounds === null || height === null || (
+      bounds.y + bounds.height > offset && bounds.y < offset + height
+    ));
+  };
+  return {
+    visible,
+    onSceneLayout: ({ nativeEvent: { layout } }: LayoutChangeEvent) => {
+      measurements.current.bounds = { y: layout.y, height: layout.height };
+      refresh();
+    },
+    onViewportLayout: ({ nativeEvent: { layout } }: LayoutChangeEvent) => {
+      measurements.current.height = layout.height;
+      refresh();
+    },
+    onScroll: ({ nativeEvent: { contentOffset } }: NativeSyntheticEvent<NativeScrollEvent>) => {
+      measurements.current.offset = contentOffset.y;
+      refresh();
+    },
+  };
+}
+export function NativeGameMap({ campaign, store, navigate, isAuthConfigured = false, active = true }: Props & { active?: boolean }) {
+  const { fontScale } = useWindowDimensions();
+  const sceneViewport = useSceneVisibility();
   const storageStatus = useSyncExternalStore(
     store.subscribe,
     store.getStatus,
@@ -89,63 +127,100 @@ export function NativeGameMap({ campaign, store, navigate }: Props) {
   );
   const [loaded, setLoaded] = useState(false),
     [list, setList] = useState(false);
+  const terrainToken = useMemo(() => ({ fontScale, list }), [fontScale, list]);
+  const currentTerrain = useRef(terrainToken);
   const scroll = useRef<ScrollView>(null),
     scrollValue = useSharedValue(0),
     [viewport, setViewport] = useState(0),
     [panelHeight, setPanelHeight] = useState(620),
-    [panelPositions, setPanelPositions] = useState<Record<string, number>>({}),
+    [panelLayouts, setPanelLayouts] = useState<Record<string, { y: number; height: number }>>({}),
     [screenHeight, setScreenHeight] = useState(700);
   const positioned = useRef(false),
+    initialOffset = useRef(mapOffset),
     measurements = useRef<{
       height: number;
+      contentHeight: number;
       districts: Record<string, number>;
       nodes: Record<string, { y: number; height: number }>;
-    }>({ height: 700, districts: {}, nodes: {} });
+    }>({ height: 700, contentHeight: 0, districts: {}, nodes: {} });
+  useLayoutEffect(() => {
+    if (currentTerrain.current === terrainToken) return;
+    currentTerrain.current = terrainToken;
+    positioned.current = false;
+    initialOffset.current = undefined;
+    mapOffset = undefined;
+    measurements.current.contentHeight = 0;
+    measurements.current.districts = {};
+    measurements.current.nodes = {};
+  }, [terrainToken]);
   const totals = gameTotals(p),
     current =
       campaign.levels.find(
         (l) => !p.awards[awardKey(campaign.id, l.id, "main")],
       ) ?? campaign.levels.at(-1)!;
   const centerCurrent = useCallback(() => {
+    if (currentTerrain.current !== terrainToken) return;
     const m = measurements.current,
-      node = m.nodes[current.id],
-      districtY = m.districts[current.district];
+      target = list ? campaign.levels[0] : current,
+      node = m.nodes[target.id],
+      districtY = m.districts[target.district];
     if (
       !loaded ||
-      list ||
       positioned.current ||
       !node ||
-      districtY === undefined
+      districtY === undefined ||
+      m.contentHeight < districtY + node.y + node.height
     )
       return;
     positioned.current = true;
     scroll.current?.scrollTo({
       y:
-        mapOffset ??
+        (list ? undefined : initialOffset.current) ??
         Math.max(0, districtY + node.y + node.height / 2 - m.height / 2),
       animated: false,
     });
-  }, [loaded, list, current.id, current.district]);
+  }, [loaded, list, current, campaign.levels, terrainToken]);
   useEffect(() => {
     void store.load().finally(() => setLoaded(true));
   }, [store]);
   useEffect(() => {
     centerCurrent();
   }, [centerCurrent]);
+  const recordPanelLayout = (id: string, layout: LayoutChangeEvent["nativeEvent"]["layout"]) => {
+    const { y } = layout;
+    const height = layout.height ?? panelHeight;
+    setPanelLayouts(previous => previous[id]?.y === y && previous[id]?.height === height
+      ? previous
+      : { ...previous, [id]: { y, height } });
+  };
   return (
+    <View style={styles.screen}>
+      <View style={styles.mapToolbar}>
+        <Action
+          label={list ? "Map" : "Level list"}
+          id="game-map-view"
+          onPress={() => setList(!list)}
+        />
+        <Action label="Explore lessons" onPress={() => navigate("/learn")} />
+      </View>
     <ScrollView
+      key={`${fontScale}:${list}`}
       ref={scroll}
       testID="game-map"
       style={styles.screen}
       contentContainerStyle={styles.content}
       onScroll={(e) => {
+        if (currentTerrain.current !== terrainToken) return;
+        sceneViewport.onScroll(e);
         const offset = e.nativeEvent.contentOffset.y;
-        if (!list) mapOffset = offset;
+        if (!list && positioned.current) mapOffset = offset;
         scrollValue.value = offset;
         setViewport(Math.floor(offset / 400) * 400);
       }}
       scrollEventThrottle={16}
       onLayout={(e) => {
+        if (currentTerrain.current !== terrainToken) return;
+        sceneViewport.onViewportLayout(e);
         measurements.current.height = e.nativeEvent.layout.height;
         setScreenHeight(e.nativeEvent.layout.height);
         setPanelHeight(
@@ -153,7 +228,11 @@ export function NativeGameMap({ campaign, store, navigate }: Props) {
         );
         centerCurrent();
       }}
-      onContentSizeChange={centerCurrent}
+      onContentSizeChange={(_width, height) => {
+        if (currentTerrain.current !== terrainToken) return;
+        measurements.current.contentHeight = height;
+        centerCurrent();
+      }}
     >
       {storageStatus ? (
         <Text accessibilityLiveRegion="polite">{storageStatus}</Text>
@@ -166,50 +245,36 @@ export function NativeGameMap({ campaign, store, navigate }: Props) {
       <Text style={styles.stats}>
         ★ {totals.stars}/36 · {totals.xp} XP · {getStreak(p)} day streak
       </Text>
-      <NativeGameScene cosmetic={p.cosmetic} visible={viewport < 600} />
+      <View testID="game-scene-region" onLayout={sceneViewport.onSceneLayout}>
+        <NativeGameScene cosmetic={p.cosmetic} visible={active && sceneViewport.visible} />
+      </View>
       <Text style={styles.heading}>Small fixes. A brighter city.</Text>
       <Action
         label="Continue the story"
         id="game-continue"
         onPress={() => navigate(`/play/${campaign.id}/${current.id}`)}
       />
-      <View style={styles.row}>
-        <Action
-          label={list ? "Map" : "Level list"}
-          id="game-map-view"
-          onPress={() => {
-            positioned.current = false;
-            if (list) {
-              measurements.current.districts = {};
-              measurements.current.nodes = {};
-            }
-            setList(!list);
-          }}
-        />
-        <Action label="Explore lessons" onPress={() => navigate("/learn")} />
-      </View>
       {!list &&
         MAP_PANELS.filter((panel) => !("district" in panel)).map((panel, i) => (
           <View
             key={panel.id}
             testID={`game-frontier-${panel.id}`}
-            style={[styles.district, { height: panelHeight }]}
+            style={[styles.district, { minHeight: panelHeight }]}
             onLayout={(e) => {
+              if (currentTerrain.current !== terrainToken) return;
               const y = e.nativeEvent.layout.y;
               measurements.current.districts[panel.id] = y;
-              setPanelPositions((prev) =>
-                prev[panel.id] === y ? prev : { ...prev, [panel.id]: y },
-              );
+              recordPanelLayout(panel.id, e.nativeEvent.layout);
             }}
           >
             {Math.abs(
-              viewport - (panelPositions[panel.id] ?? 700 + i * panelHeight),
+              viewport - (panelLayouts[panel.id]?.y ?? 700 + i * panelHeight),
             ) <
-              panelHeight + screenHeight + 400 && (
+              (panelLayouts[panel.id]?.height ?? panelHeight) + screenHeight + 400 && (
               <NativeDistrictArt
                 district="tower"
                 panel={panel.id}
-                panelTop={panelPositions[panel.id] ?? 700 + i * panelHeight}
+                panelTop={panelLayouts[panel.id]?.y ?? 700 + i * panelHeight}
                 scroll={scrollValue}
                 restored={false}
                 details={0}
@@ -235,6 +300,7 @@ export function NativeGameMap({ campaign, store, navigate }: Props) {
                   label="Return to current level"
                   onPress={() => {
                     positioned.current = false;
+                    initialOffset.current = undefined;
                     mapOffset = undefined;
                     centerCurrent();
                   }}
@@ -254,30 +320,28 @@ export function NativeGameMap({ campaign, store, navigate }: Props) {
               key={district}
               testID={`game-district-${district}`}
               onLayout={(e) => {
+                if (currentTerrain.current !== terrainToken) return;
                 measurements.current.districts[district] =
                   e.nativeEvent.layout.y;
-                const y = e.nativeEvent.layout.y;
-                setPanelPositions((prev) =>
-                  prev[district] === y ? prev : { ...prev, [district]: y },
-                );
+                recordPanelLayout(district, e.nativeEvent.layout);
                 centerCurrent();
               }}
               style={[
                 styles.district,
-                list ? { minHeight: 0 } : { height: panelHeight },
+                list ? { minHeight: 0 } : { minHeight: panelHeight },
               ]}
             >
               {!list &&
               Math.abs(
                 viewport -
-                  (panelPositions[district] ?? 700 + (9 + index) * panelHeight),
+                  (panelLayouts[district]?.y ?? 700 + (9 + index) * panelHeight),
               ) <
-                panelHeight + screenHeight + 400 ? (
+                (panelLayouts[district]?.height ?? panelHeight) + screenHeight + 400 ? (
                 <NativeDistrictArt
                   district={district as "garden" | "canal" | "tower"}
                   panel={`city-${index}` as "city-0" | "city-1" | "city-2"}
                   panelTop={
-                    panelPositions[district] ?? 700 + (9 + index) * panelHeight
+                    panelLayouts[district]?.y ?? 700 + (9 + index) * panelHeight
                   }
                   scroll={scrollValue}
                   restored={restored}
@@ -301,6 +365,7 @@ export function NativeGameMap({ campaign, store, navigate }: Props) {
                   key={l.id}
                   testID={`game-stop-${l.order}`}
                   onLayout={(e) => {
+                    if (currentTerrain.current !== terrainToken) return;
                     measurements.current.nodes[l.id] = {
                       y: e.nativeEvent.layout.y,
                       height: e.nativeEvent.layout.height,
@@ -337,7 +402,7 @@ export function NativeGameMap({ campaign, store, navigate }: Props) {
       )}
       <SaveProgressPrompt
         itemCount={store.isAnonymous() ? totals.stars : 0}
-        adapters={{ navigation: { navigate } }}
+        adapters={{ navigation: { navigate }, auth: { isConfigured: isAuthConfigured } }}
       />
       <Text style={styles.heading}>Patch’s workshop</Text>
       <Text style={styles.body}>
@@ -360,6 +425,7 @@ export function NativeGameMap({ campaign, store, navigate }: Props) {
         ))}
       </View>
     </ScrollView>
+    </View>
   );
 }
 export function NativeGamePlay({
@@ -376,11 +442,15 @@ export function NativeGamePlay({
     [output, setOutput] = useState<{ html: string; nonce: string } | null>(
       null,
     ),
-    [busy, setBusy] = useState(false);
+    [busy, setBusy] = useState(false),
+    [runnerLoaded, setRunnerLoaded] = useState(false),
+    [editor, setEditor] = useState(() => ({ generation: 0, text: session.getSnapshot().code }));
   const runnerNonce = useRef<string | null>(null);
+  const editorGeneration = useRef(0);
   const cancelRunner = useCallback(() => {
     runnerNonce.current = null;
     setBusy(false);
+    setRunnerLoaded(false);
     setOutput(null);
   }, []);
   const storageStatus = useSyncExternalStore(
@@ -433,24 +503,31 @@ export function NativeGamePlay({
       cancelRunner();
       session.submit({
         passed: false,
-        reasons: ["The local runner timed out. Retry your solution."],
+        reasons: [runnerLoaded
+          ? "The local runner timed out. Retry your solution."
+          : "The local runner could not start. Retry your solution."],
         events: [],
       });
-    }, 10000);
+    }, runnerLoaded ? 10000 : 30000);
     return () => clearTimeout(timeout);
-  }, [active, busy, session, cancelRunner]);
-  const [sceneVisible, setSceneVisible] = useState(true);
+  }, [active, busy, runnerLoaded, session, cancelRunner]);
+  const sceneViewport = useSceneVisibility();
   const editable = active && session.editable && !busy,
     sc = s.scenario;
+  const reseedEditor = () => {
+    setEditor({ generation: ++editorGeneration.current, text: session.getSnapshot().code });
+  };
   const run = () => {
     if (!editable) return;
-    if (sc.kind === "grid" || sc.kind === "sql") {
+    const current = session.getSnapshot();
+    if (current.scenario.kind === "grid" || current.scenario.kind === "sql") {
       const nonce = `${Date.now()}-${Math.random()}`;
       runnerNonce.current = nonce;
+      setRunnerLoaded(false);
       setBusy(true);
       setOutput({
         nonce,
-        html: gameSandboxHtml(sc, s.code, workerSource, nonce),
+        html: gameSandboxHtml(current.scenario, current.code, workerSource, nonce),
       });
     } else session.run();
   };
@@ -458,6 +535,7 @@ export function NativeGamePlay({
     cancelRunner();
     setFrom("");
     session.reset();
+    reseedEditor();
   };
   if (!loaded) return <Text>Preparing the workshop…</Text>;
   if (!isLevelUnlocked(campaign, level.id, p))
@@ -474,10 +552,11 @@ export function NativeGamePlay({
   return (
     <KeyboardAvoidingView
       style={{ flex: 1 }}
-      behavior={Platform.OS === "ios" ? "padding" : undefined}
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
     >
       <ScrollView
-        onScroll={(e) => setSceneVisible(e.nativeEvent.contentOffset.y < 600)}
+        onScroll={sceneViewport.onScroll}
+        onLayout={sceneViewport.onViewportLayout}
         scrollEventThrottle={100}
         testID="game-play"
         keyboardShouldPersistTaps="handled"
@@ -514,22 +593,28 @@ export function NativeGamePlay({
                 cancelRunner();
                 setFrom("");
                 session.choose(variant.id);
+                reseedEditor();
               }}
             />
           ))}
         </View>
-        <NativeGameScene
-          visible={active && sceneVisible}
-          cosmetic={p.cosmetic}
-          state={
-            s.attempt.phase === "won"
-              ? "celebrate"
-              : s.attempt.phase === "running" || s.attempt.phase === "paused"
-                ? "attack"
-                : "idle"
-          }
-          paused={s.attempt.phase === "paused"}
-        />
+        <View
+          testID="game-scene-region"
+          onLayout={sceneViewport.onSceneLayout}
+        >
+          <NativeGameScene
+            visible={active && sceneViewport.visible}
+            cosmetic={p.cosmetic}
+            state={
+              s.attempt.phase === "won"
+                ? "celebrate"
+                : (s.attempt.phase === "running" || s.attempt.phase === "paused")
+                  ? "attack"
+                  : "idle"
+            }
+            paused={s.attempt.phase === "paused"}
+          />
+        </View>
         <Text style={styles.heading}>{sc.title}</Text>
         <Text style={styles.body}>{sc.objective}</Text>
         {sc.kind === "sql" || sc.kind === "grid" ? (
@@ -538,6 +623,7 @@ export function NativeGamePlay({
               {sc.kind === "sql" ? "SQL QUERY" : "CSS DECLARATIONS"}
             </Text>
             <TextInput
+              key={editor.generation}
               accessibilityLabel={
                 sc.kind === "sql" ? "SQL query" : "CSS declarations"
               }
@@ -547,9 +633,11 @@ export function NativeGamePlay({
               autoCorrect={false}
               autoCapitalize="none"
               maxLength={4096}
-              value={s.code}
+              // Native owns typing/caret; resetting or choosing reseeds once.
+              defaultValue={editor.text}
               editable={editable}
               onChangeText={(text) => {
+                if (editor.generation !== editorGeneration.current) return;
                 cancelRunner();
                 session.edit(text);
               }}
@@ -705,6 +793,10 @@ export function NativeGamePlay({
             allowUniversalAccessFromFileURLs={false}
             setSupportMultipleWindows={false}
             style={{ height: 350, backgroundColor: "#edf4e9" }}
+            onLoadEnd={() => {
+              if (runnerNonce.current && output?.nonce === runnerNonce.current)
+                setRunnerLoaded(true);
+            }}
             onMessage={(event) => {
               try {
                 const message = JSON.parse(event.nativeEvent.data);
@@ -752,7 +844,7 @@ export function NativeGamePlay({
             <Action
               label={
                 busy
-                  ? "Running…"
+                  ? runnerLoaded ? "Running…" : "Starting runner…"
                   : level.mode === "defense" && !s.attempt.assisted
                     ? "Start defense"
                     : "Run solution"
@@ -888,18 +980,22 @@ const styles = StyleSheet.create({
     paddingVertical: 12,
   },
   button: {
-    minHeight: 46,
+    minHeight: 48,
+    minWidth: 48,
+    maxWidth: "100%",
+    flexShrink: 1,
     paddingVertical: 12,
     paddingHorizontal: 15,
     borderRadius: 12,
     borderWidth: 1,
-    borderColor: "#8fa688",
+    borderColor: "#647b65",
     backgroundColor: "#f9f7ed",
     justifyContent: "center",
   },
-  buttonText: { fontSize: 13, fontWeight: "600", color: "#285340" },
+  buttonText: { fontSize: 15, fontWeight: "600", color: "#285340" },
   selected: { backgroundColor: "#305b4c" },
   row: { flexDirection: "row", gap: 8, flexWrap: "wrap", marginVertical: 8 },
+  mapToolbar: { flexDirection: "row", gap: 8, flexWrap: "wrap", paddingHorizontal: 20, paddingVertical: 8 },
   district: {
     minHeight: 620,
     padding: 20,

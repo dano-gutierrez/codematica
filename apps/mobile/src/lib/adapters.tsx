@@ -5,6 +5,7 @@ import { createAudioPlayer, type AudioPlayer } from "expo-audio";
 import type { CodematicaAdapters, ProgressTarget } from "@codematica/ui";
 import { createNativeSupabaseClient, getNativeAuthRedirectUrl, hasSupabasePublicEnv, openAuthUrl } from "./supabase";
 import { recordNativeProgress, syncNativeAnonymousProgress } from "./progress";
+import { nativeSearchWorkerSource } from "../generated/search-worker";
 import { japaneseAudioAssets } from "../generated/japanese-audio";
 
 import type { NotebookDataClient } from "@codematica/core";
@@ -30,6 +31,7 @@ export function useCodematicaAdapters(): CodematicaAdapters {
 
   return useMemo(
     () => ({
+      searchScript: nativeSearchWorkerSource,
       navigation: {
         navigate: (href: string) => router.push(href as never),
         replace: (href: string) => router.replace(href as never),
@@ -44,6 +46,7 @@ export function useCodematicaAdapters(): CodematicaAdapters {
       handwritingCanvas: nativeHandwritingCanvas,
       auth: {
         isConfigured: hasSupabasePublicEnv(),
+        isAppleEnabled: process.env.EXPO_PUBLIC_AUTH_APPLE_ENABLED === "true",
         signInWithPassword: async (email: string, password: string) => {
           const { error } = await supabase?.auth.signInWithPassword({ email, password }) ?? { error: { message: "Supabase is not configured." } };
 
@@ -51,7 +54,10 @@ export function useCodematicaAdapters(): CodematicaAdapters {
             throw new Error(error.message);
           }
 
-          await syncNativeAnonymousProgress(supabase);
+          try {
+            const result = await syncNativeAnonymousProgress(supabase);
+            return { progressSynced: result.rejected === 0 };
+          } catch { return { progressSynced: false }; }
         },
         signUpWithPassword: async (email: string, password: string) => {
           const { error } = await supabase?.auth.signUp({
@@ -80,11 +86,13 @@ export function useCodematicaAdapters(): CodematicaAdapters {
             throw new Error(error.message);
           }
 
-          if (data.url) {
-            await openAuthUrl(data.url);
-          }
+          if (!data.url) throw new Error("Could not open sign-in. Please try again.");
+          await openAuthUrl(data.url);
         },
-        syncAnonymousProgress: () => syncNativeAnonymousProgress(supabase).then(() => undefined),
+        syncAnonymousProgress: async () => {
+          const result = await syncNativeAnonymousProgress(supabase);
+          return { progressSynced: result.rejected === 0 };
+        },
       },
     }),
     [router, supabase],

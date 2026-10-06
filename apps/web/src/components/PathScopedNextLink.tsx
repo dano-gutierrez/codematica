@@ -1,12 +1,9 @@
 "use client";
 
-import Link from "next/link";
+import { ButtonLink } from "./ButtonLink";
 import { useSearchParams } from "next/navigation";
 import { ArrowRight } from "lucide-react";
 import { appendPathToHref, recordProgress, type ProgressTarget } from "@/lib/progress/client";
-
-const nextLinkClassName =
-  "inline-flex min-h-12 items-center gap-2 rounded-xl border border-[#1d4e9e] bg-[#245fba] px-4 py-2 text-sm font-semibold text-white transition hover:-translate-y-0.5";
 
 type PathScopedNextLinkProps = {
   nextHrefsByPath: Record<string, string>;
@@ -26,9 +23,12 @@ export function PathScopedNextLink({ nextHrefsByPath, testId, wrapperClassName =
 
   return (
     <div className={wrapperClassName}>
-      <Link
+      <ButtonLink
         href={href}
-        className={nextLinkClassName}
+        label="Next activity"
+        icon={ArrowRight}
+        tone="success"
+        variant="primary"
         data-testid={testId}
         onClick={() => {
           if (!progressTarget) {
@@ -45,10 +45,7 @@ export function PathScopedNextLink({ nextHrefsByPath, testId, wrapperClassName =
             { nextNode: true },
           );
         }}
-      >
-        Next activity
-        <ArrowRight className="h-4 w-4" aria-hidden="true" />
-      </Link>
+      />
     </div>
   );
 }

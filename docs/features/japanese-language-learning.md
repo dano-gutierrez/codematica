@@ -102,13 +102,37 @@ The offline IME uses deterministic romaji-to-kana rules, curriculum boosts, and 
 - Persistence: `supabase/migrations/202608040001_create_user_skill_progress.sql`
 - Tests: exact N5 content counts and references, schema/grading/IME/audio filtering, assisted and free handwriting tolerance, stage progression, mastery scheduling, web/native open-answer and review modes, Japanese Playwright regression, coverage floors, and the Maestro installed-app journey.
 
+## App-wide Japanese design pass — 2026-10-03
+
+The dictionary presents a labeled search with empty results and Clear search recovery. The complete word catalog stays available in a named disclosure; direct search still covers every published word. Study links, details and review actions use shared geometry and semantic tones. Native character tiles grow with Dynamic Type instead of fixing their height/width; the context header stacks its action at large text sizes and omits redundant visible subtitles. Detail pages separate sections with dividers, preserve examples/readings/stroke models and use a named Japanese return link.
+
+Approved audio uses shared normal/slow playback controls. Rejected playback keeps the exercise and offers Retry audio; an older playback failure cannot replace newer feedback. Normal replay restores speed 1.0. Native listening reports false/rejected playback, and native answer choices expose radio state. Audio approval gates are unchanged.
+
+Test plan additions: `JapaneseLanguageBrowser.test.tsx`, `JapanesePracticeModes.test.tsx`, `QuestionnaireKinds.test.tsx`, native `design-controls.test.tsx`, and `design-japanese.regression.spec.ts` cover search, disclosure, audio recovery, review controls and 320/768/1440 px plus 200% text. Browser evidence does not certify native audio, VoiceOver/TalkBack or physical handwriting.
+
+### Review storage recovery and detail layout
+
+A failed web rating write keeps the recall in memory and reports that it could not be saved on this device. Retry saving writes the current snapshot without grading or counting another recall. The original rating remains disabled until the next recall. “Saved” appears only after the local write succeeds; it does not assert remote synchronization.
+
+Native character/vocabulary details use plain sections for readings and examples, named dictionary actions and an accessible stroke-order image. Only the stroke model, handwriting and repeated destinations use frames. Font scaling remains enabled.
+
+Regression tests in `JapaneseReview.test.tsx` deny local storage once, retry, and assert an unchanged attempt count. Native `design-controls.test.tsx` verifies stroke-model names and related-destination routing.
+
+Native skill ratings show Loading/Saving before acknowledgment, then “saved on this device.” A failed save keeps the selected rating and offers Retry save. Retries reuse one prepared recall and reconcile a rejected write that already committed. A changed same-skill record requires Reload progress; invalid local records remain untouched. Other skill writes and late remote merges read the latest serialized local snapshot. The optional remote request does not block local practice, and a rejected sync retains the device copy.
+
 ## Test Plan
+
+Installed `.maestro/japanese-study.yaml` uses bounded, fully visible search, result, review, deck and practice controls at normal and enlarged system text. Inspect the skill section through its heading, then return to the flashcard action before navigating; those controls need not fit in one viewport. Keep dictionary, skill, deck and writing assertions and the 20-second bound per search.
 
 The notebook feature doc owns current core, storage, component, native, Playwright, pgTAP and physical-device checks. Preserve dictionary/path navigation, IME/review behavior, source attribution, optional account configuration and the separation between required writing and optional matching.
 
 Preserve Japanese expressions, readings, translations, answer keys, and study counts during copy edits. Keep generator templates and authored lessons consistent. The N5 builder regression parses generated vocabulary tables as GFM and verifies that a literal pipe stays within its definition cell. The Japanese browser regression checks that the full definition is visible in exactly three table columns.
 
 Hub component tests scope link queries to the character section or resource shelf to avoid scanning the full vocabulary catalog repeatedly. They verify all 46 basic katakana links, separation from sound extras, and Irodori's destination and link-only reuse label.
+
+Native `review-persistence.test.ts`, `review-save-screen.test.tsx` and `review-route.test.tsx` pin deferred acknowledgment, retry without another attempt, commit-then-reject reconciliation, concurrent skills, stale remote merges, conflict/reload, invalid-data preservation and leaving the screen. `.maestro/skill-review-save.regression.yaml` checks acknowledged ratings, process-restart restoration and the next intentional recall. Run mobile coverage, lint/typechecks and this flow on a fresh credential-free Release; fault recovery is injected below the device layer.
+
+Installed `.maestro/review-and-recovery.regression.yaml` covers missing-page recovery, word breakdown/examples, first-card reveal, forward/back navigation with reveal reset, and the approval-pending listening screen. These checks pass on the current credential-free Android Release; installed iOS remains open. The 650-word deck has no skill-rating save or completion action. Active audio remains unverified until approved clips exist.
 
 ## Implementation Map
 

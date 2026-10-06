@@ -1,9 +1,10 @@
 "use client";
 
 import Link from "next/link";
-import { ArrowLeft, ArrowRight, Building2, Code2, PanelsTopLeft, Search } from "lucide-react";
+import { ArrowLeft, ArrowRight, Building2, PanelsTopLeft, Search } from "lucide-react";
 import { useMemo, useState } from "react";
 import { AppHeader } from "@/components/AppHeader";
+import { ButtonLink } from "@/components/ButtonLink";
 import { DifficultyPill } from "@/components/DifficultyPill";
 import { Dropdown } from "@/components/Dropdown";
 import { RandomInterviewButton } from "@/components/RandomInterviewButton";
@@ -34,8 +35,8 @@ export function InterviewCatalog({ index }: { index: ContentIndex }) {
     <main className="min-h-screen pb-12" data-testid="interview-catalog">
       <InterviewHeader />
 
-      <section className="mx-auto w-full max-w-7xl px-4 py-6 sm:py-8">
-        <div className="grid gap-5 lg:grid-cols-[minmax(0,1fr)_19rem]">
+      <section className="ui-page">
+        <div className="grid grid-cols-1 gap-5">
           <div className="min-w-0">
             <h1 className="mt-2 max-w-4xl text-3xl font-semibold leading-tight tracking-tight text-[#263238] sm:text-4xl">
               Interview prep
@@ -44,10 +45,21 @@ export function InterviewCatalog({ index }: { index: ContentIndex }) {
               Practice anonymous real-world exercises and community-reported company questions. Company prompts are not official question banks.
             </p>
 
+            <div className="mt-5 flex flex-wrap gap-3">
+              <RandomInterviewButton routes={routes} />
+            </div>
+            <details className="ui-disclosure mt-5">
+              <summary>Catalog totals</summary>
+              <dl className="ui-metadata mt-3">
+                <StatRow label="Real-world" value={realWorldCollections.length} />
+                <StatRow label="Companies" value={companies.length} />
+                <StatRow label="Questions" value={routes.length} />
+              </dl>
+            </details>
             <section className="mt-9" data-testid="real-world-interviews-section">
               <p className="text-sm font-semibold uppercase text-[#b4322a]">Real-world interviews</p>
               <h2 className="mt-1 text-3xl font-semibold text-[#263238]">Real-world challenges</h2>
-              <div className="mt-5 grid gap-4 sm:grid-cols-2">
+              <div className="ui-columns mt-5">
                 {realWorldCollections.map((collection) => <CollectionTile key={collection.slug} collection={collection} />)}
               </div>
             </section>
@@ -55,7 +67,7 @@ export function InterviewCatalog({ index }: { index: ContentIndex }) {
             <section className="mt-10" data-testid="company-interviews-section">
               <p className="text-sm font-semibold uppercase text-[#007c78]">Company interview prep</p>
               <h2 className="mt-1 text-3xl font-semibold text-[#263238]">Practice by company</h2>
-              <div className="mt-5 grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+              <div className="ui-columns mt-5">
                 {companies.map((company) => (
                   <CompanyTile key={company.slug} company={company} />
                 ))}
@@ -67,11 +79,11 @@ export function InterviewCatalog({ index }: { index: ContentIndex }) {
                 <p className="text-sm font-semibold uppercase text-[#4b369e]">All questions</p>
                 <h2 className="mt-1 text-3xl font-semibold text-[#263238]">All questions</h2>
               </div>
-              <div className="mt-5 grid gap-3 xl:grid-cols-[minmax(0,1fr)_16rem_16rem]">
-                <label className="relative block">
+              <div className="ui-filters mt-5">
+                <label className="ui-field-icon">
                   <span className="sr-only">Search interview questions</span>
                   <Search className="pointer-events-none absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-[#68737d]" aria-hidden="true" />
-                  <input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Search questions, collections, and tags" className="h-14 w-full rounded-xl border border-[#d5e2e8] bg-white pl-12 pr-4 text-base font-medium text-[#263238] outline-none focus:border-[#4b369e]" data-testid="interview-search-input" />
+                  <input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Search questions, collections, and tags" className="ui-input ui-filter-input" data-testid="interview-search-input" />
                 </label>
                 <Dropdown
                   label="Collection"
@@ -105,21 +117,7 @@ export function InterviewCatalog({ index }: { index: ContentIndex }) {
             </section>
           </div>
 
-          <aside className="grid h-fit gap-4 lg:sticky lg:top-5">
-            <section className="rounded-xl border border-[#d5e2e8] bg-white p-4">
-              <h2 className="flex items-center gap-2 text-sm font-semibold uppercase text-[#68737d]">
-                <Code2 className="h-4 w-4 text-[#245fba]" aria-hidden="true" />
-                Catalog
-              </h2>
-              <div className="mt-4 grid gap-2 text-sm font-medium text-[#68737d]">
-                <StatRow label="Real-world" value={realWorldCollections.length} />
-                <StatRow label="Companies" value={companies.length} />
-                <StatRow label="Questions" value={routes.length} />
-                <StatRow label="Languages" value={3} />
-              </div>
-            </section>
-            <RandomInterviewButton routes={routes} />
-          </aside>
+
         </div>
       </section>
     </main>
@@ -131,14 +129,8 @@ export function InterviewCollectionDetail({ collection }: { collection: Intervie
     <main className="min-h-screen pb-12" data-testid={collection.kind === "company" ? "interview-company-page" : "interview-collection-page"}>
       <InterviewHeader />
 
-      <section className="mx-auto w-full max-w-6xl px-4 py-6 sm:py-8">
-        <Link
-          href="/interviews"
-          className="inline-flex items-center gap-2 rounded-xl border border-[#d5e2e8] bg-white px-3 py-2 text-sm font-semibold text-[#263238]"
-        >
-          <ArrowLeft className="h-4 w-4" aria-hidden="true" />
-          Interviews
-        </Link>
+      <section className="ui-page">
+        <ButtonLink href="/interviews" label="Interviews" icon={ArrowLeft} />
 
         <div className="mt-6 flex flex-col gap-5 sm:flex-row sm:items-start sm:justify-between">
           <div className="min-w-0">
@@ -232,7 +224,7 @@ function QuestionCard({ question }: { question: InterviewQuestion }) {
   return (
     <Link
       href={question.route}
-      className="rounded-xl border border-[#d5e2e8] bg-white p-4 transition hover:-translate-y-0.5 hover:border-[#4b369e] hover:shadow-md sm:p-5"
+      className="ui-result-row bg-white p-4 sm:p-5"
       data-testid={`interview-question-card-${question.slug}`}
     >
       <span className="flex flex-wrap items-center gap-2">
@@ -255,9 +247,9 @@ function QuestionCard({ question }: { question: InterviewQuestion }) {
 
 function StatRow({ label, value }: { label: string; value: number }) {
   return (
-    <div className="flex items-center justify-between rounded-xl bg-[#f6fbfc] px-3 py-2">
-      <span>{label}</span>
-      <span className="font-semibold text-[#007c78]">{value}</span>
+    <div className="min-w-0">
+      <dt>{label}</dt>
+      <dd className="font-semibold text-[#00645f]">{value}</dd>
     </div>
   );
 }

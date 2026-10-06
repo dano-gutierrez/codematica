@@ -6,16 +6,22 @@ tags:
     clearState: true
 - assertVisible:
     id: game-map
+# Wait for the React navigator before delivering a warm deep link.
+- assertVisible:
+    id: mobile-nav-learn
 - assertVisible:
     id: game-level-1
+- takeScreenshot: game-map-current
 - tapOn:
     id: game-map-view
 - assertVisible:
     id: game-level-1
+- takeScreenshot: game-map-list
 - tapOn:
     id: game-map-view
 - assertVisible:
     id: game-level-1
+- takeScreenshot: game-map-return
 - openLink: "codematica://play/restore-the-signal/courtyard-defense"
 - assertVisible:
     id: game-scene
@@ -23,10 +29,20 @@ tags:
     element:
       id: game-code
     direction: DOWN
-- tapOn:
+- longPressOn:
     id: game-code
-- eraseText
+    point: "25%,20%"
+- runFlow:
+    when:
+      platform: Android
+      notVisible: "Select [Aa]ll"
+    commands:
+      - tapOn:
+          id: android:id/overflow
+- tapOn: "Select [Aa]ll"
+- eraseText: 1
 - inputText: "grid-column: 2 / 3; grid-row: 1 / 2;"
+- assertVisible: "grid-column: 2 / 3; grid-row: 1 / 2;"
 - hideKeyboard
 - scrollUntilVisible:
     element:
@@ -40,6 +56,8 @@ tags:
     direction: DOWN
 - assertVisible: "Signal restored!"
 - launchApp
+- assertVisible:
+    id: mobile-nav-learn
 - openLink: "codematica://play/restore-the-signal/target-lock"
 - assertVisible: "Target Lock"
 - assertVisible:
@@ -48,10 +66,20 @@ tags:
     element:
       id: game-code
     direction: DOWN
-- tapOn:
+- longPressOn:
     id: game-code
-- eraseText
+    point: "25%,20%"
+- runFlow:
+    when:
+      platform: Android
+      notVisible: "Select [Aa]ll"
+    commands:
+      - tapOn:
+          id: android:id/overflow
+- tapOn: "Select [Aa]ll"
+- eraseText: 1
 - inputText: "SELECT id FROM zombies WHERE kind = 'runner';"
+- assertVisible: "SELECT id FROM zombies WHERE kind = 'runner';"
 - hideKeyboard
 - scrollUntilVisible:
     element:

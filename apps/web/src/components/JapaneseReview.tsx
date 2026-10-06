@@ -1,24 +1,19 @@
 "use client";
 
-import Link from "next/link";
-import { Check, RotateCcw } from "lucide-react";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { Button } from "./Button";
+import { ButtonLink } from "./ButtonLink";
+import { Check, BookOpen, Layers, Pencil, Volume2, RotateCcw } from "lucide-react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { applyReviewRating, mergeSkillProgressLists, orderDueReviews, skillProgressSchema, type LearningPath, type ReviewRating, type SkillProgress } from "@codematica/core";
 import { AppHeader } from "@/components/AppHeader";
 
 const storageKey = "codematica:japanese-skill-progress:v1";
 
-const ratingOptions: Array<{
-  rating: ReviewRating;
-  label: string;
-  hint: string;
-  idleClassName: string;
-  selectedClassName: string;
-}> = [
-  { rating: "again", label: "Again", hint: "Reset · 10 min", idleClassName: "border-[#e4a7a7] bg-[#fff8f8]", selectedClassName: "border-[#a62f2f] bg-[#ffe1e1] text-[#702020]" },
-  { rating: "hard", label: "Hard", hint: "Step back · 1 day", idleClassName: "border-[#d2bd76] bg-[#fffaf0]", selectedClassName: "border-[#8a5c00] bg-[#ffedb8] text-[#624100]" },
-  { rating: "good", label: "Good", hint: "Step forward", idleClassName: "border-[#87cfc9] bg-[#f2fffd]", selectedClassName: "border-[#007c78] bg-[#d5f5f1] text-[#005f5c]" },
-  { rating: "easy", label: "Easy", hint: "Jump ahead", idleClassName: "border-[#9cc7ff] bg-[#f5f9ff]", selectedClassName: "border-[#245fba] bg-[#deebff] text-[#1d4e9e]" },
+const ratingOptions: Array<{ rating: ReviewRating; label: string; hint: string; tone: "danger" | "warning" | "success" | "info" }> = [
+  { rating: "again", label: "Again", hint: "Reset · 10 min", tone: "danger" },
+  { rating: "hard", label: "Hard", hint: "Step back · 1 day", tone: "warning" },
+  { rating: "good", label: "Good", hint: "Step forward", tone: "success" },
+  { rating: "easy", label: "Easy", hint: "Jump ahead", tone: "info" },
 ];
 
 function readStoredProgress(): SkillProgress[] {
@@ -52,6 +47,15 @@ async function loadRemoteProgress() {
 
 export function JapaneseReview({ learningPath, hasListening = false }: { learningPath: LearningPath; hasListening?: boolean }) {
   const skills = learningPath.progression?.skills ?? [];
+  const [storageFailed, setStorageFailed] = useState(false);
+  const persist = useCallback((rows: SkillProgress[]) => {
+    try {
+      window.localStorage.setItem(storageKey, JSON.stringify(rows));
+      setStorageFailed(false);
+    } catch {
+      setStorageFailed(true);
+    }
+  }, []);
   const [progress, setProgress] = useState<SkillProgress[]>([]);
   const [selectedSkillId, setSelectedSkillId] = useState(skills[0]?.id ?? "");
   const [sessionRatings, setSessionRatings] = useState<Partial<Record<string, ReviewRating>>>({});
@@ -68,11 +72,11 @@ export function JapaneseReview({ learningPath, hasListening = false }: { learnin
         if (!merged.length) return;
         progressRef.current = merged;
         setProgress(merged);
-        window.localStorage.setItem(storageKey, JSON.stringify(merged));
+        persist(merged);
         await syncStoredProgress(merged);
       })
       .catch(() => false);
-  }, []);
+  }, [persist]);
 
   const due = useMemo(() => orderDueReviews(progress), [progress]);
   const selectedSkill = skills.find((skill) => skill.id === selectedSkillId) ?? skills[0];
@@ -95,7 +99,7 @@ export function JapaneseReview({ learningPath, hasListening = false }: { learnin
     progressRef.current = rows;
     setProgress(rows);
     setSessionRatings((currentRatings) => ({ ...currentRatings, [selectedSkill.id]: rating }));
-    window.localStorage.setItem(storageKey, JSON.stringify(rows));
+    persist(rows);
     void syncStoredProgress(rows).catch(() => false);
   }
 
@@ -112,21 +116,21 @@ export function JapaneseReview({ learningPath, hasListening = false }: { learnin
   return (
     <main className="min-h-screen pb-12" data-testid="japanese-review-browser">
       <AppHeader subtitle="Japanese review" />
-      <section className="mx-auto w-full max-w-6xl px-4 py-6 sm:py-8">
-        <p className="text-sm font-semibold uppercase text-[#7a5200]">Always open</p>
+      <section className="ui-page">
         <h1 className="mt-2 text-3xl font-semibold leading-tight text-[#263238] sm:text-4xl">Ready to review</h1>
         <p className="mt-4 max-w-3xl text-base font-normal leading-7 text-[#53616c]">
-          Use the due queue to practice skill recall. Lessons, handwriting, the dictionary, and other practice modes remain available on their study screens. Ratings save on this device immediately.
+          Recall an example, then rate how much help you needed. Ratings save on this device.
         </p>
 
         <div className="mt-6 flex flex-wrap gap-3">
-          <Link href="/languages/japanese" className="inline-flex min-h-12 items-center rounded-xl border border-[#b9cbd3] bg-white px-4 py-2 text-base font-semibold text-[#263238]">Open dictionary</Link>
-          <Link href="/languages/japanese/review/flashcards" className="inline-flex min-h-12 items-center rounded-xl border border-[#9cc7ff] bg-[#f5f9ff] px-4 py-2 text-base font-semibold text-[#1d4e9e]">N5 flashcards</Link>
-          <Link href="/languages/japanese/review/writing" className="inline-flex min-h-12 items-center rounded-xl border border-[#87cfc9] bg-[#e8f8f6] px-4 py-2 text-base font-semibold text-[#005f5c]">Open-answer writing</Link>
-          {hasListening ? <Link href="/languages/japanese/review/listening" className="inline-flex min-h-12 items-center rounded-xl border border-[#d2bd76] bg-[#fffaf0] px-4 py-2 text-base font-semibold text-[#7a5200]">Listening practice</Link> : null}
+          <ButtonLink href="/languages/japanese" label="Open dictionary" icon={BookOpen} />
+          <ButtonLink href="/languages/japanese/review/flashcards" label="N5 flashcards" icon={Layers} tone="info" />
+          <ButtonLink href="/languages/japanese/review/writing" label="Open-answer writing" icon={Pencil} tone="info" />
+          {hasListening ? <ButtonLink href="/languages/japanese/review/listening" label="Listening practice" icon={Volume2} tone="info" /> : null}
         </div>
 
-        <div className="mt-8 grid gap-6 lg:grid-cols-[minmax(0,0.85fr)_minmax(22rem,1.15fr)]">
+        {storageFailed && !selectedRating ? <div role="status" className="ui-notice mt-4"><p>Couldn't save on this device. Keep this page open and retry.</p><Button label="Retry saving" icon={RotateCcw} tone="warning" onClick={() => persist(progressRef.current)} /></div> : null}
+        <div className="ui-columns mt-8 gap-6">
           <section aria-labelledby="review-skills-title">
             <div className="flex items-end justify-between gap-3">
               <div>
@@ -155,45 +159,33 @@ export function JapaneseReview({ learningPath, hasListening = false }: { learnin
           </section>
 
           {selectedSkill ? (
-            <section className="self-start rounded-xl border border-[#d2bd76] bg-[#fffaf0] p-5 sm:p-7" aria-live="polite">
+            <section className="min-w-0 self-start border-t border-[#d5e2e8] pt-5" aria-live="polite">
               <p className="text-sm font-semibold uppercase text-[#7a5200]">{selectedSkill.category} practice</p>
               <h2 className="mt-2 text-3xl font-semibold text-[#263238]">{selectedSkill.label}</h2>
               <p className="mt-3 text-base font-normal leading-7 text-[#53616c]">{selectedSkill.description}</p>
-              <div className="mt-6 rounded-xl border border-dashed border-[#d2bd76] bg-white p-5">
+              <div className="mt-6 border-l-2 border-[#7d8b94] pl-4">
                 <p className="text-lg font-semibold text-[#263238]">Recall before you reveal</p>
                 <p className="mt-2 text-base font-normal leading-7 text-[#53616c]">Recall one example you can recognize or use for this skill. Then rate how much help you needed.</p>
               </div>
-              <div className="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-4" aria-label="Review rating">
+              <div className="mt-6 grid grid-cols-[repeat(auto-fit,minmax(min(100%,8rem),1fr))] gap-3" aria-label="Review rating">
                 {ratingOptions.map((option) => {
                   const isSelected = selectedRating === option.rating;
                   return (
-                    <button
-                      key={option.rating}
-                      type="button"
-                      aria-label={option.label}
-                      aria-pressed={isSelected}
-                      disabled={Boolean(selectedRating)}
-                      data-testid={`japanese-review-rating-${option.rating}`}
-                      onClick={() => rate(option.rating)}
-                      className={`min-h-16 rounded-xl border px-3 py-2 text-left text-[#263238] transition focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-2 focus-visible:outline-[#007c78] ${isSelected ? `${option.selectedClassName} translate-y-0.5 border-b-2 shadow-inner` : option.idleClassName} ${selectedRating && !isSelected ? "cursor-not-allowed opacity-45" : "hover:-translate-y-0.5 hover:border-b-[5px]"}`}
-                    >
-                      <span className="flex items-center gap-1.5 text-base font-semibold">
-                        {isSelected ? <Check className="h-4 w-4" strokeWidth={3} aria-hidden="true" /> : null}
-                        {option.label}
-                      </span>
-                      <span className="mt-0.5 block text-xs font-medium opacity-80">{isSelected ? "Selected" : option.hint}</span>
-                    </button>
+                    <div key={option.rating} className="grid min-w-0 gap-2">
+                      <Button label={option.label} icon={isSelected ? Check : undefined} tone={option.tone} aria-pressed={isSelected} disabled={Boolean(selectedRating)}
+                        data-testid={`japanese-review-rating-${option.rating}`} onClick={() => rate(option.rating)} />
+                      <span className="text-center text-sm text-[#52616c]">{isSelected ? "Selected" : option.hint}</span>
+                    </div>
                   );
                 })}
               </div>
               {selectedRating ? (
                 <div className="mt-4 flex flex-wrap items-center justify-between gap-3 rounded-xl border border-[#87cfc9] bg-[#e8f8f6] p-3" role="status">
                   <p className="text-sm font-semibold text-[#005f5c]">
-                    {ratingOptions.find((option) => option.rating === selectedRating)?.label} saved. This recall counts as one attempt.
+                    {ratingOptions.find((option) => option.rating === selectedRating)?.label} {storageFailed ? "recorded. Couldn't save on this device. Keep this page open and retry." : "saved. This recall counts as one attempt."}
                   </p>
-                  <button type="button" onClick={resetRating} className="min-h-11 rounded-xl border border-[#007c78] bg-white px-3 py-2 text-sm font-semibold text-[#005f5c] focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-2 focus-visible:outline-[#007c78]">
-                    Practice again
-                  </button>
+                  {storageFailed ? <Button label="Retry saving" icon={RotateCcw} tone="warning" onClick={() => persist(progressRef.current)} /> : null}
+                  <Button label="Practice again" icon={RotateCcw} tone="warning" onClick={resetRating} />
                 </div>
               ) : null}
               {selectedProgress ? <p className="mt-4 text-sm font-medium text-[#53616c]">Best {Math.round(selectedProgress.bestScore * 100)}% · box {selectedProgress.reviewBox} · next {new Date(selectedProgress.nextReviewAt).toLocaleString()}</p> : null}

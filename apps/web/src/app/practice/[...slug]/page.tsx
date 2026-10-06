@@ -48,7 +48,7 @@ export default async function PracticePage({ params }: PracticePageProps) {
   const sources = getSourcesByRefs(exercise.sourceRefs);
 
   return (
-    <main className="min-h-screen px-4 py-5 sm:py-8" data-testid="practice-page">
+    <main className="ui-page min-h-screen" data-testid="practice-page">
       <div className="mx-auto w-full max-w-4xl">
         <BackButton />
 

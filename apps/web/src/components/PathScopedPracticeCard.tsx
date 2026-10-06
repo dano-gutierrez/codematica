@@ -17,7 +17,7 @@ export function PathScopedPracticeCard({ exercise, nextHrefsByPath }: PathScoped
   const nextHref = pathSlug ? nextHrefsByPath[pathSlug] : undefined;
 
   function handleProgressEvent(status: ProgressStatus, position: Record<string, unknown>) {
-    void recordProgress(
+    return recordProgress(
       {
         surface: "practice",
         slug: exercise.slug,

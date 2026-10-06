@@ -66,6 +66,7 @@ describe("complete shared native screen matrix", () => {
 
     const browser = await render(<BrowseScreen index={index} adapters={adapters} />);
     await fireEvent.changeText(browser.getByTestId("mobile-knowledge-search-input"), "cache aside");
+    await waitFor(() => expect(browser.getByTestId("mobile-result-diagram-system-design-cache-aside")).toBeOnTheScreen());
     await fireEvent.press(browser.getByTestId("mobile-result-diagram-system-design-cache-aside"));
     expect(adapters.navigation.navigate).toHaveBeenCalledWith("/diagrams/system-design/cache-aside");
     await browser.unmount();
@@ -251,25 +252,28 @@ describe("complete shared native screen matrix", () => {
 
     const helpers = await render(<>
       <SaveProgressPrompt itemCount={0} adapters={adapters} />
-      <SaveProgressPrompt itemCount={2} adapters={adapters} />
+      <SaveProgressPrompt itemCount={2} adapters={{ ...adapters, auth: { isConfigured: true } }} />
       <KeepReadingSection items={[]} isSignedIn={false} adapters={adapters} />
       <CodeBlock code="const value = 1" />
       {(["foundation", "practitioner", "senior", "principal"] as const).map((difficulty) => <DifficultyPill key={difficulty} difficulty={difficulty} />)}
     </>);
-    expect(helpers.getByText(/2 local progress items can sync/i)).toBeOnTheScreen();
+    expect(helpers.getByText(/Your progress is on this device/i)).toBeOnTheScreen();
     await fireEvent.press(helpers.getByText("Sign in"));
     expect(adapters.navigation.navigate).toHaveBeenCalledWith("/login");
   });
 
   it("handles unconfigured, successful, and failed native Auth without hiding errors", async () => {
     const unconfigured = await render(<LoginScreen adapters={createAdapters()} />);
-    expect(unconfigured.getByText(/environment variables are missing/i)).toBeOnTheScreen();
+    expect(unconfigured.getByText("Sign-in is not set up here. You can keep learning on this device.")).toBeOnTheScreen();
+    expect(unconfigured.getByTestId("mobile-sign-in")).toBeDisabled();
     await fireEvent.press(unconfigured.getByTestId("mobile-sign-in"));
-    await waitFor(() => expect(unconfigured.getByText("Signed in")).toBeOnTheScreen());
+    expect(unconfigured.queryByText("Signed in")).toBeNull();
     await unconfigured.unmount();
 
     const signIn = jest.fn(async () => undefined);
     const configured = await render(<LoginScreen adapters={createAdapters({ auth: { isConfigured: true, signInWithPassword: signIn } })} />);
+    expect(configured.getByTestId("mobile-login-email")).toBe(configured.getByLabelText("Email"));
+    expect(configured.getByTestId("mobile-login-password")).toBe(configured.getByLabelText("Password"));
     await fireEvent.changeText(configured.getByPlaceholderText("Email"), "learner@example.com");
     await fireEvent.changeText(configured.getByPlaceholderText("Password"), "password");
     await fireEvent.press(configured.getByTestId("mobile-sign-in"));
@@ -278,6 +282,8 @@ describe("complete shared native screen matrix", () => {
     await configured.unmount();
 
     const failed = await render(<LoginScreen adapters={createAdapters({ auth: { isConfigured: true, signInWithPassword: jest.fn(async () => { throw new Error("invalid login"); }) } })} />);
+    await fireEvent.changeText(failed.getByPlaceholderText("Email"), "learner@example.com");
+    await fireEvent.changeText(failed.getByPlaceholderText("Password"), "password");
     await fireEvent.press(failed.getByTestId("mobile-sign-in"));
     await waitFor(() => expect(failed.getByText("invalid login")).toBeOnTheScreen());
   });

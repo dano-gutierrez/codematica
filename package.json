@@ -15,7 +15,7 @@
     "web:dev": "npm run dev -w @codematica/web",
     "web:build": "npm run build -w @codematica/web",
     "web:start": "npm run start -w @codematica/web",
-    "build": "npm run brand:assets && npm run game:runtime && npm run game:assets && npm run content:index && npm run build -w @codematica/web",
+    "build": "npm run brand:assets && npm run game:runtime && npm run game:assets && npm run search:runtime && npm run content:index && npm run build -w @codematica/web",
     "start": "npm run start -w @codematica/web",
     "lint": "eslint . --max-warnings=0",
     "typecheck": "npm run typecheck -w @codematica/core && npm run typecheck -w @codematica/ui && npm run typecheck -w @codematica/web && npm run typecheck -w @codematica/mobile",
@@ -60,7 +60,8 @@
     "linkedin": "node --env-file=.env --import tsx scripts/linkedin/cli.ts",
     "test:linkedin:local": "node --import tsx scripts/linkedin/smoke-local.ts",
     "test:production:smoke": "node scripts/testing/production-smoke.mjs",
-    "e2e:linkedin": "EDITORIAL_E2E=1 playwright test --config=apps/web/e2e/playwright.config.ts --project=mobile-chromium linkedin-admin.regression.spec.ts",
+    "e2e:linkedin": "EDITORIAL_E2E=1 playwright test --config=apps/web/e2e/playwright.config.ts --project=mobile-chromium linkedin-admin.regression.spec.ts account-navigation.regression.spec.ts linkedin-accessibility.regression.spec.ts",
+    "e2e:linkedin:accessibility": "EDITORIAL_E2E=1 playwright test --config=apps/web/e2e/playwright.config.ts linkedin-accessibility.regression.spec.ts",
     "test:interview:python": "python3 scripts/content/verify-frontend-python.py && python3 scripts/content/verify-interview-audit.py",
     "brand:assets": "node scripts/brand/build-assets.mjs",
     "brand:check": "node scripts/brand/build-assets.mjs --check",
@@ -73,7 +74,9 @@
     "game:character-preview": "node scripts/game/capture-character-kit.mjs",
     "game:miniature-preview": "node scripts/game/capture-miniatures.mjs",
     "mobile:e2e:notebook-layout": "node apps/mobile/e2e/notebook-layout.mjs",
-    "mobile:e2e:notebook-gestures": "node apps/mobile/e2e/notebook-gestures.mjs"
+    "mobile:e2e:notebook-gestures": "node apps/mobile/e2e/notebook-gestures.mjs",
+    "search:runtime": "node scripts/content/build-search-runtime.mjs",
+    "search:check": "node scripts/content/build-search-runtime.mjs --check"
   },
   "dependencies": {
     "@fontsource-variable/noto-sans-jp": "^5.3.0",

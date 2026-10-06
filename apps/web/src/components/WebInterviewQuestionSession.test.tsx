@@ -20,7 +20,13 @@ describe("WebInterviewQuestionSession", () => {
     render(<WebInterviewQuestionSession question={question as Extract<NonNullable<typeof question>, { kind: "web" }>} />);
 
     expect(screen.getByTestId("interview-evaluation-guide")).toHaveTextContent("ambiguous visual request");
+    expect(screen.getByText("Hardcodes one painting")).not.toBeVisible();
+    const criteria = screen.getByText("Red flags and why they matter").closest("details")!;
+    expect(criteria).not.toHaveAttribute("open");
+    criteria.setAttribute("open", "");
     expect(screen.getByText("Hardcodes one painting")).toBeVisible();
+    criteria.removeAttribute("open");
+    expect(screen.getByText("Hardcodes one painting")).not.toBeVisible();
     expect(screen.getByTestId("web-solution-detail")).toHaveTextContent("Weighted CSS Grid");
     fireEvent.click(screen.getByRole("button", { name: "Show full solution" }));
     expect(screen.getByTestId("mock-web-playground")).toHaveTextContent("/App.tsx");

@@ -70,7 +70,7 @@ export function createNativeNotebookStorage(
             [cellPrefix + cell.token, JSON.stringify(cell)] as [string, string],
         ),
       );
-      await AsyncStorage.multiSet(entries);
+      if (entries.length) await AsyncStorage.multiSet(entries);
       const manifest = {
         ...snapshot,
         pages: Object.fromEntries(

@@ -4,23 +4,81 @@ tags:
 ---
 - launchApp:
     clearState: true
+# Wait for the React navigator before delivering a warm deep link.
+- assertVisible:
+    id: mobile-nav-learn
 - openLink: codematica://interviews
 - assertVisible:
     id: mobile-real-world-interview-list
+- scrollUntilVisible:
+    element:
+      id: mobile-collection-real-world
+    direction: DOWN
+    speed: 20
+    visibilityPercentage: 100
+    centerElement: false
+    timeout: 20000
 - tapOn:
     id: mobile-collection-real-world
+- scrollUntilVisible:
+    element:
+      id: mobile-question-mondrian-composition-generator
+    direction: DOWN
+    speed: 20
+    visibilityPercentage: 100
+    centerElement: false
+    timeout: 20000
 - tapOn:
     id: mobile-question-mondrian-composition-generator
-- assertVisible:
-    id: mobile-web-interview-evaluation
+- scrollUntilVisible:
+    element:
+      text: What to demonstrate
+    direction: DOWN
+- tapOn: What to demonstrate
+- scrollUntilVisible:
+    element:
+      text: "Agree on priorities, turn the ambiguous visual request.*"
+    direction: DOWN
+- assertVisible: "Agree on priorities, turn the ambiguous visual request.*"
+- scrollUntilVisible:
+    element:
+      text: What to demonstrate
+    direction: UP
+- tapOn: What to demonstrate
 - scrollUntilVisible:
     element:
       id: mobile-web-show-solution
     direction: DOWN
 - tapOn:
     id: mobile-web-show-solution
+# Walk the long solution by its headings before reaching the runner notice.
 - scrollUntilVisible:
     element:
-      id: mobile-web-playground-note
+      text: How it meets the requirements
     direction: DOWN
+    speed: 20
+    visibilityPercentage: 100
+    centerElement: false
+    timeout: 20000
+- scrollUntilVisible:
+    element:
+      text: "Time:.*"
+    direction: DOWN
+    speed: 20
+    visibilityPercentage: 100
+    centerElement: false
+    timeout: 20000
+# Android reports a clipped parent as visible before its notice text enters view.
+# Target the actual notice, preserving full visibility and the 20-second limit.
+- scrollUntilVisible:
+    element:
+      text: Interactive runner available on web
+    direction: DOWN
+    speed: 20
+    visibilityPercentage: 100
+    centerElement: false
+    timeout: 20000
+- assertVisible:
+    id: mobile-web-playground-note
 - assertVisible: "Interactive runner available on web"
+- takeScreenshot: interview-web-runner-notice

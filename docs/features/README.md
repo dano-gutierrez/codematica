@@ -67,6 +67,9 @@ The most important sections are:
 
 ## Feature References
 
+- [Design system](design-system.md): shared web controls, semantic colors, spacing, alignment, borders, typography, and concise disclosure patterns. Read before new UI work.
+- [App-wide design audit](app-wide-design-audit.md) tracks the full web/native route and state matrix, remaining adoption work, and platform verification.
+
 - `rtk-query-interview-preparation.md` owns the RTK Query interview curriculum and its source/version refresh and validation contract.
 
 - `linkedin-editorial.md`: private admin web/native post review, durable refinement/scheduling queue and exact-revision human approvals.

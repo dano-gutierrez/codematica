@@ -53,11 +53,11 @@ export default async function DocumentPage({ params }: DocumentPageProps) {
   const sources = getSourcesByRefs(document.sourceRefs);
 
   return (
-    <main className="min-h-screen px-4 py-5 sm:py-8" data-testid="document-page">
-      <div className="mx-auto w-full max-w-6xl">
+    <main className="ui-page min-h-screen" data-testid="document-page">
+      <div className="mx-auto w-full max-w-3xl">
         <BackButton />
 
-        <article className="mt-6 grid gap-7 lg:grid-cols-[minmax(0,1fr)_17rem]">
+        <article className="mt-6">
           <div className="min-w-0">
             <Suspense fallback={null}>
               <DocumentProgressTracker
@@ -89,7 +89,21 @@ export default async function DocumentPage({ params }: DocumentPageProps) {
                 </span>
               ))}
             </div>
-            <div className="mt-8 rounded-xl border border-[#d5e2e8] bg-white p-5 sm:p-7">
+          <details className="ui-disclosure mt-6" data-testid="document-outline">
+            <summary>On this page</summary>
+            <nav className="mt-3 grid gap-2 text-sm font-medium text-[#68737d]" aria-label="Article outline">
+              {document.headings.map((heading) => (
+                <a
+                  key={`${heading.depth}-${heading.id}`}
+                  href={`#${heading.id}`}
+                  className={heading.depth > 2 ? "ui-outline-link pl-3" : "ui-outline-link font-semibold"}
+                >
+                  {heading.text}
+                </a>
+              ))}
+            </nav>
+          </details>
+            <div className="mt-8">
               <MarkdownRenderer markdown={document.markdown} />
             </div>
 
@@ -109,12 +123,12 @@ export default async function DocumentPage({ params }: DocumentPageProps) {
             </Suspense>
 
             {referencedDiagrams.length > 0 ? (
-              <section className="mt-10 border-t-2 border-[#d5e2e8] pt-6" data-testid="referenced-diagrams">
+              <section className="mt-10 border-t border-[#e1e5e9] pt-6" data-testid="referenced-diagrams">
                 <h2 className="flex items-center gap-2 text-2xl font-semibold tracking-tight text-[#263238]">
                   <GitBranch className="h-5 w-5 text-[#007c78]" aria-hidden="true" />
-                  External Diagrams
+                  Related diagrams
                 </h2>
-                <div className="mt-4 grid gap-4">
+                <div className="mt-4 grid grid-cols-1 gap-4">
                   {referencedDiagrams.map((diagram) => (
                     <div key={diagram.slug}>
                       <Link href={diagram.route} className="text-sm font-semibold text-[#245fba]">
@@ -128,20 +142,7 @@ export default async function DocumentPage({ params }: DocumentPageProps) {
             ) : null}
           </div>
 
-          <aside className="h-fit rounded-xl border border-[#d5e2e8] bg-white p-4 lg:sticky lg:top-5">
-            <h2 className="text-sm font-semibold uppercase text-[#68737d]">Outline</h2>
-            <nav className="mt-3 grid gap-2 text-sm font-medium text-[#68737d]" aria-label="Article outline">
-              {document.headings.map((heading) => (
-                <a
-                  key={`${heading.depth}-${heading.id}`}
-                  href={`#${heading.id}`}
-                  className={heading.depth > 2 ? "pl-3 text-[#68737d]" : "font-semibold text-[#263238]"}
-                >
-                  {heading.text}
-                </a>
-              ))}
-            </nav>
-          </aside>
+
         </article>
       </div>
     </main>

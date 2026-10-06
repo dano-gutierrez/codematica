@@ -1,4 +1,4 @@
-import { fireEvent, render, screen } from "@testing-library/react";
+import { act, fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import type { LanguageVocabulary } from "@codematica/core";
 
@@ -46,6 +46,32 @@ describe("Japanese web practice modes", () => {
     fireEvent.click(screen.getByRole("button", { name: "0.75× slow" }));
     expect(play).toHaveBeenCalledTimes(2);
     expect(screen.getByRole("button", { name: "0.75× slow" })).toHaveAttribute("aria-pressed", "true");
+  });
+
+  it("recovers from rejected playback and returns from slow to normal speed", async () => {
+    const play = vi.spyOn(HTMLMediaElement.prototype, "play").mockRejectedValueOnce(new Error("blocked")).mockResolvedValue();
+    render(<JapaneseAudioPlayer audioId="approved-audio" />);
+    fireEvent.click(screen.getByRole("button", { name: "Play / replay" }));
+    expect(await screen.findByRole("status")).toHaveTextContent(/couldn't play/i);
+    fireEvent.click(screen.getByRole("button", { name: "Retry audio" }));
+    await waitFor(() => expect(screen.queryByRole("status")).not.toBeInTheDocument());
+    fireEvent.click(screen.getByRole("button", { name: "0.75× slow" }));
+    const audio = screen.getByTestId("japanese-audio-player").querySelector("audio")!;
+    expect(audio.playbackRate).toBe(0.75);
+    fireEvent.click(screen.getByRole("button", { name: "Play / replay" }));
+    expect(audio.playbackRate).toBe(1);
+    expect(screen.getByRole("button", { name: "0.75× slow" })).toHaveAttribute("aria-pressed", "false");
+    expect(play).toHaveBeenCalledTimes(4);
+  });
+
+  it("ignores a rejected older playback request", async () => {
+    let reject!: (reason: unknown) => void;
+    vi.spyOn(HTMLMediaElement.prototype, "play").mockImplementationOnce(() => new Promise((_, fail) => { reject = fail; })).mockResolvedValue();
+    render(<JapaneseAudioPlayer audioId="approved-audio" />);
+    fireEvent.click(screen.getByRole("button", { name: "Play / replay" }));
+    fireEvent.click(screen.getByRole("button", { name: "0.75× slow" }));
+    await act(async () => { reject(new Error("older failure")); });
+    expect(screen.queryByRole("status")).not.toBeInTheDocument();
   });
 
   it("sorts, reveals, and navigates the N5 flashcard deck", () => {

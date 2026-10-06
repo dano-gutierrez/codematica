@@ -61,13 +61,13 @@ export function MermaidBlock({ source, title }: { source: string; title?: string
   }, [diagramId, source]);
 
   return (
-    <figure className="my-6 overflow-hidden rounded-xl border border-[#d5e2e8] bg-white" data-testid="mermaid-block">
+    <figure className="my-6 min-w-0 max-w-full overflow-hidden rounded-xl border border-[#d5e2e8] bg-white" data-testid="mermaid-block">
       {title ? (
         <figcaption className="border-b-2 border-[#e4edf1] bg-[#f6fbfc] px-4 py-3 text-sm font-semibold text-[#263238]">{title}</figcaption>
       ) : null}
-      <div className="min-h-44 overflow-x-auto p-4">
+      <div className="ui-scroll-region min-h-44 overflow-x-auto p-4" role="group" aria-label={title ? `${title} diagram` : "Diagram"} tabIndex={0}>
         {state.status === "loading" ? (
-          <div className="flex min-h-36 items-center justify-center text-sm font-medium text-[#68737d]">Rendering diagram</div>
+          <div role="status" className="flex min-h-36 items-center justify-center text-sm font-medium text-[#53616c]">Rendering diagram</div>
         ) : null}
         {state.status === "ready" ? (
           <div
@@ -77,7 +77,7 @@ export function MermaidBlock({ source, title }: { source: string; title?: string
           />
         ) : null}
         {state.status === "error" ? (
-          <div className="flex min-h-36 flex-col justify-center gap-3 text-sm text-[#d83a52]" data-testid="mermaid-error">
+          <div role="status" className="flex min-h-36 flex-col justify-center gap-3 text-sm text-[#a6263c]" data-testid="mermaid-error">
             <span className="flex items-center gap-2 font-semibold">
               <AlertTriangle className="h-4 w-4" aria-hidden="true" />
               Diagram error
@@ -86,8 +86,8 @@ export function MermaidBlock({ source, title }: { source: string; title?: string
           </div>
         ) : null}
       </div>
-      <details className="border-t-2 border-[#e4edf1] px-4 py-3 text-sm text-[#68737d]">
-        <summary className="inline-flex cursor-pointer items-center gap-2 font-semibold text-[#263238]">
+      <details className="ui-disclosure px-4 text-sm text-[#53616c]">
+        <summary className="inline-flex items-center gap-2">
           <Code2 className="h-4 w-4" aria-hidden="true" />
           Source
         </summary>

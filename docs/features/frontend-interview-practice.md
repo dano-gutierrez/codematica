@@ -88,6 +88,12 @@ Tests cover rectangular/independent rows, exact zero counts, game boundaries/dra
 - `scripts/content/verify-interview-audit.py`: Python regressions for repaired earlier examples.
 - Existing reader, session, playground, questionnaire, and passive-feed components present the content; no separate practice framework was added.
 
+## App-wide design pass — 2026-10-03
+
+Guided exercise controls reuse shared buttons for approach choice, language, progression, reveal, Run, Reset and retry. Approach selection exposes pressed/selected state. Editor files and console disclosures have growing touch targets; the dark editor surface remains appropriate for code. The route uses a single reading column, available-width filters and source disclosures. This changes presentation without changing project files, preview isolation, progress or the accepted solutions.
+
+Test plan additions: existing WebPlayground/WebInterviewQuestionSession tests and `design-content.regression.spec.ts` cover shared controls and initial responsive states. Running sandbox, failure/recovery and full exercise journeys still belong to the owning playground browser lane.
+
 ## Test Plan
 
 - Exact-source compiler tests use a 30-second timeout because compiling full TypeScript programs can exceed the default five seconds under CI coverage. All compiler diagnostics and behavioral assertions remain enforced.
@@ -95,9 +101,9 @@ Tests cover rectangular/independent rows, exact zero counts, game boundaries/dra
 - Regression-first core tests initially rejected interview nodes and missing curriculum. `frontend-interview.test.ts` verifies every path transition, each quiz option, ordering answers, all references, and anonymity. Build-index tests reject missing/draft interview targets, missing attribution, and absent completion feeds.
 - `FrontendInterviewExamples.test.tsx` strictly typechecks and executes all 21 exact authored TS projects, mounts each React example, and compares model output to 21 Python snapshots. Optimized games use an independent full-window oracle; mocks control failures and stale completions.
 - `npm run test:interview:python` is mandatory in CI/release and fails if Python is absent. Python 3.13 is set up in GitHub workflows. The runner reads canonical code directly; it does not test a second copied implementation.
-- Component tests cover step reveal, approach/language switches, checkpoint links, snippet languages/source links, and growing feeds. Native Jest covers the guide and language/next-node flow.
+- Component tests cover step reveal, approach/language switches, checkpoint links, snippet languages/source links, and growing feeds. Native Jest covers the guide and language/next-node flow. Supporting rubric sections start collapsed on web/native, preserve their full content, and expose expanded state. Question prompts remain visible; recipe controls and language choices precede long solution explanations. Native read-only source shows its web-runner notice before the code. The Mondrian browser journey opens and closes its rubric with the keyboard across Chromium/WebKit.
 - Playwright `frontend-interview.regression.spec.ts` covers reload/path context, actual sandbox execution, wrong-answer feedback, final review navigation, and cards beyond the initial window. Existing Mondrian regression now explicitly reveals each solution.
-- Maestro `frontend-interview.yaml` covers installed-app recipe/Python/checkpoint/review navigation. It is included by the existing `.maestro` release-directory lane; local Jest is not a substitute for running it on Android/iOS.
+- Maestro `frontend-interview.yaml` covers installed-app recipe/Python/checkpoint/review navigation at normal and enlarged system text. Find the fully visible Python code heading below its usage note, distinct from the language-choice button, then inspect the code capture; a clipped parent alone is insufficient. Scroll checkpoint and review controls into view with bounded searches. It is included by the existing `.maestro` release-directory lane; local Jest is not a substitute for running it on Android/iOS.
 - Required commands: content:index/check, test:interview:python, lint, typecheck, test:coverage, test:mobile:coverage, build, relevant Playwright regressions, e2e:smoke, mobile:doctor. Coverage floors and exclusions are unchanged.
 
 ### Validation Notes

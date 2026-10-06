@@ -25,6 +25,9 @@ function nodeText(children: ReactNode): string {
 }
 
 const components: Components = {
+  table({ children, ...props }) {
+    return <div className="ui-scroll-region prose-table" role="group" aria-label="Data table" tabIndex={0}><table {...props}>{children}</table></div>;
+  },
   h2({ children, ...props }) {
     const id = slugifyHeading(nodeText(children));
     return (

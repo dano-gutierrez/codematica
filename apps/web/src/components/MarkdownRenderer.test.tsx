@@ -22,6 +22,13 @@ describe("MarkdownRenderer", () => {
 
     expect(screen.getByText("Python")).toBeVisible();
     expect(screen.getByText("total").closest("code")).toHaveTextContent("def total(items):");
+    expect(screen.getByRole("group", { name: "Python code" })).toHaveAttribute("tabindex", "0");
+  });
+
+  it("keeps wide data tables keyboard scrollable with table semantics", () => {
+    render(<MarkdownRenderer markdown={"| Condition | Result |\n| --- | --- |\n| Fresh | Hit |"} />);
+    expect(screen.getByRole("group", { name: "Data table" })).toHaveAttribute("tabindex", "0");
+    expect(screen.getByRole("table")).toHaveTextContent("Fresh");
   });
 
   it("renders nested headings, Mermaid, plain fences, and safe links", async () => {

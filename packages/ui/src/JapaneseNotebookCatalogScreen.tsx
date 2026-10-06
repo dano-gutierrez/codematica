@@ -1,5 +1,6 @@
-import { useEffect, useMemo, useState } from "react";
-import { Pressable, Switch, Text, TextInput, View } from "react-native";
+import { AdaptiveText as Text } from "./AdaptiveText";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { Pressable, Switch, TextInput, View } from "react-native";
 import Svg, { Path } from "react-native-svg";
 import {
   createCustomNotebook,
@@ -9,6 +10,8 @@ import {
   type ContentIndex,
   type WritingNotebook,
 } from "@codematica/core";
+import { Button } from "./Button";
+import { colors } from "./tokens";
 import { AppScreen, Header } from "./screens";
 import { JapaneseNotebookPractice } from "./JapaneseNotebookPractice";
 import type { CodematicaAdapters } from "./adapters";
@@ -33,6 +36,8 @@ export function JapaneseNotebookCatalogScreen({
         ),
     [index],
   );
+  const creatingRef = useRef(false);
+  const [creating, setCreating] = useState(false);
   const [text, setText] = useState(""),
     [saved, setSaved] = useState<WritingNotebook[]>([]),
     [selected, setSelected] = useState<WritingNotebook>(),
@@ -67,6 +72,9 @@ export function JapaneseNotebookCatalogScreen({
     validation = (e as Error).message;
   }
   async function start() {
+    if (creatingRef.current) return;
+    creatingRef.current = true;
+    setCreating(true);
     try {
       const notebook = createCustomNotebook(text, index);
       await adapters.notebooks?.saveDefinition(notebook);
@@ -74,6 +82,9 @@ export function JapaneseNotebookCatalogScreen({
       setError("");
     } catch (e) {
       setError((e as Error).message);
+    } finally {
+      creatingRef.current = false;
+      setCreating(false);
     }
   }
   function button(
@@ -82,25 +93,7 @@ export function JapaneseNotebookCatalogScreen({
     action: () => void,
     disabled = false,
   ) {
-    return (
-      <Pressable
-        key={id}
-        disabled={disabled}
-        accessibilityRole="button"
-        accessibilityLabel={label}
-        accessibilityState={{ disabled }}
-        onPress={action}
-        testID={id}
-        style={{
-          minHeight: 48,
-          padding: 12,
-          borderBottomWidth: 1,
-          borderColor: "#abcbd4",
-        }}
-      >
-        <Text style={{ color: "#263238", fontSize: 16 }}>{label}</Text>
-      </Pressable>
-    );
+    return <Button key={id} label={label} disabled={disabled || creating} busy={id === "mobile-notebook-create" && creating} onPress={action} tone={id.includes("retry") ? "warning" : "info"} variant={id.includes("create") ? "primary" : "secondary"} testID={id} />;
   }
   function notebookCard(notebook: WritingNotebook, saved: boolean) {
     const prompts = getNotebookCatalogPreview(notebook);
@@ -132,24 +125,12 @@ export function JapaneseNotebookCatalogScreen({
     );
   }
   return (
-    <AppScreen keyboardShouldPersistTaps="handled">
+    <AppScreen keyboardAware>
       {selected ? (
         <View style={{ gap: 16 }}>
-          <View style={{ flexDirection: "row", alignItems: "center", gap: 12 }}>
-            <Pressable
-              accessibilityRole="button"
-              accessibilityLabel="All notebooks"
-              testID="mobile-notebook-back"
-              onPress={() => {
-                setSelected(undefined);
-                void load();
-              }}
-              style={{ width: 44, height: 44, alignItems: "center", justifyContent: "center" }}
-            >
-              <Svg width={24} height={24} viewBox="0 0 24 24" accessible={false}>
-                <Path d="M19 12H5m7-7-7 7 7 7" stroke="#263238" strokeWidth={2} fill="none" strokeLinecap="round" strokeLinejoin="round" />
-              </Svg>
-            </Pressable>
+          <View style={{ flexDirection: "row", flexWrap: "wrap", alignItems: "center", gap: 12 }}>
+            <Button label="All notebooks" tone="neutral" variant="ghost" testID="mobile-notebook-back" onPress={() => { setSelected(undefined); void load(); }}
+              icon={<Svg width={20} height={20} viewBox="0 0 24 24" accessible={false}><Path d="M19 12H5m7-7-7 7 7 7" stroke="#263238" strokeWidth={2} fill="none" strokeLinecap="round" strokeLinejoin="round" /></Svg>} />
             <Text
               accessibilityRole="header"
               style={{ flex: 1, fontSize: 24, color: "#263238" }}
@@ -170,15 +151,19 @@ export function JapaneseNotebookCatalogScreen({
             accessibilityRole="header"
             style={{ fontSize: 28, color: "#263238" }}
           >
-            Your Japanese notebooks
+            Japanese notebooks
           </Text>
           <Text>
             Repeat a character, word or short expression in a page of
             handwriting.
           </Text>
+          <Text style={{ fontSize: 14, fontWeight: "600", color: colors.textStrong }}>Japanese text</Text>
           <TextInput
             accessibilityLabel="Japanese text"
+            autoCapitalize="none"
+            autoCorrect={false}
             value={text}
+            editable={!creating}
             onChangeText={setText}
             placeholder="あい · おはよう"
             maxLength={32}
@@ -186,23 +171,19 @@ export function JapaneseNotebookCatalogScreen({
             style={{
               minHeight: 48,
               borderWidth: 1,
-              borderRadius: 12,
+              borderRadius: 10,
               padding: 12,
-              borderColor: "#678680",
+              borderColor: colors.controlBorder,
+              fontSize: 16,
               color: "#263238",
             }}
           />
           <Text accessibilityLiveRegion="polite">
             {validation || "Choose 1–5 supported Japanese characters."}
           </Text>
-          {button(
-            "Create notebook",
-            "mobile-notebook-create",
-            () => {
-              void start();
-            },
-            !text || Boolean(validation),
-          )}
+          <Button label="Create notebook" tone="info" variant="primary"
+            testID="mobile-notebook-create" onPress={() => { void start(); }} busy={creating}
+            disabled={creating || !text || Boolean(validation)} />
           {error ? (
             <>
               <Text accessibilityLiveRegion="polite">{error}</Text>

@@ -1,6 +1,7 @@
 "use client";
-import Link from "next/link";
-import { useEffect, useMemo, useState } from "react";
+import { Button } from "./Button";
+import { ButtonLink } from "./ButtonLink";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { ArrowLeft, ArrowRight, BookOpen, Languages, Pencil } from "lucide-react";
 import {
@@ -32,6 +33,8 @@ export function JapaneseNotebookCatalog() {
         }),
     [],
   );
+  const creatingRef = useRef(false);
+  const [creating, setCreating] = useState(false);
   const [saved, setSaved] = useState<WritingNotebook[]>([]),
     [selected, setSelected] = useState<WritingNotebook | null>(),
     [text, setText] = useState(""),
@@ -73,6 +76,7 @@ export function JapaneseNotebookCatalog() {
     );
   }
   async function create() {
+    if (creatingRef.current) return;
     let notebook: WritingNotebook;
     try {
       notebook = createCustomNotebook(text, getContentIndex());
@@ -80,6 +84,8 @@ export function JapaneseNotebookCatalog() {
       setError((e as Error).message);
       return;
     }
+    creatingRef.current = true;
+    setCreating(true);
     setError("");
     try {
       await storage.saveDefinition(notebook);
@@ -90,6 +96,8 @@ export function JapaneseNotebookCatalog() {
       );
     }
     open(notebook);
+    creatingRef.current = false;
+    setCreating(false);
   }
   function notebookCard(notebook: WritingNotebook, saved: boolean) {
     const prompts = getNotebookCatalogPreview(notebook);
@@ -118,10 +126,8 @@ export function JapaneseNotebookCatalog() {
   }
   if (current)
     return (
-      <section className="mx-auto max-w-5xl px-4 py-6">
-        <button
-          type="button"
-          className="notebook-catalog-back"
+      <section className="ui-page max-w-5xl">
+        <Button label="All notebooks" icon={ArrowLeft} variant="quiet"
           onClick={() => {
             setSelected(null);
             router.replace("/languages/japanese/notebooks", { scroll: false });
@@ -130,11 +136,7 @@ export function JapaneseNotebookCatalog() {
               .then(setSaved)
               .catch(() => undefined);
           }}
-          data-testid="notebooks-back"
-        >
-          <ArrowLeft size={18} aria-hidden="true" />
-          All notebooks
-        </button>
+          data-testid="notebooks-back" />
         <h1 className="mt-4 text-3xl font-semibold">Notebook practice</h1>
         <JapaneseWritingPractice
           key={current.id}
@@ -145,20 +147,17 @@ export function JapaneseNotebookCatalog() {
     );
   return (
     <section
-      className="mx-auto max-w-5xl px-4 py-7"
+      className="ui-page max-w-5xl"
       data-testid="japanese-notebooks"
     >
       <nav aria-label="Japanese learning">
-        <Link href="/languages/japanese" className="notebook-catalog-back">
-          <ArrowLeft size={18} aria-hidden="true" />
-          Japanese
-        </Link>
+        <ButtonLink href="/languages/japanese" label="Japanese" icon={ArrowLeft} variant="quiet" />
       </nav>
       <p className="mt-5 text-xs font-semibold uppercase tracking-wider text-[#7a5200]">
-        Japanese · planas
+        Japanese writing
       </p>
       <h1 className="mt-2 text-3xl font-semibold">
-        A little ink. A lasting memory.
+        Japanese notebooks
       </h1>
       <p className="mt-3 max-w-2xl text-[#53616c]">
         Fill notebook pages with characters, words, and short expressions. Draw
@@ -181,6 +180,7 @@ export function JapaneseNotebookCatalog() {
             id="notebook-text"
             lang="ja"
             value={text}
+            disabled={creating}
             maxLength={32}
             autoCapitalize="none"
             autoCorrect="off"
@@ -193,15 +193,7 @@ export function JapaneseNotebookCatalog() {
             aria-describedby="notebook-text-help notebook-create-error"
             data-testid="notebook-custom-text"
           />
-          <button
-            type="submit"
-            className="writing-primary"
-            disabled={!text || Boolean(validation)}
-            data-testid="notebook-create"
-          >
-            Create notebook
-            <ArrowRight size={18} aria-hidden="true" />
-          </button>
+          <Button label="Create notebook" icon={ArrowRight} type="submit" tone="info" variant="primary" busy={creating} disabled={!text || Boolean(validation)} data-testid="notebook-create" />
         </div>
         <p id="notebook-text-help">
           Choose 1–5 characters with writing guides. Three sheets gradually fade
@@ -212,17 +204,12 @@ export function JapaneseNotebookCatalog() {
         </p>
         <div className="notebook-preset-prompts">
           {["あい", "カメラ", "おはよう", "ありがとう"].map((value) => (
-            <button
-              key={value}
-              type="button"
-              lang="ja"
+            <Button label={value} key={value} lang="ja" tone="info" disabled={creating}
               onClick={() => {
                 setText(value);
                 setError("");
               }}
-            >
-              {value}
-            </button>
+            />
           ))}
         </div>
       </form>
@@ -258,9 +245,7 @@ export function JapaneseNotebookCatalog() {
         {curated.map((n) => notebookCard(n, false))}
       </div>
       {error ? (
-        <button
-          type="button"
-          className="notebook-catalog-back"
+        <Button label="Retry saved notebooks" icon={ArrowRight} tone="warning"
           onClick={() =>
             void storage
               .list()
@@ -274,9 +259,7 @@ export function JapaneseNotebookCatalog() {
                 ),
               )
           }
-        >
-          Retry saved notebooks
-        </button>
+        />
       ) : null}
     </section>
   );

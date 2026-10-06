@@ -41,11 +41,11 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
         <AppNavigation />
-        <Suspense fallback={null}><GameLessonReturn /></Suspense>
-        <div id="app-content" className="app-content" tabIndex={-1}>{children}</div>
-        <Suspense fallback={null}>
-          <SaveProgressPrompt isAuthConfigured={hasSupabasePublicEnv()} />
-        </Suspense>
+        <div id="app-content" className="app-content" tabIndex={-1}>
+          <Suspense fallback={null}><GameLessonReturn /></Suspense>
+          {children}
+          <Suspense fallback={null}><SaveProgressPrompt isAuthConfigured={hasSupabasePublicEnv()} /></Suspense>
+        </div>
       </body>
     </html>
   );

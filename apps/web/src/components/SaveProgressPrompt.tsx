@@ -1,7 +1,10 @@
 "use client";
 
-import Link from "next/link";
-import { X } from "lucide-react";
+import { LogIn, X } from "lucide-react";
+import { Button } from "@/components/Button";
+import { ButtonLink } from "@/components/ButtonLink";
+import { createBrowserSupabaseClient } from "@/lib/supabase/client";
+import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { anonymousProgressChangedEvent, getAnonymousProgressItems } from "@/lib/progress/anonymous";
 import {GAME_STORAGE_KEY,gameProgressSchema,gameTotals} from "@codematica/core/game";
@@ -15,7 +18,12 @@ export function SaveProgressPrompt({ isAuthConfigured }: SaveProgressPromptProps
   const [hasAnonymousProgress, setHasAnonymousProgress] = useState(false);
   const [isSignedIn, setIsSignedIn] = useState(false);
   const [isDismissed, setIsDismissed] = useState(false);
-  const [nextPath] = useState(() => (typeof window === "undefined" ? "/" : `${window.location.pathname}${window.location.search}`));
+  const pathname = usePathname();
+  const [nextPath, setNextPath] = useState(() => (typeof window === "undefined" ? "/" : `${window.location.pathname}${window.location.search}`));
+
+  useEffect(() => {
+    queueMicrotask(() => setNextPath(`${window.location.pathname}${window.location.search}`));
+  }, [pathname]);
 
   useEffect(() => {
     function refreshAnonymousProgress() {
@@ -35,21 +43,30 @@ export function SaveProgressPrompt({ isAuthConfigured }: SaveProgressPromptProps
     }
 
     let isMounted = true;
+    let authVersion = 0;
+    const client = createBrowserSupabaseClient();
+    const subscription = client?.auth.onAuthStateChange((_event, session) => {
+      if (!isMounted) return;
+      authVersion++;
+      setIsSignedIn(!!session?.user);
+    }).data.subscription;
+    const initialVersion = authVersion;
 
     fetch("/api/progress/summary")
       .then((response) => (response.ok ? response.json() : undefined))
       .then((summary: { isSignedIn?: boolean } | undefined) => {
-        if (!isMounted || !summary?.isSignedIn) {
+        if (!isMounted || authVersion !== initialVersion) {
           return;
         }
 
-        setIsSignedIn(true);
-        void syncBufferedAnonymousProgress();
+        setIsSignedIn(!!summary?.isSignedIn);
+        if (summary?.isSignedIn) void syncBufferedAnonymousProgress();
       })
       .catch(() => undefined);
 
     return () => {
       isMounted = false;
+      subscription?.unsubscribe();
     };
   }, [isAuthConfigured]);
 
@@ -59,23 +76,16 @@ export function SaveProgressPrompt({ isAuthConfigured }: SaveProgressPromptProps
 
   return (
     <aside
-      className="fixed right-3 top-3 z-30 grid w-[min(15rem,calc(100vw-1.5rem))] grid-cols-[minmax(0,1fr)_2.5rem] gap-3 rounded-xl border border-[#00645f] bg-white p-3 shadow-lg"
+      className="save-progress-banner"
       data-testid="save-progress-prompt"
     >
       <div className="min-w-0">
-        <p className="text-sm font-semibold text-[#263238]">Save progress across devices</p>
-        <Link href={`/login?next=${encodeURIComponent(nextPath)}`} className="mt-1 inline-flex text-sm font-semibold text-[#245fba]">
-          Save progress
-        </Link>
+        <p className="text-sm font-semibold text-[#263238]">{isAuthConfigured ? "Save progress across devices" : "Progress saved on this device"}</p>
       </div>
-      <button
-        type="button"
-        aria-label="Dismiss save progress prompt"
-        onClick={() => setIsDismissed(true)}
-        className="flex h-10 w-10 items-center justify-center rounded-xl border border-[#d5e2e8] bg-[#f6fbfc] text-[#263238]"
-      >
-        <X className="h-4 w-4" aria-hidden="true" />
-      </button>
+      <div className="flex flex-wrap gap-2">
+        {isAuthConfigured ? <ButtonLink href={`/login?next=${encodeURIComponent(nextPath)}`} label="Save progress" icon={LogIn} tone="info" /> : null}
+        <Button label="Dismiss" aria-label="Dismiss save progress prompt" icon={X} variant="quiet" onClick={() => setIsDismissed(true)} />
+      </div>
     </aside>
   );
 }

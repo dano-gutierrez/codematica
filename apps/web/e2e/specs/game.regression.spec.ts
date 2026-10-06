@@ -232,3 +232,37 @@ test("@regression resetting a pending SQL runner keeps the replacement attempt i
   await expect(page.getByTestId("game-result")).toHaveCount(0);
   await expect(page.getByTestId("game-scenario-mastery-1")).toBeDisabled();
 });
+
+test("@regression @design a SQL worker timeout preserves the query and allows a successful retry", async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: "reduce" });
+  await page.addInitScript(() => {
+    localStorage.setItem("codematica.game.v1", JSON.stringify({
+      version: 1, timezone: "UTC", cosmetic: "none", activityDays: [], updatedAt: "2026-10-04T00:00:00Z",
+      awards: { "restore-the-signal/courtyard-defense/main": { earnedAt: "2026-10-04T00:00:00Z", mode: "standard" } },
+    }));
+  });
+  let requests = 0;
+  await page.route("**/game/sql-worker.js", async route => {
+    requests++;
+    if (requests === 1) {
+      await route.fulfill({
+        contentType: "text/javascript",
+        body: "self.onmessage=()=>setTimeout(()=>self.postMessage({passed:true,reasons:[],events:[],columns:['id'],rows:[[1]]}),2500);",
+      });
+    } else await route.continue();
+  });
+  await page.goto("/play/restore-the-signal/target-lock");
+  const query = "SELECT id FROM zombies WHERE kind = 'runner'";
+  await page.getByTestId("game-code").fill(query);
+  await page.getByTestId("game-run").click();
+  await expect(page.getByTestId("game-result")).toContainText("The local SQL runner took too long. Retry your query.");
+  await expect(page.getByTestId("game-code")).toHaveValue(query);
+  await expect(page.getByTestId("game-run")).toBeEnabled();
+  await expect(page.getByTestId("game-scenario-mastery-1")).toBeDisabled();
+  expect(await page.evaluate(() => Object.keys(JSON.parse(localStorage.getItem("codematica.game.v1")!).awards))).toEqual(["restore-the-signal/courtyard-defense/main"]);
+  await page.getByTestId("game-run").click();
+  await expect(page.getByTestId("game-result")).toContainText("Signal restored!");
+  await expect(page.getByTestId("game-code")).toHaveValue(query);
+  await expect(page.getByTestId("game-scenario-mastery-1")).toBeEnabled();
+  expect(requests).toBe(2);
+});

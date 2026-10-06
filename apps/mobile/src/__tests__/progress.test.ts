@@ -132,3 +132,48 @@ describe("native progress retention", () => {
     expect(AsyncStorage.removeItem).toHaveBeenCalled();
   });
 });
+
+it("retains later native learning while a sync snapshot is in flight", async () => {
+  await AsyncStorage.clear();
+  const document = getContentIndex().documents[0];
+  const target = { surface: "document" as const, slug: document.slug, title: document.title, summary: document.summary, href: document.route, eyebrow: "Document" };
+  await recordNativeProgress(undefined, target, "started");
+  let finish!: (value: { error: null }) => void;
+  let began!: () => void;
+  const started = new Promise<void>(resolve => { began = resolve; });
+  const client = { auth: { getUser: jest.fn(async () => ({ data: { user: { id: "synthetic" } }, error: null })) }, from: jest.fn(() => ({ upsert: jest.fn(() => { began(); return new Promise(resolve => { finish = resolve; }); }) })) };
+  const pending = syncNativeAnonymousProgress(client);
+  await started;
+  await recordNativeProgress(undefined, target, "completed");
+  finish({ error: null });
+  expect(await pending).toEqual({ synced: 1, rejected: 0 });
+  expect((await getAnonymousProgressItems())[0]?.input.status).toBe("completed");
+  await AsyncStorage.clear();
+});
+
+it("retains the buffer when storage cannot be read for synchronization acknowledgment", async () => {
+  await AsyncStorage.clear();
+  const document = getContentIndex().documents[0];
+  await recordNativeProgress(undefined, { surface: "document", slug: document.slug, title: document.title, summary: document.summary, href: document.route, eyebrow: "Document" }, "started");
+  const client = { auth: { getUser: jest.fn(async () => ({ data: { user: { id: "synthetic" } }, error: null })) }, from: jest.fn(() => ({ upsert: jest.fn(async () => {
+    jest.mocked(AsyncStorage.getItem).mockRejectedValueOnce(new Error("storage unavailable"));
+    return { error: null };
+  }) })) };
+  await expect(syncNativeAnonymousProgress(client)).rejects.toThrow("storage unavailable");
+  expect(await getAnonymousProgressItems()).toHaveLength(1);
+  await AsyncStorage.clear();
+});
+
+it("serializes simultaneous native learning writes instead of replacing another screen's progress", async () => {
+  await AsyncStorage.clear();
+  await Promise.all(getContentIndex().documents.slice(0, 2).map(document => recordNativeProgress(undefined, { surface: "document", slug: document.slug, title: document.title, summary: document.summary, href: document.route, eyebrow: "Document" }, "started")));
+  expect(await getAnonymousProgressItems()).toHaveLength(2);
+  await AsyncStorage.clear();
+});
+
+it("does not report synchronization complete when the retained snapshot cannot be read", async () => {
+  const client = { auth: { getUser: jest.fn() } };
+  jest.mocked(AsyncStorage.getItem).mockRejectedValueOnce(new Error("storage unavailable"));
+  await expect(syncNativeAnonymousProgress(client)).rejects.toThrow("storage unavailable");
+  expect(client.auth.getUser).not.toHaveBeenCalled();
+});

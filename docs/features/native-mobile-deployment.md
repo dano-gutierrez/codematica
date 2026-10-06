@@ -3,9 +3,9 @@
 ## Snapshot
 
 - Status: `in_progress`
-- Last updated: `2026-08-05`
+- Last updated: `2026-10-03`
 - Owner thread: `n/a`
-- Current state: The repo has an Expo Router app in `apps/mobile`, shared runtime logic in `packages/core`, shared React Native screens in `packages/ui`, adaptive phone/iPad Japanese handwriting and review, Pencil Scribble-compatible open answers, offline Japanese conversion, `expo-audio` playback, enforced Jest coverage, credential-free EAS Android/iOS E2E profiles, and checked-in Maestro regression workflows.
+- Current state: The repo has an Expo Router app in `apps/mobile`, shared runtime logic in `packages/core`, shared React Native screens in `packages/ui`, adaptive phone/iPad Japanese handwriting and review, shared semantic actions and account/recovery controls, Pencil Scribble-compatible open answers, offline Japanese conversion, `expo-audio` playback, enforced Jest coverage, credential-free EAS Android/iOS E2E profiles, and checked-in Maestro regression workflows.
 - Target outcome: Codematica can run locally on web/Android/iOS, ship Android and iOS internal builds, and prepare Play Console/App Store Connect submissions while preserving the Next/Vercel mobile web app and sharing product logic.
 - Code touchpoints:
   - `apps/mobile/`
@@ -136,7 +136,7 @@ Store-side setup still required:
 
 - `apps/mobile/app/` mirrors the web route set for discovery home, section catalogs, path details, browse, docs, diagrams, practice, languages, interviews, login, and OAuth callback.
 - `apps/mobile/src/lib/adapters.tsx` adapts Expo Router navigation, native Supabase Auth, and native progress recording to `@codematica/ui`.
-- `apps/mobile/src/lib/progress.ts` writes signed-in progress through the shared Supabase/RLS contract, retains all unique signed-out progress locally, and syncs it in 20-item batches without clearing until every batch succeeds.
+- `apps/mobile/src/lib/progress.ts` writes signed-in progress through the shared Supabase/RLS contract, retains all unique signed-out progress locally, and syncs it in 20-item batches, acknowledging only unchanged submitted records after every batch succeeds. Native buffer writes are serialized so concurrent learning remains local.
 - `apps/mobile/src/lib/supabase.ts` creates the native Supabase anon client with Expo SecureStore-backed session persistence.
 - `apps/mobile/app.config.ts` owns native app identity, adaptive orientation, tablet support, bundle/package identifiers, version counters, icon/splash assets, runtime version policy, and EAS project linkage.
 - `apps/mobile/eas.json` owns development, preview, production, e2e-test, and submit profiles.
@@ -151,13 +151,23 @@ Store-side setup still required:
 - Native writing practice uses `react-native-svg` for the stroke pad and keeps raw strokes transient.
 - Native open answers use a real Japanese-language `TextInput`; iPadOS Scribble can replace Pencil handwriting with text on-device. Candidate conversion and grading remain in shared core logic, and raw ink is never stored.
 - Approved listening assets play through `expo-audio`; draft synthetic audio is absent from generated registries.
-- Japanese writing pads use window dimensions to grow from compact phone/Split View layouts to 480–560 pt iPad canvases while retaining font scaling and 44 pt controls.
+- Japanese writing pads use window dimensions to grow from compact phone/Split View layouts to 480–560 pt iPad canvases while retaining font scaling and 48 pt controls.
 
 ## Adaptive Interface
 
 The root layout wraps the existing Stack with safe-area-aware `NativeNavigation`: a phone bottom bar and iPad sidebar, responsive to Split View and font scaling. It preserves route adapters, content, and progress behavior. See [Adaptive Interface And Navigation](adaptive-ui.md).
 
+## Design audit verification
+
+The October 3 design pass is tracked in [app-wide-design-audit.md](app-wide-design-audit.md). A fresh Android Release APK builds and installs on an isolated API 35 emulator; artifact checks verify packaged art and the offline CSS/SQLite runners. Native reader gestures pass on Android and iPhone Expo Go. iPad Expo Go checks cover portrait/landscape notebook entry, real handwriting gestures, Undo and two-finger scrolling, plus learning layouts at default/largest text. Expo Go exercises the SVG handwriting fallback. Xcode 26.3 does not meet the SDK 57 installed-iOS baseline of 26.4. Installed iOS, PencilKit/physical Pencil, native screen readers and complete installed regression lanes remain separate gates. No EAS/store build or submission is authorized by the visual audit.
+
 ## Test Plan
+
+- Native card names: discovery buttons include title, visible type/category and displayed difficulty; resume buttons include the type; editorial collection buttons include topic and review status. Component tests pin metadata and exact revision selection. Installed Learn/resume/editorial journeys verify activation at normal and enlarged text. Explicit native accessibility labels override descendant aggregation; actual TalkBack/VoiceOver speech remains a separate acceptance check.
+
+- Software keyboards: `design-controls.test.tsx` dispatches real native keyboard events to `AppScreen` on both platforms, verifies the reserved height/padding and restoration, and keeps the same input. `game.test.tsx` pins Android editor identity through the same transition. Installed acceptance must show exact CSS/SQL text above the open keyboard, execute the solutions, and retain map/list/current-level assertions. Window resize configuration or a source-only pass does not prove keyboard geometry.
+
+- Configured account: the opt-in `e2e/flows/auth-account.regression.yaml` uses only disposable local data with publishing disabled. Run at normal and enlarged text, retaining invalid-password recovery, acknowledged sign-in, account/Admin navigation, manual creation/refinement, sign-out and access denial. Its page-edge swipe makes the below-field confirmation reachable before the original bounded search; an additional bounded scroll brings the expanded account email into view. Follow the [native E2E guide](../../apps/mobile/e2e/README.md#configured-account-and-editorial-journey); preserve failed results and inspect viewport crops separately from assertions.
 
 - Native code: `code-styles.test.tsx` covers source preservation, nested Markdown, readable code/inline styles, and scroll containment. Run `npm run mobile:e2e:code-layout -- --session <agent-device-session>` on both platforms for geometry and real gesture assertions; `apps/mobile/e2e/README.md` documents setup and evidence. `.maestro/code-layout.yaml` runs in the existing EAS release lane and captures source/prose screenshots. Expo Go validation does not replace the final EAS build checks.
 
@@ -171,6 +181,7 @@ The root layout wraps the existing Stack with safe-area-aware `NativeNavigation`
 - Content: `npm run content:check` after content, parser, schema, or generated index changes.
 - Expo: `npm run doctor -w @codematica/mobile` before EAS build work.
 - Dependency updates: align SDK 57 versions across mobile dependencies, root development dependencies/overrides, and the lockfile. Declare native peers directly, including `expo-asset` for `expo-audio`. Verify `npm ci`, Doctor, typechecking, Jest coverage, and `npx expo export --platform all` from `apps/mobile`; bundle export does not prove installed-app startup or native binary compatibility.
+- Native warm-deep-link flows first assert the shared navigation is visible after launch. Android launch completion precedes React navigator readiness; sending the link immediately lost the event in local Release checks. Wait for UI state, not a fixed delay. Scroll to destinations outside the viewport before interacting.
 - Native E2E: apply the `mobile-e2e` PR label or run `npm run mobile:e2e:android` for Android smoke. A `v*` tag or `npm run mobile:e2e:release` builds credential-free Android/iOS artifacts and runs all Maestro flows with JUnit and recordings.
 - Build: `npm run build` for the web app; `npm run mobile:build:preview` for internal native testers; `npm run mobile:build:android` and `npm run mobile:build:ios` for store-ready artifacts once EAS credentials are configured.
 
@@ -207,6 +218,8 @@ The root layout wraps the existing Stack with safe-area-aware `NativeNavigation`
 The native home is the campaign map; discovery remains at `/learn`. `packages/ui/src/game/` renders ordinary native controls around Skia actors and district layers. CSS geometry and bundled SQLite execute in local WebViews with no remote service. See [Restore the Signal](restore-the-signal.md) for the chapter, pause, awards, assistance, and offline contract.
 
 `plugins/with-shared-bundle-inputs.cjs` extends the generated Android bundle task’s inputs to include shared package source and game assets. Metro watch folders alone do not invalidate Gradle’s cached production bundle. Keep this hook when updating Expo’s generated projects. The local release check uses `app:assembleRelease` with a 6 GB Gradle heap, 2 GB metaspace, and four workers; the generated default 512 MB metaspace was insufficient for the added renderers on this host.
+
+`plugins/with-live-font-scale.cjs` preserves the running Android activity when system font scale changes. It adds only the `fontScale` configuration flag and forwards the configuration callback. A posted refresh reads the updated resources, refreshes React Native DeviceInfo, and remeasures the mounted React root without recreating the activity or reloading JavaScript. Existing flags and activity identity remain intact. The hook supports Expo's generated Kotlin activity and fails on a conflicting custom callback. Configuration tests run the real Expo mods and pin idempotence/import preservation; native coverage includes the hook. A newly compiled and installed APK must retain the current route and populated input through enlargement and restoration. This is separate from cold-launch large-text checks and cannot be established with Expo Go. Shared `AdaptiveText` refreshes native text nodes at a changed font scale, preserving their parent screens and form inputs; Markdown text reparses on dimension changes without resetting sibling diagrams. Native integration tests verify live Learn query/results and Markdown/diagram state, and installed captures must verify the actual reflow.
 
 The generated `game-chapter.regression.yaml` exercises all 36 scenarios, real editors, touch connections, persistence, live background/resume, and Android airplane mode. `setAirplaneMode` has no effect on iOS Simulator, so offline iOS verification also requires a network-disabled test host/device. The first two scenarios have a short smoke flow. Keep failed Maestro reports and recordings. Current installed-device evidence and outstanding gates are recorded in the game feature doc.
 

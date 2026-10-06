@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-require-imports -- Hoisted Jest mock factories need a local React import. */
-import { act, fireEvent, render, waitFor } from "@testing-library/react-native";
-import { AppState, AccessibilityInfo, type AppStateStatus } from "react-native";
+import { act, fireEvent, render, waitFor, within } from "@testing-library/react-native";
+import { AppState, AccessibilityInfo, DeviceEventEmitter, Platform, Dimensions, type AppStateStatus, ScrollView, StyleSheet } from "react-native";
 import { getContentIndex } from "@codematica/core";
 import {
   GameStore,
@@ -18,6 +18,7 @@ import { NativeDistrictArt } from "../../../../packages/ui/src/game/NativeDistri
 const mockFrames: ((frame: {
   timeSincePreviousFrame: number | null;
 }) => void)[] = [];
+const mockSetPlaybackActive = jest.fn();
 jest.mock("react-native-reanimated", () => ({
   useSharedValue: (initial: number) => {
     const React = require("react");
@@ -33,7 +34,7 @@ jest.mock("react-native-reanimated", () => ({
     fn: (frame: { timeSincePreviousFrame: number | null }) => void,
   ) => {
     mockFrames.push(fn);
-    return { setActive: jest.fn() };
+    return { setActive: mockSetPlaybackActive };
   },
 }));
 const mockAtlasProps: {
@@ -189,6 +190,29 @@ it("edits CSS, handles the isolated runner reply, rejects unrelated messages, an
   await fireEvent.press(view.getByTestId("game-reset"));
   expect(session.getSnapshot().attempt.phase).toBe("briefing");
 });
+it("keeps the Android game editor above the keyboard without replacing the native draft", async () => {
+  const originalPlatform = Platform.OS;
+  Object.defineProperty(Platform, "OS", { value: "android", configurable: true });
+  try {
+    const { view } = await open(0);
+    const input = view.getByTestId("game-code");
+    const frame = view.root!;
+    await fireEvent(frame, "layout", {
+      persist: jest.fn(), nativeEvent: { layout: { x: 0, y: 0, width: 390, height: 700 } },
+    });
+    await act(() => { DeviceEventEmitter.emit("keyboardDidShow", {
+      duration: 0, easing: "keyboard", endCoordinates: { screenX: 0, screenY: 300, width: 390, height: 400 },
+    }); });
+    expect(StyleSheet.flatten(view.root!.props.style).height).toBe(300);
+    expect(view.getByTestId("game-code")).toBe(input);
+    await act(() => { DeviceEventEmitter.emit("keyboardDidHide", {}); });
+    expect(StyleSheet.flatten(view.root!.props.style).height).toBeUndefined();
+    expect(view.getByTestId("game-code")).toBe(input);
+  } finally {
+    Object.defineProperty(Platform, "OS", { value: originalPlatform, configurable: true });
+  }
+});
+
 it("renders SQL fixtures and exposes retryable errors without network execution", async () => {
   const { view, session } = await open(1);
   expect(
@@ -206,6 +230,146 @@ it("renders SQL fixtures and exposes retryable errors without network execution"
   await fireEvent(frame, "error");
   expect(session.getSnapshot().result?.passed).toBe(false);
   await fireEvent.press(view.getByTestId("game-reset"));
+});
+it.each([0, campaign.levels.findIndex((level) => level.id === "threat-scanner")])(
+  "keeps native code entry stable and reseeds only on explicit reset or scenario choice at level %i",
+  async (order) => {
+    const { view, session } = await open(order, "mastery-1");
+    const scenario = session.getSnapshot().scenario;
+    if (scenario.kind !== "grid" && scenario.kind !== "sql") throw new Error("Expected code scenario");
+    const input = view.getByTestId("game-code");
+    expect(input.props.value).toBeUndefined();
+    expect(input.props.defaultValue).toBe(scenario.starter);
+    await fireEvent.changeText(input, scenario.solution);
+    expect(session.getSnapshot().code).toBe(scenario.solution);
+    expect(input).toBeOnTheScreen();
+    expect(view.getByTestId("game-code").props.defaultValue).toBe(scenario.starter);
+    await fireEvent.press(view.getByTestId("game-run"));
+    const payload = JSON.parse(view.getByTestId("game-sandbox").props.source.html.match(/const data=(.*);\nconst send/)[1]);
+    expect(payload.source).toBe(scenario.solution);
+    await fireEvent.press(view.getByTestId("game-reset"));
+    expect(input).not.toBeOnTheScreen();
+    expect(view.getByTestId("game-code").props.defaultValue).toBe(scenario.starter);
+    await fireEvent.changeText(view.getByTestId("game-code"), "temporary draft");
+    await fireEvent.press(view.getByTestId("game-scenario-main"));
+    const main = session.getSnapshot().scenario;
+    if (main.kind !== "grid" && main.kind !== "sql") throw new Error("Expected code scenario");
+    expect(view.getByTestId("game-code").props.defaultValue).toBe(main.starter);
+    const mainInput = view.getByTestId("game-code");
+    await fireEvent.changeText(mainInput, "another draft");
+    await fireEvent.press(view.getByTestId("game-scenario-main"));
+    expect(mainInput).not.toBeOnTheScreen();
+    expect(view.getByTestId("game-code").props.defaultValue).toBe(main.starter);
+    expect(session.getSnapshot().code).toBe(main.starter);
+  },
+);
+it("ignores a code event from an editor replaced by reset or scenario choice", async () => {
+  const { view, session } = await open(1, "mastery-1");
+  const oldChange = view.getByTestId("game-code").props.onChangeText;
+  await fireEvent.press(view.getByTestId("game-reset"));
+  const seed = session.getSnapshot().code;
+  await act(() => { oldChange("late text from before reset"); });
+  expect(session.getSnapshot().code).toBe(seed);
+  const resetChange = view.getByTestId("game-code").props.onChangeText;
+  await fireEvent.press(view.getByTestId("game-scenario-main"));
+  const mainSeed = session.getSnapshot().code;
+  await act(() => { resetChange("late text from the previous scenario"); });
+  expect(session.getSnapshot().code).toBe(mainSeed);
+});
+it("runs the latest native text when an edit and Run arrive before the next render", async () => {
+  const { view, session } = await open(1);
+  const scenario = session.getSnapshot().scenario;
+  if (scenario.kind !== "sql") throw new Error("Expected SQL scenario");
+  const change = view.getByTestId("game-code").props.onChangeText;
+  const run = view.getByTestId("game-run");
+  await act(async () => { change(scenario.solution); await fireEvent.press(run); });
+  const payload = JSON.parse(view.getByTestId("game-sandbox").props.source.html.match(/const data=(.*);\nconst send/)[1]);
+  expect(payload.source).toBe(scenario.solution);
+});
+it("runs one current scenario and code snapshot when a scenario changes before the next render", async () => {
+  const { view, session } = await open(1, "mastery-1");
+  const run = view.getByTestId("game-run");
+  await act(async () => { session.choose("mastery-2"); await fireEvent.press(run); });
+  const payload = JSON.parse(view.getByTestId("game-sandbox").props.source.html.match(/const data=(.*);\nconst send/)[1]);
+  expect(payload.scenario).toEqual(session.getSnapshot().scenario);
+  expect(payload.source).toBe(session.getSnapshot().code);
+});
+it("waits for renderer startup before applying the response watchdog", async () => {
+  const { view, session } = await open(1);
+  jest.useFakeTimers();
+  try {
+    await fireEvent.press(view.getByTestId("game-run"));
+    const frame = view.getByTestId("game-sandbox");
+    await act(() => { jest.advanceTimersByTime(20000); });
+    expect(session.getSnapshot().result).toBeNull();
+    expect(view.getByRole("button", { name: "Starting runner…" })).toBeDisabled();
+    await fireEvent(frame, "loadEnd");
+    await act(() => { jest.advanceTimersByTime(9999); });
+    expect(session.getSnapshot().result).toBeNull();
+    await act(() => { jest.advanceTimersByTime(1); });
+    expect(session.getSnapshot().result?.reasons).toContain("The local runner timed out. Retry your solution.");
+  } finally { jest.useRealTimers(); }
+});
+it("bounds renderer startup and ignores a previous attempt's late readiness", async () => {
+  const { view, session } = await open(1);
+  jest.useFakeTimers();
+  try {
+    await fireEvent.press(view.getByTestId("game-run"));
+    const firstReady = view.getByTestId("game-sandbox").props.onLoadEnd;
+    await act(() => { jest.advanceTimersByTime(29999); });
+    expect(session.getSnapshot().result).toBeNull();
+    await act(() => { jest.advanceTimersByTime(1); });
+    expect(session.getSnapshot().result?.reasons).toContain("The local runner could not start. Retry your solution.");
+    await fireEvent.press(view.getByTestId("game-run"));
+    const second = view.getByTestId("game-sandbox");
+    await act(() => { firstReady(); });
+    await act(() => { jest.advanceTimersByTime(10000); });
+    expect(view.getByTestId("game-sandbox")).toBeOnTheScreen();
+    expect(view.getByRole("button", { name: "Starting runner…" })).toBeDisabled();
+    await fireEvent(second, "loadEnd");
+    const nonce = JSON.parse(second.props.source.html.match(/const data=(.*);\nconst send/)[1]).nonce;
+    await fireEvent(second, "message", { nativeEvent: { data: JSON.stringify({ channel: "codematica-game", nonce, result: { passed: true, reasons: [], events: [] } }) } });
+    await act(() => { jest.advanceTimersByTime(40000); });
+    expect(session.getSnapshot().result?.passed).toBe(true);
+  } finally { jest.useRealTimers(); }
+});
+it("pauses offscreen challenge art using its measured bounds and resumes after reflow", async () => {
+  const { view } = await open(1);
+  const scene = () => mockSetPlaybackActive.mock.calls.at(-1)?.[0];
+  const viewport = view.getByTestId("game-play");
+  const region = view.getByTestId("game-scene-region");
+  await fireEvent(viewport, "layout", { nativeEvent: { layout: { height: 500 } } });
+  await fireEvent(region, "layout", { nativeEvent: { layout: { y: 200, height: 144 } } });
+  expect(scene()).toBe(true);
+  await fireEvent(viewport, "scroll", { nativeEvent: { contentOffset: { y: 344 } } });
+  expect(scene()).toBe(false); // The old 600px cutoff kept offscreen art running.
+  await fireEvent(viewport, "scroll", { nativeEvent: { contentOffset: { y: 343 } } });
+  expect(scene()).toBe(true);
+  await fireEvent(region, "layout", { nativeEvent: { layout: { y: 900, height: 144 } } });
+  expect(scene()).toBe(false); // Enlarged text can move the art below the viewport.
+  await fireEvent(viewport, "layout", { nativeEvent: { layout: { height: 600 } } });
+  expect(scene()).toBe(true);
+  await fireEvent(viewport, "scroll", { nativeEvent: { contentOffset: { y: 1044 } } });
+  expect(scene()).toBe(false);
+});
+it("pauses map art outside its measured viewport and while the route is covered", async () => {
+  const props = { campaign, store: storeAt(0), navigate: jest.fn() };
+  const view = await render(<NativeGameMap {...props} />);
+  const viewport = view.getByTestId("game-map");
+  await fireEvent(viewport, "layout", { nativeEvent: { layout: { height: 500 } } });
+  await fireEvent(view.getByTestId("game-scene-region"), "layout", { nativeEvent: { layout: { y: 200, height: 144 } } });
+  expect(mockSetPlaybackActive.mock.calls.at(-1)?.[0]).toBe(true);
+  await fireEvent(viewport, "scroll", { nativeEvent: { contentOffset: { y: 344 } } });
+  expect(mockSetPlaybackActive.mock.calls.at(-1)?.[0]).toBe(false);
+  await fireEvent(viewport, "scroll", { nativeEvent: { contentOffset: { y: 0 } } });
+  expect(mockSetPlaybackActive.mock.calls.at(-1)?.[0]).toBe(true);
+  const playbackUpdates = mockSetPlaybackActive.mock.calls.length;
+  await fireEvent(viewport, "scroll", { nativeEvent: { contentOffset: { y: 1 } } });
+  expect(mockSetPlaybackActive.mock.calls).toHaveLength(playbackUpdates);
+  await view.rerender(<NativeGameMap {...props} active={false} />);
+  expect(mockSetPlaybackActive.mock.calls.at(-1)?.[0]).toBe(false);
+  await view.rerender(<NativeGameMap {...props} active />);
+  expect(mockSetPlaybackActive.mock.calls.at(-1)?.[0]).toBe(true);
 });
 it.each(
   campaign.levels.flatMap((l, i) =>
@@ -360,48 +524,219 @@ it("ticks only the focused copy of a level when returning from a lesson", async 
   }
 });
 
-it.each(["reset", "blur", "unmount"])(
-  "ignores retained runner callbacks after %s",
-  async (interruption) => {
-    const { view, session, store, navigate } = await open(0);
-    await fireEvent.press(view.getByTestId("game-run"));
-    const { onMessage, onError, source } =
-      view.getByTestId("game-sandbox").props;
-    const nonce = JSON.parse(
-      source.html.match(/const data=(.*);\nconst send/)[1],
-    ).nonce;
-    if (interruption === "reset")
-      await fireEvent.press(view.getByTestId("game-reset"));
-    else if (interruption === "blur")
-      await view.rerender(
-        <NativeGamePlay
-          campaign={campaign}
-          level={campaign.levels[0]}
-          store={store}
-          navigate={navigate}
-          workerSource="worker"
-          active={false}
-        />,
-      );
-    else await view.unmount();
-    const submit = jest.spyOn(session, "submit");
-    await act(() => {
-      onMessage({
-        nativeEvent: {
-          data: JSON.stringify({
-            channel: "codematica-game",
-            nonce,
-            result: { passed: true, reasons: [], events: [] },
-          }),
-        },
-      });
-      onError();
-    });
-    expect(submit).not.toHaveBeenCalled();
-    expect(session.getSnapshot().attempt.phase).toBe("briefing");
-    expect(Object.keys(store.getSnapshot().awards)).toHaveLength(0);
-  },
-);
+it.each(["reset", "blur", "unmount"])("ignores retained runner callbacks after %s", async (interruption) => {
+  const { view, session, store, navigate } = await open(0);
+  await fireEvent.press(view.getByTestId("game-run"));
+  const { onMessage, onError, onLoadEnd, source } = view.getByTestId("game-sandbox").props;
+  const nonce = JSON.parse(source.html.match(/const data=(.*);\nconst send/)[1]).nonce;
+  if (interruption === "reset") await fireEvent.press(view.getByTestId("game-reset"));
+  else if (interruption === "blur") await view.rerender(<NativeGamePlay campaign={campaign} level={campaign.levels[0]} store={store} navigate={navigate} workerSource="worker" active={false} />);
+  else await view.unmount();
+  const submit = jest.spyOn(session, "submit");
+  await act(() => {
+    onMessage({ nativeEvent: { data: JSON.stringify({ channel: "codematica-game", nonce, result: { passed: true, reasons: [], events: [] } }) } });
+    onError();
+    onLoadEnd();
+  });
+  expect(submit).not.toHaveBeenCalled();
+  expect(session.getSnapshot().attempt.phase).toBe("briefing");
+  expect(Object.keys(store.getSnapshot().awards)).toHaveLength(0);
+});
+
+it("keeps map actions available outside the scrolling terrain after centering and switching views", async () => {
+  const navigate = jest.fn();
+  const view = await render(<NativeGameMap campaign={campaign} store={storeAt(0)} navigate={navigate} />);
+  const terrain = view.getByTestId("game-map");
+  await fireEvent.scroll(terrain, { nativeEvent: { contentOffset: { y: 7000 } } });
+  expect(within(terrain).queryByTestId("game-map-view")).toBeNull();
+  await fireEvent.press(view.getByRole("button", { name: "Level list" }));
+  expect(view.getByRole("button", { name: "Map" })).toBeOnTheScreen();
+  await fireEvent.press(view.getByRole("button", { name: "Map" }));
+  await fireEvent.press(view.getByRole("button", { name: "Explore lessons" }));
+  expect(navigate).toHaveBeenCalledWith("/learn");
+});
+
+it("rebuilds terrain measurements when switching views and ignores callbacks from the replaced terrain", async () => {
+  const scrollTo = jest.spyOn(ScrollView.prototype, "scrollTo");
+  const view = await render(<NativeGameMap campaign={campaign} store={storeAt(0)} navigate={jest.fn()} />);
+  await waitFor(() => expect(view.getByTestId("game-level-1")).toBeEnabled());
+  const originalTerrain = view.getByTestId("game-map");
+  const toolbar = view.getByTestId("game-map-view");
+  const oldContent = originalTerrain.props.onContentSizeChange;
+  const oldDistrict = view.getByTestId("game-district-garden").props.onLayout;
+  const oldNode = view.getByTestId("game-stop-1").props.onLayout;
+  await fireEvent.press(toolbar);
+  const listTerrain = view.getByTestId("game-map");
+  expect(listTerrain).not.toBe(originalTerrain);
+  expect(view.getByTestId("game-map-view")).toBe(toolbar);
+  scrollTo.mockClear();
+  await act(() => {
+    oldContent(390, 20000);
+    oldDistrict({ nativeEvent: { layout: { y: 6000 } } });
+    oldNode({ nativeEvent: { layout: { y: 400, height: 80 } } });
+  });
+  expect(scrollTo).not.toHaveBeenCalled();
+  await fireEvent(listTerrain, "layout", { nativeEvent: { layout: { height: 600, width: 390 } } });
+  await fireEvent(view.getByTestId("game-district-garden"), "layout", { nativeEvent: { layout: { y: 1000 } } });
+  await fireEvent(view.getByTestId("game-stop-1"), "layout", { nativeEvent: { layout: { y: 200, height: 80 } } });
+  await act(() => { oldContent(390, 20000); });
+  expect(scrollTo).not.toHaveBeenCalled();
+  await fireEvent(listTerrain, "contentSizeChange", 390, 4000);
+  expect(scrollTo).toHaveBeenLastCalledWith({ y: 940, animated: false });
+  const staleListContent = listTerrain.props.onContentSizeChange;
+  const staleListDistrict = view.getByTestId("game-district-garden").props.onLayout;
+  const staleListNode = view.getByTestId("game-stop-1").props.onLayout;
+  await fireEvent.press(toolbar);
+  const mapTerrain = view.getByTestId("game-map");
+  expect(mapTerrain).not.toBe(listTerrain);
+  scrollTo.mockClear();
+  await act(() => {
+    staleListContent(390, 4000);
+    staleListDistrict({ nativeEvent: { layout: { y: 1000 } } });
+    staleListNode({ nativeEvent: { layout: { y: 200, height: 80 } } });
+    oldContent(390, 20000);
+    oldDistrict({ nativeEvent: { layout: { y: 6000 } } });
+    oldNode({ nativeEvent: { layout: { y: 400, height: 80 } } });
+  });
+  expect(scrollTo).not.toHaveBeenCalled();
+  await fireEvent(mapTerrain, "layout", { nativeEvent: { layout: { height: 600, width: 390 } } });
+  await fireEvent(mapTerrain, "contentSizeChange", 390, 7000);
+  expect(scrollTo).not.toHaveBeenCalled();
+  await fireEvent(view.getByTestId("game-stop-1"), "layout", { nativeEvent: { layout: { y: 400, height: 80 } } });
+  await act(() => {
+    staleListDistrict({ nativeEvent: { layout: { y: 1000 } } });
+    oldDistrict({ nativeEvent: { layout: { y: 6000 } } });
+  });
+  expect(scrollTo).not.toHaveBeenCalled();
+  await fireEvent(view.getByTestId("game-district-garden"), "layout", { nativeEvent: { layout: { y: 6000 } } });
+  expect(scrollTo).toHaveBeenLastCalledWith({ y: 6140, animated: false });
+  await fireEvent.press(toolbar);
+  const nextList = view.getByTestId("game-map");
+  scrollTo.mockClear();
+  await fireEvent(nextList, "layout", { nativeEvent: { layout: { height: 600, width: 390 } } });
+  await fireEvent(nextList, "contentSizeChange", 390, 4000);
+  await fireEvent(view.getByTestId("game-district-garden"), "layout", { nativeEvent: { layout: { y: 1000 } } });
+  await act(() => {
+    oldNode({ nativeEvent: { layout: { y: 400, height: 80 } } });
+    staleListNode({ nativeEvent: { layout: { y: 200, height: 80 } } });
+  });
+  await fireEvent(nextList, "contentSizeChange", 390, 4000);
+  expect(scrollTo).not.toHaveBeenCalled();
+  await fireEvent(view.getByTestId("game-stop-1"), "layout", { nativeEvent: { layout: { y: 200, height: 80 } } });
+  expect(scrollTo).toHaveBeenLastCalledWith({ y: 940, animated: false });
+});
+
+it("waits for fresh positions to center the first list level and current map level", async () => {
+  const scrollTo = jest.spyOn(ScrollView.prototype, "scrollTo");
+  const view = await render(<NativeGameMap campaign={campaign} store={storeAt(0)} navigate={jest.fn()} />);
+  await waitFor(() => expect(view.getByTestId("game-level-1")).toBeEnabled());
+  let terrain = view.getByTestId("game-map");
+  await fireEvent(terrain, "layout", { nativeEvent: { layout: { height: 600, width: 390 } } });
+  await fireEvent.scroll(terrain, { nativeEvent: { contentOffset: { y: 7000 } } });
+  scrollTo.mockClear();
+  await fireEvent.press(view.getByRole("button", { name: "Level list" }));
+  terrain = view.getByTestId("game-map");
+  expect(scrollTo).not.toHaveBeenCalled();
+  await fireEvent(view.getByTestId("game-district-garden"), "layout", { nativeEvent: { layout: { y: 1000 } } });
+  await fireEvent(terrain, "contentSizeChange", 390, 20000);
+  expect(scrollTo).not.toHaveBeenCalled();
+  await fireEvent(view.getByTestId("game-stop-1"), "layout", { nativeEvent: { layout: { y: 200, height: 80 } } });
+  expect(scrollTo).toHaveBeenLastCalledWith({ y: 940, animated: false });
+  scrollTo.mockClear();
+  await fireEvent.scroll(terrain, { nativeEvent: { contentOffset: { y: 1200 } } });
+  await fireEvent.press(view.getByRole("button", { name: "Map" }));
+  terrain = view.getByTestId("game-map");
+  expect(scrollTo).not.toHaveBeenCalled();
+  await fireEvent(view.getByTestId("game-district-garden"), "layout", { nativeEvent: { layout: { y: 6000 } } });
+  await fireEvent(view.getByTestId("game-stop-1"), "layout", { nativeEvent: { layout: { y: 400, height: 80 } } });
+  expect(scrollTo).not.toHaveBeenCalled();
+  await fireEvent(terrain, "contentSizeChange", 390, 3000);
+  expect(scrollTo).not.toHaveBeenCalled();
+  await fireEvent(terrain, "contentSizeChange", 390, 7000);
+  expect(scrollTo).toHaveBeenLastCalledWith({ y: 6140, animated: false });
+});
+
+it("recenters the current map level from fresh measurements through live font enlargement and restoration", async () => {
+  const originalWindow = Dimensions.get("window");
+  const originalScreen = Dimensions.get("screen");
+  const scrollTo = jest.spyOn(ScrollView.prototype, "scrollTo");
+  const changeScale = async (fontScale: number) => act(() => Dimensions.set({
+    window: { ...originalWindow, fontScale }, screen: { ...originalScreen, fontScale },
+  }));
+  try {
+    await changeScale(1);
+    const view = await render(<NativeGameMap campaign={campaign} store={storeAt(0)} navigate={jest.fn()} />);
+    await waitFor(() => expect(view.getByTestId("game-level-1")).toBeEnabled());
+    let terrain = view.getByTestId("game-map");
+    const toolbar = view.getByRole("button", { name: "Level list" });
+    await fireEvent(terrain, "layout", { nativeEvent: { layout: { height: 600, width: 390 } } });
+    await fireEvent.press(view.getByRole("button", { name: "Level list" }));
+    await fireEvent.press(view.getByRole("button", { name: "Map" }));
+    terrain = view.getByTestId("game-map");
+    await fireEvent(view.getByTestId("game-district-garden"), "layout", { nativeEvent: { layout: { y: 6000 } } });
+    await fireEvent(view.getByTestId("game-stop-1"), "layout", { nativeEvent: { layout: { y: 400, height: 80 } } });
+    await fireEvent(terrain, "contentSizeChange", 390, 7000);
+    expect(scrollTo).toHaveBeenLastCalledWith({ y: 6140, animated: false });
+    for (const [scale, districtY, nodeY, nodeHeight, expectedY] of [[2, 9000, 600, 160, 9380], [1, 6000, 400, 80, 6140]]) {
+      scrollTo.mockClear();
+      const previousTerrain = terrain;
+      await changeScale(scale);
+      terrain = view.getByTestId("game-map");
+      expect(terrain).not.toBe(previousTerrain);
+      expect(view.getByRole("button", { name: "Level list" })).toBe(toolbar);
+      await fireEvent.scroll(terrain, { nativeEvent: { contentOffset: { y: 6140 } } });
+      await fireEvent(terrain, "contentSizeChange", 390, 15000);
+      expect(scrollTo).not.toHaveBeenCalled();
+      await fireEvent(view.getByTestId("game-district-garden"), "layout", { nativeEvent: { layout: { y: districtY } } });
+      expect(scrollTo).not.toHaveBeenCalled();
+      await fireEvent(view.getByTestId("game-stop-1"), "layout", { nativeEvent: { layout: { y: nodeY, height: nodeHeight } } });
+      expect(scrollTo).toHaveBeenLastCalledWith({ y: expectedY, animated: false });
+      expect(view.getByRole("button", { name: "Level list" })).toBeOnTheScreen();
+    }
+  } finally {
+    await act(() => Dimensions.set({ window: originalWindow, screen: originalScreen }));
+  }
+});
+
+it("ignores a delayed list scroll offset while positioning the returned map", async () => {
+  const scrollTo = jest.spyOn(ScrollView.prototype, "scrollTo");
+  const view = await render(<NativeGameMap campaign={campaign} store={storeAt(0)} navigate={jest.fn()} />);
+  await waitFor(() => expect(view.getByTestId("game-level-1")).toBeEnabled());
+  let terrain = view.getByTestId("game-map");
+  await fireEvent(terrain, "layout", { nativeEvent: { layout: { height: 600, width: 390 } } });
+  await fireEvent.press(view.getByRole("button", { name: "Level list" }));
+  const staleScroll = view.getByTestId("game-map").props.onScroll;
+  await fireEvent.press(view.getByRole("button", { name: "Map" }));
+  terrain = view.getByTestId("game-map");
+  scrollTo.mockClear();
+  await act(() => { staleScroll({ nativeEvent: { contentOffset: { y: 1200 } } }); });
+  await fireEvent(terrain, "contentSizeChange", 390, 7000);
+  await fireEvent(view.getByTestId("game-district-garden"), "layout", { nativeEvent: { layout: { y: 6000 } } });
+  await fireEvent(view.getByTestId("game-stop-1"), "layout", { nativeEvent: { layout: { y: 400, height: 80 } } });
+  expect(scrollTo).toHaveBeenLastCalledWith({ y: 6140, animated: false });
+});
+
+it("lets terrain panels grow with text while retaining their minimum artwork height", async () => {
+  const view = await render(<NativeGameMap campaign={campaign} store={storeAt(0)} navigate={jest.fn()} />);
+  await fireEvent(view.getByTestId("game-map"), "layout", { nativeEvent: { layout: { height: 500, width: 320 } } });
+  for (const id of ["game-frontier-summit-0", "game-district-garden"]) {
+    const style = StyleSheet.flatten(view.getByTestId(id).props.style);
+    expect(style.height).toBeUndefined();
+    expect(style.minHeight).toBe(620);
+  }
+});
+
+it("keeps scenery mounted through the measured height of an enlarged terrain panel", async () => {
+  const view = await render(<NativeGameMap campaign={campaign} store={storeAt(0)} navigate={jest.fn()} />);
+  const terrain = view.getByTestId("game-map");
+  await fireEvent(terrain, "layout", { nativeEvent: { layout: { height: 500, width: 320 } } });
+  const garden = view.getByTestId("game-district-garden");
+  await fireEvent(garden, "layout", { nativeEvent: { layout: { y: 0, height: 2200 } } });
+  await fireEvent.scroll(terrain, { nativeEvent: { contentOffset: { y: 2000 } } });
+  expect(within(garden).getByTestId("game-district-art", { includeHiddenElements: true })).toBeOnTheScreen();
+  await fireEvent.scroll(terrain, { nativeEvent: { contentOffset: { y: 4000 } } });
+  expect(within(garden).queryByTestId("game-district-art", { includeHiddenElements: true })).toBeNull();
+});
 
 it("reserves fifty map positions but only exposes twelve campaign controls", async () => {
   const view = await render(
@@ -476,4 +811,11 @@ it("renders three native depths, resets them for reduced motion, and keeps terra
       mockSceneryProps.slice(-3).map((p) => (p.y as { value: number }).value),
     ).toEqual([0, 0, 0]),
   );
+});
+
+it("keeps campaign actions at shared target sizes and font scaling without changing the painted world", async () => {
+  const { view } = await open(0);
+  const run = StyleSheet.flatten(view.getByTestId("game-run").props.style);
+  expect(run.minHeight).toBeGreaterThanOrEqual(48);
+  expect(run.maxWidth).toBe("100%");
 });

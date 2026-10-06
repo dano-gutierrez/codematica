@@ -239,7 +239,17 @@ export function searchDiscovery(index: ContentIndex, query: string): DiscoveryRe
     return [];
   }
 
-  const fuse = new Fuse(createDiscoveryItems(index), {
+  return searchDiscoveryItems(createDiscoveryItems(index), normalizedQuery);
+}
+
+export type DiscoverySearchItem = Pick<DiscoveryResult, "title" | "tags" | "eyebrow" | "summary" | "searchText">;
+
+/** The same ranking over prepared rows, including native local search. */
+export function searchDiscoveryItems<T extends DiscoverySearchItem>(items: T[], query: string) {
+  const normalizedQuery = query.trim();
+  if (!normalizedQuery) return [];
+
+  const fuse = new Fuse(items, {
     includeScore: true,
     threshold: 0.34,
     ignoreLocation: true,

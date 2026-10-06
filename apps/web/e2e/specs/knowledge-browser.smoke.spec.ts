@@ -27,7 +27,7 @@ test("@smoke mobile user can follow a path, practice, search, and open a diagram
   await expect(page.getByRole("link", { name: /Next activity/i })).toHaveCSS("color", "rgb(255, 255, 255)");
   await page.getByRole("link", { name: /Next activity/i }).click();
   await expect(page.getByRole("heading", { name: "Versioned Keys Cloze" })).toBeVisible();
-  await page.getByLabel("Answer").fill("versioned keys");
+  await page.getByLabel("Answer", { exact: true }).fill("versioned keys");
   await page.getByRole("button", { name: /Check answer/i }).click();
   await expect(page.getByTestId("cloze-feedback")).toContainText("Correct");
 
