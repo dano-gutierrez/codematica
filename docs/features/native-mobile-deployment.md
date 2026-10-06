@@ -188,6 +188,8 @@ The root layout wraps the existing Stack with safe-area-aware `NativeNavigation`
 
 ## Decision Log
 
+- 2026-10-06: Align Expo SDK 57 patch dependencies and root overrides with 57.0.27 after fresh CI reported five package-version mismatches. Keep Expo Doctor enabled and verify clean install, native coverage, Android/iOS JavaScript bundle exports and the production-only web artifact. Bundle exports do not establish installed-device readiness; the existing Xcode baseline limitation remains.
+
 - `2026-07-11`: Keep Next/Vercel as the web deployment and add Expo Router for native instead of moving all targets to Expo web.
 - `2026-07-11`: Use npm workspaces with `apps/web`, `apps/mobile`, `packages/core`, and `packages/ui`.
 - `2026-07-11`: Bundle the generated content index into native for offline anonymous study.
