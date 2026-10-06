@@ -98,6 +98,8 @@ A new graph projection invalidates pending review/publication bindings. Stop and
 
 ## Test Plan
 
+Catalog tests parse the canonical files once per suite and clone that validated input for each case. Separate document-status and exercise-list assertions prove fixture mutations do not leak into other cases; existing assertions, coverage floors and default timeouts remain unchanged.
+
 - Unit/integration: full authored inventory, human-language exclusions, retained programming material, stable IDs, scoped skills, granular interviews, campaign/level/scenario coverage, status-preserving post hashes, stale evidence, transport validation, stable model-ID cache versions, source windows beyond introductory text, bounded explanations, injected content and unsupported model tool/action rejection, cache/inference locking and graph override recovery.
 - Database: RLS/anonymous rejection, atomic activation, idempotent offline submissions, expired leases, candidate hashes, literal excerpt/hash validation and stale preparation/verification/adoption/publication.
 - Browser: graph/table navigation, evidence, candidate queueing, review, denied access, offline freshness and LinkedIn context. Regression classification: `@regression`.
