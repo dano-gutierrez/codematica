@@ -88,7 +88,7 @@ Front-End Development lesson content under `content/knowledge/frontend/` must st
 - Update READMEs in the same branch whenever implementation changes their documented contract.
 - Add a dated changelog entry for a release-sized change that spans several feature contracts; do not use the changelog as a replacement for updating those contracts.
 
-- `docs/features/linkedin-editorial.md` owns private source-grounded and manual LinkedIn drafts, text formatting and required manual-draft analysis, shared web/native review, immutable approvals, Supabase jobs and Buffer scheduling. `docs/runbooks/linkedin-editorial.md` owns account bootstrap, the manually invoked local worker, backups and recovery.
+- `docs/features/linkedin-editorial.md` owns private source-grounded and manual LinkedIn drafts, text formatting and required manual-draft analysis, shared web/native review, immutable approvals, Supabase jobs and Buffer scheduling. `docs/runbooks/linkedin-editorial.md` owns account bootstrap, pinned local writer/OpenJev setup, manual preparation/backfill and Codex verification, v2 backups and recovery.
 
 - `docs/features/frontend-interview-practice.md` owns the seven frontend challenges, Python companions, quiz/review flow, and exact-solution verification. The existing-content audit is in `docs/features/interview-coding-catalog.md`.
 

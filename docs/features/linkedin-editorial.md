@@ -14,7 +14,7 @@
 
 The private collection turns existing Codematica lessons into LinkedIn learning posts. `/admin/linkedin` and the native More destination let an allowlisted personal account create manual drafts, edit, refine, reject, adopt proposals and approve posts. Supabase holds editorial state; canonical learning Markdown and anonymous browsing remain local-first.
 
-Refine enqueues durable work. A manually requested local Codex run reads the checked-in prompt, verifies sources and writes a proposed revision with an analysis. Approval authorizes Buffer scheduling, without another approval prompt. No post is automatically approved.
+Refine enqueues durable work. The opt-in local preparation stage uses a loopback writer plus OpenJev before prepared verification jobs reach Codex. A manually requested local Codex run reads the checked-in prompt, verifies sources and writes a proposed revision with an analysis. Approval authorizes Buffer scheduling, without another approval prompt. No post is automatically approved.
 
 ## Outcome / Contract
 
@@ -62,7 +62,7 @@ The reusable web `LinkedInPostText` and native editor support selection-based Un
 
 ### Data Model And Persistence
 
-`linkedin_posts.origin` distinguishes `material` from `manual`; material drafts require source snapshots, while manual drafts can start with an empty source array. `linkedin_create` is admin-only and uses an auth-user-scoped unique request key to serialize retries and atomically enqueue analysis. The initial revision remains the retry comparison source after later edits. No draft text enters public learning indexes. `linkedin_posts` tracks the current/approved revision and human approval identity. `linkedin_revisions` stores immutable text, first comment, sources, structured analysis, fact confirmation and prompt hash. `linkedin_jobs` holds refine/schedule/cancel requests, leases and attempt counts. `linkedin_publications` records external identity and confirmed state. `linkedin_settings` holds author context, channel, timezone, publishing switch and worker heartbeat. The private membership table is not exposed to clients.
+`linkedin_posts.origin` distinguishes `material` from `manual`; material drafts require source snapshots, while manual drafts can start with an empty source array. `linkedin_create` is admin-only and uses an auth-user-scoped unique request key to serialize retries and atomically enqueue analysis. The initial revision remains the retry comparison source after later edits. No draft text enters public learning indexes. `linkedin_posts` tracks the current/approved revision and human approval identity. `linkedin_revisions` stores immutable text, first comment, sources, structured analysis, fact confirmation and prompt hash. `linkedin_jobs` holds prepare/refine/schedule/cancel requests, leases and attempt counts. `linkedin_publications` records external identity and confirmed state. `linkedin_settings` holds author context, channel, timezone, publishing switch and worker heartbeat. The private membership table is not exposed to clients.
 
 `linkedin_review` serializes per-post changes and checks the expected revision. Worker RPCs are service-role only. Atomic claim uses `FOR UPDATE SKIP LOCKED`, a twenty-minute lease and at most three refinement attempts. Only one active job exists per post/revision/kind. An expired publish/cancel lease becomes uncertain, never automatically pending. A publication attempt is recorded before external creation. Reapproval after confirmed cancellation receives a fresh revision identity.
 
@@ -76,6 +76,18 @@ Migration `202609300001` adds manual provenance, creation and analysis gates. Ne
 
 Transient refinement failures become eligible after a one-hour backoff and are retried on a later manual run, within a bounded count. Stale proposals stay in history but cannot be adopted. Unknown Buffer creation requires matching the external channel, exact text, time and identity; ambiguous matches remain blocked. If publication wins a cancellation race, reconciliation marks the publication sent and cancellation failed, releasing its lease. Exports retain all revisions; restore only accepts an empty editorial collection, restores destination/context settings and always pauses publishing. Auth identities and admin grants must be provisioned separately.
 
+## Local Preparation Contract
+
+Migration `202610030002` is additive and disabled by default; hosted activation is a separate rollout. Immutable `linkedin_preparations` store selected text/analysis, related revisions, issues, before/after scores, content hashes, metrics and pinned versions. Immutable `linkedin_voice_profiles` contain generic rules only. Drafts enrolled in preparation must adopt a Codex-verified result before approval. Local reports never overwrite originals. Existing approved work keeps its current publishing contract.
+
+A manual Mac batch performs source-containment/hash checks, exact deduplication, a twelve-item lexical/topic/source shortlist, semantic relation checks, at most two writer rounds, independent integrity/quality scoring, and hook comparison with a final fidelity check. The unchanged original remains a candidate. No remote inference fallback exists. A held report needs an explicit, reasoned human override or another edit; stale results cannot enqueue Codex. Follow-up overrides preserve every flag. Local inference caches remain outside Supabase.
+
+Codex's compact handoff binds a preparation ID and candidate hash, preserving original body/comment, selected body/comment, references, voice and related flags. `accept`, sparse `patch`, and `needs_input` replace full regeneration. Existing eight-section reports are assembled from the accepted local analysis and verified replacements; local diagnostic scores remain advisory. Human adoption, fact confirmation and exact-revision approval still gate Buffer. Text/comment edits invalidate the binding; fact-only confirmation preserves it.
+
+Web/native poll a compact collection overview and fetch only selected history when its change version advances. Both display preparation status, scores, hooks, issues, related-post navigation and reasoned overrides; collection-level voice editing creates a new version and requeues review work. Backups are v2 with preparations/voice profiles; v1 restore remains supported. All original text/history is retained.
+
+Local setup, pinned models, manual activation/backfill, retries, license constraints and model evaluation are in `../runbooks/linkedin-editorial.md`. This branch has local validation only; no hosted migration, live backfill, publication or native-device release is implied.
+
 ## Code Touchpoints
 
 - `packages/core/src/linkedin.ts`: shared schemas, approval guard, filters and RPC adapter.
@@ -86,6 +98,11 @@ Transient refinement failures become eligible after a one-hour backoff and are r
 - `packages/ui/src/LinkedInAdminScreen.tsx`: native review surface; native route/auth hook gates navigation.
 - `scripts/linkedin/worker.ts`: pure seed/refinement/publication validators.
 - `scripts/linkedin/cli.ts`: local service-role operator commands.
+- `scripts/linkedin/preparation.ts` and `local-models.ts`: bounded editorial decisions, loopback transport and private cache.
+- `scripts/linkedin/models.py`: manual lifecycle for the pinned local servers.
+- `scripts/linkedin/evaluate-local.ts` / `smoke-preparation.ts`: real-model synthetic checks and inert CLI integration.
+- `packages/core/src/linkedin-preparation.ts`: verification merge and collection labels.
+- `supabase/migrations/202610030002_linkedin_preparation.sql`: opt-in preparation storage, transitions, summary/detail RPCs and v2 restoration.
 - `scripts/linkedin/smoke-local.ts`: real local Auth/REST/CLI lifecycle with inert external publications.
 - `supabase/migrations/202609290002_linkedin_recovery.sql`: cancellation race and restore settings.
 
@@ -96,7 +113,8 @@ Transient refinement failures become eligible after a one-hour backoff and are r
 - Database: manual creation authorization, atomic job insertion, retry identity/mismatches, analysis adoption, fact-only confirmation, edit invalidation and Unicode limits; transactional pgTAP tests for RLS, grants, verified bootstrap, immutability, stale actions, duplicate claims, bounded retries, uncertain publishing, withdrawal/reapproval and restoration. Clean local migration replay is required.
 - E2E: manual creation, selection formatting, failed submission retry, reload persistence, analysis/adoption/approval and mobile layout; `npm run e2e:linkedin` uses isolated fake Supabase public configuration and intercepts only editorial RPCs. Ordinary public smoke tests explicitly disable Supabase regardless of local `.env` files. The dedicated lane is separate from `e2e:web:release` and runs in CI.
 - Native: Jest review/navigation coverage and `.maestro/linkedin-admin.yaml`; the latter requires an installed app signed into an allowlisted disposable local account with publishing disabled.
-- Coverage: existing floors remain unchanged. `scripts/linkedin/worker.ts` is instrumented; the thin CLI orchestration and local smoke entrypoint use subprocess integration coverage rather than V8 unit instrumentation. No existing file is excluded.
+- Coverage: existing floors remain unchanged. `scripts/linkedin/worker.ts`, `preparation.ts` and `local-models.ts` are instrumented; the thin CLI orchestration and local smoke entrypoint use subprocess integration coverage rather than V8 unit instrumentation. No existing file is excluded.
+- Local preparation: exact/semantic duplicates versus follow-ups, unsafe high-scoring candidates, source traversal/hash failures, loopback-only requests, cache reuse, rejected-candidate isolation, sparse verification bindings, malformed checks, stale voice/text, leases, holds/overrides and v2 backup roundtrip. `test:linkedin:preparation` runs in CI after the legacy CLI lifecycle. Real GPU inference is opt-in via `linkedin:evaluate`; its token figures are character proxies.
 - Commands: `npm run test:coverage`, `npm run test:mobile:coverage`, `supabase db reset --local`, `npm run test:db`, `npm run test:linkedin:local`, `npm run lint`, `npm run typecheck`, `npm run content:check`, `npm run build`, `npm run test:production:smoke`, `npm run e2e:smoke`, `npm run e2e:linkedin`.
 - Production smoke installs only production dependencies in a fresh temporary copy of the built Next artifact, checks HTTP readiness and public/admin shells without service credentials. It preserves logs. No worker or Buffer mutation is executed by the web artifact.
 - First failing regressions captured stale revision approval, RLS, duplicate publishing, lost in-flight edits, and the already-sent cancellation race before fixes.
@@ -107,6 +125,8 @@ Transient refinement failures become eligible after a one-hour backoff and are r
 - Complete installed Android/iOS verification before native release.
 
 ## Decision Log
+
+- 2026-10-03: Added opt-in local writer/OpenJev preparation before Codex verify-and-patch. Manual batches, original preservation, explicit holds/overrides and human approval are retained. The writer emits a compact draft schema; deterministic assembly and OpenJev supply the remaining analysis. A pinned Qwen3-14B text writer passed the real-model editing and hold fixtures. Rejected-candidate feedback guides the second round; URLs in both the body and first comment are protected. `.local/**` is excluded from ESLint because it contains private generated artifacts, not source. Coverage floors remain unchanged.
 
 - 2026-09-29: Supabase is canonical editorial storage; Buffer holds only scheduled approved posts. Local Codex hourly automation avoids a separate model API bill and database cron/WebSocket infrastructure.
 - 2026-09-29: Web and native share schema/store/RPC behavior. Only the human adopts or approves proposals. Buffer Free first comments remain manual.

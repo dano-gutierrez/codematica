@@ -16,7 +16,7 @@ appId: com.codematica.app
       id: linkedin-refine
 - tapOn:
     id: linkedin-refine
-- assertVisible: Refinement queued
+- assertVisible: Preparation / verification queued
 - tapOn:
     id: linkedin-back
 - tapOn:
@@ -40,4 +40,4 @@ appId: com.codematica.app
 - scrollUntilVisible:
     element:
       id: linkedin-refine
-- assertVisible: Refinement queued
+- assertVisible: Preparation / verification queued

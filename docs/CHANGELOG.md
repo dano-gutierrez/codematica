@@ -50,6 +50,14 @@ This changelog dates durable product and architecture changes and links to their
 - Aligned the Expo SDK 57 patch dependencies and added a Gradle input hook so shared code edits invalidate cached Android bundles.
 - Added core/browser/native/database coverage and retained existing coverage floors. Generated worker/asset files are artifacts; no authored game source is excluded from coverage.
 - Release verification and current toolchain limits are tracked in [the feature contract](features/restore-the-signal.md); source and bundle success do not imply installed-iOS or deployment readiness.
+## 2026-10-03 — Local LinkedIn Preparation
+
+- Added opt-in local writer/OpenJev preparation, immutable reports and generic voice versions, duplicate/follow-up routing, bounded editing and compact Codex verification. Originals and human adoption/approval remain separate.
+- Added selected-post detail loading, advisory local scores/hooks/flags, explicit overrides and editable voice rules to web/native review. Versioned collection polling reduces repeated history transfer.
+- Added v2 backups with backward-compatible restore, isolated CLI/model acceptance tests and manual model lifecycle. No cloud inference, scheduler or paid infrastructure was added. Hosted activation/backfill remains a separate rollout.
+- Kept coverage thresholds intact; added local model modules to instrumentation and excluded ignored private `.local` artifacts from ESLint. Production artifact smoke checks that local inference and privileged worker code stay out of web startup. Playwright accepts a separate port for concurrent checkouts.
+
+Owning contract: `docs/features/linkedin-editorial.md`; operations: `docs/runbooks/linkedin-editorial.md`.
 
 ## 2026-09-29 — PR Check Reliability
 
@@ -272,3 +280,7 @@ Added admin web/native review, immutable Supabase revisions, approval-bound Buff
 ### LinkedIn worker switched to manual execution
 
 Removed the recurring Codex automation at the user’s request. Web/native copy and operating instructions now explain that requests wait for an explicit manual run. Queue, approval, and publication behavior is unchanged.
+
+- 2026-10-03: Rebased local LinkedIn preparation onto the notebook-preview changes and serialized model POSTs with the knowledge service through a shared POSIX lock.
+
+- 2026-10-04: Aligned the LinkedIn preparation parent with existing release artifact naming and emulated CodeMirror fixture fixes. Preserves failure evidence for branch dispatch and corrects WebKit test input; no product/runtime/dependency or deadline change.

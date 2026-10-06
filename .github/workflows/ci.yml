@@ -64,6 +64,7 @@ jobs:
       - uses: actions/setup-python@v6
         with:
           python-version: "3.13"
+      - run: python -m unittest discover -s scripts/linkedin -p 'test_models.py' -v
       - run: npm run test:interview:python
       - run: npm run test:coverage
         env:
@@ -120,6 +121,7 @@ jobs:
       - run: npm ci
       - run: npm run test:db
       - run: npm run test:linkedin:local
+      - run: npm run test:linkedin:preparation
       - name: Stop local Supabase
         if: always()
         run: supabase stop --no-backup

@@ -1,6 +1,5 @@
 import { defineConfig, devices } from "@playwright/test";
 
-const port = Number(process.env.PLAYWRIGHT_PORT ?? 3100);
 const webServerEnv = Object.fromEntries(
   Object.entries(process.env).filter(([key, value]) => key !== "NO_COLOR" && value !== undefined),
 ) as Record<string, string>;
@@ -10,6 +9,9 @@ const webServerEnv = Object.fromEntries(
 webServerEnv.NEXT_PUBLIC_SUPABASE_URL = process.env.EDITORIAL_E2E === "1" ? "https://editorial.supabase.test" : "";
 webServerEnv.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY = process.env.EDITORIAL_E2E === "1" ? "editorial-test-anon-key" : "";
 webServerEnv.NEXT_PUBLIC_SUPABASE_ANON_KEY = "";
+
+const port = Number(process.env.PLAYWRIGHT_PORT || 3100);
+if (!Number.isInteger(port) || port < 1024 || port > 65535) throw new Error("Invalid PLAYWRIGHT_PORT");
 
 export default defineConfig({
   testDir: "./specs",

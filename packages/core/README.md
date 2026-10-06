@@ -36,5 +36,6 @@ Japanese writing notebooks use 24 whole-prompt repetitions per sheet and support
 `src/game/miniatures.ts` defines shared full-body character frames and transforms for measured web/native scenes. It keeps layout and cosmetic placement deterministic without importing graphics libraries.
 
 Game store claims are serialized across account changes. Deferred identity checks must verify the active generation before merging remote awards or choosing a save payload; keep the interrupted-load tests when changing synchronization.
+`@codematica/core/linkedin-preparation` validates sparse verification against an immutable candidate and derives preparation labels. Overview/detail polling retains only selected history and discards stale responses during edits. Voice rules and held-draft overrides use authenticated RPCs; local reports never authorize approval.
 
 `src/game/map-art.ts` owns the fifty-position art panel order and bounded, renderer-independent parallax offsets. It does not create campaign levels or alter progression. Native runs its offset helper as a Reanimated worklet; web samples the same rule on scroll frames.
