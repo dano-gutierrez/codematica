@@ -3,7 +3,7 @@
 ## Snapshot
 
 - Status: `shipped`
-- Last updated: `2026-08-02`
+- Last updated: `2026-10-03`
 - Owner thread: `n/a`
 - Current state: Codematica ships a local-first Langfuse and LangChain skill path with Markdown lessons, Mermaid diagrams, questionnaires, and passive flashcards.
 - Target outcome: Users can learn LLM application architecture, LangChain, LangGraph, Langfuse tracing, prompt evaluation, RAG quality, and production risk governance without Supabase or executable code challenges.
@@ -47,10 +47,15 @@ The feature is shipped as local content and generated-index data. The app reuses
 - Risk guidance should align with OWASP LLM risks and NIST AI RMF concepts without turning the path into compliance paperwork.
 - Coding challenge sections must clearly say they are non-executable in this milestone and include starter code plus acceptance checks for future editor support.
 
+The path preserves its eight application units and appends Optional Advanced Agent Research. Its source node opens the official Stanford CS329A Autumn 2025 syllabus directly; no local companion is claimed. It is `required: false` and does not change progression requirements. Public readings do not include enrollment, certification, API credits or completed research. The graduate course does not allow audits. Advanced reinforcement-learning research remains external reading, distinct from the existing application, evaluation and handoff practice.
+
+The existing handoff companion adds an original contract-drift audit exercise with a pinned author-maintained workflow reference. The external command is source material, not an installed instruction or authorization. Learners compare a decision, caller, implementation and disconfirming test before proposing a correction; silently weakening the requirement is not a valid audit result.
+
 ## Code Touchpoints
 
 - `content/knowledge/ai-engineering/*.md`: source lessons and non-executable coding challenge sections.
 - `content/learning-paths/ai-engineering-langfuse-langchain.json`: ordered path units and nodes.
+- `content/sources/advanced-agent-research.json`: dated primary-source metadata for the optional Stanford syllabus.
 - `content/exercises/ai-engineering/*.json`: active questionnaires for the path.
 - `content/flashcard-feeds/ai-engineering-langfuse-langchain.json`: passive review cards.
 - `packages/core/src/generated/content-index.json`: regenerated local runtime index.
@@ -58,6 +63,9 @@ The feature is shipped as local content and generated-index data. The app reuses
 ## Test Plan
 
 - Unit/integration: generated index loads the path, ordered nodes, published documents, questionnaires, diagrams, passive feed, and next-node route.
+- Reader: `agent-handoff.regression.spec.ts` checks the audit section, attributed workflow source and unchanged checkpoint continuation.
+- Graph: the optional source belongs to the existing path through explicit ordered membership and a citation, without a fabricated document or skill.
+- Source routing: preserve earlier nodes, optional status, edition and direct upstream URL; browser coverage verifies the reference after governance.
 - Search: generated local index finds Langfuse, LangChain, RAG, and prompt evaluation documents.
 - E2E: mobile user opens the path, reads the Langfuse tracing lesson, completes the deterministic tracing questionnaire, and opens the passive flashcard feed.
 

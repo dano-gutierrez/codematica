@@ -1,0 +1,21 @@
+{
+  "sources": [
+    {
+      "id": "udlbook-notebooks",
+      "title": "Understanding Deep Learning — Author's Notebooks",
+      "provider": "Simon J. D. Prince",
+      "url": "https://github.com/udlbook/udlbook/tree/0d84a591362f1cc99c6dc2ce1c2544d559280681/Notebooks",
+      "attribution": "Simon J. D. Prince's companion notebook collection. Linked for further practice; notebook code and book text are not copied into Codematica.",
+      "lastVerifiedAt": "2026-10-03",
+      "upstream": { "repository": "udlbook/udlbook", "ref": "main", "commit": "0d84a591362f1cc99c6dc2ce1c2544d559280681", "maturity": "published" }
+    },
+    {
+      "id": "pytorch-autograd-introduction",
+      "title": "A Gentle Introduction to torch.autograd",
+      "provider": "PyTorch",
+      "url": "https://docs.pytorch.org/tutorials/beginner/blitz/autograd_tutorial.html",
+      "attribution": "Official PyTorch tutorial explaining automatic differentiation, gradient accumulation and parameter updates.",
+      "lastVerifiedAt": "2026-10-03"
+    }
+  ]
+}

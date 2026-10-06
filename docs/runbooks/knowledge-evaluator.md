@@ -22,6 +22,8 @@ Ports: OpenJev `8791`, Qwen `8793`, knowledge API `8795`, Neo4j Bolt `17687`, Ne
 
 Interrupted extraction resumes from source/prompt/model checkpoints. Re-run the index command after edits, removals or failures. Inspect counts, exclusions, unresolved references, `extracted`, `extraction_total`, `extraction_errors`, `rejected_evidence`, `semantic_complete`, source revision and working-tree state. Full `--extract` exits nonzero while gaps remain; `--limit` is a bounded compatibility pilot. Extraction completion means all source batches were processed, not that every model claim was supported. Rejected claims never become graph edges. Do not describe a partial extraction as complete. Private logs and caches may contain post text; keep `.local/` outside Git and external attachments.
 
+The Qwen adapter retries invalid JSON once using the original source/schema and a compact validation note; it does not replay the malformed assistant text. Retry cache version `bounded-fresh-json-repair-v3` leaves previously completed source-bound batches reusable. The token cap, schema and verbatim evidence checks still apply. Retry an incomplete import with the same index command; do not clear successful checkpoints or mark failures complete.
+
 All heavy calls share `~/.local/share/codematica/inference.lock`. `CODEMATICA_INFERENCE_LOCK` accepts an absolute alternative for isolated inert tests. Real graph and editorial processes must use the same path. The bearer token and Neo4j credentials are private mode-0600 files, not public application environment variables.
 
 ## Synchronize and process offline jobs

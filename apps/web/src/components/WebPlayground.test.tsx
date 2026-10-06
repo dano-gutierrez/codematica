@@ -9,6 +9,7 @@ const sandpackMocks = vi.hoisted(() => ({
   providerMount: vi.fn(),
   providerUnmount: vi.fn(),
   runSandpack: vi.fn(async () => undefined),
+  updateFile: vi.fn(),
   resetAllFiles: vi.fn(),
   status: "running",
   error: null as null | { message: string },
@@ -43,6 +44,7 @@ vi.mock("@codesandbox/sandpack-react", async () => {
     useSandpack: () => ({
       sandpack: {
         runSandpack: sandpackMocks.runSandpack,
+        updateFile: sandpackMocks.updateFile,
         resetAllFiles: sandpackMocks.resetAllFiles,
         files: sandpackMocks.files,
         activeFile: sandpackMocks.activeFile,
@@ -80,6 +82,23 @@ beforeEach(() => {
 });
 
 describe("WebPlayground", () => {
+  it("compiles current edits through the connected preview without replacing its console", () => {
+    render(<WebPlayground project={project} projectId="connected-project" />);
+    const editedFiles = { ...project.files, "/App.tsx": { code: "// revised app" } };
+    sandpackMocks.files = editedFiles;
+    act(() => sandpackMocks.listener?.({ type: "done", compilatonError: false }));
+    fireEvent.click(screen.getByTestId("web-playground-run"));
+    expect(sandpackMocks.updateFile).toHaveBeenCalledTimes(1);
+    expect(sandpackMocks.updateFile).toHaveBeenCalledWith(editedFiles, undefined, true);
+    expect(sandpackMocks.providerMount).toHaveBeenCalledTimes(1);
+    expect(sandpackMocks.providerUnmount).not.toHaveBeenCalled();
+    expect(sandpackMocks.runSandpack).not.toHaveBeenCalled();
+    expect(screen.getByRole("status")).toHaveTextContent("Compiling your edits");
+    act(() => sandpackMocks.listener?.({ type: "start" }));
+    expect(screen.getByRole("status")).toHaveTextContent("Compiling your edits");
+    act(() => sandpackMocks.listener?.({ type: "done", compilatonError: false }));
+    expect(screen.getByRole("status")).toHaveTextContent("Preview ready");
+  });
   it("keeps authored source in the shared code renderer after editor failure and can retry", () => {
     const errorLog = vi.spyOn(console, "error").mockImplementation(() => undefined);
     sandpackMocks.failEditor = true;
@@ -119,27 +138,49 @@ describe("WebPlayground", () => {
     expect(screen.getByRole("status")).toHaveTextContent("Starting preview");
   });
 
-  it("runs a fresh client with current edits and resets to authored files without a stale run", () => {
+  it("preserves the connected client for Run and resets to authored files without a stale run", () => {
     render(<WebPlayground project={{ ...project, entry: "/App.tsx" }} projectId="test-project" />);
     sandpackMocks.files = { ...project.files, "/styles.css": { code: "main { color: red; }" } };
     sandpackMocks.activeFile = "/styles.css";
     act(() => sandpackMocks.listener?.({ type: "done", compilatonError: false }));
     fireEvent.click(screen.getByTestId("web-playground-run"));
-    expect(sandpackMocks.providerMount).toHaveBeenCalledTimes(2);
-    expect(sandpackMocks.providerUnmount).toHaveBeenCalledTimes(1);
+    expect(sandpackMocks.providerMount).toHaveBeenCalledTimes(1);
+    expect(sandpackMocks.providerUnmount).not.toHaveBeenCalled();
+    expect(sandpackMocks.updateFile).toHaveBeenCalledWith(sandpackMocks.files, undefined, true);
     expect(sandpackMocks.providerProps).toHaveBeenLastCalledWith(expect.objectContaining({
-      files: sandpackMocks.files,
+      files: project.files,
       customSetup: { dependencies: project.dependencies, entry: "/App.tsx" },
-      options: expect.objectContaining({ activeFile: "/styles.css" }),
+      options: expect.objectContaining({ activeFile: project.activeFile }),
     }));
-    expect(screen.getByRole("status")).toHaveTextContent("Starting preview");
+    expect(screen.getByRole("status")).toHaveTextContent("Compiling your edits");
     fireEvent.click(screen.getByTestId("web-playground-reset"));
-    expect(sandpackMocks.providerMount).toHaveBeenCalledTimes(3);
+    expect(sandpackMocks.providerMount).toHaveBeenCalledTimes(2);
     expect(sandpackMocks.providerProps).toHaveBeenLastCalledWith(expect.objectContaining({
       files: project.files,
       options: expect.objectContaining({ activeFile: project.activeFile }),
     }));
     expect(sandpackMocks.runSandpack).not.toHaveBeenCalled();
+  });
+
+  it.each(["loading", "compiling", "compile-error", "runtime-error", "timeout", "initial", "idle"])("replaces a %s preview using the current draft", (state) => {
+    const { rerender } = render(<WebPlayground project={project} projectId="recover-project" />);
+    sandpackMocks.files = { "/App.tsx": { code: "// recover this draft" } };
+    sandpackMocks.activeFile = "/App.tsx";
+    if (state !== "loading") act(() => sandpackMocks.listener?.({ type: "done", compilatonError: state === "compile-error" }));
+    if (state === "compiling") fireEvent.click(screen.getByTestId("web-playground-run"));
+    if (state === "runtime-error") sandpackMocks.error = { message: "Runtime error" };
+    if (state === "timeout") sandpackMocks.status = "timeout";
+    if (state === "initial" || state === "idle") sandpackMocks.status = state;
+    rerender(<WebPlayground project={project} projectId="recover-project" />);
+    fireEvent.click(screen.getByTestId("web-playground-run"));
+    expect(sandpackMocks.providerMount).toHaveBeenCalledTimes(2);
+    expect(sandpackMocks.providerUnmount).toHaveBeenCalledTimes(1);
+    expect(sandpackMocks.updateFile).toHaveBeenCalledTimes(state === "compiling" ? 1 : 0);
+    expect(sandpackMocks.providerProps).toHaveBeenLastCalledWith(expect.objectContaining({ files: sandpackMocks.files, options: expect.objectContaining({ activeFile: sandpackMocks.activeFile }) }));
+    expect(sandpackMocks.runSandpack).not.toHaveBeenCalled();
+    fireEvent.click(screen.getByTestId("web-playground-reset"));
+    expect(sandpackMocks.providerMount).toHaveBeenCalledTimes(3);
+    expect(sandpackMocks.providerProps).toHaveBeenLastCalledWith(expect.objectContaining({ files: project.files, options: expect.objectContaining({ activeFile: project.activeFile }) }));
   });
 
   it("keeps edited files available after timeout and reconnects without discarding them", () => {
@@ -176,7 +217,8 @@ describe("WebPlayground", () => {
     fireEvent.click(screen.getByTestId("web-playground-run"));
     rerender(<WebPlayground project={project} projectId="second" />);
     expect(sandpackMocks.providerProps).toHaveBeenLastCalledWith(expect.objectContaining({ files: project.files }));
+    const priorUnsubscriptions = sandpackMocks.unsubscribe.mock.calls.length;
     unmount();
-    expect(sandpackMocks.unsubscribe).toHaveBeenCalled();
+    expect(sandpackMocks.unsubscribe).toHaveBeenCalledTimes(priorUnsubscriptions + 1);
   });
 });

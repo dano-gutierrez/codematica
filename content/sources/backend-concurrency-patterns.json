@@ -1,0 +1,64 @@
+{
+  "sources": [
+    {
+      "id": "backend-python313-threading",
+      "title": "Python 3.13 — Conditions, Permits And Build Scope",
+      "provider": "Python Software Foundation",
+      "url": "https://docs.python.org/3.13/library/threading.html",
+      "attribution": "Python 3.13 selected GIL/build, Condition and Semaphore/BoundedSemaphore sections. Original paper traces; no upstream code copied or threaded benchmark run.",
+      "lastVerifiedAt": "2026-10-04",
+      "upstream": {
+        "version": "Python 3.13 documentation",
+        "maturity": "published"
+      }
+    },
+    {
+      "id": "backend-java17-thread-states",
+      "title": "Java SE 17 — JVM Thread States",
+      "provider": "Oracle",
+      "url": "https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Thread.State.html",
+      "attribution": "Java SE 17 enum overview and RUNNABLE detail; JVM states differ from operating-system states. No Java scheduler executed.",
+      "lastVerifiedAt": "2026-10-04",
+      "upstream": {
+        "version": "Java SE 17",
+        "maturity": "published"
+      }
+    },
+    {
+      "id": "backend-java17-memory-model",
+      "title": "Java SE 17 — Ordering Versus Compound Atomicity",
+      "provider": "Oracle",
+      "url": "https://docs.oracle.com/javase/specs/jls/se17/html/jls-17.html",
+      "attribution": "Selected 17.4.3–17.4.5 sequential consistency, synchronization and happens-before passages. Visibility/order alone do not make a group of operations atomic; not a full memory-model proof.",
+      "lastVerifiedAt": "2026-10-04",
+      "upstream": {
+        "version": "Java Language Specification SE 17",
+        "maturity": "published"
+      }
+    },
+    {
+      "id": "backend-fowler-polymorphism",
+      "title": "Fowler — Replace Conditional With Polymorphism",
+      "provider": "Martin Fowler",
+      "url": "https://refactoring.com/catalog/replaceConditionalWithPolymorphism.html",
+      "attribution": "Selected catalog entry illustration of type-specific dispatch. Original shipping/unit/wrapper cases; no source code or whole book copied.",
+      "lastVerifiedAt": "2026-10-04",
+      "upstream": {
+        "version": "Catalog checked 2026-10-04",
+        "maturity": "published"
+      }
+    },
+    {
+      "id": "backend-dotnet-di-lifetimes",
+      "title": "Microsoft .NET — Service Safety And Lifetime",
+      "provider": "Microsoft Learn",
+      "url": "https://learn.microsoft.com/en-us/dotnet/core/extensions/dependency-injection/guidelines",
+      "attribution": "Selected Thread safety and Recommendations sections; construction/resolution safety differs from instance state and scope. No framework/container code executed.",
+      "lastVerifiedAt": "2026-10-04",
+      "upstream": {
+        "version": "Guide checked 2026-10-04",
+        "maturity": "published"
+      }
+    }
+  ]
+}

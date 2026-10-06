@@ -1,0 +1,40 @@
+{
+  "sources": [
+    {
+      "id": "legalzoom-tsindex-navigation",
+      "title": "TSIndex — Scoped Structural Navigation",
+      "provider": "LegalZoom",
+      "url": "https://github.com/legalzoom/tsindex/blob/daf6a3d560742f01e932e95d91aa1eebc8e2563b/README.md",
+      "attribution": "README and project license files inspected at this commit. Describes syntactic references, bounded navigation, partial/unready reads and an MCP write tool. No binaries, skills or upstream commands executed; heuristic savings are not measured billing.",
+      "license": {
+        "name": "MIT OR Apache-2.0",
+        "url": "https://github.com/legalzoom/tsindex/blob/daf6a3d560742f01e932e95d91aa1eebc8e2563b/LICENSE"
+      },
+      "lastVerifiedAt": "2026-10-04",
+      "upstream": {
+        "repository": "legalzoom/tsindex",
+        "ref": "main",
+        "commit": "daf6a3d560742f01e932e95d91aa1eebc8e2563b",
+        "maturity": "published"
+      }
+    },
+    {
+      "id": "codebase-memory-v011-contracts",
+      "title": "Codebase Memory MCP — v0.11.0 Index Contracts",
+      "provider": "DeusData",
+      "url": "https://github.com/DeusData/codebase-memory-mcp/releases/tag/v0.11.0",
+      "attribution": "Release notes inspected on 2026-10-04 and MIT project license verified at the version commit. Memory, staged-failure and pagination contracts are author descriptions; benchmarks not independently reproduced. Release text may change; no indexer installed or executed.",
+      "license": {
+        "name": "MIT",
+        "url": "https://github.com/DeusData/codebase-memory-mcp/blob/8972ea69c6ad94b1ef1d4ffbf0a92d78d2db1798/LICENSE"
+      },
+      "lastVerifiedAt": "2026-10-04",
+      "upstream": {
+        "repository": "DeusData/codebase-memory-mcp",
+        "ref": "v0.11.0",
+        "commit": "8972ea69c6ad94b1ef1d4ffbf0a92d78d2db1798",
+        "maturity": "published"
+      }
+    }
+  ]
+}

@@ -18,6 +18,8 @@ describe('interview workflow',()=>{
  it('binds knowledge candidates to the edited complete body and retains private artifact identities',()=>{
   expect(candidateForBrief(opportunity,sampleBrief).existingId).toBe(`interview-preparation:${opportunity.id}`);
   const resources=privateInterviewResources({profile:{version:1,resume:'PRIVATE RESUME',experience:'PRIVATE STORY'},opportunities:[opportunity],revisions:[{id:opportunity.id,createdAt:'2026-10-03',brief:sampleBrief}]});
-  expect(resources[0].visibility).toBe('private');expect(resources[0].text).not.toContain('PRIVATE RESUME');expect(resources[0].revisionId).toBe(opportunity.id);
+  expect(resources[0].visibility).toBe('private');
+  for (const excluded of ['PRIVATE RESUME','PRIVATE STORY']) expect(resources[0].text).not.toContain(excluded);
+  expect(resources[0].revisionId).toBe(opportunity.id);
  });
 });

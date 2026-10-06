@@ -42,4 +42,5 @@ Game store claims are serialized across account changes. Deferred identity check
 
 `interview-preparation` and `interview-preparation-store` own private tracker validation, RPC boundaries, freshness, access-change guards and Markdown export. The public content index remains separate.
 
+
 `src/game/map-art.ts` owns the fifty-position art panel order and bounded, renderer-independent parallax offsets. It does not create campaign levels or alter progression. Native runs its offset helper as a Reanimated worklet; web samples the same rule on scroll frames.

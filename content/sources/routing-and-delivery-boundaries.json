@@ -1,0 +1,44 @@
+{
+  "sources": [
+    {
+      "id": "nginx-upstream-routing",
+      "title": "NGINX HTTP Upstream Module",
+      "provider": "NGINX",
+      "url": "https://nginx.org/en/docs/http/ngx_http_upstream_module.html",
+      "attribution": "Official directive reference, checked October 3, 2026. Features depend on version and edition; the original Python selection toy is not the NGINX scheduler.",
+      "lastVerifiedAt": "2026-10-03"
+    },
+    {
+      "id": "kafka-41-delivery-design",
+      "title": "Apache Kafka 4.1 — Delivery And Transaction Design",
+      "provider": "Apache Kafka",
+      "url": "https://kafka.apache.org/41/design/design/",
+      "attribution": "Version 4.1 design documentation, an older version. Kafka transactions and offsets do not alone make an external effect exactly once.",
+      "lastVerifiedAt": "2026-10-03"
+    },
+    {
+      "id": "redis-pubsub-delivery",
+      "title": "Redis Pub/Sub — Delivery Semantics",
+      "provider": "Redis",
+      "url": "https://redis.io/docs/latest/develop/pubsub/",
+      "attribution": "Official Pub/Sub reference. At-most-once delivery and disconnected subscriber loss; not a durable acceptance channel.",
+      "lastVerifiedAt": "2026-10-03"
+    },
+    {
+      "id": "redis-stream-ack",
+      "title": "Redis XACK — Consumer Group Acknowledgement",
+      "provider": "Redis",
+      "url": "https://redis.io/docs/latest/commands/xack/",
+      "attribution": "Official command reference. Removes pending group entries, not an atomic receipt for an external side effect.",
+      "lastVerifiedAt": "2026-10-03"
+    },
+    {
+      "id": "redis-stream-autoclaim",
+      "title": "Redis XAUTOCLAIM — Pending Entry Recovery",
+      "provider": "Redis",
+      "url": "https://redis.io/docs/latest/commands/xautoclaim/",
+      "attribution": "Official command reference. Available since 6.2; removed-entry reporting since 7.0. Claiming idle work does not cancel a still-running old worker.",
+      "lastVerifiedAt": "2026-10-03"
+    }
+  ]
+}

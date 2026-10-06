@@ -1,0 +1,112 @@
+{
+  "slug": "system-design/distributed-reading-checkpoint",
+  "title": "Distributed Reading Checkpoint",
+  "type": "questionnaire",
+  "documentSlug": "system-design/distributed-reading-reviews",
+  "concept": "Distributed Contracts",
+  "difficulty": "practitioner",
+  "tags": [
+    "distributed-systems",
+    "evidence"
+  ],
+  "status": "published",
+  "sourceRefs": [
+    "dynamo-sosp-2007",
+    "raft-extended-2014",
+    "tail-at-scale-2013"
+  ],
+  "questions": [
+    {
+      "id": "quorum-membership",
+      "kind": "choice",
+      "prompt": "N=3, R=2 and W=2, but writes use substitute nodes. What must a latest-value claim establish?",
+      "options": [
+        {
+          "id": "option-0",
+          "label": "Name the actual read/write participants and version reconciliation; the inequality alone does not prove a latest single value.",
+          "isCorrect": true
+        },
+        {
+          "id": "option-1",
+          "label": "R + W > N proves linearizability regardless of membership.",
+          "isCorrect": false
+        },
+        {
+          "id": "option-2",
+          "label": "Use the first reply and discard all other versions.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "An overlap argument requires its participant assumptions; conflicting versions and repair still need explicit handling."
+    },
+    {
+      "id": "commit-term",
+      "kind": "choice",
+      "prompt": "A term-4 Raft leader sees an older term-2 entry on three of five servers. What establishes commitment?",
+      "options": [
+        {
+          "id": "option-0",
+          "label": "An old-term majority count alone is insufficient; use Raft's current-term commitment rule and log/election constraints.",
+          "isCorrect": true
+        },
+        {
+          "id": "option-1",
+          "label": "Any older entry is committed as soon as it appears on three machines.",
+          "isCorrect": false
+        },
+        {
+          "id": "option-2",
+          "label": "Wall-clock age proves the entry is committed.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "Direct commitment by counting uses the current term; the committed prefix and election/log invariants matter."
+    },
+    {
+      "id": "retry-effect",
+      "kind": "choice",
+      "prompt": "A command commits, but its response is lost and the client retries. What prevents a repeated effect?",
+      "options": [
+        {
+          "id": "option-0",
+          "label": "Preserve a client request identity and associated result; log commitment alone does not deduplicate retries.",
+          "isCorrect": true
+        },
+        {
+          "id": "option-1",
+          "label": "Commitment proves the client received a response.",
+          "isCorrect": false
+        },
+        {
+          "id": "option-2",
+          "label": "Every retry becomes safe simply by using the same leader.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "The operation identity and result must survive the retry boundary; consensus and client deduplication answer different questions."
+    },
+    {
+      "id": "fanout-assumptions",
+      "kind": "choice",
+      "prompt": "100 required leaves each miss a deadline with probability 0.01. What follows for the whole request?",
+      "options": [
+        {
+          "id": "option-0",
+          "label": "About 63.4% under independence; correlated stalls and extra hedge work require separate evidence.",
+          "isCorrect": true
+        },
+        {
+          "id": "option-1",
+          "label": "The whole request misses with probability 1% for every dependence structure.",
+          "isCorrect": false
+        },
+        {
+          "id": "option-2",
+          "label": "Hedging eliminates misses without extra work or effect risks.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "The independent calculation is 1 - 0.99^100. Marginal probabilities alone do not establish joint behavior or a safe hedge."
+    }
+  ]
+}

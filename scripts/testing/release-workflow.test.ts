@@ -21,6 +21,22 @@ function artifactName(job: string, ref: string, attempt: number) {
 }
 
 describe("release regression evidence", () => {
+  it.each([
+    [".github/workflows/ci.yml", "database", "npm run test:reservation:sql"],
+    [".github/workflows/release-regression.yml", "release-database", "python3 -I -W error::ResourceWarning scripts/content/verify-reservation-ranges.py"],
+  ])("runs the pinned, isolated SQL verifier in %s", (file, job, command) => {
+    const text = readFileSync(file, "utf8");
+    const body = text.split(`  ${job}:\n`)[1]?.split(/^ {2}[\w-]+:\s*$/m)[0];
+    expect(body).toBeDefined();
+    const image = readFileSync("scripts/content/verify-reservation-ranges.py", "utf8").match(/^IMAGE = "([^"]+)"$/m)?.[1];
+    expect(image).toMatch(/^postgres@sha256:[a-f0-9]{64}$/);
+    const pull = body!.indexOf(`- run: docker pull ${image}\n`);
+    const verify = body!.indexOf(`- run: ${command}\n`);
+    expect(pull).toBeGreaterThanOrEqual(0);
+    expect(verify).toBeGreaterThan(pull);
+    const scripts = JSON.parse(readFileSync("package.json", "utf8")).scripts;
+    expect(scripts["test:reservation:sql"]).toBe("python3 -I -W error::ResourceWarning scripts/content/verify-reservation-ranges.py");
+  });
   it.each(jobs)("keeps %s artifact names valid for manual branch dispatch and tags", job => {
     for (const ref of ["codex/linkedin-saved-learning", "v0.1.0"]) {
       expect(artifactName(job, ref, 1)).toMatch(/^[A-Za-z0-9_-]+$/);

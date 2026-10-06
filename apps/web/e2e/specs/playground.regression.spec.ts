@@ -32,10 +32,7 @@ test("@regression @playground starts one preview, runs edits, logs interactions,
   const connectedFrame = await page.getByTestId("web-playground").locator("iframe").elementHandle();
   await page.getByTestId("web-playground-run").click();
   await expect(preview.getByRole("button", { name: "Edited counter 7" })).toBeVisible({ timeout: 45_000 });
-  // This parent restarts the client on Run; connected-client reuse belongs to
-  // the later playground follow-up. Preserve the current lifecycle contract.
-  expect(await connectedFrame?.evaluate((frame) => frame.isConnected)).toBe(false);
-  await expect(page.getByTestId("web-playground").locator("iframe")).toHaveCount(1);
+  expect(await connectedFrame?.evaluate((frame) => frame.isConnected)).toBe(true);
   await preview.getByRole("button", { name: "Edited counter 7" }).click();
   await expect(preview.getByRole("button", { name: "Edited counter 8" })).toBeVisible();
   await page.getByText("Console", { exact: true }).click();

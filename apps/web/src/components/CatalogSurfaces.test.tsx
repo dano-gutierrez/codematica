@@ -35,7 +35,8 @@ describe("catalog and path surfaces", () => {
     expect(screen.getByTestId("path-progression-roadmap")).toHaveTextContent("Scientific Computing Apprentice");
     expect(screen.getByTestId("path-progression-roadmap")).toHaveTextContent("Framework Builder");
     expect(screen.getByTestId("path-node-source-ml-systems-ai-engineering-introduction")).toHaveTextContent("Source + document");
-    expect(screen.getByTestId("path-node-source-ml-systems-neural-computation")).toHaveAttribute("href", "https://mlsysbook.ai/vol1/nn_computation/nn_computation.html");
+    expect(screen.getByTestId("path-node-source-ml-systems-neural-computation")).toHaveAttribute("href", "/docs/ml-systems/neural-computation?path=ml-systems-engineer");
+    expect(screen.getByTestId("path-node-source-ml-systems-network-architectures")).toHaveAttribute("href", "https://mlsysbook.ai/vol1/nn_architectures/nn_architectures.html");
 
     const systemDesign = getLearningPathBySlug("system-design-fundamentals")!;
     rerender(<LearningPathDetail index={index} learningPath={systemDesign} />);

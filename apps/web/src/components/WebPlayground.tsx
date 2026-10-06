@@ -89,15 +89,20 @@ function PlaygroundSession({ project }: { project: WebExerciseProject }) {
 
 function PlaygroundWorkspace({ onRun, onReset }: { onRun: (draft: PlaygroundDraft) => void; onReset: () => void }) {
   const { sandpack, listen } = useSandpack();
-  const [phase, setPhase] = useState<"loading" | "ready" | "error">("loading");
+  const [phase, setPhase] = useState<"loading" | "compiling" | "ready" | "error">("loading");
   const timedOut = sandpack.status === "timeout";
 
   useEffect(() => listen((message) => {
-    if (message.type === "start") setPhase("loading");
+    if (message.type === "start") setPhase((current) => current === "compiling" ? "compiling" : "loading");
     if (message.type === "done") setPhase(message.compilatonError ? "error" : "ready");
   }), [listen]);
 
   function runProject() {
+    if (sandpack.status === "running" && phase === "ready" && !sandpack.error) {
+      setPhase("compiling");
+      sandpack.updateFile(sandpack.files, undefined, true);
+      return;
+    }
     onRun({ files: sandpack.files, activeFile: sandpack.activeFile });
   }
 
@@ -110,6 +115,7 @@ function PlaygroundWorkspace({ onRun, onReset }: { onRun: (draft: PlaygroundDraf
             {timedOut ? "Preview connection timed out."
               : sandpack.error || phase === "error" ? "Preview has a code error. Check the preview or console, then Run again."
                 : phase === "ready" ? "Preview ready. Edit the files, then press Run."
+                  : phase === "compiling" ? "Compiling your edits in the connected preview."
                   : "Starting preview… Connecting to the hosted runtime."}
           </p>
         </div>

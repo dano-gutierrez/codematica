@@ -12,10 +12,157 @@
       "title": "Caching Contracts",
       "summary": "Study freshness, invalidation, diagrams, and review prompts through a short cache design loop.",
       "nodes": [
-        { "kind": "document", "slug": "system-design/cache-invalidation" },
-        { "kind": "diagram", "slug": "system-design/cache-aside" },
-        { "kind": "exercise", "slug": "system-design/cache-product-contract" },
-        { "kind": "exercise", "slug": "system-design/versioned-keys-cloze" }
+        {
+          "kind": "document",
+          "slug": "system-design/cache-invalidation"
+        },
+        {
+          "kind": "diagram",
+          "slug": "system-design/cache-aside"
+        },
+        {
+          "kind": "exercise",
+          "slug": "system-design/cache-product-contract"
+        },
+        {
+          "kind": "exercise",
+          "slug": "system-design/versioned-keys-cloze"
+        }
+      ]
+    },
+    {
+      "slug": "capacity-decisions",
+      "title": "Capacity Decisions",
+      "summary": "Measure a constraint, compare interventions and preserve a scaling decision receipt.",
+      "nodes": [
+        {
+          "kind": "document",
+          "slug": "system-design/scaling-decision-worksheet"
+        },
+        {
+          "kind": "exercise",
+          "slug": "system-design/scaling-decision-checkpoint"
+        }
+      ]
+    },
+    {
+      "slug": "routing-decisions",
+      "title": "Routing Decisions",
+      "summary": "Compare signals, eligibility and affinity through an original static routing experiment.",
+      "nodes": [
+        {
+          "kind": "document",
+          "slug": "system-design/routing-decision-lab"
+        },
+        {
+          "kind": "exercise",
+          "slug": "system-design/routing-decision-checkpoint"
+        }
+      ]
+    },
+    {
+      "slug": "api-security-boundaries",
+      "title": "API Security Boundaries",
+      "summary": "Distinguish browser response sharing, request forgery and server object authorization.",
+      "nodes": [
+        {
+          "kind": "document",
+          "slug": "system-design/cors-csrf-and-authorization"
+        },
+        {
+          "kind": "exercise",
+          "slug": "system-design/api-boundary-checkpoint"
+        }
+      ]
+    },
+    {
+      "slug": "client-compatibility",
+      "title": "Client Compatibility",
+      "summary": "Separate layout capabilities, fresh data and API meaning; test cached fallback and cold starts.",
+      "nodes": [
+        {
+          "kind": "document",
+          "slug": "system-design/client-compatibility-contracts"
+        },
+        {
+          "kind": "exercise",
+          "slug": "system-design/client-compatibility-checkpoint"
+        }
+      ]
+    },
+    {
+      "slug": "traffic-rate",
+      "title": "Traffic Rate Contracts",
+      "summary": "Define precise rate windows, burst capacity and concurrency scope before choosing storage.",
+      "nodes": [
+        {
+          "kind": "document",
+          "slug": "system-design/traffic-rate-contracts"
+        },
+        {
+          "kind": "exercise",
+          "slug": "system-design/traffic-rate-checkpoint"
+        }
+      ]
+    },
+    {
+      "slug": "webhook-authenticity",
+      "title": "Webhook Authenticity",
+      "summary": "Separate signed delivery, replay admission and durable effects with original local evidence.",
+      "nodes": [
+        {
+          "kind": "document",
+          "slug": "system-design/webhook-authenticity-and-replay"
+        },
+        {
+          "kind": "exercise",
+          "slug": "system-design/webhook-authenticity-checkpoint"
+        }
+      ]
+    },
+    {
+      "slug": "reservation-boundaries",
+      "title": "Reservation Boundaries",
+      "summary": "Trace atomic inventory claims, expiry and late completion without inventing queue guarantees.",
+      "nodes": [
+        {
+          "kind": "document",
+          "slug": "system-design/fair-admission-and-reservations"
+        },
+        {
+          "kind": "exercise",
+          "slug": "system-design/reservation-boundary-checkpoint"
+        }
+      ]
+    },
+    {
+      "slug": "distributed-readings",
+      "title": "Distributed Reading Reviews",
+      "summary": "Compare quorum membership, consensus commitment and fan-out evidence through selected primary readings.",
+      "nodes": [
+        {
+          "kind": "document",
+          "slug": "system-design/distributed-reading-reviews"
+        },
+        {
+          "kind": "exercise",
+          "slug": "system-design/distributed-reading-checkpoint"
+        }
+      ]
+    },
+    {
+      "slug": "video-delivery",
+      "title": "Video Delivery Contracts",
+      "summary": "Review segment deadlines, protection observations and accepted playback revisions independently.",
+      "nodes": [
+        {
+          "kind": "document",
+          "slug": "system-design/video-delivery-boundaries"
+        },
+        {
+          "kind": "exercise",
+          "slug": "system-design/video-delivery-checkpoint"
+        }
       ]
     }
   ]
