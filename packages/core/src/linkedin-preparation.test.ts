@@ -60,3 +60,10 @@ it("shows the latest proposal after a recovered failure and recognizes adoption"
   expect(preparationLabel(post,[{...success,result_revision_id:null,review_verdict:"needs_input"}],[])).toBe("Needs attention");
   expect(preparationLabel({...post,preparation_outcome:"ready"},[],[])).toBe("Prepared");
 });
+
+it("binds verification to the exact graph evidence supplied to Codex", () => {
+  const prepared = { ...report(), knowledge_hash: "d".repeat(64) };
+  expect(() => applyVerification(prepared, review())).toThrow(/knowledge/i);
+  expect(() => applyVerification(prepared, { ...review(), knowledge_hash: "e".repeat(64) })).toThrow(/knowledge/i);
+  expect(applyVerification(prepared, { ...review(), knowledge_hash: prepared.knowledge_hash })).toEqual(prepared.analysis);
+});

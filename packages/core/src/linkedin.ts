@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { knowledgeContextSchema } from "./knowledge";
 
 export const postTextSchema = z.string().trim().min(1).max(3000);
 const scoreSchema = z.object({ score: z.number().int().min(1).max(10), justification: z.string().min(1) });
@@ -24,11 +25,13 @@ export const preparationContentSchema = z.object({
   before: z.record(z.string(), z.number().min(0).max(10)), after: z.record(z.string(), z.number().min(0).max(10)),
   versions: z.object({ writer: z.string(), judge: z.string(), prompt: z.string(), voice: z.string() }),
   metrics: z.object({ rounds: z.number().int().min(0).max(2), elapsed_ms: z.number().nonnegative(), writer_tokens: z.number().nonnegative().optional() }),
+  knowledge: knowledgeContextSchema.nullable().optional(), knowledge_hash: z.string().regex(/^[a-f0-9]{64}$/).nullable().optional(),
 });
 export const preparationSchema = preparationContentSchema.extend({ id: z.uuid(), job_id: z.uuid(), post_id: z.uuid(), revision_id: z.uuid(), created_at: z.string() });
 export type LinkedInPreparation = z.infer<typeof preparationSchema>;
 export const verificationSchema = z.object({
   preparation_id: z.uuid(), candidate_hash: z.string().regex(/^[a-f0-9]{64}$/), verdict: z.enum(["accept", "patch", "needs_input"]),
+  knowledge_hash: z.string().regex(/^[a-f0-9]{64}$/).optional(),
   checked: z.array(z.enum(["text", "meaning", "facts", "voice"])).length(4).refine((v) => new Set(v).size === 4, "Check text, meaning, facts and voice"),
   patch: analysisSchema.partial().strict().optional(), notes: z.array(z.string().trim().min(1).max(1000)).max(20), toolsUsed: z.array(z.string().min(1).max(300)).max(20),
 }).strict().refine((v) => v.verdict === "patch" ? Boolean(v.patch && Object.keys(v.patch).length) : !v.patch, "Only a patch verdict can contain replacements")
@@ -42,7 +45,7 @@ export const revisionSchema = z.object({
 export type LinkedInRevision = z.infer<typeof revisionSchema>;
 export const postSchema = z.object({
   id: z.uuid(), origin: z.enum(["material", "manual"]).default("material"), seed_key: z.string(), title: z.string(), topic: z.string(), status: z.enum(["review", "approved", "rejected", "withdrawing"]),
-  current_revision_id: z.uuid(), approved_revision_id: z.uuid().nullable(), approved_at: z.string().nullable(), preparation_required: z.boolean().optional(), preparation_outcome: z.enum(["ready","held","stale"]).nullable().optional(), created_at: z.string(), updated_at: z.string(),
+  current_revision_id: z.uuid(), approved_revision_id: z.uuid().nullable(), approved_at: z.string().nullable(), preparation_required: z.boolean().optional(), knowledge_required: z.boolean().optional(), preparation_outcome: z.enum(["ready","held","stale"]).nullable().optional(), created_at: z.string(), updated_at: z.string(),
 });
 export type LinkedInPost = z.infer<typeof postSchema>;
 export const jobSchema = z.object({ id: z.uuid(), post_id: z.uuid(), revision_id: z.uuid(), kind: z.enum(["prepare", "refine", "schedule", "cancel"]), status: z.enum(["pending", "running", "succeeded", "failed", "cancelled", "uncertain"]), attempts: z.number(), error: z.string().nullable(), created_at: z.string(), result_revision_id: z.uuid().nullable(), preparation_id: z.uuid().nullable().optional(), override_reason: z.string().nullable().optional(), verification: verificationSchema.nullable().optional(), review_verdict: z.enum(["accept","patch","needs_input"]).nullable().optional() });

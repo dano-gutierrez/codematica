@@ -1,0 +1,676 @@
+[
+  {
+    "id": "paraphrased_duplicate-1",
+    "category": "paraphrased_duplicate",
+    "candidate": {
+      "title": "Database index tradeoffs",
+      "body": "A database index helps locate matching rows without scanning every row. Additional indexes consume storage and make inserts, updates and deletes more expensive. Selectivity and the query plan determine whether an index helps.",
+      "kind": "document"
+    },
+    "expected_actions": [
+      "skip_duplicate"
+    ],
+    "expected_resources": [
+      "document:databases/index-fundamentals"
+    ],
+    "label_note": "Initial engineering label; audit ambiguous placement with a human reviewer before calibration."
+  },
+  {
+    "id": "partial_update-1",
+    "category": "partial_update",
+    "candidate": {
+      "title": "Database index tradeoffs \u2014 worked extension",
+      "body": "Explain a reproducible index experiment comparing three workloads with explicit write-cost accounting and a checklist for choosing the winning plan.",
+      "kind": "document"
+    },
+    "expected_actions": [
+      "update_existing",
+      "create_resource"
+    ],
+    "expected_resources": [
+      "document:databases/index-fundamentals"
+    ],
+    "label_note": "Initial engineering label; audit ambiguous placement with a human reviewer before calibration."
+  },
+  {
+    "id": "distinct_same_topic-1",
+    "category": "distinct_same_topic",
+    "candidate": {
+      "title": "Visualizing write amplification on a tiny table using colored blocks",
+      "body": "Create a focused lesson about Visualizing write amplification on a tiny table using colored blocks. The learning outcome is a design decision with constraints and tradeoffs, not a recap of Database index tradeoffs. Include an original scenario and a decision worksheet.",
+      "kind": "document"
+    },
+    "expected_actions": [
+      "create_resource",
+      "update_existing"
+    ],
+    "expected_resources": [
+      "document:databases/index-fundamentals"
+    ],
+    "label_note": "Initial engineering label; audit ambiguous placement with a human reviewer before calibration."
+  },
+  {
+    "id": "different_difficulty-1",
+    "category": "different_difficulty",
+    "candidate": {
+      "title": "Database index tradeoffs for complete beginners",
+      "body": "Explain Database index tradeoffs to a student who has never shipped software. Use a concrete everyday analogy, introduce only three terms, and include a five-minute activity. Avoid production architecture or senior debugging assumptions.",
+      "kind": "document",
+      "difficulty": "foundation",
+      "audience": "First-time programming student"
+    },
+    "expected_actions": [
+      "create_resource",
+      "update_existing"
+    ],
+    "expected_resources": [
+      "document:databases/index-fundamentals"
+    ],
+    "label_note": "Initial engineering label; audit ambiguous placement with a human reviewer before calibration."
+  },
+  {
+    "id": "cross_format_reuse-1",
+    "category": "cross_format_reuse",
+    "candidate": {
+      "title": "Database index tradeoffs scenario interview",
+      "body": "Create a ten-minute interview prompt that tests reasoning about Database index tradeoffs. Present a deliberately ambiguous scenario, require clarifying questions, and give an assessment rubric instead of a lesson summary.",
+      "kind": "interview-question"
+    },
+    "expected_actions": [
+      "create_resource",
+      "update_existing"
+    ],
+    "expected_resources": [
+      "document:databases/index-fundamentals"
+    ],
+    "label_note": "Initial engineering label; audit ambiguous placement with a human reviewer before calibration."
+  },
+  {
+    "id": "exact_duplicate-1",
+    "category": "exact_duplicate",
+    "source_body": "document:databases/index-fundamentals",
+    "candidate": {
+      "title": "Database index tradeoffs",
+      "body": "Resolved from the pinned snapshot at benchmark time.",
+      "kind": "document"
+    },
+    "expected_actions": [
+      "skip_duplicate"
+    ],
+    "expected_resources": [
+      "document:databases/index-fundamentals"
+    ],
+    "label_note": "Exact same source text and type."
+  },
+  {
+    "id": "paraphrased_duplicate-2",
+    "category": "paraphrased_duplicate",
+    "candidate": {
+      "title": "PostgreSQL pooling",
+      "body": "Connection pools reuse sessions rather than opening a new database connection for every operation. Bound pool size and queue waiting time, compare session and transaction pooling, and avoid overwhelming the database during spikes.",
+      "kind": "document"
+    },
+    "expected_actions": [
+      "skip_duplicate"
+    ],
+    "expected_resources": [
+      "document:databases/postgres-connection-pooling"
+    ],
+    "label_note": "Initial engineering label; audit ambiguous placement with a human reviewer before calibration."
+  },
+  {
+    "id": "partial_update-2",
+    "category": "partial_update",
+    "candidate": {
+      "title": "PostgreSQL pooling \u2014 worked extension",
+      "body": "Add an operator worksheet that calculates aggregate connection budgets across autoscaled replicas and includes a worked failover-drill checklist.",
+      "kind": "document"
+    },
+    "expected_actions": [
+      "update_existing",
+      "create_resource"
+    ],
+    "expected_resources": [
+      "document:databases/postgres-connection-pooling"
+    ],
+    "label_note": "Initial engineering label; audit ambiguous placement with a human reviewer before calibration."
+  },
+  {
+    "id": "distinct_same_topic-2",
+    "category": "distinct_same_topic",
+    "candidate": {
+      "title": "Designing admission control for a pool queue during autoscaling",
+      "body": "Create a focused lesson about Designing admission control for a pool queue during autoscaling. The learning outcome is a design decision with constraints and tradeoffs, not a recap of PostgreSQL pooling. Include an original scenario and a decision worksheet.",
+      "kind": "document"
+    },
+    "expected_actions": [
+      "create_resource",
+      "update_existing"
+    ],
+    "expected_resources": [
+      "document:databases/postgres-connection-pooling"
+    ],
+    "label_note": "Initial engineering label; audit ambiguous placement with a human reviewer before calibration."
+  },
+  {
+    "id": "different_difficulty-2",
+    "category": "different_difficulty",
+    "candidate": {
+      "title": "PostgreSQL pooling for complete beginners",
+      "body": "Explain PostgreSQL pooling to a student who has never shipped software. Use a concrete everyday analogy, introduce only three terms, and include a five-minute activity. Avoid production architecture or senior debugging assumptions.",
+      "kind": "document",
+      "difficulty": "foundation",
+      "audience": "First-time programming student"
+    },
+    "expected_actions": [
+      "create_resource",
+      "update_existing"
+    ],
+    "expected_resources": [
+      "document:databases/postgres-connection-pooling"
+    ],
+    "label_note": "Initial engineering label; audit ambiguous placement with a human reviewer before calibration."
+  },
+  {
+    "id": "cross_format_reuse-2",
+    "category": "cross_format_reuse",
+    "candidate": {
+      "title": "PostgreSQL pooling scenario interview",
+      "body": "Create a ten-minute interview prompt that tests reasoning about PostgreSQL pooling. Present a deliberately ambiguous scenario, require clarifying questions, and give an assessment rubric instead of a lesson summary.",
+      "kind": "interview-question"
+    },
+    "expected_actions": [
+      "create_resource",
+      "update_existing"
+    ],
+    "expected_resources": [
+      "document:databases/postgres-connection-pooling"
+    ],
+    "label_note": "Initial engineering label; audit ambiguous placement with a human reviewer before calibration."
+  },
+  {
+    "id": "exact_duplicate-2",
+    "category": "exact_duplicate",
+    "source_body": "document:databases/postgres-connection-pooling",
+    "candidate": {
+      "title": "PostgreSQL pooling",
+      "body": "Resolved from the pinned snapshot at benchmark time.",
+      "kind": "document"
+    },
+    "expected_actions": [
+      "skip_duplicate"
+    ],
+    "expected_resources": [
+      "document:databases/postgres-connection-pooling"
+    ],
+    "label_note": "Exact same source text and type."
+  },
+  {
+    "id": "paraphrased_duplicate-3",
+    "category": "paraphrased_duplicate",
+    "candidate": {
+      "title": "Breadth-first and depth-first search",
+      "body": "Breadth-first traversal uses a queue and explores vertices by distance from the start. Depth-first traversal follows one branch with a stack or recursion. Track visited nodes to avoid loops and choose traversal based on the goal.",
+      "kind": "document"
+    },
+    "expected_actions": [
+      "skip_duplicate"
+    ],
+    "expected_resources": [
+      "document:programming/bfs-dfs-fundamentals"
+    ],
+    "label_note": "Initial engineering label; audit ambiguous placement with a human reviewer before calibration."
+  },
+  {
+    "id": "partial_update-3",
+    "category": "partial_update",
+    "candidate": {
+      "title": "Breadth-first and depth-first search \u2014 worked extension",
+      "body": "Add a worked exercise for a directed graph with a disconnected component, including queue and stack snapshots at each step.",
+      "kind": "document"
+    },
+    "expected_actions": [
+      "update_existing",
+      "create_resource"
+    ],
+    "expected_resources": [
+      "document:programming/bfs-dfs-fundamentals"
+    ],
+    "label_note": "Initial engineering label; audit ambiguous placement with a human reviewer before calibration."
+  },
+  {
+    "id": "distinct_same_topic-3",
+    "category": "distinct_same_topic",
+    "candidate": {
+      "title": "Recognizing graph traversal patterns from ambiguous product requirements",
+      "body": "Create a focused lesson about Recognizing graph traversal patterns from ambiguous product requirements. The learning outcome is a design decision with constraints and tradeoffs, not a recap of Breadth-first and depth-first search. Include an original scenario and a decision worksheet.",
+      "kind": "document"
+    },
+    "expected_actions": [
+      "create_resource",
+      "update_existing"
+    ],
+    "expected_resources": [
+      "document:programming/bfs-dfs-fundamentals"
+    ],
+    "label_note": "Initial engineering label; audit ambiguous placement with a human reviewer before calibration."
+  },
+  {
+    "id": "different_difficulty-3",
+    "category": "different_difficulty",
+    "candidate": {
+      "title": "Breadth-first and depth-first search for complete beginners",
+      "body": "Explain Breadth-first and depth-first search to a student who has never shipped software. Use a concrete everyday analogy, introduce only three terms, and include a five-minute activity. Avoid production architecture or senior debugging assumptions.",
+      "kind": "document",
+      "difficulty": "foundation",
+      "audience": "First-time programming student"
+    },
+    "expected_actions": [
+      "create_resource",
+      "update_existing"
+    ],
+    "expected_resources": [
+      "document:programming/bfs-dfs-fundamentals"
+    ],
+    "label_note": "Initial engineering label; audit ambiguous placement with a human reviewer before calibration."
+  },
+  {
+    "id": "cross_format_reuse-3",
+    "category": "cross_format_reuse",
+    "candidate": {
+      "title": "Breadth-first and depth-first search scenario interview",
+      "body": "Create a ten-minute interview prompt that tests reasoning about Breadth-first and depth-first search. Present a deliberately ambiguous scenario, require clarifying questions, and give an assessment rubric instead of a lesson summary.",
+      "kind": "interview-question"
+    },
+    "expected_actions": [
+      "create_resource",
+      "update_existing"
+    ],
+    "expected_resources": [
+      "document:programming/bfs-dfs-fundamentals"
+    ],
+    "label_note": "Initial engineering label; audit ambiguous placement with a human reviewer before calibration."
+  },
+  {
+    "id": "exact_duplicate-3",
+    "category": "exact_duplicate",
+    "source_body": "document:programming/bfs-dfs-fundamentals",
+    "candidate": {
+      "title": "Breadth-first and depth-first search",
+      "body": "Resolved from the pinned snapshot at benchmark time.",
+      "kind": "document"
+    },
+    "expected_actions": [
+      "skip_duplicate"
+    ],
+    "expected_resources": [
+      "document:programming/bfs-dfs-fundamentals"
+    ],
+    "label_note": "Exact same source text and type."
+  },
+  {
+    "id": "paraphrased_duplicate-4",
+    "category": "paraphrased_duplicate",
+    "candidate": {
+      "title": "Python runtime boundaries",
+      "body": "Python names refer to objects. Mutable collections can be changed through shared references; rebinding a name differs from mutating an object. Compare these behaviors with JavaScript so TypeScript engineers avoid incorrect assumptions.",
+      "kind": "document"
+    },
+    "expected_actions": [
+      "skip_duplicate"
+    ],
+    "expected_resources": [
+      "document:programming/python-runtime-model"
+    ],
+    "label_note": "Initial engineering label; audit ambiguous placement with a human reviewer before calibration."
+  },
+  {
+    "id": "partial_update-4",
+    "category": "partial_update",
+    "candidate": {
+      "title": "Python runtime boundaries \u2014 worked extension",
+      "body": "Add a worked example of aliasing a nested list across module boundaries, documenting expected output before and after rebinding.",
+      "kind": "document"
+    },
+    "expected_actions": [
+      "update_existing",
+      "create_resource"
+    ],
+    "expected_resources": [
+      "document:programming/python-runtime-model"
+    ],
+    "label_note": "Initial engineering label; audit ambiguous placement with a human reviewer before calibration."
+  },
+  {
+    "id": "distinct_same_topic-4",
+    "category": "distinct_same_topic",
+    "candidate": {
+      "title": "Designing ownership conventions for mutable Python API data",
+      "body": "Create a focused lesson about Designing ownership conventions for mutable Python API data. The learning outcome is a design decision with constraints and tradeoffs, not a recap of Python runtime boundaries. Include an original scenario and a decision worksheet.",
+      "kind": "document"
+    },
+    "expected_actions": [
+      "create_resource",
+      "update_existing"
+    ],
+    "expected_resources": [
+      "document:programming/python-runtime-model"
+    ],
+    "label_note": "Initial engineering label; audit ambiguous placement with a human reviewer before calibration."
+  },
+  {
+    "id": "different_difficulty-4",
+    "category": "different_difficulty",
+    "candidate": {
+      "title": "Python runtime boundaries for complete beginners",
+      "body": "Explain Python runtime boundaries to a student who has never shipped software. Use a concrete everyday analogy, introduce only three terms, and include a five-minute activity. Avoid production architecture or senior debugging assumptions.",
+      "kind": "document",
+      "difficulty": "foundation",
+      "audience": "First-time programming student"
+    },
+    "expected_actions": [
+      "create_resource",
+      "update_existing"
+    ],
+    "expected_resources": [
+      "document:programming/python-runtime-model"
+    ],
+    "label_note": "Initial engineering label; audit ambiguous placement with a human reviewer before calibration."
+  },
+  {
+    "id": "cross_format_reuse-4",
+    "category": "cross_format_reuse",
+    "candidate": {
+      "title": "Python runtime boundaries scenario interview",
+      "body": "Create a ten-minute interview prompt that tests reasoning about Python runtime boundaries. Present a deliberately ambiguous scenario, require clarifying questions, and give an assessment rubric instead of a lesson summary.",
+      "kind": "interview-question"
+    },
+    "expected_actions": [
+      "create_resource",
+      "update_existing"
+    ],
+    "expected_resources": [
+      "document:programming/python-runtime-model"
+    ],
+    "label_note": "Initial engineering label; audit ambiguous placement with a human reviewer before calibration."
+  },
+  {
+    "id": "exact_duplicate-4",
+    "category": "exact_duplicate",
+    "source_body": "document:programming/python-runtime-model",
+    "candidate": {
+      "title": "Python runtime boundaries",
+      "body": "Resolved from the pinned snapshot at benchmark time.",
+      "kind": "document"
+    },
+    "expected_actions": [
+      "skip_duplicate"
+    ],
+    "expected_resources": [
+      "document:programming/python-runtime-model"
+    ],
+    "label_note": "Exact same source text and type."
+  },
+  {
+    "id": "paraphrased_duplicate-5",
+    "category": "paraphrased_duplicate",
+    "candidate": {
+      "title": "RTK Query cache identity",
+      "body": "RTK Query identifies cache entries by endpoint and serialized arguments. Tags connect mutations to affected queries. Refetching is different from changing cache identity, and overly broad invalidation can cause unnecessary requests.",
+      "kind": "document"
+    },
+    "expected_actions": [
+      "skip_duplicate"
+    ],
+    "expected_resources": [
+      "document:frontend/rtk-query-cache-and-invalidation"
+    ],
+    "label_note": "Initial engineering label; audit ambiguous placement with a human reviewer before calibration."
+  },
+  {
+    "id": "partial_update-5",
+    "category": "partial_update",
+    "candidate": {
+      "title": "RTK Query cache identity \u2014 worked extension",
+      "body": "Add a review worksheet for parameterized tenant queries with a cache-key audit and examples of narrowly scoped mutation tags.",
+      "kind": "document"
+    },
+    "expected_actions": [
+      "update_existing",
+      "create_resource"
+    ],
+    "expected_resources": [
+      "document:frontend/rtk-query-cache-and-invalidation"
+    ],
+    "label_note": "Initial engineering label; audit ambiguous placement with a human reviewer before calibration."
+  },
+  {
+    "id": "distinct_same_topic-5",
+    "category": "distinct_same_topic",
+    "candidate": {
+      "title": "Threat modeling tenant isolation through RTK Query cache identity",
+      "body": "Create a focused lesson about Threat modeling tenant isolation through RTK Query cache identity. The learning outcome is a design decision with constraints and tradeoffs, not a recap of RTK Query cache identity. Include an original scenario and a decision worksheet.",
+      "kind": "document"
+    },
+    "expected_actions": [
+      "create_resource",
+      "update_existing"
+    ],
+    "expected_resources": [
+      "document:frontend/rtk-query-cache-and-invalidation"
+    ],
+    "label_note": "Initial engineering label; audit ambiguous placement with a human reviewer before calibration."
+  },
+  {
+    "id": "different_difficulty-5",
+    "category": "different_difficulty",
+    "candidate": {
+      "title": "RTK Query cache identity for complete beginners",
+      "body": "Explain RTK Query cache identity to a student who has never shipped software. Use a concrete everyday analogy, introduce only three terms, and include a five-minute activity. Avoid production architecture or senior debugging assumptions.",
+      "kind": "document",
+      "difficulty": "foundation",
+      "audience": "First-time programming student"
+    },
+    "expected_actions": [
+      "create_resource",
+      "update_existing"
+    ],
+    "expected_resources": [
+      "document:frontend/rtk-query-cache-and-invalidation"
+    ],
+    "label_note": "Initial engineering label; audit ambiguous placement with a human reviewer before calibration."
+  },
+  {
+    "id": "cross_format_reuse-5",
+    "category": "cross_format_reuse",
+    "candidate": {
+      "title": "RTK Query cache identity scenario interview",
+      "body": "Create a ten-minute interview prompt that tests reasoning about RTK Query cache identity. Present a deliberately ambiguous scenario, require clarifying questions, and give an assessment rubric instead of a lesson summary.",
+      "kind": "interview-question"
+    },
+    "expected_actions": [
+      "create_resource",
+      "update_existing"
+    ],
+    "expected_resources": [
+      "document:frontend/rtk-query-cache-and-invalidation"
+    ],
+    "label_note": "Initial engineering label; audit ambiguous placement with a human reviewer before calibration."
+  },
+  {
+    "id": "exact_duplicate-5",
+    "category": "exact_duplicate",
+    "source_body": "document:frontend/rtk-query-cache-and-invalidation",
+    "candidate": {
+      "title": "RTK Query cache identity",
+      "body": "Resolved from the pinned snapshot at benchmark time.",
+      "kind": "document"
+    },
+    "expected_actions": [
+      "skip_duplicate"
+    ],
+    "expected_resources": [
+      "document:frontend/rtk-query-cache-and-invalidation"
+    ],
+    "label_note": "Exact same source text and type."
+  },
+  {
+    "id": "paraphrased_duplicate-6",
+    "category": "paraphrased_duplicate",
+    "candidate": {
+      "title": "Observability signals",
+      "body": "Logs capture discrete events, metrics summarize numerical behavior, and traces connect work across services. Correlate signals around a user-visible failure, and avoid collecting measurements that do not support an operational decision.",
+      "kind": "document"
+    },
+    "expected_actions": [
+      "skip_duplicate"
+    ],
+    "expected_resources": [
+      "document:software-engineering/observability-signals"
+    ],
+    "label_note": "Initial engineering label; audit ambiguous placement with a human reviewer before calibration."
+  },
+  {
+    "id": "partial_update-6",
+    "category": "partial_update",
+    "candidate": {
+      "title": "Observability signals \u2014 worked extension",
+      "body": "Add a hands-on exercise correlating a trace, latency histogram and structured log during a simulated timeout with an explicit evidence table.",
+      "kind": "document"
+    },
+    "expected_actions": [
+      "update_existing",
+      "create_resource"
+    ],
+    "expected_resources": [
+      "document:software-engineering/observability-signals"
+    ],
+    "label_note": "Initial engineering label; audit ambiguous placement with a human reviewer before calibration."
+  },
+  {
+    "id": "distinct_same_topic-6",
+    "category": "distinct_same_topic",
+    "candidate": {
+      "title": "Choosing telemetry retention policies under a storage budget",
+      "body": "Create a focused lesson about Choosing telemetry retention policies under a storage budget. The learning outcome is a design decision with constraints and tradeoffs, not a recap of Observability signals. Include an original scenario and a decision worksheet.",
+      "kind": "document"
+    },
+    "expected_actions": [
+      "create_resource",
+      "update_existing"
+    ],
+    "expected_resources": [
+      "document:software-engineering/observability-signals"
+    ],
+    "label_note": "Initial engineering label; audit ambiguous placement with a human reviewer before calibration."
+  },
+  {
+    "id": "different_difficulty-6",
+    "category": "different_difficulty",
+    "candidate": {
+      "title": "Observability signals for complete beginners",
+      "body": "Explain Observability signals to a student who has never shipped software. Use a concrete everyday analogy, introduce only three terms, and include a five-minute activity. Avoid production architecture or senior debugging assumptions.",
+      "kind": "document",
+      "difficulty": "foundation",
+      "audience": "First-time programming student"
+    },
+    "expected_actions": [
+      "create_resource",
+      "update_existing"
+    ],
+    "expected_resources": [
+      "document:software-engineering/observability-signals"
+    ],
+    "label_note": "Initial engineering label; audit ambiguous placement with a human reviewer before calibration."
+  },
+  {
+    "id": "cross_format_reuse-6",
+    "category": "cross_format_reuse",
+    "candidate": {
+      "title": "Observability signals scenario interview",
+      "body": "Create a ten-minute interview prompt that tests reasoning about Observability signals. Present a deliberately ambiguous scenario, require clarifying questions, and give an assessment rubric instead of a lesson summary.",
+      "kind": "interview-question"
+    },
+    "expected_actions": [
+      "create_resource",
+      "update_existing"
+    ],
+    "expected_resources": [
+      "document:software-engineering/observability-signals"
+    ],
+    "label_note": "Initial engineering label; audit ambiguous placement with a human reviewer before calibration."
+  },
+  {
+    "id": "exact_duplicate-6",
+    "category": "exact_duplicate",
+    "source_body": "document:software-engineering/observability-signals",
+    "candidate": {
+      "title": "Observability signals",
+      "body": "Resolved from the pinned snapshot at benchmark time.",
+      "kind": "document"
+    },
+    "expected_actions": [
+      "skip_duplicate"
+    ],
+    "expected_resources": [
+      "document:software-engineering/observability-signals"
+    ],
+    "label_note": "Exact same source text and type."
+  },
+  {
+    "id": "new_path-1",
+    "category": "new_path",
+    "candidate": {
+      "title": "Practical orbital mechanics",
+      "body": "Create a path for calculating satellite orbits, transfer maneuvers, inclination and launch windows. Teach Newtonian mechanics and mission planning through numerical exercises.",
+      "kind": "path"
+    },
+    "expected_actions": [
+      "create_path"
+    ],
+    "expected_resources": [],
+    "label_note": "No authored path for this discipline in the validated initial catalog."
+  },
+  {
+    "id": "new_path-2",
+    "category": "new_path",
+    "candidate": {
+      "title": "Analog electronics laboratory",
+      "body": "Create a course on physical resistors, capacitors, operational amplifiers and oscilloscope measurements. Teach safe breadboard circuits, RC filters and noise diagnosis.",
+      "kind": "path"
+    },
+    "expected_actions": [
+      "create_path"
+    ],
+    "expected_resources": [],
+    "label_note": "No authored path for this discipline in the validated initial catalog."
+  },
+  {
+    "id": "new_path-3",
+    "category": "new_path",
+    "candidate": {
+      "title": "Robot motion planning",
+      "body": "Create a path on robotic manipulators, forward and inverse kinematics, coordinate frames, joint limits and collision-free physical trajectories. Include mathematical exercises and simulated robot tasks.",
+      "kind": "path"
+    },
+    "expected_actions": [
+      "create_path"
+    ],
+    "expected_resources": [],
+    "label_note": "No authored path for this discipline in the validated initial catalog."
+  },
+  {
+    "id": "new_path-4",
+    "category": "new_path",
+    "candidate": {
+      "title": "Music harmony and composition",
+      "body": "Create a course on intervals, triads, harmonic progressions, voice leading and arranging short compositions. Include listening and composition exercises, independent of programming-language courses.",
+      "kind": "path"
+    },
+    "expected_actions": [
+      "create_path"
+    ],
+    "expected_resources": [],
+    "label_note": "No authored path for this discipline in the validated initial catalog."
+  }
+]

@@ -351,4 +351,32 @@ Native writing protects the SVG responder from ancestor ScrollView interception 
 
 The notebook catalog derives Japanese previews and authored romaji readings from the shared engine. `useNotebookRomaji` shares the display preference between catalog implementations through optional storage methods. The preference is device-local (web localStorage/native AsyncStorage) and separate from notebook ink and synchronized progress.
 
+## Optional knowledge evaluation
+
+The validated content parser feeds a complete included-resource catalog and explicit curriculum links. An isolated Python service persists Graphiti records in Neo4j and caches source-bound extraction, BGE embeddings and local inference in SQLite. Retrieval supplies bounded evidence to loopback OpenJev and Qwen. The five REST/MCP capabilities stage recommendations; human-reviewed curriculum links are versioned repository sidecars. Admin-only Supabase projections and leased jobs keep exploration and queued evaluation available while the Mac is offline. Models and caches remain local.
+
+Graph enrollment extends local LinkedIn preparation: retrieve knowledge, assess and write locally, persist compact evidence/hash, verify with Codex, then request human adoption and exact approval before Buffer. Database guards reject stale graph evidence through the final send gate. Normal web/native learning does not import the graph/model service. See [the contract](features/knowledge-evaluator.md) and [runbook](runbooks/knowledge-evaluator.md).
+
+## Private interview preparation
+
+The web/native admin tracker shares contracts and an access-aware store in core. Optional Supabase holds private opportunities, round projections, profile history and immutable preparation. Research/editing runs only through the local Codex skill/CLI; HTTP imports no worker/model code. The private-inclusive knowledge export supplies OpenJev retrieval and reviewed links without exporting the full resume.
+
+```mermaid
+flowchart LR
+  Admin[Web/native admin] --> RPC[Admin-only Supabase RPCs]
+  RPC --> Private[Private opportunities/profile/brief revisions]
+  Private --> Context[Local context export]
+  Context --> Skill[Codex research and personalization]
+  Skill --> Edit[Mandatory technical-edit comparison]
+  Edit --> Import[Validated versioned import]
+  Import --> RPC
+  Edit --> Assess[Local knowledge evaluation]
+  Assess --> Review[Explicit human report review]
+  Review --> Import
+  Private --> Catalog[Private knowledge catalog]
+  Catalog --> Existing[Existing paths/skills/lessons]
+```
+
+See [the feature contract](features/interview-preparation.md) and [operations](runbooks/interview-preparation.md). Hosted rollout and installed-device validation are separate gates.
+
 The campaign map assembles its terrain before export and cuts twelve shared-guard tiles. Exact edge pixels make joins independent of viewport cropping. Terrain remains stationary beneath mist, motes and foliage; panel-relative motion is bounded without modulo resets. Future art reserves fifty positions while progression stays at twelve authored levels. Both renderers cull distant scenery and react to reduced-motion preferences. Web uses clip overflow so centering a node cannot scroll inside a district. The map/list switch retains the last map offset; a versioned session key discards obsolete offsets from the shorter map.

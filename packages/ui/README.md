@@ -32,4 +32,6 @@ Notebook catalog cards preview actual Japanese sheet prompts with optional romaj
 
 The game level route passes focus ownership to `NativeGamePlay`. Covered native screens stop their simulation timer and invalidate runner callbacks while preserving the shared attempt for explicit return/resume.
 
+`InterviewPreparationScreen` is the native admin tracker for private companies/roles, resume context, round editing, preparation imports and saved Markdown sharing. It shares core contracts/store and uses labeled 48 dp controls.
+
 The map uses the shared fifty-position art manifest and statically imported contiguous textures in `assets/game/generated/map/`. `NativeDistrictArt` keeps terrain fixed and renders mist, amber motes and foliage at three bounded Reanimated depths. Measured panel positions drive culling and motion; reduced-motion changes reset all offsets. Future scenery has no playable controls and is omitted from the ascending level list.
