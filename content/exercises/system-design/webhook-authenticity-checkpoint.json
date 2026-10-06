@@ -1,0 +1,111 @@
+{
+  "slug": "system-design/webhook-authenticity-checkpoint",
+  "title": "Webhook Authenticity Checkpoint",
+  "type": "questionnaire",
+  "documentSlug": "system-design/webhook-authenticity-and-replay",
+  "concept": "Webhook Authenticity",
+  "difficulty": "practitioner",
+  "tags": [
+    "api",
+    "contracts"
+  ],
+  "status": "published",
+  "sourceRefs": [
+    "stripe-webhook-contracts",
+    "python-hmac-verification"
+  ],
+  "questions": [
+    {
+      "id": "raw-bytes",
+      "kind": "choice",
+      "prompt": "A receiver parses and reserializes a signed JSON body before verification. What should it do instead?",
+      "options": [
+        {
+          "id": "option-0",
+          "label": "Verify the exact received bytes with the configured endpoint secret before trusting parsed fields.",
+          "isCorrect": true
+        },
+        {
+          "id": "option-1",
+          "label": "Whitespace changes never affect a signature over raw bytes.",
+          "isCorrect": false
+        },
+        {
+          "id": "option-2",
+          "label": "Choose a signing secret using an unauthenticated body field.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "Raw-byte integrity covers the received representation. Trusted endpoint/account configuration selects the verifier; parsed data does not authorize the secret choice."
+    },
+    {
+      "id": "signed-time",
+      "kind": "choice",
+      "prompt": "A valid old payload is replayed with a newer timestamp supplied by the sender. What must the verifier establish?",
+      "options": [
+        {
+          "id": "option-0",
+          "label": "Authenticate the timestamp and check the configured clock tolerance; replay prevention also needs durable deduplication.",
+          "isCorrect": true
+        },
+        {
+          "id": "option-1",
+          "label": "Check only that the supplied timestamp looks recent.",
+          "isCorrect": false
+        },
+        {
+          "id": "option-2",
+          "label": "A valid signature means every later replay should cause a new effect.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "The timestamp must be part of the authenticated message. Freshness narrows replay time but does not prevent duplicate deliveries inside that interval."
+    },
+    {
+      "id": "retry-receipt",
+      "kind": "choice",
+      "prompt": "The provider retries an already accepted event with a fresh valid signature. Is it a new business event?",
+      "options": [
+        {
+          "id": "option-0",
+          "label": "Verify each delivery, then consult a scoped event receipt; a fresh signature does not make the event new.",
+          "isCorrect": true
+        },
+        {
+          "id": "option-1",
+          "label": "Use the signature value as the stable event identifier.",
+          "isCorrect": false
+        },
+        {
+          "id": "option-2",
+          "label": "Skip signature verification whenever the body contains a familiar event ID.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "A delivery attempt and event identity differ. Verify first, then deduplicate against the configured account/endpoint scope and durable receipt policy."
+    },
+    {
+      "id": "durable-acceptance",
+      "kind": "choice",
+      "prompt": "The toy returns accepted and stores an event in its in-memory set. What is still needed before a production receiver promises reliable effects?",
+      "options": [
+        {
+          "id": "option-0",
+          "label": "Acknowledge durable acceptance, process idempotently and reconcile failures; an in-memory seen set cannot prove crash-safe effects.",
+          "isCorrect": true
+        },
+        {
+          "id": "option-1",
+          "label": "A set plus 200 response proves exactly-once payments after process crashes.",
+          "isCorrect": false
+        },
+        {
+          "id": "option-2",
+          "label": "Mark the event completed before durable admission so failures can be ignored.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "The set models admission only. Real acknowledgment follows the chosen durable acceptance boundary; external effects and local receipts require idempotency/reconciliation."
+    }
+  ]
+}

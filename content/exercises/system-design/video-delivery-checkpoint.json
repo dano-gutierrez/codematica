@@ -1,0 +1,138 @@
+{
+  "slug": "system-design/video-delivery-checkpoint",
+  "title": "Video Delivery Checkpoint",
+  "documentSlug": "system-design/video-delivery-boundaries",
+  "concept": "Video Delivery",
+  "difficulty": "practitioner",
+  "tags": [
+    "video",
+    "drm",
+    "recovery"
+  ],
+  "status": "published",
+  "sourceRefs": [
+    "video-hls-rfc8216",
+    "video-eme-2017",
+    "video-android-drm",
+    "video-android-secure-window",
+    "video-netflix-browser-requirements"
+  ],
+  "type": "questionnaire",
+  "questions": [
+    {
+      "id": "segment-deadline",
+      "kind": "choice",
+      "prompt": "A two-second segment at 4 megabits/s transfers at 2 megabits/s with half a second buffered and no extra overhead. What follows?",
+      "options": [
+        {
+          "id": "option-0",
+          "label": "Four seconds to transfer; the half-second buffer cannot bridge that wait under these assumptions.",
+          "isCorrect": true
+        },
+        {
+          "id": "option-1",
+          "label": "Two seconds because transfer time always equals media duration.",
+          "isCorrect": false
+        },
+        {
+          "id": "option-2",
+          "label": "A CDN hit proves playback cannot stall.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "Segment size 8 megabits divided by payload throughput 2 megabits/s gives 4 seconds. The buffer does not cover that wait."
+    },
+    {
+      "id": "screenshot-evidence",
+      "kind": "choice",
+      "prompt": "A protected Android window produces a blank screenshot. What does that observation establish?",
+      "options": [
+        {
+          "id": "option-0",
+          "label": "Capture policy is observed; identify the DRM security level separately before claiming hardware-only decoding.",
+          "isCorrect": true
+        },
+        {
+          "id": "option-1",
+          "label": "Every decoded frame on every platform stays entirely in hardware-only memory.",
+          "isCorrect": false
+        },
+        {
+          "id": "option-2",
+          "label": "The browser must be limited to 720p.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "FLAG_SECURE capture behavior and MediaDrm software/hardware levels describe different boundaries."
+    },
+    {
+      "id": "output-policy",
+      "kind": "choice",
+      "prompt": "A key has output restrictions the current device cannot meet. Can the application assume uninterrupted lower-quality playback?",
+      "options": [
+        {
+          "id": "option-0",
+          "label": "Inspect the key status and output policy; downscaling is optional and cannot be assumed.",
+          "isCorrect": true
+        },
+        {
+          "id": "option-1",
+          "label": "EME always guarantees automatic downscaling.",
+          "isCorrect": false
+        },
+        {
+          "id": "option-2",
+          "label": "A cached segment automatically removes output restrictions.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "The selected EME Recommendation distinguishes output-restricted/output-downscaled and does not require downscaling."
+    },
+    {
+      "id": "resume-receipt",
+      "kind": "choice",
+      "prompt": "An application acknowledges a playback-position update in a cache. What is still needed to promise recovery?",
+      "options": [
+        {
+          "id": "option-0",
+          "label": "Define persistence, scoped ordering and recovery, then test the last accepted revision after failure.",
+          "isCorrect": true
+        },
+        {
+          "id": "option-1",
+          "label": "The cache name itself proves durable recovery.",
+          "isCorrect": false
+        },
+        {
+          "id": "option-2",
+          "label": "Always keep the highest position, even after an intentional backward seek.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "Accepted revision ordering, intentional seeks and declared storage failure/recovery contracts are separate from a lookup acknowledgement."
+    },
+    {
+      "id": "browser-requirements",
+      "kind": "choice",
+      "prompt": "A dated provider table says a browser can reach Ultra HD on qualifying Windows devices. What should a reviewer conclude?",
+      "options": [
+        {
+          "id": "option-0",
+          "label": "Check the dated platform/browser requirements and actual device configuration; the maximum is conditional.",
+          "isCorrect": true
+        },
+        {
+          "id": "option-1",
+          "label": "Every browser on every platform is permanently limited to 720p.",
+          "isCorrect": false
+        },
+        {
+          "id": "option-2",
+          "label": "Every installation of that browser always gets Ultra HD.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "The provider table distinguishes platforms and conditional maxima; it is not a measured guarantee for an arbitrary device/title."
+    }
+  ]
+}

@@ -1,0 +1,320 @@
+{
+  "sources": [
+    {
+      "id": "boundary-rfc3986",
+      "title": "RFC 3986 \u2014 URI Components",
+      "provider": "RFC Editor",
+      "url": "https://www.rfc-editor.org/rfc/rfc3986.html",
+      "attribution": "selected URI components, locating/naming and fragment handling. Original paper cases; no upstream implementation, diagram or question bank copied.",
+      "lastVerifiedAt": "2026-10-04",
+      "upstream": {
+        "version": "January 2005; sections3\u20133.5",
+        "maturity": "published"
+      }
+    },
+    {
+      "id": "boundary-rfc8141",
+      "title": "RFC 8141 \u2014 Uniform Resource Names",
+      "provider": "RFC Editor",
+      "url": "https://www.rfc-editor.org/rfc/rfc8141.html",
+      "attribution": "selected URN naming without a guaranteed current retrieval. Original paper cases; no upstream implementation, diagram or question bank copied.",
+      "lastVerifiedAt": "2026-10-04",
+      "upstream": {
+        "version": "April 2017; selected naming scope",
+        "maturity": "published"
+      }
+    },
+    {
+      "id": "boundary-rfc9110",
+      "title": "RFC 9110 \u2014 HTTP Semantics And Intermediaries",
+      "provider": "RFC Editor",
+      "url": "https://www.rfc-editor.org/rfc/rfc9110.html",
+      "attribution": "selected authority, connection reuse and client/origin intermediary roles. Original paper cases; no upstream implementation, diagram or question bank copied.",
+      "lastVerifiedAt": "2026-10-04",
+      "upstream": {
+        "version": "June 2022; sections3.7,4.3,7.1",
+        "maturity": "published"
+      }
+    },
+    {
+      "id": "boundary-rfc9112",
+      "title": "RFC 9112 \u2014 HTTP/1.1 Request Forms",
+      "provider": "RFC Editor",
+      "url": "https://www.rfc-editor.org/rfc/rfc9112.html",
+      "attribution": "selected origin/absolute/authority/asterisk request-target forms. Original paper cases; no upstream implementation, diagram or question bank copied.",
+      "lastVerifiedAt": "2026-10-04",
+      "upstream": {
+        "version": "June 2022; section3.2",
+        "maturity": "published"
+      }
+    },
+    {
+      "id": "boundary-rfc9293",
+      "title": "RFC 9293 \u2014 TCP Byte Streams",
+      "provider": "RFC Editor",
+      "url": "https://www.rfc-editor.org/rfc/rfc9293.html",
+      "attribution": "selected ordered byte delivery versus application message boundaries. Original paper cases; no upstream implementation, diagram or question bank copied.",
+      "lastVerifiedAt": "2026-10-04",
+      "upstream": {
+        "version": "August 2022; section2.2",
+        "maturity": "published"
+      }
+    },
+    {
+      "id": "boundary-rfc768",
+      "title": "RFC 768 \u2014 UDP Datagram Contract",
+      "provider": "RFC Editor",
+      "url": "https://www.rfc-editor.org/rfc/rfc768.html",
+      "attribution": "selected datagrams without a guarantee of delivery or duplicate protection. Original paper cases; no upstream implementation, diagram or question bank copied.",
+      "lastVerifiedAt": "2026-10-04",
+      "upstream": {
+        "version": "August 1980; introduction",
+        "maturity": "published"
+      }
+    },
+    {
+      "id": "boundary-rfc9113",
+      "title": "RFC 9113 \u2014 HTTP/2 Multiplexing",
+      "provider": "RFC Editor",
+      "url": "https://www.rfc-editor.org/rfc/rfc9113.html",
+      "attribution": "selected interleaved application streams and retained TCP ordering. Original paper cases; no upstream implementation, diagram or question bank copied.",
+      "lastVerifiedAt": "2026-10-04",
+      "upstream": {
+        "version": "June 2022; sections1\u20132",
+        "maturity": "published"
+      }
+    },
+    {
+      "id": "boundary-rfc9000",
+      "title": "RFC 9000 \u2014 QUIC Version 1 Streams",
+      "provider": "RFC Editor",
+      "url": "https://www.rfc-editor.org/rfc/rfc9000.html",
+      "attribution": "selected per-stream ordered delivery and stream/connection flow control. Original paper cases; no upstream implementation, diagram or question bank copied.",
+      "lastVerifiedAt": "2026-10-04",
+      "upstream": {
+        "version": "May 2021; sections2.2 and4",
+        "maturity": "published"
+      }
+    },
+    {
+      "id": "boundary-rfc9114",
+      "title": "RFC 9114 \u2014 HTTP/3 Over QUIC",
+      "provider": "RFC Editor",
+      "url": "https://www.rfc-editor.org/rfc/rfc9114.html",
+      "attribution": "selected QUIC mapping, shared congestion and field-compression dependencies. Original paper cases; no upstream implementation, diagram or question bank copied.",
+      "lastVerifiedAt": "2026-10-04",
+      "upstream": {
+        "version": "June 2022; sections1.2 and4.2.1",
+        "maturity": "published"
+      }
+    },
+    {
+      "id": "boundary-rfc826",
+      "title": "RFC 826 \u2014 Local Ethernet Address Resolution",
+      "provider": "RFC Editor",
+      "url": "https://www.rfc-editor.org/rfc/rfc826.html",
+      "attribution": "selected next-hop protocol-to-local-Ethernet address mapping. Original paper cases; no upstream implementation, diagram or question bank copied.",
+      "lastVerifiedAt": "2026-10-04",
+      "upstream": {
+        "version": "November 1982; Packet Generation",
+        "maturity": "published"
+      }
+    },
+    {
+      "id": "boundary-chrome-push",
+      "title": "Chrome \u2014 HTTP/2 Server-Push Removal",
+      "provider": "Chrome for Developers",
+      "url": "https://developer.chrome.com/blog/removing-push",
+      "attribution": "selected browser implementation support versus an RFC feature. Original paper cases; no upstream implementation, diagram or question bank copied.",
+      "lastVerifiedAt": "2026-10-04",
+      "upstream": {
+        "version": "Notice updated2022-08-18; Chrome106",
+        "maturity": "published"
+      },
+      "license": {
+        "name": "CC BY 4.0 (page prose; code samples have separate terms)",
+        "url": "https://creativecommons.org/licenses/by/4.0/"
+      }
+    },
+    {
+      "id": "boundary-dsvpn",
+      "title": "DSVPN \u2014 Author Use Case And Limits",
+      "provider": "Frank Denis / jedisct1",
+      "url": "https://github.com/jedisct1/dsvpn",
+      "attribution": "selected TCP-restricted use case and author-reported inner/outer congestion observations; no independent audit. Original paper cases; no upstream implementation, diagram or question bank copied.",
+      "lastVerifiedAt": "2026-10-04",
+      "upstream": {
+        "version": "Author README checked2026-10-04",
+        "maturity": "published"
+      }
+    },
+    {
+      "id": "boundary-graphql-security",
+      "title": "GraphQL \u2014 Security And Demand Control",
+      "provider": "GraphQL Foundation",
+      "url": "https://graphql.org/learn/security/",
+      "attribution": "selected transport independence, trusted operations and separately bounded query work. Original paper cases; no upstream implementation, diagram or question bank copied.",
+      "lastVerifiedAt": "2026-10-04",
+      "upstream": {
+        "version": "Guide checked2026-10-04",
+        "maturity": "published"
+      }
+    },
+    {
+      "id": "boundary-grpc-core",
+      "title": "gRPC \u2014 Core Concepts And Lifecycle",
+      "provider": "gRPC project",
+      "url": "https://grpc.io/docs/what-is-grpc/core-concepts/",
+      "attribution": "selected service methods, stream modes, deadlines and no rollback of earlier changes on cancellation. Original paper cases; no upstream implementation, diagram or question bank copied.",
+      "lastVerifiedAt": "2026-10-04",
+      "upstream": {
+        "version": "Page updated2026-05-11; checked2026-10-04",
+        "maturity": "published"
+      }
+    },
+    {
+      "id": "boundary-rfc6455",
+      "title": "RFC 6455 \u2014 WebSocket Protocol",
+      "provider": "RFC Editor",
+      "url": "https://www.rfc-editor.org/rfc/rfc6455.html",
+      "attribution": "selected channel/framing versus separately authored application effect semantics. Original paper cases; no upstream implementation, diagram or question bank copied.",
+      "lastVerifiedAt": "2026-10-04",
+      "upstream": {
+        "version": "December 2011; selected framing scope",
+        "maturity": "published"
+      }
+    },
+    {
+      "id": "boundary-fielding-rest",
+      "title": "Fielding \u2014 REST Architectural Constraints",
+      "provider": "Roy Thomas Fielding",
+      "url": "https://ics.uci.edu/~fielding/pubs/dissertation/rest_arch_style.htm",
+      "attribution": "selected architectural constraints including stateless interaction and uniform interface. Original paper cases; no upstream implementation, diagram or question bank copied.",
+      "lastVerifiedAt": "2026-10-04",
+      "upstream": {
+        "version": "Dissertation2000; chapter5",
+        "maturity": "published"
+      }
+    },
+    {
+      "id": "boundary-pg-materialized",
+      "title": "PostgreSQL 17 \u2014 Stored Materialized Results",
+      "provider": "PostgreSQL Global Development Group",
+      "url": "https://www.postgresql.org/docs/17/rules-materializedviews.html",
+      "attribution": "selected stored view reads, refresh and freshness limits; not a generic incremental engine. Original paper cases; no upstream implementation, diagram or question bank copied.",
+      "lastVerifiedAt": "2026-10-04",
+      "upstream": {
+        "version": "PostgreSQL17; section39.3",
+        "maturity": "published"
+      }
+    },
+    {
+      "id": "boundary-kafka-design",
+      "title": "Kafka 4.1 \u2014 Delivery And Destination Cooperation",
+      "provider": "Apache Kafka",
+      "url": "https://kafka.apache.org/41/design/design/",
+      "attribution": "selected consumer offset/output coordination and cooperating external destinations. Original paper cases; no upstream implementation, diagram or question bank copied.",
+      "lastVerifiedAt": "2026-10-04",
+      "upstream": {
+        "version": "Kafka4.1 design; older pinned edition",
+        "maturity": "published"
+      }
+    },
+    {
+      "id": "boundary-kafka-introduction",
+      "title": "Kafka 4.1 \u2014 Partitions And Replicas",
+      "provider": "Apache Kafka",
+      "url": "https://kafka.apache.org/41/getting-started/introduction/",
+      "attribution": "selected topic partitions, key order and optional replica copies. Original paper cases; no upstream implementation, diagram or question bank copied.",
+      "lastVerifiedAt": "2026-10-04",
+      "upstream": {
+        "version": "Kafka4.1 introduction; older pinned edition",
+        "maturity": "published"
+      }
+    },
+    {
+      "id": "boundary-kafka-kraft",
+      "title": "Kafka 4.1 \u2014 KRaft Metadata Quorum",
+      "provider": "Apache Kafka",
+      "url": "https://kafka.apache.org/41/operations/kraft/",
+      "attribution": "selected controller roles, metadata majority and combined-role isolation. Original paper cases; no upstream implementation, diagram or question bank copied.",
+      "lastVerifiedAt": "2026-10-04",
+      "upstream": {
+        "version": "Kafka4.1 operations; older pinned edition",
+        "maturity": "published"
+      }
+    },
+    {
+      "id": "boundary-mongo-query",
+      "title": "MongoDB \u2014 Document Read Predicates",
+      "provider": "MongoDB",
+      "url": "https://www.mongodb.com/docs/manual/tutorial/query-documents/",
+      "attribution": "selected document read predicates; application authorization is a separate authored contract. Original paper cases; no upstream implementation, diagram or question bank copied.",
+      "lastVerifiedAt": "2026-10-04",
+      "upstream": {
+        "version": "Manual9.0 current at2026-10-04",
+        "maturity": "published"
+      }
+    },
+    {
+      "id": "boundary-mongo-skip",
+      "title": "MongoDB \u2014 Sort, Skip And Range Pagination",
+      "provider": "MongoDB",
+      "url": "https://www.mongodb.com/docs/manual/reference/method/cursor.skip/",
+      "attribution": "selected unique sort tie-breakers, growing skip work and range continuation. Original paper cases; no upstream implementation, diagram or question bank copied.",
+      "lastVerifiedAt": "2026-10-04",
+      "upstream": {
+        "version": "Manual9.0 current at2026-10-04",
+        "maturity": "published"
+      }
+    },
+    {
+      "id": "boundary-mongo-explain",
+      "title": "MongoDB \u2014 Explain Plan Work Counts",
+      "provider": "MongoDB",
+      "url": "https://www.mongodb.com/docs/manual/tutorial/analyze-query-plan/",
+      "attribution": "selected returned versus examined keys/documents and scan/fetch plan evidence. Original paper cases; no upstream implementation, diagram or question bank copied.",
+      "lastVerifiedAt": "2026-10-04",
+      "upstream": {
+        "version": "Manual9.0 current at2026-10-04",
+        "maturity": "published"
+      }
+    },
+    {
+      "id": "boundary-ostep-paging",
+      "title": "OSTEP \u2014 Paging And Offset Translation",
+      "provider": "Remzi H. Arpaci-Dusseau / Andrea C. Arpaci-Dusseau",
+      "url": "https://pages.cs.wisc.edu/~remzi/OSTEP/vm-paging.pdf",
+      "attribution": "selected page/frame/offset, mapping and protection; original finite sizes differ from book fixture. Original paper cases; no upstream implementation, diagram or question bank copied.",
+      "lastVerifiedAt": "2026-10-04",
+      "upstream": {
+        "version": "OSTEP1.10; chapter18",
+        "maturity": "published"
+      }
+    },
+    {
+      "id": "boundary-ostep-segments",
+      "title": "OSTEP \u2014 Segmentation And External Holes",
+      "provider": "Remzi H. Arpaci-Dusseau / Andrea C. Arpaci-Dusseau",
+      "url": "https://pages.cs.wisc.edu/~remzi/OSTEP/vm-segmentation.pdf",
+      "attribution": "selected base/bounds and external fragmentation; original upward-growing finite segment. Original paper cases; no upstream implementation, diagram or question bank copied.",
+      "lastVerifiedAt": "2026-10-04",
+      "upstream": {
+        "version": "OSTEP1.10; chapter16",
+        "maturity": "published"
+      }
+    },
+    {
+      "id": "boundary-linux-device-io",
+      "title": "Linux \u2014 Portable Device-I/O Accesses",
+      "provider": "Linux kernel contributors",
+      "url": "https://docs.kernel.org/driver-api/device-io.html",
+      "attribution": "selected MMIO tokens, accessors and ordering/posting rules; no driver executed. Original paper cases; no upstream implementation, diagram or question bank copied.",
+      "lastVerifiedAt": "2026-10-04",
+      "upstream": {
+        "version": "Documentation checked2026-10-04",
+        "maturity": "published"
+      }
+    }
+  ]
+}

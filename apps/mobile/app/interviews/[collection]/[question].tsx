@@ -16,5 +16,5 @@ export default function InterviewQuestionRoute() {
   const nextRoutes = getNextPathNodeRoutesByPath({ kind: "interview", slug: `${question.collectionSlug}/${question.slug}` });
   const paths = Object.keys(nextRoutes);
   const pathSlug = params.path ?? (paths.length === 1 ? paths[0] : undefined);
-  return <InterviewQuestionScreen question={question} adapters={adapters} nextHref={pathSlug ? nextRoutes[pathSlug] : undefined} />;
+  return <InterviewQuestionScreen question={question} adapters={adapters} nextHref={pathSlug && Object.prototype.hasOwnProperty.call(nextRoutes, pathSlug) ? nextRoutes[pathSlug] : undefined} />;
 }

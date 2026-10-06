@@ -1,0 +1,110 @@
+{
+  "slug": "system-design/routing-decision-checkpoint",
+  "title": "Routing Decision Checkpoint",
+  "type": "questionnaire",
+  "documentSlug": "system-design/routing-decision-lab",
+  "concept": "Routing Decisions",
+  "difficulty": "practitioner",
+  "tags": [
+    "load-balancing",
+    "capacity"
+  ],
+  "status": "published",
+  "sourceRefs": [
+    "nginx-upstream-routing"
+  ],
+  "questions": [
+    {
+      "id": "signal",
+      "kind": "choice",
+      "prompt": "A has fewer connections but many more queued expensive jobs than B. What should the design review do?",
+      "options": [
+        {
+          "id": "option-0",
+          "label": "Treat connection count as one signal; measure queued work and latency for this workload.",
+          "isCorrect": true
+        },
+        {
+          "id": "option-1",
+          "label": "Declare A less loaded because connection count always equals remaining capacity.",
+          "isCorrect": false
+        },
+        {
+          "id": "option-2",
+          "label": "Use random routing to prove the shared database can never overload.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "Connections can represent different amounts of work. Neither one signal nor a random selection removes a shared bottleneck."
+    },
+    {
+      "id": "affinity",
+      "kind": "choice",
+      "prompt": "The same client is normally routed by IP hash. Which correctness claim is safe?",
+      "options": [
+        {
+          "id": "option-0",
+          "label": "Affinity may change and IPs may be shared; keep authorization and durable session state independent.",
+          "isCorrect": true
+        },
+        {
+          "id": "option-1",
+          "label": "An IP hash proves every request comes from one authorized person.",
+          "isCorrect": false
+        },
+        {
+          "id": "option-2",
+          "label": "A backend failure cannot remap a client or affect its session.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "An address is not an authenticated identity. Backend availability and client addressing can change; affinity cannot replace authorization or recoverable state."
+    },
+    {
+      "id": "eligibility",
+      "kind": "choice",
+      "prompt": "An unhealthy backend reports zero active connections. What should happen before ranking?",
+      "options": [
+        {
+          "id": "option-0",
+          "label": "Exclude the ineligible backend before ranking; define a bounded no-capacity response.",
+          "isCorrect": true
+        },
+        {
+          "id": "option-1",
+          "label": "Always choose it because zero connections proves it is healthy.",
+          "isCorrect": false
+        },
+        {
+          "id": "option-2",
+          "label": "Wait forever if every backend is unavailable.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "Eligibility precedes ranking. A low counter is not a health check, and an unbounded wait cannot preserve the request deadline."
+    },
+    {
+      "id": "scope",
+      "kind": "choice",
+      "prompt": "The original static Python routing fixture passes. What does that establish?",
+      "options": [
+        {
+          "id": "option-0",
+          "label": "The toy’s stated routing and validation cases; real proxy behavior and throughput need separate tests.",
+          "isCorrect": true
+        },
+        {
+          "id": "option-1",
+          "label": "The actual NGINX scheduler uses this exact Fraction formula and alphabetical tie-breaker.",
+          "isCorrect": false
+        },
+        {
+          "id": "option-2",
+          "label": "Production tail latency and concurrent dispatch are now certified.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "The fixture checks its own deterministic rule. It implements no proxy, sockets, health updates or workload benchmark, so those claims require separate evidence."
+    }
+  ]
+}

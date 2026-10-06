@@ -15,6 +15,7 @@ prerequisites:
   - database transactions
 diagramRefs:
   - system-design/cache-aside
+sourceRefs: [discord-message-storage-2023]
 status: published
 ---
 
@@ -50,6 +51,14 @@ The write and its invalidation event must have an ordering contract. Publishing 
 Cache-aside needs stampede control when a hot key expires. Use request coalescing, bounded stale-while-revalidate, jittered expirations, or admission limits so thousands of misses do not become thousands of origin reads. Negative caching can protect an origin from repeated misses, but use a short TTL when the missing object may be created soon.
 
 In multi-level caches, invalidating only the application cache is insufficient if a browser, CDN, or derived search index can still serve the old representation. Name every layer, its key, freshness budget, purge mechanism, and observable age.
+
+## Study coalescing without confusing it with caching
+
+[Discord's 2023 engineering report](https://discord.com/blog/how-discord-stores-trillions-of-messages) describes Rust data services that share an in-flight query among concurrent readers. Channel-based routing brings related requests to the same service instance. The report also says hot partitions remained possible; changing databases was not their only intervention. This is an attributed production case, not a local benchmark or a claim that Discord implemented Go's `singleflight` package.
+
+In an original review scenario, two tenants request a similarly named object. Write the key that identifies equivalent authorized work: include the relevant tenant, permissions, query shape and version. A shared name alone is insufficient. Distinguish joining an active read from retaining its result in a cache.
+
+Trace one waiter cancelling, the loader failing, and two service instances receiving the same key. Define bounded active keys, waiters and deadlines; show when a failed entry is removed. These are review requirements for your implementation, not claims about Discord's private cancellation policy. Coalescing identical reads does not bound unrelated-key traffic or replace admission control.
 
 ## Operational Tests
 

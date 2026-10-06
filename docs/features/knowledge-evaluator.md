@@ -71,7 +71,7 @@ Full extraction exits unsuccessfully while gaps remain; a bounded pilot may stop
 
 Supporting quotes may be short code fragments, such as `max: 8`. Quotes must be nonempty, occur verbatim in their source passage and contain the supported concept names. Unsupported concepts and relationships are discarded and counted.
 
-The single JSON repair retry receives the failed output and validation location. It requests compact quotes while keeping schema and literal-evidence validation. Retry metadata identifies this policy separately; completed validated extraction remains reusable.
+The single JSON repair retry uses the original source, schema and a bounded validation note. It requests compact quotes without replaying malformed assistant output. Schema and literal-evidence validation remain required. Retry metadata identifies this policy separately; completed validated extraction remains reusable.
 
 Inference caches include pinned model revisions and stable served model IDs. Request timestamps in the MLX model inventory are excluded. Benchmark resumption also checks extraction progress, which can change without a new authored catalog ID.
 
@@ -96,9 +96,13 @@ A new graph projection invalidates pending review/publication bindings. Stop and
 - `scripts/linkedin/knowledge.ts`: compact evidence for local preparation and Codex.
 - `supabase/migrations/202610030004_linkedin_knowledge.sql`: durable enrollment and graph guards around existing revision/lease/approval functions.
 
+Qwen extraction retries invalid structured output once against the original source and schema, without forwarding malformed assistant text. Retry policy `bounded-fresh-json-repair-v3` separates raw-response cache entries; completed source-bound batches remain reusable. For the concepts/relationships schema, the retry prompt requests one concept, no relationships and a quote under 80 characters. Token limits, finish-reason/schema checks and supporting-passage validation remain in place. These prompt requests do not guarantee compliance; failed retries remain visible coverage gaps.
+
 ## Test Plan
 
-Catalog tests parse the canonical files once per suite and clone that validated input for each case. Separate document-status and exercise-list assertions prove fixture mutations do not leak into other cases; existing assertions, coverage floors and default timeouts remain unchanged.
+Catalog tests parse validated canonical files once per suite and clone them for each case. Draft-status and synthetic-exercise changes cannot leak between cases; fingerprint checks still rebuild graph projections independently. This avoids repeated full-catalog I/O without changing test deadlines, assertions or coverage floors.
+
+The integrated private interview collection excludes both resume and experience profile text. Reference tests independently invalidate hash, passage, title and route matches, and reject unrelated existing skill IDs or invented path membership. An authenticated API test checks preparation submission and extraction while anonymous reads and submissions fail. The browser configuration regression retains every incoming desktop/WebKit feature tag and the complete mobile Chromium suite.
 
 - Unit/integration: full authored inventory, human-language exclusions, retained programming material, stable IDs, scoped skills, granular interviews, campaign/level/scenario coverage, status-preserving post hashes, stale evidence, transport validation, stable model-ID cache versions, source windows beyond introductory text, bounded explanations, injected content and unsupported model tool/action rejection, cache/inference locking and graph override recovery.
 - Database: RLS/anonymous rejection, atomic activation, idempotent offline submissions, expired leases, candidate hashes, literal excerpt/hash validation and stale preparation/verification/adoption/publication.
@@ -107,6 +111,10 @@ Catalog tests parse the canonical files once per suite and clone that validated 
 - Quality: 40 labeled local cases covering duplicates, updates, level changes, reuse and new paths; report retrieval, routing errors, abstention, latency and process RSS. Reliability requires independent labels/calibration beyond this initial set.
 - Coverage: new TypeScript domain/UI code is instrumented; existing floors are unchanged. Python has its own isolated unit lane. CLI orchestration is exercised through integration smokes.
 - Required commands: see [the runbook](../runbooks/knowledge-evaluator.md), plus lint, configured typechecks, both coverage lanes, native coverage, content freshness, Expo Doctor, web build and production-pruned HTTP smoke.
+
+The v5 action rubric distinguishes same-objective additions from standalone objectives: useful new examples or corrections can extend an existing lesson even when that material is not yet covered. Cache keys include ordered question/option layouts as well as model/prompt versions and request data. Different option orders cannot reuse one readout. A fake-transport regression and two layout mutations cover both boundaries. Local diagnostic fixtures exercise updates, distinct same-topic objectives, duplicates, cross-format reuse, incomplete evidence and injected instructions; they are initial engineering labels, not independent calibration. Incomplete extraction, low confidence and human-approval requirements remain unchanged.
+
+The private-preparation catalog checks run as independent cases for the hash, literal passage, title, route, foreign scoped skill, and omitted profile fields. Each case builds from the real validated parser result; splitting the former combined case preserves the five-second test budget and every evidence assertion.
 
 ## Open Questions
 

@@ -106,6 +106,8 @@ The offline IME uses deterministic romaji-to-kana rules, curriculum boosts, and 
 
 The notebook feature doc owns current core, storage, component, native, Playwright, pgTAP and physical-device checks. Preserve dictionary/path navigation, IME/review behavior, source attribution, optional account configuration and the separation between required writing and optional matching.
 
+The Japanese hub's Axe audit and keyboard/200%-font/reduced-motion checks use separate fresh-page tests with the unchanged default deadline. The first release trace showed a roughly nineteen-second Axe scan before later layout checks exhausted the combined thirty-second budget. Preserve every assertion and the 320px viewport; keyboard traversal must focus the visible Skip to content link.
+
 Preserve Japanese expressions, readings, translations, answer keys, and study counts during copy edits. Keep generator templates and authored lessons consistent. The N5 builder regression parses generated vocabulary tables as GFM and verifies that a literal pipe stays within its definition cell. The Japanese browser regression checks that the full definition is visible in exactly three table columns.
 
 Hub component tests scope link queries to the character section or resource shelf to avoid scanning the full vocabulary catalog repeatedly. They verify all 46 basic katakana links, separation from sound extras, and Irodori's destination and link-only reuse label.

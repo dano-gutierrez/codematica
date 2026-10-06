@@ -295,4 +295,6 @@ Removed the recurring Codex automation at the user’s request. Web/native copy 
 
 Add a web/native admin company/role/round tracker, private candidate profile, immutable brief history, Markdown export and Codex preparation skill. Every output applies technical-edit; imports bind edited prose and input versions. Reuse private knowledge catalog/evaluation and PR #15 shared controls. No coverage thresholds are lowered. Hosted rollout and installed-device acceptance remain separate.
 
-- 2026-10-04: Aligned the LinkedIn preparation parent with existing release artifact naming and emulated CodeMirror fixture fixes. Preserves failure evidence for branch dispatch and corrects WebKit test input; no product/runtime/dependency or deadline change.
+## 2026-10-04 — Graph stack integration
+
+Integrated the current private interview tracker and continuous campaign map into the knowledge/content stack. Kept private brief extraction separate from public curriculum and retained both incoming browser tag sets. Added an executable configuration regression for every desktop/WebKit tag and the full mobile Chromium lane. Scratch database replay and production-only HTTP checks use disposable state; hosted rollout and installed-device acceptance remain separate.

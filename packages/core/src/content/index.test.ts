@@ -10,12 +10,179 @@ import {
   getLanguageVocabularyBySlug,
   getLearningPathBySlug,
   getNextPathNodeRoute,
+  getPathNodeRoute,
   getNextPathNodeRoutesByPath,
   getPassiveFlashcardFeedByPathSlug,
   getReferencedDiagrams,
 } from ".";
 
 describe("generated content index", () => {
+  it.each([
+    ["rfc-http-preconditions", "IETF", "https://www.rfc-editor.org/rfc/rfc9110.html#section-13.1.1"],
+    ["google-aip-157-partial-responses", "Google", "https://google.aip.dev/157"],
+    ["google-aip-158-pagination", "Google", "https://google.aip.dev/158"],
+    ["google-aip-160-filtering", "Google", "https://google.aip.dev/160"],
+  ])("preserves the primary API contract and license scope for %s", (id, provider, url) => {
+    const source = getContentIndex().sources.find(source => source.id === id)!;
+    expect(source).toMatchObject({ provider, url, lastVerifiedAt: "2026-10-04" });
+    expect(source.license).toEqual(provider === "Google" ? { name: "Creative Commons Attribution 4.0 (text)", url: "https://creativecommons.org/licenses/by/4.0/" } : undefined);
+    expect(getDocumentBySlug("system-design/client-compatibility-contracts")?.markdown).toContain(`](${url})`);
+  });
+
+  it("keeps conditional-write, query and projection evidence in the existing client lesson", () => {
+    const lesson = getDocumentBySlug("system-design/client-compatibility-contracts")!;
+    expect(lesson?.headings.map(heading => heading.id)).toEqual(expect.arrayContaining([
+      "review-conditional-writes-before-trusting-a-tag",
+      "bound-filtering-sorting-and-continuation",
+      "name-the-resource-view-and-preserve-its-meaning",
+    ]));
+    for (const evidence of ["comparison and mutation must share one protected transition", "page tokens do not authorize access", "absence in BASIC is not deletion", "Normal request checks precede preconditions", "The RFC permits success if the change already happened"]) expect(lesson?.markdown).toContain(evidence);
+    for (const match of lesson.markdown.matchAll(/\]\(\/docs\/([^)?#]+)(?:[?#][^)]*)?\)/g)) expect(getDocumentBySlug(match[1]), `Missing local destination ${match[1]}`).toBeDefined();
+  });
+
+  it.each([
+    ["legalzoom-tsindex-navigation", "legalzoom/tsindex", "main", "daf6a3d560742f01e932e95d91aa1eebc8e2563b", "https://github.com/legalzoom/tsindex/blob/daf6a3d560742f01e932e95d91aa1eebc8e2563b/README.md", "MIT OR Apache-2.0", "https://github.com/legalzoom/tsindex/blob/daf6a3d560742f01e932e95d91aa1eebc8e2563b/LICENSE"],
+    ["codebase-memory-v011-contracts", "DeusData/codebase-memory-mcp", "v0.11.0", "8972ea69c6ad94b1ef1d4ffbf0a92d78d2db1798", "https://github.com/DeusData/codebase-memory-mcp/releases/tag/v0.11.0", "MIT", "https://github.com/DeusData/codebase-memory-mcp/blob/8972ea69c6ad94b1ef1d4ffbf0a92d78d2db1798/LICENSE"],
+  ])("pins navigation evidence identity and license for %s", (id, repository, ref, commit, url, license, licenseUrl) => {
+    const source = getContentIndex().sources.find(source => source.id === id);
+    expect(source).toMatchObject({ url, lastVerifiedAt: "2026-10-04", upstream: { repository, ref, commit }, license: { name: license, url: licenseUrl } });
+  });
+
+  it("keeps bounded retrieval in the existing handoff lesson", () => {
+    const lesson = getDocumentBySlug("ai-engineering/evidence-first-agent-handoffs");
+    expect(lesson?.sourceRefs).toEqual(expect.arrayContaining(["legalzoom-tsindex-navigation", "codebase-memory-v011-contracts"]));
+    expect(lesson?.headings).toContainEqual({id:"bound-retrieval-without-hiding-missing-evidence",depth:2,text:"Bound retrieval without hiding missing evidence"});
+    expect(lesson?.markdown).toContain("A syntactic occurrence is not a binding-aware dependency proof.");
+    expect(lesson?.markdown).toContain("a symbol-replacement write tool over MCP");
+    expect(getNextPathNodeRoute("ai-engineering-langfuse-langchain", {kind:"document",slug:"ai-engineering/evidence-first-agent-handoffs"})).toBe("/practice/ai-engineering/agent-handoff-checkpoint?path=ai-engineering-langfuse-langchain");
+  });
+
+  it.each([
+    ["redis-rate-limiting-guide", "Redis", "https://redis.io/tutorials/howtos/ratelimiting/"],
+    ["rfc-6585-status-codes", "IETF", "https://www.rfc-editor.org/rfc/rfc6585.html"],
+    ["stripe-webhook-contracts", "Stripe", "https://docs.stripe.com/webhooks"],
+    ["python-hmac-verification", "Python Software Foundation", "https://docs.python.org/3.13/library/hmac.html"],
+  ])("pins the primary destination and license scope for %s", (id, provider, url) => {
+    const source = getContentIndex().sources.find(s => s.id === id)!;
+    expect(source).toMatchObject({provider,url,lastVerifiedAt:"2026-10-04"});
+    expect(source.license).toEqual(id === "python-hmac-verification" ? {name:"Python Software Foundation License Version 2 (documentation)",url:"https://docs.python.org/3/license.html"} : undefined);
+  });
+
+  it.each([
+    ["traffic-rate-contracts", "traffic-rate-checkpoint", ["redis-rate-limiting-guide", "rfc-6585-status-codes"], ["fixed-boundary", "rolling-boundary", "token-burst", "concurrency-scope"], [
+      "A calendar-window limit can allow both batches; it does not enforce the stated rolling-window contract.",
+      "Retain distinct accepted attempts inside (now - 60, now]; an attempt exactly 60 seconds old has expired.",
+      "A full bucket can admit a burst; its capacity and refill rate do not promise a strict rolling-window count.",
+      "Use an in-flight limit with bounded admission and release; a request rate alone does not bound simultaneous slow work.",
+    ]],
+    ["webhook-authenticity-and-replay", "webhook-authenticity-checkpoint", ["stripe-webhook-contracts", "python-hmac-verification"], ["raw-bytes", "signed-time", "retry-receipt", "durable-acceptance"], [
+      "Verify the exact received bytes with the configured endpoint secret before trusting parsed fields.",
+      "Authenticate the timestamp and check the configured clock tolerance; replay prevention also needs durable deduplication.",
+      "Verify each delivery, then consult a scoped event receipt; a fresh signature does not make the event new.",
+      "Acknowledge durable acceptance, process idempotently and reconcile failures; an in-memory seen set cannot prove crash-safe effects.",
+    ]],
+  ] as const)("pins %s evidence, answer keys and ordered continuation", (slug, checkpoint, sources, questions, answers) => {
+    const lesson = getDocumentBySlug(`system-design/${slug}`)!;
+    expect(lesson?.sourceRefs).toEqual(sources);
+    const quiz = getExerciseBySlug(`system-design/${checkpoint}`);
+    if (quiz?.type !== "questionnaire") throw new Error("Operational contract practice requires a questionnaire");
+    expect(quiz.documentSlug).toBe(lesson.slug);
+    expect(quiz.sourceRefs).toEqual(sources);
+    expect(quiz.questions.map(q => q.id)).toEqual(questions);
+    expect(quiz.questions.map(q => q.kind === "choice" ? q.options.find(o => o.isCorrect)?.label : "wrong kind")).toEqual(answers);
+    expect(getNextPathNodeRoute("system-design-fundamentals", {kind:"document",slug:lesson.slug})).toBe(`/practice/system-design/${checkpoint}?path=system-design-fundamentals`);
+    expect(getNextPathNodeRoute("system-design-fundamentals", {kind:"exercise",slug:quiz.slug})).toBe(slug === "traffic-rate-contracts" ? "/docs/system-design/webhook-authenticity-and-replay?path=system-design-fundamentals" : "/docs/system-design/fair-admission-and-reservations?path=system-design-fundamentals");
+  });
+
+  it("connects client compatibility evidence to an original bounded checkpoint", () => {
+    const lesson = getDocumentBySlug("system-design/client-compatibility-contracts")!;
+    expect(lesson?.headings.map(h => h.id)).toEqual(expect.arrayContaining(["separate-the-reading-from-the-experiment", "choose-a-layout-with-an-explicit-data-contract", "check-api-meaning-as-well-as-shape"]));
+    const sources = ["duolingo-server-driven-ui", "google-aip-180-compatibility", "rfc-http-preconditions", "rfc-6585-status-codes", "google-aip-160-filtering", "google-aip-158-pagination", "google-aip-157-partial-responses"];
+    expect(lesson?.sourceRefs).toEqual(sources);
+    const report = getContentIndex().sources.find(s => s.id === sources[0])!;
+    expect(report).toMatchObject({provider:"Duolingo Engineering",url:"https://blog.duolingo.com/server-driven-ui/"});
+    expect(report.license).toBeUndefined();
+    expect(getContentIndex().sources.find(s => s.id === sources[1])).toMatchObject({provider:"Google",url:"https://google.aip.dev/180",license:{name:"Creative Commons Attribution 4.0 (text)",url:"https://creativecommons.org/licenses/by/4.0/"}});
+    const quiz = getExerciseBySlug("system-design/client-compatibility-checkpoint");
+    if (quiz?.type !== "questionnaire") throw new Error("Client compatibility must have a questionnaire");
+    expect(quiz.documentSlug).toBe(lesson.slug);
+    expect(quiz.sourceRefs).toEqual(sources);
+    expect(quiz.questions.map(q => q.id)).toEqual(["cached-layout", "cold-start", "data-contract", "pagination-meaning", "conditional-write", "bounded-query", "continuation-evidence", "resource-view"]);
+    expect(quiz.questions.map(q => q.kind === "choice" ? q.options.find(o => o.isCorrect)?.label : "wrong kind")).toEqual([
+      "Reuse a compatible cached layout with supported fresh data; a version number alone does not prove component support.",
+      "Use an explicit unavailable or upgrade state; no compatible cached layout was established.",
+      "Reject the unsupported data contract; an old layout cannot repair incompatible field meaning or types.",
+      "The JSON can parse while the meaning breaks: old callers may mistake the first page for the complete result.",
+      "Reject the stale write without overwriting A; checking the tag and committing the update must be one protected transition.",
+      "Reject unsupported fields and sort shapes explicitly, keep tenant authorization independent, and measure the allowed query plans.",
+      "Continue with the returned token and unchanged query context; zero rows alone do not prove the collection ended.",
+      "Treat omitted BASIC fields as unreturned, preserve their types in FULL, and document defaults before clients depend on them.",
+    ]);
+    const path = getLearningPathBySlug("system-design-fundamentals")!;
+    expect(path.units.map(u => u.slug)).toEqual(["caching-contracts", "capacity-decisions", "routing-decisions", "api-security-boundaries", "client-compatibility", "traffic-rate", "webhook-authenticity", "reservation-boundaries", "distributed-readings", "video-delivery"]);
+    expect(getNextPathNodeRoute(path.slug, {kind:"exercise",slug:"system-design/api-boundary-checkpoint"})).toBe("/docs/system-design/client-compatibility-contracts?path=system-design-fundamentals");
+    expect(getNextPathNodeRoute(path.slug, {kind:"document",slug:lesson.slug})).toBe("/practice/system-design/client-compatibility-checkpoint?path=system-design-fundamentals");
+    expect(getNextPathNodeRoute(path.slug, {kind:"exercise",slug:quiz.slug})).toBe("/docs/system-design/traffic-rate-contracts?path=system-design-fundamentals");
+  });
+
+  it("groups existing coding walkthroughs by pattern without duplicating questions", () => {
+    const path = getLearningPathBySlug("coding-interview-pattern-practice");
+    expect(path?.kind).toBe("skill");
+    expect(path?.units.map(unit => unit.slug)).toEqual(["foundations", "contiguous-data", "ordered-data", "trees-and-structure", "bounded-caches", "graph-decisions", "array-state-reviews", "keypad-dictionary-search"]);
+    const nodes = path!.units.flatMap(unit => unit.nodes);
+    const questions = nodes.filter(node => node.kind === "interview");
+    expect(questions.map(node => node.slug)).toEqual([
+      "amazon/two-sum-product-pair", "apple/validate-parentheses-stream", "meta/valid-palindrome-with-one-deletion", "apple/reverse-linked-list",
+      "netflix/longest-distinct-viewing-window", "google/subarray-sum-equals-k",
+      "apple/merge-intervals", "uber/meeting-rooms-ii", "amazon/top-k-frequent-items", "google/median-two-sorted-arrays",
+      "meta/binary-tree-vertical-columns", "microsoft/serialize-deserialize-binary-tree",
+      "amazon/lru-cache", "netflix/auto-expire-cache",
+      "google/number-of-islands", "google/course-schedule", "google/shortest-path-binary-matrix", "uber/shortest-path-weighted-road-graph",
+    ]);
+    expect(new Set(questions.map(node => node.slug)).size).toBe(18);
+    expect(getContentIndex().interviewCollections.flatMap(collection => collection.questions).filter(question => question.kind === "algorithm")).toHaveLength(27);
+    expect(getNextPathNodeRoute(path!.slug, nodes[0])).toBe("/interviews/apple/validate-parentheses-stream?path=coding-interview-pattern-practice");
+    expect(path?.summary).toContain("Full backtracking and comprehensive dynamic programming are outside this path");
+    expect(path?.progression).toBeUndefined();
+  });
+
+  it.each([
+    ["ai-engineering/evidence-first-agent-handoffs", "ulfaslak-architecture-cleanse", "audit-contract-drift-without-rewriting-the-contract"],
+    ["ml-systems/ml-workflow", "ml-system-case-study-index", "review-a-case-study-as-a-claim"],
+  ])("links %s to an attributed reading and original audit prompts", (slug, source, heading) => {
+    const document = getDocumentBySlug(slug)!;
+    expect(document.sourceRefs).toContain(source);
+    expect(document.headings.map(h => h.id)).toContain(heading);
+    const reference = getContentIndex().sources.find(s => s.id === source)!;
+    expect(reference.provider).toBe(source === "ulfaslak-architecture-cleanse" ? "Ulf Aslak" : "Engineer1999");
+    expect(reference.upstream?.commit).toBe(source === "ulfaslak-architecture-cleanse" ? "4cf92f75a2a7cbc19f733cc5fd3f32e3e6f72fbb" : "1da84a9dc996d857fe63d1f1609fad6caa17f8cb");
+    expect(reference.url).toBe(source === "ulfaslak-architecture-cleanse"
+      ? "https://github.com/ulfaslak/saas_tmplt/blob/4cf92f75a2a7cbc19f733cc5fd3f32e3e6f72fbb/.claude/commands/cleanse.md"
+      : "https://github.com/Engineer1999/A-Curated-List-of-ML-System-Design-Case-Studies/tree/1da84a9dc996d857fe63d1f1609fad6caa17f8cb");
+    expect(reference.license).toEqual(source === "ulfaslak-architecture-cleanse"
+      ? { name: "MIT", url: "https://github.com/ulfaslak/saas_tmplt/blob/4cf92f75a2a7cbc19f733cc5fd3f32e3e6f72fbb/LICENSE" }
+      : undefined);
+    expect(reference.attribution).toContain(source === "ulfaslak-architecture-cleanse" ? "not executed" : "not independently verified");
+  });
+
+  it("extends reservation practice with room-date overlap and explicit expiry", () => {
+    const document = getDocumentBySlug("system-design/fair-admission-and-reservations");
+    const quiz = getExerciseBySlug("system-design/reservation-boundary-checkpoint");
+    expect(document?.headings.map(h => h.id)).toContain("protect-room-dates-with-an-overlap-constraint");
+    const sources = ["postgresql-17-ranges", "postgresql-17-btree-gist", "postgresql-17-exclusion", "postgresql-17-date-functions"];
+    expect(document?.sourceRefs).toEqual(expect.arrayContaining(sources));
+    if (quiz?.type !== "questionnaire") throw new Error("Reservation practice must remain a questionnaire");
+    expect(quiz.documentSlug).toBe(document?.slug);
+    expect(quiz.sourceRefs).toEqual(expect.arrayContaining(sources));
+    expect(quiz.questions.map(q => q.id)).toEqual(["skip-result", "identity", "late-payment", "expiry-boundary", "room-overlap", "room-expiry"]);
+    expect(quiz.questions.slice(4).map(q => q.kind === "choice" ? q.options.find(o => o.isCorrect)?.label : "wrong kind")).toEqual([
+      "Enforce overlap exclusion for the same room; adjacent half-open stays may coexist.",
+      "Commit the guarded transition to expired; elapsed time alone does not remove the hold from the constraint.",
+    ]);
+    for (const path of ["system-design-fundamentals", "backend-engineer-readiness"]) {
+      expect(getNextPathNodeRoute(path, {kind:"document", slug:document!.slug})).toBe(`/practice/system-design/reservation-boundary-checkpoint?path=${path}`);
+    }
+  });
   it("uses attributed curved kana models, including the full third-stroke loop of あ", () => {
     const a = getLanguageCharacterBySlug("japanese/hiragana/a")!;
     const loop = a.strokes[2]!.points;
@@ -134,6 +301,27 @@ describe("generated content index", () => {
     expect(feed?.cards.map((card) => card.type)).toEqual(expect.arrayContaining(["concept", "practical", "snippet", "interview"]));
   });
 
+  it("adds an optional advanced research source without inventing a local companion", () => {
+    const path = getLearningPathBySlug("ai-engineering-langfuse-langchain")!;
+    expect(path.units.map(u => u.slug)).toEqual([
+      "llm-application-foundations", "langchain-building-blocks", "langfuse-tracing",
+      "prompts-datasets-evals", "rag-quality", "agents-operations",
+      "evidence-first-handoffs", "risk-governance", "advanced-agent-research",
+    ]);
+    const unit = path.units.at(-1)!;
+    expect(unit.nodes).toEqual([expect.objectContaining({
+      kind:"source",slug:"ai-engineering/stanford-self-improving-agents",
+      sourceRef:"stanford-cs329a-autumn-2025",activity:"read",companionKind:"document",required:false,
+    })]);
+    const source = getContentIndex().sources.find(s => s.id === "stanford-cs329a-autumn-2025");
+    expect(source).toMatchObject({provider:"Stanford University",url:"https://cs329a.stanford.edu/",upstream:{version:"Autumn 2025",maturity:"published"}});
+    expect(source?.attribution).toContain("not enrollment");
+    expect(source?.license).toBeUndefined();
+    expect(getDocumentBySlug(unit.nodes[0]!.slug)).toBeUndefined();
+    expect(getPathNodeRoute(unit.nodes[0]!, path.slug)).toBe("https://cs329a.stanford.edu/");
+    expect(getNextPathNodeRoute(path.slug, {kind:"exercise",slug:"ai-engineering/llm-production-risk-governance-questionnaire"})).toBe("https://cs329a.stanford.edu/");
+  });
+
   it("loads the Langfuse and LangChain AI engineering path", () => {
     const path = getLearningPathBySlug("ai-engineering-langfuse-langchain");
     const tracingDocument = getDocumentBySlug("ai-engineering/langfuse-tracing-fundamentals");
@@ -158,8 +346,11 @@ describe("generated content index", () => {
       "ai-engineering/langchain-agents-langgraph-operations",
       "ai-engineering/agent-tool-safety-flow",
       "ai-engineering/langchain-agents-langgraph-questionnaire",
+      "ai-engineering/evidence-first-agent-handoffs",
+      "ai-engineering/agent-handoff-checkpoint",
       "ai-engineering/llm-production-risk-governance",
       "ai-engineering/llm-production-risk-governance-questionnaire",
+      "ai-engineering/stanford-self-improving-agents",
     ]);
     expect(tracingDocument?.track).toBe("AI Engineering");
     expect(tracingDocument?.diagramRefs).toEqual(["ai-engineering/langfuse-trace-lifecycle"]);
@@ -170,6 +361,66 @@ describe("generated content index", () => {
     expect(feed?.cards).toHaveLength(84);
     expect(feed?.cards.map((card) => card.type)).toEqual(expect.arrayContaining(["concept", "practical", "snippet", "interview"]));
     expect(feed?.cards.some((card) => card.code?.includes("trace_id"))).toBe(true);
+  });
+
+  it("places routing practice after capacity and preserves broker effect boundaries", () => {
+    const path = getLearningPathBySlug("system-design-fundamentals");
+    expect(path?.units.map(u => u.slug)).toEqual([
+      "caching-contracts", "capacity-decisions", "routing-decisions", "api-security-boundaries", "client-compatibility", "traffic-rate", "webhook-authenticity", "reservation-boundaries", "distributed-readings", "video-delivery",
+    ]);
+    const routing = getDocumentBySlug("system-design/routing-decision-lab");
+    const quiz = getExerciseBySlug("system-design/routing-decision-checkpoint");
+    expect(routing?.status).toBe("published");
+    expect(routing?.sourceRefs).toEqual(["nginx-upstream-routing"]);
+    expect(routing?.prerequisites).toEqual(["system-design/scaling-decision-worksheet"]);
+    if (quiz?.type !== "questionnaire") throw new Error("Routing practice must be a questionnaire");
+    expect(quiz.status).toBe("published");
+    expect(quiz.documentSlug).toBe(routing?.slug);
+    expect(quiz.questions.map(q => q.id)).toEqual(["signal", "affinity", "eligibility", "scope"]);
+    expect(quiz.questions.map(q => q.kind === "choice" ? q.options.find(o => o.isCorrect)?.label : "wrong kind")).toEqual([
+      "Treat connection count as one signal; measure queued work and latency for this workload.",
+      "Affinity may change and IPs may be shared; keep authorization and durable session state independent.",
+      "Exclude the ineligible backend before ranking; define a bounded no-capacity response.",
+      "The toy’s stated routing and validation cases; real proxy behavior and throughput need separate tests.",
+    ]);
+    expect(getNextPathNodeRoute("system-design-fundamentals", {kind:"exercise",slug:"system-design/scaling-decision-checkpoint"})).toBe("/docs/system-design/routing-decision-lab?path=system-design-fundamentals");
+    expect(getNextPathNodeRoute("system-design-fundamentals", {kind:"document",slug:"system-design/routing-decision-lab"})).toBe("/practice/system-design/routing-decision-checkpoint?path=system-design-fundamentals");
+    expect(getNextPathNodeRoute("system-design-fundamentals", {kind:"exercise",slug:"system-design/routing-decision-checkpoint"})).toBe("/docs/system-design/cors-csrf-and-authorization?path=system-design-fundamentals");
+    const durable = getDocumentBySlug("software-engineering/product-interview-durable-generation-architecture");
+    expect(durable?.sourceRefs).toEqual(expect.arrayContaining(["kafka-41-delivery-design", "redis-pubsub-delivery", "redis-stream-ack", "redis-stream-autoclaim"]));
+    expect(durable?.headings.map(h => h.id)).toEqual(expect.arrayContaining(["separate-kafka-progress-from-an-external-effect", "recover-redis-work-without-treating-an-ack-as-a-receipt"]));
+  });
+
+  it("links primary reservation and coalescing cases to existing lessons", () => {
+    const reservation = getDocumentBySlug("system-design/fair-admission-and-reservations");
+    const cache = getDocumentBySlug("system-design/cache-invalidation");
+    expect(reservation?.sourceRefs).toContain("shopify-inventory-reservations-2026");
+    expect(cache?.sourceRefs).toContain("discord-message-storage-2023");
+    expect(reservation?.headings.map(h => h.id)).toContain("compare-a-bounded-pool-with-the-ledger");
+    expect(cache?.headings.map(h => h.id)).toContain("study-coalescing-without-confusing-it-with-caching");
+  });
+
+  it("links the original handoff lab and checkpoint between agents and governance", () => {
+    const path = "ai-engineering-langfuse-langchain";
+    const document = getDocumentBySlug("ai-engineering/evidence-first-agent-handoffs");
+    const checkpoint = getExerciseBySlug("ai-engineering/agent-handoff-checkpoint");
+    expect(document?.sourceRefs).toEqual([
+      "anthropic-long-running-harnesses", "anthropic-harness-design-experiment", "walkinglabs-harness-course", "ulfaslak-architecture-cleanse", "legalzoom-tsindex-navigation", "codebase-memory-v011-contracts",
+    ]);
+    if (checkpoint?.type !== "questionnaire") throw new Error("Handoff practice must be a questionnaire");
+    expect(checkpoint.status).toBe("published");
+    expect(document?.status).toBe("published");
+    expect(checkpoint?.documentSlug).toBe(document?.slug);
+    expect(checkpoint?.questions).toHaveLength(4);
+    expect(getNextPathNodeRoute(path, { kind: "exercise", slug: "ai-engineering/langchain-agents-langgraph-questionnaire" })).toBe(
+      "/docs/ai-engineering/evidence-first-agent-handoffs?path=ai-engineering-langfuse-langchain",
+    );
+    expect(getNextPathNodeRoute(path, { kind: "document", slug: "ai-engineering/evidence-first-agent-handoffs" })).toBe(
+      "/practice/ai-engineering/agent-handoff-checkpoint?path=ai-engineering-langfuse-langchain",
+    );
+    expect(getNextPathNodeRoute(path, { kind: "exercise", slug: "ai-engineering/agent-handoff-checkpoint" })).toBe(
+      "/docs/ai-engineering/llm-production-risk-governance?path=ai-engineering-langfuse-langchain",
+    );
   });
 
   it("loads the database indexes and search path", () => {

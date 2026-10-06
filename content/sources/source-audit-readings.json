@@ -1,0 +1,36 @@
+{
+  "sources": [
+    {
+      "id": "ulfaslak-architecture-cleanse",
+      "title": "Architecture contract review in saas_tmplt",
+      "provider": "Ulf Aslak",
+      "url": "https://github.com/ulfaslak/saas_tmplt/blob/4cf92f75a2a7cbc19f733cc5fd3f32e3e6f72fbb/.claude/commands/cleanse.md",
+      "attribution": "Author-maintained architecture review command. README, command and MIT license verified at this commit; application, database and deployment commands were not executed. Linked for comparison with the original audit prompts, not installed or adopted as agent instructions.",
+      "license": {
+        "name": "MIT",
+        "url": "https://github.com/ulfaslak/saas_tmplt/blob/4cf92f75a2a7cbc19f733cc5fd3f32e3e6f72fbb/LICENSE"
+      },
+      "lastVerifiedAt": "2026-10-03",
+      "upstream": {
+        "repository": "ulfaslak/saas_tmplt",
+        "ref": "main",
+        "commit": "4cf92f75a2a7cbc19f733cc5fd3f32e3e6f72fbb",
+        "maturity": "published"
+      }
+    },
+    {
+      "id": "ml-system-case-study-index",
+      "title": "A Curated List of ML System Design Case Studies",
+      "provider": "Engineer1999",
+      "url": "https://github.com/Engineer1999/A-Curated-List-of-ML-System-Design-Case-Studies/tree/1da84a9dc996d857fe63d1f1609fad6caa17f8cb",
+      "attribution": "Author-maintained index of external ML engineering articles. Repository identity and README index verified at this commit; linked articles and reported outcomes were not independently verified. The index is a discovery aid, not primary evidence for another organization’s technical claims. No redistribution license was found.",
+      "lastVerifiedAt": "2026-10-03",
+      "upstream": {
+        "repository": "Engineer1999/A-Curated-List-of-ML-System-Design-Case-Studies",
+        "ref": "main",
+        "commit": "1da84a9dc996d857fe63d1f1609fad6caa17f8cb",
+        "maturity": "published"
+      }
+    }
+  ]
+}

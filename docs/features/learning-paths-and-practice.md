@@ -3,7 +3,7 @@
 ## Snapshot
 
 - Status: `shipped`
-- Last updated: `2026-08-07`
+- Last updated: `2026-10-04`
 - Owner thread: `n/a`
 - Current state: The complete path catalog lives at `/paths`; schema-v12 source nodes, generic career/language progression, guided labs, aggregate checkpoint scoring, passive review, Japanese open answers/listening choices, and active review are local-first across web and Expo.
 - Target outcome: Users can follow role and skill paths, open local companions or authoritative sources, complete all structured practice types, and inspect published/planned progression without requiring auth or Supabase.
@@ -46,7 +46,7 @@ Learning paths organize study using ideas from career and skill paths, language-
 - `/practice/[...slug]` renders one flashcard, cloze prompt, questionnaire session, or writing exercise.
 - Exercise content is manually authored in `content/exercises/**/*.json`; path content is authored in `content/learning-paths/*.json`; passive flashcard feeds are authored in `content/flashcard-feeds/*.json`.
 - `packages/core/src/generated/content-index.json` has `schemaVersion: 12` and includes validated primary sources, generic progression, structured Japanese grammar, approval-gated audio, learning/language/interview content, and home discovery.
-- Path nodes may be documents, diagrams, exercises, or sources. Generic progressions declare a framework, roadmap label, stable skills/categories, stages with level/status/outcomes, required nodes, and published checkpoints/thresholds.
+- Path nodes may be documents, diagrams, exercises, interviews, or sources. Generic progressions declare a framework, roadmap label, stable skills/categories, stages with level/status/outcomes, required nodes, and published checkpoints/thresholds.
 - Index generation additionally fails on duplicate/missing sources, unknown outcome/question skills, missing source-required references, or published source stages without a published local companion. Planned stages may omit checkpoint requirements.
 - No node is locked, disabled, gated, or paywalled in this milestone. Optional saved progress is owned by `docs/features/auth-and-progress.md`.
 
@@ -109,6 +109,16 @@ The shipped content includes skill and role paths using Markdown articles, exter
 - Learning paths intended to replace passive social scrolling with one-minute vertical review should include a path-scoped passive feed unless the owning feature doc explicitly scopes that surface out.
 - Progression-enabled paths show stage level/status, friendly names, outcomes, expected time, and directly accessible published checkpoints. Stage metadata never locks a node.
 
+Coding Interview Pattern Practice reuses 18 existing algorithm walkthroughs and four BFS/DFS lesson/checkpoint nodes across six original units, followed by original Array State Reviews and Keypad Dictionary Search lesson/checkpoint pairs. The array reference covers nonempty maximum sums with explicit ties, validated unique-domain cyclic placement and strictly greater successor indices. It preserves inputs, discloses O(n) defensive storage, and uses bounded independent oracles rather than claiming a general proof. Questions retain their existing IDs, languages, solutions, sources and difficulty. Learners compare invariants and alternatives rather than treating a fixed question count as readiness. Keypad practice adds selected bounded backtracking; full backtracking and comprehensive dynamic programming remain outside this path. There is no progression object, new score or completion certificate. The existing BFS/DFS path remains unchanged.
+
+Algorithm interviews opened with a valid path query expose **Next activity** after the full web explanation; restarting hides it until the explanation is revealed again. Unknown or absent path queries do not choose another path. Native algorithm readers show the authored destination alongside their read-only explanation and do not record a completed result merely by navigating. Native routes retain existing unambiguous path inference for direct links.
+
+Client Compatibility extends System Design after API Security. Its original Python plan selector distinguishes layout version, component support and data contract; cold-cache and unsupported states remain visible. The same checkpoint has eight questions: four original layout/migration questions plus conditional writes, bounded query structure, continuation evidence and resource views. Original review tables use RFC 9110/6585 and Google AIP-157/158/160 alongside the prior Duolingo/AIP-180 readings. Authored lesson, path unit and checkpoint identities remain the same. The selector implements no renderer, network, persisted user cache or authorization. The tables implement no HTTP server, database, filter parser or cursor. Runtime atomicity, query performance and actual platform compatibility remain separate checks.
+
+Traffic Rate Contracts and Webhook Authenticity follow Client Compatibility in System Design. Two original four-question checkpoints preserve rate/concurrency and signed-delivery/durable-effect distinctions. The rate lab tests calendar/rolling boundaries, identical-time attempts, scoped counters, exact fractional token refill, burst caps and invalid clocks. The webhook lab uses an original custom envelope, dummy keys, raw bytes, signed time, account/endpoint receipts and bounded key rotation. It is not Stripe-compatible and must not be deployed as a receiver. Neither fixture proves distributed atomicity, durable completion or upstream performance.
+
+Distributed Reading Reviews appends one lesson and four-question checkpoint after Reservations in System Design. Selected Dynamo (SOSP 2007), Raft (May 20, 2014 extended version) and The Tail at Scale (February 2013) passages ground original review cases. Membership assumptions, current-term commitment, client retry identity, independence and hedge costs stay distinct. Earlier eight units and Backend Readiness membership are unchanged; the System Design reservation checkpoint now continues into the new unit. No distributed service, consensus proof or latency benchmark is implemented.
+
 ### Data Model And Persistence
 
 - `content/learning-paths/*.json` stores path metadata and ordered unit nodes; `content/sources/*.json` stores authoritative external source metadata.
@@ -137,7 +147,7 @@ The shipped content includes skill and role paths using Markdown articles, exter
 - `packages/core/src/content/index.ts`: lookup helpers and path-node route helpers.
 - `apps/web/src/components/LearningPathMap.tsx`: home and path detail UI.
 - `apps/web/src/components/PracticeCard.tsx`: flashcard, cloze, questionnaire, and writing shell.
-- `apps/web/src/components/PathScopedNextLink.tsx`: client-side path query reader for static document and diagram next-node links.
+- `apps/web/src/components/PathScopedNextLink.tsx`: client-side path query reader for document, diagram and algorithm next-node links; only authored own path keys can select a destination.
 - `apps/web/src/components/PathScopedPracticeCard.tsx`: client-side path query adapter for static practice pages.
 - `apps/web/src/components/QuestionnaireSession.tsx`: mobile questionnaire interactions.
 - `apps/web/src/components/PassiveFlashcardFeed.tsx`: mobile passive flashcard feed.
@@ -149,6 +159,26 @@ The shipped content includes skill and role paths using Markdown articles, exter
 - `apps/web/src/app/browse/page.tsx`: complete lesson and diagram browser route.
 
 ## Test Plan
+
+- Keypad dictionary search: canonical isolated Python compares 340 bounded key patterns and all eight key mappings with an independent literal-encoding scan. It checks complete words versus prefixes, repeated letters, sibling rollback, unique alphabetical output, unchanged inputs, exact limits and validation before shortcuts. Core/graph pin two primary sources, five headings, five independent answers, all eight units and explicit membership/assessment/prerequisite/citation edges. Browser verifies source panels, array continuation and the five-question terminal checkpoint at 100%. No arbitrary-input proof, byte-memory/throughput benchmark, shared index or complete T9/backtracking syllabus is claimed.
+
+- Backend concurrency/pattern reviews: pin five selected primary sources, ten headings, fifteen semantic boundaries, ten independent answers and all six path units. Graph checks scoped identities, order, assessment, prerequisites and citations. Browser preserves reservation/history continuation, verifies both source panels/lessons, scores each five-question checkpoint at 100% and ends only after pattern selection. Paper traces do not execute a thread scheduler, Java memory-model proof, .NET container, payment parser or full design-pattern catalog.
+
+- Video delivery: pin five primary destinations/selected editions, eight evidence boundaries, five independent answers and all ten path units. Graph verifies contains/assesses/requires/cites and stable authored identities. Browser follows the prior distributed checkpoint into the five-heading lesson, then completes five shuffled questions at 100% with no next activity. No actual video, protected-frame capture, player, bandwidth benchmark or failure injection is tested.
+
+- Token revocation: core pins four primary destinations/editions/licenses, three new headings, six scope boundaries, all eight independent answers and unchanged continuation. Graph exports new sections/citations on the existing API identity. The browser verifies source panels/headings and eight shuffled answers at100% before Client Compatibility. Original four question objects and all path units are preserved; no live token/propagation/security server is tested.
+
+- Progressive state: canonical isolated Python verifies rejected-state snapshots, accepted clocks, transfer conservation, pre/post/chained merge histories, permanent retirement and invalid partitions; 4,681 bounded traces use a separate full-state representation. Core/graph pin four answers, stable IDs and both path-specific reservation destinations. Browser follows the Backend reservation checkpoint into the new lesson and finishes its terminal quiz. Other path units/interview records remain unchanged; no durable/concurrent financial service is exercised.
+
+- Array state review: canonical isolated Python checks nonempty/all-negative/ties, unique-domain progress, strict equality, input preservation and independent bounded oracles (19,530/873/1,093 cases). Core/graph pin four answer keys, old/new path identities and requires/assesses/contains; browser follows the prior weighted-graph explanation into the array lesson, scores its checkpoint and continues to Keypad Dictionary Search. Existing 18 interview questions, six unit objects and traversal path remain unchanged. These tests prove the bounded examples, not general correctness or production performance.
+
+- Distributed readings: primary destinations/editions, no inferred license, selected assumptions, four independently pinned answer keys, old/new unit order and final/no-next behavior. Graph tests verify authored membership, section IDs, prerequisites, cites and assesses without new unresolved references. The browser journey scores four shuffled answers, verifies source panels and terminal behavior; the preceding System Design reservation journey follows the new destination. No installed consensus service, real failure schedule or latency benchmark is exercised.
+
+- Operational contracts: canonical Python fences exercise exact boundaries, scopes, invalid inputs and visible rejection states. Core/graph tests pin independent source URLs/identities, both four-question answer keys, explicit cites/assesses/prerequisite edges and ordered continuation. Two browser journeys verify source panels, scoring and the next activity. Real Redis races, HTTP/provider SDKs and installed device rendering remain separate validation.
+
+- Client compatibility: the unchanged canonical Python fence checks fresh/cached preference, version/component/data predicates, cold start and invalid versions. Core/graph tests pin primary URLs/license scope, three added section identities, explicit cites/assesses/path relationships and all eight answer keys. The original four questions remain unchanged. The browser journey verifies new headings/sources, eight scored answers and Traffic Rate continuation. Conditional-write races, cursor implementation, query plans and actual upstream/iOS/Android renderer behavior are not exercised by this reading fixture.
+- Coding-pattern path: exact unit/question order, existing question count/identity, explicit graph membership and preserved traversal-path membership.
+- Algorithm continuation: web selected/unknown/inherited-key/blank/absent path and restart gates; native authored/inferred/unknown/inherited path selection, exact destination, single navigation and no automatic completion. `coding-patterns.regression.spec.ts` verifies path → explanation → next question and standalone behavior.
 
 - Unit: path, progression, exercise, passive feed, language schema coverage, cloze validation, questionnaire validation, handwriting scoring, review scheduling/merge, passive feed windowing, duplicate ID validation, and missing reference validation.
 - Integration: generated index loads starter paths, exercises, passive feeds, and path-scoped next routes.
@@ -194,3 +224,53 @@ The shipped content includes skill and role paths using Markdown articles, exter
 ## Frontend Interview Path Extension (2026-09-27)
 
 Index v11 accepts published interview nodes (`collection/question`) and optional `completionDestination: "flashcard-feed"`. The final destination requires a published feed. Interview sources are checked under required source policy. Review snippets now declare `codeLanguage` and offer lesson links with path context. See [Frontend Interview Practice](frontend-interview-practice.md) for flow and test commands. Regression coverage lives in `frontend-interview.test.ts`, build-index tests, component tests, and `frontend-interview.regression.spec.ts`.
+
+## System Design decision practice
+
+The existing System Design Fundamentals path retains its cache unit and appends Capacity Decisions and API Security Boundaries. The new sourced lessons use an original scaling worksheet and request timeline, with a four-question capacity checkpoint and eight-question API checkpoint. Capacity estimates distinguish means from percentiles, application capacity from a shared dependency, and table partitioning from distributed sharding. API practice distinguishes CORS response sharing, anti-forgery checks, object authorization and current token/session status. The existing API lesson adds an original revocation-window review: verified scoped token identity, stale/unavailable consumer status, access versus refresh cascade and old verification-key trust. OWASP passages/license are pinned; RFC7009/9700 editions and selected scope remain explicit. No JWT library, live revocation endpoint or security-policy change is implemented. Examples are exercises, not measured company architectures or executable production operations.
+
+Validate content-index freshness, parser/source relationships and questionnaire scoring. `system-design-practice.regression.spec.ts` covers path → lesson → scored checkpoint journeys and continuation from capacity through routing to security. The private saved-post review ledger and raw social text stay outside curriculum and Git. Public sources support the original lessons; source metadata does not claim that an entire linked book or collection was read.
+
+### Durable retries and reservations
+
+Backend Engineer Readiness adds Durable Retries, Reservation Boundaries and Progressive State after Production Judgment. The former reuses the existing product architecture lesson and its optional temporary-SQLite lab with four scored questions. Reservation practice shares a lesson and six-question checkpoint with System Design Fundamentals, including room-date overlap and explicit expiry. Progressive State adds an original in-memory credit/history lesson and four-question checkpoint. Transfers and merges conserve current credits; historical queries preserve earlier identities, retirement and zero-versus-absence. Rejections leave the accepted-operation clock and all state unchanged. A full-snapshot oracle compares 4,681 bounded traces, with explicit invalid-input and chained-merge checks. The fixture is sequential and memory-only, with no real payments, persistence, concurrency guarantee or employer assessment claim. The original Product Engineering path retains 18 questions. SQL/Python are readable authored examples, with no new app execution surface.
+
+The room-date extension uses three original PostgreSQL 17 fences: partial GiST exclusion with bounded finite nonempty dates, a hold insertion, and a guarded expiry transition. Adjacent checkout-exclusive stays and different rooms may coexist; overlapping held/confirmed rows conflict. Stored state controls exclusion, so elapsed time alone does not release capacity. The constraint does not establish payment atomicity, fairness, timestamp/time-zone behavior or service authorization.
+
+Generated-content and graph tests preserve existing resource identity, both path memberships, exercise linkage and four new primary-source references. The browser regression scores all six questions. `npm run test:reservation:sql` verifies the canonical SQL in a pinned, disposable container, including concurrent commit/rollback, invalid fields and expiry guards. CI and release database lanes run it independently of the application database. Operating instructions are in `scripts/content/README.md`.
+
+### Bounded structural retrieval
+
+The existing handoff lesson adds a non-executable retrieval-review table: initial unreadiness, scoped zero matches, truncated pages, stale source, changed cursor generation and an over-budget staged failure. Two pinned primary sources retain project license and version identity. Structural references do not prove semantic dependencies, and an exposed write tool grants no new authority. No source code, checkpoint, path unit, runtime service or indexer is added. Existing canonical Python fences stay unchanged.
+
+Core/catalog checks pin both URLs, commits, licenses, explicit citations and section identity; the existing handoff browser journey checks both source panels and the new heading before its original scored quiz and Governance continuation. Real indexer performance, provider completeness, installation and memory enforcement are not tested here.
+
+### Evidence-first agent handoffs
+
+AI Engineering inserts an original handoff lesson and four-question checkpoint after Agents And Operations and before Risk And Governance. The Markdown Python lab chooses the next review step from a durable receipt, preserving exact candidate/source/configuration identity, pending-job reuse, visible failures and incomplete coverage. It never applies content or approves a report. Hashes assume a trusted receipt store and do not prove execution, truth or authorization.
+
+The lesson cites two official Anthropic experiments and links a pinned author-maintained course for optional further practice. Those upstream projects were not independently executed; their product breakdowns are not certified. The existing seven units, source identities and passive feed stay intact. Canonical lab assertions and generated route/source checks validate the content; `agent-handoff.regression.spec.ts` covers path → lesson → checkpoint → governance. No new runtime, model call, content execution surface or persistence schema is added.
+
+### Production case readings
+
+The existing cache and reservation lessons add source-linked Discord/Shopify case readings and original review prompts. No path, unit or exercise is added. The readings distinguish in-flight coalescing from result caching, tenant-sensitive work identity, bounded reservation pools, authoritative ledgers and shared connection pressure. Upstream outcomes are attributed reports; the PostgreSQL fixture does not certify MySQL behavior. Generated-index tests pin the source IDs and section headings, and existing reader/path journeys cover the routes.
+
+### Routing and delivery boundaries
+
+System Design inserts Routing Decisions after Capacity Decisions and before API Security Boundaries. Its original Python lab selects eligible static backends by a stated capacity-normalized signal and tie rule; it does not reproduce NGINX scheduling, live health, concurrent admission or production throughput. Four scored questions distinguish workload signals, affinity, eligibility and the experiment's limits. Official source metadata preserves proxy version/edition scope.
+
+Kafka offset and Redis acknowledgement/reclaim review extend the existing durable architecture lesson in its existing paths. Original crash traces separate broker progress from an atomic local effect/receipt and an uncertain external provider outcome. No new broker implementation, publication, persistence schema or learner-code execution surface is added.
+
+Generated-content tests pin source IDs, sections, checkpoint answers and all three path continuations. The allowlisted Python verifier runs the exact canonical routing fence with an empty environment and the existing exit/timeout/stderr checks. Routing mutations challenge eligibility, normalization, ties, empty pools and numeric validation. `system-design-practice.regression.spec.ts` adds the routing journey; durable practice checks both new evidence sections and source panels. Run content freshness, both unchanged coverage gates, native checks, lint/types, canonical Python labs, production build/pruned readiness and the remote browser lane before review readiness.
+
+## Video delivery review
+
+System Design retains its original nine unit objects and appends Video Delivery Contracts after Distributed Reading Reviews. One original lesson/five-question checkpoint separates segment deadlines, content-protection observations and playback-state recovery. The two-second/4-megabit-per-second case transfers 8 megabits in four seconds at the stated 2-megabit-per-second payload rate; a half-second buffer cannot cover it. This arithmetic is a hypothetical lower-overhead case, not a measured player or CDN benchmark.
+
+Selected RFC 8216 scope, the fixed 2017 EME Recommendation, Android software/hardware DRM levels and secure-window policy distinguish APIs, decoder levels, capture restrictions and optional output downscaling. The dated provider table preserves conditional platform/browser limits. Playback state requires declared scope, accepted revision and storage/recovery behavior; the largest position alone loses intentional backward seeks. Sources remain selected passages and no blanket redistribution license is inferred. Existing cache/durable contracts are prerequisites; no DRM bypass, protected content, player implementation or production failure injection is introduced.
+
+## Backend concurrency and pattern reviews
+
+Backend Engineer Readiness retains its four original unit objects and appends two lessons with five-question checkpoints. Concurrency review uses original lost-update, predicate-wakeup and permit-timeout paper traces, plus selected Python 3.13 and Java SE 17 references. Visibility/order does not make a compound transition atomic; notification does not reserve work, failed acquisition owns no permit, JVM RUNNABLE does not prove CPU execution and a local lock cannot fence another process. No scheduler/throughput experiment or full memory-model proof is run.
+
+Pattern review compares a stable conditional with a justified change axis, preserves substitution inputs/results/errors, translates explicit decimal/currency units, keeps wrappers from inventing success/repeated effects and reviews shared lifetimes. Selected Fowler and Microsoft references are not a copied pattern catalog or an executed container. The integer-cent conversion is a paper contract case, not payment processing. Existing content and both reservation continuations remain unchanged; the progressive checkpoint now leads to concurrency and its checkpoint leads to pattern selection.

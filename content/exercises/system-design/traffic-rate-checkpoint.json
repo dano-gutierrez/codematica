@@ -1,0 +1,111 @@
+{
+  "slug": "system-design/traffic-rate-checkpoint",
+  "title": "Traffic Rate Checkpoint",
+  "type": "questionnaire",
+  "documentSlug": "system-design/traffic-rate-contracts",
+  "concept": "Traffic Rate",
+  "difficulty": "practitioner",
+  "tags": [
+    "api",
+    "contracts"
+  ],
+  "status": "published",
+  "sourceRefs": [
+    "redis-rate-limiting-guide",
+    "rfc-6585-status-codes"
+  ],
+  "questions": [
+    {
+      "id": "fixed-boundary",
+      "kind": "choice",
+      "prompt": "Three calls at second 59 and three at 61 pass a three-per-calendar-minute limit. What does this demonstrate?",
+      "options": [
+        {
+          "id": "option-0",
+          "label": "A calendar-window limit can allow both batches; it does not enforce the stated rolling-window contract.",
+          "isCorrect": true
+        },
+        {
+          "id": "option-1",
+          "label": "It proves at most three calls in every rolling 60 seconds.",
+          "isCorrect": false
+        },
+        {
+          "id": "option-2",
+          "label": "The algorithm is defective even if the product explicitly allows calendar-boundary bursts.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "Match the selected algorithm to the promised interval. A calendar quota may be correct for its contract while violating a strict rolling promise."
+    },
+    {
+      "id": "rolling-boundary",
+      "kind": "choice",
+      "prompt": "For the authored rolling interval, how are equal-time calls and the exact 60-second boundary counted?",
+      "options": [
+        {
+          "id": "option-0",
+          "label": "Retain distinct accepted attempts inside (now - 60, now]; an attempt exactly 60 seconds old has expired.",
+          "isCorrect": true
+        },
+        {
+          "id": "option-1",
+          "label": "Collapse equal timestamps into one attempt to save memory.",
+          "isCorrect": false
+        },
+        {
+          "id": "option-2",
+          "label": "Keep every attempt at or before now forever.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "The open lower boundary expires an attempt exactly one period old. Each admitted attempt has its own log entry even when timestamps match."
+    },
+    {
+      "id": "token-burst",
+      "kind": "choice",
+      "prompt": "A bucket has capacity 3 and refills 3 tokens per 90 seconds. Does it guarantee no more than 3 admissions in every rolling 90 seconds?",
+      "options": [
+        {
+          "id": "option-0",
+          "label": "A full bucket can admit a burst; its capacity and refill rate do not promise a strict rolling-window count.",
+          "isCorrect": true
+        },
+        {
+          "id": "option-1",
+          "label": "Its refill rate proves the same limit for every rolling window.",
+          "isCorrect": false
+        },
+        {
+          "id": "option-2",
+          "label": "Idle time must accumulate unlimited burst capacity.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "The fixture admits 3 immediately and another after 30 seconds; capacity caps idle credit, but the contract differs from a strict rolling log."
+    },
+    {
+      "id": "concurrency-scope",
+      "kind": "choice",
+      "prompt": "An API admits ten requests per second, but each holds a scarce downstream slot for a long time. What else must be defined?",
+      "options": [
+        {
+          "id": "option-0",
+          "label": "Use an in-flight limit with bounded admission and release; a request rate alone does not bound simultaneous slow work.",
+          "isCorrect": true
+        },
+        {
+          "id": "option-1",
+          "label": "A per-second counter proves at most ten operations are in flight.",
+          "isCorrect": false
+        },
+        {
+          "id": "option-2",
+          "label": "Rate tokens authorize any operation requested by that client.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "Rate, in-flight capacity, authorization and idempotency are distinct contracts. Define slot ownership, deadlines and release under failure/cancellation."
+    }
+  ]
+}

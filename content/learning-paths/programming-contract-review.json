@@ -1,0 +1,258 @@
+{
+  "slug": "programming-contract-review",
+  "title": "Programming Contract Review",
+  "summary": "Practice selected JavaScript ownership, bounded demand, ASCII matching and tree/cost review with original finite references. This is not a complete language or algorithms syllabus.",
+  "kind": "skill",
+  "category": "Programming",
+  "audience": "Developers who want to verify concise programming summaries through explicit contracts and independent counterexamples.",
+  "status": "published",
+  "sourcePolicy": "required",
+  "sourceRefs": [
+    "js-contract-const",
+    "js-contract-freeze",
+    "js-contract-objects",
+    "js-contract-equality",
+    "js-contract-this",
+    "js-contract-splice",
+    "js-contract-sort",
+    "js-contract-substr",
+    "demand-mdn-iteration",
+    "demand-mdn-forof",
+    "demand-node-stream",
+    "demand-node-loop",
+    "demand-tus-offset",
+    "text-mdn-regex",
+    "text-mdn-forof",
+    "text-regex-vis",
+    "shape-opendsa-binary",
+    "shape-opendsa-bst",
+    "cost-opendsa-selection",
+    "cost-oxford-b16"
+  ],
+  "units": [
+    {
+      "slug": "javascript-value-contracts",
+      "title": "Value Ownership",
+      "summary": "Predict binding, nested sharing, own membership, conversion and call receivers under an explicit JavaScript context.",
+      "nodes": [
+        {
+          "kind": "document",
+          "slug": "programming/javascript-value-contracts",
+          "skillIds": [
+            "value-ownership"
+          ],
+          "required": true
+        },
+        {
+          "kind": "exercise",
+          "slug": "programming/javascript-value-contracts-checkpoint",
+          "skillIds": [
+            "value-ownership"
+          ],
+          "required": true
+        }
+      ]
+    },
+    {
+      "slug": "lazy-demand-and-stream-boundaries",
+      "title": "Bounded Demand",
+      "summary": "Trace qualifying consumption, cleanup ownership, pressure signals and accepted offsets without inferring remote effects.",
+      "nodes": [
+        {
+          "kind": "document",
+          "slug": "programming/lazy-demand-and-stream-boundaries",
+          "skillIds": [
+            "bounded-demand"
+          ],
+          "required": true
+        },
+        {
+          "kind": "exercise",
+          "slug": "programming/lazy-demand-and-stream-boundaries-checkpoint",
+          "skillIds": [
+            "bounded-demand"
+          ],
+          "required": true
+        }
+      ]
+    },
+    {
+      "slug": "text-domain-and-matching",
+      "title": "Text Domains",
+      "summary": "Preserve fixed ASCII positions and separate pattern syntax, whole-input acceptance and visualization evidence.",
+      "nodes": [
+        {
+          "kind": "document",
+          "slug": "programming/text-domain-and-matching",
+          "skillIds": [
+            "text-domain"
+          ],
+          "required": true
+        },
+        {
+          "kind": "exercise",
+          "slug": "programming/text-domain-and-matching-checkpoint",
+          "skillIds": [
+            "text-domain"
+          ],
+          "required": true
+        }
+      ]
+    },
+    {
+      "slug": "tree-shapes-and-cost-models",
+      "title": "Shape And Cost",
+      "summary": "Separate tree shape from global ordering and compare exact operation counts under explicit representation assumptions.",
+      "nodes": [
+        {
+          "kind": "document",
+          "slug": "programming/tree-shapes-and-cost-models",
+          "skillIds": [
+            "shape-and-cost"
+          ],
+          "required": true
+        },
+        {
+          "kind": "exercise",
+          "slug": "programming/tree-shapes-and-cost-models-checkpoint",
+          "skillIds": [
+            "shape-and-cost"
+          ],
+          "required": true
+        }
+      ]
+    }
+  ],
+  "progression": {
+    "framework": "career",
+    "roadmapLabel": "Selected Programming Contracts",
+    "skills": [
+      {
+        "id": "value-ownership",
+        "label": "Value Ownership",
+        "category": "programming-contracts",
+        "description": "Predict binding, nested sharing, own membership, conversion and call receivers under an explicit JavaScript context."
+      },
+      {
+        "id": "bounded-demand",
+        "label": "Bounded Demand",
+        "category": "programming-contracts",
+        "description": "Trace qualifying consumption, cleanup ownership, pressure signals and accepted offsets without inferring remote effects."
+      },
+      {
+        "id": "text-domain",
+        "label": "Text Domains",
+        "category": "programming-contracts",
+        "description": "Preserve fixed ASCII positions and separate pattern syntax, whole-input acceptance and visualization evidence."
+      },
+      {
+        "id": "shape-and-cost",
+        "label": "Shape And Cost",
+        "category": "programming-contracts",
+        "description": "Separate tree shape from global ordering and compare exact operation counts under explicit representation assumptions."
+      }
+    ],
+    "stages": [
+      {
+        "id": "value-ownership",
+        "label": "Value Ownership",
+        "level": "Practitioner",
+        "status": "published",
+        "summary": "Predict binding, nested sharing, own membership, conversion and call receivers under an explicit JavaScript context.",
+        "unitSlugs": [
+          "javascript-value-contracts"
+        ],
+        "outcomes": [
+          {
+            "id": "value-ownership-review",
+            "statement": "Predict binding, nested sharing, own membership, conversion and call receivers under an explicit JavaScript context.",
+            "skillId": "value-ownership"
+          }
+        ],
+        "requiredNodeSlugs": [
+          "programming/javascript-value-contracts",
+          "programming/javascript-value-contracts-checkpoint"
+        ],
+        "checkpointExerciseSlug": "programming/javascript-value-contracts-checkpoint",
+        "passThreshold": 0.8,
+        "minimumSkillScore": 0.8,
+        "estimatedMinutes": 30
+      },
+      {
+        "id": "bounded-demand",
+        "label": "Bounded Demand",
+        "level": "Practitioner",
+        "status": "published",
+        "summary": "Trace qualifying consumption, cleanup ownership, pressure signals and accepted offsets without inferring remote effects.",
+        "unitSlugs": [
+          "lazy-demand-and-stream-boundaries"
+        ],
+        "outcomes": [
+          {
+            "id": "bounded-demand-review",
+            "statement": "Trace qualifying consumption, cleanup ownership, pressure signals and accepted offsets without inferring remote effects.",
+            "skillId": "bounded-demand"
+          }
+        ],
+        "requiredNodeSlugs": [
+          "programming/lazy-demand-and-stream-boundaries",
+          "programming/lazy-demand-and-stream-boundaries-checkpoint"
+        ],
+        "checkpointExerciseSlug": "programming/lazy-demand-and-stream-boundaries-checkpoint",
+        "passThreshold": 0.8,
+        "minimumSkillScore": 0.8,
+        "estimatedMinutes": 30
+      },
+      {
+        "id": "text-domain",
+        "label": "Text Domains",
+        "level": "Practitioner",
+        "status": "published",
+        "summary": "Preserve fixed ASCII positions and separate pattern syntax, whole-input acceptance and visualization evidence.",
+        "unitSlugs": [
+          "text-domain-and-matching"
+        ],
+        "outcomes": [
+          {
+            "id": "text-domain-review",
+            "statement": "Preserve fixed ASCII positions and separate pattern syntax, whole-input acceptance and visualization evidence.",
+            "skillId": "text-domain"
+          }
+        ],
+        "requiredNodeSlugs": [
+          "programming/text-domain-and-matching",
+          "programming/text-domain-and-matching-checkpoint"
+        ],
+        "checkpointExerciseSlug": "programming/text-domain-and-matching-checkpoint",
+        "passThreshold": 0.8,
+        "minimumSkillScore": 0.8,
+        "estimatedMinutes": 30
+      },
+      {
+        "id": "shape-and-cost",
+        "label": "Shape And Cost",
+        "level": "Practitioner",
+        "status": "published",
+        "summary": "Separate tree shape from global ordering and compare exact operation counts under explicit representation assumptions.",
+        "unitSlugs": [
+          "tree-shapes-and-cost-models"
+        ],
+        "outcomes": [
+          {
+            "id": "shape-and-cost-review",
+            "statement": "Separate tree shape from global ordering and compare exact operation counts under explicit representation assumptions.",
+            "skillId": "shape-and-cost"
+          }
+        ],
+        "requiredNodeSlugs": [
+          "programming/tree-shapes-and-cost-models",
+          "programming/tree-shapes-and-cost-models-checkpoint"
+        ],
+        "checkpointExerciseSlug": "programming/tree-shapes-and-cost-models-checkpoint",
+        "passThreshold": 0.8,
+        "minimumSkillScore": 0.8,
+        "estimatedMinutes": 30
+      }
+    ]
+  }
+}

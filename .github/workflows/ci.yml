@@ -125,6 +125,8 @@ jobs:
           cache: npm
       - run: npm ci
       - run: npm run test:db
+      - run: docker pull postgres@sha256:e38411452a464af89e5adadb8d223bf53b898d47d6ef918b2d58c08707350449
+      - run: npm run test:reservation:sql
       - run: npm run test:linkedin:local
       - run: npm run test:linkedin:preparation
       - name: Stop local Supabase

@@ -1,0 +1,161 @@
+{
+  "slug": "system-design/reservation-boundary-checkpoint",
+  "title": "Reservation Boundary Checkpoint",
+  "type": "questionnaire",
+  "documentSlug": "system-design/fair-admission-and-reservations",
+  "concept": "Durable Operations",
+  "difficulty": "practitioner",
+  "tags": [
+    "idempotency",
+    "concurrency"
+  ],
+  "status": "published",
+  "sourceRefs": [
+    "postgresql-17-locking",
+    "postgresql-17-select",
+    "postgresql-17-ranges",
+    "postgresql-17-btree-gist",
+    "postgresql-17-exclusion",
+    "postgresql-17-date-functions"
+  ],
+  "questions": [
+    {
+      "id": "skip-result",
+      "kind": "choice",
+      "prompt": "SKIP LOCKED returns no row while an available item is locked elsewhere. What can the service conclude?",
+      "options": [
+        {
+          "id": "answer",
+          "label": "No matching row was acquired by that statement; it cannot infer sold out.",
+          "isCorrect": true
+        },
+        {
+          "id": "alternative-one",
+          "label": "Every unit has been sold permanently.",
+          "isCorrect": false
+        },
+        {
+          "id": "alternative-two",
+          "label": "The database proves strict first-come-first-served admission.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "The statement skips locked rows and does not expose a complete availability view. Neither permanent inventory exhaustion nor waiting-room fairness follows from an empty result."
+    },
+    {
+      "id": "identity",
+      "kind": "choice",
+      "prompt": "A waiting room limits accounts to one signed admission token each. What remains unresolved?",
+      "options": [
+        {
+          "id": "answer",
+          "label": "Eligibility and abuse policy; one account does not prove one legitimate human.",
+          "isCorrect": true
+        },
+        {
+          "id": "alternative-one",
+          "label": "Cryptographic signatures guarantee that every account belongs to a different human.",
+          "isCorrect": false
+        },
+        {
+          "id": "alternative-two",
+          "label": "Inventory ownership is automatically correct without a transaction.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "A signature protects a token\u2019s integrity under its design, not the uniqueness of a person. Identity policy still matters, and inventory needs its own atomic transition."
+    },
+    {
+      "id": "late-payment",
+      "kind": "choice",
+      "prompt": "B\u2019s hold expired; A now owns the unit. B\u2019s external payment succeeds late. What should completion do?",
+      "options": [
+        {
+          "id": "answer",
+          "label": "Reject the stale inventory transition and record/reconcile B\u2019s payment outcome.",
+          "isCorrect": true
+        },
+        {
+          "id": "alternative-one",
+          "label": "Sell A\u2019s held unit to B because payment delivery arrived last.",
+          "isCorrect": false
+        },
+        {
+          "id": "alternative-two",
+          "label": "Ignore the external result because a zero-row update refunded it automatically.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "The current hold/version guards protect A\u2019s ownership. They do not undo an external charge. Reconciliation or compensation follows the provider and product contract; last-write-wins is unsafe."
+    },
+    {
+      "id": "expiry-boundary",
+      "kind": "choice",
+      "prompt": "The chosen rule permits completion only while expires_at is strictly greater than now. At the exact expiry tick, what applies?",
+      "options": [
+        {
+          "id": "answer",
+          "label": "Completion is ineligible; expiry may win the guarded transition.",
+          "isCorrect": true
+        },
+        {
+          "id": "alternative-one",
+          "label": "Both completion and expiry must commit independently.",
+          "isCorrect": false
+        },
+        {
+          "id": "alternative-two",
+          "label": "Completion always wins regardless of the database\u2019s current hold version.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "Under this explicit boundary, equality fails the completion predicate and satisfies expiry\u2019s time predicate. State, identity and version still determine whether an update can commit. Both transitions cannot independently own the same unit."
+    },
+    {
+      "id": "room-overlap",
+      "kind": "choice",
+      "prompt": "Two unequal stays overlap for room 7. What protects allocation while permitting a checkout and check-in on the same day?",
+      "options": [
+        {
+          "id": "answer",
+          "label": "Enforce overlap exclusion for the same room; adjacent half-open stays may coexist.",
+          "isCorrect": true
+        },
+        {
+          "id": "alternative-one",
+          "label": "UNIQUE on room and range rejects every possible overlap.",
+          "isCorrect": false
+        },
+        {
+          "id": "alternative-two",
+          "label": "Locking a matching row always protects the empty availability result.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "Range equality is weaker than overlap exclusion. With checkout-exclusive dates, adjacent stays do not overlap. An empty lookup has no matching booking row to lock; allocation needs the database invariant, not a prior read."
+    },
+    {
+      "id": "room-expiry",
+      "kind": "choice",
+      "prompt": "The clock passes a held row\u2019s expiry tick. The exclusion predicate includes held and confirmed rows. When can a competing overlapping hold be accepted?",
+      "options": [
+        {
+          "id": "answer",
+          "label": "Commit the guarded transition to expired; elapsed time alone does not remove the hold from the constraint.",
+          "isCorrect": true
+        },
+        {
+          "id": "alternative-one",
+          "label": "The database removes the row automatically as soon as time passes.",
+          "isCorrect": false
+        },
+        {
+          "id": "alternative-two",
+          "label": "Any late payment may reactivate the old hold over the new one.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "The partial constraint depends on stored state. Time passing does not commit expiry. State, hold identity and version must guard the release; reactivation is checked for overlap, and the constraint does not settle an external charge."
+    }
+  ]
+}

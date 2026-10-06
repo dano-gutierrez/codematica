@@ -6,4 +6,6 @@ The web app declares `@codematica/ui` as a direct production dependency. The smo
 
 The artifact also rejects privileged editorial worker RPC/service-key markers in built server/client JavaScript, protecting the HTTP/worker import boundary. CI uploads production install/startup logs independently of unit results.
 
-Release regression uploads use the commit SHA and run attempt in artifact names. Manual dispatch therefore accepts branches containing slashes, and reruns preserve earlier evidence. `release-workflow.test.ts` checks both upload jobs, branch/tag inputs and attempt isolation. Playground fixtures focus CodeMirror, use its emulated Apple shortcut and assert complete text replacement; application logic remains unchanged.
+Release regression uploads use the commit SHA and run attempt in artifact names. Manual dispatch therefore accepts branches containing slashes, and reruns preserve earlier evidence. `release-workflow.test.ts` checks both upload jobs, branch/tag inputs and attempt isolation.
+
+`browser-matrix.test.ts` imports the release Playwright configuration and checks every desktop/WebKit feature tag independently. Mobile Chromium must retain the complete suite. This protects incoming test lanes during stack merges without starting a browser or changing test deadlines.

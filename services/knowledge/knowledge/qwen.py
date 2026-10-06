@@ -25,7 +25,7 @@ class QwenClient(OpenAIGenericClient):
         kwargs["client"] = object()  # All network calls use the loopback-only HTTP transport below.
         super().__init__(**kwargs)
         self.local = LocalModels(store)
-        self.local.versions["extraction_retry"] = "json-repair-v1"
+        self.local.versions["extraction_retry"] = "bounded-fresh-json-repair-v3"
 
     async def generate_response(self, messages, response_model=None, max_tokens=None, **kwargs):
         schema = response_model.model_json_schema() if response_model else {}
@@ -48,10 +48,14 @@ class QwenClient(OpenAIGenericClient):
                 except (ValueError, KeyError, TypeError) as error:
                     if attempt: raise ValueError("Local extraction failed schema validation") from None
                     body["max_tokens"]=min(3000,body["max_tokens"]+800)
-                    previous=choice.get("message",{}).get("content","")
-                    if isinstance(previous,str): body["messages"].append({"role":"assistant","content":previous[:12000]})
+                    if {"concepts", "relationships"} <= schema.get("properties", {}).keys():
+                        budget="Retry budget: return at most ONE supported concept and ZERO relationships. Keep its verbatim quote under 80 characters and include the concept name. Never copy a whole code block."
+                        if body["messages"][0]["role"] == "system":
+                            body["messages"][0]["content"] = budget + "\n" + body["messages"][0]["content"]
+                        else:
+                            body["messages"].insert(0,{"role":"system","content":budget})
                     detail=error.msg if isinstance(error,json.JSONDecodeError) else type(error).__name__
                     if hasattr(error,"errors"):
                         detail="; ".join(".".join(str(part) for part in item["loc"])+": "+item["type"] for item in error.errors(include_input=False)[:8])
-                    body["messages"].append({"role": "user", "content": "Your previous output failed validation ("+detail+"). Return one complete JSON data instance, closing every object and array. Return actual extracted data with the required keys from the example shape. Do not return $defs, properties or a schema. If quotes are required, use brief verbatim quotes under 160 characters containing the concept names; never copy whole code blocks. Escape JSON newlines once, not twice. Use empty arrays when the passage provides no supported entries."})
+                    body["messages"].append({"role": "user", "content": "Start a fresh answer using the original passages and required data shape above. Your previous output failed validation ("+detail+"). Return one complete JSON data instance, closing every object and array. Return actual extracted data with the required keys from the example shape. Do not return $defs, properties or a schema. If quotes are required, use brief verbatim quotes under 160 characters containing the concept names; never copy whole code blocks. Escape JSON newlines once, not twice. Use empty arrays when the passage provides no supported entries."})
         return await self.local.cached("graphiti-extract-v2", body, run)

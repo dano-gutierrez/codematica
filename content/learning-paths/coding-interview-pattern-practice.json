@@ -1,0 +1,171 @@
+{
+  "slug": "coding-interview-pattern-practice",
+  "title": "Coding Interview Pattern Practice",
+  "summary": "Practice patterns through 18 existing guided questions and the BFS/DFS lessons, then review original array-state contracts and selected backtracking with a bounded keypad dictionary. Explain invariants, compare alternatives and choose a difficulty. Full backtracking and comprehensive dynamic programming are outside this path; it is not a complete interview syllabus or hiring guarantee.",
+  "kind": "skill",
+  "category": "Programming",
+  "audience": "Developers strengthening coding interview reasoning across foundation, practitioner and selected senior examples. Company collections are reported public preparation, not official question banks.",
+  "status": "published",
+  "units": [
+    {
+      "slug": "foundations",
+      "title": "Lookup, Stacks And Pointers",
+      "summary": "Practice lookup ownership, nested delimiters, one-deletion budgets and in-place pointer updates. Explain the invariant before choosing a faster approach.",
+      "nodes": [
+        {
+          "kind": "interview",
+          "slug": "amazon/two-sum-product-pair"
+        },
+        {
+          "kind": "interview",
+          "slug": "apple/validate-parentheses-stream"
+        },
+        {
+          "kind": "interview",
+          "slug": "meta/valid-palindrome-with-one-deletion"
+        },
+        {
+          "kind": "interview",
+          "slug": "apple/reverse-linked-list"
+        }
+      ]
+    },
+    {
+      "slug": "contiguous-data",
+      "title": "Windows And Prefix Counts",
+      "summary": "Distinguish a contiguous distinct window from prefix-sum counting with negative values. State why a window cannot replace the prefix-count contract.",
+      "nodes": [
+        {
+          "kind": "interview",
+          "slug": "netflix/longest-distinct-viewing-window"
+        },
+        {
+          "kind": "interview",
+          "slug": "google/subarray-sum-equals-k"
+        }
+      ]
+    },
+    {
+      "slug": "ordered-data",
+      "title": "Intervals, Top K And Binary Partitions",
+      "summary": "Compare interval merging with room allocation, choose heap or frequency buckets for top K, then study the senior binary-partition median example.",
+      "nodes": [
+        {
+          "kind": "interview",
+          "slug": "apple/merge-intervals"
+        },
+        {
+          "kind": "interview",
+          "slug": "uber/meeting-rooms-ii"
+        },
+        {
+          "kind": "interview",
+          "slug": "amazon/top-k-frequent-items"
+        },
+        {
+          "kind": "interview",
+          "slug": "google/median-two-sorted-arrays"
+        }
+      ]
+    },
+    {
+      "slug": "trees-and-structure",
+      "title": "Tree Coordinates And Serialization",
+      "summary": "Clarify column-order tie rules before comparing traversals. Preserve null positions when encoding and reconstructing the senior tree example.",
+      "nodes": [
+        {
+          "kind": "interview",
+          "slug": "meta/binary-tree-vertical-columns"
+        },
+        {
+          "kind": "interview",
+          "slug": "microsoft/serialize-deserialize-binary-tree"
+        }
+      ]
+    },
+    {
+      "slug": "bounded-caches",
+      "title": "Recency And Expiry State",
+      "summary": "Study senior examples with different cache contracts: recency eviction and caller-clock expiry. Compare the simpler reference approach with its optimized alternative.",
+      "nodes": [
+        {
+          "kind": "interview",
+          "slug": "amazon/lru-cache"
+        },
+        {
+          "kind": "interview",
+          "slug": "netflix/auto-expire-cache"
+        }
+      ]
+    },
+    {
+      "slug": "graph-decisions",
+      "title": "Traversal, Dependencies And Path Cost",
+      "summary": "Review existing BFS/DFS lessons and checkpoints, then compare components, dependency cycles, equal-cost moves and non-negative weighted paths.",
+      "nodes": [
+        {
+          "kind": "document",
+          "slug": "programming/bfs-dfs-fundamentals"
+        },
+        {
+          "kind": "exercise",
+          "slug": "programming/bfs-dfs-fundamentals-questionnaire"
+        },
+        {
+          "kind": "document",
+          "slug": "programming/bfs-dfs-interview-patterns"
+        },
+        {
+          "kind": "exercise",
+          "slug": "programming/bfs-dfs-interview-patterns-questionnaire"
+        },
+        {
+          "kind": "interview",
+          "slug": "google/number-of-islands"
+        },
+        {
+          "kind": "interview",
+          "slug": "google/course-schedule"
+        },
+        {
+          "kind": "interview",
+          "slug": "google/shortest-path-binary-matrix"
+        },
+        {
+          "kind": "interview",
+          "slug": "uber/shortest-path-weighted-road-graph"
+        }
+      ]
+    },
+    {
+      "slug": "array-state-reviews",
+      "title": "Array State Reviews",
+      "summary": "Test nonempty/tie rules, validated cyclic placement and strictly greater successors with original bounded oracles.",
+      "nodes": [
+        {
+          "kind": "document",
+          "slug": "programming/array-state-invariants"
+        },
+        {
+          "kind": "exercise",
+          "slug": "programming/array-state-checkpoint"
+        }
+      ]
+    },
+    {
+      "slug": "keypad-dictionary-search",
+      "title": "Bounded Dictionary Backtracking",
+      "summary": "Validate a closed dictionary, distinguish prefixes from words, restore branch state and compare trie search with an independent scan.",
+      "nodes": [
+        {
+          "kind": "document",
+          "slug": "programming/keypad-dictionary-search"
+        },
+        {
+          "kind": "exercise",
+          "slug": "programming/keypad-search-checkpoint"
+        }
+      ]
+    }
+  ]
+}

@@ -1608,10 +1608,10 @@ export function InterviewQuestionScreen({ question, adapters, nextHref }: { ques
     return <WebInterviewQuestionScreen question={question} adapters={adapters} nextHref={nextHref} />;
   }
 
-  return <AlgorithmInterviewQuestionScreen question={question} adapters={adapters} />;
+  return <AlgorithmInterviewQuestionScreen question={question} adapters={adapters} nextHref={nextHref} />;
 }
 
-function AlgorithmInterviewQuestionScreen({ question, adapters }: { question: Extract<InterviewQuestion, { kind: "algorithm" }> } & ScreenProps) {
+function AlgorithmInterviewQuestionScreen({ question, adapters, nextHref }: { question: Extract<InterviewQuestion, { kind: "algorithm" }>; nextHref?: string } & ScreenProps) {
   const [selectedTrackId, setSelectedTrackId] = useState(question.solutionTracks[0]?.id ?? "");
   const [language, setLanguage] = useState<"python" | "typescript" | "java">("python");
   const selectedTrack = question.solutionTracks.find((track) => track.id === selectedTrackId) ?? question.solutionTracks[0];
@@ -1655,6 +1655,7 @@ function AlgorithmInterviewQuestionScreen({ question, adapters }: { question: Ex
         onChange={(value) => setLanguage(value as "python" | "typescript" | "java")}
       />
       {selectedTrack ? <SolutionTrack track={selectedTrack} language={language} /> : null}
+      {nextHref ? <Button label="Next activity" testID="mobile-interview-next-node" onPress={() => adapters.navigation.navigate(nextHref)} /> : null}
     </AppScreen>
   );
 }
