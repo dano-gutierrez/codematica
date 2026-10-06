@@ -331,6 +331,44 @@ class EvaluationTests(unittest.IsolatedAsyncioTestCase):
                 report=await evaluate(store,FakeEmbeddings(),FakeModels(),{"title":"Long proposal","body":"New material "*1100,"kind":"document"})
             self.assertEqual(report["action"],"needs_review")
             self.assertTrue(any("truncated" in warning for warning in report["warnings"]))
+    async def test_gap_proposals_cannot_assert_absence_from_bounded_evidence(self):
+        from unittest.mock import patch
+        for chosen, gaps in ((chosen,gaps) for chosen in ["create_path","update_existing","skip_duplicate"] for gaps in [None, [], ["No checklist exists."], ["No checklist exists.", "No activity exists."]]):
+            with self.subTest(chosen=chosen,gaps=gaps), tempfile.TemporaryDirectory() as tmp:
+                store=Store(Path(tmp)/"db"); store.activate(snapshot(text="A complete checklist already exists outside the selected excerpt."))
+                models=FakeModels()
+                details={"explanation":"The catalog has no checklist.", "overlapping_material":["Selected terms overlap."]}
+                if gaps is not None: details["missing_material"]=gaps.copy()
+                async def explain(_): return details
+                async def decide(state,questions):
+                    result=await FakeModels.decide(models,state,questions)
+                    result["action"]={"choice":chosen,"probabilities":{chosen:.95}}
+                    return result
+                models.explain=explain; models.decide=decide
+                with patch.object(store,"status",return_value={**store.status(),"semantic_complete":True}):
+                    report=await evaluate(store,FakeEmbeddings(),models,{"title":"Checklist practice", "body":"Add an original checklist practice activity.", "kind":"document"})
+                self.assertEqual(report["explanation"],"Unverified interpretation of selected passages: The catalog has no checklist.")
+                self.assertEqual(report["models"]["explanation_guard"],"selected-passages-review-v1")
+                self.assertNotIn("explanation_guard",models.versions)
+                self.assertEqual(report["overlapping_material"],["Selected terms overlap."])
+                self.assertEqual(report["missing_material"],["Unverified gap proposal: "+item for item in gaps or []])
+                self.assertEqual(report["model_action"],chosen)
+                self.assertEqual(report["action"],"needs_review" if gaps else chosen)
+                self.assertEqual(bool(report["warnings"]),bool(gaps))
+                if gaps: self.assertIn("complete matched resources",report["warnings"][-1])
+                self.assertEqual(details.get("missing_material"),gaps)
+
+    async def test_exact_duplicate_bypasses_unnecessary_explanation_review(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            store=Store(Path(tmp)/"db"); store.activate(snapshot())
+            models=FakeModels()
+            async def explain(_): raise AssertionError("Exact text matching must not call the writer")
+            models.explain=explain
+            report=await evaluate(store,FakeEmbeddings(),models,{"title":"Indexes", "body":"Indexes make reads faster", "kind":"document"})
+            self.assertEqual(report["action"],"skip_duplicate")
+            self.assertEqual(report["warnings"],[])
+            self.assertNotIn("Unverified",report["explanation"])
+
     async def test_invalid_explanation_requires_review_even_when_decision_is_confident(self):
         from unittest.mock import patch
         models=FakeModels()

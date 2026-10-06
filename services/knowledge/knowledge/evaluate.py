@@ -114,11 +114,14 @@ async def evaluate(store, embeddings, models, candidate):
         details = await models.explain({"action": action, "candidate": {**state["candidate"],"body":candidate["body"][:2000]},
           "matches":[{**r,"text":supporting_passage(r["text"],query,700)} for r in selected[:3]],
           "decisions":{"action":action_answer["choice"],"confidence":confidence,"placement":chosen}, "warnings": warnings})
-        explanation = details["explanation"]
+        explanation = "Unverified interpretation of selected passages: " + details["explanation"]
+        if details.get("missing_material"):
+            action = "needs_review"
+            warnings.append("Missing-material claims are unverified proposals from selected passages; inspect complete matched resources before treating them as curriculum gaps.")
     except (ValueError, KeyError):
         action="needs_review"
         warnings.append("The local explanation was invalid; inspect the structured evidence.")
     if store.status()["snapshot_id"] != status["snapshot_id"]: raise ValueError("Source catalog changed during evaluation")
     return {"snapshot_id": status["snapshot_id"], "candidate_hash": digest(candidate), "action": action, "model_action": action_answer["choice"], "explanation": explanation, "confidence": confidence, "warnings": warnings,
       "matches": selected, "placement": placement, "relationships": relationships, "alternatives": [{"action": "update_existing" if r["relation"] == "extends" else "inspect", "target_id": r["id"]} for r in selected[:3]],
-      "overlapping_material": details.get("overlapping_material", []), "missing_material": details.get("missing_material", []), "models": models.versions, "metrics": {"elapsed_ms": round((time.monotonic() - started) * 1000), "cache_hits": models.cache_hits-initial_cache_hits}, "semantic_complete": status["semantic_complete"]}
+      "overlapping_material": details.get("overlapping_material", []), "missing_material": ["Unverified gap proposal: " + item for item in details.get("missing_material", [])], "models": {**models.versions, "explanation_guard": "selected-passages-review-v1"}, "metrics": {"elapsed_ms": round((time.monotonic() - started) * 1000), "cache_hits": models.cache_hits-initial_cache_hits}, "semantic_complete": status["semantic_complete"]}
