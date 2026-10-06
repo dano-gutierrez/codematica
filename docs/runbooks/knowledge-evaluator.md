@@ -42,6 +42,8 @@ Synchronization validates and activates one projection atomically. It preserves 
 
 The MCP program is `services/knowledge/mcp_server.py`, run with the absolute `.local/knowledge/python/bin/python` from this checkout. It reads the token locally and talks to the running API. Register it in the chat client's MCP configuration; the service is not automatically started by an MCP call.
 
+When using an alternate runtime directory, set the same absolute `KNOWLEDGE_STATE` in the API and MCP client configuration. The stdio smoke forwards that directory explicitly; the SDK's default child environment omits arbitrary variables. A mismatched directory reads a different token and receives 401. Keep the token in its private file.
+
 Tools: `search_knowledge`, `get_resource`, `get_relationships`, `evaluate_candidate`, `get_evaluation`. Evaluation returns a staged job ID; poll `get_evaluation`. Read evidence and coverage before using recommendations. MCP and REST cannot authorize publication or write authored content.
 
 ## Enroll LinkedIn preparation

@@ -6,6 +6,8 @@ Install/start/index/status commands and failure handling are in [the runbook](..
 
 Private state lives under `.local/knowledge/`, excluded from Git. Tests use fake transports and isolated SQLite files; real compatibility and benchmark commands are explicit operator actions. The runtime never activates a hosted-provider fallback.
 
+For an alternate private runtime, set `KNOWLEDGE_STATE` for both API and MCP processes. The stdio smoke explicitly forwards this directory to its child; the MCP SDK's default environment does not retain arbitrary variables. No hosted or Supabase credentials are forwarded.
+
 The TypeScript exporter keeps source records and local companions separate. Published document/exercise companions inherit the source node’s explicit unit position and scoped skills, matching the reader’s route. Missing or draft companions leave the source node as the external reading target.
 
 Retrieval combines BM25 lexical ranking with local embeddings. Source metadata is searchable evidence; it does not establish the contents of a linked book. Placement choices are paths or units, and insertion points require explicit authored membership in the selected unit or the selected path’s units. Game/reference path tags and inferred edges cannot establish order. An unknown placement may identify an existing resource to update, but cannot invent an insertion order. The store and evaluation tests cover generic long-document noise, punctuation, source evidence, path/unit membership and unknown placement.
