@@ -44,3 +44,5 @@ Game store claims are serialized across account changes. Deferred identity check
 
 
 `src/game/map-art.ts` owns the fifty-position art panel order and bounded, renderer-independent parallax offsets. It does not create campaign levels or alter progression. Native runs its offset helper as a Reanimated worklet; web samples the same rule on scroll frames.
+
+Selected evidence tests pin55 independently reviewed paper-case answers, source metadata and path-qualified next routes. The knowledge catalog retains eleven authored resource/skill identities across three new paths; existing parsing and runtime providers are unchanged.

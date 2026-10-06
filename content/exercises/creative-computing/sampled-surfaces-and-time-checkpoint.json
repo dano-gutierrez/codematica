@@ -1,0 +1,152 @@
+{
+  "slug": "creative-computing/sampled-surfaces-and-time-checkpoint",
+  "title": "Sampled Surfaces And Time Checkpoint",
+  "type": "questionnaire",
+  "difficulty": "practitioner",
+  "status": "published",
+  "documentSlug": "creative-computing/sampled-surfaces-and-time",
+  "sourceRefs": [
+    "evidence-blender-scene-time",
+    "evidence-blender-position"
+  ],
+  "concept": "Sampled Surfaces And Time",
+  "tags": [
+    "evidence-review",
+    "contracts"
+  ],
+  "skillIds": [
+    "sampled-geometry"
+  ],
+  "questions": [
+    {
+      "id": "height",
+      "kind": "choice",
+      "skillIds": [
+        "sampled-geometry"
+      ],
+      "prompt": "With A=0.5, \u03bb=4, f=1, x=1 and t=0, what is the height?",
+      "options": [
+        {
+          "id": "correct",
+          "label": "0.5 metres.",
+          "isCorrect": true
+        },
+        {
+          "id": "wrong-1",
+          "label": "4 metres because wavelength is the height.",
+          "isCorrect": false
+        },
+        {
+          "id": "wrong-2",
+          "label": "1 metre because x equals 1.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "The phase is 2\u03c0\u00d7(1/4) = \u03c0/2, whose sine is 1; multiplying by amplitude gives 0.5. Wavelength and horizontal position are not the vertical amplitude."
+    },
+    {
+      "id": "time",
+      "kind": "choice",
+      "skillIds": [
+        "sampled-geometry"
+      ],
+      "prompt": "The exercise defines frame 0 at t=0 and 24 fps. What time is frame 6?",
+      "options": [
+        {
+          "id": "wrong-1",
+          "label": "6 seconds for every scene.",
+          "isCorrect": false
+        },
+        {
+          "id": "wrong-2",
+          "label": "The mapping proves every Blender timeline starts at zero.",
+          "isCorrect": false
+        },
+        {
+          "id": "correct",
+          "label": "0.25 seconds under this declared mapping.",
+          "isCorrect": true
+        }
+      ],
+      "explanation": "The authored conversion is 6/24 = 0.25 seconds. It neither makes a raw frame count seconds nor establishes a universal application timeline origin."
+    },
+    {
+      "id": "sample",
+      "kind": "choice",
+      "skillIds": [
+        "sampled-geometry"
+      ],
+      "prompt": "For x=1 and t=0.25 with the same parameters, what is the height?",
+      "options": [
+        {
+          "id": "wrong-2",
+          "label": "The scene must be a physical water simulation.",
+          "isCorrect": false
+        },
+        {
+          "id": "correct",
+          "label": "0 metres because the two phase terms cancel.",
+          "isCorrect": true
+        },
+        {
+          "id": "wrong-1",
+          "label": "0.5 metres at every time.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "The phase is 2\u03c0\u00d7(1/4\u22121\u00d70.25) = 0. Height therefore becomes zero; a changing analytic surface still does not establish a physical fluid simulation."
+    },
+    {
+      "id": "geometry",
+      "kind": "choice",
+      "skillIds": [
+        "sampled-geometry"
+      ],
+      "prompt": "A material looks wavy but no vertex positions change. What is evidenced?",
+      "options": [
+        {
+          "id": "correct",
+          "label": "An appearance effect; geometric displacement needs a separate operation.",
+          "isCorrect": true
+        },
+        {
+          "id": "wrong-1",
+          "label": "The mesh definitely moved.",
+          "isCorrect": false
+        },
+        {
+          "id": "wrong-2",
+          "label": "Good lighting proves correct topology.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "A material can change appearance without changing geometry. Vertex displacement, topology and lighting are distinct observations; a convincing still image cannot prove the missing operation."
+    },
+    {
+      "id": "spacing",
+      "kind": "choice",
+      "skillIds": [
+        "sampled-geometry"
+      ],
+      "prompt": "Spacing changes from 1 to 2 metres while wavelength remains 4. What changes?",
+      "options": [
+        {
+          "id": "wrong-1",
+          "label": "The wavelength necessarily doubles.",
+          "isCorrect": false
+        },
+        {
+          "id": "wrong-2",
+          "label": "Coarser sampling guarantees better detail.",
+          "isCorrect": false
+        },
+        {
+          "id": "correct",
+          "label": "Intervals per cycle fall from four to two; inspect the sampled shape separately.",
+          "isCorrect": true
+        }
+      ],
+      "explanation": "The wavelength-to-spacing ratio falls from 4 to 2. Sampling density changes independently of the continuous formula; coarsening does not guarantee that between-sample shape is preserved."
+    }
+  ]
+}

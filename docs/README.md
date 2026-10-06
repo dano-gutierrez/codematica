@@ -130,3 +130,5 @@ The game [miniature sheet](../assets/game/previews/miniatures-v3.png) shows the 
 - [Private interview preparation](features/interview-preparation.md): company/role tracker, mandatory technical editing and private knowledge reuse. [Operations](runbooks/interview-preparation.md).
 
 The [continuous map art review](../assets/game/previews/continuous-map/review.md) records the create/review/fix/review cycle, fifty-position landscape, three parallax depths, and visual evidence. Exact source prompts and seam export rules live in the asset guide.
+
+- `docs/features/selected-evidence-review.md` owns three bounded original paths for engineering, creative computing and ownership review, with55 source-bound choices.

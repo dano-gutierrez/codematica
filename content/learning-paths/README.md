@@ -55,3 +55,5 @@ Backend Engineer Readiness preserves its original four full units and appends Co
 Programming Contract Review adds four original, source-required units with path-qualified skills: value ownership, bounded demand, ASCII matching and tree/cost reasoning. Each published stage pairs a lesson with five choices and uses an 80% curriculum threshold. Preserve the existing coding path and interview identities; this selected practice is not a complete JavaScript or algorithms syllabus.
 
 Systems Boundary Review has six source-required units and qualified skills for request identity, transport, API interaction, derived state, document queries and memory domains. Preserve prior path unit objects and terminal routes. Each lesson pairs five original choices with an 80% curriculum threshold; the paper traces are not installed protocol/database/kernel implementations.
+
+Engineering Evidence Review, Creative Computing Review and Ownership And Funding Review contain seven, three and one source-required units. Each pairs an original lesson/checkpoint with an 80% threshold and qualified skill; previous curricula remain unchanged.

@@ -1,5 +1,9 @@
 # Product And Engineering Changelog
 
+## 2026-10-04 — Selected Evidence Review
+
+Added eleven original source-bound lessons,55 choices and three ordered paths for engineering, creative computing and ownership review. Existing curricula/runtime/dependencies are unchanged. Selected primary references preserve editions, licensing scope and fictional assumptions; no complete external course or installed-system certification is claimed. See [the feature contract](features/selected-evidence-review.md).
+
 This changelog dates durable product and architecture changes and links to their authoritative feature contracts.
 
 ## 2026-10-03 — Continuous campaign landscape

@@ -1,0 +1,156 @@
+{
+  "slug": "system-design/cloud-responsibility-and-runtime-checkpoint",
+  "title": "Cloud Responsibility And Runtime Checkpoint",
+  "type": "questionnaire",
+  "difficulty": "practitioner",
+  "status": "published",
+  "documentSlug": "system-design/cloud-responsibility-and-runtime",
+  "sourceRefs": [
+    "evidence-cloud-responsibility",
+    "evidence-container-security",
+    "evidence-lambda-reuse",
+    "evidence-lambda-acceptance",
+    "evidence-lambda-uniqueness",
+    "evidence-aws-budget"
+  ],
+  "concept": "Cloud Responsibility And Runtime",
+  "tags": [
+    "evidence-review",
+    "contracts"
+  ],
+  "skillIds": [
+    "cloud-responsibility"
+  ],
+  "questions": [
+    {
+      "id": "owner",
+      "kind": "choice",
+      "skillIds": [
+        "cloud-responsibility"
+      ],
+      "prompt": "A managed host runs an application with overly broad data access. What still belongs to the team?",
+      "options": [
+        {
+          "id": "correct",
+          "label": "The application\u2019s data and access policy need their own owner and verification.",
+          "isCorrect": true
+        },
+        {
+          "id": "wrong-1",
+          "label": "Managed hosting removes all access obligations.",
+          "isCorrect": false
+        },
+        {
+          "id": "wrong-2",
+          "label": "The service-model label proves correct configuration.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "A provider-managed host does not establish application permission correctness. Responsibility labels need explicit owners and evidence for the customer-controlled data and access boundary."
+    },
+    {
+      "id": "container",
+      "kind": "choice",
+      "skillIds": [
+        "cloud-responsibility"
+      ],
+      "prompt": "A Linux container receives broad host mounts. What is the sound review?",
+      "options": [
+        {
+          "id": "wrong-1",
+          "label": "Cgroups prove that all host data is inaccessible.",
+          "isCorrect": false
+        },
+        {
+          "id": "wrong-2",
+          "label": "A container always has its own independent guest kernel.",
+          "isCorrect": false
+        },
+        {
+          "id": "correct",
+          "label": "Inspect shared-kernel, mount, capability and daemon authority; packaging alone proves no isolation.",
+          "isCorrect": true
+        }
+      ],
+      "explanation": "Resource accounting and process isolation have different responsibilities. Broad mounts and daemon authority can expand access; the supplied Linux container does not become a separate guest kernel."
+    },
+    {
+      "id": "reuse",
+      "kind": "choice",
+      "skillIds": [
+        "cloud-responsibility"
+      ],
+      "prompt": "A reused execution environment stores Alice\u2019s user context outside the invocation. What is the risk?",
+      "options": [
+        {
+          "id": "wrong-2",
+          "label": "An initialization snapshot makes every stored request ID unique.",
+          "isCorrect": false
+        },
+        {
+          "id": "correct",
+          "label": "Bob may inherit stale request state; separate reusable clients from user context.",
+          "isCorrect": true
+        },
+        {
+          "id": "wrong-1",
+          "label": "Reuse always creates a fresh process for Bob.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "Reused environments can retain state. User context belongs to the invocation, while initialization snapshots also require explicit uniqueness review for values copied into restored environments."
+    },
+    {
+      "id": "accepted",
+      "kind": "choice",
+      "skillIds": [
+        "cloud-responsibility"
+      ],
+      "prompt": "An Event invocation returns 202. What is evidenced?",
+      "options": [
+        {
+          "id": "correct",
+          "label": "Asynchronous acceptance; function completion needs a separate outcome record.",
+          "isCorrect": true
+        },
+        {
+          "id": "wrong-1",
+          "label": "The function definitely succeeded.",
+          "isCorrect": false
+        },
+        {
+          "id": "wrong-2",
+          "label": "The customer owns a specific SQS message.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "The acceptance response precedes execution outcome. It establishes neither success nor a customer-visible queue implementation; retain the job identity and inspect the later receipt."
+    },
+    {
+      "id": "budget",
+      "kind": "choice",
+      "skillIds": [
+        "cloud-responsibility"
+      ],
+      "prompt": "A 20-unit budget alert arrives after usage reaches 27 units. What follows?",
+      "options": [
+        {
+          "id": "wrong-1",
+          "label": "Usage above 20 is impossible.",
+          "isCorrect": false
+        },
+        {
+          "id": "wrong-2",
+          "label": "The excess proves every budget action is ineffective.",
+          "isCorrect": false
+        },
+        {
+          "id": "correct",
+          "label": "The alert reports delayed usage; it did not act as a universal spending cap.",
+          "isCorrect": true
+        }
+      ],
+      "explanation": "The observed excess is seven units. Reporting delay can permit spend above a threshold; a notification alone is not a hard cap, while separate actions require their own scoped evidence."
+    }
+  ]
+}
