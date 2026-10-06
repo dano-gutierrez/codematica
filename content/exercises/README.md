@@ -39,4 +39,4 @@ Japanese writing notebooks use 24 whole-prompt repetitions per sheet and support
 
 Writing exercises may author `notebookPrompts: [{ id, text, kind, romaji, meaning }]`. IDs must be unique; text is NFC-normalized and every glyph must have a published stroke model listed in `characterSlugs`. `kind` is characters, word or phrase. Regenerate the index with `npm run content:index`.
 
-`system-design/partitioned-event-log-questionnaire` tests global IDs, lower bounds, cursor ownership, sparse indexes, publication, hot keys, acknowledgments and partial-block tails. Every choice and misconception is checked by the event-log content regression.
+`system-design/partitioned-event-log-questionnaire` tests global IDs, lower bounds, cursor ownership, sparse indexes, publication, hot keys, acknowledgments and partial-block tails. The regression grades every option against an independently stated answer key; the feature review checks misconception explanations.

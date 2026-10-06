@@ -11,7 +11,7 @@
       "type": "concept",
       "title": "Global IDs and local positions",
       "prompt": "A key has IDs [0, 2, 9]. What should an inclusive read from global offset 1 return?",
-      "explanation": "[2, 9] The offset is compared with event.id. ID 2 is the first ID at least 1. Treating the offset as a count of matching events or filtering on local index loses the first qualifying event; including ID 0 violates the inclusive lower bound.",
+      "explanation": "Compare the offset with event.id: [2, 9] qualify. Filtering by local index > 1 returns only [9]; including ID 0 ignores the lower bound. Skipping one item works for this example by coincidence, not as a general global-offset lookup.",
       "difficulty": "senior",
       "tags": [
         "interview",
@@ -47,7 +47,7 @@
       "type": "concept",
       "title": "Who owns currentIndex?",
       "prompt": "Two consumers read the same key at different speeds. Where should their read positions live?",
-      "explanation": "In separate cursor objects or records keyed by consumer identity and key. Each consumer needs an independent next offset. One shared key cursor lets one reader advance another. The writer counter allocates new global IDs and cannot describe which events either consumer processed.",
+      "explanation": "Each consumer keeps its own cursor or a record keyed by consumer identity and key. A shared key cursor lets one reader advance another. The writer nextId allocates global IDs; it does not track either reader’s progress.",
       "difficulty": "senior",
       "tags": [
         "interview",
@@ -65,7 +65,7 @@
       "type": "concept",
       "title": "Sparse anchors",
       "prompt": "What does adding a next pointer to every key event guarantee?",
-      "explanation": "Linear traversal after seeking; arbitrary offsets still need a scan or an index. Links make the next event reachable directly, but a missing ID cannot be looked up by position. Sparse anchors bound the seek walk. Link objects and pointer chasing can cost more memory and CPU than array references.",
+      "explanation": "Once positioned, a cursor follows next links in linear time. Arbitrary offsets still need a scan or index. Sparse anchors bound the initial walk. Link objects and pointer chasing can cost more memory and CPU than array references.",
       "difficulty": "senior",
       "tags": [
         "interview",
@@ -101,7 +101,7 @@
       "type": "concept",
       "title": "Hot key",
       "prompt": "One user owns almost every event. What can adding nodes achieve without changing same-key ownership?",
-      "explanation": "Move the whole key or place other keys elsewhere; it cannot split that user across nodes. The co-location rule makes the key indivisible. Splitting it requires a new requirement and ordering policy. Event counts also ignore payload sizes, so even equal counts do not prove equal memory usage.",
+      "explanation": "A key is indivisible under the ownership rule. Move it whole or place other keys elsewhere. Splitting it requires a new contract and ordering policy. Equal event counts do not imply equal memory because payload sizes vary.",
       "difficulty": "senior",
       "tags": [
         "interview",
@@ -137,7 +137,7 @@
       "type": "concept",
       "title": "Segment tail boundary",
       "prompt": "A cursor opens beyond the current tail of a partly filled block. What must it retain?",
-      "explanation": "The last block and end slot, plus the requested global lower bound. The next append may enter the existing partial block. Jumping to the next block skips it. A copied suffix cannot observe later appends. Retain the physical position and reject future entries below the requested offset.",
+      "explanation": "Keep the last block, end slot and requested global lower bound. Later appends may fill that same block; jumping past it skips them. A copied suffix cannot observe appends. New entries below the requested offset must still be skipped.",
       "difficulty": "senior",
       "tags": [
         "interview",

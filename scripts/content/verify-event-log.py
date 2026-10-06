@@ -141,6 +141,101 @@ class AuthoredEventLogs(unittest.TestCase):
                 self.assertIsNone(take())
                 self.assertLess(reads[0], 100)
 
+    def test_growth_boundaries_and_exact_transfer(self):
+        for name, mod in MODULES.items():
+            with self.subTest(track=name):
+                automatic = mod.EventLog(auto_threshold=4, cooldown=10, max_nodes=3)
+                for i in range(4):
+                    automatic.append(f'u{i}', i)
+                self.assertEqual(len(automatic.stats()), 1)
+                automatic.append('u0', 4)
+                self.assertEqual(len(automatic.stats()), 2)
+                for i in range(5, 14):
+                    automatic.append(f'u{i % 4}', i)
+                self.assertEqual(len(automatic.stats()), 2)
+                automatic.append('u2', 14)
+                self.assertEqual(len(automatic.stats()), 3)
+                for i in range(15, 50):
+                    automatic.append(f'u{i % 4}', i)
+                self.assertEqual(len(automatic.stats()), 3)
+                self.assertEqual(automatic.add_node(), 3)
+
+                manual = mod.EventLog(block_size=2)
+                for key, count in [('a', 6), ('b', 3), ('c', 1)]:
+                    for i in range(count):
+                        manual.append(key, i)
+                reader = manual.cursor('b')
+                self.assertEqual(ids(reader.next(1)), [6])
+                self.assertEqual(manual.add_node(), 1)
+                self.assertEqual(manual.stats(), [
+                    dict(id=0, event_count=7, keys=['a', 'c']),
+                    dict(id=1, event_count=3, keys=['b']),
+                ])
+                self.assertEqual(manual.append('b', 'after movement'), 10)
+                self.assertEqual(ids(reader.next()), [7, 8, 10])
+                manual.append('new', None)
+                self.assertEqual(manual.stats(), [
+                    dict(id=0, event_count=7, keys=['a', 'c']),
+                    dict(id=1, event_count=5, keys=['b', 'new']),
+                ])
+                empty = mod.EventLog()
+                self.assertEqual(empty.add_node(), 1)
+                self.assertEqual(empty.stats(), [dict(id=0, event_count=0, keys=[]), dict(id=1, event_count=0, keys=[])])
+
+    def test_validation_on_all_surfaces_and_page_boundary(self):
+        for name, mod in MODULES.items():
+            with self.subTest(track=name):
+                for option, values in [('block_size', [0, 65537, 1.5, True]), ('cooldown', [0, 1.5, True]), ('max_nodes', [0, 1025, 1.5]), ('auto_threshold', [0, 1.5, True])]:
+                    for value in values:
+                        with self.assertRaises(ValueError):
+                            mod.EventLog(**{option: value})
+                log = mod.EventLog(block_size=1)
+                reader = log.cursor('a')
+                for limit in [-1, 1.5, True, 10001]:
+                    for operation in [lambda: log.read(0, limit), lambda: log.read_key('a', 0, limit), lambda: reader.next(limit)]:
+                        with self.assertRaises(ValueError):
+                            operation()
+                for operation in [lambda: log.read(-1), lambda: log.read_key('a', -1), lambda: log.cursor('a', -1), lambda: log.cursor('')]:
+                    with self.assertRaises(ValueError):
+                        operation()
+                self.assertEqual(log.stats()[0]['keys'], [])
+                self.assertEqual(reader.next_offset, 0)
+                for i in range(10001):
+                    log.append('a', i)
+                self.assertEqual(reader.next(0), [])
+                self.assertEqual(reader.next_offset, 0)
+                for page in [log.read(0, 10000), log.read_key('a', 0, 10000), reader.next(10000)]:
+                    self.assertEqual(ids(page), list(range(10000)))
+                self.assertEqual(ids(reader.next()), [10000])
+                self.assertEqual(len(log.read()), 100)
+                self.assertEqual(len(log.read_key('a')), 100)
+
+    def test_pending_future_cursor_skips_new_entries_once(self):
+        for name, mod in MODULES.items():
+            with self.subTest(track=name):
+                reads = [0]
+                class Probe:
+                    def __init__(self, event_id): self.event_id = event_id
+                    @property
+                    def id(self):
+                        reads[0] += 1
+                        return self.event_id
+                store = mod.KeyStore(32)
+                store.append(Probe(0))
+                take = store.reader(2000)
+                self.assertIsNone(take())
+                for i in range(1, 1001):
+                    store.append(Probe(i))
+                reads[0] = 0
+                self.assertIsNone(take())
+                self.assertGreaterEqual(reads[0], 1000)
+                self.assertLessEqual(reads[0], 1001)
+                reads[0] = 0
+                self.assertIsNone(take())
+                self.assertEqual(reads[0], 0)
+                store.append(Probe(2000))
+                self.assertEqual(take().id, 2000)
+
 def snapshot():
     output = {}
     for name, mod in MODULES.items():
@@ -167,10 +262,13 @@ def scale(count):
         cursor = log.cursor('hot')
         read = 0
         while batch := cursor.next(10000):
-            read += len(batch)
+            for event in batch:
+                assert (event.id, event.key, event.value) == (read + (read + 15) // 16, 'hot', read)
+                read += 1
         assert read == count
         log.add_node()
         assert sum(n['event_count'] for n in log.stats()) == count + (count + 15) // 16
+        assert log.stats()[1]['keys'] == ['other']
         print(f'{name}: {count:,} events for hot key; seek, full cursor traversal and ownership passed in {time.monotonic()-start:.2f}s (local observation, not a benchmark guarantee).', file=sys.stderr)
         del log, cursor, batch, tail
         gc.collect()

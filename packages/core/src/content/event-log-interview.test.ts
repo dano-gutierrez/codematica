@@ -47,10 +47,22 @@ describe("partitioned event log interview", () => {
     expect(quiz?.type).toBe("questionnaire");
     if (quiz?.type !== "questionnaire") throw new Error("Missing quiz");
     expect(quiz.questions).toHaveLength(8);
+    const correctLabels = [
+      "[2, 9]",
+      "Lower-bound by global ID, then advance at most r positions.",
+      "In separate cursor objects or records keyed by consumer identity and key.",
+      "Linear traversal after seeking; arbitrary offsets still need a scan or an index.",
+      "ID allocation, event publication and index updates must be coordinated together.",
+      "Move the whole key or place other keys elsewhere; it cannot split that user across nodes.",
+      "Commit nextOffset=10 only after successful processing; distinguish fetched from acknowledged progress.",
+      "The last block and end slot, plus the requested global lower bound.",
+    ];
     for (const item of quiz.questions) {
       if (item.kind !== "choice") throw new Error("Expected trace/contract choices");
       expect(item.options.filter((option) => option.isCorrect)).toHaveLength(1);
-      for (const option of item.options) expect(checkQuestionAnswer(item, { kind: "choice", selectedOptionId: option.id }).isCorrect).toBe(option.isCorrect);
+      const expected = correctLabels[Number(item.id.split("-").at(-1)) - 1];
+      expect(item.options.find((option) => option.isCorrect)?.label).toBe(expected);
+      for (const option of item.options) expect(checkQuestionAnswer(item, { kind: "choice", selectedOptionId: option.id }).isCorrect).toBe(option.label === expected);
     }
     const feed = getPassiveFlashcardFeedByPathSlug(slug);
     expect(feed?.cards).toHaveLength(14);
@@ -173,6 +185,95 @@ describe("partitioned event log interview", () => {
       const first = ids(reader.next(1));
       log.addNode(); log.append("user-1", "refund");
       expect(python[track.id]).toEqual({ global: ids(log.read()), key: ids(log.readKey("user-1", 1n)), first, later: ids(reader.next()), nextOffset: "4" });
+    }
+  });
+
+  it("enforces the growth threshold, cooldown, cap and exact whole-key transfer", () => {
+    for (const track of tracks()) {
+      const { EventLog } = load(track.project.files["/log.ts"].code);
+      const automatic = new EventLog({ autoThreshold: 4, cooldown: 10, maxNodes: 3 });
+      for (let i = 0; i < 4; i++) automatic.append(`u${i}`, i);
+      expect(automatic.stats()).toHaveLength(1); // Exactly at the threshold.
+      automatic.append("u0", 4);
+      expect(automatic.stats()).toHaveLength(2); // First check: nextId 5.
+      for (let i = 5; i < 14; i++) automatic.append(`u${i % 4}`, i);
+      expect(automatic.stats()).toHaveLength(2); // One append before cooldown ends.
+      automatic.append("u2", 14);
+      expect(automatic.stats()).toHaveLength(3); // nextId 15: eligible again.
+      for (let i = 15; i < 50; i++) automatic.append(`u${i % 4}`, i);
+      expect(automatic.stats()).toHaveLength(3);
+      expect(automatic.addNode()).toBe(3); // The cap applies only to automatic growth.
+
+      const manual = new EventLog({ blockSize: 2 });
+      for (const [key, count] of [["a", 6], ["b", 3], ["c", 1]] as const) {
+        for (let i = 0; i < count; i++) manual.append(key, i);
+      }
+      const reader = manual.cursor("b");
+      expect(ids(reader.next(1))).toEqual([6]);
+      expect(manual.addNode()).toBe(1);
+      expect(manual.stats()).toEqual([
+        { id: 0, eventCount: 7, keys: ["a", "c"] },
+        { id: 1, eventCount: 3, keys: ["b"] },
+      ]);
+      expect(manual.append("b", "after movement")).toBe(10n);
+      expect(ids(reader.next())).toEqual([7, 8, 10]);
+      manual.append("new", null);
+      expect(manual.stats()).toEqual([
+        { id: 0, eventCount: 7, keys: ["a", "c"] },
+        { id: 1, eventCount: 5, keys: ["b", "new"] },
+      ]);
+      const empty = new EventLog();
+      expect(empty.addNode()).toBe(1);
+      expect(empty.stats()).toEqual([{ id: 0, eventCount: 0, keys: [] }, { id: 1, eventCount: 0, keys: [] }]);
+    }
+  });
+
+  it("validates every request surface and returns the full allowed page", () => {
+    for (const track of tracks()) {
+      const { EventLog } = load(track.project.files["/log.ts"].code);
+      for (const blockSize of [0, 65537, 1.5, NaN]) expect(() => new EventLog({ blockSize })).toThrow();
+      for (const maxNodes of [0, 1025, 1.5]) expect(() => new EventLog({ maxNodes })).toThrow();
+      for (const cooldown of [0, 1.5, Infinity]) expect(() => new EventLog({ cooldown })).toThrow();
+      for (const autoThreshold of [0, 1.5, NaN]) expect(() => new EventLog({ autoThreshold })).toThrow();
+      const log = new EventLog({ blockSize: 1 });
+      const reader = log.cursor("a");
+      for (const limit of [-1, 1.5, NaN, Infinity, 10001]) {
+        for (const call of [() => log.read(0n, limit), () => log.readKey("a", 0n, limit), () => reader.next(limit)]) expect(call).toThrow();
+      }
+      for (const call of [() => log.read(-1n), () => log.readKey("a", -1n), () => log.cursor("a", -1n), () => log.cursor("")]) expect(call).toThrow();
+      expect(log.stats()[0].keys).toEqual([]);
+      expect(reader.nextOffset).toBe(0n);
+      for (let i = 0; i < 10001; i++) log.append("a", i);
+      expect(reader.next(0)).toEqual([]);
+      expect(reader.nextOffset).toBe(0n);
+      for (const page of [log.read(0n, 10000), log.readKey("a", 0n, 10000), reader.next(10000)]) {
+        expect(ids(page)).toEqual(Array.from({ length: 10000 }, (_, i) => i));
+      }
+      expect(ids(reader.next())).toEqual([10000]);
+      expect(log.read()).toHaveLength(100);
+      expect(log.readKey("a")).toHaveLength(100);
+    }
+  });
+
+  it("visits newly skipped events once while a cursor waits for a future offset", () => {
+    for (const track of tracks()) {
+      const { KeyStore } = load(track.project.files["/log.ts"].code);
+      const store = new KeyStore(32);
+      let inspected = 0;
+      const append = (id: number) => store.append({ get id() { inspected++; return BigInt(id); }, key: "a", value: id });
+      append(0);
+      const take = store.reader(2000n);
+      expect(take()).toBeUndefined();
+      for (let i = 1; i <= 1000; i++) append(i);
+      inspected = 0;
+      expect(take()).toBeUndefined();
+      expect(inspected).toBeGreaterThanOrEqual(1000); // Empty output can still require a scan.
+      expect(inspected).toBeLessThanOrEqual(1001);
+      inspected = 0;
+      expect(take()).toBeUndefined();
+      expect(inspected).toBe(0); // The skipped prefix is not scanned again.
+      append(2000);
+      expect(take()!.id).toBe(2000n);
     }
   });
 });

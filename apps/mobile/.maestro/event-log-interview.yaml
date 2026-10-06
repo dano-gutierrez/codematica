@@ -39,10 +39,25 @@ tags:
     commands:
       - scrollUntilVisible:
           element:
+            text: "Question [0-9]+ of 8"
+          direction: UP
+      - scrollUntilVisible:
+          element:
+            id: mobile-questionnaire-choice-answer
+          direction: DOWN
+      - tapOn:
+          id: mobile-questionnaire-choice-answer
+      - scrollUntilVisible:
+          element:
             id: mobile-questionnaire-check
           direction: DOWN
       - tapOn:
           id: mobile-questionnaire-check
+      - scrollUntilVisible:
+          element:
+            id: mobile-questionnaire-feedback
+          direction: DOWN
+      - assertVisible: Correct
       - scrollUntilVisible:
           element:
             id: "mobile-questionnaire-(next|finish)"
@@ -52,9 +67,10 @@ tags:
 - tapOn: Start review feed
 - assertVisible:
     id: mobile-passive-flashcard-feed
-- repeat:
-    times: 14
-    commands:
-      - swipe:
-          direction: UP
+- scrollUntilVisible:
+    element:
+      id: mobile-passive-flashcard-card-12
+    direction: DOWN
+- assertVisible:
+    id: mobile-passive-flashcard-card-12
 - takeScreenshot: event-log-scrolling-review

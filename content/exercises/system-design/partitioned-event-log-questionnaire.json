@@ -43,7 +43,7 @@
           "isCorrect": false
         }
       ],
-      "explanation": "The offset is compared with event.id. ID 2 is the first ID at least 1. Treating the offset as a count of matching events or filtering on local index loses the first qualifying event; including ID 0 violates the inclusive lower bound."
+      "explanation": "The offset is compared with event.id. ID 2 is the first ID at least 1, so the result is [2, 9]. Filtering by local index > 1 returns only [9]; including ID 0 ignores the lower bound. Skipping one item happens to work here, but is not a general global-offset lookup."
     },
     {
       "id": "event-log-2",

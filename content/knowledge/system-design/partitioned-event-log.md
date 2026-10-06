@@ -13,9 +13,9 @@ status: published
 
 ## What the interviewer was probably probing
 
-Your `Map` grouped events by key, and your global counter preserved IDs across users. Those were useful starting decisions. The missing distinction was between **the ID used to locate an event** and **the position used to continue reading**.
+Your `Map` groups events by key, and the global counter assigns IDs across users. Both are sound starting points. The missing distinction is between **an event’s global ID** and **a reader’s position within one key’s history**.
 
-An interviewer asking about filtering and `currentIndex` may be looking for an indexed seek followed by a sequential cursor. We cannot know their intended answer from the question alone. Clarify whether they want arbitrary seeks, repeated forward pages, streaming without result arrays, or all three.
+The questions about filtering and `currentIndex` may be asking for an indexed seek followed by a sequential cursor. We cannot infer the interviewer’s intended answer. Clarify whether reads must support arbitrary offsets, repeated forward pages, streaming without result arrays, or all three.
 
 A good first answer is:
 
@@ -25,16 +25,16 @@ A good first answer is:
 
 ## Agree on the contract before coding
 
-The supplied prompt requests many concurrent callers, multiple in-memory nodes, same-key co-location, global IDs, offset reads, and adding nodes. Automatic growth is desirable. The clarification below is an authored practice contract:
+The prompt requires concurrent callers, multiple in-memory nodes, all events for one key on one node, global IDs, offset reads, and node addition. Automatic growth is desirable. This lesson uses these explicit practice assumptions:
 
-- One coordinator owns the simulated nodes in one process. This is not a multi-machine Kafka implementation.
+- One coordinator owns all simulated nodes in one process. A multi-machine Kafka implementation is outside this exercise.
 - IDs start at zero and increase globally. Every successful append publishes one event and returns its ID.
 - `fromOffset` / `from_offset` is an **inclusive global ID**, including for a per-key read.
 - Missing keys and offsets beyond the tail return empty pages. Negative offsets and invalid page limits fail.
-- Pages default to 100 events and allow 0–10,000. The page bound prevents a request from materializing millions of references or holding the Python lock indefinitely.
+- Pages default to 100 events and allow 0–10,000. This bounds the result allocation. It does not bound every scan: a cursor waiting for a future offset may skip many new events while holding the Python lock.
 - Storage is append-only. Deletion, retention, persistence, retry deduplication and network failures are discussion extensions.
 - Payloads are caller-owned references. Frozen event metadata does not freeze a nested payload. A service that promises immutable messages needs copying or serialization, with its cost included.
-- An optional count threshold triggers automatic node growth, subject to a cooldown and cap. Counts are a teaching approximation for load, not measured byte capacity.
+- An optional count threshold triggers automatic node growth, subject to a cooldown and cap. Counts approximate load for this exercise; they do not measure byte capacity.
 
 Ask about inclusive versus exclusive offsets; global ordering versus partition ordering; snapshot pages versus live streaming; retry semantics; retention; payload size; and the number of processes. A few million events is a volume, not a requests-per-second target.
 
@@ -54,7 +54,7 @@ The callback index in `values.filter((_, index) => ...)` is a **local array posi
 
 ## Review of your attempt
 
-The pasted snippet is unfinished and contains formatting artifacts. This review treats it as work in progress, not as a finished submission.
+The pasted snippet is unfinished and contains formatting artifacts. The review below treats it as work in progress.
 
 ### What was right
 
@@ -82,7 +82,7 @@ The pasted snippet is unfinished and contains formatting artifacts. This review 
 | Append does not return the assigned ID | The explicit append API contract is unmet. | Capture the allocated ID and return it after publication. |
 | No global index, node collection, or movement logic | Grouping by key alone is not the complete partitioned log. | Add node ownership and a global read index after the key read works. |
 
-A type named `Event` can also be confused with the browser's DOM `Event`; `LogEvent` makes the intended record clearer. Your empty array initialization itself was fine. Calling a resetting `init()` later would erase that bucket, so constructor initialization is safer.
+A type named `Event` can be confused with the browser’s DOM `Event`; `LogEvent` makes the record clearer. The empty array initialization was fine. Initialize the bucket in its constructor: a later resetting `init()` would erase its events.
 
 ## Why avoiding filter or slice needs a more precise answer
 
@@ -93,19 +93,19 @@ Let **m** be this key's history and **r** the returned page length.
 | Filter by ID, then limit | O(m), even for a tiny page | Up to O(m) references before limiting |
 | Loop from the beginning, stop at the limit | O(skipped prefix + r) | O(r) |
 | Binary search, then bounded loop | O(log(m + 1) + r) | O(r) |
-| Continue an already positioned cursor | O(r + 1) | O(r) for a page, O(1) temporary output for event-at-a-time iteration |
+| Continue a cursor after reaching its offset | O(r + 1) | O(r) for a page, O(1) temporary output for event-at-a-time iteration |
 
-Replacing `.filter` with a loop does not eliminate the old-prefix scan. A generator that begins at index zero has the same seek cost; it mainly changes when work runs and how results are allocated.
+Replacing `.filter` with a loop or generator starting at index zero still scans the old prefix. The generator mainly changes when work runs and how results are allocated.
 
-`.slice` is not inherently a bad algorithm. After finding a valid local position, `slice(start, start + limit)` copies only the page. `slice(offset)` both misinterprets a global offset and can copy a huge suffix. The authored implementations use explicit bounded loops so this distinction is visible.
+After a correct seek, `slice(start, start + limit)` copies only the page and can be reasonable. `slice(offset)` treats a global ID as a local position and can copy a huge suffix. The solutions use bounded loops to make the work explicit. Avoiding `.slice` alone does not improve complexity.
 
 Binary search finds a lower bound, not necessarily an exact match. For IDs `[0, 2, 9]`, offset `3` starts at `9`. Sorted insertion is unnecessary: the coordinator already appends monotonically increasing IDs. Python's `bisect_left` is a standard alternative to the small binary-search helper in these examples; concurrent mutation still requires coordination. [Python bisect documentation](https://docs.python.org/3/library/bisect.html).
 
-A hash map from ID to position can help with exact matches, but an offset may be absent from this key. It does not by itself answer “what is the first ID at least this offset?” Scanning global IDs until this user appears can also examine many other users' events. The ordered per-key index supports that successor query directly.
+An ID-to-position hash map finds exact matches. It cannot by itself find the first ID at or above an offset that is absent from the key. Scanning global IDs can examine many other users’ events. The ordered per-key index answers this successor query directly.
 
 ## Three approaches and when to choose them
 
-The walkthrough contains complete TypeScript and Python implementations for all three. Let **B** be block size, **P** node count, **Kd** key count on the busiest node, and **N** total events. Bounds below treat IDs and keys as bounded-size and map access as expected constant time; arbitrary-precision arithmetic adds bit-length costs.
+The walkthrough includes complete TypeScript and Python implementations for all three approaches. Let **B** be block size, **P** node count, **Kd** key count on the busiest node, and **N** total events. The bounds assume bounded-size IDs and keys and expected constant-time map access. Arbitrary-precision arithmetic adds costs as IDs grow.
 
 | Approach | First per-key page | Continuing cursor | Main tradeoff |
 | --- | --- | --- | --- |
@@ -113,7 +113,9 @@ The walkthrough contains complete TypeScript and Python implementations for all 
 | Linked chains with sparse anchors | O(log(ceil(m/B) + 1) + B + r) | O(r + 1) | Direct next links, but extra objects, pointers and weaker locality. |
 | Segmented log | O(log(ceil(m/B) + 1) + log(B + 1) + r) | O(r + 1) | Bounded blocks ease allocation and future retention; more boundary logic. |
 
-All three use a global ID index for O(r + 1) global reads. All retain O(N + keys + nodes) metadata plus payload bytes. Arrays and lists use references to the same event objects; the global index does not clone the payload.
+The cursor bounds above apply after seeking, once the requested offset has been reached. A pending future-offset cursor also scans **s** newly arrived events below its offset, for O(s + r + 1) work per call; each skipped event is visited once. The page limit bounds returned events, not this skipped work.
+
+All three use a global ID index for O(r + 1) global reads and retain O(N + keys + nodes) metadata plus payload bytes. The global and per-key indexes reference the same event objects without cloning payloads.
 
 ### Recipe 1: indexed arrays
 
@@ -141,7 +143,7 @@ All three use a global ID index for O(r + 1) global reads. All retain O(N + keys
 
 ## Where currentIndex belongs
 
-There are at least three different positions:
+Keep three positions separate:
 
 | State | Owner | Meaning |
 | --- | --- | --- |
@@ -153,29 +155,29 @@ After returning IDs `[2, 9]`, `nextOffset` becomes `10`, not `2`. Two readers ha
 
 For a restart-safe token, store `(consumerId, key, nextGlobalId)` and reopen via a seek. The token helps only if the log survives or can be restored; these examples lose events on process exit. A physical pointer is valid only in its current process/storage generation. Retention needs an explicit expired-offset result or agreed clamp policy; silently skipping deleted history would hide data loss.
 
-The supplied cursors advance **fetched** progress. Successful processing is a different event. Persist acknowledged progress only after the intended processing succeeds. Replaying after a crash can repeat effects, so consumers may need idempotency or a transaction coupling the effect and checkpoint. These extensions are not implemented by the in-memory cursor.
+These cursors advance **fetched** progress. Persist acknowledged progress only after processing succeeds. Crash recovery may replay an effect, so consumers may need idempotency or a transaction that commits the effect and checkpoint together. The in-memory cursor does not implement these extensions.
 
 ## Concurrency: make the guarantee specific
 
 The TypeScript examples publish synchronously without `await` or callbacks into caller code. In one JavaScript agent, another queued job cannot interleave with that synchronous operation. This serializes many callers; it does not turn a `Map` into shared multi-worker storage. [JavaScript execution model](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Execution_model).
 
-The Python examples use an `RLock` around ID allocation, both indexes, node counts, reads and movement. A page is collected under the lock and processed by the caller after release. This protects the compound invariant in one process; do not rely on the GIL for it. [Python threading](https://docs.python.org/3/library/threading.html).
+The Python examples hold an `RLock` while allocating IDs, updating both indexes and node counts, reading pages, and moving keys. Callers process pages after the lock is released. The lock protects these related operations within one process; do not rely on the GIL for this guarantee. [Python threading](https://docs.python.org/3/library/threading.html).
 
-Across processes, choose an owner/coordinator queue or a shared transactional mechanism. An atomic ID counter alone is insufficient: one worker could reserve ID 10 and pause while 11 publishes, leaving a global-read gap. You need a committed visibility boundary, recovery rules and coordination for index publication. The examples exclude process crashes and allocation failures; they are not transactions resilient to out-of-memory exceptions.
+Across processes, use an owner/coordinator queue or shared transactions. An atomic counter alone cannot ensure publication order: a worker could reserve ID 10 and pause while another publishes 11. Define which IDs are fully committed and visible, coordinate index publication, and provide recovery rules. These examples exclude process crashes and allocation failures, including out-of-memory exceptions.
 
 ## Adding nodes and handling millions of events
 
-A directory maps each key to one node. New keys go to a least-loaded node by event count. `addNode` chooses the busiest node and moves its largest eligible key whose count is at most half that node's load. This simple heuristic moves at most one key and can leave a new node empty. It is not optimal bin packing.
+A directory maps each key to one node. New keys go to a least-loaded node by event count. `addNode` chooses the busiest node and moves its largest eligible key whose count is at most half that node's load. This heuristic moves at most one key and may leave the new node empty; it does not find an optimal distribution.
 
-Selection costs O(P + Kd); moving the selected bucket reference is O(1) in this shared heap. Existing cursors keep the same bucket object. A real transfer costs at least the bytes moved and needs ownership versions, synchronization with writes, copying and a safe routing cutover. Merely changing `hash(key) % nodeCount` would change routes without moving old records. Consistent or rendezvous hashing can reduce routing changes, but still needs a migration protocol.
+Selecting a bucket costs O(P + Kd). Transferring its reference costs O(1) in this shared heap, and existing cursors keep the same object. A real transfer must copy the data, track ownership versions, coordinate writes, and switch routing safely. Merely changing `hash(key) % nodeCount` would change routes without moving old records. Consistent or rendezvous hashing can reduce routing changes, but still needs a migration protocol.
 
-Optional automatic growth checks a node's count threshold, waits a configured number of appended events between checks, and caps automatic node additions. Checking can cost O(P + Kd), so ordinary append is only amortized O(1) when excluding those checks; assigning a new key scans P nodes. Production signals should include bytes, write rate, latency and headroom. These thresholds are policy, not correctness proofs.
+Optional automatic growth uses a node’s event-count threshold, a configured number of appends between checks, and a cap on automatic additions. A check costs O(P + Kd); assigning a new key scans P nodes. Existing-key append is amortized O(1) only when these checks are excluded. Production policies should also consider bytes, write rate, latency and headroom. Thresholds do not prove correctness.
 
 All simulated nodes share the process's RAM, so adding one does not add physical capacity.
 
 One user with millions of events is an indivisible hot key under the stated contract. Extra nodes can hold other users, but cannot spread that user's events without changing the requirement. A dedicated owner, retention/archival, compression, or a negotiated compound key may be needed.
 
-For scale, estimate memory before discussing syntax: 3 million payloads at an assumed 200 bytes each already occupy **600 million payload bytes**, before objects, indexes and allocator overhead. This is an arithmetic example, not a measured runtime footprint. Add bounded requests and backpressure. A page loop avoids copying history; it does not make unbounded retention viable.
+Estimate memory before debating syntax: 3 million payloads at an assumed 200 bytes each already occupy **600 million payload bytes**, before objects, indexes and allocator overhead. This is an arithmetic example, not a measured runtime footprint. Bound requests and apply backpressure. Avoiding history copies does not make unlimited retention viable.
 
 ## Interview finish
 
