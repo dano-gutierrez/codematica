@@ -380,3 +380,19 @@ flowchart LR
 See [the feature contract](features/interview-preparation.md) and [operations](runbooks/interview-preparation.md). Hosted rollout and installed-device validation are separate gates.
 
 The campaign map assembles its terrain before export and cuts twelve shared-guard tiles. Exact edge pixels make joins independent of viewport cropping. Terrain remains stationary beneath mist, motes and foliage; panel-relative motion is bounded without modulo resets. Future art reserves fifty positions while progression stays at twelve authored levels. Both renderers cull distant scenery and react to reduced-motion preferences. Web uses clip overflow so centering a node cannot scroll inside a district. The map/list switch retains the last map offset; a versioned session key discards obsolete offsets from the shorter map.
+
+### Event-log interview content flow
+
+The anonymous partitioned-log exercise reuses the existing content and study pipeline. Its TypeScript simulations execute only in the web playground; Python companions run locally through the documented command. The exercise adds no application backend or new persistence layer.
+
+```mermaid
+flowchart LR
+  M[Canonical attempt-review Markdown] --> G[Shared guided interview reader]
+  J[Interview JSON: 3 TS and 3 Python programs] --> G
+  G --> W[Web playground / native code reader]
+  W --> Q[Eight-question checkpoint]
+  Q --> F[Fourteen-card scrolling review]
+  J --> T[Exact-code TS and Python checks]
+```
+
+See [Partitioned Event Log Interview](features/partitioned-event-log-interview.md).

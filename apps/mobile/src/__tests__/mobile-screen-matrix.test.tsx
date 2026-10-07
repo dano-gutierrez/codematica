@@ -246,6 +246,25 @@ describe("complete shared native screen matrix", () => {
     expect(detail.getAllByTestId("mobile-code-block").length).toBeGreaterThan(0);
   });
 
+  it("reads all event-log approaches in both languages and continues to its checkpoint", async () => {
+    const question = getInterviewQuestionBySlug("real-world", "partitioned-event-log");
+    if (question?.kind !== "web") throw new Error("Missing event-log exercise");
+    const adapters = createAdapters();
+    const nextHref = "/practice/system-design/partitioned-event-log-questionnaire?path=partitioned-event-log";
+    const view = await render(<InterviewQuestionScreen question={question} adapters={adapters} nextHref={nextHref} />);
+    for (const track of question.solutionTracks) {
+      await fireEvent.press(view.getAllByText(track.title)[0]!);
+      expect(view.getByTestId("mobile-web-recipe-position").props.children).toBe("Step 1 of 5");
+      await fireEvent.press(view.getByTestId("mobile-web-show-solution"));
+      await fireEvent.press(view.getByText("TypeScript"));
+      expect(view.getByTestId("mobile-code-source").props.children).toContain("export class EventLog");
+      await fireEvent.press(view.getByText("Python"));
+      expect(view.getByTestId("mobile-code-source").props.children).toContain("class EventLog:");
+    }
+    await fireEvent.press(view.getByTestId("mobile-interview-next-node"));
+    expect(adapters.navigation.navigate).toHaveBeenCalledWith(nextHref);
+  });
+
   it("renders vocabulary breakdowns, progress prompts, code, and every difficulty", async () => {
     const adapters = createAdapters();
     const vocabulary = getLanguageVocabularyBySlug("japanese/vocabulary/hello")!;

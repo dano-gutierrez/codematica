@@ -30,6 +30,8 @@ Interview nodes use `{ "kind": "interview", "slug": "collection/question" }` and
 
 The `database-indexes-and-search` skill path ends with Connection Pooling And Resilience: a sourced Markdown lesson, three Mermaid diagrams, a 12-question checkpoint, and eight appended review cards. Keep the existing path slug and earlier node order stable; label reported incident context and illustrative capacity assumptions explicitly.
 
+`partitioned-event-log` follows lesson → real-world interview → eight-question checkpoint → fourteen-card review using the existing interview-node and completion-destination contracts.
+
 The ML Systems path’s existing Neural Computation source node now opens a published original companion. A questionnaire follows it in Volume I Build. Keep the Framework Builder stage planned until the remaining framework, architecture and training requirements have local companions and a complete checkpoint.
 
 System Design Fundamentals appends Capacity Decisions and API Security Boundaries after its existing cache unit. Keep the authored worksheet assumptions explicit and distinguish browser response sharing, CSRF and object authorization in the lessons and checkpoints.

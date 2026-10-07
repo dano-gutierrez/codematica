@@ -45,4 +45,6 @@ Game store claims are serialized across account changes. Deferred identity check
 
 `src/game/map-art.ts` owns the fifty-position art panel order and bounded, renderer-independent parallax offsets. It does not create campaign levels or alter progression. Native runs its offset helper as a Reanimated worklet; web samples the same rule on scroll frames.
 
+The event-log interview regression executes canonical TS programs, strictly typechecks their projects, compares every bounded read against an oracle, meters seek work and verifies Python parity. `npm run test:interview:python` also runs `scripts/content/verify-event-log.py`; `--scale 1000003` exercises million-event histories locally.
+
 Selected evidence tests pin55 independently reviewed paper-case answers, source metadata and path-qualified next routes. The knowledge catalog retains eleven authored resource/skill identities across three new paths; existing parsing and runtime providers are unchanged.

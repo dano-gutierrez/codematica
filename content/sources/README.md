@@ -19,6 +19,8 @@ Interview questions can declare `sourceRefs`, validated at build time and requir
 
 `react-async-state.json` records React's state-snapshot, update-queue, setter, and effect-cleanup references for the supplementary delayed-callback lesson and checkpoint. Code examples are original and tested from their canonical Markdown fences.
 
+`event-log-interview.json` records official JavaScript execution, Python bisect/locking and Kafka consumer-offset references for the original partitioned-log exercise. These references support concepts; they do not establish that the simulation is a production broker.
+
 `neural-computation-practice.json` records the author-maintained Understanding Deep Learning notebooks at a verified commit and official PyTorch autograd documentation. These are references for an original gradient-check companion, not copied book chapters or notebook implementations.
 
 `system-design-decision-practice.json` anchors capacity and API-boundary exercises to Google SRE, PostgreSQL, MDN, WHATWG Fetch and OWASP primary material. Example workloads are original assumptions, not provider measurements.

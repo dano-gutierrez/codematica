@@ -186,4 +186,6 @@ Japanese writing notebooks use 24 whole-prompt repetitions per sheet and support
 
 Native notebook writing now protects strokes from ScrollView interception and iPad swipe-back. Selected pages use compact headers and show feedback above the paper; custom creation handles keyboard taps. `src/lib/handwriting-navigation.ts` protects notebook, writing-review, dictionary detail and authored writing-exercise routes while preserving swipe-back elsewhere. Run `npm run mobile:e2e:notebook-layout` and `npm run mobile:e2e:notebook-gestures` against disposable agent-device sessions; see [e2e setup](e2e/README.md). Physical Apple Pencil and SDK 57 build checks were deferred by the user; follow the [physical iPad checklist](../../docs/features/japanese-writing-notebooks.md#deferred-physical-ipad-checklist).
 
+Event-log interview content uses the shared native walkthrough and code reader. Jest covers all three approaches/languages and checkpoint navigation; `.maestro/event-log-interview.yaml` defines the installed-app quiz/review journey. Playground execution remains web-only.
+
 Admin → Interview preparation uses the shared native screen and optional admin-only Supabase RPCs. `apps/mobile/.maestro/interview-preparation.yaml` requires a disposable admin account/test database. See the interview feature/runbook.

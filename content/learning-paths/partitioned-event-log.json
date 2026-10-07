@@ -1,0 +1,38 @@
+{
+  "slug": "partitioned-event-log",
+  "title": "Partitioned Event Log Interview",
+  "summary": "Review a candidate attempt, build three TypeScript/Python log designs, check your reasoning, and revisit the key decisions.",
+  "kind": "skill",
+  "category": "System Design",
+  "audience": "Engineers preparing for coding and systems interviews involving large logs and concurrent callers.",
+  "status": "published",
+  "sourcePolicy": "required",
+  "sourceRefs": [
+    "event-log-js-agent",
+    "event-log-python-bisect",
+    "event-log-python-lock",
+    "event-log-kafka-offsets"
+  ],
+  "completionDestination": "flashcard-feed",
+  "units": [
+    {
+      "slug": "event-log",
+      "title": "Global offsets and linear reads",
+      "summary": "Understand the contract, implement three approaches, then test offset and ownership reasoning.",
+      "nodes": [
+        {
+          "kind": "document",
+          "slug": "system-design/partitioned-event-log"
+        },
+        {
+          "kind": "interview",
+          "slug": "real-world/partitioned-event-log"
+        },
+        {
+          "kind": "exercise",
+          "slug": "system-design/partitioned-event-log-questionnaire"
+        }
+      ]
+    }
+  ]
+}

@@ -26,3 +26,5 @@ Passive flashcards are separate from interactive `type: "flashcard"` exercises i
 Set `codeLanguage` for every authored snippet (for example `typescript`, `python`, or `sql`). `sourceDocSlug` links back to the canonical lesson and preserves the feed’s path context. Frontend Interview Practice supplies 42 cards covering seven briefs and their implementation recipes.
 
 The database feed contains 48 cards, including eight connection-pooling cards (two of each type). Preserve the earlier 40 cards and source new pooling cards to `databases/postgres-connection-pooling`; numerical capacities remain illustrative.
+
+`partitioned-event-log` supplies fourteen sourced lesson-review cards after its interview checkpoint. Each links to `system-design/partitioned-event-log`; the feed supports continued scrolling through the shared windowing component.

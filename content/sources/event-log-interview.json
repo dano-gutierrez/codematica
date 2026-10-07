@@ -1,0 +1,36 @@
+{
+  "sources": [
+    {
+      "id": "event-log-js-agent",
+      "title": "JavaScript execution model",
+      "provider": "MDN",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Execution_model",
+      "attribution": "Official reference for the authored event-log interview lesson; the exercise is an in-memory simulation.",
+      "lastVerifiedAt": "2026-10-05"
+    },
+    {
+      "id": "event-log-python-bisect",
+      "title": "bisect: array bisection",
+      "provider": "Python",
+      "url": "https://docs.python.org/3/library/bisect.html",
+      "attribution": "Official reference for the authored event-log interview lesson; the exercise is an in-memory simulation.",
+      "lastVerifiedAt": "2026-10-05"
+    },
+    {
+      "id": "event-log-python-lock",
+      "title": "threading: locks",
+      "provider": "Python",
+      "url": "https://docs.python.org/3/library/threading.html",
+      "attribution": "Official reference for the authored event-log interview lesson; the exercise is an in-memory simulation.",
+      "lastVerifiedAt": "2026-10-05"
+    },
+    {
+      "id": "event-log-kafka-offsets",
+      "title": "KafkaConsumer: offsets and consumer position",
+      "provider": "Apache Kafka",
+      "url": "https://kafka.apache.org/41/javadoc/org/apache/kafka/clients/consumer/KafkaConsumer.html",
+      "attribution": "Official reference for the authored event-log interview lesson; the exercise is an in-memory simulation.",
+      "lastVerifiedAt": "2026-10-05"
+    }
+  ]
+}

@@ -54,4 +54,6 @@ Notebook layout regressions exercise real wheel scrolling and two-finger CDP tou
 
 The `@map-art` tag also runs this spec in desktop Chromium and mobile WebKit. Omit `--project` for the three-browser lane.
 
+`event-log.regression.spec.ts` (`@regression @playground`) covers the attempt-review lesson, all three runnable TS projects, Python switching, cursor continuation across node movement, quiz feedback and scrolling review on all three browser projects.
+
 The merged release matrix retains `@smoke`, `@playground`, `@notebook-catalog`, `@interview-admin` and `@map-art` on desktop Chromium and mobile WebKit. Mobile Chromium runs the complete suite. `scripts/testing/browser-matrix.test.ts` imports the actual configuration and checks every retained tag independently so a future conflict resolution cannot silently drop a lane.

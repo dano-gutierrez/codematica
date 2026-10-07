@@ -168,3 +168,7 @@ The optional [knowledge graph and local content evaluator](docs/features/knowled
 ## Private interview preparation
 
 Admin → Interview preparation tracks companies, roles and rounds on web/native. The `prepare-interview` Codex skill uses your private resume/project context, researches current evidence and always applies technical-edit. Supabase stores immutable briefs; Markdown export and private knowledge links support reuse. See [feature](docs/features/interview-preparation.md) and [operations](docs/runbooks/interview-preparation.md).
+
+## Event-log interview practice
+
+Open `/paths/partitioned-event-log` to review a candidate attempt and compare indexed arrays, linked chains with sparse anchors, and segmented logs. Each has complete TypeScript/Python code, followed by an eight-question quiz and fourteen scrolling review cards. `npm run test:interview:python` includes the new verifier; use `python3 scripts/content/verify-event-log.py --scale 1000003` for a local million-event check. See [the feature contract](docs/features/partitioned-event-log-interview.md).

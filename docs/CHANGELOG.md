@@ -6,6 +6,14 @@ Added eleven original source-bound lessons,55 choices and three ordered paths fo
 
 This changelog dates durable product and architecture changes and links to their authoritative feature contracts.
 
+## 2026-10-07 — Event-log review integration
+
+Updated PR #50 for current main while retaining every interview verification command and regenerating the combined content index. The event-log verifier now rejects an explicit `--scale 0` instead of silently skipping scale checks. CLI regression tests cover rejected counts and the minimum accepted count; the six authored solutions are unchanged.
+
+## 2026-10-05 — Partitioned event-log interview
+
+Added an anonymous real-world exercise with three complete TypeScript/Python pairs, a review of the candidate attempt, eight checkpoint questions and fourteen review cards. The guide distinguishes global IDs from local positions, indexed seeks from sequential reads, writer counters from consumer cursors, and in-process publication from distributed guarantees. Exact authored-code tests cover oracle comparisons, threads, migration, cursor tails and bounded seek work. Review corrections clarify coincidental offset results, future-offset scan costs and block allocation. Added boundary tests reject removal of the growth cooldown and verify exact ownership transfers. Existing coverage floors and runtime dependencies are unchanged; installed-device execution is a separate verification gate.
+
 ## 2026-10-03 — Continuous campaign landscape
 
 - Created four connected original paintings and a transparent foliage kit with retained built-in imagegen prompts. Assembled terrain before cutting twelve tiles with pixel-identical edge guards.

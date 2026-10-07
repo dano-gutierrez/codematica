@@ -32,6 +32,7 @@ Conventions:
 - `docs/features/rtk-query-interview-preparation.md` owns the RTK Query interview path, seven sourced lessons, 42 scenario questions, 21 briefs, and versioned persistence case study.
 - `docs/features/product-engineering-interview-preparation.md` owns the Product Engineering research brief, plain JavaScript/durable workflow drills, 75-minute guided mock, 18 checkpoint questions, and twelve review cards.
 - `docs/features/interview-coding-catalog.md` owns company and anonymous real-world interview collections, guided algorithm walkthroughs, and frontend practice solutions.
+- [Partitioned Event Log Interview](features/partitioned-event-log-interview.md): candidate-attempt review, three TS/Python implementations, global-offset/cursor reasoning, checkpoint and scrolling review.
 - `docs/features/react-typescript-playground.md` owns the reusable web-project schema, Sandpack execution boundary, automatic startup, retry/reset lifecycle, and native fallback.
 - `docs/features/frontend-interview-practice.md#supplementary-react-state-lesson` describes the stale-closure lesson, executable Markdown examples, cleanup rules, and six-question checkpoint.
 - `docs/features/bfs-dfs-learning-path.md` owns the Programming skill path for BFS/DFS fundamentals, Python and TypeScript examples, questionnaires, scrolling review, and guided graph interview comparisons.
