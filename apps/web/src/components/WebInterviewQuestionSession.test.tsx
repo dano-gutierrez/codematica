@@ -13,6 +13,22 @@ vi.mock("@/lib/progress/client", () => ({ recordProgress: vi.fn(), appendPathToH
 vi.mock("next/navigation", () => ({ useSearchParams: () => new URLSearchParams("path=frontend-interview-practice") }));
 
 describe("WebInterviewQuestionSession", () => {
+  it("renders each event-log recipe and complete Python companion through the shared controls", () => {
+    const question = getInterviewQuestionBySlug("real-world", "partitioned-event-log");
+    if (question?.kind !== "web") throw new Error("Missing event-log exercise");
+    render(<WebInterviewQuestionSession question={question} />);
+    for (const track of question.solutionTracks) {
+      fireEvent.click(screen.getByTestId(`web-solution-tab-${track.id}`));
+      expect(screen.getByTestId("web-recipe-position")).toHaveTextContent("Step 1 of 5");
+      fireEvent.click(screen.getByRole("button", { name: "Show full solution" }));
+      fireEvent.click(screen.getByRole("button", { name: "TypeScript" }));
+      expect(screen.getByTestId("mock-web-playground")).toHaveTextContent("/log.ts");
+      fireEvent.click(screen.getByRole("button", { name: "Python" }));
+      expect(screen.getByTestId("web-python-companion")).toHaveTextContent("class EventLog:");
+      expect(screen.getByTestId("web-python-companion")).toHaveTextContent("class KeyStore:");
+    }
+  });
+
   it("shows the evaluation guide and switches among all runnable approaches", () => {
     const question = getInterviewQuestionBySlug("real-world", "mondrian-composition-generator");
     expect(question?.kind).toBe("web");

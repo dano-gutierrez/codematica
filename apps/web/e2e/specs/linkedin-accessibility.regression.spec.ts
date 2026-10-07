@@ -4,13 +4,18 @@ import { analysisFixture, editorialFixture } from "../../../../packages/core/src
 
 test.skip(process.env.EDITORIAL_E2E !== "1", "Run the isolated editorial lane with synthetic data");
 
+test.beforeEach(async ({ page }) => {
+  await page.route("**/rest/v1/rpc/knowledge_for_post", route => route.fulfill({ json: null }));
+});
+
 test("@regression long links in a proposed revision wrap on a narrow screen", async ({ page }) => {
   const data = structuredClone(editorialFixture);
   const link = "https://example.test/" + "source".repeat(100);
   data.revisions.push({ ...data.revisions[0], id: "20000000-0000-4000-8000-000000000002", parent_revision_id: data.revisions[0].id, kind: "refine", body: link });
   await page.route("**/rest/v1/rpc/linkedin_*", async route => {
     if (route.request().url().endsWith("linkedin_is_admin")) return route.fulfill({ json: true });
-    if (route.request().url().endsWith("linkedin_snapshot")) return route.fulfill({ json: data });
+    if (route.request().url().endsWith("linkedin_overview")) return route.fulfill({ json: { ...data, revisions: [], preparations: [], version: "1" } });
+    if (route.request().url().endsWith("linkedin_detail")) return route.fulfill({ json: data });
     throw new Error("Reading a proposal must not mutate editorial data");
   });
   await page.setViewportSize({ width: 320, height: 844 });
@@ -30,15 +35,26 @@ for (const width of [320, 390, 768, 1024, 1180, 1440]) {
   test(`@regression editorial touch and keyboard actions reflow at ${width}px`, async ({ page, isMobile }) => {
     const data = structuredClone(editorialFixture);
     data.revisions[0].analysis = { ...analysisFixture, verificationNotes: ["Verify the limit"] };
+    data.settings.voice_profile = { id: "40000000-0000-4000-8000-000000000001", version: "voice-test", rules: ["Use concrete examples"] };
     // Any write indicates a defect: this journey only edits and discards browser-local input.
     await page.route("**/rest/v1/rpc/linkedin_*", async (route) => {
       if (route.request().url().endsWith("linkedin_is_admin")) return route.fulfill({ json: true });
-      if (route.request().url().endsWith("linkedin_snapshot")) return route.fulfill({ json: data });
+      if (route.request().url().endsWith("linkedin_overview")) return route.fulfill({ json: { ...data, revisions: [], preparations: [], version: "1" } });
+    if (route.request().url().endsWith("linkedin_detail")) return route.fulfill({ json: data });
       throw new Error("Accessibility checks must not mutate editorial data");
     });
     await page.setViewportSize({ width, height: 844 });
     await page.goto("/admin/linkedin");
     const draft = page.getByTestId(`linkedin-post-${data.posts[0].id}`);
+    const voice = page.getByText("Voice rules · voice-test", { exact: true });
+    await expectTarget(voice, isMobile || width < 1024 ? 48 : 44);
+    await voice.click();
+    const rules = page.getByLabel("Voice rules, one per line");
+    await rules.fill("Keep this unsaved voice rule");
+    await expect(draft).toBeDisabled();
+    await expect(rules).toHaveValue("Keep this unsaved voice rule");
+    await rules.fill("Use concrete examples");
+    await expect(draft).toBeEnabled();
     await draft.click();
     const heading = page.getByRole("heading", { name: data.posts[0].title });
     await expect(heading).toBeFocused();
@@ -46,7 +62,7 @@ for (const width of [320, 390, 768, 1024, 1180, 1440]) {
     if (compact) await expect(page.getByTestId("linkedin-post-list")).toBeHidden();
     else await expect(page.getByTestId("linkedin-post-list")).toBeVisible();
     const touch = isMobile || width < 1024;
-    for (const name of ["Save revision", "Refine post", "Reject post", "Approve & queue", "Bold", "Plain text"]) {
+    for (const name of ["Save revision", "Refine post", "Reject post", "Approve & queue", "Bold", "Plain text", "Check knowledge locally"]) {
       const button = page.getByRole("button", { name, exact: true });
       await expectTarget(button, touch ? 48 : 44);
       if (touch) await expect(button.getByTestId("ui-button-label")).toBeVisible();
@@ -94,7 +110,8 @@ for (const width of [320, 390, 768, 1024, 1180, 1440]) {
 test("@regression editorial text enlargement and a short landscape viewport keep every action reachable", async ({ page }) => {
   await page.route("**/rest/v1/rpc/linkedin_*", async (route) => {
     if (route.request().url().endsWith("linkedin_is_admin")) return route.fulfill({ json: true });
-    if (route.request().url().endsWith("linkedin_snapshot")) return route.fulfill({ json: editorialFixture });
+    if (route.request().url().endsWith("linkedin_overview")) return route.fulfill({ json: { ...editorialFixture, revisions: [], preparations: [], version: "1" } });
+    if (route.request().url().endsWith("linkedin_detail")) return route.fulfill({ json: editorialFixture });
     throw new Error("Reflow checks must not mutate editorial data");
   });
   await page.setViewportSize({ width: 844, height: 390 });

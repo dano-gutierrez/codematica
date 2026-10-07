@@ -1,0 +1,421 @@
+{
+  "slug": "engineering-evidence-review",
+  "title": "Engineering Evidence Review",
+  "summary": "Selected original review cases with primary-source scope and fictional assumptions; this path is not a comprehensive syllabus or a certification.",
+  "kind": "skill",
+  "category": "Software Engineering",
+  "audience": "Learners who want to check concise technical or business claims through explicit boundaries and evidence.",
+  "status": "published",
+  "sourcePolicy": "required",
+  "sourceRefs": [
+    "evidence-openjev-readout",
+    "evidence-openjev-license",
+    "evidence-google-containment",
+    "evidence-google-service-accounts",
+    "evidence-java23-map",
+    "evidence-jls23-memory",
+    "evidence-jls23-records",
+    "evidence-java23-threadlocal",
+    "evidence-spring-transactions",
+    "evidence-ddd-reference",
+    "evidence-cloud-responsibility",
+    "evidence-container-security",
+    "evidence-lambda-reuse",
+    "evidence-lambda-acceptance",
+    "evidence-lambda-uniqueness",
+    "evidence-aws-budget",
+    "evidence-oidc-core",
+    "evidence-pkce",
+    "evidence-oauth-security",
+    "evidence-stripe-hold",
+    "evidence-visa-flow"
+  ],
+  "units": [
+    {
+      "slug": "local-decision-contracts",
+      "title": "Local Decision Contracts",
+      "summary": "Review local decision contracts using explicit assumptions, source scope and original counterexamples.",
+      "nodes": [
+        {
+          "kind": "document",
+          "slug": "ai-engineering/local-decision-contracts",
+          "skillIds": [
+            "decision-evidence"
+          ],
+          "required": true
+        },
+        {
+          "kind": "exercise",
+          "slug": "ai-engineering/local-decision-contracts-checkpoint",
+          "skillIds": [
+            "decision-evidence"
+          ],
+          "required": true
+        }
+      ]
+    },
+    {
+      "slug": "credential-containment",
+      "title": "Credential Containment",
+      "summary": "Review credential containment using explicit assumptions, source scope and original counterexamples.",
+      "nodes": [
+        {
+          "kind": "document",
+          "slug": "software-engineering/credential-containment",
+          "skillIds": [
+            "incident-evidence"
+          ],
+          "required": true
+        },
+        {
+          "kind": "exercise",
+          "slug": "software-engineering/credential-containment-checkpoint",
+          "skillIds": [
+            "incident-evidence"
+          ],
+          "required": true
+        }
+      ]
+    },
+    {
+      "slug": "java-state-and-proxy-contracts",
+      "title": "Java State And Proxy Contracts",
+      "summary": "Review java state and proxy contracts using explicit assumptions, source scope and original counterexamples.",
+      "nodes": [
+        {
+          "kind": "document",
+          "slug": "programming/java-state-and-proxy-contracts",
+          "skillIds": [
+            "java-contracts"
+          ],
+          "required": true
+        },
+        {
+          "kind": "exercise",
+          "slug": "programming/java-state-and-proxy-contracts-checkpoint",
+          "skillIds": [
+            "java-contracts"
+          ],
+          "required": true
+        }
+      ]
+    },
+    {
+      "slug": "domain-and-deployment-boundaries",
+      "title": "Domain And Deployment Boundaries",
+      "summary": "Review domain and deployment boundaries using explicit assumptions, source scope and original counterexamples.",
+      "nodes": [
+        {
+          "kind": "document",
+          "slug": "software-engineering/domain-and-deployment-boundaries",
+          "skillIds": [
+            "domain-boundaries"
+          ],
+          "required": true
+        },
+        {
+          "kind": "exercise",
+          "slug": "software-engineering/domain-and-deployment-boundaries-checkpoint",
+          "skillIds": [
+            "domain-boundaries"
+          ],
+          "required": true
+        }
+      ]
+    },
+    {
+      "slug": "cloud-responsibility-and-runtime",
+      "title": "Cloud Responsibility And Runtime",
+      "summary": "Review cloud responsibility and runtime using explicit assumptions, source scope and original counterexamples.",
+      "nodes": [
+        {
+          "kind": "document",
+          "slug": "system-design/cloud-responsibility-and-runtime",
+          "skillIds": [
+            "cloud-responsibility"
+          ],
+          "required": true
+        },
+        {
+          "kind": "exercise",
+          "slug": "system-design/cloud-responsibility-and-runtime-checkpoint",
+          "skillIds": [
+            "cloud-responsibility"
+          ],
+          "required": true
+        }
+      ]
+    },
+    {
+      "slug": "federation-and-delegation",
+      "title": "Federation And Delegation",
+      "summary": "Review federation and delegation using explicit assumptions, source scope and original counterexamples.",
+      "nodes": [
+        {
+          "kind": "document",
+          "slug": "system-design/federation-and-delegation",
+          "skillIds": [
+            "identity-boundaries"
+          ],
+          "required": true
+        },
+        {
+          "kind": "exercise",
+          "slug": "system-design/federation-and-delegation-checkpoint",
+          "skillIds": [
+            "identity-boundaries"
+          ],
+          "required": true
+        }
+      ]
+    },
+    {
+      "slug": "card-payment-state-evidence",
+      "title": "Card Payment State Evidence",
+      "summary": "Review card payment state evidence using explicit assumptions, source scope and original counterexamples.",
+      "nodes": [
+        {
+          "kind": "document",
+          "slug": "system-design/card-payment-state-evidence",
+          "skillIds": [
+            "payment-evidence"
+          ],
+          "required": true
+        },
+        {
+          "kind": "exercise",
+          "slug": "system-design/card-payment-state-evidence-checkpoint",
+          "skillIds": [
+            "payment-evidence"
+          ],
+          "required": true
+        }
+      ]
+    }
+  ],
+  "progression": {
+    "framework": "career",
+    "roadmapLabel": "Selected Evidence And Contracts",
+    "skills": [
+      {
+        "id": "decision-evidence",
+        "label": "Local Decision Contracts",
+        "category": "evidence-review",
+        "description": "Review local decision contracts using explicit assumptions, source scope and original counterexamples."
+      },
+      {
+        "id": "incident-evidence",
+        "label": "Credential Containment",
+        "category": "evidence-review",
+        "description": "Review credential containment using explicit assumptions, source scope and original counterexamples."
+      },
+      {
+        "id": "java-contracts",
+        "label": "Java State And Proxy Contracts",
+        "category": "evidence-review",
+        "description": "Review java state and proxy contracts using explicit assumptions, source scope and original counterexamples."
+      },
+      {
+        "id": "domain-boundaries",
+        "label": "Domain And Deployment Boundaries",
+        "category": "evidence-review",
+        "description": "Review domain and deployment boundaries using explicit assumptions, source scope and original counterexamples."
+      },
+      {
+        "id": "cloud-responsibility",
+        "label": "Cloud Responsibility And Runtime",
+        "category": "evidence-review",
+        "description": "Review cloud responsibility and runtime using explicit assumptions, source scope and original counterexamples."
+      },
+      {
+        "id": "identity-boundaries",
+        "label": "Federation And Delegation",
+        "category": "evidence-review",
+        "description": "Review federation and delegation using explicit assumptions, source scope and original counterexamples."
+      },
+      {
+        "id": "payment-evidence",
+        "label": "Card Payment State Evidence",
+        "category": "evidence-review",
+        "description": "Review card payment state evidence using explicit assumptions, source scope and original counterexamples."
+      }
+    ],
+    "stages": [
+      {
+        "id": "decision-evidence",
+        "label": "Local Decision Contracts",
+        "level": "Practitioner",
+        "status": "published",
+        "summary": "Review local decision contracts using explicit assumptions, source scope and original counterexamples.",
+        "unitSlugs": [
+          "local-decision-contracts"
+        ],
+        "outcomes": [
+          {
+            "id": "decision-evidence-review",
+            "statement": "Review local decision contracts using explicit assumptions, source scope and original counterexamples.",
+            "skillId": "decision-evidence"
+          }
+        ],
+        "requiredNodeSlugs": [
+          "ai-engineering/local-decision-contracts",
+          "ai-engineering/local-decision-contracts-checkpoint"
+        ],
+        "checkpointExerciseSlug": "ai-engineering/local-decision-contracts-checkpoint",
+        "passThreshold": 0.8,
+        "minimumSkillScore": 0.8,
+        "estimatedMinutes": 20
+      },
+      {
+        "id": "incident-evidence",
+        "label": "Credential Containment",
+        "level": "Practitioner",
+        "status": "published",
+        "summary": "Review credential containment using explicit assumptions, source scope and original counterexamples.",
+        "unitSlugs": [
+          "credential-containment"
+        ],
+        "outcomes": [
+          {
+            "id": "incident-evidence-review",
+            "statement": "Review credential containment using explicit assumptions, source scope and original counterexamples.",
+            "skillId": "incident-evidence"
+          }
+        ],
+        "requiredNodeSlugs": [
+          "software-engineering/credential-containment",
+          "software-engineering/credential-containment-checkpoint"
+        ],
+        "checkpointExerciseSlug": "software-engineering/credential-containment-checkpoint",
+        "passThreshold": 0.8,
+        "minimumSkillScore": 0.8,
+        "estimatedMinutes": 20
+      },
+      {
+        "id": "java-contracts",
+        "label": "Java State And Proxy Contracts",
+        "level": "Practitioner",
+        "status": "published",
+        "summary": "Review java state and proxy contracts using explicit assumptions, source scope and original counterexamples.",
+        "unitSlugs": [
+          "java-state-and-proxy-contracts"
+        ],
+        "outcomes": [
+          {
+            "id": "java-contracts-review",
+            "statement": "Review java state and proxy contracts using explicit assumptions, source scope and original counterexamples.",
+            "skillId": "java-contracts"
+          }
+        ],
+        "requiredNodeSlugs": [
+          "programming/java-state-and-proxy-contracts",
+          "programming/java-state-and-proxy-contracts-checkpoint"
+        ],
+        "checkpointExerciseSlug": "programming/java-state-and-proxy-contracts-checkpoint",
+        "passThreshold": 0.8,
+        "minimumSkillScore": 0.8,
+        "estimatedMinutes": 20
+      },
+      {
+        "id": "domain-boundaries",
+        "label": "Domain And Deployment Boundaries",
+        "level": "Practitioner",
+        "status": "published",
+        "summary": "Review domain and deployment boundaries using explicit assumptions, source scope and original counterexamples.",
+        "unitSlugs": [
+          "domain-and-deployment-boundaries"
+        ],
+        "outcomes": [
+          {
+            "id": "domain-boundaries-review",
+            "statement": "Review domain and deployment boundaries using explicit assumptions, source scope and original counterexamples.",
+            "skillId": "domain-boundaries"
+          }
+        ],
+        "requiredNodeSlugs": [
+          "software-engineering/domain-and-deployment-boundaries",
+          "software-engineering/domain-and-deployment-boundaries-checkpoint"
+        ],
+        "checkpointExerciseSlug": "software-engineering/domain-and-deployment-boundaries-checkpoint",
+        "passThreshold": 0.8,
+        "minimumSkillScore": 0.8,
+        "estimatedMinutes": 20
+      },
+      {
+        "id": "cloud-responsibility",
+        "label": "Cloud Responsibility And Runtime",
+        "level": "Practitioner",
+        "status": "published",
+        "summary": "Review cloud responsibility and runtime using explicit assumptions, source scope and original counterexamples.",
+        "unitSlugs": [
+          "cloud-responsibility-and-runtime"
+        ],
+        "outcomes": [
+          {
+            "id": "cloud-responsibility-review",
+            "statement": "Review cloud responsibility and runtime using explicit assumptions, source scope and original counterexamples.",
+            "skillId": "cloud-responsibility"
+          }
+        ],
+        "requiredNodeSlugs": [
+          "system-design/cloud-responsibility-and-runtime",
+          "system-design/cloud-responsibility-and-runtime-checkpoint"
+        ],
+        "checkpointExerciseSlug": "system-design/cloud-responsibility-and-runtime-checkpoint",
+        "passThreshold": 0.8,
+        "minimumSkillScore": 0.8,
+        "estimatedMinutes": 20
+      },
+      {
+        "id": "identity-boundaries",
+        "label": "Federation And Delegation",
+        "level": "Practitioner",
+        "status": "published",
+        "summary": "Review federation and delegation using explicit assumptions, source scope and original counterexamples.",
+        "unitSlugs": [
+          "federation-and-delegation"
+        ],
+        "outcomes": [
+          {
+            "id": "identity-boundaries-review",
+            "statement": "Review federation and delegation using explicit assumptions, source scope and original counterexamples.",
+            "skillId": "identity-boundaries"
+          }
+        ],
+        "requiredNodeSlugs": [
+          "system-design/federation-and-delegation",
+          "system-design/federation-and-delegation-checkpoint"
+        ],
+        "checkpointExerciseSlug": "system-design/federation-and-delegation-checkpoint",
+        "passThreshold": 0.8,
+        "minimumSkillScore": 0.8,
+        "estimatedMinutes": 20
+      },
+      {
+        "id": "payment-evidence",
+        "label": "Card Payment State Evidence",
+        "level": "Practitioner",
+        "status": "published",
+        "summary": "Review card payment state evidence using explicit assumptions, source scope and original counterexamples.",
+        "unitSlugs": [
+          "card-payment-state-evidence"
+        ],
+        "outcomes": [
+          {
+            "id": "payment-evidence-review",
+            "statement": "Review card payment state evidence using explicit assumptions, source scope and original counterexamples.",
+            "skillId": "payment-evidence"
+          }
+        ],
+        "requiredNodeSlugs": [
+          "system-design/card-payment-state-evidence",
+          "system-design/card-payment-state-evidence-checkpoint"
+        ],
+        "checkpointExerciseSlug": "system-design/card-payment-state-evidence-checkpoint",
+        "passThreshold": 0.8,
+        "minimumSkillScore": 0.8,
+        "estimatedMinutes": 20
+      }
+    ]
+  }
+}

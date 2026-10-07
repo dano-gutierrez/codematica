@@ -1,0 +1,4 @@
+interface:
+  display_name: "Prepare an interview"
+  short_description: "Research, personalize and save private interview briefs"
+  default_prompt: "Use $prepare-interview to prepare for this company and role, applying technical-edit before every output."

@@ -84,9 +84,11 @@ test("@regression @design local progress notice never covers the learning conten
   await expect(prompt).toBeVisible();
   await expect(prompt).toContainText("Progress saved on this device");
   await page.evaluate(() => { document.documentElement.style.fontSize = "200%"; });
-  const bannerBounds = await prompt.boundingBox();
-  const mainBounds = await page.getByRole("main").boundingBox();
-  expect(bannerBounds!.y).toBeGreaterThanOrEqual(mainBounds!.y + mainBounds!.height);
+  const main = await page.getByRole("main").elementHandle();
+  // Read both bounds in one layout snapshot while diagrams and enlarged text reflow.
+  await expect.poll(() => prompt.evaluate((banner, content) => {
+    return banner.getBoundingClientRect().top - content!.getBoundingClientRect().bottom;
+  }, main)).toBeGreaterThanOrEqual(0);
   await prompt.getByRole("button", { name: "Dismiss save progress prompt" }).click();
   await expect(prompt).toBeHidden();
   await expect(page.getByRole("heading", { level: 1 })).toBeVisible();

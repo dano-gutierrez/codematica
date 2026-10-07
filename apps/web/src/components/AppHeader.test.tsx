@@ -52,6 +52,24 @@ describe("persistent app navigation", () => {
 
 describe("account and admin navigation", () => {
   it.each([
+    ["Knowledge", "/admin/knowledge"],
+    ["Interview preparation", "/admin/interview-preparation"],
+  ])("preserves %s in both admin menus", (label, href) => {
+    auth.admin = true;
+    auth.user = { email: "editor@example.test", user_metadata: {} };
+    route.pathname = `${href}/detail`;
+    render(<AppNavigation />);
+    fireEvent.click(screen.getByTestId("mobile-nav-more"));
+    for (const name of ["Admin navigation", "Admin navigation in menu"]) {
+      const link = within(screen.getByRole("navigation", { name })).getByRole("link", { name: label });
+      expect(link).toHaveAttribute("href", href);
+      expect(link).toHaveAttribute("aria-current", "page");
+    }
+    fireEvent.click(within(screen.getByRole("navigation", { name: "Admin navigation in menu" })).getByRole("link", { name: label }));
+    expect(screen.getByRole("dialog", { hidden: true })).not.toHaveAttribute("open");
+  });
+
+  it.each([
     [{ full_name: "  Learning User  ", name: "Ignored" }, "Learning User"],
     [{ full_name: null, name: "  Preferred Name  " }, "Preferred Name"],
     [{ full_name: "", name: "" }, "learner"],

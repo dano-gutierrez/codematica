@@ -1,0 +1,136 @@
+{
+  "slug": "software-engineering/concurrency-boundary-checkpoint",
+  "title": "Concurrency Boundary Checkpoint",
+  "documentSlug": "software-engineering/concurrency-boundaries",
+  "concept": "Concurrency",
+  "difficulty": "practitioner",
+  "tags": [
+    "contracts",
+    "backend",
+    "review"
+  ],
+  "status": "published",
+  "sourceRefs": [
+    "backend-python313-threading",
+    "backend-java17-thread-states",
+    "backend-java17-memory-model"
+  ],
+  "type": "questionnaire",
+  "questions": [
+    {
+      "id": "lost-update",
+      "kind": "choice",
+      "prompt": "A reads 0; B reads 0; A writes 1; B writes 1 for two increments. What follows?",
+      "options": [
+        {
+          "id": "option-0",
+          "label": "The trace can finish at 1; protect the whole read-modify-write transition.",
+          "isCorrect": true
+        },
+        {
+          "id": "option-1",
+          "label": "The final value must be 2 because every individual read/write is visible.",
+          "isCorrect": false
+        },
+        {
+          "id": "option-2",
+          "label": "Marking the counter volatile makes the increment atomic.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "Visibility of individual reads/writes does not protect their compound transition."
+    },
+    {
+      "id": "predicate-wait",
+      "kind": "choice",
+      "prompt": "A is notified about an item, but B consumes it before A reacquires the condition lock. What should A do?",
+      "options": [
+        {
+          "id": "option-0",
+          "label": "Recheck the predicate under the reacquired condition lock; notification is not a reserved item.",
+          "isCorrect": true
+        },
+        {
+          "id": "option-1",
+          "label": "Consume without checking because notification reserves the item for A.",
+          "isCorrect": false
+        },
+        {
+          "id": "option-2",
+          "label": "Assume notify released the lock and gave A exclusive ownership.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "The predicate can cease to hold before the awakened waiter regains the lock."
+    },
+    {
+      "id": "permit-timeout",
+      "kind": "choice",
+      "prompt": "Two permits are held. A third worker times out while acquiring. What should its permit cleanup do?",
+      "options": [
+        {
+          "id": "option-0",
+          "label": "Do not release: no permit was acquired, and unconditional release corrupts capacity accounting.",
+          "isCorrect": true
+        },
+        {
+          "id": "option-1",
+          "label": "Release unconditionally because cleanup must always increase available capacity.",
+          "isCorrect": false
+        },
+        {
+          "id": "option-2",
+          "label": "Treat the timeout as success and start work without a permit.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "Cleanup must track successful acquisition; no permit was obtained by the timed-out worker."
+    },
+    {
+      "id": "jvm-state",
+      "kind": "choice",
+      "prompt": "Java SE 17 reports RUNNABLE. What is established?",
+      "options": [
+        {
+          "id": "option-0",
+          "label": "RUNNABLE is a JVM state; it does not prove the thread currently owns a CPU.",
+          "isCorrect": true
+        },
+        {
+          "id": "option-1",
+          "label": "The thread is necessarily executing on a CPU at this instant.",
+          "isCorrect": false
+        },
+        {
+          "id": "option-2",
+          "label": "The enum has a separate RUNNING state that proves simultaneous execution.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "The JVM state does not map directly to operating-system scheduling."
+    },
+    {
+      "id": "process-scope",
+      "kind": "choice",
+      "prompt": "An old worker in another process resumes after shared ownership changes. Does a mutex in the new worker suffice?",
+      "options": [
+        {
+          "id": "option-0",
+          "label": "Use shared authoritative ownership and stale-worker rejection; a local mutex alone cannot fence another process.",
+          "isCorrect": true
+        },
+        {
+          "id": "option-1",
+          "label": "Yes; a process-local mutex automatically locks all other processes.",
+          "isCorrect": false
+        },
+        {
+          "id": "option-2",
+          "label": "Yes; application authorization alone deduplicates every external effect.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "Coordination scope, authorization and durable effect receipts are independent obligations."
+    }
+  ]
+}

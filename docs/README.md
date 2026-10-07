@@ -25,7 +25,7 @@ Conventions:
 - `docs/features/markdown-knowledge-browser.md` owns article rendering, the web/native code-surface audit, the fixed dark code theme, native horizontal scroll containment, and rendered contrast/layout regressions. Theme selection is deferred.
 - `docs/features/brand-identity.md` owns the approved Patch logo, favicons, native icons, splash artwork and reproducible exports under `assets/brand/`.
 - `docs/features/home-discovery.md` owns the Learn discovery hub, compact title/metadata cards, global local search, curated rows, section themes, and full catalog routes.
-- `docs/features/learning-paths-and-practice.md` owns local path JSON, path detail, local exercise JSON, practice sessions and guided-lab completion/retry with private transient notes.
+- `docs/features/learning-paths-and-practice.md` owns local path JSON, path detail, local exercise JSON, practice sessions and guided-lab completion/retry with private transient notes. It also covers Client Compatibility, distributed readings, original array/keypad reviews, progressive state/history, token revocation, video-delivery contracts and Backend concurrency/pattern reviews.
 - `docs/features/ml-systems-career-path.md` owns the Harvard CS249r source-linked career roadmap, authored prerequisites/Foundation companions, guided labs, and upstream refresh contract.
 - `docs/features/programming-language-refresh.md` owns reusable programming-language refresh paths, starting with Python for TypeScript and JavaScript engineers.
 - `docs/features/llm-application-engineering.md` owns the Langfuse and LangChain AI engineering path, including local lessons, diagrams, quizzes, passive flashcards, and non-executable coding challenge sections.
@@ -34,6 +34,7 @@ Conventions:
 - `docs/features/rtk-query-interview-preparation.md` owns the RTK Query interview path, seven sourced lessons, 42 scenario questions, 21 briefs, and versioned persistence case study.
 - `docs/features/product-engineering-interview-preparation.md` owns the Product Engineering research brief, plain JavaScript/durable workflow drills, 75-minute guided mock, 18 checkpoint questions, and twelve review cards.
 - `docs/features/interview-coding-catalog.md` owns company and anonymous real-world interview collections, guided algorithm walkthroughs, and frontend practice solutions.
+- [Partitioned Event Log Interview](features/partitioned-event-log-interview.md): candidate-attempt review, three TS/Python implementations, global-offset/cursor reasoning, checkpoint and scrolling review.
 - `docs/features/react-typescript-playground.md` owns the reusable web-project schema, Sandpack execution boundary, automatic startup, retry/reset lifecycle, and native fallback.
 - `docs/features/frontend-interview-practice.md#supplementary-react-state-lesson` describes the stale-closure lesson, executable Markdown examples, cleanup rules, and six-question checkpoint.
 - `docs/features/bfs-dfs-learning-path.md` owns the Programming skill path for BFS/DFS fundamentals, Python and TypeScript examples, questionnaires, scrolling review, and guided graph interview comparisons.
@@ -93,7 +94,7 @@ Responsive editorial UI uses one platform contract in `features/design-system.md
 - Update READMEs in the same branch whenever implementation changes their documented contract.
 - Add a dated changelog entry for a release-sized change that spans several feature contracts; do not use the changelog as a replacement for updating those contracts.
 
-- `docs/features/linkedin-editorial.md` owns private source-grounded and manual LinkedIn drafts, text formatting and required manual-draft analysis, shared web/native review, immutable approvals, Supabase jobs and Buffer scheduling. `docs/runbooks/linkedin-editorial.md` owns account bootstrap, the manually invoked local worker, backups and recovery.
+- `docs/features/linkedin-editorial.md` owns private source-grounded and manual LinkedIn drafts, text formatting and required manual-draft analysis, shared web/native review, immutable approvals, Supabase jobs and Buffer scheduling. `docs/runbooks/linkedin-editorial.md` owns account bootstrap, pinned local writer/OpenJev setup, manual preparation/backfill and Codex verification, v2 backups and recovery.
 
 - `docs/features/frontend-interview-practice.md` owns the seven frontend challenges, Python companions, quiz/review flow, and exact-solution verification. The existing-content audit is in `docs/features/interview-coding-catalog.md`.
 
@@ -127,5 +128,14 @@ Native notebook validation now includes agent-device layout/contact runners in `
 The game [miniature sheet](../assets/game/previews/miniatures-v3.png) shows the full-body figures used in each level and their actual phone/wide rendering.
 
 Native local search uses the same core matchers in an offline runtime; its contract lives in [home discovery](features/home-discovery.md#native-local-search-execution). See [content/search tooling](../scripts/content/README.md) for `search:runtime` and `search:check`.
+- [Knowledge evaluator](features/knowledge-evaluator.md): local Graphiti/Qwen/OpenJev content inventory and decisions, admin graph/table exploration, offline jobs and graph-bound editorial review. [Runbook](runbooks/knowledge-evaluator.md).
+
+- [Programming Contract Review](features/programming-contract-review.md): original value, demand, ASCII matching and tree/cost lessons with independent local fixtures.
+
+- [Systems Boundary Review](features/systems-boundary-review.md): original request, transport, API, derived-state, document-query and memory review with selected primary evidence.
+
+- [Private interview preparation](features/interview-preparation.md): company/role tracker, mandatory technical editing and private knowledge reuse. [Operations](runbooks/interview-preparation.md).
 
 The [continuous map art review](../assets/game/previews/continuous-map/review.md) records the create/review/fix/review cycle, fifty-position landscape, three parallax depths, and visual evidence. Exact source prompts and seam export rules live in the asset guide.
+
+- `docs/features/selected-evidence-review.md` owns three bounded original paths for engineering, creative computing and ownership review, with55 source-bound choices.

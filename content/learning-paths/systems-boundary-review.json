@@ -1,0 +1,372 @@
+{
+  "slug": "systems-boundary-review",
+  "title": "Systems Boundary Review",
+  "summary": "Practice selected request, transport, API, derived-state, query and memory contracts through original paper traces.",
+  "kind": "skill",
+  "category": "System Design",
+  "audience": "Developers reviewing concise system summaries against explicit contracts and primary evidence.",
+  "status": "published",
+  "sourcePolicy": "required",
+  "sourceRefs": [
+    "boundary-rfc3986",
+    "boundary-rfc8141",
+    "boundary-rfc9110",
+    "boundary-rfc9112",
+    "boundary-rfc9293",
+    "boundary-rfc768",
+    "boundary-rfc9113",
+    "boundary-rfc9000",
+    "boundary-rfc9114",
+    "boundary-rfc826",
+    "boundary-chrome-push",
+    "boundary-dsvpn",
+    "boundary-graphql-security",
+    "boundary-grpc-core",
+    "boundary-rfc6455",
+    "boundary-fielding-rest",
+    "boundary-pg-materialized",
+    "boundary-kafka-design",
+    "boundary-kafka-introduction",
+    "boundary-kafka-kraft",
+    "boundary-mongo-query",
+    "boundary-mongo-skip",
+    "boundary-mongo-explain",
+    "boundary-ostep-paging",
+    "boundary-ostep-segments",
+    "boundary-linux-device-io"
+  ],
+  "units": [
+    {
+      "slug": "request-identities-and-navigation",
+      "title": "Request Identity",
+      "summary": "Separate address components, exact HTTP targets, connection reuse and application-ready evidence.",
+      "nodes": [
+        {
+          "kind": "document",
+          "slug": "system-design/request-identities-and-navigation",
+          "skillIds": [
+            "request-identity"
+          ],
+          "required": true
+        },
+        {
+          "kind": "exercise",
+          "slug": "system-design/request-identities-and-navigation-checkpoint",
+          "skillIds": [
+            "request-identity"
+          ],
+          "required": true
+        }
+      ]
+    },
+    {
+      "slug": "transport-streams-and-tunnels",
+      "title": "Transport Scope",
+      "summary": "Locate ordering and recovery boundaries across application streams, TCP, QUIC, local links and tunnels.",
+      "nodes": [
+        {
+          "kind": "document",
+          "slug": "system-design/transport-streams-and-tunnels",
+          "skillIds": [
+            "transport-scope"
+          ],
+          "required": true
+        },
+        {
+          "kind": "exercise",
+          "slug": "system-design/transport-streams-and-tunnels-checkpoint",
+          "skillIds": [
+            "transport-scope"
+          ],
+          "required": true
+        }
+      ]
+    },
+    {
+      "slug": "api-interactions-and-intermediaries",
+      "title": "Interaction Contracts",
+      "summary": "Select application contracts and independently verify intermediary roles, work bounds, authority and effects.",
+      "nodes": [
+        {
+          "kind": "document",
+          "slug": "system-design/api-interactions-and-intermediaries",
+          "skillIds": [
+            "interaction-contract"
+          ],
+          "required": true
+        },
+        {
+          "kind": "exercise",
+          "slug": "system-design/api-interactions-and-intermediaries-checkpoint",
+          "skillIds": [
+            "interaction-contract"
+          ],
+          "required": true
+        }
+      ]
+    },
+    {
+      "slug": "derived-state-and-log-boundaries",
+      "title": "Derived State",
+      "summary": "Reconcile versioned replacements and separate log partitions, replicas, offsets, external effects and metadata.",
+      "nodes": [
+        {
+          "kind": "document",
+          "slug": "system-design/derived-state-and-log-boundaries",
+          "skillIds": [
+            "derived-state"
+          ],
+          "required": true
+        },
+        {
+          "kind": "exercise",
+          "slug": "system-design/derived-state-and-log-boundaries-checkpoint",
+          "skillIds": [
+            "derived-state"
+          ],
+          "required": true
+        }
+      ]
+    },
+    {
+      "slug": "document-query-and-pagination-contracts",
+      "title": "Document Queries",
+      "summary": "Preserve authorization, full cursor order and consistency assumptions while inspecting actual query work.",
+      "nodes": [
+        {
+          "kind": "document",
+          "slug": "system-design/document-query-and-pagination-contracts",
+          "skillIds": [
+            "document-query"
+          ],
+          "required": true
+        },
+        {
+          "kind": "exercise",
+          "slug": "system-design/document-query-and-pagination-contracts-checkpoint",
+          "skillIds": [
+            "document-query"
+          ],
+          "required": true
+        }
+      ]
+    },
+    {
+      "slug": "virtual-addresses-and-device-io",
+      "title": "Memory Domains",
+      "summary": "Translate finite logical addresses only after bounds, mapping and permission checks; distinguish device I/O.",
+      "nodes": [
+        {
+          "kind": "document",
+          "slug": "system-design/virtual-addresses-and-device-io",
+          "skillIds": [
+            "memory-domain"
+          ],
+          "required": true
+        },
+        {
+          "kind": "exercise",
+          "slug": "system-design/virtual-addresses-and-device-io-checkpoint",
+          "skillIds": [
+            "memory-domain"
+          ],
+          "required": true
+        }
+      ]
+    }
+  ],
+  "progression": {
+    "framework": "career",
+    "roadmapLabel": "Selected Systems Contracts",
+    "skills": [
+      {
+        "id": "request-identity",
+        "label": "Request Identity",
+        "category": "systems-contracts",
+        "description": "Separate address components, exact HTTP targets, connection reuse and application-ready evidence."
+      },
+      {
+        "id": "transport-scope",
+        "label": "Transport Scope",
+        "category": "systems-contracts",
+        "description": "Locate ordering and recovery boundaries across application streams, TCP, QUIC, local links and tunnels."
+      },
+      {
+        "id": "interaction-contract",
+        "label": "Interaction Contracts",
+        "category": "systems-contracts",
+        "description": "Select application contracts and independently verify intermediary roles, work bounds, authority and effects."
+      },
+      {
+        "id": "derived-state",
+        "label": "Derived State",
+        "category": "systems-contracts",
+        "description": "Reconcile versioned replacements and separate log partitions, replicas, offsets, external effects and metadata."
+      },
+      {
+        "id": "document-query",
+        "label": "Document Queries",
+        "category": "systems-contracts",
+        "description": "Preserve authorization, full cursor order and consistency assumptions while inspecting actual query work."
+      },
+      {
+        "id": "memory-domain",
+        "label": "Memory Domains",
+        "category": "systems-contracts",
+        "description": "Translate finite logical addresses only after bounds, mapping and permission checks; distinguish device I/O."
+      }
+    ],
+    "stages": [
+      {
+        "id": "request-identity",
+        "label": "Request Identity",
+        "level": "Practitioner",
+        "status": "published",
+        "summary": "Separate address components, exact HTTP targets, connection reuse and application-ready evidence.",
+        "unitSlugs": [
+          "request-identities-and-navigation"
+        ],
+        "outcomes": [
+          {
+            "id": "request-identity-review",
+            "statement": "Separate address components, exact HTTP targets, connection reuse and application-ready evidence.",
+            "skillId": "request-identity"
+          }
+        ],
+        "requiredNodeSlugs": [
+          "system-design/request-identities-and-navigation",
+          "system-design/request-identities-and-navigation-checkpoint"
+        ],
+        "checkpointExerciseSlug": "system-design/request-identities-and-navigation-checkpoint",
+        "passThreshold": 0.8,
+        "minimumSkillScore": 0.8,
+        "estimatedMinutes": 20
+      },
+      {
+        "id": "transport-scope",
+        "label": "Transport Scope",
+        "level": "Practitioner",
+        "status": "published",
+        "summary": "Locate ordering and recovery boundaries across application streams, TCP, QUIC, local links and tunnels.",
+        "unitSlugs": [
+          "transport-streams-and-tunnels"
+        ],
+        "outcomes": [
+          {
+            "id": "transport-scope-review",
+            "statement": "Locate ordering and recovery boundaries across application streams, TCP, QUIC, local links and tunnels.",
+            "skillId": "transport-scope"
+          }
+        ],
+        "requiredNodeSlugs": [
+          "system-design/transport-streams-and-tunnels",
+          "system-design/transport-streams-and-tunnels-checkpoint"
+        ],
+        "checkpointExerciseSlug": "system-design/transport-streams-and-tunnels-checkpoint",
+        "passThreshold": 0.8,
+        "minimumSkillScore": 0.8,
+        "estimatedMinutes": 20
+      },
+      {
+        "id": "interaction-contract",
+        "label": "Interaction Contracts",
+        "level": "Practitioner",
+        "status": "published",
+        "summary": "Select application contracts and independently verify intermediary roles, work bounds, authority and effects.",
+        "unitSlugs": [
+          "api-interactions-and-intermediaries"
+        ],
+        "outcomes": [
+          {
+            "id": "interaction-contract-review",
+            "statement": "Select application contracts and independently verify intermediary roles, work bounds, authority and effects.",
+            "skillId": "interaction-contract"
+          }
+        ],
+        "requiredNodeSlugs": [
+          "system-design/api-interactions-and-intermediaries",
+          "system-design/api-interactions-and-intermediaries-checkpoint"
+        ],
+        "checkpointExerciseSlug": "system-design/api-interactions-and-intermediaries-checkpoint",
+        "passThreshold": 0.8,
+        "minimumSkillScore": 0.8,
+        "estimatedMinutes": 20
+      },
+      {
+        "id": "derived-state",
+        "label": "Derived State",
+        "level": "Practitioner",
+        "status": "published",
+        "summary": "Reconcile versioned replacements and separate log partitions, replicas, offsets, external effects and metadata.",
+        "unitSlugs": [
+          "derived-state-and-log-boundaries"
+        ],
+        "outcomes": [
+          {
+            "id": "derived-state-review",
+            "statement": "Reconcile versioned replacements and separate log partitions, replicas, offsets, external effects and metadata.",
+            "skillId": "derived-state"
+          }
+        ],
+        "requiredNodeSlugs": [
+          "system-design/derived-state-and-log-boundaries",
+          "system-design/derived-state-and-log-boundaries-checkpoint"
+        ],
+        "checkpointExerciseSlug": "system-design/derived-state-and-log-boundaries-checkpoint",
+        "passThreshold": 0.8,
+        "minimumSkillScore": 0.8,
+        "estimatedMinutes": 20
+      },
+      {
+        "id": "document-query",
+        "label": "Document Queries",
+        "level": "Practitioner",
+        "status": "published",
+        "summary": "Preserve authorization, full cursor order and consistency assumptions while inspecting actual query work.",
+        "unitSlugs": [
+          "document-query-and-pagination-contracts"
+        ],
+        "outcomes": [
+          {
+            "id": "document-query-review",
+            "statement": "Preserve authorization, full cursor order and consistency assumptions while inspecting actual query work.",
+            "skillId": "document-query"
+          }
+        ],
+        "requiredNodeSlugs": [
+          "system-design/document-query-and-pagination-contracts",
+          "system-design/document-query-and-pagination-contracts-checkpoint"
+        ],
+        "checkpointExerciseSlug": "system-design/document-query-and-pagination-contracts-checkpoint",
+        "passThreshold": 0.8,
+        "minimumSkillScore": 0.8,
+        "estimatedMinutes": 20
+      },
+      {
+        "id": "memory-domain",
+        "label": "Memory Domains",
+        "level": "Practitioner",
+        "status": "published",
+        "summary": "Translate finite logical addresses only after bounds, mapping and permission checks; distinguish device I/O.",
+        "unitSlugs": [
+          "virtual-addresses-and-device-io"
+        ],
+        "outcomes": [
+          {
+            "id": "memory-domain-review",
+            "statement": "Translate finite logical addresses only after bounds, mapping and permission checks; distinguish device I/O.",
+            "skillId": "memory-domain"
+          }
+        ],
+        "requiredNodeSlugs": [
+          "system-design/virtual-addresses-and-device-io",
+          "system-design/virtual-addresses-and-device-io-checkpoint"
+        ],
+        "checkpointExerciseSlug": "system-design/virtual-addresses-and-device-io-checkpoint",
+        "passThreshold": 0.8,
+        "minimumSkillScore": 0.8,
+        "estimatedMinutes": 20
+      }
+    ]
+  }
+}

@@ -1,0 +1,153 @@
+{
+  "slug": "system-design/virtual-addresses-and-device-io-checkpoint",
+  "title": "Memory Domains Checkpoint",
+  "type": "questionnaire",
+  "difficulty": "practitioner",
+  "status": "published",
+  "documentSlug": "system-design/virtual-addresses-and-device-io",
+  "sourceRefs": [
+    "boundary-ostep-paging",
+    "boundary-ostep-segments",
+    "boundary-linux-device-io"
+  ],
+  "concept": "Memory Domains",
+  "tags": [
+    "systems-contracts",
+    "evidence"
+  ],
+  "skillIds": [
+    "memory-domain"
+  ],
+  "questions": [
+    {
+      "id": "page-offset",
+      "kind": "choice",
+      "skillIds": [
+        "memory-domain"
+      ],
+      "prompt": "The toy uses 16-byte pages; page 1 maps to frame 7. Where does a permitted read at virtual 21 translate?",
+      "options": [
+        {
+          "id": "correct",
+          "label": "With 16-byte pages, virtual 21 has page 1 and offset 5; frame 7 gives physical 117.",
+          "isCorrect": true
+        },
+        {
+          "id": "wrong-1",
+          "label": "Physical 21, because virtual and physical addresses must match.",
+          "isCorrect": false
+        },
+        {
+          "id": "wrong-2",
+          "label": "Physical 112, because translation removes the offset.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "Integer division gives page 1 and remainder 5. Replace the page number with frame 7 while retaining the offset: 7*16+5=117. These sizes belong to the fictional fixture."
+    },
+    {
+      "id": "protection",
+      "kind": "choice",
+      "skillIds": [
+        "memory-domain"
+      ],
+      "prompt": "Page 1 is read-only and page 2 has no present mapping. What must happen before a target access?",
+      "options": [
+        {
+          "id": "wrong-1",
+          "label": "Translate and write first, then report a protection failure.",
+          "isCorrect": false
+        },
+        {
+          "id": "wrong-2",
+          "label": "Use physical address zero whenever a mapping is absent.",
+          "isCorrect": false
+        },
+        {
+          "id": "correct",
+          "label": "Check mapping presence and permission before translating or accessing the target.",
+          "isCorrect": true
+        }
+      ],
+      "explanation": "A permitted read, forbidden write and missing mapping are distinct cases. Check presence and operation permission first; rejection performs no target access and this toy does not implement fault recovery."
+    },
+    {
+      "id": "segment-limit",
+      "kind": "choice",
+      "skillIds": [
+        "memory-domain"
+      ],
+      "prompt": "An upward-growing segment has base 100 and exclusive length 12. Which boundary is correct?",
+      "options": [
+        {
+          "id": "wrong-2",
+          "label": "Offset 11 translates to 11 because the base is ignored.",
+          "isCorrect": false
+        },
+        {
+          "id": "correct",
+          "label": "For base 100 and exclusive limit 12, offset 11 maps to 111; offset 12 is rejected.",
+          "isCorrect": true
+        },
+        {
+          "id": "wrong-1",
+          "label": "Offset 12 is valid because the length is inclusive.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "The accepted logical range is 0 through 11. Check offset < 12 and permission before adding base 100. A different segment representation needs its own bound and growth-direction contract."
+    },
+    {
+      "id": "fragmentation",
+      "kind": "choice",
+      "skillIds": [
+        "memory-domain"
+      ],
+      "prompt": "An 18-byte allocation uses two 16-byte pages; separate variable-sized free holes are 6 and 6. What do these examples show?",
+      "options": [
+        {
+          "id": "correct",
+          "label": "Paging can waste space inside a final page; variable segments can leave separated free holes.",
+          "isCorrect": true
+        },
+        {
+          "id": "wrong-1",
+          "label": "The unused page tail and separate holes are identical allocation failures.",
+          "isCorrect": false
+        },
+        {
+          "id": "wrong-2",
+          "label": "A contiguous 10-byte segment always fits because total free memory is 12.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "The page allocation leaves 14 bytes inside its last fixed unit. Separated six-byte holes cannot supply one contiguous ten-byte segment under the stated policy; internal and external waste differ."
+    },
+    {
+      "id": "device-domain",
+      "kind": "choice",
+      "skillIds": [
+        "memory-domain"
+      ],
+      "prompt": "A review proposes ordinary pointer writes and memcpy for portable device-register access. What is the appropriate contract?",
+      "options": [
+        {
+          "id": "wrong-1",
+          "label": "Every mapped address behaves exactly like normal RAM.",
+          "isCorrect": false
+        },
+        {
+          "id": "wrong-2",
+          "label": "A CPU store proves that a posted device write has completed.",
+          "isCorrect": false
+        },
+        {
+          "id": "correct",
+          "label": "Use the documented platform device-I/O accessors and ordering rules; an ordinary pointer is not a portable MMIO contract.",
+          "isCorrect": true
+        }
+      ],
+      "explanation": "Platform mapping tokens, accessors and ordering/posting rules define portable device I/O. Ordinary RAM operations do not replace that contract; a device-specific completion rule may still be needed."
+    }
+  ]
+}

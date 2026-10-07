@@ -68,7 +68,7 @@ appId: com.codematica.app
     timeout: 20000
 - tapOn:
     id: linkedin-refine
-- assertVisible: Refinement queued
+- assertVisible: Preparation / verification queued
 - takeScreenshot: native-editorial-refinement
 - scrollUntilVisible:
     element:
@@ -151,6 +151,23 @@ appId: com.codematica.app
     timeout: 20000
 - assertVisible:
     id: linkedin-body
+- tapOn:
+    id: linkedin-body
+- inputText: Unsaved device notes
+- hideKeyboard
+- scrollUntilVisible:
+    element:
+      id: linkedin-discard
+    direction: DOWN
+    speed: 20
+    visibilityPercentage: 100
+    centerElement: false
+    timeout: 20000
+- assertVisible: ".*Unsaved changes. Save or discard to switch drafts.*"
+- tapOn:
+    id: linkedin-discard
+- assertNotVisible:
+    id: linkedin-discard
 - scrollUntilVisible:
     element:
       id: linkedin-refine
@@ -159,5 +176,5 @@ appId: com.codematica.app
     visibilityPercentage: 100
     centerElement: false
     timeout: 20000
-- assertVisible: Refinement queued
+- assertVisible: Preparation / verification queued
 - takeScreenshot: native-editorial-manual-queued

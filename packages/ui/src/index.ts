@@ -9,3 +9,4 @@ export { JapaneseNotebookPractice } from "./JapaneseNotebookPractice";
 export { JapaneseNotebookCatalogScreen } from "./JapaneseNotebookCatalogScreen";
 
 export { AdaptiveText } from "./AdaptiveText";
+export { InterviewPreparationScreen } from "./InterviewPreparationScreen";

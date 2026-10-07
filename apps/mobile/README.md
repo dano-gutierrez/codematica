@@ -55,7 +55,11 @@ Jest covers native adapters, offline and partial-failure progress behavior, Supa
 
 The game route-focus regression loads the actual map route through its public `@codematica/ui/game` export. Jest maps that export explicitly to the declared screen entry. Native game tests also cover measured art visibility, viewport reflow, covered routes and unchanged-visibility scroll events; artwork and scoring remain unchanged.
 
-Keep SDK 57 patch versions aligned across this workspace, root development dependencies, root overrides, and `package-lock.json`. Install required native peers directly in this app; `expo-audio` requires `expo-asset`. After updating versions, verify a clean `npm ci`, Expo Doctor, typechecking, native coverage, and Android/iOS bundle exports before installed-device checks. Follow the [Expo dependency upgrade guide](https://docs.expo.dev/workflow/upgrading-expo-sdk-walkthrough/).
+Keep SDK 57 patch versions aligned across this workspace, root development dependencies, root overrides, and `package-lock.json`. Install required native peers directly in this app; `expo-audio` requires `expo-asset`.
+
+The October 6, 2026 alignment uses Expo 57.0.27, expo-asset 57.0.19, expo-constants 57.0.21, expo-linking 57.0.12 and expo-router 57.0.25. Root overrides also follow the SDK’s CLI, Metro, Babel and module-core dependency ranges; do not keep an override below the installed SDK’s required version.
+
+After updating versions, verify a clean `npm ci`, Expo Doctor, typechecking, native coverage, and Android/iOS bundle exports before installed-device checks. Follow the [Expo dependency upgrade guide](https://docs.expo.dev/workflow/upgrading-expo-sdk-walkthrough/).
 
 ## Native E2E
 
@@ -205,3 +209,7 @@ Native OAuth uses explicit PKCE and a validated Expo Router callback handoff. Au
 ## Local fuzzy search
 
 The native adapter provides the fixed `src/generated/search-worker.ts` bundle to shared Learn/Browse search. Expensive matching executes in the existing local WebView dependency, keeping native input and scrolling responsive. It needs no network or Supabase setup. Regenerate with `npm run search:runtime` after matcher/runtime changes and verify with `npm run search:check`; CI checks freshness and the root production build regenerates it. Installed performance and startup checks remain required on Android/iOS; mocked component tests are not runtime proof.
+
+Event-log interview content uses the shared native walkthrough and code reader. Jest covers all three approaches/languages and checkpoint navigation; `.maestro/event-log-interview.yaml` defines the installed-app quiz/review journey. Playground execution remains web-only.
+
+Admin → Interview preparation uses the shared native screen and optional admin-only Supabase RPCs. `apps/mobile/.maestro/interview-preparation.yaml` requires a disposable admin account/test database. See the interview feature/runbook.

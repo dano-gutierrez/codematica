@@ -20,7 +20,13 @@ The durable matrix, CI schedules, and release contract live in `docs/features/au
 
 `code-contrast.regression.spec.ts` verifies the actual CSS cascade for lessons at phone/desktop widths, all algorithm languages, Python companions, review snippets, SQL/plain code, Mermaid source, and edited playground syntax. It measures code text against the dark surface (including the faint grid lines), protects inline-code styling, and blocks hosted execution for editor-only checks. Run with `npx playwright test --config=apps/web/e2e/playwright.config.ts --project=mobile-chromium apps/web/e2e/specs/code-contrast.regression.spec.ts`.
 
-`playground.regression.spec.ts` verifies automatic startup, one runtime shared with the console, edited code execution, actual Reset output, and recovery with edits after a blocked hosted-runtime connection. Run it with `npx playwright test --config=apps/web/e2e/playwright.config.ts apps/web/e2e/specs/playground.regression.spec.ts`. It advances the browser clock for the connection deadline; it does not sleep or inject fake application state. Generated reports under `apps/web/e2e/` are excluded from lint, not deleted.
+`playground.regression.spec.ts` verifies automatic startup, one runtime shared with the console, preview identity retained during connected Run, edited code execution, actual Reset output, and recovery with edits after a blocked hosted-runtime connection. Run it with `npx playwright test --config=apps/web/e2e/playwright.config.ts apps/web/e2e/specs/playground.regression.spec.ts`. It advances the browser clock for the connection deadline; it does not sleep or inject fake application state. Generated reports under `apps/web/e2e/` are excluded from lint, not deleted.
+
+Editor tests share `code-editor.ts`: choose CodeMirror's shortcut from the emulated browser platform, focus the editable textbox, replace the whole document, then assert its exact text before Run. An emulated iPhone uses Meta even on Linux. `scripts/testing/code-editor.test.ts` covers desktop, iOS, Android and touch-boundary cases. Each of the eight primary-route accessibility audits has its own default test budget and fresh page.
+
+The Japanese hub Axe audit and its keyboard/font-resize/reduced-motion journey also use separate fresh pages and the default thirty-second deadline. Keep the serious/critical audit, 320px viewport, 200% font, exact skip-link focus, overflow and motion assertions; do not combine their budgets or increase the timeout to mask cumulative work.
+
+`systems-boundaries.regression.spec.ts` reads all six Systems Boundary Review lessons and sources, completes shuffled checkpoints, verifies wrong-answer feedback and 80% scoring, and follows each next lesson or terminal state. Match independently specified answer labels for whichever question is shown; question order is intentionally shuffled.
 
 The app-wide `@design` lane adds responsive route matrices for foundations, discovery/interviews, Japanese practice and every campaign level. It includes enlarged-text, full-page overflow, axe and touch-target checks plus explicit recovery/return journeys. Run the full release lane for final verification; synthetic editorial cases remain in their separate `EDITORIAL_E2E=1` lane. Preserve failed traces and reports before a rerun overwrites the output directory.
 
@@ -32,9 +38,11 @@ See `docs/features/adaptive-ui.md` for persistent phone navigation, desktop/iPad
 
 The design regression checks synthetic drafts at 320–1440 px, keyboard tooltips, axe accessibility, collapsed details, unsaved-edit protection, and explicit discard. It captures desktop and phone reference images. Preserve failed traces and reports separately before rerunning this lane.
 
+Draft-load recovery covers pending/failed detail requests in component tests and failure/retry on compact and wide browser layouts. Fixtures use `linkedin_overview` and `linkedin_detail`, with intercepted `knowledge_for_post` reads.
+
 Clipboard recovery uses a denied synthetic browser API and verifies that the comment remains available without a database write. Proposal reflow includes a long unbroken source URL, not only short fixture paragraphs.
 
-`account-navigation.regression.spec.ts` also runs in `npm run e2e:linkedin`: desktop/phone sign-in, Admin/LinkedIn grouping, account disclosure, Escape focus, local sign-out, and cookie removal. Its identity and tokens are synthetic and only used against the fake Supabase host.
+`account-navigation.regression.spec.ts` also runs in `npm run e2e:linkedin`: desktop/phone sign-in, Admin/LinkedIn grouping, account disclosure, Escape focus, local sign-out, and cookie removal. All three Admin destinations are checked in both menus. Its identity and tokens are synthetic and only used against the fake Supabase host.
 
 `npm run e2e:linkedin` sets `EDITORIAL_E2E=1` and runs the admin review/refinement/approval and denied-access journey with a fake Supabase URL/key and intercepted RPCs. It makes no hosted database writes. This spec is skipped outside the dedicated lane. Default public smoke/release lanes explicitly clear public Supabase config so local credentials cannot change signed-out expectations. Run both `npm run e2e:smoke` and `npm run e2e:linkedin`.
 
@@ -65,9 +73,13 @@ Notebook layout regressions exercise real wheel scrolling and two-finger CDP tou
 The `@design` suites cover public route reflow, keyboard actions and axe at multiple content widths and 200% text. `design-foundations`, `design-content`, `design-japanese` and `design-game` are regression files. Japanese and campaign matrices run normal/enlarged text as independent cases so each keeps the existing test-time budget, axe assertions, geometry checks and captures. Long dictionary visual captures use viewport/section captures while document-wide overflow and accessibility assertions remain active. Follow the app-wide audit for remaining workflows and installed-device evidence.
 
 Foundation keyboard checks verify the skip link stays outside the viewport until focus, appears fully at default/200% text, and moves focus to main when activated. macOS WebKit uses [Safari's documented Option-Tab shortcut for links](https://support.apple.com/guide/safari/cpsh003/mac); other environments use Tab. Keep the focus and viewport assertions in both cases.
+`npm run e2e:interview-admin` exercises synthetic private tracker RPCs: failed create recovery, edited-package import, reading, study routing and Markdown download. No hosted data is used.
 
 `game-map-art.regression.spec.ts` checks fifty-position scenery with twelve playable nodes, all three moving depths, dynamic reduced motion, visual list ordering, keyboard navigation, and centering without inner overflow scrolling or blank seam strips. Run with `PLAYWRIGHT_PORT=3176 npx playwright test --config=apps/web/e2e/playwright.config.ts --project=mobile-chromium game-map-art.regression.spec.ts game.smoke.spec.ts`.
 
 The `@map-art` tag also runs this spec in desktop Chromium and mobile WebKit. Omit `--project` for the three-browser lane.
 
 Map-art checks independently double frontier heading/caption sizes at 200% text and measure the playable heading/row gaps and panel containment at 320 px. Inspect viewport captures as well as stitched element captures; fixed navigation drawn into a tall element screenshot does not establish its viewport behavior.
+`event-log.regression.spec.ts` (`@regression @playground`) covers the attempt-review lesson, all three runnable TS projects, Python switching, cursor continuation across node movement, quiz feedback and scrolling review on all three browser projects.
+
+The merged release matrix retains `@smoke`, `@playground`, `@notebook-catalog`, `@design`, `@interview-admin` and `@map-art` on desktop Chromium and mobile WebKit. Mobile Chromium runs the complete suite. `scripts/testing/browser-matrix.test.ts` imports the actual configuration and checks every retained tag independently so a future conflict resolution cannot silently drop a lane.

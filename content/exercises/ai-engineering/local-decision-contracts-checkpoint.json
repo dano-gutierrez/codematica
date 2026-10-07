@@ -1,0 +1,152 @@
+{
+  "slug": "ai-engineering/local-decision-contracts-checkpoint",
+  "title": "Local Decision Contracts Checkpoint",
+  "type": "questionnaire",
+  "difficulty": "practitioner",
+  "status": "published",
+  "documentSlug": "ai-engineering/local-decision-contracts",
+  "sourceRefs": [
+    "evidence-openjev-readout",
+    "evidence-openjev-license"
+  ],
+  "concept": "Local Decision Contracts",
+  "tags": [
+    "evidence-review",
+    "contracts"
+  ],
+  "skillIds": [
+    "decision-evidence"
+  ],
+  "questions": [
+    {
+      "id": "score",
+      "kind": "choice",
+      "skillIds": [
+        "decision-evidence"
+      ],
+      "prompt": "The three probabilities are 0.2, 0.3 and 0.5 on zero-based indices. What does score return?",
+      "options": [
+        {
+          "id": "correct",
+          "label": "The expected index is 1.3; it is not a correctness percentage.",
+          "isCorrect": true
+        },
+        {
+          "id": "wrong-1",
+          "label": "The score proves option 1 is correct.",
+          "isCorrect": false
+        },
+        {
+          "id": "wrong-2",
+          "label": "The score is 50 percent because option 2 wins.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "The weighted index is 0\u00d70.2 + 1\u00d70.3 + 2\u00d70.5 = 1.3. Argmax is a different operation, and neither readout is a held-out accuracy measurement."
+    },
+    {
+      "id": "close",
+      "kind": "choice",
+      "skillIds": [
+        "decision-evidence"
+      ],
+      "prompt": "Update wins 0.45 versus new lesson 0.40, with a missing supporting passage. What follows?",
+      "options": [
+        {
+          "id": "wrong-1",
+          "label": "Automatically overwrite the matching lesson.",
+          "isCorrect": false
+        },
+        {
+          "id": "wrong-2",
+          "label": "A winning label establishes the missing passage.",
+          "isCorrect": false
+        },
+        {
+          "id": "correct",
+          "label": "Keep the alternative and missing evidence visible; hold application for review.",
+          "isCorrect": true
+        }
+      ],
+      "explanation": "A close winning alternative remains a recommendation. Missing evidence cannot be supplied by a score, and staging a report grants no authority to change authored content."
+    },
+    {
+      "id": "layout",
+      "kind": "choice",
+      "skillIds": [
+        "decision-evidence"
+      ],
+      "prompt": "The same question now lists its options in a different order. What must change?",
+      "options": [
+        {
+          "id": "wrong-2",
+          "label": "Replace every score with a random label.",
+          "isCorrect": false
+        },
+        {
+          "id": "correct",
+          "label": "Bind the readout and cache to the new ordered option identities.",
+          "isCorrect": true
+        },
+        {
+          "id": "wrong-1",
+          "label": "Reuse the old index because the words are similar.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "An index refers to an ordered option contract. Reusing an old layout can attach the score to another meaning; arbitrary labels provide no valid alternative evaluation."
+    },
+    {
+      "id": "reuse",
+      "kind": "choice",
+      "skillIds": [
+        "decision-evidence"
+      ],
+      "prompt": "A post teaches an existing lesson through a new short example. Which duplicate check is appropriate?",
+      "options": [
+        {
+          "id": "correct",
+          "label": "Judge purpose and added value; lesson-to-post reuse can be useful.",
+          "isCorrect": true
+        },
+        {
+          "id": "wrong-1",
+          "label": "Any shared topic is a duplicate.",
+          "isCorrect": false
+        },
+        {
+          "id": "wrong-2",
+          "label": "All posts are new because their format differs.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "Cross-format reuse can add value without needing a duplicate lesson. A format change alone also does not justify repetitive posts; inspect the objective and actual added example."
+    },
+    {
+      "id": "measurement",
+      "kind": "choice",
+      "skillIds": [
+        "decision-evidence"
+      ],
+      "prompt": "A local classifier produces no text output tokens. Which claim is justified?",
+      "options": [
+        {
+          "id": "wrong-1",
+          "label": "It consumes no resources.",
+          "isCorrect": false
+        },
+        {
+          "id": "wrong-2",
+          "label": "Its weights inherit the server code\u2019s license.",
+          "isCorrect": false
+        },
+        {
+          "id": "correct",
+          "label": "Measure inference, latency and memory separately; output count proves no cost or licensing claim.",
+          "isCorrect": true
+        }
+      ],
+      "explanation": "A small output readout still requires model execution. Resource measurements and the code/weight licensing boundary remain independent of how many text tokens are returned."
+    }
+  ]
+}

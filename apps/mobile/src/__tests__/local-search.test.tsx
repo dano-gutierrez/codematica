@@ -154,7 +154,7 @@ it("uses the local runtime in both Learn and Browse and preserves their destinat
   await fireEvent.changeText(learn.getByTestId("mobile-home-global-search"), "Number Of Islands"); await settle();
   let req = request();
   await fireEvent(learn.getByTestId("mobile-local-search-runtime", { includeHiddenElements: true }), "message", message({ type: "result", id: req.id, rows: executeNativeSearch(req.input, req.query) }));
-  expect(learn.getByText("6 results")).toBeOnTheScreen();
+  expect(learn.getByText("7 results")).toBeOnTheScreen();
   await fireEvent.press(learn.getByTestId("mobile-discovery-interview-question-google-number-of-islands"));
   expect(navigate).toHaveBeenLastCalledWith("/interviews/google/number-of-islands");
   await learn.unmount();

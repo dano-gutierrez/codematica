@@ -199,6 +199,8 @@ The October 3 design pass is tracked in [app-wide-design-audit.md](app-wide-desi
 
 ## Decision Log
 
+- 2026-10-06: Align Expo SDK 57 patch dependencies and root overrides with 57.0.27 after fresh CI reported five package-version mismatches. Keep Expo Doctor enabled and verify clean install, native coverage, Android/iOS JavaScript bundle exports and the production-only web artifact. Bundle exports do not establish installed-device readiness; the existing Xcode baseline limitation remains.
+
 - `2026-07-11`: Keep Next/Vercel as the web deployment and add Expo Router for native instead of moving all targets to Expo web.
 - `2026-07-11`: Use npm workspaces with `apps/web`, `apps/mobile`, `packages/core`, and `packages/ui`.
 - `2026-07-11`: Bundle the generated content index into native for offline anonymous study.
@@ -234,3 +236,5 @@ Languages exposes Japanese and Notebook practice in the tablet/sidebar and phone
 The local `apps/mobile/modules/codematica-handwriting` Expo module wraps PencilKit and must be included in a new native binary. Expo Go and older binaries use the SVG fallback. JavaScript imports public native-module helpers from the direct `expo` dependency. The pod declares ExpoModulesCore and PencilKit explicitly. Xcode 26.3 cannot establish SDK 57 native readiness; rerun with Xcode 26.4+ and execute Maestro on both platforms, then physical Pencil/palm/pressure QA. Autolinking and Swift syntax checks are not a build or physical-device validation.
 
 The device pass adds native notebook layout/contact runners under `apps/mobile/e2e/`. They exercise real SVG fallback input in Expo Go on Android, iPhone and iPad; they do not validate the installed PencilKit module. The shell disables native swipe-back on handwriting routes to keep rightward strokes from leaving the page. Native paper blocks ScrollView interception and uses explicit two-finger/accessibility scrolling. A compact selected-page header and feedback above the paper preserve useful phone writing space. Supported builds, installed Maestro and physical Pencil checks are deferred; use the [notebook checklist](japanese-writing-notebooks.md#deferred-physical-ipad-checklist).
+
+The October 6 SDK patch validation also backports the reviewed per-route accessibility checks from the knowledge parent. All eight routes and the serious/critical assertions remain; each route uses its own browser fixture and the unchanged 30-second test timeout. The original grouped-route timeout and WebKit game navigation crash are retained as separate failures; this partition does not establish the game crash cause.

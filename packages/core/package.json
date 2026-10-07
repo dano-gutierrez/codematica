@@ -26,7 +26,11 @@
     "./progress/mastery": "./src/progress/mastery.ts",
     "./progress/progression": "./src/progress/progression.ts",
     "./generated/content-index.json": "./src/generated/content-index.json",
-    "./game": "./src/game/index.ts"
+    "./game": "./src/game/index.ts",
+    "./linkedin-preparation": "./src/linkedin-preparation.ts",
+    "./knowledge": "./src/knowledge.ts",
+    "./interview-preparation": "./src/interview-preparation.ts",
+    "./interview-preparation-store": "./src/interview-preparation-store.ts"
   },
   "scripts": {
     "typecheck": "tsc --noEmit -p tsconfig.json"

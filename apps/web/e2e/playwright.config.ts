@@ -1,6 +1,7 @@
 import { defineConfig, devices } from "@playwright/test";
 
-const port = Number(process.env.E2E_PORT ?? process.env.PLAYWRIGHT_PORT ?? "3100");
+const port = Number(process.env.E2E_PORT || process.env.PLAYWRIGHT_PORT || 3100);
+if (!Number.isInteger(port) || port < 1024 || port > 65535) throw new Error("Invalid PLAYWRIGHT_PORT");
 const webServerEnv = Object.fromEntries(
   Object.entries(process.env).filter(([key, value]) => key !== "NO_COLOR" && value !== undefined),
 ) as Record<string, string>;
@@ -62,7 +63,7 @@ export default defineConfig({
     },
     {
       name: "desktop-chromium",
-      grep: process.env.EDITORIAL_E2E === "1" ? /@regression/ : /@smoke|@playground|@notebook-catalog|@design|@map-art/,
+      grep: process.env.EDITORIAL_E2E === "1" ? /@regression/ : /@smoke|@playground|@notebook-catalog|@design|@interview-admin|@map-art/,
       use: {
         ...devices["Desktop Chrome"],
       },
@@ -72,7 +73,7 @@ export default defineConfig({
       // Concurrent WebKit pages stalled navigation on both local macOS and Linux CI.
       workers: 1,
       testIgnore: process.env.EDITORIAL_E2E === "1" ? [] : designFiles,
-      grep: process.env.EDITORIAL_E2E === "1" ? /@regression/ : /@smoke|@playground|@notebook-catalog|@design|@map-art/,
+      grep: process.env.EDITORIAL_E2E === "1" ? /@regression/ : /@smoke|@playground|@notebook-catalog|@design|@interview-admin|@map-art/,
       use: {
         ...devices["iPhone 15"],
       },

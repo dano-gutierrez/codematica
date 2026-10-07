@@ -253,3 +253,57 @@ it("does not withdraw a published post or queue refinement twice", async () => {
   expect(screen.getByRole("button", { name: "Refinement queued" })).toBeDisabled();
   expect(screen.queryByRole("link", { name: "View post" })).not.toBeInTheDocument();
 });
+
+it("loads a preparation on demand, preserves the original, and requires an override reason", async () => {
+  const { preparationFixture } = await import("../../../../packages/core/src/test/linkedin-fixture");
+  const data = structuredClone(editorialFixture); data.posts[0].preparation_required = true; data.preparations = [preparationFixture];
+  const api = { isAdmin: vi.fn().mockResolvedValue(true), snapshot: vi.fn(), overview: vi.fn().mockResolvedValue({ ...data, revisions: [], preparations: [], version: "1" }), detail: vi.fn().mockResolvedValue(data), create: vi.fn(), review: vi.fn(), preparationAction: vi.fn().mockResolvedValue(null) };
+  render(<LinkedInAdmin client={api} />);
+  expect(api.detail).not.toHaveBeenCalled();
+  fireEvent.click(await screen.findByRole("button", { name: /Retries need a budget/ }));
+  expect(await screen.findByText("Local preparation · held")).toBeInTheDocument();
+  expect(screen.getByLabelText("Post text")).toHaveValue(data.revisions[0].body);
+  expect(screen.getByRole("button", { name: "Approve & queue" })).toBeDisabled();
+  expect(screen.getByRole("button", { name: "Send to Codex with flags" })).toBeDisabled();
+  fireEvent.change(screen.getByLabelText("Reason for sending"), { target: { value: "This is a distinct follow-up" } });
+  fireEvent.click(screen.getByRole("button", { name: "Keep as a follow-up" }));
+  await waitFor(() => expect(api.preparationAction).toHaveBeenCalledWith(data.posts[0].id, data.posts[0].current_revision_id, preparationFixture.id, "follow_up", "This is a distinct follow-up"));
+  expect(api.review).not.toHaveBeenCalled();
+});
+
+
+it.each(["pending", "failed"])("returns to the collection while draft details are %s and can retry", async outcome => {
+  let resolve!: (value: typeof editorialFixture) => void;
+  let reject!: (error: Error) => void;
+  const first = new Promise<typeof editorialFixture>((yes, no) => { resolve = yes; reject = no; });
+  const api = { ...client(), overview: vi.fn().mockResolvedValue({ ...editorialFixture, revisions: [], version: "1" }), detail: vi.fn().mockReturnValueOnce(first).mockResolvedValue(editorialFixture) };
+  render(<LinkedInAdmin client={api} />);
+  const draft = await screen.findByRole("button", { name: /Retries need a budget/ });
+  fireEvent.click(draft);
+  if (outcome === "failed") {
+    await act(async () => reject(new Error("Detail request failed")));
+    expect(screen.getByRole("alert")).toHaveTextContent("Detail request failed");
+  }
+  fireEvent.click(screen.getByRole("button", { name: "Back to collection" }));
+  expect(draft).toHaveFocus();
+  if (outcome === "pending") await act(async () => resolve(editorialFixture));
+  expect(screen.queryByLabelText("Post text")).not.toBeInTheDocument();
+  fireEvent.click(draft);
+  expect(await screen.findByLabelText("Post text")).toHaveValue(editorialFixture.revisions[0].body);
+  expect(api.detail).toHaveBeenCalledTimes(2);
+  expect(screen.queryByRole("alert")).toBeNull();
+  expect(api.review).not.toHaveBeenCalled();
+});
+
+it("keeps the active draft dirty when its collection button is selected again", async () => {
+  const api = { ...client(), overview: vi.fn().mockResolvedValue({ ...editorialFixture, revisions: [], version: "1" }), detail: vi.fn().mockResolvedValue(editorialFixture) };
+  render(<LinkedInAdmin client={api} />);
+  const draft = await screen.findByRole("button", { name: /Retries need a budget/ });
+  fireEvent.click(draft);
+  fireEvent.change(await screen.findByLabelText("Post text"), { target: { value: "Keep my unsaved changes" } });
+  fireEvent.click(draft);
+  expect(screen.getByRole("button", { name: "Refresh posts" })).toBeDisabled();
+  expect(screen.getByRole("button", { name: "Back to collection" })).toBeDisabled();
+  expect(screen.getByLabelText("Post text")).toHaveValue("Keep my unsaved changes");
+  expect(api.detail).toHaveBeenCalledTimes(1);
+});

@@ -39,7 +39,7 @@ Codematica renders local content without Supabase credentials. Configure web `NE
 - `/auth/callback` exchanges OAuth/PKCE codes and returns users through `/login?sync=1` so browser-local progress can sync after login.
 - `/auth/sign-out` signs users out and redirects home.
 - Signed-in web navigation replaces Sign in with the account name/email and an expandable Sign out control. Desktop uses the sidebar footer; phones reuse it in the header and More menu.
-- Admin is a separate navigation group containing the LinkedIn icon/link, visible only for a signed-in user whose existing membership RPC succeeds. Database RLS and RPCs remain the authorization boundary.
+- Admin is a separate navigation group containing LinkedIn, Knowledge and Interview preparation, visible only for a signed-in user whose existing membership RPC succeeds. Database RLS and RPCs remain the authorization boundary.
 - Navigation Sign out calls `auth.signOut({ scope: "local" })`, clears this browser session, returns home, and refreshes server content. Failures keep a retryable account menu. Other devices remain signed in.
 - The account disclosure reserves the future Profile/settings entry point; this change adds no Profile route.
 - The app remains usable without Supabase env vars; progress POSTs then fall back to the signed-out local buffer.
@@ -61,7 +61,7 @@ The account disclosure uses native details/summary. Escape closes it and restore
 
 ### Navigation Validation
 
-Component tests verify separate Admin grouping, active LinkedIn routes and icon, ordinary/signed-out access, identity fallbacks, failure/retry, disabled concurrent sign-out, and Escape focus. Hook tests cover optional configuration, initial lookup, auth events, stale results, and cleanup.
+Component tests verify separate Admin grouping, active routes for all three admin destinations and the LinkedIn icon, ordinary/signed-out access, identity fallbacks, failure/retry, disabled concurrent sign-out, and Escape focus. Hook tests cover optional configuration, initial lookup, auth events, stale results, and cleanup.
 
 `account-navigation.regression.spec.ts` signs into intercepted synthetic Supabase endpoints on desktop and phone, checks Admin and the account menu, signs out, and verifies cookie removal and anonymous navigation. It runs with `npm run e2e:linkedin` alongside the editorial cases. No hosted account or database is changed. Coverage gates remain unchanged.
 

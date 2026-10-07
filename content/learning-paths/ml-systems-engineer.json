@@ -42,6 +42,7 @@
       "summary": "Continue through neural computation, network architectures, framework internals, training, and all 20 TinyTorch modules from tensors to the capstone.",
       "nodes": [
         { "kind": "source", "slug": "ml-systems/neural-computation", "sourceRef": "harvard-vol1-neural-computation", "activity": "read", "companionKind": "document", "skillIds": ["model-development"] },
+        { "kind": "exercise", "slug": "ml-systems/neural-computation-checkpoint", "skillIds": ["model-development", "experimental-practice"] },
         { "kind": "source", "slug": "ml-systems/network-architectures", "sourceRef": "harvard-vol1-network-architectures", "activity": "read", "companionKind": "document", "skillIds": ["model-development"] },
         { "kind": "source", "slug": "ml-systems/frameworks", "sourceRef": "harvard-vol1-frameworks", "activity": "read", "companionKind": "document", "skillIds": ["model-development", "performance-engineering"] },
         { "kind": "source", "slug": "ml-systems/model-training", "sourceRef": "harvard-vol1-training", "activity": "read", "companionKind": "document", "skillIds": ["model-development", "experimental-practice"] },

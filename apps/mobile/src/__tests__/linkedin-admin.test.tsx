@@ -1,6 +1,6 @@
-import { fireEvent, render, waitFor } from "@testing-library/react-native";
+import { act, fireEvent, render, waitFor } from "@testing-library/react-native";
 import { LinkedInAdminScreen } from "../../../../packages/ui/src/LinkedInAdminScreen";
-import { analysisFixture, editorialFixture } from "../../../../packages/core/src/test/linkedin-fixture";
+import { analysisFixture, editorialFixture, preparationFixture } from "../../../../packages/core/src/test/linkedin-fixture";
 import { Keyboard, StyleSheet } from "react-native";
 describe("native editorial review", () => {
   it("announces topic and review status to distinguish posts with the same title", async () => {
@@ -206,4 +206,96 @@ it("returns new queue views to their start without dismissing the keyboard while
   } finally {
     dismiss.mockRestore();
   }
+});
+
+it("loads local preparation details and sends held work only with an explicit reason", async () => {
+  const data = structuredClone(editorialFixture); data.posts[0].preparation_required = true; data.preparations = [preparationFixture];
+  const api = { isAdmin: jest.fn().mockResolvedValue(true), snapshot: jest.fn(), overview: jest.fn().mockResolvedValue({ ...data, revisions: [], preparations: [], version: "1" }), detail: jest.fn().mockResolvedValue(data), create: jest.fn(), review: jest.fn(), preparationAction: jest.fn().mockResolvedValue(null) };
+  const view = await render(<LinkedInAdminScreen client={api} onSignIn={jest.fn()} />);
+  await fireEvent.press(await view.findByText("Retries need a budget"));
+  expect(await view.findByText("Local preparation · held")).toBeOnTheScreen();
+  expect(view.getByTestId("linkedin-approve")).toBeDisabled();
+  expect(view.getByTestId("linkedin-send-flags")).toBeDisabled();
+  await fireEvent.changeText(view.getByLabelText("Reason for sending"), "This is a distinct follow-up");
+  await fireEvent.press(view.getByTestId("linkedin-keep-followup"));
+  await waitFor(() => expect(api.preparationAction).toHaveBeenCalledWith(data.posts[0].id, data.posts[0].current_revision_id, preparationFixture.id, "follow_up", "This is a distinct follow-up"));
+});
+
+
+it("preserves voice-rule edits through blocked selection and a failed save", async () => {
+  const data = structuredClone(editorialFixture);
+  data.settings.voice_profile = { id: "40000000-0000-4000-8000-000000000001", version: "voice-test", rules: ["Use concrete examples"] };
+  const api = { isAdmin: jest.fn().mockResolvedValue(true), snapshot: jest.fn().mockResolvedValue(data), create: jest.fn(), review: jest.fn(), setVoice: jest.fn().mockRejectedValue(new Error("Voice save offline")) };
+  const view = await render(<LinkedInAdminScreen client={api} onSignIn={jest.fn()} />);
+  const voiceToggle = await view.findByRole("button", { name: "Voice rules · voice-test" });
+  expect(voiceToggle.props.accessibilityState.expanded).toBe(false);
+  await fireEvent.press(voiceToggle);
+  expect(view.getByRole("button", { name: "Voice rules · voice-test" }).props.accessibilityState.expanded).toBe(true);
+  await fireEvent.changeText(view.getByLabelText("Voice rules, one per line"), "Keep this unsaved rule");
+  const draft = view.getByTestId(`linkedin-post-${data.posts[0].id}`);
+  expect(draft).toBeDisabled();
+  await fireEvent.press(draft);
+  expect(view.getByLabelText("Voice rules, one per line").props.value).toBe("Keep this unsaved rule");
+  expect(view.queryByTestId("linkedin-body")).toBeNull();
+  await fireEvent.press(view.getByRole("button", { name: "Save voice rules" }));
+  await waitFor(() => expect(view.getByText("Voice save offline")).toBeOnTheScreen());
+  expect(api.setVoice).toHaveBeenCalledTimes(1);
+  expect(api.setVoice).toHaveBeenCalledWith(["Keep this unsaved rule"]);
+  expect(view.getByLabelText("Voice rules, one per line").props.value).toBe("Keep this unsaved rule");
+  expect(draft).toBeDisabled();
+  await fireEvent.changeText(view.getByLabelText("Voice rules, one per line"), "Use concrete examples");
+  expect(view.getByTestId(`linkedin-post-${data.posts[0].id}`)).toBeEnabled();
+  await fireEvent.press(view.getByTestId(`linkedin-post-${data.posts[0].id}`));
+  expect(view.getByTestId("linkedin-body").props.value).toBe(data.revisions[0].body);
+  expect(api.review).not.toHaveBeenCalled();
+});
+
+it.each(["pending", "failed"])("returns from %s native draft details and retries without late navigation", async outcome => {
+  let resolve!: (value: typeof editorialFixture) => void;
+  let reject!: (error: Error) => void;
+  const first = new Promise<typeof editorialFixture>((yes, no) => { resolve = yes; reject = no; });
+  const api = { isAdmin: jest.fn().mockResolvedValue(true), snapshot: jest.fn(), overview: jest.fn().mockResolvedValue({ ...editorialFixture, revisions: [], preparations: [], version: "1" }), detail: jest.fn().mockReturnValueOnce(first).mockResolvedValue(editorialFixture), create: jest.fn(), review: jest.fn() };
+  const view = await render(<LinkedInAdminScreen client={api} onSignIn={jest.fn()} />);
+  await fireEvent.press(await view.findByTestId(`linkedin-post-${editorialFixture.posts[0].id}`));
+  if (outcome === "failed") {
+    await act(async () => reject(new Error("Details offline")));
+    expect(view.getByText("Details offline")).toBeOnTheScreen();
+  } else expect(view.getByText("Loading draft…")).toBeOnTheScreen();
+  await fireEvent.press(view.getByTestId("linkedin-back"));
+  if (outcome === "pending") await act(async () => resolve(editorialFixture));
+  expect(view.queryByTestId("linkedin-body")).toBeNull();
+  await fireEvent.press(view.getByTestId(`linkedin-post-${editorialFixture.posts[0].id}`));
+  expect((await view.findByTestId("linkedin-body")).props.value).toBe(editorialFixture.revisions[0].body);
+  expect(api.detail).toHaveBeenCalledTimes(2);
+  expect(view.queryByText("Details offline")).toBeNull();
+  expect(api.review).not.toHaveBeenCalled();
+});
+
+
+it("blocks post selection until a saved voice profile finishes refreshing", async () => {
+  const data = structuredClone(editorialFixture);
+  data.settings.voice_profile = { id: "40000000-0000-4000-8000-000000000001", version: "voice-test", rules: ["Use concrete examples"] };
+  let finish!: (value: typeof data) => void;
+  const refreshing = new Promise<typeof data>(resolve => { finish = resolve; });
+  const api = { isAdmin: jest.fn().mockResolvedValue(true), snapshot: jest.fn().mockResolvedValueOnce(data).mockReturnValueOnce(refreshing), create: jest.fn(), review: jest.fn(), setVoice: jest.fn().mockResolvedValue(null) };
+  const view = await render(<LinkedInAdminScreen client={api} onSignIn={jest.fn()} />);
+  const voiceToggle = await view.findByRole("button", { name: "Voice rules · voice-test" });
+  expect(voiceToggle.props.accessibilityState.expanded).toBe(false);
+  await fireEvent.press(voiceToggle);
+  expect(view.getByRole("button", { name: "Voice rules · voice-test" }).props.accessibilityState.expanded).toBe(true);
+  await fireEvent.changeText(view.getByLabelText("Voice rules, one per line"), "Use a concrete counterexample");
+  await fireEvent.press(view.getByRole("button", { name: "Save voice rules" }));
+  await waitFor(() => expect(api.snapshot).toHaveBeenCalledTimes(2));
+  const draft = view.getByTestId(`linkedin-post-${data.posts[0].id}`);
+  expect(draft).toBeDisabled();
+  await fireEvent.press(draft);
+  expect(view.queryByTestId("linkedin-body")).toBeNull();
+  const updated = structuredClone(data);
+  updated.settings.voice_profile = { id: "40000000-0000-4000-8000-000000000002", version: "voice-next", rules: ["Use a concrete counterexample"] };
+  await act(async () => finish(updated));
+  expect(view.getByTestId(`linkedin-post-${data.posts[0].id}`)).toBeEnabled();
+  await fireEvent.press(view.getByTestId(`linkedin-post-${data.posts[0].id}`));
+  expect(view.getByTestId("linkedin-body").props.value).toBe(data.revisions[0].body);
+  expect(api.setVoice).toHaveBeenCalledTimes(1);
+  expect(api.review).not.toHaveBeenCalled();
 });

@@ -2,6 +2,9 @@ import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
 import { InterviewQuestionSession } from "./InterviewQuestionSession";
 
+const pathQuery = vi.hoisted(() => ({ value: "" }));
+vi.mock("next/navigation", () => ({ useSearchParams: () => new URLSearchParams(pathQuery.value) }));
+
 const question = {
   kind: "algorithm" as const,
   id: "question-1",
@@ -57,6 +60,24 @@ const question = {
 };
 
 describe("InterviewQuestionSession", () => {
+  it.each(["path=coding-interview-pattern-practice", "path=other-path", "path=__proto__", "path=toString", "path=", ""])("continues only the selected algorithm path after explanation: %s", async (query) => {
+    pathQuery.value = query;
+    const nextHref = "/interviews/apple/validate-parentheses-stream?path=coding-interview-pattern-practice";
+    render(<InterviewQuestionSession question={question} onProgressEvent={vi.fn()} nextHrefsByPath={{ "coding-interview-pattern-practice": nextHref }} />);
+    await waitFor(() => expect(screen.getByTestId("interview-step-position")).toHaveTextContent("Step 1"));
+    expect(screen.queryByTestId("interview-next-node")).not.toBeInTheDocument();
+    fireEvent.click(screen.getByRole("button", { name: "Next" }));
+    fireEvent.click(screen.getByRole("button", { name: /Show full explanation/ }));
+    if (query === "path=coding-interview-pattern-practice") {
+      expect(screen.getByTestId("interview-next-node")).toHaveAttribute("href", nextHref);
+      fireEvent.click(screen.getByRole("button", { name: "Restart" }));
+      expect(screen.queryByTestId("interview-next-node")).not.toBeInTheDocument();
+    } else {
+      expect(screen.queryByTestId("interview-next-node")).not.toBeInTheDocument();
+    }
+    pathQuery.value = "";
+  });
+
   it("reveals guided steps, switches languages, and restarts with another solution track", async () => {
     const randomSpy = vi.spyOn(Math, "random").mockReturnValueOnce(0).mockReturnValueOnce(0);
     const onProgressEvent = vi.fn();

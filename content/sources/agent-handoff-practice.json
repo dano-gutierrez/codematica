@@ -1,0 +1,34 @@
+{
+  "sources": [
+    {
+      "id": "anthropic-long-running-harnesses",
+      "title": "Effective harnesses for long-running agents",
+      "provider": "Anthropic Engineering",
+      "url": "https://www.anthropic.com/engineering/effective-harnesses-for-long-running-agents",
+      "attribution": "Justin Young and the Anthropic team describe their progress-artifact and verification approach, published November 26, 2025. Linked as an attributed experiment, not a universal guarantee.",
+      "lastVerifiedAt": "2026-10-03"
+    },
+    {
+      "id": "anthropic-harness-design-experiment",
+      "title": "Harness design for long-running application development",
+      "provider": "Anthropic Engineering",
+      "url": "https://www.anthropic.com/engineering/harness-design-long-running-apps",
+      "attribution": "Official harness experiment. Compared runs have different time and cost budgets; the example is not a controlled equal-budget comparison.",
+      "lastVerifiedAt": "2026-10-03"
+    },
+    {
+      "id": "walkinglabs-harness-course",
+      "title": "Learn Harness Engineering",
+      "provider": "WalkingLabs",
+      "url": "https://github.com/walkinglabs/learn-harness-engineering/tree/38ddcd2bf8d65271f668b94e7c875ca1d629d622",
+      "attribution": "Author-maintained MIT-licensed course, linked at a verified commit. Repository/README verified; projects and product breakdowns were not independently executed or validated. Course code is not copied into this original companion.",
+      "lastVerifiedAt": "2026-10-03",
+      "upstream": {
+        "repository": "walkinglabs/learn-harness-engineering",
+        "ref": "main",
+        "commit": "38ddcd2bf8d65271f668b94e7c875ca1d629d622",
+        "maturity": "published"
+      }
+    }
+  ]
+}

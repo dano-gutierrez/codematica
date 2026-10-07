@@ -1,0 +1,155 @@
+{
+  "slug": "programming/lazy-demand-and-stream-boundaries-checkpoint",
+  "title": "Lazy Demand And Stream Boundaries Checkpoint",
+  "type": "questionnaire",
+  "difficulty": "practitioner",
+  "status": "published",
+  "documentSlug": "programming/lazy-demand-and-stream-boundaries",
+  "sourceRefs": [
+    "demand-mdn-iteration",
+    "demand-mdn-forof",
+    "demand-node-stream",
+    "demand-node-loop",
+    "demand-tus-offset"
+  ],
+  "concept": "Lazy Demand And Stream Boundaries",
+  "tags": [
+    "contract-review",
+    "invariants"
+  ],
+  "skillIds": [
+    "bounded-demand"
+  ],
+  "questions": [
+    {
+      "id": "bounded-demand",
+      "kind": "choice",
+      "skillIds": [
+        "bounded-demand"
+      ],
+      "prompt": "From [2,3,4,5,7], take the first two odd squares. How much input must the lazy fixture pull?",
+      "options": [
+        {
+          "id": "correct",
+          "label": "Pull only through the second qualifying value; eager mapping reads the full finite input.",
+          "isCorrect": true
+        },
+        {
+          "id": "wrong-1",
+          "label": "Pull exactly two inputs because the result has length two.",
+          "isCorrect": false
+        },
+        {
+          "id": "wrong-2",
+          "label": "Pull nothing because laziness makes all transformations constant-time.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "The lazy fixture reads 2,3,4,5 to produce 9 and 25, then stops before 7. Rejected inputs still need inspection. Eager filter/map evaluates the finite collection, and laziness does not eliminate transformation or predicate costs."
+    },
+    {
+      "id": "early-cleanup",
+      "kind": "choice",
+      "skillIds": [
+        "bounded-demand"
+      ],
+      "prompt": "A for...of loop breaks while consuming an opened generator with finally. What is the cleanup boundary?",
+      "options": [
+        {
+          "id": "correct",
+          "label": "Breaking for...of calls an available iterator return; a generator finally can release its owned resource.",
+          "isCorrect": true
+        },
+        {
+          "id": "wrong-1",
+          "label": "Every iterable necessarily reopens after break with its resource still available.",
+          "isCorrect": false
+        },
+        {
+          "id": "wrong-2",
+          "label": "Breaking disposes every unopened resource that might have been yielded later.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "Early exit calls an available iterator return, and the generator can execute finally for its owned state. A closed generator does not restart. This is not a promise that every iterator has cleanup or that unvisited resources are disposed."
+    },
+    {
+      "id": "stream-pressure",
+      "kind": "choice",
+      "skillIds": [
+        "bounded-demand"
+      ],
+      "prompt": "Node write returns false after a chunk is admitted. What follows?",
+      "options": [
+        {
+          "id": "correct",
+          "label": "Pause after write returns false; highWaterMark is a pressure threshold, not a strict total-memory cap.",
+          "isCorrect": true
+        },
+        {
+          "id": "wrong-1",
+          "label": "Keep writing because false rejects the chunk without buffering it.",
+          "isCorrect": false
+        },
+        {
+          "id": "wrong-2",
+          "label": "Assume the remote application has durably stored the chunk and memory cannot grow.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "False requests that the producer wait for drain; the chunk was admitted. Further writes can add buffered data, and highWaterMark is a threshold. Local buffering or drain does not establish the remote application durable effect."
+    },
+    {
+      "id": "resume-offset",
+      "kind": "choice",
+      "skillIds": [
+        "bounded-demand"
+      ],
+      "prompt": "A four-byte upload chunk was accepted but its reply was lost. What should guide the next request?",
+      "options": [
+        {
+          "id": "correct",
+          "label": "Verify session and file identity, obtain the accepted offset, then send fresh bytes from that offset.",
+          "isCorrect": true
+        },
+        {
+          "id": "wrong-1",
+          "label": "Replay the consumed body from zero until a success response appears.",
+          "isCorrect": false
+        },
+        {
+          "id": "wrong-2",
+          "label": "Trust only the last client acknowledgement even if the server reports a later offset.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "The accepted offset can advance despite a lost reply. Bind it to the same session and file, then construct fresh bytes from that position. Reusing a consumed body or silently applying offset zero again can conflict or duplicate data."
+    },
+    {
+      "id": "host-ordering",
+      "kind": "choice",
+      "skillIds": [
+        "bounded-demand"
+      ],
+      "prompt": "Does one Node top-level scheduling trace establish a universal timer/promise ordering?",
+      "options": [
+        {
+          "id": "correct",
+          "label": "Record the host and scheduling context; Node timer phases do not define every browser or module ordering.",
+          "isCorrect": true
+        },
+        {
+          "id": "wrong-1",
+          "label": "Yes, one trace defines every browser, worker and module evaluation order.",
+          "isCorrect": false
+        },
+        {
+          "id": "wrong-2",
+          "label": "Yes, a timer threshold guarantees an exact wall-clock execution deadline.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "Node phases, next-tick work, promise jobs and module context need explicit scope. A browser uses its own host rules. Timer thresholds permit later execution when callbacks occupy the thread; a single trace proves neither portability nor an exact deadline."
+    }
+  ]
+}

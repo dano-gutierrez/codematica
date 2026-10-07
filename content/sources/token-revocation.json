@@ -1,0 +1,64 @@
+{
+  "sources": [
+    {
+      "id": "token-jwt-owasp",
+      "title": "OWASP — JWT Revocation And Denylist",
+      "provider": "OWASP",
+      "url": "https://github.com/OWASP/CheatSheetSeries/blob/6b6a66bae11c9e001c3576bcc3de55cc0dc5e449/cheatsheets/JSON_Web_Token_Cheat_Sheet.md",
+      "attribution": "OWASP contributors. Selected JWT denylist, identifier scope and malleability warning inspected at the pinned commit; no upstream code copied or executed.",
+      "license": {
+        "name": "CC-BY-SA-4.0",
+        "url": "https://github.com/OWASP/CheatSheetSeries/blob/6b6a66bae11c9e001c3576bcc3de55cc0dc5e449/LICENSE.md"
+      },
+      "lastVerifiedAt": "2026-10-04",
+      "upstream": {
+        "repository": "OWASP/CheatSheetSeries",
+        "ref": "master",
+        "commit": "6b6a66bae11c9e001c3576bcc3de55cc0dc5e449",
+        "maturity": "published"
+      }
+    },
+    {
+      "id": "token-rest-owasp",
+      "title": "OWASP — REST Token Validation",
+      "provider": "OWASP",
+      "url": "https://github.com/OWASP/CheatSheetSeries/blob/6b6a66bae11c9e001c3576bcc3de55cc0dc5e449/cheatsheets/REST_Security_Cheat_Sheet.md",
+      "attribution": "OWASP contributors. Selected JWT verification and early session termination inspected at the pinned commit; no upstream code copied or executed.",
+      "license": {
+        "name": "CC-BY-SA-4.0",
+        "url": "https://github.com/OWASP/CheatSheetSeries/blob/6b6a66bae11c9e001c3576bcc3de55cc0dc5e449/LICENSE.md"
+      },
+      "lastVerifiedAt": "2026-10-04",
+      "upstream": {
+        "repository": "OWASP/CheatSheetSeries",
+        "ref": "master",
+        "commit": "6b6a66bae11c9e001c3576bcc3de55cc0dc5e449",
+        "maturity": "published"
+      }
+    },
+    {
+      "id": "rfc-7009-revocation",
+      "title": "RFC 7009 — OAuth Token Revocation",
+      "provider": "IETF",
+      "url": "https://www.rfc-editor.org/rfc/rfc7009.html",
+      "attribution": "August 2013; sections 2.1–2.2.1 and 3. Token policy, propagation and response meanings. Selected passages only; no token server implemented or blanket redistribution license inferred.",
+      "lastVerifiedAt": "2026-10-04",
+      "upstream": {
+        "version": "RFC 7009",
+        "maturity": "published"
+      }
+    },
+    {
+      "id": "rfc-9700-refresh",
+      "title": "RFC 9700 — Refresh Token Protection",
+      "provider": "IETF",
+      "url": "https://www.rfc-editor.org/rfc/rfc9700.html",
+      "attribution": "January 2025; sections 2.2.2 and 4.14. Public-client sender constraint or rotation/replay detection. Selected passages only; no token server implemented or blanket redistribution license inferred.",
+      "lastVerifiedAt": "2026-10-04",
+      "upstream": {
+        "version": "RFC 9700",
+        "maturity": "published"
+      }
+    }
+  ]
+}

@@ -1,0 +1,59 @@
+{
+  "sources": [
+    {
+      "id": "duolingo-server-driven-ui",
+      "title": "Duolingo — Server-Driven UI",
+      "provider": "Duolingo Engineering",
+      "url": "https://blog.duolingo.com/server-driven-ui/",
+      "attribution": "Primary engineering report. Configuration/data separation and versioning sections verified; experiment counts and release improvements are author-reported, not local measurements. No upstream code or illustrations copied; no redistribution license inferred.",
+      "lastVerifiedAt": "2026-10-04"
+    },
+    {
+      "id": "google-aip-180-compatibility",
+      "title": "Google AIP-180 — Backwards Compatibility",
+      "provider": "Google",
+      "url": "https://google.aip.dev/180",
+      "attribution": "Approved API improvement proposal. Source/wire/semantic distinctions, renaming and pagination guidance verified. The page identifies CC BY 4.0 for text and Apache 2.0 for code samples; the lesson's Python fixture is original. Guidance is indicative and depends on transport and consumer scope.",
+      "license": {
+        "name": "Creative Commons Attribution 4.0 (text)",
+        "url": "https://creativecommons.org/licenses/by/4.0/"
+      },
+      "lastVerifiedAt": "2026-10-04"
+    },
+    {
+      "id": "rfc-http-preconditions",
+      "title": "RFC 9110 — If-Match And Request Preconditions",
+      "provider": "IETF",
+      "url": "https://www.rfc-editor.org/rfc/rfc9110.html#section-13.1.1",
+      "attribution": "June 2022 HTTP Semantics, sections 8.8.3.2, 13.1.1 and 13.2.1. Strong comparison, prior request checks and already-applied exception verified. The lesson's strict policy and transition table are original review cases, not a server or storage-atomicity proof. No RFC code components copied; no blanket redistribution license inferred.",
+      "lastVerifiedAt": "2026-10-04"
+    },
+    {
+      "id": "google-aip-160-filtering",
+      "title": "Google AIP-160 — Filtering",
+      "provider": "Google",
+      "url": "https://google.aip.dev/160",
+      "attribution": "Approved guidance; typed/schema validation and documented complexity limits verified. The original work-order subset is not a complete implementation of the AIP filter grammar. Page text is CC BY 4.0; code samples are Apache 2.0. No upstream samples copied.",
+      "license": {"name":"Creative Commons Attribution 4.0 (text)","url":"https://creativecommons.org/licenses/by/4.0/"},
+      "lastVerifiedAt": "2026-10-04"
+    },
+    {
+      "id": "google-aip-158-pagination",
+      "title": "Google AIP-158 — Pagination",
+      "provider": "Google",
+      "url": "https://google.aip.dev/158",
+      "attribution": "Approved guidance; page-size validation, empty nonterminal pages, query continuity, opaque tokens and separate authorization verified. The lesson does not implement a cursor or claim a live-data snapshot guarantee. Page text is CC BY 4.0; code samples are Apache 2.0. No upstream samples copied.",
+      "license": {"name":"Creative Commons Attribution 4.0 (text)","url":"https://creativecommons.org/licenses/by/4.0/"},
+      "lastVerifiedAt": "2026-10-04"
+    },
+    {
+      "id": "google-aip-157-partial-responses",
+      "title": "Google AIP-157 — Partial Responses",
+      "provider": "Google",
+      "url": "https://google.aip.dev/157",
+      "attribution": "Approved guidance; view/default semantics and modern system-parameter versus legacy request-field mask guidance verified. The work-order views and write-payload review are original. Page text is CC BY 4.0; code samples are Apache 2.0. No upstream samples copied.",
+      "license": {"name":"Creative Commons Attribution 4.0 (text)","url":"https://creativecommons.org/licenses/by/4.0/"},
+      "lastVerifiedAt": "2026-10-04"
+    }
+  ]
+}

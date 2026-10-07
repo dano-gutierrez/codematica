@@ -3,7 +3,7 @@
 ## Snapshot
 
 - Status: `in_progress`
-- Last updated: `2026-10-04`
+- Last updated: `2026-10-07`
 - Current state: Shared controls and compositions are applied across web and native learning, account, editorial and campaign screens. The app-wide audit records verification; visual review and complete installed-native accessibility checks remain open.
 - Target outcome: New and revised screens share controls, spacing, hierarchy, and accessible interactions.
 - Code touchpoints: `apps/web/src/components/{Button,ButtonLink,Dropdown}.tsx`, `apps/web/src/app/globals.css`, `packages/ui/src/{Button,screens}.tsx`, `packages/ui/src/tokens.ts`.
@@ -273,3 +273,13 @@ The docs hub, orientation, engineering overview, adaptive/editorial contracts, r
 ### Native search feedback
 
 Learn and Browse use shared `LocalSearchFeedback`: concise failure text with a visible, warning-tone Retry search action. Pending search hides obsolete cards and avoids announcing an empty result. Clearing remains available while work is pending. The execution WebView contributes no visible layout, touch target or screen-reader item. Reuse [the local search hook](../../packages/ui/src/LocalSearch.tsx) and its ownership contract for these surfaces.
+## Interview preparation integration
+
+The interview tracker imports the shared Button and control styles. Keep those controls and its private tracker behavior when extending the app-wide redesign. Knowledge remains a web-only admin destination; LinkedIn and Interview preparation are available on web and native.
+
+
+### October 7 integration checks
+
+The LinkedIn design retains the current preparation, voice and Knowledge workflows. Shared control rules have one definition after merging the design styles already used by Interview preparation. Knowledge actions use the same Button geometry as the editor. Keep a return path when selected content is still loading or has failed; a hidden desktop Back control cannot be the only retry route. The overview/detail browser fixtures cover recovery at 390 and 1440 px, alongside the six-width touch/keyboard matrix. See [the editorial test plan](linkedin-editorial.md#main-integration-review--2026-10-07) for review fixes and validation limits.
+
+Voice rules use shared disclosures: growing 44/48 px web targets, visible native indicators and announced expanded state. Collection navigation stays locked while rules are dirty or a save is pending. On-demand native draft loading retains a labeled return action through failure; returning invalidates the outstanding detail selection.

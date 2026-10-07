@@ -4,12 +4,14 @@ import Link from "next/link";
 import { useEffect, useMemo, useRef, useState, useSyncExternalStore } from "react";
 import { Check, Plus, Copy, RefreshCw, Save, Sparkles, Undo2, X, Linkedin, Search, Clock3, ArrowLeft, RotateCcw } from "lucide-react";
 import { canApprove, manualPostSchema, createEditorialClient, filterPosts, type EditorialClient, type EditorialSnapshot, type LinkedInAnalysis, type LinkedInPost, type LinkedInRevision } from "@codematica/core/linkedin";
+import { preparationLabel } from "@codematica/core/linkedin-preparation";
 import { createEditorialStore, type EditorialStore } from "@codematica/core/linkedin-store";
 import { createBrowserSupabaseClient } from "@/lib/supabase/client";
 import { AppHeader } from "./AppHeader";
 import { Button } from "./Button";
 import { LinkedInPostText } from "./LinkedInPostText";
 import { Dropdown } from "./Dropdown";
+import { LinkedInKnowledge } from "./LinkedInKnowledge";
 
 export function LinkedInAdmin({ client }: { client?: EditorialClient | null }) {
   const store = useMemo(() => {
@@ -45,6 +47,10 @@ export function LinkedInAdmin({ client }: { client?: EditorialClient | null }) {
       document.removeEventListener("visibilitychange", refresh);
     };
   }, [store]);
+  const select = (id: string | null) => {
+    if (state.busy || state.editing || id === selected) return;
+    setSelected(id); void store.selectPost(id);
+  };
   const data = state.data;
   const post = data?.posts.find((item) => item.id === selected);
   const revision = data?.revisions.find((item) => item.id === post?.current_revision_id);
@@ -75,10 +81,11 @@ export function LinkedInAdmin({ client }: { client?: EditorialClient | null }) {
           <div className="editorial-queue-content">
             <p>Worker: {data.settings.worker_last_seen ? new Date(data.settings.worker_last_seen).toLocaleString() : "Waiting for first run"}</p>
             {data.settings.worker_message ? <p>{data.settings.worker_message}</p> : null}
-            <p>Ask Codex to process queued requests. Posting timezone: {data.settings.timezone}.</p>
+            <p>{data.settings.local_preparation_enabled ? "Run a local preparation batch, then ask Codex to verify ready drafts." : "Ask Codex to process queued requests."} Posting timezone: {data.settings.timezone}.</p>
           </div>
         </details>
       </div>
+      {!selected && !creating && data.settings.voice_profile ? <VoiceRules key={data.settings.voice_profile.id} profile={data.settings.voice_profile} store={store} busy={state.busy} /> : null}
       {creating ? <CreatePost store={store} busy={state.busy} onClose={(id) => {
         setCreating(false); store.setEditing(false); if (id) setSelected(id);
       }} /> : <>
@@ -93,15 +100,16 @@ export function LinkedInAdmin({ client }: { client?: EditorialClient | null }) {
             <div className="editorial-list-heading"><span>Drafts</span><span>{visible.length}</span></div>
             <div className="editorial-post-list" data-testid="linkedin-post-list">
               {visible.length ? visible.map((item) => <button key={item.id} ref={(node) => { if (node) postButtons.current.set(item.id, node); else postButtons.current.delete(item.id); }} aria-pressed={item.id === selected} disabled={state.busy || (state.editing && item.id !== selected)}
-                className="editorial-post-item" onClick={() => setSelected(item.id)} data-testid={`linkedin-post-${item.id}`}>
+                className="editorial-post-item" onClick={() => select(item.id)} data-testid={`linkedin-post-${item.id}`}>
                 <span className="editorial-post-meta"><span>{item.topic}</span><span className="editorial-status" data-status={item.status}>{item.status === "review" ? "Review" : item.status}</span></span>
                 <span className="editorial-post-title">{item.title}</span>
+                {item.preparation_required ? <span className="editorial-help">{preparationLabel(item, data.jobs, data.preparations ?? [])}</span> : null}
               </button>) : <p className="editorial-empty">No matching posts.</p>}
             </div>
           </aside>
-          {post && revision ? <div className="editorial-detail">
-            <Button label="Back to collection" icon={ArrowLeft} variant="quiet" className="editorial-back" disabled={state.busy || state.editing} onClick={() => setSelected(null)} />
-            <PostEditor key={revision.id} post={post} revision={revision} data={data} store={store} busy={state.busy} />
+          {post ? <div className="editorial-detail">
+            <Button label="Back to collection" icon={ArrowLeft} variant="quiet" className="editorial-back" disabled={state.busy || state.editing} onClick={() => select(null)} />
+            {revision ? <PostEditor key={revision.id} post={post} revision={revision} data={data} store={store} busy={state.busy} onSelect={select} /> : <p role="status" className="editorial-empty">{state.error ? "Draft details could not be loaded. Return to the collection and select the draft to try again." : "Loading draft…"}</p>}
           </div> : <div className="editorial-empty editorial-selection"><Linkedin size={32} aria-hidden="true" /><h2>Choose a draft</h2><p>Edit, refine, then approve.</p></div>}
         </div>
       </>}
@@ -116,7 +124,7 @@ function CreatePost({ store, busy, onClose }: { store: EditorialStore; busy: boo
   const titleField = useRef<HTMLInputElement>(null);
   useEffect(() => { titleField.current?.focus(); }, []);
   return <section aria-label="Create a manual post" className="editorial-create" data-testid="linkedin-create-form">
-    <div className="editorial-section-heading"><h2>New draft</h2><p>Analysis first. Approval comes after review.</p></div>
+    <div className="editorial-section-heading"><h2>New draft</h2><p>Preparation and verification come before your approval.</p></div>
     <div className="editorial-create-fields">
       <label>Title<input ref={titleField} className="ui-input" value={title} maxLength={200} disabled={busy} onChange={(e) => setTitle(e.target.value)} data-testid="linkedin-create-title" /></label>
       <label>Topic<input className="ui-input" value={topic} maxLength={100} disabled={busy} onChange={(e) => setTopic(e.target.value)} data-testid="linkedin-create-topic" /></label>
@@ -132,7 +140,7 @@ function CreatePost({ store, busy, onClose }: { store: EditorialStore; busy: boo
   </section>;
 }
 
-function PostEditor({ post, revision, data, store, busy }: { post: LinkedInPost; revision: LinkedInRevision; data: EditorialSnapshot; store: EditorialStore; busy: boolean }) {
+function PostEditor({ post, revision, data, store, busy, onSelect }: { post: LinkedInPost; revision: LinkedInRevision; data: EditorialSnapshot; store: EditorialStore; busy: boolean; onSelect: (id: string) => void }) {
   const [body, setBody] = useState(revision.body);
   const [comment, setComment] = useState(revision.first_comment);
   const [confirmed, setConfirmed] = useState(revision.facts_confirmed);
@@ -161,7 +169,7 @@ function PostEditor({ post, revision, data, store, busy }: { post: LinkedInPost;
   const dirty = body !== revision.body || comment !== revision.first_comment || confirmed !== revision.facts_confirmed;
   const locked = post.status === "approved" || post.status === "withdrawing";
   const jobs = data.jobs.filter((j) => j.post_id === post.id);
-  const refining = jobs.some((j) => j.kind === "refine" && j.revision_id === revision.id && ["pending", "running"].includes(j.status));
+  const refining = jobs.some((j) => ["prepare", "refine"].includes(j.kind) && j.revision_id === revision.id && ["pending", "running"].includes(j.status));
   const proposals = data.revisions.filter((r) => r.post_id === post.id && r.kind === "refine" && r.id !== revision.id);
   const publications = data.publications.filter((p) => p.post_id === post.id);
   const history = data.revisions.filter((r) => r.post_id === post.id);
@@ -189,19 +197,21 @@ function PostEditor({ post, revision, data, store, busy }: { post: LinkedInPost;
         <div className="ui-actions">
           <Button label="Save revision" icon={Save} iconOnly tone="info" disabled={locked || busy || !dirty || !body.trim() || body.length > 3000 || comment.length > 1248}
             onClick={() => void store.act(post, "save", { body, firstComment: comment, factsConfirmed: confirmed })} />
-          <Button label={refining ? "Refinement queued" : "Refine post"} icon={refining ? Clock3 : Sparkles} iconOnly tone="assist" disabled={locked || busy || dirty || refining} onClick={() => void store.act(post, "refine")} />
+          <Button label={refining ? (post.preparation_required ? "Preparation / verification queued" : "Refinement queued") : post.preparation_required ? "Prepare again" : "Refine post"} icon={refining ? Clock3 : Sparkles} iconOnly tone="assist" disabled={locked || busy || dirty || refining} onClick={() => void store.act(post, "refine")} />
           <Button label="Reject post" icon={X} iconOnly tone="danger" disabled={locked || busy || dirty || post.status === "rejected"} onClick={() => void store.act(post, "reject")} />
           {dirty ? <Button label="Discard changes" icon={RotateCcw} iconOnly disabled={busy} onClick={() => {
             setBody(revision.body); setComment(revision.first_comment); setConfirmed(revision.facts_confirmed); resetCopy(); store.setEditing(false);
           }} /> : null}
           {locked ? <Button label={post.status === "withdrawing" ? "Cancellation queued" : "Return to review"} icon={Undo2} iconOnly tone="warning" disabled={busy || post.status === "withdrawing" || publications.some((p) => p.status === "sent")} onClick={() => void store.act(post, "withdraw")} /> : null}
         </div>
-        <Button label="Approve & queue" icon={Check} variant="primary" tone="success" aria-describedby="linkedin-approval-help" disabled={locked || busy || dirty || !canApprove(revision, post.origin === "manual")} onClick={() => void store.act(post, "approve")} />
+        <Button label="Approve & queue" icon={Check} variant="primary" tone="success" aria-describedby="linkedin-approval-help" disabled={locked || busy || dirty || !canApprove(revision, post.origin === "manual", post.preparation_required)} onClick={() => void store.act(post, "approve")} />
       </div>
       <p id="linkedin-approval-help">Queues the saved version for Buffer’s next slot.</p>
     </div>
     {publications.map((p) => <p key={p.id} role="status" className="editorial-publication">Buffer: {p.status}{p.scheduled_at ? ` · ${new Date(p.scheduled_at).toLocaleString()}` : ""}{p.error ? ` · ${p.error}` : ""}{p.url?.startsWith("https://") ? <> · <a href={p.url} target="_blank" rel="noreferrer">View post</a></> : null}</p>)}
-    {jobs.filter((j) => ["pending", "running", "failed", "uncertain"].includes(j.status)).map((j) => <p key={j.id} className="editorial-job" role="status" data-testid={`linkedin-job-${j.id}`}>{j.kind}: {j.status}{j.error ? ` · ${j.error}` : ""}</p>)}
+    {jobs.filter((j) => ["pending", "running", "failed", "uncertain"].includes(j.status) || !!j.verification?.notes.length).map((j) => <p key={j.id} className="editorial-job" role="status" data-testid={`linkedin-job-${j.id}`}>{j.kind}: {j.status}{j.error ? ` · ${j.error}` : ""}{j.verification?.notes.map((note, i) => <span className="block" key={i}>{note}</span>)}</p>)}
+    <LinkedInKnowledge key={revision.id} postId={post.id} revisionId={revision.id} title={post.title} body={revision.body + (revision.first_comment ? "\n\n" + revision.first_comment : "")} disabled={dirty || busy} />
+    {post.preparation_required ? <PreparationReview post={post} revision={revision} data={data} store={store} disabled={locked || busy || dirty || refining || post.status !== "review"} onSelect={onSelect} /> : null}
     {proposals.map((p) => <details key={p.id} open={p.parent_revision_id === revision.id} className="editorial-disclosure editorial-proposal">
       <summary>Proposed revision{p.parent_revision_id !== revision.id ? " · older draft" : ""}</summary>
       <div className="editorial-proposal-text">{p.body}</div>
@@ -252,4 +262,23 @@ function Analysis({ analysis: a }: { analysis: LinkedInAnalysis }) {
       <p>{a.assumptions} · Tools: {a.toolsUsed.join(", ")}</p>
     </details>
   </details>;
+}
+
+function VoiceRules({ profile, store, busy }: { profile: NonNullable<EditorialSnapshot["settings"]["voice_profile"]>; store: EditorialStore; busy: boolean }) {
+  const initial = profile.rules.join("\n"); const [value, setValue] = useState(initial);
+  const rules = value.split("\n").map((line) => line.trim()).filter(Boolean);
+  return <details className="ui-disclosure my-4"><summary>Voice rules · {profile.version}</summary><p className="my-2 text-sm">Generic writing style only. Saving starts a new version and prepares review drafts again. Keep company details and private messages out.</p><label className="block">Voice rules, one per line<textarea className="ui-input mt-2 min-h-40" value={value} disabled={busy} onChange={(e) => { setValue(e.target.value); store.setEditing(e.target.value !== initial); }} /></label><Button label="Save voice rules" icon={Save} tone="info" className="mt-2" disabled={busy || value === initial || !rules.length || rules.length > 20 || rules.some((r) => r.length > 500)} onClick={() => void store.setVoice(rules)} /></details>;
+}
+function PreparationReview({ post, revision, data, store, disabled, onSelect }: { post: LinkedInPost; revision: LinkedInRevision; data: EditorialSnapshot; store: EditorialStore; disabled: boolean; onSelect: (id: string) => void }) {
+  const [reason, setReason] = useState("");
+  const report = data.preparations?.filter((r) => r.post_id === post.id && r.revision_id === revision.id).at(-1);
+  if (!report) return <p role="status">{preparationLabel(post, data.jobs, data.preparations ?? [])}</p>;
+  return <section className="editorial-preparation" data-testid="linkedin-preparation"><h3 className="font-semibold">Local preparation · {report.outcome}</h3><p className="text-sm">Local scores are advisory. This candidate has not been adopted or approved.</p>
+    {report.issues.map((issue, i) => <p key={i} className={issue.blocking ? "text-amber-900" : ""}>{issue.message}</p>)}
+    <dl>{Object.entries(report.after).map(([key, value]) => <div key={key}><dt className="inline capitalize">{key}: </dt><dd className="inline">{report.before[key] ?? "—"} → {value.toFixed(1)}/10</dd></div>)}</dl>
+    {report.analysis ? <><p className="whitespace-pre-wrap">{report.analysis.rewrittenPost}</p><p className="whitespace-pre-wrap">First comment: {report.analysis.postingPlan.firstComment}</p><details><summary>Local analysis and hooks</summary><Analysis analysis={report.analysis} /></details></> : null}
+    {report.related.map((related) => <p key={related.post_id}><Button label={`${related.kind.replaceAll("_", " ")} · ${data.posts.find((p) => p.id === related.post_id)?.title ?? related.post_id}`} icon={ArrowLeft} className="text-left" disabled={disabled} onClick={() => onSelect(related.post_id)} /><span className="block text-sm">{related.reason}</span></p>)}
+    <details><summary>Preparation versions</summary><p className="break-all text-xs">Writer: {report.versions.writer}<br />Judge: {report.versions.judge}<br />Voice: {report.versions.voice}<br />Prompt: {report.versions.prompt}<br />{report.metrics.rounds} rounds · {(report.metrics.elapsed_ms / 1000).toFixed(0)} seconds</p></details>
+    {report.outcome === "held" ? <><label className="block text-sm">Reason for sending<textarea className="ui-input mt-2" value={reason} maxLength={1000} disabled={disabled} onChange={(e) => setReason(e.target.value)} /></label><div className="flex flex-wrap gap-2"><Button label="Keep as a follow-up" icon={Check} disabled={disabled || reason.trim().length < 5} onClick={() => void store.preparationAction(post, report.id, "follow_up", reason.trim())} /><Button label="Send to Codex with flags" icon={ArrowLeft} tone="warning" disabled={disabled || reason.trim().length < 5} onClick={() => void store.preparationAction(post, report.id, "send_with_flags", reason.trim())} /></div></> : null}
+  </section>;
 }

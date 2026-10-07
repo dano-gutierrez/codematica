@@ -1,16 +1,22 @@
 import AxeBuilder from "@axe-core/playwright";
 import { expect, test } from "@playwright/test";
 
-test("@regression Japanese hub meets core keyboard, contrast, resize, and reduced-motion checks", async ({ page }) => {
+test.beforeEach(async ({ page }) => {
   await page.setViewportSize({ width: 320, height: 800 });
   await page.emulateMedia({ reducedMotion: "reduce" });
   await page.goto("/languages/japanese");
+});
 
-  await page.keyboard.press("Tab");
-  await expect(page.locator(":focus")).toBeVisible();
-
+test("@regression Japanese hub has no serious accessibility violations", async ({ page }) => {
   const accessibility = await new AxeBuilder({ page }).include("main").analyze();
   expect(accessibility.violations.filter((violation) => ["serious", "critical"].includes(violation.impact ?? ""))).toEqual([]);
+});
+
+test("@regression Japanese hub preserves keyboard, resize, and reduced-motion behavior", async ({ page }) => {
+  await page.keyboard.press("Tab");
+  const skip = page.getByRole("link", { name: "Skip to content", exact: true });
+  await expect(skip).toBeFocused();
+  await expect(skip).toBeVisible();
 
   await page.evaluate(() => (document.activeElement as HTMLElement | null)?.blur());
   await page.evaluate(() => document.documentElement.style.fontSize = "200%");

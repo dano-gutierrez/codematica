@@ -22,6 +22,23 @@ describe("mobile shared screens", () => {
     jest.clearAllMocks();
   });
 
+  it("continues an algorithm reading to its exact path destination without certifying a result", async () => {
+    const question = getInterviewQuestionBySlug("amazon", "two-sum-product-pair")!;
+    const nextHref = "/interviews/apple/validate-parentheses-stream?path=coding-interview-pattern-practice";
+    const view = await render(<InterviewQuestionScreen question={question} nextHref={nextHref} adapters={adapters} />);
+    await fireEvent.press(view.getByTestId("mobile-interview-next-node"));
+    expect(adapters.navigation.navigate).toHaveBeenCalledTimes(1);
+    expect(adapters.navigation.navigate).toHaveBeenCalledWith(nextHref);
+    expect(adapters.progress?.record).not.toHaveBeenCalled();
+  });
+
+  it("keeps an algorithm reading without a supplied continuation", async () => {
+    const question = getInterviewQuestionBySlug("amazon", "two-sum-product-pair")!;
+    const view = await render(<InterviewQuestionScreen question={question} adapters={adapters} />);
+    expect(view.queryByTestId("mobile-interview-next-node")).toBeNull();
+    expect(adapters.navigation.navigate).not.toHaveBeenCalled();
+  });
+
   it("searches generated content from the bundled index", async () => {
     const view = await render(<BrowseScreen index={getContentIndex()} adapters={adapters} />);
 

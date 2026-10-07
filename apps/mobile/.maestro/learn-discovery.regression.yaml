@@ -59,11 +59,11 @@ tags:
 # Wait for the settled lookup before scrolling; loading replaces the result list.
 # Android exposes the displayed uppercase label; keep the exact count case-independent.
 - extendedWaitUntil:
-    visible: "(?i)^6 results$"
+    visible: "(?i)^7 results$"
     timeout: 20000
 - scrollUntilVisible:
     element:
-      text: "(?i)^6 results$"
+      text: "(?i)^7 results$"
     direction: UP
     speed: 80
     visibilityPercentage: 100

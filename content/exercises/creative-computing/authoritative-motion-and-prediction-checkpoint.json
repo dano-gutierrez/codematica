@@ -1,0 +1,151 @@
+{
+  "slug": "creative-computing/authoritative-motion-and-prediction-checkpoint",
+  "title": "Authoritative Motion And Prediction Checkpoint",
+  "type": "questionnaire",
+  "difficulty": "practitioner",
+  "status": "published",
+  "documentSlug": "creative-computing/authoritative-motion-and-prediction",
+  "sourceRefs": [
+    "evidence-unity-anticipation"
+  ],
+  "concept": "Authoritative Motion And Prediction",
+  "tags": [
+    "evidence-review",
+    "contracts"
+  ],
+  "skillIds": [
+    "motion-authority"
+  ],
+  "questions": [
+    {
+      "id": "time",
+      "kind": "choice",
+      "skillIds": [
+        "motion-authority"
+      ],
+      "prompt": "A sample at t=2.0 has position 10 and velocity 4; now is 2.1 in the same time domain. What is the uncorrected prediction?",
+      "options": [
+        {
+          "id": "correct",
+          "label": "10.4 metres.",
+          "isCorrect": true
+        },
+        {
+          "id": "wrong-1",
+          "label": "14 metres.",
+          "isCorrect": false
+        },
+        {
+          "id": "wrong-2",
+          "label": "10.1 metres regardless of velocity.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "The elapsed time is 0.1 seconds, so the displacement is 4\u00d70.1 = 0.4 metres. A one-second displacement and ignoring velocity both violate the declared units."
+    },
+    {
+      "id": "horizon",
+      "kind": "choice",
+      "skillIds": [
+        "motion-authority"
+      ],
+      "prompt": "The same sample is used at t=3.0 with a 0.2-second horizon. What does the visual rule produce?",
+      "options": [
+        {
+          "id": "wrong-1",
+          "label": "14 metres because all age must be extrapolated.",
+          "isCorrect": false
+        },
+        {
+          "id": "wrong-2",
+          "label": "10.8 metres proves the server stopped there.",
+          "isCorrect": false
+        },
+        {
+          "id": "correct",
+          "label": "10.8 metres, while the true current position remains unverified.",
+          "isCorrect": true
+        }
+      ],
+      "explanation": "The clamped elapsed time is 0.2, giving 10 + 4\u00d70.2 = 10.8. That chosen visual bound neither authorizes extrapolating the full second nor measures the actual actor position."
+    },
+    {
+      "id": "sequence",
+      "kind": "choice",
+      "skillIds": [
+        "motion-authority"
+      ],
+      "prompt": "Sequence 12 is accepted, then 11 arrives within the same nonwrapping session. What follows?",
+      "options": [
+        {
+          "id": "wrong-2",
+          "label": "Average the sequence numbers to create a new server version.",
+          "isCorrect": false
+        },
+        {
+          "id": "correct",
+          "label": "Keep 12 as authoritative; reject the older update.",
+          "isCorrect": true
+        },
+        {
+          "id": "wrong-1",
+          "label": "Replace 12 because 11 arrived later.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "Network arrival order need not equal source sequence order. The exercise\u2019s session-scoped monotonic rule rejects an older sample; averaging identities cannot establish a new authoritative update."
+    },
+    {
+      "id": "authority",
+      "kind": "choice",
+      "skillIds": [
+        "motion-authority"
+      ],
+      "prompt": "A displayed correction is smoothed while the server has accepted a collision position. Which boundary matters?",
+      "options": [
+        {
+          "id": "correct",
+          "label": "Presentation smoothing must not replace authoritative gameplay checks.",
+          "isCorrect": true
+        },
+        {
+          "id": "wrong-1",
+          "label": "Smooth appearance proves the collision is correct.",
+          "isCorrect": false
+        },
+        {
+          "id": "wrong-2",
+          "label": "Client visuals may grant rewards without server policy.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "Authoritative outcomes and displayed interpolation are separate. A smooth image is not collision evidence or reward permission; apply the declared gameplay authority independently."
+    },
+    {
+      "id": "clock",
+      "kind": "choice",
+      "skillIds": [
+        "motion-authority"
+      ],
+      "prompt": "A server sample uses one clock and the client receipt another, with no mapping. What is missing?",
+      "options": [
+        {
+          "id": "wrong-1",
+          "label": "Receipt time always equals server sample time.",
+          "isCorrect": false
+        },
+        {
+          "id": "wrong-2",
+          "label": "Subtracting any two numbers yields a valid physical age.",
+          "isCorrect": false
+        },
+        {
+          "id": "correct",
+          "label": "A defined time mapping before subtracting timestamps for prediction age.",
+          "isCorrect": true
+        }
+      ],
+      "explanation": "Units and clock origin must agree for a meaningful age. Packet receipt and sample time describe different events; arithmetic alone cannot provide an absent time-domain mapping."
+    }
+  ]
+}

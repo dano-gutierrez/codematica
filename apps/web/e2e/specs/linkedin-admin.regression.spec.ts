@@ -1,8 +1,12 @@
 import { expect, test } from "@playwright/test";
 import AxeBuilder from "@axe-core/playwright";
-import { analysisFixture, editorialFixture } from "../../../../packages/core/src/test/linkedin-fixture";
+import { analysisFixture, editorialFixture, preparationFixture } from "../../../../packages/core/src/test/linkedin-fixture";
 
 test.skip(process.env.EDITORIAL_E2E !== "1", "Run npm run e2e:linkedin for isolated Supabase mocks");
+
+test.beforeEach(async ({ page }) => {
+  await page.route("**/rest/v1/rpc/knowledge_for_post", route => route.fulfill({ json: null }));
+});
 
 test("@regression failed clipboard copy keeps the comment and offers manual recovery", async ({ page }) => {
   await page.addInitScript(() => Object.defineProperty(navigator, "clipboard", {
@@ -11,7 +15,8 @@ test("@regression failed clipboard copy keeps the comment and offers manual reco
   }));
   await page.route("**/rest/v1/rpc/linkedin_*", async route => {
     if (route.request().url().endsWith("linkedin_is_admin")) return route.fulfill({ json: true });
-    if (route.request().url().endsWith("linkedin_snapshot")) return route.fulfill({ json: editorialFixture });
+    if (route.request().url().endsWith("linkedin_overview")) return route.fulfill({ json: { ...editorialFixture, revisions: [], preparations: [], version: "1" } });
+    if (route.request().url().endsWith("linkedin_detail")) return route.fulfill({ json: editorialFixture });
     throw new Error("Clipboard recovery must not write editorial data");
   });
   await page.goto("/admin/linkedin");
@@ -43,7 +48,8 @@ test("@regression editorial design stays compact, accessible and protects unsave
   data.settings.publishing_enabled = true;
   await page.route("**/rest/v1/rpc/linkedin_*", async (route) => {
     if (route.request().url().endsWith("linkedin_is_admin")) return route.fulfill({ json: true });
-    if (route.request().url().endsWith("linkedin_snapshot")) return route.fulfill({ json: data });
+    if (route.request().url().endsWith("linkedin_overview")) return route.fulfill({ json: { ...data, revisions: [], preparations: [], version: "1" } });
+    if (route.request().url().endsWith("linkedin_detail")) return route.fulfill({ json: data });
     throw new Error("Visual preview must not mutate editorial data");
   });
   await page.setViewportSize({ width: 1440, height: 1000 });
@@ -92,13 +98,15 @@ test("@regression editorial design stays compact, accessible and protects unsave
   await expect(page.getByTestId(`linkedin-post-${data.posts[0].id}`)).toHaveCount(0);
 });
 
-test("@regression admin reviews, refines and approves an exact revision", async ({ page, isMobile }) => {
-  const data = structuredClone(editorialFixture);
+test("@regression admin reviews, refines and approves an exact revision", async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  const data = structuredClone(editorialFixture); let overviewVersion = 0;
   const actions: string[] = [];
   await page.route("**/rest/v1/rpc/linkedin_*", async (route) => {
     const name = new URL(route.request().url()).pathname.split("/").pop();
     if (name === "linkedin_is_admin") return route.fulfill({ json: true });
-    if (name === "linkedin_snapshot") return route.fulfill({ json: data });
+    if (name === "linkedin_overview") return route.fulfill({ json: { ...data, revisions: [], preparations: [], version: String(++overviewVersion) } });
+    if (name === "linkedin_detail") return route.fulfill({ json: data });
     if (name === "linkedin_review") {
       const args = route.request().postDataJSON(); actions.push(args.p_action);
       expect(args.p_expected_revision).toBe(data.posts[0].current_revision_id);
@@ -109,11 +117,11 @@ test("@regression admin reviews, refines and approves an exact revision", async 
     }
     throw new Error(`Unexpected editorial RPC ${name}`);
   });
+  await page.route("**/rest/v1/rpc/knowledge_*",route=>route.fulfill({json:null}));
   await page.goto("/admin/linkedin");
   await expect(page.getByTestId("linkedin-post-list")).toBeVisible();
   await page.getByRole("button", { name: /Retries need a budget/ }).click();
-  if (isMobile) await expect(page.getByTestId("linkedin-post-list")).toBeHidden();
-  else await expect(page.getByTestId("linkedin-post-list")).toBeVisible();
+  await expect(page.getByTestId("linkedin-post-list")).toBeHidden();
   await expect(page.getByTestId("linkedin-body")).toHaveValue(editorialFixture.revisions[0].body);
   await page.getByRole("button", { name: "Refine post", exact: true }).click();
   await page.getByRole("button", { name: "Use revision" }).click();
@@ -124,7 +132,6 @@ test("@regression admin reviews, refines and approves an exact revision", async 
   await expect(page.getByRole("button", { name: "Return to review" })).toBeVisible();
   expect(actions).toEqual(["refine", "use", "approve"]);
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
-  if (!isMobile) await page.setViewportSize({ width: 390, height: 844 });
   await page.getByRole("button", { name: "Back to collection" }).click();
   await expect(page.getByTestId("linkedin-post-list")).toBeVisible();
   await expect(page.getByTestId("linkedin-review")).toHaveCount(0);
@@ -133,9 +140,10 @@ test("@regression admin reviews, refines and approves an exact revision", async 
 test("@regression ordinary users cannot load the editorial collection", async ({ page }) => {
   let snapshots = 0;
   await page.route("**/rest/v1/rpc/linkedin_*", async (route) => {
-    if (route.request().url().endsWith("linkedin_snapshot")) snapshots++;
+    if (route.request().url().endsWith("linkedin_overview")) snapshots++;
     await route.fulfill({ json: false });
   });
+  await page.route("**/rest/v1/rpc/knowledge_*",route=>route.fulfill({json:null}));
   await page.goto("/admin/linkedin");
   await expect(page.getByRole("heading", { name: "Admin access required" })).toBeVisible();
   expect(snapshots).toBe(0);
@@ -143,12 +151,13 @@ test("@regression ordinary users cannot load the editorial collection", async ({
 });
 
 test("@regression creates formatted manual text, preserves a failed submission and requires analysis", async ({ page }) => {
-  const data = structuredClone(editorialFixture); data.posts = []; data.revisions = [];
+  const data = structuredClone(editorialFixture); let overviewVersion = 0; data.posts = []; data.revisions = [];
   const creates: Record<string, string>[] = []; const actions: string[] = [];
   await page.route("**/rest/v1/rpc/linkedin_*", async (route) => {
     const name = new URL(route.request().url()).pathname.split("/").pop();
     if (name === "linkedin_is_admin") return route.fulfill({ json: true });
-    if (name === "linkedin_snapshot") return route.fulfill({ json: data });
+    if (name === "linkedin_overview") return route.fulfill({ json: { ...data, revisions: [], preparations: [], version: String(++overviewVersion) } });
+    if (name === "linkedin_detail") return route.fulfill({ json: data });
     const args = route.request().postDataJSON();
     if (name === "linkedin_create") {
       creates.push(args);
@@ -166,6 +175,7 @@ test("@regression creates formatted manual text, preserves a failed submission a
     }
     throw new Error(`Unexpected RPC ${name}`);
   });
+  await page.route("**/rest/v1/rpc/knowledge_*",route=>route.fulfill({json:null}));
   await page.goto("/admin/linkedin");
   await page.getByTestId("linkedin-create").click();
   await expect(page.getByTestId("linkedin-create-submit")).toBeDisabled();
@@ -194,3 +204,63 @@ test("@regression creates formatted manual text, preserves a failed submission a
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
   await page.screenshot({ path: test.info().outputPath("manual-post-mobile.png"), fullPage: true });
 });
+
+
+test("@regression reviews held local preparation without adopting or approving it", async ({ page }) => {
+  const data = structuredClone(editorialFixture); let version = 0; let details = 0;
+  data.posts[0].preparation_required = true; data.posts[0].preparation_outcome = "held";
+  data.preparations = [preparationFixture]; const overrides: Record<string, string>[] = [];
+  await page.route("**/rest/v1/rpc/linkedin_*", async (route) => {
+    const name = new URL(route.request().url()).pathname.split("/").pop();
+    if (name === "linkedin_is_admin") return route.fulfill({ json: true });
+    if (name === "linkedin_overview") return route.fulfill({ json: { ...data, revisions: [], preparations: [], version: String(++version) } });
+    if (name === "linkedin_detail") { details++; return route.fulfill({ json: data }); }
+    if (name === "linkedin_preparation_action") { overrides.push(route.request().postDataJSON()); return route.fulfill({ json: null }); }
+    throw new Error(`Unexpected RPC ${name}`);
+  });
+  await page.route("**/rest/v1/rpc/knowledge_*",route=>route.fulfill({json:null}));
+  await page.goto("/admin/linkedin");
+  await expect(page.getByRole("button", { name: /Retries need a budget/ })).toBeVisible(); expect(details).toBe(0);
+  await page.getByRole("button", { name: /Retries need a budget/ }).click();
+  await expect(page.getByTestId("linkedin-preparation")).toBeVisible(); expect(details).toBe(1);
+  await expect(page.getByTestId("linkedin-body")).toHaveValue(data.revisions[0].body);
+  await expect(page.getByRole("button", { name: "Approve & queue" })).toBeDisabled();
+  await expect(page.getByRole("button", { name: "Send to Codex with flags" })).toBeDisabled();
+  await page.getByLabel("Reason for sending").fill("I will supply the missing evidence during verification");
+  await page.getByRole("button", { name: "Send to Codex with flags" }).click();
+  await expect.poll(() => overrides.length).toBe(1);
+  expect(overrides[0]).toMatchObject({p_preparation_id:preparationFixture.id,p_action:"send_with_flags",p_expected_revision:data.posts[0].current_revision_id});
+  await expect(page.getByRole("button", { name: "Approve & queue" })).toBeDisabled();
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
+  await page.screenshot({path:test.info().outputPath("local-preparation-mobile.png"),fullPage:true});
+});
+
+
+for (const width of [390, 1440]) {
+ test(`@regression a failed draft load returns to the collection and retries at ${width}px`, async ({ page }) => {
+  let attempts = 0;
+  await page.route("**/rest/v1/rpc/linkedin_*", async route => {
+    if (route.request().url().endsWith("linkedin_is_admin")) return route.fulfill({ json: true });
+    if (route.request().url().endsWith("linkedin_overview")) return route.fulfill({ json: { ...editorialFixture, revisions: [], preparations: [], version: "1" } });
+    if (route.request().url().endsWith("linkedin_detail")) {
+      if (++attempts === 1) return route.fulfill({ status: 503, json: { message: "Draft temporarily unavailable" } });
+      return route.fulfill({ json: editorialFixture });
+    }
+    throw new Error("Loading recovery must not write editorial data");
+  });
+  await page.setViewportSize({ width, height: 844 });
+  await page.goto("/admin/linkedin");
+  const draft = page.getByTestId(`linkedin-post-${editorialFixture.posts[0].id}`);
+  await draft.click();
+  await expect(page.getByTestId("linkedin-admin").getByRole("alert")).toContainText("Draft temporarily unavailable");
+  if (width < 1024) await expect(page.getByTestId("linkedin-post-list")).toBeHidden();
+  else await expect(page.getByTestId("linkedin-post-list")).toBeVisible();
+  await page.getByRole("button", { name: "Back to collection" }).click();
+  await expect(draft).toBeFocused();
+  await draft.click();
+  await expect(page.getByTestId("linkedin-body")).toHaveValue(editorialFixture.revisions[0].body);
+  await expect(page.getByRole("heading", { name: editorialFixture.posts[0].title })).toBeFocused();
+  await expect(page.getByTestId("linkedin-admin").getByRole("alert")).toHaveCount(0);
+  expect(attempts).toBe(2);
+});
+}

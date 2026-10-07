@@ -3,7 +3,7 @@
 ## Snapshot
 
 - Status: `shipped`
-- Last updated: `2026-09-28`
+- Last updated: `2026-10-04`
 - Owner thread: `n/a`
 - Current state: Web interview exercises can provide editable multi-file React/TypeScript, vanilla TypeScript, or static projects and run them beside their explanations.
 - Target outcome: Any validated Codematica content surface can reuse one project contract and one isolated web player without introducing backend code execution.
@@ -27,7 +27,7 @@
 - Supported runtimes are `react-ts`, `vanilla-ts`, and `static`.
 - Project paths must be absolute, may not contain dot segments, and every active, visible, or entry path must exist in `files`.
 - Revealing the solution mounts and immediately starts one preview runtime. The console observes that preview; it must not use `standalone`, which starts a separate hidden project.
-- Subsequent edits wait for explicit Run. Run replaces the connection using the current files and active tab. Reset creates a fresh session from the authored files and active tab, so the preview cannot rerun a stale edited snapshot.
+- Subsequent edits wait for explicit Run. When the preview is ready and connected, Run compiles the current files through that client and retains the editor tab and console subscription. The hosted runtime may preserve component state during this compilation; use Reset for a fresh authored session. Run during loading, compilation, an error or a timeout creates a fresh session with the current draft and active tab. Reset creates a fresh session from the authored files and active tab, so the preview cannot rerun a stale edited snapshot.
 - Switching solutions remounts only the selected project and discards transient edits.
 - The CodeSandbox export/new-tab action is disabled. Runtime errors stay inside the preview overlay and console.
 - Startup, ready, code-error, and connection-timeout states are visible and announced. After the Sandpack connection deadline (40 seconds), Retry preview creates a fresh connection while preserving current files and the active tab. Keep a failed preview mounted and hidden until retry, because unregistering it clears Sandpack's timeout status.
@@ -45,11 +45,11 @@
 ## Test Plan
 
 - Schema tests reject unsafe paths and missing active, visible, or entry files.
-- Component tests verify immediate initialization, a shared console, file/dependency mapping, compilation status, fresh Run/Reset sessions, timeout recovery with edits, project switching, and listener cleanup. Timeout copy must tell learners that their edits are preserved and the preview needs internet access to its hosted runtime.
+- Component tests verify immediate initialization, a shared console, file/dependency mapping, connected Run compilation, fresh Reset/recovery sessions, project switching and causal listener cleanup. They cover Run during loading, compilation, compile/runtime errors, timeout, initial and idle states. Compilation stays visibly distinct from connection startup after the runtime's start message. Timeout copy must tell learners that their edits are preserved and the preview needs internet access to its hosted runtime.
 - The error-boundary regression forces editor initialization failure, verifies every authored file uses the shared source renderer, and retries successfully. `code-contrast.regression.spec.ts` checks actual editor syntax colors with hosted execution blocked, so contrast verification does not depend on the remote runtime.
 - Console browser assertions are scoped to `web-playground-console` and use a log emitted by clicking the running preview. A page-wide locator can match the editor's source text instead; startup logs can arrive before the console bridge initializes. The separate iframe-count assertion and component test protect the single-runtime contract.
 - Interview-session tests prove all authored projects are reachable.
-- The `@playground` regression lane runs in mobile Chromium, desktop Chromium, and mobile WebKit. It verifies automatic startup without clicking Run, a single runtime iframe, edit → Run → interactive output, console output, Reset restoring actual preview output, and recovery after deliberately blocking the hosted runtime. The timeout test advances the browser clock, not application state.
+- The `@playground` regression lane runs in mobile Chromium, desktop Chromium, and mobile WebKit. It verifies automatic startup without clicking Run, a single runtime iframe retained across connected Run, edit → Run → interactive output, console output, Reset restoring actual preview output, and recovery after deliberately blocking the hosted runtime. The timeout test advances the browser clock, not application state.
 - Run `npx playwright test --config=apps/web/e2e/playwright.config.ts apps/web/e2e/specs/playground.regression.spec.ts` and the interview/frontend regressions, plus lint, typecheck, and aggregate/per-file coverage. The browser runner builds production assets.
 - Local verification on 2026-09-28: 350 Vitest tests passed with aggregate and per-file coverage gates; all 9 targeted browser regressions and 9 smoke cases passed; lint, workspace typecheck, and the production build passed. The rebuilt page also automatically rendered the 3×5 board in the user's in-app browser with one runtime iframe and no browser warnings/errors.
 
@@ -61,9 +61,12 @@ flowchart TD
   Start --> Ready[Preview ready and shared console]
   Start --> Timeout[Connection timeout; editor retained]
   Ready --> Edit[Edit files locally]
-  Edit --> Run[Run with current files and active tab]
+  Edit --> Run[Compile current files through connected client]
+  Run --> Compiling[Compiling edits; client retained]
+  Compiling --> Ready
+  Compiling --> Recover[Run again with current draft; replace session]
   Timeout --> Retry[Retry with current files and active tab]
-  Run --> Start
+  Recover --> Start
   Retry --> Start
   Ready --> Reset[Reset to authored files and active tab]
   Reset --> Start
@@ -72,6 +75,12 @@ flowchart TD
 ## Connection Incident (2026-09-28)
 
 The reported blank preview reached Sandpack's `TIME_OUT`; retrying in the same browser successfully rendered the board. The original network failure's cause was not established. Inspection did verify that `standalone` console mode created a second hidden runtime, and that Reset called Run before React committed restored files. The fix removes duplicate execution, starts on reveal, replaces connections on Run/Retry, and restores the actual preview on Reset. The hosted runtime must remain available for execution.
+
+## Console Handoff Regression (2026-10-04)
+
+Two full browser runs reproduced a missing desktop console entry after replacing a ready preview on Run. The counter changed and its browser log executed, but a passive parent-message observer received no console message. Diagnostic repetitions retained failures in one of eighteen and one of ten runs; an unchanged isolated run passed. This establishes the missing handoff, not the exact internal cause in the hosted bundler.
+
+Normal Run now compiles through the connected client. Reset and recovery still replace the session. The first missing-update component regression failed before this change; fourteen state/ownership/lifecycle cases now cover its contract. The initial implementation passed thirty repeated browser journeys across all three projects. The final local suite passes 767 Vitest cases through each unchanged coverage gate, 154 native tests, Doctor 20/20, lint, types, labs and the build. The disposable production-only artifact reaches HTTP readiness; the complete browser lane passes 167 cases with six configured skips, including preview identity, console output, Reset and timeout recovery. Eleven valid targeted mutations fail and the original code is restored. Exact-head remote checks remain pending. The separate systems-content PR's failed local runs stay recorded; its exact-head remote run passes.
 
 ## Thread Handoff Prompt
 

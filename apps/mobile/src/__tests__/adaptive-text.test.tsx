@@ -74,12 +74,12 @@ it("keeps the real Learn query and settled results while its visible title remea
   const title = view.getByText("What will you learn today?");
   const input = view.getByTestId("mobile-home-global-search");
   await fireEvent.changeText(input, "Number Of Islands");
-  await waitFor(() => expect(view.getByText("6 results")).toBeOnTheScreen());
+  await waitFor(() => expect(view.getByText("7 results")).toBeOnTheScreen());
   await resize(2);
   expect(view.getByText("What will you learn today?")).not.toBe(title);
   expect(view.getByTestId("mobile-home-global-search")).toBe(input);
   expect(input.props.value).toBe("Number Of Islands");
-  expect(view.getByText("6 results")).toBeOnTheScreen();
+  expect(view.getByText("7 results")).toBeOnTheScreen();
   expect(view.getByTestId("mobile-discovery-interview-question-google-number-of-islands")).toBeOnTheScreen();
 });
 
