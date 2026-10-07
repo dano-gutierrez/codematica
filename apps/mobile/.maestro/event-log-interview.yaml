@@ -1,0 +1,76 @@
+appId: com.codematica.app
+tags:
+  - regression
+---
+- launchApp:
+    clearState: true
+- openLink: "codematica://interviews/real-world/partitioned-event-log?path=partitioned-event-log"
+- scrollUntilVisible:
+    element:
+      id: mobile-web-next-step
+    direction: DOWN
+- tapOn:
+    id: mobile-web-next-step
+- assertVisible: "Step 2 of 5"
+- tapOn:
+    id: mobile-web-show-solution
+- scrollUntilVisible:
+    element:
+      text: Python
+    direction: DOWN
+- tapOn: Python
+- scrollUntilVisible:
+    element:
+      id: mobile-code-block
+    direction: DOWN
+- assertVisible:
+    id: mobile-code-block
+- takeScreenshot: event-log-python-companion
+- scrollUntilVisible:
+    element:
+      id: mobile-interview-next-node
+    direction: DOWN
+- tapOn:
+    id: mobile-interview-next-node
+- assertVisible:
+    id: mobile-questionnaire-session
+- repeat:
+    times: 8
+    commands:
+      - scrollUntilVisible:
+          element:
+            text: "Question [0-9]+ of 8"
+          direction: UP
+      - scrollUntilVisible:
+          element:
+            id: mobile-questionnaire-choice-answer
+          direction: DOWN
+      - tapOn:
+          id: mobile-questionnaire-choice-answer
+      - scrollUntilVisible:
+          element:
+            id: mobile-questionnaire-check
+          direction: DOWN
+      - tapOn:
+          id: mobile-questionnaire-check
+      - scrollUntilVisible:
+          element:
+            id: mobile-questionnaire-feedback
+          direction: DOWN
+      - assertVisible: Correct
+      - scrollUntilVisible:
+          element:
+            id: "mobile-questionnaire-(next|finish)"
+          direction: DOWN
+      - tapOn:
+          id: "mobile-questionnaire-(next|finish)"
+- tapOn: Start review feed
+- assertVisible:
+    id: mobile-passive-flashcard-feed
+- scrollUntilVisible:
+    element:
+      id: mobile-passive-flashcard-card-12
+    direction: DOWN
+- assertVisible:
+    id: mobile-passive-flashcard-card-12
+- takeScreenshot: event-log-scrolling-review

@@ -1,0 +1,40 @@
+{
+  "sources": [
+    {
+      "id": "redis-rate-limiting-guide",
+      "title": "Redis \u2014 Rate Limiting Algorithm Comparison",
+      "provider": "Redis",
+      "url": "https://redis.io/tutorials/howtos/ratelimiting/",
+      "attribution": "Primary tutorial: algorithm distinctions, approximate counters and atomic admission discussion verified. Upstream code was not installed or executed; no throughput or licensing inference. The sequential Python fixture is original.",
+      "lastVerifiedAt": "2026-10-04"
+    },
+    {
+      "id": "rfc-6585-status-codes",
+      "title": "RFC 6585 \u2014 Additional HTTP Status Codes",
+      "provider": "IETF",
+      "url": "https://www.rfc-editor.org/rfc/rfc6585.html",
+      "attribution": "April 2012 standards-track RFC. Section 4 defines 429, explanatory responses, optional Retry-After, unspecified counting identity and non-cacheability; section 7.2 discusses resource costs under attack. Section 3 covers conditional requests for lost updates. No RFC example code copied.",
+      "lastVerifiedAt": "2026-10-04"
+    },
+    {
+      "id": "stripe-webhook-contracts",
+      "title": "Stripe \u2014 Webhook Signatures And Delivery Contracts",
+      "provider": "Stripe",
+      "url": "https://docs.stripe.com/webhooks",
+      "attribution": "Primary provider guide: raw-body verification, signed timestamp, official-library preference, renewed retry signatures, duplicate events and absent ordering guarantee verified. Custom lesson envelope is original and not Stripe-compatible; no provider code executed or license inferred.",
+      "lastVerifiedAt": "2026-10-04"
+    },
+    {
+      "id": "python-hmac-verification",
+      "title": "Python 3.13 \u2014 HMAC Verification",
+      "provider": "Python Software Foundation",
+      "url": "https://docs.python.org/3.13/library/hmac.html",
+      "attribution": "Official 3.13 documentation: HMAC input and compare_digest type/length/timing guidance verified. Page text identifies PSF License Version 2; examples additionally Zero Clause BSD. Lesson fixture is original.",
+      "license": {
+        "name": "Python Software Foundation License Version 2 (documentation)",
+        "url": "https://docs.python.org/3/license.html"
+      },
+      "lastVerifiedAt": "2026-10-04"
+    }
+  ]
+}

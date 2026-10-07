@@ -3,7 +3,7 @@
 ## Snapshot
 
 - Status: `in_progress`
-- Last updated: `2026-10-03`
+- Last updated: `2026-10-07`
 - Current state: Shared web controls and the LinkedIn redesign are implemented and ready for pull-request review. Installed native accessibility checks remain open.
 - Target outcome: New and revised screens share controls, spacing, hierarchy, and accessible interactions.
 - Code touchpoints: `Button.tsx`, `Dropdown.tsx`, `LinkedInPostText.tsx`, `LinkedInAdmin.tsx`, `apps/web/src/app/globals.css`.
@@ -204,3 +204,12 @@ The docs hub, orientation, engineering overview, adaptive/editorial contracts, r
 ## Thread Handoff Prompt
 
 `Read docs/features/design-system.md and the owning feature doc before UI work. Reuse Button, Dropdown, and existing compositions. Preserve workflow guards, update tests, inspect phone/desktop rendering, and document intentional deviations. Complete installed native accessibility checks before claiming native release readiness.`
+
+## Interview preparation integration
+
+The interview tracker imports Button and shared control styles from PR #15. Its layout follows this contract. The full LinkedIn redesign remains owned by PR #15; this integration does not merge or claim its unrelated editor behavior.
+
+
+### October 7 integration checks
+
+The LinkedIn design retains the current preparation, voice and Knowledge workflows. Shared control rules have one definition after merging the design styles already used by Interview preparation. Knowledge actions use the same Button geometry as the editor. Keep a return path when selected content is still loading or has failed; a hidden desktop Back control cannot be the only retry route. The overview/detail browser fixtures cover recovery at 390 and 1440 px, alongside the six-width touch/keyboard matrix. See [the editorial test plan](linkedin-editorial.md#main-integration-review--2026-10-07) for review fixes and validation limits.

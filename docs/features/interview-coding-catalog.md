@@ -3,7 +3,7 @@
 ## Snapshot
 
 - Status: `shipped`
-- Last updated: `2026-09-27`
+- Last updated: `2026-10-04`
 - Owner thread: `n/a`
 - Current state: The app has company interview preparation plus an anonymous real-world section, guided algorithm walkthroughs, and runnable React/TypeScript web exercises.
 - Target outcome: Users can study public company patterns or authentic anonymous briefs, understand evaluation criteria and red flags, and run frontend practice solutions without requiring auth or Supabase.
@@ -18,12 +18,15 @@
   - `apps/web/src/components/WebPlayground.tsx`
   - `apps/web/src/components/CodeBlock.tsx`
   - `apps/web/src/app/interviews/**/page.tsx`
+  - `packages/ui/src/screens.tsx` and native interview routes
 - Primary tests:
   - `packages/core/src/content/build-index.test.ts`
   - `packages/core/src/content/index.test.ts`
   - `apps/web/src/lib/interviews.test.ts`
   - `apps/web/src/components/InterviewQuestionSession.test.tsx`
   - `apps/web/e2e/specs/interview-catalog.regression.spec.ts`
+  - `apps/web/e2e/specs/coding-patterns.regression.spec.ts`
+  - `apps/mobile/src/__tests__/mobile-screens.test.tsx`
 
 ## One-Minute Brief
 
@@ -35,6 +38,8 @@ The catalog stores typed interview collections as local JSON. Company algorithm 
 - `/interviews/[collection]` shows questions for a company or real-world collection; existing company URLs are unchanged.
 - `/interviews/[collection]/[question]` dispatches to an algorithm walkthrough or web exercise session.
 - The algorithm session defaults to Python, lets users switch to TypeScript or Java, reveals one step per `Next`, and renders final code with language-aware highlighting.
+- Path-scoped algorithm sessions expose the authored next activity after the full web explanation; restarting hides it again. Web standalone and unknown paths have no continuation. Native routes reject unknown and inherited path keys and retain existing unambiguous path inference for direct links; read-only algorithm readers navigate without certifying completion.
+- Coding Interview Pattern Practice groups 18 existing questions plus BFS/DFS lessons and checkpoints. It preserves question identities, solutions and difficulty; backtracking and comprehensive dynamic programming are outside its scope.
 - Starting or restarting an algorithm session selects a solution track at random and avoids immediately repeating the previous track when another track exists.
 - Web sessions default to the first approach, reveal recipe steps, and expose code/explanation at the end or via Show full solution. Optional Python companions share the language switch; one editable Sandpack project mounts at a time.
 - Web playground edits are transient. Sandpack code runs in a cross-origin iframe and receives no Codematica auth, progress, or secret data.
@@ -67,9 +72,9 @@ Seed content uses public/community-reported prep references such as InterviewQue
 
 - Unit: collection discrimination, conditional provenance, safe project paths, active/visible file references, web track minimums, and algorithm language requirements.
 - Integration: generated index loads company and real-world collections, including graph-search additions, and resolves both route forms.
-- Component: algorithm walkthrough behavior remains stable; web sessions switch all approaches and map files into Run/Reset playground controls.
-- Native: real-world content and every source file remain available without executing the project.
-- E2E: catalog search/filter and the existing Amazon flow remain covered; the Mondrian flow verifies rubric content, three approaches, and live preview output.
+- Component: algorithm continuation covers selected/unknown/inherited-key/blank/absent paths, full-explanation gating and restart; standalone walkthrough behavior remains stable; web sessions switch all approaches and map files into Run/Reset playground controls.
+- Native: real-world content and every source file remain available without executing the project. Algorithm continuation checks exact destination, one navigation attempt and no automatic completion. Route tests cover known, inferred, blank, unknown and inherited path keys. `.maestro/coding-patterns.yaml` covers path → algorithm → next question; installed Android/iOS execution remains unverified for this change.
+- E2E: coding-pattern path → full explanation → next question and standalone reading; catalog search/filter and the existing Amazon flow remain covered; the Mondrian flow verifies rubric content, three approaches, and live preview output.
 
 ## Thread Handoff Prompt
 
@@ -98,3 +103,7 @@ Corrections:
 `interview-audit.test.ts` began with 12 reproduced failures and now executes the repaired TS behaviors. Python regressions execute the corresponding canonical snippets and parse all 54 algorithm examples. All 54 Java snippets were compiled locally with JDK 17 using minimal standard node/import wrappers; this is compilation evidence, not full Java behavioral coverage. The new frontend solutions use the stricter exact-project/Python execution gate described in [Frontend Interview Practice](frontend-interview-practice.md).
 
 The Product Engineering contracts and answer keys needed no factual correction. RTK's dated 2.12.0 baseline and release milestones were checked against [official release notes](https://github.com/reduxjs/redux-toolkit/releases/tag/v2.12.0), [infinite query documentation](https://redux-toolkit.js.org/rtk-query/usage/infinite-queries), and [createApi](https://redux-toolkit.js.org/rtk-query/api/createApi). The persistence lesson already separates raw Redux restoration from RTK rehydration and code validation from deployment. Its private incident is retained as a dated attributed report, not newly verified production evidence. Existing Product/RTK content tests and browser journeys remain part of validation.
+
+## Partitioned Event Log — 2026-10-05
+
+The real-world collection also includes `partitioned-event-log`, using the existing vanilla-TS project renderer and optional Python companion. Its three tracks teach indexed arrays, linked chains with sparse anchors, and segmented logs. The companion lesson reviews the supplied candidate attempt. See [the owning feature](partitioned-event-log-interview.md) for the eight-question checkpoint, fourteen-card feed and exact-source tests. This addition does not require a generated-index schema version change.

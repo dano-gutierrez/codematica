@@ -1,0 +1,135 @@
+{
+  "slug": "programming/keypad-search-checkpoint",
+  "title": "Keypad Search Checkpoint",
+  "type": "questionnaire",
+  "difficulty": "practitioner",
+  "status": "published",
+  "documentSlug": "programming/keypad-dictionary-search",
+  "sourceRefs": [
+    "keypad-python313-mappings",
+    "keypad-python313-product"
+  ],
+  "questions": [
+    {
+      "id": "closed-dictionary",
+      "kind": "choice",
+      "prompt": "For digits 23 and dictionary [ad, ae, be, cf, dg], which result obeys the closed-dictionary contract?",
+      "options": [
+        {
+          "id": "correct",
+          "label": "Return [ad, ae, be, cf]; only complete dictionary words with the exact encoding qualify.",
+          "isCorrect": true
+        },
+        {
+          "id": "wrong-1",
+          "label": "Return all nine letter pairs, even when absent from the dictionary.",
+          "isCorrect": false
+        },
+        {
+          "id": "wrong-2",
+          "label": "Return dg because the dictionary is trusted, regardless of its encoding.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "The accepted words encode to 23 and are complete dictionary members. Generating all pairs ignores membership; dg encodes to 34, so trusting a dictionary does not remove the encoding check."
+    },
+    {
+      "id": "terminal-word",
+      "kind": "choice",
+      "prompt": "The trie contains ad and adg. What should query 23 return?",
+      "options": [
+        {
+          "id": "correct",
+          "label": "Return only ad for 23; adg is a longer word, and an unfinished prefix is not a result.",
+          "isCorrect": true
+        },
+        {
+          "id": "wrong-1",
+          "label": "Return both words because their prefix matches.",
+          "isCorrect": false
+        },
+        {
+          "id": "wrong-2",
+          "label": "Return no words because a terminal node must have no children.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "Emit only a terminal node after every digit is consumed. adg needs another digit; a terminal node may also have children, so it is valid to store both a short and longer word."
+    },
+    {
+      "id": "branch-rollback",
+      "kind": "choice",
+      "prompt": "Query 22 searches aa, ab and ba using one mutable buffer. Which ownership rule is correct?",
+      "options": [
+        {
+          "id": "correct",
+          "label": "Snapshot each completed word and pop the chosen letter before exploring the next sibling.",
+          "isCorrect": true
+        },
+        {
+          "id": "wrong-1",
+          "label": "Save the buffer object itself so every result can reuse storage.",
+          "isCorrect": false
+        },
+        {
+          "id": "wrong-2",
+          "label": "Keep a global visited-letter set to forbid using a twice.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "Snapshot a string so results survive later mutations, and undo the branch choice before a sibling. Sharing the buffer corrupts saved results; a global letter ban rejects legitimate repeated-position words such as aa."
+    },
+    {
+      "id": "validate-first",
+      "kind": "choice",
+      "prompt": "Digits are empty or no trie prefix matches, but a dictionary entry is uppercase or empty. What should happen?",
+      "options": [
+        {
+          "id": "correct",
+          "label": "Reject the malformed dictionary before search, even when digits are empty or no prefix matches.",
+          "isCorrect": true
+        },
+        {
+          "id": "wrong-1",
+          "label": "Return an empty result immediately because no output is expected.",
+          "isCorrect": false
+        },
+        {
+          "id": "wrong-2",
+          "label": "Silently normalize or drop malformed words before building the trie.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "The whole input contract must be validated before any empty-query or no-match shortcut. An early success bypasses the contract; silent normalization changes the authored ASCII policy and can conceal incorrect input."
+    },
+    {
+      "id": "reference-cost",
+      "kind": "choice",
+      "prompt": "A trie passes the bounded oracle. Is it now the fastest choice for every query?",
+      "options": [
+        {
+          "id": "correct",
+          "label": "Compare with the independent scan under the same input contract; measure repeated-query costs before preferring a trie.",
+          "isCorrect": true
+        },
+        {
+          "id": "wrong-1",
+          "label": "Yes: prefix pruning removes every construction and output-copying cost.",
+          "isCorrect": false
+        },
+        {
+          "id": "wrong-2",
+          "label": "Yes: 340 bounded patterns prove correctness and speed for arbitrary dictionaries.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "The independent scan provides a separate correctness reference on valid inputs. Trie construction and copying still cost work, and finite checks do not prove arbitrary-input correctness or performance. Choose from measured workload and ownership needs."
+    }
+  ],
+  "concept": "Bounded Backtracking",
+  "tags": [
+    "backtracking",
+    "trie",
+    "invariants"
+  ]
+}

@@ -91,7 +91,7 @@ describe("complete shared native screen matrix", () => {
     expect(adapters.navigation.navigate).toHaveBeenCalledWith(expect.stringContaining(node.slug));
   });
 
-  it("renders ML career stages and opens planned source nodes externally", async () => {
+  it("opens the neural companion locally and the next planned source externally", async () => {
     const index = getContentIndex();
     const path = index.learningPaths.find((item) => item.slug === "ml-systems-engineer")!;
     const adapters = createAdapters();
@@ -99,7 +99,12 @@ describe("complete shared native screen matrix", () => {
     expect(view.getByText("Scientific Computing Apprentice")).toBeOnTheScreen();
     const node = path.units.find((unit) => unit.slug === "volume-one-build")!.nodes[0]!;
     await fireEvent.press(view.getByTestId(`mobile-path-node-${node.kind}-${node.slug.replaceAll("/", "-")}`));
-    expect(adapters.navigation.openExternalUrl).toHaveBeenCalledWith("https://mlsysbook.ai/vol1/nn_computation/nn_computation.html");
+    expect(adapters.navigation.navigate).toHaveBeenCalledTimes(1);
+    expect(adapters.navigation.navigate).toHaveBeenCalledWith("/docs/ml-systems/neural-computation?path=ml-systems-engineer");
+    const planned = path.units.flatMap(unit => unit.nodes).find(item => item.slug === "ml-systems/network-architectures")!;
+    await fireEvent.press(view.getByTestId(`mobile-path-node-${planned.kind}-${planned.slug.replaceAll("/", "-")}`));
+    expect(adapters.navigation.openExternalUrl).toHaveBeenCalledTimes(1);
+    expect(adapters.navigation.openExternalUrl).toHaveBeenCalledWith("https://mlsysbook.ai/vol1/nn_architectures/nn_architectures.html");
   });
 
   it("reads documents and diagrams, records completion, and renders Mermaid success/fallback states", async () => {
@@ -239,6 +244,25 @@ describe("complete shared native screen matrix", () => {
     expect(detail.getAllByText("Python").length).toBeGreaterThan(0);
     await fireEvent.press(detail.getAllByText("TypeScript")[0]!);
     expect(detail.getAllByTestId("mobile-code-block").length).toBeGreaterThan(0);
+  });
+
+  it("reads all event-log approaches in both languages and continues to its checkpoint", async () => {
+    const question = getInterviewQuestionBySlug("real-world", "partitioned-event-log");
+    if (question?.kind !== "web") throw new Error("Missing event-log exercise");
+    const adapters = createAdapters();
+    const nextHref = "/practice/system-design/partitioned-event-log-questionnaire?path=partitioned-event-log";
+    const view = await render(<InterviewQuestionScreen question={question} adapters={adapters} nextHref={nextHref} />);
+    for (const track of question.solutionTracks) {
+      await fireEvent.press(view.getAllByText(track.title)[0]!);
+      expect(view.getByTestId("mobile-web-recipe-position").props.children).toBe("Step 1 of 5");
+      await fireEvent.press(view.getByTestId("mobile-web-show-solution"));
+      await fireEvent.press(view.getByText("TypeScript"));
+      expect(view.getByTestId("mobile-code-source").props.children).toContain("export class EventLog");
+      await fireEvent.press(view.getByText("Python"));
+      expect(view.getByTestId("mobile-code-source").props.children).toContain("class EventLog:");
+    }
+    await fireEvent.press(view.getByTestId("mobile-interview-next-node"));
+    expect(adapters.navigation.navigate).toHaveBeenCalledWith(nextHref);
   });
 
   it("renders vocabulary breakdowns, progress prompts, code, and every difficulty", async () => {

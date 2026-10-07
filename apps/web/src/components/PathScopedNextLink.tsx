@@ -18,7 +18,7 @@ type PathScopedNextLinkProps = {
 export function PathScopedNextLink({ nextHrefsByPath, testId, wrapperClassName = "mt-6 flex justify-end", progressTarget }: PathScopedNextLinkProps) {
   const searchParams = useSearchParams();
   const pathSlug = searchParams.get("path") ?? "";
-  const href = pathSlug ? nextHrefsByPath[pathSlug] : undefined;
+  const href = pathSlug && Object.hasOwn(nextHrefsByPath, pathSlug) ? nextHrefsByPath[pathSlug] : undefined;
 
   if (!href) {
     return null;

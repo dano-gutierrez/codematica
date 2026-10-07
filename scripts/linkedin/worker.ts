@@ -12,7 +12,7 @@ export function prepareRefinement(input: unknown, prompt: string) {
   return { analysis: analysisSchema.parse(input), promptHash: createHash("sha256").update(prompt).digest("hex") };
 }
 export function createPublishArguments(post: LinkedInPost, revision: LinkedInRevision, settings: EditorialSnapshot["settings"]) {
-  if (!settings.publishing_enabled || !settings.buffer_channel_id || post.status !== "approved" || post.approved_revision_id !== revision.id || post.id !== revision.post_id || !canApprove(revision, post.origin === "manual")) throw new Error("The exact revision must be approved and publishing enabled");
+  if (!settings.publishing_enabled || !settings.buffer_channel_id || post.status !== "approved" || post.approved_revision_id !== revision.id || post.id !== revision.post_id || !canApprove(revision, post.origin === "manual", post.preparation_required)) throw new Error("The exact revision must be approved and publishing enabled");
   return { channelId: settings.buffer_channel_id, text: revision.body, schedulingType: "automatic" as const, mode: "addToQueue" as const };
 }
 export const publicationResultSchema = z.object({ status: z.enum(["scheduled", "sent", "error", "cancelled"]), buffer_id: z.string().min(1), scheduled_at: z.iso.datetime({ offset: true }).nullable().optional(), sent_at: z.iso.datetime({ offset: true }).nullable().optional(), url: z.url({ protocol: /^https?$/ }).nullable().optional(), error: z.string().nullable().optional() });

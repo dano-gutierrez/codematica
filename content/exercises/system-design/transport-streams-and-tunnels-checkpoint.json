@@ -1,0 +1,158 @@
+{
+  "slug": "system-design/transport-streams-and-tunnels-checkpoint",
+  "title": "Transport Scope Checkpoint",
+  "type": "questionnaire",
+  "difficulty": "practitioner",
+  "status": "published",
+  "documentSlug": "system-design/transport-streams-and-tunnels",
+  "sourceRefs": [
+    "boundary-rfc9293",
+    "boundary-rfc768",
+    "boundary-rfc9113",
+    "boundary-rfc9000",
+    "boundary-rfc9114",
+    "boundary-rfc826",
+    "boundary-chrome-push",
+    "boundary-dsvpn"
+  ],
+  "concept": "Transport Scope",
+  "tags": [
+    "systems-contracts",
+    "evidence"
+  ],
+  "skillIds": [
+    "transport-scope"
+  ],
+  "questions": [
+    {
+      "id": "tcp-order",
+      "kind": "choice",
+      "skillIds": [
+        "transport-scope"
+      ],
+      "prompt": "Stream A has missing earlier bytes in an HTTP/2 TCP connection; later stream B bytes have arrived. Which boundary remains?",
+      "options": [
+        {
+          "id": "correct",
+          "label": "HTTP/2 interleaves streams, but missing TCP bytes can stall delivery across them.",
+          "isCorrect": true
+        },
+        {
+          "id": "wrong-1",
+          "label": "HTTP/2 lets TCP deliver B around every missing byte.",
+          "isCorrect": false
+        },
+        {
+          "id": "wrong-2",
+          "label": "Only the number of browser connections determines this stall.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "HTTP/2 interleaves application exchanges, but TCP still delivers one ordered byte stream. Stream IDs cannot remove the transport gap; connection-count limits are a different constraint."
+    },
+    {
+      "id": "quic",
+      "kind": "choice",
+      "skillIds": [
+        "transport-scope"
+      ],
+      "prompt": "Which statement keeps HTTP/3, QUIC and UDP contracts distinct?",
+      "options": [
+        {
+          "id": "wrong-1",
+          "label": "HTTP/3 uses UDP and therefore has no reliability mechanism.",
+          "isCorrect": false
+        },
+        {
+          "id": "wrong-2",
+          "label": "QUIC is the name of an HTTP/2 TCP frame.",
+          "isCorrect": false
+        },
+        {
+          "id": "correct",
+          "label": "HTTP/3 uses QUIC over UDP; QUIC supplies reliable ordered stream delivery.",
+          "isCorrect": true
+        }
+      ],
+      "explanation": "HTTP/3 maps onto QUIC, which carries its stream/recovery mechanisms over UDP. The lower datagram protocol alone does not establish the application delivery promise."
+    },
+    {
+      "id": "shared-work",
+      "kind": "choice",
+      "skillIds": [
+        "transport-scope"
+      ],
+      "prompt": "QUIC stream A lacks bytes while B has all its required bytes. What is a justified claim?",
+      "options": [
+        {
+          "id": "wrong-2",
+          "label": "Every stream must always wait for every loss on A.",
+          "isCorrect": false
+        },
+        {
+          "id": "correct",
+          "label": "Another QUIC stream may progress, while shared congestion and compression dependencies still matter.",
+          "isCorrect": true
+        },
+        {
+          "id": "wrong-1",
+          "label": "B has unlimited independent bandwidth and no other dependencies.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "Per-stream ordered delivery can let B progress without A's missing data. Connection congestion, flow-control budgets, application dependencies and compression can still constrain progress."
+    },
+    {
+      "id": "next-hop",
+      "kind": "choice",
+      "skillIds": [
+        "transport-scope"
+      ],
+      "prompt": "An Ethernet/IPv4 LAN frame is sent to a router on the way to a remote service. What does its link destination identify?",
+      "options": [
+        {
+          "id": "correct",
+          "label": "A link address identifies the local next hop; it is not the remote application's identity.",
+          "isCorrect": true
+        },
+        {
+          "id": "wrong-1",
+          "label": "The remote user account and application authorization.",
+          "isCorrect": false
+        },
+        {
+          "id": "wrong-2",
+          "label": "One permanent end-to-end MAC address for the entire Internet route.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "In this LAN fixture, routing selects a next hop and ARP resolves its local Ethernet address. That address is separate from the remote server identity, TLS authority and resource permission."
+    },
+    {
+      "id": "tunnel",
+      "kind": "choice",
+      "skillIds": [
+        "transport-scope"
+      ],
+      "prompt": "A small VPN README reports success where only TCP ports are available. How should you use that evidence?",
+      "options": [
+        {
+          "id": "wrong-1",
+          "label": "Treat every workload as faster, anonymous and independently audited.",
+          "isCorrect": false
+        },
+        {
+          "id": "wrong-2",
+          "label": "Assume a VPN removes every inner and outer recovery queue.",
+          "isCorrect": false
+        },
+        {
+          "id": "correct",
+          "label": "The author reports a TCP-restricted use case; verify the tunnel and inner/outer loss tradeoff for your workload.",
+          "isCorrect": true
+        }
+      ],
+      "explanation": "The author's use case motivates a selected transport review. It is not an independent cryptographic audit or universal benchmark; verify both recovery loops and deployment requirements."
+    }
+  ]
+}

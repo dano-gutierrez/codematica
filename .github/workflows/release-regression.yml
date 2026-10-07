@@ -36,7 +36,7 @@ jobs:
       - if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: release-coverage-${{ github.ref_name }}
+          name: release-coverage-${{ github.sha }}-${{ github.run_attempt }}
           path: |
             coverage
             test-results/vitest
@@ -54,6 +54,8 @@ jobs:
       - run: supabase start
       - run: supabase db reset --local
       - run: supabase test db
+      - run: docker pull postgres@sha256:e38411452a464af89e5adadb8d223bf53b898d47d6ef918b2d58c08707350449
+      - run: python3 -I -W error::ResourceWarning scripts/content/verify-reservation-ranges.py
       - if: always()
         run: supabase stop --no-backup
 
@@ -73,7 +75,7 @@ jobs:
       - if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: release-playwright-${{ github.ref_name }}
+          name: release-playwright-${{ github.sha }}-${{ github.run_attempt }}
           path: |
             apps/web/e2e/playwright-report
             apps/web/e2e/test-results

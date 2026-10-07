@@ -1,0 +1,29 @@
+appId: com.codematica.app
+---
+# Use a disposable signed-in admin account and an isolated test database.
+- launchApp
+- tapOn:
+    id: mobile-nav-more
+- tapOn:
+    id: mobile-menu-interview-preparation
+- assertVisible: Interview preparation
+- tapOn:
+    id: interview-new
+- tapOn:
+    id: interview-field-company
+- eraseText
+- inputText: Synthetic interview company
+- tapOn:
+    id: interview-field-position
+- eraseText
+- inputText: Synthetic engineer role
+- hideKeyboard
+- scrollUntilVisible:
+    element:
+      id: interview-save
+- tapOn:
+    id: interview-save
+- assertVisible: Synthetic interview company — Synthetic engineer role
+- tapOn:
+    id: interview-back
+- assertVisible: Synthetic interview company

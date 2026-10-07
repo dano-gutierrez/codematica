@@ -49,7 +49,7 @@ Shared navigation, concise catalog headings, lighter typography and borders, con
 ### UI / UX
 
 - [Design system](design-system.md) is the reusable web control and spacing contract. The LinkedIn editor adopts shared named buttons and compact disclosures first; broader adoption is incremental. Editorial web actions show text on narrow or touch-capable screens and use 48 px targets; native editorial actions keep text with 48 dp targets. Editorial pane selection uses available content width so iPad portrait/Split View does not squeeze the editor beside the sidebar.
-- Signed-in editorial admins see a separate Admin group with a LinkedIn icon and active destination. The sidebar footer shows account name/email with an expandable Sign out action; phone header and More reuse the disclosure. Escape restores focus. Short-screen navigation scrolls while the footer stays reachable. Profile/settings can extend the same menu later. See [Auth and progress](auth-and-progress.md) for session and sign-out behavior.
+- Signed-in editorial admins see a separate Admin group with LinkedIn, Knowledge and Interview preparation links and an active destination. The sidebar footer shows account name/email with an expandable Sign out action; phone header and More reuse the disclosure. Escape restores focus. Short-screen navigation scrolls while the footer stays reachable. Profile/settings can extend the same menu later. See [Auth and progress](auth-and-progress.md) for session and sign-out behavior.
 
 - App branding uses the approved Patch head and wordmark in existing web/native headers and sidebars. See `brand-identity.md` for source ownership, browser icons and native packaging.
 

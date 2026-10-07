@@ -42,7 +42,9 @@ for (const [layout, viewport] of [
         return route.fulfill({ status: 204 });
       }
       if (url.pathname === "/rest/v1/rpc/linkedin_is_admin") return route.fulfill({ json: !signedOut && !!route.request().headers().authorization?.includes(token) });
-      if (url.pathname === "/rest/v1/rpc/linkedin_snapshot") return route.fulfill({ json: editorialFixture });
+      if (url.pathname === "/rest/v1/rpc/linkedin_overview") return route.fulfill({ json: { ...editorialFixture, revisions: [], version: "1" } });
+      if (url.pathname === "/rest/v1/rpc/knowledge_for_post") return route.fulfill({ json: null });
+      if (url.pathname === "/rest/v1/rpc/linkedin_detail") return route.fulfill({ json: editorialFixture });
       throw new Error(`Unexpected mock request ${url.pathname}`);
     });
 
@@ -64,6 +66,10 @@ for (const [layout, viewport] of [
       if (layout === "phone") await page.getByTestId("mobile-nav-more").click();
       const admin = page.getByRole("navigation", { name: layout === "desktop" ? "Admin navigation" : "Admin navigation in menu", exact: true });
       await expect(admin.getByText("Admin", { exact: true })).toBeVisible();
+      for (const [name, href] of [["Knowledge", "/admin/knowledge"], ["Interview preparation", "/admin/interview-preparation"]]) {
+        await expect(admin.getByRole("link", { name, exact: true })).toBeVisible();
+        await expect(admin.getByRole("link", { name, exact: true })).toHaveAttribute("href", href);
+      }
       await expect(admin.getByRole("link", { name: "LinkedIn", exact: true })).toHaveAttribute("aria-current", "page");
       await expect(page.getByRole("navigation", { name: "Primary navigation", exact: true }).getByRole("link", { name: "LinkedIn" })).toHaveCount(0);
       await page.getByTestId(`${placement}-account-trigger`).click();

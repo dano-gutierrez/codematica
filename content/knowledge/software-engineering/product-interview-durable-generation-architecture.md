@@ -6,7 +6,7 @@ track: Software Engineering
 topic: Interview Preparation
 difficulty: senior
 tags: [product-engineering, system-design, idempotency, observability, interview]
-sourceRefs: [product-interview-pubsub, product-interview-sre-monitoring, product-interview-otel]
+sourceRefs: [product-interview-pubsub, product-interview-sre-monitoring, product-interview-otel, rfc-http-idempotency, stripe-idempotent-requests, sqlite-transactions, python-sqlite-transactions, kafka-41-delivery-design, redis-pubsub-delivery, redis-stream-ack, redis-stream-autoclaim]
 status: published
 ---
 
@@ -87,6 +87,120 @@ stateDiagram-v2
 
 This is the exercise's simplified state machine, not a provider's API enum. Decide refund policy separately from whether bytes were computed. Browser abort/disconnect is not confirmed server cancellation.
 
+## Optional lab: duplicate delivery versus one local effect
+
+Run this after the timed architecture drill. [HTTP idempotency](https://www.rfc-editor.org/rfc/rfc9110.html#section-9.2.2) concerns the intended effect of repeating a request; responses and request logs can still differ. A POST needs an application contract to make a retry safe. A missing response does not prove rollback.
+
+An external provider has its own contract. For example, [Stripe's idempotent-request API](https://docs.stripe.com/api/idempotent_requests) retains the first executed result, including a 500 response, and documents a retention window and request-parameter checks. Do not infer another provider's behavior from this example or retry with a fresh key merely because a response was lost.
+
+This original Python 3.13+ fixture spends fictional credits in a temporary SQLite database. It performs no network, payment or provider call. Its request is just an amount; a real endpoint must authenticate and authorize before returning receipts and fingerprint every field that changes the operation. Receipts are retained for this short experiment; production retention and key reuse need an explicit policy.
+
+[SQLite supports one writer at a time](https://www.sqlite.org/lang_transaction.html). `BEGIN IMMEDIATE` serializes the two connections before either reads the receipt. [Python's `isolation_level=None`](https://docs.python.org/3.13/library/sqlite3.html#transaction-control-via-the-isolation-level-attribute) lets this fixture control SQL transactions explicitly. This demonstrates a local atomic boundary, not PostgreSQL locking behavior, distributed exactly-once processing or a throughput benchmark.
+
+Save the block as `durable_retry_lab.py` and run `python3 durable_retry_lab.py`. Predict the balances and receipt count before executing:
+
+```python
+from concurrent.futures import ThreadPoolExecutor
+from contextlib import closing
+from pathlib import Path
+import sqlite3
+from tempfile import TemporaryDirectory
+from threading import Barrier
+
+with TemporaryDirectory() as directory:
+    database = Path(directory) / 'credits.sqlite'
+    with closing(sqlite3.connect(database, isolation_level=None)) as setup:
+        setup.executescript('''
+            CREATE TABLE credits(workspace TEXT PRIMARY KEY, balance INTEGER NOT NULL);
+            INSERT INTO credits VALUES ('a', 100), ('b', 100);
+            CREATE TABLE receipts(
+                workspace TEXT, key TEXT, amount INTEGER, result INTEGER,
+                PRIMARY KEY (workspace, key)
+            );
+        ''')
+
+    def spend(workspace, key, amount, failure=None):
+        if amount <= 0:
+            raise ValueError('amount must be positive')
+        connection = sqlite3.connect(database, timeout=5, isolation_level=None)
+        try:
+            connection.execute('BEGIN IMMEDIATE')
+            previous = connection.execute(
+                'SELECT amount, result FROM receipts WHERE workspace=? AND key=?',
+                (workspace, key),
+            ).fetchone()
+            if previous:
+                if previous[0] != amount:
+                    raise ValueError('same key, different request')
+                connection.commit()
+                return previous[1]
+            balance = connection.execute(
+                'SELECT balance FROM credits WHERE workspace=?', (workspace,),
+            ).fetchone()
+            if balance is None or balance[0] < amount:
+                raise ValueError('missing workspace or insufficient credits')
+            result = balance[0] - amount
+            connection.execute('UPDATE credits SET balance=? WHERE workspace=?',
+                               (result, workspace))
+            connection.execute('INSERT INTO receipts VALUES (?, ?, ?, ?)',
+                               (workspace, key, amount, result))
+            if failure == 'before_commit':
+                raise RuntimeError('injected before commit')
+            connection.commit()
+            if failure == 'lost_response':
+                raise RuntimeError('commit happened; response was lost')
+            return result
+        finally:
+            if connection.in_transaction:
+                connection.rollback()
+            connection.close()
+
+    barrier = Barrier(2)
+    def concurrent_retry(_):
+        barrier.wait(timeout=5)
+        return spend('a', 'export-1', 10)
+    with ThreadPoolExecutor(max_workers=2) as pool:
+        assert list(pool.map(concurrent_retry, range(2))) == [90, 90]
+    try:
+        spend('a', 'export-2', 10, 'before_commit')
+    except RuntimeError:
+        pass
+    else:
+        raise AssertionError('before-commit failure did not occur')
+    with closing(sqlite3.connect(database)) as check:
+        assert check.execute("SELECT balance FROM credits WHERE workspace='a'").fetchone()[0] == 90
+        assert check.execute("SELECT count(*) FROM receipts WHERE key='export-2'").fetchone()[0] == 0
+    assert spend('a', 'export-2', 10) == 80
+    try:
+        spend('a', 'export-3', 10, 'lost_response')
+    except RuntimeError:
+        pass
+    else:
+        raise AssertionError('lost-response failure did not occur')
+    with closing(sqlite3.connect(database)) as check:
+        assert check.execute("SELECT balance FROM credits WHERE workspace='a'").fetchone()[0] == 70
+        assert check.execute("SELECT count(*) FROM receipts WHERE key='export-3'").fetchone()[0] == 1
+    assert spend('a', 'export-3', 10) == 70
+    try:
+        spend('a', 'export-1', 20)
+    except ValueError:
+        pass
+    else:
+        raise AssertionError('changed request was accepted')
+    assert spend('b', 'export-1', 10) == 90
+    assert spend('a', 'export-1', 10) == 90  # Original receipt, not current balance.
+    with closing(sqlite3.connect(database)) as check:
+        assert check.execute('SELECT * FROM credits ORDER BY workspace').fetchall() == [('a', 70), ('b', 90)]
+        assert check.execute('SELECT count(*) FROM receipts').fetchone()[0] == 4
+    print('concurrent retry, rollback, lost response, request conflict and tenant scope: passed')
+```
+
+Expected: the final line reports all five cases passed; workspace `a` has 70 credits, `b` has 90, and four receipts remain until the temporary directory closes. A repeated `export-1` returns its original receipt of 90 even though `a` now has 70. It is an operation result, not a current-balance query.
+
+Inspect state **before** retrying: a pre-commit failure leaves neither debit nor receipt; a lost post-commit response leaves both. Move the commit before receipt insertion and confirm the pre-retry assertion fails. Then remove the changed-request check or tenant scope and confirm the corresponding assertion fails. Keeping those mutations green would leave a gap in the evidence.
+
+An external payment cannot join this SQLite transaction. Extend the design with durable intent, a stable provider operation identity, reconciliation and a guarded capture/release transition; the lab does not implement that integration. Complete the [Durable Retry Lab Checkpoint](/practice/software-engineering/durable-retry-lab-checkpoint).
+
 ## Reconnect, collaboration, and authorization
 
 Persist each export's immutable input revision. Stream `{jobId, version, state}` updates; ignore stale/duplicate versions and fetch an authorized snapshot when a gap appears. On reconnect, obtain a snapshot plus a replay cursor, or subscribe-and-buffer before fetching, so no update is lost between the two. A dropped socket must not create a new export. Cursor expiry should trigger snapshot recovery.
@@ -100,6 +214,28 @@ Authorize every status read, event subscription, retry, cancellation, and asset 
 [Pub/Sub supports pull and push subscriptions](https://docs.cloud.google.com/pubsub/docs/subscriber). A push subscriber receives HTTP requests; a durable bus can sit behind a webhook receiver. Compare producer/consumer coupling, fan-out, retention, replay, retry ownership, and operational control. Acknowledge only after durable acceptance or the effect your contract requires, and budget lease extensions for variable work. Keep retry delay bounded with jitter, retryable error classification, an attempt/deadline budget, and a dead-letter/reconciliation path.
 
 When reviewing a provider integration, confirm exactly which transitions produce notifications: admission, start, intermediate progress, or terminal outcome. Document signature verification, delivery retry windows, and ordering guarantees before relying on them. Clarify undocumented capabilities before assuming they are absent. Never treat possession of a job ID as proof a webhook is authentic—verify a supported signature or reconcile with an authenticated status read before trusted side effects.
+
+## Separate Kafka progress from an external effect
+
+The [Kafka 4.1 design reference](https://kafka.apache.org/41/design/design/) distinguishes committing progress before processing from committing after processing. The former risks missing work; the latter permits repeated work after a crash. A consumer group does not prove that an external charge happens once. Kafka transactions can bind Kafka output records and consumed offsets; downstream `read_committed` matters. An external destination needs its own coordinated effect/receipt boundary.
+
+For this original export scenario, predict a crash at each boundary:
+
+| Boundary | Evidence to recover |
+| --- | --- |
+| Offset saved before the fictional debit | Progress moved, but the required effect may be missing |
+| Debit committed, offset not saved | Delivery may repeat; reuse the matching durable receipt |
+| Provider accepted work, response lost | Outcome is uncertain; reconcile the stable operation identity |
+
+Keep retention long enough for the agreed recovery window and document what happens after that window. A dead-letter route needs ownership, alerts and a replay policy; moving a failed record is not successful completion. This is a design exercise, not an executed Kafka cluster or certification of connectors, windowing, CDC or Saga implementations.
+
+## Recover Redis work without treating an ack as a receipt
+
+[Redis Pub/Sub](https://redis.io/docs/latest/develop/pubsub/) cannot replay a message lost by a disconnected subscriber. Use it only where loss is acceptable or authorized snapshot recovery supplies the missing state. A shared session store also needs an explicit outage policy; a Redis connection is not the durable job contract.
+
+For a Stream consumer group, [`XACK`](https://redis.io/docs/latest/commands/xack/) removes an entry from that group's pending list. It does not atomically commit our SQL debit or an external provider effect. [`XAUTOCLAIM`](https://redis.io/docs/latest/commands/xautoclaim/) transfers sufficiently idle pending entries; reclaiming does not stop a worker that is still executing. Guard effects with current ownership/version and durable operation identity. Retention, persistence and failover policies still bound recovery. Since Redis 7.0, the claim reply also identifies pending entries whose underlying records were removed; those entries cannot supply the missing payload.
+
+In an original review trace, worker A commits a debit and crashes before acknowledging. Worker B claims the pending entry and finds the same scoped receipt: no second debit. If A merely pauses and resumes after B claims, neither worker may bypass the effect store's guard. If retention removed the payload, surface the gap and recover from authorized durable state; do not declare the job completed from a missing pending entry. Extend the existing SQLite experiment's crash receipt; it neither runs Redis nor demonstrates an atomic transaction across the broker and SQL.
 
 ## Define reliability from the user's view
 

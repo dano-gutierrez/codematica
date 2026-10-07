@@ -322,7 +322,7 @@ Testing is a release contract, not a cleanup step.
 ### Reusable Component Inventory
 
 - `apps/web/src/components/game/`: `GameMap`, `GamePlay`, `GameScene`, `GameBoard`, `GameDistrictArt`, and `GameLessonReturn` own the campaign, accessible editors, Pixi scene, draggable/tap board, lazy scenery, and lesson return.
-- `packages/ui/src/game/`: native game map/play screens, Skia actor/district renderers, and accessible draggable board share core rules with web. Both character renderers use `packages/core/src/game/miniatures.ts` for in-level chibi poses and container fitting; reuse this composition when adding miniature views.
+- `packages/ui/src/game/`: native game map/play screens, Skia actor/district renderers, and accessible draggable board share core rules with web. Both character renderers use `packages/core/src/game/miniatures.ts` for in-level chibi poses and container fitting; reuse this composition when adding miniature views. Map renderers share the fifty-position art order and bounded offsets in `packages/core/src/game/map-art.ts`; reuse the contiguous terrain tiles and three overlay families when extending the campaign landscape.
 
 Reuse these components and extend them when needed; avoid rebuilding equivalent UI:
 
@@ -413,3 +413,9 @@ Reuse these components and extend them when needed; avoid rebuilding equivalent 
 - If you change shared business logic, content parsing, indexing, search, rendering, Supabase sync, or migrations, do not stop at E2E only; add or update matching Vitest coverage too.
 
 Editorial adaptive design: read `docs/features/design-system.md`. Icon-only controls must expose inline labels on touch/narrow web; do not rely on hover. Native editorial targets are 48 dp and text scaling stays enabled. `AppScreen` supports opt-in keyboard-aware scrolling. Verify phone, tablet, large text and desktop before changing these patterns.
+
+### Interview preparation reusable surfaces
+
+- `apps/web/src/components/InterviewPreparationAdmin.tsx`: private company/role collection, profile/round editing and brief review/export.
+- `packages/ui/src/InterviewPreparationScreen.tsx`: native counterpart sharing core tracker logic.
+- `.agents/skills/prepare-interview/SKILL.md`: research/personalization workflow; always apply repository technical-edit before interview-preparation output.

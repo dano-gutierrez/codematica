@@ -53,7 +53,11 @@ npm run test:mobile:coverage
 
 Jest covers native adapters, offline and partial-failure progress behavior, Supabase configuration, app/EAS configuration, and the shared React Native screen matrix. Coverage is enforced at 80% lines/statements/functions and 70% branches for mobile libraries, and 70%/60% for shared native UI.
 
-Keep SDK 57 patch versions aligned across this workspace, root development dependencies, root overrides, and `package-lock.json`. Install required native peers directly in this app; `expo-audio` requires `expo-asset`. After updating versions, verify a clean `npm ci`, Expo Doctor, typechecking, native coverage, and Android/iOS bundle exports before installed-device checks. Follow the [Expo dependency upgrade guide](https://docs.expo.dev/workflow/upgrading-expo-sdk-walkthrough/).
+Keep SDK 57 patch versions aligned across this workspace, root development dependencies, root overrides, and `package-lock.json`. Install required native peers directly in this app; `expo-audio` requires `expo-asset`.
+
+The October 6, 2026 alignment uses Expo 57.0.27, expo-asset 57.0.19, expo-constants 57.0.21, expo-linking 57.0.12 and expo-router 57.0.25. Root overrides also follow the SDK’s CLI, Metro, Babel and module-core dependency ranges; do not keep an override below the installed SDK’s required version.
+
+After updating versions, verify a clean `npm ci`, Expo Doctor, typechecking, native coverage, and Android/iOS bundle exports before installed-device checks. Follow the [Expo dependency upgrade guide](https://docs.expo.dev/workflow/upgrading-expo-sdk-walkthrough/).
 
 ## Native E2E
 
@@ -183,3 +187,7 @@ Editorial accessibility follows `docs/features/design-system.md`: 48 dp text act
 Japanese writing notebooks use 24 whole-prompt repetitions per sheet and support curated/custom text of 1–5 published characters. Ink and Easy/Balanced/Precise difficulty preferences stay on the device; coarse completion/unlocks optionally sync. Input detection is automatic with no mode buttons; one finger writes, two fingers scroll the paper, and web wheel/trackpad scrolling stays available. Whole characters check automatically after a 400ms pen-up pause, with errors delayed until 1.2 seconds after pen-up. Sheet controls use an accessible restart icon. The installed-app regression flow selects difficulty and draws without a submit button. See `docs/features/japanese-writing-notebooks.md` for the implementation, persistence and validation contract.
 
 Native notebook writing now protects strokes from ScrollView interception and iPad swipe-back. Selected pages use compact headers and show feedback above the paper; custom creation handles keyboard taps. `src/lib/handwriting-navigation.ts` protects notebook, writing-review, dictionary detail and authored writing-exercise routes while preserving swipe-back elsewhere. Run `npm run mobile:e2e:notebook-layout` and `npm run mobile:e2e:notebook-gestures` against disposable agent-device sessions; see [e2e setup](e2e/README.md). Physical Apple Pencil and SDK 57 build checks were deferred by the user; follow the [physical iPad checklist](../../docs/features/japanese-writing-notebooks.md#deferred-physical-ipad-checklist).
+
+Event-log interview content uses the shared native walkthrough and code reader. Jest covers all three approaches/languages and checkpoint navigation; `.maestro/event-log-interview.yaml` defines the installed-app quiz/review journey. Playground execution remains web-only.
+
+Admin → Interview preparation uses the shared native screen and optional admin-only Supabase RPCs. `apps/mobile/.maestro/interview-preparation.yaml` requires a disposable admin account/test database. See the interview feature/runbook.

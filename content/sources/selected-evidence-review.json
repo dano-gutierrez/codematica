@@ -1,0 +1,340 @@
+{
+  "sources": [
+    {
+      "id": "evidence-openjev-readout",
+      "title": "OpenJev Server — Pinned Decision Readout",
+      "provider": "Abhishek Gahlot",
+      "url": "https://github.com/abhishekgahlot2/openjev-server/blob/032a2c5791f3d8856cc26fdb6876c106fac8dbf8/openjev_server/readout.py",
+      "lastVerifiedAt": "2026-10-04",
+      "attribution": "Selected choice argmax, zero-based expected-index score and calibrated yes/no readout; probabilities are not local decision-quality evidence. Original fictional review cases; no upstream code, figures or private post text copied.",
+      "upstream": {
+        "version": "commit 032a2c5791f3d8856cc26fdb6876c106fac8dbf8",
+        "maturity": "published"
+      }
+    },
+    {
+      "id": "evidence-openjev-license",
+      "title": "OpenJev Server — Calibration And Licensing",
+      "provider": "Abhishek Gahlot",
+      "url": "https://github.com/abhishekgahlot2/openjev-server/blob/032a2c5791f3d8856cc26fdb6876c106fac8dbf8/README.md",
+      "lastVerifiedAt": "2026-10-04",
+      "attribution": "Separate Apache-2.0 server code from CC-BY-NC-4.0 weights; fit calibration on development rows, not a test set. Original fictional review cases; no upstream code, figures or private post text copied.",
+      "upstream": {
+        "version": "commit 032a2c5791f3d8856cc26fdb6876c106fac8dbf8",
+        "maturity": "published"
+      }
+    },
+    {
+      "id": "evidence-google-containment",
+      "title": "Google Cloud — Compromised Credentials",
+      "provider": "Google Cloud",
+      "url": "https://docs.cloud.google.com/docs/security/compromised-credentials",
+      "lastVerifiedAt": "2026-10-04",
+      "attribution": "Selected urgent containment, credential scope and dependency investigation; active harm can require disabling or revoking access. Original fictional review cases; no upstream code, figures or private post text copied.",
+      "upstream": {
+        "version": "guidance checked 2026-10-04",
+        "maturity": "published"
+      }
+    },
+    {
+      "id": "evidence-google-service-accounts",
+      "title": "Google Cloud — Service Account Practices",
+      "provider": "Google Cloud",
+      "url": "https://docs.cloud.google.com/iam/docs/best-practices-service-accounts",
+      "lastVerifiedAt": "2026-10-04",
+      "attribution": "Service account as both resource and principal; shared credentials limit attribution to the actual actor. Original fictional review cases; no upstream code, figures or private post text copied.",
+      "upstream": {
+        "version": "guidance checked 2026-10-04",
+        "maturity": "published"
+      }
+    },
+    {
+      "id": "evidence-java23-map",
+      "title": "Java SE 23 — Map Contract",
+      "provider": "Oracle",
+      "url": "https://docs.oracle.com/en/java/javase/23/docs/api/java.base/java/util/Map.html",
+      "lastVerifiedAt": "2026-10-04",
+      "attribution": "Selected mutable-key and shallow unmodifiable-map boundaries. Original fictional review cases; no upstream code, figures or private post text copied.",
+      "upstream": {
+        "version": "Java SE 23",
+        "maturity": "published"
+      }
+    },
+    {
+      "id": "evidence-jls23-memory",
+      "title": "Java SE 23 — Memory Model",
+      "provider": "Oracle",
+      "url": "https://docs.oracle.com/javase/specs/jls/se23/html/jls-17.html",
+      "lastVerifiedAt": "2026-10-04",
+      "attribution": "Selected volatile ordering versus compound-operation atomicity. Original fictional review cases; no upstream code, figures or private post text copied.",
+      "upstream": {
+        "version": "JLS SE 23 chapter 17",
+        "maturity": "published"
+      }
+    },
+    {
+      "id": "evidence-jls23-records",
+      "title": "Java SE 23 — Record Classes",
+      "provider": "Oracle",
+      "url": "https://docs.oracle.com/javase/specs/jls/se23/html/jls-8.html",
+      "lastVerifiedAt": "2026-10-04",
+      "attribution": "Selected final record component fields do not make referenced objects deeply immutable. Original fictional review cases; no upstream code, figures or private post text copied.",
+      "upstream": {
+        "version": "JLS SE 23 chapter 8",
+        "maturity": "published"
+      }
+    },
+    {
+      "id": "evidence-java23-threadlocal",
+      "title": "Java SE 23 — ThreadLocal",
+      "provider": "Oracle",
+      "url": "https://docs.oracle.com/en/java/javase/23/docs/api/java.base/java/lang/ThreadLocal.html",
+      "lastVerifiedAt": "2026-10-04",
+      "attribution": "Selected per-thread value, current-thread remove and later initialization semantics. Original fictional review cases; no upstream code, figures or private post text copied.",
+      "upstream": {
+        "version": "Java SE 23",
+        "maturity": "published"
+      }
+    },
+    {
+      "id": "evidence-spring-transactions",
+      "title": "Spring — Declarative Transaction Annotations",
+      "provider": "Spring project",
+      "url": "https://docs.spring.io/spring-framework/reference/data-access/transaction/declarative/annotations.html",
+      "lastVerifiedAt": "2026-10-04",
+      "attribution": "Selected default proxy self-invocation and checked-exception rollback boundaries; 6.2 global ALL_EXCEPTIONS and per-rule overrides remain separate. Original fictional review cases; no upstream code, figures or private post text copied.",
+      "upstream": {
+        "version": "reference 7.0.9 checked 2026-10-04",
+        "maturity": "published"
+      }
+    },
+    {
+      "id": "evidence-ddd-reference",
+      "title": "Domain-Driven Design Reference — Selected Boundaries",
+      "provider": "Eric Evans / Domain Language",
+      "url": "https://www.domainlanguage.com/wp-content/uploads/2016/05/DDD_Reference_2015-03.pdf",
+      "lastVerifiedAt": "2026-10-04",
+      "attribution": "Selected bounded context, entity/value distinction and aggregate consistency boundary. Original fictional review cases; no upstream code, figures or private post text copied.",
+      "upstream": {
+        "version": "March 2015",
+        "maturity": "published"
+      },
+      "license": {
+        "name": "CC BY 4.0",
+        "url": "https://creativecommons.org/licenses/by/4.0/"
+      }
+    },
+    {
+      "id": "evidence-cloud-responsibility",
+      "title": "Google Cloud — IaaS, PaaS And SaaS Responsibilities",
+      "provider": "Google Cloud",
+      "url": "https://cloud.google.com/learn/paas-vs-iaas-vs-saas",
+      "lastVerifiedAt": "2026-10-04",
+      "attribution": "Selected responsibility boundaries; managed infrastructure does not remove application access/data obligations. Original fictional review cases; no upstream code, figures or private post text copied.",
+      "upstream": {
+        "version": "guide checked 2026-10-04",
+        "maturity": "published"
+      }
+    },
+    {
+      "id": "evidence-container-security",
+      "title": "Docker Engine — Security Boundaries",
+      "provider": "Docker",
+      "url": "https://docs.docker.com/engine/security/",
+      "lastVerifiedAt": "2026-10-04",
+      "attribution": "Selected namespaces, cgroups, daemon authority and kernel isolation limits. Original fictional review cases; no upstream code, figures or private post text copied.",
+      "upstream": {
+        "version": "guide checked 2026-10-04",
+        "maturity": "published"
+      }
+    },
+    {
+      "id": "evidence-lambda-reuse",
+      "title": "AWS Lambda — Runtime Reuse Practices",
+      "provider": "Amazon Web Services",
+      "url": "https://docs.aws.amazon.com/lambda/latest/dg/best-practices.html",
+      "lastVerifiedAt": "2026-10-04",
+      "attribution": "Selected reused execution environment, initialization resources and per-invocation sensitive-state separation. Original fictional review cases; no upstream code, figures or private post text copied.",
+      "upstream": {
+        "version": "guide checked 2026-10-04",
+        "maturity": "published"
+      }
+    },
+    {
+      "id": "evidence-lambda-acceptance",
+      "title": "AWS Lambda — Asynchronous Invocation",
+      "provider": "Amazon Web Services",
+      "url": "https://docs.aws.amazon.com/lambda/latest/dg/invocation-async.html",
+      "lastVerifiedAt": "2026-10-04",
+      "attribution": "Selected Event invocation 202 means accepted for asynchronous work, not successful function outcome. Original fictional review cases; no upstream code, figures or private post text copied.",
+      "upstream": {
+        "version": "guide checked 2026-10-04",
+        "maturity": "published"
+      }
+    },
+    {
+      "id": "evidence-lambda-uniqueness",
+      "title": "AWS Lambda — SnapStart Uniqueness",
+      "provider": "Amazon Web Services",
+      "url": "https://docs.aws.amazon.com/lambda/latest/dg/snapstart-uniqueness.html",
+      "lastVerifiedAt": "2026-10-04",
+      "attribution": "Selected initialization snapshot uniqueness risks and post-initialization generation; no blanket claim about every random generator. Original fictional review cases; no upstream code, figures or private post text copied.",
+      "upstream": {
+        "version": "guide checked 2026-10-04",
+        "maturity": "published"
+      }
+    },
+    {
+      "id": "evidence-aws-budget",
+      "title": "AWS Budgets — Cost Monitoring Limits",
+      "provider": "Amazon Web Services",
+      "url": "https://docs.aws.amazon.com/cost-management/latest/userguide/budgets-managing-costs.html",
+      "lastVerifiedAt": "2026-10-04",
+      "attribution": "Selected usage/reporting delay; a budget alert is not a universal hard spending cap. Original fictional review cases; no upstream code, figures or private post text copied.",
+      "upstream": {
+        "version": "guide checked 2026-10-04",
+        "maturity": "published"
+      }
+    },
+    {
+      "id": "evidence-oidc-core",
+      "title": "OpenID Connect Core — Token Validation",
+      "provider": "OpenID Foundation",
+      "url": "https://openid.net/specs/openid-connect-core-1_0.html",
+      "lastVerifiedAt": "2026-10-04",
+      "attribution": "Selected issuer, audience, expiry and sent-nonce validation; policy choices and trusted signature verification remain explicit. Original fictional review cases; no upstream code, figures or private post text copied.",
+      "upstream": {
+        "version": "Core 1.0 incorporating errata set 2",
+        "maturity": "published"
+      }
+    },
+    {
+      "id": "evidence-pkce",
+      "title": "RFC 7636 — Proof Key For Code Exchange",
+      "provider": "IETF",
+      "url": "https://www.rfc-editor.org/rfc/rfc7636.html",
+      "lastVerifiedAt": "2026-10-04",
+      "attribution": "Selected transaction-bound challenge/verifier; not identity or object authorization by itself. Original fictional review cases; no upstream code, figures or private post text copied.",
+      "upstream": {
+        "version": "September 2015",
+        "maturity": "published"
+      }
+    },
+    {
+      "id": "evidence-oauth-security",
+      "title": "RFC 9700 — OAuth Security Practice",
+      "provider": "IETF",
+      "url": "https://www.rfc-editor.org/rfc/rfc9700.html",
+      "lastVerifiedAt": "2026-10-04",
+      "attribution": "Public clients must use PKCE; confidential clients recommended; challenge/verifier enforcement and downgrade rejection. Original fictional review cases; no upstream code, figures or private post text copied.",
+      "upstream": {
+        "version": "January 2025 sections 2.1.1 and 4.8.2",
+        "maturity": "published"
+      }
+    },
+    {
+      "id": "evidence-stripe-hold",
+      "title": "Stripe — Separate Authorization And Capture",
+      "provider": "Stripe",
+      "url": "https://docs.stripe.com/payments/place-a-hold-on-a-payment-method",
+      "lastVerifiedAt": "2026-10-04",
+      "attribution": "Selected manual-capture requires_capture and applicable hold expiry; no universal capture window. Original fictional review cases; no upstream code, figures or private post text copied.",
+      "upstream": {
+        "version": "documentation checked 2026-10-04",
+        "maturity": "published"
+      }
+    },
+    {
+      "id": "evidence-visa-flow",
+      "title": "VisaNet Connect Acceptance — Authorization And Settlement",
+      "provider": "Visa",
+      "url": "https://developer.visa.com/capabilities/visanet-connect-acceptance/docs-getting-started",
+      "lastVerifiedAt": "2026-10-04",
+      "attribution": "Selected issuer authorization and later capture/clearing/settlement roles; product-specific timings not universalized. Original fictional review cases; no upstream code, figures or private post text copied.",
+      "upstream": {
+        "version": "documentation checked 2026-10-04",
+        "maturity": "published"
+      }
+    },
+    {
+      "id": "evidence-unity-anticipation",
+      "title": "Unity Netcode — Archived Client Anticipation",
+      "provider": "Unity Technologies",
+      "url": "https://github.com/Unity-Technologies/com.unity.multiplayer.docs/blob/c25748c7e67375d3bd4657f389ec5b3bf6aff382/docs/advanced-topics/client-anticipation.md",
+      "lastVerifiedAt": "2026-10-04",
+      "attribution": "Selected visual/authoritative separation and stale-data correction; archived anticipation is not full rollback/replay prediction or current SDK certification. Original fictional review cases; no upstream code, figures or private post text copied.",
+      "upstream": {
+        "version": "archived documentation commit c25748c7e67375d3bd4657f389ec5b3bf6aff382",
+        "maturity": "published"
+      }
+    },
+    {
+      "id": "evidence-blender-scene-time",
+      "title": "Blender 5.2 — Scene Time Node",
+      "provider": "Blender project",
+      "url": "https://docs.blender.org/manual/en/5.2/modeling/geometry_nodes/input/scene/scene_time.html",
+      "lastVerifiedAt": "2026-10-04",
+      "attribution": "Selected Seconds and fractional Frame outputs; original sampled geometry model, not a copied scene. Original fictional review cases; no upstream code, figures or private post text copied.",
+      "upstream": {
+        "version": "Blender 5.2 manual",
+        "maturity": "published"
+      },
+      "license": {
+        "name": "CC BY-SA 4.0",
+        "url": "https://creativecommons.org/licenses/by-sa/4.0/"
+      }
+    },
+    {
+      "id": "evidence-blender-position",
+      "title": "Blender 5.2 — Position Node",
+      "provider": "Blender project",
+      "url": "https://docs.blender.org/manual/en/5.2/modeling/geometry_nodes/geometry/read/position.html",
+      "lastVerifiedAt": "2026-10-04",
+      "attribution": "Selected geometry position field; paper coordinates are explicitly supplied in local space. Original fictional review cases; no upstream code, figures or private post text copied.",
+      "upstream": {
+        "version": "Blender 5.2 manual",
+        "maturity": "published"
+      },
+      "license": {
+        "name": "CC BY-SA 4.0",
+        "url": "https://creativecommons.org/licenses/by-sa/4.0/"
+      }
+    },
+    {
+      "id": "evidence-unreal-triggers",
+      "title": "Unreal Engine — Trigger Volume Actors",
+      "provider": "Epic Games",
+      "url": "https://dev.epicgames.com/documentation/en-us/unreal-engine/trigger-volume-actors-in-unreal-engine",
+      "lastVerifiedAt": "2026-10-04",
+      "attribution": "Selected overlap-driven event execution; original finite blockout state model, no copied assets or full engine tutorial. Original fictional review cases; no upstream code, figures or private post text copied.",
+      "upstream": {
+        "version": "Unreal Engine 5.8 documentation checked 2026-10-04",
+        "maturity": "published"
+      }
+    },
+    {
+      "id": "evidence-unreal-overlap",
+      "title": "Unreal Engine — Actor Begin Overlap",
+      "provider": "Epic Games",
+      "url": "https://dev.epicgames.com/documentation/en-us/unreal-engine/BlueprintAPI/Collision/OnActorBeginOverlap",
+      "lastVerifiedAt": "2026-10-04",
+      "attribution": "Selected overlap event and both participating collision components generating overlap events. Original fictional review cases; no upstream code, figures or private post text copied.",
+      "upstream": {
+        "version": "Unreal Engine 5.8 documentation checked 2026-10-04",
+        "maturity": "published"
+      }
+    },
+    {
+      "id": "evidence-yc-safe",
+      "title": "Y Combinator — SAFE Documents And Post-Money Scope",
+      "provider": "Y Combinator",
+      "url": "https://www.ycombinator.com/safe",
+      "lastVerifiedAt": "2026-10-04",
+      "attribution": "Selected post-money SAFE ownership estimate scope and separate optional pro-rata side letter; fictional share arithmetic is not a negotiated financing model. Original fictional review cases; no upstream code, figures or private post text copied.",
+      "upstream": {
+        "version": "documents page checked 2026-10-04",
+        "maturity": "published"
+      }
+    }
+  ]
+}

@@ -1,0 +1,210 @@
+{
+  "slug": "system-design/partitioned-event-log-questionnaire",
+  "title": "Partitioned Event Log Checkpoint",
+  "type": "questionnaire",
+  "documentSlug": "system-design/partitioned-event-log",
+  "concept": "Global offsets, consumer cursors and partition ownership",
+  "difficulty": "senior",
+  "tags": [
+    "interview",
+    "event-log",
+    "typescript",
+    "python",
+    "binary-search",
+    "cursors",
+    "partitioning"
+  ],
+  "status": "published",
+  "sourceRefs": [
+    "event-log-js-agent",
+    "event-log-python-bisect",
+    "event-log-python-lock",
+    "event-log-kafka-offsets"
+  ],
+  "questions": [
+    {
+      "id": "event-log-1",
+      "kind": "choice",
+      "prompt": "A key has IDs [0, 2, 9]. What should an inclusive read from global offset 1 return?",
+      "options": [
+        {
+          "id": "answer",
+          "label": "[2, 9]",
+          "isCorrect": true
+        },
+        {
+          "id": "misconception-1",
+          "label": "[9]",
+          "isCorrect": false
+        },
+        {
+          "id": "misconception-2",
+          "label": "[0, 2, 9]",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "The offset is compared with event.id. ID 2 is the first ID at least 1, so the result is [2, 9]. Filtering by local index > 1 returns only [9]; including ID 0 ignores the lower bound. Skipping one item happens to work here, but is not a general global-offset lookup."
+    },
+    {
+      "id": "event-log-2",
+      "kind": "choice",
+      "prompt": "A sorted key log has m events. How can a page of r events avoid scanning its old prefix?",
+      "options": [
+        {
+          "id": "answer",
+          "label": "Lower-bound by global ID, then advance at most r positions.",
+          "isCorrect": true
+        },
+        {
+          "id": "misconception-1",
+          "label": "Filter all m events before taking r.",
+          "isCorrect": false
+        },
+        {
+          "id": "misconception-2",
+          "label": "Use slice(globalOffset) without an index lookup.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "Binary search costs O(log m); the forward page walk costs O(r). filter still examines every entry. A global offset is not a per-key array position; even a valid position with an unbounded slice copies the entire suffix."
+    },
+    {
+      "id": "event-log-3",
+      "kind": "choice",
+      "prompt": "Two consumers read the same key at different speeds. Where should their read positions live?",
+      "options": [
+        {
+          "id": "answer",
+          "label": "In separate cursor objects or records keyed by consumer identity and key.",
+          "isCorrect": true
+        },
+        {
+          "id": "misconception-1",
+          "label": "In one mutable currentIndex on the key store.",
+          "isCorrect": false
+        },
+        {
+          "id": "misconception-2",
+          "label": "In the writer nextId counter.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "Each consumer needs an independent next offset. One shared key cursor lets one reader advance another. The writer counter allocates new global IDs and cannot describe which events either consumer processed."
+    },
+    {
+      "id": "event-log-4",
+      "kind": "choice",
+      "prompt": "What does adding a next pointer to every key event guarantee?",
+      "options": [
+        {
+          "id": "answer",
+          "label": "Linear traversal after seeking; arbitrary offsets still need a scan or an index.",
+          "isCorrect": true
+        },
+        {
+          "id": "misconception-1",
+          "label": "Constant-time lookup of any missing global offset.",
+          "isCorrect": false
+        },
+        {
+          "id": "misconception-2",
+          "label": "Lower RAM use than arrays on every runtime.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "Links make the next event reachable directly, but a missing ID cannot be looked up by position. Sparse anchors bound the seek walk. Link objects and pointer chasing can cost more memory and CPU than array references."
+    },
+    {
+      "id": "event-log-5",
+      "kind": "choice",
+      "prompt": "Why is currentIndex++ alone insufficient across independent writers?",
+      "options": [
+        {
+          "id": "answer",
+          "label": "ID allocation, event publication and index updates must be coordinated together.",
+          "isCorrect": true
+        },
+        {
+          "id": "misconception-1",
+          "label": "BigInt automatically locks all writers.",
+          "isCorrect": false
+        },
+        {
+          "id": "misconception-2",
+          "label": "The Python GIL makes any sequence of dictionary writes transactional.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "A unique ID does not make its event visible in every index. BigInt is a numeric type, not a lock. A Python multi-step invariant needs explicit coordination; a process-local lock also does not coordinate separate processes."
+    },
+    {
+      "id": "event-log-6",
+      "kind": "choice",
+      "prompt": "One user owns almost every event. What can adding nodes achieve without changing same-key ownership?",
+      "options": [
+        {
+          "id": "answer",
+          "label": "Move the whole key or place other keys elsewhere; it cannot split that user across nodes.",
+          "isCorrect": true
+        },
+        {
+          "id": "misconception-1",
+          "label": "Divide that key equally among all nodes without changing the contract.",
+          "isCorrect": false
+        },
+        {
+          "id": "misconception-2",
+          "label": "Guarantee equal memory because node event counts are equal.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "The co-location rule makes the key indivisible. Splitting it requires a new requirement and ordering policy. Event counts also ignore payload sizes, so even equal counts do not prove equal memory usage."
+    },
+    {
+      "id": "event-log-7",
+      "kind": "choice",
+      "prompt": "A cursor reads through ID 9, but processing fails before success is recorded. Which durable checkpoint policy supports replay?",
+      "options": [
+        {
+          "id": "answer",
+          "label": "Commit nextOffset=10 only after successful processing; distinguish fetched from acknowledged progress.",
+          "isCorrect": true
+        },
+        {
+          "id": "misconception-1",
+          "label": "Persist 10 as soon as the page is fetched and assume success.",
+          "isCorrect": false
+        },
+        {
+          "id": "misconception-2",
+          "label": "Share the process pointer address with a restarted worker.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "The teaching cursor tracks fetching only. Durable processing needs an explicit acknowledgment policy; checkpointing before a successful effect can lose work. A process pointer is not a restart-safe token. Replaying after an ambiguous effect also requires idempotency."
+    },
+    {
+      "id": "event-log-8",
+      "kind": "choice",
+      "prompt": "A cursor opens beyond the current tail of a partly filled block. What must it retain?",
+      "options": [
+        {
+          "id": "answer",
+          "label": "The last block and end slot, plus the requested global lower bound.",
+          "isCorrect": true
+        },
+        {
+          "id": "misconception-1",
+          "label": "Only the index after the last allocated block.",
+          "isCorrect": false
+        },
+        {
+          "id": "misconception-2",
+          "label": "A copied suffix that never changes.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "The next append may enter the existing partial block. Jumping to the next block skips it. A copied suffix cannot observe later appends. Retain the physical position and reject future entries below the requested offset."
+    }
+  ]
+}

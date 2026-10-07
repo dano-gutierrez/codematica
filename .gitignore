@@ -158,3 +158,6 @@ apps/mobile/credentials/
 
 # Private editorial drafts, job inputs, and backups
 .local/
+
+# Python local model tooling bytecode
+__pycache__/

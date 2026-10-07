@@ -1,6 +1,5 @@
 import { defineConfig, devices } from "@playwright/test";
 
-const port = Number(process.env.E2E_PORT ?? process.env.PLAYWRIGHT_PORT ?? "3100");
 const webServerEnv = Object.fromEntries(
   Object.entries(process.env).filter(([key, value]) => key !== "NO_COLOR" && value !== undefined),
 ) as Record<string, string>;
@@ -10,6 +9,9 @@ const webServerEnv = Object.fromEntries(
 webServerEnv.NEXT_PUBLIC_SUPABASE_URL = process.env.EDITORIAL_E2E === "1" ? "https://editorial.supabase.test" : "";
 webServerEnv.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY = process.env.EDITORIAL_E2E === "1" ? "editorial-test-anon-key" : "";
 webServerEnv.NEXT_PUBLIC_SUPABASE_ANON_KEY = "";
+
+const port = Number(process.env.E2E_PORT || process.env.PLAYWRIGHT_PORT || 3100);
+if (!Number.isInteger(port) || port < 1024 || port > 65535) throw new Error("Invalid PLAYWRIGHT_PORT");
 
 export default defineConfig({
   testDir: "./specs",
@@ -40,7 +42,7 @@ export default defineConfig({
     },
     {
       name: "desktop-chromium",
-      grep: process.env.EDITORIAL_E2E === "1" ? /@regression/ : /@smoke|@playground|@notebook-catalog/,
+      grep: process.env.EDITORIAL_E2E === "1" ? /@regression/ : /@smoke|@playground|@notebook-catalog|@interview-admin|@map-art/,
       use: {
         ...devices["Desktop Chrome"],
       },
@@ -49,7 +51,7 @@ export default defineConfig({
       name: "mobile-webkit",
       // Concurrent WebKit pages stalled the game return-to-map step twice on Linux CI.
       workers: process.env.CI ? 1 : undefined,
-      grep: process.env.EDITORIAL_E2E === "1" ? /@regression/ : /@smoke|@playground|@notebook-catalog/,
+      grep: process.env.EDITORIAL_E2E === "1" ? /@regression/ : /@smoke|@playground|@notebook-catalog|@interview-admin|@map-art/,
       use: {
         ...devices["iPhone 15"],
       },
@@ -58,7 +60,7 @@ export default defineConfig({
   webServer: {
     // Production serving avoids concurrent on-demand compilation aborting
     // navigations when the release suite uses multiple browser workers.
-    command: `env -u NO_COLOR npm run serve:e2e -w @codematica/web -- --port ${port}`,
+    command: `env -u NO_COLOR npm run build -w @codematica/web && npx next start --hostname 127.0.0.1 --port ${port}`,
     env: webServerEnv,
     url: `http://127.0.0.1:${port}`,
     reuseExistingServer: false,

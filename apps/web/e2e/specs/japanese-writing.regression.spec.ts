@@ -108,9 +108,30 @@ async function ink(
 async function submit(page: Page) {
   await expect(page.getByTestId("writing-ink-0")).toHaveCount(0);
 }
+async function installNotebookClock(page: Page) {
+  await page.clock.install({ time: new Date("2026-10-02T10:00:00Z") });
+}
+async function pauseNotebookClock(page: Page) {
+  // The future target exceeds the whole test budget, including page setup.
+  await page.clock.pauseAt(new Date("2026-10-02T12:00:01Z"));
+}
+test("@regression notebook clock survives setup beyond its former one-second window", async ({ page }) => {
+  await installNotebookClock(page);
+  await page.clock.fastForward(1500);
+  await pauseNotebookClock(page);
+  expect(await page.evaluate(() => Date.now())).toBe(Date.parse("2026-10-02T12:00:01Z"));
+  await page.setContent('<p data-testid="clock-timer">0</p><script>setTimeout(() => { const counter = document.querySelector("[data-testid=clock-timer]"); counter.textContent = String(Number(counter.textContent) + 1); }, 1000);</script>');
+  await page.clock.runFor(999);
+  await expect(page.getByTestId("clock-timer")).toHaveText("0");
+  await page.clock.runFor(1);
+  await expect(page.getByTestId("clock-timer")).toHaveText("1");
+  await page.clock.runFor(1000);
+  await expect(page.getByTestId("clock-timer")).toHaveText("1");
+});
 test("@regression mouse handwriting uses saved difficulty and automatic checking without a submit button", async ({
   page,
 }) => {
+  await installNotebookClock(page);
   await page.goto("/languages/japanese/notebooks");
   await page.getByTestId("notebook-custom-text").fill("あ");
   await page.getByTestId("notebook-create").click();
@@ -121,8 +142,7 @@ test("@regression mouse handwriting uses saved difficulty and automatic checking
   await expect(page.getByTestId("writing-difficulty")).toContainText("Easy");
   await page.getByTestId("writing-difficulty").click();
   await page.getByRole("option", { name: "Precise", exact: true }).click();
-  await page.clock.install({ time: new Date("2026-10-02T12:00:00Z") });
-  await page.clock.pauseAt(new Date("2026-10-02T12:00:01Z"));
+  await pauseNotebookClock(page);
   const viewport = page.getByTestId("writing-notebook-viewport");
   await viewport.scrollIntoViewIfNeeded();
   const box = (await viewport.boundingBox())!;
@@ -206,6 +226,7 @@ async function savedCount(page: Page) {
   });
 }
 test("@regression compact notebook controls and a longer pause allow slower mouse handwriting", async ({ page }, testInfo) => {
+  await installNotebookClock(page);
   await page.setViewportSize({ width: 820, height: 1180 });
   await page.goto("/languages/japanese/notebooks");
   await page.getByTestId("notebook-custom-text").fill("あ");
@@ -224,8 +245,7 @@ test("@regression compact notebook controls and a longer pause allow slower mous
     expect(Math.abs(nextBox.y + nextBox.height / 2 - restartBox.y - restartBox.height / 2)).toBeLessThanOrEqual(1);
   }
   await page.setViewportSize({ width: 820, height: 1180 });
-  await page.clock.install({ time: new Date("2026-10-02T12:00:00Z") });
-  await page.clock.pauseAt(new Date("2026-10-02T12:00:01Z"));
+  await pauseNotebookClock(page);
   const viewport = page.getByTestId("writing-notebook-viewport");
   await viewport.scrollIntoViewIfNeeded();
   const box = (await viewport.boundingBox())!;
@@ -254,13 +274,13 @@ test("@regression compact notebook controls and a longer pause allow slower mous
 test("@regression rejected characters bounce and fade while saved ink and the notebook margin stay clear", async ({
   page,
 }, testInfo) => {
+  await installNotebookClock(page);
   await page.setViewportSize({ width: 507, height: 900 });
   await page.goto("/languages/japanese/notebooks");
   await page.getByTestId("notebook-custom-text").fill("一");
   await page.getByTestId("notebook-create").click();
   await expect(page.getByTestId("writing-repeat")).toBeEnabled();
-  await page.clock.install({ time: new Date("2026-10-02T12:00:00Z") });
-  await page.clock.pauseAt(new Date("2026-10-02T12:00:01Z"));
+  await pauseNotebookClock(page);
   const session = await page.context().newCDPSession(page);
   await ink(page, session, [
     [

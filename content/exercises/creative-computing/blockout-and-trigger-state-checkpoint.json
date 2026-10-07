@@ -1,0 +1,152 @@
+{
+  "slug": "creative-computing/blockout-and-trigger-state-checkpoint",
+  "title": "Blockout And Trigger State Checkpoint",
+  "type": "questionnaire",
+  "difficulty": "practitioner",
+  "status": "published",
+  "documentSlug": "creative-computing/blockout-and-trigger-state",
+  "sourceRefs": [
+    "evidence-unreal-triggers",
+    "evidence-unreal-overlap"
+  ],
+  "concept": "Blockout And Trigger State",
+  "tags": [
+    "evidence-review",
+    "contracts"
+  ],
+  "skillIds": [
+    "trigger-state"
+  ],
+  "questions": [
+    {
+      "id": "layout",
+      "kind": "choice",
+      "skillIds": [
+        "trigger-state"
+      ],
+      "prompt": "The clear corridor is blocked, while a screenshot looks attractive. What is established?",
+      "options": [
+        {
+          "id": "correct",
+          "label": "Appearance does not establish a traversable collision route.",
+          "isCorrect": true
+        },
+        {
+          "id": "wrong-1",
+          "label": "Textures guarantee clearance.",
+          "isCorrect": false
+        },
+        {
+          "id": "wrong-2",
+          "label": "A trigger policy removes every obstacle.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "Traversal depends on the stated collision layout and player footprint. Appearance and trigger logic are independent; neither attractive textures nor an event policy supplies a missing route."
+    },
+    {
+      "id": "configuration",
+      "kind": "choice",
+      "skillIds": [
+        "trigger-state"
+      ],
+      "prompt": "An overlap handler does not fire. Which independent condition belongs in the review?",
+      "options": [
+        {
+          "id": "wrong-1",
+          "label": "Only the event graph\u2019s label matters.",
+          "isCorrect": false
+        },
+        {
+          "id": "wrong-2",
+          "label": "Every visually intersecting mesh must always emit the event.",
+          "isCorrect": false
+        },
+        {
+          "id": "correct",
+          "label": "Check overlap-event configuration on both participating collision components.",
+          "isCorrect": true
+        }
+      ],
+      "explanation": "The cited event contract includes the applicable overlap settings on both sides. Visual intersection alone and a graph label do not establish a configured collision event."
+    },
+    {
+      "id": "filter",
+      "kind": "choice",
+      "skillIds": [
+        "trigger-state"
+      ],
+      "prompt": "A visitor enters the exit volume before the player. Under the declared policy, what happens?",
+      "options": [
+        {
+          "id": "wrong-2",
+          "label": "The visitor receives the player\u2019s identity automatically.",
+          "isCorrect": false
+        },
+        {
+          "id": "correct",
+          "label": "The exit remains closed; filter the actor before activation.",
+          "isCorrect": true
+        },
+        {
+          "id": "wrong-1",
+          "label": "Any overlap opens the exit.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "The authored interaction accepts only the declared player identity. An overlap is input to the filter, not authority to activate or to transform another actor into the player."
+    },
+    {
+      "id": "duplicate",
+      "kind": "choice",
+      "skillIds": [
+        "trigger-state"
+      ],
+      "prompt": "Visitor-enter, player-enter, player-enter, player-exit occur in one session. What is the result?",
+      "options": [
+        {
+          "id": "correct",
+          "label": "The exit is open with one activation.",
+          "isCorrect": true
+        },
+        {
+          "id": "wrong-1",
+          "label": "The exit closes on player-exit regardless of policy.",
+          "isCorrect": false
+        },
+        {
+          "id": "wrong-2",
+          "label": "The activation count becomes three.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "The idempotent state rule accepts the first allowed enter and keeps later events from awarding again. No close-on-exit rule was declared; visitor input remains rejected."
+    },
+    {
+      "id": "session",
+      "kind": "choice",
+      "skillIds": [
+        "trigger-state"
+      ],
+      "prompt": "A delayed event from an old level arrives after reset. Under the exercise\u2019s rule, what follows?",
+      "options": [
+        {
+          "id": "wrong-1",
+          "label": "Always apply it to the new level.",
+          "isCorrect": false
+        },
+        {
+          "id": "wrong-2",
+          "label": "A reset changes only textures and never state.",
+          "isCorrect": false
+        },
+        {
+          "id": "correct",
+          "label": "Reject the old-session event; the reset state belongs to the new session.",
+          "isCorrect": true
+        }
+      ],
+      "explanation": "Session identity protects the reset transition from delayed old work. Applying stale events would violate the declared new closed state; texture changes do not define this lifecycle boundary."
+    }
+  ]
+}

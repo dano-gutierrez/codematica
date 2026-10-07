@@ -17,3 +17,5 @@ Author local-first interview coding collections here.
 Run `npm run content:check` after editing interview files.
 
 Web tracks may include `python` with complete `code`, `explanation`, and language-specific `complexity`. Frontend Interview Practice uses three tracks per question; all 21 TS projects and Python companions are executed by tests. `sourceRefs` resolve through the shared source catalog. Run `npm run test:interview:python` and the authored-project Vitest checks after editing solutions.
+
+`real-world/partitioned-event-log` has three complete vanilla-TS projects and Python companions. `packages/core/src/content/event-log-interview.test.ts` typechecks/executes the exact projects; `scripts/content/verify-event-log.py` checks Python, threading and optional scale runs. Keep code canonical here and explanations in the companion Markdown lesson.

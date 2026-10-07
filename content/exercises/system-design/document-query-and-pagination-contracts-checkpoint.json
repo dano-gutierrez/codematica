@@ -1,0 +1,153 @@
+{
+  "slug": "system-design/document-query-and-pagination-contracts-checkpoint",
+  "title": "Document Queries Checkpoint",
+  "type": "questionnaire",
+  "difficulty": "practitioner",
+  "status": "published",
+  "documentSlug": "system-design/document-query-and-pagination-contracts",
+  "sourceRefs": [
+    "boundary-mongo-query",
+    "boundary-mongo-skip",
+    "boundary-mongo-explain"
+  ],
+  "concept": "Document Queries",
+  "tags": [
+    "systems-contracts",
+    "evidence"
+  ],
+  "skillIds": [
+    "document-query"
+  ],
+  "questions": [
+    {
+      "id": "permission",
+      "kind": "choice",
+      "skillIds": [
+        "document-query"
+      ],
+      "prompt": "Page one filters tenant east and active documents. What belongs on page two?",
+      "options": [
+        {
+          "id": "correct",
+          "label": "Keep the authorization and document predicate on every page request.",
+          "isCorrect": true
+        },
+        {
+          "id": "wrong-1",
+          "label": "Only the user-supplied cursor; it replaces the tenant predicate.",
+          "isCorrect": false
+        },
+        {
+          "id": "wrong-2",
+          "label": "Any tenant the cursor names, since it is a continuation token.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "A continuation cursor is untrusted input and does not grant authority. Preserve current authorization and the intended document predicate on every request, with the chosen consistency policy."
+    },
+    {
+      "id": "tuple",
+      "kind": "choice",
+      "skillIds": [
+        "document-query"
+      ],
+      "prompt": "Ascending score/id pagination ended at (2,b). How should the next page resume?",
+      "options": [
+        {
+          "id": "wrong-1",
+          "label": "Use score >= 2 alone, which can repeat earlier results.",
+          "isCorrect": false
+        },
+        {
+          "id": "wrong-2",
+          "label": "Use score > 2 alone, which can drop later ties.",
+          "isCorrect": false
+        },
+        {
+          "id": "correct",
+          "label": "Order by score and a unique tie-breaker, then resume strictly after the full cursor tuple.",
+          "isCorrect": true
+        }
+      ],
+      "explanation": "The complete tuple predicate distinguishes later score-2 identities from already returned ties. Combine strict tuple continuation with the original permission/filter; a unique tie-breaker fixes order."
+    },
+    {
+      "id": "offset-work",
+      "kind": "choice",
+      "skillIds": [
+        "document-query"
+      ],
+      "prompt": "A later page uses an increasingly large skip offset. What work should be reviewed?",
+      "options": [
+        {
+          "id": "wrong-2",
+          "label": "Range pagination makes authorization and index checks unnecessary.",
+          "isCorrect": false
+        },
+        {
+          "id": "correct",
+          "label": "Growing skip offsets require scanning past earlier results; compare an indexed range query.",
+          "isCorrect": true
+        },
+        {
+          "id": "wrong-1",
+          "label": "Skip has the same fixed cost regardless of offset and index.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "The server must pass earlier results for skip pagination. A suitable indexed range query can avoid unwanted scans, but its actual predicate, sort and workload still need plan evidence."
+    },
+    {
+      "id": "plan",
+      "kind": "choice",
+      "skillIds": [
+        "document-query"
+      ],
+      "prompt": "Two plans have an index name and return two documents. Which evidence supports their work comparison?",
+      "options": [
+        {
+          "id": "correct",
+          "label": "Inspect the plan and examined-versus-returned work under representative data; an index name alone proves no deadline.",
+          "isCorrect": true
+        },
+        {
+          "id": "wrong-1",
+          "label": "The index name alone guarantees a deadline for every tenant.",
+          "isCorrect": false
+        },
+        {
+          "id": "wrong-2",
+          "label": "Only the two returned rows matter; examined work is irrelevant.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "Compare examined documents/keys, returned results, sort/fetch stages and representative data/load. An index label is not a latency guarantee, and an isolated explain run is not a production benchmark."
+    },
+    {
+      "id": "concurrent",
+      "kind": "choice",
+      "skillIds": [
+        "document-query"
+      ],
+      "prompt": "A lower-scored document is inserted after the first cursor page. What has the cursor established?",
+      "options": [
+        {
+          "id": "wrong-1",
+          "label": "An immutable collection snapshot across all page requests.",
+          "isCorrect": false
+        },
+        {
+          "id": "wrong-2",
+          "label": "A guarantee that every concurrent insert appears exactly once.",
+          "isCorrect": false
+        },
+        {
+          "id": "correct",
+          "label": "A cursor is a continuation rule, not a guarantee of an unchanged concurrent result set.",
+          "isCorrect": true
+        }
+      ],
+      "explanation": "The cursor defines where the next query continues. Concurrent inserts and sort-key changes can change membership; stable-snapshot, changing-feed or explicit-refresh behavior must be defined separately."
+    }
+  ]
+}

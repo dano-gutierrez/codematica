@@ -8,3 +8,4 @@ export * from "./store";
 export { AnimationController } from "./animation";
 export * from "./miniatures";
 export * from "./board";
+export * from "./map-art";

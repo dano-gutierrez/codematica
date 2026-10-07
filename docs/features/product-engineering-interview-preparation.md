@@ -20,6 +20,7 @@ This company-neutral pack combines a research brief, a coding drill that keeps p
 - The research unit is one document. Coding/architecture each pair a document with a six-question checkpoint. The final unit orders document → guided lab → final six-question checkpoint.
 - `/practice/software-engineering/product-interview-mock-interview-lab` is a 75-minute self-directed rehearsal. The learner supplies a timer, scratch file, and diagram surface.
 - Eighteen choice questions use existing deterministic grading. Twelve passive cards link back to published lessons.
+- The architecture lesson includes an optional original SQLite retry/crash lab outside the timed drill. Its separate four-question checkpoint is in Backend Engineer Readiness; the original interview sequence remains unchanged.
 - The entire pack uses neutral titles, routes, tags, filenames, source IDs, and links. It contains no target employer identity, recruiting links, named interviewers, or identifiable product announcements.
 - Primary-source references cover general technical concepts. Job signals, anecdotes, and provider-integration questions are hypothetical or methodological, not claims about a specific company.
 - Existing generic study routes remain the entry points; there is no company interview collection or employer-specific redirect.

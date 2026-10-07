@@ -26,7 +26,13 @@ export default defineConfig({
         "apps/web/src/app/api/**/route.ts",
         "apps/web/src/app/auth/**/route.ts",
         "scripts/content/**/*.ts",
+        "scripts/interview-preparation/workflow.ts",
         "scripts/linkedin/worker.ts",
+        "scripts/linkedin/preparation.ts",
+        "scripts/linkedin/local-models.ts",
+        "scripts/linkedin/inference.ts",
+        "scripts/linkedin/knowledge.ts",
+        "scripts/knowledge/{catalog,worker,local-api,fingerprint,review,apply,private-posts}.ts",
       ],
       exclude: [
         "**/*.{test,spec}.{ts,tsx}",

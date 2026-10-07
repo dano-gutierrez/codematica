@@ -1,0 +1,151 @@
+{
+  "slug": "business/ownership-and-funding-models-checkpoint",
+  "title": "Ownership And Funding Models Checkpoint",
+  "type": "questionnaire",
+  "difficulty": "practitioner",
+  "status": "published",
+  "documentSlug": "business/ownership-and-funding-models",
+  "sourceRefs": [
+    "evidence-yc-safe"
+  ],
+  "concept": "Ownership And Funding Models",
+  "tags": [
+    "evidence-review",
+    "contracts"
+  ],
+  "skillIds": [
+    "ownership-model"
+  ],
+  "questions": [
+    {
+      "id": "initial",
+      "kind": "choice",
+      "skillIds": [
+        "ownership-model"
+      ],
+      "prompt": "The founders own 600 and 400 identical issued shares. What are the simple fractions?",
+      "options": [
+        {
+          "id": "correct",
+          "label": "60% and 40% of the 1,000 issued shares.",
+          "isCorrect": true
+        },
+        {
+          "id": "wrong-1",
+          "label": "600% and 400%.",
+          "isCorrect": false
+        },
+        {
+          "id": "wrong-2",
+          "label": "60% and 40% necessarily describe all voting and liquidation rights.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "The defined denominator is 1,000 shares, giving 600/1,000 and 400/1,000. These simple fractions do not establish rights omitted from the fictional capitalization model."
+    },
+    {
+      "id": "issue",
+      "kind": "choice",
+      "skillIds": [
+        "ownership-model"
+      ],
+      "prompt": "The company issues 250 new identical shares into the 1,000-share model. What does the new investor hold?",
+      "options": [
+        {
+          "id": "wrong-1",
+          "label": "25% because the old denominator never changes.",
+          "isCorrect": false
+        },
+        {
+          "id": "wrong-2",
+          "label": "250% because the investor bought 250 shares.",
+          "isCorrect": false
+        },
+        {
+          "id": "correct",
+          "label": "20% of 1,250 shares; existing holders\u2019 fractions change.",
+          "isCorrect": true
+        }
+      ],
+      "explanation": "A new issue changes the denominator to 1,250. The investor\u2019s fraction is 250/1,250 = 20%; dividing by the old total ignores the newly issued shares."
+    },
+    {
+      "id": "cash",
+      "kind": "choice",
+      "skillIds": [
+        "ownership-model"
+      ],
+      "prompt": "A founder sells existing shares to a new holder under the exercise\u2019s transfer rule. Who receives the price?",
+      "options": [
+        {
+          "id": "wrong-2",
+          "label": "The sale must create new shares.",
+          "isCorrect": false
+        },
+        {
+          "id": "correct",
+          "label": "The selling holder; the company\u2019s issued-share total need not increase.",
+          "isCorrect": true
+        },
+        {
+          "id": "wrong-1",
+          "label": "The company necessarily receives every share-sale payment.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "The exercise distinguishes a transfer from a primary issue. Existing shares change holders and the seller receives the price; a new issue would change both the recipient and share count."
+    },
+    {
+      "id": "safe",
+      "kind": "choice",
+      "skillIds": [
+        "ownership-model"
+      ],
+      "prompt": "The restricted SAFE illustration estimates 5% before later priced-round money. Which scope is accurate?",
+      "options": [
+        {
+          "id": "correct",
+          "label": "Keep that denominator and contract scope explicit; later dilution and rights require separate terms.",
+          "isCorrect": true
+        },
+        {
+          "id": "wrong-1",
+          "label": "Five percent is guaranteed forever.",
+          "isCorrect": false
+        },
+        {
+          "id": "wrong-2",
+          "label": "The estimate proves that issued shares and all rights already exist.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "The source describes a bounded post-money estimate. A future security\u2019s conversion and later financing can change ownership; neither perpetual percentage nor already-issued rights follows from this illustration."
+    },
+    {
+      "id": "later",
+      "kind": "choice",
+      "skillIds": [
+        "ownership-model"
+      ],
+      "prompt": "After the first issue, 250 additional shares are issued; the earlier investor still holds 250. What is its simple fraction?",
+      "options": [
+        {
+          "id": "wrong-1",
+          "label": "20% forever because the earlier investment was accepted.",
+          "isCorrect": false
+        },
+        {
+          "id": "wrong-2",
+          "label": "One fifth because the denominator remains 1,250.",
+          "isCorrect": false
+        },
+        {
+          "id": "correct",
+          "label": "One sixth of 1,500 issued shares.",
+          "isCorrect": true
+        }
+      ],
+      "explanation": "The new denominator is 1,000 + 250 + 250 = 1,500, while the earlier investor\u2019s numerator remains 250. Its fraction is 1/6 under the stated identical-share assumptions."
+    }
+  ]
+}

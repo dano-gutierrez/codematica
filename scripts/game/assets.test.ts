@@ -110,3 +110,32 @@ it("exports transparent full-body miniatures separately from portrait icons", as
     }
   }
 });
+
+it("exports fifty-position terrain with identical shared pixels at every tile boundary", async () => {
+  const manifest = JSON.parse(await readFile("assets/game/generated/map/manifest.json", "utf8"));
+  expect(manifest.capacity).toBe(50);
+  expect(manifest.panels).toHaveLength(12);
+  expect(manifest.layers).toEqual(["mist", "motes", "foliage-0", "foliage-1", "foliage-2"]);
+  let previous: Buffer | undefined;
+  for (const panel of manifest.panels) {
+    const file = `map/${panel.id}.webp`;
+    const bytes = await readFile(`assets/game/generated/${file}`);
+    expect(bytes.equals(await readFile(`apps/web/public/game/${file}`))).toBe(true);
+    const image = sharp(bytes);
+    const metadata = await image.metadata();
+    expect(metadata.width).toBe(manifest.width);
+    expect(metadata.height).toBe(manifest.tileHeight + 2 * manifest.guard);
+    const top = await image.clone().extract({left:0,top:0,width:manifest.width,height:manifest.guard*2}).raw().toBuffer();
+    if (previous) expect(top.equals(previous)).toBe(true);
+    previous = await image.clone().extract({left:0,top:manifest.tileHeight,width:manifest.width,height:manifest.guard*2}).raw().toBuffer();
+  }
+  for (const layer of manifest.layers) {
+    const bytes = await readFile(`assets/game/generated/map/${layer}.webp`);
+    expect((await sharp(bytes).metadata()).hasAlpha).toBe(true);
+    const {data,info} = await sharp(bytes).ensureAlpha().raw().toBuffer({resolveWithObject:true});
+    // Quiet center for controls. The foliage can never become an opaque page overlay.
+    if (layer.startsWith("foliage")) for(let y=0;y<info.height;y+=32)
+      expect(data[(y*info.width + Math.floor(info.width/2))*4 +3]).toBe(0);
+    expect(bytes.equals(await readFile(`apps/web/public/game/map/${layer}.webp`))).toBe(true);
+  }
+});

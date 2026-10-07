@@ -1,4 +1,4 @@
-import { mkdtemp, mkdir, cp, readFile, writeFile, readdir } from "node:fs/promises";
+import { mkdtemp, mkdir, cp, readFile, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join, resolve } from "node:path";
 import { spawn, execFileSync } from "node:child_process";
@@ -98,6 +98,13 @@ try {
     if (asset.endsWith(".js") && !data.includes(Buffer.from("AGFzbQ")))
       throw Error("SQLite WASM is missing from the bundled worker");
   }
+  const mapManifest = JSON.parse(await readFile("assets/game/generated/map/manifest.json", "utf8"));
+  for (const name of ["manifest.json", ...mapManifest.panels.map(p => `${p.id}.webp`), ...mapManifest.layers.map(l => `${l}.webp`)]) {
+    const response = await fetch(`${url}/game/map/${name}`);
+    const expected = await readFile(`assets/game/generated/map/${name}`);
+    if (!response.ok || !Buffer.from(await response.arrayBuffer()).equals(expected)) throw Error(`Missing or stale continuous map texture: ${name}`);
+  }
+  logs += "Fifty-position terrain, shared tile guards and all parallax layers match the packaged map exports.\n";
   const portraits = await fetch(`${url}/game/thumbnails/manifest.json`);
   if (!portraits.ok) throw Error("Missing character thumbnail manifest");
   const portraitManifest = await portraits.json();
@@ -162,7 +169,7 @@ try {
     const resources=execFileSync("unzip",["-Z1",path],{encoding:"utf8"}).split("\n").filter(name=>/^res\/.*\.(png|webp)$/.test(name));
     const hash=bytes=>createHash("sha256").update(bytes).digest("hex");
     const pixels=async file=>{const {data,info}=await sharp(file).ensureAlpha().raw().toBuffer({resolveWithObject:true});return `${info.width}x${info.height}:${hash(data)}`;};
-    const required=(await readdir("assets/game/generated")).filter(name=>name.endsWith(".png")||name.endsWith(".webp"));
+    const required=["actors.png", ...mapManifest.panels.map(p=>`map/${p.id}.webp`), ...mapManifest.layers.map(l=>`map/${l}.webp`)];
     const missing=new Map(await Promise.all(required.map(async name=>[await pixels(join("assets/game/generated",name)),name])));
     for(const file of resources){const bytes=execFileSync("unzip",["-p",path,file],{maxBuffer:20*1024*1024});missing.delete(await pixels(bytes));if(!missing.size)break;}
     if(missing.size)throw Error(`APK missing textures: ${[...missing.values()].join(", ")}`);

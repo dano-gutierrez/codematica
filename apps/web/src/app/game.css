@@ -155,33 +155,12 @@
   overflow: hidden;
   border-radius: 28px;
   box-shadow: 0 14px 60px #344f4920;
-  --parallax: 0px;
 }
 .game-district {
   height: 940px;
   position: relative;
   overflow: hidden;
   background: #477775;
-}
-.game-district-art {
-  position: absolute;
-  inset: -100px 0;
-  background-position: center;
-  background-size: cover;
-  transform: translateY(calc(var(--parallax) * 0.2));
-  will-change: transform;
-}
-.garden .game-district-art {
-  background-image:
-    linear-gradient(#173d3910, #13392f30), url("/game/garden.webp");
-}
-.canal .game-district-art {
-  background-image:
-    linear-gradient(#183e4310, #183e4340), url("/game/canal.webp");
-}
-.tower .game-district-art {
-  background-image:
-    linear-gradient(#272c4910, #192f4740), url("/game/tower.webp");
 }
 .game-district-heading {
   position: absolute;
@@ -325,7 +304,7 @@
 }
 .game-world[data-view="list"] {
   display: flex;
-  flex-direction: column-reverse;
+  flex-direction: column;
 }
 .game-world[data-view="list"] .game-district {
   height: auto;
@@ -750,12 +729,6 @@
     grid-template-columns: 1fr 1fr;
   }
 }
-@media (prefers-reduced-motion: reduce) {
-  .game-district-art {
-    transform: none;
-    will-change: auto;
-  }
-}
 .game-diagram {
   position: relative;
   height: 360px;
@@ -843,39 +816,112 @@
   inset: 0;
   pointer-events: none;
 }
-.game-middle-layer,
-.game-foreground-layer,
-.game-restored-layer {
-  position: absolute;
-  inset: -70px 0;
-  background-position: center;
-  background-size: cover;
-  pointer-events: none;
-}
-.game-middle-layer {
-  transform: translateY(calc(var(--parallax) * 0.1));
-}
-.game-foreground-layer {
-  transform: translateY(calc(var(--parallax) * -0.08));
-}
-.game-restored-layer {
-  transition: opacity 0.6s;
-}
-.game-world[data-view="list"] .game-district-scenery {
-  display: none;
-}
-@media (prefers-reduced-motion: reduce) {
-  .game-middle-layer,
-  .game-foreground-layer {
-    transform: none;
-  }
-  .game-restored-layer {
-    transition: none;
-  }
-}
 
 @media (max-width: 1199px) {
   .game-play-layout {
     grid-template-columns: 1fr;
   }
+}
+
+/* One assembled painting, exported with shared guard pixels at each tile edge. */
+.game-world {
+  max-width: 760px;
+  isolation: isolate;
+  background: #81958b;
+}
+.game-district {
+  height: auto;
+  min-height: 620px;
+  aspect-ratio: 2 / 3;
+  background: transparent;
+}
+.game-district-scenery {
+  z-index: 0;
+  overflow: hidden;
+}
+.game-continuous-terrain {
+  position: absolute;
+  inset: -5.555556% 0;
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+}
+.game-map-overlay {
+  position: absolute;
+  inset: 0;
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  pointer-events: none;
+  will-change: transform;
+}
+.game-map-mist {
+  transform: translateY(var(--mist-offset, 0px));
+}
+.game-map-motes {
+  transform: translateY(var(--motes-offset, 0px));
+}
+.game-map-foliage {
+  transform: translateY(var(--foliage-offset, 0px));
+  opacity: 0.7;
+}
+.game-district-heading,
+.game-route,
+.game-restored {
+  z-index: 2;
+}
+.game-district-heading {
+  max-width: calc(100% - 36px);
+}
+.game-route {
+  position: absolute;
+  inset: 0;
+  padding: 120px 0 30px;
+  justify-content: space-around;
+  gap: 0;
+}
+.game-stop {
+  min-height: 100px;
+}
+.game-frontier-heading p {
+  font-size: 12px;
+  margin-top: 6px;
+  color: #476357;
+}
+.game-frontier-heading h2 {
+  font-size: 24px;
+}
+.game-world[data-view="list"] .game-district {
+  aspect-ratio: auto;
+  min-height: 0;
+  height: auto;
+}
+.game-world[data-view="list"] .game-route {
+  position: relative;
+  inset: auto;
+  padding: 125px 0 20px;
+  gap: 12px;
+}
+.game-world[data-view="list"] .game-district-heading {
+  z-index: 2;
+}
+@media (prefers-reduced-motion: reduce) {
+  .game-map-overlay {
+    transform: none;
+    will-change: auto;
+  }
+}
+
+.game-world,
+.game-district,
+.game-district-scenery {
+  overflow: clip;
+}
+.game-district {
+  width: 100%;
+}
+.game-stop:last-child .game-stop-line {
+  display: none;
+}
+
+.game-world[data-view="list"] .game-district-scenery {
+  display: none;
 }

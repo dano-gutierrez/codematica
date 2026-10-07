@@ -1,0 +1,154 @@
+{
+  "slug": "system-design/derived-state-and-log-boundaries-checkpoint",
+  "title": "Derived State Checkpoint",
+  "type": "questionnaire",
+  "difficulty": "practitioner",
+  "status": "published",
+  "documentSlug": "system-design/derived-state-and-log-boundaries",
+  "sourceRefs": [
+    "boundary-pg-materialized",
+    "boundary-kafka-design",
+    "boundary-kafka-introduction",
+    "boundary-kafka-kraft"
+  ],
+  "concept": "Derived State",
+  "tags": [
+    "systems-contracts",
+    "evidence"
+  ],
+  "skillIds": [
+    "derived-state"
+  ],
+  "questions": [
+    {
+      "id": "replacement",
+      "kind": "choice",
+      "skillIds": [
+        "derived-state"
+      ],
+      "prompt": "A versioned record changes from value 5 to 8 in one group. What is the selected delta contract?",
+      "options": [
+        {
+          "id": "correct",
+          "label": "Replacing 5 by 8 contributes +3; replaying that replacement must not add another +3.",
+          "isCorrect": true
+        },
+        {
+          "id": "wrong-1",
+          "label": "Apply +8 on every delivery, including duplicates.",
+          "isCorrect": false
+        },
+        {
+          "id": "wrong-2",
+          "label": "Apply +3 to a guessed group without checking identity.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "A replacement removes the previous contribution and adds the new one. Stable transition identity makes an accepted replay a no-op; independently recomputing from base records detects double application."
+    },
+    {
+      "id": "predecessor",
+      "kind": "choice",
+      "skillIds": [
+        "derived-state"
+      ],
+      "prompt": "Version 2\u21923 arrives while the stored record is still at version 1. What should this fixture do?",
+      "options": [
+        {
+          "id": "wrong-1",
+          "label": "Apply the newest value and pretend the missing predecessor was observed.",
+          "isCorrect": false
+        },
+        {
+          "id": "wrong-2",
+          "label": "Change the total but leave the base version unchanged.",
+          "isCorrect": false
+        },
+        {
+          "id": "correct",
+          "label": "Use stable identity and the expected previous version; a missing predecessor needs repair.",
+          "isCorrect": true
+        }
+      ],
+      "explanation": "This authored policy requires the expected predecessor before the transition. A gap requests repair or rebuild, and a rejection changes neither the base record nor its derived total."
+    },
+    {
+      "id": "replicas",
+      "kind": "choice",
+      "skillIds": [
+        "derived-state"
+      ],
+      "prompt": "A topic has four partitions and replication factor one. Which statement is correct?",
+      "options": [
+        {
+          "id": "wrong-2",
+          "label": "The replication factor is the number of assigned consumer groups.",
+          "isCorrect": false
+        },
+        {
+          "id": "correct",
+          "label": "Partition count and replication factor describe different dimensions.",
+          "isCorrect": true
+        },
+        {
+          "id": "wrong-1",
+          "label": "The four partitions automatically provide four copies of every event.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "Partitions divide ordering and assignment work; replication counts copies of each partition. Four partitions with one replica do not provide an extra copy of each partition's records."
+    },
+    {
+      "id": "offset-effect",
+      "kind": "choice",
+      "skillIds": [
+        "derived-state"
+      ],
+      "prompt": "A consumer updates an external total and crashes before storing its progress. What risk remains?",
+      "options": [
+        {
+          "id": "correct",
+          "label": "A crash after the external effect but before its offset can repeat the effect on replay.",
+          "isCorrect": true
+        },
+        {
+          "id": "wrong-1",
+          "label": "Kafka topic transactions automatically committed the unrelated total and offset.",
+          "isCorrect": false
+        },
+        {
+          "id": "wrong-2",
+          "label": "Recording an offset proves that every external destination received its effect.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "After restart, replay can repeat an already performed effect. Coordinate the destination effect and checkpoint or demonstrate stable effect identity/reconciliation; the external system must cooperate."
+    },
+    {
+      "id": "quorum",
+      "kind": "choice",
+      "skillIds": [
+        "derived-state"
+      ],
+      "prompt": "Three KRaft controllers are configured, while a topic replication policy is separately configured. Which distinction is correct?",
+      "options": [
+        {
+          "id": "wrong-1",
+          "label": "Controller count determines each data partition replication factor.",
+          "isCorrect": false
+        },
+        {
+          "id": "wrong-2",
+          "label": "Two of three controllers can be lost while retaining a controller majority.",
+          "isCorrect": false
+        },
+        {
+          "id": "correct",
+          "label": "The KRaft metadata quorum is separate from data-partition replica placement.",
+          "isCorrect": true
+        }
+      ],
+      "explanation": "Controllers agree on metadata under the quorum contract; data-partition replicas have a different placement and acknowledgement policy. With three controllers, two available constitute a majority."
+    }
+  ]
+}

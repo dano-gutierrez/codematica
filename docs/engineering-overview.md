@@ -244,6 +244,12 @@ flowchart TD
     Campaign["content/game JSON + local lessons"] --> Validate["Core schema + reference validation"]
     Validate --> Index["Generated content index v12"]
     Artwork["Editable SVG parts + painted layers + portraits + rig timelines"] --> Export["game:assets"]
+    Landscape["Four connected map paintings + overlay sources"] --> Stitch["Aligned overlap blend + shared-guard tile cuts"]
+    Stitch --> Export
+    MapRules["50 art positions + bounded offsets in core"] --> WebMap["Web map: fixed terrain + 3 parallax depths"]
+    MapRules --> NativeMap["Skia map: fixed terrain + 3 parallax depths"]
+    Export --> WebMap
+    Export --> NativeMap
     Export --> Atlas["Shared atlas + district textures"]
     Export --> Thumbnails["Sized PNG/WebP portraits + identity manifest"]
     Export --> Miniatures["Transparent full-body miniature PNGs"]
@@ -276,7 +282,7 @@ The game renderers share `packages/core/src/game/miniatures.ts` for layer orderi
 
 ## Private LinkedIn editorial workflow
 
-Anonymous learning remains local-index first. The optional `/admin/linkedin` web/native surface reads private drafts through Supabase Auth, RLS and admin-only RPCs. `private.app_admins` is operator provisioned. Post revisions are immutable; approval binds the exact text. Manual creation atomically inserts a draft and refinement job. Manual drafts require an analyzed proposal to be adopted before approval, and text edits invalidate analysis. Shared schemas/store live in `packages/core/src/linkedin*.ts`. The HTTP/mobile graphs never import the local service-role worker.
+Anonymous learning remains local-index first. The optional `/admin/linkedin` web/native surface reads private drafts through Supabase Auth, RLS and admin-only RPCs. `private.app_admins` is operator provisioned. Post revisions are immutable; approval binds the exact text. Manual creation atomically inserts a draft and a preparation job when enabled, or a legacy refinement job. Manual drafts require an analyzed proposal to be adopted before approval, and text edits invalidate analysis. Shared schemas/store live in `packages/core/src/linkedin*.ts`. The HTTP/mobile graphs never import the local service-role worker.
 
 ```mermaid
 flowchart LR
@@ -287,8 +293,13 @@ flowchart LR
   Create --> Jobs[Durable Postgres jobs]
   Review -->|Refine| Jobs
   Review -->|Approve exact revision| Jobs
-  Jobs --> Worker[Manual local Codex run]
-  Prompt[Checked-in refinement prompt] --> Worker
+  Jobs -->|prepare, manual batch| Local[Local writer and OpenJev]
+  Local --> Reports[Immutable local preparation reports]
+  Reports -->|ready, or reasoned human override| Verify[Compact verification queue]
+  Verify --> Worker[Manual local Codex verify and patch]
+  Jobs -->|approved schedule or cancel| Worker
+  Prompt[Checked-in preparation and verification prompts] --> Local
+  Prompt --> Worker
   Worker -->|Proposed revision only| Drafts
   Worker -->|Approved text and free capacity| Buffer[Buffer daily queue]
   Buffer --> LinkedIn[Personal LinkedIn profile]
@@ -297,7 +308,7 @@ flowchart LR
   Publications --> Review
 ```
 
-The existing Codex account processes queued requests locally when the user asks. Requests persist between manual runs. Buffer Free owns daily slots and holds at most ten scheduled posts; additional approvals remain durable in Supabase. First comments are manual. Scheduling attempts are recorded before external calls; unknown results are reconciled instead of retried. Private exports before each day’s first mutations and insert-only restore preserve history; restore always pauses publishing. See `features/linkedin-editorial.md` and `runbooks/linkedin-editorial.md` for account onboarding, failure recovery and validation boundaries.
+The opt-in preparation migration keeps inference on the Mac and saves only immutable reports/voice versions in Supabase. Manual batches preserve originals and hold duplicates or integrity failures before Codex. A versioned overview and on-demand detail replace collection-wide history polling. The existing Codex account verifies selected prepared text when the user asks. Requests persist between manual runs. Buffer Free owns daily slots and holds at most ten scheduled posts; additional approvals remain durable in Supabase. First comments are manual. Scheduling attempts are recorded before external calls; unknown results are reconciled instead of retried. Private exports before each day’s first mutations and insert-only restore preserve history; restore always pauses publishing. See `features/linkedin-editorial.md` and `runbooks/linkedin-editorial.md` for account onboarding, failure recovery and validation boundaries.
 
 ## Frontend Interview Study Flow
 
@@ -349,3 +360,49 @@ See [Japanese writing notebooks](features/japanese-writing-notebooks.md) for fai
 Native writing protects the SVG responder from ancestor ScrollView interception and drives paper scrolling explicitly through touch centroids or accessibility actions. `apps/mobile/src/lib/handwriting-navigation.ts` supplies the Expo Stack gesture policy for handwriting routes, preventing iPad swipe-back from consuming rightward strokes. The native catalog uses a compact selected-page header; `AppScreen` has an optional keyboard-tap policy for form buttons. `apps/mobile/e2e/notebook-{layout,gestures}.mjs` retain measured layout, real-contact results and screenshots; physical PencilKit validation remains a separate supported-build/device gate.
 
 The notebook catalog derives Japanese previews and authored romaji readings from the shared engine. `useNotebookRomaji` shares the display preference between catalog implementations through optional storage methods. The preference is device-local (web localStorage/native AsyncStorage) and separate from notebook ink and synchronized progress.
+
+## Optional knowledge evaluation
+
+The validated content parser feeds a complete included-resource catalog and explicit curriculum links. An isolated Python service persists Graphiti records in Neo4j and caches source-bound extraction, BGE embeddings and local inference in SQLite. Retrieval supplies bounded evidence to loopback OpenJev and Qwen. The five REST/MCP capabilities stage recommendations; human-reviewed curriculum links are versioned repository sidecars. Admin-only Supabase projections and leased jobs keep exploration and queued evaluation available while the Mac is offline. Models and caches remain local.
+
+Graph enrollment extends local LinkedIn preparation: retrieve knowledge, assess and write locally, persist compact evidence/hash, verify with Codex, then request human adoption and exact approval before Buffer. Database guards reject stale graph evidence through the final send gate. Normal web/native learning does not import the graph/model service. See [the contract](features/knowledge-evaluator.md) and [runbook](runbooks/knowledge-evaluator.md).
+
+## Private interview preparation
+
+The web/native admin tracker shares contracts and an access-aware store in core. Optional Supabase holds private opportunities, round projections, profile history and immutable preparation. Research/editing runs only through the local Codex skill/CLI; HTTP imports no worker/model code. The private-inclusive knowledge export supplies OpenJev retrieval and reviewed links without exporting the full resume.
+
+```mermaid
+flowchart LR
+  Admin[Web/native admin] --> RPC[Admin-only Supabase RPCs]
+  RPC --> Private[Private opportunities/profile/brief revisions]
+  Private --> Context[Local context export]
+  Context --> Skill[Codex research and personalization]
+  Skill --> Edit[Mandatory technical-edit comparison]
+  Edit --> Import[Validated versioned import]
+  Import --> RPC
+  Edit --> Assess[Local knowledge evaluation]
+  Assess --> Review[Explicit human report review]
+  Review --> Import
+  Private --> Catalog[Private knowledge catalog]
+  Catalog --> Existing[Existing paths/skills/lessons]
+```
+
+See [the feature contract](features/interview-preparation.md) and [operations](runbooks/interview-preparation.md). Hosted rollout and installed-device validation are separate gates.
+
+The campaign map assembles its terrain before export and cuts twelve shared-guard tiles. Exact edge pixels make joins independent of viewport cropping. Terrain remains stationary beneath mist, motes and foliage; panel-relative motion is bounded without modulo resets. Future art reserves fifty positions while progression stays at twelve authored levels. Both renderers cull distant scenery and react to reduced-motion preferences. Web uses clip overflow so centering a node cannot scroll inside a district. The map/list switch retains the last map offset; a versioned session key discards obsolete offsets from the shorter map.
+
+### Event-log interview content flow
+
+The anonymous partitioned-log exercise reuses the existing content and study pipeline. Its TypeScript simulations execute only in the web playground; Python companions run locally through the documented command. The exercise adds no application backend or new persistence layer.
+
+```mermaid
+flowchart LR
+  M[Canonical attempt-review Markdown] --> G[Shared guided interview reader]
+  J[Interview JSON: 3 TS and 3 Python programs] --> G
+  G --> W[Web playground / native code reader]
+  W --> Q[Eight-question checkpoint]
+  Q --> F[Fourteen-card scrolling review]
+  J --> T[Exact-code TS and Python checks]
+```
+
+See [Partitioned Event Log Interview](features/partitioned-event-log-interview.md).

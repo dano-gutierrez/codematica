@@ -1,0 +1,23 @@
+appId: com.codematica.app
+tags:
+  - regression
+---
+- launchApp:
+    clearState: true
+- openLink: "codematica://paths/coding-interview-pattern-practice"
+- assertVisible: "Coding Interview Pattern Practice"
+- scrollUntilVisible:
+    element:
+      id: mobile-path-node-interview-amazon-two-sum-product-pair
+    direction: DOWN
+- tapOn:
+    id: mobile-path-node-interview-amazon-two-sum-product-pair
+- assertVisible: "Two Sum Product Pair"
+- scrollUntilVisible:
+    element:
+      id: mobile-interview-next-node
+    direction: DOWN
+- tapOn:
+    id: mobile-interview-next-node
+- assertVisible: "Validate Parentheses Stream"
+- takeScreenshot: coding-pattern-next-question
