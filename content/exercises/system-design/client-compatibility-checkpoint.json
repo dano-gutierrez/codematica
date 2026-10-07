@@ -1,0 +1,101 @@
+{
+  "slug": "system-design/client-compatibility-checkpoint",
+  "title": "Client Compatibility Checkpoint",
+  "type": "questionnaire",
+  "documentSlug": "system-design/client-compatibility-contracts",
+  "concept": "Client Compatibility",
+  "difficulty": "practitioner",
+  "tags": ["api", "compatibility", "server-driven-ui"],
+  "status": "published",
+  "sourceRefs": ["duolingo-server-driven-ui", "google-aip-180-compatibility", "rfc-http-preconditions", "rfc-6585-status-codes", "google-aip-160-filtering", "google-aip-158-pagination", "google-aip-157-partial-responses"],
+  "questions": [
+    {
+      "id": "cached-layout",
+      "kind": "choice",
+      "prompt": "An old client cannot render a new carousel, but has a compatible cached text layout and supports the fresh data contract. What plan is valid?",
+      "options": [
+        {"id":"option-0","label":"Reuse a compatible cached layout with supported fresh data; a version number alone does not prove component support.","isCorrect":true},
+        {"id":"option-1","label":"Render the unknown carousel because a server response guarantees client support.","isCorrect":false},
+        {"id":"option-2","label":"Treat a supported layout version as proof that every component is supported.","isCorrect":false}
+      ],
+      "explanation": "Selection checks the layout version, component capabilities and matching supported data contract independently. A cached compatible configuration can be useful; it cannot teach the client a new component."
+    },
+    {
+      "id": "cold-start",
+      "kind": "choice",
+      "prompt": "After reinstall, the client has no cached configuration and cannot render the fresh layout. What can the review conclude?",
+      "options": [
+        {"id":"option-0","label":"Use an explicit unavailable or upgrade state; no compatible cached layout was established.","isCorrect":true},
+        {"id":"option-1","label":"The client must have the previous layout because another device once cached it.","isCorrect":false},
+        {"id":"option-2","label":"Fresh data alone guarantees an old client can reconstruct any new layout.","isCorrect":false}
+      ],
+      "explanation": "Cached fallback requires an actual compatible configuration. The toy reports unavailable when none exists. A bundled fallback is a separate product implementation that must be tested, not assumed from a case study."
+    },
+    {
+      "id": "data-contract",
+      "kind": "choice",
+      "prompt": "The cached layout expects integer price cents, while the response now uses an unsupported data version with a formatted price string. Is cached layout fallback enough?",
+      "options": [
+        {"id":"option-0","label":"Reject the unsupported data contract; an old layout cannot repair incompatible field meaning or types.","isCorrect":true},
+        {"id":"option-1","label":"Keep the same version number and the client will infer the new unit and type.","isCorrect":false},
+        {"id":"option-2","label":"A cached button also grants permission to purchase without server authorization.","isCorrect":false}
+      ],
+      "explanation": "The client must understand the data shape and meaning independently of layout support. Numeric versions identify maintained contracts; they do not make incompatible payloads safe. Server authorization remains a separate requirement."
+    },
+    {
+      "id": "pagination-meaning",
+      "kind": "choice",
+      "prompt": "An API changes from returning all 100 items to returning 10 plus a cursor. Old clients parse the JSON but ignore the cursor. What is the compatibility problem?",
+      "options": [
+        {"id":"option-0","label":"The JSON can parse while the meaning breaks: old callers may mistake the first page for the complete result.","isCorrect":true},
+        {"id":"option-1","label":"Adding a field can never affect an existing client's result.","isCorrect":false},
+        {"id":"option-2","label":"Smaller responses prove source, wire and semantic compatibility on every platform.","isCorrect":false}
+      ],
+      "explanation": "A parser accepting the response is only one check. Existing callers may rely on the old complete-result behavior; define a compatible migration and verify actual old-client consumption before changing defaults."
+    },
+    {
+      "id": "conditional-write",
+      "kind": "choice",
+      "prompt": "A and B read strong tag r7. A commits r8; B sends different content with If-Match r7. Under the lesson's strict stale-write policy, what must happen?",
+      "options": [
+        {"id":"option-0","label":"Reject the stale write without overwriting A; checking the tag and committing the update must be one protected transition.","isCorrect":true},
+        {"id":"option-1","label":"Accept B after checking the tag in an earlier request; the gap before saving cannot matter.","isCorrect":false},
+        {"id":"option-2","label":"A weak r8 tag proves the same permission and can replace the strong comparison.","isCorrect":false}
+      ],
+      "explanation": "This application chooses 412 for stale tags. RFC 9110 requires strong If-Match comparison and permits a separately evidenced already-applied success exception; B's different write does not qualify. Authorization and an atomic storage/version guard still need real implementation and tests."
+    },
+    {
+      "id": "bounded-query",
+      "kind": "choice",
+      "prompt": "The work-order endpoint allows typed status/time filters and two sort shapes. A caller submits an unknown field and arbitrary sort text. What evidence supports a safe query contract?",
+      "options": [
+        {"id":"option-0","label":"Reject unsupported fields and sort shapes explicitly, keep tenant authorization independent, and measure the allowed query plans.","isCorrect":true},
+        {"id":"option-1","label":"Ignore the unknown predicate and return success; a smaller query always answers the same question.","isCorrect":false},
+        {"id":"option-2","label":"A 50-row response cap proves the database scans no more than 50 rows and needs no cost measurements.","isCorrect":false}
+      ],
+      "explanation": "A documented subset can bound supported structure, but silent predicate removal changes meaning. Typed validation, trusted query structure, bound values and separate authorization are distinct checks. Page size alone cannot establish scan, sort or write cost."
+    },
+    {
+      "id": "continuation-evidence",
+      "kind": "choice",
+      "prompt": "An AIP-158-style list returns zero rows with a nonempty next_page_token. The caller still wants all matching work orders. What should it conclude?",
+      "options": [
+        {"id":"option-0","label":"Continue with the returned token and unchanged query context; zero rows alone do not prove the collection ended.","isCorrect":true},
+        {"id":"option-1","label":"Stop permanently because a zero-row page proves the complete collection is empty.","isCorrect":false},
+        {"id":"option-2","label":"Reuse the token for a different tenant and filter because the token grants access independently.","isCorrect":false}
+      ],
+      "explanation": "Completion depends on the terminal token state under this contract. Other query arguments stay consistent; page size may change. Every continuation request still needs authorization, token validation and the service's live-versus-snapshot traversal policy."
+    },
+    {
+      "id": "resource-view",
+      "kind": "choice",
+      "prompt": "BASIC work orders omit description; FULL includes it. A client wants to save a BASIC response as a full replacement. What contract must the review preserve?",
+      "options": [
+        {"id":"option-0","label":"Treat omitted BASIC fields as unreturned, preserve their types in FULL, and document defaults before clients depend on them.","isCorrect":true},
+        {"id":"option-1","label":"An omitted description proves the server deleted it; use the partial response as a full replacement.","isCorrect":false},
+        {"id":"option-2","label":"Every endpoint must include identical fields, so named projections and authorization checks are unnecessary.","isCorrect":false}
+      ],
+      "explanation": "A partial read is not automatically an update payload. Distinguish omitted, null and explicitly cleared fields in the write contract. Document view defaults, preserve shared-field meaning and enforce field access; neither a view nor its ETag grants authority."
+    }
+  ]
+}

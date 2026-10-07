@@ -3,7 +3,7 @@
 ## Snapshot
 
 - Status: `shipped`
-- Last updated: `2026-08-05`
+- Last updated: `2026-10-03`
 - Owner thread: `n/a`
 - Current state: Codematica has enforced Vitest and Jest coverage, transactional pgTAP checks, multi-project Playwright suites, Maestro native flows, fast PR gates, nightly regression, and `v*` release-candidate workflows.
 - Target outcome: Every shipped feature has a reliable test at the lowest useful layer, critical journeys are exercised on browser and installed native targets, and a release cannot be promoted without reproducible evidence.
@@ -91,6 +91,7 @@ Configure branch protection in the account: after the five PR jobs have complete
 - `desktop-chromium`: smoke journeys, `@playground` and `@notebook-catalog` regressions.
 - `mobile-webkit`: smoke journeys, `@playground` and `@notebook-catalog` regressions. Catalog coverage protects Safari's ruby annotation layout when romaji is hidden.
 - Playground regressions exercise a real hosted runtime and a controlled connection failure, including automatic startup, edit/run/reset, and recovery with drafts intact.
+- Editor fixtures select all using CodeMirror's emulated platform, then assert complete replacement before execution; iPhone WebKit uses Meta on Linux runners. Eight primary-route accessibility audits run independently with unchanged serious/critical checks and default per-test budgets.
 - Trace, screenshot, and video are retained only for failures. HTML/JUnit reports and failure evidence are uploaded by CI.
 
 ### Native Matrix
@@ -121,6 +122,7 @@ flowchart LR
 - Tests that compile complete authored TypeScript projects have a 30-second timeout to accommodate instrumented CI runs. Other tests retain Vitest's default timeout; coverage thresholds and exclusions are unchanged.
 - A failed database run must leave production untouched; CI stops and discards the local stack.
 - Playwright and Maestro failures retain reports and visual evidence rather than relying on a rerun to diagnose the regression.
+- GitHub release artifact names use the commit SHA and run attempt; slash-containing branch dispatches remain valid and reruns retain previous evidence.
 - If EAS validation cannot authenticate, validate YAML locally, keep the workflow unexecuted, and report the missing account-side verification explicitly.
 - A flaky test is fixed or quarantined with a documented owner and reason; it is not silently retagged or removed from the release lane.
 
@@ -147,6 +149,7 @@ Playwright uses two concurrent workers in CI and four locally. This bounds canva
 - Unit: pure schemas, parsing/indexing, route mapping, search, practice, progress, interview boundaries, environment detection, adapters, and content-audio/sync helpers.
 - Integration: generated index relationships, renderers/components, API/Auth handlers, native screen matrix, and mocked Supabase boundaries.
 - Database: clean migration replay plus transactional schema, index, constraint, trigger, RLS, isolation, published-search, ranking, and limit assertions. Protected content assertions accept either an explicit table-privilege denial or an RLS-filtered empty result, since Supabase database images can enforce the same no-read contract at different layers.
+- Authored SQL: `npm run test:reservation:sql` executes canonical room-date fences in a separate pinned PostgreSQL 17 container, with no network, host ports or persistent mounts. CI and release database lanes explicitly pull the image; the verifier rejects remote Docker contexts and checks cleanup. It tests overlap/adjacency, lifecycle, invalid dates, expiry guards and observed two-session commit/rollback. It never uses Supabase connection configuration or production data.
 - E2E: representative documents, diagrams, catalogs, practice types, interviews, Japanese, Auth-disabled behavior, local progress, recovery/404, responsive layout, and accessibility.
 - Regression classification: fast critical paths are `@smoke`; feature and edge coverage is `@regression`; installed-app critical paths are Maestro flows.
 - Coverage impact: all production logic in the listed scopes is instrumented; exclusions are annotated and thresholds are non-decreasing.
@@ -183,4 +186,4 @@ The optional editorial workflow adds an isolated `npm run e2e:linkedin` lane (fa
 
 ## Authored Interview Solutions (2026-09-27)
 
-`npm run test:interview:python` is a required CI/release gate with Python 3.13 setup; missing Python fails. It executes canonical frontend companions and prior-content regression fixtures with mocked I/O. `FrontendInterviewExamples.test.tsx` compiles/executes all 21 TS projects and cross-checks Python outcomes. `interview-audit.test.ts` protects verified legacy fixes. No threshold or exclusion was lowered. The new browser and Maestro frontend-interview journeys cover the shared study flow.
+`npm run test:interview:python` is a required CI/release gate with Python 3.13 setup; missing Python fails. It executes canonical frontend companions and prior-content regression fixtures with mocked I/O, plus the original neural-gradient and temporary-SQLite retry labs through `verify-durable-labs.py`. Those labs use an isolated interpreter, no inherited credentials and a bounded timeout. `FrontendInterviewExamples.test.tsx` compiles/executes all 21 TS projects and cross-checks Python outcomes. `interview-audit.test.ts` protects verified legacy fixes. No threshold or exclusion was lowered. The new browser and Maestro frontend-interview journeys cover the shared study flow.

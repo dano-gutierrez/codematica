@@ -5,6 +5,7 @@ import { ArrowRight, RotateCcw } from "lucide-react";
 import { CodeBlock } from "@/components/CodeBlock";
 import { MermaidBlock } from "@/components/MermaidBlock";
 import { WebInterviewQuestionSession } from "@/components/WebInterviewQuestionSession";
+import { PathScopedNextLink } from "@/components/PathScopedNextLink";
 import type { InterviewAlgorithmSolutionTrack, InterviewQuestion } from "@/lib/content/schema";
 import { selectInterviewSolutionTrack } from "@/lib/interviews";
 import { recordProgress } from "@/lib/progress/client";
@@ -31,15 +32,17 @@ export function InterviewQuestionSession({
     return <WebInterviewQuestionSession question={question} nextHrefsByPath={nextHrefsByPath} />;
   }
 
-  return <AlgorithmInterviewQuestionSession question={question} onProgressEvent={onProgressEvent} />;
+  return <AlgorithmInterviewQuestionSession question={question} onProgressEvent={onProgressEvent} nextHrefsByPath={nextHrefsByPath} />;
 }
 
 function AlgorithmInterviewQuestionSession({
   question,
   onProgressEvent,
+  nextHrefsByPath,
 }: {
   question: Extract<InterviewQuestion, { kind: "algorithm" }>;
   onProgressEvent?: (status: ProgressStatus, position: Record<string, unknown>) => void;
+  nextHrefsByPath?: Record<string, string>;
 }) {
   const [track, setTrack] = useState(() => question.solutionTracks[0]);
   const [previousTrackId, setPreviousTrackId] = useState<string | undefined>();
@@ -209,6 +212,7 @@ function AlgorithmInterviewQuestionSession({
           </div>
         </section>
       ) : null}
+      {isFinal && nextHrefsByPath ? <PathScopedNextLink nextHrefsByPath={nextHrefsByPath} testId="interview-next-node" /> : null}
     </section>
   );
 }

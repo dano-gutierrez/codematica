@@ -1,4 +1,4 @@
-import { execFileSync } from "node:child_process";
+import { execFileSync, spawnSync } from "node:child_process";
 import { readFileSync } from "node:fs";
 import { runInNewContext } from "node:vm";
 import ts from "typescript";
@@ -35,6 +35,17 @@ function load(code: string): Module {
 const ids = (events: Entry[]) => Array.from(events, (event) => Number(event.id));
 
 describe("partitioned event log interview", () => {
+  it.each([0, 99, 100])("validates an explicit Python scale count of %i", (count) => {
+    const result = spawnSync(process.env.CODEMATICA_PYTHON ?? "python3", ["scripts/content/verify-event-log.py", "--scale", String(count)], { encoding: "utf8", timeout: 10_000 });
+    if (count < 100) {
+      expect(result.status).toBe(2);
+      expect(result.stderr).toContain("--scale must be at least 100");
+    } else {
+      expect(result.status).toBe(0);
+      expect(result.stderr.match(/100 events for hot key/g)).toHaveLength(3);
+    }
+  });
+
   it("publishes three complete TS/Python pairs and connects the study path", () => {
     expect(tracks()).toHaveLength(3);
     const slug = "partitioned-event-log";

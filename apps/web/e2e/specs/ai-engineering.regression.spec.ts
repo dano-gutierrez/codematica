@@ -63,3 +63,14 @@ test("@regression mobile user studies Langfuse tracing and opens the AI flashcar
   await expect(page.getByTestId("passive-flashcard-feed")).toHaveAttribute("data-ready", "true");
   await expect(page.getByTestId("passive-flashcard-card-0")).toContainText("AI Product Loop");
 });
+
+test("@regression offers the optional advanced agent syllabus after governance", async ({ page }) => {
+  await page.goto("/paths/ai-engineering-langfuse-langchain");
+  await expect(page.getByRole("heading", { name:"Optional Advanced Agent Research" })).toBeVisible();
+  const source = page.getByTestId("path-node-source-ai-engineering-stanford-self-improving-agents");
+  await expect(source).toContainText("CS329A: Self-Improving AI Agents");
+  await expect(source).toContainText("Official source · read");
+  await expect(source).toHaveAttribute("href", "https://cs329a.stanford.edu/");
+  await expect(page.getByTestId("path-detail")).toContainText("enrollment, certification and completed projects are not included");
+  await expect(page.getByTestId("path-node-exercise-ai-engineering-llm-production-risk-governance-questionnaire")).toBeVisible();
+});

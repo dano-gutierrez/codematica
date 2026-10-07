@@ -1,0 +1,151 @@
+{
+  "slug": "software-engineering/domain-and-deployment-boundaries-checkpoint",
+  "title": "Domain And Deployment Boundaries Checkpoint",
+  "type": "questionnaire",
+  "difficulty": "practitioner",
+  "status": "published",
+  "documentSlug": "software-engineering/domain-and-deployment-boundaries",
+  "sourceRefs": [
+    "evidence-ddd-reference"
+  ],
+  "concept": "Domain And Deployment Boundaries",
+  "tags": [
+    "evidence-review",
+    "contracts"
+  ],
+  "skillIds": [
+    "domain-boundaries"
+  ],
+  "questions": [
+    {
+      "id": "context",
+      "kind": "choice",
+      "skillIds": [
+        "domain-boundaries"
+      ],
+      "prompt": "Booking and Invoice are defined differently by two teams. What comes first?",
+      "options": [
+        {
+          "id": "correct",
+          "label": "Record each context\u2019s meaning and translate explicitly across the boundary.",
+          "isCorrect": true
+        },
+        {
+          "id": "wrong-1",
+          "label": "Assume identical field names establish identical meaning.",
+          "isCorrect": false
+        },
+        {
+          "id": "wrong-2",
+          "label": "Deploy a service for every noun before defining it.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "Context meanings guide a useful boundary. Similar fields and a service-per-noun layout cannot establish shared semantics or justify the deployment arrangement by themselves."
+    },
+    {
+      "id": "identity",
+      "kind": "choice",
+      "skillIds": [
+        "domain-boundaries"
+      ],
+      "prompt": "Booking B17 changes its guest contact. Under the exercise\u2019s model, what remains?",
+      "options": [
+        {
+          "id": "wrong-1",
+          "label": "It necessarily becomes a different booking.",
+          "isCorrect": false
+        },
+        {
+          "id": "wrong-2",
+          "label": "All bookings with matching dates become B17.",
+          "isCorrect": false
+        },
+        {
+          "id": "correct",
+          "label": "The booking\u2019s identity; value equality is a separate policy.",
+          "isCorrect": true
+        }
+      ],
+      "explanation": "The authored entity policy preserves identity through contact changes. Matching attributes alone do not merge different bookings; value equality requires its own explicitly chosen components."
+    },
+    {
+      "id": "invariant",
+      "kind": "choice",
+      "skillIds": [
+        "domain-boundaries"
+      ],
+      "prompt": "Two independent updates each see one remaining seat and allocate it. What is missing?",
+      "options": [
+        {
+          "id": "wrong-2",
+          "label": "Two processes guarantee consistent totals.",
+          "isCorrect": false
+        },
+        {
+          "id": "correct",
+          "label": "One protected capacity-and-allocation transition for the stated invariant.",
+          "isCorrect": true
+        },
+        {
+          "id": "wrong-1",
+          "label": "A root class name is sufficient.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "Both updates can pass an earlier observation and exceed capacity together. The invariant needs a concrete consistency mechanism; naming or process count does not protect the transition."
+    },
+    {
+      "id": "axes",
+      "kind": "choice",
+      "skillIds": [
+        "domain-boundaries"
+      ],
+      "prompt": "What distinguishes a module boundary from a deployment boundary?",
+      "options": [
+        {
+          "id": "correct",
+          "label": "Modules describe ownership and dependencies; processes add separate runtime and failure scope.",
+          "isCorrect": true
+        },
+        {
+          "id": "wrong-1",
+          "label": "Every module must be separately deployed.",
+          "isCorrect": false
+        },
+        {
+          "id": "wrong-2",
+          "label": "Events automatically remove all coupling.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "The same module model can exist in one or multiple executables. Deployment adds operational boundaries, and events still carry contracts, ordering and failure responsibilities."
+    },
+    {
+      "id": "event",
+      "kind": "choice",
+      "skillIds": [
+        "domain-boundaries"
+      ],
+      "prompt": "Booking is accepted, but billing event delivery fails. Which receipt is accurate?",
+      "options": [
+        {
+          "id": "wrong-1",
+          "label": "Emitting an event proves billing completed.",
+          "isCorrect": false
+        },
+        {
+          "id": "wrong-2",
+          "label": "Billing failure proves booking never existed.",
+          "isCorrect": false
+        },
+        {
+          "id": "correct",
+          "label": "Booking acceptance is evidenced; billing completion still needs its own receipt.",
+          "isCorrect": true
+        }
+      ],
+      "explanation": "Separate observations preserve the accepted booking and the failed delivery. Event emission is not downstream completion, and downstream failure does not erase an already accepted upstream result."
+    }
+  ]
+}

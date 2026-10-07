@@ -23,7 +23,7 @@ Conventions:
 - `docs/features/markdown-knowledge-browser.md` owns article rendering, the web/native code-surface audit, the fixed dark code theme, native horizontal scroll containment, and rendered contrast/layout regressions. Theme selection is deferred.
 - `docs/features/brand-identity.md` owns the approved Patch logo, favicons, native icons, splash artwork and reproducible exports under `assets/brand/`.
 - `docs/features/home-discovery.md` owns the Learn discovery hub, global local search, curated rows, section themes, and full catalog routes.
-- `docs/features/learning-paths-and-practice.md` owns local path JSON, path detail, local exercise JSON, and practice sessions.
+- `docs/features/learning-paths-and-practice.md` owns local path JSON, path detail, local exercise JSON, and practice sessions, including Client Compatibility's API reviews, the selected distributed-systems reading checkpoint, original array-state and keypad reviews, progressive state/history practice, token-revocation review, video-delivery contracts and Backend concurrency/pattern reviews.
 - `docs/features/ml-systems-career-path.md` owns the Harvard CS249r source-linked career roadmap, authored prerequisites/Foundation companions, guided labs, and upstream refresh contract.
 - `docs/features/programming-language-refresh.md` owns reusable programming-language refresh paths, starting with Python for TypeScript and JavaScript engineers.
 - `docs/features/llm-application-engineering.md` owns the Langfuse and LangChain AI engineering path, including local lessons, diagrams, quizzes, passive flashcards, and non-executable coding challenge sections.
@@ -89,7 +89,7 @@ Front-End Development lesson content under `content/knowledge/frontend/` must st
 - Update READMEs in the same branch whenever implementation changes their documented contract.
 - Add a dated changelog entry for a release-sized change that spans several feature contracts; do not use the changelog as a replacement for updating those contracts.
 
-- `docs/features/linkedin-editorial.md` owns private source-grounded and manual LinkedIn drafts, text formatting and required manual-draft analysis, shared web/native review, immutable approvals, Supabase jobs and Buffer scheduling. `docs/runbooks/linkedin-editorial.md` owns account bootstrap, the manually invoked local worker, backups and recovery.
+- `docs/features/linkedin-editorial.md` owns private source-grounded and manual LinkedIn drafts, text formatting and required manual-draft analysis, shared web/native review, immutable approvals, Supabase jobs and Buffer scheduling. `docs/runbooks/linkedin-editorial.md` owns account bootstrap, pinned local writer/OpenJev setup, manual preparation/backfill and Codex verification, v2 backups and recovery.
 
 - `docs/features/frontend-interview-practice.md` owns the seven frontend challenges, Python companions, quiz/review flow, and exact-solution verification. The existing-content audit is in `docs/features/interview-coding-catalog.md`.
 
@@ -122,4 +122,14 @@ Native notebook validation now includes agent-device layout/contact runners in `
 
 The game [miniature sheet](../assets/game/previews/miniatures-v3.png) shows the full-body figures used in each level and their actual phone/wide rendering.
 
+- [Knowledge evaluator](features/knowledge-evaluator.md): local Graphiti/Qwen/OpenJev content inventory and decisions, admin graph/table exploration, offline jobs and graph-bound editorial review. [Runbook](runbooks/knowledge-evaluator.md).
+
+- [Programming Contract Review](features/programming-contract-review.md): original value, demand, ASCII matching and tree/cost lessons with independent local fixtures.
+
+- [Systems Boundary Review](features/systems-boundary-review.md): original request, transport, API, derived-state, document-query and memory review with selected primary evidence.
+
+- [Private interview preparation](features/interview-preparation.md): company/role tracker, mandatory technical editing and private knowledge reuse. [Operations](runbooks/interview-preparation.md).
+
 The [continuous map art review](../assets/game/previews/continuous-map/review.md) records the create/review/fix/review cycle, fifty-position landscape, three parallax depths, and visual evidence. Exact source prompts and seam export rules live in the asset guide.
+
+- `docs/features/selected-evidence-review.md` owns three bounded original paths for engineering, creative computing and ownership review, with55 source-bound choices.

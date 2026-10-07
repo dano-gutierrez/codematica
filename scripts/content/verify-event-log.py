@@ -280,7 +280,7 @@ if __name__ == '__main__':
     args = parser.parse_args()
     result = unittest.TextTestRunner(verbosity=2).run(unittest.defaultTestLoader.loadTestsFromTestCase(AuthoredEventLogs))
     if not result.wasSuccessful(): sys.exit(1)
-    if args.scale:
+    if args.scale is not None:
         if args.scale < 100: parser.error('--scale must be at least 100')
         scale(args.scale)
     print(json.dumps(snapshot()) if args.json else 'Validated all three exact Python event-log companions.')

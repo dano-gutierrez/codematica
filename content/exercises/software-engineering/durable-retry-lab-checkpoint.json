@@ -1,0 +1,113 @@
+{
+  "slug": "software-engineering/durable-retry-lab-checkpoint",
+  "title": "Durable Retry Lab Checkpoint",
+  "type": "questionnaire",
+  "documentSlug": "software-engineering/product-interview-durable-generation-architecture",
+  "concept": "Durable Operations",
+  "difficulty": "senior",
+  "tags": [
+    "idempotency",
+    "concurrency"
+  ],
+  "status": "published",
+  "sourceRefs": [
+    "rfc-http-idempotency",
+    "stripe-idempotent-requests",
+    "sqlite-transactions",
+    "python-sqlite-transactions"
+  ],
+  "questions": [
+    {
+      "id": "atomic-receipt",
+      "kind": "choice",
+      "prompt": "The fixture raises before its transaction commits. Which state must you inspect before a retry?",
+      "options": [
+        {
+          "id": "answer",
+          "label": "Neither the debit nor its receipt committed.",
+          "isCorrect": true
+        },
+        {
+          "id": "alternative-one",
+          "label": "The debit committed, but the receipt can be added by the retry.",
+          "isCorrect": false
+        },
+        {
+          "id": "alternative-two",
+          "label": "The receipt committed while the debit rolled back.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "The balance and receipt belong to one transaction. Either split result leaves a crash gap. Inspect pre-retry state; a later retry alone can conceal the defect."
+    },
+    {
+      "id": "lost-response",
+      "kind": "choice",
+      "prompt": "A transaction committed its debit and receipt, then its response was lost. What does the retry need?",
+      "options": [
+        {
+          "id": "answer",
+          "label": "The same scoped operation identity and a matching request; return its stored result.",
+          "isCorrect": true
+        },
+        {
+          "id": "alternative-one",
+          "label": "A fresh key, because a missing response proves the first debit failed.",
+          "isCorrect": false
+        },
+        {
+          "id": "alternative-two",
+          "label": "A new debit followed by overwriting the original receipt.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "The lost response does not prove rollback. Reusing the authorized scoped identity recovers the result in this fixture; a fresh key or repeating the effect can charge twice."
+    },
+    {
+      "id": "stored-result",
+      "kind": "choice",
+      "prompt": "The first operation returned balance 90; later operations left balance 70. What should its idempotent replay return?",
+      "options": [
+        {
+          "id": "answer",
+          "label": "Its stored result of 90; current balance is a separate query.",
+          "isCorrect": true
+        },
+        {
+          "id": "alternative-one",
+          "label": "70, because every replay must be a current-balance query.",
+          "isCorrect": false
+        },
+        {
+          "id": "alternative-two",
+          "label": "A second debit so its response differs from the first.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "A replay recovers the original operation result. It does not promise the current state of a mutable resource. Neither changing the response into an unrelated query nor repeating the debit satisfies this fixture."
+    },
+    {
+      "id": "local-boundary",
+      "kind": "choice",
+      "prompt": "Two SQLite writers pass the lab. What does that establish?",
+      "options": [
+        {
+          "id": "answer",
+          "label": "These local atomicity and retry cases pass; provider effects and database throughput need separate evidence.",
+          "isCorrect": true
+        },
+        {
+          "id": "alternative-one",
+          "label": "An external payment is now part of the SQLite transaction.",
+          "isCorrect": false
+        },
+        {
+          "id": "alternative-two",
+          "label": "PostgreSQL and a distributed queue now guarantee end-to-end exactly-once effects.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "The original lab uses one local database and serialized SQLite writers. It makes no network calls and proves neither an external payment boundary nor another database\u2019s concurrency or throughput."
+    }
+  ]
+}

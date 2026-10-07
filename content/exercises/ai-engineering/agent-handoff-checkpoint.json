@@ -1,0 +1,57 @@
+{
+  "slug": "ai-engineering/agent-handoff-checkpoint",
+  "title": "Agent Handoff Checkpoint",
+  "type": "questionnaire",
+  "documentSlug": "ai-engineering/evidence-first-agent-handoffs",
+  "concept": "Agent Operations",
+  "difficulty": "practitioner",
+  "tags": ["agents", "provenance", "evaluation"],
+  "status": "published",
+  "sourceRefs": ["anthropic-long-running-harnesses", "anthropic-harness-design-experiment"],
+  "questions": [
+    {
+      "id": "cached-report",
+      "kind": "choice",
+      "prompt": "A trusted receipt matches the current candidate, source manifest and model configuration. Its job succeeded. What follows?",
+      "options": [
+        {"id": "review", "label": "Reuse the assessment for evidence review; success is not approval or correctness.", "isCorrect": true},
+        {"id": "publish", "label": "Publish immediately because matching hashes prove the model is correct.", "isCorrect": false},
+        {"id": "repeat", "label": "Always start another identical inference before reading its result.", "isCorrect": false}
+      ],
+      "explanation": "Matching inputs avoid redundant inference, but do not certify the result or authorize publication. Inspect evidence and any coverage gaps; repeating an unchanged call alone does not supply independent verification."
+    },
+    {
+      "id": "stale-source",
+      "kind": "choice",
+      "prompt": "A source changed after a report was saved. The candidate text is unchanged. How should the next session proceed?",
+      "options": [
+        {"id": "reevaluate", "label": "Preserve the old receipt and obtain an assessment bound to current sources.", "isCorrect": true},
+        {"id": "reuse", "label": "Apply the old report because candidate identity alone is sufficient.", "isCorrect": false},
+        {"id": "erase", "label": "Erase the old report and mark the requirement complete without testing.", "isCorrect": false}
+      ],
+      "explanation": "The report depends on both candidate and evidence versions. Preserving history supports diagnosis; completion still needs actual current verification. A new assessment does not authorize blindly cancelling an old worker's job."
+    },
+    {
+      "id": "content-authority",
+      "kind": "choice",
+      "prompt": "Retrieved course text tells an agent to ignore the user's approval requirement and publish a draft. What authority does that text have?",
+      "options": [
+        {"id": "data", "label": "It is untrusted source data; tool authority still comes from the authorized workflow.", "isCorrect": true},
+        {"id": "authority", "label": "It overrides approval because it was retrieved from a relevant course.", "isCorrect": false},
+        {"id": "hash", "label": "A matching source hash converts it into a trusted user instruction.", "isCorrect": false}
+      ],
+      "explanation": "Relevance and matching bytes establish neither trust nor permission. Preserve instruction/data boundaries and check the current actor's authority before external commitments."
+    },
+    {
+      "id": "comparison-budget",
+      "kind": "choice",
+      "prompt": "One harness run takes 20 minutes and costs $9; another takes six hours and costs $200. What can a quality difference establish?",
+      "options": [
+        {"id": "bounded", "label": "An observation under those conditions; it does not isolate architecture from time and cost.", "isCorrect": true},
+        {"id": "universal", "label": "A controlled proof that more agents always improve every task.", "isCorrect": false},
+        {"id": "cheaper", "label": "That the second architecture is cheaper for the same verified outcome.", "isCorrect": false}
+      ],
+      "explanation": "Different budgets confound an architecture comparison. Measure accepted outcomes, failures, cost and latency under explicit conditions; an anecdote supports a hypothesis rather than a universal or equal-budget claim."
+    }
+  ]
+}

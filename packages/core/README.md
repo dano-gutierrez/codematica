@@ -36,7 +36,15 @@ Japanese writing notebooks use 24 whole-prompt repetitions per sheet and support
 `src/game/miniatures.ts` defines shared full-body character frames and transforms for measured web/native scenes. It keeps layout and cosmetic placement deterministic without importing graphics libraries.
 
 Game store claims are serialized across account changes. Deferred identity checks must verify the active generation before merging remote awards or choosing a save payload; keep the interrupted-load tests when changing synchronization.
+`@codematica/core/linkedin-preparation` validates sparse verification against an immutable candidate and derives preparation labels. Overview/detail polling retains only selected history and discards stale responses during edits. Voice rules and held-draft overrides use authenticated RPCs; local reports never authorize approval.
+
+`knowledge.ts` defines stable resource/relationship/snapshot/candidate/report contracts and the admin projection client. `linkedin.ts` carries optional graph context/hash and durable post enrollment; verification checks the exact evidence hash. These modules have no model, filesystem or graph-database runtime imports.
+
+`interview-preparation` and `interview-preparation-store` own private tracker validation, RPC boundaries, freshness, access-change guards and Markdown export. The public content index remains separate.
+
 
 `src/game/map-art.ts` owns the fifty-position art panel order and bounded, renderer-independent parallax offsets. It does not create campaign levels or alter progression. Native runs its offset helper as a Reanimated worklet; web samples the same rule on scroll frames.
 
 The event-log interview regression executes canonical TS programs, strictly typechecks their projects, compares every bounded read against an oracle, meters seek work and verifies Python parity. `npm run test:interview:python` also runs `scripts/content/verify-event-log.py`; `--scale 1000003` exercises million-event histories locally.
+
+Selected evidence tests pin55 independently reviewed paper-case answers, source metadata and path-qualified next routes. The knowledge catalog retains eleven authored resource/skill identities across three new paths; existing parsing and runtime providers are unchanged.

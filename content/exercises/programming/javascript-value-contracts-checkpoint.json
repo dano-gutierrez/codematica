@@ -1,0 +1,158 @@
+{
+  "slug": "programming/javascript-value-contracts-checkpoint",
+  "title": "JavaScript Value Contracts Checkpoint",
+  "type": "questionnaire",
+  "difficulty": "practitioner",
+  "status": "published",
+  "documentSlug": "programming/javascript-value-contracts",
+  "sourceRefs": [
+    "js-contract-const",
+    "js-contract-freeze",
+    "js-contract-objects",
+    "js-contract-equality",
+    "js-contract-this",
+    "js-contract-splice",
+    "js-contract-sort",
+    "js-contract-substr"
+  ],
+  "concept": "JavaScript Value Contracts",
+  "tags": [
+    "contract-review",
+    "invariants"
+  ],
+  "skillIds": [
+    "value-ownership"
+  ],
+  "questions": [
+    {
+      "id": "binding-and-copy",
+      "kind": "choice",
+      "skillIds": [
+        "value-ownership"
+      ],
+      "prompt": "A frozen shallow preview shares draft.stats. Which statement is correct?",
+      "options": [
+        {
+          "id": "correct",
+          "label": "The binding is fixed; the nested object remains shared and mutable.",
+          "isCorrect": true
+        },
+        {
+          "id": "wrong-1",
+          "label": "Every nested value becomes immutable because the outer binding uses const.",
+          "isCorrect": false
+        },
+        {
+          "id": "wrong-2",
+          "label": "The spread copy necessarily duplicates the complete object graph.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "const restricts reassignment and the outer freeze restricts its own descriptors. Neither recursively copies or freezes draft.stats. A changed nested field is observed through both references; the two outer objects remain distinct."
+    },
+    {
+      "id": "missing-removal",
+      "kind": "choice",
+      "skillIds": [
+        "value-ownership"
+      ],
+      "prompt": "An item is absent and indexOf returns -1. How should a delete helper act?",
+      "options": [
+        {
+          "id": "correct",
+          "label": "Check for -1 before splice; the missing item must leave the list unchanged.",
+          "isCorrect": true
+        },
+        {
+          "id": "wrong-1",
+          "label": "Pass -1 to splice to express that no item was found.",
+          "isCorrect": false
+        },
+        {
+          "id": "wrong-2",
+          "label": "Clear the list to avoid leaving an unrecognized item behind.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "A negative splice start addresses from the end, so passing -1 removes the last element. Check the search result before mutation. Clearing the collection changes unrelated state and violates the absent-target contract."
+    },
+    {
+      "id": "own-properties",
+      "kind": "choice",
+      "skillIds": [
+        "value-ownership"
+      ],
+      "prompt": "An object inherits a name and has enumerable, hidden and symbol properties. What does Object.keys expose?",
+      "options": [
+        {
+          "id": "correct",
+          "label": "Object.keys lists enumerable own string keys; inherited keys are separate.",
+          "isCorrect": true
+        },
+        {
+          "id": "wrong-1",
+          "label": "Object.keys lists every field that ordinary property lookup can find.",
+          "isCorrect": false
+        },
+        {
+          "id": "wrong-2",
+          "label": "Object.keys recursively lists symbol keys and all hidden properties.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "Object.keys includes only enumerable own string keys. Inherited lookup can succeed without ownership; non-enumerable and symbol keys require different inspection. None of these enumeration APIs recursively flattens nested values."
+    },
+    {
+      "id": "equality-rule",
+      "kind": "choice",
+      "skillIds": [
+        "value-ownership"
+      ],
+      "prompt": "A cheat sheet says 5 == true. What does the selected equality rule predict?",
+      "options": [
+        {
+          "id": "correct",
+          "label": "5 == true is false; true converts to 1, which differs from 5.",
+          "isCorrect": true
+        },
+        {
+          "id": "wrong-1",
+          "label": "It is true because every nonzero number is loosely equal to true.",
+          "isCorrect": false
+        },
+        {
+          "id": "wrong-2",
+          "label": "It is true because strict equality first converts both operands to strings.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "Loose equality converts the boolean to a number for this comparison, giving 5 versus 1. Truthiness is a different operation. Strict equality does not apply that coercion, so converting both values to strings is not its rule."
+    },
+    {
+      "id": "call-receiver",
+      "kind": "choice",
+      "skillIds": [
+        "value-ownership"
+      ],
+      "prompt": "An ordinary method is called on another object, while an arrow was captured inside origin.capture. What differs?",
+      "options": [
+        {
+          "id": "correct",
+          "label": "The ordinary function uses its call receiver; the captured arrow retains its lexical this.",
+          "isCorrect": true
+        },
+        {
+          "id": "wrong-1",
+          "label": "Both always use the object where their source text was written.",
+          "isCorrect": false
+        },
+        {
+          "id": "wrong-2",
+          "label": "call can replace the captured arrow receiver just as it replaces an ordinary receiver.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "The ordinary function gets its receiver from the invocation; a strict detached call may have undefined this. The captured arrow keeps the enclosing this and call cannot replace it. Source location alone does not bind ordinary methods."
+    }
+  ]
+}

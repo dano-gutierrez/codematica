@@ -1,0 +1,107 @@
+{
+  "slug": "programming/array-state-checkpoint",
+  "title": "Array State Checkpoint",
+  "type": "questionnaire",
+  "documentSlug": "programming/array-state-invariants",
+  "concept": "Array Invariants",
+  "difficulty": "practitioner",
+  "tags": [
+    "arrays",
+    "invariants"
+  ],
+  "status": "published",
+  "questions": [
+    {
+      "id": "nonempty-segment",
+      "kind": "choice",
+      "prompt": "What does best_segment return for [-5, -2, -4] under the nonempty contract?",
+      "options": [
+        {
+          "id": "option-0",
+          "label": "Return sum -2 with the nonempty segment [1, 2); zero would violate this contract.",
+          "isCorrect": true
+        },
+        {
+          "id": "option-1",
+          "label": "Return zero from an empty segment.",
+          "isCorrect": false
+        },
+        {
+          "id": "option-2",
+          "label": "Return the entire array because every value is negative.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "Nonempty is part of the result contract; the best single value is at index 1."
+    },
+    {
+      "id": "segment-tie",
+      "kind": "choice",
+      "prompt": "With equal sums on [0, 0], which result matches the stated tie rule?",
+      "options": [
+        {
+          "id": "option-0",
+          "label": "Return (0, 0, 1): earliest start, then earliest exclusive end.",
+          "isCorrect": true
+        },
+        {
+          "id": "option-1",
+          "label": "Return (0, 1, 2) because it was visited last.",
+          "isCorrect": false
+        },
+        {
+          "id": "option-2",
+          "label": "Return (0, 0, 2) because longer ties always win.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "Keeping an earlier zero-sum start and updating the overall best only on improvement preserves the selected tie rule."
+    },
+    {
+      "id": "slot-domain",
+      "kind": "choice",
+      "prompt": "A cyclic-placement input contains [1, 1]. What should happen before its swap loop?",
+      "options": [
+        {
+          "id": "option-0",
+          "label": "Reject duplicate values before swaps; the unique 0..n domain is part of the contract.",
+          "isCorrect": true
+        },
+        {
+          "id": "option-1",
+          "label": "Keep swapping until a duplicate becomes unique.",
+          "isCorrect": false
+        },
+        {
+          "id": "option-2",
+          "label": "Trust annotations to prove values are unique.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "Duplicate values can prevent progress. The reference validates domain and uniqueness before changing its private copy."
+    },
+    {
+      "id": "strict-greater",
+      "kind": "choice",
+      "prompt": "Which successor-index result is correct for [2, 2, 3]?",
+      "options": [
+        {
+          "id": "option-0",
+          "label": "Return [2, 2, None]; equal values stay pending until a strictly greater value appears.",
+          "isCorrect": true
+        },
+        {
+          "id": "option-1",
+          "label": "Return [1, 2, None] because equality resolves the first index.",
+          "isCorrect": false
+        },
+        {
+          "id": "option-2",
+          "label": "Return [3, 3, None] because output values and output indices are interchangeable.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "The output is the first greater position, not its value; both positions with value 2 wait for index 2."
+    }
+  ]
+}

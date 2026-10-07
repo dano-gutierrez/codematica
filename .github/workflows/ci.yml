@@ -64,7 +64,13 @@ jobs:
       - uses: actions/setup-python@v6
         with:
           python-version: "3.13"
+      - run: python -m unittest discover -s scripts/linkedin -p 'test_models.py' -v
       - run: npm run test:interview:python
+      - name: Test knowledge contracts with inert inference
+        run: |
+          python -m venv .local/knowledge/python
+          .local/knowledge/python/bin/pip install --no-deps --requirement services/knowledge/requirements.test.lock
+          npm run test:knowledge:python
       - run: npm run test:coverage
         env:
           CI: true
@@ -119,7 +125,10 @@ jobs:
           cache: npm
       - run: npm ci
       - run: npm run test:db
+      - run: docker pull postgres@sha256:e38411452a464af89e5adadb8d223bf53b898d47d6ef918b2d58c08707350449
+      - run: npm run test:reservation:sql
       - run: npm run test:linkedin:local
+      - run: npm run test:linkedin:preparation
       - name: Stop local Supabase
         if: always()
         run: supabase stop --no-backup
@@ -136,6 +145,9 @@ jobs:
       - run: npm ci
       - run: npx playwright install --with-deps chromium webkit
       - run: npm run e2e:web:smoke
+        env:
+          CI: true
+      - run: npm run e2e:knowledge
         env:
           CI: true
       - run: npm run e2e:linkedin

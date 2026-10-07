@@ -1,0 +1,44 @@
+{
+  "sources": [
+    {
+      "id": "sre-handling-overload",
+      "title": "Handling Overload",
+      "provider": "Google SRE",
+      "url": "https://sre.google/sre-book/handling-overload/",
+      "attribution": "Alejandro Forero Cuervo; edited by Sarah Chavis. Primary source for resource-based capacity and overload responses.",
+      "lastVerifiedAt": "2026-10-03"
+    },
+    {
+      "id": "postgresql-table-partitioning",
+      "title": "PostgreSQL Table Partitioning",
+      "provider": "PostgreSQL",
+      "url": "https://www.postgresql.org/docs/current/ddl-partitioning.html",
+      "attribution": "PostgreSQL documentation. Table partitioning and pruning; not a claim of distributed sharding.",
+      "lastVerifiedAt": "2026-10-03"
+    },
+    {
+      "id": "web-cors-mdn",
+      "title": "Cross-Origin Resource Sharing",
+      "provider": "MDN Web Docs",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/CORS",
+      "attribution": "MDN contributors. Browser preflights, response access and credential considerations.",
+      "lastVerifiedAt": "2026-10-03"
+    },
+    {
+      "id": "web-fetch-standard",
+      "title": "Fetch \u2014 CORS Protocol",
+      "provider": "WHATWG",
+      "url": "https://fetch.spec.whatwg.org/#http-cors-protocol",
+      "attribution": "WHATWG Fetch contributors. Normative browser request and response-sharing behavior.",
+      "lastVerifiedAt": "2026-10-03"
+    },
+    {
+      "id": "web-csrf-owasp",
+      "title": "Cross-Site Request Forgery Prevention",
+      "provider": "OWASP",
+      "url": "https://cheatsheetseries.owasp.org/cheatsheets/Cross-Site_Request_Forgery_Prevention_Cheat_Sheet.html",
+      "attribution": "OWASP contributors. Server-side anti-forgery defenses and their limits.",
+      "lastVerifiedAt": "2026-10-03"
+    }
+  ]
+}

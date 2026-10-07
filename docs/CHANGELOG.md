@@ -1,6 +1,14 @@
 # Product And Engineering Changelog
 
+## 2026-10-04 — Selected Evidence Review
+
+Added eleven original source-bound lessons,55 choices and three ordered paths for engineering, creative computing and ownership review. Existing curricula/runtime/dependencies are unchanged. Selected primary references preserve editions, licensing scope and fictional assumptions; no complete external course or installed-system certification is claimed. See [the feature contract](features/selected-evidence-review.md).
+
 This changelog dates durable product and architecture changes and links to their authoritative feature contracts.
+
+## 2026-10-07 — Event-log review integration
+
+Updated PR #50 for current main while retaining every interview verification command and regenerating the combined content index. The event-log verifier now rejects an explicit `--scale 0` instead of silently skipping scale checks. CLI regression tests cover rejected counts and the minimum accepted count; the six authored solutions are unchanged.
 
 ## 2026-10-05 — Partitioned event-log interview
 
@@ -54,6 +62,14 @@ Added an anonymous real-world exercise with three complete TypeScript/Python pai
 - Aligned the Expo SDK 57 patch dependencies and added a Gradle input hook so shared code edits invalidate cached Android bundles.
 - Added core/browser/native/database coverage and retained existing coverage floors. Generated worker/asset files are artifacts; no authored game source is excluded from coverage.
 - Release verification and current toolchain limits are tracked in [the feature contract](features/restore-the-signal.md); source and bundle success do not imply installed-iOS or deployment readiness.
+## 2026-10-03 — Local LinkedIn Preparation
+
+- Added opt-in local writer/OpenJev preparation, immutable reports and generic voice versions, duplicate/follow-up routing, bounded editing and compact Codex verification. Originals and human adoption/approval remain separate.
+- Added selected-post detail loading, advisory local scores/hooks/flags, explicit overrides and editable voice rules to web/native review. Versioned collection polling reduces repeated history transfer.
+- Added v2 backups with backward-compatible restore, isolated CLI/model acceptance tests and manual model lifecycle. No cloud inference, scheduler or paid infrastructure was added. Hosted activation/backfill remains a separate rollout.
+- Kept coverage thresholds intact; added local model modules to instrumentation and excluded ignored private `.local` artifacts from ESLint. Production artifact smoke checks that local inference and privileged worker code stay out of web startup. Playwright accepts a separate port for concurrent checkouts.
+
+Owning contract: `docs/features/linkedin-editorial.md`; operations: `docs/runbooks/linkedin-editorial.md`.
 
 ## 2026-09-29 — PR Check Reliability
 
@@ -276,3 +292,21 @@ Added admin web/native review, immutable Supabase revisions, approval-bound Buff
 ### LinkedIn worker switched to manual execution
 
 Removed the recurring Codex automation at the user’s request. Web/native copy and operating instructions now explain that requests wait for an explicit manual run. Queue, approval, and publication behavior is unchanged.
+
+- 2026-10-03: Rebased local LinkedIn preparation onto the notebook-preview changes and serialized model POSTs with the knowledge service through a shared POSIX lock.
+
+## 2026-10-03 — Knowledge graph and graph-assisted editorial review
+
+- Added a complete non-human-language catalog, stable scoped identities, private post revisions and explicit/inferred/approved relationships.
+- Added isolated pinned Graphiti/Neo4j, local BGE/Qwen/OpenJev retrieval and staged decisions, REST/MCP, resumable extraction and a 40-case benchmark.
+- Added admin-only Supabase projections/offline jobs, a Cytoscape graph and accessible table, evidence/proposal review and reviewed relationship sidecars.
+- Persisted graph enrollment/context through LinkedIn preparation and Codex verification; enforced freshness at adoption, approval and Buffer initiation. Graph overrides now produce a flagged candidate; canonical source failures still hold.
+- Added joined real-model smoke with independent verification and inert scheduling, RLS/freshness regressions, and operating documentation. Existing coverage floors remain unchanged; hosted rollout is separate.
+
+## 2026-10-04 — Private interview preparation
+
+Add a web/native admin company/role/round tracker, private candidate profile, immutable brief history, Markdown export and Codex preparation skill. Every output applies technical-edit; imports bind edited prose and input versions. Reuse private knowledge catalog/evaluation and PR #15 shared controls. No coverage thresholds are lowered. Hosted rollout and installed-device acceptance remain separate.
+
+## 2026-10-04 — Graph stack integration
+
+Integrated the current private interview tracker and continuous campaign map into the knowledge/content stack. Kept private brief extraction separate from public curriculum and retained both incoming browser tag sets. Added an executable configuration regression for every desktop/WebKit tag and the full mobile Chromium lane. Scratch database replay and production-only HTTP checks use disposable state; hosted rollout and installed-device acceptance remain separate.

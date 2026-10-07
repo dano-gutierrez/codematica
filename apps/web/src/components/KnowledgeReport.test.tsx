@@ -1,0 +1,9 @@
+import { fireEvent,render,screen } from "@testing-library/react";
+import { describe,expect,it,vi } from "vitest";
+import { KnowledgeReport } from "./KnowledgeReport";
+import { knowledgeJob } from "../../../../packages/core/src/test/knowledge-fixture";
+describe("evidence and proposals",()=>{
+ it("shows waiting and failed jobs",()=>{const {rerender}=render(<KnowledgeReport job={{id:"j",status:"pending"}}/>);expect(screen.getByRole("status")).toHaveTextContent("Waiting");rerender(<KnowledgeReport job={{id:"j",status:"failed",error:"Offline"}}/>);expect(screen.getByRole("status")).toHaveTextContent("Offline");rerender(<KnowledgeReport job={{id:"j",status:"failed"}}/>);expect(screen.getByRole("status")).toHaveTextContent("failed");});
+ it("reviews literal evidence without editing content",()=>{const review=vi.fn();render(<KnowledgeReport job={knowledgeJob} onReview={review}/>);expect(screen.getByRole("link",{name:"Open resource"})).toHaveAttribute("href","/docs/databases/index-fundamentals");fireEvent.click(screen.getByRole("button",{name:"Accept proposal"}));fireEvent.click(screen.getByRole("button",{name:"Reject proposal"}));expect(review.mock.calls).toEqual([["accept"],["reject"]]);});
+ it("preserves warnings and reviewed states without unsafe links",()=>{const job=structuredClone(knowledgeJob);job.reviewed="reject";job.report!.warnings=["Coverage incomplete"];job.report!.relationships=[];job.report!.matches[0].route="//unsafe.test";delete job.report!.matches[0].relation;render(<KnowledgeReport job={job} onReview={vi.fn()}/>);expect(screen.queryByRole("link")).toBeNull();expect(screen.queryByRole("button")).toBeNull();expect(screen.getByText(/Proposal rejected/)).toBeInTheDocument();expect(screen.getByText("No supported relationship proposal.")).toBeInTheDocument();});
+});

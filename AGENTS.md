@@ -408,3 +408,10 @@ Reuse these components and extend them when needed; avoid rebuilding equivalent 
 - Use `npm run mobile:build:android`, `npm run mobile:build:ios`, `npm run mobile:submit:android`, and `npm run mobile:submit:ios` only after the relevant store records, credentials, metadata, screenshots, and review forms are ready.
 - Use `npm run e2e:smoke` for the critical end-to-end path.
 - If you change shared business logic, content parsing, indexing, search, rendering, Supabase sync, or migrations, do not stop at E2E only; add or update matching Vitest coverage too.
+
+### Interview preparation reusable surfaces
+
+- `apps/web/src/components/Button.tsx`: shared named action control from design PR #15.
+- `apps/web/src/components/InterviewPreparationAdmin.tsx`: private company/role collection, profile/round editing and brief review/export.
+- `packages/ui/src/InterviewPreparationScreen.tsx`: native counterpart sharing core tracker logic.
+- `.agents/skills/prepare-interview/SKILL.md`: research/personalization workflow; always apply repository technical-edit before interview-preparation output.

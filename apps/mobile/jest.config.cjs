@@ -14,6 +14,7 @@ module.exports = {
     "packages/ui/src/game/**/*.tsx",
 
     "packages/ui/src/LinkedInAdminScreen.tsx",
+    "packages/ui/src/InterviewPreparationScreen.tsx",
     "packages/ui/src/JapaneseNotebookPractice.tsx",
     "packages/ui/src/JapaneseNotebookCatalogScreen.tsx",
     "packages/ui/src/notebook-session.ts",

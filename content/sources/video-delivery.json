@@ -1,0 +1,64 @@
+{
+  "sources": [
+    {
+      "id": "video-hls-rfc8216",
+      "title": "RFC 8216 \u2014 HTTP Live Streaming",
+      "provider": "IETF",
+      "url": "https://www.rfc-editor.org/rfc/rfc8216.html",
+      "attribution": "August 2017; selected overview, 4.3.4.2 and 6.3.1 variant/segment/bandwidth and client-switch scope. Original deadline case; no player or complete protocol implementation.",
+      "lastVerifiedAt": "2026-10-04",
+      "upstream": {
+        "version": "RFC 8216",
+        "maturity": "published"
+      }
+    },
+    {
+      "id": "video-eme-2017",
+      "title": "W3C EME \u2014 Key Systems And Output Status",
+      "provider": "W3C",
+      "url": "https://www.w3.org/TR/2017/REC-encrypted-media-20170918/",
+      "attribution": "September 18, 2017 Recommendation; abstract, CDM definitions and 6.1 MediaKeyStatus output restrictions/downscaling. Selected passages only; no DRM implemented.",
+      "lastVerifiedAt": "2026-10-04",
+      "upstream": {
+        "version": "2017 Recommendation",
+        "maturity": "published"
+      }
+    },
+    {
+      "id": "video-android-drm",
+      "title": "Android MediaDrm \u2014 Software And Hardware Security Levels",
+      "provider": "Android Developers",
+      "url": "https://developer.android.com/reference/android/media/MediaDrm",
+      "attribution": "Selected API level 28 security constants and negotiated HDCP API. Software/hardware scope differs; no device or protected decoder tested.",
+      "lastVerifiedAt": "2026-10-04",
+      "upstream": {
+        "version": "API reference checked 2026-10-04",
+        "maturity": "published"
+      }
+    },
+    {
+      "id": "video-android-secure-window",
+      "title": "Android \u2014 Secure Window Capture Policy",
+      "provider": "Android Developers",
+      "url": "https://developer.android.com/security/fraud-prevention/activities",
+      "attribution": "Selected FLAG_SECURE guidance and blank-capture observation. No capture protections changed or bypassed.",
+      "lastVerifiedAt": "2026-10-04",
+      "upstream": {
+        "version": "Guide checked 2026-10-04",
+        "maturity": "published"
+      }
+    },
+    {
+      "id": "video-netflix-browser-requirements",
+      "title": "Netflix \u2014 Conditional Browser Resolution Requirements",
+      "provider": "Netflix Help Center",
+      "url": "https://help.netflix.com/en/node/30081",
+      "attribution": "2026-10-04 Windows/Mac table inspected. Conditional maxima differ by platform and browser; no playback or throughput measured.",
+      "lastVerifiedAt": "2026-10-04",
+      "upstream": {
+        "version": "Help table checked 2026-10-04",
+        "maturity": "published"
+      }
+    }
+  ]
+}

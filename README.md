@@ -153,15 +153,21 @@ The [in-level miniature kit](assets/game/previews/miniatures-v3.png) shows the a
 
 ## Private LinkedIn editorial workflow
 
-Admin web/native manual creation, Unicode text formatting and review at `/admin/linkedin` uses optional Supabase persistence and a manually invoked local Codex worker. Drafts are private; a human must approve the exact revision before Buffer scheduling. See [feature contract](docs/features/linkedin-editorial.md) and [operations runbook](docs/runbooks/linkedin-editorial.md). Commands: `npm run linkedin -- status`, `npm run e2e:linkedin`, `npm run test:linkedin:local`, and `npm run test:production:smoke` (after build).
+Admin web/native manual creation, Unicode text formatting and review at `/admin/linkedin` uses optional Supabase persistence, opt-in local writer/OpenJev preparation, and a manually invoked Codex verification worker. Drafts are private; a human must approve the exact revision before Buffer scheduling. See [feature contract](docs/features/linkedin-editorial.md) and [operations runbook](docs/runbooks/linkedin-editorial.md). Local models: `npm run linkedin:models -- status`; manual batches: `npm run linkedin -- prepare 5`. Commands: `npm run linkedin -- status`, `npm run e2e:linkedin`, `npm run test:linkedin:local`, and `npm run test:production:smoke` (after build).
 
 ## Frontend interview practice
 
-Open `/paths/frontend-interview-practice` for seven lessons, guided TS/Python solutions, checkpoints, and continuous review. Canonical code is in `content/interviews/frontend-practice.json`. After editing it, run `npm run content:index`, `npm run test:interview:python` (requires Python 3), and the authored-project Vitest checks. See [the feature contract](docs/features/frontend-interview-practice.md) for the complete verification workflow and native release gaps.
+Open `/paths/frontend-interview-practice` for seven lessons, guided TS/Python solutions, checkpoints, and continuous review. Canonical code is in `content/interviews/frontend-practice.json`. After editing it, run `npm run content:index`, `npm run test:interview:python` (CI uses Python 3.13), and the authored-project Vitest checks. The Python gate also executes the original neural-gradient, temporary-SQLite retry and evidence-bound handoff labs with isolated inputs. See [the feature contract](docs/features/frontend-interview-practice.md) for the complete verification workflow and native release gaps.
 
 The supplementary lesson `/docs/frontend/react-state-async-callbacks` covers stale state in timers and promises, functional updates, cleanup, and a six-question checkpoint. Its complete examples live in Markdown and are typechecked and executed by `ReactAsyncStateLesson.test.tsx`.
 
 Japanese writing notebooks use 24 whole-prompt repetitions per sheet and support curated/custom text of 1–5 published characters. Ink stays on the device; coarse completion/unlocks optionally sync. See `docs/features/japanese-writing-notebooks.md` for the implementation, persistence and validation contract.
+
+The optional [knowledge graph and local content evaluator](docs/features/knowledge-evaluator.md) maps canonical content, supplies evidence to OpenJev and local LinkedIn preparation, and offers an admin graph/table explorer. See [operating instructions](docs/runbooks/knowledge-evaluator.md). Anonymous learning stays independent.
+
+## Private interview preparation
+
+Admin → Interview preparation tracks companies, roles and rounds on web/native. The `prepare-interview` Codex skill uses your private resume/project context, researches current evidence and always applies technical-edit. Supabase stores immutable briefs; Markdown export and private knowledge links support reuse. See [feature](docs/features/interview-preparation.md) and [operations](docs/runbooks/interview-preparation.md).
 
 ## Event-log interview practice
 

@@ -1,0 +1,155 @@
+{
+  "slug": "system-design/api-interactions-and-intermediaries-checkpoint",
+  "title": "Interaction Contracts Checkpoint",
+  "type": "questionnaire",
+  "difficulty": "practitioner",
+  "status": "published",
+  "documentSlug": "system-design/api-interactions-and-intermediaries",
+  "sourceRefs": [
+    "boundary-rfc9110",
+    "boundary-graphql-security",
+    "boundary-grpc-core",
+    "boundary-rfc6455",
+    "boundary-fielding-rest"
+  ],
+  "concept": "Interaction Contracts",
+  "tags": [
+    "systems-contracts",
+    "evidence"
+  ],
+  "skillIds": [
+    "interaction-contract"
+  ],
+  "questions": [
+    {
+      "id": "axes",
+      "kind": "choice",
+      "skillIds": [
+        "interaction-contract"
+      ],
+      "prompt": "A service needs cacheable resources, client-selected dashboards, typed operations, a live channel and later notifications. What should the design compare?",
+      "options": [
+        {
+          "id": "correct",
+          "label": "Record separate resource-style, RPC, query-shape, channel and callback contracts.",
+          "isCorrect": true
+        },
+        {
+          "id": "wrong-1",
+          "label": "Pick one label and assume it supplies every delivery and security rule.",
+          "isCorrect": false
+        },
+        {
+          "id": "wrong-2",
+          "label": "Rank all labels by one universal speed order.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "These requirements describe different architectural, schema, RPC, channel and callback contracts. They can coexist; transport choice alone does not define permission or durable effect semantics."
+    },
+    {
+      "id": "roles",
+      "kind": "choice",
+      "skillIds": [
+        "interaction-contract"
+      ],
+      "prompt": "An office client selects one intermediary; the library exposes another in front of its services. Which distinction matters?",
+      "options": [
+        {
+          "id": "wrong-1",
+          "label": "Both are defined only by which has more backends.",
+          "isCorrect": false
+        },
+        {
+          "id": "wrong-2",
+          "label": "Every proxy necessarily anonymizes all traffic.",
+          "isCorrect": false
+        },
+        {
+          "id": "correct",
+          "label": "The forward proxy is client-selected; the reverse intermediary represents an origin service.",
+          "isCorrect": true
+        }
+      ],
+      "explanation": "The client-chosen forward proxy and origin-facing reverse intermediary represent different roles. A process may implement several functions, so trace whose authority is used on each hop."
+    },
+    {
+      "id": "query-budget",
+      "kind": "choice",
+      "skillIds": [
+        "interaction-contract"
+      ],
+      "prompt": "A dashboard requests two GraphQL fields for a book. Which review remains necessary?",
+      "options": [
+        {
+          "id": "wrong-2",
+          "label": "A schema-valid query is always within the permitted work budget.",
+          "isCorrect": false
+        },
+        {
+          "id": "correct",
+          "label": "Authorize the requested resources and bound query work independently of the selected fields.",
+          "isCorrect": true
+        },
+        {
+          "id": "wrong-1",
+          "label": "Two fields guarantee two cheap reads and automatic authorization.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "Response shape does not establish resource permission or resolver cost. Authorize the objects and bound work, expansion and deadlines separately from schema validation."
+    },
+    {
+      "id": "deadline",
+      "kind": "choice",
+      "skillIds": [
+        "interaction-contract"
+      ],
+      "prompt": "The server stores result version 8, but its reply arrives after the client deadline. What follows?",
+      "options": [
+        {
+          "id": "correct",
+          "label": "A deadline failure does not prove that the server made no change.",
+          "isCorrect": true
+        },
+        {
+          "id": "wrong-1",
+          "label": "The client can conclude that no result was stored.",
+          "isCorrect": false
+        },
+        {
+          "id": "wrong-2",
+          "label": "Cancellation rolls back every earlier side effect.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "Client and server observations can differ. Earlier changes are not undone merely by cancellation; reconciliation and a stable operation identity are needed before an uncertain write is repeated."
+    },
+    {
+      "id": "effect",
+      "kind": "choice",
+      "skillIds": [
+        "interaction-contract"
+      ],
+      "prompt": "The gateway terminates TLS and routes to a healthy service. What is still unproven?",
+      "options": [
+        {
+          "id": "wrong-1",
+          "label": "No other correctness rule is needed after a health check.",
+          "isCorrect": false
+        },
+        {
+          "id": "wrong-2",
+          "label": "A gateway label means every user owns every requested object.",
+          "isCorrect": false
+        },
+        {
+          "id": "correct",
+          "label": "Routing and TLS termination do not establish durable application effects or user authorization.",
+          "isCorrect": true
+        }
+      ],
+      "explanation": "TLS protects the relevant connection and routing selects an eligible target. User/resource authorization and the destination's durable operation receipt require separate evidence."
+    }
+  ]
+}

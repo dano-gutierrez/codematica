@@ -3,7 +3,7 @@
 ## Snapshot
 
 - Status: `in_progress`
-- Last updated: `2026-10-05`
+- Last updated: `2026-10-07`
 - Owner thread: n/a
 - Current state: implemented and locally verified; PR #50 is under review. Installed-device verification remains pending.
 - Target outcome: explain global offsets, efficient reads and independent cursors while stating concurrency and scale limits.
@@ -76,6 +76,7 @@ The first TDD run failed all six initial core tests because the new exercise and
 - Core: every offset against an independent filter/slice oracle; global/key ordering; defaults and 0/10,000/10,001 page boundaries; all request validators; unknown keys; independent cursors; future offsets; partial blocks; exact donor/recipient keys and counts; threshold/cooldown/cap boundaries; and quiz options checked against an independent answer key.
 - Complexity regression: count stored-ID inspections when seeking near a 10,000-entry tail; fewer than 100 comparisons for the chosen block size catches a full-prefix scan without wall-clock timing assertions.
 - Python: the same oracle and boundary cases, eight concurrent thread callers with interleaved reads, and shared snapshot parity with TypeScript. The million-event traversal verifies every returned ID, key and value against a calculated sequence.
+- Python scale command: an explicit count below 100 fails, including zero. CLI regression tests check 0, 99 and 100, and require all three approaches to run at the accepted boundary.
 - Web component: all three recipes, TS file selection and complete Python code.
 - Native: Jest exercises both languages/all approaches and checkpoint navigation. Maestro selects an answer, checks feedback for each question, and asserts review card 12 after scrolling. A saved flow is not device execution evidence.
 - Browser: `event-log.regression.spec.ts` is tagged `@regression @playground` to run on mobile/desktop Chromium and mobile WebKit. It executes all projects, moves ownership with a live cursor, grades the quiz and scrolls beyond the initial review window.
@@ -94,6 +95,7 @@ Installed Android/iOS Maestro execution remains a separate device check. The mat
 - The lesson now includes the future-offset scan cost already noted in the solution tracks. It no longer implies that a page limit bounds Python lock duration.
 - Complexity notes count block/anchor metadata across all keys. Segmented arrays grow on append; block size is a cap, not preallocated capacity.
 - Prose edits preserve all six authored programs and every project file verbatim.
+- An explicit `--scale 0` previously exited successfully without running the scale fixture. It now fails with the same minimum-count error as other counts below 100.
 
 ## Decision Log
 
@@ -122,3 +124,11 @@ All four workspace typechecks pass. All fifteen existing smoke checks and the co
 After the prose corrections and stronger tests, both Vitest coverage passes run 553 tests in 92 files; native Jest passes 148 tests in 18 suites. All 30 targeted mutations are rejected across the applicable TS/Python approaches. The three Python programs pass the strengthened 1,000,003-event oracle. All six authored programs and their playground files are byte-for-byte unchanged from the initial PR head.
 
 Content validation, lint, all workspace typechecks, Mobile Doctor (20/20), and the web production build pass. The event-log journey and knowledge-browser smoke test pass on desktop Chromium, mobile Chromium and mobile WebKit (six runs). Local evidence is in `/tmp/codematica-pr50-polish/` and `test-results/pr50-polish-browser/`. The Maestro YAML parses, but installed Android/iOS execution remains unverified.
+
+## Review validation — 2026-10-07
+
+Integrated main `82fc14d` and resolved documentation, verification-command and generated-index conflicts. Every existing content entry and verification command is retained; all six authored programs are unchanged. A new failing CLI regression reproduced the zero-count skip, and the fix passes counts 0, 99 and 100.
+
+Both Vitest coverage passes now run 849 tests in 126 files. Native coverage passes 162 tests in 20 suites. All interview verification commands, the three Python million-event fixtures, lint, all typechecks, content freshness, Mobile Doctor (20/20) and the production build pass. The event-log journey and reader smoke pass on all three browser projects. The isolated production-only install reaches HTTP readiness; packaged game, brand and SQLite smoke checks also pass.
+
+Evidence is retained in `/tmp/codematica-pr50-oct7-*.log` and `test-results/pr50-oct7-browser/`. The DEV-6436 review retains the prior 30 rejected mutations for unchanged solution code and adds the zero-count regression. No CodeRabbit or human review findings were present. Installed Android/iOS Maestro execution remains unverified.

@@ -1,0 +1,153 @@
+{
+  "slug": "system-design/federation-and-delegation-checkpoint",
+  "title": "Federation And Delegation Checkpoint",
+  "type": "questionnaire",
+  "difficulty": "practitioner",
+  "status": "published",
+  "documentSlug": "system-design/federation-and-delegation",
+  "sourceRefs": [
+    "evidence-oidc-core",
+    "evidence-pkce",
+    "evidence-oauth-security"
+  ],
+  "concept": "Federation And Delegation",
+  "tags": [
+    "evidence-review",
+    "contracts"
+  ],
+  "skillIds": [
+    "identity-boundaries"
+  ],
+  "questions": [
+    {
+      "id": "sessions",
+      "kind": "choice",
+      "skillIds": [
+        "identity-boundaries"
+      ],
+      "prompt": "Nora is signed into A through a shared identity provider. What is known about B?",
+      "options": [
+        {
+          "id": "correct",
+          "label": "B\u2019s local session remains separate and needs its own configured login flow.",
+          "isCorrect": true
+        },
+        {
+          "id": "wrong-1",
+          "label": "A\u2019s cookie automatically authorizes B.",
+          "isCorrect": false
+        },
+        {
+          "id": "wrong-2",
+          "label": "Shared sign-in removes every local session.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "Provider-session reuse can reduce login interaction, but each application\u2019s local session remains a separate configured object. One client cookie does not establish another application\u2019s authorization."
+    },
+    {
+      "id": "audience",
+      "kind": "choice",
+      "skillIds": [
+        "identity-boundaries"
+      ],
+      "prompt": "A token has a trusted signature but names another audience. Under the exercise\u2019s policy, what follows?",
+      "options": [
+        {
+          "id": "wrong-1",
+          "label": "Any trusted signature permits use by every client.",
+          "isCorrect": false
+        },
+        {
+          "id": "wrong-2",
+          "label": "Only the token\u2019s display name matters.",
+          "isCorrect": false
+        },
+        {
+          "id": "correct",
+          "label": "Reject it for this client despite the valid signature.",
+          "isCorrect": true
+        }
+      ],
+      "explanation": "Signature validity and intended audience are separate checks. The policy requires this registered client; a display name and trusted issuer signature cannot repair a mismatched audience."
+    },
+    {
+      "id": "nonce",
+      "kind": "choice",
+      "skillIds": [
+        "identity-boundaries"
+      ],
+      "prompt": "The client sent transaction nonce N but receives M. What follows?",
+      "options": [
+        {
+          "id": "wrong-2",
+          "label": "Send M back as a replacement for the original transaction.",
+          "isCorrect": false
+        },
+        {
+          "id": "correct",
+          "label": "Reject the mismatch before using the returned tokens.",
+          "isCorrect": true
+        },
+        {
+          "id": "wrong-1",
+          "label": "Ignore the nonce because the user is familiar.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "The returned nonce must match the one bound to this initiated transaction. Familiar identity and replacing stored state after the fact do not establish the required transaction continuity."
+    },
+    {
+      "id": "downgrade",
+      "kind": "choice",
+      "skillIds": [
+        "identity-boundaries"
+      ],
+      "prompt": "A code exchange supplies a verifier but the authorization request had no challenge. What should happen?",
+      "options": [
+        {
+          "id": "correct",
+          "label": "Reject the exchange; a verifier cannot retroactively establish the missing challenge.",
+          "isCorrect": true
+        },
+        {
+          "id": "wrong-1",
+          "label": "Accept any verifier as proof of safety.",
+          "isCorrect": false
+        },
+        {
+          "id": "wrong-2",
+          "label": "Infer a challenge from the account name.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "The challenge belongs to the original authorization request. RFC 9700 requires downgrade protection here; an arbitrary verifier or account attribute does not establish that missing transaction binding."
+    },
+    {
+      "id": "object",
+      "kind": "choice",
+      "skillIds": [
+        "identity-boundaries"
+      ],
+      "prompt": "Nora has a valid local session with read permission on I9. May she refund I9?",
+      "options": [
+        {
+          "id": "wrong-1",
+          "label": "Every authenticated user may refund every invoice.",
+          "isCorrect": false
+        },
+        {
+          "id": "wrong-2",
+          "label": "PKCE itself grants invoice refund access.",
+          "isCorrect": false
+        },
+        {
+          "id": "correct",
+          "label": "Only if the resource\u2019s current refund authorization check permits that action.",
+          "isCorrect": true
+        }
+      ],
+      "explanation": "Identity and code-exchange protection do not define object-action permission. The handler must enforce current refund authorization; read access and PKCE do not supply that separate grant."
+    }
+  ]
+}

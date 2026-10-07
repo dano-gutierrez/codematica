@@ -1,0 +1,154 @@
+{
+  "slug": "programming/tree-shapes-and-cost-models-checkpoint",
+  "title": "Tree Shapes And Cost Models Checkpoint",
+  "type": "questionnaire",
+  "difficulty": "practitioner",
+  "status": "published",
+  "documentSlug": "programming/tree-shapes-and-cost-models",
+  "sourceRefs": [
+    "shape-opendsa-binary",
+    "shape-opendsa-bst",
+    "cost-opendsa-selection",
+    "cost-oxford-b16"
+  ],
+  "concept": "Tree Shapes And Cost Models",
+  "tags": [
+    "contract-review",
+    "invariants"
+  ],
+  "skillIds": [
+    "shape-and-cost"
+  ],
+  "questions": [
+    {
+      "id": "shape-independent",
+      "kind": "choice",
+      "skillIds": [
+        "shape-and-cost"
+      ],
+      "prompt": "A root has only a left child. Under the lesson definitions, what separates full from complete?",
+      "options": [
+        {
+          "id": "correct",
+          "label": "Full means zero or two children; complete means no missing breadth-first slot before an occupied slot.",
+          "isCorrect": true
+        },
+        {
+          "id": "wrong-1",
+          "label": "Full and complete are synonyms for any tree with logarithmic search.",
+          "isCorrect": false
+        },
+        {
+          "id": "wrong-2",
+          "label": "Ordering values automatically makes the tree full and perfect.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "The example is complete but not full: the occupied positions fill left to right while the root has one child. Shape and value ordering are independent. A plain BST can have linear height, so its name is not a logarithmic guarantee."
+    },
+    {
+      "id": "global-order",
+      "kind": "choice",
+      "skillIds": [
+        "shape-and-cost"
+      ],
+      "prompt": "Root 10 has left child 5 whose right child is 12. What rejects this strict BST?",
+      "options": [
+        {
+          "id": "correct",
+          "label": "Carry ancestor bounds; a locally valid child can still violate the root's range.",
+          "isCorrect": true
+        },
+        {
+          "id": "wrong-1",
+          "label": "Check only that 12 is greater than its direct parent 5.",
+          "isCorrect": false
+        },
+        {
+          "id": "wrong-2",
+          "label": "Accept every height-balanced shape regardless of key ordering.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "The local edge from 5 to 12 is increasing, but 12 lies in the left subtree of 10 and violates its inherited upper bound. Balance does not supply ordering. The authored duplicate policy is strict and must also be checked."
+    },
+    {
+      "id": "selection-count",
+      "kind": "choice",
+      "skillIds": [
+        "shape-and-cost"
+      ],
+      "prompt": "How many comparisons does the authored selection scan make for n sorted values?",
+      "options": [
+        {
+          "id": "correct",
+          "label": "The authored selection scan makes n(n-1)/2 comparisons even on sorted input.",
+          "isCorrect": true
+        },
+        {
+          "id": "wrong-1",
+          "label": "It makes n-1 comparisons because sorted input avoids scanning the remaining portion.",
+          "isCorrect": false
+        },
+        {
+          "id": "wrong-2",
+          "label": "It makes 2^n comparisons because the implementation contains nested loops.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "Each pass still scans the remaining portion, producing the arithmetic sum n(n-1)/2. Few swaps do not remove comparisons. Nested loops do not alone establish exponential cost; the exact iteration ranges determine this quadratic count."
+    },
+    {
+      "id": "cost-claim",
+      "kind": "choice",
+      "skillIds": [
+        "shape-and-cost"
+      ],
+      "prompt": "A summary labels hash lookup or substring search O(1) or O(n). What must the review preserve?",
+      "options": [
+        {
+          "id": "correct",
+          "label": "Name the operation and assumptions; expected, worst-case and amortized claims differ.",
+          "isCorrect": true
+        },
+        {
+          "id": "wrong-1",
+          "label": "One complexity label certifies every variant, input representation and preprocessing cost.",
+          "isCorrect": false
+        },
+        {
+          "id": "wrong-2",
+          "label": "Big-O is always a tight exact count and quadratic always means exponential.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "Specify representation, primitive costs, variant and case. Distribution-based expectation and sequence-based amortization differ from a worst-case bound. Big-O is an asymptotic upper bound; preprocessing and output size still matter, and quadratic growth is polynomial."
+    },
+    {
+      "id": "model-boundary",
+      "kind": "choice",
+      "skillIds": [
+        "shape-and-cost"
+      ],
+      "prompt": "The 195 tree fixtures and 364 sort fixtures pass. What can be claimed?",
+      "options": [
+        {
+          "id": "correct",
+          "label": "The bounded fixtures check the stated representation; they do not prove arbitrary graphs or runtime speed.",
+          "isCorrect": true
+        },
+        {
+          "id": "wrong-1",
+          "label": "The fixture implements full AVL updates and validates every graph shape.",
+          "isCorrect": false
+        },
+        {
+          "id": "wrong-2",
+          "label": "The comparison count is a measured byte-memory and wall-clock throughput benchmark.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "The bounded tuple representation, independent gap/inorder references and exact comparison count are checked. There are no AVL rotations or arbitrary graph traversal. A logical operation count is distinct from measured time or memory on a deployed runtime."
+    }
+  ]
+}

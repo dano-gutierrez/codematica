@@ -65,3 +65,37 @@ it("serializes creation, preserves retry identity after failure and refreshes on
   expect(store.getSnapshot().editing).toBe(false);
   await store.create(input); expect(api.create.mock.calls[2][0]).not.toBe(api.create.mock.calls[1][0]);
 });
+
+it("polls summaries, fetches only selected details and ignores unchanged versions", async () => {
+  const api = { isAdmin: vi.fn().mockResolvedValue(true), snapshot: vi.fn(), create: vi.fn(), review: vi.fn(), overview: vi.fn().mockResolvedValue({ ...editorialFixture, revisions: [], version: "1" }), detail: vi.fn().mockResolvedValue(editorialFixture) };
+  const store = createEditorialStore(api); await store.refresh();
+  expect(api.snapshot).not.toHaveBeenCalled(); expect(store.getSnapshot().data?.revisions).toEqual([]);
+  await store.selectPost(editorialFixture.posts[0].id);
+  expect(api.detail).toHaveBeenCalledWith(editorialFixture.posts[0].id);
+  await store.refresh(); expect(api.detail).toHaveBeenCalledTimes(1);
+  expect(store.getSnapshot().data?.revisions).toEqual(editorialFixture.revisions);
+  api.overview.mockResolvedValue({ ...editorialFixture, revisions: [], version: "2" });
+  await store.refresh(); expect(api.detail).toHaveBeenCalledTimes(2);
+});
+
+it("discards a detail response after selection changes or editing starts", async () => {
+  let complete!: (v: typeof editorialFixture) => void;
+  const api = { isAdmin: vi.fn().mockResolvedValue(true), snapshot: vi.fn(), create: vi.fn(), review: vi.fn(), overview: vi.fn().mockResolvedValue({ ...editorialFixture, revisions: [], version: "1" }), detail: vi.fn().mockImplementation(() => new Promise((resolve) => { complete=resolve; })) };
+  const store=createEditorialStore(api); await store.refresh();
+  const pending=store.selectPost(editorialFixture.posts[0].id); store.setEditing(true); complete(editorialFixture); await pending;
+  expect(store.getSnapshot().data?.revisions).toEqual([]);
+});
+
+it("serializes override and voice mutations, preserves failed input and reports detail failures", async () => {
+  const api={isAdmin:vi.fn().mockResolvedValue(true),snapshot:vi.fn().mockResolvedValue(editorialFixture),create:vi.fn(),review:vi.fn(),detail:vi.fn().mockRejectedValue(new Error("Detail unavailable")),preparationAction:vi.fn().mockRejectedValue(new Error("Reason rejected")),setVoice:vi.fn().mockRejectedValue("offline")};
+  const store=createEditorialStore(api);
+  await store.preparationAction(editorialFixture.posts[0],"report","follow_up","New angle"); expect(api.preparationAction).not.toHaveBeenCalled();
+  await store.refresh(); await store.selectPost(editorialFixture.posts[0].id); expect(store.getSnapshot().error).toBe("Detail unavailable");
+  store.setEditing(true); await store.preparationAction(editorialFixture.posts[0],"report","follow_up","New angle"); expect(api.preparationAction).not.toHaveBeenCalled();
+  const voice=store.setVoice(["Direct"]); await store.setVoice(["Other"]); await voice;
+  expect(api.setVoice).toHaveBeenCalledTimes(1);expect(store.getSnapshot()).toMatchObject({editing:true,busy:false,error:"Unable to save voice rules"});
+  api.setVoice.mockResolvedValue(null);await store.setVoice(["Direct"]); expect(store.getSnapshot().editing).toBe(false);
+  await store.preparationAction(editorialFixture.posts[0],"report","follow_up","New angle"); expect(store.getSnapshot().error).toBe("Reason rejected");
+  api.preparationAction.mockResolvedValue(null); await store.preparationAction(editorialFixture.posts[0],"report","follow_up","New angle");expect(store.getSnapshot().busy).toBe(false);
+  api.detail.mockRejectedValue("oops");await store.selectPost(editorialFixture.posts[0].id,true);expect(store.getSnapshot().error).toBe("Unable to load this post");
+});

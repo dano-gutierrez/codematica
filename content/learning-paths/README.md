@@ -31,3 +31,31 @@ Interview nodes use `{ "kind": "interview", "slug": "collection/question" }` and
 The `database-indexes-and-search` skill path ends with Connection Pooling And Resilience: a sourced Markdown lesson, three Mermaid diagrams, a 12-question checkpoint, and eight appended review cards. Keep the existing path slug and earlier node order stable; label reported incident context and illustrative capacity assumptions explicitly.
 
 `partitioned-event-log` follows lesson → real-world interview → eight-question checkpoint → fourteen-card review using the existing interview-node and completion-destination contracts.
+
+The ML Systems path’s existing Neural Computation source node now opens a published original companion. A questionnaire follows it in Volume I Build. Keep the Framework Builder stage planned until the remaining framework, architecture and training requirements have local companions and a complete checkpoint.
+
+System Design Fundamentals appends Capacity Decisions and API Security Boundaries after its existing cache unit. Keep the authored worksheet assumptions explicit and distinguish browser response sharing, CSRF and object authorization in the lessons and checkpoints.
+
+Backend Engineer Readiness reuses the existing durable-generation architecture lesson with an optional original SQLite retry lab and a separate checkpoint. Its Reservation Boundaries unit is shared with System Design Fundamentals. Keep ordered membership explicit and the original Product Engineering path’s 18-question sequence unchanged.
+
+The AI Engineering path adds Evidence-First Handoffs between Agents And Operations and Risk And Governance. The original Python resume lab and four-question checkpoint distinguish input identity, model execution, verification and approval. External course projects remain optional references, not completed or independently validated activities.
+
+The existing cache and reservation lessons link attributed Discord/Shopify production cases. Their original review prompts distinguish shared in-flight reads from cached results and bounded reservation rows from authoritative stock. Keep engine-specific behavior and reported outcomes separate from local lab measurements.
+
+System Design inserts Routing Decisions between Capacity Decisions and API Security Boundaries. Its original static Python selection lab and four-question checkpoint test signal limits, eligibility and affinity; they do not execute a proxy. Kafka/Redis delivery review extends the existing durable architecture lesson rather than duplicating it.
+
+The AI path appends an optional Stanford CS329A Autumn 2025 research reference after Governance. It uses a source node with no local companion and `required: false`; preserve the eight application units. Public readings do not imply enrollment, certification or completed research.
+
+`coding-interview-pattern-practice.json` groups 18 existing algorithm questions and four BFS/DFS lesson/checkpoint nodes into six selection-focused units, followed by Array State Reviews and Keypad Dictionary Search. Keep original question IDs, code, difficulty and source provenance. The keypad reference adds selected bounded backtracking; full backtracking and comprehensive dynamic programming remain outside the path. There is no employer-frequency, readiness or progression-certification promise. Web algorithm readers continue after the full explanation; native read-only readers expose the next route without marking completion. The array checkpoint continues to keypad practice, whose checkpoint is terminal.
+
+System Design places Client Compatibility after API Security Boundaries and before Reservation Boundaries. Its original selection fixture/checkpoint separates layout support, fresh data and API meaning; cold-cache and unsupported contracts stay visible. The Duolingo report is attributed evidence, not an executed renderer or a guarantee that every old client works indefinitely.
+
+System Design adds Traffic Rate Contracts and Webhook Authenticity after Client Compatibility and before Reservations. The original sequential rate fixture and custom HMAC envelope teach precise admission and replay boundaries. They are not Redis/distributed implementations or a provider-compatible webhook handler; retain explicit concurrency, durable receipt and failure-recovery limits.
+
+Backend Engineer Readiness preserves its original four full units and appends Concurrency Boundaries and Pattern Selection Contracts after Progressive State. Preserve the two reservation destinations: Backend proceeds into history, while System Design proceeds into distributed readings. The history checkpoint now continues to concurrency; only pattern selection is terminal.
+
+Programming Contract Review adds four original, source-required units with path-qualified skills: value ownership, bounded demand, ASCII matching and tree/cost reasoning. Each published stage pairs a lesson with five choices and uses an 80% curriculum threshold. Preserve the existing coding path and interview identities; this selected practice is not a complete JavaScript or algorithms syllabus.
+
+Systems Boundary Review has six source-required units and qualified skills for request identity, transport, API interaction, derived state, document queries and memory domains. Preserve prior path unit objects and terminal routes. Each lesson pairs five original choices with an 80% curriculum threshold; the paper traces are not installed protocol/database/kernel implementations.
+
+Engineering Evidence Review, Creative Computing Review and Ownership And Funding Review contain seven, three and one source-required units. Each pairs an original lesson/checkpoint with an 80% threshold and qualified skill; previous curricula remain unchanged.

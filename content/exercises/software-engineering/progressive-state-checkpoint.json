@@ -1,0 +1,108 @@
+{
+  "slug": "software-engineering/progressive-state-checkpoint",
+  "title": "Progressive State Checkpoint",
+  "type": "questionnaire",
+  "documentSlug": "software-engineering/progressive-state-history",
+  "concept": "State And History",
+  "difficulty": "practitioner",
+  "tags": [
+    "state",
+    "history",
+    "invariants"
+  ],
+  "status": "published",
+  "questions": [
+    {
+      "id": "premerge-history",
+      "kind": "choice",
+      "prompt": "A has 7 and B has 5 at time 4. They merge into A at time 5. What does A at time 4 mean?",
+      "options": [
+        {
+          "id": "option-0",
+          "label": "A at time 4 remains 7; only the merge-time and later target balance includes B.",
+          "isCorrect": true
+        },
+        {
+          "id": "option-1",
+          "label": "A at time 4 becomes 12 because every earlier event must be combined.",
+          "isCorrect": false
+        },
+        {
+          "id": "option-2",
+          "label": "Historical queries should always return the latest balance.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "Current-state ownership changes at the merge time; earlier observations retain their original identity."
+    },
+    {
+      "id": "retired-history",
+      "kind": "choice",
+      "prompt": "How should the retired source B behave in this toy?",
+      "options": [
+        {
+          "id": "option-0",
+          "label": "B retains its earlier balance, returns None from retirement onward, and its ID cannot be reused.",
+          "isCorrect": true
+        },
+        {
+          "id": "option-1",
+          "label": "B remains active with zero credits and may be recreated immediately.",
+          "isCorrect": false
+        },
+        {
+          "id": "option-2",
+          "label": "Delete all B history so earlier queries cannot find it.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "Permanent retirement and retained earlier observations are separate from an active zero balance."
+    },
+    {
+      "id": "rejected-state",
+      "kind": "choice",
+      "prompt": "An insufficient-credit transfer at time 5 is rejected. What is the clock/history contract?",
+      "options": [
+        {
+          "id": "option-0",
+          "label": "Reject before recording state or advancing the clock; a valid operation may still use that timestamp.",
+          "isCorrect": true
+        },
+        {
+          "id": "option-1",
+          "label": "Record time 5 before checking the balance, then reject.",
+          "isCorrect": false
+        },
+        {
+          "id": "option-2",
+          "label": "Deduct available credits and call the transfer partially successful.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "The reference validates before changing either balances, history or the accepted-operation clock."
+    },
+    {
+      "id": "scope",
+      "kind": "choice",
+      "prompt": "What evidence do the original in-memory checks establish?",
+      "options": [
+        {
+          "id": "option-0",
+          "label": "The sequential bounded state/history contract; persistence, concurrency and real payments need separate design and tests.",
+          "isCorrect": true
+        },
+        {
+          "id": "option-1",
+          "label": "A durable atomic financial service safe across crashes and concurrent requests.",
+          "isCorrect": false
+        },
+        {
+          "id": "option-2",
+          "label": "An official employer assessment score or hiring outcome.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "Memory-only sequential execution and bounded replay do not prove persistence, authorization or distributed correctness."
+    }
+  ]
+}

@@ -1,0 +1,152 @@
+{
+  "slug": "system-design/card-payment-state-evidence-checkpoint",
+  "title": "Card Payment State Evidence Checkpoint",
+  "type": "questionnaire",
+  "difficulty": "practitioner",
+  "status": "published",
+  "documentSlug": "system-design/card-payment-state-evidence",
+  "sourceRefs": [
+    "evidence-stripe-hold",
+    "evidence-visa-flow"
+  ],
+  "concept": "Card Payment State Evidence",
+  "tags": [
+    "evidence-review",
+    "contracts"
+  ],
+  "skillIds": [
+    "payment-evidence"
+  ],
+  "questions": [
+    {
+      "id": "acceptance",
+      "kind": "choice",
+      "skillIds": [
+        "payment-evidence"
+      ],
+      "prompt": "A gateway accepts a submitted request. What is established?",
+      "options": [
+        {
+          "id": "correct",
+          "label": "Request acceptance; issuer authorization and settlement need separate receipts.",
+          "isCorrect": true
+        },
+        {
+          "id": "wrong-1",
+          "label": "The merchant has settled funds.",
+          "isCorrect": false
+        },
+        {
+          "id": "wrong-2",
+          "label": "Every intermediate participant has completed its operation.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "Acceptance is one stage. It does not establish the issuer\u2019s decision, capture or settlement, so the observer must preserve each operation\u2019s own identity and outcome."
+    },
+    {
+      "id": "hold",
+      "kind": "choice",
+      "skillIds": [
+        "payment-evidence"
+      ],
+      "prompt": "A manual-capture intent is in requires_capture. What does that mean here?",
+      "options": [
+        {
+          "id": "wrong-1",
+          "label": "The merchant has already received settlement.",
+          "isCorrect": false
+        },
+        {
+          "id": "wrong-2",
+          "label": "The authorization can never expire.",
+          "isCorrect": false
+        },
+        {
+          "id": "correct",
+          "label": "Authorization is evidenced; capture remains a separate pending operation.",
+          "isCorrect": true
+        }
+      ],
+      "explanation": "The stated status separates authorization from capture. Neither settled funds nor an unlimited hold follows; the applicable capture deadline must be checked for this transaction."
+    },
+    {
+      "id": "timeout",
+      "kind": "choice",
+      "skillIds": [
+        "payment-evidence"
+      ],
+      "prompt": "Capture C7 times out after it may have reached the provider. Which next step is sound?",
+      "options": [
+        {
+          "id": "wrong-2",
+          "label": "A timeout proves capture failed before reaching the provider.",
+          "isCorrect": false
+        },
+        {
+          "id": "correct",
+          "label": "Inspect C7 and preserve its idempotent operation identity before deciding on a retry.",
+          "isCorrect": true
+        },
+        {
+          "id": "wrong-1",
+          "label": "Create a new identity and assume nothing happened.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "The response can be lost after an effect. The exercise\u2019s operation-identity contract supports outcome inspection and safe retry; changing identity or declaring failure discards that uncertainty."
+    },
+    {
+      "id": "amount",
+      "kind": "choice",
+      "skillIds": [
+        "payment-evidence"
+      ],
+      "prompt": "Under the supplied partial-capture policy, 80 is held and 60 captured. What remains to release?",
+      "options": [
+        {
+          "id": "correct",
+          "label": "20 units; settlement still needs its own receipt.",
+          "isCorrect": true
+        },
+        {
+          "id": "wrong-1",
+          "label": "140 units because held and captured amounts add.",
+          "isCorrect": false
+        },
+        {
+          "id": "wrong-2",
+          "label": "Nothing, because capture proves settlement.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "The remaining hold is 80\u221260 = 20 under the stated policy. Adding the two representations double counts, and the arithmetic does not establish a later settlement outcome."
+    },
+    {
+      "id": "refund",
+      "kind": "choice",
+      "skillIds": [
+        "payment-evidence"
+      ],
+      "prompt": "A refund is accepted after capture. Which ledger policy preserves evidence?",
+      "options": [
+        {
+          "id": "wrong-1",
+          "label": "Delete the capture as if it never happened.",
+          "isCorrect": false
+        },
+        {
+          "id": "wrong-2",
+          "label": "Treat refund acceptance as proof that every account has been updated.",
+          "isCorrect": false
+        },
+        {
+          "id": "correct",
+          "label": "Retain capture and record the refund as a separate operation with its own outcome.",
+          "isCorrect": true
+        }
+      ],
+      "explanation": "A later compensating operation does not erase the original effect. Keep both identities and outcome stages; request acceptance still does not prove all downstream reconciliation is complete."
+    }
+  ]
+}
