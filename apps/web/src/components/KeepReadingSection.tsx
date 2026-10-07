@@ -9,9 +9,10 @@ import type { ProgressDisplayItem } from "@/lib/progress/progress";
 type KeepReadingSectionProps = {
   initialItems: ProgressDisplayItem[];
   isSignedIn: boolean;
+  showSummary?: boolean;
 };
 
-export function KeepReadingSection({ initialItems, isSignedIn }: KeepReadingSectionProps) {
+export function KeepReadingSection({ initialItems, isSignedIn, showSummary = true }: KeepReadingSectionProps) {
   const [anonymousItems, setAnonymousItems] = useState<ProgressDisplayItem[]>([]);
   const items = isSignedIn ? initialItems : anonymousItems;
 
@@ -32,7 +33,7 @@ export function KeepReadingSection({ initialItems, isSignedIn }: KeepReadingSect
 
   return (
     <section className="rounded-xl border border-[#dbe6e2] bg-[#eef5f2] p-4 sm:p-5" data-testid="keep-reading-section">
-      <div className="flex items-center justify-between gap-3">
+      <div>
         <div>
           <h2 className="flex items-center gap-2 text-lg font-semibold text-[#263238]">
             <BookOpenCheck className="h-5 w-5 text-[#007c78]" aria-hidden="true" />
@@ -40,29 +41,15 @@ export function KeepReadingSection({ initialItems, isSignedIn }: KeepReadingSect
           </h2>
           <p className="mt-1 text-sm font-semibold text-[#53616c]">{items.length === 0 ? "Your recent learning will appear here." : isSignedIn ? "Your latest synced activity." : "Saved on this device until you sign in."}</p>
         </div>
-        {!isSignedIn ? (
-          <Link href="/login" className="hidden rounded-xl border border-[#d5e2e8] bg-[#f6fbfc] px-3 py-2 text-sm font-semibold text-[#245fba] sm:inline-flex">
-            Sign in
-          </Link>
-        ) : (
-          <form action="/auth/sign-out" method="post">
-            <button
-              type="submit"
-              className="hidden rounded-xl border border-[#d5e2e8] bg-[#f6fbfc] px-3 py-2 text-sm font-semibold text-[#263238] sm:inline-flex"
-            >
-              Sign out
-            </button>
-          </form>
-        )}
       </div>
 
       {items.length > 0 ? (
         <div className="mt-4 grid gap-3 sm:grid-cols-2">
           {items.slice(0, 2).map((item) => (
-            <Link key={item.id} href={item.href} className="rounded-xl border border-[#d5e2e8] bg-[#f6fbfc] p-3 transition hover:-translate-y-0.5 hover:border-[#007c78]">
+            <Link key={item.id} href={item.href} className="ui-result-row bg-white p-3">
               <span className="text-xs font-semibold uppercase text-[#007c78]">{item.eyebrow}</span>
               <span className="mt-1 block text-base font-semibold text-[#263238]">{item.title}</span>
-              <span className="mt-1 line-clamp-2 block text-xs font-medium leading-5 text-[#53616c]">{item.summary}</span>
+              {showSummary ? <span className="mt-1 line-clamp-2 block text-xs font-medium leading-5 text-[#53616c]">{item.summary}</span> : null}
               <span className="mt-3 inline-flex items-center gap-1 text-sm font-semibold text-[#245fba]">
                 Resume
                 <ArrowRight className="h-4 w-4" aria-hidden="true" />

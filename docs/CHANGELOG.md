@@ -1,5 +1,13 @@
 # Product And Engineering Changelog
 
+## 2026-10-07 — App-wide design PR review integration
+
+- Integrate PR #51 with current main and the merged editorial standards, preserving preparation, Voice rules, Knowledge, interview navigation and content workflows.
+- Prevent native draft selection from discarding Voice rules edits or interrupting an unfinished save. Keep return/retry navigation available during pending or failed draft-detail reads, and use shared accessible disclosures for Voice rules.
+- Update incoming browser journeys to open source disclosures and compare progress-banner geometry in one layout snapshot. Align native search fixtures with the incoming event-log lesson without reducing assertions or coverage floors.
+- Current source coverage passes 963 web/core tests and 315 native tests. The full public browser lane passes 803 cases with 26 intentional private-environment skips; the separate synthetic admin lane passes 66 cases. Four native mutations and a banner-overlay mutation are rejected by assertions. Pruned HTTP startup, packaged campaign checks and both Hermes exports pass. Remaining installed-device acceptance gates are recorded in the [app-wide design audit](features/app-wide-design-audit.md).
+
+
 ## 2026-10-07 — Editorial design integration review
 
 - Reconcile the design with current preparation, voice, Knowledge and admin navigation features.
@@ -16,6 +24,9 @@ Added eleven original source-bound lessons,55 choices and three ordered paths fo
 
 This changelog dates durable product and architecture changes and links to their authoritative feature contracts.
 
+## 2026-10-05 — Native search label association
+
+Linked all four shared native search fields to their visible labels with stable, distinct IDs, preserving iOS names, query values and clearing. This addresses an empty Learn input announcing only its shortened placeholder in TalkBack. Added Android/iOS and duplicate-screen regressions; installed verification is recorded in the app-wide design audit.
 ## 2026-10-07 — Event-log review integration
 
 Updated PR #50 for current main while retaining every interview verification command and regenerating the combined content index. The event-log verifier now rejects an explicit `--scale 0` instead of silently skipping scale checks. CLI regression tests cover rejected counts and the minimum accepted count; the six authored solutions are unchanged.
@@ -30,6 +41,30 @@ Added an anonymous real-world exercise with three complete TypeScript/Python pai
 - Added mist, amber motes and foreground foliage at three bounded depths on web and native, behind ordinary level controls. Reduced motion freezes parallax; offscreen scenery is culled.
 - Reserved fifty art positions with twelve authored playable levels and a compact ascending list. Fixed centering-induced blank strips, smeared chapter blends, dangling route marks, and obsolete map scroll offsets.
 - Recorded the improve-game-ux create/review/fix/review cycle and visual evidence. New installed-device art/FPS checks remain pending. See [Restore the Signal](features/restore-the-signal.md) and the [map review](../assets/game/previews/continuous-map/review.md).
+
+## 2026-10-03 — App-wide design pass (in progress)
+- Include short visible metadata in native Learn/resume and editorial collection accessible names; preserve compact visuals and full-catalog summary hints. Add duplicate-title editorial selection and discovery/resume name regressions.
+- Reserve Android keyboard space in shared forms and campaign code editors without replacing input drafts. Rebuild native map/list terrain measurements on each switch and reject obsolete callbacks; preserve toolbar, progress and painted art. Add native keyboard-event and delayed-layout regressions.
+- Group native editorial creation/refresh, collapse optional filters with an active count, and return collection/editor/create transitions to the top without interrupting typing or failed saves. Add an opt-in installed account/editorial journey using an isolated local test project; keep publishing disabled and approvals human-only.
+- Add stable native email/password selectors and align questionnaire, skill-review and writing-match reset controls with the shared warning tone.
+- Confirm guided-lab completion only after progress acknowledgment on web and native. Keep private notes and choices through failures, offer retry and restart, and return focus/scroll to the beginning. Add storage-fault, responsive and installed source-to-lab journeys without changing the learning criteria or progress payload.
+- Wait for native skill-rating storage acknowledgment, expose save/reload recovery and retry the same recall without another attempt. Serialize mastery writes and preserve conflicting/unreadable local data.
+- Add installed cloze/checkpoint, passive/word/deck, missing-page and skill-save/restart journeys; document actual passive/deck actions and approval-gated audio.
+- Make Learn curated, search and resume cards compact with titles and labels; retain searchable summaries and detailed full-catalog cards.
+- Keep five native Learn section shortcuts, omitting its self-link, and reserve 48 dp header/sidebar home targets without resizing the brand artwork.
+- Wrap native Learn shortcuts at enlarged text sizes and shorten its search placeholder to keep labels readable.
+- Stack native Learn section headings above View all at narrow enlarged-text widths, preserving readable titles and every catalog destination.
+- Preserve the active Android route and transient input across system font-size changes; refresh responsive dimensions through the existing native module. Add an idempotent Expo prebuild hook and shared AdaptiveText for live text remeasurement; keep Markdown refresh separate from diagram state. Add configuration/state regressions and installed-validation requirements.
+- Coalesce native Learn and Browse lookup with a shared typing-pause helper, announce pending work and hide obsolete results. Defer Browse filters while typing and wait before showing its empty message. Retain the shared search universe and ranking; add timing/cancellation and installed large-text regressions.
+- Keep native campaign code/caret stable through typing, reseed on explicit reset/scenario changes, ignore replaced-field events, and run the latest session text.
+- Describe SQL deadlines as local runner timeouts and keep the existing two-second cap, including initialization. Settle each sandbox once and release its worker/blob URL on result, error or deadline; ignore queued callbacks. Add deadline/cleanup and browser retry regressions.
+
+- Keep interview questions and recipe controls ahead of long explanations. Share native supporting-detail disclosures with the editorial screen; retain full rubrics and keyboard/expanded-state coverage.
+- Place matching feedback before its choices and preserve empty native notebook pages after Undo/restart by skipping the storage SDK's rejected empty batch. Keep saved-progress milestones and write-failure recovery intact.
+- Pause native campaign art outside measured viewports and on covered routes. Share visibility logic without rerendering on every scroll event; preserve visible artwork, animation poses and scoring.
+- Apply the shared action, form, filter, disclosure and reading styles across discovery, catalogs, paths, practice, Japanese study, interviews and account flows. Preserve the painted campaign identity and learning/editorial rules.
+- Add native account/sign-out presentation, explicit PKCE callback handoff and progress-sync recovery. Keep anonymous local learning optional.
+- Add responsive/keyboard/axe browser matrices and native control regressions. Keep [the full route/platform audit](features/app-wide-design-audit.md) open until all flows and installed checks have current evidence. No release readiness, push or deployment is implied.
 
 ## 2026-10-03 — Touch And Accessible Editorial Review
 
@@ -327,6 +362,7 @@ Added admin web/native review, immutable Supabase revisions, approval-bound Buff
 
 Removed the recurring Codex automation at the user’s request. Web/native copy and operating instructions now explain that requests wait for an explicit manual run. Queue, approval, and publication behavior is unchanged.
 
+- 2026-10-04: Native Learn/Browse share an offline local search runtime and concise retry feedback. Prepared-row/core-result parity, owned replies, bounded failures and bundle freshness are tested. The credential-free Android artifact passes the existing Learn/Browse journeys at normal and enlarged text; fresh installed iOS and complete accessibility acceptance remain open.
 - 2026-10-03: Rebased local LinkedIn preparation onto the notebook-preview changes and serialized model POSTs with the knowledge service through a shared POSIX lock.
 
 ## 2026-10-03 — Knowledge graph and graph-assisted editorial review

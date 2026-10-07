@@ -39,7 +39,7 @@ export default async function DiagramPage({ params }: DiagramPageProps) {
   const nextHrefsByPath = getNextPathNodeRoutesByPath({ kind: "diagram", slug: diagram.slug });
 
   return (
-    <main className="min-h-screen px-4 py-5 sm:py-8" data-testid="diagram-page">
+    <main className="ui-page min-h-screen" data-testid="diagram-page">
       <div className="mx-auto w-full max-w-6xl">
         <Suspense fallback={null}>
           <DiagramProgressTracker
@@ -55,9 +55,8 @@ export default async function DiagramPage({ params }: DiagramPageProps) {
         </Suspense>
         <BackButton />
         <div className="mt-6">
-          <p className="text-sm font-semibold uppercase text-[#007c78]">Mermaid Diagram</p>
+          <p className="text-sm font-semibold uppercase text-[#007c78]">Diagram</p>
           <h1 className="mt-2 text-3xl font-semibold leading-tight tracking-tight text-[#263238] sm:text-4xl">{diagram.title}</h1>
-          <p className="mt-4 text-sm font-medium text-[#68737d]">{diagram.sourcePath}</p>
         </div>
         <div className="mt-8">
           <MermaidBlock source={diagram.source} title={diagram.title} />

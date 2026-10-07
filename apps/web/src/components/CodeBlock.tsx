@@ -79,14 +79,14 @@ export function CodeBlock({
   const accent = languageAccents[normalizedLanguage] ?? "#b7c3cc";
 
   return (
-    <figure className={cn("code-block overflow-hidden rounded-xl border border-[#263544] bg-[#101820]", className)} style={{ "--code-accent": accent } as CSSProperties}>
+    <figure className={cn("code-block min-w-0 max-w-full overflow-hidden rounded-xl border border-[#263544] bg-[#101820]", className)} style={{ "--code-accent": accent } as CSSProperties}>
       <figcaption className="code-block-header flex items-center justify-between gap-3 border-b border-[#263544] px-4 py-3 text-xs font-semibold uppercase text-[#cbd7e1]">
         <span className="inline-flex min-w-0 items-center gap-2">
           <Code2 className="h-4 w-4 shrink-0" aria-hidden="true" />
-          <span className="truncate">{displayLabel}</span>
+          <span className="ui-button-label">{displayLabel}</span>
         </span>
       </figcaption>
-      <pre className="code-block-pre overflow-x-auto p-4 text-sm leading-6" data-testid={dataTestId}>
+      <pre className="ui-scroll-region code-block-pre overflow-x-auto p-4 text-sm leading-6" role="group" aria-label={`${displayLabel} code`} tabIndex={0} data-testid={dataTestId}>
         <code
           className={cn("hljs", normalizedLanguage ? `language-${normalizedLanguage}` : undefined)}
           dangerouslySetInnerHTML={{ __html: highlighted }}

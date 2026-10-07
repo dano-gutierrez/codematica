@@ -1,10 +1,13 @@
 import { describe, expect, it } from "vitest";
 import { getContentIndex } from "./content";
-import { getHomeDiscoverySections, searchDiscovery } from "./discovery";
+import { createDiscoveryItems, getHomeDiscoverySections, searchDiscovery, searchDiscoveryItems } from "./discovery";
 
 const index = getContentIndex();
 
 describe("searchDiscovery", () => {
+  it.each(["", " N ", "Number Of Islands", "water", "System Design", "qzqznotfound"])("preserves full discovery results when searching prepared items: %s", (query) => {
+    expect(searchDiscoveryItems(createDiscoveryItems(index), query)).toEqual(searchDiscovery(index, query));
+  });
   it("searches paths, lessons, interviews, practice, and languages", () => {
     expect(searchDiscovery(index, "System Design Fundamentals")[0]).toMatchObject({
       kind: "path",

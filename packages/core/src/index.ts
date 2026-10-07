@@ -2,6 +2,7 @@ export * from "./content/index";
 export * from "./content/schema";
 export * from "./search";
 export * from "./discovery";
+export * from "./native-search";
 export * from "./interviews";
 export * from "./practice/questionnaire";
 export * from "./language-writing";

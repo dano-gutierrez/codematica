@@ -1,6 +1,6 @@
 import { expect, test } from "@playwright/test";
 
-test("@regression home discovery exposes every section and searches across content types", async ({ page }) => {
+test("@regression @design home discovery exposes compact cards and searches across content types", async ({ page }) => {
   await page.goto("/learn");
 
   await expect(page.getByTestId("discovery-home")).toBeVisible();
@@ -10,13 +10,13 @@ test("@regression home discovery exposes every section and searches across conte
   }
   await expect(page.getByTestId("home-section-languages")).toContainText("Japanese");
   const pathSummary = page.getByTestId("home-section-paths").getByText("A source-linked career path", { exact: false });
-  await expect(pathSummary).toHaveCSS("-webkit-line-clamp", "2");
-  const summaryLines = await pathSummary.evaluate((element) => element.getBoundingClientRect().height / Number.parseFloat(getComputedStyle(element).lineHeight));
-  expect(summaryLines).toBeLessThanOrEqual(2);
+  await expect(pathSummary).toHaveCount(0);
+  await expect(page.getByTestId("home-section-paths").getByRole("link", { name: /ML Systems/ }).first()).toBeVisible();
 
   await page.getByTestId("home-global-search").fill("Number Of Islands");
   await expect(page.getByTestId("home-discovery-results")).toContainText("Number Of Islands");
   await expect(page.getByTestId("home-discovery-results")).toContainText("Google interview question");
+  await expect(page.getByTestId("home-discovery-results").getByText("Count connected groups of land in a rectangular grid and compare breadth-first with depth-first flood fill.", { exact: true })).toHaveCount(0);
 
   await page.getByRole("button", { name: "Clear search" }).click();
   await page.getByTestId("home-global-search").fill("water");

@@ -104,6 +104,7 @@ for (const [index, fixture] of cases.entries()) {
       ).toBeVisible();
     const sources = page.getByTestId("source-references");
     await expect(sources).toBeVisible();
+    await page.getByTestId("source-references-toggle").click();
     await expect(
       sources
         .getByRole("link")

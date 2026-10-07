@@ -41,18 +41,18 @@ export function Dropdown({
         <Select.Trigger
           aria-label={label}
           className={cn(
-            "group flex h-14 min-w-0 w-full items-center justify-between gap-3 rounded-xl border border-[#7d8b94] bg-white px-4 text-left outline-none transition hover:border-[#6dd8cf] focus:border-[#007c78] focus-visible:ring-4 focus-visible:ring-[#6dd8cf]/35 disabled:cursor-default disabled:opacity-60 data-[state=open]:translate-y-0.5 data-[state=open]:border-[#007c78] data-[state=open]:border-b-2",
+            "ui-select-trigger group",
             triggerClassName,
           )}
           data-testid={testId}
         >
           <span className="flex min-w-0 items-center gap-3">
             {icon ? (
-              <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl border border-[#b9dce7] bg-[#f6fbfc] text-[#007c78]">{icon}</span>
+              <span className="shrink-0 text-[#007c78]">{icon}</span>
             ) : null}
             <span className="min-w-0">
-              <span className="block text-[0.68rem] font-semibold uppercase leading-none text-[#68737d]">{label}</span>
-              <span className="mt-1 block truncate text-sm font-semibold text-[#263238]">
+              <span className="ui-select-label">{label}</span>
+              <span className="ui-select-value">
                 <Select.Value placeholder={placeholder} />
               </span>
             </span>
@@ -82,7 +82,7 @@ export function Dropdown({
                   </Select.ItemIndicator>
                   <span className="min-w-0">
                     <Select.ItemText>{option.label}</Select.ItemText>
-                    {option.description ? <span className="mt-0.5 block truncate text-xs font-medium text-[#68737d]">{option.description}</span> : null}
+                    {option.description ? <span className="mt-0.5 block text-xs font-normal text-[#52616c]">{option.description}</span> : null}
                   </span>
                 </Select.Item>
               ))}

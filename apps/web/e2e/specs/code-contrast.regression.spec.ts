@@ -71,7 +71,8 @@ test("@regression keeps interview solutions, Python companions, review snippets,
     await session.getByRole("button", { name: "Next", exact: true }).click();
     await page.getByRole("button", { name: /Show full explanation/i }).click();
     for (const language of ["python", "typescript", "java"]) {
-      await page.getByLabel("Solution language").selectOption(language);
+      await page.getByTestId("interview-solution-language").click();
+      await page.getByRole("option", { name: { python: "Python", typescript: "TypeScript", java: "Java" }[language], exact: true }).click();
       await expectDarkReadableText(page.getByTestId("interview-code").getByRole("code"));
     }
   });

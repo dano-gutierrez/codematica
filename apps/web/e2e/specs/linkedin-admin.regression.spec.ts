@@ -126,7 +126,7 @@ test("@regression admin reviews, refines and approves an exact revision", async 
   await page.getByRole("button", { name: "Refine post", exact: true }).click();
   await page.getByRole("button", { name: "Use revision" }).click();
   await expect(page.getByTestId("linkedin-body")).toHaveValue(analysisFixture.rewrittenPost);
-  await page.screenshot({ path: test.info().outputPath("editorial-mobile.png"), fullPage: true });
+  await page.screenshot({ path: test.info().outputPath("editorial-editor.png"), fullPage: true });
   await page.getByRole("button", { name: "Approve & queue" }).click();
   await expect(page.getByTestId("linkedin-body")).toBeDisabled();
   await expect(page.getByRole("button", { name: "Return to review" })).toBeVisible();

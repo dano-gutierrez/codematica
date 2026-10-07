@@ -3,7 +3,7 @@
 ## Snapshot
 
 - Status: `shipped`
-- Last updated: `2026-09-05`
+- Last updated: `2026-10-04`
 - Owner thread: `n/a`
 - Current state: Web and native `/learn` routes are cross-section discovery hubs with curated rows, global local-first search, stable section colors, and full catalog destinations.
 - Target outcome: Users can identify Codematica's learning sections, search them together, and open each complete catalog.
@@ -21,6 +21,7 @@
   - `apps/web/src/components/HomeDiscovery.test.tsx`
   - `apps/web/e2e/specs/home-discovery.regression.spec.ts`
   - `apps/mobile/src/__tests__/mobile-screens.test.tsx`
+  - `apps/mobile/.maestro/learn-discovery.regression.yaml`
 
 ## One-Minute Brief
 
@@ -56,9 +57,14 @@ The Learn route provides discovery; the complete learning-path catalog has its o
 
 - Home curation references canonical content rather than duplicating titles, summaries, or routes.
 - Curated rows scroll horizontally on all screen sizes, retaining every curated item. Compact cards preview the next item on phones.
+- Learn cards show the title, category/type label and available difficulty metadata. Curated rows, search results and Keep reading omit description previews and grow naturally with their titles. Summaries remain in the source index and searchable; shared cards in full catalogs retain their descriptions.
+- Native discovery cards announce the title, type/category and displayed difficulty in their accessible name. Resume cards announce the title and type. Compact cards keep description hints absent; full-catalog cards preserve their existing summary hint.
 - Search uses a normalized `DiscoveryResult` contract and fuzzy ranking weighted toward title, tags, section labels, and summaries.
 - Exact titles receive the highest score. Only published content is searchable.
 - Search de-duplicates canonical routes even when content appears in several learning paths.
+- Learn offers five section shortcuts: Paths, Lessons, Practice, Interviews and Languages. It omits a shortcut back to the current Learn page. Native shortcuts wrap into rows with a minimum label width that grows with system text size and is capped by the viewport. The short “Search topics” placeholder avoids clipped multiline hints; the input retains its “Search all content” accessible label and links to that visible label with a stable per-instance native ID. Android uses the label association; iOS retains the explicit accessible name.
+- Native section titles and View all actions stack when enlarged text leaves less than 350 pt of effective width (`width / fontScale`, with scale above 1.4). Give the title the full available width; do not squeeze it beside the action. Normal phone/tablet headers retain their row layout.
+- Native global discovery waits for a 300 ms typing pause before running the shared lookup. While pending, it announces “Searching…” and hides results from the previous query. New input, clear and unmount cancel the pending timer. The input and curated view update immediately; search scope and ranking remain shared with web. Browse reuses the same local search hook and retains its document/diagram search API.
 
 ### Full Catalogs
 
@@ -78,18 +84,32 @@ The Learn route provides discovery; the complete learning-path catalog has its o
 
 See [Adaptive Interface And Navigation](adaptive-ui.md) for the persistent phone/tab/sidebar contract and visual rules.
 
+## App-wide design pass — 2026-10-03
+
+Discovery uses the shared page, search field and action styles. Clear search returns focus to the field; each View all action has a contextual accessible name. Carousels remain keyboard-focusable named groups and use proximity snapping. Learn cards wrap titles and labels without description previews or a fixed minimum card height. Full-catalog variants still wrap their descriptions. Keep reading relies on the shared navigation account menu for authentication.
+
+Test plan additions: `HomeDiscovery.test.tsx`, `SaveProgressPrompt.test.tsx`, native `design-controls.test.tsx`, and `design-content.regression.spec.ts` cover clear/focus, destinations and the normal-flow progress notice. The app-wide audit owns final cross-platform evidence.
+
 ## Test Plan
+
+- Native live text-size regression: enter a query, enlarge system text and restore it while Learn is open. Keep the query and settled count; titles and labels must reflow without descriptions. `adaptive-text.test.tsx` pins parent/input state and host text refresh; installed APK captures verify geometry.
 
 - Navigation/layout: `adaptive-navigation.smoke.spec.ts`, `adaptive-layout.regression.spec.ts`, and `AppHeader.test.tsx`; native `adaptive-navigation.test.tsx` and Maestro navigation smoke.
 
 - Unit: search covers every section, exact-title ranking, published-only results, route de-duplication, and curated section resolution.
 - Integration: index generation serializes schema version 12 and rejects invalid home references.
-- Component: web home renders all section destinations and swaps curated rows for grouped search results. Copy edits preserve search scope and the no-result message’s meaning.
-- Native: shared home renders every section and searches interview questions from the bundled index.
-- E2E: mobile-sized web home exposes Japanese, searches interviews and language content, preserves consistent accessible section actions, and navigates to a full catalog.
+- Component: web home renders all section destinations and swaps curated rows for grouped search results. Curated/search/resume cards retain titles, labels and routes while omitting summaries; the shared full-catalog card still renders its summary. Copy edits preserve search scope and the no-result message’s meaning.
+- Native search labels: `design-controls.test.tsx` verifies all four shared search fields on Android and iOS, including stable associations through typing/clearing and distinct IDs for duplicate mounted screens. Installed TalkBack must announce the visible search scope on an empty input; a shortened placeholder alone is insufficient. Preserve query values, the Search key, and clear-action focus.
+- Native card names: verify visible type and human-readable difficulty metadata for curated/search cards, including items without difficulty; verify the resume type and destination. Keep descriptions absent from compact names and hints. Native accessible names override automatic descendant text aggregation, so visible metadata alone is insufficient.
+- Native: shared home renders every section and searches interview questions from the bundled index. Curated/search/resume tests pin titles, labels and navigation without descriptions or verbose description hints. Phone/tablet enlarged-text regressions preserve shortcut destinations, wrapping and scaled label space. Section-header regressions cover stacking at 375 pt/2.86 scale and 768 pt/2.5 scale, normal rows at 320/375/834 pt, and the wider enlarged row at 834 pt/2 scale. Preserve every View all destination. These component assertions pin the layout rule; device captures must verify actual text geometry. Fake-timer coverage pins the 299/300 ms lookup boundary, coalesced input, hidden obsolete results and cancellation on clear while calling the real shared search through a spy.
+- Installed native: `.maestro/learn-discovery.regression.yaml` checks a fully visible compact curated/search card, titles and labels, absent descriptions, search clearing and the ML path roadmap destination. It captures both card states, including difficulty metadata above the fixed navigation. Run at default and large system text on Android and iOS with a credential-free E2E build. The existing offline-learning flow verifies path → lesson → practice → compact Keep reading → resume, including absent resume descriptions and a captured resume panel. Its resume locator includes the displayed type (`Resume Cache Product Contract, Practice`), matching the native accessible name. Large text uses bounded catalog waypoints and centers the actual curated/search card with a slow target-based scroll. Avoid fixed follow-up swipes: an already visible large card can move offscreen. Every locator keeps its 20-second limit, full-card visibility and original title/metadata/absence/navigation assertions. The settled-result check retains the exact count while accepting native display casing (`7 results` or `7 RESULTS` after the event-log catalog integration). After clearing, use the field’s Search key to dismiss input; a floating Android IME may not consume a generic Back dismissal, which would leave Learn. Preserve the clear, curated-card and destination assertions.
+- Screen readers: on the current installed artifact, traverse the Learn heading and search field, enter a query with the software keyboard, submit it, navigate results, and open/dismiss More with focus returning to its trigger. Check TalkBack and VoiceOver separately. Follow the [native E2E guide](../../apps/mobile/e2e/README.md#native-screen-reader-checks) for device isolation and evidence; announcement text and interaction captures do not establish audible speech quality or complete platform acceptance.
+- E2E: phone Chromium, desktop Chromium and iPhone WebKit verify compact curated/search cards, Japanese/interview/language search, accessible section actions, and navigation to a full catalog. Inspect the local preview at phone, tablet and desktop widths for overflow and natural card height.
 
 ## Decision Log
 
+- `2026-10-04`: Keep Learn concise with titles and metadata; descriptions remain searchable and available in full catalogs.
+- `2026-10-04`: Coalesce native global discovery lookup after a short typing pause. Installed large-text checks exposed delayed intermediate-query results; preserve the full shared search rather than changing its ranking or searchable fields.
 - `2026-07-22`: Replace the path-first root with a cross-section discovery hub.
 - `2026-07-22`: Move the complete path catalog to `/paths` and add `/practice` and `/languages` catalog routes.
 - `2026-07-22`: Keep curation in canonical JSON while keeping colors and layout in design tokens.
@@ -102,3 +122,11 @@ See [Adaptive Interface And Navigation](adaptive-ui.md) for the persistent phone
 ## Campaign navigation update (2026-09-29)
 
 Discovery, search, and Keep reading retain their behavior at `/learn`. `content/discovery/home.json` remains their editorial source. Play is the root campaign, and learning content remains accessible regardless of campaign progress. Existing discovery browser/device flows now enter through Learn.
+
+### Native local search execution
+
+Native Learn and Browse run their expensive fuzzy matching in an isolated, offline WebView using the same pure core functions. `search:runtime` produces the fixed adapter script; `search:check` enforces its freshness in CI. The host prepares rows once, sends JSON after a 300 ms typing pause, and derives result metadata and routes from its own canonical rows. The runtime returns request IDs and row positions; superseded, cleared, duplicate or unmounted replies cannot replace the current result.
+
+The runtime is hidden from layout, touch and accessibility traversal. CSP blocks network access and native navigation allows only `about:blank`. Authored strings are JSON data and never enter its HTML. Waiting for readiness and executing a match each have a 15-second deadline; renderer, transport or result failures expose a concise message and Retry search. Retry remounts the local runtime and retains the query. The shared UI can still use synchronous core search when no runtime adapter is supplied; the installed Expo adapter always supplies the generated script. Supabase remains optional.
+
+Tests cover prepared-row parity, row validation and canonical destination ownership; the generated bundle's startup and queries in a VM; and native readiness, typing, replacement, clearing, changed indexes/filters, deadlines, retry, renderer failures and unmount. Both owning screens have composition/navigation coverage. Installed regression assertions retain the exact six-result count and existing 20-second deadline. Android/iOS startup and timing require current installed-artifact evidence; older Hermes-only results do not prove this execution path.

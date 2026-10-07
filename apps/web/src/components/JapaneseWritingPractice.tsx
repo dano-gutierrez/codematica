@@ -1,5 +1,6 @@
 "use client";
-import Link from "next/link";
+import { Button } from "./Button";
+import { ButtonLink } from "./ButtonLink";
 import {
   ArrowRight,
   CheckCircle2,
@@ -45,7 +46,6 @@ import {
   useNotebookSession,
 } from "@codematica/ui/notebook-session";
 import { createWebNotebookStorage } from "@/lib/notebooks/storage";
-import { cn } from "@/lib/utils";
 import { Dropdown } from "./Dropdown";
 
 type WritingProgressHandler = (
@@ -403,7 +403,7 @@ export function JapaneseWritingPractice({
             setActivity("write");
           }}
         >
-          Write · planas
+          Write
         </ModeButton>
         {matchSheets.length ? (
           <ModeButton
@@ -422,7 +422,7 @@ export function JapaneseWritingPractice({
         <MatchingPairs sheets={matchSheets} />
       ) : (
         <>
-          <div className="notebook-sheet-picker" aria-label="Notebook sheets">
+          <div className="notebook-sheet-picker" role="group" tabIndex={0} aria-label="Notebook sheets">
             {notebook.sheets.map((item, i) => {
               const unlocked = isNotebookSheetUnlocked(
                   notebook,
@@ -508,15 +508,7 @@ export function JapaneseWritingPractice({
                   ? "IME: " + character.inputSequences.join(" or ")
                   : "Finger or stylus"}
               </span>
-              <button
-                type="button"
-                className="writing-peek"
-                onClick={() => setShowExample((v) => !v)}
-                data-testid="writing-peek"
-              >
-                <Eye size={16} aria-hidden="true" />
-                {showExample ? "Hide example" : "Show example"}
-              </button>
+              <Button label={showExample ? "Hide example" : "Show example"} icon={Eye} iconOnly tone="assist" onClick={() => setShowExample(v => !v)} data-testid="writing-peek" />
             </div>
           </div>
           <div className="notebook-difficulty">
@@ -530,23 +522,8 @@ export function JapaneseWritingPractice({
             />
           </div>
           <div className="notebook-toolbar" aria-label="Drawing tools">
-            <button
-              type="button"
-              disabled={!strokes.length && !count}
-              onClick={undo}
-              data-testid="writing-undo"
-            >
-              <Undo2 size={17} aria-hidden="true" />
-              Undo
-            </button>
-            <button
-              type="button"
-              onClick={clearInk}
-              data-testid="writing-clear"
-            >
-              <Eraser size={17} aria-hidden="true" />
-              Clear current character
-            </button>
+            <Button label="Undo" icon={Undo2} iconOnly disabled={!strokes.length && !count} onClick={undo} data-testid="writing-undo" />
+            <Button label="Clear current character" icon={Eraser} iconOnly tone="warning" onClick={clearInk} data-testid="writing-clear" />
           </div>
           <p className="notebook-instruction">
             Write anywhere with your mouse, finger or stylus. Scroll with two fingers on touch screens, or use your mouse wheel or trackpad. Characters check automatically when you pause.
@@ -637,50 +614,19 @@ export function JapaneseWritingPractice({
                       "Take your time. Recognizable shapes are enough.")}
             </p>
             {session.saveError ? (
-              <button
-                type="button"
-                onClick={session.retry}
-                data-testid="writing-save-retry"
-              >
-                Retry
-              </button>
+              <Button label="Retry" icon={RotateCcw} tone="warning" onClick={session.retry} data-testid="writing-save-retry" />
             ) : null}
           </div>
           <div className="notebook-footer">
             {sheetIndex + 1 < notebook.sheets.length ? (
-              <button
-                type="button"
-                className="writing-primary"
-                disabled={!session.complete}
-                onClick={() => choose(sheetIndex + 1)}
-                data-testid="writing-next-sheet"
-              >
-                Next sheet
-                <ArrowRight size={18} aria-hidden="true" />
-              </button>
+              <Button label="Next sheet" icon={ArrowRight} variant="primary" tone="success" disabled={!session.complete} onClick={() => choose(sheetIndex + 1)} data-testid="writing-next-sheet" />
             ) : null}
             {session.allRequiredComplete && nextHref ? (
-              <Link href={nextHref} className="writing-primary">
-                Next activity
-                <ArrowRight size={18} aria-hidden="true" />
-              </Link>
+              <ButtonLink href={nextHref} label="Next activity" icon={ArrowRight} variant="primary" tone="success" />
             ) : null}
-            <button
-              type="button"
-              className="notebook-restart"
-              aria-label="Clear and restart sheet"
-              title="Clear and restart sheet"
-              disabled={session.loading || session.loadFailed}
-              onClick={() => {
-                clearInk();
-                session.restart();
-                setShowExample(false);
-                viewport.current?.scrollTo({ top: 0 });
-              }}
-              data-testid="writing-repeat"
-            >
-              <RotateCcw size={20} aria-hidden="true" />
-            </button>
+            <Button label="Clear and restart sheet" icon={RotateCcw} iconOnly tone="warning" disabled={session.loading || session.loadFailed} onClick={() => {
+              clearInk(); session.restart(); setShowExample(false); viewport.current?.scrollTo({ top: 0 });
+            }} data-testid="writing-repeat" />
           </div>
           <p className="notebook-attribution">
             Stroke guides:{" "}
@@ -756,6 +702,12 @@ function MatchingPairs({
         Same sounds, another way to remember. {matched.length} / {pairs.length}{" "}
         matched
       </p>
+        <p
+          className="writing-feedback-slot font-semibold text-[#00645f]"
+          role="status"
+        >
+          {message}
+        </p>
       <div className="writing-match-grid">
         {(["kana", "romaji"] as const).map((side) => (
           <div key={side} className="writing-match-column">
@@ -779,27 +731,15 @@ function MatchingPairs({
         ))}
       </div>
       <div className="writing-footer">
-        <p
-          className="writing-feedback-slot font-semibold text-[#00645f]"
-          role="status"
-        >
-          {message}
-        </p>
-        <button
-          type="button"
-          className="writing-primary"
-          disabled={matched.length !== pairs.length}
+
+        <Button label="Practice again" icon={RotateCcw} tone="warning" disabled={matched.length !== pairs.length}
           onClick={() => {
             setRound((value) => value + 1);
             setMatched([]);
             setSelected({});
             setMessage("A fresh round. Match the same pairs again.");
           }}
-          data-testid="writing-match-repeat"
-        >
-          <RotateCcw size={18} aria-hidden="true" />
-          Practice again
-        </button>
+          data-testid="writing-match-repeat" />
       </div>
     </div>
   );
@@ -816,17 +756,7 @@ function ModeButton({
   onClick: () => void;
   children: string;
 }) {
-  return (
-    <button
-      type="button"
-      aria-pressed={active}
-      onClick={onClick}
-      className={cn("writing-mode", active && "is-active")}
-      data-testid={testId}
-    >
-      {children}
-    </button>
-  );
+  return <Button label={children} tone="info" aria-pressed={active} onClick={onClick} data-testid={testId} />;
 }
 
 const NotebookMarks = memo(function NotebookMarks({

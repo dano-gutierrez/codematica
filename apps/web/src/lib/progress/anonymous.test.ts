@@ -112,4 +112,14 @@ describe("anonymous progress buffer", () => {
     window.localStorage.setItem("codematica:anonymous-progress:v1", JSON.stringify({ item: true }));
     expect(getAnonymousProgressItems()).toEqual([]);
   });
+
+  it("preserves unreadable progress instead of replacing it during a write", () => {
+    const key = "codematica:anonymous-progress:v1";
+    window.localStorage.setItem(key, "{retained bytes");
+    expect(() => addAnonymousProgressItem({
+      input: { surface: "document", slug: "cache", pathSlug: "", status: "started", position: {} },
+      display: { id: "cache", title: "Cache", summary: "Summary", href: "/docs/cache", eyebrow: "Document", status: "started", lastSeenAt: "2026-10-03T00:00:00Z" },
+    })).toThrow();
+    expect(window.localStorage.getItem(key)).toBe("{retained bytes");
+  });
 });

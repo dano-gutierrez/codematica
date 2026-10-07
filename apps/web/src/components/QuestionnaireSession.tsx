@@ -1,8 +1,9 @@
 "use client";
 
-import Link from "next/link";
+import { Button } from "./Button";
+import { ButtonLink } from "./ButtonLink";
 import { ArrowDown, ArrowRight, ArrowUp, CheckCircle2, RotateCcw } from "lucide-react";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useId, useRef, useState } from "react";
 import { Dropdown, type DropdownOption } from "@/components/Dropdown";
 import { JapaneseAnswerInput } from "@/components/JapaneseAnswerInput";
 import { JapaneseAudioPlayer } from "@/components/JapaneseAudioPlayer";
@@ -35,6 +36,8 @@ export function QuestionnaireSession({
 }) {
   const mountedExercise = useRef(exercise);
   const sessionRef = useRef<HTMLDivElement>(null);
+  const headingRef = useRef<HTMLHeadingElement>(null);
+  const questionHeadingId = useId();
   const [attempt, setAttempt] = useState(() => createStableInitialAttempt(exercise));
   const [currentIndex, setCurrentIndex] = useState(0);
   const [answer, setAnswer] = useState<QuestionnaireAnswer | undefined>();
@@ -43,6 +46,10 @@ export function QuestionnaireSession({
   const [isReady, setIsReady] = useState(false);
   const [graded, setGraded] = useState<Record<string, boolean>>({});
   const question = attempt[currentIndex];
+
+  useEffect(() => {
+    if (isComplete || currentIndex > 0) headingRef.current?.focus();
+  }, [currentIndex, isComplete]);
 
   function resetAnswer(nextAnswer?: QuestionnaireAnswer) {
     setAnswer(nextAnswer);
@@ -145,7 +152,7 @@ export function QuestionnaireSession({
   function renderQuestionBody() {
     if (question.kind === "choice" || question.kind === "listening-choice") {
       return (
-        <div className="mt-5 grid min-w-0 grid-cols-[minmax(0,1fr)] gap-3">
+        <div role="radiogroup" aria-labelledby={questionHeadingId} className="mt-5 grid min-w-0 grid-cols-[minmax(0,1fr)] gap-3">
           {question.kind === "listening-choice" ? <JapaneseAudioPlayer audioId={question.audioId} revealTranscript={Boolean(result)} /> : null}
           {question.options.map((option) => (
             <label
@@ -173,7 +180,7 @@ export function QuestionnaireSession({
       return (
         <div className="mt-5 grid gap-4 rounded-xl border border-[#d5e2e8] bg-[#f6fbfc] p-4">
           <p lang="ja" className="text-lg font-normal leading-8 text-[#263238]">{prefix}<span className="mx-1 border-b-2 border-[#53616c] px-8">{value || "　"}</span>{suffix}</p>
-          <JapaneseAnswerInput value={value} disabled={!isReady || Boolean(result)} onChange={(nextValue) => resetAnswer({ kind: "open-answer", value: nextValue })} />
+          <JapaneseAnswerInput key={question.id} value={value} disabled={!isReady || Boolean(result)} onChange={(nextValue) => resetAnswer({ kind: "open-answer", value: nextValue })} />
         </div>
       );
     }
@@ -184,12 +191,12 @@ export function QuestionnaireSession({
       return (
         <div className="mt-5 rounded-xl border border-[#d5e2e8] bg-[#f6fbfc] p-4 text-lg font-normal leading-9 text-[#263238]">
           <span>{prefix}</span>
-          <label className="mx-1 inline-grid min-w-[12rem] align-middle">
+          <label className="mx-1 inline-grid w-full max-w-sm align-middle">
             <span className="sr-only">Answer</span>
             <input
               disabled={!isReady || Boolean(result)}
               aria-label="Answer"
-              className="h-11 rounded-xl border border-[#d5e2e8] bg-white px-3 text-base font-semibold text-[#263238] outline-none focus:border-[#007c78] disabled:opacity-70"
+              className="ui-input"
               data-testid="questionnaire-cloze-answer-input"
             />
           </label>
@@ -209,29 +216,23 @@ export function QuestionnaireSession({
             const label = item?.label ?? itemId;
 
             return (
-              <div key={itemId} className="grid grid-cols-[minmax(0,1fr)_6rem] gap-3 rounded-xl border border-[#d5e2e8] bg-white p-3">
+              <div key={itemId} className="flex min-w-0 flex-wrap items-center justify-between gap-3 rounded-xl border border-[#d5e2e8] bg-white p-3">
                 <span className="self-center text-base font-normal leading-6 text-[#263238]">{label}</span>
-                <span className="grid grid-cols-2 gap-2">
-                  <button
+                <span className="flex flex-wrap gap-2">
+                  <Button label="Up" icon={ArrowUp} iconOnly
                     type="button"
                     disabled={!isReady || Boolean(result) || itemIndex === 0}
                     aria-label={`Move ${label} up`}
                     data-order-direction="up"
                     data-order-index={itemIndex}
-                    className="flex h-11 items-center justify-center rounded-xl border border-[#d5e2e8] bg-[#f6fbfc] text-[#263238] disabled:opacity-45"
-                  >
-                    <ArrowUp className="h-4 w-4" aria-hidden="true" />
-                  </button>
-                  <button
+                  />
+                  <Button label="Down" icon={ArrowDown} iconOnly
                     type="button"
                     disabled={!isReady || Boolean(result) || itemIndex === itemIds.length - 1}
                     aria-label={`Move ${label} down`}
                     data-order-direction="down"
                     data-order-index={itemIndex}
-                    className="flex h-11 items-center justify-center rounded-xl border border-[#d5e2e8] bg-[#f6fbfc] text-[#263238] disabled:opacity-45"
-                  >
-                    <ArrowDown className="h-4 w-4" aria-hidden="true" />
-                  </button>
+                  />
                 </span>
               </div>
             );
@@ -280,19 +281,12 @@ export function QuestionnaireSession({
     return (
       <div className="mt-6 grid gap-5" data-testid="questionnaire-complete">
         <div className="rounded-xl border border-[#6dd8cf] bg-[#e8f8f6] p-4">
-          <p className="text-sm font-semibold uppercase text-[#007c78]">Practice complete</p>
+          <h2 ref={headingRef} tabIndex={-1} className="text-xl font-semibold text-[#00645f]">Practice complete</h2>
           <p className="mt-2 text-base font-normal leading-7 text-[#33434b]">You finished this practice session.</p>
           <p className="mt-2 text-sm font-semibold text-[#007c78]">Score {Math.round(calculateQuestionnaireSkillScores(attempt.map((attemptQuestion) => ({ question: attemptQuestion, isCorrect: graded[attemptQuestion.id] ?? false }))).overall * 100)}%</p>
         </div>
         <div className="flex flex-wrap gap-3">
-          <button
-            type="button"
-            onClick={restart}
-            className="inline-flex min-h-12 items-center gap-2 rounded-xl border border-[#d5e2e8] bg-white px-4 py-2 text-sm font-semibold text-[#263238]"
-          >
-            <RotateCcw className="h-4 w-4" aria-hidden="true" />
-            Restart
-          </button>
+          <Button label="Restart" icon={RotateCcw} tone="warning" onClick={restart} />
           {nextHref ? <NextNodeLink href={nextHref} /> : null}
         </div>
       </div>
@@ -303,42 +297,26 @@ export function QuestionnaireSession({
 
   return (
     <div className="mt-6" data-testid="questionnaire-session" data-ready={isReady ? "true" : "false"} ref={sessionRef}>
-      <div className="flex items-center justify-between gap-3 rounded-xl border border-[#d5e2e8] bg-[#f6fbfc] px-3 py-2">
+      <div className="flex flex-wrap items-center justify-between gap-3 border-b border-[#d5e2e8] pb-3">
         <p className="text-xs font-semibold uppercase text-[#68737d]" data-testid="questionnaire-position">
           Question {currentIndex + 1} of {attempt.length}
         </p>
-        <p className="text-xs font-semibold uppercase text-[#007c78]">{question.kind}</p>
+        <p className="text-xs font-semibold uppercase text-[#007c78]">{{ choice: "Multiple choice", "listening-choice": "Listening", "open-answer": "Write an answer", cloze: "Fill in the blank", ordering: "Order steps", matching: "Match pairs" }[question.kind]}</p>
       </div>
 
       <div className="mt-5" data-testid="questionnaire-question">
-        <p className="text-lg font-medium leading-8 text-[#33434b]">{question.prompt}</p>
+        <h2 id={questionHeadingId} ref={headingRef} tabIndex={-1} className="text-xl font-semibold leading-8 text-[#33434b]">{question.prompt}</h2>
         {renderQuestionBody()}
       </div>
 
       {result ? <QuestionFeedback question={question} result={result} /> : null}
 
       <div className="mt-6 flex flex-wrap gap-3">
-        <button
-          type="button"
-          onClick={checkAnswer}
-          disabled={!canCheck}
-          className="inline-flex min-h-12 items-center gap-2 rounded-xl border border-[#00645f] bg-[#007c78] px-4 py-2 text-sm font-semibold text-white transition hover:-translate-y-0.5 disabled:cursor-default disabled:opacity-65 disabled:hover:translate-y-0"
-          data-testid="questionnaire-check"
-        >
-          <CheckCircle2 className="h-4 w-4" aria-hidden="true" />
-          Check answer
-        </button>
+        <Button label="Check answer" icon={CheckCircle2} tone="success" variant="primary" onClick={checkAnswer} disabled={!canCheck} data-testid="questionnaire-check" />
 
         {result ? (
-          <button
-            type="button"
-            onClick={advance}
-            className="inline-flex min-h-12 items-center gap-2 rounded-xl border border-[#1d4e9e] bg-[#245fba] px-4 py-2 text-sm font-semibold text-white transition hover:-translate-y-0.5"
-            data-testid={currentIndex + 1 >= attempt.length ? "questionnaire-finish" : "questionnaire-next"}
-          >
-            {currentIndex + 1 >= attempt.length ? "Finish" : "Next"}
-            <ArrowRight className="h-4 w-4" aria-hidden="true" />
-          </button>
+          <Button label={currentIndex + 1 >= attempt.length ? "Finish" : "Next"} icon={ArrowRight} tone="success" variant="primary" onClick={advance}
+            data-testid={currentIndex + 1 >= attempt.length ? "questionnaire-finish" : "questionnaire-next"} />
         ) : null}
       </div>
     </div>
@@ -360,6 +338,7 @@ function QuestionFeedback({ question, result }: { question: QuestionnaireAttempt
         "mt-5 rounded-xl border p-4",
         result.isCorrect ? "border-[#6dd8cf] bg-[#e8f8f6]" : "border-[#f7cf5d] bg-[#fff5d6]",
       )}
+      role="status"
       data-testid="questionnaire-feedback"
     >
       <p className={cn("text-sm font-semibold", result.isCorrect ? "text-[#007c78]" : "text-[#7a5200]")}>
@@ -415,13 +394,5 @@ function getEffectiveAnswer(question: QuestionnaireAttemptQuestion, answer?: Que
 }
 
 function NextNodeLink({ href }: { href: string }) {
-  return (
-    <Link
-      href={href}
-      className="inline-flex min-h-12 items-center gap-2 rounded-xl border border-[#1d4e9e] bg-[#245fba] px-4 py-2 text-sm font-semibold text-white transition hover:-translate-y-0.5"
-    >
-      {href.endsWith("/flashcards") ? "Start review feed" : "Next activity"}
-      <ArrowRight className="h-4 w-4" aria-hidden="true" />
-    </Link>
-  );
+  return <ButtonLink href={href} label={href.endsWith("/flashcards") ? "Start review feed" : "Next activity"} icon={ArrowRight} tone="success" variant="primary" />;
 }

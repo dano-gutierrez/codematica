@@ -162,3 +162,17 @@ it("opens an unsaved session if definition storage fails", async () => {
   fireEvent.click(screen.getByTestId("notebook-create"));
   await screen.findByTestId("notebook-test");
 });
+
+it("announces creation and prevents a second definition save while the first is pending", async () => {
+  let finish!: () => void;
+  storage.saveDefinition.mockReturnValueOnce(new Promise<void>(resolve => { finish = resolve; }));
+  render(<JapaneseNotebookCatalog />);
+  fireEvent.change(screen.getByTestId("notebook-custom-text"), { target: { value: "あい" } });
+  fireEvent.click(screen.getByTestId("notebook-create"));
+  expect(screen.getByTestId("notebook-create")).toHaveAttribute("aria-busy", "true");
+  expect(screen.getByTestId("notebook-custom-text")).toBeDisabled();
+  fireEvent.click(screen.getByTestId("notebook-create"));
+  expect(storage.saveDefinition).toHaveBeenCalledTimes(1);
+  await act(async () => finish());
+  expect(screen.getByTestId("notebook-test")).toHaveTextContent("custom-3042-3044-v1");
+});

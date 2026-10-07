@@ -94,7 +94,8 @@ describe("InterviewQuestionSession", () => {
     expect(screen.getByTestId("interview-step-position")).toHaveTextContent("Step 2 of 2");
     expect(screen.getByText("Close the pair")).toBeVisible();
 
-    fireEvent.change(screen.getByLabelText("Solution language"), { target: { value: "java" } });
+    fireEvent.pointerDown(screen.getByTestId("interview-solution-language"), { button: 0, ctrlKey: false, pointerType: "mouse" });
+    fireEvent.click(await screen.findByRole("option", { name: "Java" }));
     fireEvent.click(screen.getByRole("button", { name: /show full explanation/i }));
 
     expect(screen.getByTestId("interview-final-explanation")).toHaveTextContent("Every earlier value is available");

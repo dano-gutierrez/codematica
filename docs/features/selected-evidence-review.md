@@ -67,6 +67,8 @@ Stale sequence/session events cannot overwrite the selected fictional state. Mis
 
 ## Test Plan
 
+Browser source checks open the Primary sources disclosure before inspecting visible links and their exact destinations.
+
 - Red first: eleven missing-resource cases failed before authoring. A mistaken test call passed a string to the existing next-route API; corrected the test to its documented node object and path query without changing production.
 - Unit/integration: all 55 reviewed answers, single correct option, question/quiz skill scope, source metadata and lesson/checkpoint routes; three graph paths, eleven qualified skills and 27 source identities.
 - E2E: `@regression` journeys read a selected heading/source, grade all five answers and inspect the next or terminal route.

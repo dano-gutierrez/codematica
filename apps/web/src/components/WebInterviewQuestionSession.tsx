@@ -1,7 +1,8 @@
 "use client";
 
 import dynamic from "next/dynamic";
-import Link from "next/link";
+import { Button } from "@/components/Button";
+import { ButtonLink } from "@/components/ButtonLink";
 import { useSearchParams } from "next/navigation";
 import {
   ArrowLeft,
@@ -29,8 +30,6 @@ const WebPlayground = dynamic(
     ),
   },
 );
-const control =
-  "inline-flex min-h-11 items-center justify-center gap-2 rounded-xl border border-[#526474] bg-white px-4 py-2 text-sm font-semibold text-[#263238] disabled:opacity-50";
 type WebInterviewQuestion = Extract<InterviewQuestion, { kind: "web" }>;
 
 export function WebInterviewQuestionSession({
@@ -86,10 +85,10 @@ export function WebInterviewQuestionSession({
       className="mt-7 grid min-w-0 grid-cols-[minmax(0,1fr)] gap-7 [&>*]:min-w-0"
       data-testid="web-interview-session"
     >
-      <section data-testid="interview-evaluation-guide">
-        <h2 className="text-2xl font-semibold text-[#263238]">
+      <details className="ui-disclosure" data-testid="interview-evaluation-guide">
+        <summary>
           What to demonstrate
-        </h2>
+        </summary>
         <p className="mt-3 leading-7 text-[#4d5c65]">
           {question.evaluation.intent}
         </p>
@@ -104,7 +103,7 @@ export function WebInterviewQuestionSession({
             </li>
           ))}
         </ul>
-      </section>
+      </details>
       <div className="grid gap-5 lg:grid-cols-2">
         <RubricSection
           title="Practice acceptance criteria"
@@ -124,22 +123,20 @@ export function WebInterviewQuestionSession({
           test the baseline.
         </p>
         <div
-          className="mt-4 grid gap-2 md:grid-cols-3"
+          className="ui-filters mt-4"
           role="group"
           aria-label="Solution approaches"
         >
           {question.solutionTracks.map((candidate, index) => (
-            <button
+            <Button
               key={candidate.id}
-              type="button"
+              label={`Approach ${index + 1} · ${candidate.title}`}
+              icon={Code2}
+              tone="info"
               aria-pressed={candidate.id === track.id}
               onClick={() => selectTrack(candidate.id)}
-              className={`${control} flex-col items-start text-left ${candidate.id === track.id ? "border-[#1d4e9e] bg-[#edf5ff]" : ""}`}
               data-testid={`web-solution-tab-${candidate.id}`}
-            >
-              <span>Approach {index + 1}</span>
-              {candidate.title}
-            </button>
+            />
           ))}
         </div>
         <article className="mt-6" data-testid="web-solution-detail">
@@ -156,61 +153,38 @@ export function WebInterviewQuestionSession({
               ? "Full solution"
               : `Step ${stepIndex + 1} of ${track.steps.length}`}
           </p>
-          <ol className="mt-4 grid gap-4">
-            {(revealed ? track.steps : [track.steps[stepIndex]]).map(
-              (step, index) => (
-                <li key={step.title}>
-                  <h4 className="text-lg font-semibold text-[#263238]">
-                    {(revealed ? index : stepIndex) + 1}. {step.title}
-                  </h4>
-                  <p className="mt-2 leading-7 text-[#4d5c65]">
-                    {step.explanation}
-                  </p>
-                </li>
-              ),
-            )}
-          </ol>
           <div className="mt-5 flex flex-wrap gap-2">
             {revealed ? (
-              <button
-                type="button"
-                className={control}
-                onClick={() => {
-                  setStepIndex(0);
-                  setRevealed(false);
-                }}
-              >
-                <RotateCcw className="h-4 w-4" aria-hidden="true" />
-                Restart recipe
-              </button>
+              <Button label="Restart recipe" icon={RotateCcw} tone="warning"
+                onClick={() => { setStepIndex(0); setRevealed(false); }} />
             ) : (
               <>
-                <button
-                  type="button"
-                  className={control}
-                  disabled={stepIndex === 0}
-                  onClick={() => setStepIndex((current) => current - 1)}
-                >
-                  <ArrowLeft className="h-4 w-4" aria-hidden="true" />
-                  Previous step
-                </button>
-                <button type="button" className={control} onClick={advance}>
-                  {stepIndex === track.steps.length - 1
-                    ? "Reveal solution"
-                    : "Next step"}
-                  <ArrowRight className="h-4 w-4" aria-hidden="true" />
-                </button>
-                <button
-                  type="button"
-                  className={control}
-                  onClick={() => setRevealed(true)}
-                >
-                  <BookOpen className="h-4 w-4" aria-hidden="true" />
-                  Show full solution
-                </button>
+                <Button label="Previous step" icon={ArrowLeft} disabled={stepIndex === 0}
+                  onClick={() => setStepIndex((current) => current - 1)} />
+                <Button label={stepIndex === track.steps.length - 1 ? "Reveal solution" : "Next step"}
+                  icon={ArrowRight} tone="info" variant="primary" onClick={advance} />
+                <Button label="Show full solution" icon={BookOpen} tone="assist" onClick={() => setRevealed(true)} />
               </>
             )}
           </div>
+          {revealed && track.python ? (
+            <div role="group" aria-label="Solution language" className="mt-4 flex flex-wrap gap-2">
+              {(["typescript", "python"] as const).map((value) => (
+                <Button key={value} label={value === "python" ? "Python" : "TypeScript"} icon={Code2} tone="info"
+                  aria-pressed={language === value} onClick={() => setLanguage(value)} />
+              ))}
+            </div>
+          ) : null}
+          <ol className="mt-4 grid gap-4">
+            {(revealed ? track.steps : [track.steps[stepIndex]]).map((step, index) => (
+              <li key={step.title}>
+                <h4 className="text-lg font-semibold text-[#263238]">
+                  {(revealed ? index : stepIndex) + 1}. {step.title}
+                </h4>
+                <p className="mt-2 leading-7 text-[#4d5c65]">{step.explanation}</p>
+              </li>
+            ))}
+          </ol>
           {revealed ? (
             <div
               className="mt-6 grid gap-5"
@@ -251,26 +225,7 @@ export function WebInterviewQuestionSession({
                   ? track.python!.complexity.space
                   : track.complexity.space}
               </p>
-              {track.python ? (
-                <div
-                  role="group"
-                  aria-label="Solution language"
-                  className="flex flex-wrap gap-2"
-                >
-                  {(["typescript", "python"] as const).map((value) => (
-                    <button
-                      type="button"
-                      key={value}
-                      aria-pressed={language === value}
-                      className={control}
-                      onClick={() => setLanguage(value)}
-                    >
-                      <Code2 className="h-4 w-4" aria-hidden="true" />
-                      {value === "python" ? "Python" : "TypeScript"}
-                    </button>
-                  ))}
-                </div>
-              ) : null}
+
             </div>
           ) : null}
         </article>
@@ -303,9 +258,9 @@ export function WebInterviewQuestionSession({
         )
       ) : null}
       {revealed && nextHref ? (
-        <Link
+        <ButtonLink
           href={nextHref}
-          className={control}
+          label="Continue to checkpoint" icon={ArrowRight} tone="success" variant="primary"
           data-testid="interview-next-node"
           onClick={() =>
             void recordProgress(target, "completed", {
@@ -313,10 +268,7 @@ export function WebInterviewQuestionSession({
               recipeReviewed: true,
             })
           }
-        >
-          Continue to checkpoint
-          <ArrowRight className="h-4 w-4" aria-hidden="true" />
-        </Link>
+        />
       ) : null}
       <section>
         <h2 className="text-sm font-semibold uppercase text-[#4d5c65]">
@@ -338,8 +290,8 @@ function RubricSection({
   items: Array<{ title: string; explanation: string }>;
 }) {
   return (
-    <section>
-      <h2 className="text-xl font-semibold text-[#263238]">{title}</h2>
+    <details className="ui-disclosure">
+      <summary>{title}</summary>
       <div className="mt-4 grid gap-4">
         {items.map((item) => (
           <article key={item.title}>
@@ -348,6 +300,6 @@ function RubricSection({
           </article>
         ))}
       </div>
-    </section>
+    </details>
   );
 }

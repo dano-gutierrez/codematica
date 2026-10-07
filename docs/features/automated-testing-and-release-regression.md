@@ -85,11 +85,15 @@ Configure branch protection in the account: after the five PR jobs have complete
 
 `npm run test:coverage` first enforces scope totals and then runs `vitest.per-file.config.ts`. `npm run test:mobile:coverage` enforces the mobile-library and shared-screen totals.
 
+Native Jest explicitly maps the public `@codematica/ui/game` export to its declared screen entry. The map route-focus test loads the real route and verifies focus/blur propagation and navigation; screen tests separately verify measured animation visibility, reflow and scroll-update behavior.
+
 ### Browser Matrix
 
 - `mobile-chromium`: complete smoke and regression suite.
-- `desktop-chromium`: smoke journeys, `@playground` and `@notebook-catalog` regressions.
-- `mobile-webkit`: smoke journeys, `@playground` and `@notebook-catalog` regressions. Catalog coverage protects Safari's ruby annotation layout when romaji is hidden.
+- `desktop-chromium`: smoke journeys, `@playground`, `@notebook-catalog` and `@design` regressions.
+- `mobile-webkit`: smoke journeys, `@playground`, `@notebook-catalog` and other design journeys. Public foundations, Japanese and campaign matrices have separate `mobile-webkit-design-*` projects per feature/width plus one interaction project. Catalog coverage protects Safari's ruby annotation layout when romaji is hidden.
+- Each WebKit project uses one worker. Responsive groups bound worker reuse after the full audit observed stalls roughly every 47 cases; the before/after test listing retains exactly the same cases with no duplicates. Use `--project='mobile-webkit*' --workers=1` for the complete serial WebKit lane. Other projects retain normal concurrency. Timeouts, assertions, tags and retained failure evidence are unchanged.
+- The dedicated synthetic editorial lane exercises admin/account journeys and accessibility on all three projects. Public lanes clear Supabase configuration and skip those cases; the separate lane intercepts all hosted requests.
 - Playground regressions exercise a real hosted runtime and a controlled connection failure, including automatic startup, edit/run/reset, and recovery with drafts intact.
 - Editor fixtures select all using CodeMirror's emulated platform, then assert complete replacement before execution; iPhone WebKit uses Meta on Linux runners. Eight primary-route accessibility audits run independently with unchanged serious/critical checks and default per-test budgets.
 - Trace, screenshot, and video are retained only for failures. HTML/JUnit reports and failure evidence are uploaded by CI.

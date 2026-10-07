@@ -96,6 +96,8 @@ The existing ML Workflow companion adds an original case-study claim record and 
 
 ## Test Plan
 
+Browser source checks open the Primary sources disclosure before inspecting visible links and their exact destinations.
+
 - Unit: schema v9 source nodes/catalogs, generic progression, planned-stage stamp denial, questionnaire skill scores.
 - Integration: repository content rebuild, source/reference checks, stable companion/external route selection. The original audit sections preserve lesson/path identity and add explicit source citations; verify pinned repository commits and evidence limits.
 - E2E: `ml-systems.regression.spec.ts` covers the source-backed Foundations guided lab and Neural Computation → scored checkpoint → next upstream chapter. Completing the neural practice must leave Framework Builder planned.

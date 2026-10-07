@@ -1,6 +1,6 @@
 import { Suspense } from "react";
 import type { Metadata } from "next";
-import Link from "next/link";
+import { ButtonLink } from "@/components/ButtonLink";
 import { notFound } from "next/navigation";
 import { ArrowLeft } from "lucide-react";
 import { SourceReferences } from "@/components/SourceReferences";
@@ -48,16 +48,10 @@ export default async function InterviewQuestionPage({ params }: InterviewQuestio
     <main className="min-h-screen pb-12" data-testid="interview-question-page">
       <InterviewHeader />
 
-      <section className="mx-auto w-full max-w-5xl px-4 py-6 sm:py-8">
-        <Link
-          href={collection.route}
-          className="inline-flex items-center gap-2 rounded-xl border border-[#d5e2e8] bg-white px-3 py-2 text-sm font-semibold text-[#263238]"
-        >
-          <ArrowLeft className="h-4 w-4" aria-hidden="true" />
-          {collection.name}
-        </Link>
+      <section className="ui-page">
+        <ButtonLink href={collection.route} label={collection.name} icon={ArrowLeft} />
 
-        <div className="mt-6 rounded-xl border border-[#d5e2e8] bg-white p-5 sm:p-7">
+        <div className="mt-6">
           <div className="flex flex-wrap items-center gap-2">
             <span className="rounded-xl border border-[#d5e2e8] bg-[#f6fbfc] px-2.5 py-1 text-xs font-semibold uppercase text-[#007c78]">
               {collection.name}
@@ -73,7 +67,7 @@ export default async function InterviewQuestionPage({ params }: InterviewQuestio
           <h1 className="mt-5 text-3xl font-semibold leading-tight tracking-tight text-[#263238] sm:text-4xl">{question.title}</h1>
           <p className="mt-4 text-base font-normal leading-7 text-[#68737d]">{question.summary}</p>
 
-          <section className="mt-6 rounded-xl border border-[#d5e2e8] bg-[#f6fbfc] p-4">
+          <section className="mt-6 border-t border-[#e1e5e9] py-4">
             <p className="text-xs font-semibold uppercase text-[#68737d]">Prompt</p>
             <p className="mt-2 text-base font-medium leading-7 text-[#33434b]">{question.prompt}</p>
             {question.constraints.length > 0 ? (

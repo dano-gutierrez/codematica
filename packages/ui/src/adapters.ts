@@ -21,12 +21,15 @@ export type ProgressAdapter = {
   record: (target: ProgressTarget, status: ProgressStatus, position?: Record<string, unknown>) => Promise<void> | void;
 };
 
+export type AuthSyncResult = { progressSynced: boolean };
+
 export type AuthAdapter = {
   isConfigured: boolean;
-  signInWithPassword?: (email: string, password: string) => Promise<void>;
+  isAppleEnabled?: boolean;
+  signInWithPassword?: (email: string, password: string) => Promise<void | AuthSyncResult>;
   signUpWithPassword?: (email: string, password: string) => Promise<void>;
   signInWithOAuth?: (provider: "google" | "apple") => Promise<void>;
-  syncAnonymousProgress?: () => Promise<void>;
+  syncAnonymousProgress?: () => Promise<void | AuthSyncResult>;
 };
 
 export type AudioAdapter = {
@@ -41,4 +44,6 @@ export type CodematicaAdapters = {
   notebooks?: import("@codematica/core").NotebookStorage;
   handwritingCanvas?: import("react").ComponentType<import("./JapaneseNotebookPractice").HandwritingCanvasProps>;
   mermaidScript?: string;
+  /** Generated local search only; do not supply remote or user-authored JavaScript. */
+  searchScript?: string;
 };

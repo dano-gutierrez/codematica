@@ -53,6 +53,8 @@ npm run test:mobile:coverage
 
 Jest covers native adapters, offline and partial-failure progress behavior, Supabase configuration, app/EAS configuration, and the shared React Native screen matrix. Coverage is enforced at 80% lines/statements/functions and 70% branches for mobile libraries, and 70%/60% for shared native UI.
 
+The game route-focus regression loads the actual map route through its public `@codematica/ui/game` export. Jest maps that export explicitly to the declared screen entry. Native game tests also cover measured art visibility, viewport reflow, covered routes and unchanged-visibility scroll events; artwork and scoring remain unchanged.
+
 Keep SDK 57 patch versions aligned across this workspace, root development dependencies, root overrides, and `package-lock.json`. Install required native peers directly in this app; `expo-audio` requires `expo-asset`.
 
 The October 6, 2026 alignment uses Expo 57.0.27, expo-asset 57.0.19, expo-constants 57.0.21, expo-linking 57.0.12 and expo-router 57.0.25. Root overrides also follow the SDK’s CLI, Metro, Babel and module-core dependency ranges; do not keep an override below the installed SDK’s required version.
@@ -64,6 +66,14 @@ After updating versions, verify a clean `npm ci`, Expo Doctor, typechecking, nat
 Credential-free native E2E builds use the `e2e-test` EAS profile: Android produces an APK and iOS produces a simulator app. Checked-in Maestro flows live in `.maestro/`, use stable `testID` selectors, and cover offline discovery, path-to-practice, browse-to-diagram, Japanese study/review, interviews, unconfigured login, and Restore the Signal. The generated game regression journey covers all 36 scenarios; regenerate it with root `npm run game:flows`. The frontend interview journey also captures Python code for dark-surface visual review. `code-layout.yaml` exercises the lesson code viewport and captures both swipe directions and surrounding prose. Local `code-styles.test.tsx` verifies fenced/indented/nested Markdown, whitespace, language labels, full-height code, and horizontal-scroll containment separately.
 
 Run `npm run mobile:e2e:code-layout -- --session <agent-device-session>` on each Android/iOS phone simulator to assert actual source movement, fixed prose/navigation bounds, reverse scrolling, and vertical page scrolling. See `e2e/README.md` for setup, Expo Go options, and retained screenshot/snapshot artifacts. This local geometry check complements the EAS Maestro screenshots.
+
+`practice-recovery.regression.yaml` covers keyboard correction of a cloze answer and a complete checkpoint/restart. `review-and-recovery.regression.yaml` covers missing-page recovery, passive scroll/source navigation, vocabulary examples, deck reveal/navigation reset and pending audio approval. `skill-review-save.regression.yaml` checks a locally acknowledged rating, process-restart restoration and a second intentional recall. Fault/retry/conflict cases are pinned in native persistence, screen and route tests. These flows need no account or hosted writes.
+
+`guided-lab-and-sources.regression.yaml` checks the ML prerequisite/source companion → guided lab journey, private notes, acknowledged completion, restart and next lesson. Run on disposable installed data at normal and enlarged text. Guided-lab write failures retain choices and notes for Retry completion; progress stores only the existing coarse milestone.
+
+Maestro warm-link flows wait for `mobile-nav-learn` after launching, then open the route. Android activity startup can precede the React navigator's URL subscription. Use a visible readiness assertion, never a fixed delay, and scroll to offscreen path/activity destinations before tapping.
+
+`learn-discovery.regression.yaml` pins compact Learn curated/search cards: fully visible titles and labels, absent description previews, clearing search and the path destination. Run it on the credential-free installed Android/iOS E2E artifact alongside the offline-learning journey. Native Jest also covers resume cards and every curated/search item.
 
 Run the Android smoke workflow manually or by applying the `mobile-e2e` pull-request label:
 
@@ -162,7 +172,7 @@ References:
 
 Expo uses adaptive orientation with `supportsTablet` enabled. Japanese handwriting adapts to window size: phones and compact Split View stay stacked; larger iPad windows get a wider canvas.
 
-Review mastery saves immediately to AsyncStorage. Signed-in sessions validate and merge the remote RLS snapshot before bounded uploads, preserving the local copy. Every lesson, flashcard, dictionary profile, and resource stays directly reachable. Run `npm run content:audio` after adding released Japanese audio to generate Expo's static asset registry.
+Review mastery waits for AsyncStorage acknowledgment before showing “saved on this device.” Rating intents share a serialized storage queue; Retry save reuses the same recall, reconciles an already committed write and keeps unrelated skills. Conflicts offer Reload progress; unreadable stored data is preserved. Optional remote loading does not delay local practice. Signed-in sessions validate and merge the remote RLS snapshot before bounded uploads, preserving the local copy. Every lesson, flashcard, dictionary profile, and resource stays directly reachable. Run `npm run content:audio` after adding released Japanese audio to generate Expo's static asset registry.
 
 ## Adaptive UI
 
@@ -174,6 +184,8 @@ Play (`/`) opens Restore the Signal, Learn (`/learn`) keeps discovery, and `/pla
 
 Android prebuild uses `plugins/with-shared-bundle-inputs.cjs` so shared source and asset edits invalidate the production JS bundle. See [plugin notes](plugins/README.md) and the game feature document for installed-build verification.
 
+The `with-live-font-scale.cjs` prebuild hook keeps the Android activity and transient navigation/input mounted when system text size changes, and publishes the new scale to responsive React Native screens. Rebuild the native binary to verify it; Expo Go does not include this activity hook. Configuration tests and native coverage pin its generation contract. Installed validation must retain the current route and input while changing text size, then inspect enlarged and restored layouts.
+
 In-level character miniatures use the shared core scene layout and Skia atlas. The scene measures its container, redraws while paused/reduced, and retains a stable `game-scene` testID in the Maestro smoke flow. See the game feature contract for installed-device verification.
 
 ## LinkedIn admin review
@@ -182,11 +194,21 @@ Verified allowlisted accounts can open More → LinkedIn posts (`/admin/linkedin
 
 The LinkedIn admin screen also supports Create → Add for analysis and selection-based Unicode bold/italic, bullets and plain text. Manual drafts require analyzed proposal adoption before approval; `.maestro/linkedin-admin.yaml` covers creation against disposable data.
 
-Editorial accessibility follows `docs/features/design-system.md`: 48 dp text actions, natural system font scaling, explicit discard before leaving dirty edits, and opt-in `AppScreen` keyboard-aware scrolling. Run native coverage and the disposable-data `.maestro/linkedin-admin.yaml` before native release; on-device screen-reader/keyboard validation is still required.
+Editorial accessibility follows `docs/features/design-system.md`: 48 dp text actions, natural system font scaling, explicit discard before leaving dirty edits, and opt-in `AppScreen` keyboard-aware scrolling. Run native coverage and the disposable-data `.maestro/linkedin-admin.yaml` before native release; on-device screen-reader/keyboard validation is still required. The opt-in `e2e/flows/auth-account.regression.yaml` signs a disposable admin in, exercises that editorial flow, signs out and verifies denied access. Keep publishing disabled, use private Maestro parameters/artifacts and follow `e2e/README.md`; it is separate from credential-free smoke and real OAuth verification.
 
-Japanese writing notebooks use 24 whole-prompt repetitions per sheet and support curated/custom text of 1–5 published characters. Ink and Easy/Balanced/Precise difficulty preferences stay on the device; coarse completion/unlocks optionally sync. Input detection is automatic with no mode buttons; one finger writes, two fingers scroll the paper, and web wheel/trackpad scrolling stays available. Whole characters check automatically after a 400ms pen-up pause, with errors delayed until 1.2 seconds after pen-up. Sheet controls use an accessible restart icon. The installed-app regression flow selects difficulty and draws without a submit button. See `docs/features/japanese-writing-notebooks.md` for the implementation, persistence and validation contract.
+Japanese writing notebooks use 24 whole-prompt repetitions per sheet and support curated/custom text of 1–5 published characters. Ink and Easy/Balanced/Precise difficulty preferences stay on the device; coarse completion/unlocks optionally sync. Input detection is automatic with no mode buttons; one finger writes, two fingers scroll the paper, and web wheel/trackpad scrolling stays available. Whole characters check automatically after a 400ms pen-up pause, with errors delayed until 1.2 seconds after pen-up. Sheet controls use a visibly labeled restart action with an icon. The installed-app regression flow selects difficulty and draws without a submit button. See `docs/features/japanese-writing-notebooks.md` for the implementation, persistence and validation contract.
 
 Native notebook writing now protects strokes from ScrollView interception and iPad swipe-back. Selected pages use compact headers and show feedback above the paper; custom creation handles keyboard taps. `src/lib/handwriting-navigation.ts` protects notebook, writing-review, dictionary detail and authored writing-exercise routes while preserving swipe-back elsewhere. Run `npm run mobile:e2e:notebook-layout` and `npm run mobile:e2e:notebook-gestures` against disposable agent-device sessions; see [e2e setup](e2e/README.md). Physical Apple Pencil and SDK 57 build checks were deferred by the user; follow the [physical iPad checklist](../../docs/features/japanese-writing-notebooks.md#deferred-physical-ipad-checklist).
+
+## Account and form design
+
+Native navigation shows account identity and an expandable Sign out action after authentication, with a separate Admin group for verified members. One Supabase client is shared across account, adapters and progress. Local-scope sign out leaves other devices signed in; failed sign out remains retryable. Login uses visible field labels, autofill, busy guards and keyboard-aware scrolling. Apple stays hidden unless `EXPO_PUBLIC_AUTH_APPLE_ENABLED=true`. OAuth callback failures keep a return-to-sign-in action; partial or failed progress sync offers Retry sync without exchanging the one-use code again, or Continue with retained local progress. Source regressions do not replace installed Android/iOS keyboard, screen-reader and large-text validation. See [the app-wide audit](../../docs/features/app-wide-design-audit.md) and [design standards](../../docs/features/design-system.md).
+
+Native OAuth uses explicit PKCE and a validated Expo Router callback handoff. Auth failure stays on a recovery screen; partial progress sync offers retry without reauthenticating. The app-wide route audit distinguishes fresh Metro/Expo Go UI checks from an installed production client and physical Pencil checks.
+
+## Local fuzzy search
+
+The native adapter provides the fixed `src/generated/search-worker.ts` bundle to shared Learn/Browse search. Expensive matching executes in the existing local WebView dependency, keeping native input and scrolling responsive. It needs no network or Supabase setup. Regenerate with `npm run search:runtime` after matcher/runtime changes and verify with `npm run search:check`; CI checks freshness and the root production build regenerates it. Installed performance and startup checks remain required on Android/iOS; mocked component tests are not runtime proof.
 
 Event-log interview content uses the shared native walkthrough and code reader. Jest covers all three approaches/languages and checkpoint navigation; `.maestro/event-log-interview.yaml` defines the installed-app quiz/review journey. Playground execution remains web-only.
 

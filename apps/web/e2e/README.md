@@ -1,8 +1,8 @@
 # Web End-To-End Tests
 
-Playwright runs the complete suite in mobile Chromium. Critical `@smoke` journeys, `@playground` and `@notebook-catalog` regressions also run in desktop Chromium and mobile WebKit. Deeper cases use `@regression`.
+Playwright runs the complete suite in mobile Chromium. Critical `@smoke` journeys, `@playground`, `@notebook-catalog`, and `@design` regressions also run in desktop Chromium and mobile WebKit. Deeper cases use `@regression`.
 
-The runner builds and serves the production Next app, avoiding dev-server compilation and Fast Refresh during parallel tests. CI uses two workers overall and limits iPhone WebKit to one worker; local runs use four. Two Linux CI attempts stalled or crashed at the game's return-to-map step with concurrent WebKit pages, while three local repetitions passed. The project limit reduces concurrency without increasing timeouts or removing journeys/assertions. All browser projects remain enabled.
+The runner builds and serves the production Next app, avoiding dev-server compilation and Fast Refresh during parallel tests. CI uses two workers overall; local runs use four. Each iPhone WebKit project uses one worker. The public foundations, Japanese and campaign matrices use a fresh worker per feature/width; their interaction cases form a separate project. This bounds worker reuse after the audit observed a navigation/teardown stall roughly every 47 cases. Editorial keeps its original three projects. All cases, assertions, timeouts, videos and traces remain enabled; a before/after listing verifies that the same cases are selected once each.
 
 Set `E2E_PORT=3102` (or another free port) when a local app owns the default 3100. The server and browser base URL use the same port.
 
@@ -10,6 +10,8 @@ Set `E2E_PORT=3102` (or another free port) when a local app owns the default 310
 npm run e2e:web:smoke
 npm run e2e:web:regression
 npm run e2e:web:release
+# Complete WebKit lane, including its responsive worker groups
+E2E_PORT=3102 npx playwright test --config=apps/web/e2e/playwright.config.ts --project='mobile-webkit*' --workers=1
 ```
 
 Specs live in `specs/` and use `*.smoke.spec.ts` or `*.regression.spec.ts`. Use role queries or stable `data-testid` values; do not use CSS selectors or fixed waits. Failures retain traces, screenshots, and video in `test-results/artifacts/`. JUnit output goes to `test-results/junit.xml`; the HTML report goes to `playwright-report/`.
@@ -25,6 +27,8 @@ Editor tests share `code-editor.ts`: choose CodeMirror's shortcut from the emula
 The Japanese hub Axe audit and its keyboard/font-resize/reduced-motion journey also use separate fresh pages and the default thirty-second deadline. Keep the serious/critical audit, 320px viewport, 200% font, exact skip-link focus, overflow and motion assertions; do not combine their budgets or increase the timeout to mask cumulative work.
 
 `systems-boundaries.regression.spec.ts` reads all six Systems Boundary Review lessons and sources, completes shuffled checkpoints, verifies wrong-answer feedback and 80% scoring, and follows each next lesson or terminal state. Match independently specified answer labels for whichever question is shown; question order is intentionally shuffled.
+
+The app-wide `@design` lane adds responsive route matrices for foundations, discovery/interviews, Japanese practice and every campaign level. It includes enlarged-text, full-page overflow, axe and touch-target checks plus explicit recovery/return journeys. Run the full release lane for final verification; synthetic editorial cases remain in their separate `EDITORIAL_E2E=1` lane. Preserve failed traces and reports before a rerun overwrites the output directory.
 
 ## Adaptive UI
 
@@ -48,6 +52,8 @@ See `docs/features/adaptive-ui.md` for persistent phone navigation, desktop/iPad
 
 ## Restore the Signal
 
+`ml-systems.regression.spec.ts` is also in the `@design` lane. It verifies source → guided lab → acknowledged completion/restart, an injected anonymous-storage failure with retained notes and retry, and 320 px normal/200% text with focus and axe on Chromium and WebKit. Notes must stay out of the stored milestone. Scope feedback queries to the lab so Next.js's separate route-announcement alert remains independent.
+
 `game.smoke.spec.ts` covers the campaign first clear, earned XP, and persisted unlock. `game.regression.spec.ts` exercises all 36 configurations plus lesson return and defensive interaction cases. Use `PLAYWRIGHT_PORT=3127` to isolate the test server from another local checkout. Discovery tests now visit `/learn`; the phone nav uses Play/Learn/Paths/Practice/More.
 
 `game-miniatures.regression.spec.ts` verifies every level’s miniature scene at 320px, captures renderer evidence, and checks stable reduced-motion pixels after clock advancement and resizing.
@@ -60,12 +66,20 @@ Notebook layout regressions exercise real wheel scrolling and two-finger CDP tou
 
 `notebook-catalog.regression.spec.ts` checks actual Japanese previews, optional romaji above the prompts, keyboard toggling, saved notebooks, navigation/reload restoration, stable card heights and phone/iPad/Split View containment. Its `@notebook-catalog` tag runs on all three projects to retain Safari coverage for ruby annotation layout. Run with `npx playwright test --config=apps/web/e2e/playwright.config.ts notebook-catalog.regression.spec.ts`.
 
+## App-wide design audit
+
+`design-foundations.regression.spec.ts` runs public library/catalog/path/reader/diagram/login/basic-practice reflow at 320, 768 and 1440 px, 200% text, axe checks, keyboard disclosures and error recovery navigation. `@design` runs these cases on all three browser platforms. Run `E2E_PORT=3114 npx playwright test --config=apps/web/e2e/playwright.config.ts design-foundations.regression.spec.ts`. Failed evidence must be copied to ignored local audit storage before a rerun replaces the output directory. This is the first subset of the full matrix in `docs/features/app-wide-design-audit.md`; it does not establish full app or installed-native readiness.
+
+The `@design` suites cover public route reflow, keyboard actions and axe at multiple content widths and 200% text. `design-foundations`, `design-content`, `design-japanese` and `design-game` are regression files. Japanese and campaign matrices run normal/enlarged text as independent cases so each keeps the existing test-time budget, axe assertions, geometry checks and captures. Long dictionary visual captures use viewport/section captures while document-wide overflow and accessibility assertions remain active. Follow the app-wide audit for remaining workflows and installed-device evidence.
+
+Foundation keyboard checks verify the skip link stays outside the viewport until focus, appears fully at default/200% text, and moves focus to main when activated. macOS WebKit uses [Safari's documented Option-Tab shortcut for links](https://support.apple.com/guide/safari/cpsh003/mac); other environments use Tab. Keep the focus and viewport assertions in both cases.
 `npm run e2e:interview-admin` exercises synthetic private tracker RPCs: failed create recovery, edited-package import, reading, study routing and Markdown download. No hosted data is used.
 
 `game-map-art.regression.spec.ts` checks fifty-position scenery with twelve playable nodes, all three moving depths, dynamic reduced motion, visual list ordering, keyboard navigation, and centering without inner overflow scrolling or blank seam strips. Run with `PLAYWRIGHT_PORT=3176 npx playwright test --config=apps/web/e2e/playwright.config.ts --project=mobile-chromium game-map-art.regression.spec.ts game.smoke.spec.ts`.
 
 The `@map-art` tag also runs this spec in desktop Chromium and mobile WebKit. Omit `--project` for the three-browser lane.
 
+Map-art checks independently double frontier heading/caption sizes at 200% text and measure the playable heading/row gaps and panel containment at 320 px. Inspect viewport captures as well as stitched element captures; fixed navigation drawn into a tall element screenshot does not establish its viewport behavior.
 `event-log.regression.spec.ts` (`@regression @playground`) covers the attempt-review lesson, all three runnable TS projects, Python switching, cursor continuation across node movement, quiz feedback and scrolling review on all three browser projects.
 
-The merged release matrix retains `@smoke`, `@playground`, `@notebook-catalog`, `@interview-admin` and `@map-art` on desktop Chromium and mobile WebKit. Mobile Chromium runs the complete suite. `scripts/testing/browser-matrix.test.ts` imports the actual configuration and checks every retained tag independently so a future conflict resolution cannot silently drop a lane.
+The merged release matrix retains `@smoke`, `@playground`, `@notebook-catalog`, `@design`, `@interview-admin` and `@map-art` on desktop Chromium and mobile WebKit. Mobile Chromium runs the complete suite. `scripts/testing/browser-matrix.test.ts` imports the actual configuration and checks every retained tag independently so a future conflict resolution cannot silently drop a lane.

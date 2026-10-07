@@ -92,7 +92,8 @@ The Web playground regression reproduced 3.88:1 comments and 3.71:1 numeric/bool
 - `/docs/[...slug]` renders one article with metadata, outline, Markdown body, and referenced diagrams.
 - `/diagrams/[...slug]` renders one standalone Mermaid diagram.
 - Article and diagram routes remain static-first. When opened from a path, a client wrapper reads `?path=` and shows the precomputed next-node link without making the server page dynamic.
-- The layout is mobile-first and uses compact controls, including reusable dropdown filters with keyboard-friendly listbox behavior.
+- The layout is mobile-first and uses reusable wrapping dropdown filters with keyboard-friendly listbox behavior. The library has one set of search/track/difficulty/type controls; optional totals live in Library overview.
+- Web articles limit prose width to about 768 px and place source/outline disclosures near the introduction. Article outline links remain keyboard accessible after expansion. Standalone diagrams retain their own scroll/renderer fallback. Shared ButtonLink supplies path continuation without changing progress payloads or static rendering.
 
 ### Data Model And Persistence
 
@@ -123,7 +124,25 @@ The Web playground regression reproduced 3.88:1 comments and 3.71:1 numeric/bool
 - `apps/web/src/app/browse/page.tsx`: route that hosts the complete lesson and diagram browser
 - `scripts/content/sync-supabase.ts`: optional Supabase upsert path
 
+## App-wide reader design pass — 2026-10-03
+
+Readers use a single reading column with optional outline and primary-source disclosures. Related diagrams and filters fit the available content width. Code, diagram and table scroll areas are named, keyboard-focusable groups with visible focus; inner groups avoid duplicate landmark names in feeds with repeated languages. The global local-progress notice follows page content in normal flow.
+
+Test plan additions: rendering/navigation/source tests plus `design-foundations.regression.spec.ts` and `design-content.regression.spec.ts` cover keyboard scroll access, source links, overflow and axe checks at 200% text. Renderer failures retain source fallback. The route/platform audit tracks remaining device checks.
+
+### Native diagram recovery
+
+A bundled native diagram preview has a named WebView and a named HTML landmark. Diagram source is a disclosure during successful preview loading. If the WebView cannot load, source stays visible with Retry preview; retry remounts only the preview. Without a bundled renderer, source is visible directly. These states do not claim that Mermaid JavaScript rendering or an installed screen reader has been verified. Related article diagrams are plain sections with shared navigation actions.
+
+Native `design-controls.test.tsx` exercises source disclosure, preview load failure and retry without losing source. Installed code/diagram scrolling remains a separate device gate.
+
 ## Test Plan
+
+- Native Browse reuses Learn's local search hook and 300 ms typing pause. It announces “Searching…” and hides obsolete results, defers filter lookups during typing and shows the empty message only after settling. Input, query, ranking, content fields and the 40-result limit are unchanged. Native component regressions call the real shared search, pin the 299/300 ms boundary, replacement queries, selected difficulty, clearing and exact pending-timer cancellation on unmount. Run native coverage plus the Learn/Browse installed journeys after changing this shared hook.
+- Installed `.maestro/browse-and-diagram.yaml` hides the search keyboard, waits for a settled numeric count, then scrolls the result title below its Diagram label fully into view before opening it. A tall card need not fit in one viewport. Run at normal and enlarged system text. Keep the result-list and destination-title assertions, the 20-second search bound and captured result for visual review.
+
+- App-wide design pass: `CatalogSurfaces.test.tsx`, `SourceReferences.test.tsx`, `Button.test.tsx` and `NavigationAndRendering.test.tsx` preserve filtering, source URL/attribution/version, disclosure behavior, link semantics and path progress. `design-foundations.regression.spec.ts` adds axe/reflow at 320/768/1440 px, 200% text and keyboard outline navigation on all three browser projects. Run it with `E2E_PORT=3114 npx playwright test --config=apps/web/e2e/playwright.config.ts design-foundations.regression.spec.ts` plus existing reader/code/diagram journeys and both coverage gates. Coverage floors remain unchanged. Native reader visual/device checks remain pending in the app-wide audit.
+
 
 - `WebPlayground.test.tsx` reproduces initialization failure and verifies shared source rendering and recovery. `code-styles.test.tsx` renders native fenced/indented/unknown-language Markdown plus standalone and inline code; the indented case failed before the fix.
 - `code-contrast.regression.spec.ts` checks actual backgrounds and every rendered code text node in lessons, three algorithm languages, Python companions, passive review, SQL without highlighting, Mermaid source, and an edited playground containing comments, numbers, and booleans. Editor contrast is checked with the remote bundler blocked. Theme selection is intentionally absent.
@@ -178,3 +197,7 @@ The Web playground regression reproduced 3.88:1 comments and 3.71:1 numeric/bool
 ## Thread Handoff Prompt
 
 `Read docs/codex-context.md and docs/features/markdown-knowledge-browser.md first. Compare the documented browser, content, search, and diagram contract against the current code, implement or audit remaining gaps, update docs and tests, and call out any doc/code mismatches explicitly.`
+
+### Native search runtime
+
+Browse uses the same [local execution contract as Learn](home-discovery.md#native-local-search-execution): the unchanged core matcher runs in an offline WebView, with the latest filters, owned request replies, a bounded pending state and Retry search. Canonical destinations, snippets, ranking and the 40-result cap are preserved. Prepared-row parity and real screen composition tests complement `.maestro/browse-and-diagram.yaml`; installed checks retain the existing readiness, exact title and destination assertions.

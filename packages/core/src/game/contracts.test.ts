@@ -371,3 +371,14 @@ describe("campaign adversarial contracts", () => {
     expect(gameTotals(broken.getSnapshot()).stars).toBe(0);
   });
 });
+
+it("gives isolated challenge previews their own named keyboard-accessible main landmark", () => {
+  const scenario = c.levels[0].scenarios[0];
+  if (scenario.kind !== "grid") throw new Error("Expected the grid fixture");
+  const preview = gameSandboxHtml(scenario, "", "", "preview");
+  expect(preview).toContain('<html lang="en">');
+  expect(preview).toContain('<title>Challenge preview</title>');
+  expect(preview).toContain('<main aria-label="Challenge preview">');
+  expect(preview).toContain('<h1 class="sr-only">Challenge preview</h1>');
+  expect(preview).toMatch(/<div id="preview"[^>]*role="group"[^>]*tabindex="0"/);
+});

@@ -9,7 +9,7 @@ export type AnonymousProgressItem = {
   display: ProgressDisplayItem;
 };
 
-export function getAnonymousProgressItems(): AnonymousProgressItem[] {
+export function getAnonymousProgressItems({ strict = false }: { strict?: boolean } = {}): AnonymousProgressItem[] {
   if (typeof window === "undefined") {
     return [];
   }
@@ -17,8 +17,10 @@ export function getAnonymousProgressItems(): AnonymousProgressItem[] {
   try {
     const raw = window.localStorage.getItem(storageKey);
     const parsed = raw ? JSON.parse(raw) : [];
-    return Array.isArray(parsed) ? (parsed as AnonymousProgressItem[]) : [];
-  } catch {
+    if (!Array.isArray(parsed)) throw new Error("Saved progress could not be read.");
+    return parsed as AnonymousProgressItem[];
+  } catch (error) {
+    if (strict) throw error;
     return [];
   }
 }
@@ -35,19 +37,23 @@ export function addAnonymousProgressItem(item: AnonymousProgressItem) {
   const key = createAnonymousProgressKey(item.input);
   const nextItems = [
     item,
-    ...getAnonymousProgressItems().filter((storedItem) => createAnonymousProgressKey(storedItem.input) !== key),
+    ...getAnonymousProgressItems({ strict: true }).filter((storedItem) => createAnonymousProgressKey(storedItem.input) !== key),
   ];
 
   window.localStorage.setItem(storageKey, JSON.stringify(nextItems));
   window.dispatchEvent(new CustomEvent(anonymousProgressChangedEvent));
 }
 
-export function clearAnonymousProgressItems() {
+/** Acknowledge only unchanged submitted records; later activity stays buffered. */
+export function clearAnonymousProgressItems(submitted?: AnonymousProgressItem[]) {
   if (typeof window === "undefined") {
     return;
   }
 
-  window.localStorage.removeItem(storageKey);
+  const acknowledged = submitted && new Set(submitted.map(item => JSON.stringify(item)));
+  const remaining = acknowledged ? getAnonymousProgressItems({ strict: true }).filter(item => !acknowledged.has(JSON.stringify(item))) : [];
+  if (remaining.length) window.localStorage.setItem(storageKey, JSON.stringify(remaining));
+  else window.localStorage.removeItem(storageKey);
   window.dispatchEvent(new CustomEvent(anonymousProgressChangedEvent));
 }
 

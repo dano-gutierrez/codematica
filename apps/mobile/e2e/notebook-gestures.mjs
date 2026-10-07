@@ -98,7 +98,8 @@ try {
   device("diff", "snapshot", "-i");
   assert.equal(repetitions(snapshot("scrolled")), initial + 1, "Two-finger scrolling must not add ink");
   device("screenshot", resolve(artifacts, "scrolled.png"));
-  device("gesture", "pan", panX, panY, 0, 100 * ratio, 500, "--pointer-count", 2);
+  // Retrace the same contacts; starting lower can leave a short landscape viewport.
+  device("gesture", "pan", panX, panY - 100 * ratio, 0, 100 * ratio, 500, "--pointer-count", 2);
   device("diff", "snapshot", "-i");
   device("screenshot", resolve(artifacts, "returned.png"));
   assert.equal(repetitions(snapshot("returned")), initial + 1);

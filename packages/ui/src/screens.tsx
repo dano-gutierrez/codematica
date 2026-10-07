@@ -1,3 +1,4 @@
+import { AdaptiveText as Text } from "./AdaptiveText";
 import {
   buildPassiveFlashcardWindow,
   buildWritingPracticeSheets,
@@ -15,9 +16,7 @@ import {
   getPathNodeRoute,
   getSourcesByRefs,
   searchJapanese,
-  searchDiscovery,
   createDiscoveryItems,
-  searchContent,
   type ContentIndex,
   type ContentSource,
   type Difficulty,
@@ -51,25 +50,27 @@ import Markdown from "react-native-markdown-display";
 import type { ASTNode, RenderRules } from "react-native-markdown-display";
 import Svg, { Circle, Path, Text as SvgText } from "react-native-svg";
 import { WebView } from "react-native-webview";
-import { Fragment, useCallback, useMemo, useRef, useState } from "react";
+import { Fragment, useCallback, useEffect, useId, useMemo, useRef, useState } from "react";
 import type { ReactNode } from "react";
 import {
   FlatList,
   Image,
   Modal,
+  Keyboard,
   KeyboardAvoidingView,
   Platform,
   Pressable,
   ScrollView,
   StyleSheet,
-  Text,
   TextInput,
   useWindowDimensions,
   View,
 } from "react-native";
 import type { NativeScrollEvent, NativeSyntheticEvent } from "react-native";
 import type { CodematicaAdapters, ProgressTarget } from "./adapters";
+import { LocalSearchFeedback, useLocalSearch } from "./LocalSearch";
 import { colors, radii, spacing } from "./tokens";
+import { Button, Disclosure } from "./Button";
 import { JapaneseNotebookPractice, NotebookDrawingContext, NotebookScrollContext } from "./JapaneseNotebookPractice";
 
 // Metro bundles these local images for offline native use.
@@ -107,50 +108,129 @@ const nativeDestinations = [
 ];
 
 /** Persistent shell navigation; the Expo adapter owns routing and safe-area insets. */
-export function NativeNavigation({ pathname, navigate, wide, isAdmin = false }: { pathname: string; navigate: (href: string) => void; wide: boolean; isAdmin?: boolean }) {
+export function NativeNavigation({ pathname, navigate, wide, isAdmin = false, account, accountLoading = false }: {
+  pathname: string;
+  navigate: (href: string) => void;
+  wide: boolean;
+  isAdmin?: boolean;
+  account?: { name: string; email?: string; signOut: () => Promise<void> };
+  accountLoading?: boolean;
+}) {
   const [menuOpen, setMenuOpen] = useState(false);
-  const [languagesOpen,setLanguagesOpen]=useState(pathname.includes("japanese"));
+  const [languagesOpen, setLanguagesOpen] = useState(pathname.includes("japanese"));
   const active = pathname.startsWith("/play/") ? "/" : pathname.startsWith("/practice/languages/japanese") ? "/languages" : pathname.startsWith("/docs/") || pathname.startsWith("/diagrams/") ? "/browse" : `/${pathname.split("/")[1]}`;
   const adminDestination = { href: "/admin/linkedin", label: "LinkedIn", path: "M4 4h16v16H4ZM8 10v7m4-7v7m0-4a3 3 0 0 1 6 0v4" };
   const adminDestinations = [adminDestination, { href: "/admin/interview-preparation", label: "Interview preparation", path: "M3 7h18v14H3ZM8 7V3h8v4M3 12h18" }];
-  const items = wide ? [...nativeDestinations, ...(isAdmin ? adminDestinations : [])] : nativeDestinations.filter(({ href }) => !["/browse", "/languages", "/interviews"].includes(href));
-  const menuItems = [...(isAdmin ? adminDestinations : []), ...nativeDestinations.filter(({ href }) => ["/browse", "/languages", "/interviews"].includes(href)), { href: "/login", label: "Sign in", path: "M4 21v-3a8 8 0 0 1 16 0v3M16 6a4 4 0 1 1-8 0 4 4 0 0 1 8 0" }];
-  return (
-    <View style={wide ? styles.navigationRail : styles.navigationBar} testID={wide ? "mobile-navigation-rail" : "mobile-navigation-bar"}>
-      {wide ? <Pressable accessibilityRole="button" accessibilityLabel="Codematica home" onPress={() => navigate("/")} style={styles.navigationBrand}>
+  const items = wide ? nativeDestinations : nativeDestinations.filter(({ href }) => !["/browse", "/languages", "/interviews"].includes(href));
+  const menuItems = nativeDestinations.filter(({ href }) => ["/browse", "/languages", "/interviews"].includes(href));
+  const moreSelected = ["/browse", "/languages", "/interviews", "/login", "/admin"].includes(active);
+  const go = (href: string) => { setMenuOpen(false); navigate(href); };
+
+  function destination({ href, label, path }: typeof nativeDestinations[number], inMenu = false) {
+    const selected = href.startsWith("/admin/") ? pathname === href || pathname.startsWith(`${href}/`) : active === href;
+    return <Pressable key={href} accessibilityRole={inMenu ? "button" : "tab"} accessibilityLabel={label} accessibilityState={{ selected }} onPress={() => go(href)}
+      style={({ pressed }) => [wide || inMenu ? styles.navigationRailItem : styles.navigationItem, selected && styles.navigationSelected, pressed && styles.navigationPressed]}
+      testID={`mobile-${inMenu ? "menu" : "nav"}-${label.toLowerCase()}`}>
+      <Svg width={22} height={22} viewBox="0 0 24 24" accessible={false}><Path d={path} stroke={selected ? colors.accentStrong : colors.textMuted} strokeWidth={1.7} fill="none" strokeLinecap="round" strokeLinejoin="round" /></Svg>
+      <Text numberOfLines={wide || inMenu ? undefined : 1} adjustsFontSizeToFit={!wide && !inMenu} style={[styles.navigationLabel, (wide || inMenu) && styles.navigationRailLabel, selected && styles.navigationSelectedText]}>{label}</Text>
+    </Pressable>;
+  }
+
+  const accountControl = accountLoading ? <Text accessibilityRole="text" accessibilityLiveRegion="polite" style={styles.mutedText}>Checking account…</Text> : account ? <NativeAccountMenu key={account.email ?? account.name} account={account} onDone={() => go("/")} /> : <Button label="Sign in" variant="ghost" tone="neutral" onPress={() => go("/login")} testID={wide ? "mobile-nav-sign-in" : "mobile-menu-sign-in"} />;
+
+  function languageLinks(inMenu = false) {
+    return <View style={styles.languageBranch}>
+      <Button label="Japanese" variant="ghost" tone="neutral" onPress={() => go("/languages/japanese")} testID={`mobile-${inMenu ? "menu" : "nav"}-japanese`} />
+      <Button label="Notebook practice" variant="ghost" tone="neutral" onPress={() => go("/languages/japanese/notebooks")} testID={`mobile-${inMenu ? "menu" : "nav"}-notebooks`} />
+    </View>;
+  }
+
+  return <View style={wide ? styles.navigationRail : styles.navigationBar} testID={wide ? "mobile-navigation-rail" : "mobile-navigation-bar"}>
+    {wide ? <>
+      <Pressable accessibilityRole="button" accessibilityLabel="Codematica home" onPress={() => navigate("/")} style={styles.navigationBrand}>
         <Image source={patchBrandMark} style={styles.brandMark} resizeMode="contain" accessible={false} />
         <Image source={codematicaWordmark} style={styles.brandWordmark} resizeMode="contain" accessible={false} />
-      </Pressable> : null}
-      {items.map(({ href, label, path }) => <Fragment key={href}><Pressable accessibilityRole="tab" accessibilityLabel={label} accessibilityState={{ selected: active === href }} onPress={() => navigate(href)} style={({ pressed }) => [wide ? styles.navigationRailItem : styles.navigationItem, active === href && styles.navigationSelected, pressed && styles.navigationPressed]} testID={`mobile-nav-${label.toLowerCase()}`}>
-        <Svg width={22} height={22} viewBox="0 0 24 24" accessible={false}><Path d={path} stroke={active === href ? colors.accentStrong : colors.textMuted} strokeWidth={1.7} fill="none" strokeLinecap="round" strokeLinejoin="round" /></Svg>
-        <Text numberOfLines={wide ? undefined : 1} adjustsFontSizeToFit={!wide} style={[styles.navigationLabel, wide && styles.navigationRailLabel, active === href && styles.navigationSelectedText]}>{label}</Text>
-      </Pressable>{wide && href==="/languages" ? <><Button label="Supported languages" variant="ghost" onPress={()=>setLanguagesOpen(v=>!v)} testID="mobile-nav-languages-expand"/>{languagesOpen ? <View style={{paddingLeft:20}}><Button label="Japanese" variant="ghost" onPress={()=>navigate("/languages/japanese")} testID="mobile-nav-japanese"/><Button label="Notebook practice" variant="ghost" onPress={()=>navigate("/languages/japanese/notebooks")} testID="mobile-nav-notebooks"/></View> : null}</> : null}</Fragment>)}
-
-      {wide ? <Button label="Sign in" variant="ghost" onPress={() => navigate("/login")} testID="mobile-nav-sign-in" /> : <Pressable accessibilityRole="button" accessibilityLabel="More" accessibilityState={{ selected: ["/browse", "/languages", "/interviews", "/login", "/admin"].includes(active) }} onPress={() => setMenuOpen(true)} style={[styles.navigationItem, ["/browse", "/languages", "/interviews", "/login", "/admin"].includes(active) && styles.navigationSelected]} testID="mobile-nav-more"><Svg width={22} height={22} viewBox="0 0 24 24" accessible={false}>{[5,12,19].map((cx) => <Circle key={cx} cx={cx} cy={12} r={1.5} fill={colors.textMuted} />)}</Svg><Text numberOfLines={1} adjustsFontSizeToFit style={styles.navigationLabel}>More</Text></Pressable>}
-      <Modal visible={menuOpen} transparent animationType="slide" onRequestClose={() => setMenuOpen(false)}>
-        <View style={styles.navigationBackdrop}>
-          <Pressable style={StyleSheet.absoluteFill} accessibilityLabel="Close menu" onPress={() => setMenuOpen(false)} />
-          <ScrollView style={styles.navigationSheet} contentContainerStyle={styles.navigationSheetContent} accessibilityViewIsModal>
-            <View style={styles.discoverySectionHeader}><Text style={styles.cardTitle}>Explore Codematica</Text><Button label="Close" variant="ghost" onPress={() => setMenuOpen(false)} testID="mobile-menu-close" /></View>
-
-            {menuItems.map(({ href, label, path }) => <Fragment key={href}><Pressable accessibilityRole="button" accessibilityLabel={label} onPress={() => { setMenuOpen(false); navigate(href); }} style={styles.navigationRailItem} testID={`mobile-menu-${label.toLowerCase().replaceAll(" ", "-")}`}><Svg width={22} height={22} viewBox="0 0 24 24" accessible={false}><Path d={path} fill="none" stroke={colors.accentStrong} strokeWidth={1.7} strokeLinecap="round" strokeLinejoin="round" /></Svg><Text style={styles.bodyText}>{label}</Text></Pressable>{href==="/languages" ? <View style={{paddingLeft:20}}><Text style={styles.mutedText}>Supported languages</Text><Button label="Japanese" variant="ghost" onPress={()=>{setMenuOpen(false);navigate("/languages/japanese");}} testID="mobile-menu-japanese"/><Button label="Notebook practice" variant="ghost" onPress={()=>{setMenuOpen(false);navigate("/languages/japanese/notebooks");}} testID="mobile-menu-notebooks"/></View> : null}</Fragment>)}
-          </ScrollView>
-        </View>
-      </Modal>
-    </View>
-  );
+      </Pressable>
+      <ScrollView style={styles.navigationScroll} contentContainerStyle={styles.navigationScrollContent} testID="mobile-navigation-scroll">
+        {items.map(item => <Fragment key={item.href}>{destination(item)}{item.href === "/languages" ? <>
+          <Pressable accessibilityRole="button" accessibilityLabel="Supported languages" accessibilityState={{ expanded: languagesOpen }} onPress={() => setLanguagesOpen(value => !value)} style={styles.languageToggle} testID="mobile-nav-languages-expand"><Text style={styles.mutedText}>Supported languages {languagesOpen ? "−" : "+"}</Text></Pressable>
+          {languagesOpen ? languageLinks() : null}
+        </> : null}</Fragment>)}
+        {isAdmin ? <View style={styles.adminSection}><Text accessibilityRole="header" style={styles.cardEyebrow}>Admin</Text>{adminDestinations.map(item => destination(item))}</View> : null}
+      </ScrollView>
+      <View style={styles.navigationFooter}>{accountControl}</View>
+    </> : <>
+      {items.map(item => destination(item))}
+      <Pressable accessibilityRole="button" accessibilityLabel="More" accessibilityState={{ selected: moreSelected, expanded: menuOpen }} onPress={() => setMenuOpen(true)} style={[styles.navigationItem, moreSelected && styles.navigationSelected]} testID="mobile-nav-more">
+        <Svg width={22} height={22} viewBox="0 0 24 24" accessible={false}>{[5,12,19].map(cx => <Circle key={cx} cx={cx} cy={12} r={1.5} fill={colors.textMuted} />)}</Svg>
+        <Text numberOfLines={1} adjustsFontSizeToFit style={styles.navigationLabel}>More</Text>
+      </Pressable>
+    </>}
+    <Modal visible={menuOpen} transparent animationType="slide" onRequestClose={() => setMenuOpen(false)}>
+      <View style={styles.navigationBackdrop}>
+        <Pressable style={StyleSheet.absoluteFill} accessibilityRole="button" accessibilityLabel="Close menu" onPress={() => setMenuOpen(false)} />
+        <ScrollView style={styles.navigationSheet} contentContainerStyle={styles.navigationSheetContent} accessibilityViewIsModal keyboardShouldPersistTaps="handled">
+          <View style={styles.discoverySectionHeader}><Text accessibilityRole="header" style={styles.cardTitle}>Explore Codematica</Text><Button label="Close" variant="ghost" tone="neutral" onPress={() => setMenuOpen(false)} testID="mobile-menu-close" /></View>
+          {menuItems.map(item => <Fragment key={item.href}>{destination(item, true)}{item.href === "/languages" ? languageLinks(true) : null}</Fragment>)}
+          {isAdmin ? <View style={styles.adminSection}><Text accessibilityRole="header" style={styles.cardEyebrow}>Admin</Text>{adminDestinations.map(item => destination(item, true))}</View> : null}
+          <View style={styles.navigationFooter}>{accountControl}</View>
+        </ScrollView>
+      </View>
+    </Modal>
+  </View>;
 }
 
-export function AppScreen({ title, children, footer, keyboardAware = false, keyboardShouldPersistTaps }: {
+function NativeAccountMenu({ account, onDone }: {
+  account: { name: string; email?: string; signOut: () => Promise<void> };
+  onDone: () => void;
+}) {
+  const [accountOpen, setAccountOpen] = useState(false);
+  const [signingOut, setSigningOut] = useState(false);
+  const [signOutError, setSignOutError] = useState("");
+  const signOutPending = useRef(false);
+  async function signOut() {
+    if (signOutPending.current) return;
+    signOutPending.current = true;
+    setSigningOut(true);
+    setSignOutError("");
+    try { await account.signOut(); setAccountOpen(false); onDone(); }
+    catch { setSignOutError("Couldn't sign out. Please try again."); }
+    finally { signOutPending.current = false; setSigningOut(false); }
+  }
+
+  return <View style={styles.accountSection}>
+    <Pressable accessibilityRole="button" accessibilityLabel={`Account: ${account.name}`} accessibilityState={{ expanded: accountOpen }} onPress={() => setAccountOpen(value => !value)} style={styles.accountTrigger} testID="mobile-account-trigger">
+      <Svg width={22} height={22} viewBox="0 0 24 24" accessible={false}><Path d="M4 21v-3a8 8 0 0 1 16 0v3M16 6a4 4 0 1 1-8 0 4 4 0 0 1 8 0" fill="none" stroke={colors.textStrong} strokeWidth={1.7} /></Svg>
+      <Text style={[styles.bodyText, styles.fill]}>{account.name}</Text>
+      <Svg width={18} height={18} viewBox="0 0 24 24" accessible={false}><Path d={accountOpen ? "m6 15 6-6 6 6" : "m6 9 6 6 6-6"} fill="none" stroke={colors.textStrong} strokeWidth={2} /></Svg>
+    </Pressable>
+    {accountOpen ? <View style={styles.stack}>
+      {account.email ? <Text selectable style={styles.mutedText}>{account.email}</Text> : null}
+      <Button label={signingOut ? "Signing out…" : "Sign out"} variant="ghost" tone="danger" busy={signingOut} onPress={() => void signOut()} testID="mobile-sign-out" />
+      {signOutError ? <Text accessibilityRole="alert" accessibilityLiveRegion="assertive" style={styles.errorText}>{signOutError}</Text> : null}
+    </View> : null}
+  </View>;
+}
+
+export function AppScreen({ title, children, footer, keyboardAware = false, keyboardShouldPersistTaps, scrollResetKey }: {
   title?: string;
   children: ReactNode;
   footer?: ReactNode;
   keyboardAware?: boolean;
   keyboardShouldPersistTaps?: "never" | "always" | "handled";
+  scrollResetKey?: number;
 }) {
   const [drawing, setDrawing] = useState(false);
   const pageScroll = useRef<ScrollView>(null);
   const pageBounds = useRef({ y: 0, viewport: 0, content: 0 });
+  const previousReset = useRef(scrollResetKey);
+  useEffect(() => {
+    if (previousReset.current === scrollResetKey) return;
+    previousReset.current = scrollResetKey;
+    Keyboard.dismiss();
+    pageBounds.current.y = 0;
+    pageScroll.current?.scrollTo({ y: 0, animated: false });
+  }, [scrollResetKey]);
   const scrollNotebookPage = useCallback((deltaY: number) => {
     const bounds = pageBounds.current;
     bounds.y = Math.max(0, Math.min(Math.max(0, bounds.content - bounds.viewport), bounds.y + deltaY));
@@ -177,25 +257,24 @@ export function AppScreen({ title, children, footer, keyboardAware = false, keyb
   return (
     <NotebookScrollContext.Provider value={scrollNotebookPage}>
       <NotebookDrawingContext.Provider value={setDrawing}>
-        {keyboardAware ? <KeyboardAvoidingView testID="keyboard-aware-screen" behavior={Platform.OS === "ios" ? "padding" : undefined} style={styles.screen}>{content}</KeyboardAvoidingView> : <View style={styles.screen}>{content}</View>}
+        {keyboardAware ? <KeyboardAvoidingView testID="keyboard-aware-screen" behavior={Platform.OS === "ios" ? "padding" : "height"} style={styles.screen}>{content}</KeyboardAvoidingView> : <View style={styles.screen}>{content}</View>}
       </NotebookDrawingContext.Provider>
     </NotebookScrollContext.Provider>
   );
 }
 
 export function Header({ adapters, subtitle = "Path map" }: { adapters: CodematicaAdapters; subtitle?: string }) {
+  const { width, fontScale } = useWindowDimensions();
+  const stacked = fontScale > 1.4 && width / fontScale < 350;
   return (
-    <View style={styles.header}>
-      <Pressable accessibilityRole="button" accessibilityLabel={`Codematica home, ${subtitle}`} onPress={() => adapters.navigation.navigate("/")} style={styles.brand} testID="mobile-home-link">
+    <View testID="mobile-page-header" style={[styles.header, stacked && { flexDirection: "column", alignItems: "flex-start" }]}>
+      <Pressable accessibilityRole="button" accessibilityLabel={`Codematica home, ${subtitle}`} onPress={() => adapters.navigation.navigate("/")} style={[styles.brand, stacked && { flex: 0, width: "100%" }]} testID="mobile-home-link">
         <Image source={patchBrandMark} style={styles.brandMark} resizeMode="contain" accessible={false} />
         <View style={styles.fill}>
           <Image source={codematicaWordmark} style={styles.brandWordmark} resizeMode="contain" accessible={false} />
-          <Text style={styles.brandSubtitle}>{subtitle}</Text>
         </View>
       </Pressable>
-      <Pressable accessibilityRole="button" onPress={() => adapters.navigation.navigate("/browse")} style={styles.ghostButton} testID="mobile-browse-link">
-        <Text style={styles.ghostButtonText}>Browse</Text>
-      </Pressable>
+      <Button label="Browse" variant="ghost" tone="neutral" onPress={() => adapters.navigation.navigate("/browse")} testID="mobile-browse-link" />
     </View>
   );
 }
@@ -213,7 +292,7 @@ export function LearningPathHomeScreen({
   return (
     <AppScreen>
       <Header adapters={adapters} />
-      <Text style={styles.heroTitle}>Learning paths</Text>
+      <Text accessibilityRole="header" style={styles.heroTitle}>Learning paths</Text>
       <Text style={styles.heroCopy}>Follow guided learning paths.</Text>
 
       <KeepReadingSection items={keepReadingItems} isSignedIn={isSignedIn} adapters={adapters} />
@@ -225,7 +304,7 @@ export function LearningPathHomeScreen({
 
       <View style={styles.stack} testID="mobile-learning-path-list">
         {index.learningPaths.map((learningPath) => (
-          <PathOverview key={learningPath.slug} index={index} learningPath={learningPath} adapters={adapters} />
+          <PathOverview key={learningPath.slug} learningPath={learningPath} adapters={adapters} />
         ))}
       </View>
     </AppScreen>
@@ -242,54 +321,46 @@ export function HomeDiscoveryScreen({
   keepReadingItems?: ProgressDisplayItem[];
   isSignedIn?: boolean;
 } & ScreenProps) {
+  const { width, fontScale } = useWindowDimensions();
+  const shortcutMinWidth = Math.min(80 * fontScale, width - 2 * spacing.lg);
+  const stackedSectionHeaders = fontScale > 1.4 && width / fontScale < 350;
   const [query, setQuery] = useState("");
+  const search = useLocalSearch({ index, kind: "discovery", query, runtimeScript: adapters.searchScript });
   const sections = useMemo(() => getHomeDiscoverySections(index), [index]);
-  const results = useMemo(() => searchDiscovery(index, query).slice(0, 40), [index, query]);
+  const results = search.results;
   const searching = query.trim().length > 0;
+  const searchPending = search.pending;
 
   return (
-    <AppScreen>
+    <AppScreen keyboardAware>
+      {search.runtime}
       <Header adapters={adapters} subtitle="Learning home" />
-      <Text style={styles.heroTitle}>What will you learn today?</Text>
-      <TextInput
-        value={query}
-        onChangeText={setQuery}
-        placeholder="What do you want to learn?"
-        placeholderTextColor={colors.textMuted}
-        style={styles.input}
-        testID="mobile-home-global-search"
-      />
+      <Text accessibilityRole="header" style={styles.heroTitle}>What will you learn today?</Text>
+      <SearchField label="Search all content" value={query} onChange={setQuery} placeholder="Search topics" testID="mobile-home-global-search" />
 
       {searching ? (
         <View style={styles.stack} testID="mobile-home-search-results">
-          <Text style={styles.cardEyebrow}>{results.length} results</Text>
-          {results.map((result) => <MobileDiscoveryCard key={`${result.kind}-${result.id}`} item={result} adapters={adapters} />)}
-          {results.length === 0 ? <Text style={styles.emptyText}>No content matches that search.</Text> : null}
+          <Text accessibilityLiveRegion="polite" style={styles.cardEyebrow}>{search.error ? "Search unavailable" : searchPending ? "Searching…" : `${results.length} results`}</Text>
+          <LocalSearchFeedback error={search.error} retry={search.retry} />
+          {!searchPending ? results.map((result) => <MobileDiscoveryCard key={`${result.kind}-${result.id}`} item={result} adapters={adapters} showSummary={false} />) : null}
+          {!searchPending && !search.error && results.length === 0 ? <Text style={styles.emptyText}>No content matches that search.</Text> : null}
         </View>
       ) : (
         <>
-          <View style={styles.homeShortcuts}>
-            {nativeDestinations.filter(({ href }) => href !== "/").map(({ href, label, path }) => <Pressable key={href} accessibilityRole="button" accessibilityLabel={label} style={styles.homeShortcut} onPress={() => adapters.navigation.navigate(href)} testID={`mobile-home-explore-${label.toLowerCase()}`}><View style={styles.homeShortcutIcon}><Svg width={22} height={22} viewBox="0 0 24 24" accessible={false}><Path d={path} stroke={colors.accentStrong} strokeWidth={1.7} fill="none" strokeLinecap="round" strokeLinejoin="round" /></Svg></View><Text style={styles.navigationLabel}>{label}</Text></Pressable>)}
+          <View style={styles.homeShortcuts} testID="mobile-home-shortcuts">
+            {nativeDestinations.filter(({ href }) => href !== "/" && href !== "/learn").map(({ href, label, path }) => <Pressable key={href} accessibilityRole="button" accessibilityLabel={label} style={[styles.homeShortcut, { minWidth: shortcutMinWidth, flexBasis: shortcutMinWidth }]} onPress={() => adapters.navigation.navigate(href)} testID={`mobile-home-explore-${label.toLowerCase()}`}><View style={styles.homeShortcutIcon}><Svg width={22} height={22} viewBox="0 0 24 24" accessible={false}><Path d={path} stroke={colors.accentStrong} strokeWidth={1.7} fill="none" strokeLinecap="round" strokeLinejoin="round" /></Svg></View><Text style={styles.navigationLabel}>{label}</Text></Pressable>)}
           </View>
-          <KeepReadingSection items={keepReadingItems} isSignedIn={isSignedIn} adapters={adapters} />
+          <KeepReadingSection items={keepReadingItems} isSignedIn={isSignedIn} adapters={adapters} showSummary={false} />
           {sections.map((section) => (
             <View key={section.id} style={styles.discoverySection} testID={`mobile-home-section-${section.id}`}>
-              <View style={styles.discoverySectionHeader}>
-                <View style={styles.fill}>
-                  <Text style={styles.discoverySectionTitle}>{section.title}</Text>
-
+              <View style={[styles.discoverySectionHeader, stackedSectionHeaders && { flexDirection: "column", alignItems: "stretch" }]}>
+                <View style={[styles.fill, stackedSectionHeaders && { flex: 0 }]}>
+                  <Text accessibilityRole="header" style={styles.discoverySectionTitle}>{section.title}</Text>
                 </View>
-                <Pressable
-                  accessibilityRole="button"
-                  onPress={() => adapters.navigation.navigate(section.route)}
-                  style={styles.discoveryViewAll}
-                  testID={`mobile-home-view-all-${section.id}`}
-                >
-                  <Text style={styles.discoveryViewAllText}>View all</Text>
-                </Pressable>
+                <Button label="View all" accessibilityLabel={`View all ${section.id === "paths" ? "learning paths" : section.id}`} variant="ghost" tone="success" onPress={() => adapters.navigation.navigate(section.route)} testID={`mobile-home-view-all-${section.id}`} />
               </View>
               <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.discoveryRow}>
-                {section.items.map((item) => <MobileDiscoveryCard key={`${item.kind}-${item.id}`} item={item} adapters={adapters} compact />)}
+                {section.items.map((item) => <MobileDiscoveryCard key={`${item.kind}-${item.id}`} item={item} adapters={adapters} compact showSummary={false} />)}
               </ScrollView>
             </View>
           ))}
@@ -297,6 +368,19 @@ export function HomeDiscoveryScreen({
       )}
     </AppScreen>
   );
+}
+
+/** Named keyboard-safe search with a touch-visible clear action. */
+function SearchField({ label, value, onChange, placeholder, testID }: {
+  label: string; value: string; onChange: (value: string) => void; placeholder: string; testID: string;
+}) {
+  const input = useRef<TextInput>(null);
+  const labelID = useId();
+  return <View style={styles.loginField}>
+    <Text nativeID={labelID} style={styles.fieldLabel}>{label}</Text>
+    <TextInput ref={input} accessibilityLabel={label} accessibilityLabelledBy={labelID} value={value} onChangeText={onChange} returnKeyType="search" placeholder={placeholder} placeholderTextColor={colors.textMuted} style={styles.input} testID={testID} />
+    {value ? <Button label="Clear search" tone="neutral" variant="secondary" onPress={() => { onChange(""); input.current?.focus(); }} /> : null}
+  </View>;
 }
 
 export function PracticeCatalogScreen({ index, adapters }: { index: ContentIndex } & ScreenProps) {
@@ -307,11 +391,13 @@ export function PracticeCatalogScreen({ index, adapters }: { index: ContentIndex
   );
 
   return (
-    <AppScreen>
+    <AppScreen keyboardAware>
       <Header adapters={adapters} subtitle="Practice & review" />
-      <Text style={styles.heroTitle}>Practice & review</Text>
-      <TextInput value={query} onChangeText={setQuery} placeholder="Search practice activities" placeholderTextColor={colors.textMuted} style={styles.input} testID="mobile-practice-catalog-search" />
+      <Text accessibilityRole="header" style={styles.heroTitle}>Practice & review</Text>
+      <SearchField label="Search practice" value={query} onChange={setQuery} placeholder="Search practice activities" testID="mobile-practice-catalog-search" />
+      <Text accessibilityLiveRegion="polite" style={styles.mutedText}>{items.length} activities</Text>
       <View style={styles.stack} testID="mobile-practice-catalog">
+        {items.length === 0 ? <Text style={styles.emptyText}>No practice matches. Try another search.</Text> : null}
         {items.map((item) => <MobileDiscoveryCard key={`${item.kind}-${item.id}`} item={item} adapters={adapters} />)}
       </View>
     </AppScreen>
@@ -325,8 +411,8 @@ export function LanguageCatalogScreen({ index, adapters }: { index: ContentIndex
   return (
     <AppScreen>
       <Header adapters={adapters} subtitle="Languages" />
-      <Text style={styles.heroTitle}>Languages</Text>
-      <Pressable onPress={() => adapters.navigation.navigate("/languages/japanese")} style={[styles.card, { borderColor: colors.sectionLanguages }]} testID="mobile-language-japanese">
+      <Text accessibilityRole="header" style={styles.heroTitle}>Languages</Text>
+      <Pressable accessibilityRole="button" accessibilityLabel="Japanese" onPress={() => adapters.navigation.navigate("/languages/japanese")} style={[styles.card, { borderColor: colors.sectionLanguages }]} testID="mobile-language-japanese">
         <Text style={styles.cardEyebrow}>Available now</Text>
         <Text style={styles.cardTitle}>Japanese</Text>
         <Text style={styles.mutedText}>Practice kana, kanji, vocabulary, pronunciation, and handwriting.</Text>
@@ -339,16 +425,19 @@ export function LanguageCatalogScreen({ index, adapters }: { index: ContentIndex
   );
 }
 
-function MobileDiscoveryCard({ item, adapters, compact = false }: { item: DiscoveryResult; compact?: boolean } & ScreenProps) {
+function MobileDiscoveryCard({ item, adapters, compact = false, showSummary = true }: { item: DiscoveryResult; compact?: boolean; showSummary?: boolean } & ScreenProps) {
   return (
     <Pressable
       onPress={() => adapters.navigation.navigate(item.route)}
+      accessibilityRole="button"
+      accessibilityLabel={[item.title, item.eyebrow, item.difficulty ? difficultyLabels[item.difficulty] : undefined].filter(Boolean).join(", ")}
+      accessibilityHint={showSummary ? item.summary : undefined}
       style={[styles.card, compact && styles.discoveryCardCompact]}
       testID={`mobile-discovery-${item.kind}-${item.sourceSlug.replaceAll("/", "-")}`}
     >
       <Text style={[styles.cardEyebrow, { color: discoverySectionColor(item.section) }]}>{item.eyebrow}</Text>
       <Text style={styles.cardTitle}>{item.title}</Text>
-      <Text style={styles.mutedText} numberOfLines={compact ? 2 : undefined}>{item.summary}</Text>
+      {showSummary ? <Text style={styles.mutedText}>{item.summary}</Text> : null}
       {item.difficulty ? <DifficultyPill difficulty={item.difficulty} /> : null}
     </Pressable>
   );
@@ -377,21 +466,21 @@ export function LearningPathDetailScreen({
       <Header adapters={adapters} subtitle="Path detail" />
       <Button label="Paths" variant="ghost" onPress={() => adapters.navigation.navigate("/paths")} testID="mobile-paths-back" />
       <Text style={styles.eyebrow}>{learningPath.kind} path</Text>
-      <Text style={styles.heroTitle}>{learningPath.title}</Text>
+      <Text accessibilityRole="header" style={styles.heroTitle}>{learningPath.title}</Text>
       <Text style={styles.heroCopy}>{learningPath.summary}</Text>
       {flashcardFeed ? (
         <Button label="Flashcard feed" onPress={() => adapters.navigation.navigate(flashcardFeed.route)} testID="mobile-path-flashcards" />
       ) : null}
 
       {learningPath.progression ? (
-        <View style={styles.card} testID="mobile-path-progression-roadmap">
-          <Text style={styles.cardEyebrow}>Career milestones · published stages earn stamps</Text>
-          <Text style={styles.cardTitle}>{learningPath.progression.roadmapLabel}</Text>
+        <View style={styles.discoverySection} testID="mobile-path-progression-roadmap">
+          <Text style={styles.cardEyebrow}>Learning milestones</Text>
+          <Text accessibilityRole="header" style={styles.cardTitle}>{learningPath.progression.roadmapLabel}</Text>
           {learningPath.progression.reviewRoute ? <Button label="Review skills" variant="ghost" onPress={() => adapters.navigation.navigate(learningPath.progression!.reviewRoute!)} /> : null}
           {learningPath.progression.stages.map((stage, stageIndex) => (
-            <View key={stage.id} style={styles.subPanel}>
+            <View key={stage.id} style={styles.sectionRow}>
               <View style={styles.pillRow}><Pill label={`Stage ${stageIndex + 1}`} tone="amber" /><Pill label={stage.level} tone="blue" /><Pill label={stage.status} tone={stage.status === "published" ? "green" : "amber"} /></View>
-              <Text style={styles.cardTitle}>{stage.label}</Text>
+              <Text accessibilityRole="header" style={styles.cardTitle}>{stage.label}</Text>
               <Text style={styles.mutedText}>{stage.summary}</Text>
               <Text style={styles.mutedText}>About {stage.estimatedMinutes} minutes{stage.passThreshold === undefined ? " · companion planned" : ` · checkpoint ${Math.round(stage.passThreshold * 100)}%`}</Text>
               {stage.outcomes.map((outcome) => <Text key={outcome.id} style={styles.bodyText}>• {outcome.statement}</Text>)}
@@ -403,9 +492,9 @@ export function LearningPathDetailScreen({
 
       <View style={styles.stack} testID="mobile-path-units">
         {learningPath.units.map((unit, unitIndex) => (
-          <View key={unit.slug} style={styles.card}>
+          <View key={unit.slug} style={styles.discoverySection}>
             <Text style={styles.cardEyebrow}>Unit {unitIndex + 1}</Text>
-            <Text style={styles.cardTitle}>{unit.title}</Text>
+            <Text accessibilityRole="header" style={styles.cardTitle}>{unit.title}</Text>
             <Text style={styles.mutedText}>{unit.summary}</Text>
             <PathNodes index={index} learningPath={learningPath} nodes={unit.nodes} adapters={adapters} />
           </View>
@@ -416,11 +505,9 @@ export function LearningPathDetailScreen({
 }
 
 function PathOverview({
-  index,
   learningPath,
   adapters,
 }: {
-  index: ContentIndex;
   learningPath: LearningPath;
 } & ScreenProps) {
   const nodeCount = learningPath.units.reduce((sum, unit) => sum + unit.nodes.length, 0);
@@ -430,12 +517,11 @@ function PathOverview({
       <View style={styles.pillRow}>
         <Pill label={learningPath.kind} />
         <Pill label={learningPath.category} tone="blue" />
-        <Pill label={`${nodeCount} nodes`} tone="amber" />
+        <Pill label={`${nodeCount} activities`} tone="amber" />
       </View>
       <Text style={styles.cardTitle}>{learningPath.title}</Text>
       <Text style={styles.mutedText}>{learningPath.summary}</Text>
-      <Button label="Open path" onPress={() => adapters.navigation.navigate(learningPath.route)} testID={`mobile-open-path-${learningPath.slug}`} />
-      <PathNodes index={index} learningPath={learningPath} nodes={learningPath.units[0]?.nodes.slice(0, 5) ?? []} adapters={adapters} />
+      <Button label="Open path" accessibilityLabel={`Open ${learningPath.title}`} onPress={() => adapters.navigation.navigate(learningPath.route)} testID={`mobile-open-path-${learningPath.slug}`} />
     </View>
   );
 }
@@ -459,6 +545,9 @@ function PathNodes({
         return (
           <Pressable
             key={`${node.kind}-${node.slug}`}
+            accessibilityRole={href.startsWith("http") ? "link" : "button"}
+            accessibilityLabel={display.title}
+            accessibilityHint={href.startsWith("http") ? "Opens the source in a browser" : display.summary}
             onPress={() => href.startsWith("http") ? adapters.navigation.openExternalUrl?.(href) : adapters.navigation.navigate(href)}
             style={styles.nodeRow}
             testID={`mobile-path-node-${node.kind}-${node.slug.replaceAll("/", "-")}`}
@@ -484,28 +573,16 @@ export function BrowseScreen({ index, adapters }: { index: ContentIndex } & Scre
   const [track, setTrack] = useState("all");
   const [difficulty, setDifficulty] = useState<"all" | Difficulty>("all");
 
-  const results = useMemo(
-    () =>
-      searchContent(index, query, {
-        track: track === "all" ? undefined : track,
-        difficulty: difficulty === "all" ? undefined : difficulty,
-      }).slice(0, 40),
-    [difficulty, index, query, track],
-  );
+  const search = useLocalSearch({ index, kind: "content", query, filters: { track: track === "all" ? undefined : track, difficulty: difficulty === "all" ? undefined : difficulty }, runtimeScript: adapters.searchScript });
+  const results = search.results;
+  const searchPending = search.pending;
 
   return (
-    <AppScreen>
+    <AppScreen keyboardAware>
+      {search.runtime}
       <Header adapters={adapters} subtitle="Content library" />
-      <Text style={styles.eyebrow}>Content library</Text>
-      <Text style={styles.heroTitle}>Lessons & diagrams</Text>
-      <TextInput
-        value={query}
-        onChangeText={setQuery}
-        placeholder="Search concepts, patterns, failures"
-        placeholderTextColor={colors.textMuted}
-        style={styles.input}
-        testID="mobile-knowledge-search-input"
-      />
+      <Text accessibilityRole="header" style={styles.heroTitle}>Lessons & diagrams</Text>
+      <SearchField label="Search lessons" value={query} onChange={setQuery} placeholder="Search concepts, patterns, failures" testID="mobile-knowledge-search-input" />
 
       <HorizontalOptions
         label="Track"
@@ -523,11 +600,13 @@ export function BrowseScreen({ index, adapters }: { index: ContentIndex } & Scre
         onChange={(value) => setDifficulty(value as "all" | Difficulty)}
       />
 
+      <Text accessibilityLiveRegion="polite" style={styles.mutedText}>{search.error ? "Search unavailable" : searchPending ? "Searching…" : `${results.length} results${results.length === 40 ? " · showing the first 40" : ""}`}</Text>
+      <LocalSearchFeedback error={search.error} retry={search.retry} />
       <View style={styles.stack} testID="mobile-search-results">
         {results.map((result) => (
           <SearchResultCard key={`${result.kind}-${result.id}`} result={result} adapters={adapters} />
         ))}
-        {results.length === 0 ? <Text style={styles.emptyText}>No lessons or diagrams match these filters.</Text> : null}
+        {!searchPending && !search.error && results.length === 0 ? <Text style={styles.emptyText}>No lessons or diagrams match these filters.</Text> : null}
       </View>
     </AppScreen>
   );
@@ -536,7 +615,7 @@ export function BrowseScreen({ index, adapters }: { index: ContentIndex } & Scre
 function SearchResultCard({ result, adapters }: { result: SearchResult } & ScreenProps) {
   const automationSlug = result.route.replace(/^\/(?:docs|diagrams)\//, "").replaceAll("/", "-");
   return (
-    <Pressable onPress={() => adapters.navigation.navigate(result.route)} style={styles.card} testID={`mobile-result-${result.kind}-${automationSlug}`}>
+    <Pressable accessibilityRole="button" accessibilityLabel={result.title} accessibilityHint={result.snippet || result.summary} onPress={() => adapters.navigation.navigate(result.route)} style={styles.card} testID={`mobile-result-${result.kind}-${automationSlug}`}>
       <View style={styles.pillRow}>
         <Pill label={result.kind === "document" ? "Doc" : "Diagram"} tone={result.kind === "document" ? "blue" : "green"} />
         {result.difficulty ? <DifficultyPill difficulty={result.difficulty} /> : null}
@@ -551,34 +630,28 @@ function SearchResultCard({ result, adapters }: { result: SearchResult } & Scree
 
 export function JapaneseLanguageHubScreen({ index, adapters }: { index: ContentIndex } & ScreenProps) {
   const [query, setQuery] = useState("");
+  const [wordsOpen, setWordsOpen] = useState(false);
   const groups = useMemo(() => getJapaneseCharacterGroups(index), [index]);
   const results = useMemo(() => searchJapanese(index, query), [index, query]);
   const flashcards = index.passiveFlashcardFeeds.find((feed) => feed.pathSlug === "japanese-foundations" && feed.status === "published");
 
   return (
-    <AppScreen>
-      <Button label="Notebook practice" variant="secondary" onPress={()=>adapters.navigation.navigate("/languages/japanese/notebooks")} testID="mobile-japanese-notebooks"/>
+    <AppScreen keyboardAware>
       <Header adapters={adapters} subtitle="Japanese" />
-      <Text style={styles.eyebrow}>Japanese</Text>
-      <Text style={styles.heroTitle}>Japanese</Text>
+      <Text accessibilityRole="header" style={styles.heroTitle}>Japanese</Text>
       <Text style={styles.heroCopy}>Find beginner Japanese characters and phrases with romaji and IPA.</Text>
       <View style={styles.actionRow}>
+        <Button label="Notebook practice" tone="info" variant="secondary" onPress={()=>adapters.navigation.navigate("/languages/japanese/notebooks")} testID="mobile-japanese-notebooks"/>
         <Button label="Learn" onPress={() => adapters.navigation.navigate("/paths/japanese-foundations")} testID="mobile-japanese-path-link" />
         <Button label="Review" variant="secondary" onPress={() => adapters.navigation.navigate("/languages/japanese/review")} testID="mobile-japanese-review-link" />
         {flashcards ? <Button label="Flashcards" variant="secondary" onPress={() => adapters.navigation.navigate(flashcards.route)} testID="mobile-japanese-flashcards-link" /> : null}
-        <Button label="Hiragana 101 · planas" variant="ghost" onPress={() => adapters.navigation.navigate("/practice/languages/japanese-hiragana-vowels-writing?path=japanese-foundations")} testID="mobile-japanese-writing-sheets-link" />
-        <Button label="Katakana planas" variant="ghost" onPress={() => adapters.navigation.navigate("/practice/languages/japanese-katakana-vowels-writing?path=japanese-foundations")} testID="mobile-japanese-katakana-sheets-link" />
+        <Button label="Hiragana writing" variant="ghost" onPress={() => adapters.navigation.navigate("/practice/languages/japanese-hiragana-vowels-writing?path=japanese-foundations")} testID="mobile-japanese-writing-sheets-link" />
+        <Button label="Katakana writing" variant="ghost" onPress={() => adapters.navigation.navigate("/practice/languages/japanese-katakana-vowels-writing?path=japanese-foundations")} testID="mobile-japanese-katakana-sheets-link" />
         <Button label="Hiragana guide" variant="ghost" onPress={() => adapters.navigation.navigate("/docs/languages/japanese-hiragana-foundations?path=japanese-foundations")} testID="mobile-japanese-hiragana-guide-link" />
         <Button label="Katakana guide" variant="ghost" onPress={() => adapters.navigation.navigate("/docs/languages/japanese-katakana-foundations?path=japanese-foundations")} testID="mobile-japanese-katakana-guide-link" />
       </View>
-      <TextInput
-        value={query}
-        onChangeText={setQuery}
-        placeholder="Search あ, ア, coffee, nihon, /ɲihoɴ/"
-        placeholderTextColor={colors.textMuted}
-        style={styles.input}
-        testID="mobile-japanese-search-input"
-      />
+      <SearchField label="Search Japanese" value={query} onChange={setQuery} placeholder="Search あ, ア, coffee, nihon, /ɲihoɴ/" testID="mobile-japanese-search-input" />
+      {query ? <Text accessibilityLiveRegion="polite" style={styles.mutedText}>{results.length ? `${results.length} matches` : "No matches. Try a character, word or romaji."}</Text> : null}
       {query ? (
         <View style={styles.stack} testID="mobile-japanese-results">
           {results.map((result) => (
@@ -593,15 +666,9 @@ export function JapaneseLanguageHubScreen({ index, adapters }: { index: ContentI
           <CharacterStrip title="Basic katakana" characters={groups.katakana.filter((character) => character.tags.includes("basic-katakana"))} adapters={adapters} />
           <CharacterStrip title="Katakana sound extras" characters={groups.katakana.filter((character) => character.tags.includes("supplement"))} adapters={adapters} />
           <CharacterStrip title="Starter kanji" characters={groups.kanji} adapters={adapters} />
-          <View style={styles.card}>
-            <Text style={styles.cardTitle}>Beginner words and greetings</Text>
-            {index.languageVocabulary.filter((item) => item.language === "ja" && item.status === "published").map((vocabulary) => (
-              <Pressable key={vocabulary.slug} onPress={() => adapters.navigation.navigate(vocabulary.route)} style={styles.subPanel}>
-                <Text style={styles.japaneseGlyph} accessibilityLanguage="ja-JP">{vocabulary.expression}</Text>
-                <Text style={styles.bodyText}>{vocabulary.romaji}</Text>
-                <Text style={styles.mutedText}>{vocabulary.meanings.join(", ")}</Text>
-              </Pressable>
-            ))}
+          <View style={styles.stack}>
+            <Button label="Words and greetings" tone="neutral" variant="secondary" accessibilityState={{ expanded: wordsOpen }} onPress={() => setWordsOpen(value => !value)} />
+            {wordsOpen ? index.languageVocabulary.filter(item => item.language === "ja" && item.status === "published").map(vocabulary => <VocabularyCard key={vocabulary.slug} vocabulary={vocabulary} adapters={adapters} />) : null}
           </View>
         </View>
       ) : null}
@@ -632,27 +699,61 @@ export function JapaneseReviewScreen({
   onRate,
   adapters,
   hasListening = false,
+  loading = false,
+  loadError = false,
+  onReload,
 }: {
   learningPath: LearningPath;
   progress: SkillProgress[];
-  onRate: (skillId: string, rating: ReviewRating) => void;
+  onRate: (skillId: string, rating: ReviewRating) => void | Promise<void>;
+  loading?: boolean;
+  loadError?: boolean;
+  onReload?: () => void;
   hasListening?: boolean;
 } & ScreenProps) {
   const skills = learningPath.progression?.skills ?? [];
   const [selectedSkillId, setSelectedSkillId] = useState(skills[0]?.id ?? "");
-  const [sessionRatings, setSessionRatings] = useState<Partial<Record<string, ReviewRating>>>({});
+  const [saves, setSaves] = useState<Partial<Record<string, { rating: ReviewRating; status: "saving" | "saved" | "error"; conflict?: boolean }>>>({});
+  const [saving, setSaving] = useState(false);
+  const savingRef = useRef(false);
+  const mounted = useRef(true);
+  useEffect(() => { mounted.current = true; return () => { mounted.current = false; }; }, []);
   const ratedSkillsRef = useRef(new Set<string>());
   const [renderedAt] = useState(() => Date.now());
   const selected = skills.find((skill) => skill.id === selectedSkillId) ?? skills[0];
   const selectedProgress = progress.find((row) => row.pathSlug === learningPath.slug && row.skillId === selected?.id);
-  const selectedRating = selected ? sessionRatings[selected.id] : undefined;
+  const selectedSave = selected ? saves[selected.id] : undefined;
+  const selectedRating = selectedSave?.rating;
   const dueCount = progress.filter((row) => new Date(row.nextReviewAt).getTime() <= renderedAt).length;
+
+  async function saveRating(skillId: string, rating: ReviewRating) {
+    if (savingRef.current || loading || loadError) return;
+    savingRef.current = true;
+    setSaving(true);
+    setSaves(current => ({ ...current, [skillId]: { rating, status: "saving" } }));
+    try {
+      await onRate(skillId, rating);
+      if (mounted.current) setSaves(current => ({ ...current, [skillId]: { rating, status: "saved" } }));
+    } catch (error) {
+      if (mounted.current) setSaves(current => ({ ...current, [skillId]: { rating, status: "error", conflict: error instanceof Error && error.name === "ReviewSaveConflict" } }));
+    } finally {
+      savingRef.current = false;
+      if (mounted.current) setSaving(false);
+    }
+  }
+
+  function reload() {
+    if (savingRef.current) return;
+    ratedSkillsRef.current.clear();
+    setSaves({});
+    onReload?.();
+  }
 
   return (
     <AppScreen>
       <Header adapters={adapters} subtitle="Japanese review" />
       <Text style={styles.eyebrow}>Always open · {dueCount} due</Text>
-      <Text style={styles.heroTitle}>Ready to review</Text>
+      <Text accessibilityRole="header" style={styles.heroTitle}>Ready to review</Text>
       <Text style={styles.heroCopy}>Use this queue to practice skill recall. Other practice modes remain available on their study screens.</Text>
       <View style={styles.actionRow}>
         <Button label="Dictionary" variant="ghost" onPress={() => adapters.navigation.navigate("/languages/japanese")} />
@@ -660,12 +761,14 @@ export function JapaneseReviewScreen({
         <Button label="Open-answer writing" variant="ghost" onPress={() => adapters.navigation.navigate("/languages/japanese/review/writing")} testID="mobile-japanese-review-writing" />
         {hasListening ? <Button label="Listening" variant="ghost" onPress={() => adapters.navigation.navigate("/languages/japanese/review/listening")} testID="mobile-japanese-review-listening" /> : null}
       </View>
+      {loading ? <Text accessibilityLiveRegion="polite" style={styles.mutedText}>Loading saved progress…</Text> : null}
+      {loadError ? <View style={styles.stack}><Text accessibilityRole="alert" style={styles.errorText}>Couldn’t load progress on this device. Your saved data has been kept.</Text>{onReload ? <Button label="Reload progress" tone="warning" disabled={saving} onPress={reload} /> : null}</View> : null}
       <View style={styles.card} testID="mobile-japanese-review-skills">
         <Text style={styles.cardTitle}>All skill cards</Text>
         {skills.map((skill) => {
           const row = progress.find((item) => item.pathSlug === learningPath.slug && item.skillId === skill.id);
           return (
-            <Pressable key={skill.id} onPress={() => setSelectedSkillId(skill.id)} accessibilityRole="button" accessibilityState={{ selected: selected?.id === skill.id }} style={[styles.subPanel, selected?.id === skill.id ? styles.optionSelected : null]}>
+            <Pressable key={skill.id} testID={`mobile-japanese-review-skill-${skill.id}`} disabled={saving} onPress={() => setSelectedSkillId(skill.id)} accessibilityRole="button" accessibilityState={{ selected: selected?.id === skill.id, disabled: saving }} style={[styles.subPanel, selected?.id === skill.id ? styles.optionSelected : null]}>
               <Text style={styles.cardTitle}>{skill.label}</Text>
               <Text style={styles.mutedText}>{row ? `Box ${row.reviewBox} · ${row.masteryState}` : "New · available now"}</Text>
             </Pressable>
@@ -683,26 +786,32 @@ export function JapaneseReviewScreen({
               <Button
                 key={rating}
                 label={rating.charAt(0).toUpperCase() + rating.slice(1)}
-                variant="ghost"
-                disabled={Boolean(selectedRating)}
+                variant="secondary"
+                tone={rating === "again" ? "danger" : rating === "hard" ? "warning" : rating === "good" ? "success" : "info"}
+                disabled={saving || loading || loadError || Boolean(selectedRating)}
+                busy={selectedSave?.status === "saving" && selectedRating === rating}
                 selected={selectedRating === rating}
                 onPress={() => {
-                  if (ratedSkillsRef.current.has(selected.id)) return;
+                  if (savingRef.current || loading || loadError || ratedSkillsRef.current.has(selected.id)) return;
                   ratedSkillsRef.current.add(selected.id);
-                  setSessionRatings((current) => ({ ...current, [selected.id]: rating }));
-                  onRate(selected.id, rating);
+                  void saveRating(selected.id, rating);
                 }}
                 testID={`mobile-japanese-review-${rating}`}
               />
             ))}
           </View>
-          {selectedRating ? (
-            <View style={styles.reviewSavedPanel}>
-              <Text accessibilityLiveRegion="polite" style={styles.reviewSavedText}>{selectedRating.charAt(0).toUpperCase() + selectedRating.slice(1)} saved. This recall counts as one attempt.</Text>
-              <Button label="Practice again" variant="ghost" onPress={() => {
-                ratedSkillsRef.current.delete(selected.id);
-                setSessionRatings((current) => ({ ...current, [selected.id]: undefined }));
-              }} testID="mobile-japanese-review-reset" />
+          {selectedSave ? (
+            <View style={styles.stack}>
+              {selectedSave.status === "saving" ? <Text accessibilityLiveRegion="polite" style={styles.mutedText}>Saving on this device…</Text> : selectedSave.status === "error" ? <>
+                <Text accessibilityRole="alert" accessibilityLiveRegion="assertive" style={styles.errorText}>{selectedSave.conflict ? "This skill changed. Reload progress before another recall." : "Couldn’t confirm this save. Your selected rating is kept here."}</Text>
+                {selectedSave.conflict ? onReload ? <Button label="Reload progress" tone="warning" disabled={saving} onPress={reload} /> : null : <Button label="Retry save" tone="warning" disabled={saving} onPress={() => void saveRating(selected.id, selectedSave.rating)} testID="mobile-japanese-review-retry" />}
+              </> : <View style={styles.reviewSavedPanel}>
+                <Text accessibilityLiveRegion="polite" style={styles.reviewSavedText}>{selectedSave.rating.charAt(0).toUpperCase() + selectedSave.rating.slice(1)} saved on this device. This recall counts as one attempt.</Text>
+                <Button label="Practice again" tone="warning" variant="ghost" disabled={saving} onPress={() => {
+                  ratedSkillsRef.current.delete(selected.id);
+                  setSaves(current => ({ ...current, [selected.id]: undefined }));
+                }} testID="mobile-japanese-review-reset" />
+              </View>}
             </View>
           ) : null}
           {selectedProgress ? <Text style={styles.mutedText}>Best {Math.round(selectedProgress.bestScore * 100)}% · box {selectedProgress.reviewBox}</Text> : null}
@@ -715,11 +824,11 @@ export function JapaneseReviewScreen({
 export function JapaneseFlashcardReviewScreen({ vocabulary, adapters }: { vocabulary: LanguageVocabulary[] } & ScreenProps) {
   const ordered = useMemo(() => [...vocabulary].sort((left, right) => left.studyOrder - right.studyOrder), [vocabulary]);
   const [index, setIndex] = useState(0); const [revealed, setRevealed] = useState(false); const card = ordered[index];
-  return <AppScreen><Header adapters={adapters} subtitle="Japanese flashcards" /><Text style={styles.eyebrow}>N5 cumulative review</Text><Text style={styles.heroTitle}>Build a 650-word foundation.</Text>{card ? <><Pressable onPress={() => setRevealed((value) => !value)} style={styles.card} testID="mobile-japanese-flashcard"><Text style={styles.positionText}>Card {index + 1} of {ordered.length}</Text><Text accessibilityLanguage="ja-JP" style={styles.japaneseGlyph}>{card.expression}</Text>{revealed ? <><Text accessibilityLanguage="ja-JP" style={styles.cardTitle}>{card.reading}</Text><Text style={styles.bodyText}>{card.meanings.join(", ")}</Text></> : <Text style={styles.mutedText}>Tap to reveal</Text>}</Pressable><View style={styles.actionRow}><Button label="Previous" variant="ghost" disabled={index === 0} onPress={() => { setIndex((value) => value - 1); setRevealed(false); }} /><Button label="Next" disabled={index === ordered.length - 1} onPress={() => { setIndex((value) => value + 1); setRevealed(false); }} /></View></> : <Text style={styles.emptyText}>No vocabulary is available.</Text>}</AppScreen>;
+  return <AppScreen><Header adapters={adapters} subtitle="Japanese flashcards" /><Text style={styles.eyebrow}>N5 cumulative review</Text><Text accessibilityRole="header" style={styles.heroTitle}>Build a 650-word foundation.</Text>{card ? <><Pressable accessibilityRole="button" accessibilityLabel={`${revealed ? "Hide" : "Reveal"} reading and meaning for ${card.expression}`} accessibilityState={{ expanded: revealed }} onPress={() => setRevealed((value) => !value)} style={styles.card} testID="mobile-japanese-flashcard"><Text style={styles.positionText}>Card {index + 1} of {ordered.length}</Text><Text accessibilityLanguage="ja-JP" style={styles.japaneseGlyph}>{card.expression}</Text>{revealed ? <><Text accessibilityLanguage="ja-JP" style={styles.cardTitle}>{card.reading}</Text><Text style={styles.bodyText}>{card.meanings.join(", ")}</Text></> : <Text style={styles.mutedText}>Tap to reveal</Text>}</Pressable><View style={styles.actionRow}><Button label="Previous" variant="ghost" disabled={index === 0} onPress={() => { setIndex((value) => value - 1); setRevealed(false); }} /><Button label="Next" disabled={index === ordered.length - 1} onPress={() => { setIndex((value) => value + 1); setRevealed(false); }} /></View></> : <Text style={styles.emptyText}>No vocabulary is available.</Text>}</AppScreen>;
 }
 
 export function JapanesePracticeModeScreen({ title, description, exercises, adapters }: { title: string; description: string; exercises: QuestionnaireExercise[] } & ScreenProps) {
-  return <AppScreen><Header adapters={adapters} subtitle={title} /><Text style={styles.heroTitle}>{title}</Text><Text style={styles.heroCopy}>{description}</Text><View style={styles.stack}>{exercises.map((exercise, index) => <Pressable key={exercise.slug} onPress={() => adapters.navigation.navigate(exercise.route)} style={styles.card} testID={`mobile-japanese-practice-unit-${index + 1}`}><Text style={styles.positionText}>Unit {index + 1}</Text><Text style={styles.cardTitle}>{exercise.title}</Text><Text style={styles.mutedText}>{exercise.questions.length} questions</Text></Pressable>)}</View>{exercises.length === 0 ? <View style={styles.card} testID="mobile-japanese-listening-pending"><Text style={styles.cardTitle}>Audio review is in progress.</Text><Text style={styles.mutedText}>Draft clips stay unavailable until a Japanese speaker approves them.</Text></View> : null}</AppScreen>;
+  return <AppScreen><Header adapters={adapters} subtitle={title} /><Text accessibilityRole="header" style={styles.heroTitle}>{title}</Text><Text style={styles.heroCopy}>{description}</Text><View style={styles.stack}>{exercises.map((exercise, index) => <Pressable accessibilityRole="button" accessibilityLabel={exercise.title} key={exercise.slug} onPress={() => adapters.navigation.navigate(exercise.route)} style={styles.card} testID={`mobile-japanese-practice-unit-${index + 1}`}><Text style={styles.positionText}>Unit {index + 1}</Text><Text style={styles.cardTitle}>{exercise.title}</Text><Text style={styles.mutedText}>{exercise.questions.length} questions</Text></Pressable>)}</View>{exercises.length === 0 ? <View style={styles.card} testID="mobile-japanese-listening-pending"><Text style={styles.cardTitle}>Audio review is in progress.</Text><Text style={styles.mutedText}>Draft clips stay unavailable until a Japanese speaker approves them.</Text></View> : null}</AppScreen>;
 }
 
 function JapaneseResultCard({ result, adapters }: { result: JapaneseSearchResult } & ScreenProps) {
@@ -731,12 +840,13 @@ function JapaneseResultCard({ result, adapters }: { result: JapaneseSearchResult
 }
 
 function CharacterStrip({ title, characters, adapters }: { title: string; characters: LanguageCharacter[] } & ScreenProps) {
+  const { fontScale } = useWindowDimensions();
   return (
-    <View style={styles.card}>
-      <Text style={styles.cardTitle}>{title}</Text>
+    <View style={styles.stack}>
+      <Text accessibilityRole="header" style={styles.cardTitle}>{title}</Text>
       <View style={styles.characterGrid}>
         {characters.map((character) => (
-          <Pressable key={character.slug} onPress={() => adapters.navigation.navigate(character.route)} style={styles.characterTile}>
+          <Pressable accessibilityRole="button" accessibilityLabel={`${character.glyph} · ${character.romaji}`} key={character.slug} onPress={() => adapters.navigation.navigate(character.route)} style={[styles.characterTile, { width: Math.max(64, Math.ceil(64 * fontScale)), maxWidth: "100%" }]}>
             <Text style={styles.characterTileGlyph} accessibilityLanguage="ja-JP">{character.glyph}</Text>
             <Text style={styles.characterTileReading}>{character.romaji}</Text>
           </Pressable>
@@ -748,7 +858,7 @@ function CharacterStrip({ title, characters, adapters }: { title: string; charac
 
 function CharacterCard({ character, adapters }: { character: LanguageCharacter } & ScreenProps) {
   return (
-    <Pressable onPress={() => adapters.navigation.navigate(character.route)} style={styles.card} testID={`mobile-japanese-character-${character.slug.replaceAll("/", "-")}`}>
+    <Pressable accessibilityRole="button" accessibilityLabel={`${character.glyph} · ${character.title}`} onPress={() => adapters.navigation.navigate(character.route)} style={styles.card} testID={`mobile-japanese-character-${character.slug.replaceAll("/", "-")}`}>
       <View style={styles.pillRow}>
         <Pill label={character.writingSystem} tone={character.writingSystem === "kanji" ? "amber" : "green"} />
         <Pill label={`/${character.ipa}/`} tone="blue" />
@@ -762,7 +872,7 @@ function CharacterCard({ character, adapters }: { character: LanguageCharacter }
 
 function VocabularyCard({ vocabulary, adapters }: { vocabulary: LanguageVocabulary } & ScreenProps) {
   return (
-    <Pressable onPress={() => adapters.navigation.navigate(vocabulary.route)} style={styles.card} testID={`mobile-japanese-vocabulary-${vocabulary.slug.replaceAll("/", "-")}`}>
+    <Pressable accessibilityRole="button" accessibilityLabel={`${vocabulary.expression} · ${vocabulary.romaji}`} onPress={() => adapters.navigation.navigate(vocabulary.route)} style={styles.card} testID={`mobile-japanese-vocabulary-${vocabulary.slug.replaceAll("/", "-")}`}>
       <View style={styles.pillRow}>
         <Pill label="Vocabulary" tone="purple" />
         <Pill label={`/${vocabulary.ipa}/`} tone="blue" />
@@ -800,19 +910,19 @@ export function JapaneseCharacterDetailScreen({ character, relatedVocabulary = [
     <AppScreen>
       <Header adapters={adapters} subtitle="Japanese character" />
       <Button label="Japanese" variant="ghost" onPress={() => adapters.navigation.navigate("/languages/japanese")} />
-      <View style={styles.card}>
+      <View style={styles.stack}>
         <View style={styles.pillRow}>
           <Pill label={character.writingSystem} tone={character.writingSystem === "kanji" ? "amber" : "green"} />
           <Pill label={`/${character.ipa}/`} tone="blue" />
         </View>
         <Text style={styles.japaneseGlyph} accessibilityLanguage="ja-JP">{character.glyph}</Text>
-        <Text style={styles.heroTitle}>{character.title}</Text>
+        <Text accessibilityRole="header" style={styles.heroTitle}>{character.title}</Text>
         <Text style={styles.heroCopy}>{character.summary}</Text>
         <Text style={styles.cardTitle}>{character.meanings.join(", ")}</Text>
         {character.inputSequences.length ? <Text style={styles.mutedText}>IME input: {character.inputSequences.join(" or ")}</Text> : null}
       </View>
-      <View style={styles.card}>
-        <Text style={styles.cardTitle}>Readings</Text>
+      <View style={styles.stack}>
+        <Text accessibilityRole="header" style={styles.cardTitle}>Readings</Text>
         {character.readings.map((reading) => (
           <Text key={`${reading.label}-${reading.value}`} style={styles.bodyText}>
             {reading.label}: {reading.value} /{reading.ipa}/
@@ -820,9 +930,9 @@ export function JapaneseCharacterDetailScreen({ character, relatedVocabulary = [
         ))}
       </View>
       <View style={styles.card}>
-        <Text style={styles.cardTitle}>Stroke model</Text>
+        <Text accessibilityRole="header" style={styles.cardTitle}>Stroke model</Text>
         <View style={[styles.writingPad, { height: writingPadSize, width: writingPadSize }]}>
-          <Svg width="100%" height="100%" viewBox="0 0 100 100">
+          <Svg width="100%" height="100%" viewBox="0 0 100 100" accessible accessibilityRole="image" accessibilityLabel={`Stroke order for ${character.glyph}`}>
             <Path d="M 50 0 L 50 100 M 0 50 L 100 50" stroke={colors.lineSoft} strokeWidth={0.8} fill="none" />
             {character.strokes.map((stroke, index) => (
               <Fragment key={stroke.id}>
@@ -835,14 +945,14 @@ export function JapaneseCharacterDetailScreen({ character, relatedVocabulary = [
         </View>
       </View>
       <View style={styles.stack} testID="mobile-japanese-character-practice">
-        <Text style={styles.cardTitle}>Practice writing {character.glyph}</Text>
+        <Text accessibilityRole="header" style={styles.cardTitle}>Practice writing {character.glyph}</Text>
         <WritingPractice exercise={writingExercise} adapters={adapters} onProgress={() => undefined} />
       </View>
       {relatedVocabulary.length || character.examples.length ? (
-        <View style={styles.card} testID="mobile-japanese-character-examples">
-          <Text style={styles.cardTitle}>Words and examples</Text>
+        <View style={styles.stack} testID="mobile-japanese-character-examples">
+          <Text accessibilityRole="header" style={styles.cardTitle}>Words and examples</Text>
           {relatedVocabulary.map((vocabulary) => (
-            <Pressable key={vocabulary.slug} onPress={() => adapters.navigation.navigate(vocabulary.route)} style={styles.subPanel}>
+            <Pressable key={vocabulary.slug} accessibilityRole="button" accessibilityLabel={`${vocabulary.expression} · ${vocabulary.romaji}`} onPress={() => adapters.navigation.navigate(vocabulary.route)} style={styles.card}>
               <Text style={styles.japaneseGlyph} accessibilityLanguage="ja-JP">{vocabulary.expression}</Text>
               <Text style={styles.bodyText}>{vocabulary.reading} · {vocabulary.romaji}</Text>
               {vocabulary.inputSequences.length ? <Text style={styles.mutedText}>IME: {vocabulary.inputSequences.join(" or ")}</Text> : null}
@@ -850,7 +960,7 @@ export function JapaneseCharacterDetailScreen({ character, relatedVocabulary = [
             </Pressable>
           ))}
           {character.examples.map((example) => (
-            <View key={example.id} style={styles.subPanel}>
+            <View key={example.id} style={styles.stack}>
               <Text style={styles.cardTitle}>{example.japanese}</Text>
               <Text style={styles.bodyText}>{example.romaji} — {example.translation}</Text>
               <Text style={styles.mutedText}>{example.explanation}</Text>
@@ -867,29 +977,29 @@ export function JapaneseVocabularyDetailScreen({ vocabulary, adapters }: { vocab
     <AppScreen>
       <Header adapters={adapters} subtitle="Japanese vocabulary" />
       <Button label="Japanese" variant="ghost" onPress={() => adapters.navigation.navigate("/languages/japanese")} />
-      <View style={styles.card}>
+      <View style={styles.stack}>
         <View style={styles.pillRow}>
           <Pill label="Vocabulary" tone="purple" />
           <Pill label={`/${vocabulary.ipa}/`} tone="blue" />
         </View>
         <Text style={styles.japaneseGlyph} accessibilityLanguage="ja-JP">{vocabulary.expression}</Text>
-        <Text style={styles.heroTitle}>{vocabulary.romaji}</Text>
+        <Text accessibilityRole="header" style={styles.heroTitle}>{vocabulary.romaji}</Text>
         <Text style={styles.heroCopy}>{vocabulary.reading}</Text>
         <Text style={styles.cardTitle}>{vocabulary.meanings.join(", ")}</Text>
         {vocabulary.inputSequences.length ? <Text style={styles.mutedText}>IME input: {vocabulary.inputSequences.join(" or ")}</Text> : null}
       </View>
       {vocabulary.segments.length ? (
-        <View style={styles.card} testID="mobile-japanese-vocabulary-breakdown">
-          <Text style={styles.cardTitle}>Kanji and hiragana breakdown</Text>
+        <View style={styles.stack} testID="mobile-japanese-vocabulary-breakdown">
+          <Text accessibilityRole="header" style={styles.cardTitle}>Kanji and hiragana breakdown</Text>
           {vocabulary.segments.map((segment, index) => (
-            <View key={`${segment.text}-${index}`} style={styles.subPanel}>
+            <View key={`${segment.text}-${index}`} style={styles.stack}>
               <Text style={styles.japaneseGlyph} accessibilityLanguage="ja-JP">{segment.text}</Text>
               <Text style={styles.bodyText}>{segment.reading} · {segment.romaji}</Text>
               <Text style={styles.mutedText}>{segment.meaning}</Text>
               <View style={styles.pillRow}>
                 {segment.characterSlugs.flatMap((slug) => {
                   const character = getLanguageCharacterBySlug(slug);
-                  return character ? [<Button key={slug} label={character.glyph} variant="ghost" onPress={() => adapters.navigation.navigate(character.route)} />] : [];
+                  return character ? [<Button key={slug} label={character.glyph} accessibilityLabel={`Open ${character.glyph} · ${character.title}`} variant="ghost" onPress={() => adapters.navigation.navigate(character.route)} />] : [];
                 })}
               </View>
             </View>
@@ -897,10 +1007,10 @@ export function JapaneseVocabularyDetailScreen({ vocabulary, adapters }: { vocab
         </View>
       ) : null}
       {vocabulary.examples.length ? (
-        <View style={styles.card} testID="mobile-japanese-vocabulary-examples">
-          <Text style={styles.cardTitle}>Example phrases</Text>
+        <View style={styles.stack} testID="mobile-japanese-vocabulary-examples">
+          <Text accessibilityRole="header" style={styles.cardTitle}>Example phrases</Text>
           {vocabulary.examples.map((example) => (
-            <View key={example.id} style={styles.subPanel}>
+            <View key={example.id} style={styles.stack}>
               <Text style={styles.cardTitle}>{example.japanese}</Text>
               <Text style={styles.bodyText}>{example.reading} · {example.romaji}</Text>
               {example.inputSequences.length ? <Text style={styles.mutedText}>IME: {example.inputSequences.join(" or ")}</Text> : null}
@@ -942,14 +1052,14 @@ export function DocumentReaderScreen({
         <Pill label={document.track} tone="blue" />
         <Pill label={`${document.readingMinutes} min`} tone="amber" />
       </View>
-      <Text style={styles.heroTitle}>{document.title}</Text>
+      <Text accessibilityRole="header" style={styles.heroTitle}>{document.title}</Text>
       <Text style={styles.heroCopy}>{document.summary}</Text>
       <SourceReferencePanel sources={getSourcesByRefs(document.sourceRefs)} adapters={adapters} />
       <TagRow tags={document.tags} />
       <MarkdownReader markdown={document.markdown} adapters={adapters} />
       {referencedDiagrams.length > 0 ? (
-        <View style={styles.card}>
-          <Text style={styles.cardTitle}>Referenced diagrams</Text>
+        <View style={styles.stack}>
+          <Text accessibilityRole="header" style={styles.cardTitle}>Diagrams</Text>
           {referencedDiagrams.map((diagram) => (
             <Button key={diagram.slug} label={diagram.title} variant="ghost" onPress={() => adapters.navigation.navigate(diagram.route)} />
           ))}
@@ -980,8 +1090,7 @@ export function DiagramReaderScreen({
   return (
     <AppScreen>
       <Header adapters={adapters} subtitle="Diagram" />
-      <Text style={styles.heroTitle}>{diagram.title}</Text>
-      <Text style={styles.heroCopy}>Mermaid diagram stored in {diagram.sourcePath}.</Text>
+      <Text accessibilityRole="header" style={styles.heroTitle}>{diagram.title}</Text>
       <MermaidBlock source={diagram.source} adapters={adapters} />
       {nextHref ? <Button label="Next activity" onPress={() => adapters.navigation.navigate(nextHref)} testID="mobile-diagram-next-node" /> : null}
     </AppScreen>
@@ -996,6 +1105,7 @@ export function PracticeScreen({
   exercise: LearningExercise;
   nextHref?: string;
 } & ScreenProps) {
+  const [scrollResetKey, setScrollResetKey] = useState(0);
   const onProgress = (status: ProgressStatus, position: Record<string, unknown> = {}) =>
     adapters.progress?.record(
       {
@@ -1012,16 +1122,15 @@ export function PracticeScreen({
     );
 
   return (
-    <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : undefined} style={styles.screen}>
-      <AppScreen>
+    <AppScreen keyboardAware scrollResetKey={scrollResetKey}>
         <Header adapters={adapters} subtitle="Practice" />
-        <View style={exercise.type === "writing" ? styles.stack : styles.card} testID="mobile-practice-card">
+        <View style={styles.stack} testID="mobile-practice-card">
           <View style={styles.pillRow}>
             <Pill label={exerciseKindLabel(exercise)} tone="purple" />
             <DifficultyPill difficulty={exercise.difficulty} />
             <Pill label={exercise.concept} tone="green" />
           </View>
-          <Text style={styles.heroTitle}>{exercise.title}</Text>
+          <Text accessibilityRole="header" style={styles.heroTitle}>{exercise.title}</Text>
           <SourceReferencePanel sources={getSourcesByRefs(exercise.sourceRefs)} adapters={adapters} />
           {exercise.type === "flashcard" ? (
             <FlashcardPractice exercise={exercise} nextHref={nextHref} adapters={adapters} onProgress={onProgress} />
@@ -1030,23 +1139,35 @@ export function PracticeScreen({
           ) : exercise.type === "writing" ? (
             <WritingPractice exercise={exercise} nextHref={nextHref} adapters={adapters} onProgress={onProgress} />
           ) : exercise.type === "guided-lab" ? (
-            <GuidedLabPractice exercise={exercise} nextHref={nextHref} adapters={adapters} onProgress={onProgress} />
+            <GuidedLabPractice exercise={exercise} nextHref={nextHref} adapters={adapters} onProgress={onProgress} onRestart={() => setScrollResetKey(value => value + 1)} />
           ) : (
             <QuestionnairePractice exercise={exercise} nextHref={nextHref} adapters={adapters} onProgress={onProgress} />
           )}
         </View>
       </AppScreen>
-    </KeyboardAvoidingView>
   );
 }
 
 function SourceReferencePanel({ sources, adapters }: { sources: ContentSource[] } & ScreenProps) {
+  const [expanded, setExpanded] = useState(false);
+  const [message, setMessage] = useState<string>();
+  const [opening, setOpening] = useState<string>();
+  const busy = useRef(false);
   if (sources.length === 0) return null;
+  async function openSource(source: ContentSource) {
+    if (busy.current || !adapters.navigation.openExternalUrl) return;
+    busy.current = true; setOpening(source.id); setMessage(undefined);
+    try { await adapters.navigation.openExternalUrl(source.url); }
+    catch { setMessage("Couldn't open this source. Please try again."); }
+    finally { busy.current = false; setOpening(undefined); }
+  }
   return (
-    <View style={styles.subPanel} testID="mobile-source-references">
-      <Text style={styles.cardEyebrow}>Primary sources</Text>
-      <Text style={styles.mutedText}>These are the authoritative sources. Use Codematica to study and track progress.</Text>
-      {sources.map((source) => <Button key={source.id} label={`${source.title} · ${source.provider}`} variant="ghost" onPress={() => adapters.navigation.openExternalUrl?.(source.url)} />)}
+    <View style={styles.disclosure} testID="mobile-source-references">
+      <Button label="Primary sources" variant="ghost" tone="neutral" accessibilityState={{ expanded }} onPress={() => setExpanded(value => !value)} />
+      {expanded ? <View style={styles.stack}>
+        {sources.map((source) => <Button key={source.id} label={`${source.title} · ${source.provider}`} variant="ghost" tone="info" disabled={!adapters.navigation.openExternalUrl || Boolean(opening && opening !== source.id)} busy={opening === source.id} onPress={() => void openSource(source)} testID={`mobile-source-${source.id}`} />)}
+        {message ? <Text accessibilityLiveRegion="polite" style={styles.mutedText}>{message}</Text> : null}
+      </View> : null}
     </View>
   );
 }
@@ -1056,14 +1177,56 @@ function GuidedLabPractice({
   nextHref,
   adapters,
   onProgress,
+  onRestart,
 }: {
   exercise: Extract<LearningExercise, { type: "guided-lab" }>;
   nextHref?: string;
+  onRestart: () => void;
   onProgress: (status: ProgressStatus, position?: Record<string, unknown>) => void | Promise<void>;
 } & ScreenProps) {
   const [predictionId, setPredictionId] = useState<string>();
   const [evidenceIds, setEvidenceIds] = useState<string[]>([]);
   const complete = Boolean(predictionId) && evidenceIds.length === exercise.evidenceChecklist.length;
+  const [notes, setNotes] = useState<Record<string, string>>({});
+  const [saving, setSaving] = useState(false);
+  const [saved, setSaved] = useState(false);
+  const [failed, setFailed] = useState(false);
+  const [startFailed, setStartFailed] = useState(false);
+  const busy = useRef(false);
+  const acknowledged = useRef(false);
+  const version = useRef(0);
+  const mounted = useRef(true);
+  useEffect(() => { mounted.current = true; return () => { mounted.current = false; }; }, []);
+
+  async function choosePrediction(id: string) {
+    if (busy.current || acknowledged.current) return;
+    setPredictionId(id);
+    setStartFailed(false);
+    const request = ++version.current;
+    try { await onProgress("started", { predictionCommitted: true }); }
+    catch { if (mounted.current && request === version.current) setStartFailed(true); }
+  }
+
+  async function finish() {
+    if (!complete || busy.current || acknowledged.current) return;
+    busy.current = true;
+    const request = ++version.current;
+    setSaving(true); setFailed(false); setStartFailed(false);
+    try {
+      await onProgress("completed", { predictionCommitted: true, evidenceCount: evidenceIds.length, evidenceTotal: exercise.evidenceChecklist.length });
+      if (mounted.current && request === version.current) { acknowledged.current = true; setSaved(true); }
+    } catch { if (mounted.current && request === version.current) setFailed(true); }
+    finally { busy.current = false; if (mounted.current && request === version.current) setSaving(false); }
+  }
+
+  function restart() {
+    if (busy.current) return;
+    version.current++; acknowledged.current = false;
+    setSaved(false); setFailed(false); setStartFailed(false);
+    setPredictionId(undefined); setEvidenceIds([]); setNotes({});
+    onRestart();
+  }
+
 
   return (
     <View style={styles.stack} testID="mobile-guided-lab-session">
@@ -1074,7 +1237,7 @@ function GuidedLabPractice({
         <Text style={styles.cardTitle}>Choose your prediction</Text>
         <Text style={styles.bodyText}>{exercise.prediction.prompt}</Text>
         {exercise.prediction.options.map((option) => (
-          <Pressable key={option.id} onPress={() => { setPredictionId(option.id); void onProgress("started", { predictionCommitted: true }); }} style={[styles.choice, predictionId === option.id && styles.choiceSelected]}>
+          <Pressable key={option.id} testID={`mobile-guided-lab-prediction-${option.id}`} disabled={saving || saved} accessibilityRole="radio" accessibilityLabel={option.label} accessibilityState={{ checked: predictionId === option.id, disabled: saving || saved }} onPress={() => void choosePrediction(option.id)} style={[styles.choice, predictionId === option.id && styles.choiceSelected]}>
             <Text style={styles.choiceText}>{option.label}</Text>
           </Pressable>
         ))}
@@ -1084,15 +1247,17 @@ function GuidedLabPractice({
         <Text style={styles.cardTitle}>Evidence checklist</Text>
         {exercise.evidenceChecklist.map((item) => {
           const checked = evidenceIds.includes(item.id);
-          return <Pressable key={item.id} onPress={() => setEvidenceIds((current) => checked ? current.filter((id) => id !== item.id) : [...current, item.id])} style={[styles.choice, checked && styles.choiceSelected]}><Text style={styles.choiceText}>{checked ? "✓ " : "○ "}{item.label}</Text></Pressable>;
+          return <Pressable key={item.id} testID={`mobile-guided-lab-evidence-${item.id}`} disabled={saving || saved} accessibilityRole="checkbox" accessibilityLabel={item.label} accessibilityState={{ checked, disabled: saving || saved }} onPress={() => setEvidenceIds((current) => checked ? current.filter((id) => id !== item.id) : [...current, item.id])} style={[styles.choice, checked && styles.choiceSelected]}><Text style={styles.choiceText}>{checked ? "✓ " : "○ "}{item.label}</Text></Pressable>;
         })}
       </View>
       <View style={styles.subPanel}>
         <Text style={styles.cardTitle}>Reflect and extend</Text>
-        {exercise.reflectionPrompts.map((prompt) => <View key={prompt}><Text style={styles.bodyText}>{prompt}</Text><TextInput multiline placeholder="Private working note (not saved)" style={styles.input} /></View>)}
+        {exercise.reflectionPrompts.map((prompt) => <View key={prompt}><Text style={styles.bodyText}>{prompt}</Text><TextInput accessibilityLabel={prompt} value={notes[prompt] ?? ""} onChangeText={value => setNotes(current => ({ ...current, [prompt]: value }))} testID={`mobile-guided-lab-note-${exercise.reflectionPrompts.indexOf(prompt)}`} multiline placeholder="Private working note (not saved)" style={[styles.input, { minHeight: 100, textAlignVertical: "top" }]} /></View>)}
         <Text style={styles.mutedText}>Extension: {exercise.extensionChallenge}</Text>
       </View>
-      <Button label="Complete lab" disabled={!complete} onPress={() => void onProgress("completed", { predictionCommitted: true, evidenceCount: evidenceIds.length, evidenceTotal: exercise.evidenceChecklist.length })} testID="mobile-guided-lab-complete" />
+      {saving ? <Text accessibilityLiveRegion="polite" style={styles.mutedText}>Completing lab…</Text> : null}
+      {failed ? <Text accessibilityRole="alert" accessibilityLiveRegion="assertive" style={styles.errorText}>Couldn’t save progress. Your choices and working notes are still here.</Text> : startFailed ? <Text accessibilityRole="alert" style={styles.errorText}>Couldn’t save progress. Keep working and retry when completing the lab.</Text> : null}
+      {saved ? <View style={styles.stack}><Text accessibilityRole="header" accessibilityLiveRegion="polite" style={styles.reviewSavedText}>Lab complete.</Text><Button label="Practice again" variant="ghost" tone="warning" onPress={restart} testID="mobile-guided-lab-restart" /></View> : <Button label={failed ? "Retry completion" : "Complete lab"} tone={failed ? "warning" : "success"} disabled={!complete} busy={saving} onPress={() => void finish()} testID="mobile-guided-lab-complete" />}
       {complete && nextHref ? <Button label={nextHref.endsWith("/flashcards") ? "Start review feed" : "Next activity"} variant="secondary" onPress={() => adapters.navigation.navigate(nextHref)} /> : null}
     </View>
   );
@@ -1129,7 +1294,7 @@ function FlashcardPractice({
         }}
         testID="mobile-flashcard-reveal"
       />
-      {revealed ? <Button label="Reset" variant="ghost" onPress={() => setRevealed(false)} /> : null}
+      {revealed ? <Button label="Reset" variant="secondary" tone="warning" onPress={() => setRevealed(false)} /> : null}
       {revealed && nextHref ? <Button label={nextHref.endsWith("/flashcards") ? "Start review feed" : "Next activity"} variant="secondary" onPress={() => adapters.navigation.navigate(nextHref)} /> : null}
     </View>
   );
@@ -1167,10 +1332,10 @@ function ClozePractice({
         {" ____ "}
         {suffix}
       </Text>
-      <TextInput value={answer} onChangeText={setAnswer} placeholder="Answer" style={styles.input} testID="mobile-cloze-answer-input" />
+      <TextInput accessibilityLabel="Answer" value={answer} onChangeText={(value) => { setAnswer(value); setResult(undefined); }} placeholder="Answer" style={styles.input} testID="mobile-cloze-answer-input" />
       <Button label="Check answer" onPress={checkAnswer} testID="mobile-cloze-check" />
       {result ? (
-        <View style={[styles.feedback, result === "correct" ? styles.feedbackCorrect : styles.feedbackReview]} testID="mobile-cloze-feedback">
+        <View accessibilityLiveRegion="polite" style={[styles.feedback, result === "correct" ? styles.feedbackCorrect : styles.feedbackReview]} testID="mobile-cloze-feedback">
           <Text style={styles.feedbackTitle}>{result === "correct" ? "Correct" : "Try again"}</Text>
           <Text style={styles.mutedText}>{exercise.explanation}</Text>
         </View>
@@ -1205,8 +1370,9 @@ function NativeWritingMatch({ sheets }: { sheets: ReturnType<typeof buildWriting
     } else { setSelected(next); setMessage("Now choose its matching tile."); }
   }
   return <View style={styles.stack} testID="mobile-writing-match"><Text style={styles.cardTitle} accessibilityRole="header">Tap the matching pairs</Text><Text style={styles.mutedText}>{matched.length} / {pairs.length} matched</Text>
+    <View style={styles.writingFeedbackSlot} accessibilityLiveRegion="polite"><Text style={styles.cardTitle}>{message}</Text></View>
     <View style={styles.writingMatchGrid}>{(["kana", "romaji"] as const).map((side) => <View key={side} style={styles.writingMatchColumn}>{(side === "kana" ? pairs : readings).map((pair) => <Pressable key={pair.id} accessibilityRole="button" accessibilityState={{ selected: selected[side] === pair.id, disabled: matched.includes(pair.id) }} disabled={matched.includes(pair.id)} onPress={() => choose(side, pair.id)} style={[styles.writingMatchTile, selected[side] === pair.id && styles.writingTileSelected, matched.includes(pair.id) && styles.writingTileMatched]} testID={`mobile-writing-match-${side}-${pair.id}`}><Text style={styles.cardTitle} accessibilityLanguage={side === "kana" ? "ja-JP" : "en-US"}>{side === "kana" ? pair.label : pair.romaji}{matched.includes(pair.id) ? " ✓" : ""}</Text></Pressable>)}</View>)}</View>
-    <View style={styles.writingFeedbackSlot} accessibilityLiveRegion="polite"><Text style={styles.cardTitle}>{message}</Text></View><Button label="Practice again" disabled={matched.length !== pairs.length} onPress={() => { setRound((value) => value + 1); setMatched([]); setSelected({}); setMessage("A fresh round. Match the same pairs again."); }} testID="mobile-writing-match-repeat" />
+<Button label="Practice again" tone="warning" variant="secondary" disabled={matched.length !== pairs.length} onPress={() => { setRound((value) => value + 1); setMatched([]); setSelected({}); setMessage("A fresh round. Match the same pairs again."); }} testID="mobile-writing-match-repeat" />
   </View>;
 }
 
@@ -1272,7 +1438,7 @@ function QuestionnairePractice({
           <Text style={styles.mutedText}>You finished this practice session.</Text>
           <Text style={styles.mutedText}>Score {Math.round(calculateQuestionnaireSkillScores(attempt.map((attemptQuestion) => ({ question: attemptQuestion, isCorrect: graded[attemptQuestion.id] ?? false }))).overall * 100)}%</Text>
         </View>
-        <Button label="Restart" variant="ghost" onPress={restart} />
+        <Button label="Restart" tone="warning" variant="ghost" onPress={restart} />
         {nextHref ? <Button label={nextHref.endsWith("/flashcards") ? "Start review feed" : "Next activity"} variant="secondary" onPress={() => adapters.navigation.navigate(nextHref)} /> : null}
       </View>
     );
@@ -1284,9 +1450,9 @@ function QuestionnairePractice({
         <Text style={styles.positionText}>
           Question {currentIndex + 1} of {attempt.length}
         </Text>
-        <Text style={styles.positionText}>{question.kind}</Text>
+        <Text style={styles.positionText}>{{ choice: "Multiple choice", "listening-choice": "Listening", "open-answer": "Write an answer", cloze: "Fill in the blank", ordering: "Order steps", matching: "Match pairs" }[question.kind]}</Text>
       </View>
-      <Text style={styles.bodyText}>{question.prompt}</Text>
+      <Text accessibilityRole="header" style={styles.cardTitle}>{question.prompt}</Text>
       <QuestionBody question={question} answer={answer} disabled={Boolean(result)} onAnswer={resetAnswer} adapters={adapters} />
       {result ? <QuestionFeedback question={question} result={result} /> : null}
       <Button label="Check answer" disabled={Boolean(result)} onPress={checkAnswer} testID="mobile-questionnaire-check" />
@@ -1323,20 +1489,13 @@ function QuestionBody({
 
     return (
       <View style={styles.stack}>
-        {question.kind === "listening-choice" ? (
-          <View style={styles.subPanel} testID="mobile-japanese-audio-player">
-            <Text style={styles.positionText}>AI-generated voice</Text>
-            {adapters.audio ? (
-              <View style={styles.actionRow}>
-                <Button label="Play / replay" onPress={() => { void adapters.audio?.play(question.audioId, 1); }} testID="mobile-japanese-audio-play" />
-                <Button label="0.75× slow" variant="ghost" onPress={() => { void adapters.audio?.play(question.audioId, 0.75); }} testID="mobile-japanese-audio-slow" />
-              </View>
-            ) : <Text style={styles.mutedText}>Listening audio is awaiting Japanese-language approval.</Text>}
-          </View>
-        ) : null}
+        {question.kind === "listening-choice" ? <ListeningControls key={question.audioId} audioId={question.audioId} audio={adapters.audio} /> : null}
         {question.options.map((option) => (
           <Pressable
             key={option.id}
+            accessibilityRole="radio"
+            accessibilityLabel={option.label}
+            accessibilityState={{ checked: selected === option.id, disabled }}
             disabled={disabled}
             onPress={() => onAnswer(question.kind === "choice" ? { kind: "choice", selectedOptionId: option.id } : { kind: "listening-choice", selectedOptionId: option.id })}
             style={[styles.choice, selected === option.id && styles.choiceSelected]}
@@ -1361,6 +1520,7 @@ function QuestionBody({
           autoCapitalize="none"
           autoCorrect={false}
           accessibilityLanguage="ja-JP"
+          accessibilityLabel="Write in romaji or Japanese"
           accessibilityHint="Type romaji or Japanese. On iPad, write here with Apple Pencil Scribble."
           placeholder="Romaji or Japanese"
           style={styles.input}
@@ -1394,6 +1554,7 @@ function QuestionBody({
           editable={!disabled}
           onChangeText={(nextValue) => onAnswer({ kind: "cloze", value: nextValue })}
           placeholder="Answer"
+          accessibilityLabel="Answer"
           style={styles.input}
           testID="mobile-questionnaire-cloze-answer-input"
         />
@@ -1423,8 +1584,8 @@ function QuestionBody({
           <View key={itemId} style={styles.orderRow}>
             <Text style={styles.fill}>{itemsById.get(itemId)?.label ?? itemId}</Text>
             <View style={styles.orderActions}>
-              <Button label="Up" disabled={disabled || index === 0} variant="ghost" onPress={() => move(index, -1)} />
-              <Button label="Down" disabled={disabled || index === itemIds.length - 1} variant="ghost" onPress={() => move(index, 1)} />
+              <Button label="Up" accessibilityLabel={`Move ${itemsById.get(itemId)?.label ?? itemId} up`} tone="neutral" disabled={disabled || index === 0} variant="ghost" onPress={() => move(index, -1)} />
+              <Button label="Down" accessibilityLabel={`Move ${itemsById.get(itemId)?.label ?? itemId} down`} tone="neutral" disabled={disabled || index === itemIds.length - 1} variant="ghost" onPress={() => move(index, 1)} />
             </View>
           </View>
         ))}
@@ -1443,6 +1604,9 @@ function QuestionBody({
             {question.rightItems.map((rightItem) => (
               <Pressable
                 key={rightItem.id}
+                accessibilityRole="radio"
+                accessibilityLabel={`${leftItem.label}: ${rightItem.label}`}
+                accessibilityState={{ checked: selectedMatches[leftItem.id] === rightItem.id, disabled }}
                 disabled={disabled}
                 onPress={() =>
                   onAnswer({
@@ -1466,9 +1630,32 @@ function QuestionBody({
   );
 }
 
+function ListeningControls({ audioId, audio }: { audioId: string; audio: CodematicaAdapters["audio"] }) {
+  const [message, setMessage] = useState("");
+  const [speed, setSpeed] = useState(1);
+  const version = useRef(0);
+  useEffect(() => { const counter = version; return () => { counter.current++; }; }, []);
+  async function play(rate: number) {
+    const request = ++version.current;
+    setMessage(""); setSpeed(rate);
+    try {
+      const played = await audio?.play(audioId, rate);
+      if (request === version.current && !played) setMessage("Audio is unavailable. Try again later.");
+    } catch { if (request === version.current) setMessage("Couldn't play this audio. Check your sound and connection, then retry."); }
+  }
+  return <View style={styles.subPanel} testID="mobile-japanese-audio-player">
+    <Text style={styles.positionText}>AI-generated voice</Text>
+    {audio ? <View style={styles.actionRow}>
+      <Button label="Play / replay" tone="info" onPress={() => void play(1)} testID="mobile-japanese-audio-play" />
+      <Button label="0.75× slow" tone="info" variant="secondary" selected={speed === 0.75} onPress={() => void play(0.75)} testID="mobile-japanese-audio-slow" />
+    </View> : <Text style={styles.mutedText}>Listening audio is awaiting Japanese-language approval.</Text>}
+    {message ? <><Text accessibilityLiveRegion="polite" style={styles.errorText}>{message}</Text><Button label="Retry audio" tone="warning" onPress={() => void play(speed)} /></> : null}
+  </View>;
+}
+
 function QuestionFeedback({ question, result }: { question: QuestionnaireAttemptQuestion; result: QuestionnaireAnswerResult }) {
   return (
-    <View style={[styles.feedback, result.isCorrect ? styles.feedbackCorrect : styles.feedbackReview]} testID="mobile-questionnaire-feedback">
+    <View accessible accessibilityLiveRegion="polite" style={[styles.feedback, result.isCorrect ? styles.feedbackCorrect : styles.feedbackReview]} testID="mobile-questionnaire-feedback">
       <Text style={styles.feedbackTitle}>{result.isCorrect ? "Correct" : "Review this"}</Text>
       {!result.isCorrect || (question.kind !== "choice" && question.kind !== "listening-choice") ? <Text style={styles.bodyText}>Correct answer: {result.correctAnswer}</Text> : null}
       <Text style={styles.mutedText}>{question.explanation}</Text>
@@ -1523,7 +1710,6 @@ export function PassiveFlashcardFeedScreen({
         testID="mobile-passive-flashcard-list"
         data={visibleCards}
         keyExtractor={(item) => item.instanceId}
-        pagingEnabled
         onScroll={recordPosition}
         scrollEventThrottle={250}
         renderItem={({ item }) => <PassiveFlashcard card={item.card} sequenceIndex={item.sequenceIndex} adapters={adapters} pathSlug={feed.pathSlug} />}
@@ -1540,7 +1726,7 @@ function PassiveFlashcard({ card, sequenceIndex, adapters, pathSlug }: { card: P
           <Pill label={cardTypeLabels[card.type]} tone={card.type === "snippet" ? "blue" : card.type === "interview" ? "amber" : "purple"} />
           <DifficultyPill difficulty={card.difficulty} />
         </View>
-        <Text style={styles.heroTitle}>{card.title}</Text>
+        <Text accessibilityRole="header" style={styles.heroTitle}>{card.title}</Text>
         <Text style={styles.bodyText}>{card.prompt}</Text>
         <Text style={styles.mutedText}>{card.explanation}</Text>
         {card.code ? <CodeBlock code={card.code} language={card.codeLanguage} /> : null}
@@ -1558,11 +1744,11 @@ export function InterviewCatalogScreen({ index, adapters }: { index: ContentInde
   return (
     <AppScreen>
       <Header adapters={adapters} subtitle="Interview prep" />
-      <Text style={styles.heroTitle}>Interview prep</Text>
+      <Text accessibilityRole="header" style={styles.heroTitle}>Interview prep</Text>
       <Text style={styles.cardTitle}>Real-world interviews</Text>
       <View style={styles.stack} testID="mobile-real-world-interview-list">
         {realWorld.map((collection) => (
-          <Pressable key={collection.slug} onPress={() => adapters.navigation.navigate(collection.route)} style={styles.card} testID={`mobile-collection-${collection.slug}`}>
+          <Pressable key={collection.slug} accessibilityRole="button" accessibilityLabel={collection.name} onPress={() => adapters.navigation.navigate(collection.route)} style={styles.card} testID={`mobile-collection-${collection.slug}`}>
             <Text style={styles.cardTitle}>{collection.name}</Text>
             <Text style={styles.mutedText}>{collection.summary}</Text>
             <Pill label={`${collection.questions.length} exercises`} tone="amber" />
@@ -1572,7 +1758,7 @@ export function InterviewCatalogScreen({ index, adapters }: { index: ContentInde
       <Text style={styles.cardTitle}>Company interview prep</Text>
       <View style={styles.stack} testID="mobile-interview-company-list">
         {companies.map((collection) => (
-          <Pressable key={collection.slug} onPress={() => adapters.navigation.navigate(collection.route)} style={styles.card} testID={`mobile-company-${collection.slug}`}>
+          <Pressable key={collection.slug} accessibilityRole="button" accessibilityLabel={collection.name} onPress={() => adapters.navigation.navigate(collection.route)} style={styles.card} testID={`mobile-company-${collection.slug}`}>
             <Text style={styles.cardTitle}>{collection.name}</Text>
             <Text style={styles.mutedText}>{collection.summary}</Text>
             <Pill label={`${collection.questions.length} questions`} tone="blue" />
@@ -1587,11 +1773,11 @@ export function InterviewCollectionScreen({ collection, adapters }: { collection
   return (
     <AppScreen>
       <Header adapters={adapters} subtitle={collection.kind === "company" ? "Company questions" : "Real-world interviews"} />
-      <Text style={styles.heroTitle}>{collection.name}</Text>
+      <Text accessibilityRole="header" style={styles.heroTitle}>{collection.name}</Text>
       <Text style={styles.heroCopy}>{collection.summary}</Text>
       <View style={styles.stack}>
         {collection.questions.map((question) => (
-          <Pressable key={question.slug} onPress={() => adapters.navigation.navigate(question.route)} style={styles.card} testID={`mobile-question-${question.slug}`}>
+          <Pressable key={question.slug} accessibilityRole="button" accessibilityLabel={question.title} onPress={() => adapters.navigation.navigate(question.route)} style={styles.card} testID={`mobile-question-${question.slug}`}>
             <View style={styles.pillRow}>
               <DifficultyPill difficulty={question.difficulty} />
               <Pill label={question.collectionKind === "real-world" ? "Real-world" : question.collectionName} tone="blue" />
@@ -1626,9 +1812,9 @@ function AlgorithmInterviewQuestionScreen({ question, adapters, nextHref }: { qu
         <DifficultyPill difficulty={question.difficulty} />
         <Pill label={question.collectionName} tone="blue" />
       </View>
-      <Text style={styles.heroTitle}>{question.title}</Text>
+      <Text accessibilityRole="header" style={styles.heroTitle}>{question.title}</Text>
       <Text style={styles.heroCopy}>{question.summary}</Text>
-      <Text style={styles.bodyText}>{question.prompt}</Text>
+      <Text accessibilityRole="header" style={styles.cardTitle}>{question.prompt}</Text>
       {question.examples.length > 0 ? (
         <View style={styles.card}>
           <Text style={styles.cardTitle}>Examples</Text>
@@ -1665,11 +1851,11 @@ function AlgorithmInterviewQuestionScreen({ question, adapters, nextHref }: { qu
 
 function SolutionTrack({ track, language }: { track: InterviewAlgorithmSolutionTrack; language: "python" | "typescript" | "java" }) {
   return (
-    <View style={styles.card}>
+    <View style={styles.stack}>
       <Text style={styles.cardTitle}>{track.title}</Text>
       <Text style={styles.mutedText}>{track.summary}</Text>
       {track.steps.map((step) => (
-        <View key={step.title} style={styles.subPanel}>
+        <View key={step.title} style={styles.disclosure}>
           <Text style={styles.cardTitle}>{step.title}</Text>
           <Text style={styles.mutedText}>{step.explanation}</Text>
         </View>
@@ -1708,29 +1894,26 @@ function WebInterviewQuestionScreen({ question, adapters, nextHref }: { question
         <DifficultyPill difficulty={question.difficulty} />
         <Pill label="Real-world" tone="amber" />
       </View>
-      <Text style={styles.heroTitle}>{question.title}</Text>
+      <Text accessibilityRole="header" style={styles.heroTitle}>{question.title}</Text>
       <Text style={styles.heroCopy}>{question.summary}</Text>
-      <Text style={styles.bodyText}>{question.prompt}</Text>
+      <Text accessibilityRole="header" style={styles.cardTitle}>{question.prompt}</Text>
 
-      <View style={styles.card} testID="mobile-web-interview-evaluation">
-        <Text style={styles.cardTitle}>What the interviewer is assessing</Text>
+      <Disclosure label="What to demonstrate"><View style={styles.stack} testID="mobile-web-interview-evaluation">
         <Text style={styles.bodyText}>{question.evaluation.intent}</Text>
         {question.evaluation.expectedSignals.map((signal) => <Text key={signal} style={styles.mutedText}>• {signal}</Text>)}
-      </View>
+      </View></Disclosure>
 
-      <View style={styles.card}>
-        <Text style={styles.cardTitle}>Acceptance criteria</Text>
+      <Disclosure label="Acceptance criteria"><View style={styles.stack} testID="mobile-web-interview-criteria">
         {question.evaluation.acceptanceCriteria.map((item) => (
-          <View key={item.title} style={styles.subPanel}><Text style={styles.cardTitle}>{item.title}</Text><Text style={styles.mutedText}>{item.explanation}</Text></View>
+          <View key={item.title} style={styles.disclosure}><Text style={styles.cardTitle}>{item.title}</Text><Text style={styles.mutedText}>{item.explanation}</Text></View>
         ))}
-      </View>
+      </View></Disclosure>
 
-      <View style={styles.card} testID="mobile-web-interview-red-flags">
-        <Text style={styles.cardTitle}>Red flags</Text>
+      <Disclosure label="Red flags"><View style={styles.stack} testID="mobile-web-interview-red-flags">
         {question.evaluation.redFlags.map((item) => (
-          <View key={item.title} style={styles.subPanel}><Text style={styles.cardTitle}>{item.title}</Text><Text style={styles.mutedText}>{item.explanation}</Text></View>
+          <View key={item.title} style={styles.disclosure}><Text style={styles.cardTitle}>{item.title}</Text><Text style={styles.mutedText}>{item.explanation}</Text></View>
         ))}
-      </View>
+      </View></Disclosure>
 
       <HorizontalOptions
         label="Approach"
@@ -1738,16 +1921,17 @@ function WebInterviewQuestionScreen({ question, adapters, nextHref }: { question
         value={selectedTrack.id}
         onChange={selectTrack}
       />
-      <View style={styles.card} testID="mobile-web-solution">
+      <View style={styles.stack} testID="mobile-web-solution">
         <Text style={styles.cardTitle}>{selectedTrack.title}</Text>
         <Text style={styles.mutedText}>{selectedTrack.summary}</Text>
         <Text style={styles.positionText} testID="mobile-web-recipe-position">{revealed ? "Full solution" : `Step ${stepIndex + 1} of ${selectedTrack.steps.length}`}</Text>
-        {(revealed ? selectedTrack.steps : [selectedTrack.steps[stepIndex]]).map((step) => <View key={step.title} style={styles.subPanel}><Text style={styles.cardTitle}>{step.title}</Text><Text style={styles.mutedText}>{step.explanation}</Text></View>)}
         {!revealed ? <View style={styles.actionRow}>
-          <Button label="Previous step" disabled={stepIndex === 0} onPress={() => setStepIndex((value) => value - 1)} testID="mobile-web-previous-step" />
+          <Button label="Previous step" tone="neutral" variant="secondary" disabled={stepIndex === 0} onPress={() => setStepIndex((value) => value - 1)} testID="mobile-web-previous-step" />
           <Button label={stepIndex === selectedTrack.steps.length - 1 ? "Reveal solution" : "Next step"} onPress={() => { if (stepIndex === selectedTrack.steps.length - 1) setRevealed(true); else setStepIndex((value) => value + 1); }} testID="mobile-web-next-step" />
-          <Button label="Show full solution" variant="secondary" onPress={() => setRevealed(true)} testID="mobile-web-show-solution" />
-        </View> : <Button label="Restart recipe" variant="ghost" onPress={() => { setStepIndex(0); setRevealed(false); }} />}
+          <Button label="Show full solution" tone="assist" variant="secondary" onPress={() => setRevealed(true)} testID="mobile-web-show-solution" />
+        </View> : <Button label="Restart recipe" tone="warning" variant="ghost" onPress={() => { setStepIndex(0); setRevealed(false); }} />}
+        {revealed && selectedTrack.python ? <HorizontalOptions label="Solution language" value={language} onChange={setLanguage} options={[{ value: "typescript", label: "TypeScript" }, { value: "python", label: "Python" }]} /> : null}
+        {(revealed ? selectedTrack.steps : [selectedTrack.steps[stepIndex]]).map((step) => <View key={step.title} style={styles.disclosure}><Text style={styles.cardTitle}>{step.title}</Text><Text style={styles.mutedText}>{step.explanation}</Text></View>)}
         {revealed ? <>
         <Text style={styles.bodyText}>{selectedTrack.explanation}</Text>
         <Text style={styles.cardTitle}>How it meets the requirements</Text>
@@ -1758,7 +1942,6 @@ function WebInterviewQuestionScreen({ question, adapters, nextHref }: { question
         </> : null}
       </View>
       {revealed ? <>
-      {selectedTrack.python ? <HorizontalOptions label="Solution language" value={language} onChange={setLanguage} options={[{ value: "typescript", label: "TypeScript" }, { value: "python", label: "Python" }]} /> : null}
       {language === "python" && selectedTrack.python ? <>
         <Text style={styles.bodyText}>{selectedTrack.python.explanation}</Text>
         <Text style={styles.mutedText}>Save as solution.py and use python3 -i solution.py locally to call its functions.</Text>
@@ -1771,11 +1954,11 @@ function WebInterviewQuestionScreen({ question, adapters, nextHref }: { question
         value={activeFile}
         onChange={setSelectedFile}
       />
-      <CodeBlock code={selectedTrack.project.files[activeFile].code} language={activeFile.split(".").pop()} />
       <View style={styles.feedback} testID="mobile-web-playground-note">
         <Text style={styles.feedbackTitle}>Interactive runner available on web</Text>
         <Text style={styles.mutedText}>All explanations and source files are available offline. Use the web playground to edit and run code.</Text>
       </View>
+      <CodeBlock code={selectedTrack.project.files[activeFile].code} language={activeFile.split(".").pop()} />
       </>}
       {nextHref ? <Button label="Continue to checkpoint" testID="mobile-interview-next-node" onPress={() => {
         void adapters.progress?.record({ surface: "interview", slug: `${question.collectionSlug}/${question.slug}`, title: question.title, summary: question.summary, href: question.route + (getPathFromHref(nextHref) ? `?path=${getPathFromHref(nextHref)}` : ""), pathSlug: getPathFromHref(nextHref), eyebrow: "Interview practice" }, "completed", { trackId: selectedTrack.id, recipeReviewed: true });
@@ -1789,66 +1972,95 @@ function WebInterviewQuestionScreen({ question, adapters, nextHref }: { question
 }
 
 export function LoginScreen({ adapters }: ScreenProps) {
+  const [mode, setMode] = useState<"sign-in" | "sign-up">("sign-in");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
+  const [failed, setFailed] = useState(false);
+  const [busy, setBusy] = useState(false);
+  const [signedIn, setSignedIn] = useState(false);
+  const [syncPending, setSyncPending] = useState(false);
+  const requestPending = useRef(false);
   const auth = adapters.auth;
+  const configured = !!auth?.isConfigured;
+  const passwordAction = mode === "sign-in" ? auth?.signInWithPassword : auth?.signUpWithPassword;
 
-  async function run(action?: () => Promise<void>, success = "Done") {
-    if (!action) {
-      setMessage("Sign-in is not set up here.");
+  async function run(action?: () => Promise<void | { progressSynced: boolean }>, success = "Done", authenticated = false) {
+    if (requestPending.current) return;
+    if (!configured || !action) {
+      setFailed(true);
+      setMessage("Sign-in is not set up here. You can keep learning on this device.");
       return;
     }
-
+    requestPending.current = true;
+    setBusy(true);
+    setFailed(false);
+    setMessage("");
     try {
-      await action();
-      setMessage(success);
-    } catch (error) {
-      setMessage(error instanceof Error ? error.message : "Could not complete the account request.");
+      const result = await action();
+      if (authenticated) setSignedIn(true);
+      const pending = authenticated && result?.progressSynced === false;
+      setSyncPending(pending);
+      setMessage(pending ? "You're signed in. Your progress is still on this device. Retry sync or continue learning." : success);
     }
+    catch (error) { setFailed(true); setMessage(error instanceof Error ? error.message : "Could not complete the account request. Please try again."); }
+    finally { requestPending.current = false; setBusy(false); }
   }
 
-  return (
-    <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : undefined} style={styles.screen}>
-      <AppScreen>
-        <Header adapters={adapters} subtitle="Sign in" />
-        <Text style={styles.heroTitle}>Save your progress.</Text>
-        <Text style={styles.heroCopy}>Sign in to sync reading and practice progress across devices.</Text>
-        {!auth?.isConfigured ? <Text style={styles.emptyText}>Sign-in is not set up: Supabase public environment variables are missing.</Text> : null}
-        <TextInput value={email} onChangeText={setEmail} placeholder="Email" autoCapitalize="none" keyboardType="email-address" style={styles.input} />
-        <TextInput value={password} onChangeText={setPassword} placeholder="Password" secureTextEntry style={styles.input} />
-        <Button label="Sign in" onPress={() => run(() => auth?.signInWithPassword?.(email, password) ?? Promise.resolve(), "Signed in")} testID="mobile-sign-in" />
-        <Button label="Create account" variant="secondary" onPress={() => run(() => auth?.signUpWithPassword?.(email, password) ?? Promise.resolve(), "Check your email")} />
-        <Button label="Continue with Google" variant="ghost" onPress={() => run(() => auth?.signInWithOAuth?.("google") ?? Promise.resolve(), "Opening Google")} />
-        <Button label="Continue with Apple" variant="ghost" onPress={() => run(() => auth?.signInWithOAuth?.("apple") ?? Promise.resolve(), "Opening Apple")} />
-        {message ? <Text style={styles.mutedText}>{message}</Text> : null}
-      </AppScreen>
-    </KeyboardAvoidingView>
-  );
+  function submit() {
+    if (signedIn || requestPending.current) return;
+    if (!email.trim() || !password) { setFailed(true); setMessage("Enter your email and password."); return; }
+    void run(passwordAction ? () => passwordAction(email.trim(), password) : undefined, mode === "sign-in" ? "Signed in" : "Check your email to confirm your account.", mode === "sign-in");
+  }
+
+  return <AppScreen keyboardAware>
+    <Header adapters={adapters} subtitle="Account" />
+    <View style={styles.loginForm}>
+      <Text accessibilityRole="header" style={styles.heroTitle}>{mode === "sign-in" ? "Welcome back" : "Create your account"}</Text>
+      <Text style={styles.heroCopy}>Keep your learning progress across devices.</Text>
+      {!configured ? <Text style={styles.mutedText}>Sign-in is not set up here. You can keep learning on this device.</Text> : null}
+      {auth?.signInWithOAuth ? <View style={styles.stack}>
+        <Button label="Continue with Google" variant="secondary" tone="neutral" disabled={!configured || busy || signedIn} onPress={() => void run(() => auth.signInWithOAuth!("google"), "Opening Google")} />
+        {auth.isAppleEnabled ? <Button label="Continue with Apple" variant="secondary" tone="neutral" disabled={!configured || busy || signedIn} onPress={() => void run(() => auth.signInWithOAuth!("apple"), "Opening Apple")} /> : null}
+      </View> : null}
+      <View style={styles.loginField}><Text style={styles.fieldLabel}>Email</Text><TextInput testID="mobile-login-email" accessibilityLabel="Email" value={email} onChangeText={setEmail} placeholder="Email" autoCapitalize="none" autoCorrect={false} autoComplete="email" textContentType="emailAddress" keyboardType="email-address" editable={configured && !busy && !signedIn} style={styles.input} /></View>
+      <View style={styles.loginField}><Text style={styles.fieldLabel}>Password</Text><TextInput testID="mobile-login-password" accessibilityLabel="Password" value={password} onChangeText={setPassword} placeholder="Password" secureTextEntry autoCapitalize="none" autoCorrect={false} autoComplete={mode === "sign-in" ? "current-password" : "new-password"} textContentType={mode === "sign-in" ? "password" : "newPassword"} editable={configured && !busy && !signedIn} onSubmitEditing={submit} returnKeyType="go" style={styles.input} /></View>
+      {mode === "sign-up" ? <Text style={styles.mutedText}>Use at least 6 characters.</Text> : null}
+      <Button label={mode === "sign-in" ? "Sign in" : "Create account"} busy={busy} disabled={!configured || !passwordAction || signedIn} onPress={submit} testID="mobile-sign-in" />
+      <Button label={mode === "sign-in" ? "Create an account" : "Use an existing account"} tone="info" variant="ghost" disabled={busy || signedIn} onPress={() => { setMode(value => value === "sign-in" ? "sign-up" : "sign-in"); setMessage(""); setFailed(false); }} />
+      {signedIn ? <View style={styles.actionRow}>
+        {syncPending ? <Button label="Retry sync" tone="warning" busy={busy} disabled={!auth?.syncAnonymousProgress} onPress={() => void run(auth?.syncAnonymousProgress, "Your progress is synced.", true)} /> : null}
+        <Button label="Continue learning" variant="secondary" tone="success" disabled={busy} onPress={() => (adapters.navigation.replace ?? adapters.navigation.navigate)("/")} />
+      </View> : null}
+      {message ? <Text accessibilityRole={failed ? "alert" : "text"} accessibilityLiveRegion={failed ? "assertive" : "polite"} style={failed ? styles.errorText : styles.mutedText}>{message}</Text> : null}
+    </View>
+  </AppScreen>;
 }
 
 export function KeepReadingSection({
   items,
   isSignedIn,
   adapters,
+  showSummary = true,
 }: {
   items: ProgressDisplayItem[];
   isSignedIn: boolean;
+  showSummary?: boolean;
 } & ScreenProps) {
   return (
-    <View style={styles.card} testID="mobile-keep-reading">
+    <View style={styles.discoverySection} testID="mobile-keep-reading">
       <View style={styles.discoverySectionHeader}>
-        <Text style={styles.cardTitle}>Keep reading</Text>
+        <Text accessibilityRole="header" style={styles.cardTitle}>Keep reading</Text>
         <Text style={styles.mutedText}>{isSignedIn ? "Signed in" : "On this device"}</Text>
       </View>
       {items.length === 0 ? (
         <Text style={styles.mutedText}>Your recent learning will appear here.</Text>
       ) : (
         items.map((item) => (
-          <Pressable key={item.id} onPress={() => adapters.navigation.navigate(item.href)} style={styles.subPanel}>
+          <Pressable key={item.id} accessibilityRole="button" accessibilityLabel={`Resume ${item.title}, ${item.eyebrow}`} onPress={() => adapters.navigation.navigate(item.href)} style={styles.subPanel}>
             <Text style={styles.cardEyebrow}>{item.eyebrow}</Text>
             <Text style={styles.cardTitle}>{item.title}</Text>
-            <Text style={styles.mutedText}>{item.summary}</Text>
+            {showSummary ? <Text style={styles.mutedText}>{item.summary}</Text> : null}
           </Pressable>
         ))
       )}
@@ -1863,13 +2075,15 @@ export function SaveProgressPrompt({ itemCount, adapters }: { itemCount: number 
 
   return (
     <View style={styles.savePrompt} testID="mobile-save-progress-prompt">
-      <Text style={styles.bodyText}>{itemCount} local progress item{itemCount === 1 ? "" : "s"} can sync after sign in.</Text>
-      <Button label="Sign in" onPress={() => adapters.navigation.navigate("/login")} />
+      <Text style={styles.bodyText}>{adapters.auth?.isConfigured ? "Your progress is on this device. Sign in to sync it." : "Progress saved on this device."}</Text>
+      {adapters.auth?.isConfigured ? <Button label="Sign in" tone="info" onPress={() => adapters.navigation.navigate("/login")} /> : null}
     </View>
   );
 }
 
 export function MarkdownReader({ markdown, adapters }: { markdown: string } & ScreenProps) {
+  // Reparse third-party text on dimension changes; sibling diagram state stays mounted.
+  useWindowDimensions();
   const blocks = useMemo(() => splitMermaidBlocks(markdown), [markdown]);
 
   return (
@@ -1900,22 +2114,27 @@ export function MarkdownReader({ markdown, adapters }: { markdown: string } & Sc
 }
 
 export function MermaidBlock({ source, title, adapters }: { source: string; title?: string } & ScreenProps) {
+  const [expanded, setExpanded] = useState(false);
+  const [failedSource, setFailedSource] = useState<string>();
+  const [attempt, setAttempt] = useState(0);
+  const failed = failedSource === source;
   const html = adapters.mermaidScript
-    ? `<!doctype html><html><head><meta name="viewport" content="width=device-width, initial-scale=1" /><style>body{margin:0;padding:16px;background:#fff;font-family:-apple-system,BlinkMacSystemFont,Segoe UI,sans-serif}.mermaid{min-width:560px}</style></head><body><pre class="mermaid">${escapeHtml(source)}</pre><script>${adapters.mermaidScript}</script><script>mermaid.initialize({startOnLoad:true,securityLevel:"strict",theme:"base"});</script></body></html>`
+    ? `<!doctype html><html lang="en"><head><title>Diagram preview</title><meta name="viewport" content="width=device-width, initial-scale=1" /><style>body{margin:0;padding:16px;background:#fff;font-family:-apple-system,BlinkMacSystemFont,Segoe UI,sans-serif}.mermaid{min-width:560px}h1{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%)}</style></head><body><main aria-label="Diagram preview"><h1>Diagram preview</h1><pre class="mermaid">${escapeHtml(source)}</pre></main><script>${adapters.mermaidScript}</script><script>mermaid.initialize({startOnLoad:true,securityLevel:"strict",theme:"base"});</script></body></html>`
     : "";
 
   return (
     <View style={styles.mermaidBlock} testID="mobile-mermaid-block">
-      {title ? <Text style={styles.cardTitle}>{title}</Text> : null}
-      {html ? (
-        <WebView originWhitelist={["*"]} source={{ html }} style={styles.webView} testID="mobile-mermaid-webview" />
+      {title ? <Text accessibilityRole="header" style={styles.cardTitle}>{title}</Text> : null}
+      {html && !failed ? (
+        <WebView key={`${source}-${attempt}`} accessibilityLabel={title ? `${title} diagram preview` : "Diagram preview"} originWhitelist={["*"]} source={{ html }} style={styles.webView} testID="mobile-mermaid-webview" onError={() => setFailedSource(source)} />
       ) : (
-        <View style={styles.feedback}>
-          <Text style={styles.feedbackTitle}>Diagram source</Text>
-          <Text style={styles.mutedText}>The bundled Mermaid renderer is unavailable. Showing diagram source.</Text>
+        <View style={styles.stack}>
+          <Text accessibilityLiveRegion="polite" style={styles.mutedText}>{failed ? "Couldn't open the diagram preview. Source is available below." : "Preview unavailable. Diagram source is available below."}</Text>
+          {failed ? <Button label="Retry preview" tone="warning" variant="secondary" onPress={() => { setFailedSource(undefined); setAttempt(value => value + 1); }} /> : null}
         </View>
       )}
-      <CodeBlock code={source} language="mermaid" />
+      {html && !failed ? <Button label="Diagram source" variant="ghost" tone="neutral" accessibilityState={{ expanded }} onPress={() => setExpanded(value => !value)} /> : null}
+      {expanded || !html || failed ? <CodeBlock code={source} language="mermaid" /> : null}
     </View>
   );
 }
@@ -1985,31 +2204,6 @@ function Pill({ label, tone = "neutral" }: { label: string; tone?: "neutral" | "
   );
 }
 
-function Button({
-  label,
-  onPress,
-  variant = "primary",
-  disabled = false,
-  selected,
-  testID,
-}: {
-  label: string;
-  onPress: () => void;
-  variant?: "primary" | "secondary" | "ghost";
-  disabled?: boolean;
-  selected?: boolean;
-  testID?: string;
-}) {
-  const buttonStyle = variant === "secondary" ? styles.secondaryButton : variant === "ghost" ? styles.ghostButton : styles.primaryButton;
-  const textStyle = variant === "ghost" ? styles.ghostButtonText : styles.primaryButtonText;
-
-  return (
-    <Pressable accessibilityLabel={label} accessibilityRole="button" accessibilityState={{ disabled, ...(selected === undefined ? {} : { selected }) }} disabled={disabled} onPress={onPress} style={({ pressed }) => [buttonStyle, selected && styles.ratingButtonSelected, disabled && !selected && styles.disabled, pressed && styles.navigationPressed]} testID={testID}>
-      <Text style={textStyle}>{selected ? `✓ ${label}` : label}</Text>
-    </Pressable>
-  );
-}
-
 function HorizontalOptions({
   label,
   options,
@@ -2026,9 +2220,7 @@ function HorizontalOptions({
       <Text style={styles.cardEyebrow}>{label}</Text>
       <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.optionRow}>
         {options.map((option) => (
-          <Pressable key={option.value} onPress={() => onChange(option.value)} style={[styles.option, value === option.value && styles.optionSelected]}>
-            <Text style={styles.optionText}>{option.label}</Text>
-          </Pressable>
+          <Button key={option.value} label={option.label} variant="secondary" tone="info" selected={value === option.value} onPress={() => onChange(option.value)} />
         ))}
       </ScrollView>
     </View>
@@ -2071,7 +2263,7 @@ function getNodeDisplay(index: ContentIndex, node: LearningPathNode) {
 
     return {
       title: diagram?.title ?? node.slug,
-      summary: diagram ? `Mermaid diagram stored in ${diagram.sourcePath}.` : "Diagram",
+      summary: diagram ? "Explore the diagram." : "Diagram",
       kindLabel: "Diagram",
       difficulty: undefined,
     };
@@ -2170,12 +2362,21 @@ function escapeHtml(value: string) {
 }
 
 const styles = StyleSheet.create({
-  homeShortcuts: { flexDirection: "row", gap: 4, paddingVertical: 8 },
+  homeShortcuts: { flexDirection: "row", flexWrap: "wrap", gap: 8, paddingVertical: 8 },
   homeShortcut: { flex: 1, alignItems: "center", gap: 8, minHeight: 64 },
   homeShortcutIcon: { width: 42, height: 42, borderRadius: 12, backgroundColor: colors.greenSoft, alignItems: "center", justifyContent: "center" },
   navigationBar: { flexDirection: "row", gap: 4, padding: 8, borderTopWidth: 1, borderColor: colors.line, backgroundColor: colors.panel },
-  navigationRail: { width: 208, backgroundColor: colors.panel, borderRightWidth: 1, borderColor: colors.line, padding: 16, gap: 8 },
-  navigationBrand: { flexDirection: "row", alignItems: "center", gap: 8, minHeight: 44, marginVertical: 24 },
+  navigationRail: { width: 224, backgroundColor: colors.panel, borderRightWidth: 1, borderColor: colors.line, padding: 16, gap: 8 },
+  navigationScroll: { flex: 1 },
+  navigationScrollContent: { gap: 6, paddingBottom: 16 },
+  navigationFooter: { borderTopWidth: 1, borderColor: colors.line, paddingTop: 12 },
+  accountSection: { gap: 8 },
+  accountTrigger: { flexDirection: "row", alignItems: "center", gap: 8, minHeight: 48, paddingVertical: 8 },
+  adminSection: { gap: 8, marginTop: 24 },
+  languageBranch: { paddingLeft: 20, gap: 4 },
+  languageToggle: { minHeight: 48, justifyContent: "center", paddingHorizontal: 12 },
+  errorText: { color: "#b4233f", fontSize: 15, lineHeight: 22 },
+  navigationBrand: { flexDirection: "row", alignItems: "center", gap: 8, minHeight: 48, marginVertical: 24 },
   navigationItem: { flex: 1, alignItems: "center", justifyContent: "center", gap: 5, minHeight: 54, paddingVertical: 6, borderRadius: 12 },
   navigationRailItem: { flexDirection: "row", alignItems: "center", gap: 14, minHeight: 52, padding: 14, borderRadius: 12 },
   navigationLabel: { fontSize: 10, fontWeight: "500", color: colors.textMuted },
@@ -2190,6 +2391,9 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: colors.background,
   },
+  loginForm: { width: "100%", maxWidth: 440, alignSelf: "center", gap: 16, paddingVertical: 24 },
+  loginField: { gap: 8 },
+  fieldLabel: { fontSize: 14, fontWeight: "600", color: colors.textStrong },
   screenContent: {
     gap: spacing.lg,
     padding: spacing.lg,
@@ -2222,6 +2426,7 @@ const styles = StyleSheet.create({
     padding: spacing.md,
   },
   brand: {
+    minHeight: 48,
     alignItems: "center",
     flex: 1,
     flexDirection: "row",
@@ -2260,6 +2465,7 @@ const styles = StyleSheet.create({
     fontWeight: "600",
     textTransform: "uppercase",
   },
+  disclosure: { borderTopWidth: 1, borderTopColor: colors.line, paddingTop: spacing.md, gap: spacing.md },
   stack: {
     gap: spacing.md,
   },
@@ -2274,6 +2480,7 @@ const styles = StyleSheet.create({
   discoverySectionHeader: {
     alignItems: "flex-end",
     flexDirection: "row",
+    flexWrap: "wrap",
     gap: spacing.md,
     justifyContent: "space-between",
   },
@@ -2296,7 +2503,6 @@ const styles = StyleSheet.create({
     paddingRight: spacing.lg,
   },
   discoveryCardCompact: {
-    minHeight: 196,
     width: 272,
   },
   card: {
@@ -2349,12 +2555,12 @@ const styles = StyleSheet.create({
   characterTile: {
     alignItems: "center",
     backgroundColor: colors.panelMuted,
-    borderColor: colors.line,
     borderRadius: radii.md,
     borderWidth: 1,
-    height: 74,
+    minHeight: 74,
+    padding: 8,
     justifyContent: "center",
-    width: 64,
+    borderColor: colors.controlBorder,
   },
   characterTileGlyph: {
     color: colors.text,
@@ -2441,6 +2647,7 @@ const styles = StyleSheet.create({
     backgroundColor: colors.purpleSoft,
     borderColor: "#c8b8ff",
   },
+  sectionRow: { borderTopWidth: 1, borderColor: colors.line, paddingTop: spacing.lg, gap: spacing.md },
   nodeRow: {
     backgroundColor: colors.panelMuted,
     borderColor: colors.line,
@@ -2458,9 +2665,8 @@ const styles = StyleSheet.create({
     color: colors.blue,
     fontSize: 14,
     fontWeight: "600",
-    height: 40,
-    overflow: "hidden",
-    paddingTop: 9,
+    minHeight: 40,
+    paddingVertical: 9,
     textAlign: "center",
     width: 40,
   },
@@ -2477,13 +2683,14 @@ const styles = StyleSheet.create({
   },
   input: {
     backgroundColor: colors.panel,
-    borderColor: colors.line,
-    borderRadius: radii.md,
+    borderColor: colors.controlBorder,
+    borderRadius: 10,
     borderWidth: 1,
     color: colors.text,
     fontSize: 16,
-    fontWeight: "600",
-    minHeight: 52,
+    fontWeight: "400",
+    minHeight: 48,
+    paddingVertical: 12,
     paddingHorizontal: spacing.lg,
   },
   optionGroup: {
@@ -2630,6 +2837,7 @@ const styles = StyleSheet.create({
     lineHeight: 22,
   },
   orderRow: {
+    flexWrap: "wrap",
     alignItems: "center",
     backgroundColor: colors.panel,
     borderColor: colors.line,

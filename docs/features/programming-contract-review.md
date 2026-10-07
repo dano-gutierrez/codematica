@@ -53,6 +53,8 @@ Invalid input is rejected before a fixture's shortcut. The generator validates z
 
 ## Test Plan
 
+Browser source checks open the Primary sources disclosure before inspecting visible links and their exact destinations.
+
 Start with missing-resource/fence failures, then verify all authored fixtures. Challenge predicates, cleanup, pointer progress, ancestor bounds, completeness, input rejection and comparison counts with targeted mutations; restore canonical bytes after each check.
 
 The `@regression` browser journeys read each lesson's actual headings/sources, finish its five answers and verify path-scoped continuation or terminal state. Generated/canonical auditing must preserve all previous resource identities and unit objects; human-language content stays untouched. Graph checks must retain four qualified skills and references.

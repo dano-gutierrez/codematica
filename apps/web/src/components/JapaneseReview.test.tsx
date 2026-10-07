@@ -102,4 +102,27 @@ describe("JapaneseReview", () => {
       reviewBox: 1,
     });
   });
+
+it("keeps a failed local rating in memory and retries saving without counting another recall", async () => {
+  vi.spyOn(globalThis, "fetch").mockResolvedValue(new Response("{}", { status: 401 }));
+  const write = window.Storage.prototype.setItem;
+  let fail = true;
+  const set = vi.spyOn(window.Storage.prototype, "setItem").mockImplementation(function (this: Storage, key, value) {
+    if (key === "codematica:japanese-skill-progress:v1" && fail) { fail = false; throw new Error("full"); }
+    write.call(this, key, value);
+  });
+  render(<JapaneseReview learningPath={getLearningPathBySlug("japanese-foundations")!} />);
+  await act(async () => undefined);
+  fireEvent.click(screen.getByRole("button", { name: "Good" }));
+  expect(set.mock.calls.filter(([key]) => key === "codematica:japanese-skill-progress:v1")).toHaveLength(1);
+  expect(screen.getByRole("status")).toHaveTextContent(/couldn't save on this device/i);
+  expect(screen.getByRole("status")).not.toHaveTextContent(/Good saved/);
+  expect(screen.getByRole("button", { name: "Good" })).toBeDisabled();
+  fireEvent.click(screen.getByRole("button", { name: "Retry saving" }));
+  expect(set.mock.calls.filter(([key]) => key === "codematica:japanese-skill-progress:v1")).toHaveLength(2);
+  const saved = JSON.parse(localStorage.getItem("codematica:japanese-skill-progress:v1") ?? "[]");
+  expect(saved[0]).toMatchObject({ attemptCount: 1, reviewBox: 1 });
+  expect(screen.getByRole("status")).toHaveTextContent(/Good saved/);
+});
+
 });

@@ -78,6 +78,7 @@ for (const [path, cases] of Object.entries(groups)) {
       await expect(
         page.getByRole("heading", { name: heading, exact: true }),
       ).toBeVisible();
+      await page.getByTestId("source-references-toggle").click();
       const urls = await page
         .getByTestId("source-references")
         .getByRole("link")

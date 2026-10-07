@@ -3,9 +3,9 @@
 ## Snapshot
 
 - Status: `in_progress`
-- Last updated: `2026-10-03`
+- Last updated: `2026-10-07`
 - Owner thread: `n/a`
-- Current state: Admin web/native screens, hosted Supabase persistence, fixed prompt, local worker CLI and 100 unapproved drafts exist. Personal account onboarding and installed-device verification remain.
+- Current state: Admin web/native screens, hosted Supabase persistence, fixed prompt, local worker CLI and 100 unapproved drafts exist. Current installed Android account/editorial journeys pass at normal and enlarged text against a disposable local fixture. Hosted onboarding, installed iOS and native accessibility acceptance are tracked separately.
 - Target outcome: A human reviews source-grounded learning posts, requests refinements and authorizes each exact revision before Buffer schedules it.
 - Code touchpoints: `packages/core/src/linkedin.ts`, `packages/core/src/linkedin-store.ts`, `apps/web/src/components/LinkedInAdmin.tsx`, `packages/ui/src/LinkedInAdminScreen.tsx`, `scripts/linkedin/cli.ts`, `prompts/linkedin/worker.md`, `supabase/migrations/202609290001_create_linkedin_editorial.sql`.
 - Primary tests: shared `linkedin*.test.ts`, web/native editorial tests, `supabase/tests/database/linkedin*.test.sql`, `apps/web/e2e/specs/linkedin-admin.regression.spec.ts`.
@@ -34,7 +34,7 @@ The initial storage/recovery migrations are applied to hosted Supabase. The manu
 
 The Buffer personal channel is connected, with one recommended slot each day in America/Los_Angeles. Runtime configuration is local; no app deployment or native store build is implied by database setup. The manual worker requires a complete local developer install and an explicit request such as “Process the LinkedIn queue.” It consumes the existing Codex account allowance, not a separately billed model API. This is not an always-on cloud worker.
 
-Personal admin identity must be confirmed and a verified Supabase Auth account created through the normal sign-in flow before privileged bootstrap. Installed-device Maestro validation remains outstanding. The SDK patch alignment from `main` now passes all 20 Expo Doctor checks; this does not replace installed-device validation.
+Personal admin identity must be confirmed and a verified Supabase Auth account created through the normal sign-in flow before privileged bootstrap. The [app-wide audit](app-wide-design-audit.md) records current installed Android Maestro results on disposable local data; installed iOS and native accessibility remain open. The SDK patch alignment from `main` passes all 20 Expo Doctor checks; this does not replace installed-device validation.
 
 ## Scope
 
@@ -65,6 +65,10 @@ Search and topic/review/publication filters lead to a post detail editor. On sma
 Create opens a title/topic/text form on web and native. Add for analysis atomically stores a manual post, its initial immutable revision and a pending refinement job. It does not approve or schedule anything. Input survives failed submissions; retries in the same composer session reuse an idempotency key. After success the editor opens the new post, even if collection filters would hide it. Cancel leaves the form without saving. A manual post requires an analyzed, explicitly adopted revision before approval; changing post text or first comment invalidates its analysis. Saving only fact confirmation preserves the prompt hash and analysis.
 
 The reusable web `LinkedInPostText` and native editor support selection-based Unicode bold/italic, bullet lines and restoration to plain text. Existing post editors use the same controls. URLs, hashtags, emoji, line breaks and unstyled characters are preserved; typing an @name does not create a LinkedIn mention. Unsupported accented letters remain plain. Styled letters can reduce screen-reader accessibility. The counter and schema use UTF-16 units, so mathematical letters and most emoji count twice. Buffer separately normalizes URL lengths; its final validation can differ for links ([official character rules](https://developers.buffer.com/guides/character-limits.html)). No HTML/Markdown or rich-text editor dependency is introduced.
+
+The native review surface now reuses the shared semantic Button palette. Queue details, additional filters, formatting help, sources, analysis and history are named disclosures. Search, primary status filters, result counts and empty/reset feedback stay visible. Required fact-verification notes and confirmation remain outside collapsed analysis. The new-post, revision, dirty-state and exact-revision approval contracts are unchanged.
+
+Native collection buttons announce title, topic and review status. Topic and status help screen-reader users distinguish posts that share a title. Activating a named post still opens its own current revision. Component regressions use distinct topics/statuses and bodies to pin that selection without approving anything.
 
 ### Data Model And Persistence
 
@@ -112,6 +116,14 @@ Local setup, pinned models, manual activation/backfill, retries, license constra
 - `scripts/linkedin/smoke-local.ts`: real local Auth/REST/CLI lifecycle with inert external publications.
 - `supabase/migrations/202609290002_linkedin_recovery.sql`: cancellation race and restore settings.
 
+Native editorial regression coverage verifies disclosure/filter reset, required verification notes while Analysis is collapsed, shared action tones and the existing guarded RPC payloads. Run native `linkedin-admin.test.tsx` and aggregate native coverage, plus synthetic browser editorial/accessibility journeys. Never use live drafts for UI validation.
+
+## Native queue composition
+
+The native queue keeps New post and Refresh in one wrapping action row, with a primary New post action. Search stays visible; review status, topic and publication share the collapsed Filters disclosure. Its active count remains visible while closed, selections survive closing, and Reset filters restores the collection. Queue failures and draft-save/approval guards remain visible. This keeps the first screen focused on drafts rather than optional criteria.
+
+Opening a draft, entering or leaving creation, and returning to the collection reset the existing `AppScreen` scroll position and dismiss the previous keyboard. Editing, polling and failed saves keep their current position and input. The save-or-discard navigation guard still applies.
+
 ## Test Plan
 
 - Web design regression: named icon controls, collapsed details, dirty draft/comment navigation guards, explicit discard, visible failed requests, and saved fact confirmation. Browser checks cover keyboard tooltips, 44 px controls, axe accessibility, and 320/390/768/1024/1440 px layouts with synthetic fixtures. Run `E2E_PORT=3102 npm run e2e:linkedin` if port 3100 is occupied. Inspect desktop/phone captures with synthetic data; the first local pass was reviewed before the user requested a pull request.
@@ -125,7 +137,7 @@ Pull-request validation on 2026-10-03 after incorporating latest `main`: 490 Vit
 - Database: manual creation authorization, atomic job insertion, retry identity/mismatches, analysis adoption, fact-only confirmation, edit invalidation and Unicode limits; transactional pgTAP tests for RLS, grants, verified bootstrap, immutability, stale actions, duplicate claims, bounded retries, uncertain publishing, withdrawal/reapproval and restoration. Clean local migration replay is required.
 - E2E: manual creation, selection formatting, failed submission retry, reload persistence, analysis/adoption/approval and mobile layout; `npm run e2e:linkedin` uses isolated fake Supabase public configuration and intercepts only editorial RPCs. Ordinary public smoke tests explicitly disable Supabase regardless of local `.env` files. The dedicated lane is separate from `e2e:web:release` and runs in CI.
 - Responsive accessibility: `npm run e2e:linkedin:accessibility` covers Chromium/iPhone WebKit at 320, 390, 768, 1024, 1180 and 1440 px, touch labels/targets, hover/Escape, keyboard focus, 200% text and short landscape reflow. Axe checks are not a full screen-reader audit.
-- Native: Jest review/navigation coverage and `.maestro/linkedin-admin.yaml`; the latter requires an installed app signed into an allowlisted disposable local account with publishing disabled.
+- Native: Jest review/navigation coverage pins collapsed filters, retained selections, reset counts and keyboard dismissal only on view transitions. `.maestro/linkedin-admin.yaml` requires an installed app signed into an allowlisted disposable local account with publishing disabled. The opt-in `e2e/flows/auth-account.regression.yaml` composes sign-in/account/sign-out and denied access around that child flow. Use disposable test drafts, unset Buffer identifiers and private artifacts; no post approval occurs. See `apps/mobile/e2e/README.md` for setup and the distinction between a local fixture artifact and production.
 - Coverage: existing floors remain unchanged. `scripts/linkedin/worker.ts`, `preparation.ts` and `local-models.ts` are instrumented; the thin CLI orchestration and local smoke entrypoint use subprocess integration coverage rather than V8 unit instrumentation. No existing file is excluded.
 - Local preparation: exact/semantic duplicates versus follow-ups, unsafe high-scoring candidates, source traversal/hash failures, loopback-only requests, cache reuse, rejected-candidate isolation, sparse verification bindings, malformed checks, stale voice/text, leases, holds/overrides and v2 backup roundtrip. `test:linkedin:preparation` runs in CI after the legacy CLI lifecycle. Real GPU inference is opt-in via `linkedin:evaluate`; its token figures are character proxies.
 - Commands: `npm run test:coverage`, `npm run test:mobile:coverage`, `supabase db reset --local`, `npm run test:db`, `npm run test:linkedin:local`, `npm run lint`, `npm run typecheck`, `npm run content:check`, `npm run build`, `npm run test:production:smoke`, `npm run e2e:smoke`, `npm run e2e:linkedin`.
@@ -153,7 +165,7 @@ Installed native Maestro, software keyboard and VoiceOver/TalkBack checks remain
 ## Open Questions
 
 - Confirm the personal admin email and complete verified app sign-in/bootstrap.
-- Complete installed Android/iOS verification before native release.
+- Complete installed iOS and native accessibility acceptance before native release. Current local Android account/editorial checks pass at normal and enlarged text, with no approvals or publications; they do not establish real-provider or hosted-account behavior.
 
 ## Decision Log
 
@@ -193,3 +205,9 @@ Merged `main` at `d8c295b`, preserving both frontend interview documentation and
 ## Graph-assisted first review
 
 The stacked knowledge evaluator adds optional persistent graph enrollment after local preparation activation. It retrieves related lessons, skills, paths and prior posts before OpenJev/editorial writing. Compact source-bound context and warnings survive into Codex verification; graph holds require a recorded reason. Database guards require the same evidence at verification, human adoption/approval and the final Buffer gate. See [the graph contract](knowledge-evaluator.md) and [runbook](../runbooks/knowledge-evaluator.md). This addition is locally implemented; hosted rollout and real external publication are not implied.
+
+### App-wide integration review — 2026-10-07
+
+PR #51 incorporates `main` at `fd23543`, retaining the overview/detail APIs, local preparation, voice rules, Knowledge context and all admin destinations. Both platforms keep a return path while details load or fail. Native collection selection now preserves dirty voice rules and blocks navigation while their save refreshes. Voice-rule controls reuse the shared disclosure contract; the web tap target was 24 px before this correction.
+
+Test Plan additions: native editorial regressions cover dirty/failed/pending voice saves, expanded state, deferred/failed details, late response cancellation and exact retry counts. The six-width Chromium/WebKit accessibility matrix covers voice-rule target geometry and dirty navigation alongside editor controls. Four executed native behavior mutations are rejected by assertions. Existing approval and preparation gates are unchanged. Use the app-wide audit for final validation and installed-device limits.

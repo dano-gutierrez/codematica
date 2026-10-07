@@ -21,7 +21,7 @@ export type SearchResult = {
   score: number;
 };
 
-type SearchableItem = {
+export type SearchableItem = {
   id: string;
   kind: "document" | "diagram";
   title: string;
@@ -43,8 +43,13 @@ export function createSearchItems(index: ContentIndex): SearchableItem[] {
 }
 
 export function searchContent(index: ContentIndex, query: string, filters: SearchFilters = {}) {
+  return searchContentItems(createSearchItems(index), query, filters);
+}
+
+/** Preserve library filtering, ranking and snippets over prepared rows. */
+export function searchContentItems(sourceItems: SearchableItem[], query: string, filters: SearchFilters = {}) {
   const trimmedQuery = query.trim();
-  const items = filterSearchItems(createSearchItems(index), filters);
+  const items = filterSearchItems(sourceItems, filters);
 
   if (!trimmedQuery) {
     return items.map((item, index) => toSearchResult(item, item.summary, items.length - index));
@@ -140,7 +145,7 @@ function diagramToSearchItem(diagram: MermaidDiagram): SearchableItem {
   };
 }
 
-function toSearchResult(item: SearchableItem, snippet: string, score: number): SearchResult {
+export function toSearchResult(item: SearchableItem, snippet: string, score: number): SearchResult {
   return {
     id: item.id,
     kind: item.kind,

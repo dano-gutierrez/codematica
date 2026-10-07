@@ -4,7 +4,7 @@ import config from "../../apps/web/e2e/playwright.config";
 describe("merged release browser coverage", () => {
   for (const name of ["desktop-chromium", "mobile-webkit"]) {
     const project = config.projects?.find(project => project.name === name);
-    it.each(["@smoke", "@playground", "@notebook-catalog", "@interview-admin", "@map-art"])(
+    it.each(["@smoke", "@playground", "@notebook-catalog", "@design", "@interview-admin", "@map-art"])(
       `${name} retains %s journeys`, tag => {
         expect(project).toBeDefined();
         expect(project?.grep).toBeInstanceOf(RegExp);

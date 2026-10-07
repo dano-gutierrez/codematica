@@ -1,5 +1,6 @@
+import { AdaptiveText as Text } from "../AdaptiveText";
 import { useRef, useState, useLayoutEffect } from "react";
-import { PanResponder, Pressable, Text, View } from "react-native";
+import { PanResponder, Pressable, View } from "react-native";
 import Svg, { Line } from "react-native-svg";
 import {
   boardPosition,

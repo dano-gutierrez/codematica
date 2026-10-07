@@ -1,0 +1,116 @@
+appId: com.codematica.app
+tags:
+  - regression
+---
+- launchApp:
+    clearState: true
+- assertVisible:
+    id: mobile-nav-learn
+- tapOn:
+    id: mobile-nav-learn
+- assertVisible:
+    id: mobile-home-global-search
+- assertVisible: "Search topics"
+- takeScreenshot: learn-search-hint
+- scrollUntilVisible:
+    element:
+      id: mobile-home-explore-languages
+    direction: DOWN
+    speed: 20
+    visibilityPercentage: 100
+    centerElement: false
+    timeout: 20000
+- assertVisible:
+    id: mobile-home-explore-interviews
+- assertVisible:
+    id: mobile-home-explore-languages
+- assertNotVisible:
+    id: mobile-home-explore-learn
+- takeScreenshot: learn-shortcut-labels
+# Center the actual card; a fixed follow-up swipe can overshoot at large text.
+- scrollUntilVisible:
+    element:
+      id: mobile-discovery-path-ml-systems-engineer
+    direction: DOWN
+    speed: 20
+    visibilityPercentage: 100
+    centerElement: true
+    timeout: 20000
+- assertVisible: "ML Systems Engineer.*Harvard CS249r"
+- assertVisible: "Role path.*Machine Learning"
+- assertNotVisible: "A source-linked career path through.*"
+- assertVisible: "ML Systems Engineer.*Harvard CS249r"
+- takeScreenshot: learn-compact-curated
+- scrollUntilVisible:
+    element:
+      id: mobile-home-global-search
+    direction: UP
+    speed: 80
+    visibilityPercentage: 100
+    centerElement: false
+    timeout: 20000
+- tapOn:
+    id: mobile-home-global-search
+- inputText: "Number Of Islands"
+- assertVisible:
+    id: mobile-home-global-search
+    text: "^Number Of Islands$"
+- pressKey: Enter
+# Wait for the settled lookup before scrolling; loading replaces the result list.
+# Android exposes the displayed uppercase label; keep the exact count case-independent.
+- extendedWaitUntil:
+    visible: "(?i)^7 results$"
+    timeout: 20000
+- scrollUntilVisible:
+    element:
+      text: "(?i)^7 results$"
+    direction: UP
+    speed: 80
+    visibilityPercentage: 100
+    centerElement: false
+    timeout: 20000
+- scrollUntilVisible:
+    element:
+      id: mobile-discovery-interview-question-google-number-of-islands
+    direction: DOWN
+    speed: 20
+    visibilityPercentage: 100
+    centerElement: true
+    timeout: 20000
+- assertVisible: "Number Of Islands"
+- assertVisible: "Google interview question"
+- assertVisible: "Practitioner"
+- assertNotVisible: "Count connected groups of land.*"
+- takeScreenshot: learn-compact-search
+- scrollUntilVisible:
+    element:
+      id: mobile-home-global-search
+    direction: UP
+    speed: 80
+    visibilityPercentage: 100
+    centerElement: false
+    timeout: 20000
+- tapOn: "Clear search"
+# Submit the cleared field with its Search key; floating IMEs may not consume Back.
+- pressKey: Enter
+- scrollUntilVisible:
+    element:
+      id: mobile-discovery-path-ml-systems-engineer
+    direction: DOWN
+    speed: 20
+    visibilityPercentage: 100
+    centerElement: true
+    timeout: 20000
+- tapOn:
+    id: mobile-discovery-path-ml-systems-engineer
+- scrollUntilVisible:
+    element:
+      text: "ML Systems career roadmap"
+    direction: DOWN
+    speed: 80
+    visibilityPercentage: 100
+    centerElement: false
+    timeout: 20000
+- assertVisible:
+    id: mobile-path-progression-roadmap
+- assertVisible: "ML Systems career roadmap"

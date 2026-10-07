@@ -136,7 +136,7 @@ describe("PracticeCard", () => {
     expect(screen.getByText(/Hiragana Vowel Writing/i)).toBeVisible();
   });
 
-  it("requires a guided-lab prediction and evidence before coarse completion", () => {
+  it("requires a guided-lab prediction and evidence before coarse completion", async () => {
     const exercise = getExerciseBySlug("ml-systems/ai-triad-guided-lab");
     const onProgressEvent = vi.fn();
     expect(exercise?.type).toBe("guided-lab");
@@ -149,5 +149,6 @@ describe("PracticeCard", () => {
     expect(complete).toBeEnabled();
     fireEvent.click(complete);
     expect(onProgressEvent).toHaveBeenCalledWith("completed", { predictionCommitted: true, evidenceCount: 3, evidenceTotal: 3 });
+    await waitFor(() => expect(screen.getByText("Lab complete.")).toBeVisible());
   });
 });

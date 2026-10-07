@@ -300,7 +300,7 @@ export function GamePlay({
                   : "Return zombie IDs. Your query runs against disposable demo tables."}
               </p>
               {s.scenario.kind === "sql" ? (
-                <div className="game-tables">
+                <div className="game-tables" role="group" aria-label="Level data tables" tabIndex={0}>
                   {[
                     { name: "zombies", rows: s.scenario.zombies },
                     { name: "zones", rows: s.scenario.zones },

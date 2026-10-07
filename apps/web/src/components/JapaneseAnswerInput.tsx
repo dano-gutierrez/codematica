@@ -1,11 +1,13 @@
 "use client";
 
 import { convertJapaneseInput } from "@codematica/core/japanese-ime";
-import { useMemo, useState } from "react";
+import { useId, useMemo, useState } from "react";
+import { Button } from "./Button";
 
 export function JapaneseAnswerInput({ value, disabled, onChange }: { value: string; disabled?: boolean; onChange: (value: string) => void }) {
   const [draft, setDraft] = useState(value);
   const conversion = useMemo(() => convertJapaneseInput(draft), [draft]);
+  const helpId = useId();
 
   function update(nextValue: string) {
     setDraft(nextValue);
@@ -35,27 +37,24 @@ export function JapaneseAnswerInput({ value, disabled, onChange }: { value: stri
               commit(conversion.candidates[0]);
             }
           }}
-          aria-describedby="japanese-answer-help"
-          className="min-h-14 rounded-xl border border-[#b9cbd3] bg-white px-4 text-xl font-semibold text-[#263238] outline-none focus:border-[#007c78] disabled:opacity-70"
+          aria-describedby={helpId}
+          className="ui-input"
           data-testid="questionnaire-open-answer-input"
         />
       </label>
-      <p id="japanese-answer-help" className="text-sm font-normal leading-6 text-[#53616c]">
-        Choose a conversion below. On iPad, write in this blank with Apple Pencil Scribble.
+      <p id={helpId} className="ui-field-hint">
+        Choose a conversion below, or press Enter. iPad Scribble works in this field.
       </p>
       {/[a-z]/i.test(draft) && conversion.candidates.length ? (
         <div className="flex flex-wrap gap-2" aria-label="Japanese conversion candidates" data-testid="japanese-ime-candidates">
           {conversion.candidates.map((candidate, index) => (
-            <button
+            <Button label={candidate} tone="info"
               key={candidate}
               type="button"
               disabled={disabled}
               onClick={() => commit(candidate)}
-              className="min-h-11 rounded-xl border border-[#9cc7ff] bg-[#f5f9ff] px-4 text-lg font-semibold text-[#1d4e9e]"
               data-testid={`japanese-ime-candidate-${index}`}
-            >
-              {candidate}
-            </button>
+            />
           ))}
         </div>
       ) : null}

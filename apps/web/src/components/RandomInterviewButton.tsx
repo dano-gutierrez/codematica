@@ -2,6 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { Shuffle } from "lucide-react";
+import { Button } from "./Button";
 
 export function RandomInterviewButton({ routes }: { routes: string[] }) {
   const router = useRouter();
@@ -15,15 +16,5 @@ export function RandomInterviewButton({ routes }: { routes: string[] }) {
     router.push(routes[index]);
   }
 
-  return (
-    <button
-      type="button"
-      onClick={openRandomQuestion}
-      className="inline-flex min-h-12 items-center justify-center gap-2 rounded-xl border border-[#392777] bg-[#4b369e] px-4 py-2 text-sm font-semibold text-white transition hover:-translate-y-0.5"
-      data-testid="interview-random-button"
-    >
-      <Shuffle className="h-4 w-4" aria-hidden="true" />
-      Random question
-    </button>
-  );
+  return <Button label="Random question" icon={Shuffle} tone="assist" variant="primary" disabled={routes.length === 0} onClick={openRandomQuestion} data-testid="interview-random-button" />;
 }

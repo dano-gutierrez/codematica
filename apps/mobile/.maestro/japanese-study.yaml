@@ -4,35 +4,109 @@ tags:
 ---
 - launchApp:
     clearState: true
+# Wait for the React navigator before delivering a warm deep link.
+- assertVisible:
+    id: mobile-nav-learn
 - openLink: codematica://languages/japanese
+- scrollUntilVisible:
+    element:
+      id: mobile-japanese-search-input
+    direction: DOWN
+    speed: 20
+    visibilityPercentage: 100
+    centerElement: false
+    timeout: 20000
 - assertVisible:
     id: mobile-japanese-search-input
 - tapOn:
     id: mobile-japanese-search-input
 - inputText: "water"
+- hideKeyboard
+- scrollUntilVisible:
+    element:
+      id: mobile-japanese-character-japanese-kanji-water
+    direction: DOWN
+    speed: 20
+    visibilityPercentage: 100
+    centerElement: false
+    timeout: 20000
 - assertVisible:
     id: mobile-japanese-results
 - tapOn:
     id: mobile-japanese-character-japanese-kanji-water
-- assertVisible:
-    id: mobile-japanese-character-practice
+- scrollUntilVisible:
+    element:
+      id: mobile-japanese-character-practice
+    direction: DOWN
 - back
+- scrollUntilVisible:
+    element:
+      id: mobile-japanese-review-link
+    direction: UP
 - tapOn:
     id: mobile-japanese-review-link
-- assertVisible:
-    id: mobile-japanese-review-skills
+- scrollUntilVisible:
+    element:
+      id: mobile-japanese-review-flashcards
+    direction: DOWN
+    speed: 20
+    visibilityPercentage: 100
+    centerElement: false
+    timeout: 20000
 - assertVisible:
     id: mobile-japanese-review-flashcards
 - assertVisible:
     id: mobile-japanese-review-writing
+- scrollUntilVisible:
+    element:
+      text: All skill cards
+    direction: DOWN
+    speed: 20
+    visibilityPercentage: 100
+    centerElement: false
+    timeout: 20000
+- assertVisible:
+    id: mobile-japanese-review-skills
+- scrollUntilVisible:
+    element:
+      id: mobile-japanese-review-flashcards
+    direction: UP
+    speed: 20
+    visibilityPercentage: 100
+    centerElement: false
+    timeout: 20000
 - tapOn:
     id: mobile-japanese-review-flashcards
+- scrollUntilVisible:
+    element:
+      id: mobile-japanese-flashcard
+    direction: DOWN
+    speed: 20
+    visibilityPercentage: 100
+    centerElement: false
+    timeout: 20000
 - assertVisible:
     id: mobile-japanese-flashcard
 - openLink: codematica://languages/japanese/review/writing
+- scrollUntilVisible:
+    element:
+      id: mobile-japanese-practice-unit-1
+    direction: DOWN
+    speed: 20
+    visibilityPercentage: 100
+    centerElement: false
+    timeout: 20000
 - assertVisible:
     id: mobile-japanese-practice-unit-1
 - tapOn:
     id: mobile-japanese-practice-unit-1
+- scrollUntilVisible:
+    element:
+      id: mobile-questionnaire-open-answer-input
+    direction: DOWN
+    speed: 20
+    visibilityPercentage: 100
+    centerElement: false
+    timeout: 20000
 - assertVisible:
     id: mobile-questionnaire-open-answer-input

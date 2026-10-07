@@ -1,16 +1,20 @@
+import { AdaptiveText as Text } from "./AdaptiveText";
 import { useEffect, useMemo, useRef, useState, useSyncExternalStore } from "react";
-import { AppState, Pressable, StyleSheet, Text, TextInput, View } from "react-native";
+import { AppState, Pressable, StyleSheet, TextInput, View } from "react-native";
 import { canApprove, manualPostSchema, filterPosts, type EditorialClient, type EditorialSnapshot, type LinkedInPost, type LinkedInRevision, type LinkedInAnalysis } from "@codematica/core/linkedin";
 import { preparationLabel } from "@codematica/core/linkedin-preparation";
 import { createEditorialStore, type EditorialStore } from "@codematica/core/linkedin-store";
 import { formatPostSelection, type PostFormat } from "@codematica/core/linkedin-formatting";
 import { AppScreen } from "./screens";
+import { Button, Disclosure } from "./Button";
 import { colors, spacing, radii } from "./tokens";
 
 export function LinkedInAdminScreen({ client, onSignIn }: { client: EditorialClient | null; onSignIn: () => void }) {
   const store = useMemo(() => createEditorialStore(client), [client]);
   const state = useSyncExternalStore(store.subscribe, store.getSnapshot, store.getSnapshot);
   const [creating, setCreating] = useState(false);
+  const [scrollVersion, setScrollVersion] = useState(0);
+  const resetViewScroll = () => setScrollVersion(value => value + 1);
   const [selected, setSelected] = useState<string | null>(null);
   const [search, setSearch] = useState(""); const [status, setStatus] = useState("all"); const [topic, setTopic] = useState("all"); const [publication, setPublication] = useState("all");
   useEffect(() => {
@@ -18,26 +22,37 @@ export function LinkedInAdminScreen({ client, onSignIn }: { client: EditorialCli
     refresh(); const timer = setInterval(refresh, 15000); const sub = AppState.addEventListener("change", refresh);
     return () => { clearInterval(timer); sub.remove(); };
   }, [store]);
-  const select = (id: string | null) => { store.setEditing(false); setSelected(id); void store.selectPost(id); };
+  const select = (id: string | null) => {
+    const current = store.getSnapshot();
+    if (current.busy || current.editing || id === selected) return;
+    setSelected(id); void store.selectPost(id); resetViewScroll();
+  };
   const data = state.data; const post = data?.posts.find((p) => p.id === selected); const revision = data?.revisions.find((r) => r.id === post?.current_revision_id);
-  return <AppScreen title="Private editorial workspace" keyboardAware><View testID="linkedin-admin" style={s.stack}>
-    <Text style={s.title}>LinkedIn learning posts</Text>
-    {state.phase === "ready" ? <Action label="Create" id="linkedin-create" disabled={creating || state.busy || state.editing} onPress={() => { setCreating(true); store.startCreate(); }} /> : null}
-    <Action label="Refresh" id="linkedin-refresh" disabled={state.editing || state.busy} onPress={() => void store.refresh()} />
+  const visible = data ? filterPosts(data.posts, search, topic, status).filter(p => publication === "all" || data.publications.some(pub => pub.post_id === p.id && pub.status === publication)) : [];
+  const activeFilterCount = [topic, status, publication].filter(value => value !== "all").length;
+  return <AppScreen keyboardAware scrollResetKey={scrollVersion}><View testID="linkedin-admin" style={s.stack}>
+    <Text accessibilityRole="header" style={s.title}>LinkedIn</Text><Text style={s.meta}>Review queue</Text>
+    <View style={s.row}>
+      {state.phase === "ready" ? <Action label="New post" id="linkedin-create" disabled={creating || state.busy || state.editing} onPress={() => { setCreating(true); resetViewScroll(); store.startCreate(); }} /> : null}
+      <Action label="Refresh" id="linkedin-refresh" disabled={state.editing || state.busy} onPress={() => void store.refresh()} />
+    </View>
     {state.error ? <Text accessibilityRole="alert" style={s.error}>{state.error}</Text> : null}
-    {state.phase === "loading" ? <Text style={s.body}>Checking admin access…</Text> : null}
+    {state.phase === "loading" ? <Text accessibilityLiveRegion="polite" style={s.body}>Checking admin access…</Text> : null}
     {state.phase === "unavailable" ? <Text style={s.body}>Supabase is not configured. Public learning remains available.</Text> : null}
     {state.phase === "denied" ? <View><Text style={s.heading}>Admin access required</Text><Action label="Sign in" onPress={onSignIn} /></View> : null}
     {data ? <>
-      <Text style={s.body}>{data.posts.length} posts · Publishing {data.settings.publishing_enabled ? "enabled" : "paused"} · {data.settings.timezone}</Text>
-      <Text style={s.meta}>Worker: {data.settings.worker_last_seen ? new Date(data.settings.worker_last_seen).toLocaleString() : "Waiting for first run"}. {data.settings.worker_message} {data.settings.local_preparation_enabled ? "Run a local preparation batch, then ask Codex to verify ready drafts." : "Requests wait until you ask Codex to process the queue."}</Text>
+      <Text style={s.body}>{data.posts.filter(p => p.status === "review").length} to review · {data.posts.length} posts</Text>
+      <Disclosure label="Queue details"><Text style={s.meta}>Publishing {data.settings.publishing_enabled ? "on" : "paused"} · {data.settings.timezone}</Text><Text style={s.meta}>Worker: {data.settings.worker_last_seen ? new Date(data.settings.worker_last_seen).toLocaleString() : "Waiting for first run"}. {data.settings.worker_message}</Text><Text style={s.meta}>{data.settings.local_preparation_enabled ? "Run preparation, then ask Codex to verify ready drafts." : "Ask Codex to process queued requests."}</Text></Disclosure>
       {!selected && !creating && data.settings.voice_profile ? <NativeVoice key={data.settings.voice_profile.id} profile={data.settings.voice_profile} store={store} busy={state.busy} /> : null}
-      {creating ? <NativeCreate store={store} busy={state.busy} onClose={(id) => { setCreating(false); store.setEditing(false); if (id) setSelected(id); }} /> : post && revision ? <><Action label="Back to collection" id="linkedin-back" disabled={state.busy || state.editing} onPress={() => { select(null); }} /><NativeEditor key={revision.id} post={post} revision={revision} data={data} store={store} busy={state.busy} onSelect={select} /></> : <>
-        <TextInput accessibilityLabel="Search posts" placeholder="Search posts" placeholderTextColor={colors.textMuted} style={s.input} value={search} onChangeText={setSearch} testID="linkedin-search" />
-        <Text style={s.heading}>Review status</Text><View style={s.row}>{["all", "review", "approved", "rejected", "withdrawing"].map((v) => <Action key={v} label={v} selected={status === v} onPress={() => setStatus(v)} />)}</View>
-        <Text style={s.heading}>Topic</Text><View style={s.row}>{["all", ...new Set(data.posts.map((p) => p.topic))].map((v) => <Action key={v} label={v} selected={topic === v} onPress={() => setTopic(v)} />)}</View>
-        <Text style={s.heading}>Publication</Text><View style={s.row}>{["all", "scheduled", "sent", "error", "unknown", "cancelled"].map((v) => <Action key={v} label={v} selected={publication === v} onPress={() => setPublication(v)} />)}</View>
-        {filterPosts(data.posts, search, topic, status).filter((p) => publication === "all" || data.publications.some((pub) => pub.post_id === p.id && pub.status === publication)).map((p) => <Pressable key={p.id} accessibilityRole="button" onPress={() => select(p.id)} style={s.post} testID={`linkedin-post-${p.id}`}><Text style={s.meta}>{p.topic} · {p.status}{p.preparation_required ? ` · ${preparationLabel(p, data.jobs, data.preparations ?? [])}` : ""}</Text><Text style={s.heading}>{p.title}</Text></Pressable>)}
+      {creating ? <NativeCreate store={store} busy={state.busy} onClose={(id) => { setCreating(false); store.setEditing(false); if (id) select(id); else resetViewScroll(); }} /> : post ? <><Action label="Back to collection" id="linkedin-back" disabled={state.busy || state.editing} onPress={() => select(null)} />{revision ? <NativeEditor key={revision.id} post={post} revision={revision} data={data} store={store} busy={state.busy} onSelect={select} /> : <Text accessibilityLiveRegion="polite" style={s.body}>{state.error ? "Draft details could not be loaded. Return to the collection and select the draft to try again." : "Loading draft…"}</Text>}</> : <>
+        <Text style={s.heading}>Search posts</Text><TextInput accessibilityLabel="Search posts" placeholder="Search posts" placeholderTextColor={colors.textMuted} style={s.input} value={search} onChangeText={setSearch} testID="linkedin-search" />
+        <Disclosure label={activeFilterCount ? `Filters (${activeFilterCount})` : "Filters"}>
+        <Text style={s.heading}>Review status</Text><View style={s.row}>{["all", "review", "approved", "rejected", "withdrawing"].map((v) => <Action key={v} label={v === "all" ? "All statuses" : v[0].toUpperCase() + v.slice(1)} selected={status === v} onPress={() => setStatus(v)} />)}</View>
+        <Text style={s.heading}>Topic</Text><View style={s.row}>{["all", ...new Set(data.posts.map((p) => p.topic))].map((v) => <Action key={v} label={v === "all" ? "All topics" : v} selected={topic === v} onPress={() => setTopic(v)} />)}</View>
+        <Text style={s.heading}>Publication</Text><View style={s.row}>{["all", "scheduled", "sent", "error", "unknown", "cancelled"].map((v) => <Action key={v} label={v === "all" ? "All publications" : v[0].toUpperCase() + v.slice(1)} selected={publication === v} onPress={() => setPublication(v)} />)}</View></Disclosure>
+        <Text accessibilityLiveRegion="polite" style={s.meta}>{visible.length} drafts</Text>
+        {!visible.length ? <><Text style={s.body}>No matching posts.</Text><Action label="Reset filters" onPress={() => { setSearch(""); setTopic("all"); setStatus("all"); setPublication("all"); }} /></> : null}
+        {visible.map((p) => <Pressable key={p.id} accessibilityRole="button" accessibilityLabel={`${p.title}, ${p.topic}, ${p.status}`} disabled={state.busy || state.editing} accessibilityState={{ disabled: state.busy || state.editing }} onPress={() => select(p.id)} style={s.post} testID={`linkedin-post-${p.id}`}><Text style={s.meta}>{p.topic} · {p.status}{p.preparation_required ? ` · ${preparationLabel(p, data.jobs, data.preparations ?? [])}` : ""}</Text><Text style={s.heading}>{p.title}</Text></Pressable>)}
       </>}
     </> : null}
   </View></AppScreen>;
@@ -65,7 +80,7 @@ function NativePostText({ value, onChange, disabled, id = "linkedin-body" }: { v
     <Text style={s.heading}>Post text</Text>
     <View style={s.row}>{([{ style: "bold", label: "Bold" }, { style: "italic", label: "Italic" }, { style: "bullet", label: "Bullets" }, { style: "plain", label: "Plain text" }] as const).map(({ style, label }) => <Action key={style} label={label} disabled={disabled} onPress={() => format(style)} />)}</View>
     <TextInput ref={field} accessibilityLabel="Post text" value={value} onChangeText={onChange} editable={!disabled} multiline style={[s.input, s.editor]} testID={id} selection={selection} onSelectionChange={(event) => setSelection(event.nativeEvent.selection)} />
-    <Text style={s.meta}>Select text to style it. Unicode bold and italic count as two characters and may be harder for screen readers. Links, hashtags, emoji and line breaks stay as text; @names do not tag people.</Text>
+    <Disclosure label="Formatting help"><Text style={s.meta}>Select text to style it. Unicode bold and italic count as two characters and may be harder for screen readers. Links, hashtags, emoji and line breaks stay as text; @names do not tag people.</Text></Disclosure>
   </View>;
 }
 
@@ -83,8 +98,9 @@ function NativeEditor({ post, revision, data, store, busy, onSelect }: { post: L
     <Text style={s.meta}>{body.length}/3,000 characters</Text>
     <Text accessibilityLiveRegion="polite" style={s.meta}>{dirty ? "Unsaved changes. Save or discard to switch drafts." : locked ? "Approved version" : "Saved"}</Text>
     <Text style={s.heading}>First comment</Text><TextInput accessibilityLabel="First comment" value={comment} onChangeText={(value) => { store.setEditing(body !== revision.body || value !== revision.first_comment || confirmed !== revision.facts_confirmed); setComment(value); }} editable={!locked && !busy} multiline style={[s.input, s.comment]} testID="linkedin-comment" />
-    <Text selectable style={s.body}>{comment}</Text><Text style={s.meta}>Select and copy the first comment to post it manually on Buffer Free.</Text>
-    {revision.analysis?.verificationNotes.length ? <Action label={confirmed ? "Facts verified" : "Confirm flagged facts are verified"} disabled={locked || busy} onPress={() => { store.setEditing(body !== revision.body || comment !== revision.first_comment || !confirmed !== revision.facts_confirmed); setConfirmed(!confirmed); }} /> : null}
+    <Text style={s.meta}>Copy and post this comment manually in Buffer.</Text>
+    {revision.analysis?.verificationNotes.map(note => <Text key={note} accessibilityLiveRegion="polite" style={s.warning}>{note}</Text>)}
+    {revision.analysis?.verificationNotes.length ? <Action label={confirmed ? "Facts verified" : "Confirm flagged facts are verified"} selected={confirmed} disabled={locked || busy} onPress={() => { store.setEditing(body !== revision.body || comment !== revision.first_comment || !confirmed !== revision.facts_confirmed); setConfirmed(!confirmed); }} /> : null}
     <View style={s.row}>
       <Action label="Save revision" id="linkedin-save" disabled={locked || busy || !dirty || !body.trim() || body.length > 3000 || comment.length > 1248} onPress={() => void store.act(post, "save", { body, firstComment: comment, factsConfirmed: confirmed })} />
       <Action label={refining ? "Preparation / verification queued" : post.preparation_required ? "Prepare again" : "Refine"} id="linkedin-refine" disabled={locked || busy || dirty || refining} onPress={() => void store.act(post, "refine")} />
@@ -95,31 +111,32 @@ function NativeEditor({ post, revision, data, store, busy, onSelect }: { post: L
     </View><Text style={s.meta}>Approval schedules this exact revision in Buffer’s next recommended slot.</Text>
     {publications.map((p) => <Text key={p.id} selectable style={s.body}>Buffer: {p.status} {p.scheduled_at ? new Date(p.scheduled_at).toLocaleString() : ""} {p.error} {p.url}</Text>)}
     {jobs.map((j) => <Text key={j.id} style={s.meta}>{j.kind}: {j.status} {j.error} {j.verification?.notes.join(" · ")}</Text>)}
-    <Text style={s.heading}>Source material</Text>{!revision.sources.length ? <Text style={s.meta}>User-authored draft. Claims will be checked during analysis.</Text> : null}{revision.sources.map((source) => <View key={source.path} style={s.source}><Text style={s.heading}>{source.title}</Text><Text selectable style={s.body}>{source.excerpt}</Text><Text selectable style={s.meta}>{source.path} · {source.hash.slice(0,12)}</Text>{source.urls.map((url) => <Text key={url} selectable style={s.meta}>{url}</Text>)}</View>)}
+    <Disclosure label="Source material">{!revision.sources.length ? <Text style={s.meta}>User-authored draft. Claims will be checked during analysis.</Text> : null}{revision.sources.map((source) => <View key={source.path} style={s.source}><Text style={s.heading}>{source.title}</Text><Text selectable style={s.body}>{source.excerpt}</Text><Text selectable style={s.meta}>{source.path} · {source.hash.slice(0,12)}</Text>{source.urls.map((url) => <Text key={url} selectable style={s.meta}>{url}</Text>)}</View>)}</Disclosure>
     {post.preparation_required ? <NativePreparation post={post} revision={revision} data={data} store={store} disabled={locked || busy || dirty || refining || post.status !== "review"} onSelect={onSelect} /> : null}
     {revision.analysis ? <NativeAnalysis analysis={revision.analysis} /> : null}
     {data.revisions.filter((r) => r.post_id === post.id && r.kind === "refine" && r.id !== revision.id).map((r) => <View key={r.id} style={s.source}><Text style={s.heading}>Proposed revision{r.parent_revision_id !== revision.id ? " · older draft" : ""}</Text><Text selectable style={s.body}>{r.body}</Text><Action label="Use revision" id={`linkedin-use-${r.id}`} disabled={locked || busy || dirty || r.parent_revision_id !== revision.id} onPress={() => void store.act(post, "use", { proposalId: r.id })} />{r.analysis ? <NativeAnalysis analysis={r.analysis} /> : null}</View>)}
-    <Text style={s.heading}>Revision history</Text>{data.revisions.filter((r) => r.post_id === post.id).map((r) => <View key={r.id}><Text style={s.meta}>{r.kind} · {new Date(r.created_at).toLocaleString()}</Text><Text selectable style={s.body}>{r.body}</Text></View>)}
+    <Disclosure label="Revision history">{data.revisions.filter((r) => r.post_id === post.id).map((r) => <View key={r.id}><Text style={s.meta}>{r.kind} · {new Date(r.created_at).toLocaleString()}</Text><Text selectable style={s.body}>{r.body}</Text></View>)}</Disclosure>
   </View>;
 }
 function NativeAnalysis({ analysis: a }: { analysis: LinkedInAnalysis }) {
-  return <View style={s.stack}><Text style={s.heading}>Analysis</Text><Text style={s.body}>{a.coreIdea}</Text>{Object.entries(a.diagnosis).map(([name,v]) => <Text key={name} style={s.body}>{name}: {v.score}/10 · {v.justification}</Text>)}<Text style={s.heading}>Alternative hooks</Text>{a.alternativeHooks.map((v) => <Text key={v} style={s.body}>{v}</Text>)}<Text style={s.heading}>Key changes</Text>{a.keyChanges.map((v) => <Text key={v} style={s.body}>{v}</Text>)}<Text style={s.heading}>Posting plan</Text><Text style={s.body}>{a.postingPlan.format} · {a.postingPlan.timing}</Text><Text selectable style={s.body}>{a.postingPlan.firstComment}</Text><Text style={s.body}>{a.postingPlan.hashtags.join(" ")}</Text>{[...a.postingPlan.engagementActions,...a.visualOutline].map((v) => <Text key={v} style={s.body}>{v}</Text>)}{a.verificationNotes.map((v) => <Text key={v} style={s.error}>Verify: {v}</Text>)}<Text style={s.meta}>{a.assumptions} · Tools: {a.toolsUsed.join(", ")}</Text></View>;
+  return <Disclosure label="Analysis"><View style={s.stack}><Text style={s.body}>{a.coreIdea}</Text>{Object.entries(a.diagnosis).map(([name,v]) => <Text key={name} style={s.body}>{name}: {v.score}/10 · {v.justification}</Text>)}<Text style={s.heading}>Alternative hooks</Text>{a.alternativeHooks.map((v) => <Text key={v} style={s.body}>{v}</Text>)}<Text style={s.heading}>Key changes</Text>{a.keyChanges.map((v) => <Text key={v} style={s.body}>{v}</Text>)}<Text style={s.heading}>Posting plan</Text><Text style={s.body}>{a.postingPlan.format} · {a.postingPlan.timing}</Text><Text selectable style={s.body}>{a.postingPlan.firstComment}</Text><Text style={s.body}>{a.postingPlan.hashtags.join(" ")}</Text>{[...a.postingPlan.engagementActions,...a.visualOutline].map((v) => <Text key={v} style={s.body}>{v}</Text>)}{a.verificationNotes.map((v) => <Text key={v} style={s.error}>Verify: {v}</Text>)}<Text style={s.meta}>{a.assumptions} · Tools: {a.toolsUsed.join(", ")}</Text></View></Disclosure>;
 }
 function Action({ label, id, onPress, disabled, selected }: { label: string; id?: string; onPress: () => void; disabled?: boolean; selected?: boolean }) {
-  return <Pressable accessibilityRole="button" accessibilityLabel={label} accessibilityState={{ disabled, selected }} testID={id} disabled={disabled} onPress={onPress} style={[s.button, selected && s.selected, disabled && s.disabled]}><Text style={s.buttonText}>{label}</Text></Pressable>;
+  const tone = id === "linkedin-reject" ? "danger" : id === "linkedin-refine" ? "assist" : id === "linkedin-approve" ? "success" : id === "linkedin-withdraw" || id === "linkedin-discard" ? "warning" : id?.startsWith("linkedin-create") || id === "linkedin-save" ? "info" : "neutral";
+  return <Button label={label} testID={id} onPress={onPress} disabled={disabled} selected={selected} tone={tone} variant={id === "linkedin-approve" || id === "linkedin-create" || id === "linkedin-create-submit" ? "primary" : "secondary"} />;
 }
 const s = StyleSheet.create({
   stack: { gap: spacing.md }, row: { flexDirection: "row", flexWrap: "wrap", gap: spacing.sm },
   title: { color: colors.text, fontSize: 24, fontWeight: "700" }, heading: { color: colors.text, fontSize: 17, fontWeight: "600" }, body: { color: colors.text, fontSize: 16, lineHeight: 25 }, meta: { color: colors.textMuted, fontSize: 13, lineHeight: 20 }, error: { color: "#991b1b", fontSize: 15 },
-  input: { borderWidth: 1, borderColor: "#7d8b94", borderRadius: radii.md, padding: spacing.md, backgroundColor: colors.panel, color: colors.text, fontSize: 16 }, editor: { minHeight: 280, textAlignVertical: "top" }, comment: { minHeight: 90, textAlignVertical: "top" },
-  button: { minHeight: 48, minWidth: 48, maxWidth: "100%", flexShrink: 1, borderWidth: 1, borderColor: "#7d8b94", borderRadius: radii.md, padding: spacing.sm, alignItems: "center", justifyContent: "center", backgroundColor: colors.panel }, buttonText: { color: colors.text, textAlign: "center", fontSize: 14, fontWeight: "600" }, selected: { backgroundColor: "#eaf7f4" }, disabled: { opacity: 0.5 },
+  warning: { color: colors.amberText, fontSize: 15, lineHeight: 22 },
+  input: { minHeight: 48, borderWidth: 1, borderColor: "#7d8b94", borderRadius: radii.md, padding: spacing.md, backgroundColor: colors.panel, color: colors.text, fontSize: 16 }, editor: { minHeight: 280, textAlignVertical: "top" }, comment: { minHeight: 90, textAlignVertical: "top" },
   post: { paddingVertical: spacing.md, borderBottomWidth: 1, borderBottomColor: colors.line, gap: spacing.sm }, source: { borderLeftWidth: 2, borderLeftColor: colors.accentStrong, paddingLeft: spacing.md, gap: spacing.sm },
 });
 
 function NativeVoice({ profile, store, busy }: { profile: NonNullable<EditorialSnapshot["settings"]["voice_profile"]>; store: EditorialStore; busy: boolean }) {
-  const [open, setOpen] = useState(false); const initial = profile.rules.join("\n"); const [value, setValue] = useState(initial);
+  const initial = profile.rules.join("\n"); const [value, setValue] = useState(initial);
   const rules = value.split("\n").map((line) => line.trim()).filter(Boolean);
-  return <View style={s.stack}><Action label={`Voice rules · ${profile.version}`} onPress={() => setOpen(!open)} />{open ? <><Text style={s.meta}>Generic writing style only; no private messages or company details. Saving prepares review drafts again.</Text><TextInput accessibilityLabel="Voice rules, one per line" multiline style={s.input} value={value} editable={!busy} onChangeText={(v) => { setValue(v); store.setEditing(v !== initial); }} /><Action label="Save voice rules" disabled={busy || value === initial || !rules.length || rules.length > 20 || rules.some((r) => r.length > 500)} onPress={() => void store.setVoice(rules)} /></> : null}</View>;
+  return <Disclosure label={`Voice rules · ${profile.version}`}><View style={s.stack}><Text style={s.meta}>Generic writing style only; no private messages or company details. Saving prepares review drafts again.</Text><TextInput accessibilityLabel="Voice rules, one per line" multiline style={s.input} value={value} editable={!busy} onChangeText={(v) => { setValue(v); store.setEditing(v !== initial); }} /><Action label="Save voice rules" disabled={busy || value === initial || !rules.length || rules.length > 20 || rules.some((r) => r.length > 500)} onPress={() => void store.setVoice(rules)} /></View></Disclosure>;
 }
 function NativePreparation({ post, revision, data, store, disabled, onSelect }: { post: LinkedInPost; revision: LinkedInRevision; data: EditorialSnapshot; store: EditorialStore; disabled: boolean; onSelect: (id: string) => void }) {
   const [reason, setReason] = useState("");

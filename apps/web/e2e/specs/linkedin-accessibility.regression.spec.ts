@@ -35,6 +35,7 @@ for (const width of [320, 390, 768, 1024, 1180, 1440]) {
   test(`@regression editorial touch and keyboard actions reflow at ${width}px`, async ({ page, isMobile }) => {
     const data = structuredClone(editorialFixture);
     data.revisions[0].analysis = { ...analysisFixture, verificationNotes: ["Verify the limit"] };
+    data.settings.voice_profile = { id: "40000000-0000-4000-8000-000000000001", version: "voice-test", rules: ["Use concrete examples"] };
     // Any write indicates a defect: this journey only edits and discards browser-local input.
     await page.route("**/rest/v1/rpc/linkedin_*", async (route) => {
       if (route.request().url().endsWith("linkedin_is_admin")) return route.fulfill({ json: true });
@@ -45,6 +46,15 @@ for (const width of [320, 390, 768, 1024, 1180, 1440]) {
     await page.setViewportSize({ width, height: 844 });
     await page.goto("/admin/linkedin");
     const draft = page.getByTestId(`linkedin-post-${data.posts[0].id}`);
+    const voice = page.getByText("Voice rules · voice-test", { exact: true });
+    await expectTarget(voice, isMobile || width < 1024 ? 48 : 44);
+    await voice.click();
+    const rules = page.getByLabel("Voice rules, one per line");
+    await rules.fill("Keep this unsaved voice rule");
+    await expect(draft).toBeDisabled();
+    await expect(rules).toHaveValue("Keep this unsaved voice rule");
+    await rules.fill("Use concrete examples");
+    await expect(draft).toBeEnabled();
     await draft.click();
     const heading = page.getByRole("heading", { name: data.posts[0].title });
     await expect(heading).toBeFocused();

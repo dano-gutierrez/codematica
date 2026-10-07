@@ -1,0 +1,206 @@
+# Configured disposable test project only. Keep publishing disabled.
+# EDITORIAL_TEST_EMAIL/PASSWORD belong to its allowlisted test admin.
+appId: com.codematica.app
+tags:
+  - regression
+---
+- launchApp:
+    clearState: true
+- assertVisible:
+    id: mobile-nav-more
+- tapOn:
+    id: mobile-nav-more
+- tapOn:
+    id: mobile-menu-sign-in
+- assertVisible: Welcome back
+- scrollUntilVisible:
+    element:
+      id: mobile-login-email
+    direction: DOWN
+    speed: 20
+    visibilityPercentage: 100
+    centerElement: false
+    timeout: 20000
+- tapOn:
+    id: mobile-login-email
+- inputText: ${EDITORIAL_TEST_EMAIL}
+- hideKeyboard
+- scrollUntilVisible:
+    element:
+      id: mobile-login-password
+    direction: DOWN
+    speed: 20
+    visibilityPercentage: 100
+    centerElement: false
+    timeout: 20000
+- tapOn:
+    id: mobile-login-password
+- inputText: wrong-pass
+- hideKeyboard
+- scrollUntilVisible:
+    element:
+      id: mobile-sign-in
+    direction: DOWN
+    speed: 20
+    visibilityPercentage: 100
+    centerElement: false
+    timeout: 20000
+- tapOn:
+    id: mobile-sign-in
+- scrollUntilVisible:
+    element:
+      text: Invalid login credentials
+    direction: DOWN
+    speed: 20
+    visibilityPercentage: 100
+    centerElement: false
+    timeout: 20000
+- assertVisible: Invalid login credentials
+- takeScreenshot: email-sign-in-recovery
+- scrollUntilVisible:
+    element:
+      id: mobile-login-password
+    direction: UP
+    speed: 20
+    visibilityPercentage: 100
+    centerElement: false
+    timeout: 20000
+- tapOn:
+    id: mobile-login-password
+- eraseText: 10
+- inputText: ${EDITORIAL_TEST_PASSWORD}
+- hideKeyboard
+- scrollUntilVisible:
+    element:
+      id: mobile-sign-in
+    direction: DOWN
+    speed: 20
+    visibilityPercentage: 100
+    centerElement: false
+    timeout: 20000
+- tapOn:
+    id: mobile-sign-in
+# Start outside the text fields; their horizontal scroll can consume this gesture.
+- swipe:
+    start: "90%,75%"
+    end: "90%,30%"
+    duration: 1000
+- scrollUntilVisible:
+    element:
+      text: Signed in
+    direction: DOWN
+    speed: 20
+    visibilityPercentage: 100
+    centerElement: false
+    timeout: 20000
+- scroll
+- assertVisible: Signed in
+- takeScreenshot: email-sign-in-acknowledged
+- scrollUntilVisible:
+    element:
+      text: Continue learning
+    direction: DOWN
+    speed: 20
+    visibilityPercentage: 100
+    centerElement: false
+    timeout: 20000
+- tapOn: Continue learning
+- tapOn:
+    id: mobile-nav-more
+- scrollUntilVisible:
+    element:
+      id: mobile-menu-linkedin
+    direction: DOWN
+    speed: 20
+    visibilityPercentage: 100
+    centerElement: false
+    timeout: 20000
+- assertVisible:
+    id: mobile-menu-linkedin
+- scrollUntilVisible:
+    element:
+      id: mobile-account-trigger
+    direction: DOWN
+    speed: 20
+    visibilityPercentage: 100
+    centerElement: false
+    timeout: 20000
+- tapOn:
+    id: mobile-account-trigger
+- scrollUntilVisible:
+    element:
+      text: ${EDITORIAL_TEST_EMAIL}
+    direction: DOWN
+    speed: 20
+    visibilityPercentage: 100
+    centerElement: false
+    timeout: 20000
+- assertVisible: ${EDITORIAL_TEST_EMAIL}
+- takeScreenshot: signed-in-account-menu
+- scrollUntilVisible:
+    element:
+      id: mobile-account-trigger
+    direction: DOWN
+    speed: 20
+    visibilityPercentage: 100
+    centerElement: false
+    timeout: 20000
+- tapOn:
+    id: mobile-account-trigger
+- scrollUntilVisible:
+    element:
+      id: mobile-menu-close
+    direction: UP
+    speed: 20
+    visibilityPercentage: 100
+    centerElement: false
+    timeout: 20000
+- tapOn:
+    id: mobile-menu-close
+- runFlow: ../../.maestro/linkedin-admin.yaml
+- tapOn:
+    id: mobile-nav-more
+- scrollUntilVisible:
+    element:
+      id: mobile-account-trigger
+    direction: DOWN
+    speed: 20
+    visibilityPercentage: 100
+    centerElement: false
+    timeout: 20000
+- tapOn:
+    id: mobile-account-trigger
+- scrollUntilVisible:
+    element:
+      id: mobile-sign-out
+    direction: DOWN
+    speed: 20
+    visibilityPercentage: 100
+    centerElement: false
+    timeout: 20000
+- tapOn:
+    id: mobile-sign-out
+- tapOn:
+    id: mobile-nav-more
+- assertVisible:
+    id: mobile-menu-sign-in
+- assertNotVisible:
+    id: mobile-menu-linkedin
+- assertNotVisible:
+    id: mobile-account-trigger
+- takeScreenshot: signed-out-account-menu
+- scrollUntilVisible:
+    element:
+      id: mobile-menu-close
+    direction: UP
+    speed: 20
+    visibilityPercentage: 100
+    centerElement: false
+    timeout: 20000
+- tapOn:
+    id: mobile-menu-close
+- openLink: codematica://admin/linkedin
+- assertVisible: Admin access required
+- assertNotVisible:
+    id: linkedin-create
+- takeScreenshot: signed-out-admin-denied

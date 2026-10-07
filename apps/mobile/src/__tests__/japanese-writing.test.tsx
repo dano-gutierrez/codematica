@@ -121,7 +121,7 @@ it("waits for multi-stroke handwriting before showing an error and exposes a lab
   const n = createCustomNotebook("あ", index);
   const view = await render(<JapaneseNotebookPractice notebook={n} adapters={adapters} />);
   expect(view.getByTestId("mobile-writing-repeat").props.accessibilityLabel).toBe("Clear and restart sheet");
-  expect(view.queryByText("Clear and restart sheet")).toBeNull();
+  expect(view.getByText("Clear and restart sheet")).toBeOnTheScreen();
   await draw(view, strokes.slice(0, 1));
   await act(() => jest.advanceTimersByTime(900));
   expect(view.getByTestId("mobile-writing-cell-0-feedback").props.accessibilityState).toEqual({ busy: false });
@@ -562,7 +562,7 @@ it("creates, validates, saves and reopens custom notebooks from Japanese navigat
       adapters={{ ...adapters, notebooks: storage }}
     />,
   );
-  expect(view.getByTestId("mobile-page-scroll").props.keyboardShouldPersistTaps).toBe("handled");
+  expect(view.getByTestId("keyboard-aware-scroll").props.keyboardShouldPersistTaps).toBe("handled");
   await fireEvent.changeText(view.getByTestId("mobile-notebook-input"), "abc");
   expect(view.getByText(/No writing guide/)).toBeOnTheScreen();
   expect(view.getByTestId("mobile-notebook-create")).toBeDisabled();
@@ -698,4 +698,25 @@ it("passes two-finger scrolling to the outer native page when the sheet fits", a
   await act(()=>props!.onPan(0,"ended"));
   expect(view.getByTestId("mobile-page-scroll").props.scrollEnabled).toBe(true);
   scrollTo.mockRestore();
+});
+
+it("keeps native notebook restart text visible beside its icon", async () => {
+  const notebook = createCustomNotebook("あ", index);
+  const view = await render(<JapaneseNotebookPractice notebook={notebook} adapters={adapters} />);
+  const restart = view.getByTestId("mobile-writing-repeat");
+  expect(restart).toHaveTextContent(/Clear and restart sheet/);
+});
+
+it("announces native notebook creation and prevents duplicate saves during storage work", async () => {
+  let finish!: () => void;
+  const storage = { list: jest.fn(async () => []), saveDefinition: jest.fn(() => new Promise<void>(resolve => { finish = resolve; })), load: jest.fn(), save: jest.fn() };
+  const view = await render(<JapaneseNotebookCatalogScreen index={index} adapters={{ ...adapters, notebooks: storage }} />);
+  await fireEvent.changeText(view.getByTestId("mobile-notebook-input"), "あい");
+  await fireEvent.press(view.getByTestId("mobile-notebook-create"));
+  expect(view.getByTestId("mobile-notebook-create").props.accessibilityState.busy).toBe(true);
+  expect(view.getByTestId("mobile-notebook-input").props.editable).toBe(false);
+  await fireEvent.press(view.getByTestId("mobile-notebook-create"));
+  expect(storage.saveDefinition).toHaveBeenCalledTimes(1);
+  await act(() => finish());
+  expect(view.getByTestId("mobile-notebook-back")).toBeOnTheScreen();
 });

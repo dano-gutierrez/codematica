@@ -1,4 +1,4 @@
-import { render, screen, within } from "@testing-library/react";
+import { fireEvent, render, screen, within } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
 import { getContentIndex } from "@codematica/core";
 import { JapaneseLanguageBrowser } from "./JapaneseLanguageBrowser";
@@ -17,6 +17,17 @@ describe("JapaneseLanguageBrowser", () => {
     expect(screen.getByTestId("japanese-resources-link")).toHaveAttribute("href", "#resources");
   });
 
+  it("announces an empty search and clears it back to the focused dictionary", () => {
+    render(<JapaneseLanguageBrowser index={getContentIndex()} />);
+    const input = screen.getByRole("textbox", { name: "Search Japanese" });
+    fireEvent.change(input, { target: { value: "qzqznotfound" } });
+    expect(screen.getByRole("status")).toHaveTextContent("No matches");
+    fireEvent.click(screen.getByRole("button", { name: "Clear search" }));
+    expect(input).toHaveValue("");
+    expect(input).toHaveFocus();
+    expect(screen.getByRole("heading", { name: "Basic hiragana" })).toBeVisible();
+  });
+
   it("separates the complete basic katakana set from sound extras", () => {
     render(<JapaneseLanguageBrowser index={getContentIndex()} />);
 
@@ -31,6 +42,18 @@ describe("JapaneseLanguageBrowser", () => {
     expect(basic.queryByRole("link", { name: "ーlong vowel" })).not.toBeInTheDocument();
     expect(extras.getByRole("link", { name: "ーlong vowel" })).toBeVisible();
     expect(extras.queryByRole("link", { name: "ンn" })).not.toBeInTheDocument();
+  });
+
+  it("keeps the full word catalog in a named disclosure", () => {
+    const index = getContentIndex();
+    render(<JapaneseLanguageBrowser index={index} />);
+    const catalog = screen.getByTestId("japanese-vocabulary-disclosure");
+    const first = index.languageVocabulary.find(item => item.language === "ja" && item.status === "published")!;
+    const word = within(catalog).getByTestId(`japanese-vocabulary-${first.slug.replaceAll("/", "-")}`);
+    expect(word).not.toBeVisible();
+    fireEvent.click(within(catalog).getByText(/Beginner words and greetings/));
+    expect(word).toBeVisible();
+    expect(word).toHaveAttribute("href", first.route);
   });
 
   it("shows trusted resources with access and reuse metadata", () => {

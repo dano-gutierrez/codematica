@@ -5,6 +5,7 @@ import { ArrowLeft, Briefcase, Code2, Lightbulb, MessagesSquare } from "lucide-r
 import type { UIEvent } from "react";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { CodeBlock } from "@/components/CodeBlock";
+import { ButtonLink } from "@/components/ButtonLink";
 import { DifficultyPill } from "@/components/DifficultyPill";
 import type { PassiveFlashcardCard, PassiveFlashcardFeed as PassiveFlashcardFeedType, PassiveFlashcardType } from "@/lib/content/schema";
 import { buildPassiveFlashcardWindow, shufflePassiveFlashcards } from "@/lib/flashcards/passive";
@@ -98,23 +99,18 @@ export function PassiveFlashcardFeed({
 
   return (
     <main
-      className="passive-feed overflow-y-auto scroll-smooth bg-[#f6fbfc] snap-y snap-mandatory"
+      className="passive-feed overflow-y-auto bg-[#f6fbfc] snap-y snap-proximity"
+      tabIndex={0}
+      aria-label={feed.title}
       data-ready={isReady ? "true" : "false"}
       data-testid="passive-flashcard-feed"
       onScroll={appendWhenNearEnd}
     >
-      <header className="fixed inset-x-0 top-0 z-20 border-b-2 border-[#d5e2e8] bg-white/95 px-4 py-3 backdrop-blur">
+      <header className="border-b border-[#d5e2e8] bg-white px-4 py-3">
         <div className="mx-auto flex w-full max-w-3xl items-center justify-between gap-3">
-          <Link
-            href={`/paths/${feed.pathSlug}`}
-            className="inline-flex min-h-10 items-center gap-2 rounded-xl border border-[#d5e2e8] bg-white px-3 py-2 text-sm font-semibold text-[#263238]"
-          >
-            <ArrowLeft className="h-4 w-4" aria-hidden="true" />
-            Path
-          </Link>
+          <ButtonLink href={`/paths/${feed.pathSlug}`} label="Path" icon={ArrowLeft} />
           <div className="min-w-0 text-right">
-            <p className="truncate text-sm font-semibold text-[#007c78]">{feed.title}</p>
-            <p className="truncate text-xs font-medium text-[#68737d]">Quick review</p>
+            <h1 className="text-sm font-semibold text-[#00645f]">{feed.title}</h1>
           </div>
         </div>
       </header>
@@ -132,7 +128,7 @@ function PassiveFlashcard({ card, sequenceIndex, pathSlug }: { card: PassiveFlas
   return (
     <article
       className={cn(
-        "passive-feed-card flex snap-start flex-col justify-center px-4 pb-8 pt-24",
+        "passive-feed-card flex min-w-0 snap-start flex-col justify-center px-4 py-8",
         typeMeta.backgroundClass,
       )}
       data-testid={`passive-flashcard-card-${sequenceIndex}`}
@@ -152,7 +148,7 @@ function PassiveFlashcard({ card, sequenceIndex, pathSlug }: { card: PassiveFlas
             <DifficultyPill difficulty={card.difficulty} />
           </div>
 
-          <h1 className="mt-5 text-3xl font-semibold leading-tight tracking-tight text-[#263238] sm:text-4xl">{card.title}</h1>
+          <h2 className="mt-5 text-3xl font-semibold leading-tight tracking-tight text-[#263238] sm:text-4xl">{card.title}</h2>
           <p className="mt-5 text-xl font-normal leading-8 text-[#33434b] sm:text-2xl sm:leading-9">{card.prompt}</p>
           <p className="mt-5 text-base font-normal leading-7 text-[#68737d] sm:text-lg sm:leading-8">{card.explanation}</p>
 

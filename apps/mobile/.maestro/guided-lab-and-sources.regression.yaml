@@ -1,0 +1,409 @@
+appId: com.codematica.app
+tags:
+  - regression
+---
+- launchApp:
+    clearState: true
+- assertVisible:
+    id: mobile-nav-learn
+- openLink: codematica://paths/ml-systems-engineer
+# Bound the long roadmap traversal without extending any locator timeout.
+- scrollUntilVisible:
+    element:
+      text: Scientific Computing Apprentice
+    direction: DOWN
+    speed: 20
+    visibilityPercentage: 100
+    centerElement: false
+    timeout: 20000
+- scrollUntilVisible:
+    element:
+      text: ML Foundations Analyst
+    direction: DOWN
+    speed: 20
+    visibilityPercentage: 100
+    centerElement: false
+    timeout: 20000
+- scrollUntilVisible:
+    element:
+      text: ML Systems Explorer
+    direction: DOWN
+    speed: 20
+    visibilityPercentage: 100
+    centerElement: false
+    timeout: 20000
+- scrollUntilVisible:
+    element:
+      text: Framework Builder
+    direction: DOWN
+    speed: 20
+    visibilityPercentage: 100
+    centerElement: false
+    timeout: 20000
+- scrollUntilVisible:
+    element:
+      text: Performance Practitioner
+    direction: DOWN
+    speed: 20
+    visibilityPercentage: 100
+    centerElement: false
+    timeout: 20000
+- scrollUntilVisible:
+    element:
+      text: Production ML Engineer
+    direction: DOWN
+    speed: 20
+    visibilityPercentage: 100
+    centerElement: false
+    timeout: 20000
+- scrollUntilVisible:
+    element:
+      text: Distributed ML Engineer
+    direction: DOWN
+    speed: 20
+    visibilityPercentage: 100
+    centerElement: false
+    timeout: 20000
+- scrollUntilVisible:
+    element:
+      text: Responsible Systems Architect
+    direction: DOWN
+    speed: 20
+    visibilityPercentage: 100
+    centerElement: false
+    timeout: 20000
+- scrollUntilVisible:
+    element:
+      text: ML Systems Portfolio
+    direction: DOWN
+    speed: 20
+    visibilityPercentage: 100
+    centerElement: false
+    timeout: 20000
+- scrollUntilVisible:
+    element:
+      text: Prerequisites — Scientific Computing
+    direction: DOWN
+    speed: 20
+    visibilityPercentage: 100
+    centerElement: false
+    timeout: 20000
+- scrollUntilVisible:
+    element:
+      id: mobile-path-node-document-ml-systems-math-foundations
+    direction: DOWN
+    speed: 20
+    visibilityPercentage: 100
+    centerElement: false
+    timeout: 20000
+- scrollUntilVisible:
+    element:
+      id: mobile-path-node-exercise-ml-systems-prerequisite-measurement-lab
+    direction: DOWN
+    speed: 20
+    visibilityPercentage: 100
+    centerElement: false
+    timeout: 20000
+- scrollUntilVisible:
+    element:
+      text: Volume I — Foundations
+    direction: DOWN
+    speed: 20
+    visibilityPercentage: 100
+    centerElement: false
+    timeout: 20000
+- scrollUntilVisible:
+    element:
+      id: mobile-path-node-source-ml-systems-ai-engineering-introduction
+    direction: DOWN
+    speed: 20
+    visibilityPercentage: 100
+    centerElement: false
+    timeout: 20000
+- tapOn:
+    id: mobile-path-node-source-ml-systems-ai-engineering-introduction
+- scrollUntilVisible:
+    element:
+      text: Primary sources
+    direction: DOWN
+    speed: 20
+    visibilityPercentage: 100
+    centerElement: false
+    timeout: 20000
+- tapOn:
+    text: Primary sources
+- scrollUntilVisible:
+    element:
+      id: mobile-source-harvard-vol1-introduction
+    direction: DOWN
+    speed: 20
+    visibilityPercentage: 100
+    centerElement: false
+    timeout: 20000
+- takeScreenshot: ml-primary-source
+- tapOn:
+    text: Primary sources
+- scrollUntilVisible:
+    element:
+      text: Read the primary chapter first
+    direction: DOWN
+    speed: 20
+    visibilityPercentage: 100
+    centerElement: false
+    timeout: 20000
+- scrollUntilVisible:
+    element:
+      text: Two constraints at once
+    direction: DOWN
+    speed: 20
+    visibilityPercentage: 100
+    centerElement: false
+    timeout: 20000
+- scrollUntilVisible:
+    element:
+      text: From model metric to mission
+    direction: DOWN
+    speed: 20
+    visibilityPercentage: 100
+    centerElement: false
+    timeout: 20000
+- scrollUntilVisible:
+    element:
+      text: Lifecycle cost
+    direction: DOWN
+    speed: 20
+    visibilityPercentage: 100
+    centerElement: false
+    timeout: 20000
+- scrollUntilVisible:
+    element:
+      text: Retrieval prompts
+    direction: DOWN
+    speed: 20
+    visibilityPercentage: 100
+    centerElement: false
+    timeout: 20000
+- scrollUntilVisible:
+    element:
+      id: mobile-document-next-node
+    direction: DOWN
+    speed: 20
+    visibilityPercentage: 100
+    centerElement: false
+    timeout: 20000
+- tapOn:
+    id: mobile-document-next-node
+- assertVisible: D–A–M Bottleneck Diagnostic
+- scrollUntilVisible:
+    element:
+      id: mobile-guided-lab-prediction-data
+    direction: DOWN
+    speed: 20
+    visibilityPercentage: 100
+    centerElement: false
+    timeout: 20000
+- tapOn:
+    id: mobile-guided-lab-prediction-data
+- scrollUntilVisible:
+    element:
+      text: Inventory evidence
+    direction: DOWN
+    speed: 20
+    visibilityPercentage: 100
+    centerElement: false
+    timeout: 20000
+- scrollUntilVisible:
+    element:
+      text: Rank hypotheses
+    direction: DOWN
+    speed: 20
+    visibilityPercentage: 100
+    centerElement: false
+    timeout: 20000
+- scrollUntilVisible:
+    element:
+      text: Make the decision
+    direction: DOWN
+    speed: 20
+    visibilityPercentage: 100
+    centerElement: false
+    timeout: 20000
+- scrollUntilVisible:
+    element:
+      id: mobile-guided-lab-evidence-observations
+    direction: DOWN
+    speed: 20
+    visibilityPercentage: 100
+    centerElement: false
+    timeout: 20000
+- tapOn:
+    id: mobile-guided-lab-evidence-observations
+- scrollUntilVisible:
+    element:
+      id: mobile-guided-lab-evidence-all-axes
+    direction: DOWN
+    speed: 20
+    visibilityPercentage: 100
+    centerElement: false
+    timeout: 20000
+- tapOn:
+    id: mobile-guided-lab-evidence-all-axes
+- scrollUntilVisible:
+    element:
+      id: mobile-guided-lab-evidence-decision-rule
+    direction: DOWN
+    speed: 20
+    visibilityPercentage: 100
+    centerElement: false
+    timeout: 20000
+- tapOn:
+    id: mobile-guided-lab-evidence-decision-rule
+- scrollUntilVisible:
+    element:
+      id: mobile-guided-lab-note-0
+    direction: DOWN
+    speed: 20
+    visibilityPercentage: 100
+    centerElement: false
+    timeout: 20000
+- tapOn:
+    id: mobile-guided-lab-note-0
+- inputText: Private working note
+- hideKeyboard
+- takeScreenshot: guided-lab-working-note
+- scrollUntilVisible:
+    element:
+      id: mobile-guided-lab-complete
+    direction: DOWN
+    speed: 20
+    visibilityPercentage: 100
+    centerElement: false
+    timeout: 20000
+- tapOn:
+    id: mobile-guided-lab-complete
+- scrollUntilVisible:
+    element:
+      text: Lab complete.
+    direction: DOWN
+    speed: 20
+    visibilityPercentage: 100
+    centerElement: false
+    timeout: 20000
+- assertVisible: Lab complete.
+- takeScreenshot: guided-lab-complete
+- scrollUntilVisible:
+    element:
+      id: mobile-guided-lab-restart
+    direction: DOWN
+    speed: 20
+    visibilityPercentage: 100
+    centerElement: false
+    timeout: 20000
+- tapOn:
+    id: mobile-guided-lab-restart
+- assertVisible: D–A–M Bottleneck Diagnostic
+- assertNotVisible: Lab complete.
+- takeScreenshot: guided-lab-restarted
+- scrollUntilVisible:
+    element:
+      id: mobile-guided-lab-prediction-data
+    direction: DOWN
+    speed: 20
+    visibilityPercentage: 100
+    centerElement: false
+    timeout: 20000
+- tapOn:
+    id: mobile-guided-lab-prediction-data
+- scrollUntilVisible:
+    element:
+      text: Inventory evidence
+    direction: DOWN
+    speed: 20
+    visibilityPercentage: 100
+    centerElement: false
+    timeout: 20000
+- scrollUntilVisible:
+    element:
+      text: Rank hypotheses
+    direction: DOWN
+    speed: 20
+    visibilityPercentage: 100
+    centerElement: false
+    timeout: 20000
+- scrollUntilVisible:
+    element:
+      text: Make the decision
+    direction: DOWN
+    speed: 20
+    visibilityPercentage: 100
+    centerElement: false
+    timeout: 20000
+- scrollUntilVisible:
+    element:
+      id: mobile-guided-lab-evidence-observations
+    direction: DOWN
+    speed: 20
+    visibilityPercentage: 100
+    centerElement: false
+    timeout: 20000
+- tapOn:
+    id: mobile-guided-lab-evidence-observations
+- scrollUntilVisible:
+    element:
+      id: mobile-guided-lab-evidence-all-axes
+    direction: DOWN
+    speed: 20
+    visibilityPercentage: 100
+    centerElement: false
+    timeout: 20000
+- tapOn:
+    id: mobile-guided-lab-evidence-all-axes
+- scrollUntilVisible:
+    element:
+      id: mobile-guided-lab-evidence-decision-rule
+    direction: DOWN
+    speed: 20
+    visibilityPercentage: 100
+    centerElement: false
+    timeout: 20000
+- tapOn:
+    id: mobile-guided-lab-evidence-decision-rule
+- scrollUntilVisible:
+    element:
+      id: mobile-guided-lab-note-0
+    direction: DOWN
+    speed: 20
+    visibilityPercentage: 100
+    centerElement: false
+    timeout: 20000
+- assertNotVisible: Private working note
+- scrollUntilVisible:
+    element:
+      id: mobile-guided-lab-complete
+    direction: DOWN
+    speed: 20
+    visibilityPercentage: 100
+    centerElement: false
+    timeout: 20000
+- tapOn:
+    id: mobile-guided-lab-complete
+- scrollUntilVisible:
+    element:
+      text: Lab complete.
+    direction: DOWN
+    speed: 20
+    visibilityPercentage: 100
+    centerElement: false
+    timeout: 20000
+- scrollUntilVisible:
+    element:
+      text: Next activity
+    direction: DOWN
+    speed: 20
+    visibilityPercentage: 100
+    centerElement: false
+    timeout: 20000
+- tapOn:
+    text: Next activity
+- assertVisible: ML Systems Foundations And Requirements
+- takeScreenshot: guided-lab-continuation

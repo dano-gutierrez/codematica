@@ -1,14 +1,13 @@
 "use client";
 
 import Link from "next/link";
-import { BookOpen, CheckCircle2, GitBranch, Network, Search, Sparkles } from "lucide-react";
+import { BookOpen, CheckCircle2, GitBranch, Network, Search } from "lucide-react";
 import { useMemo, useState } from "react";
 import { AppHeader } from "@/components/AppHeader";
 import { DifficultyPill } from "@/components/DifficultyPill";
 import { Dropdown, type DropdownOption } from "@/components/Dropdown";
 import type { ContentIndex, Difficulty } from "@/lib/content/schema";
 import { searchContent } from "@/lib/search";
-import { cn } from "@/lib/utils";
 
 const difficultyLabels: Record<Difficulty, string> = {
   foundation: "Foundation",
@@ -57,8 +56,8 @@ export function KnowledgeBrowser({ index }: { index: ContentIndex }) {
     <main className="min-h-screen pb-12" data-testid="knowledge-browser">
       <AppHeader subtitle="Lessons & diagrams" />
 
-      <section className="mx-auto w-full max-w-7xl px-4 py-6 sm:py-8">
-        <div className="grid gap-5 lg:grid-cols-[minmax(0,1fr)_20rem]">
+      <section className="ui-page">
+        <div className="grid gap-6">
           <div className="min-w-0">
             <div className="flex flex-col gap-4">
               <div>
@@ -68,20 +67,20 @@ export function KnowledgeBrowser({ index }: { index: ContentIndex }) {
               </div>
 
               <div className="grid gap-3" data-testid="search-controls">
-                <label className="relative block">
-                  <Search className="pointer-events-none absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-[#68737d]" aria-hidden="true" />
+                <label className="ui-field-icon">
+                  <Search className="h-5 w-5" aria-hidden="true" />
                   <input
                     aria-label="Search lessons and diagrams"
                     value={query}
                     onChange={(event) => setQuery(event.target.value)}
                     placeholder="Search concepts, patterns, failures"
-                    className="h-14 w-full rounded-xl border border-[#d5e2e8] bg-white pl-12 pr-4 text-base font-medium text-[#263238] outline-none transition placeholder:text-[#68737d] focus:border-[#007c78]"
+                    className="ui-input ui-filter-input"
                     data-testid="knowledge-search-input"
                   />
                 </label>
               </div>
 
-              <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
+              <div className="ui-filters">
                 <Dropdown
                   label="Track"
                   value={track}
@@ -113,18 +112,19 @@ export function KnowledgeBrowser({ index }: { index: ContentIndex }) {
               </div>
             </div>
 
-            <div className="mt-7 grid gap-3" data-testid="search-results">
+            <p className="ui-results-count" role="status">{results.length} results</p>
+            <div className="grid gap-3" data-testid="search-results">
               {results.map((result) => (
                 <Link
                   key={`${result.kind}-${result.id}`}
                   href={result.route}
-                  className="rounded-xl border border-[#d5e2e8] bg-white p-4 transition hover:-translate-y-0.5 hover:border-[#007c78] hover:shadow-md"
+                  className="ui-result-row"
                   data-testid={`result-${result.kind}-${result.id}`}
                 >
                   <div className="flex flex-wrap items-center gap-2">
                     <span className="inline-flex items-center gap-1 rounded-xl border border-[#d5e2e8] bg-[#f6fbfc] px-2 py-1 text-xs font-semibold text-[#245fba]">
                       {result.kind === "document" ? <BookOpen className="h-3.5 w-3.5" aria-hidden="true" /> : <GitBranch className="h-3.5 w-3.5" aria-hidden="true" />}
-                      {result.kind === "document" ? "Doc" : "Diagram"}
+                      {result.kind === "document" ? "Lesson" : "Diagram"}
                     </span>
                     {result.difficulty ? <DifficultyPill difficulty={result.difficulty} /> : null}
                     <span className="text-xs font-semibold uppercase text-[#68737d]">{result.track}</span>
@@ -148,55 +148,14 @@ export function KnowledgeBrowser({ index }: { index: ContentIndex }) {
             </div>
           </div>
 
-          <aside className="grid h-fit gap-4 lg:sticky lg:top-5">
-            <section className="rounded-xl border border-[#d5e2e8] bg-white p-4">
-              <h2 className="flex items-center gap-2 text-sm font-semibold uppercase text-[#68737d]">
-                <Sparkles className="h-4 w-4 text-[#8a5c00]" aria-hidden="true" />
-                Tracks
-              </h2>
-              <div className="mt-4 grid gap-2">
-                {index.tracks.map((trackOption) => (
-                  <button
-                    key={trackOption.slug}
-                    type="button"
-                    onClick={() => setTrack(trackOption.name)}
-                    className={cn(
-                      "rounded-xl border border-[#d5e2e8] bg-white p-3 text-left transition hover:border-[#007c78]",
-                      track === trackOption.name && "border-[#00645f] bg-[#eaf7f4]",
-                    )}
-                  >
-                    <span className="block text-sm font-semibold text-[#263238]">{trackOption.name}</span>
-                    <span className="mt-1 block text-xs font-medium text-[#68737d]">
-                      {trackOption.documentCount} docs - {trackOption.topics.join(", ")}
-                    </span>
-                  </button>
-                ))}
-              </div>
-            </section>
-
-            <section className="rounded-xl border border-[#d5e2e8] bg-white p-4">
-              <h2 className="flex items-center gap-2 text-sm font-semibold uppercase text-[#68737d]">
-                <CheckCircle2 className="h-4 w-4 text-[#007c78]" aria-hidden="true" />
-                Library overview
-              </h2>
-              <div className="mt-4 grid gap-2 text-sm font-medium text-[#68737d]">
-                <div className="flex items-center justify-between rounded-xl bg-[#f6fbfc] px-3 py-2">
-                  <span>Published lessons</span>
-                  <span className="font-semibold text-[#007c78]">{index.documents.filter((doc) => doc.status === "published").length}</span>
-                </div>
-                <div className="flex items-center justify-between rounded-xl bg-[#f6fbfc] px-3 py-2">
-                  <span>Diagrams</span>
-                  <span className="font-semibold text-[#245fba]">{index.diagrams.length}</span>
-                </div>
-                <div className="flex items-center justify-between rounded-xl bg-[#f6fbfc] px-3 py-2">
-                  <span>Senior+</span>
-                  <span className="font-semibold text-[#8a5c00]">
-                    {index.documents.filter((doc) => doc.difficulty === "senior" || doc.difficulty === "principal").length}
-                  </span>
-                </div>
-              </div>
-            </section>
-          </aside>
+          <details className="ui-disclosure">
+            <summary>Library overview</summary>
+            <dl className="ui-metadata">
+              <div><dt>Published lessons</dt><dd>{index.documents.filter(doc => doc.status === "published").length}</dd></div>
+              <div><dt>Diagrams</dt><dd>{index.diagrams.length}</dd></div>
+              <div><dt>Senior and principal</dt><dd>{index.documents.filter(doc => doc.difficulty === "senior" || doc.difficulty === "principal").length}</dd></div>
+            </dl>
+          </details>
         </div>
       </section>
     </main>

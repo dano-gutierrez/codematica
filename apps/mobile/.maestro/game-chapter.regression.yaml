@@ -12,6 +12,11 @@ onFlowComplete:
     }
   },
   {
+    "assertVisible": {
+      "id": "mobile-nav-learn"
+    }
+  },
+  {
     "setAirplaneMode": "enabled"
   },
   {
@@ -35,7 +40,8 @@ onFlowComplete:
         "id": "game-scenario-main"
       },
       "direction": "DOWN",
-      "centerElement": true,
+      "speed": 80,
+      "centerElement": false,
       "timeout": 20000
     }
   },
@@ -50,20 +56,52 @@ onFlowComplete:
         "id": "game-code"
       },
       "direction": "DOWN",
-      "centerElement": true,
+      "speed": 80,
+      "centerElement": false,
       "timeout": 20000
     }
   },
   {
-    "tapOn": {
-      "id": "game-code"
+    "longPressOn": {
+      "id": "game-code",
+      "point": "25%,20%"
     }
   },
   {
-    "eraseText": 36
+    "runFlow": {
+      "when": {
+        "platform": "Android",
+        "notVisible": "Select [Aa]ll"
+      },
+      "commands": [
+        {
+          "tapOn": {
+            "id": "android:id/overflow"
+          }
+        }
+      ]
+    }
   },
   {
-    "inputText": "grid-column: 2 / span 1;\ngrid-row: 1 / span 1;"
+    "tapOn": "Select [Aa]ll"
+  },
+  {
+    "eraseText": 1
+  },
+  {
+    "inputText": "grid-column: 2 / span 1;"
+  },
+  {
+    "pressKey": "Enter"
+  },
+  {
+    "inputText": "grid-row: 1 / span 1;"
+  },
+  {
+    "assertVisible": {
+      "id": "game-code",
+      "text": "^grid-column: 2 / span 1;\ngrid-row: 1 / span 1;$"
+    }
   },
   "hideKeyboard",
   {
@@ -72,7 +110,8 @@ onFlowComplete:
         "id": "game-run"
       },
       "direction": "DOWN",
-      "centerElement": true,
+      "speed": 80,
+      "centerElement": false,
       "timeout": 20000
     }
   },
@@ -87,7 +126,8 @@ onFlowComplete:
         "text": "Signal restored!"
       },
       "direction": "DOWN",
-      "centerElement": true,
+      "speed": 80,
+      "centerElement": false,
       "timeout": 20000
     }
   },
@@ -97,10 +137,33 @@ onFlowComplete:
   {
     "scrollUntilVisible": {
       "element": {
+        "id": "game-run"
+      },
+      "direction": "UP",
+      "speed": 20,
+      "centerElement": false,
+      "timeout": 20000
+    }
+  },
+  {
+    "scrollUntilVisible": {
+      "element": {
+        "id": "game-code"
+      },
+      "direction": "UP",
+      "speed": 80,
+      "centerElement": false,
+      "timeout": 20000
+    }
+  },
+  {
+    "scrollUntilVisible": {
+      "element": {
         "id": "game-scenario-mastery-1"
       },
       "direction": "UP",
-      "centerElement": true,
+      "speed": 80,
+      "centerElement": false,
       "timeout": 20000
     }
   },
@@ -115,20 +178,52 @@ onFlowComplete:
         "id": "game-code"
       },
       "direction": "DOWN",
-      "centerElement": true,
+      "speed": 80,
+      "centerElement": false,
       "timeout": 20000
     }
   },
   {
-    "tapOn": {
-      "id": "game-code"
+    "longPressOn": {
+      "id": "game-code",
+      "point": "25%,20%"
     }
   },
   {
-    "eraseText": 36
+    "runFlow": {
+      "when": {
+        "platform": "Android",
+        "notVisible": "Select [Aa]ll"
+      },
+      "commands": [
+        {
+          "tapOn": {
+            "id": "android:id/overflow"
+          }
+        }
+      ]
+    }
   },
   {
-    "inputText": "grid-column: 3 / span 1;\ngrid-row: 1 / span 1;"
+    "tapOn": "Select [Aa]ll"
+  },
+  {
+    "eraseText": 1
+  },
+  {
+    "inputText": "grid-column: 3 / span 1;"
+  },
+  {
+    "pressKey": "Enter"
+  },
+  {
+    "inputText": "grid-row: 1 / span 1;"
+  },
+  {
+    "assertVisible": {
+      "id": "game-code",
+      "text": "^grid-column: 3 / span 1;\ngrid-row: 1 / span 1;$"
+    }
   },
   "hideKeyboard",
   {
@@ -137,7 +232,8 @@ onFlowComplete:
         "id": "game-run"
       },
       "direction": "DOWN",
-      "centerElement": true,
+      "speed": 80,
+      "centerElement": false,
       "timeout": 20000
     }
   },
@@ -152,7 +248,8 @@ onFlowComplete:
         "text": "Signal restored!"
       },
       "direction": "DOWN",
-      "centerElement": true,
+      "speed": 80,
+      "centerElement": false,
       "timeout": 20000
     }
   },
@@ -162,10 +259,33 @@ onFlowComplete:
   {
     "scrollUntilVisible": {
       "element": {
+        "id": "game-run"
+      },
+      "direction": "UP",
+      "speed": 20,
+      "centerElement": false,
+      "timeout": 20000
+    }
+  },
+  {
+    "scrollUntilVisible": {
+      "element": {
+        "id": "game-code"
+      },
+      "direction": "UP",
+      "speed": 80,
+      "centerElement": false,
+      "timeout": 20000
+    }
+  },
+  {
+    "scrollUntilVisible": {
+      "element": {
         "id": "game-scenario-mastery-2"
       },
       "direction": "UP",
-      "centerElement": true,
+      "speed": 80,
+      "centerElement": false,
       "timeout": 20000
     }
   },
@@ -180,20 +300,52 @@ onFlowComplete:
         "id": "game-code"
       },
       "direction": "DOWN",
-      "centerElement": true,
+      "speed": 80,
+      "centerElement": false,
       "timeout": 20000
     }
   },
   {
-    "tapOn": {
-      "id": "game-code"
+    "longPressOn": {
+      "id": "game-code",
+      "point": "25%,20%"
     }
   },
   {
-    "eraseText": 36
+    "runFlow": {
+      "when": {
+        "platform": "Android",
+        "notVisible": "Select [Aa]ll"
+      },
+      "commands": [
+        {
+          "tapOn": {
+            "id": "android:id/overflow"
+          }
+        }
+      ]
+    }
   },
   {
-    "inputText": "grid-column: 4 / span 1;\ngrid-row: 1 / span 1;"
+    "tapOn": "Select [Aa]ll"
+  },
+  {
+    "eraseText": 1
+  },
+  {
+    "inputText": "grid-column: 4 / span 1;"
+  },
+  {
+    "pressKey": "Enter"
+  },
+  {
+    "inputText": "grid-row: 1 / span 1;"
+  },
+  {
+    "assertVisible": {
+      "id": "game-code",
+      "text": "^grid-column: 4 / span 1;\ngrid-row: 1 / span 1;$"
+    }
   },
   "hideKeyboard",
   {
@@ -202,7 +354,8 @@ onFlowComplete:
         "id": "game-run"
       },
       "direction": "DOWN",
-      "centerElement": true,
+      "speed": 80,
+      "centerElement": false,
       "timeout": 20000
     }
   },
@@ -217,7 +370,8 @@ onFlowComplete:
         "text": "Signal restored!"
       },
       "direction": "DOWN",
-      "centerElement": true,
+      "speed": 80,
+      "centerElement": false,
       "timeout": 20000
     }
   },
@@ -225,6 +379,11 @@ onFlowComplete:
     "assertVisible": "Signal restored!"
   },
   "launchApp",
+  {
+    "assertVisible": {
+      "id": "mobile-nav-learn"
+    }
+  },
   {
     "openLink": "codematica://play/restore-the-signal/target-lock"
   },
@@ -246,7 +405,8 @@ onFlowComplete:
         "id": "game-scenario-main"
       },
       "direction": "DOWN",
-      "centerElement": true,
+      "speed": 80,
+      "centerElement": false,
       "timeout": 20000
     }
   },
@@ -261,20 +421,46 @@ onFlowComplete:
         "id": "game-code"
       },
       "direction": "DOWN",
-      "centerElement": true,
+      "speed": 80,
+      "centerElement": false,
       "timeout": 20000
     }
   },
   {
-    "tapOn": {
-      "id": "game-code"
+    "longPressOn": {
+      "id": "game-code",
+      "point": "25%,20%"
     }
   },
   {
-    "eraseText": 23
+    "runFlow": {
+      "when": {
+        "platform": "Android",
+        "notVisible": "Select [Aa]ll"
+      },
+      "commands": [
+        {
+          "tapOn": {
+            "id": "android:id/overflow"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "tapOn": "Select [Aa]ll"
+  },
+  {
+    "eraseText": 1
   },
   {
     "inputText": "SELECT id FROM zombies WHERE kind = 'runner'"
+  },
+  {
+    "assertVisible": {
+      "id": "game-code",
+      "text": "^SELECT id FROM zombies WHERE kind = 'runner'$"
+    }
   },
   "hideKeyboard",
   {
@@ -283,7 +469,8 @@ onFlowComplete:
         "id": "game-run"
       },
       "direction": "DOWN",
-      "centerElement": true,
+      "speed": 80,
+      "centerElement": false,
       "timeout": 20000
     }
   },
@@ -298,7 +485,8 @@ onFlowComplete:
         "text": "Signal restored!"
       },
       "direction": "DOWN",
-      "centerElement": true,
+      "speed": 80,
+      "centerElement": false,
       "timeout": 20000
     }
   },
@@ -308,10 +496,33 @@ onFlowComplete:
   {
     "scrollUntilVisible": {
       "element": {
+        "id": "game-run"
+      },
+      "direction": "UP",
+      "speed": 20,
+      "centerElement": false,
+      "timeout": 20000
+    }
+  },
+  {
+    "scrollUntilVisible": {
+      "element": {
+        "id": "game-code"
+      },
+      "direction": "UP",
+      "speed": 80,
+      "centerElement": false,
+      "timeout": 20000
+    }
+  },
+  {
+    "scrollUntilVisible": {
+      "element": {
         "id": "game-scenario-mastery-1"
       },
       "direction": "UP",
-      "centerElement": true,
+      "speed": 80,
+      "centerElement": false,
       "timeout": 20000
     }
   },
@@ -326,20 +537,46 @@ onFlowComplete:
         "id": "game-code"
       },
       "direction": "DOWN",
-      "centerElement": true,
+      "speed": 80,
+      "centerElement": false,
       "timeout": 20000
     }
   },
   {
-    "tapOn": {
-      "id": "game-code"
+    "longPressOn": {
+      "id": "game-code",
+      "point": "25%,20%"
     }
   },
   {
-    "eraseText": 23
+    "runFlow": {
+      "when": {
+        "platform": "Android",
+        "notVisible": "Select [Aa]ll"
+      },
+      "commands": [
+        {
+          "tapOn": {
+            "id": "android:id/overflow"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "tapOn": "Select [Aa]ll"
+  },
+  {
+    "eraseText": 1
   },
   {
     "inputText": "SELECT id FROM zombies WHERE zone = 'canal';"
+  },
+  {
+    "assertVisible": {
+      "id": "game-code",
+      "text": "^SELECT id FROM zombies WHERE zone = 'canal';$"
+    }
   },
   "hideKeyboard",
   {
@@ -348,7 +585,8 @@ onFlowComplete:
         "id": "game-run"
       },
       "direction": "DOWN",
-      "centerElement": true,
+      "speed": 80,
+      "centerElement": false,
       "timeout": 20000
     }
   },
@@ -363,7 +601,8 @@ onFlowComplete:
         "text": "Signal restored!"
       },
       "direction": "DOWN",
-      "centerElement": true,
+      "speed": 80,
+      "centerElement": false,
       "timeout": 20000
     }
   },
@@ -373,10 +612,33 @@ onFlowComplete:
   {
     "scrollUntilVisible": {
       "element": {
+        "id": "game-run"
+      },
+      "direction": "UP",
+      "speed": 20,
+      "centerElement": false,
+      "timeout": 20000
+    }
+  },
+  {
+    "scrollUntilVisible": {
+      "element": {
+        "id": "game-code"
+      },
+      "direction": "UP",
+      "speed": 80,
+      "centerElement": false,
+      "timeout": 20000
+    }
+  },
+  {
+    "scrollUntilVisible": {
+      "element": {
         "id": "game-scenario-mastery-2"
       },
       "direction": "UP",
-      "centerElement": true,
+      "speed": 80,
+      "centerElement": false,
       "timeout": 20000
     }
   },
@@ -391,20 +653,46 @@ onFlowComplete:
         "id": "game-code"
       },
       "direction": "DOWN",
-      "centerElement": true,
+      "speed": 80,
+      "centerElement": false,
       "timeout": 20000
     }
   },
   {
-    "tapOn": {
-      "id": "game-code"
+    "longPressOn": {
+      "id": "game-code",
+      "point": "25%,20%"
     }
   },
   {
-    "eraseText": 23
+    "runFlow": {
+      "when": {
+        "platform": "Android",
+        "notVisible": "Select [Aa]ll"
+      },
+      "commands": [
+        {
+          "tapOn": {
+            "id": "android:id/overflow"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "tapOn": "Select [Aa]ll"
+  },
+  {
+    "eraseText": 1
   },
   {
     "inputText": "SELECT id FROM zombies WHERE threat >= 3;"
+  },
+  {
+    "assertVisible": {
+      "id": "game-code",
+      "text": "^SELECT id FROM zombies WHERE threat >= 3;$"
+    }
   },
   "hideKeyboard",
   {
@@ -413,7 +701,8 @@ onFlowComplete:
         "id": "game-run"
       },
       "direction": "DOWN",
-      "centerElement": true,
+      "speed": 80,
+      "centerElement": false,
       "timeout": 20000
     }
   },
@@ -428,7 +717,8 @@ onFlowComplete:
         "text": "Signal restored!"
       },
       "direction": "DOWN",
-      "centerElement": true,
+      "speed": 80,
+      "centerElement": false,
       "timeout": 20000
     }
   },
@@ -436,6 +726,11 @@ onFlowComplete:
     "assertVisible": "Signal restored!"
   },
   "launchApp",
+  {
+    "assertVisible": {
+      "id": "mobile-nav-learn"
+    }
+  },
   {
     "openLink": "codematica://play/restore-the-signal/open-the-gate"
   },
@@ -457,7 +752,8 @@ onFlowComplete:
         "id": "game-scenario-main"
       },
       "direction": "DOWN",
-      "centerElement": true,
+      "speed": 80,
+      "centerElement": false,
       "timeout": 20000
     }
   },
@@ -472,7 +768,8 @@ onFlowComplete:
         "id": "game-port-gate.send"
       },
       "direction": "DOWN",
-      "centerElement": true,
+      "speed": 20,
+      "centerElement": false,
       "timeout": 20000
     }
   },
@@ -487,7 +784,8 @@ onFlowComplete:
         "id": "game-port-service.in"
       },
       "direction": "DOWN",
-      "centerElement": true,
+      "speed": 20,
+      "centerElement": false,
       "timeout": 20000
     }
   },
@@ -502,7 +800,8 @@ onFlowComplete:
         "id": "game-port-service.read"
       },
       "direction": "DOWN",
-      "centerElement": true,
+      "speed": 20,
+      "centerElement": false,
       "timeout": 20000
     }
   },
@@ -517,7 +816,8 @@ onFlowComplete:
         "id": "game-port-store.in"
       },
       "direction": "DOWN",
-      "centerElement": true,
+      "speed": 20,
+      "centerElement": false,
       "timeout": 20000
     }
   },
@@ -532,7 +832,8 @@ onFlowComplete:
         "id": "game-port-store.out"
       },
       "direction": "DOWN",
-      "centerElement": true,
+      "speed": 20,
+      "centerElement": false,
       "timeout": 20000
     }
   },
@@ -547,7 +848,8 @@ onFlowComplete:
         "id": "game-port-service.data"
       },
       "direction": "UP",
-      "centerElement": true,
+      "speed": 20,
+      "centerElement": false,
       "timeout": 20000
     }
   },
@@ -562,7 +864,8 @@ onFlowComplete:
         "id": "game-port-service.out"
       },
       "direction": "DOWN",
-      "centerElement": true,
+      "speed": 20,
+      "centerElement": false,
       "timeout": 20000
     }
   },
@@ -577,7 +880,8 @@ onFlowComplete:
         "id": "game-port-gate.receive"
       },
       "direction": "UP",
-      "centerElement": true,
+      "speed": 20,
+      "centerElement": false,
       "timeout": 20000
     }
   },
@@ -592,7 +896,8 @@ onFlowComplete:
         "id": "game-run"
       },
       "direction": "DOWN",
-      "centerElement": true,
+      "speed": 80,
+      "centerElement": false,
       "timeout": 20000
     }
   },
@@ -607,7 +912,8 @@ onFlowComplete:
         "text": "Signal restored!"
       },
       "direction": "DOWN",
-      "centerElement": true,
+      "speed": 80,
+      "centerElement": false,
       "timeout": 20000
     }
   },
@@ -617,10 +923,33 @@ onFlowComplete:
   {
     "scrollUntilVisible": {
       "element": {
+        "id": "game-run"
+      },
+      "direction": "UP",
+      "speed": 20,
+      "centerElement": false,
+      "timeout": 20000
+    }
+  },
+  {
+    "scrollUntilVisible": {
+      "element": {
+        "id": "game-port-gate.send"
+      },
+      "direction": "UP",
+      "speed": 20,
+      "centerElement": false,
+      "timeout": 20000
+    }
+  },
+  {
+    "scrollUntilVisible": {
+      "element": {
         "id": "game-scenario-mastery-1"
       },
       "direction": "UP",
-      "centerElement": true,
+      "speed": 80,
+      "centerElement": false,
       "timeout": 20000
     }
   },
@@ -635,7 +964,8 @@ onFlowComplete:
         "id": "game-port-gate.send"
       },
       "direction": "DOWN",
-      "centerElement": true,
+      "speed": 20,
+      "centerElement": false,
       "timeout": 20000
     }
   },
@@ -650,7 +980,8 @@ onFlowComplete:
         "id": "game-port-proxy.in"
       },
       "direction": "DOWN",
-      "centerElement": true,
+      "speed": 20,
+      "centerElement": false,
       "timeout": 20000
     }
   },
@@ -665,7 +996,8 @@ onFlowComplete:
         "id": "game-port-proxy.send"
       },
       "direction": "DOWN",
-      "centerElement": true,
+      "speed": 20,
+      "centerElement": false,
       "timeout": 20000
     }
   },
@@ -680,7 +1012,8 @@ onFlowComplete:
         "id": "game-port-service.in"
       },
       "direction": "UP",
-      "centerElement": true,
+      "speed": 20,
+      "centerElement": false,
       "timeout": 20000
     }
   },
@@ -695,7 +1028,8 @@ onFlowComplete:
         "id": "game-port-service.read"
       },
       "direction": "DOWN",
-      "centerElement": true,
+      "speed": 20,
+      "centerElement": false,
       "timeout": 20000
     }
   },
@@ -710,7 +1044,8 @@ onFlowComplete:
         "id": "game-port-store.in"
       },
       "direction": "DOWN",
-      "centerElement": true,
+      "speed": 20,
+      "centerElement": false,
       "timeout": 20000
     }
   },
@@ -725,7 +1060,8 @@ onFlowComplete:
         "id": "game-port-store.out"
       },
       "direction": "DOWN",
-      "centerElement": true,
+      "speed": 20,
+      "centerElement": false,
       "timeout": 20000
     }
   },
@@ -740,7 +1076,8 @@ onFlowComplete:
         "id": "game-port-service.data"
       },
       "direction": "UP",
-      "centerElement": true,
+      "speed": 20,
+      "centerElement": false,
       "timeout": 20000
     }
   },
@@ -755,7 +1092,8 @@ onFlowComplete:
         "id": "game-port-service.out"
       },
       "direction": "DOWN",
-      "centerElement": true,
+      "speed": 20,
+      "centerElement": false,
       "timeout": 20000
     }
   },
@@ -770,7 +1108,8 @@ onFlowComplete:
         "id": "game-port-proxy.data"
       },
       "direction": "DOWN",
-      "centerElement": true,
+      "speed": 20,
+      "centerElement": false,
       "timeout": 20000
     }
   },
@@ -785,7 +1124,8 @@ onFlowComplete:
         "id": "game-port-proxy.return"
       },
       "direction": "DOWN",
-      "centerElement": true,
+      "speed": 20,
+      "centerElement": false,
       "timeout": 20000
     }
   },
@@ -800,7 +1140,8 @@ onFlowComplete:
         "id": "game-port-gate.receive"
       },
       "direction": "UP",
-      "centerElement": true,
+      "speed": 20,
+      "centerElement": false,
       "timeout": 20000
     }
   },
@@ -815,7 +1156,8 @@ onFlowComplete:
         "id": "game-run"
       },
       "direction": "DOWN",
-      "centerElement": true,
+      "speed": 80,
+      "centerElement": false,
       "timeout": 20000
     }
   },
@@ -830,7 +1172,8 @@ onFlowComplete:
         "text": "Signal restored!"
       },
       "direction": "DOWN",
-      "centerElement": true,
+      "speed": 80,
+      "centerElement": false,
       "timeout": 20000
     }
   },
@@ -840,10 +1183,33 @@ onFlowComplete:
   {
     "scrollUntilVisible": {
       "element": {
+        "id": "game-run"
+      },
+      "direction": "UP",
+      "speed": 20,
+      "centerElement": false,
+      "timeout": 20000
+    }
+  },
+  {
+    "scrollUntilVisible": {
+      "element": {
+        "id": "game-port-gate.send"
+      },
+      "direction": "UP",
+      "speed": 20,
+      "centerElement": false,
+      "timeout": 20000
+    }
+  },
+  {
+    "scrollUntilVisible": {
+      "element": {
         "id": "game-scenario-mastery-2"
       },
       "direction": "UP",
-      "centerElement": true,
+      "speed": 80,
+      "centerElement": false,
       "timeout": 20000
     }
   },
@@ -858,7 +1224,8 @@ onFlowComplete:
         "id": "game-port-gate.send"
       },
       "direction": "DOWN",
-      "centerElement": true,
+      "speed": 20,
+      "centerElement": false,
       "timeout": 20000
     }
   },
@@ -873,7 +1240,8 @@ onFlowComplete:
         "id": "game-port-proxy.in"
       },
       "direction": "DOWN",
-      "centerElement": true,
+      "speed": 20,
+      "centerElement": false,
       "timeout": 20000
     }
   },
@@ -888,7 +1256,8 @@ onFlowComplete:
         "id": "game-port-proxy.send"
       },
       "direction": "DOWN",
-      "centerElement": true,
+      "speed": 20,
+      "centerElement": false,
       "timeout": 20000
     }
   },
@@ -903,7 +1272,8 @@ onFlowComplete:
         "id": "game-port-service.in"
       },
       "direction": "UP",
-      "centerElement": true,
+      "speed": 20,
+      "centerElement": false,
       "timeout": 20000
     }
   },
@@ -918,7 +1288,8 @@ onFlowComplete:
         "id": "game-port-service.read"
       },
       "direction": "DOWN",
-      "centerElement": true,
+      "speed": 20,
+      "centerElement": false,
       "timeout": 20000
     }
   },
@@ -933,7 +1304,8 @@ onFlowComplete:
         "id": "game-port-store.in"
       },
       "direction": "DOWN",
-      "centerElement": true,
+      "speed": 20,
+      "centerElement": false,
       "timeout": 20000
     }
   },
@@ -948,7 +1320,8 @@ onFlowComplete:
         "id": "game-port-store.out"
       },
       "direction": "DOWN",
-      "centerElement": true,
+      "speed": 20,
+      "centerElement": false,
       "timeout": 20000
     }
   },
@@ -963,7 +1336,8 @@ onFlowComplete:
         "id": "game-port-service.data"
       },
       "direction": "UP",
-      "centerElement": true,
+      "speed": 20,
+      "centerElement": false,
       "timeout": 20000
     }
   },
@@ -978,7 +1352,8 @@ onFlowComplete:
         "id": "game-port-service.out"
       },
       "direction": "DOWN",
-      "centerElement": true,
+      "speed": 20,
+      "centerElement": false,
       "timeout": 20000
     }
   },
@@ -993,7 +1368,8 @@ onFlowComplete:
         "id": "game-port-proxy.data"
       },
       "direction": "DOWN",
-      "centerElement": true,
+      "speed": 20,
+      "centerElement": false,
       "timeout": 20000
     }
   },
@@ -1008,7 +1384,8 @@ onFlowComplete:
         "id": "game-port-proxy.return"
       },
       "direction": "DOWN",
-      "centerElement": true,
+      "speed": 20,
+      "centerElement": false,
       "timeout": 20000
     }
   },
@@ -1023,7 +1400,8 @@ onFlowComplete:
         "id": "game-port-gate.receive"
       },
       "direction": "UP",
-      "centerElement": true,
+      "speed": 20,
+      "centerElement": false,
       "timeout": 20000
     }
   },
@@ -1038,7 +1416,8 @@ onFlowComplete:
         "id": "game-port-proxy.receipt"
       },
       "direction": "DOWN",
-      "centerElement": true,
+      "speed": 20,
+      "centerElement": false,
       "timeout": 20000
     }
   },
@@ -1053,7 +1432,8 @@ onFlowComplete:
         "id": "game-port-receipt.in"
       },
       "direction": "DOWN",
-      "centerElement": true,
+      "speed": 20,
+      "centerElement": false,
       "timeout": 20000
     }
   },
@@ -1068,7 +1448,8 @@ onFlowComplete:
         "id": "game-run"
       },
       "direction": "DOWN",
-      "centerElement": true,
+      "speed": 80,
+      "centerElement": false,
       "timeout": 20000
     }
   },
@@ -1083,7 +1464,8 @@ onFlowComplete:
         "text": "Signal restored!"
       },
       "direction": "DOWN",
-      "centerElement": true,
+      "speed": 80,
+      "centerElement": false,
       "timeout": 20000
     }
   },
@@ -1091,6 +1473,11 @@ onFlowComplete:
     "assertVisible": "Signal restored!"
   },
   "launchApp",
+  {
+    "assertVisible": {
+      "id": "mobile-nav-learn"
+    }
+  },
   {
     "openLink": "codematica://play/restore-the-signal/first-outpost"
   },
@@ -1112,7 +1499,8 @@ onFlowComplete:
         "id": "game-scenario-main"
       },
       "direction": "DOWN",
-      "centerElement": true,
+      "speed": 80,
+      "centerElement": false,
       "timeout": 20000
     }
   },
@@ -1127,7 +1515,8 @@ onFlowComplete:
         "id": "game-piece-client"
       },
       "direction": "DOWN",
-      "centerElement": true,
+      "speed": 20,
+      "centerElement": false,
       "timeout": 20000
     }
   },
@@ -1142,7 +1531,8 @@ onFlowComplete:
         "id": "game-piece-database"
       },
       "direction": "DOWN",
-      "centerElement": true,
+      "speed": 20,
+      "centerElement": false,
       "timeout": 20000
     }
   },
@@ -1157,7 +1547,8 @@ onFlowComplete:
         "id": "game-piece-api-1"
       },
       "direction": "DOWN",
-      "centerElement": true,
+      "speed": 20,
+      "centerElement": false,
       "timeout": 20000
     }
   },
@@ -1169,11 +1560,38 @@ onFlowComplete:
   {
     "scrollUntilVisible": {
       "element": {
-        "id": "game-connect-client"
+        "id": "game-connect-api-1"
       },
       "direction": "DOWN",
-      "centerElement": true,
+      "speed": 20,
+      "centerElement": false,
       "timeout": 20000
+    }
+  },
+  {
+    "scrollUntilVisible": {
+      "element": {
+        "id": "game-connect-client"
+      },
+      "direction": "UP",
+      "speed": 20,
+      "centerElement": false,
+      "timeout": 20000
+    }
+  },
+  {
+    "assertVisible": {
+      "id": "game-connect-client"
+    }
+  },
+  {
+    "assertVisible": {
+      "id": "game-connect-database"
+    }
+  },
+  {
+    "assertVisible": {
+      "id": "game-connect-api-1"
     }
   },
   {
@@ -1182,43 +1600,13 @@ onFlowComplete:
     }
   },
   {
-    "scrollUntilVisible": {
-      "element": {
-        "id": "game-connect-api-1"
-      },
-      "direction": "DOWN",
-      "centerElement": true,
-      "timeout": 20000
-    }
-  },
-  {
     "tapOn": {
       "id": "game-connect-api-1"
     }
   },
   {
-    "scrollUntilVisible": {
-      "element": {
-        "id": "game-connect-api-1"
-      },
-      "direction": "DOWN",
-      "centerElement": true,
-      "timeout": 20000
-    }
-  },
-  {
     "tapOn": {
       "id": "game-connect-api-1"
-    }
-  },
-  {
-    "scrollUntilVisible": {
-      "element": {
-        "id": "game-connect-database"
-      },
-      "direction": "DOWN",
-      "centerElement": true,
-      "timeout": 20000
     }
   },
   {
@@ -1232,7 +1620,8 @@ onFlowComplete:
         "id": "game-run"
       },
       "direction": "DOWN",
-      "centerElement": true,
+      "speed": 80,
+      "centerElement": false,
       "timeout": 20000
     }
   },
@@ -1247,7 +1636,8 @@ onFlowComplete:
         "text": "Signal restored!"
       },
       "direction": "DOWN",
-      "centerElement": true,
+      "speed": 80,
+      "centerElement": false,
       "timeout": 20000
     }
   },
@@ -1257,10 +1647,33 @@ onFlowComplete:
   {
     "scrollUntilVisible": {
       "element": {
+        "id": "game-board"
+      },
+      "direction": "UP",
+      "speed": 80,
+      "centerElement": false,
+      "timeout": 20000
+    }
+  },
+  {
+    "scrollUntilVisible": {
+      "element": {
+        "id": "game-piece-client"
+      },
+      "direction": "UP",
+      "speed": 20,
+      "centerElement": false,
+      "timeout": 20000
+    }
+  },
+  {
+    "scrollUntilVisible": {
+      "element": {
         "id": "game-scenario-mastery-1"
       },
       "direction": "UP",
-      "centerElement": true,
+      "speed": 80,
+      "centerElement": false,
       "timeout": 20000
     }
   },
@@ -1275,7 +1688,8 @@ onFlowComplete:
         "id": "game-piece-client"
       },
       "direction": "DOWN",
-      "centerElement": true,
+      "speed": 20,
+      "centerElement": false,
       "timeout": 20000
     }
   },
@@ -1290,7 +1704,8 @@ onFlowComplete:
         "id": "game-piece-database"
       },
       "direction": "DOWN",
-      "centerElement": true,
+      "speed": 20,
+      "centerElement": false,
       "timeout": 20000
     }
   },
@@ -1305,7 +1720,8 @@ onFlowComplete:
         "id": "game-piece-proxy"
       },
       "direction": "DOWN",
-      "centerElement": true,
+      "speed": 20,
+      "centerElement": false,
       "timeout": 20000
     }
   },
@@ -1320,7 +1736,8 @@ onFlowComplete:
         "id": "game-piece-api-1"
       },
       "direction": "UP",
-      "centerElement": true,
+      "speed": 20,
+      "centerElement": false,
       "timeout": 20000
     }
   },
@@ -1335,7 +1752,8 @@ onFlowComplete:
         "id": "game-piece-api-2"
       },
       "direction": "DOWN",
-      "centerElement": true,
+      "speed": 20,
+      "centerElement": false,
       "timeout": 20000
     }
   },
@@ -1347,11 +1765,48 @@ onFlowComplete:
   {
     "scrollUntilVisible": {
       "element": {
-        "id": "game-connect-client"
+        "id": "game-connect-api-2"
       },
       "direction": "DOWN",
-      "centerElement": true,
+      "speed": 20,
+      "centerElement": false,
       "timeout": 20000
+    }
+  },
+  {
+    "scrollUntilVisible": {
+      "element": {
+        "id": "game-connect-client"
+      },
+      "direction": "UP",
+      "speed": 20,
+      "centerElement": false,
+      "timeout": 20000
+    }
+  },
+  {
+    "assertVisible": {
+      "id": "game-connect-client"
+    }
+  },
+  {
+    "assertVisible": {
+      "id": "game-connect-database"
+    }
+  },
+  {
+    "assertVisible": {
+      "id": "game-connect-proxy"
+    }
+  },
+  {
+    "assertVisible": {
+      "id": "game-connect-api-1"
+    }
+  },
+  {
+    "assertVisible": {
+      "id": "game-connect-api-2"
     }
   },
   {
@@ -1360,13 +1815,8 @@ onFlowComplete:
     }
   },
   {
-    "scrollUntilVisible": {
-      "element": {
-        "id": "game-connect-proxy"
-      },
-      "direction": "DOWN",
-      "centerElement": true,
-      "timeout": 20000
+    "tapOn": {
+      "id": "game-connect-proxy"
     }
   },
   {
@@ -1375,58 +1825,13 @@ onFlowComplete:
     }
   },
   {
-    "scrollUntilVisible": {
-      "element": {
-        "id": "game-connect-proxy"
-      },
-      "direction": "DOWN",
-      "centerElement": true,
-      "timeout": 20000
-    }
-  },
-  {
-    "tapOn": {
-      "id": "game-connect-proxy"
-    }
-  },
-  {
-    "scrollUntilVisible": {
-      "element": {
-        "id": "game-connect-api-1"
-      },
-      "direction": "DOWN",
-      "centerElement": true,
-      "timeout": 20000
-    }
-  },
-  {
     "tapOn": {
       "id": "game-connect-api-1"
     }
   },
   {
-    "scrollUntilVisible": {
-      "element": {
-        "id": "game-connect-api-1"
-      },
-      "direction": "DOWN",
-      "centerElement": true,
-      "timeout": 20000
-    }
-  },
-  {
     "tapOn": {
       "id": "game-connect-api-1"
-    }
-  },
-  {
-    "scrollUntilVisible": {
-      "element": {
-        "id": "game-connect-database"
-      },
-      "direction": "DOWN",
-      "centerElement": true,
-      "timeout": 20000
     }
   },
   {
@@ -1435,58 +1840,18 @@ onFlowComplete:
     }
   },
   {
-    "scrollUntilVisible": {
-      "element": {
-        "id": "game-connect-proxy"
-      },
-      "direction": "DOWN",
-      "centerElement": true,
-      "timeout": 20000
-    }
-  },
-  {
     "tapOn": {
       "id": "game-connect-proxy"
     }
   },
   {
-    "scrollUntilVisible": {
-      "element": {
-        "id": "game-connect-api-2"
-      },
-      "direction": "DOWN",
-      "centerElement": true,
-      "timeout": 20000
-    }
-  },
-  {
     "tapOn": {
       "id": "game-connect-api-2"
     }
   },
   {
-    "scrollUntilVisible": {
-      "element": {
-        "id": "game-connect-api-2"
-      },
-      "direction": "DOWN",
-      "centerElement": true,
-      "timeout": 20000
-    }
-  },
-  {
     "tapOn": {
       "id": "game-connect-api-2"
-    }
-  },
-  {
-    "scrollUntilVisible": {
-      "element": {
-        "id": "game-connect-database"
-      },
-      "direction": "DOWN",
-      "centerElement": true,
-      "timeout": 20000
     }
   },
   {
@@ -1500,7 +1865,8 @@ onFlowComplete:
         "id": "game-run"
       },
       "direction": "DOWN",
-      "centerElement": true,
+      "speed": 80,
+      "centerElement": false,
       "timeout": 20000
     }
   },
@@ -1515,7 +1881,8 @@ onFlowComplete:
         "text": "Signal restored!"
       },
       "direction": "DOWN",
-      "centerElement": true,
+      "speed": 80,
+      "centerElement": false,
       "timeout": 20000
     }
   },
@@ -1525,10 +1892,33 @@ onFlowComplete:
   {
     "scrollUntilVisible": {
       "element": {
+        "id": "game-board"
+      },
+      "direction": "UP",
+      "speed": 80,
+      "centerElement": false,
+      "timeout": 20000
+    }
+  },
+  {
+    "scrollUntilVisible": {
+      "element": {
+        "id": "game-piece-client"
+      },
+      "direction": "UP",
+      "speed": 20,
+      "centerElement": false,
+      "timeout": 20000
+    }
+  },
+  {
+    "scrollUntilVisible": {
+      "element": {
         "id": "game-scenario-mastery-2"
       },
       "direction": "UP",
-      "centerElement": true,
+      "speed": 80,
+      "centerElement": false,
       "timeout": 20000
     }
   },
@@ -1543,7 +1933,8 @@ onFlowComplete:
         "id": "game-piece-client"
       },
       "direction": "DOWN",
-      "centerElement": true,
+      "speed": 20,
+      "centerElement": false,
       "timeout": 20000
     }
   },
@@ -1558,7 +1949,8 @@ onFlowComplete:
         "id": "game-piece-database"
       },
       "direction": "DOWN",
-      "centerElement": true,
+      "speed": 20,
+      "centerElement": false,
       "timeout": 20000
     }
   },
@@ -1573,7 +1965,8 @@ onFlowComplete:
         "id": "game-piece-proxy"
       },
       "direction": "DOWN",
-      "centerElement": true,
+      "speed": 20,
+      "centerElement": false,
       "timeout": 20000
     }
   },
@@ -1588,7 +1981,8 @@ onFlowComplete:
         "id": "game-piece-api-1"
       },
       "direction": "UP",
-      "centerElement": true,
+      "speed": 20,
+      "centerElement": false,
       "timeout": 20000
     }
   },
@@ -1603,7 +1997,8 @@ onFlowComplete:
         "id": "game-piece-api-2"
       },
       "direction": "DOWN",
-      "centerElement": true,
+      "speed": 20,
+      "centerElement": false,
       "timeout": 20000
     }
   },
@@ -1615,11 +2010,48 @@ onFlowComplete:
   {
     "scrollUntilVisible": {
       "element": {
-        "id": "game-connect-client"
+        "id": "game-connect-api-2"
       },
       "direction": "DOWN",
-      "centerElement": true,
+      "speed": 20,
+      "centerElement": false,
       "timeout": 20000
+    }
+  },
+  {
+    "scrollUntilVisible": {
+      "element": {
+        "id": "game-connect-client"
+      },
+      "direction": "UP",
+      "speed": 20,
+      "centerElement": false,
+      "timeout": 20000
+    }
+  },
+  {
+    "assertVisible": {
+      "id": "game-connect-client"
+    }
+  },
+  {
+    "assertVisible": {
+      "id": "game-connect-database"
+    }
+  },
+  {
+    "assertVisible": {
+      "id": "game-connect-proxy"
+    }
+  },
+  {
+    "assertVisible": {
+      "id": "game-connect-api-1"
+    }
+  },
+  {
+    "assertVisible": {
+      "id": "game-connect-api-2"
     }
   },
   {
@@ -1628,13 +2060,8 @@ onFlowComplete:
     }
   },
   {
-    "scrollUntilVisible": {
-      "element": {
-        "id": "game-connect-proxy"
-      },
-      "direction": "DOWN",
-      "centerElement": true,
-      "timeout": 20000
+    "tapOn": {
+      "id": "game-connect-proxy"
     }
   },
   {
@@ -1643,58 +2070,13 @@ onFlowComplete:
     }
   },
   {
-    "scrollUntilVisible": {
-      "element": {
-        "id": "game-connect-proxy"
-      },
-      "direction": "DOWN",
-      "centerElement": true,
-      "timeout": 20000
-    }
-  },
-  {
-    "tapOn": {
-      "id": "game-connect-proxy"
-    }
-  },
-  {
-    "scrollUntilVisible": {
-      "element": {
-        "id": "game-connect-api-1"
-      },
-      "direction": "DOWN",
-      "centerElement": true,
-      "timeout": 20000
-    }
-  },
-  {
     "tapOn": {
       "id": "game-connect-api-1"
     }
   },
   {
-    "scrollUntilVisible": {
-      "element": {
-        "id": "game-connect-api-1"
-      },
-      "direction": "DOWN",
-      "centerElement": true,
-      "timeout": 20000
-    }
-  },
-  {
     "tapOn": {
       "id": "game-connect-api-1"
-    }
-  },
-  {
-    "scrollUntilVisible": {
-      "element": {
-        "id": "game-connect-database"
-      },
-      "direction": "DOWN",
-      "centerElement": true,
-      "timeout": 20000
     }
   },
   {
@@ -1703,58 +2085,18 @@ onFlowComplete:
     }
   },
   {
-    "scrollUntilVisible": {
-      "element": {
-        "id": "game-connect-proxy"
-      },
-      "direction": "DOWN",
-      "centerElement": true,
-      "timeout": 20000
-    }
-  },
-  {
     "tapOn": {
       "id": "game-connect-proxy"
     }
   },
   {
-    "scrollUntilVisible": {
-      "element": {
-        "id": "game-connect-api-2"
-      },
-      "direction": "DOWN",
-      "centerElement": true,
-      "timeout": 20000
-    }
-  },
-  {
     "tapOn": {
       "id": "game-connect-api-2"
     }
   },
   {
-    "scrollUntilVisible": {
-      "element": {
-        "id": "game-connect-api-2"
-      },
-      "direction": "DOWN",
-      "centerElement": true,
-      "timeout": 20000
-    }
-  },
-  {
     "tapOn": {
       "id": "game-connect-api-2"
-    }
-  },
-  {
-    "scrollUntilVisible": {
-      "element": {
-        "id": "game-connect-database"
-      },
-      "direction": "DOWN",
-      "centerElement": true,
-      "timeout": 20000
     }
   },
   {
@@ -1768,7 +2110,8 @@ onFlowComplete:
         "id": "game-run"
       },
       "direction": "DOWN",
-      "centerElement": true,
+      "speed": 80,
+      "centerElement": false,
       "timeout": 20000
     }
   },
@@ -1783,7 +2126,8 @@ onFlowComplete:
         "text": "Signal restored!"
       },
       "direction": "DOWN",
-      "centerElement": true,
+      "speed": 80,
+      "centerElement": false,
       "timeout": 20000
     }
   },
@@ -1791,6 +2135,11 @@ onFlowComplete:
     "assertVisible": "Signal restored!"
   },
   "launchApp",
+  {
+    "assertVisible": {
+      "id": "mobile-nav-learn"
+    }
+  },
   {
     "openLink": "codematica://play/restore-the-signal/crossfire"
   },
@@ -1812,7 +2161,8 @@ onFlowComplete:
         "id": "game-scenario-main"
       },
       "direction": "DOWN",
-      "centerElement": true,
+      "speed": 80,
+      "centerElement": false,
       "timeout": 20000
     }
   },
@@ -1827,20 +2177,52 @@ onFlowComplete:
         "id": "game-code"
       },
       "direction": "DOWN",
-      "centerElement": true,
+      "speed": 80,
+      "centerElement": false,
       "timeout": 20000
     }
   },
   {
-    "tapOn": {
-      "id": "game-code"
+    "longPressOn": {
+      "id": "game-code",
+      "point": "25%,20%"
     }
   },
   {
-    "eraseText": 36
+    "runFlow": {
+      "when": {
+        "platform": "Android",
+        "notVisible": "Select [Aa]ll"
+      },
+      "commands": [
+        {
+          "tapOn": {
+            "id": "android:id/overflow"
+          }
+        }
+      ]
+    }
   },
   {
-    "inputText": "grid-column: 2 / span 2;\ngrid-row: 2 / span 1;"
+    "tapOn": "Select [Aa]ll"
+  },
+  {
+    "eraseText": 1
+  },
+  {
+    "inputText": "grid-column: 2 / span 2;"
+  },
+  {
+    "pressKey": "Enter"
+  },
+  {
+    "inputText": "grid-row: 2 / span 1;"
+  },
+  {
+    "assertVisible": {
+      "id": "game-code",
+      "text": "^grid-column: 2 / span 2;\ngrid-row: 2 / span 1;$"
+    }
   },
   "hideKeyboard",
   {
@@ -1849,7 +2231,8 @@ onFlowComplete:
         "id": "game-run"
       },
       "direction": "DOWN",
-      "centerElement": true,
+      "speed": 80,
+      "centerElement": false,
       "timeout": 20000
     }
   },
@@ -1864,7 +2247,8 @@ onFlowComplete:
         "text": "Signal restored!"
       },
       "direction": "DOWN",
-      "centerElement": true,
+      "speed": 80,
+      "centerElement": false,
       "timeout": 20000
     }
   },
@@ -1874,10 +2258,33 @@ onFlowComplete:
   {
     "scrollUntilVisible": {
       "element": {
+        "id": "game-run"
+      },
+      "direction": "UP",
+      "speed": 20,
+      "centerElement": false,
+      "timeout": 20000
+    }
+  },
+  {
+    "scrollUntilVisible": {
+      "element": {
+        "id": "game-code"
+      },
+      "direction": "UP",
+      "speed": 80,
+      "centerElement": false,
+      "timeout": 20000
+    }
+  },
+  {
+    "scrollUntilVisible": {
+      "element": {
         "id": "game-scenario-mastery-1"
       },
       "direction": "UP",
-      "centerElement": true,
+      "speed": 80,
+      "centerElement": false,
       "timeout": 20000
     }
   },
@@ -1892,20 +2299,52 @@ onFlowComplete:
         "id": "game-code"
       },
       "direction": "DOWN",
-      "centerElement": true,
+      "speed": 80,
+      "centerElement": false,
       "timeout": 20000
     }
   },
   {
-    "tapOn": {
-      "id": "game-code"
+    "longPressOn": {
+      "id": "game-code",
+      "point": "25%,20%"
     }
   },
   {
-    "eraseText": 36
+    "runFlow": {
+      "when": {
+        "platform": "Android",
+        "notVisible": "Select [Aa]ll"
+      },
+      "commands": [
+        {
+          "tapOn": {
+            "id": "android:id/overflow"
+          }
+        }
+      ]
+    }
   },
   {
-    "inputText": "grid-column: 3 / span 2;\ngrid-row: 2 / span 1;"
+    "tapOn": "Select [Aa]ll"
+  },
+  {
+    "eraseText": 1
+  },
+  {
+    "inputText": "grid-column: 3 / span 2;"
+  },
+  {
+    "pressKey": "Enter"
+  },
+  {
+    "inputText": "grid-row: 2 / span 1;"
+  },
+  {
+    "assertVisible": {
+      "id": "game-code",
+      "text": "^grid-column: 3 / span 2;\ngrid-row: 2 / span 1;$"
+    }
   },
   "hideKeyboard",
   {
@@ -1914,7 +2353,8 @@ onFlowComplete:
         "id": "game-run"
       },
       "direction": "DOWN",
-      "centerElement": true,
+      "speed": 80,
+      "centerElement": false,
       "timeout": 20000
     }
   },
@@ -1929,7 +2369,8 @@ onFlowComplete:
         "text": "Signal restored!"
       },
       "direction": "DOWN",
-      "centerElement": true,
+      "speed": 80,
+      "centerElement": false,
       "timeout": 20000
     }
   },
@@ -1939,10 +2380,33 @@ onFlowComplete:
   {
     "scrollUntilVisible": {
       "element": {
+        "id": "game-run"
+      },
+      "direction": "UP",
+      "speed": 20,
+      "centerElement": false,
+      "timeout": 20000
+    }
+  },
+  {
+    "scrollUntilVisible": {
+      "element": {
+        "id": "game-code"
+      },
+      "direction": "UP",
+      "speed": 80,
+      "centerElement": false,
+      "timeout": 20000
+    }
+  },
+  {
+    "scrollUntilVisible": {
+      "element": {
         "id": "game-scenario-mastery-2"
       },
       "direction": "UP",
-      "centerElement": true,
+      "speed": 80,
+      "centerElement": false,
       "timeout": 20000
     }
   },
@@ -1957,20 +2421,52 @@ onFlowComplete:
         "id": "game-code"
       },
       "direction": "DOWN",
-      "centerElement": true,
+      "speed": 80,
+      "centerElement": false,
       "timeout": 20000
     }
   },
   {
-    "tapOn": {
-      "id": "game-code"
+    "longPressOn": {
+      "id": "game-code",
+      "point": "25%,20%"
     }
   },
   {
-    "eraseText": 36
+    "runFlow": {
+      "when": {
+        "platform": "Android",
+        "notVisible": "Select [Aa]ll"
+      },
+      "commands": [
+        {
+          "tapOn": {
+            "id": "android:id/overflow"
+          }
+        }
+      ]
+    }
   },
   {
-    "inputText": "grid-column: 4 / span 2;\ngrid-row: 2 / span 1;"
+    "tapOn": "Select [Aa]ll"
+  },
+  {
+    "eraseText": 1
+  },
+  {
+    "inputText": "grid-column: 4 / span 2;"
+  },
+  {
+    "pressKey": "Enter"
+  },
+  {
+    "inputText": "grid-row: 2 / span 1;"
+  },
+  {
+    "assertVisible": {
+      "id": "game-code",
+      "text": "^grid-column: 4 / span 2;\ngrid-row: 2 / span 1;$"
+    }
   },
   "hideKeyboard",
   {
@@ -1979,7 +2475,8 @@ onFlowComplete:
         "id": "game-run"
       },
       "direction": "DOWN",
-      "centerElement": true,
+      "speed": 80,
+      "centerElement": false,
       "timeout": 20000
     }
   },
@@ -1994,7 +2491,8 @@ onFlowComplete:
         "text": "Signal restored!"
       },
       "direction": "DOWN",
-      "centerElement": true,
+      "speed": 80,
+      "centerElement": false,
       "timeout": 20000
     }
   },
@@ -2002,6 +2500,11 @@ onFlowComplete:
     "assertVisible": "Signal restored!"
   },
   "launchApp",
+  {
+    "assertVisible": {
+      "id": "mobile-nav-learn"
+    }
+  },
   {
     "openLink": "codematica://play/restore-the-signal/threat-scanner"
   },
@@ -2023,7 +2526,8 @@ onFlowComplete:
         "id": "game-scenario-main"
       },
       "direction": "DOWN",
-      "centerElement": true,
+      "speed": 80,
+      "centerElement": false,
       "timeout": 20000
     }
   },
@@ -2038,20 +2542,46 @@ onFlowComplete:
         "id": "game-code"
       },
       "direction": "DOWN",
-      "centerElement": true,
+      "speed": 80,
+      "centerElement": false,
       "timeout": 20000
     }
   },
   {
-    "tapOn": {
-      "id": "game-code"
+    "longPressOn": {
+      "id": "game-code",
+      "point": "25%,20%"
     }
   },
   {
-    "eraseText": 23
+    "runFlow": {
+      "when": {
+        "platform": "Android",
+        "notVisible": "Select [Aa]ll"
+      },
+      "commands": [
+        {
+          "tapOn": {
+            "id": "android:id/overflow"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "tapOn": "Select [Aa]ll"
+  },
+  {
+    "eraseText": 1
   },
   {
     "inputText": "SELECT id FROM zombies WHERE threat >= 3 AND shield IS NULL"
+  },
+  {
+    "assertVisible": {
+      "id": "game-code",
+      "text": "^SELECT id FROM zombies WHERE threat >= 3 AND shield IS NULL$"
+    }
   },
   "hideKeyboard",
   {
@@ -2060,7 +2590,8 @@ onFlowComplete:
         "id": "game-run"
       },
       "direction": "DOWN",
-      "centerElement": true,
+      "speed": 80,
+      "centerElement": false,
       "timeout": 20000
     }
   },
@@ -2075,7 +2606,8 @@ onFlowComplete:
         "text": "Signal restored!"
       },
       "direction": "DOWN",
-      "centerElement": true,
+      "speed": 80,
+      "centerElement": false,
       "timeout": 20000
     }
   },
@@ -2085,10 +2617,33 @@ onFlowComplete:
   {
     "scrollUntilVisible": {
       "element": {
+        "id": "game-run"
+      },
+      "direction": "UP",
+      "speed": 20,
+      "centerElement": false,
+      "timeout": 20000
+    }
+  },
+  {
+    "scrollUntilVisible": {
+      "element": {
+        "id": "game-code"
+      },
+      "direction": "UP",
+      "speed": 80,
+      "centerElement": false,
+      "timeout": 20000
+    }
+  },
+  {
+    "scrollUntilVisible": {
+      "element": {
         "id": "game-scenario-mastery-1"
       },
       "direction": "UP",
-      "centerElement": true,
+      "speed": 80,
+      "centerElement": false,
       "timeout": 20000
     }
   },
@@ -2103,20 +2658,46 @@ onFlowComplete:
         "id": "game-code"
       },
       "direction": "DOWN",
-      "centerElement": true,
+      "speed": 80,
+      "centerElement": false,
       "timeout": 20000
     }
   },
   {
-    "tapOn": {
-      "id": "game-code"
+    "longPressOn": {
+      "id": "game-code",
+      "point": "25%,20%"
     }
   },
   {
-    "eraseText": 23
+    "runFlow": {
+      "when": {
+        "platform": "Android",
+        "notVisible": "Select [Aa]ll"
+      },
+      "commands": [
+        {
+          "tapOn": {
+            "id": "android:id/overflow"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "tapOn": "Select [Aa]ll"
+  },
+  {
+    "eraseText": 1
   },
   {
     "inputText": "SELECT id FROM zombies WHERE (kind = 'runner' OR kind = 'armored') AND threat >= 2"
+  },
+  {
+    "assertVisible": {
+      "id": "game-code",
+      "text": "^SELECT id FROM zombies WHERE \\(kind = 'runner' OR kind = 'armored'\\) AND threat >= 2$"
+    }
   },
   "hideKeyboard",
   {
@@ -2125,7 +2706,8 @@ onFlowComplete:
         "id": "game-run"
       },
       "direction": "DOWN",
-      "centerElement": true,
+      "speed": 80,
+      "centerElement": false,
       "timeout": 20000
     }
   },
@@ -2140,7 +2722,8 @@ onFlowComplete:
         "text": "Signal restored!"
       },
       "direction": "DOWN",
-      "centerElement": true,
+      "speed": 80,
+      "centerElement": false,
       "timeout": 20000
     }
   },
@@ -2150,10 +2733,33 @@ onFlowComplete:
   {
     "scrollUntilVisible": {
       "element": {
+        "id": "game-run"
+      },
+      "direction": "UP",
+      "speed": 20,
+      "centerElement": false,
+      "timeout": 20000
+    }
+  },
+  {
+    "scrollUntilVisible": {
+      "element": {
+        "id": "game-code"
+      },
+      "direction": "UP",
+      "speed": 80,
+      "centerElement": false,
+      "timeout": 20000
+    }
+  },
+  {
+    "scrollUntilVisible": {
+      "element": {
         "id": "game-scenario-mastery-2"
       },
       "direction": "UP",
-      "centerElement": true,
+      "speed": 80,
+      "centerElement": false,
       "timeout": 20000
     }
   },
@@ -2168,20 +2774,46 @@ onFlowComplete:
         "id": "game-code"
       },
       "direction": "DOWN",
-      "centerElement": true,
+      "speed": 80,
+      "centerElement": false,
       "timeout": 20000
     }
   },
   {
-    "tapOn": {
-      "id": "game-code"
+    "longPressOn": {
+      "id": "game-code",
+      "point": "25%,20%"
     }
   },
   {
-    "eraseText": 23
+    "runFlow": {
+      "when": {
+        "platform": "Android",
+        "notVisible": "Select [Aa]ll"
+      },
+      "commands": [
+        {
+          "tapOn": {
+            "id": "android:id/overflow"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "tapOn": "Select [Aa]ll"
+  },
+  {
+    "eraseText": 1
   },
   {
     "inputText": "SELECT id FROM zombies WHERE zone IN ('garden', 'tower') AND (shield = 0 OR shield IS NULL)"
+  },
+  {
+    "assertVisible": {
+      "id": "game-code",
+      "text": "^SELECT id FROM zombies WHERE zone IN \\('garden', 'tower'\\) AND \\(shield = 0 OR shield IS NULL\\)$"
+    }
   },
   "hideKeyboard",
   {
@@ -2190,7 +2822,8 @@ onFlowComplete:
         "id": "game-run"
       },
       "direction": "DOWN",
-      "centerElement": true,
+      "speed": 80,
+      "centerElement": false,
       "timeout": 20000
     }
   },
@@ -2205,7 +2838,8 @@ onFlowComplete:
         "text": "Signal restored!"
       },
       "direction": "DOWN",
-      "centerElement": true,
+      "speed": 80,
+      "centerElement": false,
       "timeout": 20000
     }
   },
@@ -2213,6 +2847,11 @@ onFlowComplete:
     "assertVisible": "Signal restored!"
   },
   "launchApp",
+  {
+    "assertVisible": {
+      "id": "mobile-nav-learn"
+    }
+  },
   {
     "openLink": "codematica://play/restore-the-signal/cache-canal"
   },
@@ -2234,7 +2873,8 @@ onFlowComplete:
         "id": "game-scenario-main"
       },
       "direction": "DOWN",
-      "centerElement": true,
+      "speed": 80,
+      "centerElement": false,
       "timeout": 20000
     }
   },
@@ -2249,7 +2889,8 @@ onFlowComplete:
         "id": "game-port-api.read"
       },
       "direction": "DOWN",
-      "centerElement": true,
+      "speed": 20,
+      "centerElement": false,
       "timeout": 20000
     }
   },
@@ -2264,7 +2905,8 @@ onFlowComplete:
         "id": "game-port-cache.read"
       },
       "direction": "DOWN",
-      "centerElement": true,
+      "speed": 20,
+      "centerElement": false,
       "timeout": 20000
     }
   },
@@ -2279,7 +2921,8 @@ onFlowComplete:
         "id": "game-port-cache.hit"
       },
       "direction": "DOWN",
-      "centerElement": true,
+      "speed": 20,
+      "centerElement": false,
       "timeout": 20000
     }
   },
@@ -2294,7 +2937,8 @@ onFlowComplete:
         "id": "game-port-api.hit"
       },
       "direction": "UP",
-      "centerElement": true,
+      "speed": 20,
+      "centerElement": false,
       "timeout": 20000
     }
   },
@@ -2309,7 +2953,8 @@ onFlowComplete:
         "id": "game-port-cache.miss"
       },
       "direction": "DOWN",
-      "centerElement": true,
+      "speed": 20,
+      "centerElement": false,
       "timeout": 20000
     }
   },
@@ -2324,7 +2969,8 @@ onFlowComplete:
         "id": "game-port-api.miss"
       },
       "direction": "UP",
-      "centerElement": true,
+      "speed": 20,
+      "centerElement": false,
       "timeout": 20000
     }
   },
@@ -2339,7 +2985,8 @@ onFlowComplete:
         "id": "game-port-api.load"
       },
       "direction": "DOWN",
-      "centerElement": true,
+      "speed": 20,
+      "centerElement": false,
       "timeout": 20000
     }
   },
@@ -2354,7 +3001,8 @@ onFlowComplete:
         "id": "game-port-db.read"
       },
       "direction": "DOWN",
-      "centerElement": true,
+      "speed": 20,
+      "centerElement": false,
       "timeout": 20000
     }
   },
@@ -2369,7 +3017,8 @@ onFlowComplete:
         "id": "game-port-db.out"
       },
       "direction": "DOWN",
-      "centerElement": true,
+      "speed": 20,
+      "centerElement": false,
       "timeout": 20000
     }
   },
@@ -2384,7 +3033,8 @@ onFlowComplete:
         "id": "game-port-api.data"
       },
       "direction": "UP",
-      "centerElement": true,
+      "speed": 20,
+      "centerElement": false,
       "timeout": 20000
     }
   },
@@ -2399,7 +3049,8 @@ onFlowComplete:
         "id": "game-port-api.fill"
       },
       "direction": "DOWN",
-      "centerElement": true,
+      "speed": 20,
+      "centerElement": false,
       "timeout": 20000
     }
   },
@@ -2414,7 +3065,8 @@ onFlowComplete:
         "id": "game-port-cache.fill"
       },
       "direction": "DOWN",
-      "centerElement": true,
+      "speed": 20,
+      "centerElement": false,
       "timeout": 20000
     }
   },
@@ -2429,7 +3081,8 @@ onFlowComplete:
         "id": "game-run"
       },
       "direction": "DOWN",
-      "centerElement": true,
+      "speed": 80,
+      "centerElement": false,
       "timeout": 20000
     }
   },
@@ -2444,7 +3097,8 @@ onFlowComplete:
         "text": "Signal restored!"
       },
       "direction": "DOWN",
-      "centerElement": true,
+      "speed": 80,
+      "centerElement": false,
       "timeout": 20000
     }
   },
@@ -2454,10 +3108,33 @@ onFlowComplete:
   {
     "scrollUntilVisible": {
       "element": {
+        "id": "game-run"
+      },
+      "direction": "UP",
+      "speed": 20,
+      "centerElement": false,
+      "timeout": 20000
+    }
+  },
+  {
+    "scrollUntilVisible": {
+      "element": {
+        "id": "game-port-api.read"
+      },
+      "direction": "UP",
+      "speed": 20,
+      "centerElement": false,
+      "timeout": 20000
+    }
+  },
+  {
+    "scrollUntilVisible": {
+      "element": {
         "id": "game-scenario-mastery-1"
       },
       "direction": "UP",
-      "centerElement": true,
+      "speed": 80,
+      "centerElement": false,
       "timeout": 20000
     }
   },
@@ -2472,7 +3149,8 @@ onFlowComplete:
         "id": "game-port-api.read"
       },
       "direction": "DOWN",
-      "centerElement": true,
+      "speed": 20,
+      "centerElement": false,
       "timeout": 20000
     }
   },
@@ -2487,7 +3165,8 @@ onFlowComplete:
         "id": "game-port-cache.read"
       },
       "direction": "DOWN",
-      "centerElement": true,
+      "speed": 20,
+      "centerElement": false,
       "timeout": 20000
     }
   },
@@ -2502,7 +3181,8 @@ onFlowComplete:
         "id": "game-port-cache.hit"
       },
       "direction": "DOWN",
-      "centerElement": true,
+      "speed": 20,
+      "centerElement": false,
       "timeout": 20000
     }
   },
@@ -2517,7 +3197,8 @@ onFlowComplete:
         "id": "game-port-api.hit"
       },
       "direction": "UP",
-      "centerElement": true,
+      "speed": 20,
+      "centerElement": false,
       "timeout": 20000
     }
   },
@@ -2532,7 +3213,8 @@ onFlowComplete:
         "id": "game-port-cache.miss"
       },
       "direction": "DOWN",
-      "centerElement": true,
+      "speed": 20,
+      "centerElement": false,
       "timeout": 20000
     }
   },
@@ -2547,7 +3229,8 @@ onFlowComplete:
         "id": "game-port-api.miss"
       },
       "direction": "UP",
-      "centerElement": true,
+      "speed": 20,
+      "centerElement": false,
       "timeout": 20000
     }
   },
@@ -2562,7 +3245,8 @@ onFlowComplete:
         "id": "game-port-api.load"
       },
       "direction": "DOWN",
-      "centerElement": true,
+      "speed": 20,
+      "centerElement": false,
       "timeout": 20000
     }
   },
@@ -2577,7 +3261,8 @@ onFlowComplete:
         "id": "game-port-db.read"
       },
       "direction": "DOWN",
-      "centerElement": true,
+      "speed": 20,
+      "centerElement": false,
       "timeout": 20000
     }
   },
@@ -2592,7 +3277,8 @@ onFlowComplete:
         "id": "game-port-db.out"
       },
       "direction": "DOWN",
-      "centerElement": true,
+      "speed": 20,
+      "centerElement": false,
       "timeout": 20000
     }
   },
@@ -2607,7 +3293,8 @@ onFlowComplete:
         "id": "game-port-api.data"
       },
       "direction": "UP",
-      "centerElement": true,
+      "speed": 20,
+      "centerElement": false,
       "timeout": 20000
     }
   },
@@ -2622,7 +3309,8 @@ onFlowComplete:
         "id": "game-port-api.fill"
       },
       "direction": "DOWN",
-      "centerElement": true,
+      "speed": 20,
+      "centerElement": false,
       "timeout": 20000
     }
   },
@@ -2637,7 +3325,8 @@ onFlowComplete:
         "id": "game-port-cache.fill"
       },
       "direction": "DOWN",
-      "centerElement": true,
+      "speed": 20,
+      "centerElement": false,
       "timeout": 20000
     }
   },
@@ -2652,7 +3341,8 @@ onFlowComplete:
         "id": "game-port-api.invalidate"
       },
       "direction": "UP",
-      "centerElement": true,
+      "speed": 20,
+      "centerElement": false,
       "timeout": 20000
     }
   },
@@ -2667,7 +3357,8 @@ onFlowComplete:
         "id": "game-port-cache.invalidate"
       },
       "direction": "DOWN",
-      "centerElement": true,
+      "speed": 20,
+      "centerElement": false,
       "timeout": 20000
     }
   },
@@ -2682,7 +3373,8 @@ onFlowComplete:
         "id": "game-run"
       },
       "direction": "DOWN",
-      "centerElement": true,
+      "speed": 80,
+      "centerElement": false,
       "timeout": 20000
     }
   },
@@ -2697,7 +3389,8 @@ onFlowComplete:
         "text": "Signal restored!"
       },
       "direction": "DOWN",
-      "centerElement": true,
+      "speed": 80,
+      "centerElement": false,
       "timeout": 20000
     }
   },
@@ -2707,10 +3400,33 @@ onFlowComplete:
   {
     "scrollUntilVisible": {
       "element": {
+        "id": "game-run"
+      },
+      "direction": "UP",
+      "speed": 20,
+      "centerElement": false,
+      "timeout": 20000
+    }
+  },
+  {
+    "scrollUntilVisible": {
+      "element": {
+        "id": "game-port-api.read"
+      },
+      "direction": "UP",
+      "speed": 20,
+      "centerElement": false,
+      "timeout": 20000
+    }
+  },
+  {
+    "scrollUntilVisible": {
+      "element": {
         "id": "game-scenario-mastery-2"
       },
       "direction": "UP",
-      "centerElement": true,
+      "speed": 80,
+      "centerElement": false,
       "timeout": 20000
     }
   },
@@ -2725,7 +3441,8 @@ onFlowComplete:
         "id": "game-port-api.read"
       },
       "direction": "DOWN",
-      "centerElement": true,
+      "speed": 20,
+      "centerElement": false,
       "timeout": 20000
     }
   },
@@ -2740,7 +3457,8 @@ onFlowComplete:
         "id": "game-port-cache.read"
       },
       "direction": "DOWN",
-      "centerElement": true,
+      "speed": 20,
+      "centerElement": false,
       "timeout": 20000
     }
   },
@@ -2755,7 +3473,8 @@ onFlowComplete:
         "id": "game-port-cache.hit"
       },
       "direction": "DOWN",
-      "centerElement": true,
+      "speed": 20,
+      "centerElement": false,
       "timeout": 20000
     }
   },
@@ -2770,7 +3489,8 @@ onFlowComplete:
         "id": "game-port-api.hit"
       },
       "direction": "UP",
-      "centerElement": true,
+      "speed": 20,
+      "centerElement": false,
       "timeout": 20000
     }
   },
@@ -2785,7 +3505,8 @@ onFlowComplete:
         "id": "game-port-cache.miss"
       },
       "direction": "DOWN",
-      "centerElement": true,
+      "speed": 20,
+      "centerElement": false,
       "timeout": 20000
     }
   },
@@ -2800,7 +3521,8 @@ onFlowComplete:
         "id": "game-port-api.miss"
       },
       "direction": "UP",
-      "centerElement": true,
+      "speed": 20,
+      "centerElement": false,
       "timeout": 20000
     }
   },
@@ -2815,7 +3537,8 @@ onFlowComplete:
         "id": "game-port-api.load"
       },
       "direction": "DOWN",
-      "centerElement": true,
+      "speed": 20,
+      "centerElement": false,
       "timeout": 20000
     }
   },
@@ -2830,7 +3553,8 @@ onFlowComplete:
         "id": "game-port-db.read"
       },
       "direction": "DOWN",
-      "centerElement": true,
+      "speed": 20,
+      "centerElement": false,
       "timeout": 20000
     }
   },
@@ -2845,7 +3569,8 @@ onFlowComplete:
         "id": "game-port-db.out"
       },
       "direction": "DOWN",
-      "centerElement": true,
+      "speed": 20,
+      "centerElement": false,
       "timeout": 20000
     }
   },
@@ -2860,7 +3585,8 @@ onFlowComplete:
         "id": "game-port-api.data"
       },
       "direction": "UP",
-      "centerElement": true,
+      "speed": 20,
+      "centerElement": false,
       "timeout": 20000
     }
   },
@@ -2875,7 +3601,8 @@ onFlowComplete:
         "id": "game-port-api.fill"
       },
       "direction": "DOWN",
-      "centerElement": true,
+      "speed": 20,
+      "centerElement": false,
       "timeout": 20000
     }
   },
@@ -2890,7 +3617,8 @@ onFlowComplete:
         "id": "game-port-cache.fill"
       },
       "direction": "DOWN",
-      "centerElement": true,
+      "speed": 20,
+      "centerElement": false,
       "timeout": 20000
     }
   },
@@ -2905,7 +3633,8 @@ onFlowComplete:
         "id": "game-port-api.invalidate"
       },
       "direction": "UP",
-      "centerElement": true,
+      "speed": 20,
+      "centerElement": false,
       "timeout": 20000
     }
   },
@@ -2920,7 +3649,8 @@ onFlowComplete:
         "id": "game-port-cache.invalidate"
       },
       "direction": "DOWN",
-      "centerElement": true,
+      "speed": 20,
+      "centerElement": false,
       "timeout": 20000
     }
   },
@@ -2935,7 +3665,8 @@ onFlowComplete:
         "id": "game-port-api.invalidate-zone"
       },
       "direction": "UP",
-      "centerElement": true,
+      "speed": 20,
+      "centerElement": false,
       "timeout": 20000
     }
   },
@@ -2950,7 +3681,8 @@ onFlowComplete:
         "id": "game-port-cache.invalidate-zone"
       },
       "direction": "DOWN",
-      "centerElement": true,
+      "speed": 20,
+      "centerElement": false,
       "timeout": 20000
     }
   },
@@ -2965,7 +3697,8 @@ onFlowComplete:
         "id": "game-run"
       },
       "direction": "DOWN",
-      "centerElement": true,
+      "speed": 80,
+      "centerElement": false,
       "timeout": 20000
     }
   },
@@ -2980,7 +3713,8 @@ onFlowComplete:
         "text": "Signal restored!"
       },
       "direction": "DOWN",
-      "centerElement": true,
+      "speed": 80,
+      "centerElement": false,
       "timeout": 20000
     }
   },
@@ -2988,6 +3722,11 @@ onFlowComplete:
     "assertVisible": "Signal restored!"
   },
   "launchApp",
+  {
+    "assertVisible": {
+      "id": "mobile-nav-learn"
+    }
+  },
   {
     "openLink": "codematica://play/restore-the-signal/bridge-siege"
   },
@@ -3009,7 +3748,8 @@ onFlowComplete:
         "id": "game-scenario-main"
       },
       "direction": "DOWN",
-      "centerElement": true,
+      "speed": 80,
+      "centerElement": false,
       "timeout": 20000
     }
   },
@@ -3024,7 +3764,8 @@ onFlowComplete:
         "id": "game-piece-client"
       },
       "direction": "DOWN",
-      "centerElement": true,
+      "speed": 20,
+      "centerElement": false,
       "timeout": 20000
     }
   },
@@ -3039,7 +3780,8 @@ onFlowComplete:
         "id": "game-piece-database"
       },
       "direction": "DOWN",
-      "centerElement": true,
+      "speed": 20,
+      "centerElement": false,
       "timeout": 20000
     }
   },
@@ -3054,7 +3796,8 @@ onFlowComplete:
         "id": "game-piece-proxy"
       },
       "direction": "DOWN",
-      "centerElement": true,
+      "speed": 20,
+      "centerElement": false,
       "timeout": 20000
     }
   },
@@ -3069,7 +3812,8 @@ onFlowComplete:
         "id": "game-piece-api-1"
       },
       "direction": "UP",
-      "centerElement": true,
+      "speed": 20,
+      "centerElement": false,
       "timeout": 20000
     }
   },
@@ -3084,7 +3828,8 @@ onFlowComplete:
         "id": "game-piece-api-2"
       },
       "direction": "DOWN",
-      "centerElement": true,
+      "speed": 20,
+      "centerElement": false,
       "timeout": 20000
     }
   },
@@ -3099,7 +3844,8 @@ onFlowComplete:
         "id": "game-piece-api-3"
       },
       "direction": "DOWN",
-      "centerElement": true,
+      "speed": 20,
+      "centerElement": false,
       "timeout": 20000
     }
   },
@@ -3111,11 +3857,53 @@ onFlowComplete:
   {
     "scrollUntilVisible": {
       "element": {
-        "id": "game-connect-client"
+        "id": "game-connect-api-3"
       },
       "direction": "DOWN",
-      "centerElement": true,
+      "speed": 20,
+      "centerElement": false,
       "timeout": 20000
+    }
+  },
+  {
+    "scrollUntilVisible": {
+      "element": {
+        "id": "game-connect-client"
+      },
+      "direction": "UP",
+      "speed": 20,
+      "centerElement": false,
+      "timeout": 20000
+    }
+  },
+  {
+    "assertVisible": {
+      "id": "game-connect-client"
+    }
+  },
+  {
+    "assertVisible": {
+      "id": "game-connect-database"
+    }
+  },
+  {
+    "assertVisible": {
+      "id": "game-connect-proxy"
+    }
+  },
+  {
+    "assertVisible": {
+      "id": "game-connect-api-1"
+    }
+  },
+  {
+    "assertVisible": {
+      "id": "game-connect-api-2"
+    }
+  },
+  {
+    "assertVisible": {
+      "id": "game-connect-api-3"
     }
   },
   {
@@ -3124,43 +3912,13 @@ onFlowComplete:
     }
   },
   {
-    "scrollUntilVisible": {
-      "element": {
-        "id": "game-connect-proxy"
-      },
-      "direction": "DOWN",
-      "centerElement": true,
-      "timeout": 20000
-    }
-  },
-  {
     "tapOn": {
       "id": "game-connect-proxy"
     }
   },
   {
-    "scrollUntilVisible": {
-      "element": {
-        "id": "game-connect-proxy"
-      },
-      "direction": "DOWN",
-      "centerElement": true,
-      "timeout": 20000
-    }
-  },
-  {
     "tapOn": {
       "id": "game-connect-proxy"
-    }
-  },
-  {
-    "scrollUntilVisible": {
-      "element": {
-        "id": "game-connect-api-1"
-      },
-      "direction": "DOWN",
-      "centerElement": true,
-      "timeout": 20000
     }
   },
   {
@@ -3169,43 +3927,13 @@ onFlowComplete:
     }
   },
   {
-    "scrollUntilVisible": {
-      "element": {
-        "id": "game-connect-api-1"
-      },
-      "direction": "DOWN",
-      "centerElement": true,
-      "timeout": 20000
-    }
-  },
-  {
     "tapOn": {
       "id": "game-connect-api-1"
     }
   },
   {
-    "scrollUntilVisible": {
-      "element": {
-        "id": "game-connect-database"
-      },
-      "direction": "DOWN",
-      "centerElement": true,
-      "timeout": 20000
-    }
-  },
-  {
     "tapOn": {
       "id": "game-connect-database"
-    }
-  },
-  {
-    "scrollUntilVisible": {
-      "element": {
-        "id": "game-connect-proxy"
-      },
-      "direction": "DOWN",
-      "centerElement": true,
-      "timeout": 20000
     }
   },
   {
@@ -3214,43 +3942,13 @@ onFlowComplete:
     }
   },
   {
-    "scrollUntilVisible": {
-      "element": {
-        "id": "game-connect-api-2"
-      },
-      "direction": "DOWN",
-      "centerElement": true,
-      "timeout": 20000
-    }
-  },
-  {
     "tapOn": {
       "id": "game-connect-api-2"
     }
   },
   {
-    "scrollUntilVisible": {
-      "element": {
-        "id": "game-connect-api-2"
-      },
-      "direction": "DOWN",
-      "centerElement": true,
-      "timeout": 20000
-    }
-  },
-  {
     "tapOn": {
       "id": "game-connect-api-2"
-    }
-  },
-  {
-    "scrollUntilVisible": {
-      "element": {
-        "id": "game-connect-database"
-      },
-      "direction": "DOWN",
-      "centerElement": true,
-      "timeout": 20000
     }
   },
   {
@@ -3259,58 +3957,18 @@ onFlowComplete:
     }
   },
   {
-    "scrollUntilVisible": {
-      "element": {
-        "id": "game-connect-proxy"
-      },
-      "direction": "DOWN",
-      "centerElement": true,
-      "timeout": 20000
-    }
-  },
-  {
     "tapOn": {
       "id": "game-connect-proxy"
     }
   },
   {
-    "scrollUntilVisible": {
-      "element": {
-        "id": "game-connect-api-3"
-      },
-      "direction": "DOWN",
-      "centerElement": true,
-      "timeout": 20000
-    }
-  },
-  {
     "tapOn": {
       "id": "game-connect-api-3"
     }
   },
   {
-    "scrollUntilVisible": {
-      "element": {
-        "id": "game-connect-api-3"
-      },
-      "direction": "DOWN",
-      "centerElement": true,
-      "timeout": 20000
-    }
-  },
-  {
     "tapOn": {
       "id": "game-connect-api-3"
-    }
-  },
-  {
-    "scrollUntilVisible": {
-      "element": {
-        "id": "game-connect-database"
-      },
-      "direction": "DOWN",
-      "centerElement": true,
-      "timeout": 20000
     }
   },
   {
@@ -3324,7 +3982,8 @@ onFlowComplete:
         "id": "game-run"
       },
       "direction": "DOWN",
-      "centerElement": true,
+      "speed": 80,
+      "centerElement": false,
       "timeout": 20000
     }
   },
@@ -3363,7 +4022,8 @@ onFlowComplete:
         "text": "Signal restored!"
       },
       "direction": "DOWN",
-      "centerElement": true,
+      "speed": 80,
+      "centerElement": false,
       "timeout": 20000
     }
   },
@@ -3373,10 +4033,33 @@ onFlowComplete:
   {
     "scrollUntilVisible": {
       "element": {
+        "id": "game-board"
+      },
+      "direction": "UP",
+      "speed": 80,
+      "centerElement": false,
+      "timeout": 20000
+    }
+  },
+  {
+    "scrollUntilVisible": {
+      "element": {
+        "id": "game-piece-client"
+      },
+      "direction": "UP",
+      "speed": 20,
+      "centerElement": false,
+      "timeout": 20000
+    }
+  },
+  {
+    "scrollUntilVisible": {
+      "element": {
         "id": "game-scenario-mastery-1"
       },
       "direction": "UP",
-      "centerElement": true,
+      "speed": 80,
+      "centerElement": false,
       "timeout": 20000
     }
   },
@@ -3391,7 +4074,8 @@ onFlowComplete:
         "id": "game-assist"
       },
       "direction": "DOWN",
-      "centerElement": true,
+      "speed": 80,
+      "centerElement": false,
       "timeout": 20000
     }
   },
@@ -3403,10 +4087,22 @@ onFlowComplete:
   {
     "scrollUntilVisible": {
       "element": {
+        "id": "game-board"
+      },
+      "direction": "UP",
+      "speed": 80,
+      "centerElement": false,
+      "timeout": 20000
+    }
+  },
+  {
+    "scrollUntilVisible": {
+      "element": {
         "id": "game-piece-client"
       },
       "direction": "UP",
-      "centerElement": true,
+      "speed": 20,
+      "centerElement": false,
       "timeout": 20000
     }
   },
@@ -3421,7 +4117,8 @@ onFlowComplete:
         "id": "game-piece-database"
       },
       "direction": "DOWN",
-      "centerElement": true,
+      "speed": 20,
+      "centerElement": false,
       "timeout": 20000
     }
   },
@@ -3436,7 +4133,8 @@ onFlowComplete:
         "id": "game-piece-proxy"
       },
       "direction": "DOWN",
-      "centerElement": true,
+      "speed": 20,
+      "centerElement": false,
       "timeout": 20000
     }
   },
@@ -3451,7 +4149,8 @@ onFlowComplete:
         "id": "game-piece-api-1"
       },
       "direction": "UP",
-      "centerElement": true,
+      "speed": 20,
+      "centerElement": false,
       "timeout": 20000
     }
   },
@@ -3466,7 +4165,8 @@ onFlowComplete:
         "id": "game-piece-api-2"
       },
       "direction": "DOWN",
-      "centerElement": true,
+      "speed": 20,
+      "centerElement": false,
       "timeout": 20000
     }
   },
@@ -3481,7 +4181,8 @@ onFlowComplete:
         "id": "game-piece-api-3"
       },
       "direction": "DOWN",
-      "centerElement": true,
+      "speed": 20,
+      "centerElement": false,
       "timeout": 20000
     }
   },
@@ -3493,11 +4194,53 @@ onFlowComplete:
   {
     "scrollUntilVisible": {
       "element": {
-        "id": "game-connect-client"
+        "id": "game-connect-api-3"
       },
       "direction": "DOWN",
-      "centerElement": true,
+      "speed": 20,
+      "centerElement": false,
       "timeout": 20000
+    }
+  },
+  {
+    "scrollUntilVisible": {
+      "element": {
+        "id": "game-connect-client"
+      },
+      "direction": "UP",
+      "speed": 20,
+      "centerElement": false,
+      "timeout": 20000
+    }
+  },
+  {
+    "assertVisible": {
+      "id": "game-connect-client"
+    }
+  },
+  {
+    "assertVisible": {
+      "id": "game-connect-database"
+    }
+  },
+  {
+    "assertVisible": {
+      "id": "game-connect-proxy"
+    }
+  },
+  {
+    "assertVisible": {
+      "id": "game-connect-api-1"
+    }
+  },
+  {
+    "assertVisible": {
+      "id": "game-connect-api-2"
+    }
+  },
+  {
+    "assertVisible": {
+      "id": "game-connect-api-3"
     }
   },
   {
@@ -3506,43 +4249,13 @@ onFlowComplete:
     }
   },
   {
-    "scrollUntilVisible": {
-      "element": {
-        "id": "game-connect-proxy"
-      },
-      "direction": "DOWN",
-      "centerElement": true,
-      "timeout": 20000
-    }
-  },
-  {
     "tapOn": {
       "id": "game-connect-proxy"
     }
   },
   {
-    "scrollUntilVisible": {
-      "element": {
-        "id": "game-connect-proxy"
-      },
-      "direction": "DOWN",
-      "centerElement": true,
-      "timeout": 20000
-    }
-  },
-  {
     "tapOn": {
       "id": "game-connect-proxy"
-    }
-  },
-  {
-    "scrollUntilVisible": {
-      "element": {
-        "id": "game-connect-api-1"
-      },
-      "direction": "DOWN",
-      "centerElement": true,
-      "timeout": 20000
     }
   },
   {
@@ -3551,43 +4264,13 @@ onFlowComplete:
     }
   },
   {
-    "scrollUntilVisible": {
-      "element": {
-        "id": "game-connect-api-1"
-      },
-      "direction": "DOWN",
-      "centerElement": true,
-      "timeout": 20000
-    }
-  },
-  {
     "tapOn": {
       "id": "game-connect-api-1"
     }
   },
   {
-    "scrollUntilVisible": {
-      "element": {
-        "id": "game-connect-database"
-      },
-      "direction": "DOWN",
-      "centerElement": true,
-      "timeout": 20000
-    }
-  },
-  {
     "tapOn": {
       "id": "game-connect-database"
-    }
-  },
-  {
-    "scrollUntilVisible": {
-      "element": {
-        "id": "game-connect-proxy"
-      },
-      "direction": "DOWN",
-      "centerElement": true,
-      "timeout": 20000
     }
   },
   {
@@ -3596,43 +4279,13 @@ onFlowComplete:
     }
   },
   {
-    "scrollUntilVisible": {
-      "element": {
-        "id": "game-connect-api-2"
-      },
-      "direction": "DOWN",
-      "centerElement": true,
-      "timeout": 20000
-    }
-  },
-  {
     "tapOn": {
       "id": "game-connect-api-2"
     }
   },
   {
-    "scrollUntilVisible": {
-      "element": {
-        "id": "game-connect-api-2"
-      },
-      "direction": "DOWN",
-      "centerElement": true,
-      "timeout": 20000
-    }
-  },
-  {
     "tapOn": {
       "id": "game-connect-api-2"
-    }
-  },
-  {
-    "scrollUntilVisible": {
-      "element": {
-        "id": "game-connect-database"
-      },
-      "direction": "DOWN",
-      "centerElement": true,
-      "timeout": 20000
     }
   },
   {
@@ -3641,58 +4294,18 @@ onFlowComplete:
     }
   },
   {
-    "scrollUntilVisible": {
-      "element": {
-        "id": "game-connect-proxy"
-      },
-      "direction": "DOWN",
-      "centerElement": true,
-      "timeout": 20000
-    }
-  },
-  {
     "tapOn": {
       "id": "game-connect-proxy"
     }
   },
   {
-    "scrollUntilVisible": {
-      "element": {
-        "id": "game-connect-api-3"
-      },
-      "direction": "DOWN",
-      "centerElement": true,
-      "timeout": 20000
-    }
-  },
-  {
     "tapOn": {
       "id": "game-connect-api-3"
     }
   },
   {
-    "scrollUntilVisible": {
-      "element": {
-        "id": "game-connect-api-3"
-      },
-      "direction": "DOWN",
-      "centerElement": true,
-      "timeout": 20000
-    }
-  },
-  {
     "tapOn": {
       "id": "game-connect-api-3"
-    }
-  },
-  {
-    "scrollUntilVisible": {
-      "element": {
-        "id": "game-connect-database"
-      },
-      "direction": "DOWN",
-      "centerElement": true,
-      "timeout": 20000
     }
   },
   {
@@ -3706,7 +4319,8 @@ onFlowComplete:
         "id": "game-routing"
       },
       "direction": "DOWN",
-      "centerElement": true,
+      "speed": 80,
+      "centerElement": false,
       "timeout": 20000
     }
   },
@@ -3721,7 +4335,8 @@ onFlowComplete:
         "id": "game-run"
       },
       "direction": "DOWN",
-      "centerElement": true,
+      "speed": 80,
+      "centerElement": false,
       "timeout": 20000
     }
   },
@@ -3736,7 +4351,8 @@ onFlowComplete:
         "text": "Signal restored!"
       },
       "direction": "DOWN",
-      "centerElement": true,
+      "speed": 80,
+      "centerElement": false,
       "timeout": 20000
     }
   },
@@ -3746,10 +4362,33 @@ onFlowComplete:
   {
     "scrollUntilVisible": {
       "element": {
+        "id": "game-board"
+      },
+      "direction": "UP",
+      "speed": 80,
+      "centerElement": false,
+      "timeout": 20000
+    }
+  },
+  {
+    "scrollUntilVisible": {
+      "element": {
+        "id": "game-piece-client"
+      },
+      "direction": "UP",
+      "speed": 20,
+      "centerElement": false,
+      "timeout": 20000
+    }
+  },
+  {
+    "scrollUntilVisible": {
+      "element": {
         "id": "game-scenario-mastery-2"
       },
       "direction": "UP",
-      "centerElement": true,
+      "speed": 80,
+      "centerElement": false,
       "timeout": 20000
     }
   },
@@ -3764,7 +4403,8 @@ onFlowComplete:
         "id": "game-assist"
       },
       "direction": "DOWN",
-      "centerElement": true,
+      "speed": 80,
+      "centerElement": false,
       "timeout": 20000
     }
   },
@@ -3776,10 +4416,22 @@ onFlowComplete:
   {
     "scrollUntilVisible": {
       "element": {
+        "id": "game-board"
+      },
+      "direction": "UP",
+      "speed": 80,
+      "centerElement": false,
+      "timeout": 20000
+    }
+  },
+  {
+    "scrollUntilVisible": {
+      "element": {
         "id": "game-piece-client"
       },
       "direction": "UP",
-      "centerElement": true,
+      "speed": 20,
+      "centerElement": false,
       "timeout": 20000
     }
   },
@@ -3794,7 +4446,8 @@ onFlowComplete:
         "id": "game-piece-database"
       },
       "direction": "DOWN",
-      "centerElement": true,
+      "speed": 20,
+      "centerElement": false,
       "timeout": 20000
     }
   },
@@ -3809,7 +4462,8 @@ onFlowComplete:
         "id": "game-piece-proxy"
       },
       "direction": "DOWN",
-      "centerElement": true,
+      "speed": 20,
+      "centerElement": false,
       "timeout": 20000
     }
   },
@@ -3824,7 +4478,8 @@ onFlowComplete:
         "id": "game-piece-api-2"
       },
       "direction": "UP",
-      "centerElement": true,
+      "speed": 20,
+      "centerElement": false,
       "timeout": 20000
     }
   },
@@ -3839,7 +4494,8 @@ onFlowComplete:
         "id": "game-piece-api-3"
       },
       "direction": "DOWN",
-      "centerElement": true,
+      "speed": 20,
+      "centerElement": false,
       "timeout": 20000
     }
   },
@@ -3851,11 +4507,48 @@ onFlowComplete:
   {
     "scrollUntilVisible": {
       "element": {
-        "id": "game-connect-client"
+        "id": "game-connect-api-3"
       },
       "direction": "DOWN",
-      "centerElement": true,
+      "speed": 20,
+      "centerElement": false,
       "timeout": 20000
+    }
+  },
+  {
+    "scrollUntilVisible": {
+      "element": {
+        "id": "game-connect-client"
+      },
+      "direction": "UP",
+      "speed": 20,
+      "centerElement": false,
+      "timeout": 20000
+    }
+  },
+  {
+    "assertVisible": {
+      "id": "game-connect-client"
+    }
+  },
+  {
+    "assertVisible": {
+      "id": "game-connect-database"
+    }
+  },
+  {
+    "assertVisible": {
+      "id": "game-connect-proxy"
+    }
+  },
+  {
+    "assertVisible": {
+      "id": "game-connect-api-2"
+    }
+  },
+  {
+    "assertVisible": {
+      "id": "game-connect-api-3"
     }
   },
   {
@@ -3864,13 +4557,8 @@ onFlowComplete:
     }
   },
   {
-    "scrollUntilVisible": {
-      "element": {
-        "id": "game-connect-proxy"
-      },
-      "direction": "DOWN",
-      "centerElement": true,
-      "timeout": 20000
+    "tapOn": {
+      "id": "game-connect-proxy"
     }
   },
   {
@@ -3879,58 +4567,13 @@ onFlowComplete:
     }
   },
   {
-    "scrollUntilVisible": {
-      "element": {
-        "id": "game-connect-proxy"
-      },
-      "direction": "DOWN",
-      "centerElement": true,
-      "timeout": 20000
-    }
-  },
-  {
-    "tapOn": {
-      "id": "game-connect-proxy"
-    }
-  },
-  {
-    "scrollUntilVisible": {
-      "element": {
-        "id": "game-connect-api-2"
-      },
-      "direction": "DOWN",
-      "centerElement": true,
-      "timeout": 20000
-    }
-  },
-  {
     "tapOn": {
       "id": "game-connect-api-2"
     }
   },
   {
-    "scrollUntilVisible": {
-      "element": {
-        "id": "game-connect-api-2"
-      },
-      "direction": "DOWN",
-      "centerElement": true,
-      "timeout": 20000
-    }
-  },
-  {
     "tapOn": {
       "id": "game-connect-api-2"
-    }
-  },
-  {
-    "scrollUntilVisible": {
-      "element": {
-        "id": "game-connect-database"
-      },
-      "direction": "DOWN",
-      "centerElement": true,
-      "timeout": 20000
     }
   },
   {
@@ -3939,58 +4582,18 @@ onFlowComplete:
     }
   },
   {
-    "scrollUntilVisible": {
-      "element": {
-        "id": "game-connect-proxy"
-      },
-      "direction": "DOWN",
-      "centerElement": true,
-      "timeout": 20000
-    }
-  },
-  {
     "tapOn": {
       "id": "game-connect-proxy"
     }
   },
   {
-    "scrollUntilVisible": {
-      "element": {
-        "id": "game-connect-api-3"
-      },
-      "direction": "DOWN",
-      "centerElement": true,
-      "timeout": 20000
-    }
-  },
-  {
     "tapOn": {
       "id": "game-connect-api-3"
     }
   },
   {
-    "scrollUntilVisible": {
-      "element": {
-        "id": "game-connect-api-3"
-      },
-      "direction": "DOWN",
-      "centerElement": true,
-      "timeout": 20000
-    }
-  },
-  {
     "tapOn": {
       "id": "game-connect-api-3"
-    }
-  },
-  {
-    "scrollUntilVisible": {
-      "element": {
-        "id": "game-connect-database"
-      },
-      "direction": "DOWN",
-      "centerElement": true,
-      "timeout": 20000
     }
   },
   {
@@ -4004,7 +4607,8 @@ onFlowComplete:
         "id": "game-run"
       },
       "direction": "DOWN",
-      "centerElement": true,
+      "speed": 80,
+      "centerElement": false,
       "timeout": 20000
     }
   },
@@ -4019,7 +4623,8 @@ onFlowComplete:
         "text": "Signal restored!"
       },
       "direction": "DOWN",
-      "centerElement": true,
+      "speed": 80,
+      "centerElement": false,
       "timeout": 20000
     }
   },
@@ -4027,6 +4632,11 @@ onFlowComplete:
     "assertVisible": "Signal restored!"
   },
   "launchApp",
+  {
+    "assertVisible": {
+      "id": "mobile-nav-learn"
+    }
+  },
   {
     "openLink": "codematica://play/restore-the-signal/rooftop-relay"
   },
@@ -4048,7 +4658,8 @@ onFlowComplete:
         "id": "game-scenario-main"
       },
       "direction": "DOWN",
-      "centerElement": true,
+      "speed": 80,
+      "centerElement": false,
       "timeout": 20000
     }
   },
@@ -4063,20 +4674,58 @@ onFlowComplete:
         "id": "game-code"
       },
       "direction": "DOWN",
-      "centerElement": true,
+      "speed": 80,
+      "centerElement": false,
       "timeout": 20000
     }
   },
   {
-    "tapOn": {
-      "id": "game-code"
+    "longPressOn": {
+      "id": "game-code",
+      "point": "25%,20%"
     }
   },
   {
-    "eraseText": 36
+    "runFlow": {
+      "when": {
+        "platform": "Android",
+        "notVisible": "Select [Aa]ll"
+      },
+      "commands": [
+        {
+          "tapOn": {
+            "id": "android:id/overflow"
+          }
+        }
+      ]
+    }
   },
   {
-    "inputText": "grid-template-columns: 1fr 1fr 2fr 1fr 1fr 2fr;\ngrid-column: 2 / span 2;\ngrid-row: 2 / span 1;"
+    "tapOn": "Select [Aa]ll"
+  },
+  {
+    "eraseText": 1
+  },
+  {
+    "inputText": "grid-template-columns: 1fr 1fr 2fr 1fr 1fr 2fr;"
+  },
+  {
+    "pressKey": "Enter"
+  },
+  {
+    "inputText": "grid-column: 2 / span 2;"
+  },
+  {
+    "pressKey": "Enter"
+  },
+  {
+    "inputText": "grid-row: 2 / span 1;"
+  },
+  {
+    "assertVisible": {
+      "id": "game-code",
+      "text": "^grid-template-columns: 1fr 1fr 2fr 1fr 1fr 2fr;\ngrid-column: 2 / span 2;\ngrid-row: 2 / span 1;$"
+    }
   },
   "hideKeyboard",
   {
@@ -4085,7 +4734,8 @@ onFlowComplete:
         "id": "game-run"
       },
       "direction": "DOWN",
-      "centerElement": true,
+      "speed": 80,
+      "centerElement": false,
       "timeout": 20000
     }
   },
@@ -4100,7 +4750,8 @@ onFlowComplete:
         "text": "Signal restored!"
       },
       "direction": "DOWN",
-      "centerElement": true,
+      "speed": 80,
+      "centerElement": false,
       "timeout": 20000
     }
   },
@@ -4110,10 +4761,33 @@ onFlowComplete:
   {
     "scrollUntilVisible": {
       "element": {
+        "id": "game-run"
+      },
+      "direction": "UP",
+      "speed": 20,
+      "centerElement": false,
+      "timeout": 20000
+    }
+  },
+  {
+    "scrollUntilVisible": {
+      "element": {
+        "id": "game-code"
+      },
+      "direction": "UP",
+      "speed": 80,
+      "centerElement": false,
+      "timeout": 20000
+    }
+  },
+  {
+    "scrollUntilVisible": {
+      "element": {
         "id": "game-scenario-mastery-1"
       },
       "direction": "UP",
-      "centerElement": true,
+      "speed": 80,
+      "centerElement": false,
       "timeout": 20000
     }
   },
@@ -4128,20 +4802,58 @@ onFlowComplete:
         "id": "game-code"
       },
       "direction": "DOWN",
-      "centerElement": true,
+      "speed": 80,
+      "centerElement": false,
       "timeout": 20000
     }
   },
   {
-    "tapOn": {
-      "id": "game-code"
+    "longPressOn": {
+      "id": "game-code",
+      "point": "25%,20%"
     }
   },
   {
-    "eraseText": 36
+    "runFlow": {
+      "when": {
+        "platform": "Android",
+        "notVisible": "Select [Aa]ll"
+      },
+      "commands": [
+        {
+          "tapOn": {
+            "id": "android:id/overflow"
+          }
+        }
+      ]
+    }
   },
   {
-    "inputText": "grid-template-columns: 2fr 1fr 1fr 2fr 1fr 1fr;\ngrid-column: 3 / span 2;\ngrid-row: 2 / span 1;"
+    "tapOn": "Select [Aa]ll"
+  },
+  {
+    "eraseText": 1
+  },
+  {
+    "inputText": "grid-template-columns: 2fr 1fr 1fr 2fr 1fr 1fr;"
+  },
+  {
+    "pressKey": "Enter"
+  },
+  {
+    "inputText": "grid-column: 3 / span 2;"
+  },
+  {
+    "pressKey": "Enter"
+  },
+  {
+    "inputText": "grid-row: 2 / span 1;"
+  },
+  {
+    "assertVisible": {
+      "id": "game-code",
+      "text": "^grid-template-columns: 2fr 1fr 1fr 2fr 1fr 1fr;\ngrid-column: 3 / span 2;\ngrid-row: 2 / span 1;$"
+    }
   },
   "hideKeyboard",
   {
@@ -4150,7 +4862,8 @@ onFlowComplete:
         "id": "game-run"
       },
       "direction": "DOWN",
-      "centerElement": true,
+      "speed": 80,
+      "centerElement": false,
       "timeout": 20000
     }
   },
@@ -4165,7 +4878,8 @@ onFlowComplete:
         "text": "Signal restored!"
       },
       "direction": "DOWN",
-      "centerElement": true,
+      "speed": 80,
+      "centerElement": false,
       "timeout": 20000
     }
   },
@@ -4175,10 +4889,33 @@ onFlowComplete:
   {
     "scrollUntilVisible": {
       "element": {
+        "id": "game-run"
+      },
+      "direction": "UP",
+      "speed": 20,
+      "centerElement": false,
+      "timeout": 20000
+    }
+  },
+  {
+    "scrollUntilVisible": {
+      "element": {
+        "id": "game-code"
+      },
+      "direction": "UP",
+      "speed": 80,
+      "centerElement": false,
+      "timeout": 20000
+    }
+  },
+  {
+    "scrollUntilVisible": {
+      "element": {
         "id": "game-scenario-mastery-2"
       },
       "direction": "UP",
-      "centerElement": true,
+      "speed": 80,
+      "centerElement": false,
       "timeout": 20000
     }
   },
@@ -4193,20 +4930,58 @@ onFlowComplete:
         "id": "game-code"
       },
       "direction": "DOWN",
-      "centerElement": true,
+      "speed": 80,
+      "centerElement": false,
       "timeout": 20000
     }
   },
   {
-    "tapOn": {
-      "id": "game-code"
+    "longPressOn": {
+      "id": "game-code",
+      "point": "25%,20%"
     }
   },
   {
-    "eraseText": 36
+    "runFlow": {
+      "when": {
+        "platform": "Android",
+        "notVisible": "Select [Aa]ll"
+      },
+      "commands": [
+        {
+          "tapOn": {
+            "id": "android:id/overflow"
+          }
+        }
+      ]
+    }
   },
   {
-    "inputText": "grid-template-columns: 1fr 2fr 1fr 1fr 2fr 1fr;\ngrid-column: 4 / span 2;\ngrid-row: 2 / span 1;"
+    "tapOn": "Select [Aa]ll"
+  },
+  {
+    "eraseText": 1
+  },
+  {
+    "inputText": "grid-template-columns: 1fr 2fr 1fr 1fr 2fr 1fr;"
+  },
+  {
+    "pressKey": "Enter"
+  },
+  {
+    "inputText": "grid-column: 4 / span 2;"
+  },
+  {
+    "pressKey": "Enter"
+  },
+  {
+    "inputText": "grid-row: 2 / span 1;"
+  },
+  {
+    "assertVisible": {
+      "id": "game-code",
+      "text": "^grid-template-columns: 1fr 2fr 1fr 1fr 2fr 1fr;\ngrid-column: 4 / span 2;\ngrid-row: 2 / span 1;$"
+    }
   },
   "hideKeyboard",
   {
@@ -4215,7 +4990,8 @@ onFlowComplete:
         "id": "game-run"
       },
       "direction": "DOWN",
-      "centerElement": true,
+      "speed": 80,
+      "centerElement": false,
       "timeout": 20000
     }
   },
@@ -4230,7 +5006,8 @@ onFlowComplete:
         "text": "Signal restored!"
       },
       "direction": "DOWN",
-      "centerElement": true,
+      "speed": 80,
+      "centerElement": false,
       "timeout": 20000
     }
   },
@@ -4238,6 +5015,11 @@ onFlowComplete:
     "assertVisible": "Signal restored!"
   },
   "launchApp",
+  {
+    "assertVisible": {
+      "id": "mobile-nav-learn"
+    }
+  },
   {
     "openLink": "codematica://play/restore-the-signal/mixed-horde"
   },
@@ -4259,7 +5041,8 @@ onFlowComplete:
         "id": "game-scenario-main"
       },
       "direction": "DOWN",
-      "centerElement": true,
+      "speed": 80,
+      "centerElement": false,
       "timeout": 20000
     }
   },
@@ -4274,20 +5057,46 @@ onFlowComplete:
         "id": "game-code"
       },
       "direction": "DOWN",
-      "centerElement": true,
+      "speed": 80,
+      "centerElement": false,
       "timeout": 20000
     }
   },
   {
-    "tapOn": {
-      "id": "game-code"
+    "longPressOn": {
+      "id": "game-code",
+      "point": "25%,20%"
     }
   },
   {
-    "eraseText": 23
+    "runFlow": {
+      "when": {
+        "platform": "Android",
+        "notVisible": "Select [Aa]ll"
+      },
+      "commands": [
+        {
+          "tapOn": {
+            "id": "android:id/overflow"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "tapOn": "Select [Aa]ll"
+  },
+  {
+    "eraseText": 1
   },
   {
     "inputText": "SELECT z.id FROM zombies AS z JOIN zones AS a ON z.zone = a.name WHERE a.evacuated = 1 AND z.threat >= 2"
+  },
+  {
+    "assertVisible": {
+      "id": "game-code",
+      "text": "^SELECT z\\.id FROM zombies AS z JOIN zones AS a ON z\\.zone = a\\.name WHERE a\\.evacuated = 1 AND z\\.threat >= 2$"
+    }
   },
   "hideKeyboard",
   {
@@ -4296,7 +5105,8 @@ onFlowComplete:
         "id": "game-run"
       },
       "direction": "DOWN",
-      "centerElement": true,
+      "speed": 80,
+      "centerElement": false,
       "timeout": 20000
     }
   },
@@ -4311,7 +5121,8 @@ onFlowComplete:
         "text": "Signal restored!"
       },
       "direction": "DOWN",
-      "centerElement": true,
+      "speed": 80,
+      "centerElement": false,
       "timeout": 20000
     }
   },
@@ -4321,10 +5132,33 @@ onFlowComplete:
   {
     "scrollUntilVisible": {
       "element": {
+        "id": "game-run"
+      },
+      "direction": "UP",
+      "speed": 20,
+      "centerElement": false,
+      "timeout": 20000
+    }
+  },
+  {
+    "scrollUntilVisible": {
+      "element": {
+        "id": "game-code"
+      },
+      "direction": "UP",
+      "speed": 80,
+      "centerElement": false,
+      "timeout": 20000
+    }
+  },
+  {
+    "scrollUntilVisible": {
+      "element": {
         "id": "game-scenario-mastery-1"
       },
       "direction": "UP",
-      "centerElement": true,
+      "speed": 80,
+      "centerElement": false,
       "timeout": 20000
     }
   },
@@ -4339,20 +5173,46 @@ onFlowComplete:
         "id": "game-code"
       },
       "direction": "DOWN",
-      "centerElement": true,
+      "speed": 80,
+      "centerElement": false,
       "timeout": 20000
     }
   },
   {
-    "tapOn": {
-      "id": "game-code"
+    "longPressOn": {
+      "id": "game-code",
+      "point": "25%,20%"
     }
   },
   {
-    "eraseText": 23
+    "runFlow": {
+      "when": {
+        "platform": "Android",
+        "notVisible": "Select [Aa]ll"
+      },
+      "commands": [
+        {
+          "tapOn": {
+            "id": "android:id/overflow"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "tapOn": "Select [Aa]ll"
+  },
+  {
+    "eraseText": 1
   },
   {
     "inputText": "SELECT z.id FROM zombies AS z JOIN zones AS a ON z.zone = a.name WHERE a.evacuated = 1 AND z.threat >= 3"
+  },
+  {
+    "assertVisible": {
+      "id": "game-code",
+      "text": "^SELECT z\\.id FROM zombies AS z JOIN zones AS a ON z\\.zone = a\\.name WHERE a\\.evacuated = 1 AND z\\.threat >= 3$"
+    }
   },
   "hideKeyboard",
   {
@@ -4361,7 +5221,8 @@ onFlowComplete:
         "id": "game-run"
       },
       "direction": "DOWN",
-      "centerElement": true,
+      "speed": 80,
+      "centerElement": false,
       "timeout": 20000
     }
   },
@@ -4376,7 +5237,8 @@ onFlowComplete:
         "text": "Signal restored!"
       },
       "direction": "DOWN",
-      "centerElement": true,
+      "speed": 80,
+      "centerElement": false,
       "timeout": 20000
     }
   },
@@ -4386,10 +5248,33 @@ onFlowComplete:
   {
     "scrollUntilVisible": {
       "element": {
+        "id": "game-run"
+      },
+      "direction": "UP",
+      "speed": 20,
+      "centerElement": false,
+      "timeout": 20000
+    }
+  },
+  {
+    "scrollUntilVisible": {
+      "element": {
+        "id": "game-code"
+      },
+      "direction": "UP",
+      "speed": 80,
+      "centerElement": false,
+      "timeout": 20000
+    }
+  },
+  {
+    "scrollUntilVisible": {
+      "element": {
         "id": "game-scenario-mastery-2"
       },
       "direction": "UP",
-      "centerElement": true,
+      "speed": 80,
+      "centerElement": false,
       "timeout": 20000
     }
   },
@@ -4404,20 +5289,46 @@ onFlowComplete:
         "id": "game-code"
       },
       "direction": "DOWN",
-      "centerElement": true,
+      "speed": 80,
+      "centerElement": false,
       "timeout": 20000
     }
   },
   {
-    "tapOn": {
-      "id": "game-code"
+    "longPressOn": {
+      "id": "game-code",
+      "point": "25%,20%"
     }
   },
   {
-    "eraseText": 23
+    "runFlow": {
+      "when": {
+        "platform": "Android",
+        "notVisible": "Select [Aa]ll"
+      },
+      "commands": [
+        {
+          "tapOn": {
+            "id": "android:id/overflow"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "tapOn": "Select [Aa]ll"
+  },
+  {
+    "eraseText": 1
   },
   {
     "inputText": "SELECT z.id FROM zombies AS z JOIN zones AS a ON z.zone = a.name WHERE a.evacuated = 1 AND z.threat >= 1"
+  },
+  {
+    "assertVisible": {
+      "id": "game-code",
+      "text": "^SELECT z\\.id FROM zombies AS z JOIN zones AS a ON z\\.zone = a\\.name WHERE a\\.evacuated = 1 AND z\\.threat >= 1$"
+    }
   },
   "hideKeyboard",
   {
@@ -4426,7 +5337,8 @@ onFlowComplete:
         "id": "game-run"
       },
       "direction": "DOWN",
-      "centerElement": true,
+      "speed": 80,
+      "centerElement": false,
       "timeout": 20000
     }
   },
@@ -4441,7 +5353,8 @@ onFlowComplete:
         "text": "Signal restored!"
       },
       "direction": "DOWN",
-      "centerElement": true,
+      "speed": 80,
+      "centerElement": false,
       "timeout": 20000
     }
   },
@@ -4449,6 +5362,11 @@ onFlowComplete:
     "assertVisible": "Signal restored!"
   },
   "launchApp",
+  {
+    "assertVisible": {
+      "id": "mobile-nav-learn"
+    }
+  },
   {
     "openLink": "codematica://play/restore-the-signal/command-loop"
   },
@@ -4470,7 +5388,8 @@ onFlowComplete:
         "id": "game-scenario-main"
       },
       "direction": "DOWN",
-      "centerElement": true,
+      "speed": 80,
+      "centerElement": false,
       "timeout": 20000
     }
   },
@@ -4485,7 +5404,8 @@ onFlowComplete:
         "id": "game-port-view.input"
       },
       "direction": "DOWN",
-      "centerElement": true,
+      "speed": 20,
+      "centerElement": false,
       "timeout": 20000
     }
   },
@@ -4500,7 +5420,8 @@ onFlowComplete:
         "id": "game-port-state.update"
       },
       "direction": "DOWN",
-      "centerElement": true,
+      "speed": 20,
+      "centerElement": false,
       "timeout": 20000
     }
   },
@@ -4515,7 +5436,8 @@ onFlowComplete:
         "id": "game-port-state.render"
       },
       "direction": "DOWN",
-      "centerElement": true,
+      "speed": 20,
+      "centerElement": false,
       "timeout": 20000
     }
   },
@@ -4530,7 +5452,8 @@ onFlowComplete:
         "id": "game-port-view.render"
       },
       "direction": "UP",
-      "centerElement": true,
+      "speed": 20,
+      "centerElement": false,
       "timeout": 20000
     }
   },
@@ -4545,7 +5468,8 @@ onFlowComplete:
         "id": "game-run"
       },
       "direction": "DOWN",
-      "centerElement": true,
+      "speed": 80,
+      "centerElement": false,
       "timeout": 20000
     }
   },
@@ -4560,7 +5484,8 @@ onFlowComplete:
         "text": "Signal restored!"
       },
       "direction": "DOWN",
-      "centerElement": true,
+      "speed": 80,
+      "centerElement": false,
       "timeout": 20000
     }
   },
@@ -4570,10 +5495,33 @@ onFlowComplete:
   {
     "scrollUntilVisible": {
       "element": {
+        "id": "game-run"
+      },
+      "direction": "UP",
+      "speed": 20,
+      "centerElement": false,
+      "timeout": 20000
+    }
+  },
+  {
+    "scrollUntilVisible": {
+      "element": {
+        "id": "game-port-view.input"
+      },
+      "direction": "UP",
+      "speed": 20,
+      "centerElement": false,
+      "timeout": 20000
+    }
+  },
+  {
+    "scrollUntilVisible": {
+      "element": {
         "id": "game-scenario-mastery-1"
       },
       "direction": "UP",
-      "centerElement": true,
+      "speed": 80,
+      "centerElement": false,
       "timeout": 20000
     }
   },
@@ -4588,7 +5536,8 @@ onFlowComplete:
         "id": "game-port-view.input"
       },
       "direction": "DOWN",
-      "centerElement": true,
+      "speed": 20,
+      "centerElement": false,
       "timeout": 20000
     }
   },
@@ -4603,7 +5552,8 @@ onFlowComplete:
         "id": "game-port-state.update"
       },
       "direction": "DOWN",
-      "centerElement": true,
+      "speed": 20,
+      "centerElement": false,
       "timeout": 20000
     }
   },
@@ -4618,7 +5568,8 @@ onFlowComplete:
         "id": "game-port-state.render"
       },
       "direction": "DOWN",
-      "centerElement": true,
+      "speed": 20,
+      "centerElement": false,
       "timeout": 20000
     }
   },
@@ -4633,7 +5584,8 @@ onFlowComplete:
         "id": "game-port-view.render"
       },
       "direction": "UP",
-      "centerElement": true,
+      "speed": 20,
+      "centerElement": false,
       "timeout": 20000
     }
   },
@@ -4648,7 +5600,8 @@ onFlowComplete:
         "id": "game-port-mirror.input"
       },
       "direction": "DOWN",
-      "centerElement": true,
+      "speed": 20,
+      "centerElement": false,
       "timeout": 20000
     }
   },
@@ -4663,7 +5616,8 @@ onFlowComplete:
         "id": "game-port-state.update"
       },
       "direction": "UP",
-      "centerElement": true,
+      "speed": 20,
+      "centerElement": false,
       "timeout": 20000
     }
   },
@@ -4678,7 +5632,8 @@ onFlowComplete:
         "id": "game-port-state.render"
       },
       "direction": "DOWN",
-      "centerElement": true,
+      "speed": 20,
+      "centerElement": false,
       "timeout": 20000
     }
   },
@@ -4693,7 +5648,8 @@ onFlowComplete:
         "id": "game-port-mirror.render"
       },
       "direction": "DOWN",
-      "centerElement": true,
+      "speed": 20,
+      "centerElement": false,
       "timeout": 20000
     }
   },
@@ -4708,7 +5664,8 @@ onFlowComplete:
         "id": "game-run"
       },
       "direction": "DOWN",
-      "centerElement": true,
+      "speed": 80,
+      "centerElement": false,
       "timeout": 20000
     }
   },
@@ -4723,7 +5680,8 @@ onFlowComplete:
         "text": "Signal restored!"
       },
       "direction": "DOWN",
-      "centerElement": true,
+      "speed": 80,
+      "centerElement": false,
       "timeout": 20000
     }
   },
@@ -4733,10 +5691,33 @@ onFlowComplete:
   {
     "scrollUntilVisible": {
       "element": {
+        "id": "game-run"
+      },
+      "direction": "UP",
+      "speed": 20,
+      "centerElement": false,
+      "timeout": 20000
+    }
+  },
+  {
+    "scrollUntilVisible": {
+      "element": {
+        "id": "game-port-view.input"
+      },
+      "direction": "UP",
+      "speed": 20,
+      "centerElement": false,
+      "timeout": 20000
+    }
+  },
+  {
+    "scrollUntilVisible": {
+      "element": {
         "id": "game-scenario-mastery-2"
       },
       "direction": "UP",
-      "centerElement": true,
+      "speed": 80,
+      "centerElement": false,
       "timeout": 20000
     }
   },
@@ -4751,7 +5732,8 @@ onFlowComplete:
         "id": "game-port-view.input"
       },
       "direction": "DOWN",
-      "centerElement": true,
+      "speed": 20,
+      "centerElement": false,
       "timeout": 20000
     }
   },
@@ -4766,7 +5748,8 @@ onFlowComplete:
         "id": "game-port-state.update"
       },
       "direction": "DOWN",
-      "centerElement": true,
+      "speed": 20,
+      "centerElement": false,
       "timeout": 20000
     }
   },
@@ -4781,7 +5764,8 @@ onFlowComplete:
         "id": "game-port-state.render"
       },
       "direction": "DOWN",
-      "centerElement": true,
+      "speed": 20,
+      "centerElement": false,
       "timeout": 20000
     }
   },
@@ -4796,7 +5780,8 @@ onFlowComplete:
         "id": "game-port-view.render"
       },
       "direction": "UP",
-      "centerElement": true,
+      "speed": 20,
+      "centerElement": false,
       "timeout": 20000
     }
   },
@@ -4811,7 +5796,8 @@ onFlowComplete:
         "id": "game-port-mirror.input"
       },
       "direction": "DOWN",
-      "centerElement": true,
+      "speed": 20,
+      "centerElement": false,
       "timeout": 20000
     }
   },
@@ -4826,7 +5812,8 @@ onFlowComplete:
         "id": "game-port-state.update"
       },
       "direction": "UP",
-      "centerElement": true,
+      "speed": 20,
+      "centerElement": false,
       "timeout": 20000
     }
   },
@@ -4841,7 +5828,8 @@ onFlowComplete:
         "id": "game-port-state.render"
       },
       "direction": "DOWN",
-      "centerElement": true,
+      "speed": 20,
+      "centerElement": false,
       "timeout": 20000
     }
   },
@@ -4856,7 +5844,8 @@ onFlowComplete:
         "id": "game-port-mirror.render"
       },
       "direction": "DOWN",
-      "centerElement": true,
+      "speed": 20,
+      "centerElement": false,
       "timeout": 20000
     }
   },
@@ -4871,7 +5860,8 @@ onFlowComplete:
         "id": "game-port-state.render"
       },
       "direction": "UP",
-      "centerElement": true,
+      "speed": 20,
+      "centerElement": false,
       "timeout": 20000
     }
   },
@@ -4886,7 +5876,8 @@ onFlowComplete:
         "id": "game-port-status.render"
       },
       "direction": "DOWN",
-      "centerElement": true,
+      "speed": 20,
+      "centerElement": false,
       "timeout": 20000
     }
   },
@@ -4901,7 +5892,8 @@ onFlowComplete:
         "id": "game-run"
       },
       "direction": "DOWN",
-      "centerElement": true,
+      "speed": 80,
+      "centerElement": false,
       "timeout": 20000
     }
   },
@@ -4916,7 +5908,8 @@ onFlowComplete:
         "text": "Signal restored!"
       },
       "direction": "DOWN",
-      "centerElement": true,
+      "speed": 80,
+      "centerElement": false,
       "timeout": 20000
     }
   },
@@ -4924,6 +5917,11 @@ onFlowComplete:
     "assertVisible": "Signal restored!"
   },
   "launchApp",
+  {
+    "assertVisible": {
+      "id": "mobile-nav-learn"
+    }
+  },
   {
     "openLink": "codematica://play/restore-the-signal/restore-the-signal"
   },
@@ -4945,7 +5943,8 @@ onFlowComplete:
         "id": "game-scenario-main"
       },
       "direction": "DOWN",
-      "centerElement": true,
+      "speed": 80,
+      "centerElement": false,
       "timeout": 20000
     }
   },
@@ -4960,7 +5959,8 @@ onFlowComplete:
         "id": "game-piece-client"
       },
       "direction": "DOWN",
-      "centerElement": true,
+      "speed": 20,
+      "centerElement": false,
       "timeout": 20000
     }
   },
@@ -4975,7 +5975,8 @@ onFlowComplete:
         "id": "game-piece-database"
       },
       "direction": "DOWN",
-      "centerElement": true,
+      "speed": 20,
+      "centerElement": false,
       "timeout": 20000
     }
   },
@@ -4990,7 +5991,8 @@ onFlowComplete:
         "id": "game-piece-proxy"
       },
       "direction": "DOWN",
-      "centerElement": true,
+      "speed": 20,
+      "centerElement": false,
       "timeout": 20000
     }
   },
@@ -5005,7 +6007,8 @@ onFlowComplete:
         "id": "game-piece-api-1"
       },
       "direction": "UP",
-      "centerElement": true,
+      "speed": 20,
+      "centerElement": false,
       "timeout": 20000
     }
   },
@@ -5020,7 +6023,8 @@ onFlowComplete:
         "id": "game-piece-api-2"
       },
       "direction": "DOWN",
-      "centerElement": true,
+      "speed": 20,
+      "centerElement": false,
       "timeout": 20000
     }
   },
@@ -5035,7 +6039,8 @@ onFlowComplete:
         "id": "game-piece-api-3"
       },
       "direction": "DOWN",
-      "centerElement": true,
+      "speed": 20,
+      "centerElement": false,
       "timeout": 20000
     }
   },
@@ -5050,7 +6055,8 @@ onFlowComplete:
         "id": "game-piece-cache"
       },
       "direction": "DOWN",
-      "centerElement": true,
+      "speed": 20,
+      "centerElement": false,
       "timeout": 20000
     }
   },
@@ -5062,11 +6068,58 @@ onFlowComplete:
   {
     "scrollUntilVisible": {
       "element": {
-        "id": "game-connect-client"
+        "id": "game-connect-cache"
       },
       "direction": "DOWN",
-      "centerElement": true,
+      "speed": 20,
+      "centerElement": false,
       "timeout": 20000
+    }
+  },
+  {
+    "scrollUntilVisible": {
+      "element": {
+        "id": "game-connect-client"
+      },
+      "direction": "UP",
+      "speed": 20,
+      "centerElement": false,
+      "timeout": 20000
+    }
+  },
+  {
+    "assertVisible": {
+      "id": "game-connect-client"
+    }
+  },
+  {
+    "assertVisible": {
+      "id": "game-connect-database"
+    }
+  },
+  {
+    "assertVisible": {
+      "id": "game-connect-proxy"
+    }
+  },
+  {
+    "assertVisible": {
+      "id": "game-connect-api-1"
+    }
+  },
+  {
+    "assertVisible": {
+      "id": "game-connect-api-2"
+    }
+  },
+  {
+    "assertVisible": {
+      "id": "game-connect-api-3"
+    }
+  },
+  {
+    "assertVisible": {
+      "id": "game-connect-cache"
     }
   },
   {
@@ -5075,13 +6128,8 @@ onFlowComplete:
     }
   },
   {
-    "scrollUntilVisible": {
-      "element": {
-        "id": "game-connect-proxy"
-      },
-      "direction": "DOWN",
-      "centerElement": true,
-      "timeout": 20000
+    "tapOn": {
+      "id": "game-connect-proxy"
     }
   },
   {
@@ -5090,58 +6138,13 @@ onFlowComplete:
     }
   },
   {
-    "scrollUntilVisible": {
-      "element": {
-        "id": "game-connect-proxy"
-      },
-      "direction": "DOWN",
-      "centerElement": true,
-      "timeout": 20000
-    }
-  },
-  {
-    "tapOn": {
-      "id": "game-connect-proxy"
-    }
-  },
-  {
-    "scrollUntilVisible": {
-      "element": {
-        "id": "game-connect-api-1"
-      },
-      "direction": "DOWN",
-      "centerElement": true,
-      "timeout": 20000
-    }
-  },
-  {
     "tapOn": {
       "id": "game-connect-api-1"
     }
   },
   {
-    "scrollUntilVisible": {
-      "element": {
-        "id": "game-connect-api-1"
-      },
-      "direction": "DOWN",
-      "centerElement": true,
-      "timeout": 20000
-    }
-  },
-  {
     "tapOn": {
       "id": "game-connect-api-1"
-    }
-  },
-  {
-    "scrollUntilVisible": {
-      "element": {
-        "id": "game-connect-database"
-      },
-      "direction": "DOWN",
-      "centerElement": true,
-      "timeout": 20000
     }
   },
   {
@@ -5150,28 +6153,8 @@ onFlowComplete:
     }
   },
   {
-    "scrollUntilVisible": {
-      "element": {
-        "id": "game-connect-proxy"
-      },
-      "direction": "DOWN",
-      "centerElement": true,
-      "timeout": 20000
-    }
-  },
-  {
     "tapOn": {
       "id": "game-connect-proxy"
-    }
-  },
-  {
-    "scrollUntilVisible": {
-      "element": {
-        "id": "game-connect-api-2"
-      },
-      "direction": "DOWN",
-      "centerElement": true,
-      "timeout": 20000
     }
   },
   {
@@ -5180,43 +6163,13 @@ onFlowComplete:
     }
   },
   {
-    "scrollUntilVisible": {
-      "element": {
-        "id": "game-connect-api-2"
-      },
-      "direction": "DOWN",
-      "centerElement": true,
-      "timeout": 20000
-    }
-  },
-  {
     "tapOn": {
       "id": "game-connect-api-2"
     }
   },
   {
-    "scrollUntilVisible": {
-      "element": {
-        "id": "game-connect-database"
-      },
-      "direction": "DOWN",
-      "centerElement": true,
-      "timeout": 20000
-    }
-  },
-  {
     "tapOn": {
       "id": "game-connect-database"
-    }
-  },
-  {
-    "scrollUntilVisible": {
-      "element": {
-        "id": "game-connect-proxy"
-      },
-      "direction": "DOWN",
-      "centerElement": true,
-      "timeout": 20000
     }
   },
   {
@@ -5225,43 +6178,13 @@ onFlowComplete:
     }
   },
   {
-    "scrollUntilVisible": {
-      "element": {
-        "id": "game-connect-api-3"
-      },
-      "direction": "DOWN",
-      "centerElement": true,
-      "timeout": 20000
-    }
-  },
-  {
     "tapOn": {
       "id": "game-connect-api-3"
     }
   },
   {
-    "scrollUntilVisible": {
-      "element": {
-        "id": "game-connect-api-3"
-      },
-      "direction": "DOWN",
-      "centerElement": true,
-      "timeout": 20000
-    }
-  },
-  {
     "tapOn": {
       "id": "game-connect-api-3"
-    }
-  },
-  {
-    "scrollUntilVisible": {
-      "element": {
-        "id": "game-connect-database"
-      },
-      "direction": "DOWN",
-      "centerElement": true,
-      "timeout": 20000
     }
   },
   {
@@ -5270,28 +6193,8 @@ onFlowComplete:
     }
   },
   {
-    "scrollUntilVisible": {
-      "element": {
-        "id": "game-connect-api-1"
-      },
-      "direction": "DOWN",
-      "centerElement": true,
-      "timeout": 20000
-    }
-  },
-  {
     "tapOn": {
       "id": "game-connect-api-1"
-    }
-  },
-  {
-    "scrollUntilVisible": {
-      "element": {
-        "id": "game-connect-cache"
-      },
-      "direction": "DOWN",
-      "centerElement": true,
-      "timeout": 20000
     }
   },
   {
@@ -5300,28 +6203,8 @@ onFlowComplete:
     }
   },
   {
-    "scrollUntilVisible": {
-      "element": {
-        "id": "game-connect-api-2"
-      },
-      "direction": "DOWN",
-      "centerElement": true,
-      "timeout": 20000
-    }
-  },
-  {
     "tapOn": {
       "id": "game-connect-api-2"
-    }
-  },
-  {
-    "scrollUntilVisible": {
-      "element": {
-        "id": "game-connect-cache"
-      },
-      "direction": "DOWN",
-      "centerElement": true,
-      "timeout": 20000
     }
   },
   {
@@ -5330,28 +6213,8 @@ onFlowComplete:
     }
   },
   {
-    "scrollUntilVisible": {
-      "element": {
-        "id": "game-connect-api-3"
-      },
-      "direction": "DOWN",
-      "centerElement": true,
-      "timeout": 20000
-    }
-  },
-  {
     "tapOn": {
       "id": "game-connect-api-3"
-    }
-  },
-  {
-    "scrollUntilVisible": {
-      "element": {
-        "id": "game-connect-cache"
-      },
-      "direction": "DOWN",
-      "centerElement": true,
-      "timeout": 20000
     }
   },
   {
@@ -5365,7 +6228,8 @@ onFlowComplete:
         "id": "game-invalidate"
       },
       "direction": "DOWN",
-      "centerElement": true,
+      "speed": 80,
+      "centerElement": false,
       "timeout": 20000
     }
   },
@@ -5380,7 +6244,8 @@ onFlowComplete:
         "id": "game-run"
       },
       "direction": "DOWN",
-      "centerElement": true,
+      "speed": 80,
+      "centerElement": false,
       "timeout": 20000
     }
   },
@@ -5419,7 +6284,8 @@ onFlowComplete:
         "text": "Signal restored!"
       },
       "direction": "DOWN",
-      "centerElement": true,
+      "speed": 80,
+      "centerElement": false,
       "timeout": 20000
     }
   },
@@ -5429,10 +6295,33 @@ onFlowComplete:
   {
     "scrollUntilVisible": {
       "element": {
+        "id": "game-board"
+      },
+      "direction": "UP",
+      "speed": 80,
+      "centerElement": false,
+      "timeout": 20000
+    }
+  },
+  {
+    "scrollUntilVisible": {
+      "element": {
+        "id": "game-piece-client"
+      },
+      "direction": "UP",
+      "speed": 20,
+      "centerElement": false,
+      "timeout": 20000
+    }
+  },
+  {
+    "scrollUntilVisible": {
+      "element": {
         "id": "game-scenario-mastery-1"
       },
       "direction": "UP",
-      "centerElement": true,
+      "speed": 80,
+      "centerElement": false,
       "timeout": 20000
     }
   },
@@ -5447,7 +6336,8 @@ onFlowComplete:
         "id": "game-assist"
       },
       "direction": "DOWN",
-      "centerElement": true,
+      "speed": 80,
+      "centerElement": false,
       "timeout": 20000
     }
   },
@@ -5459,10 +6349,22 @@ onFlowComplete:
   {
     "scrollUntilVisible": {
       "element": {
+        "id": "game-board"
+      },
+      "direction": "UP",
+      "speed": 80,
+      "centerElement": false,
+      "timeout": 20000
+    }
+  },
+  {
+    "scrollUntilVisible": {
+      "element": {
         "id": "game-piece-client"
       },
       "direction": "UP",
-      "centerElement": true,
+      "speed": 20,
+      "centerElement": false,
       "timeout": 20000
     }
   },
@@ -5477,7 +6379,8 @@ onFlowComplete:
         "id": "game-piece-database-fast"
       },
       "direction": "DOWN",
-      "centerElement": true,
+      "speed": 20,
+      "centerElement": false,
       "timeout": 20000
     }
   },
@@ -5492,7 +6395,8 @@ onFlowComplete:
         "id": "game-piece-proxy"
       },
       "direction": "UP",
-      "centerElement": true,
+      "speed": 20,
+      "centerElement": false,
       "timeout": 20000
     }
   },
@@ -5507,7 +6411,8 @@ onFlowComplete:
         "id": "game-piece-api-1"
       },
       "direction": "UP",
-      "centerElement": true,
+      "speed": 20,
+      "centerElement": false,
       "timeout": 20000
     }
   },
@@ -5522,7 +6427,8 @@ onFlowComplete:
         "id": "game-piece-api-2"
       },
       "direction": "DOWN",
-      "centerElement": true,
+      "speed": 20,
+      "centerElement": false,
       "timeout": 20000
     }
   },
@@ -5537,7 +6443,8 @@ onFlowComplete:
         "id": "game-piece-api-3"
       },
       "direction": "DOWN",
-      "centerElement": true,
+      "speed": 20,
+      "centerElement": false,
       "timeout": 20000
     }
   },
@@ -5552,7 +6459,8 @@ onFlowComplete:
         "id": "game-piece-cache"
       },
       "direction": "DOWN",
-      "centerElement": true,
+      "speed": 20,
+      "centerElement": false,
       "timeout": 20000
     }
   },
@@ -5564,11 +6472,58 @@ onFlowComplete:
   {
     "scrollUntilVisible": {
       "element": {
-        "id": "game-connect-client"
+        "id": "game-connect-cache"
       },
       "direction": "DOWN",
-      "centerElement": true,
+      "speed": 20,
+      "centerElement": false,
       "timeout": 20000
+    }
+  },
+  {
+    "scrollUntilVisible": {
+      "element": {
+        "id": "game-connect-client"
+      },
+      "direction": "UP",
+      "speed": 20,
+      "centerElement": false,
+      "timeout": 20000
+    }
+  },
+  {
+    "assertVisible": {
+      "id": "game-connect-client"
+    }
+  },
+  {
+    "assertVisible": {
+      "id": "game-connect-database-fast"
+    }
+  },
+  {
+    "assertVisible": {
+      "id": "game-connect-proxy"
+    }
+  },
+  {
+    "assertVisible": {
+      "id": "game-connect-api-1"
+    }
+  },
+  {
+    "assertVisible": {
+      "id": "game-connect-api-2"
+    }
+  },
+  {
+    "assertVisible": {
+      "id": "game-connect-api-3"
+    }
+  },
+  {
+    "assertVisible": {
+      "id": "game-connect-cache"
     }
   },
   {
@@ -5577,13 +6532,8 @@ onFlowComplete:
     }
   },
   {
-    "scrollUntilVisible": {
-      "element": {
-        "id": "game-connect-proxy"
-      },
-      "direction": "DOWN",
-      "centerElement": true,
-      "timeout": 20000
+    "tapOn": {
+      "id": "game-connect-proxy"
     }
   },
   {
@@ -5592,58 +6542,13 @@ onFlowComplete:
     }
   },
   {
-    "scrollUntilVisible": {
-      "element": {
-        "id": "game-connect-proxy"
-      },
-      "direction": "DOWN",
-      "centerElement": true,
-      "timeout": 20000
-    }
-  },
-  {
-    "tapOn": {
-      "id": "game-connect-proxy"
-    }
-  },
-  {
-    "scrollUntilVisible": {
-      "element": {
-        "id": "game-connect-api-1"
-      },
-      "direction": "DOWN",
-      "centerElement": true,
-      "timeout": 20000
-    }
-  },
-  {
     "tapOn": {
       "id": "game-connect-api-1"
     }
   },
   {
-    "scrollUntilVisible": {
-      "element": {
-        "id": "game-connect-api-1"
-      },
-      "direction": "DOWN",
-      "centerElement": true,
-      "timeout": 20000
-    }
-  },
-  {
     "tapOn": {
       "id": "game-connect-api-1"
-    }
-  },
-  {
-    "scrollUntilVisible": {
-      "element": {
-        "id": "game-connect-database-fast"
-      },
-      "direction": "DOWN",
-      "centerElement": true,
-      "timeout": 20000
     }
   },
   {
@@ -5652,28 +6557,8 @@ onFlowComplete:
     }
   },
   {
-    "scrollUntilVisible": {
-      "element": {
-        "id": "game-connect-proxy"
-      },
-      "direction": "DOWN",
-      "centerElement": true,
-      "timeout": 20000
-    }
-  },
-  {
     "tapOn": {
       "id": "game-connect-proxy"
-    }
-  },
-  {
-    "scrollUntilVisible": {
-      "element": {
-        "id": "game-connect-api-2"
-      },
-      "direction": "DOWN",
-      "centerElement": true,
-      "timeout": 20000
     }
   },
   {
@@ -5682,43 +6567,13 @@ onFlowComplete:
     }
   },
   {
-    "scrollUntilVisible": {
-      "element": {
-        "id": "game-connect-api-2"
-      },
-      "direction": "DOWN",
-      "centerElement": true,
-      "timeout": 20000
-    }
-  },
-  {
     "tapOn": {
       "id": "game-connect-api-2"
     }
   },
   {
-    "scrollUntilVisible": {
-      "element": {
-        "id": "game-connect-database-fast"
-      },
-      "direction": "DOWN",
-      "centerElement": true,
-      "timeout": 20000
-    }
-  },
-  {
     "tapOn": {
       "id": "game-connect-database-fast"
-    }
-  },
-  {
-    "scrollUntilVisible": {
-      "element": {
-        "id": "game-connect-proxy"
-      },
-      "direction": "DOWN",
-      "centerElement": true,
-      "timeout": 20000
     }
   },
   {
@@ -5727,43 +6582,13 @@ onFlowComplete:
     }
   },
   {
-    "scrollUntilVisible": {
-      "element": {
-        "id": "game-connect-api-3"
-      },
-      "direction": "DOWN",
-      "centerElement": true,
-      "timeout": 20000
-    }
-  },
-  {
     "tapOn": {
       "id": "game-connect-api-3"
     }
   },
   {
-    "scrollUntilVisible": {
-      "element": {
-        "id": "game-connect-api-3"
-      },
-      "direction": "DOWN",
-      "centerElement": true,
-      "timeout": 20000
-    }
-  },
-  {
     "tapOn": {
       "id": "game-connect-api-3"
-    }
-  },
-  {
-    "scrollUntilVisible": {
-      "element": {
-        "id": "game-connect-database-fast"
-      },
-      "direction": "DOWN",
-      "centerElement": true,
-      "timeout": 20000
     }
   },
   {
@@ -5772,28 +6597,8 @@ onFlowComplete:
     }
   },
   {
-    "scrollUntilVisible": {
-      "element": {
-        "id": "game-connect-api-1"
-      },
-      "direction": "DOWN",
-      "centerElement": true,
-      "timeout": 20000
-    }
-  },
-  {
     "tapOn": {
       "id": "game-connect-api-1"
-    }
-  },
-  {
-    "scrollUntilVisible": {
-      "element": {
-        "id": "game-connect-cache"
-      },
-      "direction": "DOWN",
-      "centerElement": true,
-      "timeout": 20000
     }
   },
   {
@@ -5802,28 +6607,8 @@ onFlowComplete:
     }
   },
   {
-    "scrollUntilVisible": {
-      "element": {
-        "id": "game-connect-api-2"
-      },
-      "direction": "DOWN",
-      "centerElement": true,
-      "timeout": 20000
-    }
-  },
-  {
     "tapOn": {
       "id": "game-connect-api-2"
-    }
-  },
-  {
-    "scrollUntilVisible": {
-      "element": {
-        "id": "game-connect-cache"
-      },
-      "direction": "DOWN",
-      "centerElement": true,
-      "timeout": 20000
     }
   },
   {
@@ -5832,28 +6617,8 @@ onFlowComplete:
     }
   },
   {
-    "scrollUntilVisible": {
-      "element": {
-        "id": "game-connect-api-3"
-      },
-      "direction": "DOWN",
-      "centerElement": true,
-      "timeout": 20000
-    }
-  },
-  {
     "tapOn": {
       "id": "game-connect-api-3"
-    }
-  },
-  {
-    "scrollUntilVisible": {
-      "element": {
-        "id": "game-connect-cache"
-      },
-      "direction": "DOWN",
-      "centerElement": true,
-      "timeout": 20000
     }
   },
   {
@@ -5867,7 +6632,8 @@ onFlowComplete:
         "id": "game-invalidate"
       },
       "direction": "DOWN",
-      "centerElement": true,
+      "speed": 80,
+      "centerElement": false,
       "timeout": 20000
     }
   },
@@ -5882,7 +6648,8 @@ onFlowComplete:
         "id": "game-run"
       },
       "direction": "DOWN",
-      "centerElement": true,
+      "speed": 80,
+      "centerElement": false,
       "timeout": 20000
     }
   },
@@ -5897,7 +6664,8 @@ onFlowComplete:
         "text": "Signal restored!"
       },
       "direction": "DOWN",
-      "centerElement": true,
+      "speed": 80,
+      "centerElement": false,
       "timeout": 20000
     }
   },
@@ -5907,10 +6675,33 @@ onFlowComplete:
   {
     "scrollUntilVisible": {
       "element": {
+        "id": "game-board"
+      },
+      "direction": "UP",
+      "speed": 80,
+      "centerElement": false,
+      "timeout": 20000
+    }
+  },
+  {
+    "scrollUntilVisible": {
+      "element": {
+        "id": "game-piece-client"
+      },
+      "direction": "UP",
+      "speed": 20,
+      "centerElement": false,
+      "timeout": 20000
+    }
+  },
+  {
+    "scrollUntilVisible": {
+      "element": {
         "id": "game-scenario-mastery-2"
       },
       "direction": "UP",
-      "centerElement": true,
+      "speed": 80,
+      "centerElement": false,
       "timeout": 20000
     }
   },
@@ -5925,7 +6716,8 @@ onFlowComplete:
         "id": "game-assist"
       },
       "direction": "DOWN",
-      "centerElement": true,
+      "speed": 80,
+      "centerElement": false,
       "timeout": 20000
     }
   },
@@ -5937,10 +6729,22 @@ onFlowComplete:
   {
     "scrollUntilVisible": {
       "element": {
+        "id": "game-board"
+      },
+      "direction": "UP",
+      "speed": 80,
+      "centerElement": false,
+      "timeout": 20000
+    }
+  },
+  {
+    "scrollUntilVisible": {
+      "element": {
         "id": "game-piece-client"
       },
       "direction": "UP",
-      "centerElement": true,
+      "speed": 20,
+      "centerElement": false,
       "timeout": 20000
     }
   },
@@ -5955,7 +6759,8 @@ onFlowComplete:
         "id": "game-piece-database-fast"
       },
       "direction": "DOWN",
-      "centerElement": true,
+      "speed": 20,
+      "centerElement": false,
       "timeout": 20000
     }
   },
@@ -5970,7 +6775,8 @@ onFlowComplete:
         "id": "game-piece-proxy"
       },
       "direction": "UP",
-      "centerElement": true,
+      "speed": 20,
+      "centerElement": false,
       "timeout": 20000
     }
   },
@@ -5985,7 +6791,8 @@ onFlowComplete:
         "id": "game-piece-api-1"
       },
       "direction": "UP",
-      "centerElement": true,
+      "speed": 20,
+      "centerElement": false,
       "timeout": 20000
     }
   },
@@ -6000,7 +6807,8 @@ onFlowComplete:
         "id": "game-piece-api-2"
       },
       "direction": "DOWN",
-      "centerElement": true,
+      "speed": 20,
+      "centerElement": false,
       "timeout": 20000
     }
   },
@@ -6015,7 +6823,8 @@ onFlowComplete:
         "id": "game-piece-api-3"
       },
       "direction": "DOWN",
-      "centerElement": true,
+      "speed": 20,
+      "centerElement": false,
       "timeout": 20000
     }
   },
@@ -6030,7 +6839,8 @@ onFlowComplete:
         "id": "game-piece-cache"
       },
       "direction": "DOWN",
-      "centerElement": true,
+      "speed": 20,
+      "centerElement": false,
       "timeout": 20000
     }
   },
@@ -6042,11 +6852,58 @@ onFlowComplete:
   {
     "scrollUntilVisible": {
       "element": {
-        "id": "game-connect-client"
+        "id": "game-connect-cache"
       },
       "direction": "DOWN",
-      "centerElement": true,
+      "speed": 20,
+      "centerElement": false,
       "timeout": 20000
+    }
+  },
+  {
+    "scrollUntilVisible": {
+      "element": {
+        "id": "game-connect-client"
+      },
+      "direction": "UP",
+      "speed": 20,
+      "centerElement": false,
+      "timeout": 20000
+    }
+  },
+  {
+    "assertVisible": {
+      "id": "game-connect-client"
+    }
+  },
+  {
+    "assertVisible": {
+      "id": "game-connect-database-fast"
+    }
+  },
+  {
+    "assertVisible": {
+      "id": "game-connect-proxy"
+    }
+  },
+  {
+    "assertVisible": {
+      "id": "game-connect-api-1"
+    }
+  },
+  {
+    "assertVisible": {
+      "id": "game-connect-api-2"
+    }
+  },
+  {
+    "assertVisible": {
+      "id": "game-connect-api-3"
+    }
+  },
+  {
+    "assertVisible": {
+      "id": "game-connect-cache"
     }
   },
   {
@@ -6055,13 +6912,8 @@ onFlowComplete:
     }
   },
   {
-    "scrollUntilVisible": {
-      "element": {
-        "id": "game-connect-proxy"
-      },
-      "direction": "DOWN",
-      "centerElement": true,
-      "timeout": 20000
+    "tapOn": {
+      "id": "game-connect-proxy"
     }
   },
   {
@@ -6070,58 +6922,13 @@ onFlowComplete:
     }
   },
   {
-    "scrollUntilVisible": {
-      "element": {
-        "id": "game-connect-proxy"
-      },
-      "direction": "DOWN",
-      "centerElement": true,
-      "timeout": 20000
-    }
-  },
-  {
-    "tapOn": {
-      "id": "game-connect-proxy"
-    }
-  },
-  {
-    "scrollUntilVisible": {
-      "element": {
-        "id": "game-connect-api-1"
-      },
-      "direction": "DOWN",
-      "centerElement": true,
-      "timeout": 20000
-    }
-  },
-  {
     "tapOn": {
       "id": "game-connect-api-1"
     }
   },
   {
-    "scrollUntilVisible": {
-      "element": {
-        "id": "game-connect-api-1"
-      },
-      "direction": "DOWN",
-      "centerElement": true,
-      "timeout": 20000
-    }
-  },
-  {
     "tapOn": {
       "id": "game-connect-api-1"
-    }
-  },
-  {
-    "scrollUntilVisible": {
-      "element": {
-        "id": "game-connect-database-fast"
-      },
-      "direction": "DOWN",
-      "centerElement": true,
-      "timeout": 20000
     }
   },
   {
@@ -6130,28 +6937,8 @@ onFlowComplete:
     }
   },
   {
-    "scrollUntilVisible": {
-      "element": {
-        "id": "game-connect-proxy"
-      },
-      "direction": "DOWN",
-      "centerElement": true,
-      "timeout": 20000
-    }
-  },
-  {
     "tapOn": {
       "id": "game-connect-proxy"
-    }
-  },
-  {
-    "scrollUntilVisible": {
-      "element": {
-        "id": "game-connect-api-2"
-      },
-      "direction": "DOWN",
-      "centerElement": true,
-      "timeout": 20000
     }
   },
   {
@@ -6160,43 +6947,13 @@ onFlowComplete:
     }
   },
   {
-    "scrollUntilVisible": {
-      "element": {
-        "id": "game-connect-api-2"
-      },
-      "direction": "DOWN",
-      "centerElement": true,
-      "timeout": 20000
-    }
-  },
-  {
     "tapOn": {
       "id": "game-connect-api-2"
     }
   },
   {
-    "scrollUntilVisible": {
-      "element": {
-        "id": "game-connect-database-fast"
-      },
-      "direction": "DOWN",
-      "centerElement": true,
-      "timeout": 20000
-    }
-  },
-  {
     "tapOn": {
       "id": "game-connect-database-fast"
-    }
-  },
-  {
-    "scrollUntilVisible": {
-      "element": {
-        "id": "game-connect-proxy"
-      },
-      "direction": "DOWN",
-      "centerElement": true,
-      "timeout": 20000
     }
   },
   {
@@ -6205,43 +6962,13 @@ onFlowComplete:
     }
   },
   {
-    "scrollUntilVisible": {
-      "element": {
-        "id": "game-connect-api-3"
-      },
-      "direction": "DOWN",
-      "centerElement": true,
-      "timeout": 20000
-    }
-  },
-  {
     "tapOn": {
       "id": "game-connect-api-3"
     }
   },
   {
-    "scrollUntilVisible": {
-      "element": {
-        "id": "game-connect-api-3"
-      },
-      "direction": "DOWN",
-      "centerElement": true,
-      "timeout": 20000
-    }
-  },
-  {
     "tapOn": {
       "id": "game-connect-api-3"
-    }
-  },
-  {
-    "scrollUntilVisible": {
-      "element": {
-        "id": "game-connect-database-fast"
-      },
-      "direction": "DOWN",
-      "centerElement": true,
-      "timeout": 20000
     }
   },
   {
@@ -6250,28 +6977,8 @@ onFlowComplete:
     }
   },
   {
-    "scrollUntilVisible": {
-      "element": {
-        "id": "game-connect-api-1"
-      },
-      "direction": "DOWN",
-      "centerElement": true,
-      "timeout": 20000
-    }
-  },
-  {
     "tapOn": {
       "id": "game-connect-api-1"
-    }
-  },
-  {
-    "scrollUntilVisible": {
-      "element": {
-        "id": "game-connect-cache"
-      },
-      "direction": "DOWN",
-      "centerElement": true,
-      "timeout": 20000
     }
   },
   {
@@ -6280,28 +6987,8 @@ onFlowComplete:
     }
   },
   {
-    "scrollUntilVisible": {
-      "element": {
-        "id": "game-connect-api-2"
-      },
-      "direction": "DOWN",
-      "centerElement": true,
-      "timeout": 20000
-    }
-  },
-  {
     "tapOn": {
       "id": "game-connect-api-2"
-    }
-  },
-  {
-    "scrollUntilVisible": {
-      "element": {
-        "id": "game-connect-cache"
-      },
-      "direction": "DOWN",
-      "centerElement": true,
-      "timeout": 20000
     }
   },
   {
@@ -6310,28 +6997,8 @@ onFlowComplete:
     }
   },
   {
-    "scrollUntilVisible": {
-      "element": {
-        "id": "game-connect-api-3"
-      },
-      "direction": "DOWN",
-      "centerElement": true,
-      "timeout": 20000
-    }
-  },
-  {
     "tapOn": {
       "id": "game-connect-api-3"
-    }
-  },
-  {
-    "scrollUntilVisible": {
-      "element": {
-        "id": "game-connect-cache"
-      },
-      "direction": "DOWN",
-      "centerElement": true,
-      "timeout": 20000
     }
   },
   {
@@ -6345,7 +7012,8 @@ onFlowComplete:
         "id": "game-invalidate"
       },
       "direction": "DOWN",
-      "centerElement": true,
+      "speed": 80,
+      "centerElement": false,
       "timeout": 20000
     }
   },
@@ -6360,7 +7028,8 @@ onFlowComplete:
         "id": "game-run"
       },
       "direction": "DOWN",
-      "centerElement": true,
+      "speed": 80,
+      "centerElement": false,
       "timeout": 20000
     }
   },
@@ -6375,7 +7044,8 @@ onFlowComplete:
         "text": "Signal restored!"
       },
       "direction": "DOWN",
-      "centerElement": true,
+      "speed": 80,
+      "centerElement": false,
       "timeout": 20000
     }
   },
@@ -6384,10 +7054,21 @@ onFlowComplete:
   },
   "launchApp",
   {
+    "assertVisible": {
+      "id": "mobile-nav-learn"
+    }
+  },
+  {
     "setAirplaneMode": "disabled"
   },
   {
     "openLink": "codematica://"
+  },
+  {
+    "assertVisible": "Level list"
+  },
+  {
+    "tapOn": "Level list"
   },
   {
     "scrollUntilVisible": {

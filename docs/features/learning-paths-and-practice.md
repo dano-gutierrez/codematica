@@ -101,6 +101,7 @@ The shipped content includes skill and role paths using Markdown articles, exter
 - Cloze prompts compare trimmed, case-insensitive answers against `acceptedAnswers`.
 - Questionnaires render one question per screen, randomize question and answer order once per attempt, show immediate feedback, and report overall/per-skill aggregate scores.
 - Guided labs require a chosen prediction and completed evidence checklist; reflections remain unsaved local component state.
+- Guided-lab completion waits for the existing progress callback. Pending work disables repeated completion and choice changes; a failed write keeps choices and notes and offers **Retry completion**. Acknowledged completion shows **Lab complete** and **Practice again**. Restart clears only transient lab work, keeps earned progress, and returns web focus to the first prediction or native scroll to the page top. Next activity remains available when the checklist is ready.
 - Ordering questions use accessible up/down controls. Matching questions use mobile-friendly select controls.
 - When practice opens from a path, completing the prompt or questionnaire shows **Next activity** for the next node in path order.
 - Published passive flashcard feeds appear as a path-level entry point, not as ordered path nodes.
@@ -139,6 +140,7 @@ Distributed Reading Reviews appends one lesson and four-question checkpoint afte
 - Progression validation fails on duplicate skills/outcomes, unknown skill references, missing stage units/nodes, invalid published checkpoints, or a published source node without a local published companion.
 - Missing routes use the shared not-found page.
 - A practice page opened without `?path=` still works but does not show a path-scoped next node.
+- A rejected prediction-start write leaves the lab usable and reports that completion can retry progress. Superseded start failures and late callbacks after leaving cannot replace current feedback. Reflection text is never included in progress payloads.
 
 ## Code Touchpoints
 
@@ -158,7 +160,22 @@ Distributed Reading Reviews appends one lesson and four-question checkpoint afte
 - `packages/core/src/progress/mastery.ts`: Japanese six-box review transitions, due ordering, and local/remote state merge.
 - `apps/web/src/app/browse/page.tsx`: complete lesson and diagram browser route.
 
+## App-wide practice design pass — 2026-10-03
+
+Path/catalog actions and practice controls follow the shared design system. Questionnaires show human-readable question types, named reorder actions, labeled answer fields, radio state, and announced feedback. Web progression focuses the next question or completion heading; Japanese answer inputs remount per question so drafts do not carry into the next prompt. Completion preserves grading and next-activity destinations. Passive feeds use one page title, card subheadings and proximity scrolling; native feeds permit free scrolling rather than mandatory paging.
+
+Test plan additions: `QuestionnaireKinds.test.tsx`, passive feed/rendering tests, native `design-controls.test.tsx`, `design-content.regression.spec.ts` and `design-japanese.regression.spec.ts`. Keep existing scoring and progress assertions. Verify native software keyboard, large text and installed scrolling separately.
+
+### Native catalog and path hierarchy
+
+Browse and practice share the labeled search field, Clear search/focus behavior, keyboard-aware scrolling, concise counts and explicit no-result feedback. Counts identify the first-40 display limit when applicable. Path overview no longer duplicates its first activities; the detail page owns Learning milestones and activity sections. Routes, prerequisites and progress guards remain unchanged.
+
+Native `design-controls.test.tsx` and `mobile-screen-matrix.test.tsx` cover search reset, empty feedback, contextual path actions and unchanged node destinations. Retain the path/practice browser and installed-device journeys.
+
 ## Test Plan
+
+- App-wide design pass: web path/catalog/basic-practice controls reuse Button/ButtonLink. Sources and reading outlines are concise disclosures; native practice uses keyboard-aware AppScreen. Native guided-lab predictions/evidence expose radio/checkbox checked state; changed cloze answers clear stale feedback. Regression-first tests live in `apps/mobile/src/__tests__/design-controls.test.tsx`; web `PracticeCard.test.tsx` and `CatalogSurfaces.test.tsx` retain grading and progress guards. Run targeted suites, both aggregate coverage gates and the `@design` browser lane at 320/768/1440 px with 200% text, then existing path-to-practice journeys. Installed Android `.maestro/practice-recovery.regression.yaml` verifies keyboard wrong-answer correction, all three checkpoint answers, 100% completion and restart. `.maestro/review-and-recovery.regression.yaml` verifies passive scrolling and source-lesson navigation; passive feeds have no reveal/rating/completion controls. Installed iOS remains open. No coverage floor or learning-content change.
+- Guided labs: web `GuidedLabFeedback.test.tsx`, `NavigationAndRendering.test.tsx` and native `guided-lab-feedback.test.tsx` verify pending acknowledgment, duplicate guards, failure/retry, note retention/privacy, restart, superseded failures and unmounts. The real web path adapter must return the progress promise; removing that return fails the deferred-callback regression. `ml-systems.regression.spec.ts` adds source → lab → completion/restart, injected local-storage failure/retry and 320 px normal/200% text with focus and axe on Chromium and WebKit. `guided-lab-and-sources.regression.yaml` checks the published prerequisite section, local source companion/disclosure, lab notes/completion/restart and continuation on a disposable installed app. Run it at native text scales 1.0 and 2.0; inspect the captured screens. Storage fault injection remains below the native device layer.
 
 - Keypad dictionary search: canonical isolated Python compares 340 bounded key patterns and all eight key mappings with an independent literal-encoding scan. It checks complete words versus prefixes, repeated letters, sibling rollback, unique alphabetical output, unchanged inputs, exact limits and validation before shortcuts. Core/graph pin two primary sources, five headings, five independent answers, all eight units and explicit membership/assessment/prerequisite/citation edges. Browser verifies source panels, array continuation and the five-question terminal checkpoint at 100%. No arbitrary-input proof, byte-memory/throughput benchmark, shared index or complete T9/backtracking syllabus is claimed.
 

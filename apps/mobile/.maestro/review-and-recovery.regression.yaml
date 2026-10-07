@@ -1,0 +1,101 @@
+appId: com.codematica.app
+tags:
+  - regression
+---
+- launchApp:
+    clearState: true
+- assertVisible:
+    id: mobile-nav-learn
+- openLink: codematica://design-audit-missing-route
+- assertVisible: This page is unavailable.
+- tapOn:
+    id: mobile-not-found-browse
+- assertVisible:
+    id: mobile-knowledge-search-input
+- openLink: codematica://paths/breadth-first-and-depth-first-search/flashcards
+- assertVisible:
+    id: mobile-passive-flashcard-list
+- assertNotVisible: Reveal answer
+- scrollUntilVisible:
+    element:
+      id: mobile-passive-flashcard-source-1
+    direction: DOWN
+    speed: 20
+    visibilityPercentage: 100
+    centerElement: false
+    timeout: 20000
+- takeScreenshot: passive-review-scrolled
+- tapOn:
+    id: mobile-passive-flashcard-source-1
+- scrollUntilVisible:
+    element:
+      id: mobile-markdown-renderer
+    direction: DOWN
+    speed: 20
+    visibilityPercentage: 100
+    centerElement: false
+    timeout: 20000
+- assertVisible:
+    id: mobile-markdown-renderer
+- openLink: codematica://languages/japanese/vocabulary/good-evening
+- assertVisible: good evening
+- scrollUntilVisible:
+    element:
+      id: mobile-japanese-vocabulary-breakdown
+    direction: DOWN
+    speed: 20
+    visibilityPercentage: 100
+    centerElement: false
+    timeout: 20000
+- assertVisible: Kanji and hiragana breakdown
+- scrollUntilVisible:
+    element:
+      id: mobile-japanese-vocabulary-examples
+    direction: DOWN
+    speed: 20
+    visibilityPercentage: 100
+    centerElement: false
+    timeout: 20000
+- assertVisible: Example phrases
+- takeScreenshot: vocabulary-examples
+- openLink: codematica://languages/japanese/review/flashcards
+- scrollUntilVisible:
+    element:
+      id: mobile-japanese-flashcard
+    direction: DOWN
+    speed: 20
+    visibilityPercentage: 100
+    centerElement: false
+    timeout: 20000
+- assertVisible: Card 1 of 650
+- tapOn:
+    id: mobile-japanese-flashcard
+- assertVisible: にほん
+- assertVisible: Japan
+- scrollUntilVisible:
+    element:
+      text: Next
+    direction: DOWN
+    speed: 20
+    visibilityPercentage: 100
+    centerElement: false
+    timeout: 20000
+- tapOn: Next
+- assertVisible: Card 2 of 650
+- assertVisible: Tap to reveal
+- tapOn: Previous
+- assertVisible: Card 1 of 650
+- assertVisible: Tap to reveal
+- takeScreenshot: vocabulary-review-reset
+- openLink: codematica://languages/japanese/review/listening
+- scrollUntilVisible:
+    element:
+      id: mobile-japanese-listening-pending
+    direction: DOWN
+    speed: 20
+    visibilityPercentage: 100
+    centerElement: false
+    timeout: 20000
+- assertVisible: Audio review is in progress.
+- assertVisible: Draft clips stay unavailable until a Japanese speaker approves them.
+- takeScreenshot: listening-approval-pending

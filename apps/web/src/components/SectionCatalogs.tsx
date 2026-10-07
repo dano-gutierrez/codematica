@@ -1,10 +1,10 @@
 "use client";
 
-import Link from "next/link";
 import { ArrowRight, BookOpen, Brain, Languages, Map as MapIcon, Search } from "lucide-react";
 import { useMemo, useState } from "react";
 import { createDiscoveryItems, type ContentIndex, type Difficulty, type LearningPath } from "@codematica/core";
 import { AppHeader } from "@/components/AppHeader";
+import { ButtonLink } from "./ButtonLink";
 import { DiscoveryCard } from "@/components/HomeDiscovery";
 import { Dropdown, type DropdownOption } from "@/components/Dropdown";
 
@@ -37,11 +37,11 @@ export function LearningPathCatalog({ index }: { index: ContentIndex }) {
   return (
     <main className="min-h-screen pb-14" data-testid="path-catalog">
       <AppHeader subtitle="Learning paths" />
-      <section className="mx-auto w-full max-w-7xl px-4 py-7 sm:py-9">
+      <section className="ui-page">
         <h1 className="mt-2 max-w-4xl text-3xl font-semibold leading-tight text-[#263238] sm:text-4xl">Learning paths</h1>
         <p className="mt-3 max-w-3xl text-base font-normal leading-7 text-[#68737d]">Follow guided learning paths.</p>
 
-        <div className="mt-6 grid gap-3 lg:grid-cols-[minmax(0,1fr)_15rem_16rem]" data-testid="path-catalog-controls">
+        <div className="ui-filters mt-6" data-testid="path-catalog-controls">
           <SearchInput value={query} onChange={setQuery} placeholder="Search paths and categories" testId="path-catalog-search" />
           <Dropdown
             label="Path type"
@@ -107,9 +107,7 @@ function PathCatalogCard({ path }: { path: LearningPath }) {
         {nodeCounts.interview > 0 ? <><span aria-hidden="true">·</span><span>{nodeCounts.interview} walkthroughs</span></> : null}
         {nodeCounts.diagram > 0 ? <><span aria-hidden="true">·</span><span>{nodeCounts.diagram} diagrams</span></> : null}
       </div>
-      <Link href={path.route} className="mt-auto inline-flex min-h-12 items-center justify-center gap-2 rounded-xl border border-[#004d49] bg-[#00645f] px-4 py-2 text-sm font-semibold text-white transition hover:-translate-y-0.5">
-        Open path <ArrowRight className="h-4 w-4" aria-hidden="true" />
-      </Link>
+      <ButtonLink href={path.route} label="Open path" icon={ArrowRight} tone="success" variant="primary" />
     </article>
   );
 }
@@ -135,11 +133,11 @@ export function PracticeCatalog({ index }: { index: ContentIndex }) {
   return (
     <main className="min-h-screen pb-14" data-testid="practice-catalog">
       <AppHeader subtitle="Practice & review" />
-      <section className="mx-auto w-full max-w-7xl px-4 py-7 sm:py-9">
+      <section className="ui-page">
         <h1 className="mt-2 max-w-4xl text-3xl font-semibold leading-tight text-[#263238] sm:text-4xl">Practice & review</h1>
         <p className="mt-3 max-w-3xl text-base font-normal leading-7 text-[#68737d]">Put what you know to work.</p>
 
-        <div className="mt-6 grid gap-3 lg:grid-cols-[minmax(0,1fr)_16rem_16rem]">
+        <div className="ui-filters mt-6">
           <SearchInput value={query} onChange={setQuery} placeholder="Search practice activities" testId="practice-catalog-search" />
           <Dropdown
             label="Activity type"
@@ -188,18 +186,18 @@ export function LanguageCatalog({ index }: { index: ContentIndex }) {
   return (
     <main className="min-h-screen pb-14" data-testid="language-catalog">
       <AppHeader subtitle="Languages" />
-      <section className="mx-auto w-full max-w-7xl px-4 py-7 sm:py-9">
+      <section className="ui-page">
         <h1 className="mt-2 max-w-4xl text-3xl font-semibold leading-tight text-[#263238] sm:text-4xl">Languages</h1>
-        <p className="mt-3 max-w-3xl text-base font-normal leading-7 text-[#68737d]">Choose a language to explore its course, reference catalog, vocabulary, pronunciation, and writing practice.</p>
+        <p className="mt-3 max-w-3xl text-base font-normal leading-7 text-[#68737d]">Choose a language to learn.</p>
 
-        <article className="mt-7 grid gap-6 rounded-xl border border-[#e8c45c] bg-white p-5 md:grid-cols-[minmax(0,1fr)_18rem] md:p-7">
+        <article className="ui-columns mt-7 rounded-xl border border-[#e8c45c] bg-white p-5 md:p-7">
           <div>
             <span className="inline-flex rounded-xl border border-[#e8c45c] bg-[#fff5d6] px-2.5 py-1 text-xs font-semibold uppercase text-[#7a5200]">Available now</span>
             <h2 className="mt-4 flex items-center gap-3 text-3xl font-semibold text-[#263238]"><Languages className="h-7 w-7 text-[#7a5200]" aria-hidden="true" />Japanese</h2>
-            <p className="mt-3 max-w-2xl text-base font-normal leading-7 text-[#68737d]">Study hiragana, katakana, starter kanji, beginner vocabulary, IPA-supported pronunciation, and handwriting.</p>
+            <p className="mt-3 max-w-2xl text-base font-normal leading-7 text-[#68737d]">Read, listen, and write Japanese—from your first kana to everyday vocabulary.</p>
             <div className="mt-5 flex flex-wrap gap-3">
-              <Link href="/languages/japanese" className="inline-flex min-h-12 items-center gap-2 rounded-xl border border-[#5b3d00] bg-[#7a5200] px-4 py-2 text-sm font-semibold text-white">Open Japanese hub <ArrowRight className="h-4 w-4" aria-hidden="true" /></Link>
-              <Link href="/paths/japanese-foundations" className="inline-flex min-h-12 items-center gap-2 rounded-xl border border-[#e8c45c] bg-[#fff5d6] px-4 py-2 text-sm font-semibold text-[#7a5200]">Japanese path <ArrowRight className="h-4 w-4" aria-hidden="true" /></Link>
+              <ButtonLink href="/languages/japanese" label="Open Japanese hub" icon={ArrowRight} tone="success" variant="primary" />
+              <ButtonLink href="/paths/japanese-foundations" label="Japanese path" icon={MapIcon} />
             </div>
           </div>
           <dl className="grid content-start gap-2 text-sm font-medium text-[#68737d]">
@@ -215,10 +213,10 @@ export function LanguageCatalog({ index }: { index: ContentIndex }) {
 
 function SearchInput({ value, onChange, placeholder, testId }: { value: string; onChange: (value: string) => void; placeholder: string; testId: string }) {
   return (
-    <label className="relative block">
+    <label className="ui-field-icon">
       <span className="sr-only">{placeholder}</span>
-      <Search className="pointer-events-none absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-[#68737d]" aria-hidden="true" />
-      <input value={value} onChange={(event) => onChange(event.target.value)} placeholder={placeholder} className="h-14 w-full rounded-xl border border-[#d5e2e8] bg-white pl-12 pr-4 text-base font-medium text-[#263238] outline-none focus:border-[#007c78]" data-testid={testId} />
+      <Search className="h-5 w-5" aria-hidden="true" />
+      <input value={value} onChange={(event) => onChange(event.target.value)} placeholder={placeholder} className="ui-input ui-filter-input" data-testid={testId} />
     </label>
   );
 }
@@ -228,7 +226,7 @@ function EmptyState({ children }: { children: React.ReactNode }) {
 }
 
 function Stat({ label, value }: { label: string; value: number }) {
-  return <div className="flex items-center justify-between rounded-xl bg-[#fff5d6] px-3 py-2 text-[#53616c]"><dt>{label}</dt><dd className="font-semibold text-[#7a5200]">{value}</dd></div>;
+  return <div className="flex flex-wrap items-center justify-between gap-2 rounded-xl bg-[#fff5d6] px-3 py-2 text-[#53616c]"><dt>{label}</dt><dd className="font-semibold text-[#7a5200]">{value}</dd></div>;
 }
 
 function matchesText(values: string[], query: string) {

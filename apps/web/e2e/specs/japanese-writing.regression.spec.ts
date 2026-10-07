@@ -225,7 +225,7 @@ async function savedCount(page: Page) {
       .reduce((sum, p) => sum + p.cells.length, 0);
   });
 }
-test("@regression compact notebook controls and a longer pause allow slower mouse handwriting", async ({ page }, testInfo) => {
+test("@regression labeled notebook controls and a longer pause allow slower mouse handwriting", async ({ page }, testInfo) => {
   await installNotebookClock(page);
   await page.setViewportSize({ width: 820, height: 1180 });
   await page.goto("/languages/japanese/notebooks");
@@ -235,14 +235,19 @@ test("@regression compact notebook controls and a longer pause allow slower mous
   const next = page.getByTestId("writing-next-sheet");
   await expect(restart).toBeEnabled();
   await expect(restart).toHaveAccessibleName("Clear and restart sheet");
-  await expect(restart).toHaveText("");
+  await expect(restart).toContainText("Clear and restart sheet");
   for (const width of [820, 320]) {
     await page.setViewportSize({ width, height: 1180 });
-    await expect.poll(async () => (await restart.boundingBox())!.width).toBe(44);
-    expect((await restart.boundingBox())!.height).toBeGreaterThanOrEqual(44);
-    expect((await next.boundingBox())!.width).toBeLessThan(180);
     const nextBox = (await next.boundingBox())!, restartBox = (await restart.boundingBox())!;
-    expect(Math.abs(nextBox.y + nextBox.height / 2 - restartBox.y - restartBox.height / 2)).toBeLessThanOrEqual(1);
+    for (const control of [nextBox, restartBox]) {
+      expect(control.width).toBeGreaterThanOrEqual(48);
+      expect(control.height).toBeGreaterThanOrEqual(48);
+      expect(control.x).toBeGreaterThanOrEqual(0);
+      expect(control.x + control.width).toBeLessThanOrEqual(width);
+    }
+    const rowDistance = Math.abs(nextBox.y + nextBox.height / 2 - restartBox.y - restartBox.height / 2);
+    if (rowDistance <= 1) expect(restartBox.x - nextBox.x - nextBox.width).toBeGreaterThanOrEqual(8);
+    else expect(restartBox.y - nextBox.y - nextBox.height).toBeGreaterThanOrEqual(8);
   }
   await page.setViewportSize({ width: 820, height: 1180 });
   await pauseNotebookClock(page);

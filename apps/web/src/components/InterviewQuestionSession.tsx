@@ -2,6 +2,8 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { ArrowRight, RotateCcw } from "lucide-react";
+import { Button } from "@/components/Button";
+import { Dropdown } from "@/components/Dropdown";
 import { CodeBlock } from "@/components/CodeBlock";
 import { MermaidBlock } from "@/components/MermaidBlock";
 import { WebInterviewQuestionSession } from "@/components/WebInterviewQuestionSession";
@@ -115,8 +117,8 @@ function AlgorithmInterviewQuestionSession({
   }, [isFinal, stepIndex, track.steps.length]);
 
   return (
-    <section className="mt-7 grid gap-5" data-testid="interview-question-session">
-      <div className="rounded-xl border border-[#d5e2e8] bg-white p-4 sm:p-5">
+    <section className="mt-7 grid grid-cols-1 gap-5" data-testid="interview-question-session">
+      <div>
         <div className="flex flex-wrap items-center justify-between gap-3">
           <div>
             <p className="text-xs font-semibold uppercase text-[#68737d]" data-testid="interview-step-position">
@@ -126,28 +128,14 @@ function AlgorithmInterviewQuestionSession({
               {track.title}
             </h2>
           </div>
-          <label className="grid gap-1 text-xs font-semibold uppercase text-[#68737d]">
-            Solution language
-            <select
-              aria-label="Solution language"
-              value={language}
-              onChange={(event) => setLanguage(event.target.value as LanguageKey)}
-              className="min-h-11 rounded-xl border border-[#d5e2e8] bg-[#f6fbfc] px-3 text-sm font-semibold normal-case text-[#263238] outline-none focus:border-[#007c78]"
-            >
-              {languageOptions.map((option) => (
-                <option key={option.value} value={option.value}>
-                  {option.label}
-                </option>
-              ))}
-            </select>
-          </label>
+          <Dropdown label="Solution language" value={language} onValueChange={(value) => setLanguage(value as LanguageKey)} options={languageOptions} testId="interview-solution-language" className="max-w-full sm:w-60" />
         </div>
 
         <p className="mt-4 text-sm font-normal leading-6 text-[#68737d]">{track.summary}</p>
 
         <div className="mt-5 grid gap-3">
           {visibleSteps.map((step, index) => (
-            <article key={`${track.id}-${step.title}`} className="rounded-xl border border-[#d5e2e8] bg-[#f6fbfc] p-4">
+            <article key={`${track.id}-${step.title}`} className="border-t border-[#e1e5e9] py-4">
               <p className="text-xs font-semibold uppercase text-[#007c78]">Step {index + 1}</p>
               <h3 className="mt-1 text-lg font-semibold text-[#263238]">{step.title}</h3>
               <p className="mt-2 text-sm font-normal leading-6 text-[#33434b]">{step.explanation}</p>
@@ -170,25 +158,7 @@ function AlgorithmInterviewQuestionSession({
         ) : null}
 
         <div className="mt-6 flex flex-wrap gap-3">
-          {isFinal ? (
-            <button
-              type="button"
-              onClick={restart}
-              className="inline-flex min-h-12 items-center gap-2 rounded-xl border border-[#d5e2e8] bg-white px-4 py-2 text-sm font-semibold text-[#263238]"
-            >
-              <RotateCcw className="h-4 w-4" aria-hidden="true" />
-              Restart
-            </button>
-          ) : (
-            <button
-              type="button"
-              onClick={advance}
-              className="inline-flex min-h-12 items-center gap-2 rounded-xl border border-[#1d4e9e] bg-[#245fba] px-4 py-2 text-sm font-semibold text-white transition hover:-translate-y-0.5"
-            >
-              {stepIndex + 1 >= track.steps.length ? "Show full explanation" : "Next"}
-              <ArrowRight className="h-4 w-4" aria-hidden="true" />
-            </button>
-          )}
+          {isFinal ? <Button label="Restart" icon={RotateCcw} tone="warning" onClick={restart} /> : <Button label={stepIndex + 1 >= track.steps.length ? "Show full explanation" : "Next"} icon={ArrowRight} tone="info" variant="primary" onClick={advance} />}
         </div>
       </div>
 

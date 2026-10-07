@@ -3,6 +3,9 @@ tags:
   - regression
 ---
 - launchApp
+# Wait for the React navigator before delivering a warm deep link.
+- assertVisible:
+    id: mobile-nav-learn
 - openLink: "codematica://docs/programming/bfs-dfs-fundamentals"
 - scrollUntilVisible:
     element:

@@ -4,14 +4,38 @@ tags:
 ---
 - launchApp:
     clearState: true
+# Wait for the React navigator before delivering a warm deep link.
+- assertVisible:
+    id: mobile-nav-learn
 - openLink: codematica://browse
 - assertVisible:
     id: mobile-knowledge-search-input
 - tapOn:
     id: mobile-knowledge-search-input
 - inputText: "cache aside"
+- hideKeyboard
+# Pending searches expose Searching…; wait for a settled count before the result.
+- scrollUntilVisible:
+    element:
+      text: "(?i)^\\d+ results(?: · showing the first 40)?$"
+    direction: DOWN
+    speed: 20
+    visibilityPercentage: 100
+    centerElement: false
+    timeout: 20000
+# Inspect the title below its type label, rather than requiring the tall card to fit.
+- scrollUntilVisible:
+    element:
+      text: "^Cache Aside$"
+      below: Diagram
+    direction: DOWN
+    speed: 20
+    visibilityPercentage: 100
+    centerElement: false
+    timeout: 20000
 - assertVisible:
     id: mobile-search-results
+- takeScreenshot: browse-diagram-result
 - tapOn:
     id: mobile-result-diagram-system-design-cache-aside
 - assertVisible: "Cache Aside"

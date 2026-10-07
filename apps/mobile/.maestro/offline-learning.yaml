@@ -8,23 +8,141 @@ tags:
     id: mobile-nav-learn
 - assertVisible:
     id: mobile-home-global-search
+- scrollUntilVisible:
+    element:
+      id: mobile-home-view-all-paths
+    direction: DOWN
+    speed: 80
+    visibilityPercentage: 100
+    centerElement: false
+    timeout: 20000
 - tapOn:
     id: mobile-home-view-all-paths
+# Traverse the long catalog in bounded segments at enlarged system text.
+- scrollUntilVisible:
+    element:
+      id: mobile-open-path-database-indexes-and-search
+    direction: DOWN
+    speed: 80
+    visibilityPercentage: 100
+    centerElement: false
+    timeout: 20000
+- scrollUntilVisible:
+    element:
+      id: mobile-open-path-ml-systems-engineer
+    direction: DOWN
+    speed: 80
+    visibilityPercentage: 100
+    centerElement: false
+    timeout: 20000
+- scrollUntilVisible:
+    element:
+      id: mobile-open-path-system-design-fundamentals
+    direction: DOWN
+    speed: 80
+    visibilityPercentage: 100
+    centerElement: false
+    timeout: 20000
 - assertVisible:
-    id: mobile-path-card-system-design-fundamentals
+    id: mobile-open-path-system-design-fundamentals
 - tapOn:
     id: mobile-open-path-system-design-fundamentals
+- scrollUntilVisible:
+    element:
+      id: mobile-path-node-document-system-design-cache-invalidation
+    direction: DOWN
+    speed: 80
+    visibilityPercentage: 100
+    centerElement: false
+    timeout: 20000
 - assertVisible:
     id: mobile-path-units
 - tapOn:
     id: mobile-path-node-document-system-design-cache-invalidation
+- scrollUntilVisible:
+    element:
+      id: mobile-markdown-renderer
+    direction: DOWN
+    speed: 80
+    visibilityPercentage: 100
+    centerElement: false
+    timeout: 20000
 - assertVisible:
     id: mobile-markdown-renderer
 - back
+- scrollUntilVisible:
+    element:
+      id: mobile-path-node-exercise-system-design-cache-product-contract
+    direction: DOWN
+    speed: 80
+    visibilityPercentage: 100
+    centerElement: false
+    timeout: 20000
 - tapOn:
     id: mobile-path-node-exercise-system-design-cache-product-contract
+- scrollUntilVisible:
+    element:
+      id: mobile-flashcard-reveal
+    direction: DOWN
+    speed: 80
+    visibilityPercentage: 100
+    centerElement: false
+    timeout: 20000
 - assertVisible:
     id: mobile-flashcard-reveal
 - tapOn:
     id: mobile-flashcard-reveal
+- scrollUntilVisible:
+    element:
+      text: "It defines how stale the user experience may become.*"
+    direction: DOWN
+    speed: 80
+    visibilityPercentage: 100
+    centerElement: false
+    timeout: 20000
 - assertVisible: "It defines how stale the user experience may become.*"
+- tapOn:
+    id: mobile-nav-learn
+- scrollUntilVisible:
+    element:
+      id: mobile-keep-reading
+    direction: DOWN
+    speed: 80
+    visibilityPercentage: 100
+    centerElement: false
+    timeout: 20000
+- scrollUntilVisible:
+    element:
+      text: "Resume Cache Product Contract, Practice"
+    direction: DOWN
+    speed: 80
+    visibilityPercentage: 100
+    centerElement: false
+    timeout: 20000
+# Expose the resume card above fixed navigation; Android clips container bounds.
+- swipe:
+    start: "50%,75%"
+    end: "50%,45%"
+    duration: 400
+- scrollUntilVisible:
+    element:
+      text: "Resume Cache Product Contract, Practice"
+    direction: UP
+    speed: 20
+    visibilityPercentage: 100
+    centerElement: false
+    timeout: 20000
+- assertVisible: "Resume Cache Product Contract, Practice"
+- assertNotVisible: "Cache invalidation practice"
+- takeScreenshot: learn-compact-resume
+- tapOn: "Resume Cache Product Contract, Practice"
+- scrollUntilVisible:
+    element:
+      id: mobile-flashcard-reveal
+    direction: DOWN
+    speed: 80
+    visibilityPercentage: 100
+    centerElement: false
+    timeout: 20000
+- assertVisible:
+    id: mobile-flashcard-reveal

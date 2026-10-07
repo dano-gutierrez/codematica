@@ -1,8 +1,9 @@
 "use client";
 
-import Link from "next/link";
+import { Button } from "./Button";
+import { ButtonLink } from "./ButtonLink";
 import { ArrowRight, CheckCircle2, RotateCcw, Sparkles } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { DifficultyPill } from "@/components/DifficultyPill";
 import { JapaneseWritingPractice } from "@/components/JapaneseWritingPractice";
 import { QuestionnaireSession } from "@/components/QuestionnaireSession";
@@ -11,7 +12,7 @@ import type { LearningExercise } from "@/lib/content/schema";
 import type { ProgressStatus } from "@/lib/progress/progress";
 import { cn } from "@/lib/utils";
 
-type PracticeProgressHandler = (status: ProgressStatus, position: Record<string, unknown>) => void;
+type PracticeProgressHandler = (status: ProgressStatus, position: Record<string, unknown>) => void | Promise<void>;
 
 export function PracticeCard({
   exercise,
@@ -23,7 +24,7 @@ export function PracticeCard({
   onProgressEvent?: PracticeProgressHandler;
 }) {
   return (
-    <section className={exercise.type === "writing" ? "py-2" : "rounded-xl border border-[#d5e2e8] bg-white p-5 sm:p-7"} data-testid="practice-card">
+    <section className="py-2" data-testid="practice-card">
       <div className="flex flex-wrap items-center gap-2">
         <span className="inline-flex items-center gap-1 rounded-xl border border-[#d5e2e8] bg-[#f6fbfc] px-2.5 py-1 text-xs font-semibold text-[#5840b8]">
           <Sparkles className="h-3.5 w-3.5" aria-hidden="true" />
@@ -80,6 +81,52 @@ function GuidedLab({
   const [predictionId, setPredictionId] = useState<string>();
   const [evidenceIds, setEvidenceIds] = useState<string[]>([]);
   const complete = Boolean(predictionId) && evidenceIds.length === exercise.evidenceChecklist.length;
+  const [notes, setNotes] = useState<Record<string, string>>({});
+  const [saving, setSaving] = useState(false);
+  const [saved, setSaved] = useState(false);
+  const [failed, setFailed] = useState(false);
+  const [startFailed, setStartFailed] = useState(false);
+  const busy = useRef(false);
+  const acknowledged = useRef(false);
+  const version = useRef(0);
+  const mounted = useRef(true);
+  const completionHeading = useRef<HTMLHeadingElement>(null);
+  const firstPrediction = useRef<HTMLInputElement>(null);
+  const restorePredictionFocus = useRef(false);
+  useEffect(() => { mounted.current = true; return () => { mounted.current = false; }; }, []);
+  useEffect(() => {
+    if (saved) completionHeading.current?.focus();
+    else if (restorePredictionFocus.current) { restorePredictionFocus.current = false; firstPrediction.current?.focus(); }
+  }, [saved]);
+
+  async function choosePrediction(id: string) {
+    if (busy.current || acknowledged.current) return;
+    setPredictionId(id);
+    setStartFailed(false);
+    const request = ++version.current;
+    try { await onProgressEvent?.("started", { predictionCommitted: true }); }
+    catch { if (mounted.current && request === version.current) setStartFailed(true); }
+  }
+
+  async function finish() {
+    if (!complete || busy.current || acknowledged.current) return;
+    busy.current = true;
+    const request = ++version.current;
+    setSaving(true); setFailed(false); setStartFailed(false);
+    try {
+      await onProgressEvent?.("completed", { predictionCommitted: true, evidenceCount: evidenceIds.length, evidenceTotal: exercise.evidenceChecklist.length });
+      if (mounted.current && request === version.current) { acknowledged.current = true; setSaved(true); }
+    } catch { if (mounted.current && request === version.current) setFailed(true); }
+    finally { busy.current = false; if (mounted.current && request === version.current) setSaving(false); }
+  }
+
+  function restart() {
+    if (busy.current) return;
+    version.current++; acknowledged.current = false; restorePredictionFocus.current = true;
+    setSaved(false); setFailed(false); setStartFailed(false);
+    setPredictionId(undefined); setEvidenceIds([]); setNotes({});
+  }
+
 
   function toggleEvidence(id: string) {
     setEvidenceIds((current) => current.includes(id) ? current.filter((item) => item !== id) : [...current, id]);
@@ -97,9 +144,9 @@ function GuidedLab({
         <legend className="px-2 text-sm font-semibold uppercase text-[#7a5200]">Choose your prediction</legend>
         <p className="text-base font-normal leading-7 text-[#263238]">{exercise.prediction.prompt}</p>
         <div className="mt-3 grid gap-2">
-          {exercise.prediction.options.map((option) => (
+          {exercise.prediction.options.map((option, index) => (
             <label key={option.id} className="flex min-h-12 cursor-pointer items-center gap-3 rounded-xl border border-[#d2bd76] bg-white px-3 py-2 text-sm font-medium text-[#33434b]">
-              <input type="radio" name="prediction" checked={predictionId === option.id} onChange={() => { setPredictionId(option.id); onProgressEvent?.("started", { predictionCommitted: true }); }} />
+              <input ref={index === 0 ? firstPrediction : undefined} type="radio" name="prediction" disabled={saving || saved} checked={predictionId === option.id} onChange={() => void choosePrediction(option.id)} />
               {option.label}
             </label>
           ))}
@@ -121,7 +168,7 @@ function GuidedLab({
         <div className="grid gap-2">
           {exercise.evidenceChecklist.map((item) => (
             <label key={item.id} className="flex min-h-11 cursor-pointer items-center gap-3 text-sm font-medium text-[#33434b]">
-              <input type="checkbox" checked={evidenceIds.includes(item.id)} onChange={() => toggleEvidence(item.id)} />
+              <input type="checkbox" disabled={saving || saved} checked={evidenceIds.includes(item.id)} onChange={() => toggleEvidence(item.id)} />
               {item.label}
             </label>
           ))}
@@ -130,13 +177,16 @@ function GuidedLab({
 
       <div className="rounded-xl border border-[#c8b8ff] bg-[#f3efff] p-4">
         <h2 className="text-sm font-semibold uppercase text-[#5840b8]">Reflect, then extend</h2>
-        {exercise.reflectionPrompts.map((prompt) => <label key={prompt} className="mt-3 block text-sm font-medium leading-6 text-[#33434b]">{prompt}<textarea className="mt-1 min-h-24 w-full rounded-xl border border-[#c8b8ff] bg-white p-3 font-semibold outline-none focus:border-[#5840b8]" /></label>)}
+        {exercise.reflectionPrompts.map((prompt) => <label key={prompt} className="mt-3 block text-sm font-medium leading-6 text-[#33434b]">{prompt}<textarea value={notes[prompt] ?? ""} onChange={event => { const value = event.target.value; setNotes(current => ({ ...current, [prompt]: value })); }} className="mt-1 ui-input min-h-24" /></label>)}
         <p className="mt-4 text-sm font-normal leading-6 text-[#53616c]"><span className="font-semibold">Extension:</span> {exercise.extensionChallenge}</p>
       </div>
 
-      <div className="flex flex-wrap gap-3">
-        <button type="button" disabled={!complete} onClick={() => onProgressEvent?.("completed", { predictionCommitted: true, evidenceCount: evidenceIds.length, evidenceTotal: exercise.evidenceChecklist.length })} className="inline-flex min-h-12 items-center gap-2 rounded-xl border border-[#00645f] bg-[#007c78] px-4 py-2 text-sm font-semibold text-white disabled:opacity-50" data-testid="guided-lab-complete">Complete lab</button>
-        {complete && nextHref ? <NextLink href={nextHref} /> : null}
+      {saving ? <p role="status">Completing lab…</p> : null}
+      {failed ? <p role="alert" className="ui-notice ui-notice-danger">Couldn’t save progress. Your choices and working notes are still here.</p> : startFailed ? <p role="alert" className="ui-notice ui-notice-danger">Couldn’t save progress. Keep working and retry when completing the lab.</p> : null}
+      {saved ? <div className="ui-notice ui-notice-success"><h2 ref={completionHeading} tabIndex={-1} className="text-xl font-semibold">Lab complete.</h2></div> : null}
+      <div className="ui-actions">
+        {saved ? <Button key="restart" label="Practice again" icon={RotateCcw} tone="warning" variant="quiet" onClick={restart} /> : <Button key="complete" label={failed ? "Retry completion" : "Complete lab"} icon={CheckCircle2} tone={failed ? "warning" : "success"} variant="primary" disabled={!complete} busy={saving} onClick={() => void finish()} data-testid="guided-lab-complete" />}
+        {complete && nextHref ? <NextLink href={nextHref} label={nextHref.endsWith("/flashcards") ? "Start review feed" : "Next activity"} /> : null}
       </div>
     </div>
   );
@@ -170,25 +220,10 @@ function Flashcard({
         </div>
       ) : null}
 
-      <div className="mt-6 flex flex-wrap gap-3">
-        <button
-          type="button"
-          onClick={revealAnswer}
-          className="inline-flex min-h-12 items-center gap-2 rounded-xl border border-[#00645f] bg-[#007c78] px-4 py-2 text-sm font-semibold text-white transition hover:-translate-y-0.5 disabled:cursor-default disabled:opacity-65 disabled:hover:translate-y-0"
-          disabled={isRevealed}
-        >
-          <CheckCircle2 className="h-4 w-4" aria-hidden="true" />
-          Reveal answer
-        </button>
+      <div className="ui-actions mt-6">
+        <Button label="Reveal answer" icon={CheckCircle2} tone="success" variant="primary" onClick={revealAnswer} disabled={isRevealed} />
         {isRevealed ? (
-          <button
-            type="button"
-            onClick={() => setIsRevealed(false)}
-            className="inline-flex min-h-12 items-center gap-2 rounded-xl border border-[#d5e2e8] bg-white px-4 py-2 text-sm font-semibold text-[#263238]"
-          >
-            <RotateCcw className="h-4 w-4" aria-hidden="true" />
-            Reset
-          </button>
+          <Button label="Reset" icon={RotateCcw} tone="warning" iconOnly onClick={() => setIsRevealed(false)} />
         ) : null}
         {isRevealed && nextHref ? <NextLink href={nextHref} /> : null}
       </div>
@@ -225,7 +260,7 @@ function ClozeCard({
 
       <div className="mt-5 rounded-xl border border-[#d5e2e8] bg-[#f6fbfc] p-4 text-lg font-normal leading-9 text-[#263238]">
         <span>{prefix}</span>
-        <label className="mx-1 inline-grid min-w-[12rem] align-middle">
+        <label className="ui-cloze-entry">
           <span className="sr-only">Answer</span>
           <input
             value={answer}
@@ -234,7 +269,7 @@ function ClozeCard({
               setResult(undefined);
             }}
             aria-label="Answer"
-            className="h-11 rounded-xl border border-[#d5e2e8] bg-white px-3 text-base font-semibold text-[#263238] outline-none focus:border-[#007c78]"
+            className="ui-input"
             data-testid="cloze-answer-input"
           />
         </label>
@@ -247,6 +282,7 @@ function ClozeCard({
             "mt-5 rounded-xl border p-4",
             result === "correct" ? "border-[#6dd8cf] bg-[#e8f8f6]" : "border-[#f7cf5d] bg-[#fff5d6]",
           )}
+          role="status"
           data-testid="cloze-feedback"
         >
           <p className={cn("text-sm font-semibold", result === "correct" ? "text-[#007c78]" : "text-[#7a5200]")}>
@@ -256,15 +292,8 @@ function ClozeCard({
         </div>
       ) : null}
 
-      <div className="mt-6 flex flex-wrap gap-3">
-        <button
-          type="button"
-          onClick={checkAnswer}
-          className="inline-flex min-h-12 items-center gap-2 rounded-xl border border-[#00645f] bg-[#007c78] px-4 py-2 text-sm font-semibold text-white transition hover:-translate-y-0.5"
-        >
-          <CheckCircle2 className="h-4 w-4" aria-hidden="true" />
-          Check answer
-        </button>
+      <div className="ui-actions mt-6">
+        <Button label="Check answer" icon={CheckCircle2} tone="success" variant="primary" onClick={checkAnswer} />
         {result && nextHref ? <NextLink href={nextHref} /> : null}
       </div>
     </div>
@@ -287,14 +316,6 @@ function WritingCard({
   return <JapaneseWritingPractice characters={characters} exercise={exercise} prompt={exercise.prompt} nextHref={nextHref} onProgressEvent={onProgressEvent} />;
 }
 
-function NextLink({ href }: { href: string }) {
-  return (
-    <Link
-      href={href}
-      className="inline-flex min-h-12 items-center gap-2 rounded-xl border border-[#1d4e9e] bg-[#245fba] px-4 py-2 text-sm font-semibold text-white transition hover:-translate-y-0.5"
-    >
-      Next activity
-      <ArrowRight className="h-4 w-4" aria-hidden="true" />
-    </Link>
-  );
+function NextLink({ href, label = "Next activity" }: { href: string; label?: string }) {
+  return <ButtonLink href={href} label={label} icon={ArrowRight} tone="success" variant="primary" />;
 }

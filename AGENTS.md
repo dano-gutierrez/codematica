@@ -328,6 +328,9 @@ Reuse these components and extend them when needed; avoid rebuilding equivalent 
 
 - `apps/web/src/components/BackButton.tsx`: shared client-side back navigation button with an optional label.
 - `apps/web/src/components/Button.tsx`: shared named action button with semantic tones, primary/secondary/quiet treatments, and icon tooltips.
+- `apps/web/src/components/ButtonLink.tsx`: server-compatible navigation control with the same visual contract; use it for navigation rather than a button handler.
+- `packages/ui/src/Button.tsx`: shared native action with scalable labels, semantic tones, 48 dp targets and busy/disabled/selected state; also exports `Disclosure` for supporting detail with a visible indicator and accessible expanded state.
+- `packages/ui/src/AdaptiveText.tsx`: native text primitive that refreshes only text measurement after a live system font-size change; preserves screen, form, navigation and progress state. Use it for native text.
 - `apps/web/src/components/AppHeader.tsx`: shared context header and root AppNavigation with phone bottom navigation, More dialog, desktop sidebar, admin-only navigation and a shared account disclosure for sign-out; extend its internal `AccountMenu` when profile settings ship.
 - `apps/web/src/components/CodeBlock.tsx`: shared language-aware code block renderer for Markdown, interview solutions, flashcard code, and Mermaid source fallbacks.
 - `apps/web/src/components/DifficultyPill.tsx`: shared difficulty badge for beginner, intermediate, and advanced content.
@@ -358,11 +361,12 @@ Reuse these components and extend them when needed; avoid rebuilding equivalent 
 - `apps/web/src/components/PracticeCard.tsx`: flashcard, cloze, questionnaire, and writing practice shell with next-node navigation.
 - `apps/web/src/components/QuestionnaireSession.tsx`: interactive questionnaire session UI, transient answer state, grading feedback, and next-node navigation.
 - `apps/web/src/components/RandomInterviewButton.tsx`: randomized interview question CTA for interview practice surfaces.
-- `packages/ui/src/screens.tsx`: shared React Native-compatible screens for Expo path, browse, reader, diagram, practice, passive flashcard, interview, Japanese language lookup/detail, login, Keep reading, and save-progress surfaces.
+- `packages/ui/src/screens.tsx`: shared React Native-compatible screens for Expo path, browse, reader, diagram, practice, passive flashcard, interview, Japanese language lookup/detail, login, Keep reading, and save-progress surfaces. Reuse `AppScreen` for keyboard-aware scrolling and its optional `scrollResetKey` for explicit practice restarts; default scrolling and notebook ink retain their ownership.
 - `packages/ui/src/screens.tsx` also exports `NativeNavigation`: shared phone/tab navigation and More modal around the Expo Stack.
 - `packages/ui/src/tokens.ts`: shared native design tokens for React Native screens.
 
 - `apps/web/src/components/LinkedInPostText.tsx`: reusable LinkedIn plain-text textarea with Unicode formatting and selection preservation.
+- `packages/ui/src/LocalSearch.tsx`: shared native local matcher lifecycle, hidden offline execution and accessible retry feedback for Learn/Browse.
 - `apps/web/src/components/LinkedInAdmin.tsx`: private source-grounded post review, revision comparison and approval controls.
 - `packages/ui/src/LinkedInAdminScreen.tsx`: shared native editorial review using the same core store and RPC contracts.
 

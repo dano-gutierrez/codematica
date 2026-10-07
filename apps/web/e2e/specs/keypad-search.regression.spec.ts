@@ -26,6 +26,7 @@ test("@regression reads sourced keypad contracts and finishes bounded dictionary
   }
   const sources = page.getByTestId("source-references");
   await expect(sources).toBeVisible();
+  await page.getByTestId("source-references-toggle").click();
   await expect(
     sources.getByRole("link", {
       name: "Python 3.13 — Mutable Sequences And Mappings · Python Software Foundation",

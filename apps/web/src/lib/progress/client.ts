@@ -51,29 +51,24 @@ export async function recordProgress(target: ProgressTarget, status: ProgressSta
   addAnonymousProgressItem({ input, display });
 }
 
-export async function syncBufferedAnonymousProgress() {
-  const items = getAnonymousProgressItems();
-
-  if (items.length === 0) {
-    return;
-  }
-
-  for (let offset = 0; offset < items.length; offset += 20) {
-    const batch = items.slice(offset, offset + 20);
-    const response = await fetch("/api/progress/sync-anonymous", {
-      method: "POST",
-      headers: {
-        "content-type": "application/json",
-      },
-      body: JSON.stringify({ items: batch.map((item) => item.input) }),
-    });
-
-    if (!response.ok) {
-      return;
+export async function syncBufferedAnonymousProgress(): Promise<boolean> {
+  try {
+    const items = getAnonymousProgressItems({ strict: true });
+    if (items.length === 0) return true;
+    for (let offset = 0; offset < items.length; offset += 20) {
+      const batch = items.slice(offset, offset + 20);
+      const response = await fetch("/api/progress/sync-anonymous", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ items: batch.map(item => item.input) }),
+      });
+      if (!response.ok) return false;
+      const result = await response.json();
+      if (result?.synced !== batch.length || result?.rejected !== 0) return false;
     }
-  }
-
-  clearAnonymousProgressItems();
+    clearAnonymousProgressItems(items);
+    return true;
+  } catch { return false; }
 }
 
 export function appendPathToHref(href: string, pathSlug: string) {

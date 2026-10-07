@@ -50,6 +50,8 @@ Each paper trace states its assumptions and separates unknown outcomes from esta
 
 ## Test Plan
 
+Browser source checks open the Primary sources disclosure before inspecting visible links and their exact destinations.
+
 Start with the seven absent-resource/path failures, then verify all thirty answer keys, per-question skill ownership, source links, headings, progression and terminal routes. Graph tests cover all six scoped skills, node positions, citations, prerequisites and no newly unresolved target. A canonical/parser audit must prove all earlier decoded records and language resources unchanged.
 
 Challenge each of thirty answer keys, each stage threshold/required-node contract, source identity and skill ownership through temporary metadata mutations; restore original bytes. Independently check the fictional arithmetic and tuple-continuation examples. Browser `@regression` journeys read all six lessons, inspect sources, complete checkpoints and follow the actual next route or terminal state.

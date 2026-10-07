@@ -44,6 +44,7 @@ const config: ExpoConfig = {
   plugins: [
     "expo-router",
     "./plugins/with-shared-bundle-inputs.cjs",
+    "./plugins/with-live-font-scale.cjs",
     "expo-secure-store",
     "expo-web-browser",
     [

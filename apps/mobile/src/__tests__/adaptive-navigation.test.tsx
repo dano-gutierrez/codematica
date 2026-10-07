@@ -1,4 +1,5 @@
 jest.mock("../lib/use-admin-access", () => ({ useAdminAccess: () => false }));
+jest.mock("../lib/use-account-session", () => ({ useAccountSession: () => ({ user: null, isLoading: false, signOut: jest.fn() }) }));
 import { act, fireEvent, render } from "@testing-library/react-native";
 import { NativeNavigation } from "../../../../packages/ui/src/screens";
 
@@ -15,7 +16,7 @@ describe("adaptive native navigation", () => {
   it("keeps phone sections reachable and identifies the current section", async () => {
     const navigate = jest.fn();
     const view = await render(<NativeNavigation pathname="/interviews/google/number-of-islands" navigate={navigate} wide={false} />);
-    expect(view.getByTestId("mobile-nav-more").props.accessibilityState).toEqual({ selected: true });
+    expect(view.getByTestId("mobile-nav-more").props.accessibilityState).toMatchObject({ selected: true });
     await fireEvent.press(view.getByTestId("mobile-nav-paths"));
     expect(navigate).toHaveBeenCalledWith("/paths");
     await fireEvent.press(view.getByTestId("mobile-nav-more"));
@@ -34,7 +35,11 @@ describe("adaptive native navigation", () => {
     const view = await render(<NativeNavigation pathname="/docs/system-design/cache-invalidation" navigate={navigate} wide />);
     expect(view.getByTestId("mobile-nav-lessons").props.accessibilityState).toEqual({ selected: true });
     expect(view.queryByTestId("mobile-nav-more")).toBeNull();
-    await fireEvent.press(view.getByRole("button", { name: "Codematica home" }));
+    const home = view.getByRole("button", { name: "Codematica home" });
+    const homeStyle = StyleSheet.flatten(home.props.style);
+    expect(homeStyle.height).toBeUndefined();
+    expect(homeStyle.minHeight).toBeGreaterThanOrEqual(48);
+    await fireEvent.press(home);
     expect(navigate).toHaveBeenCalledWith("/");
     await fireEvent.press(view.getByTestId("mobile-nav-languages"));
     expect(navigate).toHaveBeenCalledWith("/languages");
@@ -64,7 +69,7 @@ jest.mock("react-native-safe-area-context", () => ({
   SafeAreaView: "SafeAreaView",
 }));
 
-import { Dimensions } from "react-native";
+import { Dimensions, StyleSheet } from "react-native";
 import RootLayout from "../../app/_layout";
 
 describe("native window adaptation", () => {

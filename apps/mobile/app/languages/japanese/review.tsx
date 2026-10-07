@@ -1,12 +1,10 @@
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import { applyReviewRating, getContentIndex, mergeSkillProgressLists, type ReviewRating, type SkillProgress } from "@codematica/core";
+import { getContentIndex, type ReviewRating, type SkillProgress } from "@codematica/core";
 import { JapaneseReviewScreen } from "@codematica/ui";
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useCodematicaAdapters } from "../../../src/lib/adapters";
 import { createNativeSupabaseClient } from "../../../src/lib/supabase";
 import { loadNativeSkillProgress, syncNativeSkillProgress } from "../../../src/lib/skill-progress";
-
-const storageKey = "codematica:japanese-skill-progress:v1";
+import { createNativeReviewSave, mergeNativeReviewProgress } from "../../../src/lib/review-persistence";
 
 export default function JapaneseReviewRoute() {
   const adapters = useCodematicaAdapters();
@@ -14,41 +12,65 @@ export default function JapaneseReviewRoute() {
   const index = getContentIndex();
   const learningPath = index.learningPaths.find((path) => path.slug === "japanese-foundations");
   const [progress, setProgress] = useState<SkillProgress[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [loadError, setLoadError] = useState(false);
+  const mounted = useRef(true);
+  const loadVersion = useRef(0);
+  const saves = useRef(new Map<string, ReturnType<typeof createNativeReviewSave>>());
 
-  useEffect(() => {
-    void Promise.all([AsyncStorage.getItem(storageKey), loadNativeSkillProgress(supabase)]).then(([stored, remote]) => {
-      let local: SkillProgress[] = [];
+  const load = useCallback(() => {
+    const version = ++loadVersion.current;
+    const current = () => mounted.current && loadVersion.current === version;
+    void (async () => {
       try {
-        const value = JSON.parse(stored ?? "[]");
-        if (Array.isArray(value)) local = value;
+        const local = await mergeNativeReviewProgress();
+        if (!current()) return;
+        setProgress(local);
+        setLoadError(false);
+        setLoading(false);
+        // Remote availability does not delay local practice. Merge against fresh
+        // device data after the request, so intervening recalls remain intact.
+        const remote = await loadNativeSkillProgress(supabase).catch(() => []);
+        if (!current()) return;
+        const rows = await mergeNativeReviewProgress(remote);
+        if (!current()) return;
+        setProgress(rows);
+        void syncNativeSkillProgress(supabase, rows).catch(() => false);
       } catch {
-        // A malformed local cache must not block the always-available review screen.
+        if (current()) { setLoadError(true); setLoading(false); }
       }
-      const merged = mergeSkillProgressLists(local, remote);
-      setProgress(merged);
-      void AsyncStorage.setItem(storageKey, JSON.stringify(merged));
-      void syncNativeSkillProgress(supabase, merged);
-    });
+    })();
   }, [supabase]);
 
-  if (!learningPath) return null;
+  useEffect(() => {
+    mounted.current = true;
+    load();
+    return () => { mounted.current = false; };
+  }, [load]);
 
-  function onRate(skillId: string, rating: ReviewRating) {
-    const current = progress.find((row) => row.pathSlug === learningPath!.slug && row.skillId === skillId);
-    const next = applyReviewRating(current, {
-      pathSlug: learningPath!.slug,
-      skillId,
-      rating,
-      score: rating === "again" ? 0.4 : rating === "hard" ? 0.65 : rating === "good" ? 0.85 : 1,
-      now: new Date(),
-    });
-    const rows = [...progress.filter((row) => !(row.pathSlug === learningPath!.slug && row.skillId === skillId)), next];
-    setProgress(rows);
-    void AsyncStorage.setItem(storageKey, JSON.stringify(rows));
-    void syncNativeSkillProgress(supabase, rows);
+  function reload() {
+    saves.current.clear();
+    setLoading(true);
+    setLoadError(false);
+    load();
   }
 
+  async function onRate(skillId: string, rating: ReviewRating) {
+    if (!learningPath) return;
+    let save = saves.current.get(skillId);
+    if (!save) {
+      save = createNativeReviewSave(learningPath.slug, skillId, rating);
+      saves.current.set(skillId, save);
+    }
+    const rows = await save();
+    saves.current.delete(skillId);
+    if (mounted.current) setProgress(rows);
+    // "Saved" acknowledges local storage; rejected optional sync keeps that copy.
+    void syncNativeSkillProgress(supabase, rows).catch(() => false);
+  }
+
+  if (!learningPath) return null;
   const approvedAudio = new Set(index.languageAudio.filter((audio) => audio.qaStatus === "approved").map((audio) => audio.id));
   const hasListening = index.exercises.some((exercise) => exercise.type === "questionnaire" && exercise.status === "published" && exercise.questions.some((question) => question.kind === "listening-choice" && approvedAudio.has(question.audioId)));
-  return <JapaneseReviewScreen learningPath={learningPath} progress={progress} onRate={onRate} adapters={adapters} hasListening={hasListening} />;
+  return <JapaneseReviewScreen learningPath={learningPath} progress={progress} onRate={onRate} adapters={adapters} hasListening={hasListening} loading={loading} loadError={loadError} onReload={reload} />;
 }

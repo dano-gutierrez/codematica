@@ -3,7 +3,7 @@
 ## Snapshot
 
 - Status: `shipped`
-- Last updated: `2026-08-04`
+- Last updated: `2026-10-03`
 - Owner thread: `n/a`
 - Current state: Supabase Auth is wired for Google, email/password, and Apple-ready login on web, with native Expo Auth/progress adapters using the same Supabase contract. Existing resume/completion history remains unchanged; Japanese skill mastery is additive through local review state and the RLS-protected `user_skill_progress` table.
 - Target outcome: Users can keep reading, resume learning, and retain bounded Japanese mastery across devices without making anonymous browsing or review depend on Supabase.
@@ -67,6 +67,24 @@ Component tests verify separate Admin grouping, active routes for all three admi
 
 Local follow-up validation on 2026-10-03: 421 Vitest tests with aggregate/per-file coverage, six editorial/account browser journeys, nine public smoke cases, lint, workspace typechecks, production builds, and fresh production-only artifact readiness pass. The authenticated account-menu journeys also run axe checks on desktop and phone. The user requested a pull request after reviewing the local preview.
 
+### App-wide account and form pass — 2026-10-03
+
+Native navigation now accepts account identity, displays a separate Admin section, and offers an expandable Sign out action in the tablet footer or phone More menu. Sign out uses local scope, retains a retryable menu on failure and returns home on success. The shared native Supabase client is a singleton so adapters and navigation observe the same session. Account and membership lookups ignore results superseded by auth changes; foreground refresh checks the current account.
+
+Both login forms use shared actions, visible field labels, password autofill modes, busy guards and concise recovery. Native login uses keyboard-aware `AppScreen` and disables unavailable methods instead of reporting success. Native Apple appears only with `EXPO_PUBLIC_AUTH_APPLE_ENABLED=true`. Web login reuses the bounded progress-sync helper: it retains local items on HTTP/network failure, offers Retry sync without another auth request, and offers Continue with progress kept on this device. The helper reports complete/failed sync to the UI.
+
+Regression-first tests: `LoginForm.test.tsx` for live announcements, thrown network recovery and 25-item login sync; `client.test.ts` for explicit sync outcomes; native `design-controls.test.tsx`, `account-session.test.tsx`, `admin-access.test.tsx` and `supabase.test.ts` for unavailable/busy auth, account/sign-out recovery, lifecycle races and shared session ownership. Run targeted suites plus both aggregate coverage gates, typecheck, lint, production build and the synthetic `account-navigation.regression.spec.ts` journey. Installed screen-reader/keyboard proof remains open in the app-wide design audit. Coverage floors are unchanged.
+
+### Native callback and sync recovery — 2026-10-03
+
+The native singleton uses explicit PKCE with secure storage. The browser handoff validates callback scheme, host, port and path, then dispatches its code/error URL into Expo Router. Cancellation or an invalid/missing callback produces a recoverable sign-in error. A repeated current code shares its existing exchange outcome to avoid consuming the one-use code twice during duplicate handoffs. Only the most recent code is cached per client.
+
+The callback visibly handles configuration, provider, exchange and network failures. Successful authentication with interrupted progress sync keeps the local buffer, offers Retry sync without another code exchange, and allows Continue. Password sign-in similarly returns a sync outcome independently from auth success; retry calls only sync and never reauthenticates. Native account display retains a known identity on transient offline refresh, while invalid sessions/sign-out clear it. Admin membership remains separately authorized and fails closed.
+
+The web progress banner follows page content in normal document flow. Without hosted configuration it shows local saving and no unusable sign-in action. This avoids covering content, navigation and enlarged text.
+
+Test plan additions: native `supabase`, `auth-code`, `auth-callback`, `account-session`, `adapters` and `design-controls` suites; web progress/login/banner tests; `design-content.regression.spec.ts` checks banner placement. Browser-provider consent and real hosted login are not performed by UI tests.
+
 ### Progress Events
 
 - Documents: started on view; completed around 80% scroll or next-node click.
@@ -74,6 +92,7 @@ Local follow-up validation on 2026-10-03: 421 Vitest tests with aggregate/per-fi
 - Flashcards: completed on reveal.
 - Cloze prompts: completed on correct answer.
 - Questionnaires: current question index tracked; completed on finish; answers are not stored.
+- Guided labs: started after choosing a prediction; completed with prediction commitment and evidence count/total only. UI confirmation awaits the existing progress write; failed completion retains transient choices/notes for retry. Practice again clears transient work without deleting the saved milestone. Reflections stay in memory.
 - Passive feeds: latest card sequence tracked; no completion state.
 - Interviews: step, language, and track position tracked; completed when the final explanation is shown.
 - Japanese review: a rating updates the deterministic review box, best score, attempt count, mastery state, and next-review time; individual prompts or answers are not stored.
@@ -96,12 +115,24 @@ Local follow-up validation on 2026-10-03: 421 Vitest tests with aggregate/per-fi
 - The service role key remains server-only and is not used by browser auth or progress code.
 - Native Auth uses Expo SecureStore-backed session persistence and `EXPO_PUBLIC_SUPABASE_URL` / `EXPO_PUBLIC_SUPABASE_PUBLISHABLE_KEY`. The service role key is never bundled in native.
 
+### Snapshot acknowledgment and prompt lifecycle
+
+Web sync validates each response's acknowledged count and zero rejected rows before clearing. Both platforms remove only unchanged entries from the submitted snapshot. New or updated learning recorded while network requests run stays local. Native AsyncStorage read/modify/write operations are serialized, including acknowledgment; a failed operation does not poison the write queue. Writes and acknowledgments propagate unreadable storage failures without replacing or clearing its bytes; read-only summaries can fall back to an empty display. Incomplete or rejected batches preserve the local snapshot for retry.
+
+The web save prompt subscribes to the current Auth session and ignores a late initial summary after a newer event. Its sign-in return target follows route navigation. The global save prompt occupies normal flow after content, so its first appearance cannot shift a handwriting canvas. Lesson-return controls stay above the lesson in normal flow. Neither covers editors or navigation. Unconfigured web/native apps say that progress is saved on this device and omit the unavailable sign-in action.
+
 ## Test Plan
+
+- Configured installed native: `apps/mobile/e2e/flows/auth-account.regression.yaml` is an opt-in disposable-project journey for invalid-password recovery, successful email sign-in, account identity, admin navigation, sign-out and denied admin access afterward. Its editorial child flow creates/refines test drafts only; publishing stays disabled. Stable email/password IDs preserve the existing labels. Keep evaluated commands and captures private. This does not establish real Google/Apple provider or installed iOS acceptance.
+
+- Regression: deferred sync with new/updated learning, partial or malformed HTTP acknowledgments, failed batches, unreadable snapshot/acknowledgment storage, current-session prompt updates and stale-summary rejection in `anonymous.test.ts`, `client.test.ts`, `SaveProgressPrompt.test.tsx` and native `progress.test.ts`. Retain route/callback and sign-out journeys in the browser/native lanes. The disabled-auth Maestro flow matches the learner-facing unavailable message, scrolls the submit control fully into view within 20 seconds and asserts that it is disabled. Run at normal and enlarged system text and inspect the form capture.
 
 - Unit: progress payload validation, content-index mapping, stale slug filtering, local dedupe/retention, bounded web/native batch sync, and clear-after-complete behavior.
 - Server helper: authenticated upsert, unauthenticated rejection, summary mapping, anonymous sync batching, and skill-progress loading/sync.
-- Component: login provider gating, Keep reading rendering, save-progress prompt, and progress callbacks from practice/interview/passive-feed components. Unconfigured web login displays “Sign-in is not set up here.” and keeps provider buttons disabled. Native copy retains the missing Supabase public-variable explanation.
+- Component: login provider gating, Keep reading rendering, save-progress prompt, and progress callbacks from practice/interview/passive-feed components. Unconfigured web login displays “Sign-in is not set up here.” and keeps provider buttons disabled. Native explains that sign-in is unavailable and on-device learning remains usable; implementation/environment details stay out of the account form.
 - E2E: signed-out user reads and practices without redirects, sees the save-progress prompt, and sees local Keep reading state.
+
+Native mastery persistence uses `apps/mobile/src/lib/review-persistence.ts` to serialize every read/merge/rating write for `codematica:japanese-skill-progress:v1`. A reusable rating intent captures its base row, graded result and time once. Retry acknowledges an identical committed result or writes that result over the unchanged base, preserving unrelated rows; a changed same-skill record requires explicit reload. Schema-invalid or duplicate persisted records are not replaced. Native review tests cover write acknowledgment, concurrency, unknown-outcome reconciliation, failure and reload; installed skill-review checks cover real storage/restart. “Saved on this device” does not assert successful remote sync.
 
 ## Open Questions
 

@@ -59,8 +59,8 @@ test("@regression reduced-motion miniatures redraw on resize and keep their pose
   await page.clock.runFor(1300);
   expect((await scene.screenshot()).equals(before)).toBe(true);
   await page.setViewportSize({ width: 900, height: 900 });
-  const width = await scene.evaluate((el) => el.clientWidth);
-  await expect(scene).toHaveAttribute("data-render-width", String(width));
+  // Sidebar reflow may change the width again after the viewport update.
+  await expect.poll(() => scene.evaluate((el) => Number(el.getAttribute("data-render-width")) === el.clientWidth)).toBe(true);
   const resized = await scene.screenshot();
   expect(resized.equals(before)).toBe(false);
   await page.clock.runFor(1300);

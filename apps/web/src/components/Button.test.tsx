@@ -2,8 +2,19 @@ import { fireEvent, render, screen } from "@testing-library/react";
 import { RefreshCw } from "lucide-react";
 import { describe, expect, it, vi } from "vitest";
 import { Button } from "./Button";
+import { ButtonLink } from "./ButtonLink";
+
+it("allows a longer accessible name containing the visible action label", () => {
+  render(<Button label="Dismiss" aria-label="Dismiss save progress prompt" />);
+  expect(screen.getByRole("button", { name: "Dismiss save progress prompt" })).toHaveTextContent("Dismiss");
+});
 
 describe("design system button", () => {
+  it("uses a real link for navigation and preserves path scope", () => {
+    render(<ButtonLink href="/practice/cache?path=systems" label="Next activity" icon={RefreshCw} tone="success" variant="primary" />);
+    expect(screen.getByRole("link", { name: "Next activity" })).toHaveAttribute("href", "/practice/cache?path=systems");
+    expect(screen.queryByRole("button")).toBeNull();
+  });
   it("supports a plain labeled action without an icon", () => {
     render(<Button label="Continue" type="submit" />);
     expect(screen.getByRole("button", { name: "Continue" })).toHaveAttribute("type", "submit");
@@ -51,4 +62,15 @@ describe("design system button", () => {
     expect(enter).toHaveBeenCalledOnce(); expect(leave).toHaveBeenCalledOnce();
     expect(focus).toHaveBeenCalledOnce(); expect(blur).toHaveBeenCalledOnce();
   });
+});
+
+it("marks a pending action busy and disables it while keeping its visible name", () => {
+  const press = vi.fn();
+  render(<Button label="Create notebook" busy onClick={press} />);
+  const button = screen.getByRole("button", { name: "Create notebook" });
+  expect(button).toBeDisabled();
+  expect(button).toHaveAttribute("aria-busy", "true");
+  expect(button).toHaveTextContent("Create notebook");
+  fireEvent.click(button);
+  expect(press).not.toHaveBeenCalled();
 });

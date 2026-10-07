@@ -46,6 +46,7 @@ describe("navigation, progress, and rendering utilities", () => {
     render(<MermaidBlock source="graph TD; A-->B" title="Flow" />);
     expect(screen.getByText("Rendering diagram")).toBeVisible();
     await waitFor(() => expect(screen.getByTestId("mermaid-diagram")).toBeVisible());
+    expect(screen.getByRole("group", { name: "Flow diagram" })).toHaveAttribute("tabindex", "0");
     expect(mermaid.initialize).toHaveBeenCalledWith(expect.objectContaining({ securityLevel: "strict" }));
     expect(screen.getByText("Source")).toBeVisible();
   });
@@ -54,6 +55,7 @@ describe("navigation, progress, and rendering utilities", () => {
     mermaid.render.mockRejectedValueOnce(new Error("invalid syntax"));
     const view = render(<MermaidBlock source="bad" />);
     await waitFor(() => expect(screen.getByTestId("mermaid-error")).toHaveTextContent("invalid syntax"));
+    expect(screen.getByTestId("mermaid-error")).toHaveAttribute("role", "status");
     mermaid.render.mockRejectedValueOnce("bad");
     view.rerender(<MermaidBlock source="also bad" />);
     await waitFor(() => expect(screen.getByTestId("mermaid-error")).toHaveTextContent("could not render"));
@@ -88,6 +90,26 @@ describe("navigation, progress, and rendering utilities", () => {
     expect(recordProgress).toHaveBeenCalledWith(expect.objectContaining({ slug: exercise.slug }), "completed", { revealed: true });
   });
 
+  it("awaits the actual path-scoped progress callback before confirming lab completion", async () => {
+    let finish!: () => void;
+    vi.mocked(recordProgress).mockImplementation((_target, status) => status === "completed" ? new Promise<void>(resolve => { finish = resolve; }) : Promise.resolve());
+    const exercise = getExerciseBySlug("ml-systems/ai-triad-guided-lab")!;
+    if (exercise.type !== "guided-lab") throw new Error("Expected lab fixture");
+    render(<PathScopedPracticeCard exercise={exercise} nextHrefsByPath={{ "system-design-fundamentals": "/practice/next" }} />);
+    fireEvent.click(screen.getByLabelText(exercise.prediction.options[0].label));
+    for (const item of exercise.evidenceChecklist) fireEvent.click(screen.getByLabelText(item.label));
+    fireEvent.click(screen.getByTestId("guided-lab-complete"));
+    // Flush the wrapper's microtasks while the storage callback remains pending.
+    // A fire-and-forget wrapper would already display completion here.
+    await act(async () => {});
+    expect(screen.getByText("Completing lab…")).toBeVisible();
+    expect(screen.queryByText("Lab complete.")).not.toBeInTheDocument();
+    await act(async () => finish());
+    await waitFor(() => expect(screen.getByText("Lab complete.")).toBeVisible());
+    expect(recordProgress).toHaveBeenLastCalledWith(expect.objectContaining({ pathSlug: "system-design-fundamentals", href: `${exercise.route}?path=system-design-fundamentals` }), "completed", { predictionCommitted: true, evidenceCount: 3, evidenceTotal: 3 });
+    vi.mocked(recordProgress).mockResolvedValue(undefined);
+  });
+
   it("handles back and bounded random navigation, including empty routes", () => {
     const random = vi.spyOn(Math, "random").mockReturnValue(0.99);
     const back = render(<BackButton label="Return" />);
@@ -99,6 +121,7 @@ describe("navigation, progress, and rendering utilities", () => {
     fireEvent.click(screen.getByTestId("interview-random-button"));
     expect(navigation.push).toHaveBeenCalledWith("/two");
     view.rerender(<RandomInterviewButton routes={[]} />);
+    expect(screen.getByTestId("interview-random-button")).toBeDisabled();
     fireEvent.click(screen.getByTestId("interview-random-button"));
     expect(navigation.push).toHaveBeenCalledTimes(1);
     random.mockRestore();

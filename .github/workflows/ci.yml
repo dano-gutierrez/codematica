@@ -25,6 +25,7 @@ jobs:
       - run: npm ci
       - run: npm run brand:check
       - run: npm run content:check
+      - run: npm run search:check
       - run: npm run lint
       - run: npm run typecheck
       - run: npm run mobile:doctor

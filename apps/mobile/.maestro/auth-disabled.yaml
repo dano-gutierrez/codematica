@@ -4,7 +4,20 @@ tags:
 ---
 - launchApp:
     clearState: true
+# Wait for the React navigator before delivering a warm deep link.
+- assertVisible:
+    id: mobile-nav-learn
 - openLink: codematica://login
-- assertVisible: "Auth is not configured.*"
+- assertVisible: "Sign-in is not set up here.*"
+- scrollUntilVisible:
+    element:
+      id: mobile-sign-in
+    direction: DOWN
+    speed: 20
+    visibilityPercentage: 100
+    centerElement: false
+    timeout: 20000
 - assertVisible:
     id: mobile-sign-in
+    enabled: false
+- takeScreenshot: native-auth-unconfigured

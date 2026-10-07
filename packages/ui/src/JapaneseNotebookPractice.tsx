@@ -1,3 +1,5 @@
+import { AdaptiveText as Text } from "./AdaptiveText";
+import { Button } from "./Button";
 import {
   createContext,
   useContext,
@@ -10,10 +12,8 @@ import {
 import {
   AccessibilityInfo,
   Animated,
-  Pressable,
   ScrollView,
   StyleSheet,
-  Text,
   View,
   type GestureResponderEvent,
   type ViewStyle,
@@ -764,20 +764,6 @@ export function JapaneseNotebookPractice({
 const styles = StyleSheet.create({
   stack: { gap: 10 },
   toolbar: { flexDirection: "row", flexWrap: "wrap", gap: 8 },
-  button: {
-    minHeight: 44,
-    paddingHorizontal: 14,
-    paddingVertical: 12,
-    borderWidth: 1,
-    borderColor: "#678680",
-    borderRadius: 22,
-    backgroundColor: "#fffdf5",
-    justifyContent: "center",
-  },
-  buttonText: { color: "#263238", fontSize: 14, fontWeight: "600" },
-  iconButton: { width: 44, paddingHorizontal: 0, paddingVertical: 0, alignItems: "center" },
-  selected: { backgroundColor: "#dceee8", borderColor: "#007c78" },
-  disabled: { opacity: 0.45 },
   caption: { fontSize: 14, lineHeight: 21, color: "#455966" },
   glyph: { fontSize: 32, color: "#263238" },
   example: { gap: 8, alignItems: "flex-start" },
@@ -808,22 +794,6 @@ function NotebookButton({
   selected?: boolean;
   icon?: ReactNode;
 }) {
-  return (
-    <Pressable
-      accessibilityRole="button"
-      accessibilityLabel={label}
-      accessibilityState={{ disabled, selected }}
-      disabled={disabled}
-      onPress={onPress}
-      style={[
-        styles.button,
-        icon ? styles.iconButton : undefined,
-        selected && styles.selected,
-        disabled && styles.disabled,
-      ]}
-      testID={"mobile-writing-" + id}
-    >
-      {icon ?? <Text style={styles.buttonText}>{label}</Text>}
-    </Pressable>
-  );
+  const tone = id === "repeat" || id === "clear" || id === "save-retry" ? "warning" : id.startsWith("next-") ? "success" : id === "peek" ? "assist" : selected ? "info" : "neutral";
+  return <Button label={label} icon={icon} tone={tone} variant={id.startsWith("next-") ? "primary" : "secondary"} selected={selected} disabled={disabled} onPress={onPress} testID={"mobile-writing-" + id} />;
 }

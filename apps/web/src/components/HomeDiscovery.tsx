@@ -2,9 +2,11 @@
 
 import Link from "next/link";
 import { ArrowRight, BookOpen, Brain, Code2, GitBranch, Languages, Map, Search, X } from "lucide-react";
-import { useMemo, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import { getHomeDiscoverySections, searchDiscovery, type ContentIndex, type DiscoveryResult, type DiscoverySectionId, type HomeDiscoverySection } from "@codematica/core";
 import { AppHeader } from "@/components/AppHeader";
+import { Button } from "@/components/Button";
+import { ButtonLink } from "@/components/ButtonLink";
 import { DifficultyPill } from "@/components/DifficultyPill";
 import { KeepReadingSection } from "@/components/KeepReadingSection";
 import type { ProgressDisplayItem } from "@/lib/progress/progress";
@@ -21,6 +23,7 @@ export function HomeDiscovery({
   isSignedIn?: boolean;
 }) {
   const [query, setQuery] = useState("");
+  const searchInput = useRef<HTMLInputElement>(null);
   const sections = useMemo(() => getHomeDiscoverySections(index), [index]);
   const results = useMemo(() => searchDiscovery(index, query).slice(0, 40), [index, query]);
   const groupedResults = useMemo(
@@ -36,32 +39,26 @@ export function HomeDiscovery({
     <main className="min-h-screen pb-14" data-testid="discovery-home">
       <AppHeader />
 
-      <section className="mx-auto w-full max-w-7xl overflow-x-hidden px-4 py-5 sm:py-7">
+      <section className="ui-page">
         <div className="home-intro">
           <h1 className="home-title">What will you learn today?</h1>
         </div>
 
-        <label className="relative mt-4 block">
+        <div className="ui-search-row mt-4">
+        <label className="ui-field-icon ui-search-field">
           <span className="sr-only">Search all Codematica content</span>
           <Search className="pointer-events-none absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-[#68737d]" aria-hidden="true" />
           <input
+            ref={searchInput}
             value={query}
             onChange={(event) => setQuery(event.target.value)}
             placeholder="What do you want to learn?"
-            className="h-14 w-full rounded-xl border border-[#7d8b94] bg-white pl-12 pr-12 text-base font-medium text-[#263238] outline-none transition placeholder:text-[#68737d] focus:border-[#007c78]"
+            className="ui-input ui-filter-input"
             data-testid="home-global-search"
           />
-          {isSearching ? (
-            <button
-              type="button"
-              onClick={() => setQuery("")}
-              className="absolute right-2 top-1/2 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-xl text-[#68737d] hover:bg-[#eaf7f4] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#007c78]"
-              aria-label="Clear search"
-            >
-              <X className="h-5 w-5" aria-hidden="true" />
-            </button>
-          ) : null}
         </label>
+        {isSearching ? <Button label="Clear search" icon={X} iconOnly variant="quiet" onClick={() => { setQuery(""); searchInput.current?.focus(); }} /> : null}
+        </div>
 
         <div className="mt-4">
           {isSearching ? (
@@ -74,7 +71,7 @@ export function HomeDiscovery({
                   <span>{{ paths: "Paths", lessons: "Lessons", interviews: "Interviews", practice: "Practice", languages: "Languages" }[section.id]}</span>
                 </Link>)}
               </nav>
-              <KeepReadingSection initialItems={keepReadingItems} isSignedIn={isSignedIn} />
+              <KeepReadingSection initialItems={keepReadingItems} isSignedIn={isSignedIn} showSummary={false} />
               <div className="mt-6 grid min-w-0 gap-8">
                 {sections.map((section) => (
                   <HomeSectionRow key={section.id} section={section} />
@@ -104,7 +101,7 @@ function SearchResults({ query, sections, total }: { query: string; sections: Ho
               <SectionHeading section={section} showDescription={false} />
               <div className="mt-3 grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
                 {section.items.map((item) => (
-                  <DiscoveryCard key={`${item.kind}-${item.id}`} item={item} />
+                  <DiscoveryCard key={`${item.kind}-${item.id}`} item={item} showSummary={false} />
                 ))}
               </div>
             </div>
@@ -123,9 +120,9 @@ function HomeSectionRow({ section }: { section: HomeDiscoverySection }) {
   return (
     <section className="min-w-0 max-w-full" data-testid={`home-section-${section.id}`}>
       <SectionHeading section={section} showDescription={false} />
-      <div className="home-row mt-3">
+      <div className="home-row ui-scroll-region mt-3" role="region" aria-label={`${section.title} cards`} tabIndex={0}>
         {section.items.map((item) => (
-          <DiscoveryCard key={`${item.kind}-${item.id}`} item={item} />
+          <DiscoveryCard key={`${item.kind}-${item.id}`} item={item} showSummary={false} />
         ))}
       </div>
     </section>
@@ -134,7 +131,7 @@ function HomeSectionRow({ section }: { section: HomeDiscoverySection }) {
 
 function SectionHeading({ section, showDescription }: { section: HomeDiscoverySection; showDescription: boolean }) {
   return (
-    <div className="flex items-end justify-between gap-4">
+    <div className="flex flex-wrap items-end justify-between gap-4">
       <div className="min-w-0">
         <h2 className={cn("flex items-center gap-2 text-xl font-semibold tracking-tight text-[#263238]")}>
           {sectionIcon(section.id)}
@@ -142,21 +139,20 @@ function SectionHeading({ section, showDescription }: { section: HomeDiscoverySe
         </h2>
         {showDescription ? <p className="mt-1 text-sm font-semibold text-[#68737d]">{section.description}</p> : null}
       </div>
-      <Link
+      <ButtonLink
         href={section.route}
-        className={cn(
-          "section-view-all",
-        )}
+        label="View all"
+        aria-label={`View all ${section.id === "paths" ? "learning paths" : section.id}`}
+        icon={ArrowRight}
+        variant="quiet"
+        tone="success"
         data-testid={`home-view-all-${section.id}`}
-      >
-        View all
-        <ArrowRight className="h-4 w-4" aria-hidden="true" />
-      </Link>
+      />
     </div>
   );
 }
 
-export function DiscoveryCard({ item }: { item: DiscoveryResult }) {
+export function DiscoveryCard({ item, showSummary = true }: { item: DiscoveryResult; showSummary?: boolean }) {
   const theme = sectionThemes[item.section];
 
   return (
@@ -164,6 +160,7 @@ export function DiscoveryCard({ item }: { item: DiscoveryResult }) {
       href={item.route}
       className={cn(
         "discovery-card",
+        !showSummary && "discovery-card-compact",
         theme.hoverBorder,
       )}
       data-testid={`discovery-card-${item.kind}-${item.sourceSlug.replaceAll("/", "-")}`}
@@ -172,7 +169,7 @@ export function DiscoveryCard({ item }: { item: DiscoveryResult }) {
         {item.eyebrow}
       </span>
       <span className="discovery-card-title text-[#263238]">{item.title}</span>
-      <span className="discovery-card-summary mt-2 text-sm font-normal leading-6 text-[#68737d]">{item.summary}</span>
+      {showSummary ? <span className="discovery-card-summary mt-2 text-sm font-normal leading-6 text-[#68737d]">{item.summary}</span> : null}
       <span className="mt-auto flex flex-wrap items-center gap-2 pt-4">
         {item.difficulty ? <DifficultyPill difficulty={item.difficulty} /> : null}
         <span className={cn("inline-flex items-center gap-1 text-sm font-semibold", theme.accentText)}>

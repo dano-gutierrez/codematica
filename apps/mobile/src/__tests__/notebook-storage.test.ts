@@ -10,12 +10,33 @@ import {
   createNotebookSnapshot,
   getContentIndex,
   restartNotebookSheet,
+  undoNotebookCell,
 } from "@codematica/core";
 import { createNativeNotebookStorage } from "../lib/notebook-storage";
 
 afterEach(async () => {
   await AsyncStorage.clear();
+  jest.restoreAllMocks();
   jest.clearAllMocks();
+});
+it("persists an empty page after Undo without sending a rejected empty native write batch", async () => {
+  const notebook = createCustomNotebook("あ", getContentIndex());
+  const storage = createNativeNotebookStorage();
+  const originalWrite = jest.mocked(AsyncStorage.multiSet).getMockImplementation()!;
+  jest.spyOn(AsyncStorage, "multiSet").mockImplementation((entries, callback) => {
+    // The real native SDK rejects [], while its bundled Jest mock accepts it.
+    if (!entries.length) return Promise.reject(new Error("Expected array of key-value pairs"));
+    return originalWrite(entries, callback);
+  });
+  const initial = createNotebookSnapshot(notebook);
+  const accepted = acceptNotebookCharacter(notebook, initial, notebook.sheets[0]!.id, {
+    token: "last-cell", strokes: [{ points: [[10, 10], [80, 70]] }],
+  });
+  await storage.save(accepted);
+  const undone = undoNotebookCell(accepted, notebook.sheets[0]!.id);
+  await expect(storage.save(undone)).resolves.toBeUndefined();
+  expect(await createNativeNotebookStorage().load(notebook)).toEqual(undone);
+  expect((await AsyncStorage.getAllKeys()).filter(key => key.includes(":cell:"))).toEqual([]);
 });
 it("retains the catalog romaji preference separately from sheet and cell records", async () => {
   const storage = createNativeNotebookStorage();

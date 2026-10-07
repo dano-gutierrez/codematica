@@ -1,6 +1,6 @@
 # Codematica Engineering Overview
 
-Last updated: 2026-09-27
+Last updated: 2026-10-04
 
 Codematica is a mobile-first learning app for system design, coding, programming, software engineering, ML systems, and beginner human-language study. V1 stays local-first: Markdown and structured JSON remain canonical, including a validated external-source catalog for source-linked companions.
 
@@ -17,7 +17,7 @@ Codematica is a mobile-first learning app for system design, coding, programming
 - editable React/TypeScript web projects with Sandpack's cross-origin browser runtime
 - Mermaid rendered client-side on web and through a native WebView/source fallback on mobile
 - React Native SVG rendering for native handwriting/stroke surfaces
-- Fuse.js-style fuzzy search
+- Fuse.js fuzzy search; native Learn/Browse execute the same matcher in an isolated offline WebView
 - local JSON learning paths, practice prompts, flashcard feeds, and interview catalogs
 - local JSON human-language character and vocabulary catalogs
 - Vercel Hobby deployment config for first hosted web delivery
@@ -71,6 +71,11 @@ flowchart TD
   Core --> Review["Generic career/language stages + six-box mastery"]
   Core --> Search["Library fuzzy search"]
   Core --> Discovery["Cross-section search + curated home"]
+  Search --> SearchBundle["search:runtime: fixed native matcher bundle"]
+  Discovery --> SearchBundle
+  SearchBundle --> LocalSearch["Hidden offline WebView: request IDs + result positions"]
+  Index -->|prepared public rows| LocalSearch
+  LocalSearch -->|owned canonical results| Native
   SharedUI --> Native["Expo Router + adaptive native shell"]
   Core --> Web["Next.js + adaptive web shell"]
   Web --> ProgressUI["Progress trackers + Keep reading"]
@@ -108,13 +113,15 @@ The repo is an npm workspace:
 - `packages/core`: shared content schemas, generated index access, content parsing/indexing helpers, search, practice, interview, and progress contracts.
 - `packages/ui`: React Native-compatible shared screens and design tokens.
 
-Shared web action geometry and semantic tones live in `Button.tsx` and `globals.css`. New UI follows `docs/features/design-system.md` and reuses `Dropdown` and composer primitives. The LinkedIn editor is the first reference; presentation changes preserve its core store/RPC boundaries and local worker topology.
+Shared web action geometry and semantic tones live in `Button.tsx`, server-compatible `ButtonLink.tsx`, and `globals.css`. Native learning screens reuse the extracted `packages/ui/src/Button.tsx`; screen compositions remain in `screens.tsx`. New UI follows `docs/features/design-system.md` and reuses `Dropdown` and composer primitives. The LinkedIn editor is the first reference; presentation changes preserve its core store/RPC boundaries and local worker topology.
 
-`AppNavigation` shares one account disclosure across the sidebar, phone header, and More sheet. `useAccountSession` observes optional Supabase auth; existing membership checks gate a separate Admin group. Sign out clears the current browser session. UI visibility does not replace RLS/RPC authorization.
+`AppNavigation` shares one account disclosure across the sidebar, phone header, and More sheet. `useAccountSession` observes optional Supabase auth; existing membership checks gate a separate Admin group. Native navigation uses the same identity, separate Admin group and account disclosure through its Expo adapter. One persistent native Supabase client is shared by auth, navigation and progress so each observes the same in-process session. Stale account/membership lookups cannot overwrite newer auth events. Sign out clears only the current device/browser session. UI visibility does not replace RLS/RPC authorization.
 
 Vercel is the first hosted web target. The project deploys from `main` with `npm ci` and `npm run build`, which regenerates the core content index before building `apps/web`. Article, diagram, and practice routes stay static-first; path-scoped `?path=` next-node links are selected by small client wrappers from build-time route maps so normal content traffic can be served as static/SSG output.
 
 EAS internal preview builds are the first native target. `apps/mobile/eas.json` defines development, preview, production, e2e-test, and submit profiles. Production builds produce store-ready Android app bundles and iOS archives; EAS Submit can send the latest builds to Play Console internal testing and App Store Connect/TestFlight after account-side credentials and store records are configured. Native routes mirror the web route contract and read the same generated index through `@codematica/core`.
+
+Android prebuild also preserves the running activity across font-scale changes and refreshes React Native dimensions through the existing DeviceInfo module. The local Expo hook uses direct Expo/React Native dependencies, is repeatable, and rejects conflicting activity callbacks. Shared `AdaptiveText` refreshes only native text measurement at a changed font scale; Markdown refreshes its own text blocks while sibling diagrams stay mounted. Screen, form and progress state are preserved. Configuration tests verify generation; a fresh installed APK must verify that the current route and transient input survive live text-size changes. See the [native deployment contract](features/native-mobile-deployment.md) and [plugin notes](../apps/mobile/plugins/README.md).
 
 Supabase is optional at runtime:
 
@@ -137,7 +144,7 @@ External diagrams are stored separately and referenced by slug from article fron
 
 ### Paths And Practice
 
-Learning paths live in `content/learning-paths/*.json` and contain ordered units of document, diagram, exercise, and primary-source nodes. A source node resolves to its published local companion or the authoritative external URL. Exercises support `flashcard`, `cloze`, `questionnaire`, `writing`, and `guided-lab`. Questionnaires calculate aggregate overall/per-skill scores while answers stay transient. Guided labs enforce prediction and evidence-checklist completion while reflection text stays transient. Writing exercises reference language character slugs and use shared stroke-count, order/direction, and shape checks.
+Learning paths live in `content/learning-paths/*.json` and contain ordered units of document, diagram, exercise, and primary-source nodes. A source node resolves to its published local companion or the authoritative external URL. Exercises support `flashcard`, `cloze`, `questionnaire`, `writing`, and `guided-lab`. Questionnaires calculate aggregate overall/per-skill scores while answers stay transient. Guided labs enforce prediction and evidence-checklist completion while reflection text stays transient. Their web/native UI awaits the existing progress callback before confirmation and retains work for retry; only the coarse prediction/evidence milestone is saved. Practice again resets transient work without deleting earned progress. Writing exercises reference language character slugs and use shared stroke-count, order/direction, and shape checks.
 
 Passive flashcard feeds live in `content/flashcard-feeds/*.json` and attach short review cards to learning paths.
 
@@ -150,6 +157,8 @@ Interview collections live in `content/interviews/*.json` and are discriminated 
 Human-language catalogs live in `content/languages/**/*.json`. Schema v10 adds structured grammar, N5 study metadata, Japanese open-answer/listening question kinds, and synthetic-audio provenance while retaining generic progression and resource-rights metadata. Japanese indexes complete kana, an exact 100-kanji target, 650 N5-aligned words, 60 grammar patterns, learner romaji, IPA, study order, and normalized paths for published handwriting profiles. A compact pinned JMdict asset supplies local IME candidates. Only human-approved audio enters generated web/Expo registries; external resources remain link-only unless redistribution rights are explicit.
 
 Home discovery curation lives in `content/discovery/home.json`. It references canonical published content by kind and slug; index generation validates every reference and serializes the ordered sections into content index schema version 12. `packages/core/src/discovery.ts` resolves those references and provides cross-section local search to web and native.
+
+Learn uses compact title/metadata cards while preserving summaries in the searchable index and full catalogs. Native global discovery coalesces lookup after a 300 ms typing pause; a polite pending state hides obsolete results, and pending timers cancel on input changes, clear and unmount. The shared lookup still runs locally on the JS thread. This introduces no service, background worker or persistence change; see `docs/features/home-discovery.md` for timing and installed-device coverage.
 
 ### Course Catalog
 
@@ -175,7 +184,7 @@ The Japanese Foundations path is the first human-language slice. Its open progre
 
 ### Progress
 
-Progress is user state, separate from authored content. Existing completion remains in `user_progress_items`. Japanese mastery is additive: anonymous review state persists locally, while `user_skill_progress` provides an RLS-protected signed-in target for best score, attempt count, review box, mastery state, and review times. Web and Expo load the remote snapshot when authenticated, validate it, merge it deterministically with retained local state, save the merged snapshot locally, and upload it in batches of at most 20. Neither path stores answers, raw handwriting, recordings, or full attempt history.
+Progress is user state, separate from authored content. Existing completion remains in `user_progress_items`. Japanese mastery is additive: anonymous review state persists locally, while `user_skill_progress` provides an RLS-protected signed-in target for best score, attempt count, review box, mastery state, and review times. Web and Expo load the remote snapshot when authenticated, validate it, merge it deterministically with retained local state, save the merged snapshot locally, and upload it in batches of at most 20. Neither path stores answers, raw handwriting, recordings, or full attempt history. Native rating writes now share a serialized read/modify/write boundary in `review-persistence.ts`. The UI waits for device acknowledgment; a failed intent retries the same recall, reconciles a possibly committed row and preserves unrelated skills. Changed same-skill data requires explicit reload, and unreadable local records are retained. Local practice becomes available before optional remote loading completes.
 
 ## Route Model
 
@@ -235,6 +244,9 @@ The likely next step combines canonical Markdown and local structured content wi
 
 Before relying on Supabase for production user progress at scale, revisit plan level, backups, RLS policy coverage, and operational ownership. The service role key remains server-only.
 
+The design audit also makes progress acknowledgment snapshot-based: successful synchronization removes only unchanged submitted records, while new learning remains local. Native buffer writes are serialized around AsyncStorage. Shared actions own busy state and named recovery; diagram source and editorial metadata use disclosures while required failures and verification remain visible.
+
+
 ## Game runtime and progression
 
 The [game feature contract](features/restore-the-signal.md) owns the chapter. `content/game/` passes the shared Zod/index pipeline; all 36 scenarios ship in schema version 12. Game rules import no graphics libraries. Web loads PixiJS on the client, while native Skia/Reanimated consume the same atlas and keyframes. CSS uses actual local layout; sql.js and WASM are bundled into a terminable local worker. Native hosts the same sandbox document in a local WebView.
@@ -273,6 +285,8 @@ flowchart TD
 ```
 
 Game awards are separate from learning-path progress. Locks only constrain campaign levels. The anonymous buffer can be claimed by one account, and stale in-flight writes carry an expected account ID. SQL/CSS answers and full attempt history never enter the RPC. Additive migrations, clean replay, and transactional pgTAP test the merge and RLS. Final web artifacts and installed native bundles must include worker/WASM/texture assets; source-only tests cannot certify those packages.
+
+The SQL sandbox's two-second cap includes local SQLite initialization. It settles once, terminates its worker and releases the blob URL on result/error/deadline; queued callbacks cannot replace that outcome. A timeout identifies the local runner and leaves the input available for retry. The parent web/native attempt nonce independently rejects stale sandbox messages.
 
 Android prebuild also registers shared package sources and game assets as Gradle bundle inputs. This keeps incremental production APKs aligned with Metro’s workspace watch folders. The artifact check compares decoded textures because Android resource shrinking renames packed files.
 
@@ -361,6 +375,8 @@ Native writing protects the SVG responder from ancestor ScrollView interception 
 
 The notebook catalog derives Japanese previews and authored romaji readings from the shared engine. `useNotebookRomaji` shares the display preference between catalog implementations through optional storage methods. The preference is device-local (web localStorage/native AsyncStorage) and separate from notebook ink and synchronized progress.
 
+The native auth singleton now explicitly uses PKCE. Its browser result is validated and dispatched to the callback route; repeated current-code exchanges share an outcome. Callback/password UI separates successful authentication from local-progress sync recovery. These boundaries are documented in [Auth and Progress](features/auth-and-progress.md).
+
 ## Optional knowledge evaluation
 
 The validated content parser feeds a complete included-resource catalog and explicit curriculum links. An isolated Python service persists Graphiti records in Neo4j and caches source-bound extraction, BGE embeddings and local inference in SQLite. Retrieval supplies bounded evidence to loopback OpenJev and Qwen. The five REST/MCP capabilities stage recommendations; human-reviewed curriculum links are versioned repository sidecars. Admin-only Supabase projections and leased jobs keep exploration and queued evaluation available while the Mac is offline. Models and caches remain local.
@@ -389,7 +405,9 @@ flowchart LR
 
 See [the feature contract](features/interview-preparation.md) and [operations](runbooks/interview-preparation.md). Hosted rollout and installed-device validation are separate gates.
 
-The campaign map assembles its terrain before export and cuts twelve shared-guard tiles. Exact edge pixels make joins independent of viewport cropping. Terrain remains stationary beneath mist, motes and foliage; panel-relative motion is bounded without modulo resets. Future art reserves fifty positions while progression stays at twelve authored levels. Both renderers cull distant scenery and react to reduced-motion preferences. Web uses clip overflow so centering a node cannot scroll inside a district. The map/list switch retains the last map offset; a versioned session key discards obsolete offsets from the shorter map.
+## Campaign map scenery
+
+The campaign map assembles its terrain before export and cuts twelve shared-guard tiles. Exact edge pixels make joins independent of viewport cropping. Terrain remains stationary beneath mist, motes and foliage; panel-relative motion is bounded without modulo resets. Future art reserves fifty positions while progression stays at twelve authored levels. Both renderers cull distant scenery and react to reduced-motion preferences. Web uses clip overflow so centering a node cannot scroll inside a district. Its map/list switch retains the last map offset; a versioned session key discards obsolete offsets from the shorter map. Native view/font changes rebuild only terrain, reject obsolete callbacks and center from fresh measurements; leaving and revisiting the map preserves its offset. The toolbar and progress stay mounted. Shared native forms and campaign code reserve Android keyboard height and iOS padding without replacing input drafts.
 
 ### Event-log interview content flow
 

@@ -1,5 +1,5 @@
 import "react-native-url-polyfill/auto";
-import { createClient } from "@supabase/supabase-js";
+import { createClient, type SupabaseClient } from "@supabase/supabase-js";
 import * as Linking from "expo-linking";
 import * as SecureStore from "expo-secure-store";
 import * as WebBrowser from "expo-web-browser";
@@ -8,6 +8,7 @@ WebBrowser.maybeCompleteAuthSession();
 
 const supabaseUrl = process.env.EXPO_PUBLIC_SUPABASE_URL;
 const supabasePublishableKey = process.env.EXPO_PUBLIC_SUPABASE_PUBLISHABLE_KEY;
+let sharedClient: SupabaseClient | undefined;
 
 const secureStorage = {
   getItem: (key: string) => SecureStore.getItemAsync(key),
@@ -24,14 +25,17 @@ export function createNativeSupabaseClient() {
     return undefined;
   }
 
-  return createClient(supabaseUrl, supabasePublishableKey, {
+  // Navigation, adapters and progress must observe the same in-process session.
+  sharedClient ??= createClient(supabaseUrl, supabasePublishableKey, {
     auth: {
       storage: secureStorage,
       autoRefreshToken: true,
       persistSession: true,
       detectSessionInUrl: false,
+      flowType: "pkce",
     },
   });
+  return sharedClient;
 }
 
 export function getNativeAuthRedirectUrl() {
@@ -39,5 +43,15 @@ export function getNativeAuthRedirectUrl() {
 }
 
 export async function openAuthUrl(url: string) {
-  await WebBrowser.openAuthSessionAsync(url, getNativeAuthRedirectUrl());
+  const redirect = getNativeAuthRedirectUrl();
+  const result = await WebBrowser.openAuthSessionAsync(url, redirect);
+  if (result.type !== "success") throw new Error("Sign-in was cancelled. Please try again.");
+  let callback: URL;
+  const expected = new URL(redirect);
+  try { callback = new URL(result.url); }
+  catch { throw new Error("Sign-in returned an invalid callback. Please try again."); }
+  if (callback.protocol !== expected.protocol || callback.hostname !== expected.hostname || callback.port !== expected.port || callback.pathname !== expected.pathname || (!callback.searchParams.has("code") && !callback.searchParams.has("error"))) {
+    throw new Error("Sign-in returned an invalid callback. Please try again.");
+  }
+  await Linking.openURL(result.url);
 }

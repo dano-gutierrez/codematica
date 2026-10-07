@@ -13,6 +13,7 @@ import { Play, RotateCcw, Terminal } from "lucide-react";
 import { Component, type ErrorInfo, type ReactNode, useEffect, useState } from "react";
 import type { WebExerciseProject } from "@/lib/content/schema";
 import { CodeBlock } from "@/components/CodeBlock";
+import { Button } from "@/components/Button";
 
 export function WebPlayground({ project, projectId }: { project: WebExerciseProject; projectId: string }) {
   return <PlaygroundSession key={projectId} project={project} />;
@@ -120,24 +121,16 @@ function PlaygroundWorkspace({ onRun, onReset }: { onRun: (draft: PlaygroundDraf
           </p>
         </div>
         <div className="flex flex-wrap gap-2">
-          <button
-            type="button"
+          <Button
+            label="Run" icon={Play} tone="success" variant="primary"
             onClick={runProject}
-            className="inline-flex min-h-10 items-center gap-2 rounded-xl border border-[#00645f] bg-[#007c78] px-3 py-2 text-sm font-semibold text-white"
             data-testid="web-playground-run"
-          >
-            <Play className="h-4 w-4" aria-hidden="true" />
-            Run
-          </button>
-          <button
-            type="button"
+          />
+          <Button
+            label="Reset solution" icon={RotateCcw} tone="warning"
             onClick={onReset}
-            className="inline-flex min-h-10 items-center gap-2 rounded-xl border border-[#526474] bg-[#18232d] px-3 py-2 text-sm font-semibold text-white"
             data-testid="web-playground-reset"
-          >
-            <RotateCcw className="h-4 w-4" aria-hidden="true" />
-            Reset solution
-          </button>
+          />
         </div>
       </div>
 
@@ -158,16 +151,13 @@ function PlaygroundWorkspace({ onRun, onReset }: { onRun: (draft: PlaygroundDraf
           <div className="flex flex-1 flex-col items-start justify-center gap-4 bg-[#101820] p-6 text-[#edf5ff]" role="alert" data-testid="web-playground-connection-error">
             <h3 className="text-lg font-semibold">The preview couldn’t connect.</h3>
             <p className="text-sm leading-6">Your edits are preserved. The preview needs internet access to its hosted runtime. Retry to reconnect.</p>
-            <button type="button" onClick={runProject} className="inline-flex min-h-10 items-center gap-2 rounded-xl border border-[#526474] bg-[#18232d] px-3 py-2 text-sm font-semibold text-white">
-              <RotateCcw className="h-4 w-4" aria-hidden="true" />
-              Retry preview
-            </button>
+            <Button label="Retry preview" icon={RotateCcw} tone="warning" onClick={runProject} />
           </div>
         )}
       </SandpackLayout>
 
       <details className="border-t border-[#263544] text-white" data-testid="web-playground-console">
-        <summary className="flex cursor-pointer list-none items-center gap-2 px-4 py-3 text-sm font-semibold text-[#cbd7e1]">
+        <summary className="flex min-h-12 cursor-pointer list-none items-center gap-2 px-4 py-3 text-sm font-semibold text-[#cbd7e1]">
           <Terminal className="h-4 w-4 text-[#6dd8cf]" aria-hidden="true" />
           Console
         </summary>
@@ -200,13 +190,11 @@ class PlaygroundErrorBoundary extends Component<
       <section className="rounded-xl border border-[#d5e2e8] bg-white p-5" data-testid="web-playground-fallback">
         <h3 className="text-xl font-semibold text-[#263238]">The interactive runtime did not load.</h3>
         <p className="mt-2 text-sm font-normal leading-6 text-[#68737d]">The explanations and source are still available. Check your connection and retry the hosted sandbox.</p>
-        <button type="button" onClick={this.props.onRetry} className="mt-4 rounded-xl border border-[#1d4e9e] bg-[#245fba] px-4 py-2 text-sm font-semibold text-white">
-          Retry playground
-        </button>
+        <Button label="Retry playground" icon={RotateCcw} tone="warning" onClick={this.props.onRetry} className="mt-4" />
         <div className="mt-5 grid gap-3">
           {this.props.project.visibleFiles.map((path) => (
             <details key={path} className="rounded-xl border border-[#d5e2e8] bg-[#f6fbfc] p-3">
-              <summary className="cursor-pointer font-mono text-sm font-medium text-[#263238]">{path}</summary>
+              <summary className="min-h-12 cursor-pointer font-mono text-sm font-medium text-[#263238]">{path}</summary>
               <CodeBlock code={this.props.project.files[path].code} language={path.split(".").pop()} label={path} className="mt-3" />
             </details>
           ))}

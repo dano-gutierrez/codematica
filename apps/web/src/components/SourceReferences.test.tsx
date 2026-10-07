@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+import { fireEvent, render, screen } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
 import type { ContentSource } from "@/lib/content/schema";
 import { SourceReferences } from "./SourceReferences";
@@ -26,6 +26,8 @@ describe("SourceReferences", () => {
     render(<SourceReferences sources={[source]} title="Read upstream first" />);
 
     expect(screen.getByRole("heading", { name: "Read upstream first" })).toBeVisible();
+    expect(screen.getByRole("link", { name: /Machine Learning Systems, Volume I/i })).not.toBeVisible();
+    fireEvent.click(screen.getByTestId("source-references-toggle"));
     expect(screen.getByRole("link", { name: /Machine Learning Systems, Volume I/i })).toHaveAttribute("href", source.url);
     expect(screen.getByTestId("source-references")).toHaveTextContent(/v0\.7\.1/i);
   });

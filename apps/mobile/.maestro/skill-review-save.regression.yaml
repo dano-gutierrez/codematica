@@ -1,0 +1,81 @@
+appId: com.codematica.app
+tags:
+  - regression
+---
+- launchApp:
+    clearState: true
+- assertVisible:
+    id: mobile-nav-learn
+- openLink: codematica://languages/japanese/review
+- scrollUntilVisible:
+    element:
+      id: mobile-japanese-review-good
+    direction: DOWN
+    speed: 20
+    visibilityPercentage: 100
+    centerElement: false
+    timeout: 20000
+- tapOn:
+    id: mobile-japanese-review-good
+- scrollUntilVisible:
+    element:
+      text: Good saved on this device. This recall counts as one attempt.
+    direction: DOWN
+    speed: 20
+    visibilityPercentage: 100
+    centerElement: false
+    timeout: 20000
+- scrollUntilVisible:
+    element:
+      text: Best 85% · box 1
+    direction: DOWN
+    speed: 20
+    visibilityPercentage: 100
+    centerElement: false
+    timeout: 20000
+- assertVisible: Best 85% · box 1
+- takeScreenshot: skill-rating-acknowledged
+- stopApp
+- launchApp:
+    clearState: false
+- assertVisible:
+    id: mobile-nav-learn
+- openLink: codematica://languages/japanese/review
+- scrollUntilVisible:
+    element:
+      id: mobile-japanese-review-skill-kana-listening
+    direction: DOWN
+    speed: 20
+    visibilityPercentage: 100
+    centerElement: false
+    timeout: 20000
+- assertVisible: Box 1 · learning
+- takeScreenshot: skill-rating-restored
+- scrollUntilVisible:
+    element:
+      id: mobile-japanese-review-easy
+    direction: DOWN
+    speed: 20
+    visibilityPercentage: 100
+    centerElement: false
+    timeout: 20000
+- tapOn:
+    id: mobile-japanese-review-easy
+- scrollUntilVisible:
+    element:
+      text: Easy saved on this device. This recall counts as one attempt.
+    direction: DOWN
+    speed: 20
+    visibilityPercentage: 100
+    centerElement: false
+    timeout: 20000
+- scrollUntilVisible:
+    element:
+      text: Best 100% · box 3
+    direction: DOWN
+    speed: 20
+    visibilityPercentage: 100
+    centerElement: false
+    timeout: 20000
+- assertVisible: Best 100% · box 3
+- takeScreenshot: skill-rating-next-recall

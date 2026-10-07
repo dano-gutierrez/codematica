@@ -5,7 +5,7 @@ This file preserves repo context across Codex tasks.
 ## Source Of Truth
 
 - Product and feature intent lives in `docs/features/<feature>.md`.
-- Web controls, spacing, alignment, and disclosure rules live in `docs/features/design-system.md`. Read it before UI work; reuse `Button`, `Dropdown`, and existing compositions.
+- Web controls, spacing, alignment, and disclosure rules live in `docs/features/design-system.md`. Read it before UI work; reuse web `Button`/`ButtonLink`, native `Button`, `Dropdown`, and existing compositions. `docs/features/app-wide-design-audit.md` tracks all route/platform adoption and verification.
 - Web `AppNavigation` owns the Admin group and account footer/header/menu. Its account-session hook is display state; membership RPCs and RLS own admin authorization. `e2e:linkedin` tests editorial and account navigation with synthetic Supabase requests.
 
 - Approved app identity lives in `assets/brand/source/`; `npm run brand:assets` regenerates web/native copies. Preserve the selected Patch design; see `docs/features/brand-identity.md`.
@@ -167,10 +167,17 @@ Japanese planas share the core notebook engine and React-only `@codematica/ui/no
 
 Native handwriting routes disable swipe-back through `apps/mobile/src/lib/handwriting-navigation.ts`. The paper blocks automatic one-finger ScrollView interception; explicit two-finger and accessibility scrolling remain available. Device regressions run against disposable notebooks. Expo Go validates the SVG fallback; the physical iPad/PencilKit checklist remains a separate installed-build gate in the notebook feature doc.
 
+Native OAuth handoff and duplicate-current-code exchange live in `apps/mobile/src/lib/supabase.ts` and `auth-code.ts`; UI recovery lives in `app/auth/callback.tsx` and shared LoginScreen. Read the auth feature contract before changing these boundaries.
+
+### Native local search
+
+`packages/ui/src/LocalSearch.tsx` owns Learn/Browse request lifecycle and feedback. Pure transport and matching live in `packages/core/src/native-search*.ts`; the fixed generated native script is produced by `scripts/content/build-search-runtime.mjs`. Run `search:runtime`/`search:check` after runtime changes. Public canonical content stays in the host/index; the runtime has no credentials, hosted SDK, network or persistent writes. See the owning home-discovery contract before extending it.
+
 The opt-in LinkedIn local preparation stage (`202610030002`) uses `scripts/linkedin/models.py` for manual loopback model lifecycle, `preparation.ts` for bounded decisions, and `prepare.md` / `verify.md` for separate writer and Codex contracts. Supabase holds reports/voice versions, never model weights or inference. Prepared jobs use compact handoffs and sparse verification; originals, adoption and exact approval stay separate. Clients poll `linkedin_overview` and load selected `linkedin_detail`. Read the runbook for controlled activation/backfill and v2 backup compatibility.
 
 The optional knowledge evaluator indexes validated canonical content, excluding human-language curriculum. `scripts/knowledge/` owns catalogs and sync; `services/knowledge/` owns the isolated Graphiti/Neo4j/local-model runtime. `packages/core/src/knowledge.ts` contains shared contracts. Supabase is an admin-only projection/queue, never the canonical curriculum. Read `docs/features/knowledge-evaluator.md` and its runbook before graph or LinkedIn integration work. Model-resolved concepts cannot rename authored resource IDs; approvals bind source and graph hashes.
 
 Private interview preparation lives at `/admin/interview-preparation` on web/native. Supabase stores company/role/round context, candidate profile revisions and immutable briefs; none enters the public generated index. `.agents/skills/prepare-interview` always applies repository technical-edit before output. The local CLI lives in `scripts/interview-preparation`; private artifacts stay in `.local/interview-preparation`. Knowledge PR #16 catalogs private briefs and reviewed learning links; design PR #15 owns shared Button/control rules. Read the feature and runbook before changing this boundary.
+### Campaign scenery
 
 Campaign scenery: `assets/game/source/map/` contains four original connected paintings and overlay sources. `scripts/game/build-map-art.ts` assembles and blends before cutting shared-guard tiles into `generated/map/`. `packages/core/src/game/map-art.ts` reserves fifty art positions independently of the twelve authored levels and owns bounded parallax offsets. Web and native keep terrain stationary beneath three moving overlay families. See the [map art review](../assets/game/previews/continuous-map/review.md).
