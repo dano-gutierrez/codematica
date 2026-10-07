@@ -1,5 +1,15 @@
 # Product And Engineering Changelog
 
+## 2026-10-07 — Editorial design integration review
+
+- Reconcile the design with current preparation, voice, Knowledge and admin navigation features.
+- Preserve a return and retry path while draft details load or fail; retain dirty edits when reselecting the active draft.
+- Use the shared Button for Knowledge checks so touch controls meet the 48 px contract; remove duplicate shared CSS introduced by the merge.
+- Update browser fixtures to overview/detail reads and add compact/wide recovery and admin-link regressions. Keep native installed-device accessibility verification separate from local coverage.
+- Validation: 889 Vitest tests and both coverage gates, 164 native tests with coverage, Expo Doctor 20/20, 60 private-workflow browser cases, 15 public smoke cases, and 15 caught behavior mutations. Production build and fresh production-only startup pass.
+
+Owning contracts: [LinkedIn editorial](features/linkedin-editorial.md) and [design system](features/design-system.md).
+
 ## 2026-10-04 — Selected Evidence Review
 
 Added eleven original source-bound lessons,55 choices and three ordered paths for engineering, creative computing and ownership review. Existing curricula/runtime/dependencies are unchanged. Selected primary references preserve editions, licensing scope and fictional assumptions; no complete external course or installed-system certification is claimed. See [the feature contract](features/selected-evidence-review.md).
@@ -20,6 +30,30 @@ Added an anonymous real-world exercise with three complete TypeScript/Python pai
 - Added mist, amber motes and foreground foliage at three bounded depths on web and native, behind ordinary level controls. Reduced motion freezes parallax; offscreen scenery is culled.
 - Reserved fifty art positions with twelve authored playable levels and a compact ascending list. Fixed centering-induced blank strips, smeared chapter blends, dangling route marks, and obsolete map scroll offsets.
 - Recorded the improve-game-ux create/review/fix/review cycle and visual evidence. New installed-device art/FPS checks remain pending. See [Restore the Signal](features/restore-the-signal.md) and the [map review](../assets/game/previews/continuous-map/review.md).
+
+## 2026-10-03 — Touch And Accessible Editorial Review
+
+- Keep one design system with visible touch labels, 48 px/dp targets, content-width tablet panes, growing text and normal-flow action bars.
+- Preserve keyboard context through draft/create transitions; make desktop tooltips hoverable and Escape-dismissible.
+- Align native editorial controls, keyboard-aware scrolling and explicit discard before leaving unsaved edits.
+- Add Chromium/iPhone WebKit phone/tablet/desktop, 200% text and landscape regressions; retain native coverage and update the disposable-data Maestro journey. Installed native VoiceOver/TalkBack and software keyboard checks remain unverified.
+- Keep publishing permissions and coverage floors unchanged. The local visual pass was reviewed before the user requested a pull request.
+- Review fixes: invalidate stale copy feedback, provide manual clipboard recovery, wrap long proposal links and restore Search focus when filters remove the open draft. Pin comment/fact discard, normalized account names and each phone menu link with regression coverage.
+- Limit WebKit to one CI worker after two Linux game return-to-map failures; retain all browser projects, assertions and timeouts. Local repeated runs pass; CI validation remains separately recorded on the PR.
+- Validation against `main` at `dec1c2d`: 576 Vitest tests with both coverage gates, 147 native tests with coverage, Expo Doctor 20/20, 31 editorial/account browser cases and 15 public smoke cases pass. Twelve behavior mutants are caught. Content freshness, lint, typechecks, production build and pruned-artifact startup pass.
+
+Owning contracts: `docs/features/design-system.md`, `docs/features/adaptive-ui.md` and `docs/features/linkedin-editorial.md`.
+
+## 2026-10-02 — Editorial UI And Design System (Local Review)
+
+- Add shared named action buttons with consistent geometry, semantic colors, and icon tooltips.
+- Simplify LinkedIn review with compact filters, a framed composer, explicit approval, and expandable supporting material.
+- Preserve creation, formatting, analysis, and exact-revision approval. Protect unsaved draft/comment edits and offer explicit discard.
+- Document spacing, borders, alignment, typography, reuse, and accessibility. Coverage gates remain unchanged.
+- The first visual pass was reviewed locally; the user requested a pull request on 2026-10-03. No production deployment is included.
+- Follow-up (2026-10-03): include the previously local Admin sidebar group, LinkedIn icon, signed-in account footer, and shared Sign out disclosure in the design checkout and preview. Add account navigation to the existing isolated browser gate.
+
+Owning contracts: `docs/features/design-system.md` and `docs/features/linkedin-editorial.md`.
 
 ## 2026-10-03 — Campaign integration review
 

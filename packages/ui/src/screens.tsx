@@ -141,13 +141,14 @@ export function NativeNavigation({ pathname, navigate, wide, isAdmin = false }: 
   );
 }
 
-export function AppScreen({ title, children, footer, keyboardShouldPersistTaps }: {
+export function AppScreen({ title, children, footer, keyboardAware = false, keyboardShouldPersistTaps }: {
   title?: string;
   children: ReactNode;
   footer?: ReactNode;
+  keyboardAware?: boolean;
   keyboardShouldPersistTaps?: "never" | "always" | "handled";
 }) {
-  const [drawing,setDrawing]=useState(false);
+  const [drawing, setDrawing] = useState(false);
   const pageScroll = useRef<ScrollView>(null);
   const pageBounds = useRef({ y: 0, viewport: 0, content: 0 });
   const scrollNotebookPage = useCallback((deltaY: number) => {
@@ -155,15 +156,13 @@ export function AppScreen({ title, children, footer, keyboardShouldPersistTaps }
     bounds.y = Math.max(0, Math.min(Math.max(0, bounds.content - bounds.viewport), bounds.y + deltaY));
     pageScroll.current?.scrollTo({ y: bounds.y, animated: false });
   }, []);
-  return (
-    <NotebookScrollContext.Provider value={scrollNotebookPage}>
-    <NotebookDrawingContext.Provider value={setDrawing}>
-    <View style={styles.screen}>
+  const content = <>
       <ScrollView
         ref={pageScroll}
-        testID="mobile-page-scroll"
+        testID={keyboardAware ? "keyboard-aware-scroll" : "mobile-page-scroll"}
         scrollEnabled={!drawing}
-        keyboardShouldPersistTaps={keyboardShouldPersistTaps}
+        keyboardShouldPersistTaps={keyboardShouldPersistTaps ?? (keyboardAware ? "handled" : undefined)}
+        keyboardDismissMode={keyboardAware ? "on-drag" : undefined}
         contentContainerStyle={styles.screenContent}
         onLayout={(event) => { pageBounds.current.viewport = event.nativeEvent.layout.height; }}
         onContentSizeChange={(_width, height) => { pageBounds.current.content = height; }}
@@ -174,8 +173,12 @@ export function AppScreen({ title, children, footer, keyboardShouldPersistTaps }
         {children}
       </ScrollView>
       {footer ? <View style={styles.footer}>{footer}</View> : null}
-    </View>
-    </NotebookDrawingContext.Provider>
+    </>;
+  return (
+    <NotebookScrollContext.Provider value={scrollNotebookPage}>
+      <NotebookDrawingContext.Provider value={setDrawing}>
+        {keyboardAware ? <KeyboardAvoidingView testID="keyboard-aware-screen" behavior={Platform.OS === "ios" ? "padding" : undefined} style={styles.screen}>{content}</KeyboardAvoidingView> : <View style={styles.screen}>{content}</View>}
+      </NotebookDrawingContext.Provider>
     </NotebookScrollContext.Provider>
   );
 }

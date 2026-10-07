@@ -3,7 +3,7 @@
 ## Snapshot
 
 - Status: `in_progress`
-- Last updated: `2026-09-30`
+- Last updated: `2026-10-03`
 - Owner thread: `n/a`
 - Current state: Admin web/native screens, hosted Supabase persistence, fixed prompt, local worker CLI and 100 unapproved drafts exist. Personal account onboarding and installed-device verification remain.
 - Target outcome: A human reviews source-grounded learning posts, requests refinements and authorizes each exact revision before Buffer schedules it.
@@ -54,7 +54,13 @@ One personal editor and one LinkedIn channel. Free-tier limits and recommended s
 
 ### UI / UX
 
-Search and topic/review/publication filters lead to a post detail editor. On small screens selection replaces the list/filters with the editor and a Back to collection button; on desktop the list scrolls beside the editor. Text and first comment are separate. Source excerpts, references, analysis scores, alternative hooks, posting plan, proposals, job status and revision history remain inspectable. Use revision is explicit. Approve & queue explains its external effect. Public anonymous users receive a sign-in/admin-access state and never load the collection.
+The web layout follows [the design system](design-system.md). “LinkedIn” has compact queue counts and expandable worker details. New post stays labeled; refresh, formatting, save, refine, reject, copy, and withdrawal use named controls with semantic colors: compact icons on wide fine-pointer screens and visible text on touch/narrow layouts. Approve & queue keeps its visible label and publishing explanation. First comment, sources, analysis, and history start collapsed; a current proposal starts expanded. Errors, pending/failed requests, publication outcomes, and required fact checks remain visible.
+
+Unsaved edits disable switching drafts, Back to collection, New post, and refresh. Save or explicitly discard changes to continue. The web editor never silently discards text on list selection. Native uses the same save-or-discard guard, visibly labeled 48 dp actions, system text scaling and an opt-in keyboard-aware scroll view.
+
+First-comment copy announces success only for the current text and attempt. Editing, discarding or leaving a draft invalidates pending feedback. Denied or unavailable clipboard access preserves the comment and offers manual selection/copy; retry clears the previous error.
+
+Search and topic/review/publication filters lead to a post detail editor. On small screens selection replaces the list/filters with the editor and a Back to collection button; the list scrolls beside the editor when more than 48 rem of page content width is available. Opening a web draft focuses its heading; returning restores the collection button, or Search if filters removed it. Text and first comment are separate. Source excerpts, references, analysis scores, alternative hooks, posting plan, proposals, job status and revision history remain inspectable. Use revision is explicit. Approve & queue explains its external effect. Public anonymous users receive a sign-in/admin-access state and never load the collection.
 
 Create opens a title/topic/text form on web and native. Add for analysis atomically stores a manual post, its initial immutable revision and a pending refinement job. It does not approve or schedule anything. Input survives failed submissions; retries in the same composer session reuse an idempotency key. After success the editor opens the new post, even if collection filters would hide it. Cancel leaves the form without saving. A manual post requires an analyzed, explicitly adopted revision before approval; changing post text or first comment invalidates its analysis. Saving only fact confirmation preserves the prompt hash and analysis.
 
@@ -108,16 +114,41 @@ Local setup, pinned models, manual activation/backfill, retries, license constra
 
 ## Test Plan
 
+- Web design regression: named icon controls, collapsed details, dirty draft/comment navigation guards, explicit discard, visible failed requests, and saved fact confirmation. Browser checks cover keyboard tooltips, 44 px controls, axe accessibility, and 320/390/768/1024/1440 px layouts with synthetic fixtures. Run `E2E_PORT=3102 npm run e2e:linkedin` if port 3100 is occupied. Inspect desktop/phone captures with synthetic data; the first local pass was reviewed before the user requested a pull request.
+
+Local design validation on 2026-10-02: 404 Vitest tests and both coverage gates, four editorial browser journeys, nine public smoke cases, lint, workspace typechecking, production builds, and startup with a fresh production-only install pass. The visual preview uses temporary synthetic data; no hosted queue or publishing state changed. The user requested a pull request after reviewing the local preview.
+
+Pull-request validation on 2026-10-03 after incorporating latest `main`: 490 Vitest tests and both coverage gates, 113 native Jest tests with coverage, Expo Doctor 20/20, six editorial/account workflows, 21 cross-browser accessibility cases and nine public smoke cases pass. Content freshness, lint, workspace typechecks, production build and production-only artifact startup pass. Native installed-device screen-reader/keyboard checks remain open; publishing permissions and hosted data are unchanged.
+
 - Unit: formatting selection offsets, plain restoration, protected tokens and Unicode limits; manual approval gating, request validation, idempotent retries and busy-state serialization; shared schemas, exact approval guard, filters, RPC errors, race suppression and serialized writes; prompt hash and publication arguments.
 - Integration: web/native screens, membership hooks, local CLI through actual Supabase Auth/REST. CLI subprocess startup is tested with a full developer install; it is not a deployed HTTP dependency.
 - Database: manual creation authorization, atomic job insertion, retry identity/mismatches, analysis adoption, fact-only confirmation, edit invalidation and Unicode limits; transactional pgTAP tests for RLS, grants, verified bootstrap, immutability, stale actions, duplicate claims, bounded retries, uncertain publishing, withdrawal/reapproval and restoration. Clean local migration replay is required.
 - E2E: manual creation, selection formatting, failed submission retry, reload persistence, analysis/adoption/approval and mobile layout; `npm run e2e:linkedin` uses isolated fake Supabase public configuration and intercepts only editorial RPCs. Ordinary public smoke tests explicitly disable Supabase regardless of local `.env` files. The dedicated lane is separate from `e2e:web:release` and runs in CI.
+- Responsive accessibility: `npm run e2e:linkedin:accessibility` covers Chromium/iPhone WebKit at 320, 390, 768, 1024, 1180 and 1440 px, touch labels/targets, hover/Escape, keyboard focus, 200% text and short landscape reflow. Axe checks are not a full screen-reader audit.
 - Native: Jest review/navigation coverage and `.maestro/linkedin-admin.yaml`; the latter requires an installed app signed into an allowlisted disposable local account with publishing disabled.
 - Coverage: existing floors remain unchanged. `scripts/linkedin/worker.ts`, `preparation.ts` and `local-models.ts` are instrumented; the thin CLI orchestration and local smoke entrypoint use subprocess integration coverage rather than V8 unit instrumentation. No existing file is excluded.
 - Local preparation: exact/semantic duplicates versus follow-ups, unsafe high-scoring candidates, source traversal/hash failures, loopback-only requests, cache reuse, rejected-candidate isolation, sparse verification bindings, malformed checks, stale voice/text, leases, holds/overrides and v2 backup roundtrip. `test:linkedin:preparation` runs in CI after the legacy CLI lifecycle. Real GPU inference is opt-in via `linkedin:evaluate`; its token figures are character proxies.
 - Commands: `npm run test:coverage`, `npm run test:mobile:coverage`, `supabase db reset --local`, `npm run test:db`, `npm run test:linkedin:local`, `npm run lint`, `npm run typecheck`, `npm run content:check`, `npm run build`, `npm run test:production:smoke`, `npm run e2e:smoke`, `npm run e2e:linkedin`.
 - Production smoke installs only production dependencies in a fresh temporary copy of the built Next artifact, checks HTTP readiness and public/admin shells without service credentials. It preserves logs. No worker or Buffer mutation is executed by the web artifact.
 - First failing regressions captured stale revision approval, RLS, duplicate publishing, lost in-flight edits, and the already-sent cancellation race before fixes.
+
+### Polish validation — 2026-10-03
+
+Reviewed against `main` at `dec1c2d`: 576 Vitest tests with aggregate/per-file coverage gates, 147 native Jest tests with coverage, Expo Doctor 20/20, seven editorial/account browser workflows, 24 Chromium/iPhone WebKit accessibility cases and 15 public smoke cases pass. Content freshness, brand/game export checks, authored Python verification, lint, all workspace typechecks, production build, fresh production-only HTTP startup and the packaged game smoke pass.
+
+The review reproduced and fixed stale clipboard feedback, missing clipboard recovery, long-link proposal overflow and focus loss after filtering out the open draft. Tests also cover comment/fact-confirmation discard, account-name normalization and each phone language/admin link. Twelve deliberately broken behavior variants fail the regression tests. Failure traces and review evidence remain private. No production deployment or hosted Supabase/Buffer mutation was performed; installed native accessibility checks remain open.
+
+### Main integration review — 2026-10-07
+
+Reconciled the design with `main` at `6f8338c`: preserve overview/detail loading, local preparation and verification, voice rules, Knowledge context, and the Knowledge and Interview preparation admin links. Preparation candidates remain advisory and exact-revision approval still requires the existing checks.
+
+A missing revision is expected while details load. The editor keeps Back to collection available during loading or failure, including on wide screens. Returning cancels the pending selection; selecting the draft again retries even when the overview version has not changed. Selecting the active dirty draft leaves its edit guard intact. Knowledge checks now use the shared named Button and meet the same touch target rules.
+
+Regression evidence: two component tests reproduced the missing return control before the fix. Browser tests reproduced the Knowledge action's 44 px touch target before conversion to the shared control. Tests cover deferred and failed details, retry, focus restoration, all admin destinations, preparation approval gating, and touch geometry. Browser fixtures now model the actual overview/detail endpoints, with intercepted Knowledge reads. The compact flow fixes its viewport explicitly; desktop mouse checks assert the tooltip while touch checks assert the inline label.
+
+Local validation: 889 Vitest tests with aggregate/per-file coverage, 164 native Jest tests with coverage, Expo Doctor 20/20, 60 editorial/account/accessibility/interview-preparation browser cases, and 15 public smoke cases pass. All 15 behavior mutations are caught. Content freshness, authored Python verification, lint, workspace typechecks, production build and fresh production-only startup pass; the packaged game artifact also passes. Desktop and phone captures were inspected. CI results are recorded on the PR for the pushed head.
+
+Installed native Maestro, software keyboard and VoiceOver/TalkBack checks remain unverified. Local checks use synthetic data and do not change hosted queues or publish posts.
 
 ## Open Questions
 

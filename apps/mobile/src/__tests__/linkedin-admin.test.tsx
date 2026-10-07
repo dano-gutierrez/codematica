@@ -1,7 +1,43 @@
 import { fireEvent, render, waitFor } from "@testing-library/react-native";
 import { LinkedInAdminScreen } from "../../../../packages/ui/src/LinkedInAdminScreen";
 import { analysisFixture, editorialFixture, preparationFixture } from "../../../../packages/core/src/test/linkedin-fixture";
+import { StyleSheet } from "react-native";
 describe("native editorial review", () => {
+  it("preserves unsaved comments and fact confirmation until explicit discard", async () => {
+    const data = structuredClone(editorialFixture);
+    data.revisions[0].analysis = { ...analysisFixture, verificationNotes: ["Verify the metric"] };
+    const api = { isAdmin: jest.fn().mockResolvedValue(true), snapshot: jest.fn().mockResolvedValue(data), create: jest.fn(), review: jest.fn() };
+    const view = await render(<LinkedInAdminScreen client={api} onSignIn={jest.fn()} />);
+    await waitFor(() => expect(view.getByText("Retries need a budget")).toBeOnTheScreen());
+    await fireEvent.press(view.getByText("Retries need a budget"));
+    await fireEvent.changeText(view.getByTestId("linkedin-comment"), "Unsaved comment");
+    expect(view.getByTestId("linkedin-back")).toBeDisabled();
+    await fireEvent.press(view.getByText("Confirm flagged facts are verified"));
+    await fireEvent.press(view.getByTestId("linkedin-discard"));
+    expect(view.getByTestId("linkedin-comment").props.value).toBe(data.revisions[0].first_comment);
+    expect(view.getByText("Confirm flagged facts are verified")).toBeOnTheScreen();
+    expect(view.getByTestId("linkedin-back")).toBeEnabled();
+    expect(api.review).not.toHaveBeenCalled();
+  });
+  it("uses touch targets, keyboard-safe editing and explicit discard before leaving a draft", async () => {
+    const api = { isAdmin: jest.fn().mockResolvedValue(true), snapshot: jest.fn().mockResolvedValue(editorialFixture), create: jest.fn(), review: jest.fn() };
+    const view = await render(<LinkedInAdminScreen client={api} onSignIn={jest.fn()} />);
+    await waitFor(() => expect(view.getByTestId("linkedin-create")).toBeOnTheScreen());
+    expect(StyleSheet.flatten(view.getByTestId("linkedin-create").props.style).minHeight).toBeGreaterThanOrEqual(48);
+    expect(StyleSheet.flatten(view.getByTestId("linkedin-create").props.style).minWidth).toBeGreaterThanOrEqual(48);
+    expect(view.getByTestId("keyboard-aware-screen")).toBeOnTheScreen();
+    expect(view.getByTestId("keyboard-aware-scroll").props.keyboardShouldPersistTaps).toBe("handled");
+    await fireEvent.press(view.getByText("Retries need a budget"));
+    await fireEvent.changeText(view.getByTestId("linkedin-body"), "Keep my work");
+    expect(view.getByTestId("linkedin-back")).toBeDisabled();
+    await fireEvent.press(view.getByTestId("linkedin-back"));
+    expect(view.getByTestId("linkedin-body").props.value).toBe("Keep my work");
+    await fireEvent.press(view.getByTestId("linkedin-discard"));
+    expect(view.getByTestId("linkedin-body").props.value).toBe(editorialFixture.revisions[0].body);
+    expect(view.getByTestId("linkedin-back")).toBeEnabled();
+    await fireEvent.press(view.getByTestId("linkedin-back"));
+    expect(view.getByTestId("linkedin-search")).toBeOnTheScreen();
+  });
   it("protects the collection and supports refine and approve", async () => {
     const api = { isAdmin: jest.fn().mockResolvedValue(true), snapshot: jest.fn().mockResolvedValue(editorialFixture), create: jest.fn().mockResolvedValue("10000000-0000-4000-8000-000000000001"), review: jest.fn().mockResolvedValue(null) };
     const view = await render(<LinkedInAdminScreen client={api} onSignIn={jest.fn()} />);

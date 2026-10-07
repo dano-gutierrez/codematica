@@ -11,6 +11,18 @@ appId: com.codematica.app
 - tapOn: Retries need a budget
 - assertVisible:
     id: linkedin-body
+- tapOn:
+    id: linkedin-body
+- inputText: Unsaved device notes
+- hideKeyboard
+- scrollUntilVisible:
+    element:
+      id: linkedin-discard
+- assertVisible: ".*Unsaved changes. Save or discard to switch drafts.*"
+- tapOn:
+    id: linkedin-discard
+- assertNotVisible:
+    id: linkedin-discard
 - scrollUntilVisible:
     element:
       id: linkedin-refine

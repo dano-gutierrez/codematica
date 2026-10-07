@@ -10,7 +10,7 @@ webServerEnv.NEXT_PUBLIC_SUPABASE_URL = process.env.EDITORIAL_E2E === "1" ? "htt
 webServerEnv.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY = process.env.EDITORIAL_E2E === "1" ? "editorial-test-anon-key" : "";
 webServerEnv.NEXT_PUBLIC_SUPABASE_ANON_KEY = "";
 
-const port = Number(process.env.PLAYWRIGHT_PORT || 3100);
+const port = Number(process.env.E2E_PORT || process.env.PLAYWRIGHT_PORT || 3100);
 if (!Number.isInteger(port) || port < 1024 || port > 65535) throw new Error("Invalid PLAYWRIGHT_PORT");
 
 export default defineConfig({
@@ -42,14 +42,16 @@ export default defineConfig({
     },
     {
       name: "desktop-chromium",
-      grep: /@smoke|@playground|@notebook-catalog|@interview-admin|@map-art/,
+      grep: process.env.EDITORIAL_E2E === "1" ? /@regression/ : /@smoke|@playground|@notebook-catalog|@interview-admin|@map-art/,
       use: {
         ...devices["Desktop Chrome"],
       },
     },
     {
       name: "mobile-webkit",
-      grep: /@smoke|@playground|@notebook-catalog|@interview-admin|@map-art/,
+      // Concurrent WebKit pages stalled the game return-to-map step twice on Linux CI.
+      workers: process.env.CI ? 1 : undefined,
+      grep: process.env.EDITORIAL_E2E === "1" ? /@regression/ : /@smoke|@playground|@notebook-catalog|@interview-admin|@map-art/,
       use: {
         ...devices["iPhone 15"],
       },

@@ -20,9 +20,9 @@ export function LinkedInAdminScreen({ client, onSignIn }: { client: EditorialCli
   }, [store]);
   const select = (id: string | null) => { store.setEditing(false); setSelected(id); void store.selectPost(id); };
   const data = state.data; const post = data?.posts.find((p) => p.id === selected); const revision = data?.revisions.find((r) => r.id === post?.current_revision_id);
-  return <AppScreen title="Private editorial workspace"><View testID="linkedin-admin" style={s.stack}>
+  return <AppScreen title="Private editorial workspace" keyboardAware><View testID="linkedin-admin" style={s.stack}>
     <Text style={s.title}>LinkedIn learning posts</Text>
-    {state.phase === "ready" ? <Action label="Create" id="linkedin-create" disabled={state.busy || state.editing} onPress={() => { setCreating(true); store.startCreate(); }} /> : null}
+    {state.phase === "ready" ? <Action label="Create" id="linkedin-create" disabled={creating || state.busy || state.editing} onPress={() => { setCreating(true); store.startCreate(); }} /> : null}
     <Action label="Refresh" id="linkedin-refresh" disabled={state.editing || state.busy} onPress={() => void store.refresh()} />
     {state.error ? <Text accessibilityRole="alert" style={s.error}>{state.error}</Text> : null}
     {state.phase === "loading" ? <Text style={s.body}>Checking admin access…</Text> : null}
@@ -32,7 +32,7 @@ export function LinkedInAdminScreen({ client, onSignIn }: { client: EditorialCli
       <Text style={s.body}>{data.posts.length} posts · Publishing {data.settings.publishing_enabled ? "enabled" : "paused"} · {data.settings.timezone}</Text>
       <Text style={s.meta}>Worker: {data.settings.worker_last_seen ? new Date(data.settings.worker_last_seen).toLocaleString() : "Waiting for first run"}. {data.settings.worker_message} {data.settings.local_preparation_enabled ? "Run a local preparation batch, then ask Codex to verify ready drafts." : "Requests wait until you ask Codex to process the queue."}</Text>
       {!selected && !creating && data.settings.voice_profile ? <NativeVoice key={data.settings.voice_profile.id} profile={data.settings.voice_profile} store={store} busy={state.busy} /> : null}
-      {creating ? <NativeCreate store={store} busy={state.busy} onClose={(id) => { setCreating(false); store.setEditing(false); if (id) setSelected(id); }} /> : post && revision ? <><Action label="Back to collection" id="linkedin-back" onPress={() => { select(null); }} /><NativeEditor key={revision.id} post={post} revision={revision} data={data} store={store} busy={state.busy} onSelect={select} /></> : <>
+      {creating ? <NativeCreate store={store} busy={state.busy} onClose={(id) => { setCreating(false); store.setEditing(false); if (id) setSelected(id); }} /> : post && revision ? <><Action label="Back to collection" id="linkedin-back" disabled={state.busy || state.editing} onPress={() => { select(null); }} /><NativeEditor key={revision.id} post={post} revision={revision} data={data} store={store} busy={state.busy} onSelect={select} /></> : <>
         <TextInput accessibilityLabel="Search posts" placeholder="Search posts" placeholderTextColor={colors.textMuted} style={s.input} value={search} onChangeText={setSearch} testID="linkedin-search" />
         <Text style={s.heading}>Review status</Text><View style={s.row}>{["all", "review", "approved", "rejected", "withdrawing"].map((v) => <Action key={v} label={v} selected={status === v} onPress={() => setStatus(v)} />)}</View>
         <Text style={s.heading}>Topic</Text><View style={s.row}>{["all", ...new Set(data.posts.map((p) => p.topic))].map((v) => <Action key={v} label={v} selected={topic === v} onPress={() => setTopic(v)} />)}</View>
@@ -77,10 +77,11 @@ function NativeEditor({ post, revision, data, store, busy, onSelect }: { post: L
   const refining = jobs.some((j) => ["prepare", "refine"].includes(j.kind) && j.revision_id === revision.id && ["pending", "running"].includes(j.status));
   const publications = data.publications.filter((p) => p.post_id === post.id);
   return <View style={s.stack}>
-    <Text style={s.title}>{post.title}</Text>
+    <Text accessibilityRole="header" style={s.title}>{post.title}</Text>
     {post.origin === "manual" ? <Text style={s.meta}>Manual post. Analyze it, review the proposal and use that revision before approval. Changing its text requires another analysis.</Text> : null}
     <NativePostText value={body} onChange={(value) => { store.setEditing(value !== revision.body || comment !== revision.first_comment || confirmed !== revision.facts_confirmed); setBody(value); }} disabled={locked || busy} />
-    <Text style={s.meta}>{body.length}/3,000 characters{dirty ? " · Unsaved changes; automatic refresh paused" : ""}</Text>
+    <Text style={s.meta}>{body.length}/3,000 characters</Text>
+    <Text accessibilityLiveRegion="polite" style={s.meta}>{dirty ? "Unsaved changes. Save or discard to switch drafts." : locked ? "Approved version" : "Saved"}</Text>
     <Text style={s.heading}>First comment</Text><TextInput accessibilityLabel="First comment" value={comment} onChangeText={(value) => { store.setEditing(body !== revision.body || value !== revision.first_comment || confirmed !== revision.facts_confirmed); setComment(value); }} editable={!locked && !busy} multiline style={[s.input, s.comment]} testID="linkedin-comment" />
     <Text selectable style={s.body}>{comment}</Text><Text style={s.meta}>Select and copy the first comment to post it manually on Buffer Free.</Text>
     {revision.analysis?.verificationNotes.length ? <Action label={confirmed ? "Facts verified" : "Confirm flagged facts are verified"} disabled={locked || busy} onPress={() => { store.setEditing(body !== revision.body || comment !== revision.first_comment || !confirmed !== revision.facts_confirmed); setConfirmed(!confirmed); }} /> : null}
@@ -89,6 +90,7 @@ function NativeEditor({ post, revision, data, store, busy, onSelect }: { post: L
       <Action label={refining ? "Preparation / verification queued" : post.preparation_required ? "Prepare again" : "Refine"} id="linkedin-refine" disabled={locked || busy || dirty || refining} onPress={() => void store.act(post, "refine")} />
       <Action label="Approve & queue" id="linkedin-approve" disabled={locked || busy || dirty || !canApprove(revision, post.origin === "manual", post.preparation_required)} onPress={() => void store.act(post, "approve")} />
       <Action label="Reject" id="linkedin-reject" disabled={locked || busy || dirty || post.status === "rejected"} onPress={() => void store.act(post, "reject")} />
+      {dirty ? <Action label="Discard changes" id="linkedin-discard" disabled={busy} onPress={() => { setBody(revision.body); setComment(revision.first_comment); setConfirmed(revision.facts_confirmed); store.setEditing(false); }} /> : null}
       {locked ? <Action label={post.status === "withdrawing" ? "Cancellation queued" : "Return to review"} id="linkedin-withdraw" disabled={busy || post.status === "withdrawing" || publications.some((p) => p.status === "sent")} onPress={() => void store.act(post, "withdraw")} /> : null}
     </View><Text style={s.meta}>Approval schedules this exact revision in Buffer’s next recommended slot.</Text>
     {publications.map((p) => <Text key={p.id} selectable style={s.body}>Buffer: {p.status} {p.scheduled_at ? new Date(p.scheduled_at).toLocaleString() : ""} {p.error} {p.url}</Text>)}
@@ -104,13 +106,13 @@ function NativeAnalysis({ analysis: a }: { analysis: LinkedInAnalysis }) {
   return <View style={s.stack}><Text style={s.heading}>Analysis</Text><Text style={s.body}>{a.coreIdea}</Text>{Object.entries(a.diagnosis).map(([name,v]) => <Text key={name} style={s.body}>{name}: {v.score}/10 · {v.justification}</Text>)}<Text style={s.heading}>Alternative hooks</Text>{a.alternativeHooks.map((v) => <Text key={v} style={s.body}>{v}</Text>)}<Text style={s.heading}>Key changes</Text>{a.keyChanges.map((v) => <Text key={v} style={s.body}>{v}</Text>)}<Text style={s.heading}>Posting plan</Text><Text style={s.body}>{a.postingPlan.format} · {a.postingPlan.timing}</Text><Text selectable style={s.body}>{a.postingPlan.firstComment}</Text><Text style={s.body}>{a.postingPlan.hashtags.join(" ")}</Text>{[...a.postingPlan.engagementActions,...a.visualOutline].map((v) => <Text key={v} style={s.body}>{v}</Text>)}{a.verificationNotes.map((v) => <Text key={v} style={s.error}>Verify: {v}</Text>)}<Text style={s.meta}>{a.assumptions} · Tools: {a.toolsUsed.join(", ")}</Text></View>;
 }
 function Action({ label, id, onPress, disabled, selected }: { label: string; id?: string; onPress: () => void; disabled?: boolean; selected?: boolean }) {
-  return <Pressable accessibilityRole="button" accessibilityState={{ disabled, selected }} testID={id} disabled={disabled} onPress={onPress} style={[s.button, selected && s.selected, disabled && s.disabled]}><Text style={s.buttonText}>{label}</Text></Pressable>;
+  return <Pressable accessibilityRole="button" accessibilityLabel={label} accessibilityState={{ disabled, selected }} testID={id} disabled={disabled} onPress={onPress} style={[s.button, selected && s.selected, disabled && s.disabled]}><Text style={s.buttonText}>{label}</Text></Pressable>;
 }
 const s = StyleSheet.create({
   stack: { gap: spacing.md }, row: { flexDirection: "row", flexWrap: "wrap", gap: spacing.sm },
   title: { color: colors.text, fontSize: 24, fontWeight: "700" }, heading: { color: colors.text, fontSize: 17, fontWeight: "600" }, body: { color: colors.text, fontSize: 16, lineHeight: 25 }, meta: { color: colors.textMuted, fontSize: 13, lineHeight: 20 }, error: { color: "#991b1b", fontSize: 15 },
   input: { borderWidth: 1, borderColor: "#7d8b94", borderRadius: radii.md, padding: spacing.md, backgroundColor: colors.panel, color: colors.text, fontSize: 16 }, editor: { minHeight: 280, textAlignVertical: "top" }, comment: { minHeight: 90, textAlignVertical: "top" },
-  button: { minHeight: 44, borderWidth: 1, borderColor: "#7d8b94", borderRadius: radii.md, padding: spacing.sm, alignItems: "center", justifyContent: "center", backgroundColor: colors.panel }, buttonText: { color: colors.text, fontSize: 14, fontWeight: "600" }, selected: { backgroundColor: "#eaf7f4" }, disabled: { opacity: 0.5 },
+  button: { minHeight: 48, minWidth: 48, maxWidth: "100%", flexShrink: 1, borderWidth: 1, borderColor: "#7d8b94", borderRadius: radii.md, padding: spacing.sm, alignItems: "center", justifyContent: "center", backgroundColor: colors.panel }, buttonText: { color: colors.text, textAlign: "center", fontSize: 14, fontWeight: "600" }, selected: { backgroundColor: "#eaf7f4" }, disabled: { opacity: 0.5 },
   post: { paddingVertical: spacing.md, borderBottomWidth: 1, borderBottomColor: colors.line, gap: spacing.sm }, source: { borderLeftWidth: 2, borderLeftColor: colors.accentStrong, paddingLeft: spacing.md, gap: spacing.sm },
 });
 
