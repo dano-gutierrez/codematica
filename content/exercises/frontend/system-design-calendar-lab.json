@@ -1,0 +1,111 @@
+{
+  "slug": "frontend/system-design-calendar-lab",
+  "title": "Uber — Calendar Application Rehearsal",
+  "type": "guided-lab",
+  "documentSlug": "frontend/system-design-calendar",
+  "concept": "Calendar Application",
+  "difficulty": "senior",
+  "tags": [
+    "frontend",
+    "system-design",
+    "interview",
+    "whiteboard",
+    "uber"
+  ],
+  "status": "published",
+  "sourceRefs": [
+    "frontend-design-report-uber"
+  ],
+  "estimatedMinutes": 60,
+  "briefing": "An Uber L4 candidate reported calendar system design alongside React coding exercises and described difficulty keeping the discussion focused. The frontend scope below is a Codematica adaptation. Design a calendar with month/week views, event creation, editing, and recurring meetings. This exercise adapts a public candidate report; company attribution and interview details are not independently verified. The practice constraints and follow-ups are Codematica additions. Use your own timer and drawing tool: 45 minutes designing, 10 minutes handling follow-ups, and 5 minutes reviewing. No coding is required. Your design is not automatically graded; reflection text is transient. The related lesson contains the source and shared rubric.",
+  "objectives": [
+    "Define event identity, time zone, recurrence rules, exceptions, and the visible date range.",
+    "Draw the calendar shell, date navigation, event layout, editor, and range-based data fetching.",
+    "Separate stored event semantics from display formatting. Explain overlapping-event layout, cache updates, and keyboard navigation."
+  ],
+  "prediction": {
+    "prompt": "Which area is most likely to expose a weakness in your first design?",
+    "options": [
+      {
+        "id": "state",
+        "label": "State ownership or conflicting changes."
+      },
+      {
+        "id": "recovery",
+        "label": "An uncertain request outcome or recovery gap."
+      },
+      {
+        "id": "experience",
+        "label": "Performance or accessibility under the stated constraints."
+      }
+    ]
+  },
+  "steps": [
+    {
+      "id": "scope",
+      "title": "0–7 minutes: clarify the scope",
+      "instructions": "Design a calendar with month/week views, event creation, editing, and recurring meetings. Identify two main journeys, required devices, freshness, permissions, and exclusions. Separate requirements from assumptions."
+    },
+    {
+      "id": "architecture",
+      "title": "7–20 minutes: draw the architecture",
+      "instructions": "Draw the calendar shell, date navigation, event layout, editor, and range-based data fetching. Assign state owners and component inputs/events. Include loading, empty, and error states."
+    },
+    {
+      "id": "contracts",
+      "title": "20–30 minutes: define data and APIs",
+      "instructions": "Define event identity, time zone, recurrence rules, exceptions, and the visible date range. Specify one read and one write, including identities, response fields, cache policy, and safe retry conditions."
+    },
+    {
+      "id": "trace",
+      "title": "30–45 minutes: trace behavior and recovery",
+      "instructions": "Trace one interaction from input to confirmed state, then fail a request. Separate stored event semantics from display formatting. Explain overlapping-event layout, cache updates, and keyboard navigation."
+    },
+    {
+      "id": "follow-ups",
+      "title": "45–55 minutes: handle follow-ups",
+      "instructions": "Edit one occurrence versus the series. Change time zones. Cross a daylight-saving transition. Resolve two users editing the same event. Pick the hardest case and show which decisions change. State any unresolved limits."
+    },
+    {
+      "id": "review",
+      "title": "55–60 minutes: review your evidence",
+      "instructions": "Score scope, components, state and data, APIs and consistency, failure recovery, and quality and trade-offs. Use 0: missing, 1: mentioned, 2: explained with a concrete decision and consequence. Check only evidence you can show. Choose the weakest dimension and redraw it; this is not an employer hiring threshold."
+    }
+  ],
+  "evidenceChecklist": [
+    {
+      "id": "scope",
+      "label": "I stated the main journeys, assumptions, and exclusions."
+    },
+    {
+      "id": "components",
+      "label": "I drew component responsibilities and interaction contracts."
+    },
+    {
+      "id": "state",
+      "label": "I assigned state owners, stable identities, and invariants."
+    },
+    {
+      "id": "contracts",
+      "label": "I defined reads, writes, caching, and reconciliation."
+    },
+    {
+      "id": "recovery",
+      "label": "I traced one failure through usable recovery."
+    },
+    {
+      "id": "quality",
+      "label": "I defended accessibility, performance, measurement, and alternatives."
+    },
+    {
+      "id": "scenario",
+      "label": "I distinguished recurring series from occurrences and traced a time-zone or concurrent-edit case."
+    }
+  ],
+  "reflectionPrompts": [
+    "Separate stored event semantics from display formatting. Explain overlapping-event layout, cache updates, and keyboard navigation.",
+    "Which decision changed after a follow-up, and what requirement caused it?",
+    "Which dimension was weakest, and what will you redraw next time?"
+  ],
+  "extensionChallenge": "Move one occurrence of a recurring meeting across a daylight-saving transition while another user edits the series. Define the conflict policy and what each participant sees."
+}

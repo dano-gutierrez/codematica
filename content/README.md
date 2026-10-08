@@ -11,3 +11,7 @@ Original finite paper models separate visual prediction, authoritative state, sa
 Original ownership arithmetic declares issued shares, financing assumptions and omitted rights. The source-linked SAFE illustration is educational reading, not a chosen financing contract or a legal/investment outcome.
 
 See [Selected Evidence Review](../docs/features/selected-evidence-review.md) and each content directory guide.
+
+## Frontend system design interviews
+
+`knowledge/frontend/system-design-*.md` and matching guided labs provide six attributed whiteboard exercises. The dedicated path starts with a shared schedule and rubric. Candidate accounts remain unverified, and authored practice additions are labeled. See [the feature contract](../docs/features/frontend-system-design-interviews.md).

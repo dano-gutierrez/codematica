@@ -1,0 +1,111 @@
+{
+  "slug": "frontend/system-design-kanban-lab",
+  "title": "Atlassian — Collaborative Kanban Board Rehearsal",
+  "type": "guided-lab",
+  "documentSlug": "frontend/system-design-kanban",
+  "concept": "Collaborative Kanban Board",
+  "difficulty": "senior",
+  "tags": [
+    "frontend",
+    "system-design",
+    "interview",
+    "whiteboard",
+    "atlassian"
+  ],
+  "status": "published",
+  "sourceRefs": [
+    "frontend-design-report-atlassian"
+  ],
+  "estimatedMinutes": 60,
+  "briefing": "A P40 candidate’s June 29, 2025 report describes whiteboarding a Trello-like board: component architecture, state management, drag-and-drop, caching, and optimistic updates. Design a board where users create cards, move them between columns, and see teammates’ changes. This exercise adapts a public candidate report; company attribution and interview details are not independently verified. The practice constraints and follow-ups are Codematica additions. Use your own timer and drawing tool: 45 minutes designing, 10 minutes handling follow-ups, and 5 minutes reviewing. No coding is required. Your design is not automatically graded; reflection text is transient. The related lesson contains the source and shared rubric.",
+  "objectives": [
+    "Define boards, columns, cards, ordering, permissions, and pending mutations.",
+    "Draw the component hierarchy and trace a card move through server confirmation to other clients.",
+    "Explain conflict handling, reconnect recovery, and keyboard alternatives. Show why rolling back a failed move cannot erase a newer successful change."
+  ],
+  "prediction": {
+    "prompt": "Which area is most likely to expose a weakness in your first design?",
+    "options": [
+      {
+        "id": "state",
+        "label": "State ownership or conflicting changes."
+      },
+      {
+        "id": "recovery",
+        "label": "An uncertain request outcome or recovery gap."
+      },
+      {
+        "id": "experience",
+        "label": "Performance or accessibility under the stated constraints."
+      }
+    ]
+  },
+  "steps": [
+    {
+      "id": "scope",
+      "title": "0–7 minutes: clarify the scope",
+      "instructions": "Design a board where users create cards, move them between columns, and see teammates’ changes. Identify two main journeys, required devices, freshness, permissions, and exclusions. Separate requirements from assumptions."
+    },
+    {
+      "id": "architecture",
+      "title": "7–20 minutes: draw the architecture",
+      "instructions": "Draw the component hierarchy and trace a card move through server confirmation to other clients. Assign state owners and component inputs/events. Include loading, empty, and error states."
+    },
+    {
+      "id": "contracts",
+      "title": "20–30 minutes: define data and APIs",
+      "instructions": "Define boards, columns, cards, ordering, permissions, and pending mutations. Specify one read and one write, including identities, response fields, cache policy, and safe retry conditions."
+    },
+    {
+      "id": "trace",
+      "title": "30–45 minutes: trace behavior and recovery",
+      "instructions": "Trace one interaction from input to confirmed state, then fail a request. Explain conflict handling, reconnect recovery, and keyboard alternatives. Show why rolling back a failed move cannot erase a newer successful change."
+    },
+    {
+      "id": "follow-ups",
+      "title": "45–55 minutes: handle follow-ups",
+      "instructions": "Two users move the same card. A move succeeds but its response is lost. The board contains thousands of cards. Dragging is unavailable. Pick the hardest case and show which decisions change. State any unresolved limits."
+    },
+    {
+      "id": "review",
+      "title": "55–60 minutes: review your evidence",
+      "instructions": "Score scope, components, state and data, APIs and consistency, failure recovery, and quality and trade-offs. Use 0: missing, 1: mentioned, 2: explained with a concrete decision and consequence. Check only evidence you can show. Choose the weakest dimension and redraw it; this is not an employer hiring threshold."
+    }
+  ],
+  "evidenceChecklist": [
+    {
+      "id": "scope",
+      "label": "I stated the main journeys, assumptions, and exclusions."
+    },
+    {
+      "id": "components",
+      "label": "I drew component responsibilities and interaction contracts."
+    },
+    {
+      "id": "state",
+      "label": "I assigned state owners, stable identities, and invariants."
+    },
+    {
+      "id": "contracts",
+      "label": "I defined reads, writes, caching, and reconciliation."
+    },
+    {
+      "id": "recovery",
+      "label": "I traced one failure through usable recovery."
+    },
+    {
+      "id": "quality",
+      "label": "I defended accessibility, performance, measurement, and alternatives."
+    },
+    {
+      "id": "scenario",
+      "label": "I showed that a failed move cannot overwrite a newer confirmed change and provided a keyboard alternative."
+    }
+  ],
+  "reflectionPrompts": [
+    "Explain conflict handling, reconnect recovery, and keyboard alternatives. Show why rolling back a failed move cannot erase a newer successful change.",
+    "Which decision changed after a follow-up, and what requirement caused it?",
+    "Which dimension was weakest, and what will you redraw next time?"
+  ],
+  "extensionChallenge": "Disconnect one collaborator during concurrent moves, then reconnect. Extend the diagram to distinguish pending intent, confirmed state, and missed events."
+}

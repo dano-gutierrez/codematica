@@ -1,5 +1,11 @@
 # Product And Engineering Changelog
 
+## 2026-10-08 — Frontend system design interview rehearsals
+
+- Add a shared rehearsal guide, six edited candidate-report briefs, six 60-minute guided labs, and three starting diagrams through the existing local content system.
+- Preserve reported dates, source links, unverified attribution, and explicit Adobe/Uber adaptations. Practice additions and self-review remain distinct from reported interview content and automatic grading.
+- Add core content/navigation regressions and browser journeys; keep coverage floors and exclusions unchanged. See [the feature contract](features/frontend-system-design-interviews.md) for validation and release gaps.
+
 ## 2026-10-07 — App-wide design PR review integration
 
 - Integrate PR #51 with current main and the merged editorial standards, preserving preparation, Voice rules, Knowledge, interview navigation and content workflows.

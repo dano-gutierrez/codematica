@@ -5362,6 +5362,66 @@
       "contentHash": "4c3469d88c964cca2170a6eed045d6abb68c5a564d5dcedccf67326dc51c9521"
     },
     {
+      "id": "frontend-design-report-adobe",
+      "title": "Candidate report — Adobe frontend interview",
+      "provider": "FrontendLead Discuss · anon_511346",
+      "url": "https://discuss.frontendlead.com/t/adobe-senior-frontend-engineer-gen-studio-full-loop/3316",
+      "attribution": "First-person candidate report by anon_511346, published March 11, 2026, describing a December 2025–January 2026 loop. The file-system prompt has no detailed scope. Company attribution and interview details are not independently verified.",
+      "lastVerifiedAt": "2026-10-08",
+      "sourcePath": "content/sources/frontend-system-design-interviews.json",
+      "contentHash": "ec2d0e9c96d053d49be826295778482724a191d5fc35f76f261177bc59757030"
+    },
+    {
+      "id": "frontend-design-report-amazon",
+      "title": "Candidate report — Amazon frontend interview",
+      "provider": "Reddit · isospeedrix",
+      "url": "https://www.reddit.com/r/cscareerquestions/comments/1iudddy/rainforest_loop_experience_frontend_l5_12_yoe/",
+      "attribution": "First-person candidate report by isospeedrix; publication date not verified. Company attribution and interview details are not independently verified.",
+      "lastVerifiedAt": "2026-10-08",
+      "sourcePath": "content/sources/frontend-system-design-interviews.json",
+      "contentHash": "ec2d0e9c96d053d49be826295778482724a191d5fc35f76f261177bc59757030"
+    },
+    {
+      "id": "frontend-design-report-atlassian",
+      "title": "Candidate report — Atlassian frontend interview",
+      "provider": "FrontendLead Discuss · anon_717297",
+      "url": "https://discuss.frontendlead.com/t/atlassian-frontend-engineer-p40-onsite/2192",
+      "attribution": "First-person candidate report by anon_717297, published June 29, 2025. Company attribution and interview details are not independently verified.",
+      "lastVerifiedAt": "2026-10-08",
+      "sourcePath": "content/sources/frontend-system-design-interviews.json",
+      "contentHash": "ec2d0e9c96d053d49be826295778482724a191d5fc35f76f261177bc59757030"
+    },
+    {
+      "id": "frontend-design-report-salesforce",
+      "title": "Candidate report — Salesforce frontend interview",
+      "provider": "Medium · Saumyadip Mandal",
+      "url": "https://saumyadip25.medium.com/salesforce-smts-frontend-interview-experience-5cae01d6a594",
+      "attribution": "First-person candidate report by Saumyadip Mandal, published November 23, 2025. Reports a 60-minute WhatsApp Web round. Company attribution and interview details are not independently verified.",
+      "lastVerifiedAt": "2026-10-08",
+      "sourcePath": "content/sources/frontend-system-design-interviews.json",
+      "contentHash": "ec2d0e9c96d053d49be826295778482724a191d5fc35f76f261177bc59757030"
+    },
+    {
+      "id": "frontend-design-report-uber",
+      "title": "Candidate report — Uber frontend interview",
+      "provider": "LeetCode Discuss · Anonymous User",
+      "url": "https://leetcode.com/discuss/post/1746929/uber-l4-nyc-did-not-get-offer/",
+      "attribution": "First-person candidate report by an Anonymous User; publication date not verified. The frontend exercise scope is an adaptation. Company attribution and interview details are not independently verified.",
+      "lastVerifiedAt": "2026-10-08",
+      "sourcePath": "content/sources/frontend-system-design-interviews.json",
+      "contentHash": "ec2d0e9c96d053d49be826295778482724a191d5fc35f76f261177bc59757030"
+    },
+    {
+      "id": "frontend-design-report-wayfair",
+      "title": "Candidate report — Wayfair frontend interview",
+      "provider": "Medium · Saumyadip Mandal",
+      "url": "https://saumyadip25.medium.com/wayfair-software-engineer-3-frontend-interview-experience-13112d221611",
+      "attribution": "First-person candidate report by Saumyadip Mandal, published December 30, 2025, describing August 2024 interviews. Company attribution and interview details are not independently verified.",
+      "lastVerifiedAt": "2026-10-08",
+      "sourcePath": "content/sources/frontend-system-design-interviews.json",
+      "contentHash": "ec2d0e9c96d053d49be826295778482724a191d5fc35f76f261177bc59757030"
+    },
+    {
       "id": "frontend-github-repos",
       "title": "List repositories for a user",
       "provider": "GitHub",
@@ -10540,6 +10600,370 @@
       "mermaidBlocks": [],
       "contentHash": "53d9fc7a9dfc93bb08f42b228ac5cbea29270acd5465da80ce86d3041017c88f",
       "readingMinutes": 5
+    },
+    {
+      "title": "Uber — Calendar Application",
+      "slug": "frontend/system-design-calendar",
+      "summary": "Design a calendar with month/week views, event creation, editing, and recurring meetings.",
+      "track": "Front-End Development",
+      "topic": "System Design Interviews",
+      "difficulty": "senior",
+      "tags": [
+        "frontend",
+        "system-design",
+        "interview",
+        "whiteboard",
+        "practice"
+      ],
+      "prerequisites": [],
+      "diagramRefs": [],
+      "sourceRefs": [
+        "frontend-design-report-uber"
+      ],
+      "status": "published",
+      "id": "c6e3eb3342e8",
+      "route": "/docs/frontend/system-design-calendar",
+      "sourcePath": "content/knowledge/frontend/system-design-calendar.md",
+      "bodyPath": "content/knowledge/frontend/system-design-calendar.md",
+      "markdown": "An Uber L4 candidate reported calendar system design alongside React coding exercises and described difficulty keeping the discussion focused. The frontend scope below is a Codematica adaptation. [Candidate report](https://leetcode.com/discuss/post/1746929/uber-l4-nyc-did-not-get-offer/)\n\nCompany attribution and interview details are not independently verified. Sources checked October 8, 2026. The prompt is paraphrased; practice constraints, follow-ups, diagrams, and review criteria are Codematica additions unless labeled as reported.\n\n## Practice prompt\n\nDesign a calendar with month/week views, event creation, editing, and recurring meetings.\n\nUse the [60-minute schedule and rubric](/docs/frontend/system-design-interview-rehearsal). Spend 45 minutes designing, 10 minutes handling follow-ups, and 5 minutes reviewing. No coding is required.\n\n- **Define:** event identity, time zone, recurrence rules, exceptions, and the visible date range.\n- **Draw:** the calendar shell, date navigation, event layout, editor, and range-based data fetching.\n\n## Follow-ups\n\nEdit one occurrence versus the series. Change time zones. Cross a daylight-saving transition. Resolve two users editing the same event.\n\n## Self-review\n\nSeparate stored event semantics from display formatting. Explain overlapping-event layout, cache updates, and keyboard navigation.\n\n[Start the guided rehearsal](/practice/frontend/system-design-calendar-lab?path=frontend-system-design-interviews). Record a prediction, check your evidence, and reflect. Completion is self-assessed; it is not an architecture grade.",
+      "plainText": "An Uber L4 candidate reported calendar system design alongside React coding exercises and described difficulty keeping the discussion focused. The frontend scope below is a Codematica adaptation. Candidate report Company attribution and interview details are not independently verified. Sources checked October 8, 2026. The prompt is paraphrased; practice constraints, follow-ups, diagrams, and review criteria are Codematica additions unless labeled as reported. Practice prompt Design a calendar with month/week views, event creation, editing, and recurring meetings. Use the 60-minute schedule and rubric. Spend 45 minutes designing, 10 minutes handling follow-ups, and 5 minutes reviewing. No coding is required. Define: event identity, time zone, recurrence rules, exceptions, and the visible date range.Draw: the calendar shell, date navigation, event layout, editor, and range-based data fetching. Follow-ups Edit one occurrence versus the series. Change time zones. Cross a daylight-saving transition. Resolve two users editing the same event. Self-review Separate stored event semantics from display formatting. Explain overlapping-event layout, cache updates, and keyboard navigation. Start the guided rehearsal. Record a prediction, check your evidence, and reflect. Completion is self-assessed; it is not an architecture grade.",
+      "headings": [
+        {
+          "id": "practice-prompt",
+          "depth": 2,
+          "text": "Practice prompt"
+        },
+        {
+          "id": "follow-ups",
+          "depth": 2,
+          "text": "Follow-ups"
+        },
+        {
+          "id": "self-review",
+          "depth": 2,
+          "text": "Self-review"
+        }
+      ],
+      "mermaidBlocks": [],
+      "contentHash": "5f8b7b832d5f33b315cbea7d81817d2d769193f8cb09ea5152543187897a9926",
+      "readingMinutes": 1
+    },
+    {
+      "title": "Adobe — Browser File Manager",
+      "slug": "frontend/system-design-file-manager",
+      "summary": "Design a file manager with folder navigation, search, rename, move, and upload.",
+      "track": "Front-End Development",
+      "topic": "System Design Interviews",
+      "difficulty": "senior",
+      "tags": [
+        "frontend",
+        "system-design",
+        "interview",
+        "whiteboard",
+        "practice"
+      ],
+      "prerequisites": [],
+      "diagramRefs": [],
+      "sourceRefs": [
+        "frontend-design-report-adobe"
+      ],
+      "status": "published",
+      "id": "21a9f77afe90",
+      "route": "/docs/frontend/system-design-file-manager",
+      "sourcePath": "content/knowledge/frontend/system-design-file-manager.md",
+      "bodyPath": "content/knowledge/frontend/system-design-file-manager.md",
+      "markdown": "A Senior Frontend Gen Studio candidate reports a file-system design prompt during a December 2025–January 2026 loop. The March 11, 2026 report does not specify its detailed scope; this browser file-manager exercise is a Codematica adaptation. [Candidate report](https://discuss.frontendlead.com/t/adobe-senior-frontend-engineer-gen-studio-full-loop/3316)\n\nCompany attribution and interview details are not independently verified. Sources checked October 8, 2026. The prompt is paraphrased; practice constraints, follow-ups, diagrams, and review criteria are Codematica additions unless labeled as reported.\n\n## Practice prompt\n\nDesign a file manager with folder navigation, search, rename, move, and upload.\n\nUse the [60-minute schedule and rubric](/docs/frontend/system-design-interview-rehearsal). Spend 45 minutes designing, 10 minutes handling follow-ups, and 5 minutes reviewing. No coding is required.\n\n- **Define:** stable file IDs, parent relationships, folder pagination, permissions, and upload state.\n- **Draw:** tree navigation, folder contents, selection state, metadata requests, and a separate upload flow.\n\n## Follow-ups\n\nA folder contains 100,000 files. A selected file moves elsewhere. An upload fails halfway. Access is revoked while the folder is open.\n\n## Self-review\n\nExplain lazy loading, bounded rendering, cache invalidation after moves, and partial failures. Do not assume a filename or path is a permanent identity.\n\n## Starting diagram\n\nChallenge this possible boundary sketch. Add the search, rename, move, permission, and failed-upload paths.\n\n```mermaid\nflowchart LR\n    Tree[\"Folder tree\"] --> Nav[\"Navigation and selection\"]\n    Nav --> List[\"Folder contents\"]\n    List <--> Cache[\"Metadata cache\"]\n    Cache <--> API[\"File metadata API\"]\n    Upload[\"Upload manager\"] --> Transfer[\"Upload service\"]\n    Transfer -->|\"Completion metadata\"| Cache\n```\n\n[Start the guided rehearsal](/practice/frontend/system-design-file-manager-lab?path=frontend-system-design-interviews). Record a prediction, check your evidence, and reflect. Completion is self-assessed; it is not an architecture grade.",
+      "plainText": "A Senior Frontend Gen Studio candidate reports a file-system design prompt during a December 2025–January 2026 loop. The March 11, 2026 report does not specify its detailed scope; this browser file-manager exercise is a Codematica adaptation. Candidate report Company attribution and interview details are not independently verified. Sources checked October 8, 2026. The prompt is paraphrased; practice constraints, follow-ups, diagrams, and review criteria are Codematica additions unless labeled as reported. Practice prompt Design a file manager with folder navigation, search, rename, move, and upload. Use the 60-minute schedule and rubric. Spend 45 minutes designing, 10 minutes handling follow-ups, and 5 minutes reviewing. No coding is required. Define: stable file IDs, parent relationships, folder pagination, permissions, and upload state.Draw: tree navigation, folder contents, selection state, metadata requests, and a separate upload flow. Follow-ups A folder contains 100,000 files. A selected file moves elsewhere. An upload fails halfway. Access is revoked while the folder is open. Self-review Explain lazy loading, bounded rendering, cache invalidation after moves, and partial failures. Do not assume a filename or path is a permanent identity. Starting diagram Challenge this possible boundary sketch. Add the search, rename, move, permission, and failed-upload paths. flowchart LR Tree[\"Folder tree\"] --> Nav[\"Navigation and selection\"] Nav --> List[\"Folder contents\"] List <--> Cache[\"Metadata cache\"] Cache <--> API[\"File metadata API\"] Upload[\"Upload manager\"] --> Transfer[\"Upload service\"] Transfer -->|\"Completion metadata\"| Cache Start the guided rehearsal. Record a prediction, check your evidence, and reflect. Completion is self-assessed; it is not an architecture grade.",
+      "headings": [
+        {
+          "id": "practice-prompt",
+          "depth": 2,
+          "text": "Practice prompt"
+        },
+        {
+          "id": "follow-ups",
+          "depth": 2,
+          "text": "Follow-ups"
+        },
+        {
+          "id": "self-review",
+          "depth": 2,
+          "text": "Self-review"
+        },
+        {
+          "id": "starting-diagram",
+          "depth": 2,
+          "text": "Starting diagram"
+        }
+      ],
+      "mermaidBlocks": [
+        {
+          "id": "embedded-1",
+          "source": "flowchart LR\n    Tree[\"Folder tree\"] --> Nav[\"Navigation and selection\"]\n    Nav --> List[\"Folder contents\"]\n    List <--> Cache[\"Metadata cache\"]\n    Cache <--> API[\"File metadata API\"]\n    Upload[\"Upload manager\"] --> Transfer[\"Upload service\"]\n    Transfer -->|\"Completion metadata\"| Cache"
+        }
+      ],
+      "contentHash": "80f1da45e8ea4dde993d822fcc04968b2e453b7acf7d24499949139cbacffb69",
+      "readingMinutes": 2
+    },
+    {
+      "title": "Frontend System Design Interview Rehearsal",
+      "slug": "frontend/system-design-interview-rehearsal",
+      "summary": "Run six source-attributed whiteboard rehearsals with a 60-minute schedule, explicit evidence limits, and a shared self-review rubric.",
+      "track": "Front-End Development",
+      "topic": "System Design Interviews",
+      "difficulty": "senior",
+      "tags": [
+        "frontend",
+        "system-design",
+        "interview",
+        "whiteboard",
+        "practice"
+      ],
+      "prerequisites": [],
+      "diagramRefs": [],
+      "sourceRefs": [
+        "frontend-design-report-amazon",
+        "frontend-design-report-atlassian",
+        "frontend-design-report-wayfair",
+        "frontend-design-report-adobe",
+        "frontend-design-report-salesforce",
+        "frontend-design-report-uber"
+      ],
+      "status": "published",
+      "id": "9aa1f1563f6d",
+      "route": "/docs/frontend/system-design-interview-rehearsal",
+      "sourcePath": "content/knowledge/frontend/system-design-interview-rehearsal.md",
+      "bodyPath": "content/knowledge/frontend/system-design-interview-rehearsal.md",
+      "markdown": "Practice six frontend system design interviews using public candidate accounts. Company attribution and interview details are not independently verified. Sources were checked October 8, 2026; a check date does not establish that a company still asks a question. These are reported preparation topics, not an official question bank.\n\nPrompts are paraphrased. Practice constraints, follow-ups, diagrams, and review criteria are Codematica additions unless labeled as reported. Adobe’s file-manager scope and Uber’s frontend calendar scope are adaptations. No source article, employer solution, or hiring rubric is reproduced.\n\n## Run a 60-minute rehearsal\n\nSpend **45 minutes designing, 10 minutes handling follow-ups, and 5 minutes reviewing**. Use your own timer and drawing tool; no coding is required. Test screen sharing before a remote mock. Produce a component diagram, a data model, API contracts, and one failure-recovery flow.\n\n| Time | Activity | Evidence |\n| --- | --- | --- |\n| 0–7 minutes | Clarify the main journeys and constraints. | Requirements, assumptions, and exclusions |\n| 7–20 minutes | Draw components and state owners. | Responsibilities and interaction contracts |\n| 20–30 minutes | Define the data and APIs. | Identities, reads, writes, caching, and consistency |\n| 30–45 minutes | Trace an interaction and a failure. | A usable recovery path and its limits |\n| 45–55 minutes | Introduce the exercise’s follow-ups. | Decisions that must change and why |\n| 55–60 minutes | Score the evidence and choose a retry focus. | One weak dimension and a concrete improvement |\n\nKeep the discussion collaborative and let the interviewer redirect it. For a solo attempt, stop reading at the follow-ups until minute 45. Use the starting diagrams as prompts to challenge, not complete solutions.\n\n## Exercises\n\n- [Amazon — Picture-and-Word Learning Game](/docs/frontend/system-design-learning-game?path=frontend-system-design-interviews)\n- [Atlassian — Collaborative Kanban Board](/docs/frontend/system-design-kanban?path=frontend-system-design-interviews)\n- [Wayfair — Shopping Application](/docs/frontend/system-design-shopping?path=frontend-system-design-interviews)\n- [Adobe — Browser File Manager](/docs/frontend/system-design-file-manager?path=frontend-system-design-interviews)\n- [Salesforce — WhatsApp-Style Web Messaging](/docs/frontend/system-design-messaging?path=frontend-system-design-interviews)\n- [Uber — Calendar Application](/docs/frontend/system-design-calendar?path=frontend-system-design-interviews)\n\n## Review evidence\n\nScore each dimension **0: missing, 1: mentioned, 2: explained with a concrete decision and consequence**. This is a practice rubric, not an employer hiring threshold.\n\n| Dimension | Evidence to look for |\n| --- | --- |\n| Scope | Clear journeys, assumptions, and exclusions |\n| Components | Responsibilities and interaction contracts |\n| State and data | Explicit owners, identities, and invariants |\n| APIs and consistency | Read/write contracts, caching, and reconciliation |\n| Failure recovery | A complete failure path with usable recovery |\n| Quality and trade-offs | Accessibility, performance, measurement, and alternatives |\n\nAfter each attempt, choose the weakest dimension and redraw that part. On the next attempt, introduce a follow-up halfway through and explain which decisions must change.\n\nThe guided labs are not automatically graded and do not certify interview readiness. Select a prediction, perform the rehearsal, then check only evidence you can show. The app stores coarse completion; reflection text stays transient and is lost on reload or restart. Keep diagrams and any notes you want to retain in your own tool.",
+      "plainText": "Practice six frontend system design interviews using public candidate accounts. Company attribution and interview details are not independently verified. Sources were checked October 8, 2026; a check date does not establish that a company still asks a question. These are reported preparation topics, not an official question bank. Prompts are paraphrased. Practice constraints, follow-ups, diagrams, and review criteria are Codematica additions unless labeled as reported. Adobe’s file-manager scope and Uber’s frontend calendar scope are adaptations. No source article, employer solution, or hiring rubric is reproduced. Run a 60-minute rehearsal Spend 45 minutes designing, 10 minutes handling follow-ups, and 5 minutes reviewing. Use your own timer and drawing tool; no coding is required. Test screen sharing before a remote mock. Produce a component diagram, a data model, API contracts, and one failure-recovery flow. | Time | Activity | Evidence | | --- | --- | --- | | 0–7 minutes | Clarify the main journeys and constraints. | Requirements, assumptions, and exclusions | | 7–20 minutes | Draw components and state owners. | Responsibilities and interaction contracts | | 20–30 minutes | Define the data and APIs. | Identities, reads, writes, caching, and consistency | | 30–45 minutes | Trace an interaction and a failure. | A usable recovery path and its limits | | 45–55 minutes | Introduce the exercise’s follow-ups. | Decisions that must change and why | | 55–60 minutes | Score the evidence and choose a retry focus. | One weak dimension and a concrete improvement | Keep the discussion collaborative and let the interviewer redirect it. For a solo attempt, stop reading at the follow-ups until minute 45. Use the starting diagrams as prompts to challenge, not complete solutions. Exercises Amazon — Picture-and-Word Learning GameAtlassian — Collaborative Kanban BoardWayfair — Shopping ApplicationAdobe — Browser File ManagerSalesforce — WhatsApp-Style Web MessagingUber — Calendar Application Review evidence Score each dimension 0: missing, 1: mentioned, 2: explained with a concrete decision and consequence. This is a practice rubric, not an employer hiring threshold. | Dimension | Evidence to look for | | --- | --- | | Scope | Clear journeys, assumptions, and exclusions | | Components | Responsibilities and interaction contracts | | State and data | Explicit owners, identities, and invariants | | APIs and consistency | Read/write contracts, caching, and reconciliation | | Failure recovery | A complete failure path with usable recovery | | Quality and trade-offs | Accessibility, performance, measurement, and alternatives | After each attempt, choose the weakest dimension and redraw that part. On the next attempt, introduce a follow-up halfway through and explain which decisions must change. The guided labs are not automatically graded and do not certify interview readiness. Select a prediction, perform the rehearsal, then check only evidence you can show. The app stores coarse completion; reflection text stays transient and is lost on reload or restart. Keep diagrams and any notes you want to retain in your own tool.",
+      "headings": [
+        {
+          "id": "run-a-60-minute-rehearsal",
+          "depth": 2,
+          "text": "Run a 60-minute rehearsal"
+        },
+        {
+          "id": "exercises",
+          "depth": 2,
+          "text": "Exercises"
+        },
+        {
+          "id": "review-evidence",
+          "depth": 2,
+          "text": "Review evidence"
+        }
+      ],
+      "mermaidBlocks": [],
+      "contentHash": "65dacbf280ce2fb159266d7a2b2e376a0dcc83762b866282b7a1ba1aad8c8d34",
+      "readingMinutes": 3
+    },
+    {
+      "title": "Atlassian — Collaborative Kanban Board",
+      "slug": "frontend/system-design-kanban",
+      "summary": "Design a board where users create cards, move them between columns, and see teammates’ changes.",
+      "track": "Front-End Development",
+      "topic": "System Design Interviews",
+      "difficulty": "senior",
+      "tags": [
+        "frontend",
+        "system-design",
+        "interview",
+        "whiteboard",
+        "practice"
+      ],
+      "prerequisites": [],
+      "diagramRefs": [],
+      "sourceRefs": [
+        "frontend-design-report-atlassian"
+      ],
+      "status": "published",
+      "id": "7f8774f61e67",
+      "route": "/docs/frontend/system-design-kanban",
+      "sourcePath": "content/knowledge/frontend/system-design-kanban.md",
+      "bodyPath": "content/knowledge/frontend/system-design-kanban.md",
+      "markdown": "A P40 candidate’s June 29, 2025 report describes whiteboarding a Trello-like board: component architecture, state management, drag-and-drop, caching, and optimistic updates. [Candidate report](https://discuss.frontendlead.com/t/atlassian-frontend-engineer-p40-onsite/2192)\n\nCompany attribution and interview details are not independently verified. Sources checked October 8, 2026. The prompt is paraphrased; practice constraints, follow-ups, diagrams, and review criteria are Codematica additions unless labeled as reported.\n\n## Practice prompt\n\nDesign a board where users create cards, move them between columns, and see teammates’ changes.\n\nUse the [60-minute schedule and rubric](/docs/frontend/system-design-interview-rehearsal). Spend 45 minutes designing, 10 minutes handling follow-ups, and 5 minutes reviewing. No coding is required.\n\n- **Define:** boards, columns, cards, ordering, permissions, and pending mutations.\n- **Draw:** the component hierarchy and trace a card move through server confirmation to other clients.\n\n## Follow-ups\n\nTwo users move the same card. A move succeeds but its response is lost. The board contains thousands of cards. Dragging is unavailable.\n\n## Self-review\n\nExplain conflict handling, reconnect recovery, and keyboard alternatives. Show why rolling back a failed move cannot erase a newer successful change.\n\n## Starting diagram\n\nThis authored starting diagram illustrates a conditional-write contract. Define atomic server validation before relying on it. Extend it for a disconnected client returning.\n\n```mermaid\nsequenceDiagram\n    participant U as User\n    participant C as Board client\n    participant S as Board API\n    participant O as Other clients\n    U->>C: Move a card\n    C->>C: Show pending move\n    C->>S: PATCH board with If-Match and operationId\n    alt Version matches\n        S-->>C: Canonical board and new version\n        S-->>O: Committed change event\n        C->>C: Reconcile pending move\n    else Version changed\n        S-->>C: 412 Precondition Failed\n        C->>S: Fetch latest board\n        C->>C: Preserve intent and offer retry\n    end\n```\n\n[Start the guided rehearsal](/practice/frontend/system-design-kanban-lab?path=frontend-system-design-interviews). Record a prediction, check your evidence, and reflect. Completion is self-assessed; it is not an architecture grade.",
+      "plainText": "A P40 candidate’s June 29, 2025 report describes whiteboarding a Trello-like board: component architecture, state management, drag-and-drop, caching, and optimistic updates. Candidate report Company attribution and interview details are not independently verified. Sources checked October 8, 2026. The prompt is paraphrased; practice constraints, follow-ups, diagrams, and review criteria are Codematica additions unless labeled as reported. Practice prompt Design a board where users create cards, move them between columns, and see teammates’ changes. Use the 60-minute schedule and rubric. Spend 45 minutes designing, 10 minutes handling follow-ups, and 5 minutes reviewing. No coding is required. Define: boards, columns, cards, ordering, permissions, and pending mutations.Draw: the component hierarchy and trace a card move through server confirmation to other clients. Follow-ups Two users move the same card. A move succeeds but its response is lost. The board contains thousands of cards. Dragging is unavailable. Self-review Explain conflict handling, reconnect recovery, and keyboard alternatives. Show why rolling back a failed move cannot erase a newer successful change. Starting diagram This authored starting diagram illustrates a conditional-write contract. Define atomic server validation before relying on it. Extend it for a disconnected client returning. sequenceDiagram participant U as User participant C as Board client participant S as Board API participant O as Other clients U->>C: Move a card C->>C: Show pending move C->>S: PATCH board with If-Match and operationId alt Version matches S-->>C: Canonical board and new version S-->>O: Committed change event C->>C: Reconcile pending move else Version changed S-->>C: 412 Precondition Failed C->>S: Fetch latest board C->>C: Preserve intent and offer retry end Start the guided rehearsal. Record a prediction, check your evidence, and reflect. Completion is self-assessed; it is not an architecture grade.",
+      "headings": [
+        {
+          "id": "practice-prompt",
+          "depth": 2,
+          "text": "Practice prompt"
+        },
+        {
+          "id": "follow-ups",
+          "depth": 2,
+          "text": "Follow-ups"
+        },
+        {
+          "id": "self-review",
+          "depth": 2,
+          "text": "Self-review"
+        },
+        {
+          "id": "starting-diagram",
+          "depth": 2,
+          "text": "Starting diagram"
+        }
+      ],
+      "mermaidBlocks": [
+        {
+          "id": "embedded-1",
+          "source": "sequenceDiagram\n    participant U as User\n    participant C as Board client\n    participant S as Board API\n    participant O as Other clients\n    U->>C: Move a card\n    C->>C: Show pending move\n    C->>S: PATCH board with If-Match and operationId\n    alt Version matches\n        S-->>C: Canonical board and new version\n        S-->>O: Committed change event\n        C->>C: Reconcile pending move\n    else Version changed\n        S-->>C: 412 Precondition Failed\n        C->>S: Fetch latest board\n        C->>C: Preserve intent and offer retry\n    end"
+        }
+      ],
+      "contentHash": "8f9f04f154db1482b67ab99d3cf6c7d19f7d4ecc5b66a2f812230a410cfaa623",
+      "readingMinutes": 2
+    },
+    {
+      "title": "Amazon — Picture-and-Word Learning Game",
+      "slug": "frontend/system-design-learning-game",
+      "summary": "Design a mobile-first picture-and-word learning app with answer feedback and session progress.",
+      "track": "Front-End Development",
+      "topic": "System Design Interviews",
+      "difficulty": "senior",
+      "tags": [
+        "frontend",
+        "system-design",
+        "interview",
+        "whiteboard",
+        "practice"
+      ],
+      "prerequisites": [],
+      "diagramRefs": [],
+      "sourceRefs": [
+        "frontend-design-report-amazon"
+      ],
+      "status": "published",
+      "id": "18d868aaa42f",
+      "route": "/docs/frontend/system-design-learning-game",
+      "sourcePath": "content/knowledge/frontend/system-design-learning-game.md",
+      "bodyPath": "content/knowledge/frontend/system-design-learning-game.md",
+      "markdown": "An Amazon FEE L5 candidate reported two learning workflows: choose the picture matching a word, and type the word matching a picture. The discussion also covered architecture and asset delivery. [Candidate report](https://www.reddit.com/r/cscareerquestions/comments/1iudddy/rainforest_loop_experience_frontend_l5_12_yoe/)\n\nCompany attribution and interview details are not independently verified. Sources checked October 8, 2026. The prompt is paraphrased; practice constraints, follow-ups, diagrams, and review criteria are Codematica additions unless labeled as reported.\n\n## Practice prompt\n\nDesign a mobile-first learning app with both question types, answer feedback, and session progress.\n\nUse the [60-minute schedule and rubric](/docs/frontend/system-design-interview-rehearsal). Spend 45 minutes designing, 10 minutes handling follow-ups, and 5 minutes reviewing. No coding is required.\n\n- **Define:** question types, answer state, grading ownership, image loading, and progress persistence.\n- **Draw:** the session controller, question renderers, asset delivery, and progress API.\n\n## Follow-ups\n\nAn image fails to load. The user reloads after answering. A submission times out. Offline practice becomes required.\n\n## Self-review\n\nCan you add a question type without duplicating the session workflow? Can retrying a submission award progress twice?\n\n## Starting diagram\n\nUse this state diagram as a starting point. Extend it to show reload and an uncertain submission outcome.\n\n```mermaid\nstateDiagram-v2\n    [*] --> Loading\n    Loading --> Answering: Question ready\n    Loading --> LoadError: Load failed\n    LoadError --> Loading: Retry\n    Answering --> Submitting: Submit\n    Submitting --> Feedback: Grading result\n    Submitting --> Answering: Failure, retain answer\n    Feedback --> Loading: Next question\n    Feedback --> Complete: Session finished\n```\n\n[Start the guided rehearsal](/practice/frontend/system-design-learning-game-lab?path=frontend-system-design-interviews). Record a prediction, check your evidence, and reflect. Completion is self-assessed; it is not an architecture grade.",
+      "plainText": "An Amazon FEE L5 candidate reported two learning workflows: choose the picture matching a word, and type the word matching a picture. The discussion also covered architecture and asset delivery. Candidate report Company attribution and interview details are not independently verified. Sources checked October 8, 2026. The prompt is paraphrased; practice constraints, follow-ups, diagrams, and review criteria are Codematica additions unless labeled as reported. Practice prompt Design a mobile-first learning app with both question types, answer feedback, and session progress. Use the 60-minute schedule and rubric. Spend 45 minutes designing, 10 minutes handling follow-ups, and 5 minutes reviewing. No coding is required. Define: question types, answer state, grading ownership, image loading, and progress persistence.Draw: the session controller, question renderers, asset delivery, and progress API. Follow-ups An image fails to load. The user reloads after answering. A submission times out. Offline practice becomes required. Self-review Can you add a question type without duplicating the session workflow? Can retrying a submission award progress twice? Starting diagram Use this state diagram as a starting point. Extend it to show reload and an uncertain submission outcome. stateDiagram-v2 [*] --> Loading Loading --> Answering: Question ready Loading --> LoadError: Load failed LoadError --> Loading: Retry Answering --> Submitting: Submit Submitting --> Feedback: Grading result Submitting --> Answering: Failure, retain answer Feedback --> Loading: Next question Feedback --> Complete: Session finished Start the guided rehearsal. Record a prediction, check your evidence, and reflect. Completion is self-assessed; it is not an architecture grade.",
+      "headings": [
+        {
+          "id": "practice-prompt",
+          "depth": 2,
+          "text": "Practice prompt"
+        },
+        {
+          "id": "follow-ups",
+          "depth": 2,
+          "text": "Follow-ups"
+        },
+        {
+          "id": "self-review",
+          "depth": 2,
+          "text": "Self-review"
+        },
+        {
+          "id": "starting-diagram",
+          "depth": 2,
+          "text": "Starting diagram"
+        }
+      ],
+      "mermaidBlocks": [
+        {
+          "id": "embedded-1",
+          "source": "stateDiagram-v2\n    [*] --> Loading\n    Loading --> Answering: Question ready\n    Loading --> LoadError: Load failed\n    LoadError --> Loading: Retry\n    Answering --> Submitting: Submit\n    Submitting --> Feedback: Grading result\n    Submitting --> Answering: Failure, retain answer\n    Feedback --> Loading: Next question\n    Feedback --> Complete: Session finished"
+        }
+      ],
+      "contentHash": "a373d095829c9dfbbcac05cf679249ab7c62b0681090cf6727f6a037bf78bdfb",
+      "readingMinutes": 2
+    },
+    {
+      "title": "Salesforce — WhatsApp-Style Web Messaging",
+      "slug": "frontend/system-design-messaging",
+      "summary": "Design a messaging client with conversation history, sending, delivery status, and reconnect recovery.",
+      "track": "Front-End Development",
+      "topic": "System Design Interviews",
+      "difficulty": "senior",
+      "tags": [
+        "frontend",
+        "system-design",
+        "interview",
+        "whiteboard",
+        "practice"
+      ],
+      "prerequisites": [],
+      "diagramRefs": [],
+      "sourceRefs": [
+        "frontend-design-report-salesforce"
+      ],
+      "status": "published",
+      "id": "3205303ac76b",
+      "route": "/docs/frontend/system-design-messaging",
+      "sourcePath": "content/knowledge/frontend/system-design-messaging.md",
+      "bodyPath": "content/knowledge/frontend/system-design-messaging.md",
+      "markdown": "A Salesforce SMTS frontend account published November 23, 2025 reports a 60-minute WhatsApp Web design round, with messaging, synchronization, offline support, and encryption considerations. [Candidate report](https://saumyadip25.medium.com/salesforce-smts-frontend-interview-experience-5cae01d6a594)\n\nCompany attribution and interview details are not independently verified. Sources checked October 8, 2026. The prompt is paraphrased; practice constraints, follow-ups, diagrams, and review criteria are Codematica additions unless labeled as reported.\n\n## Practice prompt\n\nDesign a messaging client with conversation history, sending, delivery status, and reconnect recovery.\n\nUse the [60-minute schedule and rubric](/docs/frontend/system-design-interview-rehearsal). Spend 45 minutes designing, 10 minutes handling follow-ups, and 5 minutes reviewing. No coding is required.\n\n- **Define:** conversation IDs, message IDs, client operation IDs, ordering, and pending/confirmed/failed states.\n- **Draw:** send → pending message → server acknowledgment → reconciliation, including a lost acknowledgment.\n\n## Follow-ups\n\nRetry after disconnection. Open another tab. Receive duplicates. Load earlier history while new messages arrive.\n\n## Self-review\n\nDistinguish server acceptance, recipient delivery, and reading. Explain deduplication, ordering, scroll preservation, and where encryption changes the client/server boundary.\n\n[Start the guided rehearsal](/practice/frontend/system-design-messaging-lab?path=frontend-system-design-interviews). Record a prediction, check your evidence, and reflect. Completion is self-assessed; it is not an architecture grade.",
+      "plainText": "A Salesforce SMTS frontend account published November 23, 2025 reports a 60-minute WhatsApp Web design round, with messaging, synchronization, offline support, and encryption considerations. Candidate report Company attribution and interview details are not independently verified. Sources checked October 8, 2026. The prompt is paraphrased; practice constraints, follow-ups, diagrams, and review criteria are Codematica additions unless labeled as reported. Practice prompt Design a messaging client with conversation history, sending, delivery status, and reconnect recovery. Use the 60-minute schedule and rubric. Spend 45 minutes designing, 10 minutes handling follow-ups, and 5 minutes reviewing. No coding is required. Define: conversation IDs, message IDs, client operation IDs, ordering, and pending/confirmed/failed states.Draw: send → pending message → server acknowledgment → reconciliation, including a lost acknowledgment. Follow-ups Retry after disconnection. Open another tab. Receive duplicates. Load earlier history while new messages arrive. Self-review Distinguish server acceptance, recipient delivery, and reading. Explain deduplication, ordering, scroll preservation, and where encryption changes the client/server boundary. Start the guided rehearsal. Record a prediction, check your evidence, and reflect. Completion is self-assessed; it is not an architecture grade.",
+      "headings": [
+        {
+          "id": "practice-prompt",
+          "depth": 2,
+          "text": "Practice prompt"
+        },
+        {
+          "id": "follow-ups",
+          "depth": 2,
+          "text": "Follow-ups"
+        },
+        {
+          "id": "self-review",
+          "depth": 2,
+          "text": "Self-review"
+        }
+      ],
+      "mermaidBlocks": [],
+      "contentHash": "d4faa998ac682baa335a50cda6ce6d536a1f85a96c72f714238477a6d015202c",
+      "readingMinutes": 1
+    },
+    {
+      "title": "Wayfair — Shopping Application",
+      "slug": "frontend/system-design-shopping",
+      "summary": "Design a storefront with product discovery, reviews, and a persistent cart.",
+      "track": "Front-End Development",
+      "topic": "System Design Interviews",
+      "difficulty": "senior",
+      "tags": [
+        "frontend",
+        "system-design",
+        "interview",
+        "whiteboard",
+        "practice"
+      ],
+      "prerequisites": [],
+      "diagramRefs": [],
+      "sourceRefs": [
+        "frontend-design-report-wayfair"
+      ],
+      "status": "published",
+      "id": "d5621c35d05d",
+      "route": "/docs/frontend/system-design-shopping",
+      "sourcePath": "content/knowledge/frontend/system-design-shopping.md",
+      "bodyPath": "content/knowledge/frontend/system-design-shopping.md",
+      "markdown": "A candidate reports an August 2024 frontend interview, published December 30, 2025, covering product listings, ratings, cart state, persistence, and inventory updates. [Candidate report](https://saumyadip25.medium.com/wayfair-software-engineer-3-frontend-interview-experience-13112d221611)\n\nCompany attribution and interview details are not independently verified. Sources checked October 8, 2026. The prompt is paraphrased; practice constraints, follow-ups, diagrams, and review criteria are Codematica additions unless labeled as reported.\n\n## Practice prompt\n\nDesign a storefront with product discovery, reviews, and a persistent cart.\n\nUse the [60-minute schedule and rubric](/docs/frontend/system-design-interview-rehearsal). Spend 45 minutes designing, 10 minutes handling follow-ups, and 5 minutes reviewing. No coding is required.\n\n- **Define:** products versus purchasable variants, cart lines, quantities, prices, and availability.\n- **Draw:** listing → product detail → cart, showing URL state, cached server data, and unsaved interaction state.\n\n## Follow-ups\n\nA guest signs in with an existing account cart. A product sells out. Prices change. Two browser tabs update the cart.\n\n## Self-review\n\nState the cart merge policy. Explain which values the server must validate before purchase and how the UI communicates changes without silently discarding user choices.\n\n**Decision to defend:** Which routes benefit from server-rendered HTML, and which interactions should remain client-driven?\n\n[Start the guided rehearsal](/practice/frontend/system-design-shopping-lab?path=frontend-system-design-interviews). Record a prediction, check your evidence, and reflect. Completion is self-assessed; it is not an architecture grade.",
+      "plainText": "A candidate reports an August 2024 frontend interview, published December 30, 2025, covering product listings, ratings, cart state, persistence, and inventory updates. Candidate report Company attribution and interview details are not independently verified. Sources checked October 8, 2026. The prompt is paraphrased; practice constraints, follow-ups, diagrams, and review criteria are Codematica additions unless labeled as reported. Practice prompt Design a storefront with product discovery, reviews, and a persistent cart. Use the 60-minute schedule and rubric. Spend 45 minutes designing, 10 minutes handling follow-ups, and 5 minutes reviewing. No coding is required. Define: products versus purchasable variants, cart lines, quantities, prices, and availability.Draw: listing → product detail → cart, showing URL state, cached server data, and unsaved interaction state. Follow-ups A guest signs in with an existing account cart. A product sells out. Prices change. Two browser tabs update the cart. Self-review State the cart merge policy. Explain which values the server must validate before purchase and how the UI communicates changes without silently discarding user choices. Decision to defend: Which routes benefit from server-rendered HTML, and which interactions should remain client-driven? Start the guided rehearsal. Record a prediction, check your evidence, and reflect. Completion is self-assessed; it is not an architecture grade.",
+      "headings": [
+        {
+          "id": "practice-prompt",
+          "depth": 2,
+          "text": "Practice prompt"
+        },
+        {
+          "id": "follow-ups",
+          "depth": 2,
+          "text": "Follow-ups"
+        },
+        {
+          "id": "self-review",
+          "depth": 2,
+          "text": "Self-review"
+        }
+      ],
+      "mermaidBlocks": [],
+      "contentHash": "a76b91be2a08802660932d5c28a10fc76a737ebbce69b0924e03ac3321900b50",
+      "readingMinutes": 1
     },
     {
       "title": "CSS Grid Defense",
@@ -17309,6 +17733,131 @@
       "route": "/paths/frontend-interview-practice",
       "sourcePath": "content/learning-paths/frontend-interview-practice.json",
       "contentHash": "d9376a91aa2f62b216a91672d9a6d3242db0fe8d0a1385af08f707b205a23ea5"
+    },
+    {
+      "slug": "frontend-system-design-interviews",
+      "title": "Frontend System Design Interviews",
+      "summary": "Rehearse six public candidate-reported design topics with concise briefs, diagrams, guided whiteboard exercises, and a shared self-review rubric.",
+      "kind": "skill",
+      "category": "Front-End Development",
+      "audience": "Frontend engineers preparing for collaborative system design interviews without coding.",
+      "status": "published",
+      "sourcePolicy": "required",
+      "sourceRefs": [
+        "frontend-design-report-amazon",
+        "frontend-design-report-atlassian",
+        "frontend-design-report-wayfair",
+        "frontend-design-report-adobe",
+        "frontend-design-report-salesforce",
+        "frontend-design-report-uber"
+      ],
+      "units": [
+        {
+          "slug": "rehearsal",
+          "title": "Run and Review a Rehearsal",
+          "summary": "Set up the whiteboard, distinguish reported evidence from adaptations, and use the shared rubric.",
+          "nodes": [
+            {
+              "kind": "document",
+              "slug": "frontend/system-design-interview-rehearsal"
+            }
+          ]
+        },
+        {
+          "slug": "learning-game",
+          "title": "Amazon — Picture-and-Word Learning Game",
+          "summary": "Design a mobile-first picture-and-word learning app with answer feedback and session progress.",
+          "nodes": [
+            {
+              "kind": "document",
+              "slug": "frontend/system-design-learning-game"
+            },
+            {
+              "kind": "exercise",
+              "slug": "frontend/system-design-learning-game-lab"
+            }
+          ]
+        },
+        {
+          "slug": "kanban",
+          "title": "Atlassian — Collaborative Kanban Board",
+          "summary": "Design a board where users create cards, move them between columns, and see teammates’ changes.",
+          "nodes": [
+            {
+              "kind": "document",
+              "slug": "frontend/system-design-kanban"
+            },
+            {
+              "kind": "exercise",
+              "slug": "frontend/system-design-kanban-lab"
+            }
+          ]
+        },
+        {
+          "slug": "shopping",
+          "title": "Wayfair — Shopping Application",
+          "summary": "Design a storefront with product discovery, reviews, and a persistent cart.",
+          "nodes": [
+            {
+              "kind": "document",
+              "slug": "frontend/system-design-shopping"
+            },
+            {
+              "kind": "exercise",
+              "slug": "frontend/system-design-shopping-lab"
+            }
+          ]
+        },
+        {
+          "slug": "file-manager",
+          "title": "Adobe — Browser File Manager",
+          "summary": "Design a file manager with folder navigation, search, rename, move, and upload.",
+          "nodes": [
+            {
+              "kind": "document",
+              "slug": "frontend/system-design-file-manager"
+            },
+            {
+              "kind": "exercise",
+              "slug": "frontend/system-design-file-manager-lab"
+            }
+          ]
+        },
+        {
+          "slug": "messaging",
+          "title": "Salesforce — WhatsApp-Style Web Messaging",
+          "summary": "Design a messaging client with conversation history, sending, delivery status, and reconnect recovery.",
+          "nodes": [
+            {
+              "kind": "document",
+              "slug": "frontend/system-design-messaging"
+            },
+            {
+              "kind": "exercise",
+              "slug": "frontend/system-design-messaging-lab"
+            }
+          ]
+        },
+        {
+          "slug": "calendar",
+          "title": "Uber — Calendar Application",
+          "summary": "Design a calendar with month/week views, event creation, editing, and recurring meetings.",
+          "nodes": [
+            {
+              "kind": "document",
+              "slug": "frontend/system-design-calendar"
+            },
+            {
+              "kind": "exercise",
+              "slug": "frontend/system-design-calendar-lab"
+            }
+          ]
+        }
+      ],
+      "id": "d11208847e72",
+      "route": "/paths/frontend-system-design-interviews",
+      "sourcePath": "content/learning-paths/frontend-system-design-interviews.json",
+      "contentHash": "494ee93062650f5fbc485f7145f1ce341e61d5cdd2aeb588f98ee40a7f5bb227"
     },
     {
       "slug": "japanese-foundations",
@@ -27296,6 +27845,696 @@
       "route": "/practice/frontend/rtk-query-production-architecture-questionnaire",
       "sourcePath": "content/exercises/frontend/rtk-query-production-architecture-questionnaire.json",
       "contentHash": "b47c1fdaac2a70e262d1df4c5d8f10a227156b88040227e572d807a3ffc2cff8"
+    },
+    {
+      "slug": "frontend/system-design-calendar-lab",
+      "title": "Uber — Calendar Application Rehearsal",
+      "documentSlug": "frontend/system-design-calendar",
+      "concept": "Calendar Application",
+      "difficulty": "senior",
+      "tags": [
+        "frontend",
+        "system-design",
+        "interview",
+        "whiteboard",
+        "uber"
+      ],
+      "status": "published",
+      "sourceRefs": [
+        "frontend-design-report-uber"
+      ],
+      "type": "guided-lab",
+      "briefing": "An Uber L4 candidate reported calendar system design alongside React coding exercises and described difficulty keeping the discussion focused. The frontend scope below is a Codematica adaptation. Design a calendar with month/week views, event creation, editing, and recurring meetings. This exercise adapts a public candidate report; company attribution and interview details are not independently verified. The practice constraints and follow-ups are Codematica additions. Use your own timer and drawing tool: 45 minutes designing, 10 minutes handling follow-ups, and 5 minutes reviewing. No coding is required. Your design is not automatically graded; reflection text is transient. The related lesson contains the source and shared rubric.",
+      "objectives": [
+        "Define event identity, time zone, recurrence rules, exceptions, and the visible date range.",
+        "Draw the calendar shell, date navigation, event layout, editor, and range-based data fetching.",
+        "Separate stored event semantics from display formatting. Explain overlapping-event layout, cache updates, and keyboard navigation."
+      ],
+      "prediction": {
+        "prompt": "Which area is most likely to expose a weakness in your first design?",
+        "options": [
+          {
+            "id": "state",
+            "label": "State ownership or conflicting changes."
+          },
+          {
+            "id": "recovery",
+            "label": "An uncertain request outcome or recovery gap."
+          },
+          {
+            "id": "experience",
+            "label": "Performance or accessibility under the stated constraints."
+          }
+        ]
+      },
+      "steps": [
+        {
+          "id": "scope",
+          "title": "0–7 minutes: clarify the scope",
+          "instructions": "Design a calendar with month/week views, event creation, editing, and recurring meetings. Identify two main journeys, required devices, freshness, permissions, and exclusions. Separate requirements from assumptions."
+        },
+        {
+          "id": "architecture",
+          "title": "7–20 minutes: draw the architecture",
+          "instructions": "Draw the calendar shell, date navigation, event layout, editor, and range-based data fetching. Assign state owners and component inputs/events. Include loading, empty, and error states."
+        },
+        {
+          "id": "contracts",
+          "title": "20–30 minutes: define data and APIs",
+          "instructions": "Define event identity, time zone, recurrence rules, exceptions, and the visible date range. Specify one read and one write, including identities, response fields, cache policy, and safe retry conditions."
+        },
+        {
+          "id": "trace",
+          "title": "30–45 minutes: trace behavior and recovery",
+          "instructions": "Trace one interaction from input to confirmed state, then fail a request. Separate stored event semantics from display formatting. Explain overlapping-event layout, cache updates, and keyboard navigation."
+        },
+        {
+          "id": "follow-ups",
+          "title": "45–55 minutes: handle follow-ups",
+          "instructions": "Edit one occurrence versus the series. Change time zones. Cross a daylight-saving transition. Resolve two users editing the same event. Pick the hardest case and show which decisions change. State any unresolved limits."
+        },
+        {
+          "id": "review",
+          "title": "55–60 minutes: review your evidence",
+          "instructions": "Score scope, components, state and data, APIs and consistency, failure recovery, and quality and trade-offs. Use 0: missing, 1: mentioned, 2: explained with a concrete decision and consequence. Check only evidence you can show. Choose the weakest dimension and redraw it; this is not an employer hiring threshold."
+        }
+      ],
+      "evidenceChecklist": [
+        {
+          "id": "scope",
+          "label": "I stated the main journeys, assumptions, and exclusions."
+        },
+        {
+          "id": "components",
+          "label": "I drew component responsibilities and interaction contracts."
+        },
+        {
+          "id": "state",
+          "label": "I assigned state owners, stable identities, and invariants."
+        },
+        {
+          "id": "contracts",
+          "label": "I defined reads, writes, caching, and reconciliation."
+        },
+        {
+          "id": "recovery",
+          "label": "I traced one failure through usable recovery."
+        },
+        {
+          "id": "quality",
+          "label": "I defended accessibility, performance, measurement, and alternatives."
+        },
+        {
+          "id": "scenario",
+          "label": "I distinguished recurring series from occurrences and traced a time-zone or concurrent-edit case."
+        }
+      ],
+      "reflectionPrompts": [
+        "Separate stored event semantics from display formatting. Explain overlapping-event layout, cache updates, and keyboard navigation.",
+        "Which decision changed after a follow-up, and what requirement caused it?",
+        "Which dimension was weakest, and what will you redraw next time?"
+      ],
+      "extensionChallenge": "Move one occurrence of a recurring meeting across a daylight-saving transition while another user edits the series. Define the conflict policy and what each participant sees.",
+      "estimatedMinutes": 60,
+      "id": "887d428f0cfc",
+      "route": "/practice/frontend/system-design-calendar-lab",
+      "sourcePath": "content/exercises/frontend/system-design-calendar-lab.json",
+      "contentHash": "630f1df9aeeffeca06e27b182242d28509100bb1264a99b1381a0a25697d0c19"
+    },
+    {
+      "slug": "frontend/system-design-file-manager-lab",
+      "title": "Adobe — Browser File Manager Rehearsal",
+      "documentSlug": "frontend/system-design-file-manager",
+      "concept": "Browser File Manager",
+      "difficulty": "senior",
+      "tags": [
+        "frontend",
+        "system-design",
+        "interview",
+        "whiteboard",
+        "adobe"
+      ],
+      "status": "published",
+      "sourceRefs": [
+        "frontend-design-report-adobe"
+      ],
+      "type": "guided-lab",
+      "briefing": "A Senior Frontend Gen Studio candidate reports a file-system design prompt during a December 2025–January 2026 loop. The March 11, 2026 report does not specify its detailed scope; this browser file-manager exercise is a Codematica adaptation. Design a file manager with folder navigation, search, rename, move, and upload. This exercise adapts a public candidate report; company attribution and interview details are not independently verified. The practice constraints and follow-ups are Codematica additions. Use your own timer and drawing tool: 45 minutes designing, 10 minutes handling follow-ups, and 5 minutes reviewing. No coding is required. Your design is not automatically graded; reflection text is transient. The related lesson contains the source and shared rubric.",
+      "objectives": [
+        "Define stable file IDs, parent relationships, folder pagination, permissions, and upload state.",
+        "Draw tree navigation, folder contents, selection state, metadata requests, and a separate upload flow.",
+        "Explain lazy loading, bounded rendering, cache invalidation after moves, and partial failures. Do not assume a filename or path is a permanent identity."
+      ],
+      "prediction": {
+        "prompt": "Which area is most likely to expose a weakness in your first design?",
+        "options": [
+          {
+            "id": "state",
+            "label": "State ownership or conflicting changes."
+          },
+          {
+            "id": "recovery",
+            "label": "An uncertain request outcome or recovery gap."
+          },
+          {
+            "id": "experience",
+            "label": "Performance or accessibility under the stated constraints."
+          }
+        ]
+      },
+      "steps": [
+        {
+          "id": "scope",
+          "title": "0–7 minutes: clarify the scope",
+          "instructions": "Design a file manager with folder navigation, search, rename, move, and upload. Identify two main journeys, required devices, freshness, permissions, and exclusions. Separate requirements from assumptions."
+        },
+        {
+          "id": "architecture",
+          "title": "7–20 minutes: draw the architecture",
+          "instructions": "Draw tree navigation, folder contents, selection state, metadata requests, and a separate upload flow. Assign state owners and component inputs/events. Include loading, empty, and error states."
+        },
+        {
+          "id": "contracts",
+          "title": "20–30 minutes: define data and APIs",
+          "instructions": "Define stable file IDs, parent relationships, folder pagination, permissions, and upload state. Specify one read and one write, including identities, response fields, cache policy, and safe retry conditions."
+        },
+        {
+          "id": "trace",
+          "title": "30–45 minutes: trace behavior and recovery",
+          "instructions": "Trace one interaction from input to confirmed state, then fail a request. Explain lazy loading, bounded rendering, cache invalidation after moves, and partial failures. Do not assume a filename or path is a permanent identity."
+        },
+        {
+          "id": "follow-ups",
+          "title": "45–55 minutes: handle follow-ups",
+          "instructions": "A folder contains 100,000 files. A selected file moves elsewhere. An upload fails halfway. Access is revoked while the folder is open. Pick the hardest case and show which decisions change. State any unresolved limits."
+        },
+        {
+          "id": "review",
+          "title": "55–60 minutes: review your evidence",
+          "instructions": "Score scope, components, state and data, APIs and consistency, failure recovery, and quality and trade-offs. Use 0: missing, 1: mentioned, 2: explained with a concrete decision and consequence. Check only evidence you can show. Choose the weakest dimension and redraw it; this is not an employer hiring threshold."
+        }
+      ],
+      "evidenceChecklist": [
+        {
+          "id": "scope",
+          "label": "I stated the main journeys, assumptions, and exclusions."
+        },
+        {
+          "id": "components",
+          "label": "I drew component responsibilities and interaction contracts."
+        },
+        {
+          "id": "state",
+          "label": "I assigned state owners, stable identities, and invariants."
+        },
+        {
+          "id": "contracts",
+          "label": "I defined reads, writes, caching, and reconciliation."
+        },
+        {
+          "id": "recovery",
+          "label": "I traced one failure through usable recovery."
+        },
+        {
+          "id": "quality",
+          "label": "I defended accessibility, performance, measurement, and alternatives."
+        },
+        {
+          "id": "scenario",
+          "label": "I separated stable file identity from paths and traced a move, failed upload, or access revocation."
+        }
+      ],
+      "reflectionPrompts": [
+        "Explain lazy loading, bounded rendering, cache invalidation after moves, and partial failures. Do not assume a filename or path is a permanent identity.",
+        "Which decision changed after a follow-up, and what requirement caused it?",
+        "Which dimension was weakest, and what will you redraw next time?"
+      ],
+      "extensionChallenge": "Keep a selected file open while another user moves its parent folder and revokes access. Explain navigation, cache invalidation, and recovery.",
+      "estimatedMinutes": 60,
+      "id": "9f901856f48d",
+      "route": "/practice/frontend/system-design-file-manager-lab",
+      "sourcePath": "content/exercises/frontend/system-design-file-manager-lab.json",
+      "contentHash": "287c2eae98106f90f8b7ffe525ce143b6c513dc77c01deaf980ace94e92e2533"
+    },
+    {
+      "slug": "frontend/system-design-kanban-lab",
+      "title": "Atlassian — Collaborative Kanban Board Rehearsal",
+      "documentSlug": "frontend/system-design-kanban",
+      "concept": "Collaborative Kanban Board",
+      "difficulty": "senior",
+      "tags": [
+        "frontend",
+        "system-design",
+        "interview",
+        "whiteboard",
+        "atlassian"
+      ],
+      "status": "published",
+      "sourceRefs": [
+        "frontend-design-report-atlassian"
+      ],
+      "type": "guided-lab",
+      "briefing": "A P40 candidate’s June 29, 2025 report describes whiteboarding a Trello-like board: component architecture, state management, drag-and-drop, caching, and optimistic updates. Design a board where users create cards, move them between columns, and see teammates’ changes. This exercise adapts a public candidate report; company attribution and interview details are not independently verified. The practice constraints and follow-ups are Codematica additions. Use your own timer and drawing tool: 45 minutes designing, 10 minutes handling follow-ups, and 5 minutes reviewing. No coding is required. Your design is not automatically graded; reflection text is transient. The related lesson contains the source and shared rubric.",
+      "objectives": [
+        "Define boards, columns, cards, ordering, permissions, and pending mutations.",
+        "Draw the component hierarchy and trace a card move through server confirmation to other clients.",
+        "Explain conflict handling, reconnect recovery, and keyboard alternatives. Show why rolling back a failed move cannot erase a newer successful change."
+      ],
+      "prediction": {
+        "prompt": "Which area is most likely to expose a weakness in your first design?",
+        "options": [
+          {
+            "id": "state",
+            "label": "State ownership or conflicting changes."
+          },
+          {
+            "id": "recovery",
+            "label": "An uncertain request outcome or recovery gap."
+          },
+          {
+            "id": "experience",
+            "label": "Performance or accessibility under the stated constraints."
+          }
+        ]
+      },
+      "steps": [
+        {
+          "id": "scope",
+          "title": "0–7 minutes: clarify the scope",
+          "instructions": "Design a board where users create cards, move them between columns, and see teammates’ changes. Identify two main journeys, required devices, freshness, permissions, and exclusions. Separate requirements from assumptions."
+        },
+        {
+          "id": "architecture",
+          "title": "7–20 minutes: draw the architecture",
+          "instructions": "Draw the component hierarchy and trace a card move through server confirmation to other clients. Assign state owners and component inputs/events. Include loading, empty, and error states."
+        },
+        {
+          "id": "contracts",
+          "title": "20–30 minutes: define data and APIs",
+          "instructions": "Define boards, columns, cards, ordering, permissions, and pending mutations. Specify one read and one write, including identities, response fields, cache policy, and safe retry conditions."
+        },
+        {
+          "id": "trace",
+          "title": "30–45 minutes: trace behavior and recovery",
+          "instructions": "Trace one interaction from input to confirmed state, then fail a request. Explain conflict handling, reconnect recovery, and keyboard alternatives. Show why rolling back a failed move cannot erase a newer successful change."
+        },
+        {
+          "id": "follow-ups",
+          "title": "45–55 minutes: handle follow-ups",
+          "instructions": "Two users move the same card. A move succeeds but its response is lost. The board contains thousands of cards. Dragging is unavailable. Pick the hardest case and show which decisions change. State any unresolved limits."
+        },
+        {
+          "id": "review",
+          "title": "55–60 minutes: review your evidence",
+          "instructions": "Score scope, components, state and data, APIs and consistency, failure recovery, and quality and trade-offs. Use 0: missing, 1: mentioned, 2: explained with a concrete decision and consequence. Check only evidence you can show. Choose the weakest dimension and redraw it; this is not an employer hiring threshold."
+        }
+      ],
+      "evidenceChecklist": [
+        {
+          "id": "scope",
+          "label": "I stated the main journeys, assumptions, and exclusions."
+        },
+        {
+          "id": "components",
+          "label": "I drew component responsibilities and interaction contracts."
+        },
+        {
+          "id": "state",
+          "label": "I assigned state owners, stable identities, and invariants."
+        },
+        {
+          "id": "contracts",
+          "label": "I defined reads, writes, caching, and reconciliation."
+        },
+        {
+          "id": "recovery",
+          "label": "I traced one failure through usable recovery."
+        },
+        {
+          "id": "quality",
+          "label": "I defended accessibility, performance, measurement, and alternatives."
+        },
+        {
+          "id": "scenario",
+          "label": "I showed that a failed move cannot overwrite a newer confirmed change and provided a keyboard alternative."
+        }
+      ],
+      "reflectionPrompts": [
+        "Explain conflict handling, reconnect recovery, and keyboard alternatives. Show why rolling back a failed move cannot erase a newer successful change.",
+        "Which decision changed after a follow-up, and what requirement caused it?",
+        "Which dimension was weakest, and what will you redraw next time?"
+      ],
+      "extensionChallenge": "Disconnect one collaborator during concurrent moves, then reconnect. Extend the diagram to distinguish pending intent, confirmed state, and missed events.",
+      "estimatedMinutes": 60,
+      "id": "3b5e17d1ccd5",
+      "route": "/practice/frontend/system-design-kanban-lab",
+      "sourcePath": "content/exercises/frontend/system-design-kanban-lab.json",
+      "contentHash": "ce1a16b7ee707c216088ff89de2238119cc18972e26979f2ca5209043ebdbcd3"
+    },
+    {
+      "slug": "frontend/system-design-learning-game-lab",
+      "title": "Amazon — Picture-and-Word Learning Game Rehearsal",
+      "documentSlug": "frontend/system-design-learning-game",
+      "concept": "Picture-and-Word Learning Game",
+      "difficulty": "senior",
+      "tags": [
+        "frontend",
+        "system-design",
+        "interview",
+        "whiteboard",
+        "amazon"
+      ],
+      "status": "published",
+      "sourceRefs": [
+        "frontend-design-report-amazon"
+      ],
+      "type": "guided-lab",
+      "briefing": "An Amazon FEE L5 candidate reported two learning workflows: choose the picture matching a word, and type the word matching a picture. The discussion also covered architecture and asset delivery. Design a mobile-first learning app with both question types, answer feedback, and session progress. This exercise adapts a public candidate report; company attribution and interview details are not independently verified. The practice constraints and follow-ups are Codematica additions. Use your own timer and drawing tool: 45 minutes designing, 10 minutes handling follow-ups, and 5 minutes reviewing. No coding is required. Your design is not automatically graded; reflection text is transient. The related lesson contains the source and shared rubric.",
+      "objectives": [
+        "Define question types, answer state, grading ownership, image loading, and progress persistence.",
+        "Draw the session controller, question renderers, asset delivery, and progress API.",
+        "Can you add a question type without duplicating the session workflow? Can retrying a submission award progress twice?"
+      ],
+      "prediction": {
+        "prompt": "Which area is most likely to expose a weakness in your first design?",
+        "options": [
+          {
+            "id": "state",
+            "label": "State ownership or conflicting changes."
+          },
+          {
+            "id": "recovery",
+            "label": "An uncertain request outcome or recovery gap."
+          },
+          {
+            "id": "experience",
+            "label": "Performance or accessibility under the stated constraints."
+          }
+        ]
+      },
+      "steps": [
+        {
+          "id": "scope",
+          "title": "0–7 minutes: clarify the scope",
+          "instructions": "Design a mobile-first learning app with both question types, answer feedback, and session progress. Identify two main journeys, required devices, freshness, permissions, and exclusions. Separate requirements from assumptions."
+        },
+        {
+          "id": "architecture",
+          "title": "7–20 minutes: draw the architecture",
+          "instructions": "Draw the session controller, question renderers, asset delivery, and progress API. Assign state owners and component inputs/events. Include loading, empty, and error states."
+        },
+        {
+          "id": "contracts",
+          "title": "20–30 minutes: define data and APIs",
+          "instructions": "Define question types, answer state, grading ownership, image loading, and progress persistence. Specify one read and one write, including identities, response fields, cache policy, and safe retry conditions."
+        },
+        {
+          "id": "trace",
+          "title": "30–45 minutes: trace behavior and recovery",
+          "instructions": "Trace one interaction from input to confirmed state, then fail a request. Can you add a question type without duplicating the session workflow? Can retrying a submission award progress twice?"
+        },
+        {
+          "id": "follow-ups",
+          "title": "45–55 minutes: handle follow-ups",
+          "instructions": "An image fails to load. The user reloads after answering. A submission times out. Offline practice becomes required. Pick the hardest case and show which decisions change. State any unresolved limits."
+        },
+        {
+          "id": "review",
+          "title": "55–60 minutes: review your evidence",
+          "instructions": "Score scope, components, state and data, APIs and consistency, failure recovery, and quality and trade-offs. Use 0: missing, 1: mentioned, 2: explained with a concrete decision and consequence. Check only evidence you can show. Choose the weakest dimension and redraw it; this is not an employer hiring threshold."
+        }
+      ],
+      "evidenceChecklist": [
+        {
+          "id": "scope",
+          "label": "I stated the main journeys, assumptions, and exclusions."
+        },
+        {
+          "id": "components",
+          "label": "I drew component responsibilities and interaction contracts."
+        },
+        {
+          "id": "state",
+          "label": "I assigned state owners, stable identities, and invariants."
+        },
+        {
+          "id": "contracts",
+          "label": "I defined reads, writes, caching, and reconciliation."
+        },
+        {
+          "id": "recovery",
+          "label": "I traced one failure through usable recovery."
+        },
+        {
+          "id": "quality",
+          "label": "I defended accessibility, performance, measurement, and alternatives."
+        },
+        {
+          "id": "scenario",
+          "label": "I traced a timed-out answer submission and showed how retrying avoids duplicate progress."
+        }
+      ],
+      "reflectionPrompts": [
+        "Can you add a question type without duplicating the session workflow? Can retrying a submission award progress twice?",
+        "Which decision changed after a follow-up, and what requirement caused it?",
+        "Which dimension was weakest, and what will you redraw next time?"
+      ],
+      "extensionChallenge": "Add a third question type and offline practice. Explain which session rules remain shared and how unsynced progress is reconciled.",
+      "estimatedMinutes": 60,
+      "id": "d1f13b4d77ac",
+      "route": "/practice/frontend/system-design-learning-game-lab",
+      "sourcePath": "content/exercises/frontend/system-design-learning-game-lab.json",
+      "contentHash": "592d193aceee046298f34c5dbeb1438491d7f9d1512a177f35d093e9ac22d248"
+    },
+    {
+      "slug": "frontend/system-design-messaging-lab",
+      "title": "Salesforce — WhatsApp-Style Web Messaging Rehearsal",
+      "documentSlug": "frontend/system-design-messaging",
+      "concept": "WhatsApp-Style Web Messaging",
+      "difficulty": "senior",
+      "tags": [
+        "frontend",
+        "system-design",
+        "interview",
+        "whiteboard",
+        "salesforce"
+      ],
+      "status": "published",
+      "sourceRefs": [
+        "frontend-design-report-salesforce"
+      ],
+      "type": "guided-lab",
+      "briefing": "A Salesforce SMTS frontend account published November 23, 2025 reports a 60-minute WhatsApp Web design round, with messaging, synchronization, offline support, and encryption considerations. Design a messaging client with conversation history, sending, delivery status, and reconnect recovery. This exercise adapts a public candidate report; company attribution and interview details are not independently verified. The practice constraints and follow-ups are Codematica additions. Use your own timer and drawing tool: 45 minutes designing, 10 minutes handling follow-ups, and 5 minutes reviewing. No coding is required. Your design is not automatically graded; reflection text is transient. The related lesson contains the source and shared rubric.",
+      "objectives": [
+        "Define conversation IDs, message IDs, client operation IDs, ordering, and pending/confirmed/failed states.",
+        "Draw send → pending message → server acknowledgment → reconciliation, including a lost acknowledgment.",
+        "Distinguish server acceptance, recipient delivery, and reading. Explain deduplication, ordering, scroll preservation, and where encryption changes the client/server boundary."
+      ],
+      "prediction": {
+        "prompt": "Which area is most likely to expose a weakness in your first design?",
+        "options": [
+          {
+            "id": "state",
+            "label": "State ownership or conflicting changes."
+          },
+          {
+            "id": "recovery",
+            "label": "An uncertain request outcome or recovery gap."
+          },
+          {
+            "id": "experience",
+            "label": "Performance or accessibility under the stated constraints."
+          }
+        ]
+      },
+      "steps": [
+        {
+          "id": "scope",
+          "title": "0–7 minutes: clarify the scope",
+          "instructions": "Design a messaging client with conversation history, sending, delivery status, and reconnect recovery. Identify two main journeys, required devices, freshness, permissions, and exclusions. Separate requirements from assumptions."
+        },
+        {
+          "id": "architecture",
+          "title": "7–20 minutes: draw the architecture",
+          "instructions": "Draw send → pending message → server acknowledgment → reconciliation, including a lost acknowledgment. Assign state owners and component inputs/events. Include loading, empty, and error states."
+        },
+        {
+          "id": "contracts",
+          "title": "20–30 minutes: define data and APIs",
+          "instructions": "Define conversation IDs, message IDs, client operation IDs, ordering, and pending/confirmed/failed states. Specify one read and one write, including identities, response fields, cache policy, and safe retry conditions."
+        },
+        {
+          "id": "trace",
+          "title": "30–45 minutes: trace behavior and recovery",
+          "instructions": "Trace one interaction from input to confirmed state, then fail a request. Distinguish server acceptance, recipient delivery, and reading. Explain deduplication, ordering, scroll preservation, and where encryption changes the client/server boundary."
+        },
+        {
+          "id": "follow-ups",
+          "title": "45–55 minutes: handle follow-ups",
+          "instructions": "Retry after disconnection. Open another tab. Receive duplicates. Load earlier history while new messages arrive. Pick the hardest case and show which decisions change. State any unresolved limits."
+        },
+        {
+          "id": "review",
+          "title": "55–60 minutes: review your evidence",
+          "instructions": "Score scope, components, state and data, APIs and consistency, failure recovery, and quality and trade-offs. Use 0: missing, 1: mentioned, 2: explained with a concrete decision and consequence. Check only evidence you can show. Choose the weakest dimension and redraw it; this is not an employer hiring threshold."
+        }
+      ],
+      "evidenceChecklist": [
+        {
+          "id": "scope",
+          "label": "I stated the main journeys, assumptions, and exclusions."
+        },
+        {
+          "id": "components",
+          "label": "I drew component responsibilities and interaction contracts."
+        },
+        {
+          "id": "state",
+          "label": "I assigned state owners, stable identities, and invariants."
+        },
+        {
+          "id": "contracts",
+          "label": "I defined reads, writes, caching, and reconciliation."
+        },
+        {
+          "id": "recovery",
+          "label": "I traced one failure through usable recovery."
+        },
+        {
+          "id": "quality",
+          "label": "I defended accessibility, performance, measurement, and alternatives."
+        },
+        {
+          "id": "scenario",
+          "label": "I distinguished acceptance, delivery, and reading, and traced a lost acknowledgment without duplicate messages."
+        }
+      ],
+      "reflectionPrompts": [
+        "Distinguish server acceptance, recipient delivery, and reading. Explain deduplication, ordering, scroll preservation, and where encryption changes the client/server boundary.",
+        "Which decision changed after a follow-up, and what requirement caused it?",
+        "Which dimension was weakest, and what will you redraw next time?"
+      ],
+      "extensionChallenge": "Add another device and offline sending. Explain deduplication and encrypted-history synchronization without assuming the server can read message contents.",
+      "estimatedMinutes": 60,
+      "id": "5c6fc9f8e20e",
+      "route": "/practice/frontend/system-design-messaging-lab",
+      "sourcePath": "content/exercises/frontend/system-design-messaging-lab.json",
+      "contentHash": "d602b500299cb493f16e49c1063bb6e77dc5f19d3adff629032e3997d76ec43a"
+    },
+    {
+      "slug": "frontend/system-design-shopping-lab",
+      "title": "Wayfair — Shopping Application Rehearsal",
+      "documentSlug": "frontend/system-design-shopping",
+      "concept": "Shopping Application",
+      "difficulty": "senior",
+      "tags": [
+        "frontend",
+        "system-design",
+        "interview",
+        "whiteboard",
+        "wayfair"
+      ],
+      "status": "published",
+      "sourceRefs": [
+        "frontend-design-report-wayfair"
+      ],
+      "type": "guided-lab",
+      "briefing": "A candidate reports an August 2024 frontend interview, published December 30, 2025, covering product listings, ratings, cart state, persistence, and inventory updates. Design a storefront with product discovery, reviews, and a persistent cart. This exercise adapts a public candidate report; company attribution and interview details are not independently verified. The practice constraints and follow-ups are Codematica additions. Use your own timer and drawing tool: 45 minutes designing, 10 minutes handling follow-ups, and 5 minutes reviewing. No coding is required. Your design is not automatically graded; reflection text is transient. The related lesson contains the source and shared rubric.",
+      "objectives": [
+        "Distinguish products from purchasable variants. Define cart lines, quantities, prices, and availability.",
+        "Draw listing → product detail → cart, showing URL state, cached server data, and unsaved interaction state.",
+        "State the cart merge policy. Explain which values the server must validate before purchase and how the UI communicates changes without silently discarding user choices."
+      ],
+      "prediction": {
+        "prompt": "Which area is most likely to expose a weakness in your first design?",
+        "options": [
+          {
+            "id": "state",
+            "label": "State ownership or conflicting changes."
+          },
+          {
+            "id": "recovery",
+            "label": "An uncertain request outcome or recovery gap."
+          },
+          {
+            "id": "experience",
+            "label": "Performance or accessibility under the stated constraints."
+          }
+        ]
+      },
+      "steps": [
+        {
+          "id": "scope",
+          "title": "0–7 minutes: clarify the scope",
+          "instructions": "Design a storefront with product discovery, reviews, and a persistent cart. Identify two main journeys, required devices, freshness, permissions, and exclusions. Separate requirements from assumptions."
+        },
+        {
+          "id": "architecture",
+          "title": "7–20 minutes: draw the architecture",
+          "instructions": "Draw listing → product detail → cart, showing URL state, cached server data, and unsaved interaction state. Assign state owners and component inputs/events. Include loading, empty, and error states."
+        },
+        {
+          "id": "contracts",
+          "title": "20–30 minutes: define data and APIs",
+          "instructions": "Distinguish products from purchasable variants. Define cart lines, quantities, prices, and availability. Specify one read and one write, including identities, response fields, cache policy, and safe retry conditions."
+        },
+        {
+          "id": "trace",
+          "title": "30–45 minutes: trace behavior and recovery",
+          "instructions": "Trace one interaction from input to confirmed state, then fail a request. State the cart merge policy. Explain which values the server must validate before purchase and how the UI communicates changes without silently discarding user choices."
+        },
+        {
+          "id": "follow-ups",
+          "title": "45–55 minutes: handle follow-ups",
+          "instructions": "A guest signs in with an existing account cart. A product sells out. Prices change. Two browser tabs update the cart. Pick the hardest case and show which decisions change. State any unresolved limits."
+        },
+        {
+          "id": "review",
+          "title": "55–60 minutes: review your evidence",
+          "instructions": "Score scope, components, state and data, APIs and consistency, failure recovery, and quality and trade-offs. Use 0: missing, 1: mentioned, 2: explained with a concrete decision and consequence. Check only evidence you can show. Choose the weakest dimension and redraw it; this is not an employer hiring threshold."
+        }
+      ],
+      "evidenceChecklist": [
+        {
+          "id": "scope",
+          "label": "I stated the main journeys, assumptions, and exclusions."
+        },
+        {
+          "id": "components",
+          "label": "I drew component responsibilities and interaction contracts."
+        },
+        {
+          "id": "state",
+          "label": "I assigned state owners, stable identities, and invariants."
+        },
+        {
+          "id": "contracts",
+          "label": "I defined reads, writes, caching, and reconciliation."
+        },
+        {
+          "id": "recovery",
+          "label": "I traced one failure through usable recovery."
+        },
+        {
+          "id": "quality",
+          "label": "I defended accessibility, performance, measurement, and alternatives."
+        },
+        {
+          "id": "scenario",
+          "label": "I defined guest/account cart merging and traced a price or inventory change before purchase."
+        }
+      ],
+      "reflectionPrompts": [
+        "State the cart merge policy. Explain which values the server must validate before purchase and how the UI communicates changes without silently discarding user choices.",
+        "Which decision changed after a follow-up, and what requirement caused it?",
+        "Which dimension was weakest, and what will you redraw next time?"
+      ],
+      "extensionChallenge": "Defend your rendering choices, then change the assumption: discovery must work on a slow mobile connection while cart updates arrive from another tab.",
+      "estimatedMinutes": 60,
+      "id": "18024a8eb152",
+      "route": "/practice/frontend/system-design-shopping-lab",
+      "sourcePath": "content/exercises/frontend/system-design-shopping-lab.json",
+      "contentHash": "f8d6beef7b1fbeced4536fa1aef5397eabdb52a2b16a43f16c16cb2b7495071f"
     },
     {
       "slug": "languages/japanese-everyday-navigator-checkpoint",
@@ -168107,7 +169346,7 @@
     {
       "name": "Front-End Development",
       "slug": "front-end-development",
-      "documentCount": 24,
+      "documentCount": 31,
       "difficulties": [
         "foundation",
         "practitioner",
@@ -168126,7 +169365,8 @@
         "Next.js Rendering",
         "Next.js Route Segment Config",
         "React State",
-        "RTK Query"
+        "RTK Query",
+        "System Design Interviews"
       ]
     },
     {

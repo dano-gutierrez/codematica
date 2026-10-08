@@ -1,0 +1,121 @@
+{
+  "slug": "frontend-system-design-interviews",
+  "title": "Frontend System Design Interviews",
+  "summary": "Rehearse six public candidate-reported design topics with concise briefs, diagrams, guided whiteboard exercises, and a shared self-review rubric.",
+  "kind": "skill",
+  "category": "Front-End Development",
+  "audience": "Frontend engineers preparing for collaborative system design interviews without coding.",
+  "status": "published",
+  "sourcePolicy": "required",
+  "sourceRefs": [
+    "frontend-design-report-amazon",
+    "frontend-design-report-atlassian",
+    "frontend-design-report-wayfair",
+    "frontend-design-report-adobe",
+    "frontend-design-report-salesforce",
+    "frontend-design-report-uber"
+  ],
+  "units": [
+    {
+      "slug": "rehearsal",
+      "title": "Run and Review a Rehearsal",
+      "summary": "Set up the whiteboard, distinguish reported evidence from adaptations, and use the shared rubric.",
+      "nodes": [
+        {
+          "kind": "document",
+          "slug": "frontend/system-design-interview-rehearsal"
+        }
+      ]
+    },
+    {
+      "slug": "learning-game",
+      "title": "Amazon — Picture-and-Word Learning Game",
+      "summary": "Design a mobile-first picture-and-word learning app with answer feedback and session progress.",
+      "nodes": [
+        {
+          "kind": "document",
+          "slug": "frontend/system-design-learning-game"
+        },
+        {
+          "kind": "exercise",
+          "slug": "frontend/system-design-learning-game-lab"
+        }
+      ]
+    },
+    {
+      "slug": "kanban",
+      "title": "Atlassian — Collaborative Kanban Board",
+      "summary": "Design a board where users create cards, move them between columns, and see teammates’ changes.",
+      "nodes": [
+        {
+          "kind": "document",
+          "slug": "frontend/system-design-kanban"
+        },
+        {
+          "kind": "exercise",
+          "slug": "frontend/system-design-kanban-lab"
+        }
+      ]
+    },
+    {
+      "slug": "shopping",
+      "title": "Wayfair — Shopping Application",
+      "summary": "Design a storefront with product discovery, reviews, and a persistent cart.",
+      "nodes": [
+        {
+          "kind": "document",
+          "slug": "frontend/system-design-shopping"
+        },
+        {
+          "kind": "exercise",
+          "slug": "frontend/system-design-shopping-lab"
+        }
+      ]
+    },
+    {
+      "slug": "file-manager",
+      "title": "Adobe — Browser File Manager",
+      "summary": "Design a file manager with folder navigation, search, rename, move, and upload.",
+      "nodes": [
+        {
+          "kind": "document",
+          "slug": "frontend/system-design-file-manager"
+        },
+        {
+          "kind": "exercise",
+          "slug": "frontend/system-design-file-manager-lab"
+        }
+      ]
+    },
+    {
+      "slug": "messaging",
+      "title": "Salesforce — WhatsApp-Style Web Messaging",
+      "summary": "Design a messaging client with conversation history, sending, delivery status, and reconnect recovery.",
+      "nodes": [
+        {
+          "kind": "document",
+          "slug": "frontend/system-design-messaging"
+        },
+        {
+          "kind": "exercise",
+          "slug": "frontend/system-design-messaging-lab"
+        }
+      ]
+    },
+    {
+      "slug": "calendar",
+      "title": "Uber — Calendar Application",
+      "summary": "Design a calendar with month/week views, event creation, editing, and recurring meetings.",
+      "nodes": [
+        {
+          "kind": "document",
+          "slug": "frontend/system-design-calendar"
+        },
+        {
+          "kind": "exercise",
+          "slug": "frontend/system-design-calendar-lab"
+        }
+      ]
+    }
+  ]
+}

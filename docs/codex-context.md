@@ -153,6 +153,8 @@ LinkedIn posts are a separate optional Supabase-backed admin feature, documented
 
 ## Frontend interview curriculum
 
+Read `docs/features/frontend-system-design-interviews.md` for six candidate-reported whiteboard topics. The `frontend-system-design-interviews` path uses existing Markdown and guided labs; attribution is unverified, and practice additions are labeled. This is separate from the coding curriculum below.
+
 Read `docs/features/frontend-interview-practice.md` for the seven-topic path. Index v11 adds interview path nodes, optional final-feed navigation, web-track Python companions, and review snippet languages. Complete solution code is canonical in interview JSON; concepts live in Markdown. `npm run test:interview:python` requires Python and executes authored snippets.
 
 The supplementary `frontend/react-state-async-callbacks` lesson and its six-question checkpoint use the existing reader and questionnaire. Its standalone broken/fixed examples are canonical Markdown fences, typechecked and executed by `ReactAsyncStateLesson.test.tsx`; they are not duplicated in interview JSON.
