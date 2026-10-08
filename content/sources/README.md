@@ -62,3 +62,5 @@ The same catalog includes PostgreSQL 17 ranges, `btree_gist`, partial exclusion 
 `selected-evidence-review.json` records27 selected primary references, pinned OpenJev/Unity commits and dated Java23/Blender5.2/OIDC/RFC9700/vendor scope. DDD and Blender prose licenses come from inspected statements; code and weight terms remain separate. No saved-post body, course attachment or upstream implementation is copied.
 
 `frontend-system-design-interviews.json` links six first-person candidate accounts. These are primary evidence of the authors’ reports, not official company questions or authoritative technical solutions. Preserve author attribution, known publication/interview dates, the source-check date, and unverified details; public access does not establish redistribution rights. Rehearsal prompts are paraphrased and additions labeled.
+
+`frontend-system-design-guide.json` records twelve primary technical references from React, TanStack, MDN, web.dev, W3C, and OWASP. The guide reuses the existing MDN AbortController/WebSocket records, for fourteen references total. Keep these technical sources separate from candidate interview accounts.

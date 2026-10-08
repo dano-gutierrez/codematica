@@ -1,7 +1,7 @@
 {
   "slug": "frontend-system-design-interviews",
   "title": "Frontend System Design Interviews",
-  "summary": "Rehearse six public candidate-reported design topics with concise briefs, diagrams, guided whiteboard exercises, and a shared self-review rubric.",
+  "summary": "Learn frontend architecture decisions, then rehearse six public candidate-reported design topics with diagrams, guided whiteboard exercises, and a shared rubric.",
   "kind": "skill",
   "category": "Front-End Development",
   "audience": "Frontend engineers preparing for collaborative system design interviews without coding.",
@@ -13,9 +13,34 @@
     "frontend-design-report-wayfair",
     "frontend-design-report-adobe",
     "frontend-design-report-salesforce",
-    "frontend-design-report-uber"
+    "frontend-design-report-uber",
+    "frontend-guide-state",
+    "frontend-guide-query-keys",
+    "frontend-guide-http-cache",
+    "frontend-guide-rendering",
+    "frontend-guide-server-components",
+    "frontend-guide-keyboard",
+    "frontend-guide-authorization",
+    "frontend-guide-web-vitals",
+    "frontend-guide-combobox",
+    "frontend-guide-optimistic-updates",
+    "frontend-guide-if-match",
+    "frontend-guide-sse",
+    "product-interview-abort-controller",
+    "product-interview-websocket"
   ],
   "units": [
+    {
+      "slug": "architecture-guide",
+      "title": "Frontend System Design Interview Guide",
+      "summary": "Review component architecture, data flow, APIs, caching, rendering, and three illustrated examples.",
+      "nodes": [
+        {
+          "kind": "document",
+          "slug": "frontend/system-design-interview-guide"
+        }
+      ]
+    },
     {
       "slug": "rehearsal",
       "title": "Run and Review a Rehearsal",

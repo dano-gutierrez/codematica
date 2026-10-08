@@ -32,7 +32,7 @@ Conventions:
 - `docs/features/database-indexes-learning-path.md` owns the database indexes, PostgreSQL HOT updates, PostgreSQL search, and connection-pooling path, including local lessons, quizzes, passive flashcards, and future SQL editor roadmap boundaries.
 - `docs/features/advanced-nextjs-16-learning-path.md` owns the advanced Front-End Development skill path for Next.js 16 rendering, caching, `force-dynamic`, invalidation, performance, migration, quizzes, and one-minute brief cards.
 - `docs/features/rtk-query-interview-preparation.md` owns the RTK Query interview path, seven sourced lessons, 42 scenario questions, 21 briefs, and versioned persistence case study.
-- [Frontend System Design Interviews](features/frontend-system-design-interviews.md) owns six attributed whiteboard briefs, the 60-minute guided rehearsals, source caveats, and shared self-review rubric.
+- [Frontend System Design Interviews](features/frontend-system-design-interviews.md) owns the full architecture guide with three illustrated examples, six attributed whiteboard briefs, the 60-minute guided rehearsals, source caveats, and shared self-review rubric.
 - `docs/features/product-engineering-interview-preparation.md` owns the Product Engineering research brief, plain JavaScript/durable workflow drills, 75-minute guided mock, 18 checkpoint questions, and twelve review cards.
 - `docs/features/interview-coding-catalog.md` owns company and anonymous real-world interview collections, guided algorithm walkthroughs, and frontend practice solutions.
 - [Partitioned Event Log Interview](features/partitioned-event-log-interview.md): candidate-attempt review, three TS/Python implementations, global-offset/cursor reasoning, checkpoint and scrolling review.

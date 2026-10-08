@@ -10,6 +10,8 @@ sourceRefs: [frontend-design-report-amazon, frontend-design-report-atlassian, fr
 status: published
 ---
 
+Start with the [Frontend System Design Interview Guide](/docs/frontend/system-design-interview-guide?path=frontend-system-design-interviews) for architecture decisions and illustrated examples. This lesson supplies the schedule and rubric for the six guided rehearsals.
+
 Practice six frontend system design interviews using public candidate accounts. Company attribution and interview details are not independently verified. Sources were checked October 8, 2026; a check date does not establish that a company still asks a question. These are reported preparation topics, not an official question bank.
 
 Prompts are paraphrased. Practice constraints, follow-ups, diagrams, and review criteria are Codematica additions unless labeled as reported. Adobe’s file-manager scope and Uber’s frontend calendar scope are adaptations. No source article, employer solution, or hiring rubric is reproduced.

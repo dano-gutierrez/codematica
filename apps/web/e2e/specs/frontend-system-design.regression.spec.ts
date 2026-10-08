@@ -11,13 +11,33 @@ const cases = [
   { topic: "calendar", company: "Uber", diagrams: 0, source: "https://leetcode.com/discuss/post/1746929/uber-l4-nyc-did-not-get-offer/", evidence: "I distinguished recurring series from occurrences and traced a time-zone or concurrent-edit case." },
 ];
 
-test("@regression discovers the frontend system design path and shared rehearsal rubric", async ({ page }) => {
+test("@regression discovers the full frontend design guide and continues to the rehearsal rubric", async ({ page }) => {
   await page.goto("/browse");
-  await page.getByTestId("knowledge-search-input").fill("Frontend System Design Interview Rehearsal");
-  await expect(page.getByTestId("search-results").getByRole("heading", { name: "Frontend System Design Interview Rehearsal", exact: true })).toBeVisible();
+  await page.getByTestId("knowledge-search-input").fill("Frontend System Design Interview Guide");
+  await expect(page.getByTestId("search-results").getByRole("heading", { name: "Frontend System Design Interview Guide", exact: true })).toBeVisible();
   await page.goto("/paths");
   await page.getByTestId(`path-card-${pathSlug}`).getByRole("link", { name: /Open path/i }).click();
-  await page.getByTestId("path-node-document-frontend-system-design-interview-rehearsal").click();
+  await page.getByTestId("path-node-document-frontend-system-design-interview-guide").click();
+  await expect(page.getByRole("heading", { level: 1 })).toHaveText("Frontend System Design Interview Guide");
+  for (const name of ["Design components and state", "Define API contracts", "Choose cache policies", "Choose rendering per route", "Include quality"]) {
+    await expect(page.getByRole("heading", { name, exact: true })).toBeVisible();
+  }
+  await page.getByTestId("source-references-toggle").click();
+  await expect(page.getByTestId("source-references").getByRole("link")).toHaveCount(14);
+  await expect(page.getByTestId("mermaid-diagram")).toHaveCount(3);
+  await expect(page.getByTestId("mermaid-error")).toHaveCount(0);
+  for (const [index, label] of ["Search field", "Feed viewport", "412 Precondition Failed"].entries()) {
+    await expect(page.getByTestId("mermaid-diagram").nth(index)).toContainText(label);
+    const diagram = page.getByRole("group", { name: "Diagram", exact: true }).nth(index);
+    await diagram.focus();
+    await diagram.press("ArrowRight");
+    await expect.poll(() => diagram.evaluate(element => element.scrollLeft)).toBeGreaterThan(0);
+    await diagram.screenshot({ path: test.info().outputPath(`guide-diagram-${index + 1}.png`) });
+  }
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
+  await page.reload();
+  await expect(page.getByTestId("document-next-node")).toHaveAttribute("href", `/docs/${prefix}interview-rehearsal?path=${pathSlug}`);
+  await page.getByTestId("document-next-node").click();
   await expect(page.getByRole("heading", { name: "Review evidence", exact: true })).toBeVisible();
   await expect(page.getByTestId("markdown-renderer")).toContainText("not an employer hiring threshold");
   await expect(page.getByTestId("document-next-node")).toHaveAttribute("href", `/docs/${prefix}learning-game?path=${pathSlug}`);

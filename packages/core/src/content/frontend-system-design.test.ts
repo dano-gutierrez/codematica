@@ -20,6 +20,7 @@ describe("Frontend System Design Interviews", () => {
     expect(path?.sourcePolicy).toBe("required");
     const nodes = path!.units.flatMap(unit => unit.nodes);
     expect(nodes).toEqual([
+      { kind: "document", slug: `${prefix}interview-guide` },
       { kind: "document", slug: `${prefix}interview-rehearsal` },
       ...cases.flatMap(([topic]) => [
         { kind: "document", slug: `${prefix}${topic}` },
@@ -32,6 +33,23 @@ describe("Frontend System Design Interviews", () => {
       );
     }
     expect(searchDiscovery(getContentIndex(), "Frontend System Design Interviews").map(item => item.route)).toContain(`/paths/${pathSlug}`);
+  });
+
+  it("starts with the full architecture guide, its three examples, and technical sources", () => {
+    const guide = getDocumentBySlug(`${prefix}interview-guide`);
+    expect(guide?.title).toBe("Frontend System Design Interview Guide");
+    expect(guide?.status).toBe("published");
+    for (const heading of ["Use the hour deliberately", "Clarify requirements", "Design components and state", "Define API contracts", "Choose cache policies", "Choose rendering per route", "Include quality", "Example 1: Product search with autocomplete", "Example 2: A social feed", "Example 3: A collaborative task board"]) {
+      expect(guide?.markdown).toContain(`## ${heading}`);
+    }
+    expect(guide?.markdown.match(/```mermaid/g)).toHaveLength(3);
+    expect(guide?.sourceRefs).toHaveLength(14);
+    expect(guide?.sourceRefs?.map(id => getSourceById(id)?.url)).toContain("https://web.dev/articles/vitals");
+    expect(guide?.markdown).toContain("LCP ≤ 2.5 seconds, INP ≤ 200 milliseconds, and CLS ≤ 0.1");
+    expect(guide?.markdown).toContain("75th percentile");
+    expect(guide?.markdown).toContain("412 Precondition Failed");
+    expect(guide?.markdown).toContain("/docs/frontend/system-design-interview-rehearsal?path=frontend-system-design-interviews");
+    expect(searchDiscovery(getContentIndex(), "Frontend System Design Interview Guide").map(item => item.route)).toContain(`/docs/${prefix}interview-guide`);
   });
 
   it.each(cases)("publishes %s as a sourced, self-assessed whiteboard lab (%s)", (topic, company, url) => {

@@ -5432,6 +5432,126 @@
       "contentHash": "4c3469d88c964cca2170a6eed045d6abb68c5a564d5dcedccf67326dc51c9521"
     },
     {
+      "id": "frontend-guide-authorization",
+      "title": "Authorization Cheat Sheet",
+      "provider": "OWASP",
+      "url": "https://cheatsheetseries.owasp.org/cheatsheets/Authorization_Cheat_Sheet.html",
+      "attribution": "OWASP contributors. Server-side authorization on every request.",
+      "lastVerifiedAt": "2026-10-08",
+      "sourcePath": "content/sources/frontend-system-design-guide.json",
+      "contentHash": "ae0292ad2e7884f7d06764161bab59de2e01391eac2e2a7058d06e3aa47056f9"
+    },
+    {
+      "id": "frontend-guide-combobox",
+      "title": "Combobox Pattern",
+      "provider": "W3C WAI",
+      "url": "https://www.w3.org/WAI/ARIA/apg/patterns/combobox/",
+      "attribution": "W3C WAI ARIA Authoring Practices Guide. Combobox focus and keyboard behavior.",
+      "lastVerifiedAt": "2026-10-08",
+      "sourcePath": "content/sources/frontend-system-design-guide.json",
+      "contentHash": "ae0292ad2e7884f7d06764161bab59de2e01391eac2e2a7058d06e3aa47056f9"
+    },
+    {
+      "id": "frontend-guide-http-cache",
+      "title": "HTTP caching",
+      "provider": "MDN Web Docs",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/Caching",
+      "attribution": "MDN contributors. HTTP cache directives and conditional revalidation.",
+      "lastVerifiedAt": "2026-10-08",
+      "sourcePath": "content/sources/frontend-system-design-guide.json",
+      "contentHash": "ae0292ad2e7884f7d06764161bab59de2e01391eac2e2a7058d06e3aa47056f9"
+    },
+    {
+      "id": "frontend-guide-if-match",
+      "title": "If-Match header",
+      "provider": "MDN Web Docs",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/If-Match",
+      "attribution": "MDN contributors. Strong ETag comparison and conditional writes.",
+      "lastVerifiedAt": "2026-10-08",
+      "sourcePath": "content/sources/frontend-system-design-guide.json",
+      "contentHash": "ae0292ad2e7884f7d06764161bab59de2e01391eac2e2a7058d06e3aa47056f9"
+    },
+    {
+      "id": "frontend-guide-keyboard",
+      "title": "Developing a Keyboard Interface",
+      "provider": "W3C WAI",
+      "url": "https://www.w3.org/WAI/ARIA/apg/practices/keyboard-interface/",
+      "attribution": "W3C WAI ARIA Authoring Practices Guide. Keyboard support must be implemented for custom ARIA widgets.",
+      "lastVerifiedAt": "2026-10-08",
+      "sourcePath": "content/sources/frontend-system-design-guide.json",
+      "contentHash": "ae0292ad2e7884f7d06764161bab59de2e01391eac2e2a7058d06e3aa47056f9"
+    },
+    {
+      "id": "frontend-guide-optimistic-updates",
+      "title": "Optimistic Updates",
+      "provider": "TanStack Query",
+      "url": "https://tanstack.com/query/latest/docs/framework/react/guides/optimistic-updates",
+      "attribution": "TanStack Query documentation. Optimistic UI, rollback and reconciliation. Rechecked against the maintainer source at https://github.com/TanStack/query/blob/main/docs/framework/react/guides/optimistic-updates.md because the documentation fetch failed.",
+      "lastVerifiedAt": "2026-10-08",
+      "sourcePath": "content/sources/frontend-system-design-guide.json",
+      "contentHash": "ae0292ad2e7884f7d06764161bab59de2e01391eac2e2a7058d06e3aa47056f9"
+    },
+    {
+      "id": "frontend-guide-query-keys",
+      "title": "Query Keys",
+      "provider": "TanStack Query",
+      "url": "https://tanstack.com/query/latest/docs/framework/react/guides/query-keys",
+      "attribution": "TanStack Query documentation. Query identity includes variables that change the fetched result.",
+      "lastVerifiedAt": "2026-10-08",
+      "sourcePath": "content/sources/frontend-system-design-guide.json",
+      "contentHash": "ae0292ad2e7884f7d06764161bab59de2e01391eac2e2a7058d06e3aa47056f9"
+    },
+    {
+      "id": "frontend-guide-rendering",
+      "title": "Rendering on the Web",
+      "provider": "web.dev",
+      "url": "https://web.dev/articles/rendering-on-the-web",
+      "attribution": "web.dev authors. Static, server, client, and hybrid rendering trade-offs.",
+      "lastVerifiedAt": "2026-10-08",
+      "sourcePath": "content/sources/frontend-system-design-guide.json",
+      "contentHash": "ae0292ad2e7884f7d06764161bab59de2e01391eac2e2a7058d06e3aa47056f9"
+    },
+    {
+      "id": "frontend-guide-server-components",
+      "title": "Server Components",
+      "provider": "React",
+      "url": "https://react.dev/reference/rsc/server-components",
+      "attribution": "React documentation. Server Component execution, browser bundles, and interactive client components.",
+      "lastVerifiedAt": "2026-10-08",
+      "sourcePath": "content/sources/frontend-system-design-guide.json",
+      "contentHash": "ae0292ad2e7884f7d06764161bab59de2e01391eac2e2a7058d06e3aa47056f9"
+    },
+    {
+      "id": "frontend-guide-sse",
+      "title": "Using server-sent events",
+      "provider": "MDN Web Docs",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events/Using_server-sent_events",
+      "attribution": "MDN contributors. One-way server-to-client events; replay guarantees must be supplied by the application.",
+      "lastVerifiedAt": "2026-10-08",
+      "sourcePath": "content/sources/frontend-system-design-guide.json",
+      "contentHash": "ae0292ad2e7884f7d06764161bab59de2e01391eac2e2a7058d06e3aa47056f9"
+    },
+    {
+      "id": "frontend-guide-state",
+      "title": "Choosing the State Structure",
+      "provider": "React",
+      "url": "https://react.dev/learn/choosing-the-state-structure",
+      "attribution": "React documentation. Derived values and avoiding duplicated or contradictory state.",
+      "lastVerifiedAt": "2026-10-08",
+      "sourcePath": "content/sources/frontend-system-design-guide.json",
+      "contentHash": "ae0292ad2e7884f7d06764161bab59de2e01391eac2e2a7058d06e3aa47056f9"
+    },
+    {
+      "id": "frontend-guide-web-vitals",
+      "title": "Web Vitals",
+      "provider": "web.dev",
+      "url": "https://web.dev/articles/vitals",
+      "attribution": "Philip Walton, web.dev. Core Web Vitals thresholds and the 75th percentile, segmented by device type.",
+      "lastVerifiedAt": "2026-10-08",
+      "sourcePath": "content/sources/frontend-system-design-guide.json",
+      "contentHash": "ae0292ad2e7884f7d06764161bab59de2e01391eac2e2a7058d06e3aa47056f9"
+    },
+    {
       "id": "frontend-python-async",
       "title": "Coroutines and Tasks",
       "provider": "Python",
@@ -10706,6 +10826,119 @@
       "readingMinutes": 2
     },
     {
+      "title": "Frontend System Design Interview Guide",
+      "slug": "frontend/system-design-interview-guide",
+      "summary": "Prepare for a collaborative whiteboard interview with architecture decisions, state and API models, caching, rendering, and three illustrated examples.",
+      "track": "Front-End Development",
+      "topic": "System Design Interviews",
+      "difficulty": "senior",
+      "tags": [
+        "frontend",
+        "system-design",
+        "interview",
+        "architecture",
+        "whiteboard"
+      ],
+      "prerequisites": [],
+      "diagramRefs": [],
+      "sourceRefs": [
+        "frontend-guide-state",
+        "frontend-guide-query-keys",
+        "frontend-guide-http-cache",
+        "frontend-guide-rendering",
+        "frontend-guide-server-components",
+        "frontend-guide-keyboard",
+        "frontend-guide-authorization",
+        "frontend-guide-web-vitals",
+        "product-interview-abort-controller",
+        "frontend-guide-combobox",
+        "frontend-guide-optimistic-updates",
+        "frontend-guide-if-match",
+        "frontend-guide-sse",
+        "product-interview-websocket"
+      ],
+      "status": "published",
+      "id": "96e0cb874cb2",
+      "route": "/docs/frontend/system-design-interview-guide",
+      "sourcePath": "content/knowledge/frontend/system-design-interview-guide.md",
+      "bodyPath": "content/knowledge/frontend/system-design-interview-guide.md",
+      "markdown": "Connect **user journeys, component boundaries, state ownership, API contracts, and failure recovery**. Explain how each decision meets the requirements and adapt when they change.\n\nPrepare for a **60-minute collaborative whiteboard interview with no coding**. Technical references checked **October 8, 2026**; the example architectures and APIs are illustrative.\n\n## Use the hour deliberately\n\nAdjust this schedule to the interviewer’s priorities.\n\n| Time | Focus | What to put on the board |\n|---|---|---|\n| 0–7 min | Clarify requirements | Main users, two critical journeys, constraints, exclusions |\n| 7–15 min | Sketch architecture | UI regions, component responsibilities, browser/server boundary |\n| 15–25 min | Model data and contracts | Entities, state ownership, reads, writes |\n| 25–43 min | Explore the hardest decisions | Rendering, caching, concurrency, performance |\n| 43–55 min | Test the design against failures | Slow requests, conflicts, disconnection, accessibility |\n| 55–60 min | Recap | Main trade-offs, remaining risks, next validation step |\n\nA useful opening:\n\n> “I’ll clarify the main journeys, sketch the architecture, and trace one read and one write. Then we can explore the areas you consider most important.”\n\n## Clarify requirements\n\nBefore choosing tools, ask what changes the architecture:\n\n- **Experience:** What must users accomplish? Which journey matters most?\n- **Environment:** Mobile, desktop, low-end devices, supported browsers?\n- **Scale:** How many items are loaded, visible, or updated per second? How many concurrent editors?\n- **Freshness:** Can users see slightly stale data? Which actions need confirmed server results?\n- **Continuity:** Must URLs be shareable? Must drafts survive reloads? Is offline editing required?\n- **Delivery:** Does public content need search indexing? Are authentication and permissions involved?\n\nSeparate requirements from assumptions. Estimate quantities only when they affect a decision.\n\n## Design components and state\n\nStart with the page shell, feature regions, and reusable controls. Define each component’s responsibility, inputs, events, state, and loading/error behavior.\n\nFor search, the field owns draft text and keyboard interaction; the page coordinates committed filters; the data layer owns requests and cached results. Separate business rules from visual controls.\n\nAssign each piece of state an owner and derive values when possible. Avoid independently editable copies of the same entity. [React’s state guidance](https://react.dev/learn/choosing-the-state-structure)\n\n| State | Typical owner | Examples |\n|---|---|---|\n| Local interaction | Nearest relevant component | Open menu, focused item |\n| Navigation | URL | Query, filters, sort, selected record |\n| Server data | Query/cache layer | Products, posts, permissions |\n| Shared client state | Feature or app store, when needed | Unsaved workflow spanning several screens |\n| Durable draft | Persistence layer, if required | Recoverable form or offline edits |\n\n## Define API contracts\n\nFor an important read and write, specify:\n\n- Request parameters and response fields.\n- Stable identifiers, ordering, pagination, and version information.\n- Loading, empty, forbidden, failed, and stale UI states.\n- Cancellation, retry conditions, and reconciliation after writes.\n- Whether repeated requests are safe; define server deduplication before retrying non-idempotent operations.\n\nChoose REST, GraphQL, or a frontend-specific aggregation endpoint based on data needs and existing infrastructure. Aggregation can reduce browser request chains but adds a service to operate.\n\n## Choose cache policies\n\nCaching is a consistency decision: define the cache location, key, freshness policy, and invalidation trigger.\n\nQuery keys must distinguish inputs that change results: account, query, filters, and sort. Scope private data to the current identity and clear it when the identity changes. [Query-key guidance](https://tanstack.com/query/latest/docs/framework/react/guides/query-keys)\n\nHTTP caching is a separate layer:\n\n- `no-cache` permits storage but requires validation before reuse.\n- `no-store` prohibits storage.\n- `private` prevents shared-cache storage.\n- `ETag` supports conditional validation.\n\nChoose these explicitly for public assets, public content, and personalized responses. [MDN HTTP caching](https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/Caching)\n\n## Choose rendering per route\n\n| Approach | Useful when | Cost to discuss |\n|---|---|---|\n| Static generation | Public content changes infrequently | Freshness and regeneration |\n| Server rendering | Initial HTML and discoverability matter | Server latency, caching, hydration |\n| Client rendering | Rich interaction dominates | JavaScript cost and initial data loading |\n\nCombine approaches where useful. Hydration attaches client behavior to server-rendered HTML, so visible content can precede usable controls. [Rendering trade-offs](https://web.dev/articles/rendering-on-the-web)\n\nFor React roles, distinguish **Server Components** from SSR: Server Components keep their implementation code outside the browser bundle; SSR produces initial HTML. Interactive behavior still needs client components. [React Server Components](https://react.dev/reference/rsc/server-components)\n\n## Include quality\n\n- **Performance:** Reduce request chains, split heavy features, size images, and render only what is needed. Virtualization reduces mounted elements; pagination limits fetched data. Bound memory separately.\n- **Accessibility:** Specify semantic controls, keyboard behavior, focus restoration, and announced errors. ARIA alone does not implement keyboard interaction. [W3C keyboard guidance](https://www.w3.org/WAI/ARIA/apg/practices/keyboard-interface/)\n- **Security:** The server must authorize every request; hidden buttons do not enforce permissions. [OWASP authorization guidance](https://cheatsheetseries.owasp.org/cheatsheets/Authorization_Cheat_Sheet.html)\n- **Reliability:** Preserve usable content during refresh failures, retain unsaved input, and offer meaningful recovery.\n- **Validation:** Test state transitions and request races below the browser; test critical journeys, keyboard operation, and recovery end to end.\n\nMeasure real users. Current “good” Core Web Vitals thresholds are **LCP ≤ 2.5 seconds, INP ≤ 200 milliseconds, and CLS ≤ 0.1**, assessed at the **75th percentile**, separately for mobile and desktop. Also measure product outcomes such as search latency and failed saves. [Web Vitals](https://web.dev/articles/vitals)\n\n## Example 1: Product search with autocomplete\n\nPractice component design, request races, URL state, and caching.\n\n```mermaid\nflowchart LR\n    Input[\"Search field<br/>draft text\"] --> Controller[\"Search controller<br/>debounce and cancel\"]\n    Filters[\"URL query and filters\"] --> Controller\n    Controller --> Cache[\"Query cache\"]\n    Cache <-->|\"Search request / results\"| API[\"Search API\"]\n    Cache --> Results[\"Suggestions and product grid\"]\n    Results -->|\"Commit selection\"| Filters\n```\n\n- **Components:** Search field, suggestion list, filters, results grid, pagination.\n- **Model:** Product identifiers plus display fields; results include `items`, `nextCursor`, and available facets.\n- **Contract:** `GET /search?q=...&filters=...&sort=...&cursor=...`.\n- **Flow:** Update typing immediately; debounce network requests. Cancel obsolete work with `AbortController`, and ensure only results matching the active query can appear. The browser supports cancellation; this design adds the active-query check. [AbortController](https://developer.mozilla.org/en-US/docs/Web/API/AbortController)\n- **Accessibility:** Define arrow-key navigation, Enter selection, Escape dismissal, and focus behavior using the combobox pattern. [W3C combobox guidance](https://www.w3.org/WAI/ARIA/apg/patterns/combobox/)\n- **Trade-off:** A longer debounce reduces requests but delays suggestions. Choose it through measurement.\n- **Regression to describe:** An older, slower response must not replace newer results.\n\n**Rehearse:** “The catalog grows from thousands to millions of products.” Move filtering and ranking to the server; keep the browser’s result and rendering budgets bounded.\n\n## Example 2: A social feed\n\nPractice pagination, memory, optimistic updates, and scroll continuity.\n\n```mermaid\nflowchart LR\n    Feed[\"Feed viewport\"] --> Pages[\"Cached pages<br/>ordered post IDs\"]\n    Pages <-->|\"Cursor requests\"| API[\"Feed API\"]\n    Pages --> Cards[\"Post cards\"]\n    Cards -->|\"Like intent\"| Pending[\"Pending mutation\"]\n    Pending -->|\"Write\"| API\n    API -->|\"Canonical result\"| Pages\n    CDN[\"Media CDN\"] --> Cards\n```\n\n- **Components:** Feed page, post list, post card, composer, media viewer.\n- **Model:** `Post{id, authorId, body, media, likedByMe, likeCount}`; pages contain ordered IDs and a cursor.\n- **Pagination:** Define stable ordering or a server snapshot contract. A cursor alone does not prevent gaps when rankings change. Deduplicate overlapping pages by post ID.\n- **Interaction:** Show a like immediately, then reconcile with the server. On failure, remove the failed optimistic change or refetch. Restoring an entire old snapshot can erase newer concurrent work. [Optimistic-update patterns](https://tanstack.com/query/latest/docs/framework/react/guides/optimistic-updates)\n- **Continuity:** Preserve the reading position. Offer a “New posts” control instead of inserting content above the reader unexpectedly.\n- **Trade-off:** Virtualization improves large-list performance but complicates variable heights, focus, and scroll restoration.\n- **Regression to describe:** A failed like must not undo a later successful interaction.\n\n**Rehearse:** “A user scrolls for an hour on a low-memory phone.” Bound cached pages and decoded media as well as DOM nodes, while retaining enough position information for recovery.\n\n## Example 3: A collaborative task board\n\nPractice shared state, concurrent edits, optimistic UI, and reconnect behavior.\n\n```mermaid\nsequenceDiagram\n    participant U as User\n    participant C as Board client\n    participant S as Board API\n    participant O as Other clients\n    U->>C: Move a card\n    C->>C: Show pending move\n    C->>S: PATCH board with If-Match and operationId\n    alt Version matches\n        S-->>C: Canonical board and new version\n        S-->>O: Committed change event\n        C->>C: Reconcile pending move\n    else Version changed\n        S-->>C: 412 Precondition Failed\n        C->>S: Fetch latest board\n        C->>C: Preserve intent and offer retry\n    end\n```\n\n- **Components:** Board, columns, cards, details panel, connection status.\n- **Model:** `Board{id, revision}`, `Column{id, boardId}`, `Card{id, columnId, rank}`. Keep pending operations separate from confirmed server state.\n- **Concurrency:** Send the board’s strong `ETag` through `If-Match`. The server atomically checks the precondition and applies the move; a mismatch returns `412 Precondition Failed`. [Conditional updates](https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/If-Match)\n- **Transport:** HTTP writes plus server-sent events can support server-pushed board changes. Consider WebSockets when frequent bidirectional interaction warrants them. [SSE](https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events/Using_server-sent_events), [WebSockets](https://developer.mozilla.org/en-US/docs/Web/API/WebSockets_API)\n- **Recovery:** Load a snapshot with its revision, then request events after that revision. Define replay and deduplication in the server contract. If replay is unavailable or a gap appears, fetch a fresh snapshot.\n- **Accessibility:** Provide keyboard and menu-based moves alongside dragging.\n- **Trade-off:** One board-wide version simplifies correctness but causes conflicts between otherwise independent edits. Introduce finer concurrency rules when contention justifies them.\n- **Regression to describe:** Two users move the same card while one disconnects; reconnecting must converge on confirmed state without applying an operation twice.\n\n**Rehearse:** “Offline editing becomes mandatory.” Add durable pending operations, visible sync status, and an explicit conflict policy before promising seamless recovery.\n\n## Explain decisions\n\n> “Given this requirement, I choose this approach because of this benefit; the cost is this trade-off, and I would revisit it if this condition changed.”\n\nTest your diagramming tool and screen sharing before the interview. Rehearse one example in 45 minutes, then spend 15 minutes changing its requirements. Draw boundaries, label arrows, and trace one success and one failure so others can challenge your reasoning.\n\nContinue with the [rehearsal schedule and self-review rubric](/docs/frontend/system-design-interview-rehearsal?path=frontend-system-design-interviews), then the six reported-interview exercises. Those guided labs use a separate 45/10/5 practice schedule.",
+      "plainText": "Connect user journeys, component boundaries, state ownership, API contracts, and failure recovery. Explain how each decision meets the requirements and adapt when they change. Prepare for a 60-minute collaborative whiteboard interview with no coding. Technical references checked October 8, 2026; the example architectures and APIs are illustrative. Use the hour deliberately Adjust this schedule to the interviewer’s priorities. | Time | Focus | What to put on the board | |---|---|---| | 0–7 min | Clarify requirements | Main users, two critical journeys, constraints, exclusions | | 7–15 min | Sketch architecture | UI regions, component responsibilities, browser/server boundary | | 15–25 min | Model data and contracts | Entities, state ownership, reads, writes | | 25–43 min | Explore the hardest decisions | Rendering, caching, concurrency, performance | | 43–55 min | Test the design against failures | Slow requests, conflicts, disconnection, accessibility | | 55–60 min | Recap | Main trade-offs, remaining risks, next validation step | A useful opening: “I’ll clarify the main journeys, sketch the architecture, and trace one read and one write. Then we can explore the areas you consider most important.” Clarify requirements Before choosing tools, ask what changes the architecture: Experience: What must users accomplish? Which journey matters most?Environment: Mobile, desktop, low-end devices, supported browsers?Scale: How many items are loaded, visible, or updated per second? How many concurrent editors?Freshness: Can users see slightly stale data? Which actions need confirmed server results?Continuity: Must URLs be shareable? Must drafts survive reloads? Is offline editing required?Delivery: Does public content need search indexing? Are authentication and permissions involved? Separate requirements from assumptions. Estimate quantities only when they affect a decision. Design components and state Start with the page shell, feature regions, and reusable controls. Define each component’s responsibility, inputs, events, state, and loading/error behavior. For search, the field owns draft text and keyboard interaction; the page coordinates committed filters; the data layer owns requests and cached results. Separate business rules from visual controls. Assign each piece of state an owner and derive values when possible. Avoid independently editable copies of the same entity. React’s state guidance | State | Typical owner | Examples | |---|---|---| | Local interaction | Nearest relevant component | Open menu, focused item | | Navigation | URL | Query, filters, sort, selected record | | Server data | Query/cache layer | Products, posts, permissions | | Shared client state | Feature or app store, when needed | Unsaved workflow spanning several screens | | Durable draft | Persistence layer, if required | Recoverable form or offline edits | Define API contracts For an important read and write, specify: Request parameters and response fields.Stable identifiers, ordering, pagination, and version information.Loading, empty, forbidden, failed, and stale UI states.Cancellation, retry conditions, and reconciliation after writes.Whether repeated requests are safe; define server deduplication before retrying non-idempotent operations. Choose REST, GraphQL, or a frontend-specific aggregation endpoint based on data needs and existing infrastructure. Aggregation can reduce browser request chains but adds a service to operate. Choose cache policies Caching is a consistency decision: define the cache location, key, freshness policy, and invalidation trigger. Query keys must distinguish inputs that change results: account, query, filters, and sort. Scope private data to the current identity and clear it when the identity changes. Query-key guidance HTTP caching is a separate layer: no-cache permits storage but requires validation before reuse.no-store prohibits storage.private prevents shared-cache storage.ETag supports conditional validation. Choose these explicitly for public assets, public content, and personalized responses. MDN HTTP caching Choose rendering per route | Approach | Useful when | Cost to discuss | |---|---|---| | Static generation | Public content changes infrequently | Freshness and regeneration | | Server rendering | Initial HTML and discoverability matter | Server latency, caching, hydration | | Client rendering | Rich interaction dominates | JavaScript cost and initial data loading | Combine approaches where useful. Hydration attaches client behavior to server-rendered HTML, so visible content can precede usable controls. Rendering trade-offs For React roles, distinguish Server Components from SSR: Server Components keep their implementation code outside the browser bundle; SSR produces initial HTML. Interactive behavior still needs client components. React Server Components Include quality Performance: Reduce request chains, split heavy features, size images, and render only what is needed. Virtualization reduces mounted elements; pagination limits fetched data. Bound memory separately.Accessibility: Specify semantic controls, keyboard behavior, focus restoration, and announced errors. ARIA alone does not implement keyboard interaction. W3C keyboard guidanceSecurity: The server must authorize every request; hidden buttons do not enforce permissions. OWASP authorization guidanceReliability: Preserve usable content during refresh failures, retain unsaved input, and offer meaningful recovery.Validation: Test state transitions and request races below the browser; test critical journeys, keyboard operation, and recovery end to end. Measure real users. Current “good” Core Web Vitals thresholds are LCP ≤ 2.5 seconds, INP ≤ 200 milliseconds, and CLS ≤ 0.1, assessed at the 75th percentile, separately for mobile and desktop. Also measure product outcomes such as search latency and failed saves. Web Vitals Example 1: Product search with autocomplete Practice component design, request races, URL state, and caching. flowchart LR Input[\"Search field<br/>draft text\"] --> Controller[\"Search controller<br/>debounce and cancel\"] Filters[\"URL query and filters\"] --> Controller Controller --> Cache[\"Query cache\"] Cache <-->|\"Search request / results\"| API[\"Search API\"] Cache --> Results[\"Suggestions and product grid\"] Results -->|\"Commit selection\"| Filters Components: Search field, suggestion list, filters, results grid, pagination.Model: Product identifiers plus display fields; results include items, nextCursor, and available facets.Contract: GET /search?q=...&filters=...&sort=...&cursor=....Flow: Update typing immediately; debounce network requests. Cancel obsolete work with AbortController, and ensure only results matching the active query can appear. The browser supports cancellation; this design adds the active-query check. AbortControllerAccessibility: Define arrow-key navigation, Enter selection, Escape dismissal, and focus behavior using the combobox pattern. W3C combobox guidanceTrade-off: A longer debounce reduces requests but delays suggestions. Choose it through measurement.Regression to describe: An older, slower response must not replace newer results. Rehearse: “The catalog grows from thousands to millions of products.” Move filtering and ranking to the server; keep the browser’s result and rendering budgets bounded. Example 2: A social feed Practice pagination, memory, optimistic updates, and scroll continuity. flowchart LR Feed[\"Feed viewport\"] --> Pages[\"Cached pages<br/>ordered post IDs\"] Pages <-->|\"Cursor requests\"| API[\"Feed API\"] Pages --> Cards[\"Post cards\"] Cards -->|\"Like intent\"| Pending[\"Pending mutation\"] Pending -->|\"Write\"| API API -->|\"Canonical result\"| Pages CDN[\"Media CDN\"] --> Cards Components: Feed page, post list, post card, composer, media viewer.Model: Post{id, authorId, body, media, likedByMe, likeCount}; pages contain ordered IDs and a cursor.Pagination: Define stable ordering or a server snapshot contract. A cursor alone does not prevent gaps when rankings change. Deduplicate overlapping pages by post ID.Interaction: Show a like immediately, then reconcile with the server. On failure, remove the failed optimistic change or refetch. Restoring an entire old snapshot can erase newer concurrent work. Optimistic-update patternsContinuity: Preserve the reading position. Offer a “New posts” control instead of inserting content above the reader unexpectedly.Trade-off: Virtualization improves large-list performance but complicates variable heights, focus, and scroll restoration.Regression to describe: A failed like must not undo a later successful interaction. Rehearse: “A user scrolls for an hour on a low-memory phone.” Bound cached pages and decoded media as well as DOM nodes, while retaining enough position information for recovery. Example 3: A collaborative task board Practice shared state, concurrent edits, optimistic UI, and reconnect behavior. sequenceDiagram participant U as User participant C as Board client participant S as Board API participant O as Other clients U->>C: Move a card C->>C: Show pending move C->>S: PATCH board with If-Match and operationId alt Version matches S-->>C: Canonical board and new version S-->>O: Committed change event C->>C: Reconcile pending move else Version changed S-->>C: 412 Precondition Failed C->>S: Fetch latest board C->>C: Preserve intent and offer retry end Components: Board, columns, cards, details panel, connection status.Model: Board{id, revision}, Column{id, boardId}, Card{id, columnId, rank}. Keep pending operations separate from confirmed server state.Concurrency: Send the board’s strong ETag through If-Match. The server atomically checks the precondition and applies the move; a mismatch returns 412 Precondition Failed. Conditional updatesTransport: HTTP writes plus server-sent events can support server-pushed board changes. Consider WebSockets when frequent bidirectional interaction warrants them. SSE, WebSocketsRecovery: Load a snapshot with its revision, then request events after that revision. Define replay and deduplication in the server contract. If replay is unavailable or a gap appears, fetch a fresh snapshot.Accessibility: Provide keyboard and menu-based moves alongside dragging.Trade-off: One board-wide version simplifies correctness but causes conflicts between otherwise independent edits. Introduce finer concurrency rules when contention justifies them.Regression to describe: Two users move the same card while one disconnects; reconnecting must converge on confirmed state without applying an operation twice. Rehearse: “Offline editing becomes mandatory.” Add durable pending operations, visible sync status, and an explicit conflict policy before promising seamless recovery. Explain decisions “Given this requirement, I choose this approach because of this benefit; the cost is this trade-off, and I would revisit it if this condition changed.” Test your diagramming tool and screen sharing before the interview. Rehearse one example in 45 minutes, then spend 15 minutes changing its requirements. Draw boundaries, label arrows, and trace one success and one failure so others can challenge your reasoning. Continue with the rehearsal schedule and self-review rubric, then the six reported-interview exercises. Those guided labs use a separate 45/10/5 practice schedule.",
+      "headings": [
+        {
+          "id": "use-the-hour-deliberately",
+          "depth": 2,
+          "text": "Use the hour deliberately"
+        },
+        {
+          "id": "clarify-requirements",
+          "depth": 2,
+          "text": "Clarify requirements"
+        },
+        {
+          "id": "design-components-and-state",
+          "depth": 2,
+          "text": "Design components and state"
+        },
+        {
+          "id": "define-api-contracts",
+          "depth": 2,
+          "text": "Define API contracts"
+        },
+        {
+          "id": "choose-cache-policies",
+          "depth": 2,
+          "text": "Choose cache policies"
+        },
+        {
+          "id": "choose-rendering-per-route",
+          "depth": 2,
+          "text": "Choose rendering per route"
+        },
+        {
+          "id": "include-quality",
+          "depth": 2,
+          "text": "Include quality"
+        },
+        {
+          "id": "example-1-product-search-with-autocomplete",
+          "depth": 2,
+          "text": "Example 1: Product search with autocomplete"
+        },
+        {
+          "id": "example-2-a-social-feed",
+          "depth": 2,
+          "text": "Example 2: A social feed"
+        },
+        {
+          "id": "example-3-a-collaborative-task-board",
+          "depth": 2,
+          "text": "Example 3: A collaborative task board"
+        },
+        {
+          "id": "explain-decisions",
+          "depth": 2,
+          "text": "Explain decisions"
+        }
+      ],
+      "mermaidBlocks": [
+        {
+          "id": "embedded-1",
+          "source": "flowchart LR\n    Input[\"Search field<br/>draft text\"] --> Controller[\"Search controller<br/>debounce and cancel\"]\n    Filters[\"URL query and filters\"] --> Controller\n    Controller --> Cache[\"Query cache\"]\n    Cache <-->|\"Search request / results\"| API[\"Search API\"]\n    Cache --> Results[\"Suggestions and product grid\"]\n    Results -->|\"Commit selection\"| Filters"
+        },
+        {
+          "id": "embedded-2",
+          "source": "flowchart LR\n    Feed[\"Feed viewport\"] --> Pages[\"Cached pages<br/>ordered post IDs\"]\n    Pages <-->|\"Cursor requests\"| API[\"Feed API\"]\n    Pages --> Cards[\"Post cards\"]\n    Cards -->|\"Like intent\"| Pending[\"Pending mutation\"]\n    Pending -->|\"Write\"| API\n    API -->|\"Canonical result\"| Pages\n    CDN[\"Media CDN\"] --> Cards"
+        },
+        {
+          "id": "embedded-3",
+          "source": "sequenceDiagram\n    participant U as User\n    participant C as Board client\n    participant S as Board API\n    participant O as Other clients\n    U->>C: Move a card\n    C->>C: Show pending move\n    C->>S: PATCH board with If-Match and operationId\n    alt Version matches\n        S-->>C: Canonical board and new version\n        S-->>O: Committed change event\n        C->>C: Reconcile pending move\n    else Version changed\n        S-->>C: 412 Precondition Failed\n        C->>S: Fetch latest board\n        C->>C: Preserve intent and offer retry\n    end"
+        }
+      ],
+      "contentHash": "155b42b6110808e3a64bd8d33cc687cdc16ce8742d35c6dbeb037dec7da0a446",
+      "readingMinutes": 8
+    },
+    {
       "title": "Frontend System Design Interview Rehearsal",
       "slug": "frontend/system-design-interview-rehearsal",
       "summary": "Run six source-attributed whiteboard rehearsals with a 60-minute schedule, explicit evidence limits, and a shared self-review rubric.",
@@ -10734,8 +10967,8 @@
       "route": "/docs/frontend/system-design-interview-rehearsal",
       "sourcePath": "content/knowledge/frontend/system-design-interview-rehearsal.md",
       "bodyPath": "content/knowledge/frontend/system-design-interview-rehearsal.md",
-      "markdown": "Practice six frontend system design interviews using public candidate accounts. Company attribution and interview details are not independently verified. Sources were checked October 8, 2026; a check date does not establish that a company still asks a question. These are reported preparation topics, not an official question bank.\n\nPrompts are paraphrased. Practice constraints, follow-ups, diagrams, and review criteria are Codematica additions unless labeled as reported. Adobe’s file-manager scope and Uber’s frontend calendar scope are adaptations. No source article, employer solution, or hiring rubric is reproduced.\n\n## Run a 60-minute rehearsal\n\nSpend **45 minutes designing, 10 minutes handling follow-ups, and 5 minutes reviewing**. Use your own timer and drawing tool; no coding is required. Test screen sharing before a remote mock. Produce a component diagram, a data model, API contracts, and one failure-recovery flow.\n\n| Time | Activity | Evidence |\n| --- | --- | --- |\n| 0–7 minutes | Clarify the main journeys and constraints. | Requirements, assumptions, and exclusions |\n| 7–20 minutes | Draw components and state owners. | Responsibilities and interaction contracts |\n| 20–30 minutes | Define the data and APIs. | Identities, reads, writes, caching, and consistency |\n| 30–45 minutes | Trace an interaction and a failure. | A usable recovery path and its limits |\n| 45–55 minutes | Introduce the exercise’s follow-ups. | Decisions that must change and why |\n| 55–60 minutes | Score the evidence and choose a retry focus. | One weak dimension and a concrete improvement |\n\nKeep the discussion collaborative and let the interviewer redirect it. For a solo attempt, stop reading at the follow-ups until minute 45. Use the starting diagrams as prompts to challenge, not complete solutions.\n\n## Exercises\n\n- [Amazon — Picture-and-Word Learning Game](/docs/frontend/system-design-learning-game?path=frontend-system-design-interviews)\n- [Atlassian — Collaborative Kanban Board](/docs/frontend/system-design-kanban?path=frontend-system-design-interviews)\n- [Wayfair — Shopping Application](/docs/frontend/system-design-shopping?path=frontend-system-design-interviews)\n- [Adobe — Browser File Manager](/docs/frontend/system-design-file-manager?path=frontend-system-design-interviews)\n- [Salesforce — WhatsApp-Style Web Messaging](/docs/frontend/system-design-messaging?path=frontend-system-design-interviews)\n- [Uber — Calendar Application](/docs/frontend/system-design-calendar?path=frontend-system-design-interviews)\n\n## Review evidence\n\nScore each dimension **0: missing, 1: mentioned, 2: explained with a concrete decision and consequence**. This is a practice rubric, not an employer hiring threshold.\n\n| Dimension | Evidence to look for |\n| --- | --- |\n| Scope | Clear journeys, assumptions, and exclusions |\n| Components | Responsibilities and interaction contracts |\n| State and data | Explicit owners, identities, and invariants |\n| APIs and consistency | Read/write contracts, caching, and reconciliation |\n| Failure recovery | A complete failure path with usable recovery |\n| Quality and trade-offs | Accessibility, performance, measurement, and alternatives |\n\nAfter each attempt, choose the weakest dimension and redraw that part. On the next attempt, introduce a follow-up halfway through and explain which decisions must change.\n\nThe guided labs are not automatically graded and do not certify interview readiness. Select a prediction, perform the rehearsal, then check only evidence you can show. The app stores coarse completion; reflection text stays transient and is lost on reload or restart. Keep diagrams and any notes you want to retain in your own tool.",
-      "plainText": "Practice six frontend system design interviews using public candidate accounts. Company attribution and interview details are not independently verified. Sources were checked October 8, 2026; a check date does not establish that a company still asks a question. These are reported preparation topics, not an official question bank. Prompts are paraphrased. Practice constraints, follow-ups, diagrams, and review criteria are Codematica additions unless labeled as reported. Adobe’s file-manager scope and Uber’s frontend calendar scope are adaptations. No source article, employer solution, or hiring rubric is reproduced. Run a 60-minute rehearsal Spend 45 minutes designing, 10 minutes handling follow-ups, and 5 minutes reviewing. Use your own timer and drawing tool; no coding is required. Test screen sharing before a remote mock. Produce a component diagram, a data model, API contracts, and one failure-recovery flow. | Time | Activity | Evidence | | --- | --- | --- | | 0–7 minutes | Clarify the main journeys and constraints. | Requirements, assumptions, and exclusions | | 7–20 minutes | Draw components and state owners. | Responsibilities and interaction contracts | | 20–30 minutes | Define the data and APIs. | Identities, reads, writes, caching, and consistency | | 30–45 minutes | Trace an interaction and a failure. | A usable recovery path and its limits | | 45–55 minutes | Introduce the exercise’s follow-ups. | Decisions that must change and why | | 55–60 minutes | Score the evidence and choose a retry focus. | One weak dimension and a concrete improvement | Keep the discussion collaborative and let the interviewer redirect it. For a solo attempt, stop reading at the follow-ups until minute 45. Use the starting diagrams as prompts to challenge, not complete solutions. Exercises Amazon — Picture-and-Word Learning GameAtlassian — Collaborative Kanban BoardWayfair — Shopping ApplicationAdobe — Browser File ManagerSalesforce — WhatsApp-Style Web MessagingUber — Calendar Application Review evidence Score each dimension 0: missing, 1: mentioned, 2: explained with a concrete decision and consequence. This is a practice rubric, not an employer hiring threshold. | Dimension | Evidence to look for | | --- | --- | | Scope | Clear journeys, assumptions, and exclusions | | Components | Responsibilities and interaction contracts | | State and data | Explicit owners, identities, and invariants | | APIs and consistency | Read/write contracts, caching, and reconciliation | | Failure recovery | A complete failure path with usable recovery | | Quality and trade-offs | Accessibility, performance, measurement, and alternatives | After each attempt, choose the weakest dimension and redraw that part. On the next attempt, introduce a follow-up halfway through and explain which decisions must change. The guided labs are not automatically graded and do not certify interview readiness. Select a prediction, perform the rehearsal, then check only evidence you can show. The app stores coarse completion; reflection text stays transient and is lost on reload or restart. Keep diagrams and any notes you want to retain in your own tool.",
+      "markdown": "Start with the [Frontend System Design Interview Guide](/docs/frontend/system-design-interview-guide?path=frontend-system-design-interviews) for architecture decisions and illustrated examples. This lesson supplies the schedule and rubric for the six guided rehearsals.\n\nPractice six frontend system design interviews using public candidate accounts. Company attribution and interview details are not independently verified. Sources were checked October 8, 2026; a check date does not establish that a company still asks a question. These are reported preparation topics, not an official question bank.\n\nPrompts are paraphrased. Practice constraints, follow-ups, diagrams, and review criteria are Codematica additions unless labeled as reported. Adobe’s file-manager scope and Uber’s frontend calendar scope are adaptations. No source article, employer solution, or hiring rubric is reproduced.\n\n## Run a 60-minute rehearsal\n\nSpend **45 minutes designing, 10 minutes handling follow-ups, and 5 minutes reviewing**. Use your own timer and drawing tool; no coding is required. Test screen sharing before a remote mock. Produce a component diagram, a data model, API contracts, and one failure-recovery flow.\n\n| Time | Activity | Evidence |\n| --- | --- | --- |\n| 0–7 minutes | Clarify the main journeys and constraints. | Requirements, assumptions, and exclusions |\n| 7–20 minutes | Draw components and state owners. | Responsibilities and interaction contracts |\n| 20–30 minutes | Define the data and APIs. | Identities, reads, writes, caching, and consistency |\n| 30–45 minutes | Trace an interaction and a failure. | A usable recovery path and its limits |\n| 45–55 minutes | Introduce the exercise’s follow-ups. | Decisions that must change and why |\n| 55–60 minutes | Score the evidence and choose a retry focus. | One weak dimension and a concrete improvement |\n\nKeep the discussion collaborative and let the interviewer redirect it. For a solo attempt, stop reading at the follow-ups until minute 45. Use the starting diagrams as prompts to challenge, not complete solutions.\n\n## Exercises\n\n- [Amazon — Picture-and-Word Learning Game](/docs/frontend/system-design-learning-game?path=frontend-system-design-interviews)\n- [Atlassian — Collaborative Kanban Board](/docs/frontend/system-design-kanban?path=frontend-system-design-interviews)\n- [Wayfair — Shopping Application](/docs/frontend/system-design-shopping?path=frontend-system-design-interviews)\n- [Adobe — Browser File Manager](/docs/frontend/system-design-file-manager?path=frontend-system-design-interviews)\n- [Salesforce — WhatsApp-Style Web Messaging](/docs/frontend/system-design-messaging?path=frontend-system-design-interviews)\n- [Uber — Calendar Application](/docs/frontend/system-design-calendar?path=frontend-system-design-interviews)\n\n## Review evidence\n\nScore each dimension **0: missing, 1: mentioned, 2: explained with a concrete decision and consequence**. This is a practice rubric, not an employer hiring threshold.\n\n| Dimension | Evidence to look for |\n| --- | --- |\n| Scope | Clear journeys, assumptions, and exclusions |\n| Components | Responsibilities and interaction contracts |\n| State and data | Explicit owners, identities, and invariants |\n| APIs and consistency | Read/write contracts, caching, and reconciliation |\n| Failure recovery | A complete failure path with usable recovery |\n| Quality and trade-offs | Accessibility, performance, measurement, and alternatives |\n\nAfter each attempt, choose the weakest dimension and redraw that part. On the next attempt, introduce a follow-up halfway through and explain which decisions must change.\n\nThe guided labs are not automatically graded and do not certify interview readiness. Select a prediction, perform the rehearsal, then check only evidence you can show. The app stores coarse completion; reflection text stays transient and is lost on reload or restart. Keep diagrams and any notes you want to retain in your own tool.",
+      "plainText": "Start with the Frontend System Design Interview Guide for architecture decisions and illustrated examples. This lesson supplies the schedule and rubric for the six guided rehearsals. Practice six frontend system design interviews using public candidate accounts. Company attribution and interview details are not independently verified. Sources were checked October 8, 2026; a check date does not establish that a company still asks a question. These are reported preparation topics, not an official question bank. Prompts are paraphrased. Practice constraints, follow-ups, diagrams, and review criteria are Codematica additions unless labeled as reported. Adobe’s file-manager scope and Uber’s frontend calendar scope are adaptations. No source article, employer solution, or hiring rubric is reproduced. Run a 60-minute rehearsal Spend 45 minutes designing, 10 minutes handling follow-ups, and 5 minutes reviewing. Use your own timer and drawing tool; no coding is required. Test screen sharing before a remote mock. Produce a component diagram, a data model, API contracts, and one failure-recovery flow. | Time | Activity | Evidence | | --- | --- | --- | | 0–7 minutes | Clarify the main journeys and constraints. | Requirements, assumptions, and exclusions | | 7–20 minutes | Draw components and state owners. | Responsibilities and interaction contracts | | 20–30 minutes | Define the data and APIs. | Identities, reads, writes, caching, and consistency | | 30–45 minutes | Trace an interaction and a failure. | A usable recovery path and its limits | | 45–55 minutes | Introduce the exercise’s follow-ups. | Decisions that must change and why | | 55–60 minutes | Score the evidence and choose a retry focus. | One weak dimension and a concrete improvement | Keep the discussion collaborative and let the interviewer redirect it. For a solo attempt, stop reading at the follow-ups until minute 45. Use the starting diagrams as prompts to challenge, not complete solutions. Exercises Amazon — Picture-and-Word Learning GameAtlassian — Collaborative Kanban BoardWayfair — Shopping ApplicationAdobe — Browser File ManagerSalesforce — WhatsApp-Style Web MessagingUber — Calendar Application Review evidence Score each dimension 0: missing, 1: mentioned, 2: explained with a concrete decision and consequence. This is a practice rubric, not an employer hiring threshold. | Dimension | Evidence to look for | | --- | --- | | Scope | Clear journeys, assumptions, and exclusions | | Components | Responsibilities and interaction contracts | | State and data | Explicit owners, identities, and invariants | | APIs and consistency | Read/write contracts, caching, and reconciliation | | Failure recovery | A complete failure path with usable recovery | | Quality and trade-offs | Accessibility, performance, measurement, and alternatives | After each attempt, choose the weakest dimension and redraw that part. On the next attempt, introduce a follow-up halfway through and explain which decisions must change. The guided labs are not automatically graded and do not certify interview readiness. Select a prediction, perform the rehearsal, then check only evidence you can show. The app stores coarse completion; reflection text stays transient and is lost on reload or restart. Keep diagrams and any notes you want to retain in your own tool.",
       "headings": [
         {
           "id": "run-a-60-minute-rehearsal",
@@ -10754,7 +10987,7 @@
         }
       ],
       "mermaidBlocks": [],
-      "contentHash": "65dacbf280ce2fb159266d7a2b2e376a0dcc83762b866282b7a1ba1aad8c8d34",
+      "contentHash": "bc2c7b12207898f3ee95a8348a5586bd08ec9220cbcac0495849f236ee03d26a",
       "readingMinutes": 3
     },
     {
@@ -17737,7 +17970,7 @@
     {
       "slug": "frontend-system-design-interviews",
       "title": "Frontend System Design Interviews",
-      "summary": "Rehearse six public candidate-reported design topics with concise briefs, diagrams, guided whiteboard exercises, and a shared self-review rubric.",
+      "summary": "Learn frontend architecture decisions, then rehearse six public candidate-reported design topics with diagrams, guided whiteboard exercises, and a shared rubric.",
       "kind": "skill",
       "category": "Front-End Development",
       "audience": "Frontend engineers preparing for collaborative system design interviews without coding.",
@@ -17749,9 +17982,34 @@
         "frontend-design-report-wayfair",
         "frontend-design-report-adobe",
         "frontend-design-report-salesforce",
-        "frontend-design-report-uber"
+        "frontend-design-report-uber",
+        "frontend-guide-state",
+        "frontend-guide-query-keys",
+        "frontend-guide-http-cache",
+        "frontend-guide-rendering",
+        "frontend-guide-server-components",
+        "frontend-guide-keyboard",
+        "frontend-guide-authorization",
+        "frontend-guide-web-vitals",
+        "frontend-guide-combobox",
+        "frontend-guide-optimistic-updates",
+        "frontend-guide-if-match",
+        "frontend-guide-sse",
+        "product-interview-abort-controller",
+        "product-interview-websocket"
       ],
       "units": [
+        {
+          "slug": "architecture-guide",
+          "title": "Frontend System Design Interview Guide",
+          "summary": "Review component architecture, data flow, APIs, caching, rendering, and three illustrated examples.",
+          "nodes": [
+            {
+              "kind": "document",
+              "slug": "frontend/system-design-interview-guide"
+            }
+          ]
+        },
         {
           "slug": "rehearsal",
           "title": "Run and Review a Rehearsal",
@@ -17857,7 +18115,7 @@
       "id": "d11208847e72",
       "route": "/paths/frontend-system-design-interviews",
       "sourcePath": "content/learning-paths/frontend-system-design-interviews.json",
-      "contentHash": "494ee93062650f5fbc485f7145f1ce341e61d5cdd2aeb588f98ee40a7f5bb227"
+      "contentHash": "d84b1312cead2138f89aa01c160d64371e934fc7751138a533348d1fbbbea135"
     },
     {
       "slug": "japanese-foundations",
@@ -169346,7 +169604,7 @@
     {
       "name": "Front-End Development",
       "slug": "front-end-development",
-      "documentCount": 31,
+      "documentCount": 32,
       "difficulties": [
         "foundation",
         "practitioner",

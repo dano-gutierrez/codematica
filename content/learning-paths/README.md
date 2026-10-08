@@ -60,4 +60,4 @@ Systems Boundary Review has six source-required units and qualified skills for r
 
 Engineering Evidence Review, Creative Computing Review and Ownership And Funding Review contain seven, three and one source-required units. Each pairs an original lesson/checkpoint with an 80% threshold and qualified skill; previous curricula remain unchanged.
 
-`frontend-system-design-interviews.json` orders a shared rehearsal guide and six document/lab pairs, ending at the calendar lab. It uses existing guided labs and remains separate from the frontend coding path. Preserve all six public-report attributions and the Adobe/Uber scope adaptations.
+`frontend-system-design-interviews.json` orders the full architecture guide, shared rehearsal guide, and six document/lab pairs: 14 nodes ending at the calendar lab. It uses existing guided labs and remains separate from the frontend coding path. Preserve technical references, all six public-report attributions, and the Adobe/Uber scope adaptations.

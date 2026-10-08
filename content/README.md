@@ -14,4 +14,4 @@ See [Selected Evidence Review](../docs/features/selected-evidence-review.md) and
 
 ## Frontend system design interviews
 
-`knowledge/frontend/system-design-*.md` and matching guided labs provide six attributed whiteboard exercises. The dedicated path starts with a shared schedule and rubric. Candidate accounts remain unverified, and authored practice additions are labeled. See [the feature contract](../docs/features/frontend-system-design-interviews.md).
+`knowledge/frontend/system-design-*.md` and matching guided labs provide the full frontend interview guide and six attributed whiteboard exercises. The path starts with architecture decisions and three illustrated examples, followed by the rehearsal schedule and rubric. Technical references and unverified candidate reports remain distinct; authored practice additions are labeled. See [the feature contract](../docs/features/frontend-system-design-interviews.md).
