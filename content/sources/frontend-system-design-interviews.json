@@ -1,0 +1,52 @@
+{
+  "sources": [
+    {
+      "id": "frontend-design-report-amazon",
+      "title": "Candidate report — Amazon frontend interview",
+      "provider": "Reddit · isospeedrix",
+      "url": "https://www.reddit.com/r/cscareerquestions/comments/1iudddy/rainforest_loop_experience_frontend_l5_12_yoe/",
+      "attribution": "First-person candidate report by isospeedrix; publication date not verified. Company attribution and interview details are not independently verified.",
+      "lastVerifiedAt": "2026-10-08"
+    },
+    {
+      "id": "frontend-design-report-atlassian",
+      "title": "Candidate report — Atlassian frontend interview",
+      "provider": "FrontendLead Discuss · anon_717297",
+      "url": "https://discuss.frontendlead.com/t/atlassian-frontend-engineer-p40-onsite/2192",
+      "attribution": "First-person candidate report by anon_717297, published June 29, 2025. Company attribution and interview details are not independently verified.",
+      "lastVerifiedAt": "2026-10-08"
+    },
+    {
+      "id": "frontend-design-report-wayfair",
+      "title": "Candidate report — Wayfair frontend interview",
+      "provider": "Medium · Saumyadip Mandal",
+      "url": "https://saumyadip25.medium.com/wayfair-software-engineer-3-frontend-interview-experience-13112d221611",
+      "attribution": "First-person candidate report by Saumyadip Mandal, published December 30, 2025, describing August 2024 interviews. Company attribution and interview details are not independently verified.",
+      "lastVerifiedAt": "2026-10-08"
+    },
+    {
+      "id": "frontend-design-report-adobe",
+      "title": "Candidate report — Adobe frontend interview",
+      "provider": "FrontendLead Discuss · anon_511346",
+      "url": "https://discuss.frontendlead.com/t/adobe-senior-frontend-engineer-gen-studio-full-loop/3316",
+      "attribution": "First-person candidate report by anon_511346, published March 11, 2026, describing a December 2025–January 2026 loop. The file-system prompt has no detailed scope. Company attribution and interview details are not independently verified.",
+      "lastVerifiedAt": "2026-10-08"
+    },
+    {
+      "id": "frontend-design-report-salesforce",
+      "title": "Candidate report — Salesforce frontend interview",
+      "provider": "Medium · Saumyadip Mandal",
+      "url": "https://saumyadip25.medium.com/salesforce-smts-frontend-interview-experience-5cae01d6a594",
+      "attribution": "First-person candidate report by Saumyadip Mandal, published November 23, 2025. Reports a 60-minute WhatsApp Web round. Company attribution and interview details are not independently verified.",
+      "lastVerifiedAt": "2026-10-08"
+    },
+    {
+      "id": "frontend-design-report-uber",
+      "title": "Candidate report — Uber frontend interview",
+      "provider": "LeetCode Discuss · Anonymous User",
+      "url": "https://leetcode.com/discuss/post/1746929/uber-l4-nyc-did-not-get-offer/",
+      "attribution": "First-person candidate report by an Anonymous User; publication date not verified. The frontend exercise scope is an adaptation. Company attribution and interview details are not independently verified.",
+      "lastVerifiedAt": "2026-10-08"
+    }
+  ]
+}

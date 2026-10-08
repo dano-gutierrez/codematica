@@ -60,3 +60,5 @@ Programming Contract Review has four five-choice checkpoints covering value owne
 The six Systems Boundary Review checkpoints contain thirty original paper-trace choices. Keep request form, transport ordering, resource authority, version/offset/effect, full cursor tuple and memory permission boundaries distinct. No packet, SDK, broker, database or device operation runs in the app.
 
 Selected Evidence Review adds eleven five-question paper checkpoints. Preserve fictional assumptions, independent answer keys and path-scoped skills; grading runs no model, credential, payment, cloud or engine operation.
+
+`frontend/system-design-*-lab.json` contains six 60-minute whiteboard rehearsals. Keep source caveats in each briefing, retain scenario-specific follow-ups/evidence, and link the owning brief. Completion is self-assessed; the six-dimension rubric is not an automatic score or employer hiring threshold.

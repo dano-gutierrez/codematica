@@ -59,3 +59,5 @@ Programming Contract Review adds four original, source-required units with path-
 Systems Boundary Review has six source-required units and qualified skills for request identity, transport, API interaction, derived state, document queries and memory domains. Preserve prior path unit objects and terminal routes. Each lesson pairs five original choices with an 80% curriculum threshold; the paper traces are not installed protocol/database/kernel implementations.
 
 Engineering Evidence Review, Creative Computing Review and Ownership And Funding Review contain seven, three and one source-required units. Each pairs an original lesson/checkpoint with an 80% threshold and qualified skill; previous curricula remain unchanged.
+
+`frontend-system-design-interviews.json` orders the full architecture guide, shared rehearsal guide, and six document/lab pairs: 14 nodes ending at the calendar lab. It uses existing guided labs and remains separate from the frontend coding path. Preserve technical references, all six public-report attributions, and the Adobe/Uber scope adaptations.

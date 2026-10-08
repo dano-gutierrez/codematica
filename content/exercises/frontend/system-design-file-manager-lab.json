@@ -1,0 +1,111 @@
+{
+  "slug": "frontend/system-design-file-manager-lab",
+  "title": "Adobe — Browser File Manager Rehearsal",
+  "type": "guided-lab",
+  "documentSlug": "frontend/system-design-file-manager",
+  "concept": "Browser File Manager",
+  "difficulty": "senior",
+  "tags": [
+    "frontend",
+    "system-design",
+    "interview",
+    "whiteboard",
+    "adobe"
+  ],
+  "status": "published",
+  "sourceRefs": [
+    "frontend-design-report-adobe"
+  ],
+  "estimatedMinutes": 60,
+  "briefing": "A Senior Frontend Gen Studio candidate reports a file-system design prompt during a December 2025–January 2026 loop. The March 11, 2026 report does not specify its detailed scope; this browser file-manager exercise is a Codematica adaptation. Design a file manager with folder navigation, search, rename, move, and upload. This exercise adapts a public candidate report; company attribution and interview details are not independently verified. The practice constraints and follow-ups are Codematica additions. Use your own timer and drawing tool: 45 minutes designing, 10 minutes handling follow-ups, and 5 minutes reviewing. No coding is required. Your design is not automatically graded; reflection text is transient. The related lesson contains the source and shared rubric.",
+  "objectives": [
+    "Define stable file IDs, parent relationships, folder pagination, permissions, and upload state.",
+    "Draw tree navigation, folder contents, selection state, metadata requests, and a separate upload flow.",
+    "Explain lazy loading, bounded rendering, cache invalidation after moves, and partial failures. Do not assume a filename or path is a permanent identity."
+  ],
+  "prediction": {
+    "prompt": "Which area is most likely to expose a weakness in your first design?",
+    "options": [
+      {
+        "id": "state",
+        "label": "State ownership or conflicting changes."
+      },
+      {
+        "id": "recovery",
+        "label": "An uncertain request outcome or recovery gap."
+      },
+      {
+        "id": "experience",
+        "label": "Performance or accessibility under the stated constraints."
+      }
+    ]
+  },
+  "steps": [
+    {
+      "id": "scope",
+      "title": "0–7 minutes: clarify the scope",
+      "instructions": "Design a file manager with folder navigation, search, rename, move, and upload. Identify two main journeys, required devices, freshness, permissions, and exclusions. Separate requirements from assumptions."
+    },
+    {
+      "id": "architecture",
+      "title": "7–20 minutes: draw the architecture",
+      "instructions": "Draw tree navigation, folder contents, selection state, metadata requests, and a separate upload flow. Assign state owners and component inputs/events. Include loading, empty, and error states."
+    },
+    {
+      "id": "contracts",
+      "title": "20–30 minutes: define data and APIs",
+      "instructions": "Define stable file IDs, parent relationships, folder pagination, permissions, and upload state. Specify one read and one write, including identities, response fields, cache policy, and safe retry conditions."
+    },
+    {
+      "id": "trace",
+      "title": "30–45 minutes: trace behavior and recovery",
+      "instructions": "Trace one interaction from input to confirmed state, then fail a request. Explain lazy loading, bounded rendering, cache invalidation after moves, and partial failures. Do not assume a filename or path is a permanent identity."
+    },
+    {
+      "id": "follow-ups",
+      "title": "45–55 minutes: handle follow-ups",
+      "instructions": "A folder contains 100,000 files. A selected file moves elsewhere. An upload fails halfway. Access is revoked while the folder is open. Pick the hardest case and show which decisions change. State any unresolved limits."
+    },
+    {
+      "id": "review",
+      "title": "55–60 minutes: review your evidence",
+      "instructions": "Score scope, components, state and data, APIs and consistency, failure recovery, and quality and trade-offs. Use 0: missing, 1: mentioned, 2: explained with a concrete decision and consequence. Check only evidence you can show. Choose the weakest dimension and redraw it; this is not an employer hiring threshold."
+    }
+  ],
+  "evidenceChecklist": [
+    {
+      "id": "scope",
+      "label": "I stated the main journeys, assumptions, and exclusions."
+    },
+    {
+      "id": "components",
+      "label": "I drew component responsibilities and interaction contracts."
+    },
+    {
+      "id": "state",
+      "label": "I assigned state owners, stable identities, and invariants."
+    },
+    {
+      "id": "contracts",
+      "label": "I defined reads, writes, caching, and reconciliation."
+    },
+    {
+      "id": "recovery",
+      "label": "I traced one failure through usable recovery."
+    },
+    {
+      "id": "quality",
+      "label": "I defended accessibility, performance, measurement, and alternatives."
+    },
+    {
+      "id": "scenario",
+      "label": "I separated stable file identity from paths and traced a move, failed upload, or access revocation."
+    }
+  ],
+  "reflectionPrompts": [
+    "Explain lazy loading, bounded rendering, cache invalidation after moves, and partial failures. Do not assume a filename or path is a permanent identity.",
+    "Which decision changed after a follow-up, and what requirement caused it?",
+    "Which dimension was weakest, and what will you redraw next time?"
+  ],
+  "extensionChallenge": "Keep a selected file open while another user moves its parent folder and revokes access. Explain navigation, cache invalidation, and recovery."
+}

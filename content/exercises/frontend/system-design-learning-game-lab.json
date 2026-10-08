@@ -1,0 +1,111 @@
+{
+  "slug": "frontend/system-design-learning-game-lab",
+  "title": "Amazon — Picture-and-Word Learning Game Rehearsal",
+  "type": "guided-lab",
+  "documentSlug": "frontend/system-design-learning-game",
+  "concept": "Picture-and-Word Learning Game",
+  "difficulty": "senior",
+  "tags": [
+    "frontend",
+    "system-design",
+    "interview",
+    "whiteboard",
+    "amazon"
+  ],
+  "status": "published",
+  "sourceRefs": [
+    "frontend-design-report-amazon"
+  ],
+  "estimatedMinutes": 60,
+  "briefing": "An Amazon FEE L5 candidate reported two learning workflows: choose the picture matching a word, and type the word matching a picture. The discussion also covered architecture and asset delivery. Design a mobile-first learning app with both question types, answer feedback, and session progress. This exercise adapts a public candidate report; company attribution and interview details are not independently verified. The practice constraints and follow-ups are Codematica additions. Use your own timer and drawing tool: 45 minutes designing, 10 minutes handling follow-ups, and 5 minutes reviewing. No coding is required. Your design is not automatically graded; reflection text is transient. The related lesson contains the source and shared rubric.",
+  "objectives": [
+    "Define question types, answer state, grading ownership, image loading, and progress persistence.",
+    "Draw the session controller, question renderers, asset delivery, and progress API.",
+    "Can you add a question type without duplicating the session workflow? Can retrying a submission award progress twice?"
+  ],
+  "prediction": {
+    "prompt": "Which area is most likely to expose a weakness in your first design?",
+    "options": [
+      {
+        "id": "state",
+        "label": "State ownership or conflicting changes."
+      },
+      {
+        "id": "recovery",
+        "label": "An uncertain request outcome or recovery gap."
+      },
+      {
+        "id": "experience",
+        "label": "Performance or accessibility under the stated constraints."
+      }
+    ]
+  },
+  "steps": [
+    {
+      "id": "scope",
+      "title": "0–7 minutes: clarify the scope",
+      "instructions": "Design a mobile-first learning app with both question types, answer feedback, and session progress. Identify two main journeys, required devices, freshness, permissions, and exclusions. Separate requirements from assumptions."
+    },
+    {
+      "id": "architecture",
+      "title": "7–20 minutes: draw the architecture",
+      "instructions": "Draw the session controller, question renderers, asset delivery, and progress API. Assign state owners and component inputs/events. Include loading, empty, and error states."
+    },
+    {
+      "id": "contracts",
+      "title": "20–30 minutes: define data and APIs",
+      "instructions": "Define question types, answer state, grading ownership, image loading, and progress persistence. Specify one read and one write, including identities, response fields, cache policy, and safe retry conditions."
+    },
+    {
+      "id": "trace",
+      "title": "30–45 minutes: trace behavior and recovery",
+      "instructions": "Trace one interaction from input to confirmed state, then fail a request. Can you add a question type without duplicating the session workflow? Can retrying a submission award progress twice?"
+    },
+    {
+      "id": "follow-ups",
+      "title": "45–55 minutes: handle follow-ups",
+      "instructions": "An image fails to load. The user reloads after answering. A submission times out. Offline practice becomes required. Pick the hardest case and show which decisions change. State any unresolved limits."
+    },
+    {
+      "id": "review",
+      "title": "55–60 minutes: review your evidence",
+      "instructions": "Score scope, components, state and data, APIs and consistency, failure recovery, and quality and trade-offs. Use 0: missing, 1: mentioned, 2: explained with a concrete decision and consequence. Check only evidence you can show. Choose the weakest dimension and redraw it; this is not an employer hiring threshold."
+    }
+  ],
+  "evidenceChecklist": [
+    {
+      "id": "scope",
+      "label": "I stated the main journeys, assumptions, and exclusions."
+    },
+    {
+      "id": "components",
+      "label": "I drew component responsibilities and interaction contracts."
+    },
+    {
+      "id": "state",
+      "label": "I assigned state owners, stable identities, and invariants."
+    },
+    {
+      "id": "contracts",
+      "label": "I defined reads, writes, caching, and reconciliation."
+    },
+    {
+      "id": "recovery",
+      "label": "I traced one failure through usable recovery."
+    },
+    {
+      "id": "quality",
+      "label": "I defended accessibility, performance, measurement, and alternatives."
+    },
+    {
+      "id": "scenario",
+      "label": "I traced a timed-out answer submission and showed how retrying avoids duplicate progress."
+    }
+  ],
+  "reflectionPrompts": [
+    "Can you add a question type without duplicating the session workflow? Can retrying a submission award progress twice?",
+    "Which decision changed after a follow-up, and what requirement caused it?",
+    "Which dimension was weakest, and what will you redraw next time?"
+  ],
+  "extensionChallenge": "Add a third question type and offline practice. Explain which session rules remain shared and how unsynced progress is reconciled."
+}

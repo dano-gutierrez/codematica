@@ -326,6 +326,8 @@ The opt-in preparation migration keeps inference on the Mac and saves only immut
 
 ## Frontend Interview Study Flow
 
+The [Frontend System Design Interviews](features/frontend-system-design-interviews.md) path starts with the full architecture guide, then a rehearsal guide and six source-attributed brief → guided-lab pairs through the existing index, reader, and practice flow. It adds no runtime boundary or persistence contract. Technical references and candidate reports remain distinct from authored constraints and self-assessment.
+
 Index v11 resolves interview path nodes alongside documents and exercises. Optional Python companions remain structured interview content; anonymous browsing and progress boundaries are unchanged. Exact authored code is verified before indexing/release. See `docs/features/frontend-interview-practice.md`.
 
 ```mermaid

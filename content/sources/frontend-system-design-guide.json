@@ -1,0 +1,100 @@
+{
+  "sources": [
+    {
+      "id": "frontend-guide-state",
+      "title": "Choosing the State Structure",
+      "provider": "React",
+      "url": "https://react.dev/learn/choosing-the-state-structure",
+      "attribution": "React documentation. Derived values and avoiding duplicated or contradictory state.",
+      "lastVerifiedAt": "2026-10-08"
+    },
+    {
+      "id": "frontend-guide-query-keys",
+      "title": "Query Keys",
+      "provider": "TanStack Query",
+      "url": "https://tanstack.com/query/latest/docs/framework/react/guides/query-keys",
+      "attribution": "TanStack Query documentation. Query identity includes variables that change the fetched result.",
+      "lastVerifiedAt": "2026-10-08"
+    },
+    {
+      "id": "frontend-guide-http-cache",
+      "title": "HTTP caching",
+      "provider": "MDN Web Docs",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/Caching",
+      "attribution": "MDN contributors. HTTP cache directives and conditional revalidation.",
+      "lastVerifiedAt": "2026-10-08"
+    },
+    {
+      "id": "frontend-guide-rendering",
+      "title": "Rendering on the Web",
+      "provider": "web.dev",
+      "url": "https://web.dev/articles/rendering-on-the-web",
+      "attribution": "web.dev authors. Static, server, client, and hybrid rendering trade-offs.",
+      "lastVerifiedAt": "2026-10-08"
+    },
+    {
+      "id": "frontend-guide-server-components",
+      "title": "Server Components",
+      "provider": "React",
+      "url": "https://react.dev/reference/rsc/server-components",
+      "attribution": "React documentation. Server Component execution, browser bundles, and interactive client components.",
+      "lastVerifiedAt": "2026-10-08"
+    },
+    {
+      "id": "frontend-guide-keyboard",
+      "title": "Developing a Keyboard Interface",
+      "provider": "W3C WAI",
+      "url": "https://www.w3.org/WAI/ARIA/apg/practices/keyboard-interface/",
+      "attribution": "W3C WAI ARIA Authoring Practices Guide. Keyboard support must be implemented for custom ARIA widgets.",
+      "lastVerifiedAt": "2026-10-08"
+    },
+    {
+      "id": "frontend-guide-authorization",
+      "title": "Authorization Cheat Sheet",
+      "provider": "OWASP",
+      "url": "https://cheatsheetseries.owasp.org/cheatsheets/Authorization_Cheat_Sheet.html",
+      "attribution": "OWASP contributors. Server-side authorization on every request.",
+      "lastVerifiedAt": "2026-10-08"
+    },
+    {
+      "id": "frontend-guide-web-vitals",
+      "title": "Web Vitals",
+      "provider": "web.dev",
+      "url": "https://web.dev/articles/vitals",
+      "attribution": "Philip Walton, web.dev. Core Web Vitals thresholds and the 75th percentile, segmented by device type.",
+      "lastVerifiedAt": "2026-10-08"
+    },
+    {
+      "id": "frontend-guide-combobox",
+      "title": "Combobox Pattern",
+      "provider": "W3C WAI",
+      "url": "https://www.w3.org/WAI/ARIA/apg/patterns/combobox/",
+      "attribution": "W3C WAI ARIA Authoring Practices Guide. Combobox focus and keyboard behavior.",
+      "lastVerifiedAt": "2026-10-08"
+    },
+    {
+      "id": "frontend-guide-optimistic-updates",
+      "title": "Optimistic Updates",
+      "provider": "TanStack Query",
+      "url": "https://tanstack.com/query/latest/docs/framework/react/guides/optimistic-updates",
+      "attribution": "TanStack Query documentation. Optimistic UI, rollback and reconciliation. Rechecked against the maintainer source at https://github.com/TanStack/query/blob/main/docs/framework/react/guides/optimistic-updates.md because the documentation fetch failed.",
+      "lastVerifiedAt": "2026-10-08"
+    },
+    {
+      "id": "frontend-guide-if-match",
+      "title": "If-Match header",
+      "provider": "MDN Web Docs",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/If-Match",
+      "attribution": "MDN contributors. Strong ETag comparison and conditional writes.",
+      "lastVerifiedAt": "2026-10-08"
+    },
+    {
+      "id": "frontend-guide-sse",
+      "title": "Using server-sent events",
+      "provider": "MDN Web Docs",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events/Using_server-sent_events",
+      "attribution": "MDN contributors. One-way server-to-client events; replay guarantees must be supplied by the application.",
+      "lastVerifiedAt": "2026-10-08"
+    }
+  ]
+}
