@@ -1,0 +1,126 @@
+{
+  "documentSlug": "fde/career-launch",
+  "concept": "Career Launch, First 90 Days And Field Habits",
+  "difficulty": "practitioner",
+  "tags": [
+    "fde",
+    "career-transition"
+  ],
+  "status": "published",
+  "sourceRefs": [
+    "fde-openai-role",
+    "fde-palantir-role"
+  ],
+  "skillIds": [
+    "fde-career-launch"
+  ],
+  "slug": "fde/career-launch-checkpoint",
+  "title": "Career Launch, First 90 Days And Field Habits Checkpoint",
+  "type": "questionnaire",
+  "questions": [
+    {
+      "id": "deliverable",
+      "kind": "choice",
+      "prompt": "Which first-30-days plan is concrete and realistic?",
+      "options": [
+        {
+          "id": "deliverable",
+          "label": "Run the stack, map owners, shadow a deployment and reproduce a known issue.",
+          "isCorrect": true
+        },
+        {
+          "id": "alternative-a",
+          "label": "Promise unrestricted customer access on day one.",
+          "isCorrect": false
+        },
+        {
+          "id": "alternative-b",
+          "label": "Rewrite the platform before learning its operational constraints.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "Learning and a bounded reproduction create useful evidence early. Access and major redesign depend on context and authorization.",
+      "skillIds": [
+        "fde-career-launch"
+      ]
+    },
+    {
+      "id": "verify",
+      "kind": "choice",
+      "prompt": "How should you assess travel and on-call expectations for a role?",
+      "options": [
+        {
+          "id": "alternative-a",
+          "label": "Assume every FDE job matches one public posting.",
+          "isCorrect": false
+        },
+        {
+          "id": "alternative-b",
+          "label": "Infer support hours from the company's logo.",
+          "isCorrect": false
+        },
+        {
+          "id": "verify",
+          "label": "Verify the current arrangements with the hiring team and concrete deployment examples.",
+          "isCorrect": true
+        }
+      ],
+      "explanation": "Role expectations vary by team and location. A title, isolated posting or brand cannot establish the actual working agreement.",
+      "skillIds": [
+        "fde-career-launch"
+      ]
+    },
+    {
+      "id": "permission",
+      "kind": "choice",
+      "prompt": "What belongs in a public application portfolio?",
+      "options": [
+        {
+          "id": "alternative-b",
+          "label": "A production credential to make review convenient.",
+          "isCorrect": false
+        },
+        {
+          "id": "permission",
+          "label": "Work you are authorized to share, with synthetic replacements for private material.",
+          "isCorrect": true
+        },
+        {
+          "id": "alternative-a",
+          "label": "An employer's private customer dataset because you worked on it.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "Participation in a project does not grant disclosure rights. Show credible original evidence without exposing customer data or credentials.",
+      "skillIds": [
+        "fde-career-launch"
+      ]
+    },
+    {
+      "id": "gap",
+      "kind": "choice",
+      "prompt": "After the path, what is the most useful next learning decision?",
+      "options": [
+        {
+          "id": "gap",
+          "label": "Choose a demonstrated technical gap and a customer-facing gap for focused practice.",
+          "isCorrect": true
+        },
+        {
+          "id": "alternative-a",
+          "label": "Repeat only the easiest quizzes to preserve a perfect score.",
+          "isCorrect": false
+        },
+        {
+          "id": "alternative-b",
+          "label": "Collect more tool names without building or explaining anything.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "Targeted practice improves weak capabilities. Score maintenance and vocabulary collection provide little evidence of transferable delivery skill.",
+      "skillIds": [
+        "fde-career-launch"
+      ]
+    }
+  ]
+}

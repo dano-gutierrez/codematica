@@ -1,0 +1,126 @@
+{
+  "documentSlug": "fde/value-and-scope",
+  "concept": "Value, Scope And Pilot Decisions",
+  "difficulty": "practitioner",
+  "tags": [
+    "fde",
+    "career-transition"
+  ],
+  "status": "published",
+  "sourceRefs": [
+    "fde-openai-role",
+    "fde-google-slos"
+  ],
+  "skillIds": [
+    "fde-value-and-scope"
+  ],
+  "slug": "fde/value-and-scope-checkpoint",
+  "title": "Value, Scope And Pilot Decisions Checkpoint",
+  "type": "questionnaire",
+  "questions": [
+    {
+      "id": "sixty",
+      "kind": "choice",
+      "prompt": "120 tickets/day × 60% eligible × 5 minutes saved × 20 days × 50% adoption gives what modeled monthly capacity?",
+      "options": [
+        {
+          "id": "alternative-b",
+          "label": "360 hours of measured customer productivity.",
+          "isCorrect": false
+        },
+        {
+          "id": "sixty",
+          "label": "60 hours before review, training and operating overhead.",
+          "isCorrect": true
+        },
+        {
+          "id": "alternative-a",
+          "label": "120 hours of guaranteed cash savings.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "The arithmetic is 120×0.6×5×20×0.5/60 = 60 hours. It is modeled capacity, not a measured result or automatic expenditure reduction.",
+      "skillIds": [
+        "fde-value-and-scope"
+      ]
+    },
+    {
+      "id": "baseline",
+      "kind": "choice",
+      "prompt": "A pilot team reports 400 model calls as its success metric. What is missing?",
+      "options": [
+        {
+          "id": "baseline",
+          "label": "A baseline and user outcome with a denominator, window and countermetric.",
+          "isCorrect": true
+        },
+        {
+          "id": "alternative-a",
+          "label": "A larger number of model calls so the result looks significant.",
+          "isCorrect": false
+        },
+        {
+          "id": "alternative-b",
+          "label": "A screenshot of the infrastructure dashboard instead of task evidence.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "Activity does not establish value. Define task success and harmful side effects against a comparable baseline; volume and screenshots cannot replace that contract.",
+      "skillIds": [
+        "fde-value-and-scope"
+      ]
+    },
+    {
+      "id": "slice",
+      "kind": "choice",
+      "prompt": "Refund automation is added to a two-week read-only pilot. How should the FDE respond?",
+      "options": [
+        {
+          "id": "alternative-a",
+          "label": "Accept it while silently removing permission checks.",
+          "isCorrect": false
+        },
+        {
+          "id": "alternative-b",
+          "label": "Reject all discussion without explaining the consequence.",
+          "isCorrect": false
+        },
+        {
+          "id": "slice",
+          "label": "Offer explicit scope/date options and obtain a decision from the responsible owner.",
+          "isCorrect": true
+        }
+      ],
+      "explanation": "The new action changes risk and delivery work. Options preserve a shared outcome while making tradeoffs visible; hidden quality cuts and unexplained refusal do not.",
+      "skillIds": [
+        "fde-value-and-scope"
+      ]
+    },
+    {
+      "id": "decision",
+      "kind": "choice",
+      "prompt": "A pilot has features and a deadline but no decision owner or stop criteria. What should be added?",
+      "options": [
+        {
+          "id": "alternative-b",
+          "label": "A commitment to expand before the pilot has produced evidence.",
+          "isCorrect": false
+        },
+        {
+          "id": "decision",
+          "label": "Who decides continuation, using which evidence and failure thresholds.",
+          "isCorrect": true
+        },
+        {
+          "id": "alternative-a",
+          "label": "A rule to continue indefinitely if any user likes the demo.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "A pilot must inform a decision. Undefined continuation or precommitted expansion removes the learning function and can turn a trial into unsupported production.",
+      "skillIds": [
+        "fde-value-and-scope"
+      ]
+    }
+  ]
+}

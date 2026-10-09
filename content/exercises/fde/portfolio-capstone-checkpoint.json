@@ -1,0 +1,127 @@
+{
+  "documentSlug": "fde/portfolio-capstone",
+  "concept": "FDE Portfolio Capstone: Northstar Support Operations",
+  "difficulty": "practitioner",
+  "tags": [
+    "fde",
+    "career-transition"
+  ],
+  "status": "published",
+  "sourceRefs": [
+    "fde-aws-idempotency",
+    "fde-owasp-authorization",
+    "fde-google-slos"
+  ],
+  "skillIds": [
+    "fde-portfolio-capstone"
+  ],
+  "slug": "fde/portfolio-capstone-checkpoint",
+  "title": "FDE Portfolio Capstone: Northstar Support Operations Checkpoint",
+  "type": "questionnaire",
+  "questions": [
+    {
+      "id": "vertical",
+      "kind": "choice",
+      "prompt": "What is the first useful Northstar capstone increment?",
+      "options": [
+        {
+          "id": "alternative-a",
+          "label": "A full autonomous refund platform before clarifying permissions.",
+          "isCorrect": false
+        },
+        {
+          "id": "alternative-b",
+          "label": "A presentation without any reproducible workflow.",
+          "isCorrect": false
+        },
+        {
+          "id": "vertical",
+          "label": "One authorized order-status workflow with evidence, failure states and a baseline.",
+          "isCorrect": true
+        }
+      ],
+      "explanation": "A bounded vertical slice provides end-to-end learning and measurable behavior. Excess scope and presentation-only work miss the delivery objective.",
+      "skillIds": [
+        "fde-portfolio-capstone"
+      ]
+    },
+    {
+      "id": "denied",
+      "kind": "choice",
+      "prompt": "Which test belongs in the capstone acceptance matrix?",
+      "options": [
+        {
+          "id": "alternative-b",
+          "label": "The UI hides the admin button but the API permits the action.",
+          "isCorrect": false
+        },
+        {
+          "id": "denied",
+          "label": "Tenant A cannot obtain tenant B's ticket through the API, cache or model context.",
+          "isCorrect": true
+        },
+        {
+          "id": "alternative-a",
+          "label": "Every tenant can see all records so the demo is easier.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "Isolation must cover actual access paths. Visibility controls alone do not enforce authorization, and broad demo access invalidates the requirement.",
+      "skillIds": [
+        "fde-portfolio-capstone"
+      ]
+    },
+    {
+      "id": "crash",
+      "kind": "choice",
+      "prompt": "A fake provider applies an action then raises a timeout. What must the capstone demonstrate?",
+      "options": [
+        {
+          "id": "crash",
+          "label": "Explicit uncertainty and reconciliation without blindly creating a second operation.",
+          "isCorrect": true
+        },
+        {
+          "id": "alternative-a",
+          "label": "A fresh operation key on every retry.",
+          "isCorrect": false
+        },
+        {
+          "id": "alternative-b",
+          "label": "A completed state invented from the fact that a request was sent.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "The fixture probes the ambiguous outcome boundary. New keys can duplicate work; sending a request does not prove completion.",
+      "skillIds": [
+        "fde-portfolio-capstone"
+      ]
+    },
+    {
+      "id": "label",
+      "kind": "choice",
+      "prompt": "You timed your own synthetic workflow and saved five minutes. How should the portfolio describe it?",
+      "options": [
+        {
+          "id": "alternative-a",
+          "label": "A verified customer productivity improvement.",
+          "isCorrect": false
+        },
+        {
+          "id": "alternative-b",
+          "label": "A company-wide savings claim without adoption data.",
+          "isCorrect": false
+        },
+        {
+          "id": "label",
+          "label": "A local synthetic observation with workload and measurement limits.",
+          "isCorrect": true
+        }
+      ],
+      "explanation": "Evidence labels preserve credibility. Personal fixture timing is useful but does not establish real customer adoption or organization-wide impact.",
+      "skillIds": [
+        "fde-portfolio-capstone"
+      ]
+    }
+  ]
+}

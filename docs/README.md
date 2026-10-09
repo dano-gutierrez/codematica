@@ -140,3 +140,5 @@ Native local search uses the same core matchers in an offline runtime; its contr
 The [continuous map art review](../assets/game/previews/continuous-map/review.md) records the create/review/fix/review cycle, fifty-position landscape, three parallax depths, and visual evidence. Exact source prompts and seam export rules live in the asset guide.
 
 - `docs/features/selected-evidence-review.md` owns three bounded original paths for engineering, creative computing and ownership review, with55 source-bound choices.
+
+- [Forward Deployed Engineer Career Path](features/forward-deployed-engineer-path.md): sixteen units for career transition, customer delivery, technical practice, reported case studies, a synthetic portfolio and a timed interview mock.

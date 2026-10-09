@@ -1,0 +1,127 @@
+{
+  "documentSlug": "fde/adoption-and-handover",
+  "concept": "Adoption, Enablement And Sustainable Handover",
+  "difficulty": "practitioner",
+  "tags": [
+    "fde",
+    "career-transition"
+  ],
+  "status": "published",
+  "sourceRefs": [
+    "fde-openai-role",
+    "fde-morgan-stanley",
+    "fde-intercom"
+  ],
+  "skillIds": [
+    "fde-adoption-and-handover"
+  ],
+  "slug": "fde/adoption-and-handover-checkpoint",
+  "title": "Adoption, Enablement And Sustainable Handover Checkpoint",
+  "type": "questionnaire",
+  "questions": [
+    {
+      "id": "denominator",
+      "kind": "choice",
+      "prompt": "30 of 100 eligible agents are active, and 60 were trained. What is adoption among eligible agents?",
+      "options": [
+        {
+          "id": "alternative-a",
+          "label": "50%, because untrained eligible users should disappear from every denominator.",
+          "isCorrect": false
+        },
+        {
+          "id": "alternative-b",
+          "label": "100%, because every active agent opened the application.",
+          "isCorrect": false
+        },
+        {
+          "id": "denominator",
+          "label": "30%, with 50% separately describing active users among trained agents.",
+          "isCorrect": true
+        }
+      ],
+      "explanation": "Denominators answer different questions. Eligible adoption is 30/100; trained-user activation is 30/60. Neither can silently substitute for the other.",
+      "skillIds": [
+        "fde-adoption-and-handover"
+      ]
+    },
+    {
+      "id": "reopen",
+      "kind": "choice",
+      "prompt": "A bot marks a ticket resolved but it reopens next day. Under a no-reopen-for-seven-days rule, how is it counted?",
+      "options": [
+        {
+          "id": "alternative-b",
+          "label": "Removed from all metrics because the result is inconvenient.",
+          "isCorrect": false
+        },
+        {
+          "id": "reopen",
+          "label": "Not resolved for that outcome metric; record the repeat work.",
+          "isCorrect": true
+        },
+        {
+          "id": "alternative-a",
+          "label": "Resolved because the first automated status was positive.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "The declared observation window determines success. Premature counting and selective exclusion hide rework.",
+      "skillIds": [
+        "fde-adoption-and-handover"
+      ]
+    },
+    {
+      "id": "teachback",
+      "kind": "choice",
+      "prompt": "Which handover test provides useful evidence of customer capability?",
+      "options": [
+        {
+          "id": "teachback",
+          "label": "A maintainer deploys and recovers a fixture using the runbook without the builder driving.",
+          "isCorrect": true
+        },
+        {
+          "id": "alternative-a",
+          "label": "A slide deck was emailed to an unconfirmed recipient.",
+          "isCorrect": false
+        },
+        {
+          "id": "alternative-b",
+          "label": "The builder says the deployment is straightforward.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "Independent teach-back tests instructions and ownership. Sending documents and confidence do not show that another person can operate the system.",
+      "skillIds": [
+        "fde-adoption-and-handover"
+      ]
+    },
+    {
+      "id": "separate",
+      "kind": "choice",
+      "prompt": "High usage and low answer accuracy are observed together. What should the review conclude?",
+      "options": [
+        {
+          "id": "alternative-a",
+          "label": "Usage proves correctness, so ignore the incorrect answers.",
+          "isCorrect": false
+        },
+        {
+          "id": "alternative-b",
+          "label": "Accuracy cannot matter if the customer paid for the pilot.",
+          "isCorrect": false
+        },
+        {
+          "id": "separate",
+          "label": "Adoption and quality differ; investigate quality despite high usage.",
+          "isCorrect": true
+        }
+      ],
+      "explanation": "Usage, quality and commercial activity are distinct. A valuable review preserves both positive and negative evidence.",
+      "skillIds": [
+        "fde-adoption-and-handover"
+      ]
+    }
+  ]
+}

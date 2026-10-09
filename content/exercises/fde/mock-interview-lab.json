@@ -1,0 +1,104 @@
+{
+  "documentSlug": "fde/interview-practice",
+  "concept": "FDE Interview Practice And Timed Mock",
+  "difficulty": "practitioner",
+  "tags": [
+    "fde",
+    "career-transition"
+  ],
+  "status": "published",
+  "sourceRefs": [
+    "fde-openai-role",
+    "fde-palantir-role",
+    "fde-aws-idempotency"
+  ],
+  "skillIds": [
+    "fde-interview-practice"
+  ],
+  "slug": "fde/mock-interview-lab",
+  "title": "FDE 90-Minute Mock Interview",
+  "estimatedMinutes": 90,
+  "briefing": "Use the original company-neutral interview practice lesson and a timer. This is not a reported employer loop. Attempt discovery, coding and design before reading reference answers; use the recruiter's actual tool rules when known. The app records a self-assessment checklist, not hiring readiness.",
+  "objectives": [
+    "Clarify an ambiguous request before choosing technology.",
+    "Implement and test a scoped receipt rule and defend recovery boundaries.",
+    "Explain scope, evaluation and factual ownership under time pressure."
+  ],
+  "prediction": {
+    "prompt": "Which interview dimension needs the most deliberate practice?",
+    "options": [
+      {
+        "id": "discovery",
+        "label": "Discovery and scope negotiation."
+      },
+      {
+        "id": "technical",
+        "label": "Coding and architecture recovery."
+      },
+      {
+        "id": "communication",
+        "label": "Communication and ownership evidence."
+      }
+    ]
+  },
+  "steps": [
+    {
+      "id": "discovery",
+      "title": "0–15 minutes: clarify Northstar",
+      "instructions": "Ask about the user, workflow, baseline, data, permissions and exceptions. Have a peer reveal a missing access approval and conflicting resolution definitions. Write a short brief."
+    },
+    {
+      "id": "code",
+      "title": "15–35 minutes: implement the receipt rule",
+      "instructions": "Implement tenant/request identity, replay and payload conflict in your preferred language with deterministic tests. Explain the in-memory concurrency and restart limits."
+    },
+    {
+      "id": "design",
+      "title": "35–55 minutes: design and trace failure",
+      "instructions": "Draw the application and optional durable action path. Trace source staleness, revocation, timeout and remote success followed by a crash. Separate outbox acceptance from provider reconciliation."
+    },
+    {
+      "id": "delivery",
+      "title": "55–70 minutes: defend delivery",
+      "instructions": "Propose a two-week pilot, representative evaluation, rollout and handover. Respond to added refund scope with options. Explain final-artifact startup validation."
+    },
+    {
+      "id": "stories",
+      "title": "70–80 minutes: ownership stories",
+      "instructions": "Tell one real ambiguity story and one failure story. Identify your contribution, decision, alternatives, observed result, uncertainty and lesson."
+    },
+    {
+      "id": "score",
+      "title": "80–90 minutes: questions and scoring",
+      "instructions": "Ask role-fit questions and score discovery, coding, architecture, evaluation, communication and ownership from zero to four using the lesson rubric. Select one concrete improvement; 18/24 is a practice heuristic only."
+    }
+  ],
+  "reflectionPrompts": [
+    "Which follow-up exposed your weakest assumption?",
+    "What is one test or explanation you will improve before repeating?"
+  ],
+  "extensionChallenge": "Repeat with a data-integration role that uses no LLM. Replace model evaluation with reconciliation and data-quality acceptance while preserving customer and operational reasoning.",
+  "evidenceChecklist": [
+    {
+      "id": "evidence-1",
+      "label": "I clarified the user, task, constraints and success measure."
+    },
+    {
+      "id": "evidence-2",
+      "label": "I tested identity, replay and conflicting payload behavior."
+    },
+    {
+      "id": "evidence-3",
+      "label": "I traced uncertainty and recovery without claiming exactly-once effects."
+    },
+    {
+      "id": "evidence-4",
+      "label": "I defended a bounded pilot and evaluation plan."
+    },
+    {
+      "id": "evidence-5",
+      "label": "I used factual ownership stories and scored all six dimensions."
+    }
+  ],
+  "type": "guided-lab"
+}

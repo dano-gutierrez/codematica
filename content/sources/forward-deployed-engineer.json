@@ -1,0 +1,92 @@
+{
+  "sources": [
+    {
+      "id": "fde-openai-role",
+      "title": "Forward Deployed Engineer — Singapore",
+      "provider": "OpenAI",
+      "url": "https://openai.com/careers/forward-deployed-engineer-singapore-singapore/",
+      "attribution": "Dated role example: discovery, delivery, adoption and product feedback. Requirements vary by posting.",
+      "lastVerifiedAt": "2026-10-07"
+    },
+    {
+      "id": "fde-palantir-role",
+      "title": "Forward Deployed Software Engineer",
+      "provider": "Palantir",
+      "url": "https://jobs.lever.co/palantir/dab396d4-2f14-4796-aac0-0d82883dccf0",
+      "attribution": "Employer role description: customer collaboration, data and hands-on software delivery; not an interview specification.",
+      "lastVerifiedAt": "2026-10-07"
+    },
+    {
+      "id": "fde-aws-idempotency",
+      "title": "Making retries safe with idempotent APIs",
+      "provider": "Amazon Web Services",
+      "url": "https://aws.amazon.com/builders-library/making-retries-safe-with-idempotent-APIs/",
+      "attribution": "Malcolm Featonby, Amazon Builders Library. Selected client intent, atomicity and parameter mismatch guidance.",
+      "lastVerifiedAt": "2026-10-07"
+    },
+    {
+      "id": "fde-google-slos",
+      "title": "Service Level Objectives",
+      "provider": "Google SRE",
+      "url": "https://sre.google/sre-book/service-level-objectives/",
+      "attribution": "Google Site Reliability Engineering book. Selected user-facing indicators and objective definitions.",
+      "lastVerifiedAt": "2026-10-07"
+    },
+    {
+      "id": "fde-owasp-authorization",
+      "title": "API1:2023 Broken Object Level Authorization",
+      "provider": "OWASP",
+      "url": "https://api-security.owasp.org/editions/2023/en/0xa1-broken-object-level-authorization/",
+      "attribution": "OWASP API Security Top 10, 2023 edition. Object/action authorization and regression testing.",
+      "lastVerifiedAt": "2026-10-07"
+    },
+    {
+      "id": "fde-postgres-joins",
+      "title": "PostgreSQL 17: Joins Between Tables",
+      "provider": "PostgreSQL Global Development Group",
+      "url": "https://www.postgresql.org/docs/17/tutorial-join.html",
+      "attribution": "PostgreSQL 17 tutorial, selected inner and left outer join semantics. Original fixtures are authored separately.",
+      "lastVerifiedAt": "2026-10-07"
+    },
+    {
+      "id": "fde-opentelemetry-signals",
+      "title": "OpenTelemetry Signals",
+      "provider": "OpenTelemetry",
+      "url": "https://opentelemetry.io/docs/concepts/signals/",
+      "attribution": "Selected trace, metric and log definitions; no SDK version or deployment recipe is implied.",
+      "lastVerifiedAt": "2026-10-07"
+    },
+    {
+      "id": "fde-anthropic-agents",
+      "title": "Building effective agents",
+      "provider": "Anthropic",
+      "url": "https://www.anthropic.com/engineering/building-effective-agents",
+      "attribution": "December 19, 2024 architectural guidance, including its notice that tooling has changed. Used for workflow/agent tradeoffs, not a current SDK recipe.",
+      "lastVerifiedAt": "2026-10-07"
+    },
+    {
+      "id": "fde-morgan-stanley",
+      "title": "Morgan Stanley uses AI evals to shape the future of financial services",
+      "provider": "OpenAI",
+      "url": "https://openai.com/index/morgan-stanley/",
+      "attribution": "December 4, 2024 customer story. Adoption and evaluation claims are vendor-reported, not independently audited.",
+      "lastVerifiedAt": "2026-10-07"
+    },
+    {
+      "id": "fde-intercom",
+      "title": "Intercom provides customer service tech that delivers up to 86% resolution rates with Claude",
+      "provider": "Anthropic",
+      "url": "https://www.anthropic.com/customers/intercom",
+      "attribution": "Vendor customer story inspected October 7, 2026. Historical reported average and maximum are distinct, not current product guarantees.",
+      "lastVerifiedAt": "2026-10-07"
+    },
+    {
+      "id": "fde-airbus-skywise",
+      "title": "easyJet signs Skywise Predictive Maintenance agreement with Airbus for its entire fleet",
+      "provider": "Airbus",
+      "url": "https://www.airbus.com/en/newsroom/press-releases/2018-03-easyjet-signs-skywise-predictive-maintenance-agreement-with-airbus",
+      "attribution": "March 2018 press release: reported trial and fleet agreement; future plans and ambitions are not verified outcomes.",
+      "lastVerifiedAt": "2026-10-07"
+    }
+  ]
+}

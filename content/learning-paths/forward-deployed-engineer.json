@@ -1,0 +1,934 @@
+{
+  "slug": "forward-deployed-engineer",
+  "title": "Forward Deployed Engineer (FDE)",
+  "summary": "Move from another engineering discipline into customer-facing technical delivery: discovery, data, integrations, AI, production, adoption, case studies, a portfolio capstone and interview rehearsal.",
+  "kind": "role",
+  "category": "Software Engineering",
+  "audience": "Backend, frontend, mobile, data, ML, platform, QA, embedded and solutions engineers transitioning into FDE roles.",
+  "status": "published",
+  "sourcePolicy": "required",
+  "sourceRefs": [
+    "fde-openai-role",
+    "fde-palantir-role",
+    "fde-aws-idempotency",
+    "fde-google-slos",
+    "fde-owasp-authorization",
+    "fde-postgres-joins",
+    "fde-opentelemetry-signals",
+    "fde-anthropic-agents",
+    "fde-morgan-stanley",
+    "fde-intercom",
+    "fde-airbus-skywise"
+  ],
+  "completionDestination": "flashcard-feed",
+  "units": [
+    {
+      "slug": "role-and-transition",
+      "title": "Forward Deployed Engineering: Role And Transition",
+      "summary": "Map your existing engineering strengths to customer discovery, technical delivery, adoption and ownership.",
+      "nodes": [
+        {
+          "kind": "document",
+          "slug": "fde/role-and-transition",
+          "skillIds": [
+            "fde-role-and-transition"
+          ],
+          "required": true
+        },
+        {
+          "kind": "exercise",
+          "slug": "fde/role-and-transition-checkpoint",
+          "skillIds": [
+            "fde-role-and-transition"
+          ],
+          "required": true
+        }
+      ]
+    },
+    {
+      "slug": "discovery-and-domain",
+      "title": "Customer Discovery And Domain Modeling",
+      "summary": "Turn a vague customer request into a verified workflow, stakeholder map, domain model and delivery brief.",
+      "nodes": [
+        {
+          "kind": "document",
+          "slug": "fde/discovery-and-domain",
+          "skillIds": [
+            "fde-discovery-and-domain"
+          ],
+          "required": true
+        },
+        {
+          "kind": "exercise",
+          "slug": "fde/discovery-lab",
+          "skillIds": [
+            "fde-discovery-and-domain"
+          ],
+          "required": true
+        },
+        {
+          "kind": "exercise",
+          "slug": "fde/discovery-and-domain-checkpoint",
+          "skillIds": [
+            "fde-discovery-and-domain"
+          ],
+          "required": true
+        }
+      ]
+    },
+    {
+      "slug": "value-and-scope",
+      "title": "Value, Scope And Pilot Decisions",
+      "summary": "Choose a measurable pilot, calculate an honest value hypothesis and negotiate explicit delivery boundaries.",
+      "nodes": [
+        {
+          "kind": "document",
+          "slug": "fde/value-and-scope",
+          "skillIds": [
+            "fde-value-and-scope"
+          ],
+          "required": true
+        },
+        {
+          "kind": "exercise",
+          "slug": "fde/value-and-scope-checkpoint",
+          "skillIds": [
+            "fde-value-and-scope"
+          ],
+          "required": true
+        }
+      ]
+    },
+    {
+      "slug": "data-and-sql",
+      "title": "Data Investigation And SQL For FDEs",
+      "summary": "Profile unfamiliar customer data, preserve row meaning, join safely and explain missing or stale evidence.",
+      "nodes": [
+        {
+          "kind": "document",
+          "slug": "fde/data-and-sql",
+          "skillIds": [
+            "fde-data-and-sql"
+          ],
+          "required": true
+        },
+        {
+          "kind": "exercise",
+          "slug": "fde/data-and-sql-checkpoint",
+          "skillIds": [
+            "fde-data-and-sql"
+          ],
+          "required": true
+        }
+      ]
+    },
+    {
+      "slug": "integrations-and-workflows",
+      "title": "Reliable Integrations And Customer Workflows",
+      "summary": "Design API connectors and durable work around scoped identity, uncertain outcomes, retries and reconciliation.",
+      "nodes": [
+        {
+          "kind": "document",
+          "slug": "fde/integrations-and-workflows",
+          "skillIds": [
+            "fde-integrations-and-workflows"
+          ],
+          "required": true
+        },
+        {
+          "kind": "exercise",
+          "slug": "fde/integration-lab",
+          "skillIds": [
+            "fde-integrations-and-workflows"
+          ],
+          "required": true
+        },
+        {
+          "kind": "exercise",
+          "slug": "fde/integrations-and-workflows-checkpoint",
+          "skillIds": [
+            "fde-integrations-and-workflows"
+          ],
+          "required": true
+        }
+      ]
+    },
+    {
+      "slug": "security-and-trust",
+      "title": "Security, Permissions And Customer Trust",
+      "summary": "Protect customer data through explicit identity, object authorization, tenant isolation and controlled operational access.",
+      "nodes": [
+        {
+          "kind": "document",
+          "slug": "fde/security-and-trust",
+          "skillIds": [
+            "fde-security-and-trust"
+          ],
+          "required": true
+        },
+        {
+          "kind": "exercise",
+          "slug": "fde/security-and-trust-checkpoint",
+          "skillIds": [
+            "fde-security-and-trust"
+          ],
+          "required": true
+        }
+      ]
+    },
+    {
+      "slug": "ai-and-retrieval",
+      "title": "Applied AI, Retrieval And Bounded Actions",
+      "summary": "Choose where AI helps, build evidence-linked retrieval and constrain model actions with deterministic application policy.",
+      "nodes": [
+        {
+          "kind": "document",
+          "slug": "fde/ai-and-retrieval",
+          "skillIds": [
+            "fde-ai-and-retrieval"
+          ],
+          "required": true
+        },
+        {
+          "kind": "exercise",
+          "slug": "fde/ai-and-retrieval-checkpoint",
+          "skillIds": [
+            "fde-ai-and-retrieval"
+          ],
+          "required": true
+        }
+      ]
+    },
+    {
+      "slug": "evaluation-and-experiments",
+      "title": "Evaluation And Experimental Decisions",
+      "summary": "Create representative test sets, isolate failure modes and decide whether an AI or workflow change deserves rollout.",
+      "nodes": [
+        {
+          "kind": "document",
+          "slug": "fde/evaluation-and-experiments",
+          "skillIds": [
+            "fde-evaluation-and-experiments"
+          ],
+          "required": true
+        },
+        {
+          "kind": "exercise",
+          "slug": "fde/evaluation-and-experiments-checkpoint",
+          "skillIds": [
+            "fde-evaluation-and-experiments"
+          ],
+          "required": true
+        }
+      ]
+    },
+    {
+      "slug": "prototype-to-production",
+      "title": "From Prototype To Production",
+      "summary": "Convert a useful vertical slice into an observable, recoverable deployment with explicit acceptance and operational ownership.",
+      "nodes": [
+        {
+          "kind": "document",
+          "slug": "fde/prototype-to-production",
+          "skillIds": [
+            "fde-prototype-to-production"
+          ],
+          "required": true
+        },
+        {
+          "kind": "exercise",
+          "slug": "fde/prototype-to-production-checkpoint",
+          "skillIds": [
+            "fde-prototype-to-production"
+          ],
+          "required": true
+        }
+      ]
+    },
+    {
+      "slug": "operations-and-incidents",
+      "title": "Operations, Debugging And Incident Leadership",
+      "summary": "Diagnose customer-facing failures through user signals, safe mitigation, structured communication and verified recovery.",
+      "nodes": [
+        {
+          "kind": "document",
+          "slug": "fde/operations-and-incidents",
+          "skillIds": [
+            "fde-operations-and-incidents"
+          ],
+          "required": true
+        },
+        {
+          "kind": "exercise",
+          "slug": "fde/operations-and-incidents-checkpoint",
+          "skillIds": [
+            "fde-operations-and-incidents"
+          ],
+          "required": true
+        }
+      ]
+    },
+    {
+      "slug": "adoption-and-handover",
+      "title": "Adoption, Enablement And Sustainable Handover",
+      "summary": "Measure useful behavior, train operators and transfer a deployed workflow without creating permanent dependence on its builder.",
+      "nodes": [
+        {
+          "kind": "document",
+          "slug": "fde/adoption-and-handover",
+          "skillIds": [
+            "fde-adoption-and-handover"
+          ],
+          "required": true
+        },
+        {
+          "kind": "exercise",
+          "slug": "fde/adoption-and-handover-checkpoint",
+          "skillIds": [
+            "fde-adoption-and-handover"
+          ],
+          "required": true
+        }
+      ]
+    },
+    {
+      "slug": "customer-communication",
+      "title": "Customer Communication And Product Feedback",
+      "summary": "Lead technical decisions through concise updates, credible demos, scope negotiation and actionable field feedback.",
+      "nodes": [
+        {
+          "kind": "document",
+          "slug": "fde/customer-communication",
+          "skillIds": [
+            "fde-customer-communication"
+          ],
+          "required": true
+        },
+        {
+          "kind": "exercise",
+          "slug": "fde/customer-communication-checkpoint",
+          "skillIds": [
+            "fde-customer-communication"
+          ],
+          "required": true
+        }
+      ]
+    },
+    {
+      "slug": "case-studies",
+      "title": "FDE Case Studies: Outcomes And Evidence",
+      "summary": "Analyze three published customer stories and two fictional failure cases without confusing reported outcomes with transferable proof.",
+      "nodes": [
+        {
+          "kind": "document",
+          "slug": "fde/case-studies",
+          "skillIds": [
+            "fde-case-studies"
+          ],
+          "required": true
+        },
+        {
+          "kind": "exercise",
+          "slug": "fde/case-studies-checkpoint",
+          "skillIds": [
+            "fde-case-studies"
+          ],
+          "required": true
+        }
+      ]
+    },
+    {
+      "slug": "portfolio-capstone",
+      "title": "FDE Portfolio Capstone: Northstar Support Operations",
+      "summary": "Deliver an original customer-workflow project with synthetic data, secure integration, evaluation, operational evidence and a credible handover.",
+      "nodes": [
+        {
+          "kind": "document",
+          "slug": "fde/portfolio-capstone",
+          "skillIds": [
+            "fde-portfolio-capstone"
+          ],
+          "required": true
+        },
+        {
+          "kind": "exercise",
+          "slug": "fde/capstone-lab",
+          "skillIds": [
+            "fde-portfolio-capstone"
+          ],
+          "required": true
+        },
+        {
+          "kind": "exercise",
+          "slug": "fde/portfolio-capstone-checkpoint",
+          "skillIds": [
+            "fde-portfolio-capstone"
+          ],
+          "required": true
+        }
+      ]
+    },
+    {
+      "slug": "interview-practice",
+      "title": "FDE Interview Practice And Timed Mock",
+      "summary": "Rehearse discovery, decomposition, coding, architecture, customer communication and factual ownership stories with explicit scoring.",
+      "nodes": [
+        {
+          "kind": "document",
+          "slug": "fde/interview-practice",
+          "skillIds": [
+            "fde-interview-practice"
+          ],
+          "required": true
+        },
+        {
+          "kind": "exercise",
+          "slug": "fde/mock-interview-lab",
+          "skillIds": [
+            "fde-interview-practice"
+          ],
+          "required": true
+        },
+        {
+          "kind": "exercise",
+          "slug": "fde/interview-practice-checkpoint",
+          "skillIds": [
+            "fde-interview-practice"
+          ],
+          "required": true
+        }
+      ]
+    },
+    {
+      "slug": "career-launch",
+      "title": "Career Launch, First 90 Days And Field Habits",
+      "summary": "Turn learning evidence into a truthful application, choose role fit and establish effective delivery habits in a new FDE role.",
+      "nodes": [
+        {
+          "kind": "document",
+          "slug": "fde/career-launch",
+          "skillIds": [
+            "fde-career-launch"
+          ],
+          "required": true
+        },
+        {
+          "kind": "exercise",
+          "slug": "fde/career-launch-checkpoint",
+          "skillIds": [
+            "fde-career-launch"
+          ],
+          "required": true
+        }
+      ]
+    }
+  ],
+  "progression": {
+    "framework": "career",
+    "roadmapLabel": "Customer Delivery Practice — Curriculum Progress, Not Certification",
+    "skills": [
+      {
+        "id": "fde-role-and-transition",
+        "label": "Forward Deployed Engineering: Role And Transition",
+        "category": "fde-delivery",
+        "description": "Map your existing engineering strengths to customer discovery, technical delivery, adoption and ownership."
+      },
+      {
+        "id": "fde-discovery-and-domain",
+        "label": "Customer Discovery And Domain Modeling",
+        "category": "fde-delivery",
+        "description": "Turn a vague customer request into a verified workflow, stakeholder map, domain model and delivery brief."
+      },
+      {
+        "id": "fde-value-and-scope",
+        "label": "Value, Scope And Pilot Decisions",
+        "category": "fde-delivery",
+        "description": "Choose a measurable pilot, calculate an honest value hypothesis and negotiate explicit delivery boundaries."
+      },
+      {
+        "id": "fde-data-and-sql",
+        "label": "Data Investigation And SQL For FDEs",
+        "category": "fde-delivery",
+        "description": "Profile unfamiliar customer data, preserve row meaning, join safely and explain missing or stale evidence."
+      },
+      {
+        "id": "fde-integrations-and-workflows",
+        "label": "Reliable Integrations And Customer Workflows",
+        "category": "fde-delivery",
+        "description": "Design API connectors and durable work around scoped identity, uncertain outcomes, retries and reconciliation."
+      },
+      {
+        "id": "fde-security-and-trust",
+        "label": "Security, Permissions And Customer Trust",
+        "category": "fde-delivery",
+        "description": "Protect customer data through explicit identity, object authorization, tenant isolation and controlled operational access."
+      },
+      {
+        "id": "fde-ai-and-retrieval",
+        "label": "Applied AI, Retrieval And Bounded Actions",
+        "category": "fde-delivery",
+        "description": "Choose where AI helps, build evidence-linked retrieval and constrain model actions with deterministic application policy."
+      },
+      {
+        "id": "fde-evaluation-and-experiments",
+        "label": "Evaluation And Experimental Decisions",
+        "category": "fde-delivery",
+        "description": "Create representative test sets, isolate failure modes and decide whether an AI or workflow change deserves rollout."
+      },
+      {
+        "id": "fde-prototype-to-production",
+        "label": "From Prototype To Production",
+        "category": "fde-delivery",
+        "description": "Convert a useful vertical slice into an observable, recoverable deployment with explicit acceptance and operational ownership."
+      },
+      {
+        "id": "fde-operations-and-incidents",
+        "label": "Operations, Debugging And Incident Leadership",
+        "category": "fde-delivery",
+        "description": "Diagnose customer-facing failures through user signals, safe mitigation, structured communication and verified recovery."
+      },
+      {
+        "id": "fde-adoption-and-handover",
+        "label": "Adoption, Enablement And Sustainable Handover",
+        "category": "fde-delivery",
+        "description": "Measure useful behavior, train operators and transfer a deployed workflow without creating permanent dependence on its builder."
+      },
+      {
+        "id": "fde-customer-communication",
+        "label": "Customer Communication And Product Feedback",
+        "category": "fde-delivery",
+        "description": "Lead technical decisions through concise updates, credible demos, scope negotiation and actionable field feedback."
+      },
+      {
+        "id": "fde-case-studies",
+        "label": "FDE Case Studies: Outcomes And Evidence",
+        "category": "fde-delivery",
+        "description": "Analyze three published customer stories and two fictional failure cases without confusing reported outcomes with transferable proof."
+      },
+      {
+        "id": "fde-portfolio-capstone",
+        "label": "FDE Portfolio Capstone: Northstar Support Operations",
+        "category": "fde-delivery",
+        "description": "Deliver an original customer-workflow project with synthetic data, secure integration, evaluation, operational evidence and a credible handover."
+      },
+      {
+        "id": "fde-interview-practice",
+        "label": "FDE Interview Practice And Timed Mock",
+        "category": "fde-delivery",
+        "description": "Rehearse discovery, decomposition, coding, architecture, customer communication and factual ownership stories with explicit scoring."
+      },
+      {
+        "id": "fde-career-launch",
+        "label": "Career Launch, First 90 Days And Field Habits",
+        "category": "fde-delivery",
+        "description": "Turn learning evidence into a truthful application, choose role fit and establish effective delivery habits in a new FDE role."
+      }
+    ],
+    "stages": [
+      {
+        "id": "fde-role-and-transition",
+        "label": "Forward Deployed Engineering: Role And Transition",
+        "level": "Practice",
+        "status": "published",
+        "summary": "Map your existing engineering strengths to customer discovery, technical delivery, adoption and ownership.",
+        "unitSlugs": [
+          "role-and-transition"
+        ],
+        "outcomes": [
+          {
+            "id": "fde-role-and-transition-outcome",
+            "statement": "Map your existing engineering strengths to customer discovery, technical delivery, adoption and ownership.",
+            "skillId": "fde-role-and-transition"
+          }
+        ],
+        "requiredNodeSlugs": [
+          "fde/role-and-transition",
+          "fde/role-and-transition-checkpoint"
+        ],
+        "checkpointExerciseSlug": "fde/role-and-transition-checkpoint",
+        "passThreshold": 0.75,
+        "minimumSkillScore": 0.75,
+        "estimatedMinutes": 65
+      },
+      {
+        "id": "fde-discovery-and-domain",
+        "label": "Customer Discovery And Domain Modeling",
+        "level": "Practice",
+        "status": "published",
+        "summary": "Turn a vague customer request into a verified workflow, stakeholder map, domain model and delivery brief.",
+        "unitSlugs": [
+          "discovery-and-domain"
+        ],
+        "outcomes": [
+          {
+            "id": "fde-discovery-and-domain-outcome",
+            "statement": "Turn a vague customer request into a verified workflow, stakeholder map, domain model and delivery brief.",
+            "skillId": "fde-discovery-and-domain"
+          }
+        ],
+        "requiredNodeSlugs": [
+          "fde/discovery-and-domain",
+          "fde/discovery-lab",
+          "fde/discovery-and-domain-checkpoint"
+        ],
+        "checkpointExerciseSlug": "fde/discovery-and-domain-checkpoint",
+        "passThreshold": 0.75,
+        "minimumSkillScore": 0.75,
+        "estimatedMinutes": 80
+      },
+      {
+        "id": "fde-value-and-scope",
+        "label": "Value, Scope And Pilot Decisions",
+        "level": "Practice",
+        "status": "published",
+        "summary": "Choose a measurable pilot, calculate an honest value hypothesis and negotiate explicit delivery boundaries.",
+        "unitSlugs": [
+          "value-and-scope"
+        ],
+        "outcomes": [
+          {
+            "id": "fde-value-and-scope-outcome",
+            "statement": "Choose a measurable pilot, calculate an honest value hypothesis and negotiate explicit delivery boundaries.",
+            "skillId": "fde-value-and-scope"
+          }
+        ],
+        "requiredNodeSlugs": [
+          "fde/value-and-scope",
+          "fde/value-and-scope-checkpoint"
+        ],
+        "checkpointExerciseSlug": "fde/value-and-scope-checkpoint",
+        "passThreshold": 0.75,
+        "minimumSkillScore": 0.75,
+        "estimatedMinutes": 65
+      },
+      {
+        "id": "fde-data-and-sql",
+        "label": "Data Investigation And SQL For FDEs",
+        "level": "Practice",
+        "status": "published",
+        "summary": "Profile unfamiliar customer data, preserve row meaning, join safely and explain missing or stale evidence.",
+        "unitSlugs": [
+          "data-and-sql"
+        ],
+        "outcomes": [
+          {
+            "id": "fde-data-and-sql-outcome",
+            "statement": "Profile unfamiliar customer data, preserve row meaning, join safely and explain missing or stale evidence.",
+            "skillId": "fde-data-and-sql"
+          }
+        ],
+        "requiredNodeSlugs": [
+          "fde/data-and-sql",
+          "fde/data-and-sql-checkpoint"
+        ],
+        "checkpointExerciseSlug": "fde/data-and-sql-checkpoint",
+        "passThreshold": 0.75,
+        "minimumSkillScore": 0.75,
+        "estimatedMinutes": 65
+      },
+      {
+        "id": "fde-integrations-and-workflows",
+        "label": "Reliable Integrations And Customer Workflows",
+        "level": "Practice",
+        "status": "published",
+        "summary": "Design API connectors and durable work around scoped identity, uncertain outcomes, retries and reconciliation.",
+        "unitSlugs": [
+          "integrations-and-workflows"
+        ],
+        "outcomes": [
+          {
+            "id": "fde-integrations-and-workflows-outcome",
+            "statement": "Design API connectors and durable work around scoped identity, uncertain outcomes, retries and reconciliation.",
+            "skillId": "fde-integrations-and-workflows"
+          }
+        ],
+        "requiredNodeSlugs": [
+          "fde/integrations-and-workflows",
+          "fde/integration-lab",
+          "fde/integrations-and-workflows-checkpoint"
+        ],
+        "checkpointExerciseSlug": "fde/integrations-and-workflows-checkpoint",
+        "passThreshold": 0.75,
+        "minimumSkillScore": 0.75,
+        "estimatedMinutes": 125
+      },
+      {
+        "id": "fde-security-and-trust",
+        "label": "Security, Permissions And Customer Trust",
+        "level": "Practice",
+        "status": "published",
+        "summary": "Protect customer data through explicit identity, object authorization, tenant isolation and controlled operational access.",
+        "unitSlugs": [
+          "security-and-trust"
+        ],
+        "outcomes": [
+          {
+            "id": "fde-security-and-trust-outcome",
+            "statement": "Protect customer data through explicit identity, object authorization, tenant isolation and controlled operational access.",
+            "skillId": "fde-security-and-trust"
+          }
+        ],
+        "requiredNodeSlugs": [
+          "fde/security-and-trust",
+          "fde/security-and-trust-checkpoint"
+        ],
+        "checkpointExerciseSlug": "fde/security-and-trust-checkpoint",
+        "passThreshold": 0.75,
+        "minimumSkillScore": 0.75,
+        "estimatedMinutes": 65
+      },
+      {
+        "id": "fde-ai-and-retrieval",
+        "label": "Applied AI, Retrieval And Bounded Actions",
+        "level": "Practice",
+        "status": "published",
+        "summary": "Choose where AI helps, build evidence-linked retrieval and constrain model actions with deterministic application policy.",
+        "unitSlugs": [
+          "ai-and-retrieval"
+        ],
+        "outcomes": [
+          {
+            "id": "fde-ai-and-retrieval-outcome",
+            "statement": "Choose where AI helps, build evidence-linked retrieval and constrain model actions with deterministic application policy.",
+            "skillId": "fde-ai-and-retrieval"
+          }
+        ],
+        "requiredNodeSlugs": [
+          "fde/ai-and-retrieval",
+          "fde/ai-and-retrieval-checkpoint"
+        ],
+        "checkpointExerciseSlug": "fde/ai-and-retrieval-checkpoint",
+        "passThreshold": 0.75,
+        "minimumSkillScore": 0.75,
+        "estimatedMinutes": 65
+      },
+      {
+        "id": "fde-evaluation-and-experiments",
+        "label": "Evaluation And Experimental Decisions",
+        "level": "Practice",
+        "status": "published",
+        "summary": "Create representative test sets, isolate failure modes and decide whether an AI or workflow change deserves rollout.",
+        "unitSlugs": [
+          "evaluation-and-experiments"
+        ],
+        "outcomes": [
+          {
+            "id": "fde-evaluation-and-experiments-outcome",
+            "statement": "Create representative test sets, isolate failure modes and decide whether an AI or workflow change deserves rollout.",
+            "skillId": "fde-evaluation-and-experiments"
+          }
+        ],
+        "requiredNodeSlugs": [
+          "fde/evaluation-and-experiments",
+          "fde/evaluation-and-experiments-checkpoint"
+        ],
+        "checkpointExerciseSlug": "fde/evaluation-and-experiments-checkpoint",
+        "passThreshold": 0.75,
+        "minimumSkillScore": 0.75,
+        "estimatedMinutes": 65
+      },
+      {
+        "id": "fde-prototype-to-production",
+        "label": "From Prototype To Production",
+        "level": "Practice",
+        "status": "published",
+        "summary": "Convert a useful vertical slice into an observable, recoverable deployment with explicit acceptance and operational ownership.",
+        "unitSlugs": [
+          "prototype-to-production"
+        ],
+        "outcomes": [
+          {
+            "id": "fde-prototype-to-production-outcome",
+            "statement": "Convert a useful vertical slice into an observable, recoverable deployment with explicit acceptance and operational ownership.",
+            "skillId": "fde-prototype-to-production"
+          }
+        ],
+        "requiredNodeSlugs": [
+          "fde/prototype-to-production",
+          "fde/prototype-to-production-checkpoint"
+        ],
+        "checkpointExerciseSlug": "fde/prototype-to-production-checkpoint",
+        "passThreshold": 0.75,
+        "minimumSkillScore": 0.75,
+        "estimatedMinutes": 65
+      },
+      {
+        "id": "fde-operations-and-incidents",
+        "label": "Operations, Debugging And Incident Leadership",
+        "level": "Practice",
+        "status": "published",
+        "summary": "Diagnose customer-facing failures through user signals, safe mitigation, structured communication and verified recovery.",
+        "unitSlugs": [
+          "operations-and-incidents"
+        ],
+        "outcomes": [
+          {
+            "id": "fde-operations-and-incidents-outcome",
+            "statement": "Diagnose customer-facing failures through user signals, safe mitigation, structured communication and verified recovery.",
+            "skillId": "fde-operations-and-incidents"
+          }
+        ],
+        "requiredNodeSlugs": [
+          "fde/operations-and-incidents",
+          "fde/operations-and-incidents-checkpoint"
+        ],
+        "checkpointExerciseSlug": "fde/operations-and-incidents-checkpoint",
+        "passThreshold": 0.75,
+        "minimumSkillScore": 0.75,
+        "estimatedMinutes": 65
+      },
+      {
+        "id": "fde-adoption-and-handover",
+        "label": "Adoption, Enablement And Sustainable Handover",
+        "level": "Practice",
+        "status": "published",
+        "summary": "Measure useful behavior, train operators and transfer a deployed workflow without creating permanent dependence on its builder.",
+        "unitSlugs": [
+          "adoption-and-handover"
+        ],
+        "outcomes": [
+          {
+            "id": "fde-adoption-and-handover-outcome",
+            "statement": "Measure useful behavior, train operators and transfer a deployed workflow without creating permanent dependence on its builder.",
+            "skillId": "fde-adoption-and-handover"
+          }
+        ],
+        "requiredNodeSlugs": [
+          "fde/adoption-and-handover",
+          "fde/adoption-and-handover-checkpoint"
+        ],
+        "checkpointExerciseSlug": "fde/adoption-and-handover-checkpoint",
+        "passThreshold": 0.75,
+        "minimumSkillScore": 0.75,
+        "estimatedMinutes": 65
+      },
+      {
+        "id": "fde-customer-communication",
+        "label": "Customer Communication And Product Feedback",
+        "level": "Practice",
+        "status": "published",
+        "summary": "Lead technical decisions through concise updates, credible demos, scope negotiation and actionable field feedback.",
+        "unitSlugs": [
+          "customer-communication"
+        ],
+        "outcomes": [
+          {
+            "id": "fde-customer-communication-outcome",
+            "statement": "Lead technical decisions through concise updates, credible demos, scope negotiation and actionable field feedback.",
+            "skillId": "fde-customer-communication"
+          }
+        ],
+        "requiredNodeSlugs": [
+          "fde/customer-communication",
+          "fde/customer-communication-checkpoint"
+        ],
+        "checkpointExerciseSlug": "fde/customer-communication-checkpoint",
+        "passThreshold": 0.75,
+        "minimumSkillScore": 0.75,
+        "estimatedMinutes": 65
+      },
+      {
+        "id": "fde-case-studies",
+        "label": "FDE Case Studies: Outcomes And Evidence",
+        "level": "Practice",
+        "status": "published",
+        "summary": "Analyze three published customer stories and two fictional failure cases without confusing reported outcomes with transferable proof.",
+        "unitSlugs": [
+          "case-studies"
+        ],
+        "outcomes": [
+          {
+            "id": "fde-case-studies-outcome",
+            "statement": "Analyze three published customer stories and two fictional failure cases without confusing reported outcomes with transferable proof.",
+            "skillId": "fde-case-studies"
+          }
+        ],
+        "requiredNodeSlugs": [
+          "fde/case-studies",
+          "fde/case-studies-checkpoint"
+        ],
+        "checkpointExerciseSlug": "fde/case-studies-checkpoint",
+        "passThreshold": 0.75,
+        "minimumSkillScore": 0.75,
+        "estimatedMinutes": 65
+      },
+      {
+        "id": "fde-portfolio-capstone",
+        "label": "FDE Portfolio Capstone: Northstar Support Operations",
+        "level": "Practice",
+        "status": "published",
+        "summary": "Deliver an original customer-workflow project with synthetic data, secure integration, evaluation, operational evidence and a credible handover.",
+        "unitSlugs": [
+          "portfolio-capstone"
+        ],
+        "outcomes": [
+          {
+            "id": "fde-portfolio-capstone-outcome",
+            "statement": "Deliver an original customer-workflow project with synthetic data, secure integration, evaluation, operational evidence and a credible handover.",
+            "skillId": "fde-portfolio-capstone"
+          }
+        ],
+        "requiredNodeSlugs": [
+          "fde/portfolio-capstone",
+          "fde/capstone-lab",
+          "fde/portfolio-capstone-checkpoint"
+        ],
+        "checkpointExerciseSlug": "fde/portfolio-capstone-checkpoint",
+        "passThreshold": 0.75,
+        "minimumSkillScore": 0.75,
+        "estimatedMinutes": 1235
+      },
+      {
+        "id": "fde-interview-practice",
+        "label": "FDE Interview Practice And Timed Mock",
+        "level": "Practice",
+        "status": "published",
+        "summary": "Rehearse discovery, decomposition, coding, architecture, customer communication and factual ownership stories with explicit scoring.",
+        "unitSlugs": [
+          "interview-practice"
+        ],
+        "outcomes": [
+          {
+            "id": "fde-interview-practice-outcome",
+            "statement": "Rehearse discovery, decomposition, coding, architecture, customer communication and factual ownership stories with explicit scoring.",
+            "skillId": "fde-interview-practice"
+          }
+        ],
+        "requiredNodeSlugs": [
+          "fde/interview-practice",
+          "fde/mock-interview-lab",
+          "fde/interview-practice-checkpoint"
+        ],
+        "checkpointExerciseSlug": "fde/interview-practice-checkpoint",
+        "passThreshold": 0.75,
+        "minimumSkillScore": 0.75,
+        "estimatedMinutes": 125
+      },
+      {
+        "id": "fde-career-launch",
+        "label": "Career Launch, First 90 Days And Field Habits",
+        "level": "Practice",
+        "status": "published",
+        "summary": "Turn learning evidence into a truthful application, choose role fit and establish effective delivery habits in a new FDE role.",
+        "unitSlugs": [
+          "career-launch"
+        ],
+        "outcomes": [
+          {
+            "id": "fde-career-launch-outcome",
+            "statement": "Turn learning evidence into a truthful application, choose role fit and establish effective delivery habits in a new FDE role.",
+            "skillId": "fde-career-launch"
+          }
+        ],
+        "requiredNodeSlugs": [
+          "fde/career-launch",
+          "fde/career-launch-checkpoint"
+        ],
+        "checkpointExerciseSlug": "fde/career-launch-checkpoint",
+        "passThreshold": 0.75,
+        "minimumSkillScore": 0.75,
+        "estimatedMinutes": 65
+      }
+    ]
+  }
+}

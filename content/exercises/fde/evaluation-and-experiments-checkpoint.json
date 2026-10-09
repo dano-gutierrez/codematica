@@ -1,0 +1,126 @@
+{
+  "documentSlug": "fde/evaluation-and-experiments",
+  "concept": "Evaluation And Experimental Decisions",
+  "difficulty": "practitioner",
+  "tags": [
+    "fde",
+    "career-transition"
+  ],
+  "status": "published",
+  "sourceRefs": [
+    "fde-morgan-stanley",
+    "fde-google-slos"
+  ],
+  "skillIds": [
+    "fde-evaluation-and-experiments"
+  ],
+  "slug": "fde/evaluation-and-experiments-checkpoint",
+  "title": "Evaluation And Experimental Decisions Checkpoint",
+  "type": "questionnaire",
+  "questions": [
+    {
+      "id": "holdout",
+      "kind": "choice",
+      "prompt": "You repeatedly tune prompts to fix the held-out set. What happens to its role?",
+      "options": [
+        {
+          "id": "alternative-a",
+          "label": "Its independence improves because the score rises.",
+          "isCorrect": false
+        },
+        {
+          "id": "alternative-b",
+          "label": "It becomes equivalent to a production randomized trial.",
+          "isCorrect": false
+        },
+        {
+          "id": "holdout",
+          "label": "It becomes development evidence; use fresh held-out cases for the next unbiased check.",
+          "isCorrect": true
+        }
+      ],
+      "explanation": "Repeated tuning leaks evaluation feedback into development. A higher fitted score is not independent evidence, and offline tuning is not a production trial.",
+      "skillIds": [
+        "fde-evaluation-and-experiments"
+      ]
+    },
+    {
+      "id": "slice",
+      "kind": "choice",
+      "prompt": "A candidate gets 90/100 correct but fails all ten warranty exceptions. What should the report show?",
+      "options": [
+        {
+          "id": "alternative-b",
+          "label": "100%, after removing exceptions from the denominator post hoc.",
+          "isCorrect": false
+        },
+        {
+          "id": "slice",
+          "label": "The overall rate, the failed exception slice, counts and severity.",
+          "isCorrect": true
+        },
+        {
+          "id": "alternative-a",
+          "label": "Only 90%, because subgroup outcomes would complicate the story.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "Critical slices can determine rollout even when averages look good. Hiding or retroactively excluding failures misrepresents the task population.",
+      "skillIds": [
+        "fde-evaluation-and-experiments"
+      ]
+    },
+    {
+      "id": "paired",
+      "kind": "choice",
+      "prompt": "How can you compare two prompt versions more fairly offline?",
+      "options": [
+        {
+          "id": "paired",
+          "label": "Use the same cases and rubric, record versions, and inspect paired wins and losses.",
+          "isCorrect": true
+        },
+        {
+          "id": "alternative-a",
+          "label": "Give the new version only easy questions and compare averages.",
+          "isCorrect": false
+        },
+        {
+          "id": "alternative-b",
+          "label": "Change corpus, model and task mix without recording them.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "Matched cases make differences interpretable. Different difficulty and undocumented simultaneous changes confound the comparison.",
+      "skillIds": [
+        "fde-evaluation-and-experiments"
+      ]
+    },
+    {
+      "id": "version",
+      "kind": "choice",
+      "prompt": "Which evidence is needed to reproduce an evaluation result?",
+      "options": [
+        {
+          "id": "alternative-a",
+          "label": "Only a screenshot of the final percentage.",
+          "isCorrect": false
+        },
+        {
+          "id": "alternative-b",
+          "label": "Only the provider name with no dataset or prompt identity.",
+          "isCorrect": false
+        },
+        {
+          "id": "version",
+          "label": "Inputs, rubric, relevant configuration versions and per-case judgments.",
+          "isCorrect": true
+        }
+      ],
+      "explanation": "Reproduction needs the tested system and judgments, not just its headline score. Provider identity alone leaves major variables unspecified.",
+      "skillIds": [
+        "fde-evaluation-and-experiments"
+      ]
+    }
+  ]
+}

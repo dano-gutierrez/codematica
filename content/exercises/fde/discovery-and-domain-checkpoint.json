@@ -1,0 +1,126 @@
+{
+  "documentSlug": "fde/discovery-and-domain",
+  "concept": "Customer Discovery And Domain Modeling",
+  "difficulty": "practitioner",
+  "tags": [
+    "fde",
+    "career-transition"
+  ],
+  "status": "published",
+  "sourceRefs": [
+    "fde-openai-role",
+    "fde-palantir-role"
+  ],
+  "skillIds": [
+    "fde-discovery-and-domain"
+  ],
+  "slug": "fde/discovery-and-domain-checkpoint",
+  "title": "Customer Discovery And Domain Modeling Checkpoint",
+  "type": "questionnaire",
+  "questions": [
+    {
+      "id": "observe",
+      "kind": "choice",
+      "prompt": "A sponsor asks for an AI assistant to speed up support. What is the most useful first investigation?",
+      "options": [
+        {
+          "id": "alternative-a",
+          "label": "Select a model before talking to operators.",
+          "isCorrect": false
+        },
+        {
+          "id": "alternative-b",
+          "label": "Assume the sponsor knows every daily workaround.",
+          "isCorrect": false
+        },
+        {
+          "id": "observe",
+          "label": "Observe a recent task, its exceptions, handoffs and current evidence.",
+          "isCorrect": true
+        }
+      ],
+      "explanation": "A concrete workflow exposes the problem behind the requested solution. Model selection and sponsor-only assumptions skip necessary discovery.",
+      "skillIds": [
+        "fde-discovery-and-domain"
+      ]
+    },
+    {
+      "id": "map",
+      "kind": "choice",
+      "prompt": "The sponsor funds a pilot but cannot grant data access. What should the brief record?",
+      "options": [
+        {
+          "id": "alternative-b",
+          "label": "Give the sponsor the database administrator password.",
+          "isCorrect": false
+        },
+        {
+          "id": "map",
+          "label": "Separate sponsor, data owner, access reviewer and operational owner.",
+          "isCorrect": true
+        },
+        {
+          "id": "alternative-a",
+          "label": "Treat funding approval as permission to copy production data.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "Decision authority differs by responsibility. Budget approval does not confer data access, and credential sharing does not establish an authorized process.",
+      "skillIds": [
+        "fde-discovery-and-domain"
+      ]
+    },
+    {
+      "id": "constraint",
+      "kind": "choice",
+      "prompt": "Production API access is unresolved, but synthetic exports are available. Which pilot statement is honest?",
+      "options": [
+        {
+          "id": "constraint",
+          "label": "Demonstrate a synthetic slice and keep production integration as a separate acceptance gate.",
+          "isCorrect": true
+        },
+        {
+          "id": "alternative-a",
+          "label": "Mark the fixture demo as production integration complete.",
+          "isCorrect": false
+        },
+        {
+          "id": "alternative-b",
+          "label": "Silently use another team's credentials to preserve the date.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "Synthetic data can support useful discovery without proving the real integration. Claims and access must match the actual evidence and authorization.",
+      "skillIds": [
+        "fde-discovery-and-domain"
+      ]
+    },
+    {
+      "id": "playback",
+      "kind": "choice",
+      "prompt": "Two teams disagree on what a resolved ticket means. What is the best next step?",
+      "options": [
+        {
+          "id": "alternative-a",
+          "label": "Average both definitions without telling either team.",
+          "isCorrect": false
+        },
+        {
+          "id": "alternative-b",
+          "label": "Let the database column name decide the business meaning.",
+          "isCorrect": false
+        },
+        {
+          "id": "playback",
+          "label": "Agree examples, counterexamples and the metric definition in a customer playback.",
+          "isCorrect": true
+        }
+      ],
+      "explanation": "Shared terms need explicit operational meaning. Combining incompatible metrics or relying on a field name preserves the ambiguity.",
+      "skillIds": [
+        "fde-discovery-and-domain"
+      ]
+    }
+  ]
+}

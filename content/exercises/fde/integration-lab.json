@@ -1,0 +1,89 @@
+{
+  "documentSlug": "fde/integrations-and-workflows",
+  "concept": "Reliable Integrations And Customer Workflows",
+  "difficulty": "practitioner",
+  "tags": [
+    "fde",
+    "career-transition"
+  ],
+  "status": "published",
+  "sourceRefs": [
+    "fde-aws-idempotency"
+  ],
+  "skillIds": [
+    "fde-integrations-and-workflows"
+  ],
+  "slug": "fde/integration-lab",
+  "title": "FDE Integration And Recovery Lab",
+  "estimatedMinutes": 90,
+  "briefing": "Implement the original receipt reducer and a fake external adapter in a local scratch project. No live APIs, credentials, payments or customer writes are needed. The reducer is a sequential model; record the extra requirements for a durable concurrent service. Completion is a self-reported evidence checklist.",
+  "objectives": [
+    "Test scoped identity, replay and parameter conflict.",
+    "Expose a remote-success/response-loss failure using a fake adapter.",
+    "Separate local acceptance durability from remote-effect reconciliation."
+  ],
+  "prediction": {
+    "prompt": "Which boundary can still fail after a job and outbox are committed together?",
+    "options": [
+      {
+        "id": "remote",
+        "label": "Remote success before the worker records completion."
+      },
+      {
+        "id": "none",
+        "label": "No remaining boundary can fail."
+      }
+    ]
+  },
+  "steps": [
+    {
+      "id": "tests",
+      "title": "Write the expected traces",
+      "instructions": "Before coding, list accepted A/k1, replay A/k1, conflict A/k1 with changed payload and accepted B/k1. State the final receipt count of two."
+    },
+    {
+      "id": "reducer",
+      "title": "Implement and mutate the reducer",
+      "instructions": "Copy or reimplement the lesson reducer, run its assertions, then remove tenant scoping and parameter comparison separately. Record which assertion fails for each mutation."
+    },
+    {
+      "id": "adapter",
+      "title": "Simulate an uncertain outcome",
+      "instructions": "Create a fake adapter that records an operation result, then raises a timeout on its first response. Retry with the original identity and reconcile the stored result; contrast a fresh identity that causes another fake effect."
+    },
+    {
+      "id": "crash",
+      "title": "Trace storage boundaries",
+      "instructions": "Draw crashes before acceptance, after acceptance but before dispatch, and after remote success but before completion. For each, record the authoritative state, safe next action and what remains unknown."
+    },
+    {
+      "id": "handover",
+      "title": "Write the recovery procedure",
+      "instructions": "Define retry limits, overall deadline, permission checks, receipt retention and manual review. State which requirements your in-memory model does not implement."
+    }
+  ],
+  "reflectionPrompts": [
+    "What does your receipt prove, and what does it not prove?",
+    "Which concurrency or restart failure remains outside this lab?"
+  ],
+  "extensionChallenge": "Implement a disposable SQLite transaction with a unique tenant/request key, restart between acceptance and dispatch, and prove recovery. Keep all external effects behind the fake adapter.",
+  "evidenceChecklist": [
+    {
+      "id": "evidence-1",
+      "label": "I ran tenant, replay and conflict assertions."
+    },
+    {
+      "id": "evidence-2",
+      "label": "I demonstrated both intentional reducer mutations failing."
+    },
+    {
+      "id": "evidence-3",
+      "label": "I traced remote success followed by response loss."
+    },
+    {
+      "id": "evidence-4",
+      "label": "I separated durable acceptance from remote reconciliation."
+    }
+  ],
+  "type": "guided-lab"
+}

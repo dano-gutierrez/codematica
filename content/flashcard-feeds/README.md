@@ -28,3 +28,5 @@ Set `codeLanguage` for every authored snippet (for example `typescript`, `python
 The database feed contains 48 cards, including eight connection-pooling cards (two of each type). Preserve the earlier 40 cards and source new pooling cards to `databases/postgres-connection-pooling`; numerical capacities remain illustrative.
 
 `partitioned-event-log` supplies fourteen sourced lesson-review cards after its interview checkpoint. Each links to `system-design/partitioned-event-log`; the feed supports continued scrolling through the shared windowing component.
+
+The Forward Deployed Engineer feed has 32 sourced-through-companion cards, two for each of sixteen units. The final career-launch checkpoint links here; do not insert the feed into ordered path nodes or imply its completion certifies job readiness.
