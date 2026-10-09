@@ -1,0 +1,126 @@
+{
+  "documentSlug": "fde/ai-and-retrieval",
+  "concept": "Applied AI, Retrieval And Bounded Actions",
+  "difficulty": "practitioner",
+  "tags": [
+    "fde",
+    "career-transition"
+  ],
+  "status": "published",
+  "sourceRefs": [
+    "fde-anthropic-agents",
+    "fde-owasp-authorization"
+  ],
+  "skillIds": [
+    "fde-ai-and-retrieval"
+  ],
+  "slug": "fde/ai-and-retrieval-checkpoint",
+  "title": "Applied AI, Retrieval And Bounded Actions Checkpoint",
+  "type": "questionnaire",
+  "questions": [
+    {
+      "id": "simple",
+      "kind": "choice",
+      "prompt": "A workflow needs an exact order lookup and fixed status template. What baseline should you try?",
+      "options": [
+        {
+          "id": "simple",
+          "label": "Deterministic lookup and templating before adding model-directed steps.",
+          "isCorrect": true
+        },
+        {
+          "id": "alternative-a",
+          "label": "A multi-agent design before defining the correct lookup.",
+          "isCorrect": false
+        },
+        {
+          "id": "alternative-b",
+          "label": "Fine-tuning before determining which source owns order state.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "A simple baseline makes incremental value measurable. Agent complexity and tuning do not repair an undefined data contract.",
+      "skillIds": [
+        "fde-ai-and-retrieval"
+      ]
+    },
+    {
+      "id": "retrieve",
+      "kind": "choice",
+      "prompt": "The correct policy never enters the model context. Which area should you investigate first?",
+      "options": [
+        {
+          "id": "alternative-a",
+          "label": "Only change the output temperature.",
+          "isCorrect": false
+        },
+        {
+          "id": "alternative-b",
+          "label": "Score the prose style instead of checking evidence coverage.",
+          "isCorrect": false
+        },
+        {
+          "id": "retrieve",
+          "label": "Corpus coverage, parsing, permissions and retrieval selection.",
+          "isCorrect": true
+        }
+      ],
+      "explanation": "Missing evidence is primarily a retrieval/input failure. Output settings and fluency scores cannot establish that the necessary source was available.",
+      "skillIds": [
+        "fde-ai-and-retrieval"
+      ]
+    },
+    {
+      "id": "abstain",
+      "kind": "choice",
+      "prompt": "Two current permitted policies contradict each other. What should a support assistant do?",
+      "options": [
+        {
+          "id": "alternative-b",
+          "label": "Invent a compromise policy and cite both documents.",
+          "isCorrect": false
+        },
+        {
+          "id": "abstain",
+          "label": "Expose the conflict and use the agreed review or abstention path.",
+          "isCorrect": true
+        },
+        {
+          "id": "alternative-a",
+          "label": "Choose whichever answer is longer without disclosure.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "Contradiction requires an explicit resolution policy or human review. Length and invented compromises do not establish authority.",
+      "skillIds": [
+        "fde-ai-and-retrieval"
+      ]
+    },
+    {
+      "id": "authorize",
+      "kind": "choice",
+      "prompt": "A model emits valid JSON requesting a refund. What does this prove?",
+      "options": [
+        {
+          "id": "authorize",
+          "label": "The output parses; authorization and action-specific validation are still required.",
+          "isCorrect": true
+        },
+        {
+          "id": "alternative-a",
+          "label": "The refund is authorized because the schema passed.",
+          "isCorrect": false
+        },
+        {
+          "id": "alternative-b",
+          "label": "The customer approved it because the model used the correct tool name.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "Syntax validates structure, not permission or correctness. Consequential action requires independent policy and any required approval.",
+      "skillIds": [
+        "fde-ai-and-retrieval"
+      ]
+    }
+  ]
+}

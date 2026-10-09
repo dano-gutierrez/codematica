@@ -1,0 +1,126 @@
+{
+  "documentSlug": "fde/role-and-transition",
+  "concept": "Forward Deployed Engineering: Role And Transition",
+  "difficulty": "practitioner",
+  "tags": [
+    "fde",
+    "career-transition"
+  ],
+  "status": "published",
+  "sourceRefs": [
+    "fde-openai-role",
+    "fde-palantir-role"
+  ],
+  "skillIds": [
+    "fde-role-and-transition"
+  ],
+  "slug": "fde/role-and-transition-checkpoint",
+  "title": "Forward Deployed Engineering: Role And Transition Checkpoint",
+  "type": "questionnaire",
+  "questions": [
+    {
+      "id": "outcome",
+      "kind": "choice",
+      "prompt": "A prototype works, but operators still use their spreadsheet. What should the FDE investigate next?",
+      "options": [
+        {
+          "id": "outcome",
+          "label": "Workflow fit, reasons for non-use and the intended operational outcome.",
+          "isCorrect": true
+        },
+        {
+          "id": "alternative-a",
+          "label": "Whether a more complex architecture would impress the sponsor.",
+          "isCorrect": false
+        },
+        {
+          "id": "alternative-b",
+          "label": "Whether demo attendance can be counted as completed adoption.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "A working prototype does not establish sustained use. Investigate operator constraints and measure the workflow; architectural novelty and attendance do not show value.",
+      "skillIds": [
+        "fde-role-and-transition"
+      ]
+    },
+    {
+      "id": "bridge",
+      "kind": "choice",
+      "prompt": "A frontend engineer is moving into an integration-heavy FDE role. Which practice best addresses a likely gap?",
+      "options": [
+        {
+          "id": "alternative-a",
+          "label": "Rebuild the same interface in three frontend frameworks.",
+          "isCorrect": false
+        },
+        {
+          "id": "alternative-b",
+          "label": "Wait to learn backend boundaries until the first live customer incident.",
+          "isCorrect": false
+        },
+        {
+          "id": "bridge",
+          "label": "Build and test a small tenant-aware API, SQL query and fake connector.",
+          "isCorrect": true
+        }
+      ],
+      "explanation": "Existing interface skills transfer. A bounded backend/data exercise produces evidence for missing capabilities; framework repetition and deferral leave the gap untested.",
+      "skillIds": [
+        "fde-role-and-transition"
+      ]
+    },
+    {
+      "id": "ownership",
+      "kind": "choice",
+      "prompt": "Two companies advertise FDE jobs. Which question best distinguishes their actual roles?",
+      "options": [
+        {
+          "id": "alternative-b",
+          "label": "Do both companies use the same diagram tool?",
+          "isCorrect": false
+        },
+        {
+          "id": "ownership",
+          "label": "Who writes production code, owns rollout and supports the customer afterward?",
+          "isCorrect": true
+        },
+        {
+          "id": "alternative-a",
+          "label": "Do both job titles contain the word engineer?",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "Ownership across delivery reveals the job shape. Titles and tools do not establish engineering depth, support responsibility or customer exposure.",
+      "skillIds": [
+        "fde-role-and-transition"
+      ]
+    },
+    {
+      "id": "evidence",
+      "kind": "choice",
+      "prompt": "You passed all path checkpoints. Which claim is defensible?",
+      "options": [
+        {
+          "id": "evidence",
+          "label": "I completed curriculum assessments and can show separate project evidence.",
+          "isCorrect": true
+        },
+        {
+          "id": "alternative-a",
+          "label": "I am certified to operate any customer deployment independently.",
+          "isCorrect": false
+        },
+        {
+          "id": "alternative-b",
+          "label": "My quiz scores predict an offer from a particular employer.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "The assessments measure the authored curriculum. Delivery competence requires separate evidence, and hiring depends on the role and process.",
+      "skillIds": [
+        "fde-role-and-transition"
+      ]
+    }
+  ]
+}

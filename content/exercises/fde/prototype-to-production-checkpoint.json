@@ -1,0 +1,126 @@
+{
+  "documentSlug": "fde/prototype-to-production",
+  "concept": "From Prototype To Production",
+  "difficulty": "practitioner",
+  "tags": [
+    "fde",
+    "career-transition"
+  ],
+  "status": "published",
+  "sourceRefs": [
+    "fde-google-slos",
+    "fde-aws-idempotency"
+  ],
+  "skillIds": [
+    "fde-prototype-to-production"
+  ],
+  "slug": "fde/prototype-to-production-checkpoint",
+  "title": "From Prototype To Production Checkpoint",
+  "type": "questionnaire",
+  "questions": [
+    {
+      "id": "artifact",
+      "kind": "choice",
+      "prompt": "A Node bundle builds but a package disappears after production pruning. Which check catches the deployment gap?",
+      "options": [
+        {
+          "id": "alternative-b",
+          "label": "Only checking that the bundle file exists.",
+          "isCorrect": false
+        },
+        {
+          "id": "artifact",
+          "label": "Safe startup of the final pruned artifact in an isolated environment.",
+          "isCorrect": true
+        },
+        {
+          "id": "alternative-a",
+          "label": "Another source-only module compile against populated local node_modules.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "The deployed dependency graph can differ from local source tests. Boot the actual artifact with inert I/O; compilation and file presence are insufficient.",
+      "skillIds": [
+        "fde-prototype-to-production"
+      ]
+    },
+    {
+      "id": "rollback",
+      "kind": "choice",
+      "prompt": "A release writes a new data shape then fails. What must rollback planning consider?",
+      "options": [
+        {
+          "id": "rollback",
+          "label": "Compatibility and recovery for persisted data and external effects as well as code.",
+          "isCorrect": true
+        },
+        {
+          "id": "alternative-a",
+          "label": "Assume reverting the code reverses every database and remote mutation.",
+          "isCorrect": false
+        },
+        {
+          "id": "alternative-b",
+          "label": "Delete all new records without considering ownership or recovery.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "Application rollback does not undo data or remote effects. Compatibility and reconciliation require explicit planning; destructive cleanup is not a generic rollback.",
+      "skillIds": [
+        "fde-prototype-to-production"
+      ]
+    },
+    {
+      "id": "compatible",
+      "kind": "choice",
+      "prompt": "A customer-specific policy differs from another customer. How should reusable design proceed?",
+      "options": [
+        {
+          "id": "alternative-a",
+          "label": "Hardcode tenant names throughout the shared runtime.",
+          "isCorrect": false
+        },
+        {
+          "id": "alternative-b",
+          "label": "Build a universal framework before investigating the second workflow.",
+          "isCorrect": false
+        },
+        {
+          "id": "compatible",
+          "label": "Identify shared invariants and keep explicit policy differences at a boundary.",
+          "isCorrect": true
+        }
+      ],
+      "explanation": "Evidence should guide abstraction. Scattered special cases obstruct maintenance; speculative generalization can encode the wrong common model.",
+      "skillIds": [
+        "fde-prototype-to-production"
+      ]
+    },
+    {
+      "id": "owner",
+      "kind": "choice",
+      "prompt": "A pilot is about to become an ongoing customer dependency. What must be established?",
+      "options": [
+        {
+          "id": "alternative-b",
+          "label": "An assumption that someone will monitor it later.",
+          "isCorrect": false
+        },
+        {
+          "id": "owner",
+          "label": "A named operational owner, support boundary and tested recovery instructions.",
+          "isCorrect": true
+        },
+        {
+          "id": "alternative-a",
+          "label": "Only the original builder's private notes.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "Sustained service requires accessible ownership and recovery. Private knowledge and unspecified monitoring create an unsupported dependency.",
+      "skillIds": [
+        "fde-prototype-to-production"
+      ]
+    }
+  ]
+}

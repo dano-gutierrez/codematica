@@ -1,0 +1,125 @@
+{
+  "documentSlug": "fde/integrations-and-workflows",
+  "concept": "Reliable Integrations And Customer Workflows",
+  "difficulty": "practitioner",
+  "tags": [
+    "fde",
+    "career-transition"
+  ],
+  "status": "published",
+  "sourceRefs": [
+    "fde-aws-idempotency"
+  ],
+  "skillIds": [
+    "fde-integrations-and-workflows"
+  ],
+  "slug": "fde/integrations-and-workflows-checkpoint",
+  "title": "Reliable Integrations And Customer Workflows Checkpoint",
+  "type": "questionnaire",
+  "questions": [
+    {
+      "id": "reconcile",
+      "kind": "choice",
+      "prompt": "A remote action may have succeeded before the response timed out. What is the next safe design step?",
+      "options": [
+        {
+          "id": "alternative-a",
+          "label": "Retry with a new operation key until a success response arrives.",
+          "isCorrect": false
+        },
+        {
+          "id": "alternative-b",
+          "label": "Mark it failed and forget that the remote effect may exist.",
+          "isCorrect": false
+        },
+        {
+          "id": "reconcile",
+          "label": "Reconcile using the original operation identity or provider-supported idempotency.",
+          "isCorrect": true
+        }
+      ],
+      "explanation": "A lost response creates uncertainty. A new key may repeat the action, while forgetting the uncertainty prevents correct recovery.",
+      "skillIds": [
+        "fde-integrations-and-workflows"
+      ]
+    },
+    {
+      "id": "scope",
+      "kind": "choice",
+      "prompt": "Tenant A and tenant B both use request key k1. What identity does the lesson reducer use?",
+      "options": [
+        {
+          "id": "alternative-b",
+          "label": "Only the payload because identical inputs always mean the same intent.",
+          "isCorrect": false
+        },
+        {
+          "id": "scope",
+          "label": "The pair of authenticated tenant and request key.",
+          "isCorrect": true
+        },
+        {
+          "id": "alternative-a",
+          "label": "Only k1 because request keys are always globally unique.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "The fixture scopes keys by authenticated tenant. Payload equality does not determine intent and unscoped keys mix customers.",
+      "skillIds": [
+        "fde-integrations-and-workflows"
+      ]
+    },
+    {
+      "id": "atomic",
+      "kind": "choice",
+      "prompt": "A job is saved but the process crashes before queue publication. Which mechanism preserves dispatch intent?",
+      "options": [
+        {
+          "id": "atomic",
+          "label": "Write the job and an outbox record in one durable transaction.",
+          "isCorrect": true
+        },
+        {
+          "id": "alternative-a",
+          "label": "Keep the publish intent only in a local variable.",
+          "isCorrect": false
+        },
+        {
+          "id": "alternative-b",
+          "label": "Assume provider idempotency also fixes the database-to-queue gap.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "The outbox closes the local acceptance/publication gap. Memory is lost on crash; provider idempotency addresses repeated remote effects, a different boundary.",
+      "skillIds": [
+        "fde-integrations-and-workflows"
+      ]
+    },
+    {
+      "id": "bounded",
+      "kind": "choice",
+      "prompt": "A connector receives repeated transient failures. Which retry policy is defensible?",
+      "options": [
+        {
+          "id": "alternative-a",
+          "label": "Retry immediately forever with unlimited concurrent requests.",
+          "isCorrect": false
+        },
+        {
+          "id": "alternative-b",
+          "label": "Retry every authorization failure as if it were transient.",
+          "isCorrect": false
+        },
+        {
+          "id": "bounded",
+          "label": "Bound attempts and total time, back off with jitter, and respect provider guidance.",
+          "isCorrect": true
+        }
+      ],
+      "explanation": "Bounded retries control load and time. Unlimited attempts amplify failure, while persistent authorization errors require a different response.",
+      "skillIds": [
+        "fde-integrations-and-workflows"
+      ]
+    }
+  ]
+}

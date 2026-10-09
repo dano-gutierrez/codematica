@@ -1,0 +1,127 @@
+{
+  "documentSlug": "fde/case-studies",
+  "concept": "FDE Case Studies: Outcomes And Evidence",
+  "difficulty": "practitioner",
+  "tags": [
+    "fde",
+    "career-transition"
+  ],
+  "status": "published",
+  "sourceRefs": [
+    "fde-morgan-stanley",
+    "fde-intercom",
+    "fde-airbus-skywise"
+  ],
+  "skillIds": [
+    "fde-case-studies"
+  ],
+  "slug": "fde/case-studies-checkpoint",
+  "title": "FDE Case Studies: Outcomes And Evidence Checkpoint",
+  "type": "questionnaire",
+  "questions": [
+    {
+      "id": "adoption",
+      "kind": "choice",
+      "prompt": "The Morgan Stanley story reports over 98% of advisor teams using the assistant. What does that describe?",
+      "options": [
+        {
+          "id": "adoption",
+          "label": "Reported team adoption, not a 98% answer-accuracy rate.",
+          "isCorrect": true
+        },
+        {
+          "id": "alternative-a",
+          "label": "A controlled demonstration that every answer is correct.",
+          "isCorrect": false
+        },
+        {
+          "id": "alternative-b",
+          "label": "A guaranteed usage rate for any new customer.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "The published metric concerns team use. It does not establish answer accuracy, causality or transferable adoption guarantees.",
+      "skillIds": [
+        "fde-case-studies"
+      ]
+    },
+    {
+      "id": "maximum",
+      "kind": "choice",
+      "prompt": "A story reports 51% average resolution and up to 86%. How should a new pilot use those numbers?",
+      "options": [
+        {
+          "id": "alternative-a",
+          "label": "Promise 86% as the expected minimum.",
+          "isCorrect": false
+        },
+        {
+          "id": "alternative-b",
+          "label": "Average 51 and 86 to predict its own result.",
+          "isCorrect": false
+        },
+        {
+          "id": "maximum",
+          "label": "Keep the statistics distinct and measure its own defined workload.",
+          "isCorrect": true
+        }
+      ],
+      "explanation": "Average and maximum describe different statistics and populations. Neither a minimum promise nor their arithmetic average predicts a new deployment.",
+      "skillIds": [
+        "fde-case-studies"
+      ]
+    },
+    {
+      "id": "historical",
+      "kind": "choice",
+      "prompt": "Airbus describes eliminating technical delays as a long-term aim in a 2018 release. What can you claim?",
+      "options": [
+        {
+          "id": "alternative-b",
+          "label": "The release proves current fleet-wide causal savings.",
+          "isCorrect": false
+        },
+        {
+          "id": "historical",
+          "label": "It was a stated historical ambition, not proof that all such delays were eliminated.",
+          "isCorrect": true
+        },
+        {
+          "id": "alternative-a",
+          "label": "Every easyJet delay was eliminated by the announcement date.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "Plans and reported trial outcomes must remain separate. A dated announcement cannot establish unreported completion or a current causal estimate.",
+      "skillIds": [
+        "fde-case-studies"
+      ]
+    },
+    {
+      "id": "hypothesis",
+      "kind": "choice",
+      "prompt": "A successful customer case resembles your project. What is the next useful artifact?",
+      "options": [
+        {
+          "id": "hypothesis",
+          "label": "A transfer hypothesis, missing-evidence list and local experiment.",
+          "isCorrect": true
+        },
+        {
+          "id": "alternative-a",
+          "label": "A copied performance guarantee using the vendor's best number.",
+          "isCorrect": false
+        },
+        {
+          "id": "alternative-b",
+          "label": "A claim that the same architecture must fit every customer.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "Case studies inspire testable hypotheses. Different data, users and constraints prevent automatic transfer of outcomes or architecture.",
+      "skillIds": [
+        "fde-case-studies"
+      ]
+    }
+  ]
+}

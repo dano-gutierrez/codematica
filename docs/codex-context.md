@@ -183,3 +183,7 @@ Private interview preparation lives at `/admin/interview-preparation` on web/nat
 ### Campaign scenery
 
 Campaign scenery: `assets/game/source/map/` contains four original connected paintings and overlay sources. `scripts/game/build-map-art.ts` assembles and blends before cutting shared-guard tiles into `generated/map/`. `packages/core/src/game/map-art.ts` reserves fifty art positions independently of the twelve authored levels and owns bounded parallax offsets. Web and native keep terrain stationary beneath three moving overlay families. See the [map art review](../assets/game/previews/continuous-map/review.md).
+
+## Forward Deployed Engineer curriculum
+
+`/paths/forward-deployed-engineer` uses existing role progression, source-linked Markdown, questionnaires, guided labs and passive review. Canonical lessons/exercises live under `content/knowledge/fde/` and `content/exercises/fde/`. Read `docs/features/forward-deployed-engineer-path.md` for the sixteen-unit scope, synthetic-lab boundaries and vendor-report attribution.

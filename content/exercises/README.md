@@ -62,3 +62,5 @@ The six Systems Boundary Review checkpoints contain thirty original paper-trace 
 Selected Evidence Review adds eleven five-question paper checkpoints. Preserve fictional assumptions, independent answer keys and path-scoped skills; grading runs no model, credential, payment, cloud or engine operation.
 
 `frontend/system-design-*-lab.json` contains six 60-minute whiteboard rehearsals. Keep source caveats in each briefing, retain scenario-specific follow-ups/evidence, and link the owning brief. Completion is self-assessed; the six-dimension rubric is not an automatic score or employer hiring threshold.
+
+FDE exercises include sixteen four-question checkpoints and four guided labs for discovery, integrations, the synthetic Northstar capstone and a 90-minute mock. Checklists are self-reported; no learner code or customer workflow is executed in the app. Preserve the independent answer keys and reported-versus-simulated evidence distinctions.

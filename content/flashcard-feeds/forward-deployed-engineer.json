@@ -1,0 +1,426 @@
+{
+  "slug": "forward-deployed-engineer",
+  "pathSlug": "forward-deployed-engineer",
+  "title": "FDE Field And Interview Briefs",
+  "summary": "Thirty-two reviews of discovery, data, integration, security, evaluation, operations, case-study evidence and interview judgment.",
+  "audience": "Engineers practicing customer delivery and preparing for Forward Deployed Engineer interviews.",
+  "status": "published",
+  "cards": [
+    {
+      "id": "fde-role-and-transition-outcome",
+      "type": "practical",
+      "title": "Forward Deployed Engineering — Outcome",
+      "prompt": "A prototype works, but operators still use their spreadsheet. What should the FDE investigate next?",
+      "explanation": "Workflow fit, reasons for non-use and the intended operational outcome. A working prototype does not establish sustained use. Investigate operator constraints and measure the workflow; architectural novelty and attendance do not show value.",
+      "difficulty": "practitioner",
+      "tags": [
+        "fde",
+        "career-transition"
+      ],
+      "sourceDocSlug": "fde/role-and-transition"
+    },
+    {
+      "id": "fde-role-and-transition-bridge",
+      "type": "practical",
+      "title": "Forward Deployed Engineering — Bridge",
+      "prompt": "A frontend engineer is moving into an integration-heavy FDE role. Which practice best addresses a likely gap?",
+      "explanation": "Build and test a small tenant-aware API, SQL query and fake connector. Existing interface skills transfer. A bounded backend/data exercise produces evidence for missing capabilities; framework repetition and deferral leave the gap untested.",
+      "difficulty": "practitioner",
+      "tags": [
+        "fde",
+        "career-transition"
+      ],
+      "sourceDocSlug": "fde/role-and-transition"
+    },
+    {
+      "id": "fde-discovery-and-domain-observe",
+      "type": "practical",
+      "title": "Customer Discovery And Domain Modeling — Observe",
+      "prompt": "A sponsor asks for an AI assistant to speed up support. What is the most useful first investigation?",
+      "explanation": "Observe a recent task, its exceptions, handoffs and current evidence. A concrete workflow exposes the problem behind the requested solution. Model selection and sponsor-only assumptions skip necessary discovery.",
+      "difficulty": "practitioner",
+      "tags": [
+        "fde",
+        "career-transition"
+      ],
+      "sourceDocSlug": "fde/discovery-and-domain"
+    },
+    {
+      "id": "fde-discovery-and-domain-map",
+      "type": "practical",
+      "title": "Customer Discovery And Domain Modeling — Map",
+      "prompt": "The sponsor funds a pilot but cannot grant data access. What should the brief record?",
+      "explanation": "Separate sponsor, data owner, access reviewer and operational owner. Decision authority differs by responsibility. Budget approval does not confer data access, and credential sharing does not establish an authorized process.",
+      "difficulty": "practitioner",
+      "tags": [
+        "fde",
+        "career-transition"
+      ],
+      "sourceDocSlug": "fde/discovery-and-domain"
+    },
+    {
+      "id": "fde-value-and-scope-sixty",
+      "type": "practical",
+      "title": "Value, Scope And Pilot Decisions — Sixty",
+      "prompt": "120 tickets/day × 60% eligible × 5 minutes saved × 20 days × 50% adoption gives what modeled monthly capacity?",
+      "explanation": "60 hours before review, training and operating overhead. The arithmetic is 120×0.6×5×20×0.5/60 = 60 hours. It is modeled capacity, not a measured result or automatic expenditure reduction.",
+      "difficulty": "practitioner",
+      "tags": [
+        "fde",
+        "career-transition"
+      ],
+      "sourceDocSlug": "fde/value-and-scope"
+    },
+    {
+      "id": "fde-value-and-scope-baseline",
+      "type": "practical",
+      "title": "Value, Scope And Pilot Decisions — Baseline",
+      "prompt": "A pilot team reports 400 model calls as its success metric. What is missing?",
+      "explanation": "A baseline and user outcome with a denominator, window and countermetric. Activity does not establish value. Define task success and harmful side effects against a comparable baseline; volume and screenshots cannot replace that contract.",
+      "difficulty": "practitioner",
+      "tags": [
+        "fde",
+        "career-transition"
+      ],
+      "sourceDocSlug": "fde/value-and-scope"
+    },
+    {
+      "id": "fde-data-and-sql-grain",
+      "type": "practical",
+      "title": "Data Investigation And SQL For FDEs — Grain",
+      "prompt": "Joining tickets to multiple shipment events inflates the ticket count. What should you inspect first?",
+      "explanation": "The row grain and one-to-many relationship before aggregating. A correct join can multiply rows when grains differ. Resource changes and renaming do not correct the population being counted.",
+      "difficulty": "practitioner",
+      "tags": [
+        "fde",
+        "career-transition"
+      ],
+      "sourceDocSlug": "fde/data-and-sql"
+    },
+    {
+      "id": "fde-data-and-sql-quarantine",
+      "type": "practical",
+      "title": "Data Investigation And SQL For FDEs — Quarantine",
+      "prompt": "An import contains unknown states and malformed timestamps. What preserves evidence?",
+      "explanation": "Quarantine invalid rows with reasons and report completeness. Quarantine and counts preserve what was excluded and why. Silent deletion hides coverage loss; invented values change business meaning.",
+      "difficulty": "practitioner",
+      "tags": [
+        "fde",
+        "career-transition"
+      ],
+      "sourceDocSlug": "fde/data-and-sql"
+    },
+    {
+      "id": "fde-integrations-and-workflows-reconcile",
+      "type": "practical",
+      "title": "Reliable Integrations And Customer Workflows — Reconcile",
+      "prompt": "A remote action may have succeeded before the response timed out. What is the next safe design step?",
+      "explanation": "Reconcile using the original operation identity or provider-supported idempotency. A lost response creates uncertainty. A new key may repeat the action, while forgetting the uncertainty prevents correct recovery.",
+      "difficulty": "practitioner",
+      "tags": [
+        "fde",
+        "career-transition"
+      ],
+      "sourceDocSlug": "fde/integrations-and-workflows"
+    },
+    {
+      "id": "fde-integrations-and-workflows-scope",
+      "type": "practical",
+      "title": "Reliable Integrations And Customer Workflows — Scope",
+      "prompt": "Tenant A and tenant B both use request key k1. What identity does the lesson reducer use?",
+      "explanation": "The pair of authenticated tenant and request key. The fixture scopes keys by authenticated tenant. Payload equality does not determine intent and unscoped keys mix customers.",
+      "difficulty": "practitioner",
+      "tags": [
+        "fde",
+        "career-transition"
+      ],
+      "sourceDocSlug": "fde/integrations-and-workflows"
+    },
+    {
+      "id": "fde-security-and-trust-object",
+      "type": "practical",
+      "title": "Security, Permissions And Customer Trust — Object",
+      "prompt": "A logged-in user changes the ticket ID in an API request. What must the server verify?",
+      "explanation": "Permission for that user to perform that action on that ticket. Identity and hard-to-guess IDs do not grant object access. Authorization must connect the actor, action and record.",
+      "difficulty": "practitioner",
+      "tags": [
+        "fde",
+        "career-transition"
+      ],
+      "sourceDocSlug": "fde/security-and-trust"
+    },
+    {
+      "id": "fde-security-and-trust-filter",
+      "type": "practical",
+      "title": "Security, Permissions And Customer Trust — Filter",
+      "prompt": "A retrieval system filters unauthorized citations only after model generation. What is wrong?",
+      "explanation": "Unauthorized content may already have reached the model or telemetry. Authorization must constrain retrieval before data crosses the boundary. Output appearance does not undo earlier exposure.",
+      "difficulty": "practitioner",
+      "tags": [
+        "fde",
+        "career-transition"
+      ],
+      "sourceDocSlug": "fde/security-and-trust"
+    },
+    {
+      "id": "fde-ai-and-retrieval-simple",
+      "type": "practical",
+      "title": "Applied AI, Retrieval And Bounded Actions — Simple",
+      "prompt": "A workflow needs an exact order lookup and fixed status template. What baseline should you try?",
+      "explanation": "Deterministic lookup and templating before adding model-directed steps. A simple baseline makes incremental value measurable. Agent complexity and tuning do not repair an undefined data contract.",
+      "difficulty": "practitioner",
+      "tags": [
+        "fde",
+        "career-transition"
+      ],
+      "sourceDocSlug": "fde/ai-and-retrieval"
+    },
+    {
+      "id": "fde-ai-and-retrieval-retrieve",
+      "type": "practical",
+      "title": "Applied AI, Retrieval And Bounded Actions — Retrieve",
+      "prompt": "The correct policy never enters the model context. Which area should you investigate first?",
+      "explanation": "Corpus coverage, parsing, permissions and retrieval selection. Missing evidence is primarily a retrieval/input failure. Output settings and fluency scores cannot establish that the necessary source was available.",
+      "difficulty": "practitioner",
+      "tags": [
+        "fde",
+        "career-transition"
+      ],
+      "sourceDocSlug": "fde/ai-and-retrieval"
+    },
+    {
+      "id": "fde-evaluation-and-experiments-holdout",
+      "type": "practical",
+      "title": "Evaluation And Experimental Decisions — Holdout",
+      "prompt": "You repeatedly tune prompts to fix the held-out set. What happens to its role?",
+      "explanation": "It becomes development evidence; use fresh held-out cases for the next unbiased check. Repeated tuning leaks evaluation feedback into development. A higher fitted score is not independent evidence, and offline tuning is not a production trial.",
+      "difficulty": "practitioner",
+      "tags": [
+        "fde",
+        "career-transition"
+      ],
+      "sourceDocSlug": "fde/evaluation-and-experiments"
+    },
+    {
+      "id": "fde-evaluation-and-experiments-slice",
+      "type": "practical",
+      "title": "Evaluation And Experimental Decisions — Slice",
+      "prompt": "A candidate gets 90/100 correct but fails all ten warranty exceptions. What should the report show?",
+      "explanation": "The overall rate, the failed exception slice, counts and severity. Critical slices can determine rollout even when averages look good. Hiding or retroactively excluding failures misrepresents the task population.",
+      "difficulty": "practitioner",
+      "tags": [
+        "fde",
+        "career-transition"
+      ],
+      "sourceDocSlug": "fde/evaluation-and-experiments"
+    },
+    {
+      "id": "fde-prototype-to-production-artifact",
+      "type": "practical",
+      "title": "From Prototype To Production — Artifact",
+      "prompt": "A Node bundle builds but a package disappears after production pruning. Which check catches the deployment gap?",
+      "explanation": "Safe startup of the final pruned artifact in an isolated environment. The deployed dependency graph can differ from local source tests. Boot the actual artifact with inert I/O; compilation and file presence are insufficient.",
+      "difficulty": "practitioner",
+      "tags": [
+        "fde",
+        "career-transition"
+      ],
+      "sourceDocSlug": "fde/prototype-to-production"
+    },
+    {
+      "id": "fde-prototype-to-production-rollback",
+      "type": "practical",
+      "title": "From Prototype To Production — Rollback",
+      "prompt": "A release writes a new data shape then fails. What must rollback planning consider?",
+      "explanation": "Compatibility and recovery for persisted data and external effects as well as code. Application rollback does not undo data or remote effects. Compatibility and reconciliation require explicit planning; destructive cleanup is not a generic rollback.",
+      "difficulty": "practitioner",
+      "tags": [
+        "fde",
+        "career-transition"
+      ],
+      "sourceDocSlug": "fde/prototype-to-production"
+    },
+    {
+      "id": "fde-operations-and-incidents-user",
+      "type": "practical",
+      "title": "Operations, Debugging And Incident Leadership — User",
+      "prompt": "An API is fast but users see stale shipment status. Which conclusion follows?",
+      "explanation": "Latency alone does not measure the useful customer outcome or source freshness. Infrastructure responsiveness is one indicator. Freshness and task correctness need separate evidence; hiding uncertainty makes the experience less trustworthy.",
+      "difficulty": "practitioner",
+      "tags": [
+        "fde",
+        "career-transition"
+      ],
+      "sourceDocSlug": "fde/operations-and-incidents"
+    },
+    {
+      "id": "fde-operations-and-incidents-mitigate",
+      "type": "practical",
+      "title": "Operations, Debugging And Incident Leadership — Mitigate",
+      "prompt": "During a stale-data incident, what should happen while the cause is investigated?",
+      "explanation": "Contain harm, expose freshness, offer the approved fallback and communicate known impact. Mitigation and investigation can proceed together. Mislabeling stale data prolongs harm, and restart is not proof of recovered user behavior.",
+      "difficulty": "practitioner",
+      "tags": [
+        "fde",
+        "career-transition"
+      ],
+      "sourceDocSlug": "fde/operations-and-incidents"
+    },
+    {
+      "id": "fde-adoption-and-handover-denominator",
+      "type": "practical",
+      "title": "Adoption, Enablement And Sustainable Handover — Denominator",
+      "prompt": "30 of 100 eligible agents are active, and 60 were trained. What is adoption among eligible agents?",
+      "explanation": "30%, with 50% separately describing active users among trained agents. Denominators answer different questions. Eligible adoption is 30/100; trained-user activation is 30/60. Neither can silently substitute for the other.",
+      "difficulty": "practitioner",
+      "tags": [
+        "fde",
+        "career-transition"
+      ],
+      "sourceDocSlug": "fde/adoption-and-handover"
+    },
+    {
+      "id": "fde-adoption-and-handover-reopen",
+      "type": "practical",
+      "title": "Adoption, Enablement And Sustainable Handover — Reopen",
+      "prompt": "A bot marks a ticket resolved but it reopens next day. Under a no-reopen-for-seven-days rule, how is it counted?",
+      "explanation": "Not resolved for that outcome metric; record the repeat work. The declared observation window determines success. Premature counting and selective exclusion hide rework.",
+      "difficulty": "practitioner",
+      "tags": [
+        "fde",
+        "career-transition"
+      ],
+      "sourceDocSlug": "fde/adoption-and-handover"
+    },
+    {
+      "id": "fde-customer-communication-options",
+      "type": "practical",
+      "title": "Customer Communication And Product Feedback — Options",
+      "prompt": "A sponsor adds scope without extending the date. What communication best supports a decision?",
+      "explanation": "Explain options, consequences and a recommendation with a decision owner. Visible tradeoffs make a decision possible. Concealed omissions and unexplained refusal prevent shared understanding.",
+      "difficulty": "practitioner",
+      "tags": [
+        "fde",
+        "career-transition"
+      ],
+      "sourceDocSlug": "fde/customer-communication"
+    },
+    {
+      "id": "fde-customer-communication-unknown",
+      "type": "practical",
+      "title": "Customer Communication And Product Feedback — Unknown",
+      "prompt": "You do not know whether the customer API supports idempotency. What should you say?",
+      "explanation": "State the uncertainty, identify how to verify it and avoid promising retry safety yet. A credible engineer distinguishes verified contracts from assumptions. Guessing or withholding an important uncertainty creates preventable delivery risk.",
+      "difficulty": "practitioner",
+      "tags": [
+        "fde",
+        "career-transition"
+      ],
+      "sourceDocSlug": "fde/customer-communication"
+    },
+    {
+      "id": "fde-case-studies-adoption",
+      "type": "interview",
+      "title": "FDE Case Studies — Adoption",
+      "prompt": "The Morgan Stanley story reports over 98% of advisor teams using the assistant. What does that describe?",
+      "explanation": "Reported team adoption, not a 98% answer-accuracy rate. The published metric concerns team use. It does not establish answer accuracy, causality or transferable adoption guarantees.",
+      "difficulty": "practitioner",
+      "tags": [
+        "fde",
+        "career-transition"
+      ],
+      "sourceDocSlug": "fde/case-studies"
+    },
+    {
+      "id": "fde-case-studies-maximum",
+      "type": "interview",
+      "title": "FDE Case Studies — Maximum",
+      "prompt": "A story reports 51% average resolution and up to 86%. How should a new pilot use those numbers?",
+      "explanation": "Keep the statistics distinct and measure its own defined workload. Average and maximum describe different statistics and populations. Neither a minimum promise nor their arithmetic average predicts a new deployment.",
+      "difficulty": "practitioner",
+      "tags": [
+        "fde",
+        "career-transition"
+      ],
+      "sourceDocSlug": "fde/case-studies"
+    },
+    {
+      "id": "fde-portfolio-capstone-vertical",
+      "type": "interview",
+      "title": "FDE Portfolio Capstone — Vertical",
+      "prompt": "What is the first useful Northstar capstone increment?",
+      "explanation": "One authorized order-status workflow with evidence, failure states and a baseline. A bounded vertical slice provides end-to-end learning and measurable behavior. Excess scope and presentation-only work miss the delivery objective.",
+      "difficulty": "practitioner",
+      "tags": [
+        "fde",
+        "career-transition"
+      ],
+      "sourceDocSlug": "fde/portfolio-capstone"
+    },
+    {
+      "id": "fde-portfolio-capstone-denied",
+      "type": "interview",
+      "title": "FDE Portfolio Capstone — Denied",
+      "prompt": "Which test belongs in the capstone acceptance matrix?",
+      "explanation": "Tenant A cannot obtain tenant B's ticket through the API, cache or model context. Isolation must cover actual access paths. Visibility controls alone do not enforce authorization, and broad demo access invalidates the requirement.",
+      "difficulty": "practitioner",
+      "tags": [
+        "fde",
+        "career-transition"
+      ],
+      "sourceDocSlug": "fde/portfolio-capstone"
+    },
+    {
+      "id": "fde-interview-practice-clarify",
+      "type": "interview",
+      "title": "FDE Interview Practice And Timed Mock — Clarify",
+      "prompt": "An interviewer asks you to automate support. What should precede a detailed architecture?",
+      "explanation": "Clarify the user, task, constraints, data and success criteria. Clarification creates a problem contract. Tool lists and unsupported authority assumptions skip the core ambiguity the exercise probes.",
+      "difficulty": "practitioner",
+      "tags": [
+        "fde",
+        "career-transition"
+      ],
+      "sourceDocSlug": "fde/interview-practice"
+    },
+    {
+      "id": "fde-interview-practice-reconcile",
+      "type": "interview",
+      "title": "FDE Interview Practice And Timed Mock — Reconcile",
+      "prompt": "In the architecture mock, what does the outbox alone fail to guarantee?",
+      "explanation": "That a remote effect cannot repeat after remote success and a worker crash. An outbox preserves local dispatch intent. Remote-effect idempotency or reconciliation addresses a separate failure window.",
+      "difficulty": "practitioner",
+      "tags": [
+        "fde",
+        "career-transition"
+      ],
+      "sourceDocSlug": "fde/interview-practice"
+    },
+    {
+      "id": "fde-career-launch-deliverable",
+      "type": "interview",
+      "title": "Career Launch, First 90 Days And Field Habits — Deliverable",
+      "prompt": "Which first-30-days plan is concrete and realistic?",
+      "explanation": "Run the stack, map owners, shadow a deployment and reproduce a known issue. Learning and a bounded reproduction create useful evidence early. Access and major redesign depend on context and authorization.",
+      "difficulty": "practitioner",
+      "tags": [
+        "fde",
+        "career-transition"
+      ],
+      "sourceDocSlug": "fde/career-launch"
+    },
+    {
+      "id": "fde-career-launch-verify",
+      "type": "interview",
+      "title": "Career Launch, First 90 Days And Field Habits — Verify",
+      "prompt": "How should you assess travel and on-call expectations for a role?",
+      "explanation": "Verify the current arrangements with the hiring team and concrete deployment examples. Role expectations vary by team and location. A title, isolated posting or brand cannot establish the actual working agreement.",
+      "difficulty": "practitioner",
+      "tags": [
+        "fde",
+        "career-transition"
+      ],
+      "sourceDocSlug": "fde/career-launch"
+    }
+  ]
+}

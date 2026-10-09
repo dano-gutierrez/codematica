@@ -426,3 +426,7 @@ flowchart LR
 ```
 
 See [Partitioned Event Log Interview](features/partitioned-event-log-interview.md).
+
+## Forward Deployed Engineer content flow
+
+The FDE role path adds sixteen original lessons, 64 scenario questions, four self-reported guided labs and 32 review cards to the existing canonical Markdown/JSON → validated index → web/native reader flow. It introduces no service, schema, model integration or persistence change. Source dates and reported outcome limits live in its primary-source catalog and companions. See [Forward Deployed Engineer Career Path](features/forward-deployed-engineer-path.md).

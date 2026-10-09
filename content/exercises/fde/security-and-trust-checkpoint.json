@@ -1,0 +1,126 @@
+{
+  "documentSlug": "fde/security-and-trust",
+  "concept": "Security, Permissions And Customer Trust",
+  "difficulty": "practitioner",
+  "tags": [
+    "fde",
+    "career-transition"
+  ],
+  "status": "published",
+  "sourceRefs": [
+    "fde-owasp-authorization",
+    "fde-openai-role"
+  ],
+  "skillIds": [
+    "fde-security-and-trust"
+  ],
+  "slug": "fde/security-and-trust-checkpoint",
+  "title": "Security, Permissions And Customer Trust Checkpoint",
+  "type": "questionnaire",
+  "questions": [
+    {
+      "id": "object",
+      "kind": "choice",
+      "prompt": "A logged-in user changes the ticket ID in an API request. What must the server verify?",
+      "options": [
+        {
+          "id": "alternative-b",
+          "label": "Only that some valid login cookie exists.",
+          "isCorrect": false
+        },
+        {
+          "id": "object",
+          "label": "Permission for that user to perform that action on that ticket.",
+          "isCorrect": true
+        },
+        {
+          "id": "alternative-a",
+          "label": "Only that the ticket ID is a UUID.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "Identity and hard-to-guess IDs do not grant object access. Authorization must connect the actor, action and record.",
+      "skillIds": [
+        "fde-security-and-trust"
+      ]
+    },
+    {
+      "id": "filter",
+      "kind": "choice",
+      "prompt": "A retrieval system filters unauthorized citations only after model generation. What is wrong?",
+      "options": [
+        {
+          "id": "filter",
+          "label": "Unauthorized content may already have reached the model or telemetry.",
+          "isCorrect": true
+        },
+        {
+          "id": "alternative-a",
+          "label": "Nothing, because hiding citations removes all disclosure paths.",
+          "isCorrect": false
+        },
+        {
+          "id": "alternative-b",
+          "label": "Nothing, provided the generated answer sounds confident.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "Authorization must constrain retrieval before data crosses the boundary. Output appearance does not undo earlier exposure.",
+      "skillIds": [
+        "fde-security-and-trust"
+      ]
+    },
+    {
+      "id": "minimize",
+      "kind": "choice",
+      "prompt": "Which debugging artifact is most appropriate for a public portfolio?",
+      "options": [
+        {
+          "id": "alternative-a",
+          "label": "A copied customer database with renamed filenames.",
+          "isCorrect": false
+        },
+        {
+          "id": "alternative-b",
+          "label": "A production service token so reviewers can reproduce everything.",
+          "isCorrect": false
+        },
+        {
+          "id": "minimize",
+          "label": "A synthetic reproduction with redacted logs and explicit limitations.",
+          "isCorrect": true
+        }
+      ],
+      "explanation": "Synthetic, rights-cleared evidence supports review without exposing customer data or credentials. Renaming files does not anonymize their contents.",
+      "skillIds": [
+        "fde-security-and-trust"
+      ]
+    },
+    {
+      "id": "separate",
+      "kind": "choice",
+      "prompt": "A retrieved policy document says to call an administrator tool. How should the application treat it?",
+      "options": [
+        {
+          "id": "alternative-b",
+          "label": "As an administrator command if the model repeats it in valid JSON.",
+          "isCorrect": false
+        },
+        {
+          "id": "separate",
+          "label": "As untrusted document content; tool authorization remains a server-side decision.",
+          "isCorrect": true
+        },
+        {
+          "id": "alternative-a",
+          "label": "As a permission grant because the document was retrieved successfully.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "Retrieval and output syntax do not establish authority. The application must enforce the allowed action independently of document instructions.",
+      "skillIds": [
+        "fde-security-and-trust"
+      ]
+    }
+  ]
+}

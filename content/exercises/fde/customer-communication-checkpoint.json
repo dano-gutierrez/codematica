@@ -1,0 +1,126 @@
+{
+  "documentSlug": "fde/customer-communication",
+  "concept": "Customer Communication And Product Feedback",
+  "difficulty": "practitioner",
+  "tags": [
+    "fde",
+    "career-transition"
+  ],
+  "status": "published",
+  "sourceRefs": [
+    "fde-openai-role",
+    "fde-palantir-role"
+  ],
+  "skillIds": [
+    "fde-customer-communication"
+  ],
+  "slug": "fde/customer-communication-checkpoint",
+  "title": "Customer Communication And Product Feedback Checkpoint",
+  "type": "questionnaire",
+  "questions": [
+    {
+      "id": "options",
+      "kind": "choice",
+      "prompt": "A sponsor adds scope without extending the date. What communication best supports a decision?",
+      "options": [
+        {
+          "id": "alternative-b",
+          "label": "Send an unexplained refusal with no relation to the outcome.",
+          "isCorrect": false
+        },
+        {
+          "id": "options",
+          "label": "Explain options, consequences and a recommendation with a decision owner.",
+          "isCorrect": true
+        },
+        {
+          "id": "alternative-a",
+          "label": "Agree immediately and hide omitted testing.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "Visible tradeoffs make a decision possible. Concealed omissions and unexplained refusal prevent shared understanding.",
+      "skillIds": [
+        "fde-customer-communication"
+      ]
+    },
+    {
+      "id": "unknown",
+      "kind": "choice",
+      "prompt": "You do not know whether the customer API supports idempotency. What should you say?",
+      "options": [
+        {
+          "id": "unknown",
+          "label": "State the uncertainty, identify how to verify it and avoid promising retry safety yet.",
+          "isCorrect": true
+        },
+        {
+          "id": "alternative-a",
+          "label": "Promise exactly-once effects because most APIs probably support it.",
+          "isCorrect": false
+        },
+        {
+          "id": "alternative-b",
+          "label": "Avoid mentioning the uncertainty until after deployment.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "A credible engineer distinguishes verified contracts from assumptions. Guessing or withholding an important uncertainty creates preventable delivery risk.",
+      "skillIds": [
+        "fde-customer-communication"
+      ]
+    },
+    {
+      "id": "boundary",
+      "kind": "choice",
+      "prompt": "The live integration fails during a demo and you switch to a synthetic recording. What must you disclose?",
+      "options": [
+        {
+          "id": "alternative-a",
+          "label": "Nothing, as long as the video looks like the application.",
+          "isCorrect": false
+        },
+        {
+          "id": "alternative-b",
+          "label": "Claim the recording proves current production recovery.",
+          "isCorrect": false
+        },
+        {
+          "id": "boundary",
+          "label": "The fallback environment and what it does and does not demonstrate.",
+          "isCorrect": true
+        }
+      ],
+      "explanation": "A labeled fallback can preserve a useful discussion. It cannot establish the current integration state or recovery.",
+      "skillIds": [
+        "fde-customer-communication"
+      ]
+    },
+    {
+      "id": "reproduce",
+      "kind": "choice",
+      "prompt": "Which field report is most actionable for the product team?",
+      "options": [
+        {
+          "id": "alternative-b",
+          "label": "A vague request to make the platform better.",
+          "isCorrect": false
+        },
+        {
+          "id": "reproduce",
+          "label": "A safe minimal reproduction, versions, impact, workaround and evidence of recurrence.",
+          "isCorrect": true
+        },
+        {
+          "id": "alternative-a",
+          "label": "A private customer data dump with no explanation.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "A reproducible report lets engineers investigate and prioritize. Sensitive dumps and vague feedback are neither sufficient nor appropriate evidence.",
+      "skillIds": [
+        "fde-customer-communication"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,90 @@
+{
+  "documentSlug": "fde/discovery-and-domain",
+  "concept": "Customer Discovery And Domain Modeling",
+  "difficulty": "practitioner",
+  "tags": [
+    "fde",
+    "career-transition"
+  ],
+  "status": "published",
+  "sourceRefs": [
+    "fde-openai-role",
+    "fde-palantir-role"
+  ],
+  "skillIds": [
+    "fde-discovery-and-domain"
+  ],
+  "slug": "fde/discovery-lab",
+  "title": "FDE Customer Discovery Lab",
+  "estimatedMinutes": 45,
+  "briefing": "Run the fictional Northstar discovery role-play from the companion lesson with a peer or a recorded solo exercise. Use only synthetic examples. Produce a one-page brief, stakeholder map and domain glossary. The app records self-reported completion, not verified customer research.",
+  "objectives": [
+    "Separate observed workflow evidence from assumptions.",
+    "Identify the people who own data access, acceptance and operations.",
+    "Negotiate a bounded first slice and a measurable next decision."
+  ],
+  "prediction": {
+    "prompt": "Which uncertainty is most likely to change the pilot scope?",
+    "options": [
+      {
+        "id": "access",
+        "label": "Data access and workflow ownership."
+      },
+      {
+        "id": "model",
+        "label": "The preferred model or framework."
+      }
+    ]
+  },
+  "steps": [
+    {
+      "id": "observe",
+      "title": "Observe one concrete task",
+      "instructions": "Spend ten minutes walking through one synthetic ticket from trigger to outcome. Ask about tools, delays, exceptions and evidence. Write observations separately from your interpretations."
+    },
+    {
+      "id": "map",
+      "title": "Map domain and decision owners",
+      "instructions": "Spend ten minutes naming operator, sponsor, data owner, access reviewer and operational owner. Define ten terms with examples; resolve what closed and resolved mean."
+    },
+    {
+      "id": "constraints",
+      "title": "Reveal constraints",
+      "instructions": "Spend ten minutes introducing unresolved production access and warranty approval requirements. Update the proposed scope without treating the original request as a commitment."
+    },
+    {
+      "id": "brief",
+      "title": "Write the delivery brief",
+      "instructions": "Spend ten minutes on one user, one workflow, baseline owner, excluded actions, success measure, risks and decision date. Use the lesson template."
+    },
+    {
+      "id": "playback",
+      "title": "Play back the decision",
+      "instructions": "Spend five minutes reading the brief to the peer or recording yourself. Capture corrections and name the next evidence that could change the plan."
+    }
+  ],
+  "reflectionPrompts": [
+    "Which question changed your understanding most?",
+    "Which claim still lacks evidence, and who can verify it?"
+  ],
+  "extensionChallenge": "Repeat with a customer who has excellent data but no operator capacity for review. Explain how the workflow and scope decision change.",
+  "evidenceChecklist": [
+    {
+      "id": "evidence-1",
+      "label": "I recorded observations separately from assumptions."
+    },
+    {
+      "id": "evidence-2",
+      "label": "I named data, decision and operational owners."
+    },
+    {
+      "id": "evidence-3",
+      "label": "I defined one bounded workflow and its exclusions."
+    },
+    {
+      "id": "evidence-4",
+      "label": "I captured a baseline plan and customer playback corrections."
+    }
+  ],
+  "type": "guided-lab"
+}

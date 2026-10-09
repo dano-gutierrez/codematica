@@ -1,0 +1,100 @@
+{
+  "documentSlug": "fde/portfolio-capstone",
+  "concept": "FDE Portfolio Capstone: Northstar Support Operations",
+  "difficulty": "practitioner",
+  "tags": [
+    "fde",
+    "career-transition"
+  ],
+  "status": "published",
+  "sourceRefs": [
+    "fde-aws-idempotency",
+    "fde-owasp-authorization",
+    "fde-google-slos"
+  ],
+  "skillIds": [
+    "fde-portfolio-capstone"
+  ],
+  "slug": "fde/capstone-lab",
+  "title": "Northstar FDE Portfolio Lab",
+  "estimatedMinutes": 1200,
+  "briefing": "Build the 16–23 hour synthetic Northstar capstone in several sessions using the companion contract. The 1200-minute estimate is a planning midpoint. Use a local database and fake adapters; a paid model is optional. The app does not run or grade the repository, audit security or verify real customer outcomes.",
+  "objectives": [
+    "Deliver one complete authorized customer workflow.",
+    "Prove failure behavior with reproducible fixtures and evaluations.",
+    "Provide a demo, operational handover and honest impact memo."
+  ],
+  "prediction": {
+    "prompt": "Where do you expect the largest delivery uncertainty?",
+    "options": [
+      {
+        "id": "data",
+        "label": "Data meaning, freshness and access."
+      },
+      {
+        "id": "workflow",
+        "label": "Workflow fit and operational handover."
+      },
+      {
+        "id": "implementation",
+        "label": "Implementation and failure recovery."
+      }
+    ]
+  },
+  "steps": [
+    {
+      "id": "baseline",
+      "title": "Create the brief and fixture manifest",
+      "instructions": "Use two tenants, ten orders and twenty tickets per tenant plus twelve policy documents. Include cross-tenant repeated IDs, missing records, stale data, duplicates and contradictions. Record expected outcomes before implementation."
+    },
+    {
+      "id": "slice",
+      "title": "Build one complete workflow",
+      "instructions": "Implement authorized lookup, source timestamps, draft review and local save. Add permission and receipt tests before the implementation. Handle denied, empty, stale and unavailable states explicitly."
+    },
+    {
+      "id": "evaluate",
+      "title": "Run failure and evaluation cases",
+      "instructions": "Use the lesson's acceptance matrix and forty-case evaluation. Keep development and held-out cases separate. Inject response loss, duplicate events and a revoked user. Record per-case outcomes and versions."
+    },
+    {
+      "id": "release",
+      "title": "Package and recover",
+      "instructions": "Create a disposable local artifact, verify startup with inert dependencies, and run an outage/recovery exercise. Write deployment, rollback, ownership and escalation instructions."
+    },
+    {
+      "id": "defend",
+      "title": "Demo and transfer ownership",
+      "instructions": "Record a five-minute demo with normal and failure flows. Ask a peer to use the runbook. Write an impact memo separating assumptions, synthetic measurements and any real peer feedback."
+    }
+  ],
+  "reflectionPrompts": [
+    "Which requirement changed and how did you negotiate it?",
+    "What evidence would be required before a real customer deployment?",
+    "Could another maintainer recover the application without you?"
+  ],
+  "extensionChallenge": "Add a second fictional customer with different policy and a tighter freshness requirement. Generalize only the shared invariant and document what remains customer-specific.",
+  "evidenceChecklist": [
+    {
+      "id": "evidence-1",
+      "label": "I saved the brief, fixture manifest and baseline."
+    },
+    {
+      "id": "evidence-2",
+      "label": "I demonstrated tenant isolation and explicit failure states."
+    },
+    {
+      "id": "evidence-3",
+      "label": "I recorded evaluation results including failed cases."
+    },
+    {
+      "id": "evidence-4",
+      "label": "I verified local artifact startup and a recovery drill."
+    },
+    {
+      "id": "evidence-5",
+      "label": "I produced a demo, runbook and evidence-labeled impact memo."
+    }
+  ],
+  "type": "guided-lab"
+}

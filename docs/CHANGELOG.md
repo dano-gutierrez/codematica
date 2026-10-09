@@ -24,6 +24,10 @@
 
 Owning contracts: [LinkedIn editorial](features/linkedin-editorial.md) and [design system](features/design-system.md).
 
+## 2026-10-07 — Forward Deployed Engineer career path
+
+Added sixteen source-backed transition lessons, 64 scenario questions, four guided labs, a synthetic portfolio capstone, a 90-minute interview mock and 32 review cards. Three reported customer stories preserve metric and attribution limits. Existing web/native curriculum infrastructure is reused. See [the feature contract](features/forward-deployed-engineer-path.md).
+
 ## 2026-10-04 — Selected Evidence Review
 
 Added eleven original source-bound lessons,55 choices and three ordered paths for engineering, creative computing and ownership review. Existing curricula/runtime/dependencies are unchanged. Selected primary references preserve editions, licensing scope and fictional assumptions; no complete external course or installed-system certification is claimed. See [the feature contract](features/selected-evidence-review.md).

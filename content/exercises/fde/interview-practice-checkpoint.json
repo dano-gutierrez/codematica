@@ -1,0 +1,127 @@
+{
+  "documentSlug": "fde/interview-practice",
+  "concept": "FDE Interview Practice And Timed Mock",
+  "difficulty": "practitioner",
+  "tags": [
+    "fde",
+    "career-transition"
+  ],
+  "status": "published",
+  "sourceRefs": [
+    "fde-openai-role",
+    "fde-palantir-role",
+    "fde-aws-idempotency"
+  ],
+  "skillIds": [
+    "fde-interview-practice"
+  ],
+  "slug": "fde/interview-practice-checkpoint",
+  "title": "FDE Interview Practice And Timed Mock Checkpoint",
+  "type": "questionnaire",
+  "questions": [
+    {
+      "id": "clarify",
+      "kind": "choice",
+      "prompt": "An interviewer asks you to automate support. What should precede a detailed architecture?",
+      "options": [
+        {
+          "id": "alternative-b",
+          "label": "Assume all support actions may run autonomously.",
+          "isCorrect": false
+        },
+        {
+          "id": "clarify",
+          "label": "Clarify the user, task, constraints, data and success criteria.",
+          "isCorrect": true
+        },
+        {
+          "id": "alternative-a",
+          "label": "Name as many infrastructure services as possible.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "Clarification creates a problem contract. Tool lists and unsupported authority assumptions skip the core ambiguity the exercise probes.",
+      "skillIds": [
+        "fde-interview-practice"
+      ]
+    },
+    {
+      "id": "reconcile",
+      "kind": "choice",
+      "prompt": "In the architecture mock, what does the outbox alone fail to guarantee?",
+      "options": [
+        {
+          "id": "reconcile",
+          "label": "That a remote effect cannot repeat after remote success and a worker crash.",
+          "isCorrect": true
+        },
+        {
+          "id": "alternative-a",
+          "label": "That local dispatch intent can be stored with the job.",
+          "isCorrect": false
+        },
+        {
+          "id": "alternative-b",
+          "label": "That a transaction can contain multiple local records.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "An outbox preserves local dispatch intent. Remote-effect idempotency or reconciliation addresses a separate failure window.",
+      "skillIds": [
+        "fde-interview-practice"
+      ]
+    },
+    {
+      "id": "specific",
+      "kind": "choice",
+      "prompt": "Which ownership story is strongest?",
+      "options": [
+        {
+          "id": "alternative-a",
+          "label": "A teammate's achievement retold as entirely your own.",
+          "isCorrect": false
+        },
+        {
+          "id": "alternative-b",
+          "label": "A fabricated customer story with an impressive metric.",
+          "isCorrect": false
+        },
+        {
+          "id": "specific",
+          "label": "A factual account of your decision, alternatives, evidence, limitation and learning.",
+          "isCorrect": true
+        }
+      ],
+      "explanation": "Specific, honest ownership can withstand follow-up questions. Misattribution and invented outcomes undermine the evidence the interviewer needs.",
+      "skillIds": [
+        "fde-interview-practice"
+      ]
+    },
+    {
+      "id": "practice",
+      "kind": "choice",
+      "prompt": "What does a score of 18/24 in this mock mean?",
+      "options": [
+        {
+          "id": "alternative-b",
+          "label": "It certifies production deployment competence.",
+          "isCorrect": false
+        },
+        {
+          "id": "practice",
+          "label": "It meets an authored practice heuristic, not an employer hiring threshold.",
+          "isCorrect": true
+        },
+        {
+          "id": "alternative-a",
+          "label": "It guarantees passing an FDE interview.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "The rubric structures rehearsal only. Employers and production contexts evaluate additional evidence under different constraints.",
+      "skillIds": [
+        "fde-interview-practice"
+      ]
+    }
+  ]
+}

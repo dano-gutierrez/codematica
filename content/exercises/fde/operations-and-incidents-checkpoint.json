@@ -1,0 +1,126 @@
+{
+  "documentSlug": "fde/operations-and-incidents",
+  "concept": "Operations, Debugging And Incident Leadership",
+  "difficulty": "practitioner",
+  "tags": [
+    "fde",
+    "career-transition"
+  ],
+  "status": "published",
+  "sourceRefs": [
+    "fde-opentelemetry-signals",
+    "fde-google-slos"
+  ],
+  "skillIds": [
+    "fde-operations-and-incidents"
+  ],
+  "slug": "fde/operations-and-incidents-checkpoint",
+  "title": "Operations, Debugging And Incident Leadership Checkpoint",
+  "type": "questionnaire",
+  "questions": [
+    {
+      "id": "user",
+      "kind": "choice",
+      "prompt": "An API is fast but users see stale shipment status. Which conclusion follows?",
+      "options": [
+        {
+          "id": "user",
+          "label": "Latency alone does not measure the useful customer outcome or source freshness.",
+          "isCorrect": true
+        },
+        {
+          "id": "alternative-a",
+          "label": "The workflow is healthy because the server is responding.",
+          "isCorrect": false
+        },
+        {
+          "id": "alternative-b",
+          "label": "The UI should hide timestamps to reduce concern.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "Infrastructure responsiveness is one indicator. Freshness and task correctness need separate evidence; hiding uncertainty makes the experience less trustworthy.",
+      "skillIds": [
+        "fde-operations-and-incidents"
+      ]
+    },
+    {
+      "id": "mitigate",
+      "kind": "choice",
+      "prompt": "During a stale-data incident, what should happen while the cause is investigated?",
+      "options": [
+        {
+          "id": "alternative-a",
+          "label": "Keep showing data as current until a root cause is certain.",
+          "isCorrect": false
+        },
+        {
+          "id": "alternative-b",
+          "label": "Promise complete recovery based only on a service restart.",
+          "isCorrect": false
+        },
+        {
+          "id": "mitigate",
+          "label": "Contain harm, expose freshness, offer the approved fallback and communicate known impact.",
+          "isCorrect": true
+        }
+      ],
+      "explanation": "Mitigation and investigation can proceed together. Mislabeling stale data prolongs harm, and restart is not proof of recovered user behavior.",
+      "skillIds": [
+        "fde-operations-and-incidents"
+      ]
+    },
+    {
+      "id": "redact",
+      "kind": "choice",
+      "prompt": "How should a trace help investigate a customer failure?",
+      "options": [
+        {
+          "id": "alternative-b",
+          "label": "Remove all operation IDs so no one can connect events.",
+          "isCorrect": false
+        },
+        {
+          "id": "redact",
+          "label": "Correlate safe operation metadata while minimizing sensitive payloads.",
+          "isCorrect": true
+        },
+        {
+          "id": "alternative-a",
+          "label": "Copy every customer document into unrestricted logs.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "Useful correlation does not require unrestricted content capture. Overcollection exposes data; removing all correlation makes diagnosis harder.",
+      "skillIds": [
+        "fde-operations-and-incidents"
+      ]
+    },
+    {
+      "id": "evidence",
+      "kind": "choice",
+      "prompt": "Which evidence supports a recovery claim after an exporter incident?",
+      "options": [
+        {
+          "id": "evidence",
+          "label": "Fresh source data and successful affected user workflows over the agreed observation window.",
+          "isCorrect": true
+        },
+        {
+          "id": "alternative-a",
+          "label": "A green unit-test run without checking the affected system.",
+          "isCorrect": false
+        },
+        {
+          "id": "alternative-b",
+          "label": "A confident message from someone who has not observed the workflow.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "Recovery requires observation at the failed boundary and user journey. Test success and confidence do not establish restored service.",
+      "skillIds": [
+        "fde-operations-and-incidents"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,126 @@
+{
+  "documentSlug": "fde/data-and-sql",
+  "concept": "Data Investigation And SQL For FDEs",
+  "difficulty": "practitioner",
+  "tags": [
+    "fde",
+    "career-transition"
+  ],
+  "status": "published",
+  "sourceRefs": [
+    "fde-postgres-joins",
+    "fde-palantir-role"
+  ],
+  "skillIds": [
+    "fde-data-and-sql"
+  ],
+  "slug": "fde/data-and-sql-checkpoint",
+  "title": "Data Investigation And SQL For FDEs Checkpoint",
+  "type": "questionnaire",
+  "questions": [
+    {
+      "id": "grain",
+      "kind": "choice",
+      "prompt": "Joining tickets to multiple shipment events inflates the ticket count. What should you inspect first?",
+      "options": [
+        {
+          "id": "grain",
+          "label": "The row grain and one-to-many relationship before aggregating.",
+          "isCorrect": true
+        },
+        {
+          "id": "alternative-a",
+          "label": "Increase database memory until the count looks plausible.",
+          "isCorrect": false
+        },
+        {
+          "id": "alternative-b",
+          "label": "Rename the count field to make the larger number acceptable.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "A correct join can multiply rows when grains differ. Resource changes and renaming do not correct the population being counted.",
+      "skillIds": [
+        "fde-data-and-sql"
+      ]
+    },
+    {
+      "id": "quarantine",
+      "kind": "choice",
+      "prompt": "An import contains unknown states and malformed timestamps. What preserves evidence?",
+      "options": [
+        {
+          "id": "alternative-a",
+          "label": "Silently delete the rows and report only clean successes.",
+          "isCorrect": false
+        },
+        {
+          "id": "alternative-b",
+          "label": "Convert every unknown state to delivered.",
+          "isCorrect": false
+        },
+        {
+          "id": "quarantine",
+          "label": "Quarantine invalid rows with reasons and report completeness.",
+          "isCorrect": true
+        }
+      ],
+      "explanation": "Quarantine and counts preserve what was excluded and why. Silent deletion hides coverage loss; invented values change business meaning.",
+      "skillIds": [
+        "fde-data-and-sql"
+      ]
+    },
+    {
+      "id": "left",
+      "kind": "choice",
+      "prompt": "The SQL fixture must retain a ticket with no matching order. Which join shape is appropriate?",
+      "options": [
+        {
+          "id": "alternative-b",
+          "label": "A left join on order ID alone because left joins enforce tenant permissions.",
+          "isCorrect": false
+        },
+        {
+          "id": "left",
+          "label": "A left join on tenant and order identity, with independent caller authorization.",
+          "isCorrect": true
+        },
+        {
+          "id": "alternative-a",
+          "label": "An inner join on order ID alone.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "The left join preserves unmatched tickets; the composite predicate preserves the fixture identities. Join type itself does not authorize access.",
+      "skillIds": [
+        "fde-data-and-sql"
+      ]
+    },
+    {
+      "id": "freshness",
+      "kind": "choice",
+      "prompt": "A source API returns HTTP 200 but its export is ninety minutes old. What is established?",
+      "options": [
+        {
+          "id": "freshness",
+          "label": "The endpoint responded; business data freshness still needs its own check.",
+          "isCorrect": true
+        },
+        {
+          "id": "alternative-a",
+          "label": "The data must be current because HTTP succeeded.",
+          "isCorrect": false
+        },
+        {
+          "id": "alternative-b",
+          "label": "The status must be false because old data can never be useful.",
+          "isCorrect": false
+        }
+      ],
+      "explanation": "Reachability and freshness are separate properties. Timestamp and workflow requirements determine whether the result is usable; neither success nor age alone proves its business truth.",
+      "skillIds": [
+        "fde-data-and-sql"
+      ]
+    }
+  ]
+}
